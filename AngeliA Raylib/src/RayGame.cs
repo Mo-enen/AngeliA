@@ -31,6 +31,7 @@ public partial class RayGame : Game {
 	private int IgnoreGizmosFrame = -1;
 	private int CurrentBgmID = 0;
 	private bool HasScreenEffectEnabled;
+	private int PrevFPS = -1;
 
 	// Saving
 	private static readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false, SavingLocation.Global);
@@ -187,6 +188,11 @@ public partial class RayGame : Game {
 		Raylib.ClearBackground(Color.Blank);
 		Update();
 		Raylib.EndBlendMode();
+		int fps = GetTargetFramerate();
+		if (fps != PrevFPS) {
+			PrevFPS = fps;
+			Raylib.SetTargetFPS(fps);
+		}
 
 		// Black Side Border
 		if (Renderer.CameraRange.x.NotAlmostZero()) {

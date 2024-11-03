@@ -35,14 +35,6 @@ public partial class RayGame {
 
 	protected override void _OpenUrl (string url) => Raylib.OpenURL(url);
 
-	protected override void _SetTargetFramerate (int framerate) {
-		framerate = framerate.Clamp(4, 360);
-		if (framerate != TargetFPS) {
-			TargetFPS = framerate;
-			Raylib.SetTargetFPS(framerate);
-		}
-	}
-
 
 	// Window
 	protected override void _SetWindowSize (int width, int height) {

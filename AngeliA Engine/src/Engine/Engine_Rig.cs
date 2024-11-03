@@ -164,8 +164,7 @@ public partial class Engine {
 
 		bool openingGameEditor = CurrentWindow is GameEditor;
 		bool currentWindowRequireRigGame = openingGameEditor || Game.GlobalFrame <= ForceRigGameRunInBackgroundFrame;
-		if (!currentWindowRequireRigGame) Game.SetTargetFramerate(60);
-
+		
 		// Quit if Not Game Project
 		if (CurrentProject != null && CurrentProject.Universe.Info.ProjectType != ProjectType.Game) {
 			if (Transceiver.RigProcessRunning) {

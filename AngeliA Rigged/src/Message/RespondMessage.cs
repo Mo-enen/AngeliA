@@ -179,6 +179,7 @@ public class RigRespondMessage {
 		RequireDoodleWorldCount = 0;
 		RequireShowDoodle = false;
 		RequireResetDoodle = false;
+		TargetFramerate = 60;
 		RequireDoodleRenderingOffset = default;
 		if (clearLastRendering) {
 			foreach (var layer in Layers) {
@@ -196,7 +197,7 @@ public class RigRespondMessage {
 		Game.SoundVolume = SoundVolume;
 		CachedScreenWidth = callingMessage.ScreenWidth;
 		CachedScreenHeight = callingMessage.ScreenHeight;
-		Game.SetTargetFramerate(TargetFramerate);
+		Game.ForceTargetFramerate(TargetFramerate, 1);
 
 		// Cursor
 		if (!ignoreMouseInput) {
