@@ -10,6 +10,7 @@ public static class PlayerSystem {
 
 	#region --- VAR ---
 
+
 	// Const
 	private const int RUSH_TAPPING_GAP = 16;
 	private const int ACTION_SCAN_RANGE = Const.HALF;
@@ -551,26 +552,20 @@ public static class PlayerSystem {
 
 
 	// Select Player
-	public static void UserChooseCharacterAsPlayer (Character target) {
-		HomeUnitPosition = new Int3(Selecting.X.ToUnit(), Selecting.Y.ToUnit(), Stage.ViewZ);
-		TaskSystem.AddToLast(FadeOutTask.TYPE_ID);
-		TaskSystem.AddToLast(SelectPlayerTask.TYPE_ID, target);
-		TaskSystem.AddToLast(FadeInTask.TYPE_ID);
-	}
+	public static void SelectCharacterAsPlayer (int characterTypeID, bool failbackToDefault = true) {
 
-
-	public static void SelectCharacterAsPlayer (int characterTypeID) {
 		if (Selecting != null && Selecting.Active && characterTypeID == Selecting.TypeID) return;
-		if (characterTypeID == 0) characterTypeID = GetDefaultPlayerID();
-		if (characterTypeID != 0) {
-			if (
-				Stage.PeekOrGetEntity(characterTypeID) is Character target
-			) {
-				SetCharacterAsPlayer(target);
-			} else if (Stage.SpawnEntity(characterTypeID, 0, 0) is Character _target) {
-				SetCharacterAsPlayer(_target);
-			}
+
+		if (characterTypeID == 0 && failbackToDefault) {
+			characterTypeID = GetDefaultPlayerID();
 		}
+
+		if (characterTypeID != 0 && Stage.GetOrSpawnEntity(
+			characterTypeID, Stage.ViewRect.CenterX(), Stage.ViewRect.CenterY()
+		) is Character target) {
+			SetCharacterAsPlayer(target);
+		}
+
 	}
 
 
@@ -599,12 +594,12 @@ public static class PlayerSystem {
 		System.Type result = null;
 		int currentPriority = int.MinValue;
 		foreach (var (type, attribute) in Util.AllClassWithAttribute<EntityAttribute.DefaultSelectPlayerAttribute>()) {
-			if ((type == typeof(Character) || type.IsSubclassOf(typeof(Character))) && attribute.Priority >= currentPriority) {
+			if (type.IsSubclassOf(typeof(Character)) && attribute.Priority >= currentPriority) {
 				result = type;
 				currentPriority = attribute.Priority;
 			}
 		}
-		return result != null ? result.AngeHash() : DefaultPlayer.TYPE_ID;
+		return result != null ? result.AngeHash() : 0;
 	}
 
 

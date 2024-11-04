@@ -88,7 +88,7 @@ public partial class GameEditor : WindowUI {
 		// Movements
 		try {
 
-			var hostMov = new DefaultPlayer().NativeMovement;
+			var hostMov = new CharacterMovement(null);
 			var fields = typeof(CharacterMovement).GetFields(
 				BindingFlags.Public | BindingFlags.Instance
 			).OrderBy(f => f.MetadataToken).ToArray();
