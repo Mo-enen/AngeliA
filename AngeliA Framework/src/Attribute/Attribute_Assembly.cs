@@ -53,3 +53,8 @@ public class GlobalGravityAttribute (int gravity) : Attribute {
 }
 
 
+
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class EnablePlayerSystemAttribute : Attribute { }
+
+

@@ -48,6 +48,7 @@ public static class PlayerSystem {
 	public static int AimViewX { get; private set; } = 0;
 	public static int AimViewY { get; private set; } = 0;
 	public static IActionTarget TargetActionEntity { get; private set; } = null;
+	public static bool Enable { get; private set; } = false;
 
 	// Data
 	private static int AttackRequiringFrame = int.MinValue;
@@ -88,9 +89,18 @@ public static class PlayerSystem {
 	}
 
 
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		if (Util.TryGetAttributeFromAllAssemblies<EnablePlayerSystemAttribute>()) {
+			Enable = true;
+		}
+	}
+
+
 	[OnGameInitializeLater]
 	[OnSavingSlotChanged]
-	public static TaskResult OnGameInitializeLaterPlayer () {
+	internal static TaskResult OnGameInitializeLaterPlayer () {
+		if (!Enable) return TaskResult.End;
 		if (!Stage.IsReady) return TaskResult.Continue;
 		RespawnCpUnitPosition = null;
 		SelectCharacterAsPlayer(SelectingPlayerID.Value);
@@ -102,6 +112,7 @@ public static class PlayerSystem {
 	[BeforeBeforeUpdate]
 	internal static void BeforeUpdate () {
 
+		if (!Enable) return;
 		if (Selecting == null || !Selecting.Active) return;
 
 		Selecting.ForceStayOnStage();
@@ -522,6 +533,7 @@ public static class PlayerSystem {
 	// Update
 	[BeforeUpdateUpdate]
 	internal static void Update () {
+		if (!Enable) return;
 		if (Selecting == null || !Selecting.Active) return;
 		if (!Stage.ViewRect.Overlaps(Selecting.Rect)) return;
 		UpdateCollect();
@@ -554,6 +566,7 @@ public static class PlayerSystem {
 	// Select Player
 	public static void SelectCharacterAsPlayer (int characterTypeID, bool failbackToDefault = true) {
 
+		if (!Enable) return;
 		if (Selecting != null && Selecting.Active && characterTypeID == Selecting.TypeID) return;
 
 		if (characterTypeID == 0 && failbackToDefault) {
@@ -570,6 +583,9 @@ public static class PlayerSystem {
 
 
 	public static void SetCharacterAsPlayer (Character target) {
+
+		if (!Enable) return;
+
 		if (Selecting != null) {
 			Selecting.Movement.Stop();
 			Selecting.OnActivated();
@@ -591,6 +607,7 @@ public static class PlayerSystem {
 
 	// Misc
 	public static int GetDefaultPlayerID () {
+		if (!Enable) return 0;
 		System.Type result = null;
 		int currentPriority = int.MinValue;
 		foreach (var (type, attribute) in Util.AllClassWithAttribute<EntityAttribute.DefaultSelectPlayerAttribute>()) {
@@ -607,6 +624,9 @@ public static class PlayerSystem {
 
 
 	public static Int3 GetPlayerFinalRespawnUnitPosition () {
+
+		if (!Enable) return default;
+
 		Int3 result;
 		if (RespawnCpUnitPosition.HasValue) {
 			// CP Respawn Pos
