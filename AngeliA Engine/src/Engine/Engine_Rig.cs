@@ -164,7 +164,7 @@ public partial class Engine {
 
 		bool openingGameEditor = CurrentWindow is GameEditor;
 		bool currentWindowRequireRigGame = openingGameEditor || Game.GlobalFrame <= ForceRigGameRunInBackgroundFrame;
-		
+
 		// Quit if Not Game Project
 		if (CurrentProject != null && CurrentProject.Universe.Info.ProjectType != ProjectType.Game) {
 			if (Transceiver.RigProcessRunning) {
@@ -223,9 +223,9 @@ public partial class Engine {
 			if (gameEDT.EntityClickerOn) {
 				calling.RequireEntityClicker();
 			}
-			if (gameEDT.RequireReloadPlayerMovement) {
-				gameEDT.RequireReloadPlayerMovement = false;
-				calling.RequireReloadPlayerMovement();
+			if (gameEDT.RequireOpenOrCloseMovementPanel.HasValue) {
+				calling.RequireChangeSetting(MovementEditor.SETTING_PANEL, gameEDT.RequireOpenOrCloseMovementPanel.Value);
+				gameEDT.RequireOpenOrCloseMovementPanel = null;
 			}
 
 			// Tool Command
@@ -328,7 +328,6 @@ public partial class Engine {
 						openingGameEditor,
 						!requireRigGameRender
 					);
-					gameEDT.RigGameSelectingPlayerID = resp.SelectingPlayerID;
 					gameEDT.UpdateUsageData(resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities);
 					gameEDT.HavingGamePlay = resp.GamePlaying;
 					if (openingGameEditor) {

@@ -356,7 +356,6 @@ public class RigCallingMessage {
 	public void RequireClearCharPoolInvoke () => RequireGameMessageInvoke.SetBit(2, true);
 	public void RequireDrawColliderGizmos () => RequireGameMessageInvoke.SetBit(3, true);
 	public void RequireEntityClicker () => RequireGameMessageInvoke.SetBit(4, true);
-	public void RequireReloadPlayerMovement () => RequireGameMessageInvoke.SetBit(5, true);
 
 
 	public void RequireChangeSetting (Saving<bool> data) => RequireChangeSetting(data.ID, data.Value);
