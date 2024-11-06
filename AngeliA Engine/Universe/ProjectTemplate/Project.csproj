@@ -52,12 +52,15 @@
 		<Reference Include="lib\Release\*.dll" />
 	</ItemGroup>
 
-	
+
 	<!--Remove-->
 	<ItemGroup>
 		<Compile Remove="Build\**" />
+		<Compile Remove="Entry\**" />
 		<EmbeddedResource Remove="Build\**" />
+		<EmbeddedResource Remove="Entry\**" />
 		<None Remove="Build\**" />
+		<None Remove="Entry\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -67,5 +70,9 @@
 		<None Remove="Icon.ico" />
 	</ItemGroup>
 
+	<!--Copy Game Lib into Library Folder-->
+	<Target Name="CopyDll" AfterTargets="Build">
+		<Copy SourceFiles="$(OutputPath)Project.dll" DestinationFiles="$(OutputPath)Library\Project.dll" ContinueOnError="true" />
+	</Target>
 
 </Project>
