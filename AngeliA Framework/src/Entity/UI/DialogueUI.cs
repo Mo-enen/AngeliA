@@ -43,7 +43,7 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 	protected abstract IRect ContentRect { get; }
 	protected abstract IRect IconRect { get; }
 	protected abstract IRect NameRect { get; }
-	protected virtual int RollingSpeed => 16; // Character per Frame
+	protected virtual int RollingSpeed => 16; // Char per Frame
 	public IRect BackgroundRect { get; private set; }
 
 	// Data
@@ -153,7 +153,7 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 		Name = name;
 	}
 
-
+	
 	public bool Roll () {
 		RolledFrame = Game.GlobalFrame;
 		if (EndIndex >= Content.Length - 1) {

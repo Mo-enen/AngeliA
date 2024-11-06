@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-
 namespace AngeliA;
+
 public class DialogueTask : Task {
 
 
@@ -177,7 +177,7 @@ public class DialogueTask : Task {
 					CharacterID = currentCharacterID,
 					CharacterName = currentCharacterName,
 					Content = builder.ToString(),
-					Colors = colors.ToArray(),
+					Colors = [.. colors],
 				});
 			}
 			currentCharacterID = 0;

@@ -253,7 +253,6 @@ public partial class Engine {
 		Instance?.CheckScriptChanged();
 		Instance?.RefreshProjectCache();
 		Instance?.CheckResourceChanged();
-		Instance?.CheckDialogChanged();
 	}
 
 
@@ -335,8 +334,8 @@ public partial class Engine {
 		if (Instance.CurrentProject == null) {
 			Instance.OnGUI_Hub();
 		} else {
-			Instance.OnGUI_Engine();
 			Instance.OnGUI_Window();
+			Instance.OnGUI_Engine();
 			Instance.OnGUI_Hotkey();
 		}
 		Instance.OnGUI_RiggedGame();
@@ -921,7 +920,6 @@ public partial class Engine {
 		// Change Check
 		CheckScriptChanged();
 		UpdateDllLibraryFiles();
-		CheckDialogChanged();
 		CheckResourceChanged();
 		ReloadRenderingSheet();
 
@@ -1122,9 +1120,6 @@ public partial class Engine {
 		PackageManager.Instance.SyncPackageDllWithProject(CurrentProject);
 
 	}
-
-
-	private void CheckDialogChanged () => EngineUtil.TryCompileDialogueFiles(Universe.BuiltIn.EditableConversationRoot, Universe.BuiltIn.ConversationRoot, forceCompile: false);
 
 
 	private void ReloadRenderingSheet () {

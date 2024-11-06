@@ -195,7 +195,7 @@ public class GameEditor : WindowUI {
 			CurrentPanel = newIsOn ? PanelType.Profiler : PanelType.None;
 		}
 		if (rect.MouseInside()) {
-			GUI.BackgroundLabel(rect.EdgeRight(1), TIP_PROFILER, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+			GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_PROFILER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 		}
 		rect.SlideDown(padding);
 
@@ -208,7 +208,7 @@ public class GameEditor : WindowUI {
 				RequireOpenOrCloseMovementPanel = newIsOn;
 			}
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeRight(1), TIP_MOVEMENT, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+				GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_MOVEMENT, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 
@@ -220,7 +220,7 @@ public class GameEditor : WindowUI {
 					CurrentPanel = newIsOn ? PanelType.Lighting : PanelType.None;
 				}
 				if (rect.MouseInside()) {
-					GUI.BackgroundLabel(rect.EdgeRight(1), TIP_LIGHTING, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+					GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_LIGHTING, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 				}
 				rect.SlideDown(padding);
 			}
@@ -228,14 +228,14 @@ public class GameEditor : WindowUI {
 			// Collider
 			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeRight(1), TIP_COLLIDER, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+				GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_COLLIDER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 
 			// Entity Clicker
 			EntityClickerOn = GUI.IconToggle(rect, EntityClickerOn, BTN_ENTITY_CLICKER);
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeRight(1), TIP_ENTITY_CLICER, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+				GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_ENTITY_CLICER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 
@@ -249,7 +249,7 @@ public class GameEditor : WindowUI {
 					}
 				}
 				if (rect.MouseInside()) {
-					GUI.BackgroundLabel(rect.EdgeRight(1), TIP_NEXT_FRAME, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+					GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_NEXT_FRAME, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 				}
 				rect.SlideDown(padding);
 			}
@@ -260,7 +260,7 @@ public class GameEditor : WindowUI {
 				RequireNextFrame = false;
 			}
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeRight(1), FrameDebugging ? BuiltInText.UI_CONTINUE : TIP_FRAME_DEBUG, Color32.GREY_20, padding, style: GUI.Skin.SmallLabel);
+				GUI.BackgroundLabel(rect.EdgeLeft(1), FrameDebugging ? BuiltInText.UI_CONTINUE : TIP_FRAME_DEBUG, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 

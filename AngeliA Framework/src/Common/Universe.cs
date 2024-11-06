@@ -16,7 +16,6 @@ public class Universe {
 	public string GameSheetPath { get; private set; }
 	public string InfoPath { get; private set; }
 	public string ConversationRoot { get; private set; }
-	public string EditableConversationRoot { get; private set; }
 	public string UniverseMetaRoot { get; private set; }
 	public string BuiltInMapRoot { get; private set; }
 	public string LanguageRoot { get; private set; }
@@ -54,7 +53,6 @@ public class Universe {
 			BuiltInSheetPath = AngePath.GetBuiltInSheetPath(universeFolder),
 			GameSheetPath = AngePath.GetGameSheetPath(universeFolder),
 			ConversationRoot = AngePath.GetConversationRoot(universeFolder),
-			EditableConversationRoot = AngePath.GetEditableConversationRoot(universeFolder),
 			UniverseMetaRoot = AngePath.GetUniverseMetaRoot(universeFolder),
 			LanguageRoot = AngePath.GetLanguageRoot(universeFolder),
 			BuiltInMapRoot = AngePath.GetMapRoot(universeFolder),
@@ -79,7 +77,6 @@ public class Universe {
 
 		// Create Folders
 		Util.CreateFolder(result.ConversationRoot);
-		Util.CreateFolder(result.EditableConversationRoot);
 		Util.CreateFolder(result.UniverseMetaRoot);
 		Util.CreateFolder(result.BuiltInMapRoot);
 		Util.CreateFolder(result.LanguageRoot);
