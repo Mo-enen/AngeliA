@@ -5,31 +5,52 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class ItemCombinationAttribute : Attribute {
-	public Type ItemA = null;
-	public Type ItemB = null;
-	public Type ItemC = null;
-	public Type ItemD = null;
-	public int Count = 1;
-	public bool ConsumeA = true;
-	public bool ConsumeB = true;
-	public bool ConsumeC = true;
-	public bool ConsumeD = true;
-	public ItemCombinationAttribute (Type itemA, int count = 1, bool consumeA = true) : this(itemA, null, null, null, count, consumeA, true, true, true) { }
-	public ItemCombinationAttribute (Type itemA, Type itemB, int count = 1, bool consumeA = true, bool consumeB = true) : this(itemA, itemB, null, null, count, consumeA, consumeB, true, true) { }
-	public ItemCombinationAttribute (Type itemA, Type itemB, Type itemC, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true) : this(itemA, itemB, itemC, null, count, consumeA, consumeB, consumeC, true) { }
-	public ItemCombinationAttribute (Type itemA, Type itemB, Type itemC, Type itemD, int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true) {
-		ItemA = itemA;
-		ItemB = itemB;
-		ItemC = itemC;
-		ItemD = itemD;
-		Count = count;
-		ConsumeA = consumeA;
-		ConsumeB = consumeB;
-		ConsumeC = consumeC;
-		ConsumeD = consumeD;
-	}
+public class ItemCombinationAttribute<I0> (
+	int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true
+) : ItemCombinationAttribute(
+	typeof(I0), null, null, null, count, consumeA, consumeB, consumeC, consumeD
+) { }
+
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class ItemCombinationAttribute<I0, I1> (
+	int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true
+) : ItemCombinationAttribute(
+	typeof(I0), typeof(I1), null, null, count, consumeA, consumeB, consumeC, consumeD
+) { }
+
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class ItemCombinationAttribute<I0, I1, I2> (
+	int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true
+) : ItemCombinationAttribute(
+	typeof(I0), typeof(I1), typeof(I2), null, count, consumeA, consumeB, consumeC, consumeD
+) { }
+
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class ItemCombinationAttribute<I0, I1, I2, I3> (
+	int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true
+) : ItemCombinationAttribute(
+	typeof(I0), typeof(I1), typeof(I2), typeof(I3), count, consumeA, consumeB, consumeC, consumeD
+) { }
+
+
+public abstract class ItemCombinationAttribute (
+	Type itemA, Type itemB, Type itemC, Type itemD, int count = 1,
+	bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true
+) : Attribute {
+	public Type ItemA = itemA;
+	public Type ItemB = itemB;
+	public Type ItemC = itemC;
+	public Type ItemD = itemD;
+	public int Count = count;
+	public bool ConsumeA = consumeA;
+	public bool ConsumeB = consumeB;
+	public bool ConsumeC = consumeC;
+	public bool ConsumeD = consumeD;
 }
 
 

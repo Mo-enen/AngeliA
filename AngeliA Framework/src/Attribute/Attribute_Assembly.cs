@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class ToolApplicationAttribute : Attribute { }
 
