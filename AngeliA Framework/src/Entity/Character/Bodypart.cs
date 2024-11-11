@@ -134,6 +134,12 @@ public class BodyPart (BodyPart parent, bool useLimbFlip) {
 	}
 
 
+	public Int2 NaturalLerp (float x01, float y01) {
+		if ((Height > 0 == Width > 0) != FrontSide) x01 = 1f - x01;
+		return GlobalLerp(x01, y01);
+	}
+
+
 	public void LimbRotate (int rotation, int grow = 1000) {
 		if (LimbParent != null) {
 			Util.LimbRotate(

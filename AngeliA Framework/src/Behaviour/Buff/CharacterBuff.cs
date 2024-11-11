@@ -44,21 +44,22 @@ public sealed class CharacterBuff {
 	}
 
 
-	#endregion
-
-
-
-
-	#region --- API ---
-
-
-	internal void ApplyOnUpdate () {
+	internal void ApplyOnBeforeUpdate () {
 		var span = BuffStates.GetReadOnlySpan();
 		for (int i = 0; i < span.Length; i++) {
 			var state = span[i];
 			if (state.Frame < Game.GlobalFrame) continue;
-			var buff = Buff.GetBuffAtIndex(i);
-			buff.ApplyToCharacter(Character, ref state.Data);
+			Buff.GetBuffAtIndex(i).BeforeUpdate(Character, ref state.Data);
+		}
+	}
+
+
+	internal void ApplyOnLateUpdate () {
+		var span = BuffStates.GetReadOnlySpan();
+		for (int i = 0; i < span.Length; i++) {
+			var state = span[i];
+			if (state.Frame < Game.GlobalFrame) continue;
+			Buff.GetBuffAtIndex(i).LateUpdate(Character, ref state.Data);
 		}
 	}
 
@@ -72,6 +73,14 @@ public sealed class CharacterBuff {
 			buff.OnCharacterAttack(Character, bullet, ref state.Data);
 		}
 	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
 
 
 	public bool HasBuff (int id) {

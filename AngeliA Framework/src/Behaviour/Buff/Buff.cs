@@ -62,10 +62,11 @@ public abstract class Buff {
 	public static Buff GetBuffAtIndex (int index) => AllBuffs[index];
 
 
-	public virtual void ApplyToCharacter (Character target, ref object data) { }
-
-
+	public virtual void BeforeUpdate (Character target, ref object data) { }
+	public virtual void LateUpdate (Character target, ref object data) { }
 	public virtual void OnCharacterAttack (Character target, Bullet bullet, ref object data) { }
+
+
 
 
 	#endregion

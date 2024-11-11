@@ -290,7 +290,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		}
 		// Update
 		BeforeUpdate_Inventory();
-		Buff.ApplyOnUpdate();
+		Buff.ApplyOnBeforeUpdate();
 		Rendering.BeforeUpdate();
 	}
 
@@ -438,6 +438,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		LateUpdate_RenderCharacter();
 		LateUpdate_Event();
 		LateUpdate_Inventory();
+		Buff.ApplyOnLateUpdate();
 		base.LateUpdate();
 		LateUpdate_BouceHighlight();
 	}

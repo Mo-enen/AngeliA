@@ -39,7 +39,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	#region --- MSG ---
 
 
-	public Summon () => Navigation = new(this);
+	public Summon () => Navigation = CreateSummonNavigation();
 
 
 	public override void OnActivated () {
@@ -139,6 +139,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 
 	protected override CharacterAttackness CreateNativeAttackness () => new SummonAttackness(this);
+	protected virtual SummonNavigation CreateSummonNavigation () => new(this);
 
 
 	public override void SetCharacterState (CharacterState state) {
@@ -148,16 +149,21 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 
 	// Summon
-	public static T CreateSummon<T> (Character owner, int x, int y) where T : Summon => CreateSummon(owner, typeof(T).AngeHash(), x, y) as T;
-	public static Summon CreateSummon (Character owner, int typeID, int x, int y) {
+	public static T CreateSummon<T> (Character owner, int x, int y, bool forceCreate = false) where T : Summon => CreateSummon(owner, typeof(T).AngeHash(), x, y, forceCreate) as T;
+	public static Summon CreateSummon (Character owner, int typeID, int x, int y, bool forceCreate = false) {
 		if (owner == null || !Stage.Enable) return null;
 		if (Stage.SpawnEntity(typeID, x, y) is Summon summon) {
 			// Create New
 			summon.Owner = owner;
 			summon.OnSummoned(true);
 			return summon;
+		} else if (forceCreate && Stage.GetEntity(typeID) is Summon stageSummon) {
+			// Find from Stage
+			stageSummon.Owner = owner;
+			stageSummon.OnSummoned(false);
+			return stageSummon;
 		} else {
-			// Find Old
+			// Find Existing Summon
 			var entities = Stage.Entities[EntityLayer.GAME];
 			int eLen = Stage.EntityCounts[EntityLayer.GAME];
 			int minSpawnFrame = int.MaxValue;
