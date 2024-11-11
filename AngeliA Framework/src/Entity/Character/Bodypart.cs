@@ -122,7 +122,10 @@ public class BodyPart (BodyPart parent, bool useLimbFlip) {
 	}
 
 
-	public Int2 GlobalLerp (float x01, float y01) {
+	public Int2 GlobalLerp (float x01, float y01, bool natural = false) {
+		if (natural && (Height > 0 == Width > 0) != FrontSide) {
+			x01 = 1f - x01;
+		}
 		var result = new Int2(GlobalX, GlobalY);
 		var v = new Float2(
 			x01 * Width - Width * PivotX / 1000f,
@@ -131,12 +134,6 @@ public class BodyPart (BodyPart parent, bool useLimbFlip) {
 		result.x += (int)v.x;
 		result.y += (int)v.y;
 		return result;
-	}
-
-
-	public Int2 NaturalLerp (float x01, float y01) {
-		if ((Height > 0 == Width > 0) != FrontSide) x01 = 1f - x01;
-		return GlobalLerp(x01, y01);
 	}
 
 

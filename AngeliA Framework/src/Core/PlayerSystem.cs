@@ -61,6 +61,9 @@ public static class PlayerSystem {
 	private static int IgnoreAttackFrame = int.MinValue;
 	private static int ForceUpdateViewGroundingFrame = int.MinValue;
 
+	// Frame Based
+	public static readonly FrameBasedInt TargetViewHeight = new(Const.CEL * 26);
+
 	// Saving
 	private static readonly SavingInt SelectingPlayerID = new("Player.SelectingPlayerID", 0, SavingLocation.Slot);
 	private static readonly SavingInt HomeUnitPositionX = new("Player.HomeX", int.MinValue, SavingLocation.Slot);
@@ -94,6 +97,7 @@ public static class PlayerSystem {
 		if (Util.TryGetAttributeFromAllAssemblies<EnablePlayerSystemAttribute>()) {
 			Enable = true;
 		}
+		TargetViewHeight.BaseValue = Universe.BuiltInInfo.DefaultViewHeight;
 	}
 
 
@@ -477,7 +481,7 @@ public static class PlayerSystem {
 		Stage.SetViewPositionDelay(AimViewX, AimViewY, 96, int.MinValue);
 
 		// Size
-		Stage.SetViewSizeDelay(Universe.BuiltInInfo.DefaultViewHeight, 96, int.MinValue, centralized: true);
+		Stage.SetViewSizeDelay(TargetViewHeight, 96, int.MinValue, centralized: true);
 
 		// Clamp
 		if (!Stage.ViewRect.Contains(Selecting.X, Selecting.Y)) {
@@ -667,8 +671,6 @@ public static class PlayerSystem {
 
 
 	public static void IgnoreAttack (int duration = 1) => IgnoreAttackFrame = Game.GlobalFrame + duration;
-
-
 
 
 	#endregion

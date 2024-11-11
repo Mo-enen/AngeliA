@@ -59,9 +59,10 @@ public class FrameBasedInt (int value) : FrameBasedValue<int>(value) {
 	public void Min (int value, int duration = 0, int priority = 0) {
 		if (Overrided) {
 			if (priority < OverridePriority) return;
+			if (value > OverrideValue) return;
 			OverrideFrame = Util.Max(Game.PauselessFrame + duration, OverrideFrame);
 			OverrideValue = Util.Min(OverrideValue, value);
-		} else {
+		} else if (value <= BaseValue) {
 			OverrideFrame = Game.PauselessFrame + duration;
 			OverrideValue = Util.Min(BaseValue, value);
 		}
@@ -70,9 +71,10 @@ public class FrameBasedInt (int value) : FrameBasedValue<int>(value) {
 	public void Max (int value, int duration = 0, int priority = 0) {
 		if (Overrided) {
 			if (priority < OverridePriority) return;
+			if (value < OverrideValue) return;
 			OverrideFrame = Util.Max(Game.PauselessFrame + duration, OverrideFrame);
 			OverrideValue = Util.Max(OverrideValue, value);
-		} else {
+		} else if (value >= BaseValue) {
 			OverrideFrame = Game.PauselessFrame + duration;
 			OverrideValue = Util.Max(BaseValue, value);
 		}
