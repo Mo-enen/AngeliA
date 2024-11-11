@@ -717,6 +717,12 @@ public static class Extension {
 		return rect;
 	}
 	[MethodImpl(INLINE)]
+	public static IRect Shift (this IRect rect, Int2 offset) {
+		rect.x += offset.x;
+		rect.y += offset.y;
+		return rect;
+	}
+	[MethodImpl(INLINE)]
 	public static void SetMinMax (this ref IRect rect, int xMin, int xMax, int yMin, int yMax) {
 		rect.x = xMin;
 		rect.y = yMin;

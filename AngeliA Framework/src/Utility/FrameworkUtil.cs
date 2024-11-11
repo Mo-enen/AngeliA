@@ -1096,7 +1096,6 @@ public static class FrameworkUtil {
 				case EquipmentType.HandTool:
 					break;
 				case EquipmentType.Jewelry:
-					break;
 				case EquipmentType.BodyArmor:
 				case EquipmentType.Helmet:
 				case EquipmentType.Shoes:

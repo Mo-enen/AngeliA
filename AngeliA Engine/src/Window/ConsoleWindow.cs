@@ -47,6 +47,7 @@ public class ConsoleWindow : WindowUI {
 	public override string DefaultWindowName => "Console";
 
 	// Data
+	private readonly char[] TimingChars = new char[12]; // 99+°59'59"59
 	private readonly Pipe<Line> Lines = new(512);
 	private readonly Pipe<Line> CompileErrorLines = new(128);
 	private int ScrollY = 0;
@@ -186,10 +187,10 @@ public class ConsoleWindow : WindowUI {
 			);
 			// Time
 			if (showLogTime) {
-				var tChars = GUI.GetTimeChars(line.Hour, line.Minute, line.Second, line.Frame);
+				FillTimeChars(line.Hour, line.Minute, line.Second, line.Frame);
 				GUI.BackgroundLabel(
 					rect.ShrinkRight(scrollBarWidth + padding),
-					tChars, Color32.BLACK, smallPadding, GUI.Skin.SmallRightLabel
+					TimingChars, Color32.BLACK, smallPadding, GUI.Skin.SmallRightLabel
 				);
 			}
 			rect.SlideDown();
@@ -256,6 +257,66 @@ public class ConsoleWindow : WindowUI {
 		}
 		lines.LinkToTail(new Line(level, content.Replace("\n", "; ").Replace("\r", ""), Game.GlobalFrame));
 		ScrollY = int.MaxValue;
+	}
+
+
+	private void FillTimeChars (int hour, int min, int sec, int frame = -1, bool ignoreZero = true) {
+
+		int index = 0;
+
+		// Hour
+		if (hour > 0 || (hour == 0 && !ignoreZero)) {
+			if (hour < 100) {
+				IntToChars.Int_to_Chars(hour, TimingChars, ref index);
+				TimingChars[index] = '°';
+				index++;
+			} else {
+				TimingChars[0] = '9';
+				TimingChars[1] = '9';
+				TimingChars[2] = '+';
+				TimingChars[3] = '°';
+				index = 4;
+			}
+		}
+
+		// Min
+		if (min > 0 || (min == 0 && !ignoreZero)) {
+			min %= 60;
+			TimingChars[index] = (char)('0' + (min / 10));
+			TimingChars[index + 1] = (char)('0' + (min % 10));
+			TimingChars[index + 2] = '\'';
+			index += 3;
+		}
+
+		// Sec
+		if (sec > 0 || (sec == 0 && !ignoreZero)) {
+			sec %= 60;
+			TimingChars[index] = (char)('0' + (sec / 10));
+			TimingChars[index + 1] = (char)('0' + (sec % 10));
+			TimingChars[index + 2] = '\'';
+			index += 3;
+		}
+
+		// Frame
+		if (frame > 0 || (frame == 0 && !ignoreZero)) {
+			frame %= 60;
+			TimingChars[index] = (char)('0' + (frame / 10));
+			TimingChars[index + 1] = (char)('0' + (frame % 10));
+			TimingChars[index + 2] = '\'';
+			index += 3;
+		}
+
+		// Zero
+		if (index == 0) {
+			TimingChars[0] = '0';
+			index++;
+		}
+
+		// End
+		if (index < TimingChars.Length) {
+			TimingChars[index] = '\0';
+		}
+
 	}
 
 
