@@ -14,12 +14,14 @@ public class ItemCombinationAttribute<I0> (
 ) { }
 
 
+
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class ItemCombinationAttribute<I0, I1> (
 	int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true
 ) : ItemCombinationAttribute(
 	typeof(I0), typeof(I1), null, null, count, consumeA, consumeB, consumeC, consumeD
 ) { }
+
 
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
@@ -30,12 +32,14 @@ public class ItemCombinationAttribute<I0, I1, I2> (
 ) { }
 
 
+
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class ItemCombinationAttribute<I0, I1, I2, I3> (
 	int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true
 ) : ItemCombinationAttribute(
 	typeof(I0), typeof(I1), typeof(I2), typeof(I3), count, consumeA, consumeB, consumeC, consumeD
 ) { }
+
 
 
 public abstract class ItemCombinationAttribute (
@@ -62,8 +66,6 @@ public class ItemDropAttribute (Type itemType, int dropCount = 1, int dropChance
 	public int DropCount = dropCount;
 	public int DropChance = dropChance;
 }
-
-
 
 
 
