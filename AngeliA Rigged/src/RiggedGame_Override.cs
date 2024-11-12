@@ -171,6 +171,8 @@ public partial class RiggedGame {
 
 	protected override void _SetDoodleOffset (Float2 screenOffset) => RespondMessage.RequireDoodleRenderingOffset = screenOffset;
 
+	protected override void _SetDoodleZoom (float zoom) => RespondMessage.RequireDoodleRenderingZoom = zoom;
+
 	protected override void _DoodleRect (FRect screenRect, Color32 color) {
 		if (RespondMessage.RequireDoodleRectCount >= RespondMessage.RequireDoodleRects.Length) return;
 		RespondMessage.RequireDoodleRects[RespondMessage.RequireDoodleRectCount] = new RigRespondMessage.DoodleRectData() {

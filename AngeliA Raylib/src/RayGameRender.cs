@@ -34,6 +34,7 @@ public partial class RayGame {
 	private int ShaderPropIndex_INV_TEXTURE;
 	private int ShaderPropIndex_INV_SCREEN_SIZE;
 	private Float2 DoodleRenderingOffset;
+	private float DoodleRenderingZoom;
 
 
 	// MSG
@@ -106,16 +107,7 @@ public partial class RayGame {
 		// Apply Doodle Before UI
 		if (GlobalFrame <= DoodleFrame && GlobalFrame > DoodleOnTopOfUiFrame && layerIndex == RenderLayer.UI) {
 			Raylib.BeginBlendMode(BlendMode.CustomSeparate);
-			Raylib.DrawTextureRec(
-				DoodleRenderTexture.Texture,
-				new Rectangle(
-					DoodleRenderingOffset.x,
-					-DoodleRenderingOffset.y,
-					DoodleRenderTexture.Texture.Width,
-					DoodleRenderTexture.Texture.Height
-				),
-				new Vector2(DoodleScreenPadding.left, DoodleScreenPadding.down), Color.White
-			);
+			DrawDoodleTexture();
 			Raylib.EndBlendMode();
 		}
 
@@ -577,6 +569,8 @@ public partial class RayGame {
 	}
 
 	protected override void _SetDoodleOffset (Float2 screenOffset) => DoodleRenderingOffset = screenOffset;
+
+	protected override void _SetDoodleZoom (float zoom) => DoodleRenderingZoom = zoom;
 
 	protected override void _DoodleRect (FRect screenRect, Color32 color) {
 		if (CurrentAltTextureMode != AltTextureMode.Doodle) {

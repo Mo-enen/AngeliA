@@ -203,7 +203,10 @@ public partial class Game {
 	public static void SetDoodleOffset (Float2 screenOffset) => Instance._SetDoodleOffset(screenOffset);
 	protected abstract void _SetDoodleOffset (Float2 screenOffset);
 
-	public static void DoodleRectWrap (FRect screenRect, Color32 color) {
+	public static void SetDoodleZoom (float zoom) => Instance._SetDoodleZoom(zoom);
+	protected abstract void _SetDoodleZoom (float zoom);
+
+	public static void DoodleRectSwap (FRect screenRect, Color32 color) {
 		int cWidth = ScreenWidth - DoodleScreenPadding.horizontal;
 		int cHeight = ScreenHeight - DoodleScreenPadding.vertical;
 		var canvasRect = new FRect(0, 0, cWidth, cHeight);

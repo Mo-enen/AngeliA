@@ -122,6 +122,7 @@ public class RigRespondMessage {
 	public bool RequireShowDoodle;
 	public bool RequireResetDoodle;
 	public Float2 RequireDoodleRenderingOffset;
+	public float RequireDoodleRenderingZoom;
 	public int RequireDoodleRectCount;
 	public DoodleRectData[] RequireDoodleRects = new DoodleRectData[64];
 	public int RequireDoodleWorldCount;
@@ -181,6 +182,7 @@ public class RigRespondMessage {
 		RequireResetDoodle = false;
 		TargetFramerate = 60;
 		RequireDoodleRenderingOffset = default;
+		RequireDoodleRenderingZoom = 1f;
 		if (clearLastRendering) {
 			foreach (var layer in Layers) {
 				if (layer == null) continue;
@@ -314,6 +316,7 @@ public class RigRespondMessage {
 		float doodleShiftX = (float)leftPadding * Game.ScreenWidth / Renderer.CameraRect.width;
 		Game.DoodleScreenPadding = Int4.Direction(doodleShiftX.FloorToInt(), 0, 0, 0);
 		Game.SetDoodleOffset(RequireDoodleRenderingOffset);
+		Game.SetDoodleZoom(RequireDoodleRenderingZoom);
 
 		// Doodle Rect
 		for (int i = 0; i < RequireDoodleRectCount; i++) {
@@ -547,6 +550,7 @@ public class RigRespondMessage {
 			RequireResetDoodle = Util.ReadBool(ref pointer, end);
 			RequireDoodleRenderingOffset.x = Util.ReadFloat(ref pointer, end);
 			RequireDoodleRenderingOffset.y = Util.ReadFloat(ref pointer, end);
+			RequireDoodleRenderingZoom = Util.ReadFloat(ref pointer, end);
 
 			RequireDoodleRectCount = Util.ReadInt(ref pointer, end);
 			for (int i = 0; i < RequireDoodleRectCount; i++) {
@@ -746,7 +750,8 @@ public class RigRespondMessage {
 			Util.Write(ref pointer, RequireResetDoodle, end);
 			Util.Write(ref pointer, RequireDoodleRenderingOffset.x, end);
 			Util.Write(ref pointer, RequireDoodleRenderingOffset.y, end);
-
+			Util.Write(ref pointer, RequireDoodleRenderingZoom, end);
+			
 			Util.Write(ref pointer, RequireDoodleRectCount, end);
 			for (int i = 0; i < RequireDoodleRectCount; i++) {
 				var data = RequireDoodleRects[i];

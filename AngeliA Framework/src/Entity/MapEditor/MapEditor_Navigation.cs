@@ -185,9 +185,16 @@ public partial class MapEditor {
 		float screenOffsetX = (float)unitRect.x * gameScreenH / unitRangeH;
 		float screenOffsetY = (float)unitRect.y * gameScreenH / unitRangeH;
 		var bgColor = BackgroundColor;
+		bool inTransition = Game.GlobalFrame < TransitionFrame + TransitionDuration;
 
 		Game.ShowDoodle();
 		Game.SetDoodleOffset(new Float2(screenOffsetX, screenOffsetY));
+		Game.SetDoodleZoom(inTransition ?
+			Util.Lerp(
+				TransitionScaleStart, TransitionScaleEnd,
+				Ease.OutQuart((Game.GlobalFrame - TransitionFrame) / (float)TransitionDuration)
+			) : 1f
+		);
 
 		// Z Changed
 		if (NavWorldDoodledZ != CurrentZ) {
@@ -232,7 +239,7 @@ public partial class MapEditor {
 						deltaX < 0 ? NavWorldDoodledUnitRange.x : unitRect.xMax,
 						Util.Min(unitRect.yMax, NavWorldDoodledUnitRange.yMax)
 					);
-					Game.DoodleRectWrap(doodleRect, bgColor);
+					Game.DoodleRectSwap(doodleRect, bgColor);
 					Game.DoodleWorld(Stream, doodleRect, doodleUnitRect, CurrentZ);
 				}
 				// Doodle Delta Y
@@ -249,7 +256,7 @@ public partial class MapEditor {
 						Util.Min(unitRect.xMax, NavWorldDoodledUnitRange.xMax),
 						deltaY < 0 ? NavWorldDoodledUnitRange.y : unitRect.yMax
 					);
-					Game.DoodleRectWrap(doodleRect, bgColor);
+					Game.DoodleRectSwap(doodleRect, bgColor);
 					Game.DoodleWorld(Stream, doodleRect, doodleUnitRect, CurrentZ);
 				}
 				// Doodle Delta X&Y
@@ -266,7 +273,7 @@ public partial class MapEditor {
 						deltaX < 0 ? NavWorldDoodledUnitRange.x : unitRect.xMax,
 						deltaY < 0 ? NavWorldDoodledUnitRange.y : unitRect.yMax
 					);
-					Game.DoodleRectWrap(doodleRect, bgColor);
+					Game.DoodleRectSwap(doodleRect, bgColor);
 					Game.DoodleWorld(Stream, doodleRect, doodleUnitRect, CurrentZ);
 				}
 			}
@@ -290,8 +297,10 @@ public partial class MapEditor {
 			NavWorldDoodledZ = int.MinValue;
 			Game.ResetDoodle();
 			Save();
+			RequireTransition(TargetViewRect.CenterX(), TargetViewRect.CenterY(), 10f, 1f, 20);
 		} else {
 			Game.HideDoodle();
+			RequireTransition(TargetViewRect.CenterX(), TargetViewRect.CenterY(), 0.618f, 1f, 20);
 		}
 	}
 

@@ -215,16 +215,7 @@ public partial class RayGame : Game {
 
 		// Front Doodle
 		if (GlobalFrame <= DoodleFrame + 1 && GlobalFrame <= DoodleOnTopOfUiFrame + 1) {
-			Raylib.DrawTextureRec(
-				DoodleRenderTexture.Texture,
-				new Rectangle(
-					DoodleRenderingOffset.x,
-					-DoodleRenderingOffset.y,
-					DoodleRenderTexture.Texture.Width,
-					DoodleRenderTexture.Texture.Height
-				),
-				new Vector2(DoodleScreenPadding.left, DoodleScreenPadding.down), Color.White
-			);
+			DrawDoodleTexture();
 		}
 
 		// Front Gizmos
@@ -357,6 +348,31 @@ public partial class RayGame : Game {
 		Raylib.BeginTextureMode(DoodleRenderTexture);
 		Raylib.BeginBlendMode(BlendMode.AlphaPremultiply);
 		CurrentAltTextureMode = AltTextureMode.Doodle;
+	}
+
+
+	private void DrawDoodleTexture () {
+		var sourceRect = new Rectangle(
+			DoodleRenderingOffset.x,
+			-DoodleRenderingOffset.y,
+			DoodleRenderTexture.Texture.Width,
+			DoodleRenderTexture.Texture.Height
+		);
+		var dstRect = new Rectangle(
+			DoodleScreenPadding.left, DoodleScreenPadding.down,
+			DoodleRenderTexture.Texture.Width,
+			DoodleRenderTexture.Texture.Height
+		);
+		if (DoodleRenderingZoom.NotAlmost(1f)) {
+			float expX = (dstRect.Width * DoodleRenderingZoom - dstRect.Width) / 2f;
+			float expY = (dstRect.Height * DoodleRenderingZoom - dstRect.Height) / 2f;
+			dstRect = dstRect.ExpandRectangle(expX, expX, expY, expY);
+		}
+		Raylib.DrawTexturePro(
+			DoodleRenderTexture.Texture,
+			sourceRect, dstRect,
+			Vector2.Zero, 0f, Color.White
+		);
 	}
 
 

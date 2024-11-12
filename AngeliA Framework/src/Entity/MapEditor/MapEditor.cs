@@ -65,12 +65,12 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	// Const
+	public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
 	public const int SETTING_QUICK_PLAYER_DROP = 92176_1;
 	public const int SETTING_SHOW_BEHIND = 92176_2;
 	public const int SETTING_SHOW_STATE = 92176_3;
 	public const int SETTING_SHOW_GRID_GIZMOS = 92176_4;
 	private const int PANEL_WIDTH = 256;
-	public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
 	private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
 	private static readonly Color32 CURSOR_TINT = new(240, 240, 240, 128);
 	private static readonly Color32 CURSOR_TINT_DARK = new(16, 16, 16, 128);
@@ -151,6 +151,11 @@ public sealed partial class MapEditor : WindowUI {
 	private Long4? TargetUndoViewPos = null;
 	private byte WorldBehindAlpha;
 	private int WorldBehindParallax;
+	private int TransitionFrame = int.MinValue;
+	private Int2 TransitionCenter;
+	private float TransitionScaleStart;
+	private float TransitionScaleEnd;
+	private int TransitionDuration = 20;
 
 
 	#endregion
@@ -335,10 +340,12 @@ public sealed partial class MapEditor : WindowUI {
 			// --- General Mode ---
 			Update_ScreenUI();
 			if (!editingPause) {
-				Update_Mouse();
-				Update_View();
-				Update_Hotkey();
-				Update_DropPlayer();
+				if (Game.GlobalFrame >= TransitionFrame + TransitionDuration) {
+					Update_Mouse();
+					Update_View();
+					Update_Hotkey();
+					Update_DropPlayer();
+				}
 				Update_RenderWorld();
 			}
 			Update_PaletteGroupUI();
@@ -734,12 +741,14 @@ public sealed partial class MapEditor : WindowUI {
 				if (Input.MouseWheelDelta > 0) {
 					if (CurrentZ != int.MaxValue) {
 						SetViewZ(CurrentZ + 1);
+						RequireTransition(TargetViewRect.CenterX(), TargetViewRect.CenterY(), 0.8f, 1f, 10);
 					}
 				}
 				// Down
 				if (Input.MouseWheelDelta < 0) {
 					if (CurrentZ != int.MinValue) {
 						SetViewZ(CurrentZ - 1);
+						RequireTransition(TargetViewRect.CenterX(), TargetViewRect.CenterY(), 1.2f, 1f, 10);
 					}
 				}
 			}
@@ -841,15 +850,25 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void Update_RenderWorld () {
 
-		if (IsPlaying) return;
+		if (IsPlaying || IsNavigating || (RequireIsNavigating.HasValue && RequireIsNavigating.Value)) return;
 
 		var cameraRect = Renderer.CameraRect;
-		var fixedCameraRect = Renderer.CameraRect.Shrink(DroppingPlayer || TaskingRoute ? 0 : PanelRect.xMax - Renderer.CameraRect.x, 0, 0, 0);
+		var fixedCameraRect = cameraRect.Shrink(DroppingPlayer || TaskingRoute ? 0 : PanelRect.xMax - cameraRect.x, 0, 0, 0);
+		bool inTransition = Game.GlobalFrame < TransitionFrame + TransitionDuration;
+		if (inTransition) {
+			float scale = Util.Min(TransitionScaleStart, TransitionScaleEnd);
+			int expX = (int)((cameraRect.width / scale - cameraRect.width) / 2f);
+			int expY = (int)((cameraRect.height / scale - cameraRect.height) / 2f);
+			cameraRect = cameraRect.Expand(expX, expX, expY, expY);
+			fixedCameraRect = fixedCameraRect.Expand(expX, expX, expY, expY);
+		}
+		int renderingStart_Default = Renderer.GetUsedCellCount(RenderLayer.DEFAULT);
+		int renderingStart_Behind = Renderer.GetUsedCellCount(RenderLayer.BEHIND);
 
 		// Behind
 		if (ShowBehind) {
 
-			using var _ = new LayerScope(RenderLayer.BEHIND);
+			using var __ = new LayerScope(RenderLayer.BEHIND);
 			var cameraRectF = cameraRect.ToFRect();
 			var behindCameraRect = cameraRectF.ScaleFrom(
 				WorldBehindParallax / 1000f,
@@ -858,34 +877,34 @@ public sealed partial class MapEditor : WindowUI {
 			).ToIRect();
 			int blockSize = (Const.CEL * 1000).CeilDivide(WorldBehindParallax);
 
-			int z = CurrentZ + 1;
-			int left = behindCameraRect.xMin.ToUnit() - 1;
-			int right = behindCameraRect.xMax.ToUnit() + 1;
-			int down = behindCameraRect.yMin.ToUnit() - 1;
-			int up = behindCameraRect.yMax.ToUnit() + 1;
+			int _z = CurrentZ + 1;
+			int _left = behindCameraRect.xMin.ToUnit() - 1;
+			int _right = behindCameraRect.xMax.ToUnit() + 1;
+			int _down = behindCameraRect.yMin.ToUnit() - 1;
+			int _up = behindCameraRect.yMax.ToUnit() + 1;
 
 			// BG
-			for (int y = down; y <= up; y++) {
-				for (int x = left; x <= right; x++) {
-					int id = Stream.GetBlockAt(x, y, z, BlockType.Background);
+			for (int y = _down; y <= _up; y++) {
+				for (int x = _left; x <= _right; x++) {
+					int id = Stream.GetBlockAt(x, y, _z, BlockType.Background);
 					if (id == 0) continue;
 					DrawBlockBehind(cameraRect, behindCameraRect, blockSize, id, x, y, false);
 				}
 			}
 
 			// Level
-			for (int y = down; y <= up; y++) {
-				for (int x = left; x <= right; x++) {
-					int id = Stream.GetBlockAt(x, y, z, BlockType.Level);
+			for (int y = _down; y <= _up; y++) {
+				for (int x = _left; x <= _right; x++) {
+					int id = Stream.GetBlockAt(x, y, _z, BlockType.Level);
 					if (id == 0) continue;
 					DrawBlockBehind(cameraRect, behindCameraRect, blockSize, id, x, y, false);
 				}
 			}
 
 			// Entity
-			for (int y = down; y <= up; y++) {
-				for (int x = left; x <= right; x++) {
-					int id = Stream.GetBlockAt(x, y, z, BlockType.Entity);
+			for (int y = _down; y <= _up; y++) {
+				for (int x = _left; x <= _right; x++) {
+					int id = Stream.GetBlockAt(x, y, _z, BlockType.Entity);
 					if (id == 0) continue;
 					DrawBlockBehind(cameraRect, behindCameraRect, blockSize, id, x, y, true);
 				}
@@ -894,74 +913,88 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		// Current
-		using (new DefaultLayerScope()) {
+		using var _ = new DefaultLayerScope();
 
-			int z = CurrentZ;
-			int left = fixedCameraRect.xMin.ToUnit() - 1;
-			int right = fixedCameraRect.xMax.ToUnit() + 1;
-			int down = fixedCameraRect.yMin.ToUnit() - 1;
-			int up = fixedCameraRect.yMax.ToUnit() + 1;
-			int index = 0;
-			int blinkCountDown = RequireWorldRenderBlinkIndex + 1;
-			int unusedCellCount = Renderer.GetLayerCapacity(Renderer.CurrentLayerIndex) - Renderer.GetUsedCellCount();
+		int z = CurrentZ;
+		int left = fixedCameraRect.xMin.ToUnit() - 1;
+		int right = fixedCameraRect.xMax.ToUnit() + 1;
+		int down = fixedCameraRect.yMin.ToUnit() - 1;
+		int up = fixedCameraRect.yMax.ToUnit() + 1;
+		int index = 0;
+		int blinkCountDown = RequireWorldRenderBlinkIndex + 1;
+		int unusedCellCount = Renderer.GetLayerCapacity(Renderer.CurrentLayerIndex) - Renderer.GetUsedCellCount();
 
-			// BG
-			for (int y = down; y <= up; y++) {
-				for (int x = left; x <= right; x++) {
-					int id = Stream.GetBlockAt(x, y, z, BlockType.Background);
-					if (id == 0) continue;
-					if (blinkCountDown-- > 0) continue;
-					DrawBlock(id, x, y);
-					index++;
-					if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
-				}
+		// BG
+		for (int y = down; y <= up; y++) {
+			for (int x = left; x <= right; x++) {
+				int id = Stream.GetBlockAt(x, y, z, BlockType.Background);
+				if (id == 0) continue;
+				if (blinkCountDown-- > 0) continue;
+				DrawBlock(id, x, y);
+				index++;
+				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
 			}
-
-			// Level
-			for (int y = down; y <= up; y++) {
-				for (int x = left; x <= right; x++) {
-					int id = Stream.GetBlockAt(x, y, z, BlockType.Level);
-					if (id == 0) continue;
-					if (blinkCountDown-- > 0) continue;
-					DrawBlock(id, x, y);
-					index++;
-					if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
-				}
-			}
-
-			// Entity
-			for (int y = down; y <= up; y++) {
-				for (int x = left; x <= right; x++) {
-					int id = Stream.GetBlockAt(x, y, z, BlockType.Entity);
-					if (id == 0) continue;
-					if (blinkCountDown-- > 0) continue;
-					DrawEntity(id, x, y);
-					index++;
-					if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
-				}
-			}
-
-			// Element
-			for (int y = down; y <= up; y++) {
-				for (int x = left; x <= right; x++) {
-					int id = Stream.GetBlockAt(x, y, z, BlockType.Element);
-					if (id == 0) continue;
-					if (blinkCountDown-- > 0) continue;
-					DrawElement(id, x, y);
-					index++;
-					if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
-				}
-			}
-
-			bool requireRepaint = RequireWorldRenderBlinkIndex > 0;
-			RequireWorldRenderBlinkIndex = -1;
-			if (requireRepaint) Update_RenderWorld();
-
-			return;
-
-			_REQUIRE_BLINK_:;
-			RequireWorldRenderBlinkIndex += unusedCellCount;
 		}
+
+		// Level
+		for (int y = down; y <= up; y++) {
+			for (int x = left; x <= right; x++) {
+				int id = Stream.GetBlockAt(x, y, z, BlockType.Level);
+				if (id == 0) continue;
+				if (blinkCountDown-- > 0) continue;
+				DrawBlock(id, x, y);
+				index++;
+				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+			}
+		}
+
+		// Entity
+		for (int y = down; y <= up; y++) {
+			for (int x = left; x <= right; x++) {
+				int id = Stream.GetBlockAt(x, y, z, BlockType.Entity);
+				if (id == 0) continue;
+				if (blinkCountDown-- > 0) continue;
+				DrawEntity(id, x, y);
+				index++;
+				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+			}
+		}
+
+		// Element
+		for (int y = down; y <= up; y++) {
+			for (int x = left; x <= right; x++) {
+				int id = Stream.GetBlockAt(x, y, z, BlockType.Element);
+				if (id == 0) continue;
+				if (blinkCountDown-- > 0) continue;
+				DrawElement(id, x, y);
+				index++;
+				if (index >= unusedCellCount) goto _REQUIRE_BLINK_;
+			}
+		}
+
+		bool requireRepaint = RequireWorldRenderBlinkIndex > 0;
+		RequireWorldRenderBlinkIndex = -1;
+		if (requireRepaint) Update_RenderWorld();
+
+		// Transition
+		if (inTransition) {
+			float lerp01 = (Game.GlobalFrame - TransitionFrame) / (float)TransitionDuration;
+			lerp01 = Ease.OutQuart(lerp01);
+			float scale01 = Util.Lerp(TransitionScaleStart, TransitionScaleEnd, lerp01);
+			for (int operation = 0; operation < 2; operation++) {
+				int layer = operation == 0 ? RenderLayer.DEFAULT : RenderLayer.BEHIND;
+				if (!Renderer.GetCells(layer, out var cells, out int count)) continue;
+				int startIndex = operation == 0 ? renderingStart_Default : renderingStart_Behind;
+				for (int i = startIndex; i < count; i++) {
+					cells[i].ScaleFrom(scale01, TransitionCenter.x, TransitionCenter.y);
+				}
+			}
+		}
+
+		return;
+
+		_REQUIRE_BLINK_:;
+		RequireWorldRenderBlinkIndex += unusedCellCount;
 
 	}
 
@@ -1279,6 +1312,16 @@ public sealed partial class MapEditor : WindowUI {
 		player.Movement.CurrentJumpCount = 0;
 		RequireSetMode = true;
 		PlayerSystem.ForceUpdateGroundedForView(1);
+	}
+
+
+	private void RequireTransition (int centerX, int centerY, float scaleStart, float scaleEnd, int duration) {
+		TransitionFrame = Game.GlobalFrame;
+		TransitionCenter.x = centerX;
+		TransitionCenter.y = centerY;
+		TransitionScaleStart = scaleStart;
+		TransitionScaleEnd = scaleEnd;
+		TransitionDuration = duration;
 	}
 
 

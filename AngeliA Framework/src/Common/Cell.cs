@@ -127,5 +127,13 @@ public class Cell {
 		Width = Width * scale / 1000;
 		Height = Height * scale / 1000;
 	}
-
+	public void ScaleFrom (float scale, int pointX, int pointY) {
+		var localPoint = GlobalToLocal(pointX, pointY);
+		PivotX = (float)localPoint.x / Width;
+		PivotY = (float)localPoint.y / Height;
+		X = pointX;
+		Y = pointY;
+		Width = (Width * scale).RoundToInt();
+		Height = (Height * scale).RoundToInt();
+	}
 }
