@@ -461,12 +461,22 @@ public sealed partial class MapEditor : WindowUI {
 				int y = Input.MouseGlobalPosition.y.ToUnit();
 				int z = CurrentZ;
 
-				GUI.Label(
+				// Z
+				IRect boundsZ;
+				if (z != int.MinValue) {
+					GUI.Label(
 					new IRect(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
 					StateZLabelToString.GetChars(z),
-					out var boundsZ
+					out boundsZ
 				);
+				} else {
+					GUI.Label(
+						new IRect(cameraRect.xMax - LABEL_WIDTH - PADDING, cameraRect.y + PADDING, LABEL_WIDTH, LABEL_HEIGHT),
+						"---", out boundsZ
+					);
+				}
 
+				// Y
 				GUI.Label(
 					 new IRect(
 						Util.Min(cameraRect.xMax - LABEL_WIDTH * 2 - PADDING, boundsZ.x - LABEL_WIDTH - PADDING),
@@ -477,6 +487,7 @@ public sealed partial class MapEditor : WindowUI {
 					out var boundsY
 				);
 
+				// X
 				GUI.Label(
 					 new IRect(
 						Util.Min(cameraRect.xMax - LABEL_WIDTH * 3 - PADDING, boundsY.x - LABEL_WIDTH - PADDING),
@@ -721,11 +732,15 @@ public sealed partial class MapEditor : WindowUI {
 				}
 				// Up
 				if (Input.MouseWheelDelta > 0) {
-					SetViewZ(CurrentZ + 1);
+					if (CurrentZ != int.MaxValue) {
+						SetViewZ(CurrentZ + 1);
+					}
 				}
 				// Down
 				if (Input.MouseWheelDelta < 0) {
-					SetViewZ(CurrentZ - 1);
+					if (CurrentZ != int.MinValue) {
+						SetViewZ(CurrentZ - 1);
+					}
 				}
 			}
 
@@ -1021,6 +1036,9 @@ public sealed partial class MapEditor : WindowUI {
 	}
 
 
+	public void SetViewZ (int newZ) => CurrentZ = newZ;
+
+
 	#endregion
 
 
@@ -1142,9 +1160,6 @@ public sealed partial class MapEditor : WindowUI {
 	}
 
 
-	private void SetViewZ (int newZ) => CurrentZ = newZ;
-
-
 	private void ResetCamera (bool immediately = false) {
 		int viewHeight = Universe.BuiltInInfo.DefaultViewHeight * 3 / 2;
 		int viewWidth = viewHeight * Universe.BuiltInInfo.ViewRatio / 1000;
@@ -1213,10 +1228,16 @@ public sealed partial class MapEditor : WindowUI {
 		PanelRect.y = mainRect.y;
 
 		// Toolbar Rect
-		int HEIGHT = GUI.ToolbarSize;
+		int toolbarHeight = 0;
+		if (ToolbarFuncs.Count > 0) {
+			int column = PanelRect.width.UDivide(GUI.ToolbarSize.GreaterOrEquel(1));
+			if (column > 0) {
+				toolbarHeight = GUI.ToolbarSize * ToolbarFuncs.Count.CeilDivide(column);
+			}
+		}
 		ToolbarRect.width = PanelRect.width;
-		ToolbarRect.height = HEIGHT;
-		ToolbarRect.y = mainRect.yMax - HEIGHT;
+		ToolbarRect.height = toolbarHeight;
+		ToolbarRect.y = mainRect.yMax - toolbarHeight;
 		ToolbarOffsetX = ToolbarOffsetX.LerpTo(IsPlaying || DroppingPlayer ? -ToolbarRect.width : 0, 200);
 		ToolbarRect.x = mainRect.x + ToolbarOffsetX;
 
@@ -1255,6 +1276,7 @@ public sealed partial class MapEditor : WindowUI {
 		}
 		player.SetCharacterState(CharacterState.GamePlay);
 		player.ForceStayOnStage(1);
+		player.Movement.CurrentJumpCount = 0;
 		RequireSetMode = true;
 		PlayerSystem.ForceUpdateGroundedForView(1);
 	}

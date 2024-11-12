@@ -74,6 +74,7 @@ public static class Const {
 
 	// Misc
 	public static void EmptyMethod () { }
+	public static bool EmptyBoolMethod () => true;
 	public const int MIN_CHARACTER_HEIGHT = 65;
 	public const int MAX_CHARACTER_HEIGHT = 251;
 	public const int RIG_BUFFER_SIZE = 5_000_000; // 5MB

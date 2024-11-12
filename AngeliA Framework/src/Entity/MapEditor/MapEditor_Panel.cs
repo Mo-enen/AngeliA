@@ -53,6 +53,14 @@ public partial class MapEditor {
 	private enum PaletteTabType { Listed = 0, BuiltIn = 1, }
 
 
+	private class ToolbarFuncData (SpriteCode icon, LanguageCode tip, System.Action func, System.Func<bool> enable = null) {
+		public SpriteCode Icon = icon;
+		public LanguageCode Tip = tip;
+		public System.Action Func = func;
+		public System.Func<bool> Enable = enable;
+	}
+
+
 	#endregion
 
 
@@ -63,12 +71,6 @@ public partial class MapEditor {
 
 	// Const
 	private static readonly SpriteCode UI_DEFAULT_LIST_COVER = "Entity";
-	private static readonly int UI_TAB = BuiltInSprite.UI_TAB;
-	private static readonly int UI_TAB_ICON_PINNED = BuiltInSprite.ICON_STAR;
-	private static readonly int UI_TAB_ICON_ALL = BuiltInSprite.ICON_MENU;
-	private static readonly int ITEM_FRAME = BuiltInSprite.UI_ITEM_FRAME;
-	private static readonly int SEARCH_ICON = BuiltInSprite.ICON_SEARCH;
-	private static readonly int GAMEPAD_ICON = BuiltInSprite.ICON_GAMEPAD;
 	private static readonly LanguageCode UI_TAB_PINNED = ("UI.PaletteTab.Pinned", "Favorite");
 	private static readonly LanguageCode UI_TAB_ALL = ("UI.PaletteTab.All", "All");
 	private static readonly LanguageCode MENU_PALETTE_ADD_TO_LIST = ("Menu.MEDT.AddToList", "Add to List:");
@@ -82,6 +84,13 @@ public partial class MapEditor {
 
 	// Data
 	private readonly Dictionary<int, PaletteGroup> PaletteGroupCache = [];
+	private static readonly List<ToolbarFuncData> ToolbarFuncs = [
+		new(BuiltInSprite.ICON_REFRESH, ("Tip.MapEDT.ResetCamera", "Reset camera to default position"), ToolbarButton_ResetCamera),
+		new(BuiltInSprite.ICON_TRIANGLE_DOWN, ("Tip.MapEDT.FrontZ","Goto the front layer"), ToolbarButton_Z_Front, ToolbarButton_Z_Front_Enable),
+		new(BuiltInSprite.ICON_TRIANGLE_UP, ("Tip.MapEDT.BackZ","Goto the behind layer"), ToolbarButton_Z_Back, ToolbarButton_Z_Back_Enable),
+		new(BuiltInSprite.ICON_MAP, ("Tip.MapEDT.Nav","Open world map view"), ToolbarButton_Nav),
+		new(BuiltInSprite.ICON_GAMEPAD, ("Tip.MapEDT.Play","Start play test"), ToolbarButton_Play),
+	];
 	private IRect PaletteGroupPanelRect = default;
 	private PaletteTabType CurrentPaletteTab = PaletteTabType.BuiltIn;
 	private int SelectingPaletteGroupIndex = 0;
@@ -332,7 +341,7 @@ public partial class MapEditor {
 
 			// Button
 			Renderer.DrawSlice(
-				UI_TAB, tabRect,
+				BuiltInSprite.UI_TAB, tabRect,
 				tabBorder, tabBorder, tabBorder, tabBorder,
 				selecting ? Color32.GREY_128 : Color32.GREY_64
 			);
@@ -341,7 +350,7 @@ public partial class MapEditor {
 			// Highlight
 			if (selecting) {
 				var cells = Renderer.DrawSlice(
-					UI_TAB, tabRect.EdgeUp(tabBorder),
+					BuiltInSprite.UI_TAB, tabRect.EdgeUp(tabBorder),
 					tabBorder, tabBorder, 0, tabBorder,
 					Color32.GREY_230
 				);
@@ -358,10 +367,9 @@ public partial class MapEditor {
 				Skin.SmallCenterLabel
 			);
 
-
 			// Icon
 			Renderer.Draw(
-				i == (int)PaletteTabType.Listed ? UI_TAB_ICON_PINNED : UI_TAB_ICON_ALL,
+				i == (int)PaletteTabType.Listed ? BuiltInSprite.ICON_STAR : BuiltInSprite.ICON_MENU,
 				labelBounds.EdgeOutside(Direction4.Left, labelBounds.height).Shift(-tabRect.height / 4, 0), Color32.WHITE
 			);
 
@@ -536,7 +544,7 @@ public partial class MapEditor {
 		int BORDER = Unify(2);
 		int BORDER_ALT = Unify(2);
 		int scrollbarSize = GUI.ScrollbarSize;
-		int TOOLBAR_HEIGHT = GUI.ToolbarSize * 2;
+		int TOOLBAR_HEIGHT = ToolbarRect.height + GUI.ToolbarSize;
 		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
 		int targetReorderReleaseIndex = -1;
 		IRect requiringTooltipRect = default;
@@ -593,7 +601,7 @@ public partial class MapEditor {
 
 				// Frame
 				Renderer.DrawSlice(
-					ITEM_FRAME, rect,
+					BuiltInSprite.UI_ITEM_FRAME, rect,
 					BORDER, BORDER, BORDER, BORDER
 				);
 
@@ -790,57 +798,35 @@ public partial class MapEditor {
 
 	private void Update_ToolbarUI () {
 
-		if (IsPlaying) return;
+		if (IsPlaying || DroppingPlayer) return;
 
-		int padding = Unify(2);
-		int btnPadding = Unify(2);
-		int btnSpace = Unify(2);
-		bool oldE = GUI.Enable;
-		GUI.Enable = !TaskingRoute;
-		var panel = ToolbarRect;
-		Renderer.DrawPixel(panel, Color32.GREY_32);
-		panel = panel.Shrink(padding);
-		int ITEM_SIZE = panel.height;
+		using var _ = new GUIEnableScope(!TaskingRoute);
 
-		// Reset Camera
-		var btnRect = new IRect(panel.x, panel.y, ITEM_SIZE, ITEM_SIZE);
-		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_REFRESH)) {
-			ResetCamera();
-		}
-		btnRect.SlideRight(btnSpace);
+		Renderer.DrawPixel(ToolbarRect, Color32.GREY_32);
 
-		// Button Down
-		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_TRIANGLE_DOWN)) {
-			SetViewZ(CurrentZ - 1);
-		}
-		btnRect.SlideRight(btnSpace);
-
-		// Button Up
-		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_TRIANGLE_UP)) {
-			SetViewZ(CurrentZ + 1);
-		}
-		btnRect.SlideRight(btnSpace);
-
-		// Nav/Game
-		if (GUI.DarkButton(btnRect.Shrink(btnPadding), IsNavigating ? BuiltInSprite.ICON_BRUSH : BuiltInSprite.ICON_MAP)) {
-			SetNavigationMode(!IsNavigating);
-			Input.UseAllMouseKey();
-		}
-		btnRect.SlideRight(btnSpace);
-
-		// Play
-		if (!DroppingPlayer) {
-			if (GUI.DarkButton(btnRect.Shrink(btnPadding), GAMEPAD_ICON)) {
-				if (IsEditing) {
-					StartDropPlayer(forceUseMouse: true);
-				} else {
-					SetEditorMode(!PlayingGame);
-				}
+		// Buttons
+		int padding = Unify(4);
+		int btnSize = GUI.ToolbarSize.GreaterOrEquel(1);
+		int column = PanelRect.width.UDivide(btnSize);
+		int top = PanelRect.yMax - btnSize;
+		for (int funcIndex = 0; funcIndex < ToolbarFuncs.Count; funcIndex++) {
+			var func = ToolbarFuncs[funcIndex];
+			using var __ = new GUIEnableScope(func.Enable == null || func.Enable.Invoke());
+			int i = funcIndex % column;
+			int j = funcIndex / column;
+			var rect = new IRect(
+				PanelRect.x + i * btnSize,
+				top - j * btnSize,
+				btnSize, btnSize
+			).Shrink(padding);
+			if (GUI.DarkButton(rect, func.Icon)) {
+				func.Func?.Invoke();
 			}
-			btnRect.SlideRight(btnSpace);
+			if (rect.MouseInside()) {
+				DrawTooltip(rect, func.Tip);
+			}
 		}
 
-		GUI.Enable = oldE;
 	}
 
 
@@ -850,7 +836,7 @@ public partial class MapEditor {
 
 		int PADDING = Unify(6);
 		int HEIGHT = GUI.ToolbarSize;
-		var searchPanel = new IRect(PanelRect.x, PanelRect.yMax - HEIGHT * 2, PanelRect.width, HEIGHT);
+		var searchPanel = new IRect(PanelRect.x, ToolbarRect.y - HEIGHT, PanelRect.width, HEIGHT);
 		Renderer.DrawPixel(searchPanel, Color32.GREY_32);
 		searchPanel = searchPanel.Shrink(PADDING);
 
@@ -867,7 +853,7 @@ public partial class MapEditor {
 		// Search Icon
 		if (GUI.TypingTextFieldID != SEARCH_BAR_ID && string.IsNullOrEmpty(SearchingText)) {
 			Renderer.Draw(
-				SEARCH_ICON,
+				BuiltInSprite.ICON_SEARCH,
 				searchPanel.Edge(Direction4.Left, searchPanel.height).Shrink(PADDING)
 			);
 		}
@@ -885,6 +871,19 @@ public partial class MapEditor {
 			GUI.CancelTyping();
 		}
 
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public static void AddToolbarButton (SpriteCode icon, LanguageCode tip, System.Action func, System.Func<bool> enable = null) {
+		ToolbarFuncs.Add(new ToolbarFuncData(icon, tip, func, enable));
 	}
 
 
@@ -988,6 +987,37 @@ public partial class MapEditor {
 		}
 
 	}
+
+
+	// Toolbar Btn
+	private static void ToolbarButton_ResetCamera () => Instance?.ResetCamera();
+	private static void ToolbarButton_Z_Front () {
+		if (Instance == null) return;
+		if (Instance.CurrentZ != int.MinValue) {
+			Instance.SetViewZ(Instance.CurrentZ - 1);
+		}
+	}
+	private static void ToolbarButton_Z_Back () {
+		if (Instance == null) return;
+		if (Instance.CurrentZ != int.MaxValue) {
+			Instance.SetViewZ(Instance.CurrentZ + 1);
+		}
+	}
+	private static void ToolbarButton_Nav () {
+		if (Instance == null) return;
+		Instance.SetNavigationMode(!Instance.IsNavigating);
+		Input.UseAllMouseKey();
+	}
+	private static void ToolbarButton_Play () {
+		if (Instance == null) return;
+		if (IsEditing) {
+			Instance.StartDropPlayer(forceUseMouse: true);
+		} else {
+			Instance.SetEditorMode(!Instance.PlayingGame);
+		}
+	}
+	private static bool ToolbarButton_Z_Front_Enable () => Instance != null && Instance.CurrentZ != int.MinValue;
+	private static bool ToolbarButton_Z_Back_Enable () => Instance != null && Instance.CurrentZ != int.MaxValue;
 
 
 	#endregion

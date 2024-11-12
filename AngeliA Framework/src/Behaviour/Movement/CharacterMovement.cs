@@ -186,7 +186,7 @@ public class CharacterMovement (Rigidbody rig) {
 	public Int2 LastMoveDirection { get; private set; } = default;
 	public int IntendedX { get; private set; } = 0;
 	public int IntendedY { get; private set; } = 0;
-	public int CurrentJumpCount { get; private set; } = 0;
+	public int CurrentJumpCount { get; set; } = 0;
 	public int SpeedRateX { get; private set; } = 1000;
 	public bool FacingRight { get; set; } = true;
 	public bool FacingFront { get; set; } = true;
