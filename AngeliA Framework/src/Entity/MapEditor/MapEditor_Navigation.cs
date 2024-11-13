@@ -15,6 +15,7 @@ public partial class MapEditor {
 	private bool NavPrevHolderMouseLeft = false;
 	private bool NavMouseLeftDragged = false;
 
+
 	// MSG
 	[OnWindowSizeChanged]
 	internal static void OnWindowSizeChanged_Nav () {

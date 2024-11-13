@@ -1383,5 +1383,12 @@ public static class FrameworkUtil {
 		}
 	}
 
+	public static void HighlightBlink (Cell cell, float pivotX = 0.5f, float pivotY = 0f, bool horizontal = true, bool vertical = true) {
+		if (Game.GlobalFrame % 30 > 15) return;
+		const int OFFSET = Const.CEL / 20;
+		cell.ReturnPivots(pivotX, pivotY);
+		if (horizontal) cell.Width += OFFSET * 2;
+		if (vertical) cell.Height += OFFSET * 2;
+	}
 
 }

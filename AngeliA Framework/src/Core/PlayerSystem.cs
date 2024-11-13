@@ -312,7 +312,7 @@ public static class PlayerSystem {
 		// Try Perform Action
 		if (TargetActionEntity != null && !TargetActionEntity.LockInput) {
 			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_USE, int.MinValue + 1);
-			if (Input.GameKeyDown(Gamekey.Action) && !PlayerMenuUI.ShowingUI) {
+			if ((TargetActionEntity.InvokeOnTouch || Input.GameKeyDown(Gamekey.Action)) && !PlayerMenuUI.ShowingUI) {
 				if (TargetActionEntity.Invoke()) {
 					Input.UseGameKey(Gamekey.Action);
 				}
@@ -521,15 +521,12 @@ public static class PlayerSystem {
 
 
 	private static void UpdateAutoPick () {
-		// Auto Pick Item on Ground
-		if (!TaskSystem.HasTask() && !PlayerMenuUI.ShowingUI) {
-			var cells = Physics.OverlapAll(PhysicsMask.ITEM, Selecting.Rect, out int count, null, OperationMode.ColliderAndTrigger);
-			for (int i = 0; i < count; i++) {
-				var cell = cells[i];
-				if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
-				int equippingID = Inventory.GetEquipment(Selecting.InventoryID, EquipmentType.HandTool, out _);
-				holder.Collect(Selecting, onlyStackOnExisting: true, ignoreEquipment: equippingID == 0);
-			}
+		if (TaskSystem.HasTask() || PlayerMenuUI.ShowingUI) return;
+		var cells = Physics.OverlapAll(PhysicsMask.ITEM, Selecting.Rect, out int count, null, OperationMode.ColliderAndTrigger);
+		for (int i = 0; i < count; i++) {
+			var cell = cells[i];
+			if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
+			holder.Collect(Selecting, onlyStackOnExisting: true, ignoreEquipment: true);
 		}
 	}
 

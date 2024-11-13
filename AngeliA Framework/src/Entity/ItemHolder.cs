@@ -5,7 +5,7 @@ namespace AngeliA;
 
 [EntityAttribute.Capacity(2048, 0)]
 [EntityAttribute.Layer(EntityLayer.ITEM)]
-public class ItemHolder : Rigidbody, IActionTarget {
+public class ItemHolder : Rigidbody {
 
 
 
@@ -41,11 +41,10 @@ public class ItemHolder : Rigidbody, IActionTarget {
 	public override int CollisionMask => PhysicsMask.MAP;
 	public int ItemID { get; set; } = 0;
 	public int ItemCount { get; set; } = 1;
-	bool IActionTarget.AllowInvokeOnSquat => true;
-
 
 	// Data
 	private static readonly Dictionary<Int3, Pipe<Int4>> HoldingPool = [];
+	private bool TouchingPlayer = false;
 
 
 	#endregion
@@ -102,6 +101,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 
 	public override void OnActivated () {
 		base.OnActivated();
+		TouchingPlayer = false;
 		Width = ITEM_PHYSICS_SIZE;
 		Height = ITEM_PHYSICS_SIZE;
 		// Detect Item Element from World
@@ -125,6 +125,20 @@ public class ItemHolder : Rigidbody, IActionTarget {
 
 
 	public override void FirstUpdate () => Physics.FillEntity(PhysicsLayer.ITEM, this, true);
+
+
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
+		// Check for Player Collect
+		var player = PlayerSystem.Selecting;
+		TouchingPlayer = player != null && player.Rect.Overlaps(Rect);
+		if (TouchingPlayer && player.Movement.IsSquatting) {
+			bool collected = Collect(player, onlyStackOnExisting: false, ignoreEquipment: false);
+			if (collected) {
+				ItemSystem.SetItemUnlocked(ItemID, true);
+			}
+		}
+	}
 
 
 	public override void Update () {
@@ -176,7 +190,8 @@ public class ItemHolder : Rigidbody, IActionTarget {
 	public override void LateUpdate () {
 
 		base.LateUpdate();
-		if (!Active) return;
+
+		if (!Active || ItemCount <= 0 || ItemID == 0) return;
 
 		int renderingOffsetX = 0;
 		int redneringSizeOffset = 0;
@@ -215,17 +230,10 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		}
 
 		// Highlight
-		(this as IActionTarget).BlinkIfHighlight(cell);
-	}
-
-
-	bool IActionTarget.Invoke () {
-		var player = PlayerSystem.Selecting;
-		bool collected = Collect(player, onlyStackOnExisting: false, ignoreEquipment: false);
-		if (collected) {
-			ItemSystem.SetItemUnlocked(ItemID, true);
+		if (TouchingPlayer) {
+			FrameworkUtil.HighlightBlink(cell);
 		}
-		return collected || player.EquippingToolType == ToolType.Throwing;
+
 	}
 
 
@@ -257,7 +265,7 @@ public class ItemHolder : Rigidbody, IActionTarget {
 		// Collect / Append
 		if (ItemCount > 0) {
 			int addCount = onlyStackOnExisting ?
-				Inventory.FindAndAddItem(invID, ItemID, ItemCount, ignoreEquipment: false) :
+				Inventory.FindAndAddItem(invID, ItemID, ItemCount, ignoreEquipment) :
 				Inventory.CollectItem(invID, ItemID, ItemCount, ignoreEquipment);
 			if (addCount > 0) {
 				int newCount = ItemCount - addCount;

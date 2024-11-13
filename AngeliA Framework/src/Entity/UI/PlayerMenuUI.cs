@@ -1154,7 +1154,7 @@ public class PlayerMenuUI : EntityUI {
 		var player = PlayerSystem.Selecting;
 		ItemSystem.SpawnItem(
 			TakingID,
-			player.X + (player.Movement.FacingRight ? Const.CEL * 2 : -Const.CEL * 2),
+			player.X + (player.Movement.FacingRight ? Const.CEL : -Const.CEL),
 			player.Y,
 			TakingCount,
 			jump: false
