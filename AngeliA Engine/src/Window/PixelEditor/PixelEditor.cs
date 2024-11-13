@@ -1068,12 +1068,6 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private void CreateSpritesForCharacter (string characterName, Int2? pixelPos = null) => CreateSpritesFromTemplates(characterName, "CharacterTemplate", pixelPos);
-
-
-	private void CreateSpritesForSheetCharacter (string characterName, Int2? pixelPos = null) => CreateSpritesFromTemplates(characterName, "SheetCharacterTemplate", pixelPos);
-
-
 	// Util
 	private IRect Pixel_to_Stage (IRect pixRect, bool ignoreClamp = false) => Pixel_to_Stage(pixRect, out _, out _, ignoreClamp);
 	private IRect Pixel_to_Stage (IRect pixRect, out FRect? uv, out bool outside, bool ignoreClamp = false) {

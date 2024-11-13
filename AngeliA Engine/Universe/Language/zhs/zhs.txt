@@ -234,7 +234,7 @@ Tip.Publish:生成并发布成品
 Tip.Recompile:以调试模式重新生成工程
 Tip.ResetCamera:重置画布位置
 Tip.Rule:自动平铺规则
-Tip.Rule.Any:任何块
+Tip.Rule.Any:非空块
 Tip.Rule.Empty:空的块
 Tip.Rule.Mode:平铺模式 （相同/不同）或（任何/空）
 Tip.Rule.NotSame:不同块

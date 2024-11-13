@@ -1003,11 +1003,11 @@ public partial class PixelEditor {
 		}
 		static void NewPoseCharSprite () {
 			if (GenericPopupUI.InvokingItemData is not (string name, Int2 pixPos)) return;
-			Instance.CreateSpritesForCharacter(name, pixelPos: pixPos);
+			Instance.CreateSpritesFromTemplates(name, "CharacterTemplate", pixPos);
 		}
 		static void NewSheetCharSprite () {
 			if (GenericPopupUI.InvokingItemData is not (string name, Int2 pixPos)) return;
-			Instance.CreateSpritesForSheetCharacter(name, pixelPos: pixPos);
+			Instance.CreateSpritesFromTemplates(name, "SheetCharacterTemplate", pixPos);
 		}
 	}
 
