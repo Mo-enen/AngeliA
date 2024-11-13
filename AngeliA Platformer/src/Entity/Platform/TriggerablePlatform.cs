@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
-public abstract class TriggerablePlatform : Platform, IPartializable {
+public abstract class TriggerablePlatform : Platform, IUnitable {
 
 	// Api
-	protected virtual PartializedMode TriggerMode => PartializedMode.Horizontal;
+	protected virtual IUnitable.UniteMode TriggerMode => IUnitable.UniteMode.Horizontal;
 	protected object TriggeredData { get; set; } = null;
-	int IPartializable.PartializeStamp { get; set; }
+	int IUnitable.LocalUniteStamp { get; set; }
 	public int LastTriggerFrame { get; private set; } = -1;
 
 	// MSG
@@ -23,14 +24,14 @@ public abstract class TriggerablePlatform : Platform, IPartializable {
 	// API
 	public virtual void Trigger (object data = null) {
 		LastTriggerFrame = Game.GlobalFrame;
-		IPartializable.ForAllPartializedEntity<TriggerablePlatform>(
+		IUnitable.ForAllPartializedEntity<TriggerablePlatform>(
 			PhysicsMask.ENVIRONMENT, TypeID, Rect, OperationMode.ColliderAndTrigger, TriggerMode,
 			OnTrigger, data
 		);
 		static void OnTrigger (TriggerablePlatform platform) {
 			platform.LastTriggerFrame = Game.GlobalFrame;
-			platform.TriggeredData = IPartializable.PartializeTempParam;
-			platform.OnTriggered(IPartializable.PartializeTempParam);
+			platform.TriggeredData = IUnitable.UniteTempParam;
+			platform.OnTriggered(IUnitable.UniteTempParam);
 		}
 	}
 

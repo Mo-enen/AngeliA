@@ -696,9 +696,11 @@ public static class FrameworkUtil {
 			if (blockID != 0) {
 				int realBlockID = blockID;
 				var blockRect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
+
 				// Remove from Map
 				WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Level, 0);
 				result = true;
+
 				// Event
 				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
 					blockID = sprite.Group.ID;
@@ -709,6 +711,15 @@ public static class FrameworkUtil {
 						);
 					}
 				}
+
+				// Spawn Embedded Item
+				int ele = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element);
+				if (ele != 0 && ItemSystem.GetItem(ele) is Item _ele && _ele.EmbedIntoLevel) {
+					ItemSystem.SpawnItem(ele, unitX.ToGlobal(), unitY.ToGlobal(), 1, false);
+					WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Element, 0);
+				}
+
+				// Final
 				if (dropItemAfterPicked && ItemSystem.HasItem(blockID)) {
 					// Drop Item
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
@@ -717,6 +728,7 @@ public static class FrameworkUtil {
 					// Break
 					InvokeObjectBreak(realBlockID, blockRect);
 				}
+
 				if (!allowMultiplePick) {
 					return true;
 				}
@@ -734,9 +746,9 @@ public static class FrameworkUtil {
 				WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Background, 0);
 				result = true;
 
+				// Rule
 				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
 					blockID = sprite.Group.ID;
-					// Rule
 					if (sprite.Group.WithRule) {
 						RedirectForRule(
 							WorldSquad.Stream, new IRect(unitX - 1, unitY - 1, 3, 3), Stage.ViewZ
@@ -744,6 +756,14 @@ public static class FrameworkUtil {
 					}
 				}
 
+				// Spawn Embedded Item
+				int ele = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element);
+				if (ele != 0 && ItemSystem.GetItem(ele) is Item _ele && _ele.EmbedIntoLevel) {
+					ItemSystem.SpawnItem(ele, unitX.ToGlobal(), unitY.ToGlobal(), 1, false);
+					WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Element, 0);
+				}
+
+				// Final
 				if (dropItemAfterPicked && ItemSystem.HasItem(blockID)) {
 					// Drop Item
 					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
@@ -752,6 +772,7 @@ public static class FrameworkUtil {
 					// Break
 					InvokeObjectBreak(realBlockID, blockRect);
 				}
+
 				if (!allowMultiplePick) {
 					return true;
 				}

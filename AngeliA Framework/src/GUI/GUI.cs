@@ -104,6 +104,11 @@ public static partial class GUI {
 		Color = Color32.WHITE;
 		BodyColor = Color32.WHITE;
 		ContentColor = Color32.WHITE;
+		RefreshAllCacheSize();
+	}
+
+
+	internal static void RefreshAllCacheSize () {
 		FieldHeight = Unify(26);
 		FieldPadding = Unify(8);
 		ToolbarSize = Unify(42);

@@ -9,34 +9,22 @@ public interface IUndoItem {
 }
 
 
-public class UndoRedo {
+public class UndoRedo (
+	int undoLimit = 4096,
+	System.Action<IUndoItem> onUndoPerformed = null,
+	System.Action<IUndoItem> onRedoPerformed = null
+) {
 
 
 	// Api
-	public int CurrentStep { get; private set; } = 0;
+	public int CurrentStep { get; private set; } = int.MinValue;
 
 	// Data
-	protected readonly Pipe<IUndoItem> UndoList = null;
-	protected readonly Pipe<IUndoItem> RedoList = null;
-	private readonly System.Action<IUndoItem> OnUndoPerformed = null;
-	private readonly System.Action<IUndoItem> OnRedoPerformed = null;
+	protected readonly Pipe<IUndoItem> UndoList = new Pipe<IUndoItem>(undoLimit);
+	protected readonly Pipe<IUndoItem> RedoList = new Pipe<IUndoItem>(undoLimit);
+	private readonly System.Action<IUndoItem> OnUndoPerformed = onUndoPerformed;
+	private readonly System.Action<IUndoItem> OnRedoPerformed = onRedoPerformed;
 	private int StableLength = 0;
-
-
-	// API
-	public UndoRedo (
-		int undoLimit = 4096,
-		System.Action<IUndoItem> onUndoPerformed = null,
-		System.Action<IUndoItem> onRedoPerformed = null
-	) {
-		UndoList = new Pipe<IUndoItem>(undoLimit);
-		RedoList = new Pipe<IUndoItem>(undoLimit);
-		OnUndoPerformed = onUndoPerformed;
-		OnRedoPerformed = onRedoPerformed;
-		CurrentStep = int.MinValue;
-		StableLength = 0;
-	}
-
 
 	public virtual void Register (IUndoItem data) {
 		RedoList.Reset();

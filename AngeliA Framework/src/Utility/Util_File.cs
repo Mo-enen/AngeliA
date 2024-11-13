@@ -122,54 +122,6 @@ public static partial class Util {
 	}
 
 
-	public static void SaveNameAndIntToFile<T> (IEnumerable<T> list, string path) where T : IDeconstruct<string, int> {
-		CreateFolder(GetParentPath(path));
-		using var fs = new FileStream(path, FileMode.Create);
-		using var sw = new StreamWriter(fs);
-		foreach (var (key, value) in list) {
-			sw.Write(key);
-			sw.Write(':');
-			sw.Write(value);
-			sw.Write('\n');
-		}
-	}
-	public static void SaveNameAndIntToFile<T> (IEnumerable<T> list, string path, Encoding encoding) where T : IDeconstruct<string, int> {
-		CreateFolder(GetParentPath(path));
-		using var fs = new FileStream(path, FileMode.Create);
-		using var sw = new StreamWriter(fs, encoding);
-		foreach (var (key, value) in list) {
-			sw.Write(key);
-			sw.Write(':');
-			sw.Write(value);
-			sw.Write('\n');
-		}
-	}
-
-
-	public static void SaveNameAndStringToFile<T> (IEnumerable<T> list, string path) where T : IDeconstruct<string, string> {
-		CreateFolder(GetParentPath(path));
-		using var fs = new FileStream(path, FileMode.Create);
-		using var sw = new StreamWriter(fs);
-		foreach (var (key, value) in list) {
-			sw.Write(key);
-			sw.Write(':');
-			sw.Write(value);
-			sw.Write('\n');
-		}
-	}
-	public static void SaveNameAndStringToFile<T> (IEnumerable<T> list, string path, Encoding encoding) where T : IDeconstruct<string, string> {
-		CreateFolder(GetParentPath(path));
-		using var fs = new FileStream(path, FileMode.Create);
-		using var sw = new StreamWriter(fs, encoding);
-		foreach (var (key, value) in list) {
-			sw.Write(key);
-			sw.Write(':');
-			sw.Write(value);
-			sw.Write('\n');
-		}
-	}
-
-
 	public static void CreateFolder (string path) {
 		if (string.IsNullOrEmpty(path) || FolderExists(path)) return;
 		string pPath = GetParentPath(path);

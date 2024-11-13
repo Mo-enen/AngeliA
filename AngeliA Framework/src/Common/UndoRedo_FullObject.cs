@@ -5,24 +5,15 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public class FullObjectUndo : UndoRedo {
+public class FullObjectUndo (int undoLimit = 4096, Action<IUndoItem> onUndoRedoPerformed = null) : UndoRedo(undoLimit, onUndoRedoPerformed, onUndoRedoPerformed) {
 
 
-	private struct ItemPair : IUndoItem {
+	private struct ItemPair (IUndoItem before, IUndoItem after, bool hasBefore) : IUndoItem {
 		public int Step { get; set; }
-		public IUndoItem Before;
-		public IUndoItem After;
-		public bool HasBefore;
-		public ItemPair (IUndoItem before, IUndoItem after, bool hasBefore) {
-			Before = before;
-			After = after;
-			HasBefore = hasBefore;
-		}
+		public IUndoItem Before = before;
+		public IUndoItem After = after;
+		public bool HasBefore = hasBefore;
 	}
-
-
-	public FullObjectUndo (int undoLimit = 4096, Action<IUndoItem> onUndoRedoPerformed = null) : base(undoLimit, onUndoRedoPerformed, onUndoRedoPerformed) { }
-
 
 	public override void Register (IUndoItem data) {
 		IUndoItem before = default;

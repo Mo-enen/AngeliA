@@ -9,7 +9,7 @@ public abstract class SnakePlatform : StepTriggerPlatform, IRouteWalker {
 
 
 	// Api
-	protected sealed override PartializedMode TriggerMode => PartializedMode.Horizontal;
+	protected sealed override IUnitable.UniteMode TriggerMode => IUnitable.UniteMode.Horizontal;
 	public abstract int EndBreakDuration { get; }
 	public abstract int Speed { get; }
 	public Direction8 CurrentDirection { get; set; }

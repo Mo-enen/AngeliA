@@ -109,13 +109,13 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 		// Spread Leadership
 		if (RequireSpreadLeadership) {
 			RequireSpreadLeadership = false;
-			IPartializable.ForAllPartializedEntity<RoutinePlatform>(
+			IUnitable.ForAllPartializedEntity<RoutinePlatform>(
 				PhysicsMask.ENVIRONMENT, TypeID, Rect,
 				OperationMode.ColliderAndTrigger, TriggerMode,
 				SetLeader, this
 			);
 			static void SetLeader (RoutinePlatform other) {
-				if (IPartializable.PartializeTempParam is not RoutinePlatform leader) return;
+				if (IUnitable.UniteTempParam is not RoutinePlatform leader) return;
 				other.Leader = leader;
 				other.LeaderOffset.x = other.X - leader.X;
 				other.LeaderOffset.y = other.Y - leader.Y;

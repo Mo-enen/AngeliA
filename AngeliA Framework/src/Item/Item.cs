@@ -12,6 +12,7 @@ public abstract class Item : IMapItem {
 	// Api
 	public abstract int MaxStackCount { get; }
 	public virtual bool AllowDuplicateUpdate => true;
+	public virtual bool EmbedIntoLevel => false;
 	public int TypeID { get; init; }
 
 	// Cache

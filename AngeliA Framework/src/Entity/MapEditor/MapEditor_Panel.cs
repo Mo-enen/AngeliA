@@ -81,6 +81,7 @@ public partial class MapEditor {
 	private static readonly LanguageCode MENU_PALETTE_DELETE_LIST_MSG = ("Menu.MEDT.DeleteListMsg", "Delete List \"{0}\"?");
 	private static readonly LanguageCode MENU_PALETTE_SET_LIST_COVER = ("Menu.MEDT.SetAsListCover", "Set as List Cover");
 	private const int SEARCH_BAR_ID = 3983472;
+	private const int TOOLBAR_BTN_SIZE = 42;
 
 	// Data
 	private readonly Dictionary<int, PaletteGroup> PaletteGroupCache = [];
@@ -806,7 +807,7 @@ public partial class MapEditor {
 
 		// Buttons
 		int padding = Unify(4);
-		int btnSize = GUI.ToolbarSize.GreaterOrEquel(1);
+		int btnSize = Unify(TOOLBAR_BTN_SIZE).GreaterOrEquel(1);
 		int column = PanelRect.width.UDivide(btnSize);
 		int top = PanelRect.yMax - btnSize;
 		for (int funcIndex = 0; funcIndex < ToolbarFuncs.Count; funcIndex++) {
@@ -995,12 +996,14 @@ public partial class MapEditor {
 		if (Instance == null) return;
 		if (Instance.CurrentZ != int.MinValue) {
 			Instance.SetViewZ(Instance.CurrentZ - 1);
+			Instance.RequireTransition(Instance.TargetViewRect.CenterX(), Instance.TargetViewRect.CenterY(), 1.2f, 1f, 10);
 		}
 	}
 	private static void ToolbarButton_Z_Back () {
 		if (Instance == null) return;
 		if (Instance.CurrentZ != int.MaxValue) {
 			Instance.SetViewZ(Instance.CurrentZ + 1);
+			Instance.RequireTransition(Instance.TargetViewRect.CenterX(), Instance.TargetViewRect.CenterY(), 0.8f, 1f, 10);
 		}
 	}
 	private static void ToolbarButton_Nav () {
