@@ -13,7 +13,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 
 	private class Item {
-		public bool IsSeparator => string.IsNullOrEmpty(Label);
+		public bool IsSeparator;
 		public string Label;
 		public int Icon;
 		public int Mark;
@@ -22,6 +22,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		public bool Enabled;
 		public bool IsSubMenu;
 		public bool Visible;
+		public bool Editable;
 		public int Level;
 		public object Data;
 		public System.Action Action;
@@ -44,11 +45,24 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	public IRect BackgroundRect { get; private set; }
 	public int OffsetX { get; set; } = 0;
 	public int OffsetY { get; set; } = 0;
-	public static object InvokingItemData { get; private set; }
+	public static string InvokingItemlabel { get; private set; } = "";
+	public static object InvokingItemData { get; private set; } = null;
 	public int MenuID { get; private set; } = 0;
 	public int CurrentSubLevel { get; set; } = 0;
 
 	// Data
+	private readonly GUIStyle TextInputStyle = new(GUI.Skin.Frame) {
+		Alignment = Alignment.MidLeft,
+		ContentBorder = Int4.Direction(1, 1, 1, 1),
+		BodyColor = Color32.GREY_230,
+		BodyColorDown = Color32.GREY_230,
+		BodyColorHover = Color32.GREY_230,
+		BodyColorDisable = Color32.GREY_230,
+		ContentColor = Color32.GREY_12,
+		ContentColorDown = Color32.GREY_12,
+		ContentColorHover = Color32.GREY_12,
+		ContentColorDisable = Color32.GREY_12,
+	};
 	private readonly Item[] Items = new Item[128];
 	private Color32 LabelTint = Color32.WHITE;
 	private Color32 IconTint = Color32.WHITE;
@@ -107,7 +121,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		int panelPadding = Unify(4);
 		var cameraRect = Renderer.CameraRect;
 		bool anyItemHovering = false;
-		bool ignoreClose = false;
+		bool ignoreClose = GUI.IsTyping;
 		int panelTopOffsetY = cameraRect.y + OffsetY;
 		var panelRect = new IRect(
 			cameraRect.x + OffsetX,
@@ -244,16 +258,35 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 						}
 
 						// Label
-						GUI.Label(
-							rect.Shrink(indent, 0, 0, 0),
-							item.Label,
-							out var labelBounds,
-							GUISkin.Default.SmallLabel
-						);
-						maxWidth = Util.Max(
-							maxWidth,
-							labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0) + (item.IsSubMenu ? rect.height : 0)
-						);
+						var labelBounds = rect;
+						if (item.Editable) {
+							item.Label = GUI.InputField(
+								161267 + i, rect.Shrink(indent, 0, 0, 0), item.Label, out _, out bool confirm,
+								bodyStyle: TextInputStyle
+							);
+							if (confirm) {
+								InvokingItemlabel = item.Label;
+								InvokingItemData = item.Data;
+								item.Action?.Invoke();
+								InvokingItemData = null;
+								InvokingItemlabel = "";
+								Input.UseMouseKey(0);
+								Input.UseMouseKey(1);
+								Input.UseMouseKey(2);
+								Active = false;
+							}
+						} else {
+							GUI.Label(
+								rect.Shrink(indent, 0, 0, 0),
+								item.Label,
+								out labelBounds,
+								GUISkin.Default.SmallLabel
+							);
+							maxWidth = Util.Max(
+								maxWidth,
+								labelBounds.width + indent * 4 / 3 + (item.Icon != 0 ? iconPadding + rect.height : 0) + (item.IsSubMenu ? rect.height : 0)
+							);
+						}
 
 						// Icon
 						if (item.Icon != 0) {
@@ -273,9 +306,15 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 						if (hover && item.Enabled && mouseLeftDown) {
 							if (!item.IsSubMenu) {
 								// Click Item
-								InvokingItemData = item.Data;
-								item.Action?.Invoke();
-								InvokingItemData = null;
+								if (!item.Editable) {
+									InvokingItemlabel = item.Label;
+									InvokingItemData = item.Data;
+									item.Action?.Invoke();
+									InvokingItemData = null;
+									InvokingItemlabel = "";
+								} else {
+									ignoreClose = true;
+								}
 							} else {
 								// Click Sub Menu
 								ignoreClose = true;
@@ -373,28 +412,20 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	}
 
 
-	public static void AddSeparator () => AddItem("", Const.EmptyMethod, true, false);
+	public static void AddSeparator () {
+		var item = AddItemLogic("", 0, default, 0, Const.EmptyMethod, true, false, null, false);
+		if (item != null) {
+			item.IsSeparator = true;
+		}
+	}
 
 
-	public static void AddItem (string label, System.Action action, bool enabled = true, bool @checked = false, object data = null) => AddItem(label, 0, default, 0, action, enabled, @checked, data);
+	public static void AddItem (string label, System.Action action, bool enabled = true, bool @checked = false, object data = null, bool editable = false) => AddItem(label, 0, default, 0, action, enabled, @checked, data, editable);
 
 
-	public static void AddItem (string label, int icon, Direction2 iconPosition, int checkMarkSprite, System.Action action, bool enabled = true, bool @checked = false, object data = null) {
+	public static void AddItem (string label, int icon, Direction2 iconPosition, int checkMarkSprite, System.Action action, bool enabled = true, bool @checked = false, object data = null, bool editable = false) {
 		if (Instance == null || Instance.ItemCount >= Instance.Items.Length - 1) return;
-		int level = Instance.CurrentSubLevel;
-		var item = Instance.Items[Instance.ItemCount];
-		item.Label = label;
-		item.Icon = icon;
-		item.IconPosition = iconPosition;
-		item.Action = action;
-		item.Enabled = enabled;
-		item.Checked = @checked;
-		item.Mark = checkMarkSprite;
-		item.Level = level;
-		item.IsSubMenu = false;
-		item.Data = data;
-		item.Visible = level == 0;
-		Instance.ItemCount++;
+		AddItemLogic(label, icon, iconPosition, checkMarkSprite, action, enabled, @checked, data, editable);
 	}
 
 
@@ -437,6 +468,27 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 
 	#region --- LGC ---
+
+
+	private static Item AddItemLogic (string label, int icon, Direction2 iconPosition, int checkMarkSprite, System.Action action, bool enabled, bool @checked, object data, bool editable) {
+		int level = Instance.CurrentSubLevel;
+		var item = Instance.Items[Instance.ItemCount];
+		item.Label = label;
+		item.Icon = icon;
+		item.IconPosition = iconPosition;
+		item.Action = action;
+		item.Enabled = enabled;
+		item.Checked = @checked;
+		item.Mark = checkMarkSprite;
+		item.Level = level;
+		item.IsSubMenu = false;
+		item.Data = data;
+		item.Visible = level == 0;
+		item.Editable = editable;
+		item.IsSeparator = false;
+		Instance.ItemCount++;
+		return item;
+	}
 
 
 	private void HideAll () {

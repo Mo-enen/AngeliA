@@ -16,9 +16,14 @@ public partial class PixelEditor {
 	private enum InputName { Name, Width, Height, BorderL, BorderR, BorderD, BorderU, PivotX, PivotY, Z, Duration, }
 
 
-	private class SpriteSorterByX : IComparer<SpriteData> {
-		public static readonly SpriteSorterByX Instance = new();
-		public int Compare (SpriteData a, SpriteData b) => a.Sprite.PixelRect.x.CompareTo(b.Sprite.PixelRect.x);
+	private class SpriteSorterByXY : IComparer<SpriteData> {
+		public static readonly SpriteSorterByXY Instance = new();
+		public int Compare (SpriteData a, SpriteData b) {
+
+			int result = b.Sprite.PixelRect.y.CompareTo(a.Sprite.PixelRect.y);
+			if (result != 0) return result;
+			return a.Sprite.PixelRect.x.CompareTo(b.Sprite.PixelRect.x);
+		}
 	}
 
 
@@ -105,6 +110,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode MENU_NEW_PAL_SPRITE = ("Menu.CreateNewPalette", "New Palette");
 	private static readonly LanguageCode MENU_NEW_CHAR_SPRITE = ("Menu.CreateNewCharacterSprite", "New Character Sprites");
 	private static readonly LanguageCode MENU_NEW_SHEET_CHAR_SPRITE = ("Menu.CreateNewSheetCharacterSprite", "New Sheet Character Sprites");
+	private static readonly LanguageCode MENU_NEW_RULE_TILE_SPRITE = ("Menu.CreateNewRuleTileSprite", "New Rule Tile Sprites");
 	private static LanguageCode[] TIP_TOOLS;
 
 	// Data
@@ -976,6 +982,7 @@ public partial class PixelEditor {
 		// For All Pose Characters
 		GenericPopupUI.AddItem(MENU_NEW_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
 		GenericPopupUI.BeginSubItem();
+		GenericPopupUI.AddItem("(Enter Name Here)", NewPoseCharSprite, data: ("", pixPos), editable: true);
 		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN)) {
 			string name = Util.GetNameWithoutExtension(filePath);
 			GenericPopupUI.AddItem(name, NewPoseCharSprite, data: (name, pixPos));
@@ -985,10 +992,17 @@ public partial class PixelEditor {
 		// For All Sheet Characters
 		GenericPopupUI.AddItem(MENU_NEW_SHEET_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
 		GenericPopupUI.BeginSubItem();
+		GenericPopupUI.AddItem("(Enter Name Here)", NewSheetCharSprite, data: ("", pixPos), editable: true);
 		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN)) {
 			string name = Util.GetNameWithoutExtension(filePath);
 			GenericPopupUI.AddItem(name, NewSheetCharSprite, data: (name, pixPos));
 		}
+		GenericPopupUI.EndSubItem();
+
+		// Rule Tiles
+		GenericPopupUI.AddItem(MENU_NEW_RULE_TILE_SPRITE, Const.EmptyMethod, data: pixPos);
+		GenericPopupUI.BeginSubItem();
+		GenericPopupUI.AddItem("(Enter Name Here)", NewRuleTileSprite, data: ("", pixPos), editable: true);
 		GenericPopupUI.EndSubItem();
 
 		// Func
@@ -1003,11 +1017,18 @@ public partial class PixelEditor {
 		}
 		static void NewPoseCharSprite () {
 			if (GenericPopupUI.InvokingItemData is not (string name, Int2 pixPos)) return;
-			Instance.CreateSpritesFromTemplates(name, "CharacterTemplate", pixPos);
+			string resultName = string.IsNullOrEmpty(name) ? GenericPopupUI.InvokingItemlabel : name;
+			Instance.CreateSpritesFromTemplates(resultName, "CharacterTemplate", pixPos);
 		}
 		static void NewSheetCharSprite () {
 			if (GenericPopupUI.InvokingItemData is not (string name, Int2 pixPos)) return;
-			Instance.CreateSpritesFromTemplates(name, "SheetCharacterTemplate", pixPos);
+			string resultName = string.IsNullOrEmpty(name) ? GenericPopupUI.InvokingItemlabel : name;
+			Instance.CreateSpritesFromTemplates(resultName, "SheetCharacterTemplate", pixPos);
+		}
+		static void NewRuleTileSprite () {
+			if (GenericPopupUI.InvokingItemData is not (string name, Int2 pixPos)) return;
+			string resultName = string.IsNullOrEmpty(name) ? GenericPopupUI.InvokingItemlabel : name;
+			Instance.CreateSpritesFromTemplates(resultName, "RuleTileTemplate", pixPos);
 		}
 	}
 
@@ -1098,7 +1119,7 @@ public partial class PixelEditor {
 		if (!string.IsNullOrEmpty(name)) {
 			var hoveringData = HoveringSpriteStageIndex >= 0 ? StagedSprites[HoveringSpriteStageIndex] : null;
 			var resizingData = HoveringResizeStageIndex >= 0 ? StagedSprites[HoveringResizeStageIndex] : null;
-			StagedSprites.Sort(SpriteSorterByX.Instance);
+			StagedSprites.Sort(SpriteSorterByXY.Instance);
 			if (hoveringData != null) {
 				HoveringSpriteStageIndex = StagedSprites.IndexOf(hoveringData);
 			}
@@ -1107,8 +1128,31 @@ public partial class PixelEditor {
 			}
 		}
 
-		// Final
+		// Buffer for Rename
 		int checkedCount = 0;
+		if (!string.IsNullOrEmpty(name) && SelectingSpriteCount > 1) {
+			string tempName = "soiweiusj-asdfius723jIUF";
+			for (int i = 0; i < StagedSprites.Count && checkedCount < SelectingSpriteCount; i++) {
+				var spData = StagedSprites[i];
+				if (!spData.Selecting) continue;
+				checkedCount++;
+				var sprite = spData.Sprite;
+				// Name
+				bool renamed;
+				string oldName = sprite.RealName;
+				renamed = EditingSheet.RenameSprite(sprite, $"{tempName} {checkedCount - 1}");
+				if (renamed) {
+					RegisterUndo(new SpriteNameUndoItem() {
+						SpriteID = sprite.ID,
+						From = oldName,
+						To = sprite.RealName,
+					}, true);
+				}
+			}
+		}
+
+		// Final
+		checkedCount = 0;
 		for (int i = 0; i < StagedSprites.Count && checkedCount < SelectingSpriteCount; i++) {
 
 			var spData = StagedSprites[i];
@@ -1177,7 +1221,7 @@ public partial class PixelEditor {
 						SpriteID = sprite.ID,
 						From = oldName,
 						To = sprite.RealName,
-					}, ignoreUndoStep);
+					}, true);
 				}
 			}
 

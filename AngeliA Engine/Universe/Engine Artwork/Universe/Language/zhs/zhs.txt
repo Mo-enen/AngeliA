@@ -122,6 +122,7 @@ Menu.AtlasType:类型
 Menu.BuiltInTheme:内置
 Menu.CreateNewCharacterSprite:创建角色图块
 Menu.CreateNewPalette:创建调色板
+Menu.CreateNewRuleTileSprite:创建自动平铺图块
 Menu.CreateNewSheetCharacterSprite:创建帧动画角色图块
 Menu.CreateNewSprite:创建图块
 Menu.Group.Letter:字母

@@ -122,6 +122,7 @@ Menu.AtlasType:Type
 Menu.BuiltInTheme:Built-in
 Menu.CreateNewCharacterSprite:New Character Sprites
 Menu.CreateNewPalette:New Palette
+Menu.CreateNewRuleTileSprite:New Rule Tile Sprites
 Menu.CreateNewSheetCharacterSprite:New Sheet Character Sprites
 Menu.CreateNewSprite:New Sprite
 Menu.Group.Letter:Letter
