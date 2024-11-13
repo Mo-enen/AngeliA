@@ -5,6 +5,4 @@ public abstract class Weapon<B> : Weapon where B : Bullet {
 }
 
 
-public abstract class Weapon : HandTool {
-
-}
+public abstract class Weapon : HandTool { }

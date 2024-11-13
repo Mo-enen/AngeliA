@@ -363,7 +363,7 @@ public abstract class PoseAnimation {
 
 	protected static void AttackLegShake (float ease01) {
 		if (AnimationType != CharacterAnimationType.Idle) return;
-		int deltaX = (int)(2f * ease01 * A2G);
+		int deltaX = (int)(1f * ease01 * A2G);
 		// Move Leg
 		if (FacingRight) {
 			UpperLegL.X -= deltaX / 2;

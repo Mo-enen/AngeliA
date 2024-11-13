@@ -34,6 +34,8 @@ public sealed class BlockBuilder : HandTool {
 
 
 	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
+		base.OnPoseAnimationUpdate_FromEquipment(rendering);
+
 		var pHolder = rendering.TargetCharacter;
 		if (
 			!pHolder.IsAttackAllowedByMovement() ||
@@ -42,10 +44,7 @@ public sealed class BlockBuilder : HandTool {
 			PlayerMenuUI.ShowingUI ||
 			TaskSystem.HasTask() ||
 			!Universe.BuiltInInfo.AllowPlayerModifyMap
-		) {
-			base.OnPoseAnimationUpdate_FromEquipment(rendering);
-			return;
-		}
+		) return;
 
 		if (pHolder == PlayerSystem.Selecting) {
 			int targetUnitX, targetUnitY;
