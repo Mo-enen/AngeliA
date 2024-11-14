@@ -59,6 +59,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 	private int IgnorePhysicsFrame = -1;
 	private int PrevPositionUpdateFrame = -1;
 	private int InWaterFloatDuration = 0;
+	private (int value, int decay) MomentumX = (0, 0);
+	private (int value, int decay) MomentumY = (0, 0);
 
 
 	#endregion
@@ -130,7 +132,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 			if (DestroyWhenInsideGround) Active = false;
 			return;
 		}
-		
+
 		// Is Inside Ground
 		if (IsInsideGround) {
 			if (DestroyWhenInsideGround) {
@@ -214,7 +216,15 @@ public abstract class Rigidbody : Entity, ICarrier {
 		}
 
 		// Move
-		PerformMove(VelocityX, VelocityY);
+		PerformMove(VelocityX + MomentumX.value, VelocityY + MomentumY.value);
+
+		// Momentum Decay
+		if (MomentumX.value != 0) {
+			MomentumX.value = MomentumX.value.MoveTowards(0, MomentumX.decay);
+		}
+		if (MomentumY.value != 0) {
+			MomentumY.value = MomentumY.value.MoveTowards(0, MomentumY.decay);
+		}
 
 		// Grounded Check
 		IsGrounded = GroundedCheck();
@@ -235,7 +245,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 				RisingGravityScale.Override(0, 1, priority: 64);
 				FallingGravityScale.Override(0, 1, priority: 64);
 				int floatY = WaterFloatSpeed - (WaterFloatSpeed - InWaterFloatDuration / 16).GreaterOrEquelThanZero();
-				//PerformMove(0, floatY);
 				VelocityY = VelocityY.LerpTo(floatY, 500);
 				InWaterFloatDuration += DeltaPositionY.Abs().Clamp(2, 8);
 			} else {
@@ -254,7 +263,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	#region --- API ---
 
 
-	public virtual void PerformMove (int speedX, int speedY, bool ignoreCarry = false) {
+	public void PerformMove (int speedX, int speedY, bool ignoreCarry = false) {
 
 		if (Game.GlobalFrame <= IgnorePhysicsFrame) return;
 
@@ -281,6 +290,29 @@ public abstract class Rigidbody : Entity, ICarrier {
 		// Offset Position
 		X = newPos.x - OffsetX;
 		Y = newPos.y - OffsetY;
+
+	}
+
+
+	public void SetMomentum (int x, int y, int decayX = 1, int decayY = 1) {
+		MomentumX = (x, decayX);
+		MomentumY = (y, decayY);
+	}
+
+
+	void ICarrier.PerformCarry (int x, int y) {
+
+		MakeGrounded(1);
+
+		if (x != 0) {
+			MomentumX.value = x;
+			MomentumX.decay = (x / 4).GreaterOrEquel(1);
+		}
+
+		if (y != 0) {
+			MomentumY.value = y;
+			MomentumY.decay = (y / 4).GreaterOrEquel(1);
+		}
 
 	}
 

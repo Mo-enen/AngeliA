@@ -59,15 +59,16 @@ public abstract class Platform : Entity, IBlockEntity {
 			PrevY = Y;
 		}
 		ICarrier.CarryTargetsOnTopHorizontally(this, X - PrevX, OperationMode.ColliderAndTrigger);
-		ICarrier.CarryTargetsOnTopVertically(this, Y - PrevY, OneWay, OperationMode.ColliderAndTrigger);
+		ICarrier.CarryTargetsOnTopVertically(this, Y - PrevY, OperationMode.ColliderAndTrigger);
 		LastMoveFrame = Game.GlobalFrame;
-		Update_PushX();
+		UpdatePushX();
+		AntiFallThrough();
 	}
 
 
 	public override void Update () {
 		base.Update();
-		Update_Touch();
+		UpdateTouch();
 	}
 
 
@@ -77,7 +78,7 @@ public abstract class Platform : Entity, IBlockEntity {
 	}
 
 
-	private void Update_Touch () {
+	private void UpdateTouch () {
 		if (TouchedByRigidbody && TouchedByCharacter && TouchedByPlayer) return;
 		var hits = Physics.OverlapAll(PhysicsMask.ENTITY, Rect.Expand(1), out int count, this);
 		for (int i = 0; i < count; i++) {
@@ -97,7 +98,7 @@ public abstract class Platform : Entity, IBlockEntity {
 	}
 
 
-	private void Update_PushX () {
+	private void UpdatePushX () {
 
 		if (OneWay || X == PrevX) return;
 
@@ -117,10 +118,7 @@ public abstract class Platform : Entity, IBlockEntity {
 		}
 		if (!pushLeft && !pushRight) return;
 
-		var rect = Rect;
-		var prevRect = rect;
-		prevRect.x = PrevX;
-		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, rect, out int count, this);
+		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect, out int count, this);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig) continue;
@@ -134,6 +132,21 @@ public abstract class Platform : Entity, IBlockEntity {
 				if (rig.VelocityX > X - PrevX || rRect.xMax < X + Width) continue;
 				rig.PerformMove(X + Width - rRect.xMin, 0);
 			}
+		}
+	}
+
+
+	private void AntiFallThrough () {
+		int limitY = PrevY + Height / 2;
+		int top = Rect.yMax;
+		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect, out int count, this);
+		for (int i = 0; i < count; i++) {
+			var hit = hits[i];
+			if (hit.Entity is not Rigidbody rig) continue;
+			if (OneWay && rig.IgnoringOneway) continue;
+			var rRect = rig.Rect;
+			if (rRect.y < limitY) continue;
+			rig.PerformMove(X - PrevX, top - rig.Y);
 		}
 	}
 

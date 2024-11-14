@@ -5,6 +5,7 @@ namespace AngeliA;
 
 public interface ICarrier {
 
+	private const int DETECT_RANGE = 96;
 	public bool AllowBeingCarry => true;
 	public int CarryLeft { get; set; }
 	public int CarryRight { get; set; }
@@ -16,6 +17,8 @@ public interface ICarrier {
 	// MSG
 	public void OnBeingCarry (int deltaX, int deltaY) { }
 
+	public void PerformCarry (int x, int y);
+
 	// API
 	public static void CarryTargetsOnTopHorizontally (Entity self, int _deltaX, OperationMode colMode = OperationMode.ColliderOnly) {
 		if (_deltaX == 0) return;
@@ -26,7 +29,7 @@ public interface ICarrier {
 			var deltaX = data.delta;
 			var hits = Physics.OverlapAll(
 				PhysicsMask.DYNAMIC,
-				selfRect.EdgeOutside(Direction4.Up),
+				selfRect.EdgeOutside(Direction4.Up, DETECT_RANGE),
 				out int count, null, colMode
 			);
 			for (int i = 0; i < count; i++) {
@@ -57,27 +60,18 @@ public interface ICarrier {
 				}
 
 				// Move
-				if (entity is Rigidbody rig) {
-					int oldX = rig.X;
-					rig.PerformMove(nextDeltaX, 0, ignoreCarry: true);
-					rig.MakeGrounded(1, self.TypeID);
-					nextDeltaX = rig.X - oldX;
-				} else {
-					entity.X += nextDeltaX;
-				}
-
-				// Callback
+				int oldX = entity.X;
+				carrier.PerformCarry(nextDeltaX, 0);
 				carrier.OnBeingCarry(nextDeltaX, 0);
+				nextDeltaX = entity.X - oldX;
 
 				// Keep Carry
 				CarryBuffer.LinkToTail((entity.Rect, nextDeltaX));
 			}
-
 		}
-
 	}
 
-	public static void CarryTargetsOnTopVertically (Entity self, int _deltaY, bool fromOneway = false, OperationMode colMode = OperationMode.ColliderOnly) {
+	public static void CarryTargetsOnTopVertically (Entity self, int _deltaY, OperationMode colMode = OperationMode.ColliderOnly) {
 		if (_deltaY == 0) return;
 		CarryBuffer.Reset();
 		CarryPerformBuffer.Reset();
@@ -87,7 +81,7 @@ public interface ICarrier {
 			var deltaY = data.delta;
 			var hits = Physics.OverlapAll(
 				PhysicsMask.DYNAMIC,
-				selfRect.EdgeOutside(Direction4.Up, 32),
+				selfRect.EdgeOutside(Direction4.Up, DETECT_RANGE),
 				out int count, null, colMode
 			);
 			for (int i = 0; i < count; i++) {
@@ -110,6 +104,8 @@ public interface ICarrier {
 		) {
 			// Perform Move
 			var entity = data.entity;
+			if (entity is not ICarrier carrier) continue;
+
 			var deltaY = data.delta;
 			if (entity is IWithCharacterMovement withMovement) {
 				var movement = withMovement.CurrentMovement;
@@ -125,22 +121,9 @@ public interface ICarrier {
 			}
 
 			// Move
-			if (entity is Rigidbody rig) {
+			carrier.PerformCarry(0, deltaY);
+			carrier.OnBeingCarry(0, deltaY);
 
-				if (fromOneway && rig.IgnoringOneway) continue;
-
-				rig.MakeGrounded(1);
-				rig.IgnoreGravity(1);
-				rig.VelocityY = Util.Max(deltaY, self.Rect.yMax - entity.Rect.y);
-
-			} else {
-				entity.Y += deltaY;
-			}
-
-			// Callback
-			if (entity is ICarrier carrier) {
-				carrier.OnBeingCarry(0, deltaY);
-			}
 		}
 	}
 
