@@ -119,7 +119,7 @@ public interface ICarrier {
 					continue;
 				}
 			}
-
+			
 			// Move
 			carrier.PerformCarry(0, deltaY);
 			carrier.OnBeingCarry(0, deltaY);
