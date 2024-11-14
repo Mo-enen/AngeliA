@@ -120,6 +120,7 @@ MEDT.LevelOnly:仅关卡
 MEDT.TooManySpriteHint:图块太多了(っ°Д°)っ
 Menu.AtlasType:类型
 Menu.BuiltInTheme:内置
+Menu.CreateNewArmorSprite:创建护甲图块
 Menu.CreateNewCharacterSprite:创建角色图块
 Menu.CreateNewPalette:创建调色板
 Menu.CreateNewRuleTileSprite:创建自动平铺图块

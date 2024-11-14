@@ -110,6 +110,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode MENU_NEW_PAL_SPRITE = ("Menu.CreateNewPalette", "New Palette");
 	private static readonly LanguageCode MENU_NEW_CHAR_SPRITE = ("Menu.CreateNewCharacterSprite", "New Character Sprites");
 	private static readonly LanguageCode MENU_NEW_SHEET_CHAR_SPRITE = ("Menu.CreateNewSheetCharacterSprite", "New Sheet Character Sprites");
+	private static readonly LanguageCode MENU_NEW_ARMOR_SPRITE = ("Menu.CreateNewArmorSprite", "New Armor Sprites");
 	private static readonly LanguageCode MENU_NEW_RULE_TILE_SPRITE = ("Menu.CreateNewRuleTileSprite", "New Rule Tile Sprites");
 	private static LanguageCode[] TIP_TOOLS;
 
@@ -999,6 +1000,12 @@ public partial class PixelEditor {
 		}
 		GenericPopupUI.EndSubItem();
 
+		// Armor Sprites
+		GenericPopupUI.AddItem(MENU_NEW_ARMOR_SPRITE, Const.EmptyMethod, data: pixPos);
+		GenericPopupUI.BeginSubItem();
+		GenericPopupUI.AddItem("(Enter Name Here)", NewArmorSprite, data: ("", pixPos), editable: true);
+		GenericPopupUI.EndSubItem();
+
 		// Rule Tiles
 		GenericPopupUI.AddItem(MENU_NEW_RULE_TILE_SPRITE, Const.EmptyMethod, data: pixPos);
 		GenericPopupUI.BeginSubItem();
@@ -1024,6 +1031,11 @@ public partial class PixelEditor {
 			if (GenericPopupUI.InvokingItemData is not (string name, Int2 pixPos)) return;
 			string resultName = string.IsNullOrEmpty(name) ? GenericPopupUI.InvokingItemlabel : name;
 			Instance.CreateSpritesFromTemplates(resultName, "SheetCharacterTemplate", pixPos);
+		}
+		static void NewArmorSprite () {
+			if (GenericPopupUI.InvokingItemData is not (string name, Int2 pixPos)) return;
+			string resultName = string.IsNullOrEmpty(name) ? GenericPopupUI.InvokingItemlabel : name;
+			Instance.CreateSpritesFromTemplates(resultName, "ArmorTemplate", pixPos);
 		}
 		static void NewRuleTileSprite () {
 			if (GenericPopupUI.InvokingItemData is not (string name, Int2 pixPos)) return;

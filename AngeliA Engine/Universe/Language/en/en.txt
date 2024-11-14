@@ -120,6 +120,7 @@ MEDT.LevelOnly:Level Only
 MEDT.TooManySpriteHint:too many sprites (っ°Д°)っ
 Menu.AtlasType:Type
 Menu.BuiltInTheme:Built-in
+Menu.CreateNewArmorSprite:New Armor Sprites
 Menu.CreateNewCharacterSprite:New Character Sprites
 Menu.CreateNewPalette:New Palette
 Menu.CreateNewRuleTileSprite:New Rule Tile Sprites

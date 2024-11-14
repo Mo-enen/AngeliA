@@ -130,7 +130,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 			if (DestroyWhenInsideGround) Active = false;
 			return;
 		}
-
+		
 		// Is Inside Ground
 		if (IsInsideGround) {
 			if (DestroyWhenInsideGround) {
