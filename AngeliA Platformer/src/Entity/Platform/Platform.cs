@@ -146,7 +146,7 @@ public abstract class Platform : Entity, IBlockEntity {
 			if (OneWay && rig.IgnoringOneway) continue;
 			var rRect = rig.Rect;
 			if (rRect.y < limitY) continue;
-			rig.PerformMove(0, top - rig.Y);
+			Physics.ForcePush(rig, Direction4.Up, top - rig.Y);
 		}
 	}
 

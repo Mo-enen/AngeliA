@@ -36,6 +36,7 @@ public interface ICarrier {
 
 				var hit = hits[i];
 				var entity = hit.Entity;
+
 				if (entity is not ICarrier carrier) continue;
 				if (!carrier.AllowBeingCarry) continue;
 				if (entity.Rect.y < selfRect.yMax) continue;
@@ -72,6 +73,7 @@ public interface ICarrier {
 	}
 
 	public static void CarryTargetsOnTopVertically (Entity self, int _deltaY, OperationMode colMode = OperationMode.ColliderOnly) {
+
 		if (_deltaY == 0) return;
 		CarryBuffer.Reset();
 		CarryPerformBuffer.Reset();
@@ -111,15 +113,13 @@ public interface ICarrier {
 				var movement = withMovement.CurrentMovement;
 				if (
 					movement != null &&
-					movement.IsFlying ||
-					movement.Target.VelocityY > deltaY ||
-					Game.GlobalFrame < movement.LastJumpFrame + 2
+					(movement.IsFlying || Game.GlobalFrame < movement.LastJumpFrame + 2)
 				) {
 					movement.Target.CancelMakeGrounded();
 					continue;
 				}
 			}
-			
+
 			// Move
 			carrier.PerformCarry(0, deltaY);
 			carrier.OnBeingCarry(0, deltaY);

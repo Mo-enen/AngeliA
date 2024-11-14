@@ -29,6 +29,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public int DeltaPositionY => Y - PrevY;
 	public bool IgnoringPhysics => Game.GlobalFrame <= IgnorePhysicsFrame;
 	public bool IgnoringOneway => Game.GlobalFrame <= IgnoreOnewayFrame;
+	public int CurrentMomentumX => MomentumX.value;
+	public int CurrentMomentumY => MomentumY.value;
 
 	// Based Value
 	public static readonly FrameBasedInt GlobalGravity = new(5);
@@ -57,6 +59,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	private int IgnoreInsideGroundFrame = -1;
 	private int IgnoreOnewayFrame = -1;
 	private int IgnorePhysicsFrame = -1;
+	private int IgnoreMomentumFrame = -1;
 	private int PrevPositionUpdateFrame = -1;
 	private int InWaterFloatDuration = 0;
 	private (int value, int decay) MomentumX = (0, 0);
@@ -96,6 +99,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 		PrevX = X;
 		PrevY = Y;
 		InWaterFloatDuration = 0;
+		MomentumX = (0, 0);
+		MomentumY = (0, 0);
 	}
 
 
@@ -216,7 +221,12 @@ public abstract class Rigidbody : Entity, ICarrier {
 		}
 
 		// Move
-		PerformMove(VelocityX + MomentumX.value, VelocityY + MomentumY.value);
+		int momentumX = MomentumX.value;
+		int momentumY = MomentumY.value;
+		if (Game.GlobalFrame <= IgnoreMomentumFrame) {
+			momentumX = momentumY = 0;
+		}
+		PerformMove(VelocityX + momentumX, VelocityY + momentumY);
 
 		// Momentum Decay
 		if (MomentumX.value != 0) {
@@ -306,12 +316,15 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 		if (x != 0) {
 			MomentumX.value = x;
-			MomentumX.decay = (x / 4).GreaterOrEquel(1);
+			MomentumX.decay = (x / 2).GreaterOrEquel(1);
 		}
 
 		if (y != 0) {
 			MomentumY.value = y;
-			MomentumY.decay = (y / 4).GreaterOrEquel(1);
+			MomentumY.decay = (y / 2).GreaterOrEquel(1);
+			if (y < 0) {
+				VelocityY = y;
+			}
 		}
 
 	}
@@ -350,6 +363,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public void IgnoreInsideGround (int duration = 0) => IgnoreInsideGroundFrame = Game.GlobalFrame + duration;
 	public void IgnoreOneway (int duration = 0) => IgnoreOnewayFrame = Game.GlobalFrame + duration;
 	public void CancelIgnoreOneway () => IgnoreOnewayFrame = -1;
+	public void IgnoreMomentum (int duration = 1) => IgnoreMomentumFrame = Game.GlobalFrame + duration;
 
 
 	#endregion

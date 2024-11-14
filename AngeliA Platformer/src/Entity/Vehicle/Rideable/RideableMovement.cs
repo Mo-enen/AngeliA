@@ -12,7 +12,6 @@ public class RideableMovement (Rigidbody rig) : VehicleMovement(rig) {
 		DashWithRoll.BaseValue = false;
 		FirstJumpWithRoll.BaseValue = false;
 		SubsequentJumpWithRoll.BaseValue = false;
-		GrowJumpCountWhenFallOffEdge.BaseValue = false;
 	}
 
 }

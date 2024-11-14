@@ -46,7 +46,6 @@ public class CharacterMovement (Rigidbody rig) {
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpSpeed = new(73);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpReleaseSpeedRate = new(700);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpRiseGravityRate = new(600);
-	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool GrowJumpCountWhenFallOffEdge = new(true);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool FirstJumpWithRoll = new(false);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 1)] public readonly FrameBasedBool SubsequentJumpWithRoll = new(true);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool JumpBreakRush = new(false);
@@ -754,12 +753,14 @@ public class CharacterMovement (Rigidbody rig) {
 
 		// Fall off Edge
 		if (
-			GrowJumpCountWhenFallOffEdge &&
 			CurrentJumpCount == 0 &&
 			!IsGrounded && !InWater && !IsClimbing &&
-			frame > LastGroundingFrame + JUMP_TOLERANCE
+			frame > LastGroundingFrame
 		) {
-			CurrentJumpCount++;
+			// Grow Jump Count
+			if (frame > LastGroundingFrame + JUMP_TOLERANCE) {
+				CurrentJumpCount++;
+			}
 		}
 
 		// Jump Release

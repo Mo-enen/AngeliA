@@ -80,6 +80,7 @@ public static class Physics {
 	private static readonly PhysicsCell[] c_Oneway = new PhysicsCell[32];
 	private static readonly PhysicsCell[] c_GetEntity = new PhysicsCell[32];
 	private static readonly PhysicsCell[] c_OverlapAll = new PhysicsCell[1024];
+	private static readonly Pipe<(Rigidbody rig, IRect from, IRect to)> c_ForcePushCache = new(256);
 	private static Layer[] Layers = null;
 	private static Layer CurrentLayer = null;
 	private static int CurrentLayerEnum = -1;
@@ -239,6 +240,53 @@ public static class Physics {
 			);
 		}
 		return result;
+	}
+
+
+	public static void ForcePush (Rigidbody host, Direction4 direction, int distance) {
+		c_ForcePushCache.Reset();
+		int deltaX = direction.IsHorizontal() ? distance : 0;
+		int deltaY = direction.IsVertical() ? distance : 0;
+		c_ForcePushCache.LinkToTail((host, host.Rect, host.Rect.Shift(deltaX, deltaY)));
+		host.X += deltaX;
+		host.Y += deltaY;
+		if (deltaX != 0) host.VelocityX = 0;
+		if (deltaY != 0) host.VelocityY = 0;
+		for (int safe = 0; c_ForcePushCache.TryPopHead(out var pair) && safe < 4096; safe++) {
+			var source = pair.rig;
+			var sourceRect = pair.from;
+			var targetSourceRect = pair.to;
+			var hits = OverlapAll(host.CollisionMask, targetSourceRect, out int count, source);
+			for (int i = 0; i < count; i++) {
+				var hit = hits[i];
+				if (hit.Entity is not Rigidbody hitRig) continue;
+				var hitRect = hitRig.Rect;
+				switch (direction) {
+					case Direction4.Left:
+						if (hitRect.x >= sourceRect.x) continue;
+						hitRig.X = targetSourceRect.x - hitRect.width;
+						break;
+					case Direction4.Right:
+						if (hitRect.x <= sourceRect.x) continue;
+						hitRig.X = targetSourceRect.xMax;
+						break;
+					case Direction4.Down:
+						if (hitRect.y >= sourceRect.y) continue;
+						hitRig.Y = targetSourceRect.y - hitRect.height;
+						break;
+					case Direction4.Up:
+						if (hitRect.y <= sourceRect.y) continue;
+						hitRig.Y = targetSourceRect.yMax;
+						break;
+				}
+				hitRig.MakeGrounded(1, source.TypeID);
+				hitRig.IgnoreGravity(1);
+				c_ForcePushCache.LinkToTail((hitRig, hitRect, hitRig.Rect));
+				if (deltaX != 0) hitRig.VelocityX = 0;
+				if (deltaY != 0) hitRig.VelocityY = 0;
+			}
+		}
+		c_ForcePushCache.Reset();
 	}
 
 

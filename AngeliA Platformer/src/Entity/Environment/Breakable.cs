@@ -7,7 +7,7 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 	int IDamageReceiver.Team => Const.TEAM_ENVIRONMENT;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
-	public override bool DestroyWhenInsideGround => false;
+	public override bool DestroyWhenInsideGround => true;
 	protected virtual Tag IgnoreDamageType => Tag.None;
 
 
