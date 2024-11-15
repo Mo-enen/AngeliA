@@ -78,7 +78,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	public readonly FrameBasedInt TailID = new(0);
 	public readonly FrameBasedInt WingID = new(0);
 	public readonly FrameBasedInt HornID = new(0);
-	public readonly FrameBasedInt ForceExpressionIndex = new(-1);
+	public readonly FrameBasedInt ForceFaceExpressionIndex = new(-1);
 
 	// Suit
 	public readonly FrameBasedInt SuitHead = new(0);

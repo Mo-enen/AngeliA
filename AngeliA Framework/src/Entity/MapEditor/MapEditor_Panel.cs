@@ -14,6 +14,12 @@ public partial class MapEditor {
 	#region  --- SUB ---
 
 
+	private class ToolbarBtnComparer : IComparer<MapEditorToolbarButton> {
+		public static readonly ToolbarBtnComparer Instance = new();
+		public int Compare (MapEditorToolbarButton a, MapEditorToolbarButton b) => a.Order.CompareTo(b.Order);
+	}
+
+
 	private class PaletteItemComparer : IComparer<PaletteItem> {
 		public static readonly PaletteItemComparer Instance = new();
 		public int Compare (PaletteItem a, PaletteItem b) {
@@ -53,14 +59,6 @@ public partial class MapEditor {
 	private enum PaletteTabType { Listed = 0, BuiltIn = 1, }
 
 
-	private class ToolbarFuncData (SpriteCode icon, LanguageCode tip, System.Action func, System.Func<bool> enable = null) {
-		public SpriteCode Icon = icon;
-		public LanguageCode Tip = tip;
-		public System.Action Func = func;
-		public System.Func<bool> Enable = enable;
-	}
-
-
 	#endregion
 
 
@@ -85,12 +83,12 @@ public partial class MapEditor {
 
 	// Data
 	private readonly Dictionary<int, PaletteGroup> PaletteGroupCache = [];
-	private static readonly List<ToolbarFuncData> ToolbarFuncs = [
-		new(BuiltInSprite.ICON_REFRESH, ("Tip.MapEDT.ResetCamera", "Reset camera to default position"), ToolbarButton_ResetCamera),
-		new(BuiltInSprite.ICON_TRIANGLE_DOWN, ("Tip.MapEDT.FrontZ","Goto the front layer"), ToolbarButton_Z_Front, ToolbarButton_Z_Front_Enable),
-		new(BuiltInSprite.ICON_TRIANGLE_UP, ("Tip.MapEDT.BackZ","Goto the behind layer"), ToolbarButton_Z_Back, ToolbarButton_Z_Back_Enable),
-		new(BuiltInSprite.ICON_MAP, ("Tip.MapEDT.Nav","Open world map view"), ToolbarButton_Nav),
-		new(BuiltInSprite.ICON_GAMEPAD, ("Tip.MapEDT.Play","Start play test"), ToolbarButton_Play),
+	private static readonly List<MapEditorToolbarButton> ToolbarButtons = [
+		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_REFRESH, ("Tip.MapEDT.ResetCamera", "Reset camera to default position"), ToolbarButton_ResetCamera),
+		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_TRIANGLE_DOWN, ("Tip.MapEDT.FrontZ","Goto the front layer"), ToolbarButton_Z_Front, ToolbarButton_Z_Front_Enable),
+		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_TRIANGLE_UP, ("Tip.MapEDT.BackZ","Goto the behind layer"), ToolbarButton_Z_Back, ToolbarButton_Z_Back_Enable),
+		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_MAP, ("Tip.MapEDT.Nav","Open world map view"), ToolbarButton_Nav),
+		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_GAMEPAD, ("Tip.MapEDT.Play","Start play test"), ToolbarButton_Play),
 	];
 	private IRect PaletteGroupPanelRect = default;
 	private PaletteTabType CurrentPaletteTab = PaletteTabType.BuiltIn;
@@ -111,6 +109,20 @@ public partial class MapEditor {
 
 
 	#region --- MSG ---
+
+
+	[OnGameInitialize]
+	internal static void OnGameInitialize_Toolbar () {
+		var builtInType = typeof(BuiltInMapEditorToolbarButton);
+		foreach (var type in typeof(MapEditorToolbarButton).AllChildClass()) {
+			try {
+				if (type == builtInType) continue;
+				if (System.Activator.CreateInstance(type) is not MapEditorToolbarButton btn) continue;
+				ToolbarButtons.Add(btn);
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
+		ToolbarButtons.Sort(ToolbarBtnComparer.Instance);
+	}
 
 
 	[OnMainSheetReload]
@@ -810,21 +822,19 @@ public partial class MapEditor {
 		int btnSize = Unify(TOOLBAR_BTN_SIZE).GreaterOrEquel(1);
 		int column = PanelRect.width.UDivide(btnSize);
 		int top = PanelRect.yMax - btnSize;
-		for (int funcIndex = 0; funcIndex < ToolbarFuncs.Count; funcIndex++) {
-			var func = ToolbarFuncs[funcIndex];
-			using var __ = new GUIEnableScope(func.Enable == null || func.Enable.Invoke());
-			int i = funcIndex % column;
-			int j = funcIndex / column;
+		for (int btnIndex = 0; btnIndex < ToolbarButtons.Count; btnIndex++) {
+			var btn = ToolbarButtons[btnIndex];
+			using var __ = new GUIEnableScope(btn.Enable == null || btn.Enable.Invoke());
+			int i = btnIndex % column;
+			int j = btnIndex / column;
 			var rect = new IRect(
 				PanelRect.x + i * btnSize,
 				top - j * btnSize,
 				btnSize, btnSize
 			).Shrink(padding);
-			if (GUI.DarkButton(rect, func.Icon)) {
-				func.Func?.Invoke();
-			}
+			btn.ButtonGUI(rect);
 			if (rect.MouseInside()) {
-				DrawTooltip(rect, func.Tip);
+				DrawTooltip(rect, btn.Tip);
 			}
 		}
 
@@ -872,19 +882,6 @@ public partial class MapEditor {
 			GUI.CancelTyping();
 		}
 
-	}
-
-
-	#endregion
-
-
-
-
-	#region --- API ---
-
-
-	public static void AddToolbarButton (SpriteCode icon, LanguageCode tip, System.Action func, System.Func<bool> enable = null) {
-		ToolbarFuncs.Add(new ToolbarFuncData(icon, tip, func, enable));
 	}
 
 

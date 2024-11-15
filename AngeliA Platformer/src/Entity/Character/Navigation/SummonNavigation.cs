@@ -10,7 +10,7 @@ public class SummonNavigation (Character character) : CharacterNavigation(charac
 
 	// VAR
 	private const int AIM_REFRESH_FREQUENCY = 60;
-	public override bool NavigationEnable => TargetCharacter.CharacterState == CharacterState.GamePlay && Owner != null && Owner.Active;
+	public override bool NavigationEnable => TargetCharacter.CharacterState == CharacterState.GamePlay;
 	public override bool ClampInSpawnRect => Owner == PlayerSystem.Selecting;
 	public Entity Owner { get; set; }
 	public bool IsFollowingOwner => CurrentAmiMode == AimMode.FollowOwner;
@@ -100,6 +100,7 @@ public class SummonNavigation (Character character) : CharacterNavigation(charac
 		}
 		return false;
 	}
+
 	public void MakeWander (int x, int y) {
 		CurrentAmiMode = AimMode.Wandering;
 		CurrentWanderingPos.x = x;

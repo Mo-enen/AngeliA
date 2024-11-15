@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public enum CharacterExpression {
+public enum CharacterFaceExpression {
 	Normal = 0,
 	Blink = 1,
 	Sleep = 2,
@@ -143,7 +143,7 @@ public abstract class Face : BodyGadget {
 	}
 
 
-	protected virtual void DrawEye (PoseCharacterRenderer renderer, CharacterExpression expression, IRect faceRect, bool leftEye) {
+	protected virtual void DrawEye (PoseCharacterRenderer renderer, CharacterFaceExpression expression, IRect faceRect, bool leftEye) {
 
 		if (
 			!Renderer.TryGetSprite(Sprite_Eye, out var eye) ||
@@ -154,13 +154,13 @@ public abstract class Face : BodyGadget {
 		bool facingRight = renderer.Head.Width > 0;
 		var rect = faceRect.CornerInside(leftEye ? Alignment.TopLeft : Alignment.TopRight, sclera.GlobalWidth, sclera.GlobalHeight);
 		bool eyeOpening =
-			expression == CharacterExpression.Normal ||
-			expression == CharacterExpression.PassOut ||
-			expression == CharacterExpression.Damage;
+			expression == CharacterFaceExpression.Normal ||
+			expression == CharacterFaceExpression.PassOut ||
+			expression == CharacterFaceExpression.Damage;
 
 		// Expression Redirect
 		if (!Renderer.TryGetSprite(Sprite_Eyelash, out var eyelash) && !eyeOpening) {
-			expression = CharacterExpression.Normal;
+			expression = CharacterFaceExpression.Normal;
 			eyeOpening = true;
 		}
 
@@ -170,7 +170,7 @@ public abstract class Face : BodyGadget {
 		}
 
 		switch (expression) {
-			case CharacterExpression.Normal: {
+			case CharacterFaceExpression.Normal: {
 
 				// Sclera
 				Renderer.Draw(sclera, rect, z: 33);
@@ -184,12 +184,12 @@ public abstract class Face : BodyGadget {
 
 				break;
 			}
-			case CharacterExpression.Blink:
-			case CharacterExpression.Sleep: {
+			case CharacterFaceExpression.Blink:
+			case CharacterFaceExpression.Sleep: {
 				rect.height = 1;
 				break;
 			}
-			case CharacterExpression.Damage: {
+			case CharacterFaceExpression.Damage: {
 
 				int pointX = facingRight ? rect.x + rect.width / 4 : rect.xMax - rect.width / 4;
 				int pointY = rect.CenterY();
@@ -207,7 +207,7 @@ public abstract class Face : BodyGadget {
 
 				break;
 			}
-			case CharacterExpression.PassOut: {
+			case CharacterFaceExpression.PassOut: {
 
 				int expand = rect.height / 8;
 
@@ -229,8 +229,8 @@ public abstract class Face : BodyGadget {
 				Renderer.Draw(eye, eyeRect.Shift(shiftX, shiftY), z: 34);
 				break;
 			}
-			case CharacterExpression.Attack:
-			case CharacterExpression.Suffer: {
+			case CharacterFaceExpression.Attack:
+			case CharacterFaceExpression.Suffer: {
 				rect.height = 1;
 				if (eyelash == null) break;
 				eyebrow = null;
@@ -246,7 +246,7 @@ public abstract class Face : BodyGadget {
 				);
 				break;
 			}
-			case CharacterExpression.Happy: {
+			case CharacterFaceExpression.Happy: {
 				if (eyelash == null) break;
 				eyebrow = null;
 				Renderer.Draw(
@@ -302,9 +302,9 @@ public abstract class Face : BodyGadget {
 	}
 
 
-	protected virtual void DrawMouth (PoseCharacterRenderer renderer, CharacterExpression expression, IRect faceRect) {
+	protected virtual void DrawMouth (PoseCharacterRenderer renderer, CharacterFaceExpression expression, IRect faceRect) {
 
-		if (expression != CharacterExpression.PassOut && expression != CharacterExpression.Damage) return;
+		if (expression != CharacterFaceExpression.PassOut && expression != CharacterFaceExpression.Damage) return;
 		if (!Renderer.TryGetSprite(Sprite_Mouth, out var mouth)) return;
 		Renderer.TryGetSprite(Sprite_Tooth, out var tooth);
 
@@ -312,7 +312,7 @@ public abstract class Face : BodyGadget {
 		var rect = faceRect.CornerInside(Alignment.BottomMid, mouth.GlobalWidth, mouth.GlobalHeight);
 
 		// Animation for Damage
-		if (expression == CharacterExpression.Damage) {
+		if (expression == CharacterFaceExpression.Damage) {
 			int newWidth = rect.width / 2 + (Game.GlobalFrame.PingPong(6) * rect.width / 24);
 			int newHeight = rect.height * 3 / 2 + ((Game.GlobalFrame + 3).PingPong(6) * rect.height / 36);
 			rect.x += (rect.width - newWidth) / 2;
@@ -392,10 +392,10 @@ public abstract class Face : BodyGadget {
 	}
 
 
-	public static CharacterExpression GetCurrentExpression (PoseCharacterRenderer renderer) {
+	public static CharacterFaceExpression GetCurrentExpression (PoseCharacterRenderer renderer) {
 
-		if (renderer.ForceExpressionIndex >= 0) {
-			return (CharacterExpression)renderer.ForceExpressionIndex.FinalValue;
+		if (renderer.ForceFaceExpressionIndex >= 0) {
+			return (CharacterFaceExpression)renderer.ForceFaceExpressionIndex.FinalValue;
 		}
 
 		// Attack
@@ -403,27 +403,27 @@ public abstract class Face : BodyGadget {
 			renderer.TargetCharacter.Attackness.IsAttacking &&
 			renderer.TargetCharacter.EquippingToolType != ToolType.Magic &&
 			renderer.TargetCharacter.EquippingToolType != ToolType.Ranged
-		) return CharacterExpression.Attack;
+		) return CharacterFaceExpression.Attack;
 
 		// Blink
 		if (
 			(Game.GlobalFrame + renderer.TargetCharacter.TypeID).UMod(360) <= 8 &&
 			renderer.TargetCharacter.AnimationType != CharacterAnimationType.Sleep &&
 			renderer.TargetCharacter.AnimationType != CharacterAnimationType.PassOut
-		) return CharacterExpression.Blink;
+		) return CharacterFaceExpression.Blink;
 
 		// In Ground
 		if (renderer.TargetCharacter.IsInsideGround) {
-			return CharacterExpression.Suffer;
+			return CharacterFaceExpression.Suffer;
 		}
 
 		// Other
 		return renderer.TargetCharacter.AnimationType switch {
-			CharacterAnimationType.Sleep => CharacterExpression.Sleep,
-			CharacterAnimationType.PassOut => CharacterExpression.PassOut,
-			CharacterAnimationType.Crash => CharacterExpression.Suffer,
-			CharacterAnimationType.TakingDamage => CharacterExpression.Damage,
-			_ => CharacterExpression.Normal,
+			CharacterAnimationType.Sleep => CharacterFaceExpression.Sleep,
+			CharacterAnimationType.PassOut => CharacterFaceExpression.PassOut,
+			CharacterAnimationType.Crash => CharacterFaceExpression.Suffer,
+			CharacterAnimationType.TakingDamage => CharacterFaceExpression.Damage,
+			_ => CharacterFaceExpression.Normal,
 		};
 	}
 

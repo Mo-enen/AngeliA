@@ -10,7 +10,6 @@ namespace AngeliA.Platformer;
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.Capacity(128)]
 [EntityAttribute.ExcludeInMapEditor]
-[EntityAttribute.DontSpawnFromWorld]
 public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 
@@ -25,6 +24,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	bool IDamageReceiver.TakeDamageFromLevel => false;
 	public int InventoryUpdatedFrame { get; set; } = -1;
 	public SummonNavigation Navigation { get; init; }
+	public virtual bool RequireOwner => false;
 
 	// Data
 	private int SummonFrame = int.MinValue;
@@ -80,7 +80,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		if (!Active) return;
 
 		// Inactive when Owner not Ready
-		if (Owner == null || !Owner.Active) {
+		if (RequireOwner && (Owner == null || !Owner.Active)) {
 			Active = false;
 			return;
 		}
@@ -90,8 +90,10 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 			PrevZ = Stage.ViewZ;
 			if (Navigation.IsFollowingOwner) {
 				if (CharacterState != CharacterState.Sleep) {
-					X = Owner.X;
-					Y = Owner.Y;
+					if (Owner != null) {
+						X = Owner.X;
+						Y = Owner.Y;
+					}
 					Navigation.ResetNavigation();
 					Navigation.NavigationState = CharacterNavigationState.Operation;
 					Navigation.Refresh();

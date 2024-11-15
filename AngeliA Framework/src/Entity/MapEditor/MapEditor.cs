@@ -1265,11 +1265,11 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Toolbar Rect
 		int toolbarHeight = 0;
-		if (ToolbarFuncs.Count > 0) {
+		if (ToolbarButtons.Count > 0) {
 			int btnSize = Unify(TOOLBAR_BTN_SIZE).GreaterOrEquel(1);
 			int column = PanelRect.width.UDivide(btnSize);
 			if (column > 0) {
-				toolbarHeight = btnSize * ToolbarFuncs.Count.CeilDivide(column);
+				toolbarHeight = btnSize * ToolbarButtons.Count.CeilDivide(column);
 			}
 		}
 		ToolbarRect.width = PanelRect.width;
