@@ -21,8 +21,8 @@ public sealed class WorldSquad : IBlockSquad {
 	// Data
 	[BeforeLevelRendered] internal static System.Action BeforeLevelRendered;
 	[AfterLevelRendered] internal static System.Action AfterLevelRendered;
-	[OnWorldCreated] internal static System.Action<World> OnWorldCreated;
-	[OnWorldLoaded] internal static System.Action<World> OnWorldLoaded;
+	[OnWorldCreatedBySquad] internal static System.Action<World> OnWorldCreated;
+	[OnWorldLoadedBySquad] internal static System.Action<World> OnWorldLoaded;
 	private static byte WorldBehindAlpha;
 	private static int WorldBehindParallax;
 	private static bool SaveChangesToFile = false;

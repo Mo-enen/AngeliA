@@ -39,6 +39,7 @@ public sealed class WorldStream : IBlockSquad {
 	// Api
 	public static event System.Action<WorldStream, World> OnWorldCreated;
 	public static event System.Action<WorldStream, World> OnWorldLoaded;
+	public static event System.Action<WorldStream, World> OnWorldSaved;
 	public string MapRoot { get; init; }
 	public bool IsDirty { get; private set; } = false;
 	public bool UseBuiltInAsFailback { get; set; } = false;
@@ -102,6 +103,7 @@ public sealed class WorldStream : IBlockSquad {
 				string path = PathPool.GetOrAddPath(pos);
 				data.World.SaveToDisk(path);
 				data.IsDirty = false;
+				OnWorldSaved?.Invoke(this, data.World);
 			}
 		}
 	}

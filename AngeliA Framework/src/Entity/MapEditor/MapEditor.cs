@@ -87,7 +87,8 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly LanguageCode HINT_SWITCH_TO_NAV = ("CtrlHint.MEDT.Nav", "Navigation Mode");
 
 	// Api
-	[OnMapEditorEditModeChanged] internal static System.Action OnEditModeChanged;
+	[OnWorldSavedByMapEditor] internal static System.Action<World> OnWorldSavedByMapEditor;
+	[OnMapEditorModeChange] internal static System.Action<OnMapEditorModeChange.Mode> OnMapEditorModeChange;
 	public static MapEditor Instance { get; private set; }
 	public static bool IsActived => Instance != null && Instance.Active;
 	public static bool IsEditing => IsActived && !Instance.PlayingGame;
@@ -97,6 +98,7 @@ public sealed partial class MapEditor : WindowUI {
 	public static bool ShowState { get; set; } = false;
 	public static bool ShowBehind { get; set; } = true;
 	public static bool ShowGridGizmos { get; set; } = true;
+	public static string MapRoot => Instance != null && Instance.Stream != null ? Instance.Stream.MapRoot : "";
 	public int CurrentZ { get; private set; } = 0;
 	public override IRect BackgroundRect => default;
 
@@ -166,15 +168,14 @@ public sealed partial class MapEditor : WindowUI {
 	#region --- MSG ---
 
 
-	[OnGameQuitting(-1)]
-	internal static void OnGameQuitting_Editor () {
-		if (Instance == null) return;
-		if (!Instance.PlayingGame) {
-			Instance.ApplyPaste();
-			Instance.Save();
+
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		WorldStream.OnWorldSaved += _OnWorldSaved;
+		static void _OnWorldSaved (WorldStream stream, World world) {
+			if (Instance == null || stream != Instance.Stream) return;
+			OnWorldSavedByMapEditor?.Invoke(world);
 		}
-		JsonUtil.SaveJson(Instance.EditorMeta, Universe.BuiltIn.BuiltInMapRoot);
-		FrameworkUtil.DeleteAllEmptyMaps(Universe.BuiltIn.BuiltInMapRoot);
 	}
 
 
@@ -194,6 +195,18 @@ public sealed partial class MapEditor : WindowUI {
 				ShowGridGizmos = data == 1;
 				break;
 		}
+	}
+
+
+	[OnGameQuitting(-1)]
+	internal static void OnGameQuitting_Editor () {
+		if (Instance == null) return;
+		if (!Instance.PlayingGame) {
+			Instance.ApplyPaste();
+			Instance.Save();
+		}
+		JsonUtil.SaveJson(Instance.EditorMeta, Universe.BuiltIn.BuiltInMapRoot);
+		FrameworkUtil.DeleteAllEmptyMaps(Universe.BuiltIn.BuiltInMapRoot);
 	}
 
 
@@ -1092,6 +1105,11 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void SetEditorMode (bool toPlayMode) {
 
+		OnMapEditorModeChange?.Invoke(toPlayMode ?
+			AngeliA.OnMapEditorModeChange.Mode.ExitEditMode :
+			AngeliA.OnMapEditorModeChange.Mode.ExitPlayMode
+		);
+
 		if (Game.GlobalFrame != 0 && toPlayMode) {
 			Save();
 		}
@@ -1161,8 +1179,10 @@ public sealed partial class MapEditor : WindowUI {
 			LightingSystem.ForceCameraScale(0, 1);
 		}
 
-		// Event
-		OnEditModeChanged?.Invoke();
+		OnMapEditorModeChange?.Invoke(toPlayMode ?
+			AngeliA.OnMapEditorModeChange.Mode.EnterPlayMode :
+			AngeliA.OnMapEditorModeChange.Mode.EnterEditMode
+		);
 
 	}
 

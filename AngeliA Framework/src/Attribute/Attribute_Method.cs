@@ -54,8 +54,15 @@ public class AfterEntityRepositionAttribute : EventAttribute { }
 // World
 public class BeforeLevelRenderedAttribute : EventAttribute { }
 public class AfterLevelRenderedAttribute : EventAttribute { }
-public class OnWorldCreatedAttribute : EventAttribute { }
-public class OnWorldLoadedAttribute : EventAttribute { }
+public class OnWorldCreatedBySquadAttribute : EventAttribute { }
+public class OnWorldLoadedBySquadAttribute : EventAttribute { }
+
+
+// Map Editor
+public class OnWorldSavedByMapEditorAttribute : EventAttribute { }
+public class OnMapEditorModeChange : EventAttribute {
+	public enum Mode { EnterPlayMode, ExitPlayMode, EnterEditMode, ExitEditMode, }
+}
 
 
 // Language
@@ -65,10 +72,6 @@ public class OnLanguageChangedAttribute : EventAttribute { }
 // Cheat
 public class CheatCodeAttribute (string code) : EventAttribute { public string Code = code; }
 public class OnCheatPerformedAttribute : EventAttribute { }
-
-
-// Map Editor
-public class OnMapEditorEditModeChangedAttribute : EventAttribute { }
 
 
 // Item

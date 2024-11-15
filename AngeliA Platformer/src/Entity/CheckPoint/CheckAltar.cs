@@ -52,10 +52,12 @@ public abstract class CheckAltar<CP> : Entity, IBlockEntity where CP : CheckPoin
 	}
 
 
-	[OnMapEditorEditModeChanged]
-	internal static void OnMapEditorEditModeChanged () {
-		CheckAltar<CheckPoint>.CurrentAltarID = 0;
-		CheckAltar<CheckPoint>.CurrentAltarUnitPos = default;
+	[OnMapEditorModeChange]
+	internal static void OnMapEditorEditModeChanged (OnMapEditorModeChange.Mode mode) {
+		if (mode == OnMapEditorModeChange.Mode.ExitEditMode) {
+			CheckAltar<CheckPoint>.CurrentAltarID = 0;
+			CheckAltar<CheckPoint>.CurrentAltarUnitPos = default;
+		}
 	}
 
 

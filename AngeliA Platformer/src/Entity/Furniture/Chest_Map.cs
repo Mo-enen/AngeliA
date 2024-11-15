@@ -27,8 +27,12 @@ public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 
 
 	[OnGameRestart]
-	[OnMapEditorEditModeChanged]
-	public static void ClearOpenedMarks () => OpenedChest.Clear();
+	[OnMapEditorModeChange]
+	public static void ClearOpenedMarks (OnMapEditorModeChange.Mode mode) {
+		if (mode == OnMapEditorModeChange.Mode.ExitEditMode) {
+			OpenedChest.Clear();
+		}
+	}
 
 
 	bool IActionTarget.Invoke () {
