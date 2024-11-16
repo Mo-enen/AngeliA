@@ -31,7 +31,7 @@ public class TeleportTask : Task {
 	public override TaskResult FrameUpdate () {
 
 		int teleFrame = Duration - (Duration - WaitDuration) / 2;
-		
+
 		// Parallax
 		if (UseParallax && LocalFrame > WaitDuration) {
 			int PARA = Universe.BuiltInInfo.WorldBehindParallax;
@@ -179,24 +179,26 @@ public class TeleportTask : Task {
 
 
 	// API
-	public static TeleportTask TeleportParallax (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(fromX, fromY, toX, toY, toZ, 6, 30, false, true);
-	public static TeleportTask TeleportVegnette (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(fromX, fromY, toX, toY, toZ, 0, -60, true, false);
-	public static TeleportTask TeleportLogic (int fromX, int fromY, int toX, int toY, int toZ, int waitDuration = 6, int duration = 42, bool useVignette = false, bool useParallax = true) {
+	public static TeleportTask TeleportFromDoor (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(false, fromX, fromY, toX, toY, toZ, false, true);
+	public static TeleportTask TeleportFromPortal (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(true, fromX, fromY, toX, toY, toZ, true, false);
+	private static TeleportTask TeleportLogic (bool portal, int fromX, int fromY, int toX, int toY, int toZ, bool useVignette = false, bool useParallax = true) {
 		if (TaskSystem.HasTask()) return null;
 		if (TaskSystem.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {
 			svTask.TeleportFrom = new Int2(fromX, fromY);
 			svTask.TeleportTo = new Int3(toX, toY, toZ);
-			svTask.WaitDuration = waitDuration;
-			svTask.Duration = duration.Abs();
+			svTask.WaitDuration = 0;
 			svTask.UseParallax = useParallax;
 			svTask.UseVignette = useVignette;
+			int duration = portal ? 60 : 30;
 			var player = PlayerSystem.Selecting;
 			if (player != null) {
+				duration = portal ? player.TeleportDuration * 2 : player.TeleportDuration;
 				player.Movement.Stop();
-				player.EnterTeleportState(duration, Stage.ViewZ > toZ);
+				player.EnterTeleportState(Stage.ViewZ > toZ, portal);
 				player.VelocityX = 0;
 				player.VelocityY = 0;
 			}
+			svTask.Duration = duration;
 			return svTask;
 		}
 		return null;

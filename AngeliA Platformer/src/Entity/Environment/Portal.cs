@@ -38,7 +38,7 @@ public abstract class Portal : Entity {
 			if (DontSpawnAfterUsed) {
 				FrameworkUtil.RemoveFromWorldMemory(this);
 			}
-			TeleportTask.TeleportVegnette(
+			TeleportTask.TeleportFromPortal(
 				X + Width / 2, Y + Height / 2,
 				TargetGlobalPosition.x, TargetGlobalPosition.y, TargetGlobalPosition.z
 			);

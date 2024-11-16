@@ -35,7 +35,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 
 	// Const
-	public const int FULL_SLEEP_DURATION = 90;
 	public const int INVENTORY_COLUMN = 6;
 	public const int INVENTORY_ROW = 3;
 
@@ -88,6 +87,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public int InventoryID { get; private set; }
 	public int RenderingCellIndex { get; private set; }
 	public bool TakeDamageFromLevel => Game.GlobalFrame > IgnoreDamageFromLevelFrame;
+	public readonly FrameBasedInt FullSleepDuration = new(90);
+	public readonly FrameBasedInt TeleportDuration = new(30);
 
 	// Behaviour
 	public CharacterMovement Movement;
@@ -669,7 +670,11 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	}
 
 
-	public void EnterTeleportState (int duration, bool front) {
+	public void EnterTeleportState (bool front, bool portal) {
+		int duration = portal ? -TeleportDuration : TeleportDuration;
+		if (portal) {
+			duration *= 2;
+		}
 		_TeleportEndFrame = (Game.GlobalFrame + duration.Abs()) * (front ? 1 : -1);
 		_TeleportDuration = duration;
 	}

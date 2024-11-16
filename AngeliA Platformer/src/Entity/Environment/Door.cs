@@ -87,7 +87,7 @@ public abstract class Door : Entity, IBlockEntity {
 		if (character == null) return false;
 		if (character == PlayerSystem.Selecting) {
 			if (TaskSystem.HasTask()) return false;
-			TeleportTask.TeleportParallax(
+			TeleportTask.TeleportFromDoor(
 				X + Width / 2, Y, X + Width / 2, Y,
 				IsFrontDoor ? Stage.ViewZ - 1 : Stage.ViewZ + 1
 			);

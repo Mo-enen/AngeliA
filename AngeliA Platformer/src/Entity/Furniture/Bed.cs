@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 public abstract class Bed : Furniture, IActionTarget {
@@ -41,10 +42,10 @@ public abstract class Bed : Furniture, IActionTarget {
 		if (Target == player) {
 			// Curtain
 			if (RequireRestartGame) {
-				Game.PassEffect_RetroDarken((float)(Game.GlobalFrame - player.SleepStartFrame) / Character.FULL_SLEEP_DURATION);
+				Game.PassEffect_RetroDarken((float)(Game.GlobalFrame - player.SleepStartFrame) / player.FullSleepDuration);
 			}
 			// Restart Game
-			if (RequireRestartGame && Game.GlobalFrame - player.SleepStartFrame >= Character.FULL_SLEEP_DURATION) {
+			if (RequireRestartGame && Game.GlobalFrame - player.SleepStartFrame >= player.FullSleepDuration) {
 				RequireRestartGame = false;
 				PlayerSystem.HomeUnitPosition = new Int3(player.X.ToUnit(), player.Y.ToUnit(), Stage.ViewZ);
 				player.GetBonusFromFullSleep();

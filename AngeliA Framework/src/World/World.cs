@@ -13,7 +13,7 @@ public enum BlockType {
 	Element = 3,
 }
 
-public class World {
+public class World (Int3 pos) {
 
 
 
@@ -24,11 +24,11 @@ public class World {
 	// Api
 	public static readonly Color32[] CacheMapPixels = new Color32[Const.MAP * Const.MAP];
 	public static readonly Dictionary<uint, Int3> TextureMapLinkedPool = [];
-	public Int3 WorldPosition { get; set; } = default;
-	public int[] Backgrounds { get; set; } = null;
-	public int[] Levels { get; set; } = null;
-	public int[] Entities { get; set; } = null;
-	public int[] Elements { get; set; } = null;
+	public Int3 WorldPosition { get; set; } = pos;
+	public int[] Backgrounds { get; set; } = new int[Const.MAP * Const.MAP];
+	public int[] Levels { get; set; } = new int[Const.MAP * Const.MAP];
+	public int[] Entities { get; set; } = new int[Const.MAP * Const.MAP];
+	public int[] Elements { get; set; } = new int[Const.MAP * Const.MAP];
 
 
 	#endregion
@@ -40,13 +40,6 @@ public class World {
 
 
 	public World () : this(new Int3(int.MinValue, int.MinValue, int.MinValue)) { }
-	public World (Int3 pos) {
-		WorldPosition = pos;
-		Levels = new int[Const.MAP * Const.MAP];
-		Backgrounds = new int[Const.MAP * Const.MAP];
-		Entities = new int[Const.MAP * Const.MAP];
-		Elements = new int[Const.MAP * Const.MAP];
-	}
 
 
 	public bool EmptyCheck () {
@@ -55,6 +48,25 @@ public class World {
 		foreach (var a in Backgrounds) if (a != 0) return false;
 		foreach (var a in Elements) if (a != 0) return false;
 		return true;
+	}
+
+
+	public bool ContainsBlock (int blockID, BlockType type) {
+		switch (type) {
+			case BlockType.Entity:
+				foreach (var e in Entities) if (e == blockID) return true;
+				break;
+			case BlockType.Level:
+				foreach (var lv in Levels) if (lv == blockID) return true;
+				break;
+			case BlockType.Background:
+				foreach (var bg in Backgrounds) if (bg == blockID) return true;
+				break;
+			case BlockType.Element:
+				foreach (var ele in Elements) if (ele == blockID) return true;
+				break;
+		}
+		return false;
 	}
 
 

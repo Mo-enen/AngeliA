@@ -90,8 +90,7 @@ public static class MapGenerationSystem {
 	#region --- API ---
 
 
-	[CheatCode("RecreatedAllMaps")]
-	public static void RemoveAllGeneratedMaps () {
+	public static void ResetAll () {
 		if (!Enable) return;
 		AllTasks.Reset();
 		WorldSquad.Stream.ClearWorldPool();

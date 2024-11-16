@@ -45,8 +45,6 @@ public sealed class WorldSquad : IBlockSquad {
 
 		if (!Renderer.IsReady) return TaskResult.Continue;
 
-		CopyAllMapsFromBuiltInToUserIfEmpty();
-
 		var info = Universe.BuiltInInfo;
 		WorldBehindAlpha = info.WorldBehindAlpha;
 		WorldBehindParallax = info.WorldBehindParallax;
@@ -81,8 +79,6 @@ public sealed class WorldSquad : IBlockSquad {
 
 	[OnSavingSlotChanged]
 	internal static void OnSavingSlotChanged () {
-		// Copy Maps from Built-in Folder
-		CopyAllMapsFromBuiltInToUserIfEmpty();
 		// Reset Stream
 		Stream?.SaveAllDirty();
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
@@ -171,16 +167,6 @@ public sealed class WorldSquad : IBlockSquad {
 	#region --- LGC ---
 
 
-	private static void CopyAllMapsFromBuiltInToUserIfEmpty () {
-		if (Util.GetFileCount(
-			Universe.BuiltIn.SlotUserMapRoot,
-			AngePath.MAP_SEARCH_PATTERN,
-			System.IO.SearchOption.TopDirectoryOnly
-		) > 0) return;
-		Util.CopyFolder(Universe.BuiltIn.BuiltInMapRoot, Universe.BuiltIn.SlotUserMapRoot, true, false, true);
-	}
-
-
 	private void RenderCurrentFrame () {
 
 		bool isBehind = this == Behind;
@@ -231,7 +217,14 @@ public sealed class WorldSquad : IBlockSquad {
 		int worldU = unitRect_Level.yMax.CeilDivide(Const.MAP);
 		for (int worldI = worldL; worldI < worldR; worldI++) {
 			for (int worldJ = worldD; worldJ < worldU; worldJ++) {
-				if (!Stream.TryGetWorld(worldI, worldJ, z, out var world)) continue;
+				// Get World
+				World world;
+				if (MapGenerationSystem.Enable) {
+					world = Stream.GetOrCreateWorld(worldI, worldJ, z);
+				} else {
+					if (!Stream.TryGetWorld(worldI, worldJ, z, out world)) continue;
+				}
+				// Draw World
 				var worldUnitRect = new IRect(
 					world.WorldPosition.x * Const.MAP,
 					world.WorldPosition.y * Const.MAP,
@@ -281,7 +274,14 @@ public sealed class WorldSquad : IBlockSquad {
 		worldU = unitRect_Entity.yMax.CeilDivide(Const.MAP);
 		for (int worldI = worldL; worldI < worldR; worldI++) {
 			for (int worldJ = worldD; worldJ < worldU; worldJ++) {
-				if (!Stream.TryGetWorld(worldI, worldJ, z, out var world)) continue;
+				// Get World
+				World world;
+				if (MapGenerationSystem.Enable) {
+					world = Stream.GetOrCreateWorld(worldI, worldJ, z);
+				} else {
+					if (!Stream.TryGetWorld(worldI, worldJ, z, out world)) continue;
+				}
+				// Draw World
 				var worldUnitRect = new IRect(
 					world.WorldPosition.x * Const.MAP,
 					world.WorldPosition.y * Const.MAP,

@@ -143,6 +143,9 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
+	public World GetOrCreateWorld (int worldX, int worldY, int worldZ) => CreateOrGetWorldData(worldX, worldY, worldZ).World;
+
+
 	public void AddWorld (World world, bool overrideExists = false) {
 		if (WorldPool.TryGetValue(world.WorldPosition, out var data)) {
 			if (data.World == null || overrideExists) {
@@ -299,9 +302,10 @@ public sealed class WorldStream : IBlockSquad {
 			data.IsDirty = false;
 			WorldPool[worldPos] = data;
 
+			// Load Data
+			bool loaded = false;
 			if (PathPool.TryGetPath(worldPos, out string path)) {
-				// Load Data
-				bool loaded = newWorld.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+				loaded = newWorld.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
 				if (
 					!loaded &&
 					UseBuiltInAsFailback &&
@@ -309,14 +313,19 @@ public sealed class WorldStream : IBlockSquad {
 					Util.CopyFile(builtInPath, path)
 				) {
 					// Load from Failback
-					newWorld.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+					loaded = newWorld.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
 				}
 			}
 
 			// Final
 			CurrentValidMapCount++;
 			TryReleaseOverload();
-			OnWorldCreated?.Invoke(this, newWorld);
+			if (!loaded) {
+				OnWorldCreated?.Invoke(this, newWorld);
+				IsDirty = true;
+				data.IsDirty = true;
+				WorldPool[worldPos] = data;
+			}
 			OnWorldLoaded?.Invoke(this, newWorld);
 
 			return data;

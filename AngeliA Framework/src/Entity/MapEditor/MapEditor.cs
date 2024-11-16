@@ -83,7 +83,6 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly LanguageCode HINT_MEDT_SWITCH_EDIT = ("CtrlHint.MEDT.SwitchMode.Edit", "Back to Edit");
 	private static readonly LanguageCode HINT_MEDT_SWITCH_PLAY = ("CtrlHint.MEDT.SwitchMode.Play", "Play");
 	private static readonly LanguageCode HINT_MEDT_PLAY_FROM_BEGIN = ("CtrlHint.MEDT.PlayFromBegin", "Play from Start");
-	private static readonly LanguageCode HINT_TOO_MANY_SPRITE = ("MEDT.TooManySpriteHint", "too many sprites (っ°Д°)っ");
 	private static readonly LanguageCode HINT_SWITCH_TO_NAV = ("CtrlHint.MEDT.Nav", "Navigation Mode");
 
 	// Api
@@ -453,18 +452,6 @@ public sealed partial class MapEditor : WindowUI {
 	private void Update_ScreenUI () {
 
 		if (IsPlaying || TaskingRoute) return;
-
-		// Too Many Sprite
-		if (RequireWorldRenderBlinkIndex > 0) {
-			var cameraRect = Renderer.CameraRect;
-			int hintWidth = Unify(120);
-			using (new GUIBodyColorScope(Color32.RED.WithNewA(Game.GlobalFrame.PingPong(60) * 2 + 255 - 120))) {
-				GUI.BackgroundLabel(
-					new IRect(cameraRect.CenterX() - hintWidth / 2, cameraRect.yMax - Unify(32), hintWidth, Unify(22)),
-					HINT_TOO_MANY_SPRITE, Color32.WHITE, Unify(6), false, Skin.SmallCenterLabel
-				);
-			}
-		}
 
 		// State
 		if (ShowState) {
@@ -1088,6 +1075,18 @@ public sealed partial class MapEditor : WindowUI {
 	public void SetViewZ (int newZ) => CurrentZ = newZ;
 
 
+	public void GotoPlayMode () {
+		if (PlayingGame) return;
+		SetEditorMode(true);
+	}
+
+
+	public void GotoEditMode () {
+		if (!PlayingGame) return;
+		SetEditorMode(false);
+	}
+
+
 	#endregion
 
 
@@ -1168,9 +1167,11 @@ public sealed partial class MapEditor : WindowUI {
 
 		} else {
 			// Edit >> Play
-			// Reset User Map
-			Util.DeleteFolder(Universe.BuiltIn.SlotUserMapRoot);
-			Util.CreateFolder(Universe.BuiltIn.SlotUserMapRoot);
+			if (!MapGenerationSystem.Enable) {
+				// Reset User Map
+				Util.DeleteFolder(Universe.BuiltIn.SlotUserMapRoot);
+				Util.CreateFolder(Universe.BuiltIn.SlotUserMapRoot);
+			}
 			WorldSquad.Stream.ClearWorldPool();
 			// Reset Stage
 			Stage.SetViewZ(CurrentZ);
