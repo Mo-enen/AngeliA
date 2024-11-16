@@ -143,11 +143,9 @@ public static partial class Util {
 
 	public static void BytesToFile (byte[] bytes, string path, int length = -1) {
 		CreateFolder(GetParentPath(path));
-		FileStream fs = new(path, FileMode.Create, FileAccess.Write);
+		using var fs = new FileStream(path, FileMode.Create, FileAccess.Write);
 		bytes ??= [];
 		fs.Write(bytes, 0, length < 0 ? bytes.Length : length);
-		fs.Close();
-		fs.Dispose();
 	}
 
 

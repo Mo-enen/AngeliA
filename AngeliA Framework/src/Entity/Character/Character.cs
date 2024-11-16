@@ -584,15 +584,14 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 
 	private void LateUpdate_BouceHighlight () {
-		if ((this as IActionTarget).IsHighlighted) {
-			// Bounce
-			if (Game.GlobalFrame % 20 == 0) Bounce();
-			// Hint
-			ControlHintUI.DrawGlobalHint(
-				X - Const.HALF, Y + Const.CEL * 2,
-				Gamekey.Action, BuiltInText.HINT_SWITCH_PLAYER, true
-			);
-		}
+		if (this is not IActionTarget act || !act.IsHighlighted) return;
+		// Bounce
+		if (Game.GlobalFrame % 20 == 0) Bounce();
+		// Hint
+		ControlHintUI.DrawGlobalHint(
+			X - Const.HALF, Y + Const.CEL * 2,
+			Gamekey.Action, BuiltInText.HINT_SWITCH_PLAYER, true
+		);
 	}
 
 

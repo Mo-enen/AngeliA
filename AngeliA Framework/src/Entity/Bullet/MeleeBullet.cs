@@ -9,7 +9,7 @@ public class MeleeBullet : Bullet {
 	public static readonly int TYPE_ID = typeof(MeleeBullet).AngeHash();
 
 	// Api
-	public override int Duration => 10;
+	public override int Duration => 5;
 	protected sealed override int EnvironmentHitCount => int.MaxValue;
 	protected sealed override int ReceiverHitCount => 4;
 	public virtual int SmokeParticleID => 0;

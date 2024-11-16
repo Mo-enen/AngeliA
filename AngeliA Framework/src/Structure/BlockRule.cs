@@ -11,7 +11,7 @@ public enum Rule : byte {
 	Empty = 4,
 }
 
-public struct BlockRule {
+public struct BlockRule (Rule ruleTL, Rule ruleT, Rule ruleTR, Rule ruleL, Rule ruleR, Rule ruleBL, Rule ruleB, Rule ruleBR) {
 	public static readonly BlockRule EMPTY = new();
 	public readonly bool IsEmpty => RuleTL == Rule.Whatever && RuleT == Rule.Whatever && RuleTR == Rule.Whatever && RuleL == Rule.Whatever && RuleR == Rule.Whatever && RuleBL == Rule.Whatever && RuleB == Rule.Whatever && RuleBR == Rule.Whatever;
 	public Rule this[int i] {
@@ -39,23 +39,13 @@ public struct BlockRule {
 			}
 		}
 	}
-	public Rule RuleTL;
-	public Rule RuleT;
-	public Rule RuleTR;
-	public Rule RuleL;
-	public Rule RuleR;
-	public Rule RuleBL;
-	public Rule RuleB;
-	public Rule RuleBR;
-	public BlockRule (Rule ruleTL, Rule ruleT, Rule ruleTR, Rule ruleL, Rule ruleR, Rule ruleBL, Rule ruleB, Rule ruleBR) {
-		RuleTL = ruleTL;
-		RuleT = ruleT;
-		RuleTR = ruleTR;
-		RuleL = ruleL;
-		RuleR = ruleR;
-		RuleBL = ruleBL;
-		RuleB = ruleB;
-		RuleBR = ruleBR;
-	}
+	public Rule RuleTL = ruleTL;
+	public Rule RuleT = ruleT;
+	public Rule RuleTR = ruleTR;
+	public Rule RuleL = ruleL;
+	public Rule RuleR = ruleR;
+	public Rule RuleBL = ruleBL;
+	public Rule RuleB = ruleB;
+	public Rule RuleBR = ruleBR;
 	public readonly bool IsSameWith (BlockRule other) => RuleTL == other.RuleTL && RuleT == other.RuleT && RuleTR == other.RuleTR && RuleL == other.RuleL && RuleR == other.RuleR && RuleBL == other.RuleBL && RuleB == other.RuleB && RuleBR == other.RuleBR;
 }

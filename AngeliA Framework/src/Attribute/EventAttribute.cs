@@ -106,7 +106,7 @@ public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 						methodMsg.Append(' ');
 					}
 				}
-				Debug.LogError($"\"{method.DeclaringType.Name}.{method.Name}\" is having wrong param. Expect ({infoMsg}) Get ({methodMsg})");
+				Debug.LogError($"[{att.GetType().Name}] \"{method.DeclaringType.Name}.{method.Name}\" is having wrong param. Expect ({infoMsg}) Get ({methodMsg})");
 #endif
 
 			} catch (Exception ex) {

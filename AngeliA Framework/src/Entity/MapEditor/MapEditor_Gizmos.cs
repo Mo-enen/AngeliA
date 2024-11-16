@@ -28,7 +28,9 @@ public partial class MapEditor {
 
 		if (IsPlaying || !ShowGridGizmos || DroppingPlayer || Game.IsPausing || TaskingRoute) return;
 
+		using var _ = new LayerScope(RenderLayer.DEFAULT);
 		var TINT = new Color32(128, 128, 128, 16);
+		var TINT_STRONG = new Color32(128, 128, 128, 78);
 		var cRect = Renderer.CameraRect.Shrink(PanelRect.width, 0, 0, 0);
 		int l = Util.FloorToInt(cRect.xMin.UDivide(Const.CEL) + 1) * Const.CEL;
 		int r = Util.CeilToInt(cRect.xMax.UDivide(Const.CEL) + 1) * Const.CEL;
@@ -37,15 +39,15 @@ public partial class MapEditor {
 		int size = Unify(2);
 		var rect = new IRect(cRect.xMin, 0, r - l, size);
 		for (int y = d; y <= u; y += Const.CEL) {
+			var tint = y.UMod(Const.CEL * Const.MAP) == 0 ? TINT_STRONG : TINT;
 			rect.y = y - size / 2;
-			Renderer.Draw(BuiltInSprite.SOFT_LINE_H, rect, TINT, z: int.MinValue);
-			//Game.DrawGizmosRect(rect, TINT);
+			Renderer.Draw(BuiltInSprite.SOFT_LINE_H, rect, tint, z: int.MaxValue);
 		}
 		rect = new IRect(0, cRect.y, size, cRect.height);
 		for (int x = l; x <= r; x += Const.CEL) {
+			var tint = x.UMod(Const.CEL * Const.MAP) == 0 ? TINT_STRONG : TINT;
 			rect.x = x - size / 2;
-			Renderer.Draw(BuiltInSprite.SOFT_LINE_V, rect, TINT, z: int.MinValue);
-			//Game.DrawGizmosRect(rect, TINT);
+			Renderer.Draw(BuiltInSprite.SOFT_LINE_V, rect, tint, z: int.MaxValue);
 		}
 
 	}
