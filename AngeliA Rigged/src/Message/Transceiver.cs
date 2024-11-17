@@ -40,7 +40,8 @@ public class RigTransceiver {
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
 	private int IgnoreMouseInputFrame = -1;
-	private int LeftPadding = 0;
+	private int PaddingL = default;
+	private int PaddingR = default;
 
 
 	#endregion
@@ -136,12 +137,13 @@ public class RigTransceiver {
 	}
 
 
-	public unsafe void Call (bool ignoreMouseInput, bool ignoreKeyInput, int leftPadding, byte requiringWindowIndex) {
+	public unsafe void Call (bool ignoreMouseInput, bool ignoreKeyInput, int paddingLeft, int paddingRight, byte requiringWindowIndex) {
 		// Engine >> Rig
 		IgnoreMouseInputFrame = ignoreMouseInput ? Game.PauselessFrame : IgnoreMouseInputFrame;
 		if (*BufferPointer == 0) return;
-		LeftPadding = leftPadding;
-		CallingMessage.LoadDataFromEngine(ignoreMouseInput, ignoreKeyInput, leftPadding, requiringWindowIndex);
+		PaddingL = paddingLeft;
+		PaddingR = paddingRight;
+		CallingMessage.LoadDataFromEngine(ignoreMouseInput, ignoreKeyInput, paddingLeft, paddingRight, requiringWindowIndex);
 		CallingMessage.WriteDataToPipe(BufferPointer + 1);
 		*BufferPointer = 0;
 	}
@@ -165,7 +167,7 @@ public class RigTransceiver {
 		RespondMessage.ReadDataFromPipe(BufferPointer + 1);
 		RespondMessage.ApplyToEngine(CallingMessage, ignoreMouseInput);
 		if (!ignoreRendering) {
-			RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, LeftPadding);
+			RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, PaddingL, PaddingR);
 		}
 		// Update Setting
 		if (updateViewCache) {
@@ -183,7 +185,7 @@ public class RigTransceiver {
 			Renderer.DrawPixel(Renderer.CameraRect, Color32.BLACK_128);
 			Renderer.SetLayer(oldLayer);
 		}
-		RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, LeftPadding);
+		RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, PaddingL, PaddingR);
 	}
 
 

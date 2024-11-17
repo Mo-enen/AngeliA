@@ -81,20 +81,21 @@ public class RigCallingMessage {
 	#region --- API ---
 
 
-	public void LoadDataFromEngine (bool ignoreMouseInput, bool ignoreKeyInput, int leftPadding, byte requiringWindowIndex) {
+	public void LoadDataFromEngine (bool ignoreMouseInput, bool ignoreKeyInput, int paddingL, int paddingR, byte requiringWindowIndex) {
 
 		int mouseScroll = Game.MouseScrollDelta;
 		var mousePos = Game.MouseScreenPosition;
 		var stickL = Game.GamepadLeftStickDirection;
 		var stickR = Game.GamepadRightStickDirection;
-		int screenLeftPadding = leftPadding * Game.ScreenWidth / Renderer.CameraRect.width;
+		int screenLeftPadding = paddingL * Game.ScreenWidth / Renderer.CameraRect.width;
+		int screenRightPadding = paddingR * Game.ScreenWidth / Renderer.CameraRect.width;
 		mousePos.x -= screenLeftPadding;
 
 		RequiringWindowIndex = requiringWindowIndex;
 		CursorInScreen = Game.CursorInScreen;
 		MonitorWidth = Game.MonitorWidth;
 		MonitorHeight = Game.MonitorHeight;
-		ScreenWidth = Game.ScreenWidth - screenLeftPadding;
+		ScreenWidth = Game.ScreenWidth - screenLeftPadding - screenRightPadding;
 		ScreenHeight = Game.ScreenHeight;
 
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) {

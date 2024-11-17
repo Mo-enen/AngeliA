@@ -160,6 +160,125 @@ public partial class Engine {
 	}
 
 
+	private bool OnGUI_Calling () {
+
+		bool openingGameEditor = CurrentWindow is GameEditor;
+		bool currentWindowRequireRigGame = openingGameEditor || Game.GlobalFrame <= ForceRigGameRunInBackgroundFrame;
+		var gameEDT = GameEditor.Instance;
+		var calling = Transceiver.CallingMessage;
+		var console = ConsoleWindow.Instance;
+		var lanEditor = LanguageEditor.Instance;
+		var currentUniverse = CurrentProject?.Universe;
+		var currentInfo = currentUniverse?.Info;
+		bool requireRigInput = openingGameEditor;
+		bool runningGame = !gameEDT.FrameDebugging || gameEDT.RequireNextFrame;
+
+		gameEDT.RequireNextFrame = false;
+
+		if (
+			CurrentProject == null ||
+			EngineUtil.BuildingProjectInBackground ||
+			!Transceiver.RigProcessRunning ||
+			!currentWindowRequireRigGame
+		) return false;
+
+		if (Input.AnyMouseButtonDown) {
+			IgnoreInputForRig = IgnoreInputForRig ||
+				!WindowUI.WindowRect.Contains(Input.MouseGlobalPosition) ||
+				gameEDT.PanelRect.MouseInside() ||
+				gameEDT.ToolbarRect.MouseInside();
+		}
+		if (!Input.AnyMouseButtonHolding) {
+			IgnoreInputForRig = false;
+		}
+		if (Input.IgnoringMouseInput) {
+			IgnoreInputForRig = true;
+		}
+
+		if (gameEDT.DrawCollider) {
+			calling.RequireDrawColliderGizmos();
+		}
+		if (gameEDT.EntityClickerOn) {
+			calling.RequireEntityClicker();
+		}
+		if (gameEDT.RequireOpenOrCloseMovementPanel.HasValue) {
+			calling.RequireRemoteSetting(MovementEditor.SETTING_PANEL, gameEDT.RequireOpenOrCloseMovementPanel.Value);
+			gameEDT.RequireOpenOrCloseMovementPanel = null;
+		}
+
+		// Tool Command
+		if (console.RequireCodeAnalysis != 0) {
+			ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
+			calling.RequireRemoteSetting(console.RequireCodeAnalysis > 0 ?
+				FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_ID :
+				FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_SILENTLY_ID,
+				0
+			);
+			console.RequireCodeAnalysis = 0;
+		}
+		if (lanEditor.RequireAddKeysForAllLanguageCode) {
+			ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
+			calling.RequireRemoteSetting(LanguageUtil.ADD_KEYS_FOR_ALL_LANGUAGE_CODE_SETTING_ID, 0);
+			lanEditor.RequireAddKeysForAllLanguageCode = false;
+		}
+
+		// Map Editor Setting Changed
+		if (SettingWindow.Instance.MapSettingChanged) {
+			SettingWindow.Instance.MapSettingChanged = false;
+			calling.RequireRemoteSetting(MapEditor.SETTING_QUICK_PLAYER_DROP, EngineSetting.MapEditor_QuickPlayerDrop.Value);
+			calling.RequireRemoteSetting(MapEditor.SETTING_SHOW_BEHIND, EngineSetting.MapEditor_ShowBehind.Value);
+			calling.RequireRemoteSetting(MapEditor.SETTING_SHOW_GRID_GIZMOS, EngineSetting.MapEditor_ShowGizmos.Value);
+			calling.RequireRemoteSetting(MapEditor.SETTING_SHOW_STATE, EngineSetting.MapEditor_ShowState.Value);
+		}
+
+		// Lighting Map Setting Changed
+		if (gameEDT.LightMapSettingChanged) {
+			gameEDT.LightMapSettingChanged = false;
+			if (gameEDT.ForcingInGameDaytime >= 0f) {
+				calling.RequireRemoteSetting(
+					LightingSystem.SETTING_IN_GAME_DAYTIME, (int)(gameEDT.ForcingInGameDaytime * 1000)
+				);
+			}
+			calling.RequireRemoteSetting(
+				LightingSystem.SETTING_PIXEL_STYLE, currentInfo.LightMap_PixelStyle
+			);
+			calling.RequireRemoteSetting(
+				LightingSystem.SETTING_SELF_LERP, (int)(currentInfo.LightMap_SelfLerp * 1000)
+			);
+			calling.RequireRemoteSetting(
+				LightingSystem.SETTING_AIR_ILLUMINANCE_DAY, (int)(currentInfo.LightMap_AirIlluminanceDay * 1000)
+			);
+			calling.RequireRemoteSetting(
+				LightingSystem.SETTING_AIR_ILLUMINANCE_NIGHT, (int)(currentInfo.LightMap_AirIlluminanceNight * 1000)
+			);
+			calling.RequireRemoteSetting(
+				LightingSystem.SETTING_BACKGROUND_TINT, (int)(currentInfo.LightMap_BackgroundTint * 1000)
+			);
+			calling.RequireRemoteSetting(
+				LightingSystem.SETTING_SOLID_ILLUMINANCE, (int)(currentInfo.LightMap_SolidIlluminance * 1000)
+			);
+			calling.RequireRemoteSetting(
+				LightingSystem.SETTING_LEVEL_ILLUMINATE_REMAIN, (int)(currentInfo.LightMap_LevelIlluminateRemain * 1000)
+			);
+			// Save Uni-Info to File
+			JsonUtil.SaveJsonToPath(currentInfo, currentUniverse.InfoPath, prettyPrint: true);
+		}
+
+		// Make the Call
+		if (runningGame) {
+			Transceiver.Call(
+				ignoreMouseInput: !requireRigInput || IgnoreInputForRig || Game.PauselessFrame < LastNotInteractableFrame + 6,
+				ignoreKeyInput: !requireRigInput,
+				paddingLeft: GetEngineLeftBarWidth(out _),
+				paddingRight: gameEDT.ToolbarWidth,
+				requiringWindowIndex: 0
+			);
+		}
+
+		return true;
+	}
+
+
 	private void OnGUI_RiggedGame () {
 
 		bool openingGameEditor = CurrentWindow is GameEditor;
@@ -174,18 +293,17 @@ public partial class Engine {
 		}
 
 		ConsoleWindow.Instance.HaveRunningRigGame = Transceiver.RigProcessRunning;
+
 		if (HasCompileError) return;
 
 		bool requireRigGameRender = openingGameEditor;
-		bool requireRigInput = openingGameEditor;
 
 		var gameEDT = GameEditor.Instance;
-		var calling = Transceiver.CallingMessage;
 		var resp = Transceiver.RespondMessage;
 		var console = ConsoleWindow.Instance;
 		var lanEditor = LanguageEditor.Instance;
 		var currentUniverse = CurrentProject?.Universe;
-		var currentInfo = currentUniverse?.Info;
+		bool runningGame = !gameEDT.FrameDebugging || gameEDT.RequireNextFrame;
 
 		if (console.RequireCodeAnalysis != 0 || lanEditor.RequireAddKeysForAllLanguageCode) {
 			ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
@@ -194,110 +312,7 @@ public partial class Engine {
 		Transceiver.LogWithPrefix = EngineSetting.AddPrefixMarkForMessageFromGame.Value;
 
 		// Call
-		bool called = false;
-		bool runningGame = !gameEDT.FrameDebugging || gameEDT.RequireNextFrame;
-		gameEDT.RequireNextFrame = false;
-
-		if (
-			CurrentProject != null &&
-			!EngineUtil.BuildingProjectInBackground &&
-			Transceiver.RigProcessRunning &&
-			currentWindowRequireRigGame
-		) {
-			if (Input.AnyMouseButtonDown) {
-				IgnoreInputForRig = IgnoreInputForRig ||
-					!WindowUI.WindowRect.Contains(Input.MouseGlobalPosition) ||
-					gameEDT.PanelRect.MouseInside() ||
-					gameEDT.ToolbarRect.MouseInside();
-			}
-			if (!Input.AnyMouseButtonHolding) {
-				IgnoreInputForRig = false;
-			}
-			if (Input.IgnoringMouseInput) {
-				IgnoreInputForRig = true;
-			}
-
-			if (gameEDT.DrawCollider) {
-				calling.RequireDrawColliderGizmos();
-			}
-			if (gameEDT.EntityClickerOn) {
-				calling.RequireEntityClicker();
-			}
-			if (gameEDT.RequireOpenOrCloseMovementPanel.HasValue) {
-				calling.RequireRemoteSetting(MovementEditor.SETTING_PANEL, gameEDT.RequireOpenOrCloseMovementPanel.Value);
-				gameEDT.RequireOpenOrCloseMovementPanel = null;
-			}
-
-			// Tool Command
-			if (console.RequireCodeAnalysis != 0) {
-				ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
-				calling.RequireRemoteSetting(console.RequireCodeAnalysis > 0 ?
-					FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_ID :
-					FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_SILENTLY_ID,
-					0
-				);
-				console.RequireCodeAnalysis = 0;
-			}
-			if (lanEditor.RequireAddKeysForAllLanguageCode) {
-				ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
-				calling.RequireRemoteSetting(LanguageUtil.ADD_KEYS_FOR_ALL_LANGUAGE_CODE_SETTING_ID, 0);
-				lanEditor.RequireAddKeysForAllLanguageCode = false;
-			}
-
-			// Map Editor Setting Changed
-			if (SettingWindow.Instance.MapSettingChanged) {
-				SettingWindow.Instance.MapSettingChanged = false;
-				calling.RequireRemoteSetting(MapEditor.SETTING_QUICK_PLAYER_DROP, EngineSetting.MapEditor_QuickPlayerDrop.Value);
-				calling.RequireRemoteSetting(MapEditor.SETTING_SHOW_BEHIND, EngineSetting.MapEditor_ShowBehind.Value);
-				calling.RequireRemoteSetting(MapEditor.SETTING_SHOW_GRID_GIZMOS, EngineSetting.MapEditor_ShowGizmos.Value);
-				calling.RequireRemoteSetting(MapEditor.SETTING_SHOW_STATE, EngineSetting.MapEditor_ShowState.Value);
-			}
-
-			// Lighting Map Setting Changed
-			if (gameEDT.LightMapSettingChanged) {
-				gameEDT.LightMapSettingChanged = false;
-				if (gameEDT.ForcingInGameDaytime >= 0f) {
-					calling.RequireRemoteSetting(
-						LightingSystem.SETTING_IN_GAME_DAYTIME, (int)(gameEDT.ForcingInGameDaytime * 1000)
-					);
-				}
-				calling.RequireRemoteSetting(
-					LightingSystem.SETTING_PIXEL_STYLE, currentInfo.LightMap_PixelStyle
-				);
-				calling.RequireRemoteSetting(
-					LightingSystem.SETTING_SELF_LERP, (int)(currentInfo.LightMap_SelfLerp * 1000)
-				);
-				calling.RequireRemoteSetting(
-					LightingSystem.SETTING_AIR_ILLUMINANCE_DAY, (int)(currentInfo.LightMap_AirIlluminanceDay * 1000)
-				);
-				calling.RequireRemoteSetting(
-					LightingSystem.SETTING_AIR_ILLUMINANCE_NIGHT, (int)(currentInfo.LightMap_AirIlluminanceNight * 1000)
-				);
-				calling.RequireRemoteSetting(
-					LightingSystem.SETTING_BACKGROUND_TINT, (int)(currentInfo.LightMap_BackgroundTint * 1000)
-				);
-				calling.RequireRemoteSetting(
-					LightingSystem.SETTING_SOLID_ILLUMINANCE, (int)(currentInfo.LightMap_SolidIlluminance * 1000)
-				);
-				calling.RequireRemoteSetting(
-					LightingSystem.SETTING_LEVEL_ILLUMINATE_REMAIN, (int)(currentInfo.LightMap_LevelIlluminateRemain * 1000)
-				);
-				// Save Uni-Info to File
-				JsonUtil.SaveJsonToPath(currentInfo, currentUniverse.InfoPath, prettyPrint: true);
-			}
-
-			// Make the Call
-			if (runningGame) {
-				int leftBarWidth = GetEngineLeftBarWidth(out _) + gameEDT.ToolbarLeftWidth;
-				Transceiver.Call(
-					ignoreMouseInput: !requireRigInput || IgnoreInputForRig || Game.PauselessFrame < LastNotInteractableFrame + 6,
-					ignoreKeyInput: !requireRigInput,
-					leftPadding: leftBarWidth,
-					requiringWindowIndex: 0
-				);
-			}
-			called = true;
-		}
+		bool called = OnGUI_Calling();
 
 		// Respond
 		bool buildingProjectInBackground = EngineUtil.BuildingProjectInBackground;

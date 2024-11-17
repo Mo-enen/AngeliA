@@ -260,7 +260,7 @@ public class RigRespondMessage {
 	}
 
 
-	public void ApplyRenderingToEngine (Universe universe, int sheetIndex, int leftPadding) {
+	public void ApplyRenderingToEngine (Universe universe, int sheetIndex, int leftPadding, int rightPadding) {
 
 		// View
 		var info = universe.Info;
@@ -270,17 +270,15 @@ public class RigRespondMessage {
 		Stage.SetViewRectImmediately(engineViewRect, remapAllRenderingCells: true);
 		if (oldViewHeight != ViewHeight) {
 			leftPadding = leftPadding * ViewHeight / oldViewHeight;
+			rightPadding = rightPadding * ViewHeight / oldViewHeight;
 		}
-
-		// Gizmos
-		int cameraExpand = (info.ViewRatio * ViewHeight / 1000 - engineViewRect.width) / 2;
-		int gizmosOffsetX = leftPadding / 2 - cameraExpand;
+		int paddingShiftX = (leftPadding - rightPadding) / 2;
 
 		// Gizmos Rect
 		for (int i = 0; i < RequireGizmosRectCount; i++) {
 			var data = RequireGizmosRects[i];
 			var rect = data.Rect;
-			rect.x = data.Rect.x + gizmosOffsetX;
+			rect.x = data.Rect.x + paddingShiftX;
 			if (data.ColorTL == data.ColorTR && data.ColorBL == data.ColorBR) {
 				if (data.ColorTL == data.ColorBL) {
 					Game.DrawGizmosRect(rect, data.ColorTL);
@@ -295,8 +293,8 @@ public class RigRespondMessage {
 		// Gizmos Line
 		for (int i = 0; i < RequireGizmosLineCount; i++) {
 			var data = RequireGizmosLines[i];
-			int startX = data.Start.x + gizmosOffsetX;
-			int endX = data.End.x + gizmosOffsetX;
+			int startX = data.Start.x + paddingShiftX;
+			int endX = data.End.x + paddingShiftX;
 			Game.DrawGizmosLine(startX, data.Start.y, endX, data.End.y, data.Thickness, data.Color);
 		}
 
@@ -368,7 +366,7 @@ public class RigRespondMessage {
 						}
 					}
 					if (rCell == null) continue;
-					rCell.X = cell.X + leftPadding / 2 - cameraExpand;
+					rCell.X = cell.X + paddingShiftX;
 					rCell.Y = cell.Y;
 					rCell.Z = cell.Z;
 					rCell.Width = cell.Width;

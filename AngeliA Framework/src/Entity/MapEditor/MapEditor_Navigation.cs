@@ -53,9 +53,8 @@ public partial class MapEditor {
 		}
 		ControlHintUI.AddHint(KeyboardKey.Tab, BuiltInText.UI_BACK);
 
-		// Panel
+		// Toolbar
 		NavMouseInGUI = false;
-		Update_NavigationPanel();
 		Update_NavigationToolbar();
 
 		// Click to Nav Logic
@@ -99,27 +98,13 @@ public partial class MapEditor {
 	}
 
 
-	private void Update_NavigationPanel () {
-
-		NavMouseInGUI |= PanelRect.MouseInside();
-		
-		// BG
-		Renderer.DrawPixel(PanelRect, Color32.BLACK);
-
-
-
-
-
-	}
-
-
 	private void Update_NavigationToolbar () {
 
 		using var _ = new GUIEnableScope(!TaskingRoute);
 
 		// BG
 		var barRect = Renderer.CameraRect.CornerInside(Alignment.TopLeft, PanelRect.width, Unify(TOOLBAR_BTN_SIZE));
-		Renderer.DrawPixel(barRect, Color32.GREY_32);
+		var bgCell = Renderer.DrawPixel(barRect, Color32.GREY_32);
 
 		// Btns
 		var btnRect = barRect.EdgeSquareLeft();
@@ -146,6 +131,9 @@ public partial class MapEditor {
 		}
 		NavMouseInGUI |= btnRect.MouseInside();
 		btnRect.SlideRight();
+
+		// Finish
+		bgCell.Width = btnRect.x - bgCell.X;
 
 	}
 

@@ -64,7 +64,7 @@ public class MovementEditor {
 		if (PlayerSystem.Selecting == null) return;
 		Cursor.RequireCursor();
 		using var _ = new UILayerScope();
-		var panelRect = Renderer.CameraRect.CornerInside(Alignment.TopLeft, GUI.Unify(220), 0);
+		var panelRect = Renderer.CameraRect.CornerInside(Alignment.TopRight, GUI.Unify(220), 0);
 		var bgCell = Renderer.DrawPixel(panelRect, Color32.BLACK);
 		Instance.DrawMovementPanel(PlayerSystem.Selecting.NativeMovement, ref panelRect);
 		bgCell.SetRect(panelRect);
@@ -198,7 +198,7 @@ public class MovementEditor {
 		// Min Width
 		int minWidth = GUI.Unify(296);
 		if (panelRect.width < minWidth) {
-			panelRect.width = minWidth;
+			panelRect.xMin -= minWidth - panelRect.width;
 		}
 
 		// Content

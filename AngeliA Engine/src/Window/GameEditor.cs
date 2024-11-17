@@ -21,7 +21,7 @@ public class GameEditor : WindowUI {
 	}
 
 
-	private enum PanelType { None, Profiler, Movement, Lighting, }
+	private enum PanelType { None, Profiler, Movement, Lighting, Camera, }
 
 
 	#endregion
@@ -41,6 +41,7 @@ public class GameEditor : WindowUI {
 	private static readonly SpriteCode BTN_PAUSE = "Engine.Game.Pause";
 	private static readonly SpriteCode BTN_MOVEMENT = "Engine.Game.Movement";
 	private static readonly SpriteCode BTN_LIGHTING = "Engine.Game.Lighting";
+	private static readonly SpriteCode BTN_CAMERA = "Engine.Game.Camera";
 	private static readonly SpriteCode TOOLBAR_BG = "Engine.Game.Toolbar";
 	private static readonly SpriteCode PANEL_BG = "Engine.Game.PanelBG";
 
@@ -50,6 +51,7 @@ public class GameEditor : WindowUI {
 	private static readonly LanguageCode TIP_ENTITY_CLICER = ("Engine.Game.Tip.EntityClicker", "Entity Debugger");
 	private static readonly LanguageCode TIP_COLLIDER = ("Engine.Game.Tip.Collider", "Collider");
 	private static readonly LanguageCode TIP_LIGHTING = ("Engine.Game.Tip.Lighting", "Lighting System");
+	private static readonly LanguageCode TIP_CAMERA = ("Engine.Game.Tip.Camera", "Camera Position");
 	private static readonly LanguageCode TIP_MOVEMENT = ("Engine.Game.Tip.Movement", "Movement System");
 	private static readonly LanguageCode LABEL_DAYTIME = ("UI.RigEditor.Daytime", "In-Game Daytime");
 	private static readonly LanguageCode LABEL_PIXEL_STYLE = ("UI.RigEditor.PixelStyle", "Use Pixel Style");
@@ -71,7 +73,7 @@ public class GameEditor : WindowUI {
 	public bool RequireNextFrame { get; set; } = false;
 	public bool HavingGamePlay { get; set; } = false;
 	public bool? RequireOpenOrCloseMovementPanel { get; set; } = null;
-	public int ToolbarLeftWidth => Unify(40);
+	public int ToolbarWidth => Unify(40);
 	public bool LightMapSettingChanged { get; set; } = false;
 	public float ForcingInGameDaytime { get; private set; } = -1f;
 
@@ -132,20 +134,20 @@ public class GameEditor : WindowUI {
 			EntityClickerOn = false;
 			FrameDebugging = false;
 			RequireNextFrame = false;
-			CurrentPanel = CurrentPanel != PanelType.Profiler ? PanelType.None : CurrentPanel;
+			CurrentPanel = CurrentPanel != PanelType.Profiler && CurrentPanel != PanelType.Camera ? PanelType.None : CurrentPanel;
 		}
 
 		using var _ = new UILayerScope();
 
 		int padding = Unify(6);
-		int buttonSize = ToolbarLeftWidth - padding * 2;
-		var barRect = ToolbarRect = WindowRect.EdgeLeft(buttonSize + padding * 2);
+		int buttonSize = ToolbarWidth - padding * 2;
+		var barRect = ToolbarRect = WindowRect.EdgeRight(buttonSize + padding * 2);
 		var oldPanel = CurrentPanel;
 
 		// Draw Panels
 		if (CurrentPanel != PanelType.None) {
 
-			var panelRect = barRect.CornerOutside(Alignment.TopRight, Unify(220), Unify(384));
+			var panelRect = barRect.CornerOutside(Alignment.TopLeft, Unify(220), Unify(384));
 
 			// Draw Panel BG
 			var cells = GUI.DrawSlice(PANEL_BG, panelRect);
@@ -157,6 +159,7 @@ public class GameEditor : WindowUI {
 				case PanelType.Profiler: DrawProfilerPanel(ref panelRect); break;
 				case PanelType.Movement: break;
 				case PanelType.Lighting: DrawLightingPanel(ref panelRect); break;
+				case PanelType.Camera: DrawCameraPanel(ref panelRect); break;
 			}
 
 			if (bgPainted) {
@@ -202,7 +205,18 @@ public class GameEditor : WindowUI {
 			CurrentPanel = newIsOn ? PanelType.Profiler : PanelType.None;
 		}
 		if (rect.MouseInside()) {
-			GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_PROFILER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+			GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_PROFILER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+		}
+		rect.SlideDown(padding);
+
+		// Camera
+		isOn = CurrentPanel == PanelType.Camera;
+		newIsOn = GUI.IconToggle(rect, isOn, BTN_CAMERA);
+		if (isOn != newIsOn) {
+			CurrentPanel = newIsOn ? PanelType.Camera : PanelType.None;
+		}
+		if (rect.MouseInside()) {
+			GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_CAMERA, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 		}
 		rect.SlideDown(padding);
 
@@ -214,7 +228,7 @@ public class GameEditor : WindowUI {
 				CurrentPanel = newIsOn ? PanelType.Movement : PanelType.None;
 			}
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_MOVEMENT, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+				GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_MOVEMENT, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 
@@ -226,7 +240,7 @@ public class GameEditor : WindowUI {
 					CurrentPanel = newIsOn ? PanelType.Lighting : PanelType.None;
 				}
 				if (rect.MouseInside()) {
-					GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_LIGHTING, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+					GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_LIGHTING, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 				}
 				rect.SlideDown(padding);
 			}
@@ -234,14 +248,14 @@ public class GameEditor : WindowUI {
 			// Collider
 			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_COLLIDER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+				GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_COLLIDER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 
 			// Entity Clicker
 			EntityClickerOn = GUI.IconToggle(rect, EntityClickerOn, BTN_ENTITY_CLICKER);
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_ENTITY_CLICER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+				GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_ENTITY_CLICER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 
@@ -255,7 +269,7 @@ public class GameEditor : WindowUI {
 					}
 				}
 				if (rect.MouseInside()) {
-					GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_NEXT_FRAME, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+					GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_NEXT_FRAME, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 				}
 				rect.SlideDown(padding);
 			}
@@ -266,7 +280,7 @@ public class GameEditor : WindowUI {
 				RequireNextFrame = false;
 			}
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeLeft(1), FrameDebugging ? BuiltInText.UI_CONTINUE : TIP_FRAME_DEBUG, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+				GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), FrameDebugging ? BuiltInText.UI_CONTINUE : TIP_FRAME_DEBUG, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 
@@ -331,7 +345,7 @@ public class GameEditor : WindowUI {
 		// Min Width
 		int minWidth = Unify(396);
 		if (panelRect.width < minWidth) {
-			panelRect.width = minWidth;
+			panelRect.xMin -= minWidth - panelRect.width;
 		}
 
 		// Content
@@ -441,6 +455,36 @@ public class GameEditor : WindowUI {
 			LightMapSettingChanged = true;
 		}
 
+	}
+
+
+	private void DrawCameraPanel (ref IRect panelRect) {
+
+		// Min Width
+		int minWidth = Unify(396);
+		if (panelRect.width < minWidth) {
+			panelRect.xMin -= minWidth - panelRect.width;
+		}
+
+		// Content
+		int panelPadding = Unify(12);
+		int padding = GUI.FieldPadding;
+		int toolbarSize = Unify(28);
+		int top = panelRect.y;
+		var rect = new IRect(panelRect.x, panelRect.y - toolbarSize, panelRect.width, toolbarSize);
+		rect = rect.Shrink(panelPadding, panelPadding, 0, 0);
+
+
+
+		rect.SlideDown();
+
+
+
+
+
+		// Final
+		panelRect.height = top - rect.yMax;
+		panelRect.y -= panelRect.height;
 	}
 
 
