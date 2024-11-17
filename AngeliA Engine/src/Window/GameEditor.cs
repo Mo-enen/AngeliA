@@ -186,7 +186,7 @@ public class GameEditor : WindowUI {
 		}
 
 		// Toolbar BG
-		GUI.DrawSlice(TOOLBAR_BG, barRect);
+		GUI.DrawSlice(TOOLBAR_BG, barRect.Expand(Unify(1), 0, 0, 0));
 
 		// Toolbar Buttons
 		var rect = new IRect(

@@ -14,6 +14,7 @@ public partial class MapEditor {
 	private int WindowSizeChangedFrame = int.MinValue;
 	private bool NavPrevHolderMouseLeft = false;
 	private bool NavMouseLeftDragged = false;
+	private bool NavMouseInGUI = false;
 
 
 	// MSG
@@ -52,32 +53,10 @@ public partial class MapEditor {
 		}
 		ControlHintUI.AddHint(KeyboardKey.Tab, BuiltInText.UI_BACK);
 
-		// Btns
-		var btnRect = Renderer.CameraRect.CornerInside(Alignment.TopLeft, Unify(46));
-		int btnPadding = Unify(6);
-		bool mouseInBtn = false;
-
-		// Back Btn
-		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_BACK)) {
-			Input.UseAllMouseKey();
-			SetNavigationMode(false);
-		}
-		mouseInBtn = mouseInBtn || btnRect.MouseInside();
-		btnRect.SlideRight();
-
-		// Button Down
-		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_TRIANGLE_DOWN)) {
-			SetViewZ(CurrentZ - 1);
-		}
-		mouseInBtn = mouseInBtn || btnRect.MouseInside();
-		btnRect.SlideRight();
-
-		// Button Up
-		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_TRIANGLE_UP)) {
-			SetViewZ(CurrentZ + 1);
-		}
-		mouseInBtn = mouseInBtn || btnRect.MouseInside();
-		btnRect.SlideRight();
+		// Panel
+		NavMouseInGUI = false;
+		Update_NavigationPanel();
+		Update_NavigationToolbar();
 
 		// Click to Nav Logic
 		bool mouseLeftHolding = Input.MouseLeftButtonHolding;
@@ -87,7 +66,7 @@ public partial class MapEditor {
 			int dis = (pos.x - downPos.x).Abs() + (pos.y - downPos.y).Abs();
 			NavMouseLeftDragged = NavMouseLeftDragged || dis > Unify(200);
 		}
-		if (!mouseInBtn && NavPrevHolderMouseLeft && !mouseLeftHolding && !NavMouseLeftDragged) {
+		if (!NavMouseInGUI && NavPrevHolderMouseLeft && !mouseLeftHolding && !NavMouseLeftDragged) {
 			var mousePos = Input.MouseGlobalPosition;
 			int unitRangeW = NAV_UNIT_RANGE * Game.ScreenWidth / Game.ScreenHeight;
 			int unitRangeH = NAV_UNIT_RANGE;
@@ -111,9 +90,62 @@ public partial class MapEditor {
 		}
 		NavPrevHolderMouseLeft = mouseLeftHolding;
 
-		// Update
+		// View
 		Update_NavigationView();
+
+		// Rendering
 		Update_NavigationRendering();
+
+	}
+
+
+	private void Update_NavigationPanel () {
+
+		NavMouseInGUI |= PanelRect.MouseInside();
+		
+		// BG
+		Renderer.DrawPixel(PanelRect, Color32.BLACK);
+
+
+
+
+
+	}
+
+
+	private void Update_NavigationToolbar () {
+
+		using var _ = new GUIEnableScope(!TaskingRoute);
+
+		// BG
+		var barRect = Renderer.CameraRect.CornerInside(Alignment.TopLeft, PanelRect.width, Unify(TOOLBAR_BTN_SIZE));
+		Renderer.DrawPixel(barRect, Color32.GREY_32);
+
+		// Btns
+		var btnRect = barRect.EdgeSquareLeft();
+		int btnPadding = Unify(4);
+
+		// Back Btn
+		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_BRUSH)) {
+			Input.UseAllMouseKey();
+			SetNavigationMode(false);
+		}
+		NavMouseInGUI |= btnRect.MouseInside();
+		btnRect.SlideRight();
+
+		// Button Down
+		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_TRIANGLE_DOWN)) {
+			SetViewZ(CurrentZ - 1);
+		}
+		NavMouseInGUI |= btnRect.MouseInside();
+		btnRect.SlideRight();
+
+		// Button Up
+		if (GUI.DarkButton(btnRect.Shrink(btnPadding), BuiltInSprite.ICON_TRIANGLE_UP)) {
+			SetViewZ(CurrentZ + 1);
+		}
+		NavMouseInGUI |= btnRect.MouseInside();
+		btnRect.SlideRight();
 
 	}
 
@@ -126,7 +158,9 @@ public partial class MapEditor {
 			Input.MouseMidButtonHolding ||
 			Input.MouseLeftButtonHolding
 		) {
-			delta = Input.MouseScreenPositionDelta;
+			if (!NavMouseInGUI) {
+				delta = Input.MouseScreenPositionDelta;
+			}
 		} else if (!Input.AnyMouseButtonHolding) {
 			delta = Input.Direction / -32;
 		}
