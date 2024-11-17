@@ -161,6 +161,12 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Cursor.RequireCursor();
+	}
+
+
 	public override void UpdateWindowUI () {
 
 		Cursor.RequireCursor();

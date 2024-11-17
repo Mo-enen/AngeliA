@@ -76,7 +76,7 @@ Label.Project.ScaleUiBasedOnMonitor:根据屏幕高度缩放UI
 Label.Project.Sound:音效
 Label.Project.UseLightingSystem:使用地图光照系统
 Label.Project.UseMapEditor:使用地图编辑器
-Label.Project.UseProceduralMap:自动生成地图
+Label.Project.UseProceduralMap:使用地图生成器
 Label.ProjectType:工程类型
 Label.ProjectType.Artwork:美工
 Label.ProjectType.Game:游戏

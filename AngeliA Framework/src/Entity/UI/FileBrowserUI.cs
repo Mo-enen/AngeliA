@@ -120,6 +120,12 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Cursor.RequireCursor();
+	}
+
+
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		Input.IgnoreMouseToActionJump();
@@ -128,8 +134,6 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 	public override void UpdateUI () {
 		base.UpdateUI();
-
-		Cursor.RequireCursor();
 
 		int bgPadding = Unify(12);
 		int navBarHeight = Unify(32);

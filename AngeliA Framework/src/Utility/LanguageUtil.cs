@@ -10,6 +10,8 @@ namespace AngeliA;
 
 public static partial class LanguageUtil {
 
+	public const int ADD_KEYS_FOR_ALL_LANGUAGE_CODE_SETTING_ID = 914528783;
+
 	// Data
 	private static readonly StringBuilder CacheBuilder = new();
 
@@ -73,7 +75,7 @@ public static partial class LanguageUtil {
 				}
 				foreach (var lanCodes in type.ForAllStaticFieldValue<LanguageCode[]>(fieldBinding, inherited: false)) {
 					if (lanCodes == null || lanCodes.Length == 0) continue;
-					foreach(var lanCode in lanCodes) {
+					foreach (var lanCode in lanCodes) {
 						pairs.Add(new(lanCode.Name, loadDef ? lanCode.DefaultValue : ""));
 					}
 				}

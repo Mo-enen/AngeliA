@@ -84,10 +84,10 @@ public partial class MapEditor {
 	// Data
 	private readonly Dictionary<int, PaletteGroup> PaletteGroupCache = [];
 	private static readonly List<MapEditorToolbarButton> ToolbarButtons = [
-		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_REFRESH, ("Tip.MapEDT.ResetCamera", "Reset camera to default position"), ToolbarButton_ResetCamera),
+		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_MAP, ("Tip.MapEDT.Nav","Open world map view"), ToolbarButton_Nav),
 		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_TRIANGLE_DOWN, ("Tip.MapEDT.FrontZ","Goto the front layer"), ToolbarButton_Z_Front, ToolbarButton_Z_Front_Enable),
 		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_TRIANGLE_UP, ("Tip.MapEDT.BackZ","Goto the behind layer"), ToolbarButton_Z_Back, ToolbarButton_Z_Back_Enable),
-		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_MAP, ("Tip.MapEDT.Nav","Open world map view"), ToolbarButton_Nav),
+		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_REFRESH, ("Tip.MapEDT.ResetCamera", "Reset camera to default position"), ToolbarButton_ResetCamera),
 		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_GAMEPAD, ("Tip.MapEDT.Play","Start play test"), ToolbarButton_Play),
 	];
 	private IRect PaletteGroupPanelRect = default;

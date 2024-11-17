@@ -121,6 +121,12 @@ public class SettingWindow : WindowUI {
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Cursor.RequireCursor();
+	}
+
+
 	public override void UpdateWindowUI () {
 
 		if (CurrentProject == null) return;

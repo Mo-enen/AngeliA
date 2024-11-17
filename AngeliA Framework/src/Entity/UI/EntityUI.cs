@@ -51,7 +51,9 @@ public abstract class EntityUI : Entity {
 
 		using (new UILayerScope()) {
 
+			int oldCursorP = Cursor.CursorPriority;
 			if (Game.PauselessFrame == BlockingEventFrame) {
+				Cursor.CursorPriority = int.MaxValue;
 				Input.IgnoreAllInput(0);
 			}
 
@@ -60,12 +62,12 @@ public abstract class EntityUI : Entity {
 			if (Game.PauselessFrame == BlockingEventFrame) {
 				Input.CancelIgnoreMouseInput();
 				Input.CancelIgnoreKeyInput();
+				Cursor.CursorPriority = oldCursorP;
 			}
 
 		}
 
 		if (BlockEvent) {
-			Cursor.CursorPriority = int.MaxValue;
 			BlockingEventFrame = Game.PauselessFrame;
 		}
 	}

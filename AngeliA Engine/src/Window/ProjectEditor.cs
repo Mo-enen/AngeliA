@@ -135,8 +135,8 @@ public class ProjectEditor : WindowUI {
 	}
 
 
-	public override void BeforeUpdate () {
-		base.BeforeUpdate();
+	public override void FirstUpdate () {
+		base.FirstUpdate();
 		Cursor.RequireCursor();
 	}
 

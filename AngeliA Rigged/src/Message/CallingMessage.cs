@@ -22,14 +22,6 @@ public class RigCallingMessage {
 	}
 
 
-	public enum ToolCommand : byte {
-		None = 0,
-		RunCodeAnalysis,
-		RunCodeAnalysisSilently,
-		AddKeysForAllLanguageCode,
-	}
-
-
 	#endregion
 
 
@@ -77,10 +69,8 @@ public class RigCallingMessage {
 	public byte PressedKeyCount;
 	public readonly int[] PressedGuiKeys = new int[256];
 
-	public int RequireChangedSettingCount = 0;
-	public Int2[] RequireChangedSettings = new Int2[64];
-
-	public ToolCommand RequireToolsetCommand = ToolCommand.None;
+	public int RequireRemoteSettingCount = 0;
+	public Int2[] RequireRemoteSettings = new Int2[64];
 
 
 	#endregion
@@ -256,14 +246,12 @@ public class RigCallingMessage {
 				PressedGuiKeys[i] = Util.ReadInt(ref pointer, end);
 			}
 
-			RequireChangedSettingCount = Util.ReadInt(ref pointer, end);
-			for (int i = 0; i < RequireChangedSettingCount && i < RequireChangedSettings.Length; i++) {
+			RequireRemoteSettingCount = Util.ReadInt(ref pointer, end);
+			for (int i = 0; i < RequireRemoteSettingCount && i < RequireRemoteSettings.Length; i++) {
 				int id = Util.ReadInt(ref pointer, end);
 				int data = Util.ReadInt(ref pointer, end);
-				RequireChangedSettings[i] = new Int2(id, data);
+				RequireRemoteSettings[i] = new Int2(id, data);
 			}
-
-			RequireToolsetCommand = (ToolCommand)Util.ReadByte(ref pointer, end);
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
@@ -335,16 +323,13 @@ public class RigCallingMessage {
 				Util.Write(ref pointer, PressedGuiKeys[i], end);
 			}
 
-			Util.Write(ref pointer, RequireChangedSettingCount, end);
-			for (int i = 0; i < RequireChangedSettingCount && i < RequireChangedSettings.Length; i++) {
-				var id_data = RequireChangedSettings[i];
+			Util.Write(ref pointer, RequireRemoteSettingCount, end);
+			for (int i = 0; i < RequireRemoteSettingCount && i < RequireRemoteSettings.Length; i++) {
+				var id_data = RequireRemoteSettings[i];
 				Util.Write(ref pointer, id_data.x, end);
 				Util.Write(ref pointer, id_data.y, end);
 			}
-			RequireChangedSettingCount = 0;
-
-			Util.Write(ref pointer, (byte)RequireToolsetCommand, end);
-			RequireToolsetCommand = ToolCommand.None;
+			RequireRemoteSettingCount = 0;
 
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 
@@ -358,13 +343,13 @@ public class RigCallingMessage {
 	public void RequireEntityClicker () => RequireGameMessageInvoke.SetBit(4, true);
 
 
-	public void RequireChangeSetting (Saving<bool> data) => RequireChangeSetting(data.ID, data.Value);
-	public void RequireChangeSetting (Saving<int> data) => RequireChangeSetting(data.ID, data.Value);
-	public void RequireChangeSetting (int id, bool data) => RequireChangeSetting(id, data ? 1 : 0);
-	public void RequireChangeSetting (int id, int data) {
-		if (RequireChangedSettingCount >= RequireChangedSettings.Length) return;
-		RequireChangedSettings[RequireChangedSettingCount] = new Int2(id, data);
-		RequireChangedSettingCount++;
+	public void RequireRemoteSetting (Saving<bool> data) => RequireRemoteSetting(data.ID, data.Value);
+	public void RequireRemoteSetting (Saving<int> data) => RequireRemoteSetting(data.ID, data.Value);
+	public void RequireRemoteSetting (int id, bool data) => RequireRemoteSetting(id, data ? 1 : 0);
+	public void RequireRemoteSetting (int id, int data) {
+		if (RequireRemoteSettingCount >= RequireRemoteSettings.Length) return;
+		RequireRemoteSettings[RequireRemoteSettingCount] = new Int2(id, data);
+		RequireRemoteSettingCount++;
 	}
 
 

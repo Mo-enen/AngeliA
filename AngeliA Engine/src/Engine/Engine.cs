@@ -476,6 +476,103 @@ public partial class Engine {
 	}
 
 
+	private void OnGUI_Window () {
+
+		int barWidth = GetEngineLeftBarWidth(out _);
+
+		// Switch Active Window
+		WindowUI.ForceWindowRect(Renderer.CameraRect.Shrink(barWidth, 0, 0, 0));
+		for (int i = 0; i < AllWindows.Length; i++) {
+			var win = AllWindows[i];
+			bool active = i == CurrentWindowIndex;
+			if (active == win.Active) continue;
+			win.Active = active;
+			if (active) {
+				win.OnActivated();
+			} else {
+				win.OnInactivated();
+			}
+		}
+
+		// Update Generic UI
+		bool oldE = GUI.Interactable;
+		GUI.Interactable = true;
+		foreach (var ui in AllGenericUIs) {
+			if (!ui.Active) continue;
+			ui.FirstUpdate();
+		}
+		foreach (var ui in AllGenericUIs) {
+			if (!ui.Active) continue;
+			ui.BeforeUpdate();
+		}
+		foreach (var ui in AllGenericUIs) {
+			if (!ui.Active) continue;
+			ui.Update();
+		}
+		foreach (var ui in AllGenericUIs) {
+			if (!ui.Active) continue;
+			ui.LateUpdate();
+		}
+		GUI.Interactable = oldE;
+
+		// Update Window UI
+		foreach (var ui in AllWindows) {
+			if (!ui.Active) continue;
+			ui.FirstUpdate();
+		}
+		foreach (var ui in AllWindows) {
+			if (!ui.Active) continue;
+			ui.BeforeUpdate();
+		}
+		foreach (var ui in AllWindows) {
+			if (!ui.Active) continue;
+			ui.Update();
+		}
+		foreach (var ui in AllWindows) {
+			if (!ui.Active) continue;
+			ui.LateUpdate();
+		}
+
+		// Misc
+		if (GenericDialogUI.ShowingDialog) {
+			Game.CancelGizmosOnTopOfUI();
+			Game.CancelDoodleOnTopOfUI();
+		}
+
+		// Update Tooltip
+		bool hoveringSameRect = false;
+		foreach (var window in AllWindows) {
+			if (!window.Active) continue;
+			string content = window.RequiringTooltipContent;
+			if (content != null && EngineSetting.UseTooltip.Value) {
+				ToolLabel = content;
+				ToolLabelRect = window.RequiringTooltipRect;
+				if (ToolLabelRect.MouseInside()) {
+					LastHoveringToolLabelRect = ToolLabelRect;
+					if (!hoveringSameRect && LastHoveringToolLabelRect == ToolLabelRect) {
+						HoveringTooltipDuration++;
+						hoveringSameRect = true;
+					}
+				}
+			}
+			window.RequiringTooltipContent = null;
+		}
+		if (!hoveringSameRect) HoveringTooltipDuration = 0;
+
+		// Update Notify
+		foreach (var window in AllWindows) {
+			if (window.NotificationContent != null && EngineSetting.UseNotification.Value) {
+				NotificationFlash = Game.GlobalFrame < NotificationStartFrame + NOTIFY_DURATION;
+				NotificationStartFrame = Game.GlobalFrame;
+				NotificationContent = window.NotificationContent;
+				NotificationSubContent = window.NotificationSubContent;
+			}
+			window.NotificationContent = null;
+		}
+
+	}
+
+
 	private void OnGUI_Engine () {
 
 		using var _ = new UILayerScope();
@@ -520,7 +617,9 @@ public partial class Engine {
 			}
 
 			// Cursor
-			if (!selecting && hovering) Cursor.SetCursorAsHand();
+			if (!selecting && hovering) {
+				Cursor.SetCursorAsHand();
+			}
 
 			// Body
 			GUI.DrawSlice(UI_ENGINE_BAR_BTN, rect);
@@ -623,103 +722,6 @@ public partial class Engine {
 		// Menu Cache
 		if (menuButtonClicked) {
 			FullsizeMenu.Value = !FullsizeMenu.Value;
-		}
-
-	}
-
-
-	private void OnGUI_Window () {
-
-		int barWidth = GetEngineLeftBarWidth(out _);
-
-		// Switch Active Window
-		WindowUI.ForceWindowRect(Renderer.CameraRect.Shrink(barWidth, 0, 0, 0));
-		for (int i = 0; i < AllWindows.Length; i++) {
-			var win = AllWindows[i];
-			bool active = i == CurrentWindowIndex;
-			if (active == win.Active) continue;
-			win.Active = active;
-			if (active) {
-				win.OnActivated();
-			} else {
-				win.OnInactivated();
-			}
-		}
-
-		// Update Generic UI
-		bool oldE = GUI.Interactable;
-		GUI.Interactable = true;
-		foreach (var ui in AllGenericUIs) {
-			if (!ui.Active) continue;
-			ui.FirstUpdate();
-		}
-		foreach (var ui in AllGenericUIs) {
-			if (!ui.Active) continue;
-			ui.BeforeUpdate();
-		}
-		foreach (var ui in AllGenericUIs) {
-			if (!ui.Active) continue;
-			ui.Update();
-		}
-		foreach (var ui in AllGenericUIs) {
-			if (!ui.Active) continue;
-			ui.LateUpdate();
-		}
-		GUI.Interactable = oldE;
-
-		// Update Window UI
-		foreach (var ui in AllWindows) {
-			if (!ui.Active) continue;
-			ui.FirstUpdate();
-		}
-		foreach (var ui in AllWindows) {
-			if (!ui.Active) continue;
-			ui.BeforeUpdate();
-		}
-		foreach (var ui in AllWindows) {
-			if (!ui.Active) continue;
-			ui.Update();
-		}
-		foreach (var ui in AllWindows) {
-			if (!ui.Active) continue;
-			ui.LateUpdate();
-		}
-
-		// Misc
-		if (GenericDialogUI.ShowingDialog) {
-			Game.CancelGizmosOnTopOfUI();
-			Game.CancelDoodleOnTopOfUI();
-		}
-
-		// Update Tooltip
-		bool hoveringSameRect = false;
-		foreach (var window in AllWindows) {
-			if (!window.Active) continue;
-			string content = window.RequiringTooltipContent;
-			if (content != null && EngineSetting.UseTooltip.Value) {
-				ToolLabel = content;
-				ToolLabelRect = window.RequiringTooltipRect;
-				if (ToolLabelRect.MouseInside()) {
-					LastHoveringToolLabelRect = ToolLabelRect;
-					if (!hoveringSameRect && LastHoveringToolLabelRect == ToolLabelRect) {
-						HoveringTooltipDuration++;
-						hoveringSameRect = true;
-					}
-				}
-			}
-			window.RequiringTooltipContent = null;
-		}
-		if (!hoveringSameRect) HoveringTooltipDuration = 0;
-
-		// Update Notify
-		foreach (var window in AllWindows) {
-			if (window.NotificationContent != null && EngineSetting.UseNotification.Value) {
-				NotificationFlash = Game.GlobalFrame < NotificationStartFrame + NOTIFY_DURATION;
-				NotificationStartFrame = Game.GlobalFrame;
-				NotificationContent = window.NotificationContent;
-				NotificationSubContent = window.NotificationSubContent;
-			}
-			window.NotificationContent = null;
 		}
 
 	}

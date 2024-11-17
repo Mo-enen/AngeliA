@@ -44,6 +44,12 @@ public class GenericDialogUI : MenuUI {
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Cursor.RequireCursor();
+	}
+
+
 	public override void LateUpdate () {
 		base.LateUpdate();
 		Input.IgnoreMouseInput();

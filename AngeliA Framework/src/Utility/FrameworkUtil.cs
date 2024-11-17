@@ -10,8 +10,11 @@ namespace AngeliA;
 public static class FrameworkUtil {
 
 
+	public const int RUN_CODE_ANALYSIS_SETTING_ID = 895245367;
+	public const int RUN_CODE_ANALYSIS_SETTING_SILENTLY_ID = 895245368;
+
 	private const int SEARCHLIGHT_DENSITY = 32;
-	private static readonly System.Type BLOCK_ENTITY_TYPE = typeof(IBlockEntity);
+	private static readonly Type BLOCK_ENTITY_TYPE = typeof(IBlockEntity);
 	private static readonly List<PhysicsCell[,,]> CellPhysicsCells = [];
 	private static readonly Color32[] COLLIDER_TINTS = [
 		Color32.RED_BETTER,

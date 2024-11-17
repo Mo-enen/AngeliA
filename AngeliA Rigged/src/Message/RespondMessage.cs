@@ -204,7 +204,7 @@ public class RigRespondMessage {
 		// Cursor
 		if (!ignoreMouseInput) {
 			if (RequireSetCursorIndex > -3) {
-				Cursor.SetCursor(RequireSetCursorIndex, int.MinValue + 1);
+				Cursor.SetCursor(RequireSetCursorIndex, 1);
 			}
 		}
 
@@ -751,7 +751,7 @@ public class RigRespondMessage {
 			Util.Write(ref pointer, RequireDoodleRenderingOffset.x, end);
 			Util.Write(ref pointer, RequireDoodleRenderingOffset.y, end);
 			Util.Write(ref pointer, RequireDoodleRenderingZoom, end);
-			
+
 			Util.Write(ref pointer, RequireDoodleRectCount, end);
 			for (int i = 0; i < RequireDoodleRectCount; i++) {
 				var data = RequireDoodleRects[i];

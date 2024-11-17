@@ -43,7 +43,7 @@ public sealed class WorldSquad : IBlockSquad {
 	[OnGameInitialize(-128)]
 	internal static TaskResult OnGameInitialize () {
 
-		if (!Renderer.IsReady) return TaskResult.Continue;
+		if (!Renderer.IsReady || !MapGenerationSystem.Ready) return TaskResult.Continue;
 
 		var info = Universe.BuiltInInfo;
 		WorldBehindAlpha = info.WorldBehindAlpha;
@@ -62,7 +62,7 @@ public sealed class WorldSquad : IBlockSquad {
 			OnWorldLoaded?.Invoke(world);
 		}
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
-		Stream.UseBuiltInAsFailback = true;
+		Stream.UseBuiltInAsFailback = !MapGenerationSystem.Enable;
 		SquadReady = true;
 
 		return TaskResult.End;
@@ -82,7 +82,7 @@ public sealed class WorldSquad : IBlockSquad {
 		// Reset Stream
 		Stream?.SaveAllDirty();
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
-		Stream.UseBuiltInAsFailback = true;
+		Stream.UseBuiltInAsFailback = !MapGenerationSystem.Enable;
 		Stream.ClearWorldPool();
 		SquadReady = true;
 	}

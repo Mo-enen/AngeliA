@@ -224,59 +224,62 @@ public partial class Engine {
 				calling.RequireEntityClicker();
 			}
 			if (gameEDT.RequireOpenOrCloseMovementPanel.HasValue) {
-				calling.RequireChangeSetting(MovementEditor.SETTING_PANEL, gameEDT.RequireOpenOrCloseMovementPanel.Value);
+				calling.RequireRemoteSetting(MovementEditor.SETTING_PANEL, gameEDT.RequireOpenOrCloseMovementPanel.Value);
 				gameEDT.RequireOpenOrCloseMovementPanel = null;
 			}
 
 			// Tool Command
 			if (console.RequireCodeAnalysis != 0) {
 				ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
-				calling.RequireToolsetCommand = console.RequireCodeAnalysis > 0 ?
-					RigCallingMessage.ToolCommand.RunCodeAnalysis :
-					RigCallingMessage.ToolCommand.RunCodeAnalysisSilently;
+				calling.RequireRemoteSetting(console.RequireCodeAnalysis > 0 ?
+					FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_ID :
+					FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_SILENTLY_ID,
+					0
+				);
 				console.RequireCodeAnalysis = 0;
-			} else if (lanEditor.RequireAddKeysForAllLanguageCode) {
+			}
+			if (lanEditor.RequireAddKeysForAllLanguageCode) {
 				ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
-				calling.RequireToolsetCommand = RigCallingMessage.ToolCommand.AddKeysForAllLanguageCode;
+				calling.RequireRemoteSetting(LanguageUtil.ADD_KEYS_FOR_ALL_LANGUAGE_CODE_SETTING_ID, 0);
 				lanEditor.RequireAddKeysForAllLanguageCode = false;
 			}
 
 			// Map Editor Setting Changed
 			if (SettingWindow.Instance.MapSettingChanged) {
 				SettingWindow.Instance.MapSettingChanged = false;
-				calling.RequireChangeSetting(MapEditor.SETTING_QUICK_PLAYER_DROP, EngineSetting.MapEditor_QuickPlayerDrop.Value);
-				calling.RequireChangeSetting(MapEditor.SETTING_SHOW_BEHIND, EngineSetting.MapEditor_ShowBehind.Value);
-				calling.RequireChangeSetting(MapEditor.SETTING_SHOW_GRID_GIZMOS, EngineSetting.MapEditor_ShowGizmos.Value);
-				calling.RequireChangeSetting(MapEditor.SETTING_SHOW_STATE, EngineSetting.MapEditor_ShowState.Value);
+				calling.RequireRemoteSetting(MapEditor.SETTING_QUICK_PLAYER_DROP, EngineSetting.MapEditor_QuickPlayerDrop.Value);
+				calling.RequireRemoteSetting(MapEditor.SETTING_SHOW_BEHIND, EngineSetting.MapEditor_ShowBehind.Value);
+				calling.RequireRemoteSetting(MapEditor.SETTING_SHOW_GRID_GIZMOS, EngineSetting.MapEditor_ShowGizmos.Value);
+				calling.RequireRemoteSetting(MapEditor.SETTING_SHOW_STATE, EngineSetting.MapEditor_ShowState.Value);
 			}
 
 			// Lighting Map Setting Changed
 			if (gameEDT.LightMapSettingChanged) {
 				gameEDT.LightMapSettingChanged = false;
 				if (gameEDT.ForcingInGameDaytime >= 0f) {
-					calling.RequireChangeSetting(
+					calling.RequireRemoteSetting(
 						LightingSystem.SETTING_IN_GAME_DAYTIME, (int)(gameEDT.ForcingInGameDaytime * 1000)
 					);
 				}
-				calling.RequireChangeSetting(
+				calling.RequireRemoteSetting(
 					LightingSystem.SETTING_PIXEL_STYLE, currentInfo.LightMap_PixelStyle
 				);
-				calling.RequireChangeSetting(
+				calling.RequireRemoteSetting(
 					LightingSystem.SETTING_SELF_LERP, (int)(currentInfo.LightMap_SelfLerp * 1000)
 				);
-				calling.RequireChangeSetting(
+				calling.RequireRemoteSetting(
 					LightingSystem.SETTING_AIR_ILLUMINANCE_DAY, (int)(currentInfo.LightMap_AirIlluminanceDay * 1000)
 				);
-				calling.RequireChangeSetting(
+				calling.RequireRemoteSetting(
 					LightingSystem.SETTING_AIR_ILLUMINANCE_NIGHT, (int)(currentInfo.LightMap_AirIlluminanceNight * 1000)
 				);
-				calling.RequireChangeSetting(
+				calling.RequireRemoteSetting(
 					LightingSystem.SETTING_BACKGROUND_TINT, (int)(currentInfo.LightMap_BackgroundTint * 1000)
 				);
-				calling.RequireChangeSetting(
+				calling.RequireRemoteSetting(
 					LightingSystem.SETTING_SOLID_ILLUMINANCE, (int)(currentInfo.LightMap_SolidIlluminance * 1000)
 				);
-				calling.RequireChangeSetting(
+				calling.RequireRemoteSetting(
 					LightingSystem.SETTING_LEVEL_ILLUMINATE_REMAIN, (int)(currentInfo.LightMap_LevelIlluminateRemain * 1000)
 				);
 				// Save Uni-Info to File

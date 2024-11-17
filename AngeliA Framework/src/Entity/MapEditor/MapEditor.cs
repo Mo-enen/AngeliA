@@ -608,7 +608,14 @@ public sealed partial class MapEditor : WindowUI {
 
 				// Switch Mode
 				if (Input.KeyboardDown(KeyboardKey.Space)) {
-					StartDropPlayer();
+					if (MapGenerationSystem.Enable) {
+						SetEditorMode(true);
+						TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
+						Input.UseAllHoldingKeys();
+						Input.UseGameKey(Gamekey.Start);
+					} else {
+						StartDropPlayer();
+					}
 				}
 				ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_SWITCH_PLAY);
 

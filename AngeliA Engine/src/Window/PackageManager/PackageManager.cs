@@ -127,6 +127,12 @@ public class PackageManager : WindowUI {
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Cursor.RequireCursor();
+	}
+
+
 	public override void UpdateWindowUI () {
 		if (CurrentProject == null) return;
 		GUI.DrawSlice(UI_BG, WindowRect.ShrinkUp(GUI.ToolbarSize));

@@ -105,6 +105,12 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Cursor.RequireCursor();
+	}
+
+
 	public override void UpdateUI () {
 		base.UpdateUI();
 
@@ -112,8 +118,6 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 			Active = false;
 			return;
 		}
-
-		Cursor.RequireCursor();
 
 		int panelWidth = PrevPanelWidth >= 0 ? PrevPanelWidth : Unify(200);
 		int itemHeight = Unify(26);

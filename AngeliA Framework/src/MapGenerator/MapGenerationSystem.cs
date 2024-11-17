@@ -25,6 +25,7 @@ public static class MapGenerationSystem {
 
 	// Api
 	public static bool Enable { get; private set; }
+	public static bool Ready { get; private set; } = false;
 
 	// Data
 	private static readonly Dictionary<int, MapGenerator> Pool = [];
@@ -43,6 +44,7 @@ public static class MapGenerationSystem {
 	[OnGameInitialize(-32)]
 	internal static void OnGameInitialize () {
 
+		Ready = true;
 		Enable = Universe.BuiltInInfo.UseProceduralMap && !Game.IsToolApplication;
 		if (!Enable) return;
 

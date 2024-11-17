@@ -72,6 +72,12 @@ public class ConsoleWindow : WindowUI {
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Cursor.RequireCursor();
+	}
+
+
 	public override void UpdateWindowUI () {
 
 		bool hasLog = Lines.Length > 0;

@@ -24,25 +24,23 @@ public static class Cursor {
 #else
 			Game.HideCursor();
 #endif
-		} else {
+		} else if (CursorPriority != int.MinValue) {
 			// Has Cursor
-			if (CursorPriority != int.MinValue) {
-				CursorPriority = int.MinValue;
-				if (CurrentCursorIndex == Const.CURSOR_NONE) {
-					Game.HideCursor();
+			CursorPriority = int.MinValue;
+			if (CurrentCursorIndex == Const.CURSOR_NONE) {
+				Game.HideCursor();
+				Game.SetCursor(CurrentCursorIndex);
+			} else {
+				if (!Game.CursorVisible) {
+					Game.ShowCursor();
+					if (!Game.IsToolApplication) {
+						Game.CenterCursor();
+					}
+				}
+				if (CurrentCursorIndex >= 0 && CurrentCursorIndex < Const.CURSOR_COUNT) {
 					Game.SetCursor(CurrentCursorIndex);
 				} else {
-					if (!Game.CursorVisible) {
-						Game.ShowCursor();
-						if (!Game.IsToolApplication) {
-							Game.CenterCursor();
-						}
-					}
-					if (CurrentCursorIndex >= 0 && CurrentCursorIndex < Const.CURSOR_COUNT) {
-						Game.SetCursor(CurrentCursorIndex);
-					} else {
-						Game.SetCursorToNormal();
-					}
+					Game.SetCursorToNormal();
 				}
 			}
 		}

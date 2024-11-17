@@ -257,29 +257,30 @@ public partial class RiggedGame : Game {
 			PlayerSystem.Selecting.Movement.ReloadMovementConfigFromFile();
 		}
 
-		// Setting Change
-		for (int i = 0; i < CallingMessage.RequireChangedSettingCount && i < CallingMessage.RequireChangedSettings.Length; i++) {
-			var id_data = CallingMessage.RequireChangedSettings[i];
-			OnRemoteSettingChanged?.Invoke(id_data.x, id_data.y);
-		}
+		// Remote Setting
+		for (int i = 0; i < CallingMessage.RequireRemoteSettingCount && i < CallingMessage.RequireRemoteSettings.Length; i++) {
+			var id_data = CallingMessage.RequireRemoteSettings[i];
+			switch (id_data.x) {
+				default:
+					OnRemoteSettingChanged?.Invoke(id_data.x, id_data.y);
+					break;
+				case FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_ID:
+					FrameworkUtil.RunAngeliaCodeAnalysis(
+						onlyLogWhenWarningFounded: false,
+						fixScriptFileName: Universe.BuiltInInfo.RequireFixScriptNamesWhenAnalyse
+					);
+					break;
+				case FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_SILENTLY_ID:
+					FrameworkUtil.RunAngeliaCodeAnalysis(
+						onlyLogWhenWarningFounded: true,
+						fixScriptFileName: false
+					);
+					break;
+				case LanguageUtil.ADD_KEYS_FOR_ALL_LANGUAGE_CODE_SETTING_ID:
+					LanguageUtil.AddKeysForAllLanguageCode(Universe.BuiltIn.LanguageRoot);
+					break;
+			}
 
-		// Toolset Command
-		switch (CallingMessage.RequireToolsetCommand) {
-			case RigCallingMessage.ToolCommand.RunCodeAnalysis:
-				FrameworkUtil.RunAngeliaCodeAnalysis(
-					onlyLogWhenWarningFounded: false,
-					fixScriptFileName: Universe.BuiltInInfo.RequireFixScriptNamesWhenAnalyse
-				);
-				break;
-			case RigCallingMessage.ToolCommand.RunCodeAnalysisSilently:
-				FrameworkUtil.RunAngeliaCodeAnalysis(
-					onlyLogWhenWarningFounded: true,
-					fixScriptFileName: false
-				);
-				break;
-			case RigCallingMessage.ToolCommand.AddKeysForAllLanguageCode:
-				LanguageUtil.AddKeysForAllLanguageCode(Universe.BuiltIn.LanguageRoot);
-				break;
 		}
 
 	}

@@ -94,6 +94,12 @@ public class GameEditor : WindowUI {
 	public GameEditor () => Instance = this;
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Cursor.RequireCursor();
+	}
+
+
 	public override void UpdateWindowUI () {
 		if (CurrentProject == null) return;
 		OnGUI_Hotkey();
@@ -134,6 +140,7 @@ public class GameEditor : WindowUI {
 		int padding = Unify(6);
 		int buttonSize = ToolbarLeftWidth - padding * 2;
 		var barRect = ToolbarRect = WindowRect.EdgeLeft(buttonSize + padding * 2);
+		var oldPanel = CurrentPanel;
 
 		// Draw Panels
 		if (CurrentPanel != PanelType.None) {
@@ -205,7 +212,6 @@ public class GameEditor : WindowUI {
 			newIsOn = GUI.IconToggle(rect, isOn, BTN_MOVEMENT);
 			if (isOn != newIsOn) {
 				CurrentPanel = newIsOn ? PanelType.Movement : PanelType.None;
-				RequireOpenOrCloseMovementPanel = newIsOn;
 			}
 			if (rect.MouseInside()) {
 				GUI.BackgroundLabel(rect.EdgeLeft(1), TIP_MOVEMENT, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
@@ -265,6 +271,11 @@ public class GameEditor : WindowUI {
 			rect.SlideDown(padding);
 
 			if (!CurrentProject.Universe.Info.UseLightingSystem && CurrentPanel == PanelType.Lighting) CurrentPanel = PanelType.None;
+		}
+
+		// Require Open/Close Movement 
+		if ((oldPanel == PanelType.Movement) != (CurrentPanel == PanelType.Movement)) {
+			RequireOpenOrCloseMovementPanel = CurrentPanel == PanelType.Movement;
 		}
 
 	}

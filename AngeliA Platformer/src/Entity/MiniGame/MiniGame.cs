@@ -127,7 +127,7 @@ public abstract class MiniGame : Entity, IActionTarget, IBlockEntity {
 				}
 				ControlHintUI.AddHint(Gamekey.Start, BuiltInText.UI_QUIT);
 			}
-			if (RequireMouseCursor) Cursor.RequireCursor(-1);
+			if (RequireMouseCursor) Cursor.RequireCursor();
 		}
 		// Draw Arcade
 		bool allowInvoke = (this as IActionTarget).AllowInvoke();
