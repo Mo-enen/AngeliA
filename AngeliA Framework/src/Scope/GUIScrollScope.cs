@@ -2,23 +2,17 @@
 
 
 
-public readonly struct GUIVerticalScrollScope : System.IDisposable {
+public readonly struct GUIVerticalScrollScope (IRect panelRect, int positionY, int min = int.MinValue, int max = int.MaxValue) : System.IDisposable {
 	public readonly int PositionY => Scope.Position.y;
-	public readonly GUIScrollScope Scope;
-	public GUIVerticalScrollScope (IRect rect, int positionY, int min = int.MinValue, int max = int.MaxValue) {
-		Scope = new GUIScrollScope(rect, new Int2(0, positionY), new Int2(0, min), new Int2(0, max), true);
-	}
+	public readonly GUIScrollScope Scope = new(panelRect, new Int2(0, positionY), new Int2(0, min), new Int2(0, max), true);
 	public readonly void Dispose () => Scope.Dispose();
 }
 
 
 
-public readonly struct GUIHorizontalScrollScope : System.IDisposable {
+public readonly struct GUIHorizontalScrollScope (IRect rect, int positionX, int min = int.MinValue, int max = int.MaxValue) : System.IDisposable {
 	public readonly int PositionX => Scope.Position.x;
-	public readonly GUIScrollScope Scope;
-	public GUIHorizontalScrollScope (IRect rect, int positionX, int min = int.MinValue, int max = int.MaxValue) {
-		Scope = new GUIScrollScope(rect, new Int2(positionX, 0), new Int2(min, 0), new Int2(max, 0), false);
-	}
+	public readonly GUIScrollScope Scope = new(rect, new Int2(positionX, 0), new Int2(min, 0), new Int2(max, 0), false);
 	public readonly void Dispose () => Scope.Dispose();
 }
 

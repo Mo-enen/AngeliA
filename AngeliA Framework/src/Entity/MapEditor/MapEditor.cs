@@ -193,6 +193,24 @@ public sealed partial class MapEditor : WindowUI {
 			case SETTING_SHOW_GRID_GIZMOS:
 				ShowGridGizmos = data == 1;
 				break;
+			case Stage.SETTING_SET_VIEW_X:
+				if (Instance == null) break;
+				Instance.TargetViewRect.x = data;
+				Instance.ViewRect.x = data;
+				break;
+			case Stage.SETTING_SET_VIEW_Y:
+				if (Instance == null) break;
+				Instance.TargetViewRect.y = data;
+				Instance.ViewRect.y = data;
+				break;
+			case Stage.SETTING_SET_VIEW_H:
+				if (Instance == null) break;
+				int width = Game.GetViewWidthFromViewHeight(data);
+				Instance.TargetViewRect.width = width;
+				Instance.ViewRect.width = width;
+				Instance.TargetViewRect.height = data;
+				Instance.ViewRect.height = data;
+				break;
 		}
 	}
 
@@ -1079,7 +1097,12 @@ public sealed partial class MapEditor : WindowUI {
 	}
 
 
-	public void SetViewZ (int newZ) => CurrentZ = newZ;
+	public void SetViewZ (int newZ) {
+		CurrentZ = newZ;
+		if (IsNavigating) {
+			Game.ResetDoodle();
+		}
+	}
 
 
 	public void GotoPlayMode () {

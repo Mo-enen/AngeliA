@@ -268,6 +268,7 @@ public class RigRespondMessage {
 		int oldViewHeight = Stage.ViewRect.height;
 		var engineViewRect = new IRect(ViewX, ViewY, ViewWidth, ViewHeight);
 		Stage.SetViewRectImmediately(engineViewRect, remapAllRenderingCells: true);
+		Stage.SetViewZ(ViewZ, true);
 		if (oldViewHeight != ViewHeight) {
 			leftPadding = leftPadding * ViewHeight / oldViewHeight;
 			rightPadding = rightPadding * ViewHeight / oldViewHeight;

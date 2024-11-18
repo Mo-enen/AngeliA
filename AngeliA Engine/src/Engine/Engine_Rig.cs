@@ -238,6 +238,11 @@ public partial class Engine {
 				calling.RequireRemoteSetting(
 					LightingSystem.SETTING_IN_GAME_DAYTIME, (int)(gameEDT.ForcingInGameDaytime * 1000)
 				);
+			} else if (gameEDT.ForcingInGameDaytime < -1.001f) {
+				gameEDT.ForcingInGameDaytime = -1f;
+				calling.RequireRemoteSetting(
+					LightingSystem.SETTING_FREE_IN_GAME_DAYTIME, 0
+				);
 			}
 			calling.RequireRemoteSetting(
 				LightingSystem.SETTING_PIXEL_STYLE, currentInfo.LightMap_PixelStyle

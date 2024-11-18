@@ -98,6 +98,9 @@ public static class Stage {
 		1024,	//ITEM
 		128,	//DECORATE
 	];
+	public const int SETTING_SET_VIEW_X = 92173623_5;
+	public const int SETTING_SET_VIEW_Y = 92173623_6;
+	public const int SETTING_SET_VIEW_H = 92173623_7;
 
 	// Api
 	public static int[] EntityCounts { get; private set; } = new int[EntityLayer.COUNT];
@@ -223,6 +226,32 @@ public static class Stage {
 
 	[OnGameQuitting(-1024)]
 	internal static void OnGameQuitting () => DespawnAllNonUiEntities(refreshImmediately: true);
+
+
+	[OnRemoteSettingChanged]
+	internal static void OnRemoteSettingChanged (int id, int data) {
+		switch (id) {
+			case SETTING_SET_VIEW_X: {
+				var rect = ViewRect;
+				rect.x = data;
+				SetViewRectImmediately(rect);
+				break;
+			}
+			case SETTING_SET_VIEW_Y: {
+				var rect = ViewRect;
+				rect.y = data;
+				SetViewRectImmediately(rect);
+				break;
+			}
+			case SETTING_SET_VIEW_H: {
+				var rect = ViewRect;
+				rect.width = Game.GetViewWidthFromViewHeight(data);
+				rect.height = data;
+				SetViewRectImmediately(rect);
+				break;
+			}
+		}
+	}
 
 
 	[OnGameUpdate(-4096)]

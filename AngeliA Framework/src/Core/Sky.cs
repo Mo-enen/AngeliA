@@ -88,9 +88,11 @@ public static class Sky {
 
 
 	public static void SetInGameDaytime (float newDaytime01) {
-		InGameDaytime01 = ForceInGameDaytimeValue = newDaytime01.Clamp01();
 		if (newDaytime01 < 0f) {
+			ForceInGameDaytimeValue = -1f;
 			InGameDaytime01 = GetInGameDaytimeFromRealTime();
+		} else {
+			InGameDaytime01 = ForceInGameDaytimeValue = newDaytime01.Clamp01();
 		}
 		RefreshSkyTintFromDateTime();
 		DaylightTintColor = DaylightTint != null ? DaylightTint.Evaluate(InGameDaytime01) : Color32.WHITE;

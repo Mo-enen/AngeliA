@@ -20,7 +20,6 @@ public class WorldPathPool : Dictionary<Int3, string> {
 		if (string.IsNullOrEmpty(MapRoot)) return false;
 		if (TryGetValue(worldPos, out path)) return true;
 		path = Util.CombinePaths(MapRoot, GetWorldNameFromPosition(worldPos.x, worldPos.y, worldPos.z));
-		//if (!Util.FileExists(path)) path = null;
 		Add(worldPos, path);
 		return true;
 	}

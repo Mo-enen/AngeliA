@@ -1,8 +1,7 @@
-﻿using System.Reflection;
+﻿using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
-using System.Linq;
 
 namespace AngeliaEngine;
 
@@ -33,6 +32,8 @@ public class GameEditor : WindowUI {
 
 
 	// Const
+	private const string CAMERA_SLOT_FILE_NAME = "CameraSlot";
+
 	private static readonly SpriteCode BTN_COLLIDER = "Engine.Game.Collider";
 	private static readonly SpriteCode BTN_ENTITY_CLICKER = "Engine.Game.Entity";
 	private static readonly SpriteCode BTN_PROFILER = "Engine.Game.Profiler";
@@ -75,14 +76,18 @@ public class GameEditor : WindowUI {
 	public bool? RequireOpenOrCloseMovementPanel { get; set; } = null;
 	public int ToolbarWidth => Unify(40);
 	public bool LightMapSettingChanged { get; set; } = false;
-	public float ForcingInGameDaytime { get; private set; } = -1f;
+	public float ForcingInGameDaytime { get; set; } = -1f;
 
 	// Data
 	private static readonly Cell[] CacheForPanelSlice = new Cell[9];
 	private readonly ProfilerUiBarData[] RenderingUsages = new ProfilerUiBarData[RenderLayer.COUNT];
 	private readonly ProfilerUiBarData[] EntityUsages = new ProfilerUiBarData[EntityLayer.COUNT];
+	private readonly List<(IRect rect, int z)> BuiltInCameraSlots = [];
+	private readonly List<(IRect rect, int z)> UserCameraSlots = [];
 	private Project CurrentProject = null;
 	private PanelType CurrentPanel = PanelType.None;
+	private int CameraPanelScrollY = 0;
+	private bool CameraSlotDirty = false;
 
 
 	#endregion
@@ -444,7 +449,7 @@ public class GameEditor : WindowUI {
 			info.LightMap_BackgroundTint = 0.5f;
 			info.LightMap_LevelIlluminateRemain = 0.3f;
 			LightMapSettingChanged = true;
-			ForcingInGameDaytime = -1f;
+			ForcingInGameDaytime = -2f;
 		}
 		rect.SlideDown(padding);
 
@@ -460,31 +465,64 @@ public class GameEditor : WindowUI {
 
 	private void DrawCameraPanel (ref IRect panelRect) {
 
-		// Min Width
-		int minWidth = Unify(396);
-		if (panelRect.width < minWidth) {
-			panelRect.xMin -= minWidth - panelRect.width;
+		int toolbarSize = Unify(64);
+		int scrollbarWidth = Unify(12);
+		int panelPadding = Unify(6);
+		int padding = Unify(4);
+		int itemSize = Unify(64);
+		panelRect.xMin = panelRect.xMax - Unify(256);
+		panelRect.yMin = panelRect.yMax - Unify(720);
+		var oldPanelRect = panelRect;
+		var toolbarRect = panelRect.EdgeUp(toolbarSize);
+		panelRect = panelRect.Shrink(panelPadding, panelPadding + scrollbarWidth, panelPadding, panelPadding + toolbarSize);
+		var slots = CurrentProject.Universe.Info.UseProceduralMap && HavingGamePlay ? UserCameraSlots : BuiltInCameraSlots;
+
+		// Toolbar
+		if (GUI.Button(toolbarRect, 0)) {
+			CameraSlotDirty = true;
+			AddCurrentPosToCameraSlot();
 		}
 
 		// Content
-		int panelPadding = Unify(12);
-		int padding = GUI.FieldPadding;
-		int toolbarSize = Unify(28);
-		int top = panelRect.y;
-		var rect = new IRect(panelRect.x, panelRect.y - toolbarSize, panelRect.width, toolbarSize);
-		rect = rect.Shrink(panelPadding, panelPadding, 0, 0);
+		int column = (panelRect.width / itemSize).GreaterOrEquel(1);
+		const int EXTRA_ROW = 2;
+		int row = slots.Count.CeilDivide(column);
+		int pageRow = panelRect.height.CeilDivide(column);
+		int maxRow = (row + EXTRA_ROW - pageRow).GreaterOrEquel(0);
+		int deletingSlotIndex = -1;
+		using var scroll = new GUIVerticalScrollScope(panelRect, CameraPanelScrollY, 0, maxRow);
+		CameraPanelScrollY = scroll.PositionY.Clamp(0, maxRow);
+
+		for (int i = CameraPanelScrollY * column; i < slots.Count; i++) {
+			var rect = new IRect(
+				panelRect.x + (i % column) * itemSize,
+				panelRect.yMax - (i / column) * itemSize - itemSize,
+				itemSize, itemSize
+			);
 
 
 
-		rect.SlideDown();
+			Renderer.DrawPixel(rect.Shrink(padding), Color32.GREY_128);
 
+
+
+		}
+
+		// Scrollbar
 
 
 
 
 		// Final
-		panelRect.height = top - rect.yMax;
-		panelRect.y -= panelRect.height;
+		if (deletingSlotIndex >= 0) {
+			CameraSlotDirty = true;
+			slots.RemoveAt(deletingSlotIndex);
+		}
+		if (CameraSlotDirty) {
+			CameraSlotDirty = false;
+			SaveCameraSlotToFile();
+		}
+		panelRect = oldPanelRect;
 	}
 
 
@@ -496,7 +534,11 @@ public class GameEditor : WindowUI {
 	#region --- API ---
 
 
-	public void SetCurrentProject (Project currentProject) => CurrentProject = currentProject;
+	public void SetCurrentProject (Project currentProject) {
+		CurrentProject = currentProject;
+		CameraSlotDirty = false;
+		LoadCameraSlotsFromFile();
+	}
 
 
 	public void UpdateUsageData (int[] renderUsages, int[] renderCapacities, int[] entityUsages, int[] entityCapacities) {
@@ -522,6 +564,77 @@ public class GameEditor : WindowUI {
 			EntityUsages[i].Value = entityUsages[i];
 			EntityUsages[i].Capacity = entityCapacities[i];
 		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private void LoadCameraSlotsFromFile () {
+
+		BuiltInCameraSlots.Clear();
+		UserCameraSlots.Clear();
+
+		if (CurrentProject == null) return;
+
+		string builtInPath = Util.CombinePaths(CurrentProject.Universe.BuiltInMapRoot, CAMERA_SLOT_FILE_NAME);
+		string userPath = Util.CombinePaths(CurrentProject.Universe.SlotUserMapRoot, CAMERA_SLOT_FILE_NAME);
+
+		LoadFromFile(BuiltInCameraSlots, builtInPath);
+		LoadFromFile(UserCameraSlots, userPath);
+
+		// Func
+		static void LoadFromFile (List<(IRect, int)> list, string filePath) {
+			if (!Util.FileExists(filePath)) return;
+			using var stream = File.Open(filePath, FileMode.Open);
+			using var reader = new BinaryReader(stream);
+			while (reader.NotEnd()) {
+				int x = reader.ReadInt32();
+				int y = reader.ReadInt32();
+				int w = reader.ReadInt32();
+				int h = reader.ReadInt32();
+				int z = reader.ReadInt32();
+				list.Add((new IRect(x, y, w, h), z));
+			}
+		}
+	}
+
+
+	private void SaveCameraSlotToFile () {
+
+		if (CurrentProject == null) return;
+
+		string builtInPath = Util.CombinePaths(CurrentProject.Universe.BuiltInMapRoot, CAMERA_SLOT_FILE_NAME);
+		string userPath = Util.CombinePaths(CurrentProject.Universe.SlotUserMapRoot, CAMERA_SLOT_FILE_NAME);
+
+		SaveToFile(BuiltInCameraSlots, builtInPath);
+		SaveToFile(UserCameraSlots, userPath);
+
+		// Func
+		static void SaveToFile (List<(IRect, int)> list, string filePath) {
+			Util.CreateFolder(Util.GetParentPath(filePath));
+			using var stream = File.Open(filePath, FileMode.CreateNew);
+			using var writer = new BinaryWriter(stream);
+			foreach (var (rect, z) in list) {
+				writer.Write(rect.x);
+				writer.Write(rect.y);
+				writer.Write(rect.width);
+				writer.Write(rect.height);
+				writer.Write(z);
+			}
+		}
+	}
+
+
+	private void AddCurrentPosToCameraSlot () {
+
+
+
 	}
 
 
