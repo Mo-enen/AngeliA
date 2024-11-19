@@ -203,6 +203,10 @@ public sealed partial class MapEditor : WindowUI {
 				Instance.TargetViewRect.y = data;
 				Instance.ViewRect.y = data;
 				break;
+			case Stage.SETTING_SET_VIEW_Z:
+				if (Instance == null) break;
+				Instance.SetViewZ(data);
+				break;
 			case Stage.SETTING_SET_VIEW_H:
 				if (Instance == null) break;
 				int width = Game.GetViewWidthFromViewHeight(data);

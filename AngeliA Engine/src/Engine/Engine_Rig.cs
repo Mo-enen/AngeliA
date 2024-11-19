@@ -160,41 +160,149 @@ public partial class Engine {
 	}
 
 
-	private bool OnGUI_Calling () {
+	private void OnGUI_RiggedGame () {
 
 		bool openingGameEditor = CurrentWindow is GameEditor;
 		bool currentWindowRequireRigGame = openingGameEditor || Game.GlobalFrame <= ForceRigGameRunInBackgroundFrame;
+
+		// Quit if Not Game Project
+		if (CurrentProject != null && CurrentProject.Universe.Info.ProjectType != ProjectType.Game) {
+			if (Transceiver.RigProcessRunning) {
+				Transceiver.Abort();
+			}
+			return;
+		}
+
+		ConsoleWindow.Instance.HaveRunningRigGame = Transceiver.RigProcessRunning;
+
+		if (HasCompileError) return;
+
+		bool requireRigGameRender = openingGameEditor;
+
 		var gameEDT = GameEditor.Instance;
-		var calling = Transceiver.CallingMessage;
+		var resp = Transceiver.RespondMessage;
 		var console = ConsoleWindow.Instance;
 		var lanEditor = LanguageEditor.Instance;
 		var currentUniverse = CurrentProject?.Universe;
-		var currentInfo = currentUniverse?.Info;
-		bool requireRigInput = openingGameEditor;
 		bool runningGame = !gameEDT.FrameDebugging || gameEDT.RequireNextFrame;
+		int sheetIndex = RenderingSheetIndex;
+		bool ignoreInGameGizmos = gameEDT.IgnoreInGameGizmos;
 
+		if (console.RequireCodeAnalysis != 0 || lanEditor.RequireAddKeysForAllLanguageCode) {
+			ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
+		}
+		gameEDT.ThumbnailSheetIndex = sheetIndex;
+
+		Transceiver.LogWithPrefix = EngineSetting.AddPrefixMarkForMessageFromGame.Value;
+
+		// Call
+		bool called = OnGUI_Calling();
+
+		// Respond
+		bool buildingProjectInBackground = EngineUtil.BuildingProjectInBackground;
+		NoGameRunningFrameCount = Transceiver.RigProcessRunning || buildingProjectInBackground ? 0 : NoGameRunningFrameCount + 1;
+
+		if (CurrentProject == null) {
+			if (Transceiver.RigProcessRunning) {
+				Transceiver.Abort();
+			}
+			return;
+		}
+
+		// Abort when Building
+		if (Transceiver.RigProcessRunning && buildingProjectInBackground) {
+			Transceiver.Abort();
+		}
+
+		if (buildingProjectInBackground) {
+			// Building in Background
+			if (currentWindowRequireRigGame && requireRigGameRender) {
+				Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, true, ignoreInGameGizmos);
+			}
+		} else if (Transceiver.RigProcessRunning) {
+			// Rig Running
+			if (called) {
+				if (runningGame) {
+					// Get Respond
+					Transceiver.Respond(
+						currentUniverse, sheetIndex,
+						openingGameEditor,
+						!requireRigGameRender,
+						ignoreInGameGizmos
+					);
+					gameEDT.UpdateUsageData(resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities);
+					gameEDT.HavingGamePlay = resp.GamePlaying;
+					if (openingGameEditor) {
+						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
+					}
+				} else if (requireRigGameRender) {
+					Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, false, ignoreInGameGizmos);
+				}
+			}
+		} else if (
+			(RigGameFailToStartCount < 16 && Game.GlobalFrame > RigGameFailToStartFrame + 30) ||
+			Game.GlobalFrame > RigGameFailToStartFrame + 6000
+		) {
+			// No Rig Game Running
+			int code = Transceiver.Start(
+				CurrentProject.BuildPath,
+				CurrentProject.UniversePath
+			);
+			if (code == 0) {
+				// Start
+				RigGameFailToStartCount = 0;
+				RigGameFailToStartFrame = int.MinValue;
+				SettingWindow.Instance.MapSettingChanged = true;
+				GameEditor.Instance.LightMapSettingChanged = true;
+			} else {
+				// Fail to Start
+				RigGameFailToStartFrame = Game.GlobalFrame;
+				RigGameFailToStartCount++;
+			}
+			if (currentWindowRequireRigGame && requireRigGameRender) {
+				// Still Render Last Image
+				Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, true, ignoreInGameGizmos);
+			}
+		}
+
+	}
+
+
+	private bool OnGUI_Calling () {
+
+		var gameEDT = GameEditor.Instance;
+		bool runningGame = !gameEDT.FrameDebugging || gameEDT.RequireNextFrame;
 		gameEDT.RequireNextFrame = false;
 
 		if (
 			CurrentProject == null ||
 			EngineUtil.BuildingProjectInBackground ||
 			!Transceiver.RigProcessRunning ||
-			!currentWindowRequireRigGame
+			(CurrentWindow is not GameEditor && Game.GlobalFrame > ForceRigGameRunInBackgroundFrame)
 		) return false;
 
-		if (Input.AnyMouseButtonDown) {
+		var console = ConsoleWindow.Instance;
+		var lanEditor = LanguageEditor.Instance;
+		var currentUniverse = CurrentProject?.Universe;
+		var currentInfo = currentUniverse?.Info;
+		bool requireRigInput = CurrentWindow is GameEditor;
+		var calling = Transceiver.CallingMessage;
+
+		// Ignore Input Check
+		if (Input.AnyMouseButtonDown || Input.MouseWheelDelta != 0) {
 			IgnoreInputForRig = IgnoreInputForRig ||
 				!WindowUI.WindowRect.Contains(Input.MouseGlobalPosition) ||
 				gameEDT.PanelRect.MouseInside() ||
 				gameEDT.ToolbarRect.MouseInside();
 		}
-		if (!Input.AnyMouseButtonHolding) {
+		if (!Input.AnyMouseButtonHolding && Input.MouseWheelDelta == 0) {
 			IgnoreInputForRig = false;
 		}
 		if (Input.IgnoringMouseInput) {
 			IgnoreInputForRig = true;
 		}
 
+		// Game Editor Toolbox
 		if (gameEDT.DrawCollider) {
 			calling.RequireDrawColliderGizmos();
 		}
@@ -204,6 +312,14 @@ public partial class Engine {
 		if (gameEDT.RequireOpenOrCloseMovementPanel.HasValue) {
 			calling.RequireRemoteSetting(MovementEditor.SETTING_PANEL, gameEDT.RequireOpenOrCloseMovementPanel.Value);
 			gameEDT.RequireOpenOrCloseMovementPanel = null;
+		}
+		if (gameEDT.RequireSetViewPos.HasValue) {
+			var pos = gameEDT.RequireSetViewPos.Value;
+			calling.RequireRemoteSetting(Stage.SETTING_SET_VIEW_X, pos.x);
+			calling.RequireRemoteSetting(Stage.SETTING_SET_VIEW_Y, pos.y);
+			calling.RequireRemoteSetting(Stage.SETTING_SET_VIEW_Z, pos.z);
+			calling.RequireRemoteSetting(Stage.SETTING_SET_VIEW_H, pos.w);
+			gameEDT.RequireSetViewPos = null;
 		}
 
 		// Tool Command
@@ -281,111 +397,6 @@ public partial class Engine {
 		}
 
 		return true;
-	}
-
-
-	private void OnGUI_RiggedGame () {
-
-		bool openingGameEditor = CurrentWindow is GameEditor;
-		bool currentWindowRequireRigGame = openingGameEditor || Game.GlobalFrame <= ForceRigGameRunInBackgroundFrame;
-
-		// Quit if Not Game Project
-		if (CurrentProject != null && CurrentProject.Universe.Info.ProjectType != ProjectType.Game) {
-			if (Transceiver.RigProcessRunning) {
-				Transceiver.Abort();
-			}
-			return;
-		}
-
-		ConsoleWindow.Instance.HaveRunningRigGame = Transceiver.RigProcessRunning;
-
-		if (HasCompileError) return;
-
-		bool requireRigGameRender = openingGameEditor;
-
-		var gameEDT = GameEditor.Instance;
-		var resp = Transceiver.RespondMessage;
-		var console = ConsoleWindow.Instance;
-		var lanEditor = LanguageEditor.Instance;
-		var currentUniverse = CurrentProject?.Universe;
-		bool runningGame = !gameEDT.FrameDebugging || gameEDT.RequireNextFrame;
-
-		if (console.RequireCodeAnalysis != 0 || lanEditor.RequireAddKeysForAllLanguageCode) {
-			ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
-		}
-
-		Transceiver.LogWithPrefix = EngineSetting.AddPrefixMarkForMessageFromGame.Value;
-
-		// Call
-		bool called = OnGUI_Calling();
-
-		// Respond
-		bool buildingProjectInBackground = EngineUtil.BuildingProjectInBackground;
-		NoGameRunningFrameCount = Transceiver.RigProcessRunning || buildingProjectInBackground ? 0 : NoGameRunningFrameCount + 1;
-
-		if (CurrentProject == null) {
-			if (Transceiver.RigProcessRunning) {
-				Transceiver.Abort();
-			}
-			return;
-		}
-
-		// Abort when Building
-		if (Transceiver.RigProcessRunning && buildingProjectInBackground) {
-			Transceiver.Abort();
-		}
-
-		int sheetIndex = RenderingSheetIndex;
-		if (buildingProjectInBackground) {
-			// Building in Background
-			if (currentWindowRequireRigGame && requireRigGameRender) {
-				Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, coverWithBlackTint: true);
-			}
-		} else if (Transceiver.RigProcessRunning) {
-			// Rig Running
-			if (called) {
-				if (runningGame) {
-					// Get Respond
-					Transceiver.Respond(
-						currentUniverse, sheetIndex,
-						openingGameEditor,
-						!requireRigGameRender
-					);
-					gameEDT.UpdateUsageData(resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities);
-					gameEDT.HavingGamePlay = resp.GamePlaying;
-					if (openingGameEditor) {
-						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
-					}
-				} else if (requireRigGameRender) {
-					Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex);
-				}
-			}
-		} else if (
-			(RigGameFailToStartCount < 16 && Game.GlobalFrame > RigGameFailToStartFrame + 30) ||
-			Game.GlobalFrame > RigGameFailToStartFrame + 6000
-		) {
-			// No Rig Game Running
-			int code = Transceiver.Start(
-				CurrentProject.BuildPath,
-				CurrentProject.UniversePath
-			);
-			if (code == 0) {
-				// Start
-				RigGameFailToStartCount = 0;
-				RigGameFailToStartFrame = int.MinValue;
-				SettingWindow.Instance.MapSettingChanged = true;
-				GameEditor.Instance.LightMapSettingChanged = true;
-			} else {
-				// Fail to Start
-				RigGameFailToStartFrame = Game.GlobalFrame;
-				RigGameFailToStartCount++;
-			}
-			if (currentWindowRequireRigGame && requireRigGameRender) {
-				// Still Render Last Image
-				Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, coverWithBlackTint: true);
-			}
-		}
-
 	}
 
 

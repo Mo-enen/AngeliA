@@ -260,7 +260,7 @@ public class RigRespondMessage {
 	}
 
 
-	public void ApplyRenderingToEngine (Universe universe, int sheetIndex, int leftPadding, int rightPadding) {
+	public void ApplyRenderingToEngine (Universe universe, int sheetIndex, int leftPadding, int rightPadding, bool ignoreInGameGizmos) {
 
 		// View
 		var info = universe.Info;
@@ -276,27 +276,29 @@ public class RigRespondMessage {
 		int paddingShiftX = (leftPadding - rightPadding) / 2;
 
 		// Gizmos Rect
-		for (int i = 0; i < RequireGizmosRectCount; i++) {
-			var data = RequireGizmosRects[i];
-			var rect = data.Rect;
-			rect.x = data.Rect.x + paddingShiftX;
-			if (data.ColorTL == data.ColorTR && data.ColorBL == data.ColorBR) {
-				if (data.ColorTL == data.ColorBL) {
-					Game.DrawGizmosRect(rect, data.ColorTL);
+		if (!ignoreInGameGizmos) {
+			for (int i = 0; i < RequireGizmosRectCount; i++) {
+				var data = RequireGizmosRects[i];
+				var rect = data.Rect;
+				rect.x = data.Rect.x + paddingShiftX;
+				if (data.ColorTL == data.ColorTR && data.ColorBL == data.ColorBR) {
+					if (data.ColorTL == data.ColorBL) {
+						Game.DrawGizmosRect(rect, data.ColorTL);
+					} else {
+						Game.DrawGizmosRect(rect, data.ColorTL, data.ColorBL);
+					}
 				} else {
-					Game.DrawGizmosRect(rect, data.ColorTL, data.ColorBL);
+					Game.DrawGizmosRect(rect, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
 				}
-			} else {
-				Game.DrawGizmosRect(rect, data.ColorTL, data.ColorTR, data.ColorBL, data.ColorBR);
 			}
-		}
 
-		// Gizmos Line
-		for (int i = 0; i < RequireGizmosLineCount; i++) {
-			var data = RequireGizmosLines[i];
-			int startX = data.Start.x + paddingShiftX;
-			int endX = data.End.x + paddingShiftX;
-			Game.DrawGizmosLine(startX, data.Start.y, endX, data.End.y, data.Thickness, data.Color);
+			// Gizmos Line
+			for (int i = 0; i < RequireGizmosLineCount; i++) {
+				var data = RequireGizmosLines[i];
+				int startX = data.Start.x + paddingShiftX;
+				int endX = data.End.x + paddingShiftX;
+				Game.DrawGizmosLine(startX, data.Start.y, endX, data.End.y, data.Thickness, data.Color);
+			}
 		}
 
 		// Doodle

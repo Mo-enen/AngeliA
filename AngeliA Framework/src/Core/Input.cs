@@ -696,6 +696,7 @@ public static class Input {
 		2 => MouseMidState.Ignored,
 		_ => false,
 	};
+	public static bool KeyboardKeyUsed (KeyboardKey key) => KeyboardStateMap.TryGetValue(key, out var state) && state.Ignored;
 
 
 	public static void UseGameKey (Gamekey key) => GamekeyStateMap[key].Ignored = true;
@@ -721,11 +722,13 @@ public static class Input {
 		MouseLeftState.Ignored = true;
 		MouseRightState.Ignored = true;
 		MouseMidState.Ignored = true;
+		_MouseWheelDelta = 0;
 	}
 	public static void UseMouseKey (int index) {
 		if (index == 0 && MouseLeftState.Holding) MouseLeftState.Ignored = true;
 		if (index == 1 && MouseRightState.Holding) MouseRightState.Ignored = true;
 		if (index == 2 && MouseMidState.Holding) MouseMidState.Ignored = true;
+		if (index == 3) _MouseWheelDelta = 0;
 	}
 
 

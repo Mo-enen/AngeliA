@@ -20,7 +20,7 @@ public class GameEditor : WindowUI {
 	}
 
 
-	private enum PanelType { None, Profiler, Movement, Lighting, Camera, }
+	private enum PanelType { None, Profiler, Movement, Lighting, Location, }
 
 
 	#endregion
@@ -32,7 +32,7 @@ public class GameEditor : WindowUI {
 
 
 	// Const
-	private const string CAMERA_SLOT_FILE_NAME = "CameraSlot";
+	private const string LOCATION_SLOT_FILE_NAME = "LocationSlot";
 
 	private static readonly SpriteCode BTN_COLLIDER = "Engine.Game.Collider";
 	private static readonly SpriteCode BTN_ENTITY_CLICKER = "Engine.Game.Entity";
@@ -42,7 +42,7 @@ public class GameEditor : WindowUI {
 	private static readonly SpriteCode BTN_PAUSE = "Engine.Game.Pause";
 	private static readonly SpriteCode BTN_MOVEMENT = "Engine.Game.Movement";
 	private static readonly SpriteCode BTN_LIGHTING = "Engine.Game.Lighting";
-	private static readonly SpriteCode BTN_CAMERA = "Engine.Game.Camera";
+	private static readonly SpriteCode BTN_LOCATION = "Engine.Game.Location";
 	private static readonly SpriteCode TOOLBAR_BG = "Engine.Game.Toolbar";
 	private static readonly SpriteCode PANEL_BG = "Engine.Game.PanelBG";
 
@@ -52,7 +52,7 @@ public class GameEditor : WindowUI {
 	private static readonly LanguageCode TIP_ENTITY_CLICER = ("Engine.Game.Tip.EntityClicker", "Entity Debugger");
 	private static readonly LanguageCode TIP_COLLIDER = ("Engine.Game.Tip.Collider", "Collider");
 	private static readonly LanguageCode TIP_LIGHTING = ("Engine.Game.Tip.Lighting", "Lighting System");
-	private static readonly LanguageCode TIP_CAMERA = ("Engine.Game.Tip.Camera", "Camera Position");
+	private static readonly LanguageCode TIP_LOCATION = ("Engine.Game.Tip.Location", "View Positions");
 	private static readonly LanguageCode TIP_MOVEMENT = ("Engine.Game.Tip.Movement", "Movement System");
 	private static readonly LanguageCode LABEL_DAYTIME = ("UI.RigEditor.Daytime", "In-Game Daytime");
 	private static readonly LanguageCode LABEL_PIXEL_STYLE = ("UI.RigEditor.PixelStyle", "Use Pixel Style");
@@ -62,6 +62,7 @@ public class GameEditor : WindowUI {
 	private static readonly LanguageCode LABEL_AIR_ILLU_NIGHT = ("UI.RigEditor.AirIlluNight", "Air Illuminance (Night)");
 	private static readonly LanguageCode LABEL_BG_TINT = ("UI.RigEditor.BgTint", "Background Tint");
 	private static readonly LanguageCode LABEL_LV_REMAIN = ("UI.RigEditor.LvRemain", "Solid Illuminate Remain");
+	private static readonly LanguageCode LABEL_ADD_LOCATION_SLOT = ("UI.RigEditor.AddLocationSlot", "+ New Location");
 
 	// Api
 	public static GameEditor Instance { get; private set; }
@@ -74,20 +75,26 @@ public class GameEditor : WindowUI {
 	public bool RequireNextFrame { get; set; } = false;
 	public bool HavingGamePlay { get; set; } = false;
 	public bool? RequireOpenOrCloseMovementPanel { get; set; } = null;
+	public Int4? RequireSetViewPos { get; set; } = null;
 	public int ToolbarWidth => Unify(40);
 	public bool LightMapSettingChanged { get; set; } = false;
 	public float ForcingInGameDaytime { get; set; } = -1f;
+	public int ThumbnailSheetIndex { get; set; } = -1;
+	public bool IgnoreInGameGizmos => CurrentPanel == PanelType.Location && HavingGamePlay;
 
 	// Data
 	private static readonly Cell[] CacheForPanelSlice = new Cell[9];
+	private static readonly GUIStyle NewLocationSlotButton = new(GUI.Skin.Button) {
+		CharSize = 16,
+	};
 	private readonly ProfilerUiBarData[] RenderingUsages = new ProfilerUiBarData[RenderLayer.COUNT];
 	private readonly ProfilerUiBarData[] EntityUsages = new ProfilerUiBarData[EntityLayer.COUNT];
-	private readonly List<(IRect rect, int z)> BuiltInCameraSlots = [];
-	private readonly List<(IRect rect, int z)> UserCameraSlots = [];
+	private readonly List<(IRect rect, int z)> LocationSlots = [];
 	private Project CurrentProject = null;
 	private PanelType CurrentPanel = PanelType.None;
-	private int CameraPanelScrollY = 0;
-	private bool CameraSlotDirty = false;
+	private int LocationPanelScrollY = 0;
+	private bool LocationSlotDirty = false;
+	private WorldStream LocationThumbnailStream = null;
 
 
 	#endregion
@@ -139,7 +146,7 @@ public class GameEditor : WindowUI {
 			EntityClickerOn = false;
 			FrameDebugging = false;
 			RequireNextFrame = false;
-			CurrentPanel = CurrentPanel != PanelType.Profiler && CurrentPanel != PanelType.Camera ? PanelType.None : CurrentPanel;
+			CurrentPanel = CurrentPanel != PanelType.Profiler && CurrentPanel != PanelType.Location ? PanelType.None : CurrentPanel;
 		}
 
 		using var _ = new UILayerScope();
@@ -148,6 +155,10 @@ public class GameEditor : WindowUI {
 		int buttonSize = ToolbarWidth - padding * 2;
 		var barRect = ToolbarRect = WindowRect.EdgeRight(buttonSize + padding * 2);
 		var oldPanel = CurrentPanel;
+		bool allowLocationPanel = !HavingGamePlay || !CurrentProject.Universe.Info.UseProceduralMap;
+		if (!allowLocationPanel && CurrentPanel == PanelType.Location) {
+			CurrentPanel = PanelType.None;
+		}
 
 		// Draw Panels
 		if (CurrentPanel != PanelType.None) {
@@ -164,7 +175,7 @@ public class GameEditor : WindowUI {
 				case PanelType.Profiler: DrawProfilerPanel(ref panelRect); break;
 				case PanelType.Movement: break;
 				case PanelType.Lighting: DrawLightingPanel(ref panelRect); break;
-				case PanelType.Camera: DrawCameraPanel(ref panelRect); break;
+				case PanelType.Location: DrawLocationPanel(ref panelRect); break;
 			}
 
 			if (bgPainted) {
@@ -214,16 +225,18 @@ public class GameEditor : WindowUI {
 		}
 		rect.SlideDown(padding);
 
-		// Camera
-		isOn = CurrentPanel == PanelType.Camera;
-		newIsOn = GUI.IconToggle(rect, isOn, BTN_CAMERA);
-		if (isOn != newIsOn) {
-			CurrentPanel = newIsOn ? PanelType.Camera : PanelType.None;
+		// Location
+		if (allowLocationPanel) {
+			isOn = CurrentPanel == PanelType.Location;
+			newIsOn = GUI.IconToggle(rect, isOn, BTN_LOCATION);
+			if (isOn != newIsOn) {
+				CurrentPanel = newIsOn ? PanelType.Location : PanelType.None;
+			}
+			if (rect.MouseInside()) {
+				GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_LOCATION, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+			}
+			rect.SlideDown(padding);
 		}
-		if (rect.MouseInside()) {
-			GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_CAMERA, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
-		}
-		rect.SlideDown(padding);
 
 		if (HavingGamePlay) {
 			// Movement
@@ -295,6 +308,11 @@ public class GameEditor : WindowUI {
 		// Require Open/Close Movement 
 		if ((oldPanel == PanelType.Movement) != (CurrentPanel == PanelType.Movement)) {
 			RequireOpenOrCloseMovementPanel = CurrentPanel == PanelType.Movement;
+		}
+
+		// Click Outside to Close Panel
+		if (CurrentPanel == PanelType.Location && Input.MouseLeftButtonDown && !PanelRect.MouseInside() && !ToolbarRect.MouseInside()) {
+			CurrentPanel = PanelType.None;
 		}
 
 	}
@@ -463,66 +481,128 @@ public class GameEditor : WindowUI {
 	}
 
 
-	private void DrawCameraPanel (ref IRect panelRect) {
+	private void DrawLocationPanel (ref IRect panelRect) {
 
-		int toolbarSize = Unify(64);
+		Game.ForceGizmosOnTopOfUI(1);
+		using var _ = new SheetIndexScope(ThumbnailSheetIndex);
+
+		int toolbarSize = Unify(56);
 		int scrollbarWidth = Unify(12);
+		int panelPaddingLarge = Unify(22);
 		int panelPadding = Unify(6);
 		int padding = Unify(4);
-		int itemSize = Unify(64);
+		int thumbnailPadding = Unify(4);
+		int itemSize = Unify(72);
 		panelRect.xMin = panelRect.xMax - Unify(256);
-		panelRect.yMin = panelRect.yMax - Unify(720);
+		panelRect.height = Unify(600);
+		panelRect.y -= panelRect.height;
 		var oldPanelRect = panelRect;
-		var toolbarRect = panelRect.EdgeUp(toolbarSize);
+		var toolbarRect = panelRect.EdgeUp(toolbarSize).Shrink(panelPaddingLarge, panelPaddingLarge, panelPadding, panelPadding);
 		panelRect = panelRect.Shrink(panelPadding, panelPadding + scrollbarWidth, panelPadding, panelPadding + toolbarSize);
-		var slots = CurrentProject.Universe.Info.UseProceduralMap && HavingGamePlay ? UserCameraSlots : BuiltInCameraSlots;
 
 		// Toolbar
-		if (GUI.Button(toolbarRect, 0)) {
-			CameraSlotDirty = true;
-			AddCurrentPosToCameraSlot();
+		var unitViewRect = Stage.ViewRect.Fit(1, 1).ToUnit();
+		if (GUI.Button(toolbarRect, LABEL_ADD_LOCATION_SLOT, out var state, NewLocationSlotButton)) {
+			LocationSlotDirty = true;
+			LocationSlots.Add((unitViewRect, Stage.ViewZ));
+			LocationPanelScrollY = int.MaxValue / 2;
 		}
+		var toolbarConRect = GUI.GetContentRect(toolbarRect, NewLocationSlotButton, state);
+		DrawThumbnail(
+			toolbarConRect.Shrink(thumbnailPadding / 2),
+			LocationThumbnailStream, unitViewRect, Stage.ViewZ, 0, 500, toolbarRect
+		);
 
 		// Content
 		int column = (panelRect.width / itemSize).GreaterOrEquel(1);
 		const int EXTRA_ROW = 2;
-		int row = slots.Count.CeilDivide(column);
-		int pageRow = panelRect.height.CeilDivide(column);
+		int row = LocationSlots.Count.CeilDivide(column);
+		int pageRow = panelRect.height.CeilDivide(itemSize);
 		int maxRow = (row + EXTRA_ROW - pageRow).GreaterOrEquel(0);
 		int deletingSlotIndex = -1;
-		using var scroll = new GUIVerticalScrollScope(panelRect, CameraPanelScrollY, 0, maxRow);
-		CameraPanelScrollY = scroll.PositionY.Clamp(0, maxRow);
+		int offsetX = (panelRect.width - itemSize * column - scrollbarWidth) / 2;
+		using (var scroll = new GUIVerticalScrollScope(panelRect, LocationPanelScrollY * itemSize, 0, maxRow * itemSize)) {
 
-		for (int i = CameraPanelScrollY * column; i < slots.Count; i++) {
-			var rect = new IRect(
-				panelRect.x + (i % column) * itemSize,
-				panelRect.yMax - (i / column) * itemSize - itemSize,
-				itemSize, itemSize
-			);
+			LocationPanelScrollY = (scroll.PositionY / itemSize).Clamp(0, maxRow);
+
+			for (int i = LocationPanelScrollY * column; i < LocationSlots.Count; i++) {
+
+				int currentColumn = i % column;
+				int currentRow = i / column;
+				if (currentRow >= LocationPanelScrollY + pageRow) break;
+
+				var rect = new IRect(
+					panelRect.x + currentColumn * itemSize + offsetX,
+					panelRect.yMax - currentRow * itemSize - itemSize,
+					itemSize, itemSize
+				);
+				var (viewRect, z) = LocationSlots[i];
+
+				// Button
+				if (GUI.Button(rect.Shrink(padding), 0, out var _state, GUI.Skin.DarkButton)) {
 
 
+				}
+				var conRect = GUI.GetContentRect(rect.Shrink(padding), GUI.Skin.DarkButton, _state);
 
-			Renderer.DrawPixel(rect.Shrink(padding), Color32.GREY_128);
+				// Thumbnail
+				DrawThumbnail(conRect.Shrink(thumbnailPadding).Shift(0, LocationPanelScrollY * itemSize), LocationThumbnailStream, viewRect, z, 500, 500, panelRect);
 
-
-
+			}
 		}
 
 		// Scrollbar
-
-
-
+		LocationPanelScrollY = GUI.ScrollBar(
+			8925634, panelRect.EdgeRight(scrollbarWidth),
+			LocationPanelScrollY, row + EXTRA_ROW, pageRow
+		).Clamp(0, maxRow);
 
 		// Final
 		if (deletingSlotIndex >= 0) {
-			CameraSlotDirty = true;
-			slots.RemoveAt(deletingSlotIndex);
+			LocationSlotDirty = true;
+			LocationSlots.RemoveAt(deletingSlotIndex);
 		}
-		if (CameraSlotDirty) {
-			CameraSlotDirty = false;
-			SaveCameraSlotToFile();
+		if (LocationSlotDirty) {
+			LocationSlotDirty = false;
+			SaveLocationSlotToFile();
 		}
 		panelRect = oldPanelRect;
+
+		// Func
+		static void DrawThumbnail (IRect rect, IBlockSquad squad, IRect unitViewRect, int z, int pivotX, int pivotY, IRect panelRect) {
+			if (unitViewRect.width <= 0 || unitViewRect.height <= 0) return;
+			int unitL = unitViewRect.x;
+			int unitR = unitViewRect.xMax;
+			int unitD = unitViewRect.y;
+			int unitU = unitViewRect.yMax;
+			rect = rect.Fit(unitViewRect.width, unitViewRect.height, pivotX, pivotY);
+			float stepX = (float)rect.width / unitViewRect.width;
+			float stepY = (float)rect.height / unitViewRect.height;
+			var pxRect = new IRect(
+				rect.x, 0,
+				rect.width.UDivide(unitViewRect.width) + 1,
+				rect.height.UDivide(unitViewRect.height) + 1
+			);
+			// Sky BG
+			Game.DrawGizmosRect(
+				rect.Clamp(panelRect),
+				Color32.LerpUnclamped(Sky.SkyTintBottomColor, Sky.SkyTintTopColor, 0.5f)
+			);
+			// Content
+			for (int j = unitD; j < unitU; j++) {
+				pxRect.y = (rect.y + (j - unitD) * stepY).RoundToInt();
+				if (!pxRect.Overlaps(panelRect)) continue;
+				for (int i = unitL; i < unitR; i++) {
+					var (lv, bg, en, _) = squad.GetAllBlocksAt(i, j, z);
+					int id = en != 0 ? en : lv != 0 ? lv : bg;
+					if (id == 0) continue;
+					if (!Renderer.TryGetSpriteForGizmos(id, out var sprite)) continue;
+					pxRect.x = (rect.x + (i - unitL) * stepX).RoundToInt();
+					Game.DrawGizmosRect(pxRect, sprite.SummaryTint);
+				}
+			}
+		}
+
 	}
 
 
@@ -536,8 +616,10 @@ public class GameEditor : WindowUI {
 
 	public void SetCurrentProject (Project currentProject) {
 		CurrentProject = currentProject;
-		CameraSlotDirty = false;
-		LoadCameraSlotsFromFile();
+		LocationSlotDirty = false;
+		RequireSetViewPos = null;
+		LocationThumbnailStream = currentProject != null ? new(currentProject.Universe.BuiltInMapRoot) : null;
+		LoadLocationSlotsFromFile();
 	}
 
 
@@ -575,66 +657,37 @@ public class GameEditor : WindowUI {
 	#region --- LGC ---
 
 
-	private void LoadCameraSlotsFromFile () {
-
-		BuiltInCameraSlots.Clear();
-		UserCameraSlots.Clear();
-
+	private void LoadLocationSlotsFromFile () {
+		LocationSlots.Clear();
 		if (CurrentProject == null) return;
-
-		string builtInPath = Util.CombinePaths(CurrentProject.Universe.BuiltInMapRoot, CAMERA_SLOT_FILE_NAME);
-		string userPath = Util.CombinePaths(CurrentProject.Universe.SlotUserMapRoot, CAMERA_SLOT_FILE_NAME);
-
-		LoadFromFile(BuiltInCameraSlots, builtInPath);
-		LoadFromFile(UserCameraSlots, userPath);
-
-		// Func
-		static void LoadFromFile (List<(IRect, int)> list, string filePath) {
-			if (!Util.FileExists(filePath)) return;
-			using var stream = File.Open(filePath, FileMode.Open);
-			using var reader = new BinaryReader(stream);
-			while (reader.NotEnd()) {
-				int x = reader.ReadInt32();
-				int y = reader.ReadInt32();
-				int w = reader.ReadInt32();
-				int h = reader.ReadInt32();
-				int z = reader.ReadInt32();
-				list.Add((new IRect(x, y, w, h), z));
-			}
+		string filePath = Util.CombinePaths(CurrentProject.Universe.BuiltInMapRoot, LOCATION_SLOT_FILE_NAME);
+		if (!Util.FileExists(filePath)) return;
+		using var stream = File.Open(filePath, FileMode.Open);
+		using var reader = new BinaryReader(stream);
+		while (reader.NotEnd()) {
+			int x = reader.ReadInt32();
+			int y = reader.ReadInt32();
+			int z = reader.ReadInt32();
+			int w = reader.ReadInt32();
+			int h = reader.ReadInt32();
+			LocationSlots.Add((new IRect(x, y, w, h), z));
 		}
 	}
 
 
-	private void SaveCameraSlotToFile () {
-
+	private void SaveLocationSlotToFile () {
 		if (CurrentProject == null) return;
-
-		string builtInPath = Util.CombinePaths(CurrentProject.Universe.BuiltInMapRoot, CAMERA_SLOT_FILE_NAME);
-		string userPath = Util.CombinePaths(CurrentProject.Universe.SlotUserMapRoot, CAMERA_SLOT_FILE_NAME);
-
-		SaveToFile(BuiltInCameraSlots, builtInPath);
-		SaveToFile(UserCameraSlots, userPath);
-
-		// Func
-		static void SaveToFile (List<(IRect, int)> list, string filePath) {
-			Util.CreateFolder(Util.GetParentPath(filePath));
-			using var stream = File.Open(filePath, FileMode.CreateNew);
-			using var writer = new BinaryWriter(stream);
-			foreach (var (rect, z) in list) {
-				writer.Write(rect.x);
-				writer.Write(rect.y);
-				writer.Write(rect.width);
-				writer.Write(rect.height);
-				writer.Write(z);
-			}
+		string filePath = Util.CombinePaths(CurrentProject.Universe.BuiltInMapRoot, LOCATION_SLOT_FILE_NAME);
+		Util.CreateFolder(Util.GetParentPath(filePath));
+		using var stream = File.Open(filePath, FileMode.Create);
+		using var writer = new BinaryWriter(stream);
+		foreach (var (rect, z) in LocationSlots) {
+			writer.Write(rect.x);
+			writer.Write(rect.y);
+			writer.Write(z);
+			writer.Write(rect.width);
+			writer.Write(rect.height);
 		}
-	}
-
-
-	private void AddCurrentPosToCameraSlot () {
-
-
-
 	}
 
 

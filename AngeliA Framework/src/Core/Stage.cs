@@ -100,7 +100,8 @@ public static class Stage {
 	];
 	public const int SETTING_SET_VIEW_X = 92173623_5;
 	public const int SETTING_SET_VIEW_Y = 92173623_6;
-	public const int SETTING_SET_VIEW_H = 92173623_7;
+	public const int SETTING_SET_VIEW_Z = 92173623_7;
+	public const int SETTING_SET_VIEW_H = 92173623_8;
 
 	// Api
 	public static int[] EntityCounts { get; private set; } = new int[EntityLayer.COUNT];
@@ -241,6 +242,10 @@ public static class Stage {
 				var rect = ViewRect;
 				rect.y = data;
 				SetViewRectImmediately(rect);
+				break;
+			}
+			case SETTING_SET_VIEW_Z: {
+				SetViewZ(data, true);
 				break;
 			}
 			case SETTING_SET_VIEW_H: {
