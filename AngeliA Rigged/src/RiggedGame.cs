@@ -228,6 +228,9 @@ public partial class RiggedGame : Game {
 			if (keyIndex < 0 || keyIndex >= GamepadHoldingFrames.Length) continue;
 			GamepadHoldingFrames[keyIndex] = PauselessFrame;
 		}
+		if (CallingMessage.IgnoringMouseInput) {
+			Input.IgnoreMouseInput(0);
+		}
 
 		// Requirement
 		if (CallingMessage.RequireGameMessageInvoke.GetBit(0)) {

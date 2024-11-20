@@ -289,16 +289,19 @@ public partial class Engine {
 		var calling = Transceiver.CallingMessage;
 
 		// Ignore Input Check
-		if (Input.AnyMouseButtonDown || Input.MouseWheelDelta != 0) {
-			IgnoreInputForRig = IgnoreInputForRig ||
-				!WindowUI.WindowRect.Contains(Input.MouseGlobalPosition) ||
+		bool mouseInputIgnoreFromPanel = !WindowUI.WindowRect.MouseInside() ||
 				gameEDT.PanelRect.MouseInside() ||
 				gameEDT.ToolbarRect.MouseInside();
+		if (Input.AnyMouseButtonDown || Input.MouseWheelDelta != 0) {
+			IgnoreInputForRig = IgnoreInputForRig || mouseInputIgnoreFromPanel;
 		}
 		if (!Input.AnyMouseButtonHolding && Input.MouseWheelDelta == 0) {
 			IgnoreInputForRig = false;
 		}
 		if (Input.IgnoringMouseInput) {
+			IgnoreInputForRig = true;
+		}
+		if (!Input.AnyMouseButtonHolding && mouseInputIgnoreFromPanel) {
 			IgnoreInputForRig = true;
 		}
 

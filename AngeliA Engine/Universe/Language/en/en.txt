@@ -30,6 +30,7 @@ Engine.Game.Tip.Collider:Collider
 Engine.Game.Tip.EntityClicker:Entity Debugger
 Engine.Game.Tip.FrameDebug:Frame Debugger
 Engine.Game.Tip.Lighting:Lighting System
+Engine.Game.Tip.Location:View Positions
 Engine.Game.Tip.Movement:Movement System
 Engine.Game.Tip.NextFrame:Next Frame
 Engine.Game.Tip.Profiler:Profiler
@@ -490,6 +491,7 @@ UI.Restart:Restart
 UI.Rig.BuildError:Compile Error in Game Script :(\nAll errors must be fixed otherwise the game cannot run
 UI.Rig.BuildingHint:Recompiling
 UI.Rig.NotRunning:Rigged Game Not Running :(\nThis should not happen. Please contact the developer and report this problem.
+UI.RigEditor.AddLocationSlot:+ New Location
 UI.RigEditor.AirIlluDay:Air Illuminance (Day)
 UI.RigEditor.AirIlluNight:Air Illuminance (Night)
 UI.RigEditor.BgTint:Background Tint

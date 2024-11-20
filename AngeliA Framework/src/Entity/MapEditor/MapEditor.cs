@@ -194,27 +194,37 @@ public sealed partial class MapEditor : WindowUI {
 				ShowGridGizmos = data == 1;
 				break;
 			case Stage.SETTING_SET_VIEW_X:
-				if (Instance == null) break;
-				Instance.TargetViewRect.x = data;
-				Instance.ViewRect.x = data;
+				if (Instance == null || IsPlaying) break;
+				Instance.TargetViewRect.x = data.ToGlobal();
+				Instance.ViewRect.x = data.ToGlobal();
 				break;
 			case Stage.SETTING_SET_VIEW_Y:
-				if (Instance == null) break;
-				Instance.TargetViewRect.y = data;
-				Instance.ViewRect.y = data;
+				if (Instance == null || IsPlaying) break;
+				Instance.TargetViewRect.y = data.ToGlobal();
+				Instance.ViewRect.y = data.ToGlobal();
 				break;
 			case Stage.SETTING_SET_VIEW_Z:
-				if (Instance == null) break;
+				if (Instance == null || IsPlaying) break;
 				Instance.SetViewZ(data);
 				break;
 			case Stage.SETTING_SET_VIEW_H:
-				if (Instance == null) break;
-				int width = Game.GetViewWidthFromViewHeight(data);
+				if (Instance == null || IsPlaying) break;
+				int width = Game.GetViewWidthFromViewHeight(data.ToGlobal());
 				Instance.TargetViewRect.width = width;
 				Instance.ViewRect.width = width;
-				Instance.TargetViewRect.height = data;
-				Instance.ViewRect.height = data;
+				Instance.TargetViewRect.height = data.ToGlobal();
+				Instance.ViewRect.height = data.ToGlobal();
+				UpdateViewCache();
 				break;
+		}
+		static void UpdateViewCache () {
+			if (IsPlaying) return;
+			var viewRect = Instance.ViewRect;
+			Stage.SetViewPositionDelay(viewRect.x, viewRect.y, 1000, int.MaxValue);
+			Stage.SetViewSizeDelay(viewRect.height, 1000, int.MaxValue);
+			Renderer.UpdateCameraRect();
+			GUI.RefreshAllCacheSize();
+			Instance.UpdatePanelRect(Renderer.CameraRect);
 		}
 	}
 

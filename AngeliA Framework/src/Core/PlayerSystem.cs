@@ -92,6 +92,22 @@ public static class PlayerSystem {
 	}
 
 
+	[OnRemoteSettingChanged(1)]
+	internal static void OnRemoteSettingChanged (int id, int data) {
+		if (Selecting == null) return;
+		switch (id) {
+			case Stage.SETTING_SET_VIEW_X: {
+				Selecting.X = data.ToGlobal() + Stage.ViewRect.width / 2;
+				break;
+			}
+			case Stage.SETTING_SET_VIEW_Y: {
+				Selecting.Y = data.ToGlobal() + Stage.ViewRect.height / 2;
+				break;
+			}
+		}
+	}
+
+
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
 		if (Util.TryGetAttributeFromAllAssemblies<EnablePlayerSystemAttribute>()) {

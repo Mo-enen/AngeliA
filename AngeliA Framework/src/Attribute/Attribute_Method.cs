@@ -31,7 +31,7 @@ public class OnGameLostFocusAttribute : EventAttribute { }
 
 // System
 public class OnWindowSizeChangedAttribute : EventAttribute { }
-public class OnRemoteSettingChangedAttribute : EventAttribute { }
+public class OnRemoteSettingChangedAttribute (int order = 0) : EventAttribute(order) { }
 public class OnFileDroppedAttribute : EventAttribute { }
 
 

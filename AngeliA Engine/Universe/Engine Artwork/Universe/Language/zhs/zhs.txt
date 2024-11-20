@@ -30,6 +30,7 @@ Engine.Game.Tip.Collider:碰撞体
 Engine.Game.Tip.EntityClicker:实体调试
 Engine.Game.Tip.FrameDebug:逐帧调试
 Engine.Game.Tip.Lighting:光照系统
+Engine.Game.Tip.Location:地标
 Engine.Game.Tip.Movement:运动系统
 Engine.Game.Tip.NextFrame:下一帧
 Engine.Game.Tip.Profiler:探查器
@@ -490,6 +491,7 @@ UI.Restart:重启
 UI.Rig.BuildError:编译错误 :(\n必须解决所有编译错误才能运行游戏
 UI.Rig.BuildingHint:编译中
 UI.Rig.NotRunning:游戏未运行\n这是意料之外的情况，请向开发者报告该错误
+UI.RigEditor.AddLocationSlot:+ 新地标
 UI.RigEditor.AirIlluDay:空气亮度（白天）
 UI.RigEditor.AirIlluNight:空气亮度（夜间）
 UI.RigEditor.BgTint:背景亮度

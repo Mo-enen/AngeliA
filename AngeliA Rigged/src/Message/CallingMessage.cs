@@ -37,7 +37,7 @@ public class RigCallingMessage {
 	private static readonly int GamepadKeyCount = typeof(GamepadKey).EnumLength();
 
 	// Api
-	public int CalledCount { get; private set; } = 0;
+	public bool IgnoringMouseInput => !DeviceData.GetBit(7);
 
 	// Pipe
 	public byte RequiringWindowIndex;
@@ -109,6 +109,7 @@ public class RigCallingMessage {
 		DeviceData.SetBit(4, !ignoreMouseInput && mouseScroll != 0);
 		DeviceData.SetBit(5, Game.IsKeyboardAvailable);
 		DeviceData.SetBit(6, Game.IsGamepadAvailable);
+		DeviceData.SetBit(7, !ignoreMouseInput);
 		MouseScrollDelta = ignoreMouseInput ? 0 : mouseScroll;
 		MousePosX = mousePos.x;
 		MousePosY = mousePos.y;
@@ -260,8 +261,6 @@ public class RigCallingMessage {
 
 
 	public unsafe void WriteDataToPipe (byte* pointer) {
-
-		CalledCount++;
 
 		try {
 

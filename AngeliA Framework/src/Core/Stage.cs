@@ -234,13 +234,13 @@ public static class Stage {
 		switch (id) {
 			case SETTING_SET_VIEW_X: {
 				var rect = ViewRect;
-				rect.x = data;
+				rect.x = data.ToGlobal();
 				SetViewRectImmediately(rect);
 				break;
 			}
 			case SETTING_SET_VIEW_Y: {
 				var rect = ViewRect;
-				rect.y = data;
+				rect.y = data.ToGlobal();
 				SetViewRectImmediately(rect);
 				break;
 			}
@@ -250,8 +250,8 @@ public static class Stage {
 			}
 			case SETTING_SET_VIEW_H: {
 				var rect = ViewRect;
-				rect.width = Game.GetViewWidthFromViewHeight(data);
-				rect.height = data;
+				rect.width = Game.GetViewWidthFromViewHeight(data.ToGlobal());
+				rect.height = data.ToGlobal();
 				SetViewRectImmediately(rect);
 				break;
 			}

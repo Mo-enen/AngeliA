@@ -63,6 +63,7 @@ public class GameEditor : WindowUI {
 	private static readonly LanguageCode LABEL_BG_TINT = ("UI.RigEditor.BgTint", "Background Tint");
 	private static readonly LanguageCode LABEL_LV_REMAIN = ("UI.RigEditor.LvRemain", "Solid Illuminate Remain");
 	private static readonly LanguageCode LABEL_ADD_LOCATION_SLOT = ("UI.RigEditor.AddLocationSlot", "+ New Location");
+	private static readonly LanguageCode MSG_DELETE_LOCATION = ("UI.RigEditor.DeleteLocationMsg", "Delete Location {0}?");
 
 	// Api
 	public static GameEditor Instance { get; private set; }
@@ -75,7 +76,7 @@ public class GameEditor : WindowUI {
 	public bool RequireNextFrame { get; set; } = false;
 	public bool HavingGamePlay { get; set; } = false;
 	public bool? RequireOpenOrCloseMovementPanel { get; set; } = null;
-	public Int4? RequireSetViewPos { get; set; } = null;
+	public Int4? RequireSetViewPos { get; set; } = null; // x,y,z,w >> x,y,z,viewHeight (all in unit)
 	public int ToolbarWidth => Unify(40);
 	public bool LightMapSettingChanged { get; set; } = false;
 	public float ForcingInGameDaytime { get; set; } = -1f;
@@ -166,7 +167,9 @@ public class GameEditor : WindowUI {
 			var panelRect = barRect.CornerOutside(Alignment.TopLeft, Unify(220), Unify(384));
 
 			// Draw Panel BG
+			Renderer.SetLayer(CurrentPanel == PanelType.Location ? RenderLayer.DEFAULT : RenderLayer.UI);
 			var cells = GUI.DrawSlice(PANEL_BG, panelRect);
+			Renderer.SetLayer(RenderLayer.UI);
 			bool bgPainted = cells != null;
 			cells?.CopyTo(CacheForPanelSlice, 0);
 
@@ -186,10 +189,17 @@ public class GameEditor : WindowUI {
 						var cacheCell = CacheForPanelSlice[i];
 						cacheCell.CopyFrom(placeHolders[i]);
 						cacheCell.Color = Color32.WHITE;
+						if (CurrentPanel == PanelType.Location) {
+							cacheCell.Z = int.MaxValue;
+						}
 					}
 				} else {
 					for (int i = 0; i < 9; i++) {
-						CacheForPanelSlice[i].Color = Color32.CLEAR;
+						var cacheCell = CacheForPanelSlice[i];
+						cacheCell.Color = Color32.CLEAR;
+						if (CurrentPanel == PanelType.Location) {
+							cacheCell.Z = int.MaxValue;
+						}
 					}
 				}
 			}
@@ -483,8 +493,8 @@ public class GameEditor : WindowUI {
 
 	private void DrawLocationPanel (ref IRect panelRect) {
 
-		Game.ForceGizmosOnTopOfUI(1);
 		using var _ = new SheetIndexScope(ThumbnailSheetIndex);
+		using var __ = new LayerScope(RenderLayer.DEFAULT);
 
 		int toolbarSize = Unify(56);
 		int scrollbarWidth = Unify(12);
@@ -499,6 +509,7 @@ public class GameEditor : WindowUI {
 		var oldPanelRect = panelRect;
 		var toolbarRect = panelRect.EdgeUp(toolbarSize).Shrink(panelPaddingLarge, panelPaddingLarge, panelPadding, panelPadding);
 		panelRect = panelRect.Shrink(panelPadding, panelPadding + scrollbarWidth, panelPadding, panelPadding + toolbarSize);
+		int cellStart = Renderer.GetUsedCellCount();
 
 		// Toolbar
 		var unitViewRect = Stage.ViewRect.Fit(1, 1).ToUnit();
@@ -519,17 +530,19 @@ public class GameEditor : WindowUI {
 		int row = LocationSlots.Count.CeilDivide(column);
 		int pageRow = panelRect.height.CeilDivide(itemSize);
 		int maxRow = (row + EXTRA_ROW - pageRow).GreaterOrEquel(0);
-		int deletingSlotIndex = -1;
 		int offsetX = (panelRect.width - itemSize * column - scrollbarWidth) / 2;
-		using (var scroll = new GUIVerticalScrollScope(panelRect, LocationPanelScrollY * itemSize, 0, maxRow * itemSize)) {
+		using (var scroll = new GUIVerticalScrollScope(
+			panelRect, LocationPanelScrollY, 0, maxRow * itemSize,
+			layer: RenderLayer.DEFAULT
+		)) {
 
-			LocationPanelScrollY = (scroll.PositionY / itemSize).Clamp(0, maxRow);
+			LocationPanelScrollY = scroll.PositionY.Clamp(0, maxRow * itemSize);
 
-			for (int i = LocationPanelScrollY * column; i < LocationSlots.Count; i++) {
+			for (int i = (LocationPanelScrollY / itemSize) * column; i < LocationSlots.Count; i++) {
 
 				int currentColumn = i % column;
 				int currentRow = i / column;
-				if (currentRow >= LocationPanelScrollY + pageRow) break;
+				if (currentRow > LocationPanelScrollY / itemSize + pageRow) break;
 
 				var rect = new IRect(
 					panelRect.x + currentColumn * itemSize + offsetX,
@@ -540,13 +553,30 @@ public class GameEditor : WindowUI {
 
 				// Button
 				if (GUI.Button(rect.Shrink(padding), 0, out var _state, GUI.Skin.DarkButton)) {
-
-
+					int globalViewH = viewRect.height.ToGlobal();
+					if (HavingGamePlay) {
+						int maxHeight = CurrentProject.Universe.Info.DefaultViewHeight;
+						globalViewH = globalViewH.Clamp(1, maxHeight);
+					}
+					int globalViewW = Game.GetViewWidthFromViewHeight(globalViewH);
+					var globalCenterX = viewRect.x.ToGlobal() + viewRect.width.ToGlobal() / 2;
+					var globalCenterY = viewRect.y.ToGlobal() + viewRect.height.ToGlobal() / 2;
+					RequireSetViewPos = new Int4(
+						(globalCenterX - globalViewW / 2).ToUnit(),
+						(globalCenterY - globalViewH / 2).ToUnit(),
+						z,
+						globalViewH.ToUnit()
+					);
 				}
 				var conRect = GUI.GetContentRect(rect.Shrink(padding), GUI.Skin.DarkButton, _state);
 
 				// Thumbnail
-				DrawThumbnail(conRect.Shrink(thumbnailPadding).Shift(0, LocationPanelScrollY * itemSize), LocationThumbnailStream, viewRect, z, 500, 500, panelRect);
+				DrawThumbnail(conRect.Shift(0, LocationPanelScrollY).Shrink(thumbnailPadding), LocationThumbnailStream, viewRect, z, 500, 500, panelRect);
+
+				// Menu
+				if (Input.MouseRightButtonDown && rect.MouseInside()) {
+					ShowLocaltionSlotMenu(Input.UnshiftedMouseGlobalPosition, i);
+				}
 
 			}
 		}
@@ -554,14 +584,17 @@ public class GameEditor : WindowUI {
 		// Scrollbar
 		LocationPanelScrollY = GUI.ScrollBar(
 			8925634, panelRect.EdgeRight(scrollbarWidth),
-			LocationPanelScrollY, row + EXTRA_ROW, pageRow
-		).Clamp(0, maxRow);
+			LocationPanelScrollY, (row + EXTRA_ROW) * itemSize, panelRect.height
+		).Clamp(0, maxRow * panelRect.height);
+
+		// Max Cell Z 
+		if (Renderer.GetCells(out var cells, out int count)) {
+			for (int i = cellStart; i < count; i++) {
+				cells[i].Z = int.MaxValue;
+			}
+		}
 
 		// Final
-		if (deletingSlotIndex >= 0) {
-			LocationSlotDirty = true;
-			LocationSlots.RemoveAt(deletingSlotIndex);
-		}
 		if (LocationSlotDirty) {
 			LocationSlotDirty = false;
 			SaveLocationSlotToFile();
@@ -687,6 +720,28 @@ public class GameEditor : WindowUI {
 			writer.Write(z);
 			writer.Write(rect.width);
 			writer.Write(rect.height);
+		}
+	}
+
+
+	private void ShowLocaltionSlotMenu (Int2 pos, int index) {
+		GenericPopupUI.BeginPopup(pos);
+		GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteDialog, data: index);
+		static void DeleteDialog () {
+			if (GenericPopupUI.InvokingItemData is not int index) return;
+			GenericDialogUI.SpawnDialog_Button(
+				string.Format(MSG_DELETE_LOCATION, index),
+				BuiltInText.UI_DELETE, Delete,
+				BuiltInText.UI_CANCEL, Const.EmptyMethod
+			);
+			GenericDialogUI.SetCustomData(index);
+			GenericDialogUI.SetItemTint(Color32.RED_BETTER);
+		}
+		static void Delete () {
+			if (Instance == null) return;
+			if (GenericDialogUI.InvokingData is not int index) return;
+			Instance.LocationSlots.RemoveAt(index);
+			Instance.LocationSlotDirty = true;
 		}
 	}
 

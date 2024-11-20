@@ -57,6 +57,7 @@ public partial class MapEditor {
 
 		if (!DraggingUnitRect.HasValue || MouseDownOutsideBoundary) return;
 		if (IsPlaying || DroppingPlayer || TaskingRoute || CtrlHolding) return;
+		using var _ = new LayerScope(RenderLayer.DEFAULT);
 
 		// Rect Frame
 		var draggingRect = new IRect(
@@ -71,12 +72,12 @@ public partial class MapEditor {
 		if (MouseDownButton != 0 || SelectingPaletteItem == null) {
 			Renderer.DrawSlice(
 				BuiltInSprite.FRAME_16, draggingRect.Shrink(thickness),
-				thickness, thickness, thickness, thickness, Color32.BLACK
+				thickness, thickness, thickness, thickness, Color32.BLACK, z: int.MaxValue - 1
 			);
 
 			Renderer.DrawSlice(
 				BuiltInSprite.FRAME_16, draggingRect,
-				thickness, thickness, thickness, thickness, Color32.WHITE
+				thickness, thickness, thickness, thickness, Color32.WHITE, z: int.MaxValue - 1
 			);
 		}
 
@@ -119,6 +120,7 @@ public partial class MapEditor {
 
 		if (IsPlaying || DroppingPlayer || TaskingRoute) return;
 		if (!SelectionUnitRect.HasValue || !Pasting) return;
+		using var _ = new LayerScope(RenderLayer.DEFAULT);
 
 		var pastingUnitRect = SelectionUnitRect.Value;
 
@@ -127,7 +129,8 @@ public partial class MapEditor {
 		var frameRect = pastingUnitRect.ToGlobal();
 		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_16, frameRect,
-			thickness, thickness, thickness, thickness, Color32.WHITE
+			thickness, thickness, thickness, thickness, Color32.WHITE,
+			z: int.MaxValue - 1
 		);
 
 		// Content Thumbnail
@@ -144,6 +147,7 @@ public partial class MapEditor {
 
 		if (!SelectionUnitRect.HasValue) return;
 		if (IsPlaying || DroppingPlayer || TaskingRoute) return;
+		using var _ = new LayerScope(RenderLayer.DEFAULT);
 
 		var selectionRect = new IRect(
 			SelectionUnitRect.Value.x.ToGlobal(),
@@ -156,14 +160,14 @@ public partial class MapEditor {
 
 		// Paste Tint
 		if (Pasting) {
-			Renderer.DrawPixel(selectionRect, new Color32(0, 128, 255, 32));
+			Renderer.DrawPixel(selectionRect, new Color32(0, 128, 255, 32), z: int.MaxValue - 2);
 		}
 
 		// Black Frame
 		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_16, selectionRect,
 			thickness, thickness, thickness, thickness,
-			Color32.BLACK
+			Color32.BLACK, z: int.MaxValue - 1
 		);
 
 		// Dotted White
@@ -177,22 +181,19 @@ public partial class MapEditor {
 			selectionRect.x,
 			selectionRect.yMax - thickness / 2,
 			selectionRect.width,
-			true, thickness, dotGap, Color32
-.WHITE
+			true, thickness, dotGap, Color32.WHITE
 		);
 		DrawDottedLineGizmos(
 			selectionRect.xMin + thickness / 2,
 			selectionRect.y + thickness,
 			selectionRect.height - thickness * 2,
-			false, thickness, dotGap, Color32
-.WHITE
+			false, thickness, dotGap, Color32.WHITE
 		);
 		DrawDottedLineGizmos(
 			selectionRect.xMax - thickness / 2,
 			selectionRect.y + thickness,
 			selectionRect.height - thickness * 2,
-			false, thickness, dotGap, Color32
-.WHITE
+			false, thickness, dotGap, Color32.WHITE
 		);
 
 	}
@@ -204,6 +205,7 @@ public partial class MapEditor {
 		if (GenericPopupUI.ShowingPopup || GenericDialogUI.ShowingDialog) return;
 		if (MouseInSelection || MouseOutsideBoundary || MouseDownOutsideBoundary || DraggingUnitRect.HasValue) return;
 		if (Input.AnyMouseButtonHolding && MouseDownInSelection) return;
+		using var _ = new LayerScope(RenderLayer.DEFAULT);
 
 		var cursorRect = new IRect(
 			Input.MouseGlobalPosition.x.ToUnifyGlobal(),
@@ -215,13 +217,13 @@ public partial class MapEditor {
 		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_HOLLOW_16, cursorRect.Shrink(thickness),
 			thickness, thickness, thickness, thickness,
-			CURSOR_TINT_DARK
+			CURSOR_TINT_DARK, z: int.MaxValue - 1
 		);
 
 		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_HOLLOW_16, cursorRect,
 			thickness, thickness, thickness, thickness,
-			CURSOR_TINT
+			CURSOR_TINT, z: int.MaxValue - 1
 		);
 
 		if (SelectingPaletteItem == null) {
@@ -262,7 +264,7 @@ public partial class MapEditor {
 		sprite ??= GetRealGizmosSprite(artworkID);
 		if (sprite == null) return;
 		if (shrink) rect = rect.Shrink(rect.width * 2 / 10);
-		Renderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), tint);
+		Renderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), tint, z: int.MaxValue - 1);
 	}
 
 
@@ -292,7 +294,7 @@ public partial class MapEditor {
 					x + i * stepLength, y,
 					0, 500, 0,
 					stepLength, thickness,
-					tint
+					tint, z: int.MaxValue - 1
 				);
 				if (i == stepCount) {
 					ref var shift = ref cell.Shift;
@@ -304,7 +306,7 @@ public partial class MapEditor {
 					x, y + i * stepLength,
 					0, 500, -90,
 					stepLength, thickness,
-					tint
+					tint, z: int.MaxValue - 1
 				);
 				if (i == stepCount) {
 					ref var shift = ref cell.Shift;
