@@ -419,23 +419,25 @@ public static class FrameworkUtil {
 
 	public static void DrawClockHands (IRect rect, int handCode, int thickness, int thicknessSecond, Color32 tint) => DrawClockHands(rect.CenterX(), rect.CenterY(), rect.height, handCode, thickness, thicknessSecond, tint);
 	public static void DrawClockHands (int centerX, int centerY, int radius, int handCode, int thickness, int thicknessSecond, Color32 tint, int z = int.MinValue) {
-		var now = System.DateTime.Now;
+
+		Time01_to_TimeDigit(Sky.InGameDaytime01, out int hour, out int min, out int second);
+
 		// Sec
 		Renderer.Draw(
 			handCode, centerX, centerY,
-			500, 0, now.Second * 360 / 60,
+			500, 0, second * 360 / 60,
 			thicknessSecond, radius * 900 / 2000, tint, z
 		);
 		// Min
 		Renderer.Draw(
 			handCode, centerX, centerY,
-			500, 0, now.Minute * 360 / 60,
+			500, 0, min * 360 / 60,
 			thickness, radius * 800 / 2000, tint, z
 		);
 		// Hour
 		Renderer.Draw(
 			handCode, centerX, centerY,
-			500, 0, (now.Hour * 360 / 12) + (now.Minute * 360 / 12 / 60),
+			500, 0, (hour * 360 / 12) + (min * 360 / 12 / 60),
 			thickness, radius * 400 / 2000, tint, z
 		);
 	}
@@ -454,6 +456,16 @@ public static class FrameworkUtil {
 			rot, headSize, headSize
 		);
 	}
+
+
+	public static void Time01_to_TimeDigit (float time01, out int hour, out int minute, out int second) {
+		hour = (int)(time01 * 24f).UMod(24f);
+		minute = (int)(hour * 24f * 60f).UMod(60f);
+		second = (int)(hour * 24f * 60f * 60f).UMod(60f);
+	}
+
+
+	public static float TimeDigit_to_Time01 (int hour, int minute, int second) => ((hour + (minute + second / 60f) / 60f) / 24f).UMod(1f);
 
 
 	// FrameBasedValue Load/Save

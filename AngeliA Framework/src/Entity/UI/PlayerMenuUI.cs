@@ -1103,8 +1103,10 @@ public class PlayerMenuUI : EntityUI {
 		if (cursorID == 0 || cursorCount == 0) return;
 		if (ItemSystem.IsEquipment(cursorID)) return;
 		var item = ItemSystem.GetItem(cursorID);
-		if (item != null && item.Use(PlayerSystem.Selecting)) {
-			Inventory.TakeItemAt(invID, CursorIndex);
+		if (item != null && item.Use(PlayerSystem.Selecting, out bool consume)) {
+			if (consume) {
+				Inventory.TakeItemAt(invID, CursorIndex);
+			}
 		}
 	}
 

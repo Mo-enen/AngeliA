@@ -117,6 +117,15 @@ public sealed class CharacterBuff {
 	}
 
 
+	public object GetBuffData (int id) => Buff.TryGetBuffIndex(id, out int index) ? BuffStates[index].Data : null;
+
+
+	public void SetBuffData (int id, object data) {
+		if (!Buff.TryGetBuffIndex(id, out int index)) return;
+		BuffStates[index].Data = data;
+	}
+
+
 	#endregion
 
 
