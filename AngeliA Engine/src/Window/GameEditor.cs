@@ -582,10 +582,12 @@ public class GameEditor : WindowUI {
 		}
 
 		// Scrollbar
-		LocationPanelScrollY = GUI.ScrollBar(
-			8925634, panelRect.EdgeRight(scrollbarWidth),
-			LocationPanelScrollY, (row + EXTRA_ROW) * itemSize, panelRect.height
-		).Clamp(0, maxRow * panelRect.height);
+		if (maxRow > 0) {
+			LocationPanelScrollY = GUI.ScrollBar(
+				8925634, panelRect.EdgeRight(scrollbarWidth),
+				LocationPanelScrollY, (row + EXTRA_ROW) * itemSize, panelRect.height
+			).Clamp(0, maxRow * panelRect.height);
+		}
 
 		// Max Cell Z 
 		if (Renderer.GetCells(out var cells, out int count)) {

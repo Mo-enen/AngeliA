@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 namespace AngeliA;
 
@@ -49,8 +50,10 @@ public static class PlayerSystem {
 	public static int AimViewY { get; private set; } = 0;
 	public static IActionTarget TargetActionEntity { get; private set; } = null;
 	public static bool Enable { get; private set; } = false;
+	public static int UnlockedPlayerCount => UnlockedPlayer.Count;
 
 	// Data
+	private static readonly HashSet<int> UnlockedPlayer = [];
 	private static int AttackRequiringFrame = int.MinValue;
 	private static int LastLeftKeyDown = int.MinValue;
 	private static int LastRightKeyDown = int.MinValue;
@@ -60,6 +63,7 @@ public static class PlayerSystem {
 	private static int IgnorePlayerQuickMenuFrame = -1;
 	private static int IgnoreAttackFrame = int.MinValue;
 	private static int ForceUpdateViewGroundingFrame = int.MinValue;
+	private static bool UnlockPlayerDirty = false;
 
 	// Frame Based
 	public static readonly FrameBasedInt TargetViewHeight = new(Const.CEL * 26);
@@ -123,6 +127,8 @@ public static class PlayerSystem {
 		if (!Enable) return TaskResult.End;
 		if (!Stage.IsReady) return TaskResult.Continue;
 		RespawnCpUnitPosition = null;
+		UnlockPlayerDirty = false;
+		LoadUnlockedPlayerListFromFile();
 		SelectCharacterAsPlayer(SelectingPlayerID.Value);
 		return TaskResult.End;
 	}
@@ -554,6 +560,10 @@ public static class PlayerSystem {
 		if (Selecting == null || !Selecting.Active) return;
 		if (!Stage.ViewRect.Overlaps(Selecting.Rect)) return;
 		UpdateCollect();
+		if (UnlockPlayerDirty) {
+			UnlockPlayerDirty = false;
+			SaveUnlockedPlayerListToFile();
+		}
 	}
 
 
@@ -619,6 +629,25 @@ public static class PlayerSystem {
 		LockInputFrame = -1;
 		TargetActionEntity = null;
 		PlayerMenuUI.CloseMenu();
+		UnlockedPlayer.Add(target.TypeID);
+		UnlockPlayerDirty = true;
+	}
+
+
+	// Unlock Player
+	public static IEnumerable<int> ForAllUnlockedPlayers () {
+		foreach (var id in UnlockedPlayer) {
+			yield return id;
+		}
+	}
+
+
+	public static bool IsPlayerUnlocked (int id) => UnlockedPlayer.Contains(id);
+
+
+	public static void UnlockPlayer (int id) {
+		UnlockedPlayer.Add(id);
+		UnlockPlayerDirty = true;
 	}
 
 
@@ -670,6 +699,9 @@ public static class PlayerSystem {
 	}
 
 
+	public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
+
+
 	// Ignore
 	public static void LockInput (int duration = 1) => LockInputFrame = Game.GlobalFrame + duration;
 
@@ -694,7 +726,28 @@ public static class PlayerSystem {
 	#region --- LGC ---
 
 
-	public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
+	// Unlock Player
+	private static void LoadUnlockedPlayerListFromFile () {
+		UnlockedPlayer.Clear();
+		string path = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "UnlockedPlayers");
+		if (!Util.FileExists(path)) return;
+		using var stream = File.Open(path, FileMode.Open);
+		using var reader = new BinaryReader(stream);
+		while (reader.NotEnd()) {
+			UnlockedPlayer.Add(reader.ReadInt32());
+		}
+	}
+
+
+	private static void SaveUnlockedPlayerListToFile () {
+		if (UnlockedPlayer.Count == 0) return;
+		string path = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "UnlockedPlayers");
+		using var stream = File.Open(path, FileMode.Create);
+		using var writer = new BinaryWriter(stream);
+		foreach (int id in UnlockedPlayer) {
+			writer.Write(id);
+		}
+	}
 
 
 	#endregion
