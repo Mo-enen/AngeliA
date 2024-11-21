@@ -32,6 +32,7 @@ public static class ItemSystem {
 
 
 	private class CombinationData {
+		public Int4 OriginalCombinationKeys;
 		public int Result;
 		public int ResultCount;
 		public int Keep0;
@@ -131,7 +132,7 @@ public static class ItemSystem {
 		}
 
 		// Load Combination from Code
-		LoadCombinationPoolFromCode(CombinationPool);
+		LoadCombinationPoolFromCode();
 
 		// Load Unlock from File
 		LoadUnlockDataFromFile();
@@ -258,11 +259,30 @@ public static class ItemSystem {
 				continue;
 			}
 			var _craft = craft;
-			if (combination.x != 0 && !_craft.Swap(combination.x, 0)) continue;
-			if (combination.y != 0 && !_craft.Swap(combination.y, 0)) continue;
-			if (combination.z != 0 && !_craft.Swap(combination.z, 0)) continue;
-			if (combination.w != 0 && !_craft.Swap(combination.w, 0)) continue;
-			output.Add(craft);
+			if (combination.x != 0 && !ReplaceTo(ref _craft, combination.x, 0)) continue;
+			if (combination.y != 0 && !ReplaceTo(ref _craft, combination.y, 0)) continue;
+			if (combination.z != 0 && !ReplaceTo(ref _craft, combination.z, 0)) continue;
+			if (combination.w != 0 && !ReplaceTo(ref _craft, combination.w, 0)) continue;
+			output.Add(result.OriginalCombinationKeys);
+		}
+		static bool ReplaceTo (ref Int4 host, int value, int newValue) {
+			if (host.x == value) {
+				host.x = newValue;
+				return true;
+			}
+			if (host.y == value) {
+				host.y = newValue;
+				return true;
+			}
+			if (host.z == value) {
+				host.z = newValue;
+				return true;
+			}
+			if (host.w == value) {
+				host.w = newValue;
+				return true;
+			}
+			return false;
 		}
 	}
 
@@ -382,8 +402,8 @@ public static class ItemSystem {
 
 
 	// Combination
-	private static void LoadCombinationPoolFromCode (Dictionary<Int4, CombinationData> pool) {
-		pool.Clear();
+	private static void LoadCombinationPoolFromCode () {
+		CombinationPool.Clear();
 		foreach (var type in typeof(Item).AllChildClass()) {
 			var iComs = type.GetCustomAttributes<ItemCombinationAttribute>(false);
 			if (iComs == null) continue;
@@ -398,22 +418,23 @@ public static class ItemSystem {
 				int idC = com.ItemC != null ? com.ItemC.AngeHash() : 0;
 				int idD = com.ItemD != null ? com.ItemD.AngeHash() : 0;
 				var key = GetSortedCombination(idA, idB, idC, idD);
-				if (pool.ContainsKey(key)) {
+				if (CombinationPool.ContainsKey(key)) {
 #if DEBUG
-					var resultItem = GetItem(pool[key].Result);
+					var resultItem = GetItem(CombinationPool[key].Result);
 					if (resultItem != null) {
 						Debug.Log($"Item Combination Collistion: \"{type.Name}\" & \"{resultItem.GetType().Name}\"");
 					}
 #endif
 					continue;
 				}
-				pool.Add(key, new CombinationData() {
+				CombinationPool.Add(key, new CombinationData() {
 					Result = type.AngeHash(),
 					ResultCount = com.Count,
 					Keep0 = com.ConsumeA ? 0 : idA,
 					Keep1 = com.ConsumeB ? 0 : idB,
 					Keep2 = com.ConsumeC ? 0 : idC,
 					Keep3 = com.ConsumeD ? 0 : idD,
+					OriginalCombinationKeys = new(idA, idB, idC, idD),
 				});
 			}
 		}

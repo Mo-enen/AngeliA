@@ -77,25 +77,6 @@ public struct Int4 : IEquatable<Int4>, IFormattable {
 	public override readonly int GetHashCode () => x ^ (y << 2) ^ (z >> 2) ^ (w >> 1);
 
 	public readonly bool Contains (int value) => x == value || y == value || z == value || w == value;
-	public bool Swap (int value, int newValue) {
-		if (x == value) {
-			x = newValue;
-			return true;
-		}
-		if (y == value) {
-			y = newValue;
-			return true;
-		}
-		if (z == value) {
-			z = newValue;
-			return true;
-		}
-		if (w == value) {
-			w = newValue;
-			return true;
-		}
-		return false;
-	}
 	public readonly int Count (int value) {
 		int count = 0;
 		if (x == value) count++;

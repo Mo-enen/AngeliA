@@ -1,4 +1,5 @@
 ﻿using AngeliA;
+
 namespace AngeliA.Platformer;
 
 public abstract class ItemBasedSummon : Summon {
