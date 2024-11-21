@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+[EntityAttribute.Capacity(1, 0)]
 public abstract class PlayableCharacter : Character, IActionTarget {
 
 	protected override CharacterRenderer CreateNativeRenderer () => new PoseCharacterRenderer(this);

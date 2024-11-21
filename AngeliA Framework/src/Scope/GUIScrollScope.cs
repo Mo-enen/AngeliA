@@ -24,7 +24,6 @@ public readonly struct GUIScrollScope : System.IDisposable {
 	public readonly int Layer;
 	public readonly Int2 MousePosShift;
 	public readonly bool PrevMouseInputIgnoring;
-	public GUIScrollScope (IRect rect, Int2 position, bool mouseWheelForVertical = true, int layer = RenderLayer.UI) : this(rect, position, new Int2(int.MinValue, int.MinValue), new Int2(int.MaxValue, int.MaxValue), mouseWheelForVertical, false, layer) { }
 	public GUIScrollScope (IRect rect, Int2 position, Int2 min, Int2 max, bool mouseWheelForVertical = true, bool reverseMouseWheel = false, int layer = RenderLayer.UI) {
 
 		Layer = layer;
