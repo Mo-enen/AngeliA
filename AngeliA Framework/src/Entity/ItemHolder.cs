@@ -35,6 +35,7 @@ public class ItemHolder : Rigidbody {
 	public static readonly int TYPE_ID = typeof(ItemHolder).AngeHash();
 	private const int ITEM_PHYSICS_SIZE = Const.HALF;
 	private const int ITEM_RENDER_SIZE = Const.CEL * 2 / 3;
+	private static readonly LanguageCode HINT_PICK = ("Hint.PickItem", "Pick Item");
 
 	// Api
 	public override int PhysicalLayer => PhysicsLayer.ITEM;
@@ -132,11 +133,16 @@ public class ItemHolder : Rigidbody {
 		// Check for Player Collect
 		var player = PlayerSystem.Selecting;
 		TouchingPlayer = player != null && player.Rect.Overlaps(Rect);
-		if (TouchingPlayer && player.Movement.IsSquatting) {
-			bool collected = Collect(player, onlyStackOnExisting: false, ignoreEquipment: false);
-			if (collected) {
-				ItemSystem.SetItemUnlocked(ItemID, true);
+		if (TouchingPlayer) {
+			// Collect
+			if (player.Movement.IsSquatting) {
+				bool collected = Collect(player, onlyStackOnExisting: false, ignoreEquipment: false);
+				if (collected) {
+					ItemSystem.SetItemUnlocked(ItemID, true);
+				}
 			}
+			// Hint
+			ControlHintUI.AddHint(Gamekey.Down, HINT_PICK);
 		}
 	}
 
@@ -230,9 +236,9 @@ public class ItemHolder : Rigidbody {
 		}
 
 		// Highlight
-		if (TouchingPlayer) {
-			FrameworkUtil.HighlightBlink(cell);
-		}
+		//if (TouchingPlayer) {
+		//	FrameworkUtil.HighlightBlink(cell);
+		//}
 
 	}
 

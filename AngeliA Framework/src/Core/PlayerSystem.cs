@@ -734,7 +734,9 @@ public static class PlayerSystem {
 		using var stream = File.Open(path, FileMode.Open);
 		using var reader = new BinaryReader(stream);
 		while (reader.NotEnd()) {
-			UnlockedPlayer.Add(reader.ReadInt32());
+			int id = reader.ReadInt32();
+			if (Stage.GetEntityType(id) == null) continue;
+			UnlockedPlayer.Add(id);
 		}
 	}
 

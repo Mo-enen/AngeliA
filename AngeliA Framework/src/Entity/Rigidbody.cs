@@ -101,6 +101,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		InWaterFloatDuration = 0;
 		MomentumX = (0, 0);
 		MomentumY = (0, 0);
+		IsInsideGround = false;
 	}
 
 
@@ -129,12 +130,12 @@ public abstract class Rigidbody : Entity, ICarrier {
 		OnSlippy = !InWater && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, Tag.Slip);
 
 		// Inside Ground Check
-		IsInsideGround = Game.GlobalFrame > IgnoreInsideGroundFrame && InsideGroundCheck();
+		IsInsideGround = Game.GlobalFrame > SpawnFrame && Game.GlobalFrame > IgnoreInsideGroundFrame && InsideGroundCheck();
 
 		// Ignoring Physics
 		if (IgnoringPhysics) {
 			IsGrounded = GroundedCheck();
-			if (DestroyWhenInsideGround) Active = false;
+			if (IsInsideGround && DestroyWhenInsideGround) Active = false;
 			return;
 		}
 
@@ -387,12 +388,10 @@ public abstract class Rigidbody : Entity, ICarrier {
 	private bool InsideGroundCheck () {
 		int mask = PhysicsMask.LEVEL & CollisionMask;
 		if (mask == 0) return false;
-		int sizeX = Width / 8;
-		int sizeY = Height / 8;
 		var rect = new IRect(
-			X + OffsetX + Width / 2 - sizeX / 2,
-			Y + OffsetY + Height / 2 - sizeY / 2,
-			sizeX, sizeY
+			X + OffsetX + Width / 2,
+			Y + OffsetY + Height / 2,
+			1, 1
 		);
 		return Physics.Overlap(mask, rect, this);
 	}
