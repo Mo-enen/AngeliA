@@ -670,13 +670,16 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	}
 
 
-	public void EnterTeleportState (bool front, bool portal) {
+	public void EnterTeleportState (bool front, bool portal, bool lastHalfOnly = false) {
 		int duration = portal ? -TeleportDuration : TeleportDuration;
 		if (portal) {
 			duration *= 2;
 		}
 		_TeleportEndFrame = (Game.GlobalFrame + duration.Abs()) * (front ? 1 : -1);
 		_TeleportDuration = duration;
+		if (lastHalfOnly) {
+			_TeleportEndFrame -= _TeleportEndFrame.Sign() * duration.Abs() / 2;
+		}
 	}
 
 

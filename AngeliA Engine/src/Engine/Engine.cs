@@ -308,6 +308,10 @@ public partial class Engine {
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
 
+
+		
+
+
 		GUI.Enable = true;
 		if (!Instance.CurrentWindowRequireRigGame) {
 			Sky.ForceSkyboxTint(GUI.Skin.Background);
