@@ -1,18 +1,13 @@
 namespace AngeliA;
 
 [System.Serializable]
-public class ColorGradient {
+public class ColorGradient (params ColorGradient.Data[] values) {
 	[System.Serializable]
-	public struct Data {
-		public float time;
-		public Color32 color;
-		public Data (Color32 color, float time) {
-			this.time = time;
-			this.color = color;
-		}
+	public struct Data (Color32 color, float time) {
+		public float time = time;
+		public Color32 color = color;
 	}
-	public Data[] Values;
-	public ColorGradient (params Data[] values) => Values = values;
+	public Data[] Values = values;
 	public Color32 Evaluate (float time) {
 		float prevTime = 0f;
 		var prevColor = Color32.CLEAR;

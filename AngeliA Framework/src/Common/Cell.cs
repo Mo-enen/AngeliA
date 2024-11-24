@@ -1,9 +1,10 @@
 ﻿namespace AngeliA;
 
 
-public struct CellRawData () {
+public struct RawCell () {
 	public int SpriteID = 0;
 	public char TextChar = '\0';
+	public int Order;
 	public int X;
 	public int Y;
 	public int Z;
@@ -173,7 +174,7 @@ public class Cell {
 		}
 	}
 
-	public CellRawData GetRawData () {
+	public RawCell GetRawData () {
 		return new() {
 			SpriteID = Sprite != null ? Sprite.ID : 0,
 			TextChar = TextSprite != null ? TextSprite.Char : '\0',
@@ -191,7 +192,7 @@ public class Cell {
 		};
 	}
 
-	public void LoadFromRawData (CellRawData data, int sheetIndex = int.MinValue) {
+	public void LoadFromRawData (RawCell data, int sheetIndex = int.MinValue) {
 		if (sheetIndex == int.MinValue) {
 			sheetIndex = Renderer.CurrentSheetIndex;
 		}
