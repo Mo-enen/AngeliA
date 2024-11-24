@@ -208,26 +208,13 @@ public static class FrameworkUtil {
 		globalRect.SetMinMax(originalMinX, originalMaxX, originalMinY, originalMaxY);
 
 		// Move Cells
-		int originalWidth = originalMaxX - originalMinX;
-		int originalHeight = originalMaxY - originalMinY;
-		var targetRect = uiRect = rect.Fit(originalWidth, originalHeight, 500, 0);
-		int minZ = int.MaxValue;
-		for (int i = cellIndexStart; i < count && i < cellIndexEnd; i++) {
-			var cell = cells[i];
-			minZ = Util.Min(minZ, cell.Z);
-			cell.X = targetRect.x + (cell.X - originalMinX) * targetRect.width / originalWidth;
-			cell.Y = targetRect.y + (cell.Y - originalMinY) * targetRect.height / originalHeight;
-			cell.Width = cell.Width * targetRect.width / originalWidth;
-			cell.Height = cell.Height * targetRect.height / originalHeight;
-			if (!cell.Shift.IsZero) {
-				cell.Shift = new Int4(
-					cell.Shift.left * targetRect.width / originalWidth,
-					cell.Shift.right * targetRect.width / originalWidth,
-					cell.Shift.down * targetRect.height / originalHeight,
-					cell.Shift.up * targetRect.height / originalHeight
-				);
-			}
-		}
+		RemapCells(
+			cells, cellIndexStart, Util.Min(count, cellIndexEnd),
+			IRect.MinMaxRect(originalMinX, originalMinY, originalMaxX, originalMaxY),
+			rect, out int minZ,
+			500, 0
+		);
+		uiRect = rect.Fit(originalMaxX - originalMinX, originalMaxY - originalMinY, 500, 0);
 
 		// Fix Z
 		if (minZ != int.MaxValue) {
@@ -242,6 +229,31 @@ public static class FrameworkUtil {
 
 		return true;
 
+	}
+
+
+	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, int fitPivotX = 500, int fitPivotY = 500) => RemapCells(cells, cellIndexStart, cellIndexEnd, from, to, out _, fitPivotX, fitPivotY);
+	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, out int minZ, int fitPivotX = 500, int fitPivotY = 500) {
+		int originalWidth = from.width;
+		int originalHeight = from.height;
+		var targetRect = to.Fit(originalWidth, originalHeight, fitPivotX, fitPivotY);
+		minZ = int.MaxValue;
+		for (int i = cellIndexStart; i < cellIndexEnd; i++) {
+			var cell = cells[i];
+			minZ = Util.Min(minZ, cell.Z);
+			cell.X = targetRect.x + (cell.X - from.x) * targetRect.width / originalWidth;
+			cell.Y = targetRect.y + (cell.Y - from.y) * targetRect.height / originalHeight;
+			cell.Width = cell.Width * targetRect.width / originalWidth;
+			cell.Height = cell.Height * targetRect.height / originalHeight;
+			if (!cell.Shift.IsZero) {
+				cell.Shift = new Int4(
+					cell.Shift.left * targetRect.width / originalWidth,
+					cell.Shift.right * targetRect.width / originalWidth,
+					cell.Shift.down * targetRect.height / originalHeight,
+					cell.Shift.up * targetRect.height / originalHeight
+				);
+			}
+		}
 	}
 
 

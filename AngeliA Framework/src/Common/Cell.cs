@@ -1,11 +1,29 @@
 ﻿namespace AngeliA;
 
+
+public struct CellRawData () {
+	public int SpriteID = 0;
+	public char TextChar = '\0';
+	public int X;
+	public int Y;
+	public int Z;
+	public int Width;
+	public int Height;
+	public int Rotation1000;
+	public float PivotX;
+	public float PivotY;
+	public Color32 Color = Color32.WHITE;
+	public Int4 Shift;
+	public Alignment BorderSide = Alignment.Full;
+}
+
+
 public class Cell {
 
 	public static readonly Cell EMPTY = new() { Sprite = null, TextSprite = null, SheetIndex = -1, };
 
 	public AngeSprite Sprite;
-	public CharSprite TextSprite;
+	public CharSprite TextSprite { get; set; }
 	public int SheetIndex;
 	public int Order;
 	public int X;
@@ -43,8 +61,8 @@ public class Cell {
 		PivotX = other.PivotX;
 		PivotY = other.PivotY;
 		Color = other.Color;
-		BorderSide = other.BorderSide;
 		Shift = other.Shift;
+		BorderSide = other.BorderSide;
 	}
 	public Int2 LocalToGlobal (int localX, int localY) {
 		int pOffsetX = (int)(PivotX * Width);
@@ -136,4 +154,65 @@ public class Cell {
 		Width = (Width * scale).RoundToInt();
 		Height = (Height * scale).RoundToInt();
 	}
+	public IRect GetGlobalBounds () {
+		if (Rotation1000.UMod(360_000) == 0) {
+			int pOffsetX = (int)(PivotX * Width);
+			int pOffsetY = (int)(PivotY * Height);
+			return new IRect(X - pOffsetX, Y - pOffsetY, Width, Height);
+		} else {
+			var bl = GlobalLerp(0f, 0f);
+			var br = GlobalLerp(1f, 0f);
+			var tl = GlobalLerp(0f, 1f);
+			var tr = GlobalLerp(1f, 1f);
+			return IRect.MinMaxRect(
+				Util.Min(Util.Min(bl.x, br.x), Util.Min(tl.x, tr.x)),
+				Util.Min(Util.Min(bl.y, br.y), Util.Min(tl.y, tr.y)),
+				Util.Max(Util.Max(bl.x, br.x), Util.Max(tl.x, tr.x)),
+				Util.Max(Util.Max(bl.y, br.y), Util.Max(tl.y, tr.y))
+			);
+		}
+	}
+
+	public CellRawData GetRawData () {
+		return new() {
+			SpriteID = Sprite != null ? Sprite.ID : 0,
+			TextChar = TextSprite != null ? TextSprite.Char : '\0',
+			X = X,
+			Y = Y,
+			Z = Z,
+			Width = Width,
+			Height = Height,
+			Rotation1000 = Rotation1000,
+			PivotX = PivotX,
+			PivotY = PivotY,
+			Color = Color,
+			Shift = Shift,
+			BorderSide = BorderSide,
+		};
+	}
+
+	public void LoadFromRawData (CellRawData data, int sheetIndex = int.MinValue) {
+		if (sheetIndex == int.MinValue) {
+			sheetIndex = Renderer.CurrentSheetIndex;
+		}
+		using var _ = new SheetIndexScope(sheetIndex);
+		Renderer.TryGetSprite(data.SpriteID, out Sprite, true);
+		if (data.TextChar != '\0' && Renderer.RequireCharForPool(data.TextChar, out var cSprite)) {
+			TextSprite = cSprite;
+		} else {
+			TextSprite = null;
+		}
+		X = data.X;
+		Y = data.Y;
+		Z = data.Z;
+		Width = data.Width;
+		Height = data.Height;
+		Rotation1000 = data.Rotation1000;
+		PivotX = data.PivotX;
+		PivotY = data.PivotY;
+		Color = data.Color;
+		Shift = data.Shift;
+		BorderSide = data.BorderSide;
+	}
+
 }
