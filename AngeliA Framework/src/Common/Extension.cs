@@ -934,6 +934,14 @@ public static class Extension {
 		}
 		return rect;
 	}
+	public static IRect WithNewWidth (this IRect rect, int width) {
+		rect.width = width;
+		return rect;
+	}
+	public static IRect WithNewHeight (this IRect rect, int height) {
+		rect.height = height;
+		return rect;
+	}
 
 
 	// Misc

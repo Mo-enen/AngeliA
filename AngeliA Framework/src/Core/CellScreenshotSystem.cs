@@ -32,6 +32,7 @@ public static class CellScreenshotSystem {
 		// Info
 		public long CreatedDate;
 		public string FilePath;
+		public bool Locked;
 
 		// Content
 		public IRect Range;
@@ -43,6 +44,7 @@ public static class CellScreenshotSystem {
 		// API
 		public void Read (BinaryReader reader) {
 
+			Locked = reader.ReadBoolean();
 			CreatedDate = reader.ReadInt64();
 
 			Range.x = reader.ReadInt32();
@@ -98,6 +100,7 @@ public static class CellScreenshotSystem {
 
 		public void Write (BinaryWriter writer) {
 
+			writer.Write((bool)Locked);
 			writer.Write((long)CreatedDate);
 
 			writer.Write((int)Range.x);
@@ -219,6 +222,7 @@ public static class CellScreenshotSystem {
 	public static Screenshot TakeScreenshotImmediately (IRect cameraRange) {
 		var now = System.DateTime.UtcNow;
 		var result = new Screenshot {
+			Locked = false,
 			CreatedDate = now.ToFileTimeUtc(),
 			FilePath = Util.CombinePaths(MetaRoot, now.ToString("yyyy-dd-M--HH-mm-ss-fff")),
 			SkyBottom = Sky.SkyTintBottomColor,
@@ -248,15 +252,25 @@ public static class CellScreenshotSystem {
 	}
 
 
-	public static Screenshot GetScreenshot (int index) => Screenshots[index];
+	public static Screenshot GetScreenshot (int index) => index >= 0 && index < Screenshots.Count ? Screenshots[index] : null;
 
 
-	public static void DeleteScreenshot (int index) {
+	public static void DeleteScreenshot (int index, bool dontDeleteLocked = true) {
 		if (index < 0 || index >= Screenshots.Count) return;
 		var shot = Screenshots[index];
 		if (shot == null) return;
+		if (shot.Locked && dontDeleteLocked) return;
 		Screenshots.RemoveAt(index);
 		Util.DeleteFile(shot.FilePath);
+	}
+
+
+	public static void SetScreenshotLock (int index, bool locked) {
+		if (index < 0 || index >= Screenshots.Count) return;
+		var shot = Screenshots[index];
+		if (shot == null || shot.Locked == locked) return;
+		shot.Locked = locked;
+		SaveScreenshotToFile(shot);
 	}
 
 
@@ -309,6 +323,7 @@ public static class CellScreenshotSystem {
 			var shot = new Screenshot();
 			while (reader.NotEnd()) {
 				shot.Read(reader);
+				shot.FilePath = path;
 			}
 			Screenshots.Add(shot);
 		}

@@ -60,6 +60,7 @@ public class ControlHintUI : EntityUI {
 	private Int4 ButtonBorder = default;
 	private int ForceHintFrame = int.MinValue;
 	private int ForceHideGamepadFrame = int.MinValue;
+	private int ForceHideGlobalHintFrame = int.MinValue;
 	private int OffsetResetFrame = int.MinValue;
 
 	// Saving
@@ -227,28 +228,34 @@ public class ControlHintUI : EntityUI {
 
 
 	public static void DrawGlobalHint (int globalX, int globalY, Gamekey key, string label, bool background = false) {
-		if (Game.IsPausing) return;
-		Instance?.DrawGamekey(globalX, globalY, key, key, label, background);
+		if (Game.IsPausing || Instance == null) return;
+		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
+		Instance.DrawGamekey(globalX, globalY, key, key, label, background);
 	}
 	public static void DrawGlobalHint (int globalX, int globalY, Gamekey keyA, Gamekey keyB, string label, bool background = false) {
-		if (Game.IsPausing) return;
-		Instance?.DrawGamekey(globalX, globalY, keyA, keyB, label, background);
+		if (Game.IsPausing || Instance == null) return;
+		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
+		Instance.DrawGamekey(globalX, globalY, keyA, keyB, label, background);
 	}
 	internal static void DrawGlobalHint (int globalX, int globalY, KeyboardKey key, string label, bool background = false) {
-		if (Game.IsPausing) return;
-		Instance?.DrawKey(globalX, globalY, key, key, label, background);
+		if (Game.IsPausing || Instance == null) return;
+		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
+		Instance.DrawKey(globalX, globalY, key, key, label, background);
 	}
 	internal static void DrawGlobalHint (int globalX, int globalY, KeyboardKey keyA, KeyboardKey keyB, string label, bool background = false) {
-		if (Game.IsPausing) return;
-		Instance?.DrawKey(globalX, globalY, keyA, keyB, label, background);
+		if (Game.IsPausing || Instance == null) return;
+		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
+		Instance.DrawKey(globalX, globalY, keyA, keyB, label, background);
 	}
 	internal static void DrawGlobalHint (int globalX, int globalY, GamepadKey key, string label, bool background = false) {
-		if (Game.IsPausing) return;
-		Instance?.DrawGamepadButton(globalX, globalY, key, key, label, background);
+		if (Game.IsPausing || Instance == null) return;
+		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
+		Instance.DrawGamepadButton(globalX, globalY, key, key, label, background);
 	}
 	internal static void DrawGlobalHint (int globalX, int globalY, GamepadKey keyA, GamepadKey keyB, string label, bool background = false) {
-		if (Game.IsPausing) return;
-		Instance?.DrawGamepadButton(globalX, globalY, keyA, keyB, label, background);
+		if (Game.IsPausing || Instance == null) return;
+		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
+		Instance.DrawGamepadButton(globalX, globalY, keyA, keyB, label, background);
 	}
 
 
@@ -261,6 +268,12 @@ public class ControlHintUI : EntityUI {
 	public static void ForceHideGamepad (int duration = 1) {
 		if (Instance == null) return;
 		Instance.ForceHideGamepadFrame = Game.PauselessFrame + duration;
+	}
+
+
+	public static void ForceHideGlobalHint (int duration = 1) {
+		if (Instance == null) return;
+		Instance.ForceHideGlobalHintFrame = Game.PauselessFrame + duration;
 	}
 
 
