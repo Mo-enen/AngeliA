@@ -132,8 +132,15 @@ public static partial class Util {
 		result.a = (byte)QuickRandom(minA, maxA);
 		return result;
 	}
+
+	/// <summary>
+	/// "min" is Included, "max" is Excluded
+	/// </summary>
 	public static int QuickRandom (int min, int max) => (QuickRandomSeed = QuickRandomWithSeed(QuickRandomSeed)).UMod((max - min).GreaterOrEquel(1)) + min;
 	public static int QuickRandom () => QuickRandomSeed = QuickRandomWithSeed(QuickRandomSeed);
+	/// <summary>
+	/// "min" is Included, "max" is Excluded
+	/// </summary>
 	public static int QuickRandomWithSeed (int seed, int min, int max) => QuickRandomWithSeed(seed).UMod((max - min).GreaterOrEquel(1)) + min;
 	public static int QuickRandomWithSeed (int seed) {
 		seed = (seed * 1103515245 + 12345) % 23456789;
@@ -142,6 +149,9 @@ public static partial class Util {
 		seed = (seed * 2127912213) % 2147483647;
 		return seed;
 	}
+	/// <summary>
+	/// "min" is Included, "max" is Excluded
+	/// </summary>
 	public static int QuickRandomWithSeed (long seed, int min, int max) => QuickRandomWithSeed(seed).UMod((max - min).GreaterOrEquel(1)) + min;
 	public static int QuickRandomWithSeed (long seed) {
 		seed = (seed * 12234503515245 + 72456224) % 2223423456789;

@@ -9,23 +9,23 @@ public class PoseAnimation_PhotoPose : PoseAnimation {
 
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
+		switch (Attackness.AttackStyleIndex.UMod(1)) {
+			case 0:
+				Pose0();
+				break;
 
+		}
+	}
 
-		float deltaX = Target.DeltaPositionX.Clamp(-30, 30) / 30f;
-		float deltaY = Target.DeltaPositionY.Clamp(-20, 20) / 20f;
+	private void Pose0 () {
 
-		Rendering.PoseRootX = (int)(-FacingSign * A2G + deltaX * 30);
-		Rendering.PoseRootY =0;
-		Rendering.PoseRootY += (CurrentAnimationFrame.PingPong(10) - 5) * 3;
-		Body.X += FacingSign * A2G;
-		Head.X += FacingSign * A2G * 2;
-		Hip.X = Body.X;
-		UpperLegL.X += FacingSign * A2G;
-		UpperLegR.X += FacingSign * A2G;
-		Head.Rotation = FacingSign * (int)(10 - deltaX.Abs() * 10);
+		Head.Rotation = -5;
+		int bodyOffsetX = A2G;
+		Head.X -= bodyOffsetX;
+		Body.X -= bodyOffsetX;
+		Hip.X -= bodyOffsetX;
+		UpperLegL.X -= bodyOffsetX / 2;
 
-		Body.Height = Body.SizeY - (int)(deltaX * 16).Abs();
-		Head.Y = Body.Y + Body.Height - (int)(deltaX * 24).Abs();
 		ResetShoulderAndUpperArmPos();
 
 		// Arm
@@ -33,39 +33,29 @@ public class PoseAnimation_PhotoPose : PoseAnimation {
 		UpperArmR.Height = UpperArmR.SizeY;
 		LowerArmL.Height = LowerArmL.SizeY;
 		LowerArmR.Height = LowerArmR.SizeY;
-		UpperArmL.LimbRotate(-20);
-		UpperArmR.LimbRotate(20);
-		LowerArmL.LimbRotate(0);
+		UpperArmL.LimbRotate(60);
+		UpperArmR.LimbRotate(-5);
+		LowerArmL.LimbRotate(120);
 		LowerArmR.LimbRotate(0);
 		HandL.LimbRotate(0);
 		HandR.LimbRotate(1);
 
 		// Leg
-		UpperLegL.LimbRotate((int)(FacingSign * (-80 + deltaY * 15)));
-		UpperLegR.LimbRotate((int)(FacingSign * (-80 + deltaY * 15)));
-		LowerLegL.LimbRotate((int)(FacingSign * (120 + deltaY * 8)));
-		LowerLegR.LimbRotate((int)(FacingSign * (120 + deltaY * 8)));
+		UpperLegL.LimbRotate(10);
+		LowerLegL.LimbRotate(0);
 		FootL.LimbRotate(-FacingSign);
-		FootR.LimbRotate(-FacingSign);
-
-		// Misc
-		Rendering.BodyTwist = FacingSign * 1000;
-		Rendering.HeadTwist = FacingSign * 100;
 
 		// Grab Rot
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + 90;
-		Rendering.HandGrabScaleL = 500;
-		Rendering.HandGrabScaleR = 500;
+		Rendering.HandGrabScaleL = 0;
+		Rendering.HandGrabScaleR = 0;
 
 		// Z
-		UpperLegL.Z = FacingSign * 6;
-		UpperLegR.Z = FacingSign * -6;
-		LowerLegL.Z = FacingSign * 7;
-		LowerLegR.Z = FacingSign * -7;
-		FootL.Z = FacingSign * 8;
-		FootR.Z = FacingSign * -8;
-
+		UpperArmL.Z = 30;
+		UpperArmR.Z = 30;
+		LowerArmL.Z = 31;
+		LowerArmR.Z = 31;
+		HandL.Z = 32;
+		HandR.Z = 32;
 
 	}
 

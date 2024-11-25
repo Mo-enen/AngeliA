@@ -187,6 +187,7 @@ public partial class Game {
 	public static void CancelGizmosOnTopOfUI () => Instance.GizmosOnTopOfUiFrame = -1;
 
 	// Doodle
+	public static bool ShowingDoodle => GlobalFrame <= Instance.DoodleFrame + 1;
 	public static Int4 DoodleScreenPadding { get; set; } = new(0, 0, 0, 0);
 	protected int DoodleFrame { get; private set; } = -1;
 

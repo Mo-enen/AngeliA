@@ -167,7 +167,7 @@ public class GameEditor : WindowUI {
 			var panelRect = barRect.CornerOutside(Alignment.TopLeft, Unify(220), Unify(384));
 
 			// Draw Panel BG
-			Renderer.SetLayer(CurrentPanel == PanelType.Location ? RenderLayer.DEFAULT : RenderLayer.UI);
+			Renderer.SetLayer(!Game.ShowingDoodle && CurrentPanel == PanelType.Location ? RenderLayer.DEFAULT : RenderLayer.UI);
 			var cells = GUI.DrawSlice(PANEL_BG, panelRect);
 			Renderer.SetLayer(RenderLayer.UI);
 			bool bgPainted = cells != null;
@@ -493,8 +493,12 @@ public class GameEditor : WindowUI {
 
 	private void DrawLocationPanel (ref IRect panelRect) {
 
+		bool requireUI = Game.ShowingDoodle;
+		if (requireUI) {
+			Game.ForceGizmosOnTopOfUI(1);
+		}
 		using var _ = new SheetIndexScope(ThumbnailSheetIndex);
-		using var __ = new LayerScope(RenderLayer.DEFAULT);
+		using var __ = new LayerScope(requireUI ? RenderLayer.UI : RenderLayer.DEFAULT);
 
 		int toolbarSize = Unify(56);
 		int scrollbarWidth = Unify(12);
