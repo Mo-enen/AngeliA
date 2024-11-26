@@ -100,6 +100,7 @@ public partial class MapEditor {
 	private string SearchingText = "";
 	private int DraggingForReorderPaletteGroup = -1;
 	private int DraggingForReorderPaletteItem = -1;
+	private int ActivedToolbarButtonCount = 0;
 	private PaletteItem MenuingPalItem;
 
 
@@ -822,11 +823,13 @@ public partial class MapEditor {
 		int btnSize = Unify(TOOLBAR_BTN_SIZE).GreaterOrEquel(1);
 		int column = PanelRect.width.UDivide(btnSize);
 		int top = PanelRect.yMax - btnSize;
-		for (int btnIndex = 0; btnIndex < ToolbarButtons.Count; btnIndex++) {
-			var btn = ToolbarButtons[btnIndex];
+		int activeBtnIndex = 0;
+		for (int index = 0; index < ToolbarButtons.Count; index++) {
+			var btn = ToolbarButtons[index];
+			if (btn.Active != null && !btn.Active.Invoke()) continue;
 			using var __ = new GUIEnableScope(btn.Enable == null || btn.Enable.Invoke());
-			int i = btnIndex % column;
-			int j = btnIndex / column;
+			int i = activeBtnIndex % column;
+			int j = activeBtnIndex / column;
 			var rect = new IRect(
 				PanelRect.x + i * btnSize,
 				top - j * btnSize,
@@ -836,6 +839,7 @@ public partial class MapEditor {
 			if (rect.MouseInside()) {
 				DrawTooltip(rect, btn.Tip);
 			}
+			activeBtnIndex++;
 		}
 
 	}

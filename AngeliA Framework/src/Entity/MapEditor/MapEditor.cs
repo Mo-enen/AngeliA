@@ -422,6 +422,13 @@ public sealed partial class MapEditor : WindowUI {
 
 		UpdatePanelRect(Renderer.CameraRect);
 
+		ActivedToolbarButtonCount = 0;
+		foreach (var tBtn in ToolbarButtons) {
+			if (tBtn.Active == null || tBtn.Active.Invoke()) {
+				ActivedToolbarButtonCount++;
+			}
+		}
+
 		// Cursor
 		if (!IsPlaying) Cursor.RequireCursor(int.MinValue);
 
