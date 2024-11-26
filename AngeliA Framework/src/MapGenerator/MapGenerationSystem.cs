@@ -29,7 +29,7 @@ public static class MapGenerationSystem {
 
 	// Data
 	private static readonly Dictionary<int, MapGenerator> Pool = [];
-	private static readonly Dictionary<Int3, MapState> StatePool = [];
+	private static readonly Dictionary<Int3, (int id, MapState state)> StatePool = [];
 	private static readonly Pipe<(MapGenerator gen, Int3 worldPos)> AllTasks = new(64);
 
 
@@ -108,7 +108,8 @@ public static class MapGenerationSystem {
 	}
 
 
-	public static bool IsGenerating (Int3 worldPosition) => StatePool.TryGetValue(worldPosition, out var state) && state == MapState.Generating;
+	public static bool IsGenerating (Int3 worldPosition) => StatePool.TryGetValue(worldPosition, out var pair) && pair.state == MapState.Generating;
+	public static bool IsGenerating (Int3 worldPosition, int generatorID) => StatePool.TryGetValue(worldPosition, out var pair) && pair.state == MapState.Generating && pair.id == generatorID;
 
 
 	public static void GenerateMap (int generatorID, Int3 worldPos, bool async) {
@@ -119,7 +120,7 @@ public static class MapGenerationSystem {
 
 	public static void GenerateMap (MapGenerator generator, Int3 worldPos, bool async) {
 		if (!Enable) return;
-		StatePool[worldPos] = MapState.Generating;
+		StatePool[worldPos] = (generator.TypeID, MapState.Generating);
 		if (async) {
 			AllTasks.LinkToTail((generator, worldPos));
 		} else {
@@ -164,7 +165,8 @@ public static class MapGenerationSystem {
 		}
 
 		// Finish
-		StatePool[worldPos] = success ? MapState.Success : MapState.Fail;
+		StatePool[worldPos] = (generator.TypeID, success ? MapState.Success : MapState.Fail);
+
 	}
 
 

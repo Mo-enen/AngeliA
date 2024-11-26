@@ -52,10 +52,10 @@ public class AfterEntityRepositionAttribute : EventAttribute { }
 
 
 // World
-public class BeforeLevelRenderedAttribute : EventAttribute { }
-public class AfterLevelRenderedAttribute : EventAttribute { }
-public class OnWorldCreatedBySquadAttribute : EventAttribute { }
-public class OnWorldLoadedBySquadAttribute : EventAttribute { }
+public class BeforeLevelRenderedAttribute (int order = 0) : EventAttribute(order) { }
+public class AfterLevelRenderedAttribute (int order = 0) : EventAttribute(order) { }
+public class OnWorldCreatedBySquadAttribute (int order = 0) : EventAttribute(order) { }
+public class OnWorldLoadedBySquadAttribute (int order = 0) : EventAttribute(order) { }
 
 
 // Map Editor
