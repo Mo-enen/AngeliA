@@ -384,7 +384,7 @@ public partial class PixelEditor {
 					var pixelRect = DraggingPixelRect;
 					if (pixelRect.width > 0 && pixelRect.height > 0 && (pixelRect.width > 1 || pixelRect.height > 1)) {
 						string name = EditingSheet.GetAvailableSpriteName("New Sprite");
-						var sprite = EditingSheet.CreateSprite(name, pixelRect, CurrentAtlasIndex);
+						var sprite = EditingSheet.CreateSprite(name, pixelRect, EditingSheet.Atlas[CurrentAtlasIndex].ID);
 						EditingSheet.AddSprite(sprite);
 						StagedSprites.Add(new SpriteData(sprite));
 						RegisterUndo(new SpriteObjectUndoItem() {

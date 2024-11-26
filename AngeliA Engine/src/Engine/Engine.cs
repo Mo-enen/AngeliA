@@ -916,11 +916,13 @@ public partial class Engine {
 			if (builtInSheetModDate != Util.GetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath)) {
 				var engineSheet = new Sheet();
 				if (engineSheet.LoadFromDisk(Universe.BuiltIn.GameSheetPath)) {
-					int engineBuiltInIndex = engineSheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
-					if (engineBuiltInIndex >= 0) {
-						engineSheet.RemoveAllAtlasAndAllSpritesInsideExcept(engineBuiltInIndex);
+					engineSheet.RemoveAllAtlasAndAllSpritesInsideExcept("BuiltIn".AngeHash());
+					if (engineSheet.Atlas.Count > 0) {
 						engineSheet.SaveToDisk(CurrentProject.Universe.BuiltInSheetPath);
 						Util.SetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath, builtInSheetModDate);
+#if DEBUG
+						Debug.Log("Built-in Sheet Updated");
+#endif
 					}
 				}
 			}

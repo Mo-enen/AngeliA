@@ -20,7 +20,7 @@ public class AngeSprite {
 	public int PivotY;
 	public int LocalZ;
 	public Int4 GlobalBorder;
-	public int AtlasIndex;
+	public int AtlasID;
 	public Atlas Atlas;
 	public SpriteGroup Group;
 	public bool IsTrigger;
@@ -72,7 +72,7 @@ public class AngeSprite {
 			);
 
 			// Atlas Index
-			AtlasIndex = reader.ReadByte();
+			AtlasID = reader.ReadInt32();
 
 			// Summary Tint
 			SummaryTint = Util.IntToColor(reader.ReadInt32());
@@ -142,7 +142,7 @@ public class AngeSprite {
 			writer.Write((ushort)GlobalBorder.w);
 
 			// Atlas Index
-			writer.Write((byte)AtlasIndex);
+			writer.Write((int)AtlasID);
 
 			// Summary Tint
 			writer.Write((int)Util.ColorToInt(SummaryTint));
@@ -245,7 +245,7 @@ public class AngeSprite {
 			PivotY = PivotY,
 			LocalZ = LocalZ,
 			GlobalBorder = GlobalBorder,
-			AtlasIndex = AtlasIndex,
+			AtlasID = AtlasID,
 			Atlas = Atlas,
 			Group = null,
 			IsTrigger = IsTrigger,

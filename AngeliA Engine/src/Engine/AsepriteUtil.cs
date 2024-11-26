@@ -121,7 +121,7 @@ public static class AsepriteUtil {
 				LocalZ = offsetZ,
 				PivotX = pivotX ?? flex.AngePivot.x,
 				PivotY = pivotY ?? flex.AngePivot.y,
-				AtlasIndex = atlasIndex,
+				AtlasID = atlases[atlasIndex].ID,
 				Atlas = atlases[atlasIndex],
 				Tag = tag,
 				Rule = blockRule,

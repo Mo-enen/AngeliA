@@ -332,7 +332,7 @@ public partial class PixelEditor {
 			var sprite = EditingSheet.CreateSprite(
 				EditingSheet.GetAvailableSpriteName("New Sprite"),
 				new IRect(4, 4, size.x, size.y),
-				Instance.CurrentAtlasIndex
+				EditingSheet.Atlas[Instance.CurrentAtlasIndex].ID
 			);
 			sprite.Pixels = Game.GetPixelsFromTexture(texture);
 			EditingSheet.AddSprite(sprite);
@@ -406,15 +406,16 @@ public partial class PixelEditor {
 
 	#region --- LGC ---
 
-	
+
 	private void SetCurrentAtlas (int atlasIndex, bool forceChange = false, bool resetUndo = true) {
 		if (EditingSheet.Atlas.Count == 0 || CurrentProject == null) return;
 		atlasIndex = atlasIndex.Clamp(0, EditingSheet.Atlas.Count - 1);
 		if (!forceChange && CurrentAtlasIndex == atlasIndex) return;
 		CurrentAtlasIndex = atlasIndex;
 		StagedSprites.Clear();
+		var atlas = EditingSheet.Atlas[atlasIndex];
 		foreach (var sprite in EditingSheet.Sprites) {
-			if (sprite.AtlasIndex != atlasIndex) continue;
+			if (sprite.AtlasID != atlas.ID) continue;
 			StagedSprites.Add(new SpriteData(sprite));
 		}
 		ResetCamera();

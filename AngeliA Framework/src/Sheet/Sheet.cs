@@ -22,6 +22,7 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 	public readonly List<Atlas> Atlas = [];
 	public readonly Dictionary<int, AngeSprite> SpritePool = [];
 	public readonly Dictionary<int, SpriteGroup> GroupPool = [];
+	public readonly Dictionary<int, Atlas> AtlasPool = [];
 	public readonly Dictionary<int, object> TexturePool = [];
 
 	// Data
@@ -99,12 +100,18 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 
 	public void CalculateExtraData () {
 
+		// Atlas
+		AtlasPool.Clear();
+		foreach (var atlas in Atlas) {
+			AtlasPool.TryAdd(atlas.ID, atlas);
+		}
+
 		// Sprites
 		SpritePool.Clear();
 		var spriteSpan = CollectionsMarshal.AsSpan(Sprites);
 		for (int i = 0; i < spriteSpan.Length; i++) {
 			var sprite = spriteSpan[i];
-			sprite.Atlas = Atlas[sprite.AtlasIndex];
+			sprite.Atlas = AtlasPool.TryGetValue(sprite.AtlasID, out var atlas) ? atlas : null;
 			sprite.Group = null;
 			SpritePool.TryAdd(sprite.ID, sprite);
 		}
@@ -184,6 +191,7 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 		Atlas.Clear();
 		SpritePool.Clear();
 		GroupPool.Clear();
+		AtlasPool.Clear();
 		foreach (var (_, texture) in TexturePool) Game.UnloadTexture(texture);
 		TexturePool.Clear();
 	}
@@ -266,17 +274,6 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 		var atlas = Atlas[from];
 		Atlas.RemoveAt(from);
 		Atlas.Insert(to, atlas);
-		int min = Util.Min(from, to);
-		int max = Util.Max(from, to);
-		int delta = (from - to).Sign3();
-		foreach (var sp in Sprites) {
-			if (sp.AtlasIndex == from) {
-				sp.AtlasIndex = to;
-				continue;
-			}
-			if (sp.AtlasIndex < min || sp.AtlasIndex > max) continue;
-			sp.AtlasIndex += delta;
-		}
 		return to;
 	}
 
@@ -299,7 +296,6 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 	}
 
 	public void CombineSheet (Sheet sheet) {
-		int atlasShift = Atlas.Count;
 		foreach (var altas in sheet.Atlas) {
 			Atlas.Add(altas);
 		}
@@ -312,7 +308,6 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 		}
 		foreach (var sprite in sheet.Sprites) {
 			if (SpritePool.ContainsKey(sprite.ID)) continue;
-			sprite.AtlasIndex += atlasShift;
 			Sprites.Add(sprite);
 			SpritePool.Add(sprite.ID, sprite);
 			SyncSpritePixelsIntoTexturePool(sprite);
@@ -333,39 +328,35 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 	public void RemoveAtlasAndAllSpritesInside (int atlasIndex) {
 		if (atlasIndex < 0 || atlasIndex >= Atlas.Count) return;
 		// Remove Atlas
+		var removedAtlas = Atlas[atlasIndex];
 		Atlas.RemoveAt(atlasIndex);
+		AtlasPool.Remove(removedAtlas.ID);
 		// Remove Sprites
 		for (int i = 0; i < Sprites.Count; i++) {
-			if (Sprites[i].AtlasIndex == atlasIndex) {
+			if (Sprites[i].AtlasID == removedAtlas.ID) {
 				RemoveSprite(i);
 				i--;
-			}
-		}
-		// Fix Index
-		foreach (var sprite in Sprites) {
-			if (sprite.AtlasIndex > atlasIndex) {
-				sprite.AtlasIndex--;
 			}
 		}
 	}
 
-	public void RemoveAllAtlasAndAllSpritesInsideExcept (int ignoreAtlasIndex) {
-		if (ignoreAtlasIndex < 0 || ignoreAtlasIndex >= Atlas.Count) return;
+	public void RemoveAllAtlasAndAllSpritesInsideExcept (int ignoreAtlasID) {
+		if (ignoreAtlasID != 0) return;
 		// Remove Sprites
 		for (int i = 0; i < Sprites.Count; i++) {
-			if (Sprites[i].AtlasIndex != ignoreAtlasIndex) {
+			if (Sprites[i].AtlasID != ignoreAtlasID) {
 				RemoveSprite(i);
 				i--;
 			}
 		}
-		// Fix Index
-		foreach (var sprite in Sprites) {
-			sprite.AtlasIndex = 0;
-		}
 		// Remove Atlas
-		var atlas = Atlas[ignoreAtlasIndex];
+		AtlasPool.TryGetValue(ignoreAtlasID, out var keepAtlas);
 		Atlas.Clear();
-		Atlas.Add(atlas);
+		AtlasPool.Clear();
+		if (keepAtlas != null) {
+			Atlas.Add(keepAtlas);
+			AtlasPool.Add(keepAtlas.ID, keepAtlas);
+		}
 	}
 
 	public void RemoveGroupAndAllSpritesInside (int groupIndex) {
@@ -391,12 +382,12 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 	}
 
 	// Create
-	public AngeSprite CreateSprite (string name, IRect pixelRect, int atlasIndex) {
+	public AngeSprite CreateSprite (string name, IRect pixelRect, int atlasID) {
 		return new() {
 			ID = name.AngeHash(),
 			RealName = name,
-			Atlas = Atlas[atlasIndex],
-			AtlasIndex = atlasIndex,
+			Atlas = AtlasPool[atlasID],
+			AtlasID = atlasID,
 			GlobalWidth = pixelRect.width * Const.ART_SCALE,
 			GlobalHeight = pixelRect.height * Const.ART_SCALE,
 			PixelRect = pixelRect,

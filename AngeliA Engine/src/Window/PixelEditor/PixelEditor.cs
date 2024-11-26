@@ -1022,7 +1022,7 @@ public partial class PixelEditor : WindowUI {
 		var sprite = EditingSheet.CreateSprite(
 			name,
 			pixelPos.HasValue ? new IRect(pixelPos.Value.x, pixelPos.Value.y, w, h) : new IRect(1, STAGE_SIZE - h - 1, w, h),
-			CurrentAtlasIndex
+			EditingSheet.Atlas[CurrentAtlasIndex].ID
 		);
 		EditingSheet.AddSprite(sprite);
 		StagedSprites.Add(new SpriteData(sprite));
@@ -1060,7 +1060,7 @@ public partial class PixelEditor : WindowUI {
 		var sprite = EditingSheet.CreateSprite(
 			name,
 			new IRect(spritePixPos.x, spritePixPos.y, PAL_WIDTH, PAL_HEIGHT),
-			CurrentAtlasIndex
+			EditingSheet.Atlas[CurrentAtlasIndex].ID
 		);
 		sprite.Tag = Tag.Palette;
 		PALETTE_PIXELS.CopyTo(sprite.Pixels, 0);
@@ -1121,8 +1121,9 @@ public partial class PixelEditor : WindowUI {
 
 	private void CopySpriteToStage (AngeSprite source, int x, int y, string basicName) {
 		var sprite = source.CreateCopy();
-		sprite.AtlasIndex = CurrentAtlasIndex;
-		sprite.Atlas = EditingSheet.Atlas[CurrentAtlasIndex];
+		var atlas = EditingSheet.Atlas[CurrentAtlasIndex];
+		sprite.AtlasID = atlas.ID;
+		sprite.Atlas = atlas;
 		sprite.RealName = EditingSheet.GetAvailableSpriteName(basicName);
 		sprite.ID = sprite.RealName.AngeHash();
 		sprite.PixelRect.x = x;
