@@ -268,6 +268,26 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 		return true;
 	}
 
+	public bool RenameAtlas (int atlasID, string newName) {
+		if (!AtlasPool.TryGetValue(atlasID, out var atlas)) return false;
+		int newID = newName.AngeHash();
+		if (newID == atlasID) return false;
+		if (AtlasPool.ContainsKey(newID)) return false;
+		AtlasPool.Remove(atlasID);
+		AtlasPool.Add(newID, atlas);
+		atlas.ID = newID;
+		atlas.Name = newName;
+		// Sync all Sprites
+		int len = Sprites.Count;
+		for (int i = 0; i < len; i++) {
+			var sp = Sprites[i];
+			if (sp.AtlasID == atlasID) {
+				sp.AtlasID = newID;
+			}
+		}
+		return true;
+	}
+
 	public int MoveAtlas (int from, int to) {
 		if (from == to) return to;
 		if (to > from) to--;

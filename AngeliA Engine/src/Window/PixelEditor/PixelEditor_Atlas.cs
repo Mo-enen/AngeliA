@@ -186,14 +186,15 @@ public partial class PixelEditor {
 
 					// Label
 					if (renaming) {
-						atlas.Name = GUI.SmallInputField(
+						string newName = GUI.SmallInputField(
 							ATLAS_INPUT_ID + i, contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
 							atlas.Name, out bool changed, out bool confirm
 						);
-						if (changed || confirm) {
-							int oldID = atlas.ID;
-							atlas.ID = atlas.Name.AngeHash();
-							if (oldID != atlas.ID) SetDirty();
+						if ((confirm || changed) && !string.IsNullOrWhiteSpace(newName)) {
+							bool renamed = EditingSheet.RenameAtlas(atlas.ID, newName);
+							if (renamed) {
+								SetDirty();
+							}
 						}
 					} else {
 						GUI.Label(
@@ -492,12 +493,24 @@ public partial class PixelEditor {
 
 
 	private void CreateAtlas () {
-		EditingSheet.Atlas.Add(new Atlas() {
-			Name = "New Atlas",
+		string basicName = "New Atlas";
+		string name = basicName;
+		int id = basicName.AngeHash();
+		int index = 1;
+		while (EditingSheet.AtlasPool.ContainsKey(id)) {
+			name = $"{basicName}_{index}";
+			id = name.AngeHash();
+			index++;
+		}
+		var atlas = new Atlas() {
+			Name = name,
 			Type = AtlasType.General,
-			ID = "New Atlas".AngeHash(),
+			ID = id,
 			IndentLevel = 0,
-		});
+		};
+		EditingSheet.Atlas.Add(atlas);
+		EditingSheet.AtlasPool.Add(atlas.ID, atlas);
+
 		SetDirty();
 		AtlasPanelScrollY = int.MaxValue;
 		SetCurrentAtlas(EditingSheet.Atlas.Count - 1);
@@ -506,7 +519,6 @@ public partial class PixelEditor {
 		CreateSpriteForPalette(useDefaultPos: true);
 
 		// Create First Sprite
-		var atlas = EditingSheet.Atlas[CurrentAtlasIndex];
 		CreateNewSprite($"{atlas.Name}.NewSprite");
 	}
 
