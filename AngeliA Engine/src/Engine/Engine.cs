@@ -309,7 +309,7 @@ public partial class Engine {
 	internal static void OnGUI () {
 
 
-		
+
 
 
 		GUI.Enable = true;
@@ -911,15 +911,17 @@ public partial class Engine {
 		Game.LoadFontsIntoPool(CurrentProject.Universe.FontRoot, builtIn: false);
 
 		// Built-in Sheet
-		long builtInSheetModDate = Util.GetFileModifyDate(Universe.BuiltIn.GameSheetPath);
-		if (builtInSheetModDate != Util.GetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath)) {
-			var engineSheet = new Sheet();
-			if (engineSheet.LoadFromDisk(Universe.BuiltIn.GameSheetPath)) {
-				int engineBuiltInIndex = engineSheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
-				if (engineBuiltInIndex >= 0) {
-					engineSheet.RemoveAllAtlasAndAllSpritesInsideExcept(engineBuiltInIndex);
-					engineSheet.SaveToDisk(CurrentProject.Universe.BuiltInSheetPath);
-					Util.SetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath, builtInSheetModDate);
+		if (!CurrentProject.IsEngineInternalProject) {
+			long builtInSheetModDate = Util.GetFileModifyDate(Universe.BuiltIn.GameSheetPath);
+			if (builtInSheetModDate != Util.GetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath)) {
+				var engineSheet = new Sheet();
+				if (engineSheet.LoadFromDisk(Universe.BuiltIn.GameSheetPath)) {
+					int engineBuiltInIndex = engineSheet.Atlas.FindIndex(a => a.Name == "BuiltIn");
+					if (engineBuiltInIndex >= 0) {
+						engineSheet.RemoveAllAtlasAndAllSpritesInsideExcept(engineBuiltInIndex);
+						engineSheet.SaveToDisk(CurrentProject.Universe.BuiltInSheetPath);
+						Util.SetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath, builtInSheetModDate);
+					}
 				}
 			}
 		}

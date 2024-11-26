@@ -13,6 +13,9 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 	#region --- VAR ---
 
 
+	// Const
+	const int CODE_FILE_VERSION = 0;
+
 	// Api
 	public readonly List<AngeSprite> Sprites = [];
 	public readonly List<SpriteGroup> Groups = [];
@@ -72,15 +75,14 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 
 		// File Version
 		int fileVersion = reader.ReadInt32();
-		const int CODE_VERSION = 0;
 
 		// Load Data
 		switch (fileVersion) {
-			case CODE_VERSION:
+			case CODE_FILE_VERSION:
 				LoadFromBinary_v0(reader);
 				break;
 			default:
-				Debug.LogError($"Can not handle sheet version {fileVersion}. Expect: version-{CODE_VERSION}");
+				Debug.LogError($"Can not handle sheet version {fileVersion}. Expect: version-{CODE_FILE_VERSION}");
 				return false;
 		}
 
@@ -90,7 +92,7 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 	public void SaveToDisk (string path) {
 		using var stream = new MemoryStream(1024);
 		using var writer = new BinaryWriter(stream);
-		writer.Write((int)0); // File Version
+		writer.Write((int)CODE_FILE_VERSION);
 		SaveToBinary_v0(writer);
 		Util.ByteToCompressedFile(path, stream.GetBuffer(), (int)stream.Position);
 	}

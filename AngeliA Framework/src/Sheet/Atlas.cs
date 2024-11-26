@@ -18,6 +18,7 @@ public class Atlas {
 	public int ID;
 	public string Name;
 	public AtlasType Type;
+	public int IndentLevel;
 
 	public void LoadFromBinary_v0 (BinaryReader reader) {
 		uint byteLen = reader.ReadUInt32();
@@ -37,6 +38,8 @@ public class Atlas {
 			// Type
 			Type = (AtlasType)reader.ReadByte();
 
+			// Indent
+			IndentLevel = reader.ReadInt32();
 
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
@@ -58,6 +61,9 @@ public class Atlas {
 
 			// Type
 			writer.Write((byte)Type);
+
+			// Indent
+			writer.Write((int)IndentLevel);
 
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);

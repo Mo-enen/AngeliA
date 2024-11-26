@@ -10,7 +10,7 @@ public class AngeSprite {
 	public static readonly AngeSprite EMPTY = new();
 
 	private static readonly StringBuilder CacheBuilder = new(256);
-	
+
 	public int ID;
 	public string RealName;
 	public int GlobalWidth;
