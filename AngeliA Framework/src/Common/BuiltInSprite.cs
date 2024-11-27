@@ -142,5 +142,13 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode ICON_WARNING = "Icon.Warning";
 	public static readonly SpriteCode ICON_ERROR = "Icon.Error";
 	public static readonly SpriteCode LAMP_LIGHT = "Lamp Light";
+	public static readonly SpriteCode FILE_ICON_FILE = "FileIcon.File";
+	public static readonly SpriteCode FILE_ICON_FOLDER = "FileIcon.Folder";
+	public static readonly SpriteCode FILE_ICON_FOLDER_EMPTY = "FileIcon.FolderEmpty";
+	public static readonly SpriteCode FILE_ICON_AUDIO = "FileIcon.Audio";
+	public static readonly SpriteCode FILE_ICON_TEXT = "FileIcon.Text";
+	public static readonly SpriteCode FILE_ICON_IMAGE = "FileIcon.Image";
+	public static readonly SpriteCode FILE_ICON_DISK = "FileIcon.Disk";
+	public static readonly SpriteCode FILE_ICON_FONT = "FileIcon.Font";
 
 }

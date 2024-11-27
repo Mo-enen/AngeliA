@@ -17,6 +17,7 @@ public partial class PixelEditor {
 	private static string[] ATLAS_TYPE_NAMES = null;
 	private static readonly SpriteCode UI_ATLAS_PANEL = "UI.Artwork.AtlasPanel";
 	private static readonly SpriteCode UI_ATLAS_TOOLBAR = "UI.Artwork.AtlasToolbar";
+	private static readonly SpriteCode UI_ATLAS_FOLDER = "Icon.NewFolder";
 	private static readonly SpriteCode ICON_SPRITE_ATLAS = "Icon.SpriteAtlas";
 	private static readonly SpriteCode ICON_IMPORT_ASE = "Icon.ImportAseprite";
 	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
@@ -27,6 +28,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TITLE_EXPORT_PNG = ("PixelEditor.Title.ExportPNG", "Export PNG file");
 	private static readonly LanguageCode MENU_ATLAS_TYPE = ("Menu.AtlasType", "Type");
 	private static readonly LanguageCode TIP_ADD_ATLAS = ("Tip.AddAtlas", "Create new atlas");
+	private static readonly LanguageCode TIP_ADD_ATLAS_FOLDER = ("Tip.AddAtlas", "Create new folder");
 	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.PixelEditor.ImportPNG", "Import PNG file into current canvas");
 	private static readonly LanguageCode TIP_EXPORT_PNG = ("Tip.PixelEditor.ExportPNG", "Export current canvas to a PNG file");
@@ -57,16 +59,32 @@ public partial class PixelEditor {
 
 		const int ATLAS_INPUT_ID = 287234;
 		var panelRect = WindowRect.Edge(Direction4.Left, Unify(PANEL_WIDTH));
+		var atlasList = EditingSheet.Atlas;
+		bool isFolded = false;
+		bool isSubItem = false;
 
 		// BG
 		GUI.DrawSlice(UI_ATLAS_PANEL, panelRect);
 		panelRect = panelRect.Shrink(0, 0, 0, GUI.ToolbarSize);
 
 		// Item Count Check
-		int itemCount = EditingSheet.Atlas.Count;
+		int itemCount = atlasList.Count;
 		if (itemCount <= 0) {
 			if (!Input.MouseLeftButtonHolding) AtlasItemReorderIndex = -1;
 			return;
+		}
+		int unfoldedItemCount = 0;
+		for (int i = 0; i < itemCount; i++) {
+			var atlas = atlasList[i];
+			bool isFolder = atlas.IsFolder;
+			if (isFolder) {
+				isFolded = atlas.State == AtlasState.Folded || AtlasItemReorderIndex == i;
+				isSubItem = true;
+			} else {
+				if (!isSubItem) isFolded = false;
+				if (isFolded) continue;
+			}
+			unfoldedItemCount++;
 		}
 
 		// List
@@ -76,24 +94,42 @@ public partial class PixelEditor {
 		SetCurrentAtlas(CurrentAtlasIndex.Clamp(0, itemCount - 1));
 		var rect = panelRect.Edge(Direction4.Up, Unify(36));
 		int newSelectingIndex = -1;
-		int scrollMax = ((itemCount + 6) * rect.height - panelRect.height).GreaterOrEquelThanZero();
+		int scrollMax = ((unfoldedItemCount + 6) * rect.height - panelRect.height).GreaterOrEquelThanZero();
 		bool hasScrollbar = scrollMax > 0;
 		if (hasScrollbar) rect.width -= scrollbarWidth;
 		bool requireUseMouseButtons = false;
 		int requireReorderFrom = -1;
 		int requireReorderTo = -1;
+		bool reorderToTopHalf = false;
 		IRect reorderGhostRect = default;
 		int reorderGhostID = 0;
 		string reorderGhostLabel = null;
+		isFolded = false;
+		isSubItem = false;
 
 		using (var scroll = new GUIVerticalScrollScope(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
 			AtlasPanelScrollY = scroll.PositionY;
 			for (int i = 0; i < itemCount; i++) {
 
-				var atlas = EditingSheet.Atlas[i];
+				var atlas = atlasList[i];
+
+				// Folder Cache
+				bool isFolder = atlas.IsFolder;
+				isSubItem = isSubItem && atlas.InFolder;
+				if (isFolder) {
+					isFolded = atlas.State == AtlasState.Folded || AtlasItemReorderIndex == i;
+					isSubItem = true;
+				} else {
+					if (!isSubItem) isFolded = false;
+					if (isFolded) continue;
+				}
+
+				// Atlas Item
+				rect.xMin = panelRect.x;
+				bool hover = rect.MouseInside();
+				rect.xMin = !isFolder && isSubItem ? panelRect.x + rect.height : panelRect.x;
 				bool selecting = CurrentAtlasIndex == i;
 				bool renaming = RenamingAtlasIndex == i;
-				bool hover = rect.MouseInside();
 				bool hoverTopHalf = hover && Input.MouseGlobalPosition.y > rect.CenterY();
 				if (renaming && !GUI.IsTyping) {
 					RenamingAtlasIndex = -1;
@@ -102,7 +138,7 @@ public partial class PixelEditor {
 				var contentRect = rect.Shrink(0, 0, itemPadding, itemPadding);
 				int iconWidth = contentRect.height;
 
-				// Reorder
+				// Reorder Start
 				var reorderRect = rect.Edge(Direction4.Left, iconWidth);
 				if (reorderRect.MouseInside()) {
 					// Highlight
@@ -114,16 +150,24 @@ public partial class PixelEditor {
 						AtlasItemReorderIndex = i;
 					}
 				}
-				Cursor.SetCursor(Const.CURSOR_RESIZE_VERTICAL, reorderRect);
+
+				// Reorder Cursor
+				if (!isFolder) {
+					Cursor.SetCursor(Const.CURSOR_RESIZE_VERTICAL, reorderRect);
+				}
 
 				// Reordering
-				if (hover && AtlasItemReorderIndex >= 0 && AtlasItemReorderIndex != i && AtlasItemReorderIndex < EditingSheet.Atlas.Count) {
+				if (hover && AtlasItemReorderIndex >= 0 && AtlasItemReorderIndex != i && AtlasItemReorderIndex < atlasList.Count) {
 					// Draw Ghost
 					var _iconRect = contentRect.Edge(Direction4.Left, iconWidth);
 					_iconRect.y = (hoverTopHalf ? rect.yMax : rect.yMin) - _iconRect.height / 2;
-					var reorderingAtlas = EditingSheet.Atlas[AtlasItemReorderIndex];
+					var reorderingAtlas = atlasList[AtlasItemReorderIndex];
 					int targetAtlasID = reorderingAtlas.ID;
-					if (EditingSheet.TryGetTextureFromPool(targetAtlasID, out var iconTexture)) {
+					if (reorderingAtlas.IsFolder) {
+						reorderGhostID = BuiltInSprite.FILE_ICON_FOLDER;
+						reorderGhostRect = _iconRect;
+						reorderGhostLabel = reorderingAtlas.Name;
+					} else if (EditingSheet.TryGetTextureFromPool(targetAtlasID, out var iconTexture)) {
 						var iconSize = Game.GetTextureSize(iconTexture);
 						reorderGhostID = targetAtlasID;
 						reorderGhostRect = _iconRect.Fit(iconSize.x, iconSize.y);
@@ -133,10 +177,12 @@ public partial class PixelEditor {
 						reorderGhostRect = _iconRect;
 						reorderGhostLabel = reorderingAtlas.Name;
 					}
+
 					// Perform Reorder
 					if (!Input.MouseLeftButtonHolding) {
 						requireReorderFrom = AtlasItemReorderIndex;
 						requireReorderTo = hoverTopHalf ? i : i + 1;
+						reorderToTopHalf = hoverTopHalf;
 					}
 				}
 
@@ -149,20 +195,26 @@ public partial class PixelEditor {
 					}
 					// Click
 					if (Input.MouseLeftButtonDown) {
-						if (selecting) {
-							if (rect.ShrinkLeft(iconWidth).MouseInside()) {
-								TryApplySpriteInputFields();
-								RefreshSpriteInputContent();
-								GUI.CancelTyping();
-								RenamingAtlasIndex = i;
-								renaming = true;
-								GUI.StartTyping(ATLAS_INPUT_ID + i);
-							}
-						} else {
+						if (selecting || isFolder) {
+							// Start Rename
+							TryApplySpriteInputFields();
+							RefreshSpriteInputContent();
+							GUI.CancelTyping();
+							RenamingAtlasIndex = i;
+							renaming = true;
+							GUI.StartTyping(ATLAS_INPUT_ID + i);
+						}
+						if (!selecting && !isFolder) {
 							newSelectingIndex = i;
 							RenamingAtlasIndex = -1;
 						}
 					}
+				}
+
+				// Fold / Unfold
+				if (Input.MouseLeftButtonDown && isFolder && rect.EdgeLeft(iconWidth).MouseInside()) {
+					atlas.State = atlas.State == AtlasState.Folded ? AtlasState.Unfolded : AtlasState.Folded;
+					//SetDirty();
 				}
 
 				// Selection Mark
@@ -175,13 +227,18 @@ public partial class PixelEditor {
 					// Icon
 					var iconRect = contentRect.Edge(Direction4.Left, iconWidth);
 
-					if (EditingSheet.TryGetTextureFromPool(atlas.ID, out var iconTexture)) {
-						var iconSize = Game.GetTextureSize(iconTexture);
-						using (new SheetIndexScope(EditingSheetIndex)) {
-							GUI.Icon(iconRect.Fit(iconSize.x, iconSize.y), atlas.ID);
-						}
+					if (isFolder) {
+						bool isEmptyFolder = i >= atlasList.Count - 1 || atlasList[i + 1].State != AtlasState.Sub;
+						GUI.Icon(iconRect, isEmptyFolder ? BuiltInSprite.FILE_ICON_FOLDER_EMPTY : BuiltInSprite.FILE_ICON_FOLDER);
 					} else {
-						GUI.Icon(iconRect, ICON_SPRITE_ATLAS);
+						if (EditingSheet.TryGetTextureFromPool(atlas.ID, out var iconTexture)) {
+							var iconSize = Game.GetTextureSize(iconTexture);
+							using (new SheetIndexScope(EditingSheetIndex)) {
+								GUI.Icon(iconRect.Fit(iconSize.x, iconSize.y), atlas.ID);
+							}
+						} else {
+							GUI.Icon(iconRect, ICON_SPRITE_ATLAS);
+						}
 					}
 
 					// Label
@@ -219,7 +276,7 @@ public partial class PixelEditor {
 			// Reorder Ghost
 			if (reorderGhostID != 0) {
 				reorderGhostRect.x += Unify(12);
-				if (reorderGhostID != ICON_SPRITE_ATLAS) {
+				if (reorderGhostID != ICON_SPRITE_ATLAS && reorderGhostID != BuiltInSprite.FILE_ICON_FOLDER) {
 					using (new SheetIndexScope(EditingSheetIndex)) {
 						GUI.Icon(reorderGhostRect, reorderGhostID);
 					}
@@ -233,17 +290,9 @@ public partial class PixelEditor {
 		// Answer Request
 		if (requireUseMouseButtons) Input.UseAllMouseKey();
 
+		// Perform Reorder
 		if (requireReorderFrom >= 0 && requireReorderTo >= 0) {
-			Atlas currentAtlas = null;
-			if (CurrentAtlasIndex >= 0 && CurrentAtlasIndex < EditingSheet.Atlas.Count) {
-				currentAtlas = EditingSheet.Atlas[CurrentAtlasIndex];
-			}
-			EditingSheet.MoveAtlas(requireReorderFrom, requireReorderTo);
-			if (currentAtlas != null && EditingSheet.Atlas[CurrentAtlasIndex] != currentAtlas) {
-				int newIndex = EditingSheet.Atlas.IndexOf(currentAtlas);
-				SetCurrentAtlas(newIndex, forceChange: true, resetUndo: false);
-			}
-			SetDirty();
+			PerformReorder(requireReorderFrom, requireReorderTo, reorderToTopHalf);
 		}
 
 		// Change Selection
@@ -256,12 +305,11 @@ public partial class PixelEditor {
 			var barRect = panelRect.Edge(Direction4.Right, scrollbarWidth);
 			AtlasPanelScrollY = GUI.ScrollBar(
 				1256231, barRect,
-				AtlasPanelScrollY, (itemCount + 6) * rect.height, panelRect.height
+				AtlasPanelScrollY, (unfoldedItemCount + 6) * rect.height, panelRect.height
 			);
 		}
 
-
-
+		// Final
 		if (!Input.MouseLeftButtonHolding) AtlasItemReorderIndex = -1;
 
 	}
@@ -279,11 +327,18 @@ public partial class PixelEditor {
 		int padding = Unify(4);
 		var rect = toolbarRect.Edge(Direction4.Left, toolbarRect.height);
 
-		// Add
+		// Add Atlas
 		if (GUI.Button(rect, BuiltInSprite.ICON_PLUS, Skin.SmallDarkButton)) {
-			CreateAtlas();
+			CreateAtlas(folder: false);
 		}
 		RequireTooltip(rect, TIP_ADD_ATLAS);
+		rect.SlideRight(padding);
+
+		// Add Atlas Folder
+		if (GUI.Button(rect, UI_ATLAS_FOLDER, Skin.SmallDarkButton)) {
+			CreateAtlas(folder: true);
+		}
+		RequireTooltip(rect, TIP_ADD_ATLAS_FOLDER);
 		rect.SlideRight(padding);
 
 		// Import from Ase
@@ -409,12 +464,14 @@ public partial class PixelEditor {
 
 
 	private void SetCurrentAtlas (int atlasIndex, bool forceChange = false, bool resetUndo = true) {
-		if (EditingSheet.Atlas.Count == 0 || CurrentProject == null) return;
-		atlasIndex = atlasIndex.Clamp(0, EditingSheet.Atlas.Count - 1);
+		var altasList = EditingSheet.Atlas;
+		if (altasList.Count == 0 || CurrentProject == null) return;
+		atlasIndex = atlasIndex.Clamp(0, altasList.Count - 1);
 		if (!forceChange && CurrentAtlasIndex == atlasIndex) return;
+		if (altasList[atlasIndex].IsFolder) return;
 		CurrentAtlasIndex = atlasIndex;
 		StagedSprites.Clear();
-		var atlas = EditingSheet.Atlas[atlasIndex];
+		var atlas = altasList[atlasIndex];
 		foreach (var sprite in EditingSheet.Sprites) {
 			if (sprite.AtlasID != atlas.ID) continue;
 			StagedSprites.Add(new SpriteData(sprite));
@@ -492,8 +549,8 @@ public partial class PixelEditor {
 	}
 
 
-	private void CreateAtlas () {
-		string basicName = "New Atlas";
+	private void CreateAtlas (bool folder) {
+		string basicName = folder ? "New Folder" : "New Atlas";
 		string name = basicName;
 		int id = basicName.AngeHash();
 		int index = 1;
@@ -502,24 +559,96 @@ public partial class PixelEditor {
 			id = name.AngeHash();
 			index++;
 		}
+		var targetState = folder ? AtlasState.Unfolded : AtlasState.Root;
+		if (!folder && EditingSheet.Atlas.Count > 0) {
+			var lastState = EditingSheet.Atlas[^1].State;
+			if (lastState == AtlasState.Root || lastState == AtlasState.Sub) {
+				targetState = lastState;
+			}
+		}
 		var atlas = new Atlas() {
 			Name = name,
 			Type = AtlasType.General,
 			ID = id,
-			IndentLevel = 0,
+			State = targetState,
 		};
 		EditingSheet.Atlas.Add(atlas);
 		EditingSheet.AtlasPool.Add(atlas.ID, atlas);
 
 		SetDirty();
 		AtlasPanelScrollY = int.MaxValue;
-		SetCurrentAtlas(EditingSheet.Atlas.Count - 1);
 
-		// Create Palette Sprite
-		CreateSpriteForPalette(useDefaultPos: true);
+		if (!folder) {
+			SetCurrentAtlas(EditingSheet.Atlas.Count - 1);
+			// Create Default Sprites
+			CreateSpriteForPalette(useDefaultPos: true);
+			CreateNewSprite($"{atlas.Name}.NewSprite");
+		}
+	}
 
-		// Create First Sprite
-		CreateNewSprite($"{atlas.Name}.NewSprite");
+
+	private void PerformReorder (int from, int to, bool toTopHalf) {
+
+		var atlasList = EditingSheet.Atlas;
+
+		if (atlasList[from].IsFolder) {
+			atlasList[from].State = AtlasState.Folded;
+		}
+
+		int anchoringIndex = toTopHalf ? to : to - 1;
+		if (anchoringIndex < 0) return;
+		var anchoringAtlas = atlasList[anchoringIndex];
+		bool intoFolder = anchoringAtlas.InFolder || (!toTopHalf && anchoringAtlas.IsFolder);
+
+		// Gate for "Folder into Folder"
+		var movingAtlas = atlasList[from];
+		if (intoFolder && movingAtlas.IsFolder) {
+			bool allow = false;
+			if (!toTopHalf) {
+				if (to >= atlasList.Count) {
+					allow = true;
+				} else {
+					var nextAtlas = atlasList[to];
+					if (nextAtlas.IsFolder || !nextAtlas.InFolder) {
+						allow = true;
+					}
+				}
+			}
+			if (!allow) {
+				if (anchoringAtlas.State == AtlasState.Folded) {
+					intoFolder = false;
+					allow = true;
+					if (!toTopHalf) {
+						int len = 0;
+						for (int i = anchoringIndex; i < atlasList.Count; i++) {
+							if (atlasList[i].InFolder) {
+								len++;
+							} else {
+								break;
+							}
+						}
+						to += len;
+					}
+				}
+			}
+			if (!allow) return;
+		}
+
+		// Get Current Atlas
+		Atlas currentAtlas = null;
+		if (CurrentAtlasIndex >= 0 && CurrentAtlasIndex < atlasList.Count) {
+			currentAtlas = atlasList[CurrentAtlasIndex];
+		}
+
+		// Perform Move 
+		EditingSheet.MoveAtlas(from, to, intoFolder);
+
+		// Update for Current Selecting
+		if (atlasList[CurrentAtlasIndex] != currentAtlas) {
+			int newIndex = atlasList.IndexOf(currentAtlas);
+			SetCurrentAtlas(newIndex, forceChange: true, resetUndo: false);
+		}
+		SetDirty();
 	}
 
 

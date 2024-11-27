@@ -288,13 +288,55 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 		return true;
 	}
 
-	public int MoveAtlas (int from, int to) {
-		if (from == to) return to;
-		if (to > from) to--;
+	public void MoveAtlas (int from, int to, bool intoFolder = false) {
+
 		var atlas = Atlas[from];
-		Atlas.RemoveAt(from);
-		Atlas.Insert(to, atlas);
-		return to;
+
+		if (from == to) {
+			if (intoFolder && !atlas.IsFolder) {
+				atlas.State = AtlasState.Sub;
+			}
+			return;
+		}
+
+		if (atlas.IsFolder) {
+			// Range
+			int len = 1;
+			for (int i = from + 1; i < Atlas.Count; i++) {
+				if (Atlas[i].InFolder) {
+					len++;
+				} else {
+					break;
+				}
+			}
+			// Check Valid
+			if (to >= from && to < from + len) {
+				return;
+			}
+			// Move Range
+			if (to > from) {
+				// to Bottom
+				for (int i = len - 1; i >= 0; i--) {
+					var _atlas = Atlas[from + i];
+					Atlas.RemoveAt(from + i);
+					Atlas.Insert(to + i - len, _atlas);
+				}
+			} else {
+				// to Top
+				for (int i = 0; i < len; i++) {
+					var _atlas = Atlas[from + i];
+					Atlas.RemoveAt(from + i);
+					Atlas.Insert(to + i, _atlas);
+				}
+			}
+
+		} else {
+			// Single
+			if (to > from) to--;
+			Atlas.RemoveAt(from);
+			Atlas.Insert(to, atlas);
+			atlas.State = intoFolder ? AtlasState.Sub : AtlasState.Root;
+		}
 	}
 
 	// Find

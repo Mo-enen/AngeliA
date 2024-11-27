@@ -12,13 +12,24 @@ public enum AtlasType {
 }
 
 
+public enum AtlasState {
+	Root = 0,
+	Sub = 1,
+	Folded = 2,
+	Unfolded = 3,
+}
+
+
 public class Atlas {
 
 	private static readonly StringBuilder CacheBuilder = new(256);
 	public int ID;
 	public string Name;
 	public AtlasType Type;
-	public int IndentLevel;
+	public AtlasState State;
+
+	public bool IsFolder => State == AtlasState.Folded || State == AtlasState.Unfolded;
+	public bool InFolder => State == AtlasState.Sub;
 
 	public void LoadFromBinary_v0 (BinaryReader reader) {
 		uint byteLen = reader.ReadUInt32();
@@ -39,7 +50,7 @@ public class Atlas {
 			Type = (AtlasType)reader.ReadByte();
 
 			// Indent
-			IndentLevel = reader.ReadInt32();
+			State = (AtlasState)reader.ReadInt32();
 
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
@@ -63,7 +74,7 @@ public class Atlas {
 			writer.Write((byte)Type);
 
 			// Indent
-			writer.Write((int)IndentLevel);
+			writer.Write((int)State);
 
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);

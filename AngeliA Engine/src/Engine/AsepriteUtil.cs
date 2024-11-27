@@ -107,7 +107,7 @@ public static class AsepriteUtil {
 					Name = flex.AtlasName,
 					Type = flex.AtlasType,
 					ID = flex.AtlasID,
-					IndentLevel = 0,
+					State = 0,
 				});
 			}
 

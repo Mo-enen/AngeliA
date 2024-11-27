@@ -43,20 +43,17 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	private static readonly LanguageCode ERROR_NAME_INVALID = ("FileBrowser.Error.NameInValid", "Name contains invalid char");
 	private static readonly LanguageCode FAV_DESKTOP = ("FileBrowser.Fav.Desktop", "Desktop");
 	private static readonly LanguageCode FAV_PIC = ("FileBrowser.Fav.Pic", "My Picture");
-	private static readonly SpriteCode CommenFileIcon = "FileIcon.File";
-	private static readonly SpriteCode FolderIcon = "FileIcon.Folder";
-	private static readonly SpriteCode DiskIcon = "FileIcon.Disk";
 	private static readonly Dictionary<int, SpriteCode> FileIconPool = new() {
-		{ ".mp3".AngeHash(), "FileIcon.Audio"},
-		{ ".wav".AngeHash(), "FileIcon.Audio"},
-		{ ".ogg".AngeHash(), "FileIcon.Audio"},
-		{ ".xm".AngeHash(), "FileIcon.Audio"},
-		{ ".mod".AngeHash(), "FileIcon.Audio"},
-		{ ".txt".AngeHash(), "FileIcon.Text"},
-		{ ".json".AngeHash(), "FileIcon.Text"},
-		{ ".png".AngeHash(), "FileIcon.Image"},
-		{ ".jpg".AngeHash(), "FileIcon.Image"},
-		{ ".ttf".AngeHash(), "FileIcon.Font"},
+		{ ".mp3".AngeHash(), BuiltInSprite.FILE_ICON_AUDIO},
+		{ ".wav".AngeHash(), BuiltInSprite.FILE_ICON_AUDIO},
+		{ ".ogg".AngeHash(), BuiltInSprite.FILE_ICON_AUDIO},
+		{ ".xm".AngeHash(), BuiltInSprite.FILE_ICON_AUDIO},
+		{ ".mod".AngeHash(), BuiltInSprite.FILE_ICON_AUDIO},
+		{ ".txt".AngeHash(), BuiltInSprite.FILE_ICON_TEXT},
+		{ ".json".AngeHash(), BuiltInSprite.FILE_ICON_TEXT},
+		{ ".png".AngeHash(), BuiltInSprite.FILE_ICON_IMAGE},
+		{ ".jpg".AngeHash(), BuiltInSprite.FILE_ICON_IMAGE},
+		{ ".ttf".AngeHash(), BuiltInSprite.FILE_ICON_FONT},
 	};
 
 	// Api
@@ -305,17 +302,17 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		DrawButton(
 			FAV_DESKTOP,
 			System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop),
-			FolderIcon
+			BuiltInSprite.FILE_ICON_FOLDER
 		);
 		DrawButton(
 			FAV_PIC,
 			System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyPictures),
-			FolderIcon
+			BuiltInSprite.FILE_ICON_FOLDER
 		);
 
 		// Disks
 		foreach (var diskPath in Disks) {
-			DrawButton(diskPath, diskPath, DiskIcon);
+			DrawButton(diskPath, diskPath, BuiltInSprite.FILE_ICON_DISK);
 		}
 
 		// Func
@@ -459,8 +456,8 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 			return;
 		}
 		Items.Clear();
-		Renderer.TryGetSprite(FolderIcon, out var folderSprite);
-		Renderer.TryGetSprite(CommenFileIcon, out var commenFileSprite);
+		Renderer.TryGetSprite(BuiltInSprite.FILE_ICON_FOLDER, out var folderSprite);
+		Renderer.TryGetSprite(BuiltInSprite.FILE_ICON_FILE, out var commenFileSprite);
 		foreach (string folderPath in Util.EnumerateFolders(path, true)) {
 			if (Util.IsFolderHidden(folderPath)) continue;
 			string name = Util.GetNameWithExtension(folderPath);
