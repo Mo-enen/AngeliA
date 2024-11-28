@@ -231,10 +231,10 @@ public abstract class Hair : BodyGadget {
 	protected virtual int FlowAmountX => 500;
 	protected virtual int FlowAmountY => 500;
 	public override bool SpriteLoaded => SpriteFFL != 0 || SpriteFFR != 0 || SpriteFB != 0 || SpriteBF != 0;
-	protected int SpriteFFL;
-	protected int SpriteFFR;
-	protected int SpriteFB;
-	protected int SpriteBF;
+	public int SpriteFFL { get; protected set; }
+	public int SpriteFFR { get; protected set; }
+	public int SpriteFB { get; protected set; }
+	public int SpriteBF { get; protected set; }
 
 
 	// API

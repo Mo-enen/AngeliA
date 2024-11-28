@@ -25,7 +25,7 @@ public class PlayerMenuUI : EntityUI {
 	private static readonly LanguageCode HINT_DROP = ("CtrlHint.Drop", "Drop");
 	private static readonly LanguageCode HINT_THROW = ("CtrlHint.Throw", "Throw");
 	private static readonly LanguageCode HINT_HUSE = ("CtrlHint.HoldToUse", "Hold to Use");
-	private static readonly LanguageCode HINT_TRANSFER = ("CtrlHint.Transfer", "Transfer");
+	private static readonly LanguageCode HINT_TRANSFER = ("CtrlHint.Transfer", "Transfer (Hold to Use)");
 	private static readonly LanguageCode HINT_EQUIP = ("CtrlHint.Equip", "Equip");
 	private static readonly LanguageCode UI_HELMET = ("UI.Equipment.Helmet", "Helmet");
 	private static readonly LanguageCode UI_HAND_TOOL = ("UI.Equipment.HandTool", "Tool");
@@ -33,7 +33,7 @@ public class PlayerMenuUI : EntityUI {
 	private static readonly LanguageCode UI_GLOVES = ("UI.Equipment.Gloves", "Gloves");
 	private static readonly LanguageCode UI_BODYSUIT = ("UI.Equipment.Bodysuit", "Cloth");
 	private static readonly LanguageCode UI_JEWELRY = ("UI.Equipment.Jewelry", "Jewelry");
-	private const int HOLD_KEY_DURATION = 26;
+	private const int HOLD_KEY_DURATION = 32;
 	private const int ANIMATION_DURATION = 12;
 	private const int FLASH_PANEL_DURATION = 52;
 	private const int WINDOW_PADDING = 6;
@@ -345,6 +345,7 @@ public class PlayerMenuUI : EntityUI {
 		bool actionDown = Input.GameKeyDown(Gamekey.Action);
 		bool cancelDown = !actionDown && Input.GameKeyDown(Gamekey.Jump);
 		bool actionUp = Input.GameKeyUp(Gamekey.Action);
+		bool cancelUp = Input.GameKeyUp(Gamekey.Jump);
 		bool actionHolding = Input.GameKeyHolding(Gamekey.Action);
 		bool cancelHolding = !actionHolding && Input.GameKeyHolding(Gamekey.Jump);
 
@@ -361,6 +362,7 @@ public class PlayerMenuUI : EntityUI {
 		if (cancelDown) CancelKeyDownFrame = Game.GlobalFrame;
 		bool intendedDrop = actionDown;
 		bool intendedStartTake = actionUp && Game.GlobalFrame < ActionKeyDownFrame + HOLD_KEY_DURATION;
+		bool intendedQuickDrop = cancelUp && Game.GlobalFrame < CancelKeyDownFrame + HOLD_KEY_DURATION;
 		bool intendedHoldAction =
 			actionHolding &&
 			ActionKeyDownFrame >= 0 &&
@@ -390,8 +392,8 @@ public class PlayerMenuUI : EntityUI {
 					} else if (intendedHoldAction) {
 						// Hold
 						if (cursorCount > 1) SplitItemAtCursor();
-					} else if (cancelDown) {
-						// Quick
+					} else if (intendedQuickDrop) {
+						// Quick Drop
 						QuickDropAtCursor_FromInventory();
 					} else if (intendedHoldCancel) {
 						// Use

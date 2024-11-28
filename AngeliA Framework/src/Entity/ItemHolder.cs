@@ -32,6 +32,7 @@ public class ItemHolder : Rigidbody {
 
 
 	// Const
+	private const int RENDERING_Z = 35000;
 	public static readonly int TYPE_ID = typeof(ItemHolder).AngeHash();
 	private const int ITEM_PHYSICS_SIZE = Const.HALF;
 	private const int ITEM_RENDER_SIZE = Const.CEL * 2 / 3;
@@ -212,33 +213,28 @@ public class ItemHolder : Rigidbody {
 		if (Renderer.TryGetSprite(ItemID, out var sprite, true) ||
 			Renderer.TryGetSpriteFromGroup(ItemID, 0, out sprite)
 		) {
-			cell = Renderer.Draw(sprite, renderingRect.Fit(sprite));
+			cell = Renderer.Draw(sprite, renderingRect.Fit(sprite), z: RENDERING_Z);
 		} else {
-			cell = Renderer.Draw(BuiltInSprite.ICON_ENTITY, renderingRect);
+			cell = Renderer.Draw(BuiltInSprite.ICON_ENTITY, renderingRect, z: RENDERING_Z);
 		}
 
 		// Shadow
 		FrameworkUtil.DrawEnvironmentShadow(cell);
 
 		// UI
-		if (ItemCount > 1 && !TaskSystem.HasTask() && (PlayerMenuUI.Instance == null || !PlayerMenuUI.Instance.Active)) {
+		if (ItemCount > 1 && !TaskSystem.HasTask() && !PlayerMenuUI.ShowingUI) {
 			if (ItemSystem.GetItem(ItemID) is HandTool wItem && wItem.UseStackAsUsage) {
 				// Usage
 				FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), ItemCount, wItem.MaxStackCount);
 			} else {
 				// Count
 				var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
-				using (new UILayerScope()) {
-					Renderer.DrawPixel(labelRect, Color32.BLACK);
-					GUI.IntLabel(labelRect, ItemCount, GUISkin.Default.SmallLabel);
-				}
+				using var _ = new UILayerScope();
+				var bg = Renderer.DrawPixel(labelRect, Color32.BLACK);
+				GUI.IntLabel(labelRect, ItemCount, out var bounds, GUISkin.Default.SmallLabel);
+				bg.SetRect(bounds);
 			}
 		}
-
-		// Highlight
-		//if (TouchingPlayer) {
-		//	FrameworkUtil.HighlightBlink(cell);
-		//}
 
 	}
 
