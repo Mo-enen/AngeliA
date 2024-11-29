@@ -43,6 +43,8 @@ public static class BuiltInText {
 	public static readonly LanguageCode UI_EXPLORE = ("UI.Explore", "Open in Explorer");
 	public static readonly LanguageCode UI_IGNORE = ("UI.Ignore", "Ignore");
 	public static readonly LanguageCode UI_APPLY = ("UI.Apply", "Apply");
+	public static readonly LanguageCode UI_LOCK = ("UI.Lock", "Lock");
+	public static readonly LanguageCode UI_UNLOCK = ("UI.Unlock", "Unlock");
 
 	// Label
 	public static readonly LanguageCode LABEL_L = ("Label.L", "L");

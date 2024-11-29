@@ -150,5 +150,6 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode FILE_ICON_IMAGE = "FileIcon.Image";
 	public static readonly SpriteCode FILE_ICON_DISK = "FileIcon.Disk";
 	public static readonly SpriteCode FILE_ICON_FONT = "FileIcon.Font";
+	public static readonly SpriteCode ICON_CHARACTER_AVATAR = "Icon.CharacterAvatar";
 
 }

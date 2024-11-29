@@ -467,8 +467,17 @@ public partial class PixelEditor {
 		var altasList = EditingSheet.Atlas;
 		if (altasList.Count == 0 || CurrentProject == null) return;
 		atlasIndex = atlasIndex.Clamp(0, altasList.Count - 1);
+		// Redirect for Folder
+		if (altasList[atlasIndex].IsFolder) {
+			for (; atlasIndex < altasList.Count; atlasIndex++) {
+				if (!altasList[atlasIndex].IsFolder) break;
+			}
+			if (atlasIndex >= altasList.Count || altasList[atlasIndex].IsFolder) {
+				return;
+			}
+		}
+		// ---
 		if (!forceChange && CurrentAtlasIndex == atlasIndex) return;
-		if (altasList[atlasIndex].IsFolder) return;
 		CurrentAtlasIndex = atlasIndex;
 		StagedSprites.Clear();
 		var atlas = altasList[atlasIndex];

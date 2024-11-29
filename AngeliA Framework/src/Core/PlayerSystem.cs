@@ -51,9 +51,11 @@ public static class PlayerSystem {
 	public static IActionTarget TargetActionEntity { get; private set; } = null;
 	public static bool Enable { get; private set; } = false;
 	public static int UnlockedPlayerCount => UnlockedPlayer.Count;
+	public static int PlayableCharactersCount => AllPlayablesID.Count;
 
 	// Data
 	private static readonly HashSet<int> UnlockedPlayer = [];
+	private static readonly List<int> AllPlayablesID = [];
 	private static int AttackRequiringFrame = int.MinValue;
 	private static int LastLeftKeyDown = int.MinValue;
 	private static int LastRightKeyDown = int.MinValue;
@@ -83,6 +85,7 @@ public static class PlayerSystem {
 	#region --- MSG ---
 
 
+	// Cheat
 	[CheatCode("FillInventory")]
 	internal static void CheatCodeFillInventory () {
 		if (Selecting == null) return;
@@ -96,6 +99,25 @@ public static class PlayerSystem {
 	}
 
 
+	[CheatCode("LockAllCharacter")]
+	internal static void CheatCode_LockAllCharacters () {
+		UnlockedPlayer.Clear();
+		if (Selecting != null) {
+			UnlockedPlayer.Add(Selecting.TypeID);
+		}
+		UnlockPlayerDirty = true;
+	}
+
+
+	[CheatCode("UnlockAllCharacter")]
+	internal static void CheatCode_UnlockAllCharacters () {
+		foreach (int id in AllPlayablesID) {
+			UnlockPlayer(id);
+		}
+	}
+
+
+	// Message
 	[OnRemoteSettingChanged(1)]
 	internal static void OnRemoteSettingChanged (int id, int data) {
 		if (Selecting == null) return;
@@ -118,6 +140,18 @@ public static class PlayerSystem {
 			Enable = true;
 		}
 		TargetViewHeight.BaseValue = Universe.BuiltInInfo.DefaultViewHeight;
+	}
+
+
+	[OnGameUpdateLater]
+	internal static void OnGameUpdateLater () {
+		AllPlayablesID.Clear();
+		foreach (var ch in typeof(PlayableCharacter).AllChildClass()) {
+			int id = ch.AngeHash();
+			if (Stage.IsValidEntityID(id)) {
+				AllPlayablesID.Add(id);
+			}
+		}
 	}
 
 
@@ -642,6 +676,13 @@ public static class PlayerSystem {
 	}
 
 
+	public static IEnumerable<int> ForAllPlayables () {
+		foreach (var id in AllPlayablesID) {
+			yield return id;
+		}
+	}
+
+
 	public static bool IsPlayerUnlocked (int id) => UnlockedPlayer.Contains(id);
 
 
@@ -735,7 +776,7 @@ public static class PlayerSystem {
 		using var reader = new BinaryReader(stream);
 		while (reader.NotEnd()) {
 			int id = reader.ReadInt32();
-			if (Stage.GetEntityType(id) == null) continue;
+			if (!Stage.IsValidEntityID(id)) continue;
 			UnlockedPlayer.Add(id);
 		}
 	}

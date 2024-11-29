@@ -309,6 +309,12 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 					break;
 				}
 			}
+			// Folder Redirect
+			if (to >= 0 && to < Atlas.Count && Atlas[to].InFolder) {
+				for (; to < Atlas.Count; to++) {
+					if (!Atlas[to].InFolder) break;
+				}
+			}
 			// Check Valid
 			if (to >= from && to < from + len) {
 				return;
