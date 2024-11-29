@@ -443,6 +443,7 @@ public static class Inventory {
 					if (emptyB || (eData.BodySuit == item && eData.BodySuitCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.BodySuitCount);
 						count -= delta;
+						eData.BodySuit = item;
 						eData.BodySuitCount += delta;
 						if (emptyB) {
 							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.BodySuitCount, maxStackCount);
@@ -457,6 +458,7 @@ public static class Inventory {
 					if (emptyHl || (eData.Helmet == item && eData.HelmetCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.HelmetCount);
 						count -= delta;
+						eData.Helmet = item;
 						eData.HelmetCount += delta;
 						if (emptyHl) {
 							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.HelmetCount, maxStackCount);
@@ -471,6 +473,7 @@ public static class Inventory {
 					if (emptyS || (eData.Shoes == item && eData.ShoesCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.ShoesCount);
 						count -= delta;
+						eData.Shoes = item;
 						eData.ShoesCount += delta;
 						if (emptyS) {
 							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.ShoesCount, maxStackCount);
@@ -485,6 +488,7 @@ public static class Inventory {
 					if (emptyG || (eData.Gloves == item && eData.GlovesCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.GlovesCount);
 						count -= delta;
+						eData.Gloves = item;
 						eData.GlovesCount += delta;
 						if (emptyG) {
 							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.GlovesCount, maxStackCount);
@@ -499,6 +503,7 @@ public static class Inventory {
 					if (emptyJ || (eData.Jewelry == item && eData.JewelryCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.JewelryCount);
 						count -= delta;
+						eData.Jewelry = item;
 						eData.JewelryCount += delta;
 						if (emptyJ) {
 							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.JewelryCount, maxStackCount);
@@ -511,7 +516,7 @@ public static class Inventory {
 
 		}
 
-		if (!ignoreInventory) {
+		if (!ignoreInventory && count > 0) {
 
 			// Try Append to Exists
 			for (int i = 0; i < data.Items.Length; i++) {
@@ -707,7 +712,7 @@ public static class Inventory {
 				// Valid Item Count
 				for (int i = 0; i < data.Items.Length; i++) {
 					int iCount = data.Counts[i];
-					if (iCount <= 0) {
+					if (iCount <= 0 || data.Items[i] == 0) {
 						data.Counts[i] = 0;
 						data.Items[i] = 0;
 					}

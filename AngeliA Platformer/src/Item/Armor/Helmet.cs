@@ -1,4 +1,6 @@
-﻿using AngeliA;namespace AngeliA.Platformer;
+﻿using AngeliA;
+
+namespace AngeliA.Platformer;
 
 public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 	public sealed override EquipmentType EquipmentType => EquipmentType.Helmet;

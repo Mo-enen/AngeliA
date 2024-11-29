@@ -138,6 +138,7 @@ public static partial class Util {
 	/// </summary>
 	public static int QuickRandom (int min, int max) => (QuickRandomSeed = QuickRandomWithSeed(QuickRandomSeed)).UMod((max - min).GreaterOrEquel(1)) + min;
 	public static int QuickRandom () => QuickRandomSeed = QuickRandomWithSeed(QuickRandomSeed);
+	public static int QuickRandomSign () => QuickRandom() % 2 == 0 ? 1 : -1;
 	/// <summary>
 	/// "min" is Included, "max" is Excluded
 	/// </summary>

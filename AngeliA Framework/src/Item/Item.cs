@@ -35,14 +35,14 @@ public abstract class Item : IMapItem {
 	public virtual void BeforeItemUpdate_FromInventory (Entity holder, int stackCount) { }
 	public virtual void OnItemUpdate_FromInventory (Entity holder, int stackCount) { }
 	public virtual void OnPoseAnimationUpdate_FromInventory (PoseCharacterRenderer rendering, int stackCount) { }
-	public virtual void OnTakeDamage_FromInventory (Entity holder, int stackCount, Entity sender, ref int damage) { }
+	public virtual void OnTakeDamage_FromInventory (Entity holder, int stackCount, Entity sender, ref Damage damage) { }
 
 	// Equipment
 	public virtual void BeforeItemUpdate_FromEquipment (Entity holder) { }
 	public virtual void OnItemUpdate_FromEquipment (Entity holder) { }
 	public virtual void BeforePoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) { }
 	public virtual void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) { }
-	public virtual void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref int damage) { }
+	public virtual void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref Damage damage) { }
 	public virtual void OnCharacterAttack_FromEquipment (Character character, Bullet bullet) { }
 	public virtual bool TryRepairEquipment (Entity holder) => false;
 
