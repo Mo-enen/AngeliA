@@ -409,7 +409,9 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 	}
 
 	public void RemoveAllAtlasAndAllSpritesInsideExcept (int ignoreAtlasID) {
-		if (ignoreAtlasID != 0) return;
+
+		if (ignoreAtlasID == 0) return;
+
 		// Remove Sprites
 		for (int i = 0; i < Sprites.Count; i++) {
 			if (Sprites[i].AtlasID != ignoreAtlasID) {
@@ -417,6 +419,7 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 				i--;
 			}
 		}
+
 		// Remove Atlas
 		AtlasPool.TryGetValue(ignoreAtlasID, out var keepAtlas);
 		Atlas.Clear();

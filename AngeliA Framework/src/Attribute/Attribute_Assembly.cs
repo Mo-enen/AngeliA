@@ -59,3 +59,7 @@ public class GlobalGravityAttribute (int gravity) : Attribute {
 public class EnablePlayerSystemAttribute : Attribute { }
 
 
+
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
+public class UseBlockColoringSystemAttribute : Attribute { }
+

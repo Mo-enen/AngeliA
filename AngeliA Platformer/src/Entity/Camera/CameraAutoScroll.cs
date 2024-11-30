@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using AngeliA;namespace AngeliA.Platformer;
 
 [EntityAttribute.Capacity(16)]
-[EntityAttribute.MapEditorGroup("System")]
+[EntityAttribute.MapEditorGroup("System", -512)]
 [EntityAttribute.UpdateOutOfRange]
 public sealed class CameraAutoScroll : Entity {
 

@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 public class CameraGateDown : CameraGate {
@@ -21,7 +22,7 @@ public class CameraGateRight : CameraGate {
 
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.Capacity(16)]
-[EntityAttribute.MapEditorGroup("System")]
+[EntityAttribute.MapEditorGroup("System", -512)]
 public abstract class CameraGate : Entity {
 
 

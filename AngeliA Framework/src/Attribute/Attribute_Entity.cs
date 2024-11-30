@@ -19,8 +19,9 @@ public static class EntityAttribute {
 
 
 	[AttributeUsage(AttributeTargets.Class, Inherited = true)]
-	public class MapEditorGroupAttribute (string groupName) : Attribute {
+	public class MapEditorGroupAttribute (string groupName, int order = 0) : Attribute {
 		public string GroupName = groupName;
+		public int Order = order;
 	}
 
 

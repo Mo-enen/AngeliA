@@ -3,5 +3,5 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-[EntityAttribute.MapEditorGroup("System")]
+[EntityAttribute.MapEditorGroup("System", -512)]
 public abstract class SystemElement : IMapItem { }

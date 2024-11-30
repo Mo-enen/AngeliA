@@ -36,6 +36,15 @@ public partial class MapEditor {
 	}
 
 
+	private class PaletteGroupComparer : IComparer<PaletteGroup> {
+		public static readonly PaletteGroupComparer Instance = new();
+		public int Compare (PaletteGroup a, PaletteGroup b) {
+			int result = a.Order.CompareTo(b.Order);
+			return result != 0 ? result : a.GroupName.CompareTo(b.GroupName);
+		}
+	}
+
+
 	private class PaletteItem {
 		public int ID = 0;
 		public int ArtworkID = 0;
@@ -51,6 +60,7 @@ public partial class MapEditor {
 		public string GroupName;
 		public int DisplayNameID;
 		public int CoverID;
+		public int Order;
 		public AtlasType AtlasType;
 		public List<PaletteItem> Items;
 	}
@@ -170,6 +180,7 @@ public partial class MapEditor {
 					GroupName = atlasName,
 					AtlasType = atlasType,
 					CoverID = atlasID,
+					Order = 1024,
 					DisplayNameID = atlasID,
 				});
 			}
@@ -200,6 +211,7 @@ public partial class MapEditor {
 					GroupName = atlasName,
 					AtlasType = atlasType,
 					CoverID = atlasID,
+					Order = 1024,
 					DisplayNameID = atlasID,
 				});
 			}
@@ -234,6 +246,7 @@ public partial class MapEditor {
 				GroupName = "_Entity",
 				DisplayNameID = "Palette.Entity".AngeHash(),
 				CoverID = "Entity".AngeHash(),
+				Order = -1024,
 			}
 		}};
 		foreach (var type in typeof(IMapItem).AllClassImplemented()) {
@@ -244,9 +257,11 @@ public partial class MapEditor {
 
 			// Check Group Name
 			string groupName = "Default";
+			int groupOrder = 0;
 			atts = type.GetCustomAttributes(typeof(EntityAttribute.MapEditorGroupAttribute), true);
-			if (atts != null && atts.Length > 0) {
-				groupName = (atts[0] as EntityAttribute.MapEditorGroupAttribute).GroupName;
+			if (atts != null && atts.Length > 0 && atts[0] is EntityAttribute.MapEditorGroupAttribute gAtt) {
+				groupName = gAtt.GroupName;
+				groupOrder = gAtt.Order;
 			}
 
 			// Add
@@ -256,6 +271,7 @@ public partial class MapEditor {
 					GroupName = groupName,
 					AtlasType = AtlasType.General,
 					CoverID = groupName.AngeHash(),
+					Order = groupOrder,
 					DisplayNameID = $"Palette.{groupName}".AngeHash(),
 				});
 			}
@@ -284,10 +300,7 @@ public partial class MapEditor {
 	private void ApplyPalettePoolChanges () {
 
 		// Sort Groups
-		PaletteGroups.Sort((a, b) => {
-			int result = a.AtlasType.CompareTo(b.AtlasType);
-			return result != 0 ? result : a.GroupName.CompareTo(b.GroupName);
-		});
+		PaletteGroups.Sort(PaletteGroupComparer.Instance);
 
 		// Palette Pool
 		PalettePool.Clear();

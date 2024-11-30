@@ -872,7 +872,7 @@ public partial class PixelEditor : WindowUI {
 		EditingSheet.SaveToDisk(CurrentProject.Universe.GameSheetPath);
 		RequireReloadRenderingSheet = true;
 #if DEBUG
-		// Sync Artwork for Project "Engine Artwork"
+		// Project "Engine Artwork" >> Ange Engine
 		if (CurrentProject != null && CurrentProject.IsEngineInternalProject) {
 			if (Util.FileExists(CurrentProject.Universe.GameSheetPath)) {
 				Util.CopyFile(CurrentProject.Universe.GameSheetPath, Universe.BuiltIn.GameSheetPath);
