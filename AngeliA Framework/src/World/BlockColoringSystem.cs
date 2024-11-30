@@ -53,13 +53,19 @@ public static class BlockColoringSystem {
 	internal static void AfterLevelRendered () {
 		if (!Enable) return;
 		if (!Renderer.GetCells(RenderLayer.DEFAULT, out var cells, out int count)) return;
+		var squad = WorldSquad.Front;
+		int z = Stage.ViewZ;
 		for (int i = CellIndexStart; i < count; i++) {
 			var cell = cells[i];
 			int unitX = (cell.X + cell.Width / 2).ToUnit();
 			int unitY = (cell.Y + cell.Height / 2).ToUnit();
-
-
-
+			int id = squad.GetBlockAt(unitX, unitY, z, BlockType.Element);
+			if (id != 0 && COLOR_POOL.TryGetValue(id, out var color)) {
+				float lerp = color.a / 255f;
+				cell.Color.r = (byte)Util.LerpUnclamped(255, color.r, lerp);
+				cell.Color.g = (byte)Util.LerpUnclamped(255, color.g, lerp);
+				cell.Color.b = (byte)Util.LerpUnclamped(255, color.b, lerp);
+			}
 		}
 	}
 
