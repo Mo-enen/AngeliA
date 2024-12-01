@@ -54,13 +54,17 @@ public sealed class BlockBuilder : HandTool {
 			// Get Target Pos
 			if (Game.IsMouseAvailable) {
 				Cursor.RequireCursor();
-				available = GetTargetUnitPositionFromMouse(pHolder, out targetUnitX, out targetUnitY, out inRange);
+				available = FrameworkUtil.GetAimingBuilderPositionFromMouse(
+					pHolder, MOUSE_RANGE, BlockType, out targetUnitX, out targetUnitY, out inRange
+				);
 			} else {
 				if (!pHolder.IsInsideGround) {
 					pHolder.Movement.SquatMoveSpeed.Override(0, 1, priority: 4096);
 					pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
 				}
-				available = GetTargetUnitPosFromKey(pHolder, out targetUnitX, out targetUnitY);
+				available = FrameworkUtil.GetAimingBuilderPositionFromKey(
+					pHolder, BlockType, out targetUnitX, out targetUnitY
+				);
 			}
 			// Target Block Highlight
 			if (inRange && !PlayerMenuUI.ShowingUI) {
@@ -137,89 +141,6 @@ public sealed class BlockBuilder : HandTool {
 
 		}
 		return false;
-	}
-
-
-	private bool GetTargetUnitPositionFromMouse (Character holder, out int targetUnitX, out int targetUnitY, out bool inRange) {
-
-		var mouseUnitPos = Input.MouseGlobalPosition.ToUnit();
-		targetUnitX = mouseUnitPos.x;
-		targetUnitY = mouseUnitPos.y;
-
-		// Range Check
-		int holderUnitX = holder.Rect.CenterX().ToUnit();
-		int holderUnitY = (holder.Rect.y + Const.HALF).ToUnit();
-		if (
-			!targetUnitX.InRangeInclude(holderUnitX - MOUSE_RANGE, holderUnitX + MOUSE_RANGE) ||
-			!targetUnitY.InRangeInclude(holderUnitY - MOUSE_RANGE, holderUnitY + MOUSE_RANGE)
-		) {
-			inRange = false;
-			return false;
-		}
-		inRange = true;
-
-		// Overlap with Holder Check
-		var mouseRect = new IRect(targetUnitX.ToGlobal(), targetUnitY.ToGlobal(), Const.CEL, Const.CEL);
-		if (holder.Rect.Overlaps(mouseRect)) {
-			return false;
-		}
-
-		// Overlap with Entity Check
-		if (
-			BlockType == BlockType.Entity &&
-			Physics.Overlap(PhysicsMask.ENTITY, mouseRect, null, OperationMode.ColliderAndTrigger
-		)) {
-			return false;
-		}
-
-		// Block Empty Check
-		return IsBlockEmptyAt(targetUnitX, targetUnitY);
-
-	}
-
-
-	private bool GetTargetUnitPosFromKey (Character holder, out int targetUnitX, out int targetUnitY) {
-
-		bool result;
-		var aim = holder.Attackness.AimingDirection;
-		var aimNormal = aim.Normal();
-		if (!holder.Movement.IsClimbing) {
-			// Normal
-			int pointX = holder.Rect.CenterX();
-			int pointY = aim.IsTop() ? holder.Rect.yMax - Const.HALF / 2 : holder.Rect.y + Const.HALF;
-			targetUnitX = pointX.ToUnit() + aimNormal.x;
-			targetUnitY = pointY.ToUnit() + aimNormal.y;
-		} else {
-			// Climbing
-			int pointX = holder.Rect.CenterX();
-			int pointY = holder.Rect.yMax - Const.HALF / 2;
-			targetUnitX = holder.Movement.FacingRight ? pointX.ToUnit() + 1 : pointX.ToUnit() - 1;
-			targetUnitY = pointY.ToUnit() + aimNormal.y;
-		}
-
-		result = IsBlockEmptyAt(targetUnitX, targetUnitY);
-
-		// Redirect
-		if (!result) {
-			int oldTargetX = targetUnitX;
-			int oldTargetY = targetUnitX;
-			if (aim.IsBottom()) {
-				if (aim == Direction8.Bottom) {
-					targetUnitX += holder.Movement.FacingRight ? 1 : -1;
-				}
-			} else if (aim.IsTop()) {
-				if (aim == Direction8.Top) {
-					targetUnitX += holder.Movement.FacingRight ? 1 : -1;
-				}
-			} else {
-				targetUnitY++;
-			}
-			if (oldTargetX != targetUnitX || oldTargetY != targetUnitY) {
-				result = IsBlockEmptyAt(targetUnitX, targetUnitY);
-			}
-		}
-
-		return result;
 	}
 
 

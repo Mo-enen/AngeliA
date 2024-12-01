@@ -22,7 +22,7 @@ public abstract class PickTool : HandTool {
 	public virtual bool AllowPickBlockEntity => true;
 	public virtual bool DropItemAfterPicked => true;
 	public virtual bool UseMouseToPick => false;
-	public virtual int MouseRange => 6;
+	public virtual int MouseUnitRange => 6;
 	public override bool UseStackAsUsage => true;
 	public override int MaxStackCount => 4096;
 
@@ -56,9 +56,15 @@ public abstract class PickTool : HandTool {
 		bool hasTraget, inRange = true;
 		if (UseMouseToPick && Game.IsMouseAvailable) {
 			Cursor.RequireCursor();
-			hasTraget = GetTargetUnitPositionFromMouse(pHolder, out targetUnitX, out targetUnitY, out inRange);
+			hasTraget = FrameworkUtil.GetAimingPickerPositionFromMouse(
+				pHolder, MouseUnitRange, out targetUnitX, out targetUnitY, out inRange,
+				AllowPickBlockEntity, AllowPickLevelBlock, AllowPickBackgroundBlock
+			);
 		} else {
-			hasTraget = GetTargetUnitPositionFromKey(pHolder, out targetUnitX, out targetUnitY);
+			hasTraget = FrameworkUtil.GetAimingPickerPositionFromKey(
+				pHolder, out targetUnitX, out targetUnitY,
+				AllowPickBlockEntity, AllowPickLevelBlock, AllowPickBackgroundBlock
+			);
 		}
 
 		// Target Block Highlight
@@ -67,7 +73,7 @@ public abstract class PickTool : HandTool {
 		}
 
 		// Pick Block
-		if (InRange(pHolder, targetUnitX, targetUnitY) && Game.GlobalFrame == pHolder.Attackness.LastAttackFrame) {
+		if (inRange && Game.GlobalFrame == pHolder.Attackness.LastAttackFrame) {
 			// Erase Block from Map
 			bool picked = FrameworkUtil.PickBlockAt(
 				targetUnitX, targetUnitY,
@@ -100,82 +106,6 @@ public abstract class PickTool : HandTool {
 
 
 	public override Bullet SpawnBullet (Character sender) => null;
-
-
-	// LGC
-	protected virtual bool GetTargetUnitPositionFromMouse (Character holder, out int targetUnitX, out int targetUnitY, out bool inRange) {
-
-		var mouseUnitPos = Input.MouseGlobalPosition.ToUnit();
-		targetUnitX = mouseUnitPos.x;
-		targetUnitY = mouseUnitPos.y;
-
-		// Range Check
-		inRange = InRange(holder, targetUnitX, targetUnitY);
-		if (!inRange) return false;
-
-		// Has Pickable Block
-		inRange = true;
-		return FrameworkUtil.HasPickableBlockAt(
-			targetUnitX, targetUnitY,
-			allowPickBlockEntity: AllowPickBlockEntity,
-			allowPickLevelBlock: AllowPickLevelBlock,
-			allowPickBackgroundBlock: AllowPickBackgroundBlock
-		);
-	}
-
-
-	protected virtual bool GetTargetUnitPositionFromKey (Character pHolder, out int targetUnitX, out int targetUnitY) {
-
-		var aim = pHolder.Attackness.AimingDirection;
-		var aimNormal = aim.Normal();
-		int pointX = aim.IsTop() ? pHolder.Rect.CenterX() : pHolder.Movement.FacingRight ? pHolder.Rect.xMax - 16 : pHolder.Rect.xMin + 16;
-		int pointY = pHolder.Rect.yMax - 16;
-		targetUnitX = pointX.ToUnit() + aimNormal.x;
-		targetUnitY = pointY.ToUnit() + aimNormal.y;
-		bool hasTraget = FrameworkUtil.HasPickableBlockAt(
-			targetUnitX, targetUnitY,
-			allowPickBlockEntity: AllowPickBlockEntity,
-			allowPickLevelBlock: AllowPickLevelBlock,
-			allowPickBackgroundBlock: AllowPickBackgroundBlock
-		);
-
-		// Redirect
-		if (!hasTraget) {
-			int oldTargetX = targetUnitX;
-			int oldTargetY = targetUnitX;
-			if (aim.IsBottom()) {
-				if (aim == Direction8.Bottom) {
-					targetUnitX += pointX.UMod(Const.CEL) < Const.HALF ? -1 : 1;
-				}
-			} else if (aim.IsTop()) {
-				if (aim == Direction8.Top) {
-					targetUnitX += pHolder.Movement.FacingRight ? 1 : -1;
-				}
-			} else {
-				targetUnitY--;
-			}
-			if (oldTargetX != targetUnitX || oldTargetY != targetUnitY) {
-				hasTraget = FrameworkUtil.HasPickableBlockAt(
-					targetUnitX, targetUnitY,
-					allowPickBlockEntity: AllowPickBlockEntity,
-					allowPickLevelBlock: AllowPickLevelBlock,
-					allowPickBackgroundBlock: AllowPickBackgroundBlock
-				);
-			}
-		}
-
-		return hasTraget;
-
-	}
-
-
-	protected virtual bool InRange (Entity holder, int targetUnitX, int targetUnitY) {
-		int holderUnitX = holder.Rect.CenterX().ToUnit();
-		int holderUnitY = (holder.Rect.y + Const.HALF).ToUnit();
-		return
-			targetUnitX.InRangeInclude(holderUnitX - MouseRange, holderUnitX + MouseRange) &&
-			targetUnitY.InRangeInclude(holderUnitY - MouseRange, holderUnitY + MouseRange);
-	}
 
 
 }

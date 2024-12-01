@@ -11,7 +11,7 @@ public class MeleeBullet : Bullet {
 	// Api
 	public override int Duration => 5;
 	protected sealed override int EnvironmentHitCount => int.MaxValue;
-	protected sealed override int ReceiverHitCount => 4;
+	protected override int ReceiverHitCount => 4;
 	public virtual int SmokeParticleID => 0;
 
 	// MSG

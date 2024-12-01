@@ -52,7 +52,7 @@ public abstract class Item : IMapItem {
 	// Misc
 	public virtual void OnCollect (Entity holder) { }
 	public virtual bool CanUse (Entity holder) => false;
-	public virtual bool Use (Entity holder, out bool consume) {
+	public virtual bool Use (Entity holder, int inventoryID, int itemIndex, out bool consume) {
 		consume = false;
 		return false;
 	}

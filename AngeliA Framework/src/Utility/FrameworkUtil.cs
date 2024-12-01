@@ -1132,6 +1132,187 @@ public static class FrameworkUtil {
 	}
 
 
+	public static void PaintBlock (int unitX, int unitY, int blockColorID) {
+		var squad = WorldSquad.Front;
+		var (lv, bg, _, ele) = squad.GetAllBlocksAt(unitX, unitY, Stage.ViewZ);
+		if (lv == 0 && bg == 0) return;
+		if (!BlockColoringSystem.TryGetColor(ele, out _) && ele != 0) return;
+		squad.SetBlockAt(unitX, unitY, BlockType.Element, blockColorID);
+	}
+
+
+	public static bool IsBlockEmptyAt (int unitX, int unitY, BlockType blockType) {
+		switch (blockType) {
+			case BlockType.Entity:
+				// Check for Block Entity
+				var hits = Physics.OverlapAll(
+					PhysicsMask.MAP,
+					new IRect(unitX.ToGlobal() + 1, unitY.ToGlobal() + 1, Const.CEL - 2, Const.CEL - 2),
+					out int count, null, OperationMode.ColliderAndTrigger
+				);
+				for (int i = 0; i < count; i++) {
+					if (hits[i].Entity is IBlockEntity) return false;
+				}
+				return true;
+
+			default:
+				// Other Type
+				return WorldSquad.Front.GetBlockAt(unitX, unitY, blockType) == 0;
+		}
+	}
+
+
+	// Block Aiming
+	public static bool GetAimingBuilderPositionFromMouse (Character holder, int unitRange, BlockType blockType, out int targetUnitX, out int targetUnitY, out bool inRange) {
+
+		var mouseUnitPos = Input.MouseGlobalPosition.ToUnit();
+		targetUnitX = mouseUnitPos.x;
+		targetUnitY = mouseUnitPos.y;
+
+		// Range Check
+		int holderUnitX = holder.Rect.CenterX().ToUnit();
+		int holderUnitY = (holder.Rect.y + Const.HALF).ToUnit();
+		if (
+			!targetUnitX.InRangeInclude(holderUnitX - unitRange, holderUnitX + unitRange) ||
+			!targetUnitY.InRangeInclude(holderUnitY - unitRange, holderUnitY + unitRange)
+		) {
+			inRange = false;
+			return false;
+		}
+		inRange = true;
+
+		// Overlap with Holder Check
+		var mouseRect = new IRect(targetUnitX.ToGlobal(), targetUnitY.ToGlobal(), Const.CEL, Const.CEL);
+		if (holder.Rect.Overlaps(mouseRect)) {
+			return false;
+		}
+
+		// Overlap with Entity Check
+		if (
+			blockType == BlockType.Entity &&
+			Physics.Overlap(PhysicsMask.ENTITY, mouseRect, null, OperationMode.ColliderAndTrigger
+		)) {
+			return false;
+		}
+
+		// Block Empty Check
+		return IsBlockEmptyAt(targetUnitX, targetUnitY, blockType);
+
+	}
+
+
+	public static bool GetAimingBuilderPositionFromKey (Character holder, BlockType blockType, out int targetUnitX, out int targetUnitY) {
+
+		bool result;
+		var aim = holder.Attackness.AimingDirection;
+		var aimNormal = aim.Normal();
+		if (!holder.Movement.IsClimbing) {
+			// Normal
+			int pointX = holder.Rect.CenterX();
+			int pointY = aim.IsTop() ? holder.Rect.yMax - Const.HALF / 2 : holder.Rect.y + Const.HALF;
+			targetUnitX = pointX.ToUnit() + aimNormal.x;
+			targetUnitY = pointY.ToUnit() + aimNormal.y;
+		} else {
+			// Climbing
+			int pointX = holder.Rect.CenterX();
+			int pointY = holder.Rect.yMax - Const.HALF / 2;
+			targetUnitX = holder.Movement.FacingRight ? pointX.ToUnit() + 1 : pointX.ToUnit() - 1;
+			targetUnitY = pointY.ToUnit() + aimNormal.y;
+		}
+
+		result = IsBlockEmptyAt(targetUnitX, targetUnitY, blockType);
+
+		// Redirect
+		if (!result) {
+			int oldTargetX = targetUnitX;
+			int oldTargetY = targetUnitX;
+			if (aim.IsBottom()) {
+				if (aim == Direction8.Bottom) {
+					targetUnitX += holder.Movement.FacingRight ? 1 : -1;
+				}
+			} else if (aim.IsTop()) {
+				if (aim == Direction8.Top) {
+					targetUnitX += holder.Movement.FacingRight ? 1 : -1;
+				}
+			} else {
+				targetUnitY++;
+			}
+			if (oldTargetX != targetUnitX || oldTargetY != targetUnitY) {
+				result = IsBlockEmptyAt(targetUnitX, targetUnitY, blockType);
+			}
+		}
+
+		return result;
+	}
+
+
+	public static bool GetAimingPickerPositionFromMouse (
+		Character holder, int unitRange, out int targetUnitX, out int targetUnitY, out bool inRange,
+		bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true
+	) {
+
+		var mouseUnitPos = Input.MouseGlobalPosition.ToUnit();
+		targetUnitX = mouseUnitPos.x;
+		targetUnitY = mouseUnitPos.y;
+
+		// Range Check
+		int holderUnitX = holder.Rect.CenterX().ToUnit();
+		int holderUnitY = (holder.Rect.y + Const.HALF).ToUnit();
+		inRange = targetUnitX.InRangeInclude(holderUnitX - unitRange, holderUnitX + unitRange) &&
+				targetUnitY.InRangeInclude(holderUnitY - unitRange, holderUnitY + unitRange);
+		if (!inRange) return false;
+
+		// Pickable Check
+		return HasPickableBlockAt(
+			targetUnitX, targetUnitY, allowPickBlockEntity, allowPickLevelBlock, allowPickBackgroundBlock
+		);
+	}
+
+
+	public static bool GetAimingPickerPositionFromKey (
+		Character pHolder, out int targetUnitX, out int targetUnitY,
+		bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true
+	) {
+
+		var aim = pHolder.Attackness.AimingDirection;
+		var aimNormal = aim.Normal();
+		int pointX = aim.IsTop() ? pHolder.Rect.CenterX() : pHolder.Movement.FacingRight ? pHolder.Rect.xMax - 16 : pHolder.Rect.xMin + 16;
+		int pointY = pHolder.Rect.yMax - 16;
+		targetUnitX = pointX.ToUnit() + aimNormal.x;
+		targetUnitY = pointY.ToUnit() + aimNormal.y;
+		bool hasTraget = HasPickableBlockAt(
+			targetUnitX, targetUnitY,
+			allowPickBlockEntity, allowPickLevelBlock, allowPickBackgroundBlock
+		);
+
+		// Redirect
+		if (!hasTraget) {
+			int oldTargetX = targetUnitX;
+			int oldTargetY = targetUnitX;
+			if (aim.IsBottom()) {
+				if (aim == Direction8.Bottom) {
+					targetUnitX += pointX.UMod(Const.CEL) < Const.HALF ? -1 : 1;
+				}
+			} else if (aim.IsTop()) {
+				if (aim == Direction8.Top) {
+					targetUnitX += pHolder.Movement.FacingRight ? 1 : -1;
+				}
+			} else {
+				targetUnitY--;
+			}
+			if (oldTargetX != targetUnitX || oldTargetY != targetUnitY) {
+				hasTraget = HasPickableBlockAt(
+					targetUnitX, targetUnitY,
+					allowPickBlockEntity, allowPickLevelBlock, allowPickBackgroundBlock
+				);
+			}
+		}
+
+		return hasTraget;
+
+	}
+
+
 	// Item
 	public static void DrawItemShortInfo (int itemID, IRect panelRect, int z, int armorIcon, int armorEmptyIcon, Color32 tint) {
 

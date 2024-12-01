@@ -78,6 +78,8 @@ public static class BlockColoringSystem {
 	#region --- API ---
 
 
+	public static bool TryGetColor (int elementID, out Color32 color) => COLOR_POOL.TryGetValue(elementID, out color);
+
 
 	#endregion
 

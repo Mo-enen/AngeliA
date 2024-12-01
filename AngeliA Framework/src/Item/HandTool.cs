@@ -51,10 +51,11 @@ public abstract class HandTool : Equipment {
 
 
 	// MSG
-	public HandTool () : this(true) => TypeName = GetType().AngeName();
+	public HandTool () : this(true) { }
 
 
 	public HandTool (bool loadArtwork) {
+		TypeName = GetType().AngeName();
 		if (loadArtwork) LoadFromSheet();
 	}
 
