@@ -73,8 +73,6 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_ADD_FONT = ("Label.Project.AddFont", "+ Font");
 	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map");
 	private static readonly LanguageCode LABEL_USE_MAP_EDT = ("Label.Project.UseMapEditor", "Use Map Editor");
-	private static readonly LanguageCode LABEL_ALLOW_MOD_MAP = ("Label.Project.AllowPlayerModiMap", "Allow Player Modify Map");
-	private static readonly LanguageCode LABEL_SAVE_PLAYER_MAP_CHANGE = ("Label.Project.SavePlayerChangesToMap", "Save Map Changes from Player (After Release)");
 	private static readonly LanguageCode LABEL_USE_LIGHT_SYS = ("Label.Project.UseLightingSystem", "Use Map Lighting System");
 	private static readonly LanguageCode LABEL_ALLOW_PAUSE = ("Label.Project.AllowPause", "Allow Pause Game");
 	private static readonly LanguageCode LABEL_ALLOW_RESTART_MENU = ("Label.Project.AllowRestartFromMenu", "Allow Restart from Menu");
@@ -526,26 +524,6 @@ public class ProjectEditor : WindowUI {
 			SetDirty();
 		}
 		rect.SlideDown(padding);
-
-		// Allow Player Modify Map
-		bool newAllowMod = GUI.Toggle(rect, info.AllowPlayerModifyMap, LABEL_ALLOW_MOD_MAP, labelStyle: Skin.SmallLabel);
-		if (newAllowMod != info.AllowPlayerModifyMap) {
-			info.AllowPlayerModifyMap = newAllowMod;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
-
-		// Save Changes from Player to Map
-		if (info.AllowPlayerModifyMap) {
-			bool newSaveChanges = GUI.Toggle(rect, info.SaveChangesFromPlayerToMap, LABEL_SAVE_PLAYER_MAP_CHANGE, labelStyle: Skin.SmallLabel);
-			if (newSaveChanges != info.SaveChangesFromPlayerToMap) {
-				info.SaveChangesFromPlayerToMap = newSaveChanges;
-				RequireRecompileOnSave = true;
-				SetDirty();
-			}
-			rect.SlideDown(padding);
-		}
 
 	}
 

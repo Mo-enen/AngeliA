@@ -48,7 +48,7 @@ public sealed class WorldSquad : IBlockSquad {
 		var info = Universe.BuiltInInfo;
 		WorldBehindAlpha = info.WorldBehindAlpha;
 		WorldBehindParallax = info.WorldBehindParallax;
-		SaveChangesToFile = info.SaveChangesFromPlayerToMap;
+		SaveChangesToFile = true;
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
 		WorldStream.OnWorldCreated += _OnWorldCreated;

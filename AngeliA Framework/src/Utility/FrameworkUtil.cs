@@ -212,7 +212,7 @@ public static class FrameworkUtil {
 			cells, cellIndexStart, Util.Min(count, cellIndexEnd),
 			IRect.MinMaxRect(originalMinX, originalMinY, originalMaxX, originalMaxY),
 			rect, out int minZ,
-			500, 0
+			500, 0, round: false
 		);
 		uiRect = rect.Fit(originalMaxX - originalMinX, originalMaxY - originalMinY, 500, 0);
 
@@ -232,8 +232,8 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, int fitPivotX = 500, int fitPivotY = 500) => RemapCells(cells, cellIndexStart, cellIndexEnd, from, to, out _, fitPivotX, fitPivotY);
-	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, out int minZ, int fitPivotX = 500, int fitPivotY = 500) {
+	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, int fitPivotX = 500, int fitPivotY = 500, bool round = false) => RemapCells(cells, cellIndexStart, cellIndexEnd, from, to, out _, fitPivotX, fitPivotY, round);
+	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, out int minZ, int fitPivotX = 500, int fitPivotY = 500, bool round = false) {
 		int originalWidth = from.width;
 		int originalHeight = from.height;
 		var targetRect = to.Fit(originalWidth, originalHeight, fitPivotX, fitPivotY);
@@ -241,10 +241,17 @@ public static class FrameworkUtil {
 		for (int i = cellIndexStart; i < cellIndexEnd; i++) {
 			var cell = cells[i];
 			minZ = Util.Min(minZ, cell.Z);
-			cell.X = targetRect.x + (cell.X - from.x) * targetRect.width / originalWidth;
-			cell.Y = targetRect.y + (cell.Y - from.y) * targetRect.height / originalHeight;
-			cell.Width = cell.Width * targetRect.width / originalWidth;
-			cell.Height = cell.Height * targetRect.height / originalHeight;
+			if (round) {
+				cell.X = (targetRect.x + (cell.X - from.x) * targetRect.width / (float)originalWidth).FloorToInt();
+				cell.Y = (targetRect.y + (cell.Y - from.y) * targetRect.height / (float)originalHeight).FloorToInt();
+				cell.Width = (cell.Width * targetRect.width / (float)originalWidth).CeilToInt();
+				cell.Height = (cell.Height * targetRect.height / (float)originalHeight).CeilToInt();
+			} else {
+				cell.X = targetRect.x + (cell.X - from.x) * targetRect.width / originalWidth;
+				cell.Y = targetRect.y + (cell.Y - from.y) * targetRect.height / originalHeight;
+				cell.Width = cell.Width * targetRect.width / originalWidth;
+				cell.Height = cell.Height * targetRect.height / originalHeight;
+			}
 			if (!cell.Shift.IsZero) {
 				cell.Shift = new Int4(
 					cell.Shift.left * targetRect.width / originalWidth,
@@ -1132,11 +1139,11 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void PaintBlock (int unitX, int unitY, int blockColorID) {
+	public static void PaintBlock (int unitX, int unitY, int blockColorID, bool overlapExistingElement = false) {
 		var squad = WorldSquad.Front;
 		var (lv, bg, _, ele) = squad.GetAllBlocksAt(unitX, unitY, Stage.ViewZ);
 		if (lv == 0 && bg == 0) return;
-		if (!BlockColoringSystem.TryGetColor(ele, out _) && ele != 0) return;
+		if (!overlapExistingElement && !BlockColoringSystem.TryGetColor(ele, out _) && ele != 0) return;
 		squad.SetBlockAt(unitX, unitY, BlockType.Element, blockColorID);
 	}
 

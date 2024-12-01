@@ -35,8 +35,7 @@ public abstract class PickTool : HandTool {
 			pHolder.Attackness.IsAttackIgnored ||
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||
-			TaskSystem.HasTask() ||
-			!Universe.BuiltInInfo.AllowPlayerModifyMap
+			TaskSystem.HasTask()
 		) {
 			base.OnPoseAnimationUpdate_FromEquipment(rendering);
 			return;

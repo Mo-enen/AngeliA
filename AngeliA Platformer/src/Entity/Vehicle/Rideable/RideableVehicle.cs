@@ -58,13 +58,17 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 		if (base.CheckForStopDrive()) return true;
 
 		// For Player
-		if (Driver == PlayerSystem.Selecting && Input.GameKeyDown(Gamekey.Select)) {
-			Input.UseGameKey(Gamekey.Select);
-			Driver.VelocityY = 56;
-			Driver.CancelIgnorePhysics();
-			return true;
+		var player = PlayerSystem.Selecting;
+		if (Driver == player) {
+			if (Input.GameKeyDown(Gamekey.Select) && !Physics.Overlap(player.CollisionMask, player.Rect.EdgeUp(Const.HALF), player)) {
+				Input.UseGameKey(Gamekey.Select);
+				Driver.VelocityY = 56;
+				Driver.CancelIgnorePhysics();
+				return true;
+			}
+			ControlHintUI.AddHint(Gamekey.Select, BuiltInText.HINT_STOP_DRIVE);
 		}
-		ControlHintUI.AddHint(Gamekey.Select, BuiltInText.HINT_STOP_DRIVE);
+
 		return false;
 	}
 

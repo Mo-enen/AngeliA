@@ -42,8 +42,7 @@ public sealed class BlockBuilder : HandTool {
 			pHolder.Attackness.IsAttackIgnored ||
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||
-			TaskSystem.HasTask() ||
-			!Universe.BuiltInInfo.AllowPlayerModifyMap
+			TaskSystem.HasTask()
 		) return;
 
 		if (pHolder == PlayerSystem.Selecting) {

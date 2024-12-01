@@ -290,7 +290,7 @@ public static class CellScreenshotSystem {
 			DrawCells(screenshot.CellsDefault, tint);
 			if (Renderer.GetCells(out var cells, out int count)) {
 				int cellEnd = Renderer.GetUsedCellCount().LessOrEquel(count);
-				FrameworkUtil.RemapCells(cells, cellStart, cellEnd, screenshot.Range, rect);
+				FrameworkUtil.RemapCells(cells, cellStart, cellEnd, screenshot.Range, rect, round: true);
 			}
 			// Func
 			static void DrawCells (RawCell[] cells, Color32 tint) {

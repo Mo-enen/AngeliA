@@ -18,8 +18,6 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public int PatchVersion = 0;
 	public uint EngineBuildVersion = 0;
 	public bool UseProceduralMap = false;
-	public bool SaveChangesFromPlayerToMap = true;
-	public bool AllowPlayerModifyMap = true;
 	public bool UseMapEditor = true;
 	public bool UseLightingSystem = true;
 	public bool AllowCheatCode = false;

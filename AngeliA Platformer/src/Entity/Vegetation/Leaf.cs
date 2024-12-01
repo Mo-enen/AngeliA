@@ -89,17 +89,10 @@ public abstract class Leaf : Entity, IBlockEntity, ICombustible, IDamageReceiver
 
 
 	protected virtual void OnLeafBreak () {
-
 		// Item
 		ItemSystem.DropItemFor(this);
-
 		// Block
-		if (Universe.BuiltInInfo.AllowPlayerModifyMap) {
-			FrameworkUtil.PickEntityBlock(this, false);
-		} else {
-			FrameworkUtil.RemoveFromWorldMemory(this);
-			FrameworkUtil.InvokeObjectBreak(TypeID, Rect);
-		}
+		FrameworkUtil.PickEntityBlock(this, false);
 	}
 
 

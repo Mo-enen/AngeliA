@@ -25,6 +25,7 @@ public abstract class BodyCloth : Cloth {
 	private int SpriteIdShoulder;
 	private int SpriteIdUpperArm;
 	private int SpriteIdLowerArm;
+	private int SpriteIdDress;
 	protected virtual int TwistShiftTopAmount => 300;
 	protected virtual int LocalZ => 7;
 
@@ -41,9 +42,11 @@ public abstract class BodyCloth : Cloth {
 		SpriteIdShoulder = $"{name}.ShoulderSuit".AngeHash();
 		SpriteIdUpperArm = $"{name}.UpperArmSuit".AngeHash();
 		SpriteIdLowerArm = $"{name}.LowerArmSuit".AngeHash();
+		SpriteIdDress = $"{name}.Dress".AngeHash();
 		if (!Renderer.HasSprite(SpriteIdShoulder) && !Renderer.HasSpriteGroup(SpriteIdShoulder)) SpriteIdShoulder = 0;
 		if (!Renderer.HasSprite(SpriteIdUpperArm) && !Renderer.HasSpriteGroup(SpriteIdUpperArm)) SpriteIdUpperArm = 0;
 		if (!Renderer.HasSprite(SpriteIdLowerArm) && !Renderer.HasSpriteGroup(SpriteIdLowerArm)) SpriteIdLowerArm = 0;
+		if (!Renderer.HasSpriteGroup(SpriteIdDress)) SpriteIdDress = 0;
 		return SpriteLoaded;
 	}
 
@@ -61,6 +64,7 @@ public abstract class BodyCloth : Cloth {
 		DrawClothForShoulder(renderer, SpriteIdShoulder);
 		DrawClothForUpperArm(renderer, SpriteIdUpperArm);
 		DrawClothForLowerArm(renderer, SpriteIdLowerArm);
+		DrawDress(renderer, SpriteIdDress);
 	}
 
 	public static void DrawClothForBody (PoseCharacterRenderer renderer, int spriteIdFrontL, int spriteIdFrontR, int localZ, int twistShiftTopAmount) {
@@ -181,10 +185,12 @@ public abstract class BodyCloth : Cloth {
 	}
 
 	public static void DrawCape (PoseCharacterRenderer renderer, int capeID, int motionAmount = 1000) {
+
 		if (capeID == 0) return;
 		if (!Renderer.TryGetSpriteGroup(capeID, out var group) || group.Count < 4) return;
 		if (!Renderer.TryGetSpriteFromGroup(capeID, renderer.Body.FrontSide ? 2 : 3, out var sprite, false, false)) return;
 		var animatedPoseType = renderer.TargetCharacter.AnimationType;
+
 		if (
 			animatedPoseType == CharacterAnimationType.SquatIdle ||
 			animatedPoseType == CharacterAnimationType.SquatMove ||
@@ -192,51 +198,72 @@ public abstract class BodyCloth : Cloth {
 			animatedPoseType == CharacterAnimationType.Rolling ||
 			animatedPoseType == CharacterAnimationType.Spin ||
 			animatedPoseType == CharacterAnimationType.Fly ||
-			animatedPoseType == CharacterAnimationType.Sleep ||
-			animatedPoseType == CharacterAnimationType.Crash ||
-			animatedPoseType == CharacterAnimationType.PassOut
+			animatedPoseType.IsLyingDown()
 		) return;
-		DrawCape(renderer, sprite, motionAmount);
-		// Func
-		static void DrawCape (PoseCharacterRenderer renderer, AngeSprite sprite, int motionAmount = 1000) {
 
-			var body = renderer.Body;
+		var body = renderer.Body;
 
-			// Draw
-			int height = sprite.GlobalHeight + body.Height.Abs() - body.SizeY;
-			var cells = Renderer.DrawSlice(
-				sprite,
-				body.GlobalX, body.GlobalY + body.Height,
-				500, 1000, 0,
-				sprite.GlobalWidth,
-				body.Height.Sign() * height, Color32.WHITE, body.FrontSide ? -31 : 31
-			);
+		// Draw
+		int height = sprite.GlobalHeight + body.Height.Abs() - body.SizeY;
+		var cells = Renderer.DrawSlice(
+			sprite,
+			body.GlobalX, body.GlobalY + body.Height,
+			500, 1000, 0,
+			sprite.GlobalWidth,
+			body.Height.Sign() * height, Color32.WHITE, body.FrontSide ? -31 : 31
+		);
 
-			// Flow Motion
+		// Flow Motion
+		if (motionAmount != 0) {
+			// X
+			int maxX = 30 * motionAmount / 1000;
+			int offsetX = (-renderer.TargetCharacter.DeltaPositionX * motionAmount / 1000).Clamp(-maxX, maxX);
+			cells[3].X += offsetX / 2;
+			cells[4].X += offsetX / 2;
+			cells[5].X += offsetX / 2;
+			cells[6].X += offsetX;
+			cells[7].X += offsetX;
+			cells[8].X += offsetX;
+			// Y
+			int maxY = 20 * motionAmount / 1000;
+			int offsetAmountY = 1000 + (renderer.TargetCharacter.DeltaPositionY * motionAmount / 10000).Clamp(-maxY, maxY) * 1000 / 20;
+			offsetAmountY = offsetAmountY.Clamp(800, 1200);
+			cells[0].Height = cells[0].Height * offsetAmountY / 1000;
+			cells[1].Height = cells[1].Height * offsetAmountY / 1000;
+			cells[2].Height = cells[2].Height * offsetAmountY / 1000;
+			cells[3].Height = cells[3].Height * offsetAmountY / 1000;
+			cells[4].Height = cells[4].Height * offsetAmountY / 1000;
+			cells[5].Height = cells[5].Height * offsetAmountY / 1000;
+			cells[6].Height = cells[6].Height * offsetAmountY / 1000;
+			cells[7].Height = cells[7].Height * offsetAmountY / 1000;
+			cells[8].Height = cells[8].Height * offsetAmountY / 1000;
+		}
+
+	}
+
+	public static void DrawDress (PoseCharacterRenderer renderer, int dressID, int motionAmount = 1000) {
+
+		if (dressID == 0) return;
+		if (!Renderer.TryGetSpriteGroup(dressID, out var group)) return;
+
+		// Render
+		var hip = renderer.Hip;
+		for (int i = 0; i < group.Count; i++) {
+
+			int offsetX = 0;
+			int offsetY = 0;
+
+			// Motion
 			if (motionAmount != 0) {
-				// X
 				int maxX = 30 * motionAmount / 1000;
-				int offsetX = (-renderer.TargetCharacter.DeltaPositionX * motionAmount / 1000).Clamp(-maxX, maxX);
-				cells[3].X += offsetX / 2;
-				cells[4].X += offsetX / 2;
-				cells[5].X += offsetX / 2;
-				cells[6].X += offsetX;
-				cells[7].X += offsetX;
-				cells[8].X += offsetX;
-				// Y
 				int maxY = 20 * motionAmount / 1000;
-				int offsetAmountY = 1000 + (renderer.TargetCharacter.DeltaPositionY * motionAmount / 10000).Clamp(-maxY, maxY) * 1000 / 20;
-				offsetAmountY = offsetAmountY.Clamp(800, 1200);
-				cells[0].Height = cells[0].Height * offsetAmountY / 1000;
-				cells[1].Height = cells[1].Height * offsetAmountY / 1000;
-				cells[2].Height = cells[2].Height * offsetAmountY / 1000;
-				cells[3].Height = cells[3].Height * offsetAmountY / 1000;
-				cells[4].Height = cells[4].Height * offsetAmountY / 1000;
-				cells[5].Height = cells[5].Height * offsetAmountY / 1000;
-				cells[6].Height = cells[6].Height * offsetAmountY / 1000;
-				cells[7].Height = cells[7].Height * offsetAmountY / 1000;
-				cells[8].Height = cells[8].Height * offsetAmountY / 1000;
+				offsetX = (-renderer.TargetCharacter.DeltaPositionX * motionAmount / 1000).Clamp(-maxX, maxX);
+				offsetY = (renderer.TargetCharacter.DeltaPositionY * motionAmount / 1000).Clamp(-maxY, maxY);
 			}
+
+
+			// TODO
+
 		}
 	}
 

@@ -2,7 +2,6 @@
 
 [EntityAttribute.MapEditorGroup("BlockColor", -512)]
 public abstract class BlockColor : SystemElement, IMapItem {
-	bool IMapItem.Avaliable => BlockColoringSystem.Enable;
 	public abstract Color32 Color { get; }
 }
 

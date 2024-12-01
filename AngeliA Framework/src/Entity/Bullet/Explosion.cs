@@ -69,7 +69,6 @@ public abstract class Explosion : Entity {
 			}
 			// Destroy Block
 			if (DestroyBlocks) {
-				bool allowMod = Universe.BuiltInInfo.AllowPlayerModifyMap;
 				for (int x = range.x; x < range.xMax; x += Const.CEL) {
 					for (int y = range.y; y < range.yMax; y += Const.CEL) {
 						if (!Util.OverlapRectCircle(
@@ -80,7 +79,7 @@ public abstract class Explosion : Entity {
 							(x + 1).ToUnit(),
 							(y + 1).ToUnit(),
 							allowMultiplePick: true,
-							dropItemAfterPicked: allowMod
+							dropItemAfterPicked: true
 						);
 					}
 				}

@@ -14,9 +14,6 @@ public static class BlockColoringSystem {
 	// Const
 	public static readonly Dictionary<int, Color32> COLOR_POOL = [];
 
-	// Api
-	public static bool Enable { get; private set; } = false;
-
 	// Data
 	private static int CellIndexStart = -1;
 
@@ -31,8 +28,6 @@ public static class BlockColoringSystem {
 
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
-		Enable = Util.TryGetAttributeFromAllAssemblies<UseBlockColoringSystemAttribute>();
-		if (!Enable) return;
 		// Init Color Pool
 		COLOR_POOL.Clear();
 		foreach (var type in typeof(BlockColor).AllChildClass()) {
@@ -44,14 +39,12 @@ public static class BlockColoringSystem {
 
 	[BeforeLevelRendered]
 	internal static void BeforeLevelRendered () {
-		if (!Enable) return;
 		CellIndexStart = Renderer.GetUsedCellCount(RenderLayer.DEFAULT);
 	}
 
 
 	[AfterLevelRendered]
 	internal static void AfterLevelRendered () {
-		if (!Enable) return;
 		if (!Renderer.GetCells(RenderLayer.DEFAULT, out var cells, out int count)) return;
 		var squad = WorldSquad.Front;
 		int z = Stage.ViewZ;
