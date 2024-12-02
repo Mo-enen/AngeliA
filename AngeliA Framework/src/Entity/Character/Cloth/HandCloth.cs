@@ -3,21 +3,17 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-
-
 public sealed class ModularHandSuit : HandCloth, IModularCloth { }
-
 
 public abstract class HandCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Hand;
-	public override bool SpriteLoaded => SpriteID != 0;
-	private int SpriteID;
+	public override bool SpriteLoaded => SpriteHand.IsValid;
+	private ClothSprite SpriteHand;
 
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteID = $"{name}.HandSuit".AngeHash();
-		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
+		SpriteHand = new ClothSprite(name, "HandSuit");
 		return SpriteLoaded;
 	}
 
@@ -30,22 +26,13 @@ public abstract class HandCloth : Cloth {
 	public override void DrawCloth (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawClothForHand(renderer, SpriteID);
+		DrawClothForHand(renderer, SpriteHand);
 	}
 
-	public static void DrawClothForHand (PoseCharacterRenderer renderer, int spriteID, int localZ = 1) {
-		if (spriteID == 0) return;
-		if (Renderer.HasSpriteGroup(spriteID)) {
-			if (Renderer.TryGetSpriteFromGroup(spriteID, renderer.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
-				CoverClothOn(renderer.HandL, spriteL.ID, localZ);
-			}
-			if (Renderer.TryGetSpriteFromGroup(spriteID, renderer.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
-				CoverClothOn(renderer.HandR, spriteR.ID, localZ);
-			}
-		} else {
-			CoverClothOn(renderer.HandL, spriteID, localZ);
-			CoverClothOn(renderer.HandR, spriteID, localZ);
-		}
+	public static void DrawClothForHand (PoseCharacterRenderer renderer, ClothSprite sprite, int localZ = 1) {
+		if (!sprite.IsValid) return;
+		CoverClothOn(renderer.HandL, sprite.GetSpriteID(renderer.HandL.FrontSide, renderer.HandL.Width > 0), localZ);
+		CoverClothOn(renderer.HandR, sprite.GetSpriteID(renderer.HandR.FrontSide, renderer.HandR.Width > 0), localZ);
 	}
 
 }

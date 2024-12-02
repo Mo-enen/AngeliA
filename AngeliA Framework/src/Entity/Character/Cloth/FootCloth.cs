@@ -15,13 +15,12 @@ public sealed class ModularFootSuit : FootCloth, IModularCloth { }
 public abstract class FootCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Foot;
-	public override bool SpriteLoaded => SpriteID != 0;
-	private int SpriteID;
+	public override bool SpriteLoaded => SpriteFoot.IsValid;
+	private ClothSprite SpriteFoot;
 
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteID = $"{name}.FootSuit".AngeHash();
-		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
+		SpriteFoot = new ClothSprite(name, "FootSuit");
 		return SpriteLoaded;
 	}
 
@@ -34,22 +33,13 @@ public abstract class FootCloth : Cloth {
 	public override void DrawCloth (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawClothForFoot(renderer, SpriteID);
+		DrawClothForFoot(renderer, SpriteFoot);
 	}
 
-	public static void DrawClothForFoot (PoseCharacterRenderer renderer, int spriteID, int localZ = 1) {
-		if (spriteID == 0) return;
-		if (Renderer.HasSpriteGroup(spriteID)) {
-			if (Renderer.TryGetSpriteFromGroup(spriteID, renderer.Body.FrontSide ? 0 : 1, out var spriteL, false, true)) {
-				DrawClothForFootLogic(renderer.FootL, spriteL.ID, localZ);
-			}
-			if (Renderer.TryGetSpriteFromGroup(spriteID, renderer.Body.FrontSide ? 1 : 0, out var spriteR, false, true)) {
-				DrawClothForFootLogic(renderer.FootR, spriteR.ID, localZ);
-			}
-		} else {
-			DrawClothForFootLogic(renderer.FootL, spriteID, localZ);
-			DrawClothForFootLogic(renderer.FootR, spriteID, localZ);
-		}
+	public static void DrawClothForFoot (PoseCharacterRenderer renderer, ClothSprite sprite, int localZ = 1) {
+		if (!sprite.IsValid) return;
+		DrawClothForFootLogic(renderer.FootL, sprite.GetSpriteID(renderer.FootL.FrontSide, renderer.FootL.Width > 0), localZ);
+		DrawClothForFootLogic(renderer.FootR, sprite.GetSpriteID(renderer.FootR.FrontSide, renderer.FootR.Width > 0), localZ);
 		// Func
 		static void DrawClothForFootLogic (BodyPart foot, int spriteID, int localZ) {
 			if (spriteID == 0 || foot.IsFullCovered) return;

@@ -16,15 +16,13 @@ public sealed class ModularHeadSuit : HeadCloth, IModularCloth { }
 public abstract class HeadCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Head;
-	public override bool SpriteLoaded => SpriteID != 0;
+	public override bool SpriteLoaded => SpriteHead.IsValid;
 	protected virtual HatFrontMode Front => HatFrontMode.FrontOfHead;
-	protected virtual bool PixelShiftForLeft => true;
-	private int SpriteID;
+	private ClothSprite SpriteHead;
 
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteID = $"{name}.HeadSuit".AngeHash();
-		if (!Renderer.HasSprite(SpriteID) && !Renderer.HasSpriteGroup(SpriteID)) SpriteID = 0;
+		SpriteHead = new ClothSprite(name, "HeadSuit");
 		return SpriteLoaded;
 	}
 
@@ -37,15 +35,20 @@ public abstract class HeadCloth : Cloth {
 	public override void DrawCloth (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawClothForHead(renderer, SpriteID, Front, PixelShiftForLeft);
+		DrawClothForHead(renderer, SpriteHead, Front);
 	}
 
-	public static void DrawClothForHead (PoseCharacterRenderer renderer, int spriteOrGroupID, HatFrontMode frontMode, bool pixelShiftForLeft) {
+	public static void DrawClothForHead (PoseCharacterRenderer renderer, ClothSprite clothSprite, HatFrontMode frontMode) {
 
 		var head = renderer.Head;
-		if (spriteOrGroupID == 0 || head.IsFullCovered) return;
-		bool hideHead = false;
-		bool showEar = false;
+		if (!clothSprite.IsValid || head.IsFullCovered) return;
+
+		// Get Sprite
+		bool front = frontMode != HatFrontMode.AlwaysBackOfHead && (
+			frontMode == HatFrontMode.AlwaysFrontOfHead ||
+			frontMode == HatFrontMode.FrontOfHead == head.FrontSide
+		);
+		if (!clothSprite.TryGetSprite(front, head.Width > 0, out var sprite)) return;
 
 		// Width Amount
 		int widthAmount = 1000;
@@ -53,51 +56,13 @@ public abstract class HeadCloth : Cloth {
 		if (head.Height < 0) widthAmount = -widthAmount;
 
 		// Draw
-		Cell[] cells = null;
-		if (Renderer.HasSpriteGroup(spriteOrGroupID)) {
-			// Group
-			if (head.FrontSide) {
-				// Front
-				bool front = frontMode != HatFrontMode.AlwaysBackOfHead && frontMode != HatFrontMode.BackOfHead;
-				if (Renderer.TryGetSpriteFromGroup(spriteOrGroupID, 0, out var sprite, false, true)) {
-					bool usePixelShift = pixelShiftForLeft && head.FrontSide && head.Width < 0;
-					cells = AttachClothOn(
-						head, sprite, 500, 1000,
-						(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,
-						usePixelShift ? (front ? -16 : 16) : 0, 0
-					);
-					hideHead = sprite.Tag.HasAll(Tag.HideLimb);
-					showEar = sprite.Tag.HasAll(Tag.ShowLimb);
-				}
-			} else {
-				// Back
-				if (Renderer.TryGetSpriteFromGroup(spriteOrGroupID, 1, out var sprite, false, true)) {
-					bool front = frontMode != HatFrontMode.AlwaysBackOfHead && frontMode != HatFrontMode.FrontOfHead;
-					bool usePixelShift = pixelShiftForLeft && head.FrontSide && head.Width < 0;
-					cells = AttachClothOn(
-						head, sprite, 500, 1000,
-						(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,
-						usePixelShift ? (front ? -16 : 16) : 0, 0
-					);
-					hideHead = sprite.Tag.HasAll(Tag.HideLimb);
-					showEar = sprite.Tag.HasAll(Tag.ShowLimb);
-				}
-			}
-		} else if (Renderer.TryGetSprite(spriteOrGroupID, out var sprite)) {
-			// Single Sprite
-			bool front = frontMode != HatFrontMode.AlwaysBackOfHead && (
-				frontMode == HatFrontMode.AlwaysFrontOfHead ||
-				frontMode == HatFrontMode.FrontOfHead == head.FrontSide
-			);
-			bool usePixelShift = pixelShiftForLeft && head.FrontSide && head.Width < 0;
-			cells = AttachClothOn(
-				head, sprite, 500, 1000,
-				(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,
-				usePixelShift ? (front ? -16 : 16) : 0, 0
-			);
-			hideHead = sprite.Tag.HasAll(Tag.HideLimb);
-			showEar = sprite.Tag.HasAll(Tag.ShowLimb);
-		}
+		var cells = AttachClothOn(
+			head, sprite, 500, 1000,
+			(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,
+			0, 0
+		);
+		bool hideHead = sprite.Tag.HasAll(Tag.HideLimb);
+		bool showEar = sprite.Tag.HasAll(Tag.ShowLimb);
 
 		// Head Rotate
 		if (cells != null && renderer.Head.Rotation != 0) {

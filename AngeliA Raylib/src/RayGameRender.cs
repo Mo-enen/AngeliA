@@ -123,7 +123,10 @@ public partial class RayGame {
 		}
 
 		// Apply Prev Pixels for Transparent Layer
-		byte layerAlpha = Renderer.GetLayerAlpha(layerIndex);
+		var layerTint = Renderer.GetLayerTint(layerIndex);
+		byte layerAlpha = layerTint.a;
+		layerTint.a = 255;
+		bool tinted = layerTint != Color32.WHITE;
 		if (layerAlpha == 0) return;
 		if (layerAlpha < 255) {
 			Raylib.EndTextureMode();
@@ -228,14 +231,13 @@ public partial class RayGame {
 					Raylib.DrawTexturePro(
 						texture,
 						source.ShrinkRectangle(0.001f),
-						//dest.ExpandRectangle(0.001f),
 						dest,
 						new Vector2(
 							pivotX * dest.Width,
 							pivotY * dest.Height
 						),
 						cell.Rotation1000 / 1000f,
-						cell.Color.ToRaylib()
+						tinted ? (cell.Color * layerTint).ToRaylib() : cell.Color.ToRaylib()
 					);
 
 				} else if (cell.TextSprite != null) {
@@ -270,7 +272,9 @@ public partial class RayGame {
 						new Vector2(
 							pivotX * dest.Width,
 							pivotY * dest.Height
-						), rotation: 0, cell.Color.ToRaylib()
+						),
+						rotation: 0,
+						tinted ? (cell.Color * layerTint).ToRaylib() : cell.Color.ToRaylib()
 					);
 				}
 			} catch (Exception ex) { Debug.LogException(ex); }
@@ -281,6 +285,7 @@ public partial class RayGame {
 
 		// Apply for Transparent Layer
 		if (layerAlpha < 255) {
+			Debug.Log(Game.GlobalFrame);
 			Raylib.EndTextureMode();
 			Raylib.BeginTextureMode(RenderTexture);
 			Raylib.DrawTextureRec(

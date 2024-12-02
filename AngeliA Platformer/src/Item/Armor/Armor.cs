@@ -4,13 +4,8 @@ using System.Collections.Generic;
 
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
-
-
-
-public enum HelmetWearingMode { Attach, Cover, }
-
-
 
 public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipment where N : Equipment {
 

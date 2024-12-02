@@ -9,7 +9,7 @@ public static class Sky {
 	// Api
 	public static Color32 SkyTintTopColor { get; private set; }
 	public static Color32 SkyTintBottomColor { get; private set; }
-	public static Color32 DaylightTintColor { get; private set; } = Color32.WHITE;
+	public static Color32 SunlightTintColor { get; private set; } = Color32.WHITE;
 	public static ColorGradient GradientTop { get; set; } = new ColorGradient(
 		new ColorGradient.Data(new Color32(10, 12, 31, 255), 0f),
 		new ColorGradient.Data(new Color32(13, 49, 76, 255), 0.25f),
@@ -24,7 +24,7 @@ public static class Sky {
 		new ColorGradient.Data(new Color32(27, 69, 101, 255), 0.75f),
 		new ColorGradient.Data(new Color32(10, 12, 31, 255), 1f)
 	);
-	public static ColorGradient DaylightTint { get; set; } = new ColorGradient(
+	public static ColorGradient SunlightTint { get; set; } = new ColorGradient(
 		new ColorGradient.Data(new Color32(190, 230, 255, 255), 0f),
 		new ColorGradient.Data(new Color32(255, 240, 220, 255), 0.5f),
 		new ColorGradient.Data(new Color32(190, 230, 255, 255), 1f)
@@ -61,12 +61,13 @@ public static class Sky {
 			(everyMinute && Game.PauselessFrame > ForceBackgroundTintFrame)
 		) {
 			RefreshSkyTintFromDateTime();
-			DaylightTintColor = DaylightTint != null ? DaylightTint.Evaluate(InGameDaytime01) : Color32.WHITE;
+			SunlightTintColor = SunlightTint != null ? SunlightTint.Evaluate(InGameDaytime01) : Color32.WHITE;
 		}
 
-		// Daylight Tint
-		if (DaylightTintColor != Color32.WHITE) {
-			Game.PassEffect_Tint(DaylightTintColor, 1);
+		// Sunlight Tint
+		if (SunlightTintColor != Color32.WHITE) {
+			Renderer.SetLayerTint(RenderLayer.BEHIND, SunlightTintColor);
+			Renderer.SetLayerTint(RenderLayer.DEFAULT, SunlightTintColor);
 		}
 	}
 
@@ -95,7 +96,7 @@ public static class Sky {
 			InGameDaytime01 = ForceInGameDaytimeValue = newDaytime01.Clamp01();
 		}
 		RefreshSkyTintFromDateTime();
-		DaylightTintColor = DaylightTint != null ? DaylightTint.Evaluate(InGameDaytime01) : Color32.WHITE;
+		SunlightTintColor = SunlightTint != null ? SunlightTint.Evaluate(InGameDaytime01) : Color32.WHITE;
 	}
 
 

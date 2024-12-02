@@ -337,7 +337,7 @@ public partial class RiggedGame : Game {
 			if (!Renderer.GetCells(layer, out var cells, out int count)) continue;
 			count = Util.Min(count, layerData.Cells.Length);
 			layerData.CellCount = count;
-			layerData.layerAlpha = Renderer.GetLayerAlpha(layer);
+			layerData.layerTint = Renderer.GetLayerTint(layer);
 			for (int i = 0; i < count; i++) {
 				var source = cells[i];
 				var target = layerData.Cells[i];

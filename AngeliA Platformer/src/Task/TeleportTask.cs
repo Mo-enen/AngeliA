@@ -52,10 +52,9 @@ public class TeleportTask : Task {
 							cell.Color.a = (byte)Util.LerpUnclamped(cell.Color.a, 255, localLerp).Clamp(0, 255);
 						}
 					} else {
-						Renderer.SetLayerAlpha(
-							RenderLayer.BEHIND,
-							(byte)Util.LerpUnclamped(255, 0, localLerp).Clamp(0, 255)
-						);
+						var tint = Renderer.GetLayerTint(RenderLayer.BEHIND);
+						tint.a = (byte)Util.LerpUnclamped(255, 0, localLerp).Clamp(0, 255);
+						Renderer.SetLayerTint(RenderLayer.BEHIND, tint);
 					}
 				}
 
@@ -70,10 +69,9 @@ public class TeleportTask : Task {
 						ParaLogic(cells, center, count, ease);
 					}
 					if (ToBehind) {
-						Renderer.SetLayerAlpha(
-							layer,
-							(byte)Util.LerpUnclamped(255, 0, localLerp).Clamp(0, 255)
-						);
+						var tint = Renderer.GetLayerTint(layer);
+						tint.a = (byte)Util.LerpUnclamped(255, 0, localLerp).Clamp(0, 255);
+						Renderer.SetLayerTint(layer, tint);
 					}
 				}
 
@@ -90,10 +88,9 @@ public class TeleportTask : Task {
 				if (Renderer.GetCells(RenderLayer.BEHIND, out var cells, out int count)) {
 					ParaLogic(cells, center, count, ease);
 					if (ToBehind) {
-						Renderer.SetLayerAlpha(
-							RenderLayer.BEHIND,
-							(byte)Util.LerpUnclamped(0, 255, localLerp).Clamp(0, 255)
-						);
+						var tint = Renderer.GetLayerTint(RenderLayer.BEHIND);
+						tint.a = (byte)Util.LerpUnclamped(0, 255, localLerp).Clamp(0, 255);
+						Renderer.SetLayerTint(RenderLayer.BEHIND, tint);
 					} else {
 						for (int i = 0; i < count; i++) {
 							var cell = cells[i];
@@ -113,10 +110,9 @@ public class TeleportTask : Task {
 						ParaLogic(cells, center, count, ease);
 					}
 					if (!ToBehind) {
-						Renderer.SetLayerAlpha(
-							layer,
-							(byte)Util.LerpUnclamped(0, 255, localLerp).Clamp(0, 255)
-						);
+						var tint = Renderer.GetLayerTint(layer);
+						tint.a = (byte)Util.LerpUnclamped(0, 255, localLerp).Clamp(0, 255);
+						Renderer.SetLayerTint(layer, tint);
 					}
 				}
 

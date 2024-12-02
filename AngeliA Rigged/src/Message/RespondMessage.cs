@@ -65,7 +65,7 @@ public class RigRespondMessage {
 	public class RenderingLayerData (int capacity) {
 		public int CellCount = 0;
 		public readonly RenderingCellData[] Cells = new RenderingCellData[capacity].FillWithNewValue();
-		public byte layerAlpha = 255;
+		public Color32 layerTint = Color32.WHITE;
 	}
 
 
@@ -187,7 +187,7 @@ public class RigRespondMessage {
 			foreach (var layer in Layers) {
 				if (layer == null) continue;
 				layer.CellCount = 0;
-				layer.layerAlpha = 255;
+				layer.layerTint = Color32.WHITE;
 			}
 		}
 	}
@@ -353,7 +353,7 @@ public class RigRespondMessage {
 				if (layerData == null) continue;
 				int count = layerData.CellCount;
 				Renderer.SetLayer(layer);
-				Renderer.SetLayerAlpha(layer, layerData.layerAlpha);
+				Renderer.SetLayerTint(layer, layerData.layerTint);
 				for (int i = 0; i < count; i++) {
 					var cell = layerData.Cells[i];
 					Cell rCell = null;
@@ -601,7 +601,12 @@ public class RigRespondMessage {
 					Layers[index] = layerData = new RenderingLayerData(targetCapacity);
 				}
 				layerData.CellCount = Util.ReadInt(ref pointer, end);
-				layerData.layerAlpha = Util.ReadByte(ref pointer, end);
+				byte _r = Util.ReadByte(ref pointer, end);
+				byte _g = Util.ReadByte(ref pointer, end);
+				byte _b = Util.ReadByte(ref pointer, end);
+				byte _a = Util.ReadByte(ref pointer, end);
+				var layerTint = new Color32(_r, _g, _b, _a);
+				layerData.layerTint = layerTint;
 				for (int i = 0; i < layerData.CellCount; i++) {
 					var cell = layerData.Cells[i];
 					cell.SpriteID = Util.ReadInt(ref pointer, end);
@@ -789,7 +794,10 @@ public class RigRespondMessage {
 				}
 				Util.Write(ref pointer, layerData.Cells.Length, end);
 				Util.Write(ref pointer, layerData.CellCount, end);
-				Util.Write(ref pointer, layerData.layerAlpha, end);
+				Util.Write(ref pointer, layerData.layerTint.r, end);
+				Util.Write(ref pointer, layerData.layerTint.g, end);
+				Util.Write(ref pointer, layerData.layerTint.b, end);
+				Util.Write(ref pointer, layerData.layerTint.a, end);
 				for (int i = 0; i < layerData.CellCount; i++) {
 					var cell = layerData.Cells[i];
 					Util.Write(ref pointer, cell.SpriteID, end);

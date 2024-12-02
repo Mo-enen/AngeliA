@@ -2,23 +2,17 @@
 
 namespace AngeliA.Platformer;
 
+public enum HelmetWearingMode { Attach, Cover, }
+
 public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 	public sealed override EquipmentType EquipmentType => EquipmentType.Helmet;
-	private int SpriteFront { get; init; } = 0;
-	private int SpriteBack { get; init; } = 0;
+	private ClothSprite SpriteHelmet { get; init; }
 	protected abstract HelmetWearingMode WearingMode { get; }
-	public Helmet () {
-		string basicName = GetType().AngeName();
-		SpriteFront = $"{basicName}.Main".AngeHash();
-		SpriteBack = $"{basicName}.Back".AngeHash();
-		if (!Renderer.HasSprite(SpriteFront)) SpriteFront = 0;
-		if (!Renderer.HasSprite(SpriteBack)) SpriteBack = 0;
-	}
+	public Helmet () => SpriteHelmet = new ClothSprite(GetType().AngeName(), "Main");
 	protected override void DrawArmor (PoseCharacterRenderer renderer) {
 
 		var head = renderer.Head;
-		int spriteID = head.FrontSide ? SpriteFront : SpriteBack;
-		if (spriteID == 0 || !Renderer.TryGetSprite(spriteID, out var sprite)) return;
+		if (!SpriteHelmet.TryGetSprite(head.FrontSide, head.Width > 0, out var sprite)) return;
 
 		// Draw Helmet
 		switch (WearingMode) {
@@ -30,7 +24,7 @@ public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : E
 				break;
 			default: {
 				// Cover
-				var cells = Cloth.CoverClothOn(head, spriteID, 34 - head.Z, Color32.WHITE, false);
+				var cells = Cloth.CoverClothOn(head, sprite.ID, 34 - head.Z, Color32.WHITE, false);
 				// Grow Padding
 				if (!sprite.GlobalBorder.IsZero && cells != null) {
 					var center = head.GetGlobalCenter();
