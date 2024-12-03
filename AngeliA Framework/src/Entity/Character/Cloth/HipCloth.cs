@@ -13,7 +13,7 @@ public sealed class ModularHipSuit : HipCloth, IModularCloth { }
 public abstract class HipCloth : Cloth {
 
 	// SUB
-	public enum HipClothType { None, Pants, Skirt, Dress, }
+	public enum HipClothType { None, Pants, Skirt, }
 
 	// VAR
 	protected sealed override ClothType ClothType => ClothType.Hip;
@@ -29,14 +29,13 @@ public abstract class HipCloth : Cloth {
 	// API
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteHip = new OrientedSprite(name, "HipSuit", "SkirtSuit", "DressSuit");
+		SpriteHip = new OrientedSprite(name, "HipSuit", "SkirtSuit");
 		SpriteTail = new OrientedSprite(name, "TailSuit");
 		SpriteUpperLeg = new OrientedSprite(name, "UpperLegSuit");
 		SpriteLowerLeg = new OrientedSprite(name, "LowerLegSuit");
 		HipType = SpriteHip.AttachmentName switch {
 			"HipSuit" => HipClothType.Pants,
 			"SkirtSuit" => HipClothType.Skirt,
-			"DressSuit" => HipClothType.Dress,
 			_ => HipClothType.None,
 		};
 		return SpriteLoaded;
@@ -57,9 +56,6 @@ public abstract class HipCloth : Cloth {
 				break;
 			case HipClothType.Skirt:
 				DrawClothAsSkirt(rendering, SpriteHip, CoverLegs ? 6 : 1);
-				break;
-			case HipClothType.Dress:
-				DrawClothAsDress(rendering, SpriteHip.GroupID, CoverLegs ? 6 : 1);
 				break;
 		}
 		DrawClothForUpperLeg(rendering, SpriteUpperLeg);
@@ -101,11 +97,18 @@ public abstract class HipCloth : Cloth {
 
 	}
 
-	public static void DrawClothAsSkirt (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 6) {
+	public static void DrawClothAsSkirt (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 6, int motionAmount = 1000) {
 
 		var hip = rendering.Hip;
 		if (!clothSprite.IsValid || hip.IsFullCovered) return;
-		if (!clothSprite.TryGetSprite(hip.FrontSide, hip.Width > 0, out var sprite)) return;
+		SpriteGroup group = null;
+		if (!clothSprite.TryGetSprite(hip.FrontSide, hip.Width > 0, out var sprite)) {
+			if (clothSprite.GroupID != 0 && Renderer.TryGetSpriteGroup(clothSprite.GroupID, out group) && group.Count > 0) {
+				sprite = group.Sprites[0];
+			} else {
+				return;
+			}
+		}
 
 		var body = rendering.Body;
 		var upperLegL = rendering.UpperLegL;
@@ -113,7 +116,6 @@ public abstract class HipCloth : Cloth {
 		var animatedPoseType = rendering.TargetCharacter.AnimationType;
 		const int A2G = 16;
 
-		// Skirt
 		int bodyWidthAbs = body.Width.Abs();
 		var legTopL = upperLegL.GlobalLerp(0.5f, 1f);
 		var legTopR = upperLegR.GlobalLerp(0.5f, 1f);
@@ -121,77 +123,95 @@ public abstract class HipCloth : Cloth {
 		int right = legTopR.x + upperLegR.SizeX / 2;
 		int centerX = (left + right) / 2;
 		int centerY = (legTopL.y + legTopR.y) / 2;
-		bool stretch =
-			animatedPoseType != CharacterAnimationType.GrabSide &&
-			animatedPoseType != CharacterAnimationType.Dash &&
-			animatedPoseType != CharacterAnimationType.Idle;
 		int width = Util.Max(
 			(right - left).Abs(), bodyWidthAbs - body.Border.left - body.Border.right
 		);
 		width += sprite.GlobalBorder.horizontal;
-		if (stretch) width += Stretch(upperLegL.Rotation, upperLegR.Rotation);
+
+		// Stretch
+		if (animatedPoseType != CharacterAnimationType.GrabSide &&
+			animatedPoseType != CharacterAnimationType.Dash &&
+			animatedPoseType != CharacterAnimationType.Idle
+		) {
+			int stretch = 0;
+			if (upperLegL.Rotation > 0) stretch += upperLegL.Rotation / 2;
+			if (upperLegR.Rotation < 0) stretch += upperLegR.Rotation / -2;
+			width += stretch;
+		}
 		width += animatedPoseType switch {
-			CharacterAnimationType.JumpUp or CharacterAnimationType.JumpDown => 2 * A2G,
+			CharacterAnimationType.JumpUp or CharacterAnimationType.JumpDown => A2G,
 			CharacterAnimationType.Run => A2G / 2,
+			CharacterAnimationType.Pound => A2G,
 			_ => 0,
 		};
-		int shiftY = animatedPoseType switch {
-			CharacterAnimationType.Dash => A2G,
-			_ => 0,
-		};
-		int offsetY = sprite.GlobalHeight * (1000 - sprite.PivotY) / 1000 + shiftY;
+
+		// Shift Y
+		int offsetY = sprite.GlobalHeight * (1000 - sprite.PivotY) / 1000;
+		if (animatedPoseType == CharacterAnimationType.Dash) offsetY += A2G;
 		int height = body.Height > 0 ? sprite.GlobalHeight : -sprite.GlobalHeight;
 		if (animatedPoseType.IsLyingDown() && body.Height > 0) {
 			height = height.LessOrEquel(centerY + offsetY - rendering.TargetCharacter.Y);
 		}
-		Renderer.Draw(
-			sprite,
-			centerX,
-			body.Height > 0 ? centerY + offsetY : centerY - offsetY,
-			500, 1000, 0,
-			width, height,
-			hip.Z + localZ
-		);
+		if (body.Height < 0) offsetY = -offsetY;
 
-		// Limb
-		hip.Covered = sprite.Tag.HasAll(Tag.HideLimb) ?
-			BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
+		if (group != null) {
+			// Dress Group
 
-		// Func
-		static int Stretch (int rotL, int rotR) {
-			int result = 0;
-			if (rotL > 0) result += rotL / 2;
-			if (rotR < 0) result += rotR / -2;
-			return result;
-		}
-	}
+			// Render
+			int deltaX = rendering.TargetCharacter.DeltaPositionX.Clamp(-64, 64);
+			int deltaY = rendering.TargetCharacter.DeltaPositionY.Clamp(-42, 42);
+			int signY = hip.Height.Sign3();
+			int currentY = centerY + offsetY;
+			for (int i = 0; i < group.Count; i++) {
 
-	public static void DrawClothAsDress (PoseCharacterRenderer rendering, int dressGroupID, int localZ = 6, int motionAmount = 1000) {
+				if (group.Sprites[i] is not AngeSprite segSprite) continue;
 
-		if (dressGroupID == 0 || !Renderer.TryGetSpriteGroup(dressGroupID, out var group)) return;
+				// Motion
+				int motionX = 0;
+				int motionY = 0;
+				if (motionAmount != 0) {
+					float lerp01 = i / (group.Count - 1f);
+					motionX = (-deltaX * motionAmount * lerp01 / 1000f).RoundToInt();
+					motionY = (-deltaY * motionAmount * lerp01 / 2000f).RoundToInt();
+				}
+				if (
+					animatedPoseType == CharacterAnimationType.Dash ||
+					animatedPoseType == CharacterAnimationType.Rush
+				) {
+					motionX = motionX * 3 / 2;
+				}
 
-		// Render
-		var hip = rendering.Hip;
-		int z = hip.Z + localZ;
-		int deltaX = rendering.TargetCharacter.DeltaPositionX;
-		int deltaY = rendering.TargetCharacter.DeltaPositionY;
-		for (int i = 0; i < group.Count; i++) {
-
-			// Motion
-			int offsetX = 0;
-			int offsetY = 0;
-			if (motionAmount != 0) {
-
+				// Draw Segment
+				int deltaW = width.Sign() * (width.Abs() - sprite.GlobalWidth);
+				int deltaH = height.Sign() * (height.Abs() - sprite.GlobalHeight);
+				int segWidth = segSprite.GlobalWidth + deltaW + motionX.Abs();
+				int segHeight = signY * (segSprite.GlobalHeight + deltaH - motionY);
+				currentY -= segHeight;
+				Renderer.Draw(
+					segSprite,
+					centerX + motionX / 2,
+					currentY,
+					500, 0, 0,
+					segWidth, segHeight,
+					z: hip.Z + localZ
+				);
 
 			}
 
-			// Draw Segment
-
-
-
-
-
+		} else {
+			// Single Skirt
+			Renderer.Draw(
+				sprite,
+				centerX,
+				centerY + offsetY,
+				500, 1000, 0,
+				width, height,
+				hip.Z + localZ
+			);
 		}
+
+		// Limb
+		hip.Covered = sprite.Tag.HasAll(Tag.HideLimb) ? BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 	}
 

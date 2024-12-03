@@ -1,4 +1,5 @@
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Slope : Entity, IBlockEntity {
@@ -12,7 +13,7 @@ public abstract class Slope : Entity, IBlockEntity {
 	// Api
 	public abstract Direction2 DirectionVertical { get; }
 	public abstract Direction2 DirectionHorizontal { get; }
-	public virtual int CollisionMask => PhysicsMask.ENTITY;
+	public virtual int CollisionMask => PhysicsMask.DYNAMIC;
 
 
 	#endregion

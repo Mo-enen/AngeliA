@@ -21,7 +21,7 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 		string basicName = GetType().AngeName();
 		SpriteBody = new OrientedSprite(basicName, "Body");
 		SpriteCape = new OrientedSprite(basicName, "Cape");
-		SpriteHip = new OrientedSprite(basicName, "Hip", "Skirt", "Dress");
+		SpriteHip = new OrientedSprite(basicName, "Hip", "Skirt");
 		SpriteShoulder = new OrientedSprite(basicName, "Shoulder");
 		SpriteUpperArm = new OrientedSprite(basicName, "UpperArm");
 		SpriteLowerArm = new OrientedSprite(basicName, "LowerArm");
@@ -30,7 +30,6 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 		HipType = SpriteHip.AttachmentName switch {
 			"Hip" => HipCloth.HipClothType.Pants,
 			"Skirt" => HipCloth.HipClothType.Skirt,
-			"Dress" => HipCloth.HipClothType.Dress,
 			_ => HipCloth.HipClothType.None,
 		};
 	}
@@ -47,9 +46,6 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 				break;
 			case HipCloth.HipClothType.Skirt:
 				HipCloth.DrawClothAsSkirt(renderer, SpriteHip, 7);
-				break;
-			case HipCloth.HipClothType.Dress:
-				HipCloth.DrawClothAsDress(renderer, SpriteHip.GroupID, 7);
 				break;
 		}
 

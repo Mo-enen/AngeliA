@@ -110,6 +110,11 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	#region --- MSG ---
 
 
+	[CheatCode("ResetCharacterRenderingConfig")]
+	internal static void CheatCode_ResetConfig () => ReloadRenderingConfigPoolFromFileAndSheet();
+
+
+	// Init
 	[OnGameInitialize(-128)]
 	internal static TaskResult InitializePose () {
 
@@ -134,10 +139,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 	[OnSavingSlotChanged]
 	internal static void OnSavingSlotChanged () => ReloadRenderingConfigPoolFromFileAndSheet();
-
-
-	[BeforeBeforeUpdate]
-	internal static void BeforeBeforeUpdate () => GlobalPoseRenderingZOffset = 0;
 
 
 	public PoseCharacterRenderer (Character target) : base(target) {
@@ -184,6 +185,12 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	}
 
 
+	// Global Update
+	[BeforeBeforeUpdate]
+	internal static void BeforeBeforeUpdate () => GlobalPoseRenderingZOffset = 0;
+
+
+	// Renderer Msg
 	public override void OnActivated () {
 		base.OnActivated();
 		PrevAniID = 0;
@@ -682,15 +689,15 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	}
 
 
-	public static void ReloadRenderingConfigPoolFromFileAndSheet () {
+	public static void ReloadRenderingConfigPoolFromFileAndSheet (bool forceReset = false) {
 		RenderingConfigGlobalVersion++;
 		ConfigPool_Rendering.Clear();
 		string renderRoot = Universe.BuiltIn.SlotCharacterRenderingConfigRoot;
 		foreach (var type in typeof(Character).AllChildClass()) {
 			int typeID = type.AngeHash();
-			// Load From File
 			string path = Util.CombinePaths(renderRoot, $"{type.Name}.json");
-			var config = JsonUtil.LoadJsonFromPath<CharacterRenderingConfig>(path);
+			// Load From File
+			var config = !forceReset ? JsonUtil.LoadJsonFromPath<CharacterRenderingConfig>(path) : null;
 			// Create Default Config
 			if (config == null) {
 				config = CreateCharacterRenderingConfigFromSheet(type);
