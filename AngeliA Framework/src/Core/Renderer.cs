@@ -849,6 +849,7 @@ public static class Renderer {
 
 	public static Color32 GetLayerTint (int layer) => Layers[layer].LayerTint;
 	public static void SetLayerTint (int layer, Color32 tint) => Layers[layer].LayerTint = tint;
+	public static void MultLayerTint (int layer, Color32 tint) => Layers[layer].LayerTint *= tint;
 
 
 	// Internal

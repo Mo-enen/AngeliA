@@ -31,32 +31,28 @@ public abstract class Face : BodyGadget {
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Face;
-	public override bool SpriteLoaded => Sprite_Eye != 0;
-	private int Sprite_Eye;
-	private int Sprite_Sclera;
-	private int Sprite_Eyelash;
-	private int Sprite_Eyebrow;
-	private int Sprite_Mouth;
-	private int Sprite_Tooth;
+	public override bool SpriteLoaded => SpriteEye.IsValid && SpriteSclera.IsValid;
+
+	private OrientedSprite SpriteEye;
+	private OrientedSprite SpriteSclera;
+	private OrientedSprite SpriteEyelash;
+	private OrientedSprite SpriteEyebrow;
+	private OrientedSprite SpriteMouth;
+	private OrientedSprite SpriteTooth;
+	private OrientedSprite SpriteEar;
 
 
 	// API
 	public override bool FillFromSheet (string keyword) {
 		base.FillFromSheet(keyword);
-		Sprite_Eye = GetSpriteID(keyword, "Eye");
-		Sprite_Sclera = GetSpriteID(keyword, "Sclera");
-		Sprite_Eyelash = GetSpriteID(keyword, "Eyelash");
-		Sprite_Eyebrow = GetSpriteID(keyword, "Eyebrow");
-		Sprite_Mouth = GetSpriteID(keyword, "Mouth");
-		Sprite_Tooth = GetSpriteID(keyword, "Tooth");
-
+		SpriteEye = new OrientedSprite(keyword, "Eye");
+		SpriteSclera = new OrientedSprite(keyword, "Sclera");
+		SpriteEyelash = new OrientedSprite(keyword, "Eyelash");
+		SpriteEyebrow = new OrientedSprite(keyword, "Eyebrow");
+		SpriteMouth = new OrientedSprite(keyword, "Mouth");
+		SpriteTooth = new OrientedSprite(keyword, "Tooth");
+		SpriteEar = new OrientedSprite(keyword, "HumanEar");
 		return SpriteLoaded;
-
-		// Func
-		static int GetSpriteID (string keyword, string typeName) {
-			int id = $"{keyword}.Face.{typeName}".AngeHash();
-			return Renderer.HasSpriteGroup(id) || Renderer.HasSprite(id) ? id : 0;
-		}
 	}
 
 
@@ -112,6 +108,7 @@ public abstract class Face : BodyGadget {
 		DrawEye(renderer, expression, faceRect, true);
 		DrawEye(renderer, expression, faceRect, false);
 		DrawMouth(renderer, expression, faceRect);
+		DrawSpriteAsHumanEar(renderer, SpriteEar);
 
 		// Move with Head
 		if (Renderer.GetCells(out var cells, out int count)) {
@@ -145,13 +142,13 @@ public abstract class Face : BodyGadget {
 
 	protected virtual void DrawEye (PoseCharacterRenderer renderer, CharacterFaceExpression expression, IRect faceRect, bool leftEye) {
 
-		if (
-			!Renderer.TryGetSprite(Sprite_Eye, out var eye) ||
-			!Renderer.TryGetSprite(Sprite_Sclera, out var sclera)
-		) return;
+		if (!SpriteEye.IsValid || !SpriteSclera.IsValid) return;
 
-		Renderer.TryGetSprite(Sprite_Eyebrow, out var eyebrow);
 		bool facingRight = renderer.Head.Width > 0;
+		if (!SpriteEye.TryGetSprite(true, facingRight, out var eye)) return;
+		if (!SpriteSclera.TryGetSprite(true, facingRight, out var sclera)) return;
+		SpriteEyebrow.TryGetSprite(true, facingRight, out var eyebrow);
+
 		var rect = faceRect.CornerInside(leftEye ? Alignment.TopLeft : Alignment.TopRight, sclera.GlobalWidth, sclera.GlobalHeight);
 		bool eyeOpening =
 			expression == CharacterFaceExpression.Normal ||
@@ -159,7 +156,7 @@ public abstract class Face : BodyGadget {
 			expression == CharacterFaceExpression.Damage;
 
 		// Expression Redirect
-		if (!Renderer.TryGetSprite(Sprite_Eyelash, out var eyelash) && !eyeOpening) {
+		if (!SpriteEyelash.TryGetSprite(true, facingRight, out var eyelash) && !eyeOpening) {
 			expression = CharacterFaceExpression.Normal;
 			eyeOpening = true;
 		}
@@ -305,10 +302,11 @@ public abstract class Face : BodyGadget {
 	protected virtual void DrawMouth (PoseCharacterRenderer renderer, CharacterFaceExpression expression, IRect faceRect) {
 
 		if (expression != CharacterFaceExpression.PassOut && expression != CharacterFaceExpression.Damage) return;
-		if (!Renderer.TryGetSprite(Sprite_Mouth, out var mouth)) return;
-		Renderer.TryGetSprite(Sprite_Tooth, out var tooth);
 
 		bool facingRight = renderer.Head.Width > 0;
+		if (!SpriteMouth.TryGetSprite(true, facingRight, out var mouth)) return;
+		SpriteTooth.TryGetSprite(true, facingRight, out var tooth);
+
 		var rect = faceRect.CornerInside(Alignment.BottomMid, mouth.GlobalWidth, mouth.GlobalHeight);
 
 		// Animation for Damage
@@ -343,7 +341,7 @@ public abstract class Face : BodyGadget {
 	}
 
 
-	public static void DrawSpriteAsHumanEar (PoseCharacterRenderer renderer, int spriteL, int spriteR, int offsetXL = -32, int offsetXR = 0) {
+	public static void DrawSpriteAsHumanEar (PoseCharacterRenderer renderer, OrientedSprite oSprite, int offsetXL = 0, int offsetXR = 0) {
 
 		// Get Face Rect
 		var head = renderer.Head;
@@ -365,13 +363,13 @@ public abstract class Face : BodyGadget {
 		// Draw Ears
 		if (!facingRight) (offsetXL, offsetXR) = (-offsetXR, -offsetXL);
 		var cellL = Renderer.Draw(
-			spriteL,
+			oSprite.GetSpriteID(true, false),
 			faceRect.x + offsetXL, faceRect.yMax, 1000, 1000, 0,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
 			facingRight ? 33 : -33
 		);
 		var cellR = Renderer.Draw(
-			spriteR,
+			oSprite.GetSpriteID(true, true),
 			faceRect.xMax + offsetXR, faceRect.yMax, 0, 1000, 0,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
 			facingRight ? -33 : 33

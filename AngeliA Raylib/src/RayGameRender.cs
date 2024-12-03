@@ -285,7 +285,6 @@ public partial class RayGame {
 
 		// Apply for Transparent Layer
 		if (layerAlpha < 255) {
-			Debug.Log(Game.GlobalFrame);
 			Raylib.EndTextureMode();
 			Raylib.BeginTextureMode(RenderTexture);
 			Raylib.DrawTextureRec(

@@ -58,13 +58,20 @@ public abstract class Wing : BodyGadget {
 
 
 	public static void DrawSpriteAsWing (PoseCharacterRenderer renderer, OrientedSprite oSprite, bool isPropeller, int scale = 1000) {
-		if (
-			!oSprite.IsValid ||
-			!Renderer.HasSpriteGroup(oSprite.GroupID, out int groupCount)
-		) return;
+
+		if (!oSprite.IsValid) return;
+		AngeSprite singleSprite = null;
+		if (!Renderer.TryGetAnimationGroup(oSprite.GroupID, out var group) || group.Count == 0) {
+			if (oSprite.TryGetSprite(renderer.Body.FrontSide, renderer.Body.Width > 0, out singleSprite)) {
+				group = null;
+			} else {
+				return;
+			}
+		}
+
 		var aniType = renderer.TargetCharacter.AnimationType;
 		int z = renderer.Body.FrontSide ? -33 : 33;
-		int signY = aniType == CharacterAnimationType.Rolling && !renderer.Body.FrontSide ? 1 : -1;
+		int signY = aniType == CharacterAnimationType.Rolling && !renderer.Body.FrontSide ? -1 : 1;
 
 		// Get Wing Position
 		int xLeft;
@@ -94,10 +101,11 @@ public abstract class Wing : BodyGadget {
 			// Flying
 			if (isPropeller) {
 				// Propeller
-				if (Renderer.TryGetSpriteFromGroup(
-					oSprite.GroupID, renderer.CurrentAnimationFrame.UMod(groupCount),
-					out var sprite, true, true
-				)) {
+				var sprite = singleSprite;
+				if (group != null) {
+					Renderer.CurrentSheet.TryGetSpriteFromAnimationFrame(group, renderer.CurrentAnimationFrame, out sprite);
+				}
+				if (sprite != null) {
 					Renderer.Draw(
 						sprite,
 						(xLeft + xRight) / 2,
@@ -110,7 +118,13 @@ public abstract class Wing : BodyGadget {
 				}
 			} else {
 				// Wings
-				if (Renderer.TryGetSpriteFromGroup(oSprite.GroupID, (renderer.CurrentAnimationFrame / 6).UMod(groupCount), out var sprite, true, true)) {
+				var sprite = singleSprite;
+				if (group != null) {
+					Renderer.CurrentSheet.TryGetSpriteFromAnimationFrame(
+						group, renderer.CurrentAnimationFrame, out sprite
+					);
+				}
+				if (sprite != null) {
 					Renderer.Draw(
 						sprite,
 						xLeft, yLeft, sprite.PivotX, sprite.PivotY, 0,
@@ -127,28 +141,36 @@ public abstract class Wing : BodyGadget {
 					);
 				}
 			}
-		} else if (!isPropeller && Renderer.TryGetSpriteFromGroup(oSprite.GroupID, 0, out var firstSprite, false, true)) {
-			// Not Flying with Wing
-			int rot = Game.GlobalFrame.PingPong(120) - 60;
-			rot /= 12;
-			int facingScaleL = 1000 + renderer.Body.Width.Sign3() * 300;
-			int facingScaleR = 1000 - renderer.Body.Width.Sign3() * 300;
-			// L
-			Renderer.Draw(
-				firstSprite,
-				xLeft, yLeft, firstSprite.PivotX, firstSprite.PivotY, -rot,
-				firstSprite.GlobalWidth * scale / 1000 * facingScaleL / 1000,
-				signY * firstSprite.GlobalHeight * scale / 1000,
-				z
-			);
-			// R
-			Renderer.Draw(
-				firstSprite,
-				xRight, yRight, firstSprite.PivotX, firstSprite.PivotY, rot,
-				-firstSprite.GlobalWidth * scale / 1000 * facingScaleR / 1000,
-				signY * firstSprite.GlobalHeight * scale / 1000,
-				z
-			);
+		} else if (!isPropeller) {
+			var sprite = group != null ? group.Sprites[0] : singleSprite;
+			if (sprite != null) {
+				// Not Flying with Wing
+				int rot = (Game.GlobalFrame.PingPong(120) - 60) / 12;
+				int signW = renderer.Body.Width.Sign3();
+				int facingScaleL = 1000;
+				int facingScaleR = 1000;
+				if (renderer.Body.FrontSide) {
+					facingScaleL = 1000 + signW * 300;
+					facingScaleR = 1000 - signW * 300;
+				}
+				// L
+				Renderer.Draw(
+					sprite,
+					xLeft, yLeft, sprite.PivotX, sprite.PivotY, -rot,
+					sprite.GlobalWidth * scale / 1000 * facingScaleL / 1000,
+					signY * sprite.GlobalHeight * scale / 1000,
+					z
+				);
+				// R
+				Renderer.Draw(
+					sprite,
+					xRight, yRight, sprite.PivotX, sprite.PivotY, rot,
+					-sprite.GlobalWidth * scale / 1000 * facingScaleR / 1000,
+					signY * sprite.GlobalHeight * scale / 1000,
+					z
+
+				);
+			}
 		}
 	}
 

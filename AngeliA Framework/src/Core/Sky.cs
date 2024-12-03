@@ -66,8 +66,8 @@ public static class Sky {
 
 		// Sunlight Tint
 		if (SunlightTintColor != Color32.WHITE) {
-			Renderer.SetLayerTint(RenderLayer.BEHIND, SunlightTintColor);
-			Renderer.SetLayerTint(RenderLayer.DEFAULT, SunlightTintColor);
+			Renderer.MultLayerTint(RenderLayer.BEHIND, SunlightTintColor);
+			Renderer.MultLayerTint(RenderLayer.DEFAULT, SunlightTintColor);
 		}
 	}
 

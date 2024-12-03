@@ -204,10 +204,10 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		SyncRenderingConfigFromPool();
 		// Give Default Wing
 		if (WingID.BaseValue == 0 && TargetCharacter.Movement.FlyAvailable) {
-			WingID.Override(
-				TargetCharacter.Movement.GlideOnFlying.BaseValue ? DefaultWing.TYPE_ID : DefaultPropellerWing.TYPE_ID,
-				duration: 1
-			);
+			int targetID = TargetCharacter.Movement.GlideOnFlying.BaseValue ? DefaultWing.TYPE_ID : DefaultPropellerWing.TYPE_ID;
+			if (WingID.FinalValue == 0 || WingID.FinalValue == targetID) {
+				WingID.Override(targetID, duration: 1);
+			}
 		}
 	}
 

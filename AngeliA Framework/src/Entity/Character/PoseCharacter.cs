@@ -10,8 +10,7 @@ public abstract class PoseCharacter : Character {
 	public override void OnActivated () {
 		base.OnActivated();
 		if (Rendering is PoseCharacterRenderer rendering) {
-			Rendering.SpinOnGroundPound = Wing.IsPropellerWing(rendering.WingID);
-			Movement.FinalCharacterHeight = Movement.FinalCharacterHeight * rendering.CharacterHeight / 160;
+			Movement.FinalCharacterHeight = Movement.MovementHeight * rendering.CharacterHeight / 160;
 		}
 	}
 
