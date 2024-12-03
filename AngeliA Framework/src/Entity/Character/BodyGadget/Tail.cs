@@ -12,8 +12,8 @@ public abstract class Tail : BodyGadget {
 
 	// Data
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Tail;
-	public override bool SpriteLoaded => SpriteGroupID != 0;
-	protected int SpriteGroupID { get; private set; }
+	public override bool SpriteLoaded => SpriteTail.IsValid;
+	public OrientedSprite SpriteTail { get; private set; }
 	protected virtual int LimbGrow => 1000;
 	protected virtual int AngleAmountRoot => 1000;
 	protected virtual int AngleAmountSubsequent => 1000;
@@ -28,8 +28,7 @@ public abstract class Tail : BodyGadget {
 
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteGroupID = $"{name}.Tail".AngeHash();
-		if (!Renderer.HasSpriteGroup(SpriteGroupID)) SpriteGroupID = 0;
+		SpriteTail = new OrientedSprite(name, "Tail");
 		return SpriteLoaded;
 	}
 
@@ -50,20 +49,20 @@ public abstract class Tail : BodyGadget {
 		) return;
 		using var _ = new SheetIndexScope(SheetIndex);
 		DrawSpriteAsTail(
-			renderer, SpriteGroupID, Frequency, FrequencyAlt, FrameLen, FrameDelta,
+			renderer, SpriteTail, Frequency, FrequencyAlt, FrameLen, FrameDelta,
 			AngleAmountRoot, AngleAmountSubsequent, AngleOffset, LimbGrow, OffsetX, OffsetY
 		);
 	}
 
 
 	public static void DrawSpriteAsTail (
-		PoseCharacterRenderer renderer, int spriteGroupID,
+		PoseCharacterRenderer renderer, OrientedSprite oSprite,
 		int frequency, int frequencyAlt, int frameLen, int frameDelta,
 		int angleAmountRoot, int angleAmountSubsequent, int angleOffset, int limbGrow,
 		int offsetX, int offsetY
 	) {
 
-		if (spriteGroupID == 0 || !Renderer.HasSpriteGroup(spriteGroupID, out int count)) return;
+		if (!oSprite.IsValid || !Renderer.HasSpriteGroup(oSprite.GroupID, out int count)) return;
 		if (frequency <= 0) frequency = 1;
 		if (frequencyAlt <= 0) frequencyAlt = 1;
 		if (frameLen <= 0) frameLen = 1;
@@ -86,7 +85,7 @@ public abstract class Tail : BodyGadget {
 		int animationFrame = (target.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
 		for (int i = 0; i < count; i++) {
 
-			if (!Renderer.TryGetSpriteFromGroup(spriteGroupID, i, out var sprite, false, true)) break;
+			if (!Renderer.TryGetSpriteFromGroup(oSprite.GroupID, i, out var sprite, false, true)) break;
 			w = sprite.GlobalWidth;
 			h = sprite.GlobalHeight;
 			px = 0;

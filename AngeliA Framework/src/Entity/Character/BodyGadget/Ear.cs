@@ -10,26 +10,16 @@ public abstract class Ear : BodyGadget {
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Ear;
-	public override bool SpriteLoaded => SpriteIdL != 0 || SpriteIdR != 0;
-	private int SpriteIdL { get; set; }
-	private int SpriteIdR { get; set; }
-	private int SpriteIdLBack { get; set; }
-	private int SpriteIdRBack { get; set; }
+	public override bool SpriteLoaded => SpriteEar.IsValid;
 	protected virtual int FacingLeftOffsetX => 0;
 	protected virtual int MotionAmount => 618;
+	public OrientedSprite SpriteEar { get; private set; }
 
 
 	// MSG
 	public override bool FillFromSheet (string basicName) {
 		base.FillFromSheet(basicName);
-		SpriteIdL = $"{basicName}.EarL".AngeHash();
-		SpriteIdR = $"{basicName}.EarR".AngeHash();
-		SpriteIdLBack = $"{basicName}.EarLB".AngeHash();
-		SpriteIdRBack = $"{basicName}.EarRB".AngeHash();
-		if (!Renderer.HasSprite(SpriteIdL)) SpriteIdL = 0;
-		if (!Renderer.HasSprite(SpriteIdR)) SpriteIdR = 0;
-		if (!Renderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
-		if (!Renderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
+		SpriteEar = new OrientedSprite(basicName, "Ear");
 		return SpriteLoaded;
 	}
 
@@ -46,8 +36,7 @@ public abstract class Ear : BodyGadget {
 		using var _ = new SheetIndexScope(SheetIndex);
 		DrawSpriteAsEar(
 			renderer,
-			renderer.Head.FrontSide ? SpriteIdL : SpriteIdLBack,
-			renderer.Head.FrontSide ? SpriteIdR : SpriteIdRBack,
+			SpriteEar,
 			FrontOfHeadL(renderer), FrontOfHeadR(renderer),
 			renderer.Head.FrontSide == renderer.TargetCharacter.Movement.FacingRight ? 0 : FacingLeftOffsetX,
 			MotionAmount, selfMotion: true
@@ -59,17 +48,17 @@ public abstract class Ear : BodyGadget {
 
 
 	public static void DrawSpriteAsEar (
-		PoseCharacterRenderer renderer, int spriteIdLeft, int spriteIdRight,
+		PoseCharacterRenderer renderer, OrientedSprite oSprite,
 		bool frontOfHeadL = true, bool frontOfHeadR = true, int offsetX = 0,
 		int motionAmount = 1000, bool selfMotion = true
 	) {
-		if (spriteIdLeft == 0 && spriteIdRight == 0) return;
-
-		int leftEarID = spriteIdLeft;
-		int rightEarID = spriteIdRight;
-		if (leftEarID == 0 && rightEarID == 0) return;
+		if (!oSprite.IsValid) return;
 
 		var head = renderer.Head;
+		int leftEarID = oSprite.GetSpriteID(head.FrontSide, false);
+		int rightEarID = oSprite.GetSpriteID(head.FrontSide, true);
+		if (leftEarID == 0 && rightEarID == 0) return;
+
 		if (head.Tint.a == 0) return;
 
 		bool facingRight = renderer.TargetCharacter.Movement.FacingRight;

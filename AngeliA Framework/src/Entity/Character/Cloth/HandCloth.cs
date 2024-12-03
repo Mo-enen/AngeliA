@@ -9,11 +9,11 @@ public abstract class HandCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Hand;
 	public override bool SpriteLoaded => SpriteHand.IsValid;
-	private ClothSprite SpriteHand;
+	private OrientedSprite SpriteHand;
 
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteHand = new ClothSprite(name, "HandSuit");
+		SpriteHand = new OrientedSprite(name, "HandSuit");
 		return SpriteLoaded;
 	}
 
@@ -29,7 +29,7 @@ public abstract class HandCloth : Cloth {
 		DrawClothForHand(renderer, SpriteHand);
 	}
 
-	public static void DrawClothForHand (PoseCharacterRenderer renderer, ClothSprite sprite, int localZ = 1) {
+	public static void DrawClothForHand (PoseCharacterRenderer renderer, OrientedSprite sprite, int localZ = 1) {
 		if (!sprite.IsValid) return;
 		CoverClothOn(renderer.HandL, sprite.GetSpriteID(renderer.HandL.FrontSide, renderer.HandL.Width > 0), localZ);
 		CoverClothOn(renderer.HandR, sprite.GetSpriteID(renderer.HandR.FrontSide, renderer.HandR.Width > 0), localZ);

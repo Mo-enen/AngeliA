@@ -6,9 +6,9 @@ public enum HelmetWearingMode { Attach, Cover, }
 
 public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 	public sealed override EquipmentType EquipmentType => EquipmentType.Helmet;
-	private ClothSprite SpriteHelmet { get; init; }
+	private OrientedSprite SpriteHelmet { get; init; }
 	protected abstract HelmetWearingMode WearingMode { get; }
-	public Helmet () => SpriteHelmet = new ClothSprite(GetType().AngeName(), "Main");
+	public Helmet () => SpriteHelmet = new OrientedSprite(GetType().AngeName(), "Main");
 	protected override void DrawArmor (PoseCharacterRenderer renderer) {
 
 		var head = renderer.Head;

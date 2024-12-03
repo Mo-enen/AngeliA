@@ -16,11 +16,11 @@ public abstract class FootCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Foot;
 	public override bool SpriteLoaded => SpriteFoot.IsValid;
-	private ClothSprite SpriteFoot;
+	private OrientedSprite SpriteFoot;
 
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteFoot = new ClothSprite(name, "FootSuit");
+		SpriteFoot = new OrientedSprite(name, "FootSuit");
 		return SpriteLoaded;
 	}
 
@@ -36,7 +36,7 @@ public abstract class FootCloth : Cloth {
 		DrawClothForFoot(renderer, SpriteFoot);
 	}
 
-	public static void DrawClothForFoot (PoseCharacterRenderer renderer, ClothSprite sprite, int localZ = 1) {
+	public static void DrawClothForFoot (PoseCharacterRenderer renderer, OrientedSprite sprite, int localZ = 1) {
 		if (!sprite.IsValid) return;
 		DrawClothForFootLogic(renderer.FootL, sprite.GetSpriteID(renderer.FootL.FrontSide, renderer.FootL.Width > 0), localZ);
 		DrawClothForFootLogic(renderer.FootR, sprite.GetSpriteID(renderer.FootR.FrontSide, renderer.FootR.Width > 0), localZ);

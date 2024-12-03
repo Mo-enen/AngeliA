@@ -21,19 +21,19 @@ public abstract class HipCloth : Cloth {
 	protected virtual bool CoverLegs => true;
 
 	private HipClothType HipType = HipClothType.None;
-	private ClothSprite SpriteHip;
-	private ClothSprite SpriteTail;
-	private ClothSprite SpriteUpperLeg;
-	private ClothSprite SpriteLowerLeg;
+	private OrientedSprite SpriteHip;
+	private OrientedSprite SpriteTail;
+	private OrientedSprite SpriteUpperLeg;
+	private OrientedSprite SpriteLowerLeg;
 
 	// API
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteHip = new ClothSprite(name, "HipSuit", "SkirtSuit", "DressSuit");
-		SpriteTail = new ClothSprite(name, "TailSuit");
-		SpriteUpperLeg = new ClothSprite(name, "UpperLegSuit");
-		SpriteLowerLeg = new ClothSprite(name, "LowerLegSuit");
-		HipType = SpriteHip.SuitName switch {
+		SpriteHip = new OrientedSprite(name, "HipSuit", "SkirtSuit", "DressSuit");
+		SpriteTail = new OrientedSprite(name, "TailSuit");
+		SpriteUpperLeg = new OrientedSprite(name, "UpperLegSuit");
+		SpriteLowerLeg = new OrientedSprite(name, "LowerLegSuit");
+		HipType = SpriteHip.AttachmentName switch {
 			"HipSuit" => HipClothType.Pants,
 			"SkirtSuit" => HipClothType.Skirt,
 			"DressSuit" => HipClothType.Dress,
@@ -67,7 +67,7 @@ public abstract class HipCloth : Cloth {
 		DrawDoubleClothTailsOnHip(rendering, SpriteTail);
 	}
 
-	public static void DrawClothAsPants (PoseCharacterRenderer rendering, ClothSprite clothSprite, int localZ = 1) {
+	public static void DrawClothAsPants (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 1) {
 
 		var hip = rendering.Hip;
 		if (!clothSprite.IsValid || hip.IsFullCovered) return;
@@ -101,7 +101,7 @@ public abstract class HipCloth : Cloth {
 
 	}
 
-	public static void DrawClothAsSkirt (PoseCharacterRenderer rendering, ClothSprite clothSprite, int localZ = 6) {
+	public static void DrawClothAsSkirt (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 6) {
 
 		var hip = rendering.Hip;
 		if (!clothSprite.IsValid || hip.IsFullCovered) return;
@@ -196,20 +196,20 @@ public abstract class HipCloth : Cloth {
 	}
 
 	// Leg
-	public static void DrawClothForUpperLeg (PoseCharacterRenderer rendering, ClothSprite clothSprite, int localZ = 1) {
+	public static void DrawClothForUpperLeg (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 1) {
 		if (!clothSprite.IsValid) return;
 		CoverClothOn(rendering.UpperLegL, clothSprite.GetSpriteID(rendering.UpperLegL.FrontSide, rendering.UpperLegL.Width > 0), localZ);
 		CoverClothOn(rendering.UpperLegR, clothSprite.GetSpriteID(rendering.UpperLegR.FrontSide, rendering.UpperLegR.Width > 0), localZ);
 	}
 
-	public static void DrawClothForLowerLeg (PoseCharacterRenderer rendering, ClothSprite clothSprite, int localZ = 1) {
+	public static void DrawClothForLowerLeg (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 1) {
 		if (!clothSprite.IsValid) return;
 		CoverClothOn(rendering.LowerLegL, clothSprite.GetSpriteID(rendering.LowerLegL.FrontSide, rendering.LowerLegL.Width > 0), localZ);
 		CoverClothOn(rendering.LowerLegR, clothSprite.GetSpriteID(rendering.LowerLegR.FrontSide, rendering.LowerLegR.Width > 0), localZ);
 	}
 
 	// Cloth Tail
-	public static void DrawDoubleClothTailsOnHip (PoseCharacterRenderer rendering, ClothSprite clothSprite, bool drawOnAllPose = false) {
+	public static void DrawDoubleClothTailsOnHip (PoseCharacterRenderer rendering, OrientedSprite clothSprite, bool drawOnAllPose = false) {
 
 		var animatedPoseType = rendering.TargetCharacter.AnimationType;
 		var hip = rendering.Hip;

@@ -11,26 +11,15 @@ public abstract class Horn : BodyGadget {
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Horn;
-	public override bool SpriteLoaded => SpriteIdL != 0 || SpriteIdR != 0 || SpriteIdLBack != 0 || SpriteIdRBack != 0;
-	private int SpriteIdL;
-	private int SpriteIdR;
-	private int SpriteIdLBack;
-	private int SpriteIdRBack;
+	public override bool SpriteLoaded => SpriteHorn.IsValid;
 	protected virtual bool AnchorOnFace => false;
-	protected virtual int FacingLeftOffsetX => 0;
+	public OrientedSprite SpriteHorn { get; private set; }
 
 
 	// MSG
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteIdL = $"{name}.HornL".AngeHash();
-		SpriteIdR = $"{name}.HornR".AngeHash();
-		SpriteIdLBack = $"{name}.HornLB".AngeHash();
-		SpriteIdRBack = $"{name}.HornRB".AngeHash();
-		if (!Renderer.HasSprite(SpriteIdL)) SpriteIdL = 0;
-		if (!Renderer.HasSprite(SpriteIdR)) SpriteIdR = 0;
-		if (!Renderer.HasSprite(SpriteIdLBack)) SpriteIdLBack = SpriteIdL;
-		if (!Renderer.HasSprite(SpriteIdRBack)) SpriteIdRBack = SpriteIdR;
+		SpriteHorn = new OrientedSprite(name, "Horn");
 		return SpriteLoaded;
 	}
 
@@ -44,18 +33,14 @@ public abstract class Horn : BodyGadget {
 
 
 	public override void DrawGadget (PoseCharacterRenderer renderer) {
-
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-
-		var movement = renderer.TargetCharacter.Movement;
-		int idL = movement.FacingFront ? SpriteIdL : SpriteIdLBack;
-		int idR = movement.FacingFront ? SpriteIdR : SpriteIdRBack;
 		DrawSpriteAsHorn(
-			renderer, idL, idR,
-			FrontOfHeadL(renderer), FrontOfHeadR(renderer),
-			AnchorOnFace,
-			movement.FacingFront == movement.FacingRight ? 0 : FacingLeftOffsetX
+			renderer,
+			SpriteHorn,
+			FrontOfHeadL(renderer),
+			FrontOfHeadR(renderer),
+			AnchorOnFace
 		);
 	}
 
@@ -65,11 +50,11 @@ public abstract class Horn : BodyGadget {
 
 
 	public static void DrawSpriteAsHorn (
-		PoseCharacterRenderer renderer, int spriteIdLeft, int spriteIdRight,
-		bool frontOfHeadL = true, bool frontOfHeadR = true, bool onFace = false, int offsetX = 0
+		PoseCharacterRenderer renderer, OrientedSprite oSprite,
+		bool frontOfHeadL = true, bool frontOfHeadR = true, bool onFace = false
 	) {
 
-		if (spriteIdLeft == 0 && spriteIdRight == 0) return;
+		if (!oSprite.IsValid) return;
 		var head = renderer.Head;
 		if (head.Tint.a == 0) return;
 
@@ -77,10 +62,8 @@ public abstract class Horn : BodyGadget {
 		if (onFace) headRect = headRect.Shrink(head.Border);
 
 		bool flipLR = !head.FrontSide && head.Height > 0;
-		if (flipLR) {
-			(spriteIdLeft, spriteIdRight) = (spriteIdRight, spriteIdLeft);
-			offsetX = -offsetX;
-		}
+		oSprite.TryGetSprite(head.FrontSide, flipLR, out var spriteL);
+		oSprite.TryGetSprite(head.FrontSide, !flipLR, out var spriteR);
 
 		// Twist
 		int twist = renderer.HeadTwist;
@@ -89,14 +72,14 @@ public abstract class Horn : BodyGadget {
 			twistWidth -= 16 * twist.Abs() / 500;
 		}
 
-		if (Renderer.TryGetSprite(spriteIdLeft, out var sprite)) {
+		if (spriteL != null) {
 			var cell = Renderer.Draw(
-				sprite,
-				headRect.xMin + offsetX,
+				spriteL,
+				headRect.xMin,
 				head.Height > 0 ? headRect.yMax : headRect.yMin,
-				sprite.PivotX, sprite.PivotY, 0,
-				sprite.GlobalWidth * (flipLR ? -1 : 1) + twistWidth,
-				head.Height.Sign3() * sprite.GlobalHeight,
+				spriteL.PivotX, spriteL.PivotY, 0,
+				spriteL.GlobalWidth * (flipLR ? -1 : 1) + twistWidth,
+				head.Height.Sign3() * spriteL.GlobalHeight,
 				head.Z + (head.FrontSide == frontOfHeadL ? 34 : -34)
 			);
 			if (renderer.Head.Rotation != 0) {
@@ -105,14 +88,14 @@ public abstract class Horn : BodyGadget {
 			}
 		}
 
-		if (Renderer.TryGetSprite(spriteIdRight, out sprite)) {
+		if (spriteR != null) {
 			var cell = Renderer.Draw(
-				sprite,
-				headRect.xMax + offsetX,
+				spriteR,
+				headRect.xMax,
 				head.Height > 0 ? headRect.yMax : headRect.yMin,
-				sprite.PivotX, sprite.PivotY, 0,
-				sprite.GlobalWidth * (flipLR ? -1 : 1) + twistWidth,
-				head.Height.Sign3() * sprite.GlobalHeight,
+				spriteR.PivotX, spriteR.PivotY, 0,
+				spriteR.GlobalWidth * (flipLR ? -1 : 1) + twistWidth,
+				head.Height.Sign3() * spriteR.GlobalHeight,
 				head.Z + (head.FrontSide == frontOfHeadR ? 34 : -34)
 			);
 			if (renderer.Head.Rotation != 0) {

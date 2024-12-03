@@ -6,28 +6,28 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 
 	public sealed override EquipmentType EquipmentType => EquipmentType.BodyArmor;
 
-	private ClothSprite SpriteBody { get; init; }
-	private ClothSprite SpriteCape { get; init; }
-	private ClothSprite SpriteHip { get; init; }
-	private ClothSprite SpriteShoulder { get; init; }
-	private ClothSprite SpriteUpperArm { get; init; }
-	private ClothSprite SpriteLowerArm { get; init; }
-	private ClothSprite SpriteUpperLeg { get; init; }
-	private ClothSprite SpriteLowerLeg { get; init; }
+	private OrientedSprite SpriteBody { get; init; }
+	private OrientedSprite SpriteCape { get; init; }
+	private OrientedSprite SpriteHip { get; init; }
+	private OrientedSprite SpriteShoulder { get; init; }
+	private OrientedSprite SpriteUpperArm { get; init; }
+	private OrientedSprite SpriteLowerArm { get; init; }
+	private OrientedSprite SpriteUpperLeg { get; init; }
+	private OrientedSprite SpriteLowerLeg { get; init; }
 
 	private readonly HipCloth.HipClothType HipType = HipCloth.HipClothType.None;
 
 	public BodyArmor () {
 		string basicName = GetType().AngeName();
-		SpriteBody = new ClothSprite(basicName, "Body");
-		SpriteCape = new ClothSprite(basicName, "Cape");
-		SpriteHip = new ClothSprite(basicName, "Hip", "Skirt", "Dress");
-		SpriteShoulder = new ClothSprite(basicName, "Shoulder");
-		SpriteUpperArm = new ClothSprite(basicName, "UpperArm");
-		SpriteLowerArm = new ClothSprite(basicName, "LowerArm");
-		SpriteUpperLeg = new ClothSprite(basicName, "UpperLeg");
-		SpriteLowerLeg = new ClothSprite(basicName, "LowerLeg");
-		HipType = SpriteHip.SuitName switch {
+		SpriteBody = new OrientedSprite(basicName, "Body");
+		SpriteCape = new OrientedSprite(basicName, "Cape");
+		SpriteHip = new OrientedSprite(basicName, "Hip", "Skirt", "Dress");
+		SpriteShoulder = new OrientedSprite(basicName, "Shoulder");
+		SpriteUpperArm = new OrientedSprite(basicName, "UpperArm");
+		SpriteLowerArm = new OrientedSprite(basicName, "LowerArm");
+		SpriteUpperLeg = new OrientedSprite(basicName, "UpperLeg");
+		SpriteLowerLeg = new OrientedSprite(basicName, "LowerLeg");
+		HipType = SpriteHip.AttachmentName switch {
 			"Hip" => HipCloth.HipClothType.Pants,
 			"Skirt" => HipCloth.HipClothType.Skirt,
 			"Dress" => HipCloth.HipClothType.Dress,

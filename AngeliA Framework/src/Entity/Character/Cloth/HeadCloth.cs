@@ -18,11 +18,11 @@ public abstract class HeadCloth : Cloth {
 	protected sealed override ClothType ClothType => ClothType.Head;
 	public override bool SpriteLoaded => SpriteHead.IsValid;
 	protected virtual HatFrontMode Front => HatFrontMode.FrontOfHead;
-	private ClothSprite SpriteHead;
+	private OrientedSprite SpriteHead;
 
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteHead = new ClothSprite(name, "HeadSuit");
+		SpriteHead = new OrientedSprite(name, "HeadSuit");
 		return SpriteLoaded;
 	}
 
@@ -38,7 +38,7 @@ public abstract class HeadCloth : Cloth {
 		DrawClothForHead(renderer, SpriteHead, Front);
 	}
 
-	public static void DrawClothForHead (PoseCharacterRenderer renderer, ClothSprite clothSprite, HatFrontMode frontMode) {
+	public static void DrawClothForHead (PoseCharacterRenderer renderer, OrientedSprite clothSprite, HatFrontMode frontMode) {
 
 		var head = renderer.Head;
 		if (!clothSprite.IsValid || head.IsFullCovered) return;
