@@ -60,7 +60,7 @@ public abstract class Hair : BodyGadget {
 			TwistHair(renderer, bCells, backHairRect);
 			RotateHair(renderer, bCells);
 		}
-
+		
 		// Hair Appear in Front
 		var fCells = DrawHairSprite(
 			spriteForward.GetSpriteID(head.FrontSide, head.Width > 0),

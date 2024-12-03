@@ -2,7 +2,7 @@
 
 public struct OrientedSprite {
 
-	public readonly bool IsValid => SpriteID_FL != 0 && SpriteID_FR != 0 && SpriteID_BL != 0 && SpriteID_BR != 0;
+	public readonly bool IsValid => GroupID != 0 || (SpriteID_FL != 0 && SpriteID_FR != 0 && SpriteID_BL != 0 && SpriteID_BR != 0);
 
 	public string AttachmentName;
 	public int GroupID;
@@ -54,6 +54,9 @@ public struct OrientedSprite {
 		SpriteID_FR = $"{hostName}.{attachmentName}.FR".AngeHash();
 		SpriteID_BL = $"{hostName}.{attachmentName}.BL".AngeHash();
 		SpriteID_BR = $"{hostName}.{attachmentName}.BR".AngeHash();
+		if (!Renderer.HasSprite(SpriteID_BL) && !Renderer.HasSprite(SpriteID_BR)) {
+			SpriteID_BL = SpriteID_BR = $"{hostName}.{attachmentName}.B".AngeHash();
+		}
 		if (!Renderer.HasSprite(SpriteID_BL)) SpriteID_BL = SpriteID_FL;
 		if (!Renderer.HasSprite(SpriteID_BR)) SpriteID_BR = SpriteID_FR;
 		if (Renderer.HasSprite(SpriteID_FL) && Renderer.HasSprite(SpriteID_FR)) return true;
