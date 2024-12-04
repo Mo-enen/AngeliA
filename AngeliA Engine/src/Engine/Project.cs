@@ -34,7 +34,7 @@ public class Project {
 			IconPath = Util.CombinePaths(projectPath, "Icon.ico"),
 			UniversePath = AngePath.GetUniverseRoot(projectPath),
 			CsprojPath = Util.EnumerateFiles(projectPath, true, "*.csproj").FirstOrDefault(path => !path.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase), defaultValue: ""),
-			IsEngineInternalProject = Util.IsSamePath(Util.GetParentPath(projectPath), Universe.BuiltIn.UniverseRoot),
+			IsEngineInternalProject = Util.IsSubPathOf(projectPath, Universe.BuiltIn.UniverseRoot),
 			Universe = Universe.LoadFromFile(AngePath.GetUniverseRoot(projectPath)),
 		};
 	}

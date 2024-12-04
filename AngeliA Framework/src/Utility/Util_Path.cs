@@ -82,6 +82,12 @@ public static partial class Util {
 	public static bool IsSamePath (string pathA, string pathB) => FixPath(GetFullPath(pathA)) == FixPath(GetFullPath(pathB));
 
 
+	public static bool IsSubPathOf (string basePath, string subPath) {
+		var rel = Path.GetRelativePath(basePath.Replace('\\', '/'), subPath.Replace('\\', '/'));
+		return rel != "." && rel != ".." && !rel.StartsWith("../") && !Path.IsPathRooted(rel);
+	}
+
+
 	public static bool IsFileHidden (string path) => (File.GetAttributes(path) & FileAttributes.Hidden) != 0;
 
 

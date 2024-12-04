@@ -87,6 +87,7 @@ public partial class PixelEditor : WindowUI {
 	public static readonly Sheet EditingSheet = new(ignoreGroups: false, ignoreSpriteWithIgnoreTag: false);
 	public static PixelEditor Instance { get; private set; }
 	public bool RequireReloadRenderingSheet { get; set; }
+	public string RequireChangeThemePath { get; set; } = null;
 	protected override bool BlockEvent => true;
 	public override string DefaultWindowName => "Artwork";
 
@@ -855,6 +856,7 @@ public partial class PixelEditor : WindowUI {
 		DraggingState = DragState.None;
 		PaintingColor = Color32.CLEAR;
 		PaintingColorF = default;
+		RequireChangeThemePath = null;
 		EditingSheet.LoadFromDisk(project.Universe.GameSheetPath);
 		SetCurrentAtlas(PrevOpenAtlasIndex.Value, forceChange: true, resetUndo: true);
 	}
@@ -872,11 +874,20 @@ public partial class PixelEditor : WindowUI {
 		EditingSheet.SaveToDisk(CurrentProject.Universe.GameSheetPath);
 		RequireReloadRenderingSheet = true;
 #if DEBUG
-		// Project "Engine Artwork" >> Ange Engine
 		if (CurrentProject != null && CurrentProject.IsEngineInternalProject) {
-			if (Util.FileExists(CurrentProject.Universe.GameSheetPath)) {
-				Util.CopyFile(CurrentProject.Universe.GameSheetPath, Universe.BuiltIn.GameSheetPath);
-				Renderer.LoadMainSheet();
+			if (CurrentProject.Universe.Info.ProjectType == ProjectType.Artwork) {
+				// Project "Engine Artwork" >> Ange Engine
+				if (Util.FileExists(CurrentProject.Universe.GameSheetPath)) {
+					Util.CopyFile(CurrentProject.Universe.GameSheetPath, Universe.BuiltIn.GameSheetPath);
+					Renderer.LoadMainSheet();
+				}
+			} else if (CurrentProject.Universe.Info.ProjectType == ProjectType.EngineTheme) {
+				// Project "Theme" >> Ange Engine Theme
+				if (Util.FileExists(CurrentProject.Universe.GameSheetPath)) {
+					string path = Util.CombinePaths(EngineUtil.ThemeRoot, $"{CurrentProject.Universe.Info.ProductName}.{AngePath.SHEET_FILE_EXT}");
+					Util.CopyFile(CurrentProject.Universe.GameSheetPath, path);
+					RequireChangeThemePath = path;
+				}
 			}
 		}
 #endif

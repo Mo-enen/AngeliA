@@ -188,7 +188,8 @@ public partial class Engine {
 
 					// Icon
 					var iconRect = itemContentRect.Edge(Direction4.Left, itemContentRect.height);
-					using (new GUIContentColorScope(folderExists ? Color32.WHITE : Color32.WHITE_128)) {
+					using (new SheetIndexScope(-1)) {
+						using var _ = new GUIContentColorScope(folderExists ? Color32.WHITE : Color32.WHITE_128);
 						if (Renderer.TryGetSprite(project.IconID, out var iconSP)) {
 							Renderer.Draw(iconSP, iconRect);
 						} else {
@@ -296,6 +297,7 @@ public partial class Engine {
 		Util.SetFolderModifyDate(path, time);
 		Projects.Add(item);
 		SortProjects();
+		SyncIconSpriteToMainSheet();
 	}
 
 

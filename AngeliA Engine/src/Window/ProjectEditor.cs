@@ -459,21 +459,23 @@ public class ProjectEditor : WindowUI {
 		}
 
 		// Icon
-		GUI.SmallLabel(rect, LABEL_ICON);
-		int iconButtonSize = Unify(56);
-		rect.y = rect.yMax - iconButtonSize;
-		rect.height = iconButtonSize;
-		var iconButtonRect = rect.ShrinkLeft(GUI.LabelWidth).Edge(Direction4.Left, iconButtonSize);
-		bool hasIcon = Renderer.TryGetSprite(IconSpriteID, out var iconSP);
-		if (GUI.Button(iconButtonRect, 0, out var state, style: hasIcon ? GUIStyle.None : GUI.Skin.DarkButton)) {
-			FileBrowserUI.OpenFile(TITLE_PICK_ICON, SetIconFromPNG, "*.png");
+		using (new SheetIndexScope(-1)) {
+			GUI.SmallLabel(rect, LABEL_ICON);
+			int iconButtonSize = Unify(56);
+			rect.y = rect.yMax - iconButtonSize;
+			rect.height = iconButtonSize;
+			var iconButtonRect = rect.ShrinkLeft(GUI.LabelWidth).Edge(Direction4.Left, iconButtonSize);
+			bool hasIcon = Renderer.TryGetSprite(IconSpriteID, out var iconSP);
+			if (GUI.Button(iconButtonRect, 0, out var state, style: hasIcon ? GUIStyle.None : GUI.Skin.DarkButton)) {
+				FileBrowserUI.OpenFile(TITLE_PICK_ICON, SetIconFromPNG, "*.png");
+			}
+			if (hasIcon) {
+				var contentRect = GUI.GetContentRect(iconButtonRect, Skin.DarkButton, state);
+				Renderer.Draw(iconSP, contentRect.Shrink(iconButtonRect.height / 8));
+			}
+			rect.height = itemHeight;
+			rect.SlideDown(padding);
 		}
-		if (hasIcon) {
-			var contentRect = GUI.GetContentRect(iconButtonRect, Skin.DarkButton, state);
-			Renderer.Draw(iconSP, contentRect.Shrink(iconButtonRect.height / 8));
-		}
-		rect.height = itemHeight;
-		rect.SlideDown(padding);
 
 		// Open Project Folders
 		GUI.SmallLabel(rect, LABEL_LINK);

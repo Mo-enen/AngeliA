@@ -1,0 +1,78 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<OutputType>Library</OutputType>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<UseWindowsForms>False</UseWindowsForms>
+		<StartupObject></StartupObject>
+		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<SignAssembly>False</SignAssembly>
+		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<EnableNETAnalyzers>False</EnableNETAnalyzers>
+		<GenerateDependencyFile>False</GenerateDependencyFile>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<ErrorReport>none</ErrorReport>
+		<AnalysisLevel>none</AnalysisLevel>
+		<Deterministic>True</Deterministic>
+		<Optimize>True</Optimize>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+
+		<OutputPath>Temp</OutputPath>
+		<PublishDir>Publish</PublishDir>
+
+	</PropertyGroup>
+
+
+	<!--Debug Only-->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>portable</DebugType>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<Reference Include="lib\Debug\*.dll" />
+	</ItemGroup>
+
+	<!--Release Only-->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>none</DebugType>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<Reference Include="lib\Release\*.dll" />
+	</ItemGroup>
+
+
+	<!--Remove-->
+	<ItemGroup>
+		<Compile Remove="Build\**" />
+		<Compile Remove="Entry\**" />
+		<EmbeddedResource Remove="Build\**" />
+		<EmbeddedResource Remove="Entry\**" />
+		<None Remove="Build\**" />
+		<None Remove="Entry\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove=".gitattributes" />
+		<None Remove=".gitignore" />
+		<None Remove="desktop.ini" />
+		<None Remove="Icon.ico" />
+	</ItemGroup>
+
+	<!--Copy Game Lib into Library Folder-->
+	<Target Name="CopyDll" AfterTargets="Build">
+		<Copy SourceFiles="$(OutputPath)Project.dll" DestinationFiles="$(OutputPath)Library\Project.dll" ContinueOnError="true" />
+	</Target>
+
+</Project>

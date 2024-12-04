@@ -308,10 +308,6 @@ public partial class Engine {
 	[OnGameUpdateLater(-4096)]
 	internal static void OnGUI () {
 
-
-
-
-
 		GUI.Enable = true;
 		if (!Instance.CurrentWindowRequireRigGame) {
 			Sky.ForceSkyboxTint(GUI.Skin.Background);
@@ -661,10 +657,12 @@ public partial class Engine {
 			int iconSize = contentRect.height;
 			var iconRect = contentRect.Edge(Direction4.Left, iconSize);
 			int iconID = window is GameEditor && CurrentProjectData != null ? CurrentProjectData.IconID : window.TypeID;
-			if (Renderer.TryGetSprite(iconID, out var iconSP)) {
-				Renderer.Draw(iconSP, iconRect);
-			} else {
-				Renderer.Draw(window.TypeID, iconRect);
+			using (new SheetIndexScope(-1)) {
+				if (Renderer.TryGetSprite(iconID, out var iconSP)) {
+					Renderer.Draw(iconSP, iconRect);
+				} else {
+					Renderer.Draw(window.TypeID, iconRect);
+				}
 			}
 
 			// Compling Mark
@@ -807,9 +805,11 @@ public partial class Engine {
 		if (EngineUtil.BuildingProjectInBackground) return;
 
 		// Theme
-		if (SettingWindow.Instance.RequireChangeThemePath != null) {
-			string path = SettingWindow.Instance.RequireChangeThemePath;
+		string requireChangeThemePath = SettingWindow.Instance.RequireChangeThemePath ?? PixelEditor.Instance.RequireChangeThemePath;
+		if (requireChangeThemePath != null) {
+			string path = requireChangeThemePath;
 			SettingWindow.Instance.RequireChangeThemePath = null;
+			PixelEditor.Instance.RequireChangeThemePath = null;
 			if (path != "" && Util.FileExists(path) && ThemeSheet.LoadFromDisk(path)) {
 				// Load Custom Theme
 				ThemeSkin.Name = Util.GetDisplayName(Util.GetNameWithoutExtension(path));
