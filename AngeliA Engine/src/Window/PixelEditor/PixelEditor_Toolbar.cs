@@ -678,7 +678,7 @@ public partial class PixelEditor {
 
 		// Rule
 		var atlas = EditingSheet.Atlas[CurrentAtlasIndex];
-		if (atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background) {
+		if (CurrentProject.IsEngineInternalProject || atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background) {
 			if (GUI.Button(rect, ICON_RULE, Skin.SmallDarkButton)) {
 				OpeningTilingRuleEditor = !OpeningTilingRuleEditor;
 				if (OpeningTilingRuleEditor) {

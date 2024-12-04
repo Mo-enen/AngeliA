@@ -613,6 +613,11 @@ public partial class Engine {
 
 			var window = AllWindows[index];
 
+			// Put Setting Icon at Bottom
+			if (window is SettingWindow && index == AllWindows.Length - 1) {
+				rect = barRect.EdgeDown(rect.height).Shift(0, rect.height);
+			}
+
 			bool selecting = index == CurrentWindowIndex;
 			bool hovering = GUI.Enable && GUI.Interactable && rect.Contains(mousePos);
 
@@ -709,12 +714,14 @@ public partial class Engine {
 
 		// Back to Hub
 		if (FullsizeMenu.Value) {
-			if (GUI.Button(
-				barRect.Edge(Direction4.Down, rect.height),
-				BuiltInText.UI_BACK, GUI.Skin.SmallCenterLabelButton
-			)) {
+			var btnRect = barRect.Edge(Direction4.Down, rect.height);
+			if (GUI.Button(btnRect, BuiltInText.UI_BACK, GUI.Skin.SmallCenterLabelButton)) {
 				TryCloseProject();
 			}
+			GUI.Icon(
+				btnRect.WithNewWidth(rect.height + contentPadding),
+				ICON_TAB_BACK, GUI.Skin.IconButton, GUIState.Normal
+			);
 		} else {
 			if (GUI.Button(
 				barRect.Edge(Direction4.Down, rect.height),
