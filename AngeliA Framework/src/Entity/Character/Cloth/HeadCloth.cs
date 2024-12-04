@@ -48,7 +48,7 @@ public abstract class HeadCloth : Cloth {
 			frontMode == HatFrontMode.AlwaysFrontOfHead ||
 			frontMode == HatFrontMode.FrontOfHead == head.FrontSide
 		);
-		if (!clothSprite.TryGetSprite(front, head.Width > 0, out var sprite)) return;
+		if (!clothSprite.TryGetSprite(front, head.Width > 0, renderer.CurrentAnimationFrame, out var sprite)) return;
 
 		// Width Amount
 		int widthAmount = 1000;

@@ -60,14 +60,13 @@ public abstract class Wing : BodyGadget {
 	public static void DrawSpriteAsWing (PoseCharacterRenderer renderer, OrientedSprite oSprite, bool isPropeller, int scale = 1000) {
 
 		if (!oSprite.IsValid) return;
-		AngeSprite singleSprite = null;
-		if (!Renderer.TryGetAnimationGroup(oSprite.GroupID, out var group) || group.Count == 0) {
-			if (oSprite.TryGetSprite(renderer.Body.FrontSide, renderer.Body.Width > 0, out singleSprite)) {
-				group = null;
-			} else {
-				return;
-			}
-		}
+		if (!oSprite.TryGetSprite(
+			renderer.Body.FrontSide, renderer.Body.Width > 0, renderer.CurrentAnimationFrame, out var sprite
+		)) return;
+
+		var singleSprite = oSprite.TryGetSprite(
+			renderer.Body.FrontSide, renderer.Body.Width > 0, 0, out var firstSprite
+		) ? firstSprite : sprite;
 
 		var aniType = renderer.TargetCharacter.AnimationType;
 		int z = renderer.Body.FrontSide ? -33 : 33;
@@ -101,77 +100,61 @@ public abstract class Wing : BodyGadget {
 			// Flying
 			if (isPropeller) {
 				// Propeller
-				var sprite = singleSprite;
-				if (group != null) {
-					Renderer.CurrentSheet.TryGetSpriteFromAnimationFrame(group, renderer.CurrentAnimationFrame, out sprite);
-				}
-				if (sprite != null) {
-					Renderer.Draw(
-						sprite,
-						(xLeft + xRight) / 2,
-						(yLeft + yRight) / 2,
-						sprite.PivotX, sprite.PivotY, 0,
-						sprite.GlobalWidth * scale / 1000,
-						sprite.GlobalHeight * scale / 1000,
-						z
-					);
-				}
+				Renderer.Draw(
+					sprite,
+					(xLeft + xRight) / 2,
+					(yLeft + yRight) / 2,
+					sprite.PivotX, sprite.PivotY, 0,
+					sprite.GlobalWidth * scale / 1000,
+					sprite.GlobalHeight * scale / 1000,
+					z
+				);
+
 			} else {
 				// Wings
-				var sprite = singleSprite;
-				if (group != null) {
-					Renderer.CurrentSheet.TryGetSpriteFromAnimationFrame(
-						group, renderer.CurrentAnimationFrame, out sprite
-					);
-				}
-				if (sprite != null) {
-					Renderer.Draw(
-						sprite,
-						xLeft, yLeft, sprite.PivotX, sprite.PivotY, 0,
-						sprite.GlobalWidth * scale / 1000,
-						signY * sprite.GlobalHeight * scale / 1000,
-						z
-					);
-					Renderer.Draw(
-						sprite,
-						xRight, yRight, sprite.PivotX, sprite.PivotY, 0,
-						-sprite.GlobalWidth * scale / 1000,
-						signY * sprite.GlobalHeight * scale / 1000,
-						z
-					);
-				}
+				Renderer.Draw(
+					sprite,
+					xLeft, yLeft, sprite.PivotX, sprite.PivotY, 0,
+					sprite.GlobalWidth * scale / 1000,
+					signY * sprite.GlobalHeight * scale / 1000,
+					z
+				);
+				Renderer.Draw(
+					sprite,
+					xRight, yRight, sprite.PivotX, sprite.PivotY, 0,
+					-sprite.GlobalWidth * scale / 1000,
+					signY * sprite.GlobalHeight * scale / 1000,
+					z
+				);
 			}
 		} else if (!isPropeller) {
-			var sprite = group != null ? group.Sprites[0] : singleSprite;
-			if (sprite != null) {
-				// Not Flying with Wing
-				int rot = (Game.GlobalFrame.PingPong(120) - 60) / 12;
-				int signW = renderer.Body.Width.Sign3();
-				int facingScaleL = 1000;
-				int facingScaleR = 1000;
-				if (renderer.Body.FrontSide) {
-					facingScaleL = 1000 + signW * 300;
-					facingScaleR = 1000 - signW * 300;
-				}
-				// L
-				Renderer.Draw(
-					sprite,
-					xLeft, yLeft, sprite.PivotX, sprite.PivotY, -rot,
-					sprite.GlobalWidth * scale / 1000 * facingScaleL / 1000,
-					signY * sprite.GlobalHeight * scale / 1000,
-					z
-				);
-				// R
-				Renderer.Draw(
-					sprite,
-					xRight, yRight, sprite.PivotX, sprite.PivotY, rot,
-					-sprite.GlobalWidth * scale / 1000 * facingScaleR / 1000,
-					signY * sprite.GlobalHeight * scale / 1000,
-					z
-
-				);
+			// Not Flying with Wing
+			int rot = (Game.GlobalFrame.PingPong(120) - 60) / 12;
+			int signW = renderer.Body.Width.Sign3();
+			int facingScaleL = 1000;
+			int facingScaleR = 1000;
+			if (renderer.Body.FrontSide) {
+				facingScaleL = 1000 + signW * 300;
+				facingScaleR = 1000 - signW * 300;
 			}
+			// L
+			Renderer.Draw(
+				singleSprite,
+				xLeft, yLeft, singleSprite.PivotX, singleSprite.PivotY, -rot,
+				singleSprite.GlobalWidth * scale / 1000 * facingScaleL / 1000,
+				signY * singleSprite.GlobalHeight * scale / 1000,
+				z
+			);
+			// R
+			Renderer.Draw(
+				singleSprite,
+				xRight, yRight, singleSprite.PivotX, singleSprite.PivotY, rot,
+				-singleSprite.GlobalWidth * scale / 1000 * facingScaleR / 1000,
+				signY * singleSprite.GlobalHeight * scale / 1000,
+				z
+			);
 		}
+
 	}
 
 

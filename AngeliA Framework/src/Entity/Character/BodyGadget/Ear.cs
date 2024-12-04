@@ -10,16 +10,17 @@ public abstract class Ear : BodyGadget {
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Ear;
-	public override bool SpriteLoaded => SpriteEar.IsValid;
-	protected virtual int FacingLeftOffsetX => 0;
+	public override bool SpriteLoaded => SpriteEarLeft.IsValid || SpriteEarRight.IsValid;
 	protected virtual int MotionAmount => 618;
-	public OrientedSprite SpriteEar { get; private set; }
+	public OrientedSprite SpriteEarLeft { get; private set; }
+	public OrientedSprite SpriteEarRight { get; private set; }
 
 
 	// MSG
 	public override bool FillFromSheet (string basicName) {
 		base.FillFromSheet(basicName);
-		SpriteEar = new OrientedSprite(basicName, "Ear");
+		SpriteEarLeft = new OrientedSprite(basicName, "EarLeft", "Ear");
+		SpriteEarRight = new OrientedSprite(basicName, "EarRight", "Ear");
 		return SpriteLoaded;
 	}
 
@@ -36,9 +37,8 @@ public abstract class Ear : BodyGadget {
 		using var _ = new SheetIndexScope(SheetIndex);
 		DrawSpriteAsEar(
 			renderer,
-			SpriteEar,
+			SpriteEarLeft, SpriteEarRight,
 			FrontOfHeadL(renderer), FrontOfHeadR(renderer),
-			renderer.Head.FrontSide == renderer.TargetCharacter.Movement.FacingRight ? 0 : FacingLeftOffsetX,
 			MotionAmount, selfMotion: true
 		);
 	}
@@ -48,18 +48,17 @@ public abstract class Ear : BodyGadget {
 
 
 	public static void DrawSpriteAsEar (
-		PoseCharacterRenderer renderer, OrientedSprite oSprite,
-		bool frontOfHeadL = true, bool frontOfHeadR = true, int offsetX = 0,
+		PoseCharacterRenderer renderer,
+		OrientedSprite spriteLeft, OrientedSprite spriteRight,
+		bool frontOfHeadL = true, bool frontOfHeadR = true,
 		int motionAmount = 1000, bool selfMotion = true
 	) {
-		if (!oSprite.IsValid) return;
-
 		var head = renderer.Head;
-		int leftEarID = oSprite.GetSpriteID(head.FrontSide, false);
-		int rightEarID = oSprite.GetSpriteID(head.FrontSide, true);
-		if (leftEarID == 0 && rightEarID == 0) return;
-
 		if (head.Tint.a == 0) return;
+
+		spriteLeft.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var earSpriteL);
+		spriteRight.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var earSpriteR);
+		if (earSpriteL == null && earSpriteR == null) return;
 
 		bool facingRight = renderer.TargetCharacter.Movement.FacingRight;
 		var headRect = head.GetGlobalRect();
@@ -150,10 +149,10 @@ public abstract class Ear : BodyGadget {
 		}
 
 		// Draw
-		if (Renderer.TryGetSprite(leftEarID, out var earSpriteL)) {
+		if (earSpriteL != null) {
 			var cell = Renderer.Draw(
 				earSpriteL,
-				headRect.x + shiftL.x + offsetX,
+				headRect.x + shiftL.x,
 				(flipY ? headRect.y : headRect.yMax) + shiftL.y,
 				earSpriteL.PivotX, earSpriteL.PivotY, -rotL,
 				earSpriteL.GlobalWidth + expandSizeL.x,
@@ -165,10 +164,10 @@ public abstract class Ear : BodyGadget {
 				cell.Y -= renderer.Head.Height.Abs() * renderer.Head.Rotation.Abs() / 360;
 			}
 		}
-		if (Renderer.TryGetSprite(rightEarID, out var earSpriteR)) {
+		if (earSpriteR != null) {
 			var cell = Renderer.Draw(
 				earSpriteR,
-				headRect.xMax + shiftR.x + offsetX,
+				headRect.xMax + shiftR.x,
 				(flipY ? headRect.y : headRect.yMax) + shiftR.y,
 				earSpriteR.PivotX, earSpriteR.PivotY, rotR,
 				earSpriteR.GlobalWidth + expandSizeR.x,

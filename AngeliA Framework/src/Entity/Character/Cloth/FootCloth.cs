@@ -15,12 +15,14 @@ public sealed class ModularFootSuit : FootCloth, IModularCloth { }
 public abstract class FootCloth : Cloth {
 
 	protected sealed override ClothType ClothType => ClothType.Foot;
-	public override bool SpriteLoaded => SpriteFoot.IsValid;
-	private OrientedSprite SpriteFoot;
+	public override bool SpriteLoaded => SpriteFootLeft.IsValid || SpriteFootRight.IsValid;
+	private OrientedSprite SpriteFootLeft;
+	private OrientedSprite SpriteFootRight;
 
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteFoot = new OrientedSprite(name, "FootSuit");
+		SpriteFootLeft = new OrientedSprite(name, "FootSuitLeft", "FootSuit");
+		SpriteFootRight = new OrientedSprite(name, "FootSuitRight", "FootSuit");
 		return SpriteLoaded;
 	}
 
@@ -33,17 +35,21 @@ public abstract class FootCloth : Cloth {
 	public override void DrawCloth (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawClothForFoot(renderer, SpriteFoot);
+		DrawClothForFoot(renderer, SpriteFootLeft, SpriteFootRight);
 	}
 
-	public static void DrawClothForFoot (PoseCharacterRenderer renderer, OrientedSprite sprite, int localZ = 1) {
-		if (!sprite.IsValid) return;
-		DrawClothForFootLogic(renderer.FootL, sprite.GetSpriteID(renderer.FootL.FrontSide, renderer.FootL.Width > 0), localZ);
-		DrawClothForFootLogic(renderer.FootR, sprite.GetSpriteID(renderer.FootR.FrontSide, renderer.FootR.Width > 0), localZ);
+	public static void DrawClothForFoot (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
+		if (spriteLeft.IsValid) {
+			spriteLeft.TryGetSprite(renderer.FootL.FrontSide, renderer.FootL.Width > 0, renderer.CurrentAnimationFrame, out var sprite);
+			DrawClothForFootLogic(renderer.FootL, sprite, localZ);
+		}
+		if (spriteRight.IsValid) {
+			spriteRight.TryGetSprite(renderer.FootR.FrontSide, renderer.FootR.Width > 0, renderer.CurrentAnimationFrame, out var sprite);
+			DrawClothForFootLogic(renderer.FootR, sprite, localZ);
+		}
 		// Func
-		static void DrawClothForFootLogic (BodyPart foot, int spriteID, int localZ) {
-			if (spriteID == 0 || foot.IsFullCovered) return;
-			if (!Renderer.TryGetSprite(spriteID, out var sprite)) return;
+		static void DrawClothForFootLogic (BodyPart foot, AngeSprite sprite, int localZ) {
+			if (sprite == null || foot.IsFullCovered) return;
 			var location = foot.GlobalLerp(0f, 0f);
 			int width = Util.Max(foot.Width, sprite.GlobalWidth);
 			if (sprite.GlobalBorder.IsZero) {

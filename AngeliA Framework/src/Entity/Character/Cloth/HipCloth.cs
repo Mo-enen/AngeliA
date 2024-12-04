@@ -22,17 +22,21 @@ public abstract class HipCloth : Cloth {
 
 	private HipClothType HipType = HipClothType.None;
 	private OrientedSprite SpriteHip;
-	private OrientedSprite SpriteTail;
-	private OrientedSprite SpriteUpperLeg;
-	private OrientedSprite SpriteLowerLeg;
+	private OrientedSprite SpriteClothTail;
+	private OrientedSprite SpriteUpperLegLeft;
+	private OrientedSprite SpriteUpperLegRight;
+	private OrientedSprite SpriteLowerLegLeft;
+	private OrientedSprite SpriteLowerLegRight;
 
 	// API
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
 		SpriteHip = new OrientedSprite(name, "HipSuit", "SkirtSuit");
-		SpriteTail = new OrientedSprite(name, "TailSuit");
-		SpriteUpperLeg = new OrientedSprite(name, "UpperLegSuit");
-		SpriteLowerLeg = new OrientedSprite(name, "LowerLegSuit");
+		SpriteClothTail = new OrientedSprite(name, "TailSuit");
+		SpriteUpperLegLeft = new OrientedSprite(name, "UpperLegSuitLeft", "UpperLegSuit");
+		SpriteUpperLegRight = new OrientedSprite(name, "UpperLegSuitRight", "UpperLegSuit");
+		SpriteLowerLegLeft = new OrientedSprite(name, "LowerLegSuitLeft", "LowerLegSuit");
+		SpriteLowerLegRight = new OrientedSprite(name, "LowerLegSuitRight", "LowerLegSuit");
 		HipType = SpriteHip.AttachmentName switch {
 			"HipSuit" => HipClothType.Pants,
 			"SkirtSuit" => HipClothType.Skirt,
@@ -58,16 +62,16 @@ public abstract class HipCloth : Cloth {
 				DrawClothAsSkirt(rendering, SpriteHip, CoverLegs ? 6 : 1);
 				break;
 		}
-		DrawClothForUpperLeg(rendering, SpriteUpperLeg);
-		DrawClothForLowerLeg(rendering, SpriteLowerLeg);
-		DrawDoubleClothTailsOnHip(rendering, SpriteTail);
+		DrawClothForUpperLeg(rendering, SpriteUpperLegLeft, SpriteUpperLegRight);
+		DrawClothForLowerLeg(rendering, SpriteLowerLegLeft, SpriteLowerLegRight);
+		DrawDoubleClothTailsOnHip(rendering, SpriteClothTail);
 	}
 
 	public static void DrawClothAsPants (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 1) {
 
 		var hip = rendering.Hip;
 		if (!clothSprite.IsValid || hip.IsFullCovered) return;
-		if (!clothSprite.TryGetSprite(hip.FrontSide, hip.Width > 0, out var sprite)) return;
+		if (!clothSprite.TryGetSprite(hip.FrontSide, hip.Width > 0, rendering.CurrentAnimationFrame, out var sprite)) return;
 
 		var rect = hip.GetGlobalRect();
 		if (!sprite.GlobalBorder.IsZero) {
@@ -102,8 +106,8 @@ public abstract class HipCloth : Cloth {
 		var hip = rendering.Hip;
 		if (!clothSprite.IsValid || hip.IsFullCovered) return;
 		SpriteGroup group = null;
-		if (!clothSprite.TryGetSprite(hip.FrontSide, hip.Width > 0, out var sprite)) {
-			if (clothSprite.GroupID != 0 && Renderer.TryGetSpriteGroup(clothSprite.GroupID, out group) && group.Count > 0) {
+		if (!clothSprite.TryGetSpriteWithoutAnimation(hip.FrontSide, hip.Width > 0, out var sprite)) {
+			if (clothSprite.TryGetSpriteGroup(hip.FrontSide, hip.Width > 0, out group) && group.Count > 0) {
 				sprite = group.Sprites[0];
 			} else {
 				return;
@@ -216,16 +220,28 @@ public abstract class HipCloth : Cloth {
 	}
 
 	// Leg
-	public static void DrawClothForUpperLeg (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 1) {
-		if (!clothSprite.IsValid) return;
-		CoverClothOn(rendering.UpperLegL, clothSprite.GetSpriteID(rendering.UpperLegL.FrontSide, rendering.UpperLegL.Width > 0), localZ);
-		CoverClothOn(rendering.UpperLegR, clothSprite.GetSpriteID(rendering.UpperLegR.FrontSide, rendering.UpperLegR.Width > 0), localZ);
+	public static void DrawClothForUpperLeg (PoseCharacterRenderer rendering, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
+		bool facingRight = rendering.Body.Width > 0;
+		if (spriteLeft.IsValid) {
+			spriteLeft.TryGetSprite(rendering.UpperLegL.FrontSide, facingRight, rendering.CurrentAnimationFrame, out var sprite);
+			CoverClothOn(rendering.UpperLegL, sprite, localZ);
+		}
+		if (spriteRight.IsValid) {
+			spriteRight.TryGetSprite(rendering.UpperLegR.FrontSide, facingRight, rendering.CurrentAnimationFrame, out var sprite);
+			CoverClothOn(rendering.UpperLegR, sprite, localZ);
+		}
 	}
 
-	public static void DrawClothForLowerLeg (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 1) {
-		if (!clothSprite.IsValid) return;
-		CoverClothOn(rendering.LowerLegL, clothSprite.GetSpriteID(rendering.LowerLegL.FrontSide, rendering.LowerLegL.Width > 0), localZ);
-		CoverClothOn(rendering.LowerLegR, clothSprite.GetSpriteID(rendering.LowerLegR.FrontSide, rendering.LowerLegR.Width > 0), localZ);
+	public static void DrawClothForLowerLeg (PoseCharacterRenderer rendering, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
+		bool facingRight = rendering.Body.Width > 0;
+		if (spriteLeft.IsValid) {
+			spriteLeft.TryGetSprite(rendering.LowerLegL.FrontSide, facingRight, rendering.CurrentAnimationFrame, out var sprite);
+			CoverClothOn(rendering.LowerLegL, sprite, localZ);
+		}
+		if (spriteRight.IsValid) {
+			spriteRight.TryGetSprite(rendering.LowerLegR.FrontSide, facingRight, rendering.CurrentAnimationFrame, out var sprite);
+			CoverClothOn(rendering.LowerLegR, sprite, localZ);
+		}
 	}
 
 	// Cloth Tail
@@ -259,14 +275,17 @@ public abstract class HipCloth : Cloth {
 
 		if (animatedPoseType == CharacterAnimationType.Dash) scaleY = 500;
 
-		DrawSingleClothTail(rendering, clothSprite.GetSpriteID(hip.FrontSide, false), hipRect.x + 16, hipRect.y, z, rotL, scaleX, scaleY);
-		DrawSingleClothTail(rendering, clothSprite.GetSpriteID(hip.FrontSide, true), hipRect.xMax - 16, hipRect.y, z, rotR, scaleX, scaleY);
+		clothSprite.TryGetSprite(hip.FrontSide, false, rendering.CurrentAnimationFrame, out var spriteL);
+		clothSprite.TryGetSprite(hip.FrontSide, true, rendering.CurrentAnimationFrame, out var spriteR);
+
+		DrawSingleClothTail(rendering, spriteL, hipRect.x + 16, hipRect.y, z, rotL, scaleX, scaleY);
+		DrawSingleClothTail(rendering, spriteR, hipRect.xMax - 16, hipRect.y, z, rotR, scaleX, scaleY);
 
 	}
 
-	public static void DrawSingleClothTail (PoseCharacterRenderer rendering, int spriteID, int globalX, int globalY, int z, int rotation, int scaleX = 1000, int scaleY = 1000, int motionAmount = 1000) {
+	public static void DrawSingleClothTail (PoseCharacterRenderer rendering, AngeSprite sprite, int globalX, int globalY, int z, int rotation, int scaleX = 1000, int scaleY = 1000, int motionAmount = 1000) {
 
-		if (!Renderer.TryGetSprite(spriteID, out var sprite)) return;
+		if (sprite == null) return;
 
 		int rot = 0;
 

@@ -13,37 +13,39 @@ public abstract class BraidHair : Hair {
 	protected virtual int DropMotionAmount => 200;
 	protected virtual int PositionAmountX => 0;
 	protected virtual int PositionAmountY => 0;
-	public OrientedSprite SpriteBraid { get; init; }
+	public OrientedSprite SpriteBraidLeft { get; init; }
+	public OrientedSprite SpriteBraidRight { get; init; }
 
 	protected BraidHair () : base() {
 		string name = (GetType().DeclaringType ?? GetType()).AngeName();
-		SpriteBraid = new OrientedSprite(name, "Braid");
+		SpriteBraidLeft = new OrientedSprite(name, "BraidLeft", "Braid");
+		SpriteBraidRight = new OrientedSprite(name, "BraidRight", "Braid");
 	}
 
 	public override void DrawGadget (PoseCharacterRenderer renderer) {
 		using var _ = new SheetIndexScope(SheetIndex);
 		var cells = DrawSpriteAsHair(renderer, SpriteHairForward, SpriteHairBackward, FlowAmountX, FlowAmountY);
-		if (Game.GlobalFrame > renderer.HideBraidFrame && SpriteBraid.IsValid) {
+		if (Game.GlobalFrame > renderer.HideBraidFrame && (SpriteBraidLeft.IsValid || SpriteBraidRight.IsValid)) {
 			DrawBraid(renderer, cells, ForceBackOnFlow);
 		}
 	}
 
 	private void DrawBraid (PoseCharacterRenderer renderer, Cell[] cells, bool forceBackOnFlow) => DrawBraid(
-		renderer, cells, forceBackOnFlow, SpriteBraid,
+		renderer, cells, forceBackOnFlow, SpriteBraidLeft, SpriteBraidRight,
 		GetFrontL(renderer) ? 33 : -33, GetFrontR(renderer) ? 33 : -33,
 		PositionAmountX, PositionAmountY, FacingLeftOffsetX, MotionAmount,
 		FlowMotionAmount, DropMotionAmount, UseLimbRotate, 0, 0
 	);
 
 	public static void DrawBraid (
-		PoseCharacterRenderer renderer, bool forceBackOnFlow, OrientedSprite oSprite,
+		PoseCharacterRenderer renderer, bool forceBackOnFlow, OrientedSprite spriteLeft, OrientedSprite spriteRight,
 		int zLeft, int zRight, int positionAmountX = 0, int positionAmountY = 0,
 		int facingLeftOffsetX = 0, int motionAmount = 618, int flowMotionAmount = 618, int dropMotionAmount = 200, bool useLimbRotate = false,
 		int offsetX = 0, int offsetY = 0
-	) => DrawBraid(renderer, null, forceBackOnFlow, oSprite, zLeft, zRight, positionAmountX, positionAmountY, facingLeftOffsetX, motionAmount, flowMotionAmount, dropMotionAmount, useLimbRotate, offsetX, offsetY);
+	) => DrawBraid(renderer, null, forceBackOnFlow, spriteLeft, spriteRight, zLeft, zRight, positionAmountX, positionAmountY, facingLeftOffsetX, motionAmount, flowMotionAmount, dropMotionAmount, useLimbRotate, offsetX, offsetY);
 
 	private static void DrawBraid (
-		PoseCharacterRenderer renderer, Cell[] hairCells, bool forceBackOnFlow, OrientedSprite oSprite,
+		PoseCharacterRenderer renderer, Cell[] hairCells, bool forceBackOnFlow, OrientedSprite spriteLeft, OrientedSprite spriteRight,
 		int zLeft, int zRight, int positionAmountX, int positionAmountY,
 		int facingLeftOffsetX, int motionAmount, int flowMotionAmount, int dropMotionAmount, bool useLimbRotate,
 		int offsetX, int offsetY
@@ -113,8 +115,8 @@ public abstract class BraidHair : Hair {
 			r += facingLeftOffsetX;
 		}
 
-		int braidL = oSprite.GetSpriteID(head.FrontSide, false);
-		int braidR = oSprite.GetSpriteID(head.FrontSide, true);
+		spriteLeft.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var braidL);
+		spriteRight.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var braidR);
 
 		if (motionAmount != 0) {
 			rot = !flipY ? (renderer.TargetCharacter.DeltaPositionX * motionAmount / 1500).Clamp(-90, 90) : 0;
@@ -146,8 +148,8 @@ public abstract class BraidHair : Hair {
 		}
 
 		// Func
-		static Cell[] DrawBraidLogic (int spriteID, int x, int y, int z, int px, int rot, bool flipX, bool flipY, int deltaHeight, bool rolling, bool allowLimbRotate) {
-			if (!Renderer.TryGetSprite(spriteID, out var sprite)) return null;
+		static Cell[] DrawBraidLogic (AngeSprite sprite, int x, int y, int z, int px, int rot, bool flipX, bool flipY, int deltaHeight, bool rolling, bool allowLimbRotate) {
+			if (sprite == null) return null;
 			int width = flipX ? -sprite.GlobalWidth : sprite.GlobalWidth;
 			int height = flipY ? -sprite.GlobalHeight : sprite.GlobalHeight;
 			height = (height + deltaHeight).Clamp(height / 3, height * 3);

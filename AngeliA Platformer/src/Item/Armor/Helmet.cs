@@ -12,7 +12,7 @@ public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : E
 	protected override void DrawArmor (PoseCharacterRenderer renderer) {
 
 		var head = renderer.Head;
-		if (!SpriteHelmet.TryGetSprite(head.FrontSide, head.Width > 0, out var sprite)) return;
+		if (!SpriteHelmet.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var sprite)) return;
 
 		// Draw Helmet
 		switch (WearingMode) {
@@ -24,7 +24,7 @@ public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : E
 				break;
 			default: {
 				// Cover
-				var cells = Cloth.CoverClothOn(head, sprite.ID, 34 - head.Z, Color32.WHITE, false);
+				var cells = Cloth.CoverClothOn(head, sprite, 34 - head.Z, Color32.WHITE, false);
 				// Grow Padding
 				if (!sprite.GlobalBorder.IsZero && cells != null) {
 					var center = head.GetGlobalCenter();

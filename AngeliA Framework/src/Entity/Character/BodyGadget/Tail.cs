@@ -62,11 +62,13 @@ public abstract class Tail : BodyGadget {
 		int offsetX, int offsetY
 	) {
 
-		if (!oSprite.IsValid || !Renderer.HasSpriteGroup(oSprite.GroupID, out int count)) return;
+		if (!oSprite.IsValid) return;
+		if (!oSprite.TryGetSpriteGroup(renderer.Body.FrontSide, renderer.Body.Width > 0, out var group) || group.Count == 0) return;
 		if (frequency <= 0) frequency = 1;
 		if (frequencyAlt <= 0) frequencyAlt = 1;
 		if (frameLen <= 0) frameLen = 1;
 
+		int count = group.Count;
 		var target = renderer.TargetCharacter;
 		int z = renderer.Body.FrontSide ? -33 : 33;
 		int facingSign = target.Movement.FacingRight || target.AnimationType == CharacterAnimationType.Climb ? 1 : -1;
@@ -85,7 +87,7 @@ public abstract class Tail : BodyGadget {
 		int animationFrame = (target.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
 		for (int i = 0; i < count; i++) {
 
-			if (!Renderer.TryGetSpriteFromGroup(oSprite.GroupID, i, out var sprite, false, true)) break;
+			var sprite = group.Sprites[i];
 			w = sprite.GlobalWidth;
 			h = sprite.GlobalHeight;
 			px = 0;

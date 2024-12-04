@@ -143,10 +143,10 @@ public abstract class Cloth {
 	}
 
 
-	public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID) => CoverClothOn(bodyPart, spriteID, 1, Color32.WHITE, true);
-	public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ) => CoverClothOn(bodyPart, spriteID, localZ, Color32.WHITE, true);
-	public static Cell[] CoverClothOn (BodyPart bodyPart, int spriteID, int localZ, Color32 tint, bool defaultHideLimb = true) {
-		if (spriteID == 0 || bodyPart.IsFullCovered || !Renderer.TryGetSprite(spriteID, out var sprite)) return null;
+	public static Cell[] CoverClothOn (BodyPart bodyPart, AngeSprite sprite) => CoverClothOn(bodyPart, sprite, 1, Color32.WHITE, true);
+	public static Cell[] CoverClothOn (BodyPart bodyPart, AngeSprite sprite, int localZ) => CoverClothOn(bodyPart, sprite, localZ, Color32.WHITE, true);
+	public static Cell[] CoverClothOn (BodyPart bodyPart, AngeSprite sprite, int localZ, Color32 tint, bool defaultHideLimb = true) {
+		if (sprite == null || bodyPart.IsFullCovered) return null;
 		Cell[] result;
 		if (sprite.GlobalBorder.IsZero) {
 			SINGLE_CELL[0] = Renderer.Draw(

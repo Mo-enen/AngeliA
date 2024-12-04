@@ -55,15 +55,17 @@ public abstract class Hair : BodyGadget {
 
 		// Hair Appear in Back
 		if (head.FrontSide) {
-			var bCells = DrawHairSprite(spriteBackward.GetSpriteID(head.FrontSide, head.Width > 0), renderer, -32, out var backHairRect);
+			spriteBackward.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var sprite);
+			var bCells = DrawHairSprite(sprite, renderer, -32, out var backHairRect);
 			FlowHair(renderer, bCells, true, flowAmountX, flowAmountY);
 			TwistHair(renderer, bCells, backHairRect);
 			RotateHair(renderer, bCells);
 		}
-		
+
 		// Hair Appear in Front
+		spriteForward.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var fSprite);
 		var fCells = DrawHairSprite(
-			spriteForward.GetSpriteID(head.FrontSide, head.Width > 0),
+			fSprite,
 			renderer, 32, out var hairRect
 		);
 		FlowHair(renderer, fCells, false, flowAmountX, flowAmountY);
@@ -72,15 +74,12 @@ public abstract class Hair : BodyGadget {
 		return fCells;
 
 		// Func
-		static Cell[] DrawHairSprite (int spriteID, PoseCharacterRenderer renderer, int z, out IRect hairRect) {
+		static Cell[] DrawHairSprite (AngeSprite hairSprite, PoseCharacterRenderer renderer, int z, out IRect hairRect) {
 
 			hairRect = default;
-			if (spriteID == 0) return null;
+			if (hairSprite == null) return null;
 
 			var head = renderer.Head;
-
-			if (!Renderer.TryGetSprite(spriteID, out var hairSprite)) return null;
-
 			var headRect = head.GetGlobalRect();
 
 			// Expand Rect

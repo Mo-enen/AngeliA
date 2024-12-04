@@ -2,16 +2,17 @@
 
 public struct OrientedSprite {
 
-	public readonly bool IsValid => GroupID != 0 || (SpriteID_FL != 0 && SpriteID_FR != 0 && SpriteID_BL != 0 && SpriteID_BR != 0);
+	// VAR
+	public readonly bool IsValid => (SpriteID_FL != 0 && SpriteID_FR != 0 && SpriteID_BL != 0 && SpriteID_BR != 0);
 
 	public string AttachmentName;
-	public int GroupID;
 	public int SpriteID_FL;
 	public int SpriteID_FR;
 	public int SpriteID_BL;
 	public int SpriteID_BR;
 
-	public OrientedSprite () => SpriteID_FL = SpriteID_FR = SpriteID_BL = SpriteID_BR = GroupID = 0;
+	// MSG
+	public OrientedSprite () => SpriteID_FL = SpriteID_FR = SpriteID_BL = SpriteID_BR = 0;
 	public OrientedSprite (string hostName, string attachmentName) => LoadFromSheet(hostName, attachmentName);
 	public OrientedSprite (string hostName, string attachmentName, string attachmentNameAlt) {
 		if (!LoadFromSheet(hostName, attachmentName)) {
@@ -29,44 +30,72 @@ public struct OrientedSprite {
 		}
 	}
 
+	// API
 	public bool LoadFromSheet (string hostName, string attachmentName) {
 
-		AttachmentName = attachmentName;
+		SpriteID_FL = SpriteID_FR = SpriteID_BL = SpriteID_BR = 0;
 
-		SpriteID_FL = SpriteID_FR = SpriteID_BL = SpriteID_BR = $"{hostName}.{attachmentName}".AngeHash();
-		if (Renderer.HasSprite(SpriteID_FL)) return true;
-		if (Renderer.HasSpriteGroup(SpriteID_FL)) {
-			GroupID = SpriteID_FL;
-			SpriteID_FL = SpriteID_FR = SpriteID_BL = SpriteID_BR = 0;
+		// Basic
+		int basicID = $"{hostName}.{attachmentName}".AngeHash();
+		if (IsValid(basicID)) SpriteID_FL = SpriteID_FR = SpriteID_BL = SpriteID_BR = basicID;
+
+		// .L
+		int lID = $"{hostName}.{attachmentName}.L".AngeHash();
+		if (IsValid(lID)) SpriteID_FL = SpriteID_BL = lID;
+
+		// .R
+		int rID = $"{hostName}.{attachmentName}.R".AngeHash();
+		if (IsValid(rID)) SpriteID_FR = SpriteID_BR = rID;
+
+		// .F
+		int fID = $"{hostName}.{attachmentName}.F".AngeHash();
+		if (IsValid(fID)) SpriteID_FL = SpriteID_FR = fID;
+
+		// .B
+		int bID = $"{hostName}.{attachmentName}.B".AngeHash();
+		if (IsValid(bID)) SpriteID_BL = SpriteID_BR = bID;
+
+		// .FL
+		int flID = $"{hostName}.{attachmentName}.FL".AngeHash();
+		if (IsValid(flID)) SpriteID_FL = flID;
+
+		// .FR
+		int frID = $"{hostName}.{attachmentName}.FR".AngeHash();
+		if (IsValid(frID)) SpriteID_FR = frID;
+
+		// .BL
+		int blID = $"{hostName}.{attachmentName}.BL".AngeHash();
+		if (IsValid(blID)) SpriteID_BL = blID;
+
+		// .BR
+		int brID = $"{hostName}.{attachmentName}.BR".AngeHash();
+		if (IsValid(brID)) SpriteID_BR = brID;
+
+		// Final
+		if (SpriteID_FL == 0 && SpriteID_FR == 0 && SpriteID_BL == 0 && SpriteID_BR == 0) {
+			AttachmentName = "";
+			return false;
+		} else {
+			AttachmentName = attachmentName;
 			return true;
 		}
 
-		SpriteID_FL = SpriteID_FR = $"{hostName}.{attachmentName}.F".AngeHash();
-		SpriteID_BL = SpriteID_BR = $"{hostName}.{attachmentName}.B".AngeHash();
-		if (!Renderer.HasSprite(SpriteID_BL)) SpriteID_BL = SpriteID_BR = SpriteID_FL;
-		if (Renderer.HasSprite(SpriteID_FL)) return true;
-
-		SpriteID_FL = SpriteID_BL = $"{hostName}.{attachmentName}.L".AngeHash();
-		SpriteID_FR = SpriteID_BR = $"{hostName}.{attachmentName}.R".AngeHash();
-		if (Renderer.HasSprite(SpriteID_FL) && Renderer.HasSprite(SpriteID_FR)) return true;
-
-		SpriteID_FL = $"{hostName}.{attachmentName}.FL".AngeHash();
-		SpriteID_FR = $"{hostName}.{attachmentName}.FR".AngeHash();
-		SpriteID_BL = $"{hostName}.{attachmentName}.BL".AngeHash();
-		SpriteID_BR = $"{hostName}.{attachmentName}.BR".AngeHash();
-		if (!Renderer.HasSprite(SpriteID_BL) && !Renderer.HasSprite(SpriteID_BR)) {
-			SpriteID_BL = SpriteID_BR = $"{hostName}.{attachmentName}.B".AngeHash();
-		}
-		if (!Renderer.HasSprite(SpriteID_BL)) SpriteID_BL = SpriteID_FL;
-		if (!Renderer.HasSprite(SpriteID_BR)) SpriteID_BR = SpriteID_FR;
-		if (Renderer.HasSprite(SpriteID_FL) && Renderer.HasSprite(SpriteID_FR)) return true;
-
-		SpriteID_FL = SpriteID_FR = SpriteID_BL = SpriteID_BR = 0;
-		AttachmentName = "";
-
-		return false;
+		// Func
+		static bool IsValid (int id) => Renderer.HasSprite(id) || Renderer.HasSpriteGroup(id);
 	}
-	public readonly int GetSpriteID (bool front, bool right) => front ? (right ? SpriteID_FR : SpriteID_FL) : (right ? SpriteID_BR : SpriteID_BL);
-	public readonly bool TryGetSprite (bool front, bool right, out AngeSprite sprite) => Renderer.TryGetSprite(GetSpriteID(front, right), out sprite, true);
+	public readonly int GetID (bool front, bool right) => front ? (right ? SpriteID_FR : SpriteID_FL) : (right ? SpriteID_BR : SpriteID_BL);
+	public readonly bool TryGetSpriteWithoutAnimation (bool front, bool right, out AngeSprite sprite) => Renderer.TryGetSprite(GetID(front, right), out sprite, true);
+	public readonly bool TryGetSpriteGroup (bool front, bool right, out SpriteGroup group) => Renderer.TryGetSpriteGroup(GetID(front, right), out group);
+	public readonly bool TryGetSprite (bool front, bool right, int animationFrame, out AngeSprite sprite) {
+		int id = GetID(front, right);
+		if (Renderer.TryGetSprite(id, out sprite, true)) {
+			return true;
+		} else if (Renderer.TryGetAnimationGroup(id, out var aniGroup)) {
+			return Renderer.CurrentSheet.TryGetSpriteFromAnimationFrame(aniGroup, animationFrame, out sprite);
+		} else {
+			sprite = null;
+			return false;
+		}
+	}
 
 }

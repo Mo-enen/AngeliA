@@ -22,9 +22,12 @@ public abstract class BodyCloth : Cloth {
 	public override bool SpriteLoaded => SpriteBody.IsValid;
 	private OrientedSprite SpriteBody;
 	private OrientedSprite SpriteCape;
-	private OrientedSprite SpriteShoulder;
-	private OrientedSprite SpriteUpperArm;
-	private OrientedSprite SpriteLowerArm;
+	private OrientedSprite SpriteShoulderLeft;
+	private OrientedSprite SpriteShoulderRight;
+	private OrientedSprite SpriteUpperArmLeft;
+	private OrientedSprite SpriteUpperArmRight;
+	private OrientedSprite SpriteLowerArmLeft;
+	private OrientedSprite SpriteLowerArmRight;
 	protected virtual int TwistShiftTopAmount => 300;
 	protected virtual int LocalZ => 7;
 
@@ -32,9 +35,12 @@ public abstract class BodyCloth : Cloth {
 		base.FillFromSheet(name);
 		SpriteBody = new OrientedSprite(name, "BodySuit");
 		SpriteCape = new OrientedSprite(name, "CapeSuit");
-		SpriteShoulder = new OrientedSprite(name, "ShoulderSuit");
-		SpriteUpperArm = new OrientedSprite(name, "UpperArmSuit");
-		SpriteLowerArm = new OrientedSprite(name, "LowerArmSuit");
+		SpriteShoulderLeft = new OrientedSprite(name, "ShoulderSuitLeft", "ShoulderSuit");
+		SpriteShoulderRight = new OrientedSprite(name, "ShoulderSuitRight", "ShoulderSuit");
+		SpriteUpperArmLeft = new OrientedSprite(name, "UpperArmSuitLeft", "UpperArmSuit");
+		SpriteUpperArmRight = new OrientedSprite(name, "UpperArmSuitRight", "UpperArmSuit");
+		SpriteLowerArmLeft = new OrientedSprite(name, "LowerArmSuitLeft", "LowerArmSuit");
+		SpriteLowerArmRight = new OrientedSprite(name, "LowerArmSuitRight", "LowerArmSuit");
 		return SpriteLoaded;
 	}
 
@@ -49,9 +55,9 @@ public abstract class BodyCloth : Cloth {
 		using var _ = new SheetIndexScope(SheetIndex);
 		DrawClothForBody(renderer, SpriteBody, LocalZ, TwistShiftTopAmount);
 		DrawCape(renderer, SpriteCape);
-		DrawClothForShoulder(renderer, SpriteShoulder);
-		DrawClothForUpperArm(renderer, SpriteUpperArm);
-		DrawClothForLowerArm(renderer, SpriteLowerArm);
+		DrawClothForShoulder(renderer, SpriteShoulderLeft, SpriteShoulderRight);
+		DrawClothForUpperArm(renderer, SpriteUpperArmLeft, SpriteUpperArmRight);
+		DrawClothForLowerArm(renderer, SpriteLowerArmLeft, SpriteLowerArmRight);
 	}
 
 	public static void DrawClothForBody (PoseCharacterRenderer renderer, OrientedSprite clothSprite, int localZ, int twistShiftTopAmount) {
@@ -59,10 +65,13 @@ public abstract class BodyCloth : Cloth {
 		if (!clothSprite.IsValid) return;
 		if (renderer.Body.IsFullCovered) return;
 
+
 		var body = renderer.Body;
 		bool facingRight = body.Width > 0;
 		bool facingFront = body.FrontSide;
-		if (!clothSprite.TryGetSprite(facingFront, facingRight, out var suitSprite)) return;
+		if (!clothSprite.TryGetSprite(
+			facingFront, facingRight, renderer.CurrentAnimationFrame, out var suitSprite
+		)) return;
 
 		bool separatedSprite = clothSprite.SpriteID_FL != clothSprite.SpriteID_FR;
 		var hip = renderer.Hip;
@@ -124,22 +133,52 @@ public abstract class BodyCloth : Cloth {
 
 	}
 
-	public static void DrawClothForShoulder (PoseCharacterRenderer renderer, OrientedSprite clothSprite) {
-		if (!clothSprite.IsValid) return;
-		CoverClothOn(renderer.ShoulderL, clothSprite.GetSpriteID(renderer.ShoulderL.FrontSide, renderer.Body.Width > 0));
-		CoverClothOn(renderer.ShoulderR, clothSprite.GetSpriteID(renderer.ShoulderR.FrontSide, renderer.Body.Width > 0));
+	public static void DrawClothForShoulder (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
+		bool facingRight = renderer.Body.Width > 0;
+		if (spriteLeft.IsValid) {
+			spriteLeft.TryGetSprite(
+				renderer.ShoulderL.FrontSide, facingRight, renderer.CurrentAnimationFrame, out var sprite
+			);
+			CoverClothOn(renderer.ShoulderL, sprite, localZ);
+		}
+		if (spriteRight.IsValid) {
+			spriteRight.TryGetSprite(
+				renderer.ShoulderR.FrontSide, facingRight, renderer.CurrentAnimationFrame, out var sprite
+			);
+			CoverClothOn(renderer.ShoulderR, sprite, localZ);
+		}
 	}
 
-	public static void DrawClothForUpperArm (PoseCharacterRenderer renderer, OrientedSprite clothSprite, int localZ = 1) {
-		if (!clothSprite.IsValid) return;
-		CoverClothOn(renderer.UpperArmL, clothSprite.GetSpriteID(renderer.UpperArmL.FrontSide, renderer.Body.Width > 0), localZ);
-		CoverClothOn(renderer.UpperArmR, clothSprite.GetSpriteID(renderer.UpperArmR.FrontSide, renderer.Body.Width > 0), localZ);
+	public static void DrawClothForUpperArm (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
+		bool facingRight = renderer.Body.Width > 0;
+		if (spriteLeft.IsValid) {
+			spriteLeft.TryGetSprite(
+				renderer.UpperArmL.FrontSide, facingRight, renderer.CurrentAnimationFrame, out var sprite
+			);
+			CoverClothOn(renderer.UpperArmL, sprite, localZ);
+		}
+		if (spriteRight.IsValid) {
+			spriteRight.TryGetSprite(
+				renderer.UpperArmR.FrontSide, facingRight, renderer.CurrentAnimationFrame, out var sprite
+			);
+			CoverClothOn(renderer.UpperArmR, sprite, localZ);
+		}
 	}
 
-	public static void DrawClothForLowerArm (PoseCharacterRenderer renderer, OrientedSprite clothSprite, int localZ = 1) {
-		if (!clothSprite.IsValid) return;
-		CoverClothOn(renderer.LowerArmL, clothSprite.GetSpriteID(renderer.LowerArmL.FrontSide, renderer.Body.Width > 0), localZ);
-		CoverClothOn(renderer.LowerArmR, clothSprite.GetSpriteID(renderer.LowerArmR.FrontSide, renderer.Body.Width > 0), localZ);
+	public static void DrawClothForLowerArm (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
+		bool facingRight = renderer.Body.Width > 0;
+		if (spriteLeft.IsValid) {
+			spriteLeft.TryGetSprite(
+				renderer.LowerArmL.FrontSide, facingRight, renderer.CurrentAnimationFrame, out var sprite
+			);
+			CoverClothOn(renderer.LowerArmL, sprite, localZ);
+		}
+		if (spriteRight.IsValid) {
+			spriteRight.TryGetSprite(
+				renderer.LowerArmR.FrontSide, facingRight, renderer.CurrentAnimationFrame, out var sprite
+			);
+			CoverClothOn(renderer.LowerArmR, sprite, localZ);
+		}
 	}
 
 	public static void DrawCape (PoseCharacterRenderer renderer, OrientedSprite clothSprite, int motionAmount = 1000) {
@@ -148,7 +187,7 @@ public abstract class BodyCloth : Cloth {
 		var body = renderer.Body;
 		bool facingRight = body.Width > 0;
 		bool facingFront = body.FrontSide;
-		if (!clothSprite.TryGetSprite(facingFront, facingRight, out var sprite)) return;
+		if (!clothSprite.TryGetSprite(facingFront, facingRight, renderer.CurrentAnimationFrame, out var sprite)) return;
 
 		var animatedPoseType = renderer.TargetCharacter.AnimationType;
 

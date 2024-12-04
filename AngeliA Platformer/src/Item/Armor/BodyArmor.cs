@@ -9,11 +9,19 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 	private OrientedSprite SpriteBody { get; init; }
 	private OrientedSprite SpriteCape { get; init; }
 	private OrientedSprite SpriteHip { get; init; }
-	private OrientedSprite SpriteShoulder { get; init; }
-	private OrientedSprite SpriteUpperArm { get; init; }
-	private OrientedSprite SpriteLowerArm { get; init; }
-	private OrientedSprite SpriteUpperLeg { get; init; }
-	private OrientedSprite SpriteLowerLeg { get; init; }
+
+	private OrientedSprite SpriteShoulderLeft { get; init; }
+	private OrientedSprite SpriteUpperArmLeft { get; init; }
+	private OrientedSprite SpriteLowerArmLeft { get; init; }
+	private OrientedSprite SpriteUpperLegLeft { get; init; }
+	private OrientedSprite SpriteLowerLegLeft { get; init; }
+
+	private OrientedSprite SpriteShoulderRight { get; init; }
+	private OrientedSprite SpriteUpperArmRight { get; init; }
+	private OrientedSprite SpriteLowerArmRight { get; init; }
+	private OrientedSprite SpriteUpperLegRight { get; init; }
+	private OrientedSprite SpriteLowerLegRight { get; init; }
+
 
 	private readonly HipCloth.HipClothType HipType = HipCloth.HipClothType.None;
 
@@ -22,11 +30,19 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 		SpriteBody = new OrientedSprite(basicName, "Body");
 		SpriteCape = new OrientedSprite(basicName, "Cape");
 		SpriteHip = new OrientedSprite(basicName, "Hip", "Skirt");
-		SpriteShoulder = new OrientedSprite(basicName, "Shoulder");
-		SpriteUpperArm = new OrientedSprite(basicName, "UpperArm");
-		SpriteLowerArm = new OrientedSprite(basicName, "LowerArm");
-		SpriteUpperLeg = new OrientedSprite(basicName, "UpperLeg");
-		SpriteLowerLeg = new OrientedSprite(basicName, "LowerLeg");
+
+		SpriteShoulderLeft = new OrientedSprite(basicName, "ShoulderLeft", "Shoulder");
+		SpriteUpperArmLeft = new OrientedSprite(basicName, "UpperArmLeft", "UpperArm");
+		SpriteLowerArmLeft = new OrientedSprite(basicName, "LowerArmLeft", "LowerArm");
+		SpriteUpperLegLeft = new OrientedSprite(basicName, "UpperLegLeft", "UpperLeg");
+		SpriteLowerLegLeft = new OrientedSprite(basicName, "LowerLegLeft", "LowerLeg");
+
+		SpriteShoulderRight = new OrientedSprite(basicName, "ShoulderRight", "Shoulder");
+		SpriteUpperArmRight = new OrientedSprite(basicName, "UpperArmRight", "UpperArm");
+		SpriteLowerArmRight = new OrientedSprite(basicName, "LowerArmRight", "LowerArm");
+		SpriteUpperLegRight = new OrientedSprite(basicName, "UpperLegRight", "UpperLeg");
+		SpriteLowerLegRight = new OrientedSprite(basicName, "LowerLegRight", "LowerLeg");
+
 		HipType = SpriteHip.AttachmentName switch {
 			"Hip" => HipCloth.HipClothType.Pants,
 			"Skirt" => HipCloth.HipClothType.Skirt,
@@ -53,15 +69,15 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 		BodyCloth.DrawCape(renderer, SpriteCape);
 
 		// Shoulder
-		BodyCloth.DrawClothForShoulder(renderer, SpriteShoulder);
+		BodyCloth.DrawClothForShoulder(renderer, SpriteShoulderLeft, SpriteShoulderRight);
 
 		// Arm
-		BodyCloth.DrawClothForUpperArm(renderer, SpriteUpperArm, 3);
-		BodyCloth.DrawClothForLowerArm(renderer, SpriteLowerArm, 3);
+		BodyCloth.DrawClothForUpperArm(renderer, SpriteUpperArmLeft, SpriteUpperArmRight, 3);
+		BodyCloth.DrawClothForLowerArm(renderer, SpriteLowerArmLeft, SpriteLowerArmRight, 3);
 
 		// Leg
-		HipCloth.DrawClothForUpperLeg(renderer, SpriteUpperLeg, 3);
-		HipCloth.DrawClothForLowerLeg(renderer, SpriteLowerLeg, 3);
+		HipCloth.DrawClothForUpperLeg(renderer, SpriteUpperLegLeft, SpriteUpperLegRight, 3);
+		HipCloth.DrawClothForLowerLeg(renderer, SpriteLowerLegLeft, SpriteLowerLegRight, 3);
 
 	}
 

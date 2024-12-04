@@ -11,15 +11,17 @@ public abstract class Horn : BodyGadget {
 
 	// VAR
 	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Horn;
-	public override bool SpriteLoaded => SpriteHorn.IsValid;
+	public override bool SpriteLoaded => SpriteHornLeft.IsValid || SpriteHornRight.IsValid;
 	protected virtual bool AnchorOnFace => false;
-	public OrientedSprite SpriteHorn { get; private set; }
+	public OrientedSprite SpriteHornLeft { get; private set; }
+	public OrientedSprite SpriteHornRight { get; private set; }
 
 
 	// MSG
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
-		SpriteHorn = new OrientedSprite(name, "Horn");
+		SpriteHornLeft = new OrientedSprite(name, "HornLeft", "Horn");
+		SpriteHornRight = new OrientedSprite(name, "HornRight", "Horn");
 		return SpriteLoaded;
 	}
 
@@ -37,7 +39,7 @@ public abstract class Horn : BodyGadget {
 		using var _ = new SheetIndexScope(SheetIndex);
 		DrawSpriteAsHorn(
 			renderer,
-			SpriteHorn,
+			SpriteHornLeft, SpriteHornRight,
 			FrontOfHeadL(renderer),
 			FrontOfHeadR(renderer),
 			AnchorOnFace
@@ -50,11 +52,11 @@ public abstract class Horn : BodyGadget {
 
 
 	public static void DrawSpriteAsHorn (
-		PoseCharacterRenderer renderer, OrientedSprite oSprite,
+		PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight,
 		bool frontOfHeadL = true, bool frontOfHeadR = true, bool onFace = false
 	) {
 
-		if (!oSprite.IsValid) return;
+		if (!spriteLeft.IsValid && !spriteRight.IsValid) return;
 		var head = renderer.Head;
 		if (head.Tint.a == 0) return;
 
@@ -62,8 +64,8 @@ public abstract class Horn : BodyGadget {
 		if (onFace) headRect = headRect.Shrink(head.Border);
 
 		bool flipLR = !head.FrontSide && head.Height > 0;
-		oSprite.TryGetSprite(head.FrontSide, flipLR, out var spriteL);
-		oSprite.TryGetSprite(head.FrontSide, !flipLR, out var spriteR);
+		spriteLeft.TryGetSprite(head.FrontSide, flipLR, renderer.CurrentAnimationFrame, out var spriteL);
+		spriteRight.TryGetSprite(head.FrontSide, !flipLR, renderer.CurrentAnimationFrame, out var spriteR);
 
 		// Twist
 		int twist = renderer.HeadTwist;
