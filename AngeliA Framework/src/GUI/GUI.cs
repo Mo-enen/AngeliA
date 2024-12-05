@@ -203,10 +203,10 @@ public static partial class GUI {
 	}
 	public static Cell[] DrawSlice (AngeSprite sprite, IRect rect) {
 		var border = sprite.GlobalBorder;
-		border.left /= 10;
-		border.right /= 10;
-		border.down /= 10;
-		border.up /= 10;
+		border.left /= GUIStyle.BORDER_SCALE;
+		border.right /= GUIStyle.BORDER_SCALE;
+		border.down /= GUIStyle.BORDER_SCALE;
+		border.up /= GUIStyle.BORDER_SCALE;
 		border = UnifyBorder(border);
 		return Renderer.DrawSlice(sprite, rect, border.left, border.right, border.down, border.up, Color);
 	}
@@ -238,13 +238,13 @@ public static partial class GUI {
 	public static void SmallLabel (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => LabelLogic(rect, text, null, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
 	public static void SmallLabel (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) => LabelLogic(rect, text, null, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex);
 
-	public static void Label (IRect rect, string text, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
-	public static void Label (IRect rect, char[] text, GUIStyle style = null) => LabelLogic(rect, "", text, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
-	public static void Label (IRect rect, string text, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
-	public static void Label (IRect rect, char[] text, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, "", text, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
-	public static void Label (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
-	public static void Label (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex, GUIStyle style = null) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex);
-	private static void LabelLogic (IRect rect, string text, char[] chars, GUIStyle style, GUIState state, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) {
+	public static void Label (IRect rect, string text, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _, charSize);
+	public static void Label (IRect rect, char[] text, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, "", text, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _, charSize);
+	public static void Label (IRect rect, string text, out IRect bounds, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _, charSize);
+	public static void Label (IRect rect, char[] text, out IRect bounds, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, "", text, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _, charSize);
+	public static void Label (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex, charSize);
+	public static void Label (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex, charSize);
+	private static void LabelLogic (IRect rect, string text, char[] chars, GUIStyle style, GUIState state, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex, int charSize = -2) {
 
 		if (Game.FontCount == 0 || (text == null && chars == null)) {
 			endIndex = startIndex;
@@ -266,7 +266,11 @@ public static partial class GUI {
 
 		bool fromString = chars == null;
 		int count = fromString ? text.Length : chars.Length;
-		int charSize = style.CharSize < 0 ? rect.height * 2 / 3 : Unify(style.CharSize);
+		if (charSize == -2) {
+			charSize = style.CharSize < 0 ? rect.height : Unify(style.CharSize);
+		} else {
+			charSize = charSize < 0 ? rect.height : Unify(charSize);
+		}
 		int lineSpace = Unify(style.LineSpace);
 		int charSpace = Unify(style.CharSpace);
 		var alignment = style.Alignment;
@@ -484,10 +488,10 @@ public static partial class GUI {
 
 
 	// Button
-	public static bool SmallLinkButton (IRect rect, string label, bool useUnderLine = true) => LinkButton(rect, label, out _, Skin.SmallLabel, useUnderLine);
-	public static bool SmallLinkButton (IRect rect, string label, out IRect bounds, bool useUnderLine = true) => LinkButton(rect, label, out bounds, Skin.SmallLabel, useUnderLine);
-	public static bool LinkButton (IRect rect, string label, GUIStyle labelStyle = null, bool useUnderLine = true) => LinkButton(rect, label, out _, labelStyle, useUnderLine);
-	public static bool LinkButton (IRect rect, string label, out IRect bounds, GUIStyle labelStyle = null, bool useUnderLine = true) {
+	public static bool SmallLinkButton (IRect rect, string label, bool useUnderLine = true, int charSize = -2) => LinkButton(rect, label, out _, Skin.SmallLabel, useUnderLine, charSize);
+	public static bool SmallLinkButton (IRect rect, string label, out IRect bounds, bool useUnderLine = true, int charSize = -2) => LinkButton(rect, label, out bounds, Skin.SmallLabel, useUnderLine, charSize);
+	public static bool LinkButton (IRect rect, string label, GUIStyle labelStyle = null, bool useUnderLine = true, int charSize = -2) => LinkButton(rect, label, out _, labelStyle, useUnderLine, charSize);
+	public static bool LinkButton (IRect rect, string label, out IRect bounds, GUIStyle labelStyle = null, bool useUnderLine = true, int charSize = -2) {
 
 		bounds = default;
 		if (string.IsNullOrEmpty(label)) return false;
@@ -495,7 +499,7 @@ public static partial class GUI {
 		// Label
 		labelStyle ??= Skin.Label;
 		int cellStart = Renderer.GetUsedCellCount();
-		LabelLogic(rect, label, null, labelStyle, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
+		LabelLogic(rect, label, null, labelStyle, GUIState.Normal, -1, 0, false, out bounds, out _, out _, charSize);
 
 		// Button
 		bool result = BlankButton(bounds, out var state);
@@ -516,16 +520,17 @@ public static partial class GUI {
 
 		return result;
 	}
-	public static bool DarkButton (IRect rect, string label) => Button(rect, label, Skin.DarkButton);
+
+	public static bool DarkButton (IRect rect, string label, int charSize = -2) => Button(rect, label, Skin.DarkButton, charSize);
 	public static bool DarkButton (IRect rect, int icon) => Button(rect, icon, Skin.DarkButton);
-	public static bool Button (IRect rect, string label, GUIStyle style = null) => Button(rect, label, out _, style);
-	public static bool Button (IRect rect, string label, out GUIState state, GUIStyle style = null) {
+	public static bool Button (IRect rect, string label, GUIStyle style = null, int charSize = -2) => Button(rect, label, out _, style, charSize);
+	public static bool Button (IRect rect, string label, out GUIState state, GUIStyle style = null, int charSize = -2) {
 		style ??= Skin.Button;
 		bool result = BlankButton(rect, out state);
 		DrawStyleBody(rect, style, state);
 		// Label
 		if (!string.IsNullOrEmpty(label)) {
-			LabelLogic(rect, label, null, style, state, -1, 0, false, out _, out _, out _);
+			LabelLogic(rect, label, null, style, state, -1, 0, false, out _, out _, out _, charSize);
 		}
 		return result;
 	}
@@ -537,6 +542,7 @@ public static partial class GUI {
 		Icon(rect, icon, style, state);
 		return result;
 	}
+
 	public static bool BlankButton (IRect rect, out GUIState state) {
 		state = GUIState.Normal;
 		if (!Enable) {
@@ -669,7 +675,7 @@ public static partial class GUI {
 	}
 	public static void PopupTriangleIcon (IRect rect, int iconSprite = 0) {
 		iconSprite = iconSprite == 0 ? BuiltInSprite.ICON_TRIANGLE_DOWN : iconSprite;
-		Renderer.Draw(iconSprite, rect.Edge(Direction4.Right, rect.height));
+		Renderer.Draw(iconSprite, rect.Shrink(rect.height / 4).EdgeSquareRight());
 	}
 
 

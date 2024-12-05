@@ -27,5 +27,6 @@
   "LightMap_LevelIlluminateRemain": 0.3,
   "WorldBehindParallax": 1300,
   "WorldBehindAlpha": 64,
-  "RequireFixScriptNamesWhenAnalyse": false
+  "RequireFixScriptNamesWhenAnalyse": false,
+  "LastOpenAtlasIndex": 0
 }

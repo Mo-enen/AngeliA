@@ -17,6 +17,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode FRAME_16 = "Frame16";
 	public static readonly SpriteCode MENU_SELECTION_MARK = "Menu Selection Mark";
 	public static readonly SpriteCode MENU_THREE_DOTS = "Menu Three Dots";
+	public static readonly SpriteCode MENU_GENERIC_DIALOG_BG = "Menu.GenericDialogBG";
 	public static readonly SpriteCode SOFT_LINE_H = "Soft Line H";
 	public static readonly SpriteCode SOFT_LINE_V = "Soft Line V";
 	public static readonly SpriteCode GAMEPAD_START = "k_Gamepad Start";
@@ -137,7 +138,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode UI_SLIDER_FILL = "UI.SliderFill";
 	public static readonly SpriteCode UI_SLIDER_HANDLE = "UI.SliderHandle";
 	public static readonly SpriteCode ICON_CLEAR = "Icon.Clear";
-	public static readonly SpriteCode UI_DIALOG_BG = "UI.DialogBackground";
+	public static readonly SpriteCode MENU_DIALOG_BG = "UI.DialogBackground";
 	public static readonly SpriteCode ICON_INFO = "Icon.Info";
 	public static readonly SpriteCode ICON_WARNING = "Icon.Warning";
 	public static readonly SpriteCode ICON_ERROR = "Icon.Error";

@@ -67,10 +67,10 @@ public partial class GUISkin {
 	};
 
 	public readonly GUIStyle DialogBG = new() {
-		BodySprite = BuiltInSprite.UI_DIALOG_BG,
-		BodySpriteHover = BuiltInSprite.UI_DIALOG_BG,
-		BodySpriteDown = BuiltInSprite.UI_DIALOG_BG,
-		BodySpriteDisable = BuiltInSprite.UI_DIALOG_BG,
+		BodySprite = BuiltInSprite.MENU_DIALOG_BG,
+		BodySpriteHover = BuiltInSprite.MENU_DIALOG_BG,
+		BodySpriteDown = BuiltInSprite.MENU_DIALOG_BG,
+		BodySpriteDisable = BuiltInSprite.MENU_DIALOG_BG,
 	};
 
 	public readonly GUIStyle ItemFrame = new() {

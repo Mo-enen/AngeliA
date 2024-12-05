@@ -5,6 +5,8 @@ namespace AngeliA;
 
 public sealed class GUIStyle {
 
+	public const int BORDER_SCALE = 16;
+
 	public static readonly GUIStyle None = new() {
 		BodySprite = 0,
 		BodySpriteHover = 0,
@@ -71,10 +73,10 @@ public sealed class GUIStyle {
 		int id = GetBodySprite(state);
 		if (!Renderer.TryGetSprite(id, out var sprite, true)) return default;
 		var border = sprite.GlobalBorder;
-		border.left /= 10;
-		border.right /= 10;
-		border.down /= 10;
-		border.up /= 10;
+		border.left /= BORDER_SCALE;
+		border.right /= BORDER_SCALE;
+		border.down /= BORDER_SCALE;
+		border.up /= BORDER_SCALE;
 		return border;
 	}
 
@@ -82,10 +84,10 @@ public sealed class GUIStyle {
 		int id = GetBodySprite(state);
 		if (!Renderer.TryGetSprite(id, out var sprite, true)) return default;
 		var border = sprite.GlobalBorder;
-		border.left /= 10;
-		border.right /= 10;
-		border.down /= 10;
-		border.up /= 10;
+		border.left /= BORDER_SCALE;
+		border.right /= BORDER_SCALE;
+		border.down /= BORDER_SCALE;
+		border.up /= BORDER_SCALE;
 		return border;
 	}
 

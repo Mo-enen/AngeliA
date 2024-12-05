@@ -118,13 +118,13 @@ public partial class Engine {
 
 				// Create
 				rect.y -= rect.height + itemPadding;
-				if (GUI.DarkButton(rect, BTN_CREATE)) {
+				if (GUI.DarkButton(rect, BTN_CREATE, charSize: 16)) {
 					FileBrowserUI.SaveFolder(CREATE_PRO_TITLE, "New Project", CreateNewProjectAt);
 				}
 
 				// Add
 				rect.y -= rect.height + itemPadding;
-				if (GUI.DarkButton(rect, BTN_ADD)) {
+				if (GUI.DarkButton(rect, BTN_ADD, charSize: 16)) {
 					FileBrowserUI.OpenFolder(ADD_PRO_TITLE, AddExistsProjectAt);
 				}
 			}

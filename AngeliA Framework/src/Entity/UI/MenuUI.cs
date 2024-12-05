@@ -24,10 +24,10 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected override bool BlockEvent => true;
 
 	// Config
-	protected int BackgroundCode = Const.PIXEL;
-	protected int SelectionMarkCode = BuiltInSprite.MENU_SELECTION_MARK;
-	protected int MoreItemMarkCode = BuiltInSprite.MENU_MORE_MARK;
-	protected int ArrowMarkCode = BuiltInSprite.MENU_ARROW_MARK;
+	protected SpriteCode BackgroundCode = "Pixel";
+	protected SpriteCode SelectionMarkCode = BuiltInSprite.MENU_SELECTION_MARK;
+	protected SpriteCode MoreItemMarkCode = BuiltInSprite.MENU_MORE_MARK;
+	protected SpriteCode ArrowMarkCode = BuiltInSprite.MENU_ARROW_MARK;
 	protected int WindowWidth = 660;
 	protected int ItemHeight = 32;
 	protected int ItemGap = 16;
@@ -150,7 +150,8 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			Renderer.DrawPixel(Renderer.CameraRect, ScreenTint, int.MaxValue - 6);
 		}
 		if (BackgroundStyle == null) {
-			Renderer.DrawSlice(BackgroundCode, bgRect, BackgroundTint, int.MaxValue - 5);
+			using var __ = new GUIBodyColorScope(BackgroundTint);
+			GUI.DrawSlice(BackgroundCode, bgRect);
 		} else {
 			GUI.DrawStyleBody(bgRect, BackgroundStyle, GUIState.Normal);
 		}
@@ -368,7 +369,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 				// Single Label
 				if (drawStyleBody) {
-					GUI.DrawStyleBody(labelRect, contentStyle, GUIState.Normal);
+					GUI.DrawStyleBody(labelRect, contentStyle, mouseHoverLabel ? GUIState.Hover : GUIState.Normal);
 				}
 
 				GUI.Label(labelRect, label, contentStyle);
@@ -394,7 +395,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				// Content Label
 				if (hasContent) {
 					if (drawStyleBody) {
-						GUI.DrawStyleBody(secLabelRect, contentStyle, GUIState.Normal);
+						GUI.DrawStyleBody(secLabelRect, contentStyle, mouseHoverLabel ? GUIState.Hover : GUIState.Normal);
 					}
 					if (useStringContent) {
 						GUI.Label(secLabelRect, content, out labelBounds, contentStyle);

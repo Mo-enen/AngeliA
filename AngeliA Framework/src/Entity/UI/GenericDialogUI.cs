@@ -41,6 +41,8 @@ public class GenericDialogUI : MenuUI {
 	public override void OnActivated () {
 		base.OnActivated();
 		ContentPadding = new(32, 32, 18, 12);
+		BackgroundCode = BuiltInSprite.MENU_GENERIC_DIALOG_BG;
+		BackgroundTint = Color32.WHITE;
 	}
 
 
@@ -67,7 +69,7 @@ public class GenericDialogUI : MenuUI {
 				if (DrawItem(
 					option.Label,
 					labelStyle: GUI.Skin.Label,
-					contentStyle: GUI.Skin.SmallDarkButton,
+					contentStyle: GUI.Skin.DarkButton,
 					drawStyleBody: true
 				)) {
 					int oldSpawnFrame = SpawnFrame;

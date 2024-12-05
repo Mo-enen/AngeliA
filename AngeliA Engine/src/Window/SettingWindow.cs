@@ -293,19 +293,19 @@ public class SettingWindow : WindowUI {
 		// Theme
 		GUI.SmallLabel(rect, LABEL_THEME);
 		var popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
-		if (GUI.Button(popRect, Skin.Name == "Built-in" ? LABEL_THEME_BUILT_IN : Skin.Name, Skin.SmallDarkButton)) {
+		if (GUI.Button(popRect, Skin.Name == "Built-in" ? LABEL_THEME_BUILT_IN : Skin.Name, Skin.DarkButton)) {
 			ShowThemeMenu(popRect.Shift(Unify(4), MasterScroll).BottomLeft());
 		}
-		GUI.PopupTriangleIcon(popRect.Shrink(rect.height / 8));
+		GUI.PopupTriangleIcon(popRect);
 		rect.SlideDown(GUI.FieldPadding);
 
 		// Language
 		GUI.SmallLabel(rect, LABEL_LANGUAGE);
 		popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
-		if (GUI.Button(popRect, Util.GetLanguageDisplayName(Language.CurrentLanguage), Skin.SmallDarkButton)) {
+		if (GUI.Button(popRect, Util.GetLanguageDisplayName(Language.CurrentLanguage), Skin.DarkButton)) {
 			ShowLanguageMenu(popRect.Shift(Unify(4), MasterScroll).BottomLeft());
 		}
-		GUI.PopupTriangleIcon(popRect.Shrink(rect.height / 8));
+		GUI.PopupTriangleIcon(popRect);
 		rect.SlideDown(GUI.FieldPadding);
 
 		return rect;
@@ -378,11 +378,11 @@ public class SettingWindow : WindowUI {
 
 		// Key
 		rect.width = Unify(96);
-		if (GUI.Button(rect, Util.GetKeyDisplayName(saving.Value.Key), Skin.SmallDarkButton)) {
+		if (GUI.Button(rect, Util.GetKeyDisplayName(saving.Value.Key), Skin.DarkButton)) {
 			ActivatedSetting = saving;
 			ShowKeyboardKeyPopup(rect.Shift(Unify(4), MasterScroll).BottomLeft());
 		}
-		GUI.PopupTriangleIcon(rect.Shrink(rect.height / 8));
+		GUI.PopupTriangleIcon(rect);
 		rect.SlideRight(padding * 4);
 
 		// CSA
