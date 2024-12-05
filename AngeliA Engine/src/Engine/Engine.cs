@@ -39,6 +39,7 @@ public partial class Engine {
 	private static readonly LanguageCode MENU_SORT_BY_NAME = ("Menu.SortProjectByName", "Sort by Name");
 	private static readonly LanguageCode MENU_SORT_BY_TIME = ("Menu.SortProjectByTime", "Sort by Last Open Time");
 	private static readonly LanguageCode NOTI_THEME_LOADED = ("Noti.ThemeLoaded", "Theme Loaded");
+	private static readonly LanguageCode NOTI_THEME_NOT_LOADED = ("Noti.ThemeLoaded", "Fail to Load Theme");
 	private static readonly LanguageCode FILE_DROP_MSG_AUDIO = ("UI.FileDropMsg.Audio", "Import audio file {0} as:");
 	private static readonly LanguageCode FILE_DROP_LABEL_MUSIC = ("UI.FileDropLabel.Music", "Music");
 	private static readonly LanguageCode FILE_DROP_LABEL_SOUND = ("UI.FileDropLabel.Sound", "Sound");
@@ -177,9 +178,10 @@ public partial class Engine {
 		engine.RenderingSheetIndex = Renderer.AddAltSheet(engine.RenderingSheet);
 		engine.ThemeSheetIndex = Renderer.AddAltSheet(engine.ThemeSheet);
 		if (!string.IsNullOrEmpty(CurrentThemeName.Value)) {
-			engine.ThemeSheet.LoadFromDisk(Util.CombinePaths(EngineUtil.ThemeRoot, $"{CurrentThemeName.Value}.{AngePath.SHEET_FILE_EXT}"));
-			engine.ThemeSkin.Name = Util.GetDisplayName(CurrentThemeName.Value);
-			engine.ThemeSkin.LoadColorFromSheet(engine.ThemeSheet);
+			engine.LoadTheme(
+				Util.CombinePaths(EngineUtil.ThemeRoot, $"{CurrentThemeName.Value}.{AngePath.SHEET_FILE_EXT}"),
+				false
+			);
 		}
 
 	}
@@ -810,23 +812,7 @@ public partial class Engine {
 			string path = requireChangeThemePath;
 			SettingWindow.Instance.RequireChangeThemePath = null;
 			PixelEditor.Instance.RequireChangeThemePath = null;
-			if (path != "" && Util.FileExists(path) && ThemeSheet.LoadFromDisk(path)) {
-				// Load Custom Theme
-				ThemeSkin.Name = Util.GetDisplayName(Util.GetNameWithoutExtension(path));
-				ThemeSkin.LoadColorFromSheet(ThemeSheet);
-				CurrentThemeName.Value = Util.GetNameWithoutExtension(path);
-			} else {
-				// Load Built-in Theme
-				ThemeSheet.Clear();
-				ThemeSkin.Name = "Built-in";
-				ThemeSkin.LoadColorFromSkin(GUISkin.Default);
-				CurrentThemeName.Value = "";
-			}
-			// Notify
-			NotificationFlash = Game.GlobalFrame < NotificationStartFrame + NOTIFY_DURATION;
-			NotificationStartFrame = Game.GlobalFrame;
-			NotificationContent = NOTI_THEME_LOADED;
-			NotificationSubContent = ThemeSkin.Name;
+			LoadTheme(path, true);
 		}
 
 		// Ignore Rebuild for Non-Game Project
@@ -927,9 +913,7 @@ public partial class Engine {
 					if (engineSheet.Atlas.Count > 0) {
 						engineSheet.SaveToDisk(CurrentProject.Universe.BuiltInSheetPath);
 						Util.SetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath, builtInSheetModDate);
-#if DEBUG
 						Debug.Log("Built-in Sheet Updated");
-#endif
 					}
 				}
 			}
@@ -1093,6 +1077,40 @@ public partial class Engine {
 	private int GetEngineLeftBarWidth (out int contentPadding) {
 		contentPadding = GUI.Unify(8);
 		return (FullsizeMenu.Value ? GUI.Unify(WINDOW_BAR_WIDTH_FULL) : GUI.Unify(WINDOW_BAR_WIDTH_NORMAL)) + contentPadding;
+	}
+
+
+	private void LoadTheme (string path, bool notification = true) {
+		bool loaded;
+		if (path != "" && Util.FileExists(path) && ThemeSheet.LoadFromDisk(path)) {
+			// Load Custom Theme
+			ThemeSkin.Name = Util.GetDisplayName(Util.GetNameWithoutExtension(path));
+			ThemeSkin.LoadColorFromSheet(ThemeSheet);
+			CurrentThemeName.Value = Util.GetNameWithoutExtension(path);
+			// Load Built-In from Engine
+			var builtInSheet = new Sheet();
+			if (builtInSheet.LoadFromDisk(Universe.BuiltIn.GameSheetPath)) {
+				builtInSheet.RemoveAllAtlasAndAllSpritesInsideExcept("BuiltIn".AngeHash());
+				if (builtInSheet.Atlas.Count > 0) {
+					ThemeSheet.CombineSheet(builtInSheet);
+				}
+			}
+			loaded = true;
+		} else {
+			// Load Built-in Theme
+			ThemeSheet.Clear();
+			ThemeSkin.Name = "Built-in";
+			ThemeSkin.LoadColorFromSkin(GUISkin.Default);
+			CurrentThemeName.Value = "";
+			loaded = false;
+		}
+		// Notify
+		if (notification) {
+			NotificationFlash = Game.GlobalFrame < NotificationStartFrame + NOTIFY_DURATION;
+			NotificationStartFrame = Game.GlobalFrame;
+			NotificationContent = loaded ? NOTI_THEME_LOADED : NOTI_THEME_NOT_LOADED;
+			NotificationSubContent = loaded ? ThemeSkin.Name : "";
+		}
 	}
 
 

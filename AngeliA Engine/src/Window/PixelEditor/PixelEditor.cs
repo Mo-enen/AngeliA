@@ -873,6 +873,7 @@ public partial class PixelEditor : WindowUI {
 		TryApplyPixelBuffer(true);
 		EditingSheet.SaveToDisk(CurrentProject.Universe.GameSheetPath);
 		RequireReloadRenderingSheet = true;
+
 #if DEBUG
 		if (CurrentProject != null && CurrentProject.IsEngineInternalProject) {
 			if (CurrentProject.Universe.Info.ProjectType == ProjectType.Artwork) {

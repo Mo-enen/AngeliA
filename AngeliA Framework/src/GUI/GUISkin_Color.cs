@@ -25,21 +25,4 @@ public partial class GUISkin {
 	public Color32 GizmosDragging = Color32.WHITE;
 	public Color32 GizmosDraggingAlt = Color32.BLACK;
 
-	public void LoadColorFromSheet (Sheet sheet) {
-		foreach (var (field, _) in this.ForAllFields<Color32>(BindingFlags.Instance | BindingFlags.Public)) {
-			int fieldID = field.Name.AngeHash();
-			if (sheet.SpritePool.TryGetValue(fieldID, out var sprite)) {
-				field.SetValue(this, sprite.SummaryTint);
-			} else {
-				field.SetValue(this, field.GetValue(Default));
-			}
-		}
-	}
-
-	public void LoadColorFromSkin (GUISkin otherSkin) {
-		foreach (var (field, _) in this.ForAllFields<Color32>(BindingFlags.Instance | BindingFlags.Public)) {
-			field.SetValue(this, field.GetValue(otherSkin));
-		}
-	}
-
 }

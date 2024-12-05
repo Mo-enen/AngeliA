@@ -14,7 +14,6 @@ public partial class GUISkin {
 		MidLeft = 0, MidMid = 0b010000, TopLeft = 0b100000, TopMid = 0b110000,
 		WordWrap = 0b1000000,
 		Clip = 0b10000000,
-		NoBorder = 0, SmallBorder = 0b0100000000, Border = 0b1000000000, LargeBorder = 0b1100000000,
 	}
 
 
@@ -37,11 +36,6 @@ public partial class GUISkin {
 			ContentColorDown = dark ? Color32.GREY_20 : grey ? Color32.GREY_112 : Color32.GREY_216,
 			ContentColorDisable = (dark ? Color32.GREY_32 : grey ? Color32.GREY_128 : Color32.GREY_245).WithNewA(128),
 
-			ContentBorder =
-				pattern.HasFlag(LabelPattern.LargeBorder) ? Int4.one * 4 :
-				pattern.HasFlag(LabelPattern.SmallBorder) ? Int4.one * 1 :
-				pattern.HasFlag(LabelPattern.Border) ? Int4.one * 2 :
-				null,
 			CharSize =
 				pattern.HasFlag(LabelPattern.Auto) ? -1 :
 				pattern.HasFlag(LabelPattern.Large) ? 28 :
@@ -95,12 +89,12 @@ public partial class GUISkin {
 	public readonly GUIStyle AutoRightLabel = new(ProduceLabel(LabelPattern.Auto)) { Alignment = Alignment.MidRight };
 
 	// MSG
-	public readonly GUIStyle SmallMessage = ProduceLabel(LabelPattern.Small | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.SmallBorder, lineSpace: 10);
-	public readonly GUIStyle Message = ProduceLabel(LabelPattern.Normal | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.Border, lineSpace: 10);
-	public readonly GUIStyle LargeMessage = ProduceLabel(LabelPattern.Large | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.LargeBorder, lineSpace: 10);
-	public readonly GUIStyle SmallCenterMessage = ProduceLabel(LabelPattern.Small | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.SmallBorder, lineSpace: 10);
-	public readonly GUIStyle CenterMessage = ProduceLabel(LabelPattern.Normal | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.Border, lineSpace: 10);
-	public readonly GUIStyle LargeCenterMessage = ProduceLabel(LabelPattern.Large | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.LargeBorder, lineSpace: 10);
+	public readonly GUIStyle SmallMessage = ProduceLabel(LabelPattern.Small | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip, lineSpace: 10);
+	public readonly GUIStyle Message = ProduceLabel(LabelPattern.Normal | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip, lineSpace: 10);
+	public readonly GUIStyle LargeMessage = ProduceLabel(LabelPattern.Large | LabelPattern.TopMid | LabelPattern.WordWrap | LabelPattern.Clip, lineSpace: 10);
+	public readonly GUIStyle SmallCenterMessage = ProduceLabel(LabelPattern.Small | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip, lineSpace: 10);
+	public readonly GUIStyle CenterMessage = ProduceLabel(LabelPattern.Normal | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip, lineSpace: 10);
+	public readonly GUIStyle LargeCenterMessage = ProduceLabel(LabelPattern.Large | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip, lineSpace: 10);
 
 	// Text Area
 	public readonly GUIStyle LargeTextArea = ProduceLabel(LabelPattern.Large | LabelPattern.TopLeft | LabelPattern.WordWrap | LabelPattern.Clip);

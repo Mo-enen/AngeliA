@@ -170,6 +170,7 @@ public class ProjectEditor : WindowUI {
 			MasterScrollPos = scroll.PositionY;
 			int left = rect.x;
 			int indent = GUI.FieldHeight / 2;
+			int foldPaddingL = Unify(24);
 
 			// Workflow Button
 			if (projectType == ProjectType.Game) {
@@ -179,7 +180,7 @@ public class ProjectEditor : WindowUI {
 			// Game
 			rect.yMin = rect.yMax - GUI.FieldHeight;
 			rect.xMin += indent;
-			if (!GUI.ToggleFold(rect, ref FoldingGamePanel, ICON_GAME, LABEL_GAME, indent)) {
+			if (!GUI.ToggleFold(rect, ref FoldingGamePanel, ICON_GAME, LABEL_GAME, foldPaddingL)) {
 				rect.xMin += indent;
 				rect.SlideDown(GUI.FieldPadding);
 				OnGUI_Game(ref rect);
@@ -193,7 +194,7 @@ public class ProjectEditor : WindowUI {
 				rect.x = left;
 				rect.yMin = rect.yMax - GUI.FieldHeight;
 				rect.xMin += indent;
-				if (!GUI.ToggleFold(rect, ref FoldingMapPanel, ICON_MAP, LABEL_MAP, indent)) {
+				if (!GUI.ToggleFold(rect, ref FoldingMapPanel, ICON_MAP, LABEL_MAP, foldPaddingL)) {
 					rect.xMin += indent;
 					rect.SlideDown(GUI.FieldPadding);
 					OnGUI_Map(ref rect);
@@ -205,7 +206,7 @@ public class ProjectEditor : WindowUI {
 				rect.x = left;
 				rect.yMin = rect.yMax - GUI.FieldHeight;
 				rect.xMin += indent;
-				if (!GUI.ToggleFold(rect, ref FoldingStagePanel, ICON_STAGE, LABEL_STAGE, indent)) {
+				if (!GUI.ToggleFold(rect, ref FoldingStagePanel, ICON_STAGE, LABEL_STAGE, foldPaddingL)) {
 					rect.xMin += indent;
 					rect.SlideDown(GUI.FieldPadding);
 					OnGUI_Stage(ref rect);
@@ -215,7 +216,7 @@ public class ProjectEditor : WindowUI {
 
 				// Resource
 				rect.xMin = left + indent;
-				if (!GUI.ToggleFold(rect, ref FoldingResourcePanel, ICON_RESOURCE, LABEL_RESOURCE, indent)) {
+				if (!GUI.ToggleFold(rect, ref FoldingResourcePanel, ICON_RESOURCE, LABEL_RESOURCE, foldPaddingL)) {
 					rect.xMin += indent;
 					rect.SlideDown(GUI.FieldPadding);
 					OnGUI_Resource(ref rect);
@@ -237,12 +238,9 @@ public class ProjectEditor : WindowUI {
 		if (panelBgSprite != null) {
 			using (new DefaultLayerScope()) {
 				var range = new IRect(panelRect.x, rect.yMax + MasterScrollPos, panelRect.width, panelRect.yMax - rect.yMax);
-				var border = GUI.UnifyBorder(panelBgSprite.GlobalBorder, true);
+				var border = GUI.UnifyBorder(panelBgSprite.GlobalBorder);
 				range = range.Expand(border);
-				Renderer.DrawSlice(
-					panelBgSprite, range,
-					borderL: border.left, borderR: border.right, borderD: border.down, borderU: border.up
-				);
+				GUI.DrawSlice(panelBgSprite, range);
 			}
 		}
 

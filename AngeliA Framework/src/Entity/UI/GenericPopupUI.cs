@@ -53,7 +53,6 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	// Data
 	private readonly GUIStyle TextInputStyle = new(GUI.Skin.Frame) {
 		Alignment = Alignment.MidLeft,
-		ContentBorder = Int4.Direction(1, 1, 1, 1),
 		BodyColor = Color32.GREY_230,
 		BodyColorDown = Color32.GREY_230,
 		BodyColorHover = Color32.GREY_230,

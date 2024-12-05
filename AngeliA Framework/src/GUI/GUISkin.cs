@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace AngeliA;
 
@@ -41,7 +42,6 @@ public partial class GUISkin {
 		BodyColorHover = Color32.GREY_20,
 		BodyColorDown = Color32.GREY_20,
 		BodyColorDisable = Color32.GREY_20,
-		BodyBorder = Int4.Direction(2, 2, 2, 2),
 	};
 
 	public readonly GUIStyle WeakPixel = new() {
@@ -80,7 +80,6 @@ public partial class GUISkin {
 		BodySpriteDisable = BuiltInSprite.UI_ITEM_FRAME,
 
 		ContentColorDisable = Color32.WHITE_128,
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
 	};
 
 	public readonly GUIStyle Scrollbar = new() {
@@ -133,10 +132,6 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_TOGGLE_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_TOGGLE_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_TOGGLE,
-		ContentShift = new(0, 2),
-		ContentShiftHover = new(0, 2),
-		ContentShiftDisable = new(0, 2),
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
 	};
 
 	public readonly GUIStyle LargeToggle = new() {
@@ -144,10 +139,6 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_LARGE_TOGGLE_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_LARGE_TOGGLE_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_LARGE_TOGGLE,
-		ContentShift = new(0, 2),
-		ContentShiftHover = new(0, 2),
-		ContentShiftDisable = new(0, 2),
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
 	};
 
 	public readonly GUIStyle ToggleMark = new() {
@@ -166,7 +157,6 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD_LARGE,
 		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD_LARGE,
 
-		ContentBorder = Int4.one * 12,
 		Alignment = Alignment.MidLeft,
 
 		ContentColor = Color32.GREY_245,
@@ -185,7 +175,6 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD,
 		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD,
 
-		ContentBorder = Int4.one * 8,
 		Alignment = Alignment.MidLeft,
 
 		ContentColor = Color32.GREY_245,
@@ -204,7 +193,6 @@ public partial class GUISkin {
 		BodySpriteDown = BuiltInSprite.UI_INPUT_FIELD_SMALL,
 		BodySpriteDisable = BuiltInSprite.UI_INPUT_FIELD_SMALL,
 
-		ContentBorder = Int4.one * 4,
 		Alignment = Alignment.MidLeft,
 
 		ContentColor = Color32.GREY_245,
@@ -215,7 +203,27 @@ public partial class GUISkin {
 		CharSize = 14,
 		Wrap = WrapMode.NoWrap,
 
-
 	};
+
+
+	// API
+	public void LoadColorFromSheet (Sheet sheet) {
+		foreach (var (field, _) in this.ForAllFields<Color32>(BindingFlags.Instance | BindingFlags.Public)) {
+			int fieldID = field.Name.AngeHash();
+			if (sheet.SpritePool.TryGetValue(fieldID, out var sprite)) {
+				field.SetValue(this, sprite.SummaryTint);
+			} else {
+				field.SetValue(this, field.GetValue(Default));
+			}
+		}
+	}
+
+
+	public void LoadColorFromSkin (GUISkin otherSkin) {
+		foreach (var (field, _) in this.ForAllFields<Color32>(BindingFlags.Instance | BindingFlags.Public)) {
+			field.SetValue(this, field.GetValue(otherSkin));
+		}
+	}
+
 
 }

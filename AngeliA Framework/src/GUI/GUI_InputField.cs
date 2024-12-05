@@ -80,8 +80,9 @@ public static partial class GUI {
 
 		int startCellIndex = Renderer.GetUsedCellCount();
 		var labelRect = rect;
-		if (bodyStyle.ContentBorder.HasValue) {
-			rect = rect.Shrink(bodyStyle.ContentBorder.Value);
+		var contentBorder = bodyStyle.GetContentBorder(state);
+		if (!contentBorder.IsZero) {
+			rect = rect.Shrink(contentBorder);
 		}
 		int beamShrink = rect.height / 12;
 		var beamRect = new IRect(

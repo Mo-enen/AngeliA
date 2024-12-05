@@ -29,18 +29,12 @@ public sealed class GUIStyle {
 	public Color32 BodyColorHover = Color32.WHITE;
 	public Color32 BodyColorDown = Color32.WHITE;
 	public Color32 BodyColorDisable = Color32.WHITE;
-	public Int4? BodyBorder = null;
 
 	// Content
 	public Color32 ContentColor = Color32.WHITE;
 	public Color32 ContentColorHover = Color32.WHITE;
 	public Color32 ContentColorDown = Color32.WHITE;
 	public Color32 ContentColorDisable = Color32.WHITE;
-	public Int2 ContentShift = Int2.zero;
-	public Int2 ContentShiftHover = Int2.zero;
-	public Int2 ContentShiftDown = Int2.zero;
-	public Int2 ContentShiftDisable = Int2.zero;
-	public Int4? ContentBorder = null;
 
 	// Text
 	public int CharSize = -1;
@@ -57,20 +51,14 @@ public sealed class GUIStyle {
 		BodySpriteHover = source.BodySpriteHover;
 		BodySpriteDown = source.BodySpriteDown;
 		BodySpriteDisable = source.BodySpriteDisable;
-		BodyBorder = source.BodyBorder;
 		BodyColor = source.BodyColor;
 		BodyColorHover = source.BodyColorHover;
 		BodyColorDown = source.BodyColorDown;
 		BodyColorDisable = source.BodyColorDisable;
-		ContentBorder = source.ContentBorder;
 		ContentColor = source.ContentColor;
 		ContentColorHover = source.ContentColorHover;
 		ContentColorDown = source.ContentColorDown;
 		ContentColorDisable = source.ContentColorDisable;
-		ContentShift = source.ContentShift;
-		ContentShiftHover = source.ContentShiftHover;
-		ContentShiftDown = source.ContentShiftDown;
-		ContentShiftDisable = source.ContentShiftDisable;
 		CharSize = source.CharSize;
 		CharSpace = source.CharSpace;
 		LineSpace = source.LineSpace;
@@ -78,13 +66,29 @@ public sealed class GUIStyle {
 		Wrap = source.Wrap;
 		Clip = source.Clip;
 	}
-	public Int2 GetContentShift (GUIState state) => state switch {
-		GUIState.Normal => ContentShift,
-		GUIState.Hover => ContentShiftHover,
-		GUIState.Press => ContentShiftDown,
-		GUIState.Disable => ContentShiftDisable,
-		_ => ContentShift,
-	};
+
+	public Int4 GetBodyBorder (GUIState state) {
+		int id = GetBodySprite(state);
+		if (!Renderer.TryGetSprite(id, out var sprite, true)) return default;
+		var border = sprite.GlobalBorder;
+		border.left /= 10;
+		border.right /= 10;
+		border.down /= 10;
+		border.up /= 10;
+		return border;
+	}
+
+	public Int4 GetContentBorder (GUIState state) {
+		int id = GetBodySprite(state);
+		if (!Renderer.TryGetSprite(id, out var sprite, true)) return default;
+		var border = sprite.GlobalBorder;
+		border.left /= 10;
+		border.right /= 10;
+		border.down /= 10;
+		border.up /= 10;
+		return border;
+	}
+
 	public Color32 GetContentColor (GUIState state) => state switch {
 		GUIState.Normal => ContentColor,
 		GUIState.Hover => ContentColorHover,
@@ -92,6 +96,7 @@ public sealed class GUIStyle {
 		GUIState.Disable => ContentColorDisable,
 		_ => ContentColor,
 	};
+
 	public Color32 GetBodyColor (GUIState state) => state switch {
 		GUIState.Normal => BodyColor,
 		GUIState.Hover => BodyColorHover,
@@ -99,6 +104,7 @@ public sealed class GUIStyle {
 		GUIState.Disable => BodyColorDisable,
 		_ => BodyColor,
 	};
+
 	public int GetBodySprite (GUIState state) => state switch {
 		GUIState.Normal => BodySprite,
 		GUIState.Hover => BodySpriteHover,

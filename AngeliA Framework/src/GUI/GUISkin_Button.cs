@@ -11,10 +11,6 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_BUTTON_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_BUTTON_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_BUTTON,
-		ContentShift = new(0, 2),
-		ContentShiftDisable = new(0, 2),
-		ContentShiftHover = new(0, 2),
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
 
 		ContentColor = Color32.GREY_32,
 		ContentColorHover = Color32.GREY_32,
@@ -31,11 +27,6 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_SMALL_BUTTON_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_SMALL_BUTTON_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_SMALL_BUTTON,
-
-		ContentShift = new(0, 1),
-		ContentShiftDisable = new(0, 1),
-		ContentShiftHover = new(0, 1),
-		ContentBorder = Int4.Direction(1, 1, 1, 1),
 
 		ContentColor = Color32.GREY_32,
 		ContentColorHover = Color32.GREY_32,
@@ -62,7 +53,6 @@ public partial class GUISkin {
 		ContentColorDown = Color32.GREY_230,
 		ContentColorDisable = Color32.WHITE_128,
 
-		ContentBorder = Int4.Direction(3, 3, 3, 3),
 	};
 	public readonly GUIStyle SmallIconButton = new() {
 		BodySprite = 0,
@@ -80,7 +70,6 @@ public partial class GUISkin {
 		ContentColorDown = Color32.GREY_230,
 		ContentColorDisable = Color32.CLEAR,
 
-		ContentBorder = Int4.Direction(1, 1, 1, 1),
 	};
 
 	public readonly GUIStyle DarkButton = new() {
@@ -88,10 +77,6 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_DARK_BUTTON_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_DARK_BUTTON_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_DARK_BUTTON,
-		ContentShift = new(0, 2),
-		ContentShiftDisable = new(0, 2),
-		ContentShiftHover = new(0, 2),
-		ContentBorder = Int4.Direction(2, 2, 2, 2),
 
 		ContentColor = Color32.WHITE,
 		ContentColorHover = Color32.WHITE,
@@ -107,11 +92,6 @@ public partial class GUISkin {
 		BodySpriteHover = BuiltInSprite.UI_MINI_BUTTON_DARK_HOVER,
 		BodySpriteDown = BuiltInSprite.UI_MINI_BUTTON_DARK_DOWN,
 		BodySpriteDisable = BuiltInSprite.UI_MINI_BUTTON_DARK,
-
-		ContentShift = new(0, 1),
-		ContentShiftDisable = new(0, 1),
-		ContentShiftHover = new(0, 1),
-		ContentBorder = Int4.Direction(1, 1, 1, 1),
 
 		ContentColor = Color32.WHITE,
 		ContentColorHover = Color32.WHITE,

@@ -407,8 +407,9 @@ public partial class MapEditor {
 		}
 
 		// Content
-		bool mouseInPanel = groupRect.MouseInside();
 		groupRect = groupRect.Shrink(PANEL_PADDING);
+		var contentRect = groupRect.Expand(0, GUI.ScrollbarSize, -TAB_SIZE, 0);
+		bool mouseInPanel = contentRect.MouseInside();
 		bool interactable = !IsPlaying && !DroppingPlayer && !TaskingRoute;
 		var rect = new IRect(0, 0, ITEM_SIZE, ITEM_SIZE);
 		int offsetX = groupRect.x + (groupRect.width - groupColumnCount * ITEM_SIZE - (groupColumnCount - 1) * ITEM_GAP) / 2;
@@ -423,7 +424,7 @@ public partial class MapEditor {
 		int startIndex = PaletteGroupScrollY * groupColumnCount;
 		int endIndex = Util.Min(startIndex + UI_ROW_MAX * (ITEM_SIZE + ITEM_GAP), groupCount - 1);
 
-		using (new ClampCellsScope(groupRect.Expand(0, GUI.ScrollbarSize, -TAB_SIZE, 0))) {
+		using (new ClampCellsScope(contentRect)) {
 
 			for (int i = startIndex; i <= endIndex; i++) {
 
@@ -433,7 +434,7 @@ public partial class MapEditor {
 				int coverID = showingBuiltIn ? PaletteGroups[i].CoverID : EditorMeta.PinnedLists[i].Icon;
 				if (coverID == 0) coverID = UI_DEFAULT_LIST_COVER;
 				rect.x = offsetX + (i % groupColumnCount) * (ITEM_SIZE + ITEM_GAP);
-				rect.y = groupRect.yMax - ITEM_SIZE - (i / groupColumnCount - PaletteGroupScrollY) * (ITEM_SIZE + ITEM_GAP);
+				rect.y = contentRect.yMax - ITEM_SIZE - (i / groupColumnCount - PaletteGroupScrollY) * (ITEM_SIZE + ITEM_GAP);
 
 				bool mouseHovering = mouseInPanel && rect.MouseInside();
 
@@ -520,7 +521,7 @@ public partial class MapEditor {
 		}
 
 		// Click on Empty
-		if (!showingBuiltIn && Input.MouseRightButtonDown && groupRect.MouseInside()) {
+		if (!showingBuiltIn && Input.MouseRightButtonDown && contentRect.MouseInside()) {
 			Input.UseMouseKey(1);
 			ShowPaletteListMenu(null);
 		}

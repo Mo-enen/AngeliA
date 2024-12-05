@@ -122,18 +122,11 @@ public static partial class GUI {
 	public static int UnifyMonitor (int value) => (
 		value / 1000f * Renderer.CameraRect.height * Game.MonitorHeight / Game.ScreenHeight.GreaterOrEquel(1)
 	).RoundToInt();
-	public static Int4 UnifyBorder (Int4 border, bool fromSprite) {
-		if (fromSprite) {
-			border.left = Unify(border.left / 10);
-			border.right = Unify(border.right / 10);
-			border.down = Unify(border.down / 10);
-			border.up = Unify(border.up / 10);
-		} else {
-			border.left = Unify(border.left);
-			border.right = Unify(border.right);
-			border.down = Unify(border.down);
-			border.up = Unify(border.up);
-		}
+	public static Int4 UnifyBorder (Int4 border) {
+		border.left = Unify(border.left);
+		border.right = Unify(border.right);
+		border.down = Unify(border.down);
+		border.up = Unify(border.up);
 		return border;
 	}
 
@@ -143,19 +136,14 @@ public static partial class GUI {
 
 	public static IRect GetContentRect (IRect rect, GUIStyle style, GUIState state) {
 		// Border
-		if (style.ContentBorder.HasValue) {
-			var border = style.ContentBorder.Value;
-			border.left = Unify(border.left);
-			border.right = Unify(border.right);
-			border.down = Unify(border.down);
-			border.up = Unify(border.up);
-			rect = rect.Shrink(border);
+		var contentBorder = style.GetContentBorder(state);
+		if (!contentBorder.IsZero) {
+			contentBorder.left = Unify(contentBorder.left);
+			contentBorder.right = Unify(contentBorder.right);
+			contentBorder.down = Unify(contentBorder.down);
+			contentBorder.up = Unify(contentBorder.up);
+			rect = rect.Shrink(contentBorder);
 		}
-		// Shift
-		var shift = style.GetContentShift(state);
-		shift.x = Unify(shift.x);
-		shift.y = Unify(shift.y);
-		rect = rect.Shift(shift.x, shift.y);
 		// Final
 		return rect;
 	}
@@ -170,7 +158,11 @@ public static partial class GUI {
 			tint * Color * style.GetBodyColor(state) :
 			tint * BodyColor * Color;
 		if (color.a == 0) return;
-		var border = UnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
+		var bodyBorder = style.GetBodyBorder(state);
+		if (bodyBorder.IsZero) {
+			bodyBorder = _sprite.GlobalBorder;
+		}
+		var border = UnifyBorder(bodyBorder);
 		if (border.IsZero) {
 			Renderer.Draw(_sprite, rect, color);
 		} else {
@@ -179,17 +171,25 @@ public static partial class GUI {
 	}
 
 
-	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state, bool ignoreSlice = false) {
+	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state, bool ignoreSlice = false, bool fit = false) {
 		if (!Renderer.TryGetSprite(sprite, out var _sprite)) return;
 		var color = ContentColor == Color32.WHITE ?
 			style.GetContentColor(state) * Color :
 			ContentColor * Color;
 		if (color.a == 0) return;
-		rect = GetContentRect(rect, style, state);
+		var contentRect = GetContentRect(rect, style, state);
+		if (fit) {
+			contentRect = contentRect.Fit(rect.width, rect.height);
+		}
+		rect = contentRect;
 		if (ignoreSlice || _sprite.GlobalBorder.IsZero) {
 			Renderer.Draw(_sprite, rect, color);
 		} else {
-			var border = UnifyBorder(style.BodyBorder ?? _sprite.GlobalBorder, !style.BodyBorder.HasValue);
+			var bodyBorder = style.GetBodyBorder(state);
+			if (bodyBorder.IsZero) {
+				bodyBorder = _sprite.GlobalBorder;
+			}
+			var border = UnifyBorder(bodyBorder);
 			Renderer.DrawSlice(_sprite, rect, border.left, border.right, border.down, border.up, color);
 		}
 	}
@@ -202,7 +202,12 @@ public static partial class GUI {
 		return null;
 	}
 	public static Cell[] DrawSlice (AngeSprite sprite, IRect rect) {
-		var border = UnifyBorder(sprite.GlobalBorder, true);
+		var border = sprite.GlobalBorder;
+		border.left /= 10;
+		border.right /= 10;
+		border.down /= 10;
+		border.up /= 10;
+		border = UnifyBorder(border);
 		return Renderer.DrawSlice(sprite, rect, border.left, border.right, border.down, border.up, Color);
 	}
 
@@ -261,7 +266,7 @@ public static partial class GUI {
 
 		bool fromString = chars == null;
 		int count = fromString ? text.Length : chars.Length;
-		int charSize = style.CharSize < 0 ? rect.height / 2 : Unify(style.CharSize);
+		int charSize = style.CharSize < 0 ? rect.height * 2 / 3 : Unify(style.CharSize);
 		int lineSpace = Unify(style.LineSpace);
 		int charSpace = Unify(style.CharSpace);
 		var alignment = style.Alignment;
@@ -613,7 +618,7 @@ public static partial class GUI {
 		// Fold Triangle
 		using (new GUIColorScope(Color32.GREY_128)) {
 			Icon(
-				rect.EdgeOutside(Direction4.Left, rect.height * 2 / 3).Shift(-paddingLeft / 4, 0),
+				rect.EdgeOutside(Direction4.Left, rect.height / 2).Shift(-paddingLeft / 3, 0),
 				folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN
 			);
 		}
@@ -657,7 +662,7 @@ public static partial class GUI {
 	public static void Icon (IRect rect, int sprite, GUIStyle style, GUIState state) {
 		if (!Renderer.TryGetSprite(sprite, out var icon)) return;
 		if (style != null) {
-			DrawStyleContent(rect.Fit(icon), sprite, style, state, ignoreSlice: true);
+			DrawStyleContent(rect.Fit(icon), sprite, style, state, ignoreSlice: true, fit: true);
 		} else {
 			Renderer.Draw(icon, rect.Fit(icon), Color * ContentColor);
 		}
