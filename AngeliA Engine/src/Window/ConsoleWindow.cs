@@ -53,6 +53,7 @@ public class ConsoleWindow : WindowUI {
 	private int ScrollY = 0;
 	private int ScrollErrorY = 0;
 	private bool LoggingCompileError = false;
+	private Project CurrentProject;
 
 
 	#endregion
@@ -79,6 +80,8 @@ public class ConsoleWindow : WindowUI {
 
 
 	public override void UpdateWindowUI () {
+
+		if (CurrentProject == null) return;
 
 		bool hasLog = Lines.Length > 0;
 		bool hasError = CompileErrorLines.Length > 0;
@@ -124,15 +127,17 @@ public class ConsoleWindow : WindowUI {
 		rect.SlideRight(padding);
 
 		// Code Analysis
-		if (GUI.Button(rect, ICON_CODE_ANA, Skin.SmallDarkButton)) {
-			if (HaveRunningRigGame) {
-				RequireCodeAnalysis = 1;
-			}
+		using (new GUIEnableScope(CurrentProject.Universe.Info.ProjectType == ProjectType.Game)) {
+			if (GUI.Button(rect, ICON_CODE_ANA, Skin.SmallDarkButton)) {
+				if (HaveRunningRigGame) {
+					RequireCodeAnalysis = 1;
+				}
 #if DEBUG
-			string projectFolder = Util.GetParentPath(Universe.BuiltIn.UniverseRoot);
-			FrameworkUtil.RunEmptyScriptFileAnalysis(Util.GetParentPath(projectFolder));
-			FrameworkUtil.RunBuiltInSpriteAnalysys();
+				string projectFolder = Util.GetParentPath(Universe.BuiltIn.UniverseRoot);
+				FrameworkUtil.RunEmptyScriptFileAnalysis(Util.GetParentPath(projectFolder), false);
+				FrameworkUtil.RunBuiltInSpriteAnalysys();
 #endif
+			}
 		}
 		RequireTooltip(rect, TIP_HASH_COL);
 
@@ -227,6 +232,14 @@ public class ConsoleWindow : WindowUI {
 
 
 	#region --- API ---
+
+
+	public void SetCurrentProject (Project project) {
+		CurrentProject = project;
+		RequireCodeAnalysis = 2;
+		Clear();
+		RemoveAllCompileErrors();
+	}
 
 
 	public void Clear () => Lines.Reset();

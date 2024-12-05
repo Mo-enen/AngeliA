@@ -159,7 +159,7 @@ public class PackageManager : WindowUI {
 		GUI.DrawSlice(UI_TOOLBAR, barRect);
 
 		// Import Pack
-		if (GUI.DarkButton(rect, ICON_IMPORT_PACK)) {
+		if (GUI.Button(rect, ICON_IMPORT_PACK, Skin.SmallDarkButton)) {
 			FileBrowserUI.OpenFile(IMPORT_PACK_TITLE, OnPackImport, AngePath.PACKAGE_SEARCH_PATTERN);
 			static void OnPackImport (string path) {
 				if (Instance == null) return;
@@ -183,7 +183,7 @@ public class PackageManager : WindowUI {
 		rect.SlideRight(padding);
 
 		// Export Pack
-		if (GUI.DarkButton(rect, ICON_EXPORT_PACK)) {
+		if (GUI.Button(rect, ICON_EXPORT_PACK, Skin.SmallDarkButton)) {
 			var info = CurrentProject.Universe.Info;
 			ExportingPackage = true;
 			Export_PackageName = $"com.{info.DeveloperName.ToLower().Replace(" ", "")}.{info.ProductName.ToLower().Replace(" ", "")}";

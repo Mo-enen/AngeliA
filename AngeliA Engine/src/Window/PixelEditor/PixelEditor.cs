@@ -88,6 +88,7 @@ public partial class PixelEditor : WindowUI {
 	public static PixelEditor Instance { get; private set; }
 	public bool RequireReloadRenderingSheet { get; set; }
 	public string RequireChangeThemePath { get; set; } = null;
+	public bool RequireUniverseDirty { get; set; } = false;
 	protected override bool BlockEvent => true;
 	public override string DefaultWindowName => "Artwork";
 
@@ -120,8 +121,7 @@ public partial class PixelEditor : WindowUI {
 	// Saving
 	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false, SavingLocation.Global);
 	private static readonly SavingBool ShowAxis = new("PixEdt.ShowAxis", true, SavingLocation.Global);
-	private static readonly SavingInt PrevOpenAtlasIndex = new("PixEdt.PrevAtlas", 0, SavingLocation.Global);
-
+	
 
 	#endregion
 
@@ -858,7 +858,7 @@ public partial class PixelEditor : WindowUI {
 		PaintingColorF = default;
 		RequireChangeThemePath = null;
 		EditingSheet.LoadFromDisk(project.Universe.GameSheetPath);
-		SetCurrentAtlas(PrevOpenAtlasIndex.Value, forceChange: true, resetUndo: true);
+		SetCurrentAtlas(project.Universe.Info.LastOpenAtlasIndex, forceChange: true, resetUndo: true);
 	}
 
 

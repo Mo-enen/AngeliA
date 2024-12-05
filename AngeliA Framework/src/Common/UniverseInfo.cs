@@ -10,6 +10,7 @@ public enum ProjectType {
 
 [System.Serializable]
 public class UniverseInfo : IJsonSerializationCallback {
+
 	public string ProductName = "";
 	public string DeveloperName = "";
 	public ProjectType ProjectType = ProjectType.Game;
@@ -39,6 +40,7 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public int WorldBehindParallax = 1300;
 	public byte WorldBehindAlpha = 64;
 	public bool RequireFixScriptNamesWhenAnalyse = false;
+	public int LastOpenAtlasIndex = 0;
 
 	public void OnAfterLoadedFromDisk () => Valid(true);
 	public void OnBeforeSaveToDisk () => Valid(true);

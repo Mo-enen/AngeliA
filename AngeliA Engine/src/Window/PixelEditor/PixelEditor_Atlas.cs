@@ -490,10 +490,11 @@ public partial class PixelEditor {
 		ResizingStageIndex = -1;
 		HoveringResizeDirection = null;
 		SelectingPaletteIndex = -1;
-		PrevOpenAtlasIndex.Value = atlasIndex;
+		CurrentProject.Universe.Info.LastOpenAtlasIndex = atlasIndex;
 		PixelSelectionPixelRect = default;
 		PixelBufferSize = Int2.zero;
 		if (resetUndo) Undo.Reset();
+		RequireUniverseDirty = true;
 	}
 
 

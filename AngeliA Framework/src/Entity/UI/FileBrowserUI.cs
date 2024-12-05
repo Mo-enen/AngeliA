@@ -177,7 +177,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 		// Parent
 		rect.x += buttonPadding;
-		if (GUI.Button(rect, BuiltInSprite.ICON_TRIANGLE_LEFT, GUI.Skin.IconButton) || (!GUI.IsTyping && Input.KeyboardDown(KeyboardKey.Backspace))) {
+		if (GUI.Button(rect.Shrink(Unify(6)), BuiltInSprite.ICON_TRIANGLE_LEFT, GUI.Skin.IconButton) || (!GUI.IsTyping && Input.KeyboardDown(KeyboardKey.Backspace))) {
 			string parentPath = Util.GetParentPath(CurrentFolder);
 			if (!string.IsNullOrEmpty(parentPath)) {
 				CurrentName = ActionType == BrowserActionType.Open ? Util.GetNameWithExtension(CurrentFolder) : CurrentName;

@@ -850,6 +850,13 @@ public partial class Engine {
 			PixelEditor.Instance.RequireReloadRenderingSheet = false;
 			ReloadRenderingSheet();
 		}
+
+		// Dirty
+		if (PixelEditor.Instance.RequireUniverseDirty) {
+			PixelEditor.Instance.RequireUniverseDirty = false;
+			ProjectEditor.Instance.Save(true);
+		}
+
 	}
 
 
@@ -892,9 +899,7 @@ public partial class Engine {
 		GameEditor.Instance.CleanDirty();
 		GameEditor.Instance.SetCurrentProject(CurrentProject);
 		PackageManager.Instance.SetCurrentProject(CurrentProject);
-		ConsoleWindow.Instance.RequireCodeAnalysis = -1;
-		ConsoleWindow.Instance.Clear();
-		ConsoleWindow.Instance.RemoveAllCompileErrors();
+		ConsoleWindow.Instance.SetCurrentProject(CurrentProject);
 
 		// Audio
 		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, CurrentProject.UniversePath);
@@ -997,6 +1002,7 @@ public partial class Engine {
 			GameEditor.Instance.CleanDirty();
 			GameEditor.Instance.SetCurrentProject(null);
 			PackageManager.Instance.SetCurrentProject(null);
+			ConsoleWindow.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
 			Game.SetWindowIcon(0);
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);

@@ -328,7 +328,7 @@ public partial class Engine {
 		// Tool Command
 		if (console.RequireCodeAnalysis != 0) {
 			ForceRigGameRunInBackgroundFrame = Game.GlobalFrame + 2;
-			calling.RequireRemoteSetting(console.RequireCodeAnalysis > 0 ?
+			calling.RequireRemoteSetting(console.RequireCodeAnalysis == 1 ?
 				FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_ID :
 				FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_SILENTLY_ID,
 				0
