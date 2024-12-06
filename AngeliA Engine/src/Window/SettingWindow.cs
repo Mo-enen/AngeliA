@@ -293,7 +293,7 @@ public class SettingWindow : WindowUI {
 		// Theme
 		GUI.SmallLabel(rect, LABEL_THEME);
 		var popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
-		if (GUI.Button(popRect, Skin.Name == "Built-in" ? LABEL_THEME_BUILT_IN : Skin.Name, Skin.DarkButton)) {
+		if (GUI.Button(popRect, Skin.Name == "Built-in" ? LABEL_THEME_BUILT_IN : Skin.Name, Skin.SmallDarkButton)) {
 			ShowThemeMenu(popRect.Shift(Unify(4), MasterScroll).BottomLeft());
 		}
 		GUI.PopupTriangleIcon(popRect);
@@ -302,7 +302,7 @@ public class SettingWindow : WindowUI {
 		// Language
 		GUI.SmallLabel(rect, LABEL_LANGUAGE);
 		popRect = rect.ShrinkLeft(GUI.LabelWidth).LeftHalf();
-		if (GUI.Button(popRect, Util.GetLanguageDisplayName(Language.CurrentLanguage), Skin.DarkButton)) {
+		if (GUI.Button(popRect, Util.GetLanguageDisplayName(Language.CurrentLanguage), Skin.SmallDarkButton)) {
 			ShowLanguageMenu(popRect.Shift(Unify(4), MasterScroll).BottomLeft());
 		}
 		GUI.PopupTriangleIcon(popRect);
@@ -378,7 +378,7 @@ public class SettingWindow : WindowUI {
 
 		// Key
 		rect.width = Unify(96);
-		if (GUI.Button(rect, Util.GetKeyDisplayName(saving.Value.Key), Skin.DarkButton)) {
+		if (GUI.Button(rect, Util.GetKeyDisplayName(saving.Value.Key), Skin.SmallDarkButton)) {
 			ActivatedSetting = saving;
 			ShowKeyboardKeyPopup(rect.Shift(Unify(4), MasterScroll).BottomLeft());
 		}

@@ -337,7 +337,7 @@ public class ProjectEditor : WindowUI {
 		if (GUI.Button(
 			popRect,
 			PROJECT_TYPE_LABELS[((int)info.ProjectType).Clamp(0, PROJECT_TYPE_COUNT - 1)],
-			Skin.DarkButton
+			Skin.SmallDarkButton
 		)) {
 			ShowProjectTypeMenu(popRect.Shift(Unify(4), MasterScrollPos).BottomLeft());
 		}

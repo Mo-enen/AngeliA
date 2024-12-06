@@ -40,7 +40,7 @@ public abstract class Slope : Entity, IBlockEntity {
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		// Fix Rig
-		var hits = Physics.OverlapAll(CollisionMask, Rect, out int count);
+		var hits = Physics.OverlapAll(CollisionMask, Rect, out int count, this, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig) continue;

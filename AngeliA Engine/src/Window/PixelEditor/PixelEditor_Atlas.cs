@@ -127,7 +127,8 @@ public partial class PixelEditor {
 				// Atlas Item
 				rect.xMin = panelRect.x;
 				bool hover = rect.MouseInside();
-				rect.xMin = !isFolder && isSubItem ? panelRect.x + rect.height : panelRect.x;
+				int indent = rect.height / 2;
+				rect.xMin = !isFolder && isSubItem ? panelRect.x + indent : panelRect.x;
 				bool selecting = CurrentAtlasIndex == i;
 				bool renaming = RenamingAtlasIndex == i;
 				bool hoverTopHalf = hover && Input.MouseGlobalPosition.y > rect.CenterY();

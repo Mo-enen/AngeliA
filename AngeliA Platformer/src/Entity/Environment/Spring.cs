@@ -45,18 +45,18 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 		if (Horizontal) {
 			// Horizontal
 			if (Physics.Overlap(
-				PhysicsMask.ENTITY, new(X - 1, Y, Const.HALF, Const.CEL), this
+				PhysicsMask.ENTITY, new(X - 1, Y, Const.HALF, Const.CEL), this, OperationMode.ColliderAndTrigger
 			)) {
 				PerformBounce(Direction4.Left);
 			} else if (Physics.Overlap(
-				PhysicsMask.ENTITY, new(X + Const.HALF, Y, Const.HALF + 1, Const.CEL), this
+				PhysicsMask.ENTITY, new(X + Const.HALF, Y, Const.HALF + 1, Const.CEL), this, OperationMode.ColliderAndTrigger
 			)) {
 				PerformBounce(Direction4.Right);
 			}
 		} else {
 			// Vertical
 			if (Physics.Overlap(
-				PhysicsMask.ENTITY, new(X, Y + Const.HALF, Const.CEL, Const.HALF + 1), this
+				PhysicsMask.ENTITY, new(X, Y + Const.HALF, Const.CEL, Const.HALF + 1), this, OperationMode.ColliderAndTrigger
 			)) {
 				PerformBounce(Direction4.Up);
 			}
@@ -87,14 +87,10 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 	private void PerformBounce (Direction4 side) {
 		LastBounceFrame = Game.GlobalFrame;
 		BounceSide = side;
-		const int GAP = 16;
-		var globalRect = FullRect.Expand(
-			Horizontal ? GAP : 0, Horizontal ? GAP : 0,
-			Horizontal ? 0 : GAP, Horizontal ? 0 : GAP
-		);
+		var globalRect = FullRect.Edge(side, 16);
 		Entity ignore = this;
 		for (int safe = 0; safe < 2048; safe++) {
-			var hits = Physics.OverlapAll(PhysicsMask.ENTITY, globalRect, out int count, ignore);
+			var hits = Physics.OverlapAll(PhysicsMask.ENTITY, globalRect, out int count, ignore, OperationMode.ColliderAndTrigger);
 			if (count == 0) break;
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];

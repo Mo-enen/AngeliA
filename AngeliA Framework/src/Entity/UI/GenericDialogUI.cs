@@ -69,7 +69,7 @@ public class GenericDialogUI : MenuUI {
 				if (DrawItem(
 					option.Label,
 					labelStyle: GUI.Skin.Label,
-					contentStyle: GUI.Skin.DarkButton,
+					contentStyle: GUI.Skin.SmallDarkButton,
 					drawStyleBody: true
 				)) {
 					int oldSpawnFrame = SpawnFrame;

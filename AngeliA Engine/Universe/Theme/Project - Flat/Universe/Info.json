@@ -1,5 +1,5 @@
 ﻿{
-  "ProductName": "Retro",
+  "ProductName": "Flat",
   "DeveloperName": "Moenen",
   "ProjectType": 2,
   "MajorVersion": 0,
@@ -27,5 +27,6 @@
   "LightMap_LevelIlluminateRemain": 0.3,
   "WorldBehindParallax": 1300,
   "WorldBehindAlpha": 64,
-  "RequireFixScriptNamesWhenAnalyse": false
+  "RequireFixScriptNamesWhenAnalyse": false,
+  "LastOpenAtlasIndex": 1
 }

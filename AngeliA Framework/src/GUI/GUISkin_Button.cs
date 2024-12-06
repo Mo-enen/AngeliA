@@ -17,7 +17,7 @@ public partial class GUISkin {
 		ContentColorDown = Color32.GREY_32,
 		ContentColorDisable = Color32.GREY_64,
 
-		CharSize = -1,
+		CharSize = 19,
 		Alignment = Alignment.MidMid,
 	};
 
@@ -33,7 +33,7 @@ public partial class GUISkin {
 		ContentColorDown = Color32.GREY_32,
 		ContentColorDisable = Color32.GREY_64,
 
-		CharSize = -1,
+		CharSize = 14,
 		Alignment = Alignment.MidMid,
 	};
 
@@ -82,7 +82,7 @@ public partial class GUISkin {
 		ContentColorHover = Color32.WHITE,
 		ContentColorDown = Color32.GREY_230,
 		ContentColorDisable = Color32.GREY_196,
-		CharSize = -1,
+		CharSize = 19,
 		Alignment = Alignment.MidMid,
 	};
 
@@ -98,7 +98,7 @@ public partial class GUISkin {
 		ContentColorDown = Color32.GREY_230,
 		ContentColorDisable = Color32.GREY_196,
 
-		CharSize = -1,
+		CharSize = 14,
 		Alignment = Alignment.MidMid,
 	};
 

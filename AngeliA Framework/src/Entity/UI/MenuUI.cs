@@ -150,7 +150,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 			Renderer.DrawPixel(Renderer.CameraRect, ScreenTint, int.MaxValue - 6);
 		}
 		if (BackgroundStyle == null) {
-			using var __ = new GUIBodyColorScope(BackgroundTint);
+			using var __ = new GUIColorScope(BackgroundTint);
 			GUI.DrawSlice(BackgroundCode, bgRect);
 		} else {
 			GUI.DrawStyleBody(bgRect, BackgroundStyle, GUIState.Normal);
