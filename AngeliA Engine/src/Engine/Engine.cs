@@ -47,8 +47,8 @@ public partial class Engine {
 	// Data
 	private static Engine Instance = null;
 	private readonly GUIStyle TooltipStyle = new(GUI.Skin.SmallLabel);
-	private readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
-	private readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.AutoLabel) { Alignment = Alignment.BottomRight, };
+	private readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.Label) { Alignment = Alignment.BottomRight, };
+	private readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.SmallLabel) { Alignment = Alignment.BottomRight, };
 	private readonly List<ProjectData> Projects = [];
 	private readonly Sheet RenderingSheet = new(ignoreGroups: false, ignoreSpriteWithIgnoreTag: true);
 	private readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
@@ -459,12 +459,12 @@ public partial class Engine {
 			) : Color32.BLACK
 		);
 
-		// Main
+		// Main Label
 		rect.y = top - labelHeight - (hasSub ? 0 : subLabelHeight);
 		rect.height = labelHeight;
 		GUI.Label(rect, NotificationContent, out var bound, NotificationLabelStyle);
 
-		// Sub
+		// Sub Label
 		if (hasSub) {
 			rect.y = top - labelHeight - subLabelHeight;
 			rect.height = subLabelHeight;
@@ -908,7 +908,7 @@ public partial class Engine {
 		Game.UnloadFontsFromPool(ignoreBuiltIn: true);
 		Game.LoadFontsIntoPool(CurrentProject.Universe.FontRoot, builtIn: false);
 
-		// Built-in Sheet
+		// Built-in Sheet from Engine to Project
 		if (!CurrentProject.IsEngineInternalProject) {
 			long builtInSheetModDate = Util.GetFileModifyDate(Universe.BuiltIn.GameSheetPath);
 			if (builtInSheetModDate != Util.GetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath)) {

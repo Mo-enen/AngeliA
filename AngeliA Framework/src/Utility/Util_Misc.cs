@@ -316,7 +316,17 @@ public static partial class Util {
 	}
 	[MethodImpl(INLINE)] public static float Atan (float x, float y) => (float)Math.Atan2(y, x) * Rad2Deg;
 	[MethodImpl(INLINE)] public static int Min (int a, int b) => (a < b) ? a : b;
+	[MethodImpl(INLINE)]
+	public static int Min (int a, int b, int c) {
+		int ab = (a < b) ? a : b;
+		return (ab < c) ? ab : c;
+	}
 	[MethodImpl(INLINE)] public static int Max (int a, int b) => (a > b) ? a : b;
+	[MethodImpl(INLINE)]
+	public static int Max (int a, int b, int c) {
+		int ab = (a > b) ? a : b;
+		return (ab > c) ? ab : c;
+	}
 	[MethodImpl(INLINE)] public static float Min (float a, float b) => (a < b) ? a : b;
 	[MethodImpl(INLINE)] public static float Max (float a, float b) => (a > b) ? a : b;
 	[MethodImpl(INLINE)] public static float Sin (float radAngle) => (float)Math.Sin(radAngle);

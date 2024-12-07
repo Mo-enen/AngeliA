@@ -68,6 +68,7 @@ public static partial class LanguageUtil {
 			var pairs = new List<KeyValuePair<string, string>>();
 			pairs.AddRange(LoadAllPairsFromDiskAtPath(filePath));
 			bool loadDef = lan == "en";
+			// All Language Code
 			foreach (var type in Util.AllTypes) {
 				foreach (var lanCode in type.ForAllStaticFieldValue<LanguageCode>(fieldBinding, inherited: false)) {
 					if (lanCode == null) continue;
@@ -80,6 +81,19 @@ public static partial class LanguageUtil {
 					}
 				}
 			}
+			// All Items
+			foreach (var type in typeof(Item).AllChildClass()) {
+				string angeName = type.AngeName();
+				pairs.Add(new($"iName.{angeName}", loadDef ? Util.GetDisplayName(angeName) : ""));
+				pairs.Add(new($"iDes.{angeName}", ""));
+			}
+			// All Buffs
+			foreach (var type in typeof(Buff).AllChildClass()) {
+				string angeName = type.AngeName();
+				pairs.Add(new($"iName.{angeName}", loadDef ? Util.GetDisplayName(angeName) : ""));
+				pairs.Add(new($"iDes.{angeName}", ""));
+			}
+			// Save to Disk
 			SaveAllPairsToDisk(filePath, pairs);
 		}
 	}

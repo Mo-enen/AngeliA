@@ -134,7 +134,7 @@ public partial class LanguageEditor : WindowUI {
 
 		using var _ = new GUIInteractableScope(Game.GlobalFrame > RequireReloadWhenFileChangedFrame);
 
-		Update_Bar(panelRect.Edge(Direction4.Up, Unify(84)));
+		Update_Toolbar(panelRect.Edge(Direction4.Up, Unify(84)));
 		Update_Content(panelRect.Edge(Direction4.Down, panelRect.height - Unify(84)));
 
 		if (Game.GlobalFrame <= RequireReloadWhenFileChangedFrame) {
@@ -144,7 +144,7 @@ public partial class LanguageEditor : WindowUI {
 	}
 
 
-	private void Update_Bar (IRect panelRect) {
+	private void Update_Toolbar (IRect panelRect) {
 
 		// BG
 		GUI.DrawSlice(UI_TOOLBAR, panelRect.TopHalf());
@@ -258,6 +258,7 @@ public partial class LanguageEditor : WindowUI {
 			labelRect.x += labelRect.width;
 		}
 
+		// Func
 		static void AddForAllLanguageCode () {
 			if (Instance == null || Instance.Languages.Count == 0) return;
 			var project = Instance.CurrentProject;

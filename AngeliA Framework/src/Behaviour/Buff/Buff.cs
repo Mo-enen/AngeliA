@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-
 public abstract class Buff {
 
 
@@ -14,6 +13,9 @@ public abstract class Buff {
 
 	// Api
 	public int TypeID { get; init; }
+	public int NameID { get; init; }
+	public int DescriptionID { get; init; }
+	public string TypeName { get; init; }
 	public static int AllBuffCount => AllBuffs.Length;
 
 	// Data
@@ -45,7 +47,22 @@ public abstract class Buff {
 	}
 
 
-	public Buff () => TypeID = GetType().AngeHash();
+	public Buff () {
+		string name = GetType().AngeName();
+		TypeID = name.AngeHash();
+		NameID = $"iName.{name}".AngeHash();
+		DescriptionID = $"iDes.{name}".AngeHash();
+		TypeName = name;
+	}
+
+
+	public virtual void BeforeUpdate (Character target, ref object data) { }
+
+
+	public virtual void LateUpdate (Character target, ref object data) { }
+
+
+	public virtual void OnCharacterAttack (Character target, Bullet bullet, ref object data) { }
 
 
 	#endregion
@@ -62,11 +79,17 @@ public abstract class Buff {
 	public static Buff GetBuffAtIndex (int index) => AllBuffs[index];
 
 
-	public virtual void BeforeUpdate (Character target, ref object data) { }
-	public virtual void LateUpdate (Character target, ref object data) { }
-	public virtual void OnCharacterAttack (Character target, Bullet bullet, ref object data) { }
+	public static string GetBuffDisplayName (int id) {
+		if (!TryGetBuffIndex(id, out int index)) return "";
+		var buff = AllBuffs[index];
+		return Language.Get(buff.NameID, buff.TypeName);
+	}
 
 
+	public static string GetBuffDescription (int id) {
+		if (!TryGetBuffIndex(id, out int index)) return "";
+		return Language.Get(AllBuffs[index].DescriptionID);
+	}
 
 
 	#endregion
