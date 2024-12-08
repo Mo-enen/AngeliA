@@ -19,6 +19,7 @@ public partial class PixelEditor {
 
 	// Data
 	private readonly List<AngeSprite> SpriteCopyBuffer = [];
+	private readonly Color32[] PixelBufferBeforeAdjusted = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
 	private readonly Color32[] PixelBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
 	private readonly Color32[] PixelCopyBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
 	private readonly Queue<Int2> BucketCacheQueue = new();
@@ -864,12 +865,12 @@ public partial class PixelEditor {
 		TryApplyPixelBuffer(ignoreUndoStep);
 		PixelSelectionPixelRect = default;
 		PixelBufferSize = Int2.zero;
-		AdjustingColorF = new(1, 1, 1, 1);
+		ColorAdjustData = (0, 0, 0, 0);
 	}
 
 
 	private void SetSelectingPixelAsBuffer (bool removePixels, bool ignoreUndoStep = false) {
-		AdjustingColorF = new(1, 1, 1, 1);
+		ColorAdjustData = (0, 0, 0, 0);
 		PixelBufferSize.x = PixelSelectionPixelRect.width.Clamp(0, MAX_SELECTION_SIZE);
 		PixelBufferSize.y = PixelSelectionPixelRect.height.Clamp(0, MAX_SELECTION_SIZE);
 		if (PixelSelectionPixelRect == default) return;
@@ -976,7 +977,6 @@ public partial class PixelEditor {
 
 	private void TryApplyPixelBuffer (bool ignoreUndoStep = false) {
 		if (PixelBufferSize.Area <= 0 || PixelSelectionPixelRect == default) return;
-		var tint = AdjustingColorF.ToColor32();
 		for (int i = 0; i < StagedSprites.Count; i++) {
 			var spData = StagedSprites[i];
 			var sprite = spData.Sprite;
@@ -996,7 +996,7 @@ public partial class PixelEditor {
 			}, ignoreUndoStep);
 			for (int y = d; y < u; y++) {
 				for (int x = l; x < r; x++) {
-					var buffer = PixelBuffer[(y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL)] * tint;
+					var buffer = PixelBuffer[(y - bufferD) * MAX_SELECTION_SIZE + (x - bufferL)];
 					int index = (y - pixelRect.y) * pixelRect.width + (x - pixelRect.x);
 					var oldPixel = sprite.Pixels[index];
 					var newPixel = Util.MergeColor_Editor(buffer, oldPixel);
@@ -1474,6 +1474,16 @@ public partial class PixelEditor {
 			spData.PixelDirty = true;
 		}
 
+	}
+
+
+	private void AdjustBuffer (Color32[] original, Color32[] buffer, Int2 size, float h, float s, float v, float a) {
+		for (int j = 0; j < size.y; j++) {
+			for (int i = 0; i < size.x; i++) {
+				int index = j * MAX_SELECTION_SIZE + i;
+				buffer[index] = original[index].Adjust(h, s, v, a);
+			}
+		}
 	}
 
 

@@ -130,8 +130,8 @@ public partial class PixelEditor {
 	private IRect RuleEditorRect = default;
 	private IRect CreateSpriteBigButtonRect = default;
 	private ColorF PaintingColorF = new(0, 0, 0, 0);
-	private ColorF AdjustingColorF = new(1, 1, 1, 1);
 	private int Contains9Pivots = 0b_00000000;
+	private (int h, int s, int v, int a) ColorAdjustData;
 
 
 	#endregion
@@ -340,25 +340,51 @@ public partial class PixelEditor {
 
 		if (PixelSelectionPixelRect == default) return;
 
-		rect.width = Util.Min(Unify(512), toolbarRect.xMax - rect.x);
+		rect.width = Util.Min(Unify(960), toolbarRect.xMax - rect.x);
 		if (rect.width < rect.height) return;
+		int padding = Unify(6);
 
-		// Color Field
-		int padding = Unify(4);
-		var newColorF = GUI.HorizontalColorField(
-			AdjustingColorF, rect, stepped: false, alpha: true
-		);
-		rect.SlideRight(padding);
-		if (newColorF != AdjustingColorF) {
-			AdjustingColorF = newColorF;
+		// Slider
+		bool noStep = Input.HoldingAlt;
+		int newH = DrawSlider(239045, rect.Part(0, 4).Shrink(padding, padding, 0, 0), ColorAdjustData.h, -180, 180, step: noStep ? 0 : 10);
+		int newS = DrawSlider(239046, rect.Part(1, 4).Shrink(padding, padding, 0, 0), ColorAdjustData.s, -100, 100, step: noStep ? 0 : 10);
+		int newV = DrawSlider(239047, rect.Part(2, 4).Shrink(padding, padding, 0, 0), ColorAdjustData.v, -100, 100, step: noStep ? 0 : 10);
+		int newA = DrawSlider(239048, rect.Part(3, 4).Shrink(padding, padding, 0, 0), ColorAdjustData.a, -255, 255, step: noStep ? 0 : 5);
+
+		// Adjust Logic
+		if (newH != ColorAdjustData.h || newS != ColorAdjustData.s || newV != ColorAdjustData.v || newA != ColorAdjustData.a) {
 			if (PixelBufferSize == Int2.zero) {
 				var oldSelectionRect = PixelSelectionPixelRect;
 				SetSelectingPixelAsBuffer(removePixels: true, ignoreUndoStep: true);
 				PixelSelectionPixelRect = oldSelectionRect;
+				PixelBuffer.CopyTo(PixelBufferBeforeAdjusted, 0);
 			}
+			AdjustBuffer(
+				PixelBufferBeforeAdjusted, PixelBuffer, PixelBufferSize,
+				newH / 360f, newS / 100f, newV / 100f, newA / 255f
+			);
+			Game.FillPixelsIntoTexture(PixelBuffer, PixelBufferGizmosTexture);
+			ColorAdjustData.h = newH;
+			ColorAdjustData.s = newS;
+			ColorAdjustData.v = newV;
+			ColorAdjustData.a = newA;
 		}
 		rect.SlideRight(padding);
-
+		// Func
+		static int DrawSlider (int ctrlID, IRect rect, int value, int min, int max, int step) {
+			int labelWidth = rect.height * 3 / 2;
+			value = GUI.HandleSlider(ctrlID, rect.ShrinkRight(labelWidth), value, min, max, step: step);
+			GUI.IntLabel(rect.EdgeRight(labelWidth), value, GUI.Skin.SmallCenterGreyLabel);
+			if (rect.MouseInside()) {
+				if (Input.MouseWheelDelta != 0) {
+					value += Input.MouseWheelDelta * (step == 0 ? 1 : step);
+				}
+				if (Input.MouseMidButtonDown) {
+					value = 0;
+				}
+			}
+			return value.Clamp(min, max);
+		}
 	}
 
 

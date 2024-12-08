@@ -1005,19 +1005,20 @@ public static class Extension {
 	// Color
 	[MethodImpl(INLINE)] public static Color32 WithNewA (this Color32 value, int a) => new(value.r, value.g, value.b, (byte)(a.Clamp(0, 255)));
 	[MethodImpl(INLINE)] public static ColorF WithNewA (this ColorF value, float a) => new(value.r, value.g, value.b, a);
-	[MethodImpl(INLINE)]
-	public static Color32 ToColor32 (this ColorF value) => new(
-		(byte)(value.r * 255f),
-		(byte)(value.g * 255f),
-		(byte)(value.b * 255f),
-		(byte)(value.a * 255f)
-	);
-	[MethodImpl(INLINE)]
-	public static ColorF ToColorF (this Color32 value) => new(
-		value.r / 255f, value.g / 255f, value.b / 255f, value.a / 255f
-	);
+	[MethodImpl(INLINE)] public static Color32 ToColor32 (this ColorF value) => new((byte)(value.r * 255f), (byte)(value.g * 255f), (byte)(value.b * 255f), (byte)(value.a * 255f));
+	[MethodImpl(INLINE)] public static ColorF ToColorF (this Color32 value) => new(value.r / 255f, value.g / 255f, value.b / 255f, value.a / 255f);
 	[MethodImpl(INLINE)] public static bool Almost (this ColorF a, ColorF b) => a == b;
 	[MethodImpl(INLINE)] public static bool LookDifferent (this Color32 a, Color32 b) => (a.a > 0 || b.a > 0) && a != b;
+	[MethodImpl(INLINE)]
+	public static Color32 Adjust (this Color32 color, float hue, float saturation, float volume, float alpha) {
+		if (hue.AlmostZero() && saturation.AlmostZero() && volume.AlmostZero() && alpha.AlmostZero()) return color;
+		Util.RGBToHSV(color, out float h, out float s, out float v);
+		h = (h + hue).UMod(1f);
+		s = (s + saturation).Clamp01();
+		v = (v + volume).Clamp01();
+		float a = color.a != 0 ? ((color.a / 255f) + alpha).Clamp01() : 0;
+		return Util.HsvToRgb(h, s, v).WithNewA((int)(a * 255));
+	}
 
 	// Enum
 	public static int EnumLength (this System.Type @enum) => System.Enum.GetValues(@enum).Length;

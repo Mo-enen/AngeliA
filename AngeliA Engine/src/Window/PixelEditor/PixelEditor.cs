@@ -121,7 +121,7 @@ public partial class PixelEditor : WindowUI {
 	// Saving
 	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false, SavingLocation.Global);
 	private static readonly SavingBool ShowAxis = new("PixEdt.ShowAxis", true, SavingLocation.Global);
-	
+
 
 	#endregion
 
@@ -991,7 +991,7 @@ public partial class PixelEditor : WindowUI {
 		if (newTool != Tool.Sprite) {
 			ClearSpriteSelection();
 		}
-		AdjustingColorF = new(1, 1, 1, 1);
+		ColorAdjustData = (0, 0, 0, 0);
 	}
 
 
@@ -1351,7 +1351,7 @@ public partial class PixelEditor : WindowUI {
 				Util.LerpUnclamped(uv.yMin, uv.yMax, rectUV.Value.yMax)
 			);
 		}
-		Game.DrawGizmosTexture(stageRect, uv, PixelBufferGizmosTexture, AdjustingColorF.ToColor32());
+		Game.DrawGizmosTexture(stageRect, uv, PixelBufferGizmosTexture);
 	}
 
 
