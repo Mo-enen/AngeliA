@@ -95,6 +95,9 @@ public static class Input {
 	public static bool IgnoringMouseInput => Game.GlobalFrame <= IgnoreMouseInputFrame;
 	public static bool IgnoringKeyInput => Game.GlobalFrame <= IgnoreKeyInputFrame;
 	public static Int2 MousePositionShift { get; private set; } = default;
+	public static (int prev, int current) LastMouseLeftButtonDownFrame { get; private set; } = (-120, -120);
+	public static (int prev, int current) LastMouseRightButtonDownFrame { get; private set; } = (-120, -120);
+	public static (int prev, int current) LastMouseMidButtonDownFrame { get; private set; } = (-120, -120);
 
 	// Data
 	private static readonly Dictionary<Gamekey, State> GamekeyStateMap = new() {
@@ -331,9 +334,21 @@ public static class Input {
 			MouseGlobalPositionDelta = newGlobalPos - _MouseGlobalPosition;
 			_MouseGlobalPosition = newGlobalPos;
 
-			RefreshState(MouseLeftState, Game.IsMouseLeftHolding);
-			RefreshState(MouseRightState, Game.IsMouseRightHolding);
-			RefreshState(MouseMidState, Game.IsMouseMidHolding);
+			bool leftHolding = Game.IsMouseLeftHolding;
+			bool rightHolding = Game.IsMouseRightHolding;
+			bool midHolding = Game.IsMouseMidHolding;
+			if (leftHolding && !MouseLeftState.Holding) {
+				LastMouseLeftButtonDownFrame = (LastMouseLeftButtonDownFrame.current, Game.GlobalFrame);
+			}
+			if (rightHolding && !MouseRightState.Holding) {
+				LastMouseRightButtonDownFrame = (LastMouseRightButtonDownFrame.current, Game.GlobalFrame);
+			}
+			if (midHolding && !MouseMidState.Holding) {
+				LastMouseMidButtonDownFrame = (LastMouseMidButtonDownFrame.current, Game.GlobalFrame);
+			}
+			RefreshState(MouseLeftState, leftHolding);
+			RefreshState(MouseRightState, rightHolding);
+			RefreshState(MouseMidState, midHolding);
 
 			_MouseLeftDownGlobalPosition = MouseLeftButtonDown ? newGlobalPos : _MouseLeftDownGlobalPosition;
 			_MouseRightDownGlobalPosition = MouseRightButtonDown ? newGlobalPos : _MouseRightDownGlobalPosition;

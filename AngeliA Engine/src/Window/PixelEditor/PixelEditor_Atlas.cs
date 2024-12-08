@@ -13,6 +13,7 @@ public partial class PixelEditor {
 
 
 	// Const
+	private const int ATLAS_INPUT_ID = 287234;
 	private static readonly int ATLAS_TYPE_COUNT = typeof(AtlasType).EnumLength();
 	private static string[] ATLAS_TYPE_NAMES = null;
 	private static readonly SpriteCode UI_ATLAS_PANEL = "UI.Artwork.AtlasPanel";
@@ -43,8 +44,8 @@ public partial class PixelEditor {
 	private int CurrentAtlasIndex = -1;
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
-	private int AtlasMenuTargetIndex = -1;
 	private int AtlasItemReorderIndex = -1;
+	private int RequireStartRenameAtlasIndex = -1;
 
 
 	#endregion
@@ -57,7 +58,6 @@ public partial class PixelEditor {
 
 	private void Update_AtlasPanel () {
 
-		const int ATLAS_INPUT_ID = 287234;
 		var panelRect = WindowRect.Edge(Direction4.Left, Unify(PANEL_WIDTH));
 		var atlasList = EditingSheet.Atlas;
 		bool isFolded = false;
@@ -86,7 +86,6 @@ public partial class PixelEditor {
 			}
 			unfoldedItemCount++;
 		}
-
 		// List
 		int scrollbarWidth = GUI.ScrollbarSize;
 		int labelPadding = Unify(4);
@@ -106,6 +105,16 @@ public partial class PixelEditor {
 		string reorderGhostLabel = null;
 		isFolded = false;
 		isSubItem = false;
+
+		// Start Rename
+		if (GUI.Interactable && RequireStartRenameAtlasIndex >= 0) {
+			TryApplySpriteInputFields();
+			RefreshSpriteInputContent();
+			GUI.CancelTyping();
+			RenamingAtlasIndex = RequireStartRenameAtlasIndex;
+			GUI.StartTyping(ATLAS_INPUT_ID + RequireStartRenameAtlasIndex);
+			RequireStartRenameAtlasIndex = -1;
+		}
 
 		using (var scroll = new GUIVerticalScrollScope(panelRect, AtlasPanelScrollY, 0, scrollMax)) {
 			AtlasPanelScrollY = scroll.PositionY;
@@ -127,7 +136,7 @@ public partial class PixelEditor {
 				// Atlas Item
 				rect.xMin = panelRect.x;
 				bool hover = rect.MouseInside();
-				int indent = rect.height / 2;
+				int indent = rect.height * 2 / 3;
 				rect.xMin = !isFolder && isSubItem ? panelRect.x + indent : panelRect.x;
 				bool selecting = CurrentAtlasIndex == i;
 				bool renaming = RenamingAtlasIndex == i;
@@ -153,9 +162,7 @@ public partial class PixelEditor {
 				}
 
 				// Reorder Cursor
-				if (!isFolder) {
-					Cursor.SetCursor(Const.CURSOR_RESIZE_VERTICAL, reorderRect);
-				}
+				Cursor.SetCursor(Const.CURSOR_RESIZE_VERTICAL, reorderRect);
 
 				// Reordering
 				if (hover && AtlasItemReorderIndex >= 0 && AtlasItemReorderIndex != i && AtlasItemReorderIndex < atlasList.Count) {
@@ -196,26 +203,15 @@ public partial class PixelEditor {
 					}
 					// Click
 					if (Input.MouseLeftButtonDown) {
-						if (selecting || isFolder) {
-							// Start Rename
-							TryApplySpriteInputFields();
-							RefreshSpriteInputContent();
-							GUI.CancelTyping();
-							RenamingAtlasIndex = i;
-							renaming = true;
-							GUI.StartTyping(ATLAS_INPUT_ID + i);
-						}
-						if (!selecting && !isFolder) {
+						if (isFolder) {
+							// Fold / Unfold
+							atlas.State = atlas.State == AtlasState.Folded ? AtlasState.Unfolded : AtlasState.Folded;
+						} else if (!selecting) {
+							// Select Atlas
 							newSelectingIndex = i;
 							RenamingAtlasIndex = -1;
 						}
 					}
-				}
-
-				// Fold / Unfold
-				if (Input.MouseLeftButtonDown && isFolder && rect.EdgeLeft(iconWidth).MouseInside()) {
-					atlas.State = atlas.State == AtlasState.Folded ? AtlasState.Unfolded : AtlasState.Folded;
-					//SetDirty();
 				}
 
 				// Selection Mark
@@ -242,8 +238,9 @@ public partial class PixelEditor {
 						}
 					}
 
-					// Label
+					// Name
 					if (renaming) {
+						// Rename Input Field
 						string newName = GUI.SmallInputField(
 							ATLAS_INPUT_ID + i, contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
 							atlas.Name, out bool changed, out bool confirm
@@ -255,6 +252,7 @@ public partial class PixelEditor {
 							}
 						}
 					} else {
+						// Name Label
 						GUI.Label(
 							contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
 							atlas.Name,
@@ -272,6 +270,7 @@ public partial class PixelEditor {
 
 				// Next
 				rect.SlideDown();
+
 			}
 
 			// Reorder Ghost
@@ -312,7 +311,6 @@ public partial class PixelEditor {
 
 		// Final
 		if (!Input.MouseLeftButtonHolding) AtlasItemReorderIndex = -1;
-
 	}
 
 
@@ -501,32 +499,41 @@ public partial class PixelEditor {
 
 	private void ShowAtlasItemPopup (int atlasIndex) {
 
-		if (atlasIndex < 0 || atlasIndex >= EditingSheet.Atlas.Count) return;
+		var atlasList = EditingSheet.Atlas;
+		if (atlasIndex < 0 || atlasIndex >= atlasList.Count) return;
+		var atlas = atlasList[atlasIndex];
 
-		AtlasMenuTargetIndex = atlasIndex;
 		GenericPopupUI.BeginPopup();
 
-		// Delete
-		GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteAtlasConfirm, enabled: EditingSheet.Atlas.Count > 1);
+		// Rename
+		GenericPopupUI.AddItem(BuiltInText.UI_RENAME, StartRename, data: atlasIndex);
 
-		GenericPopupUI.AddSeparator();
+		if (!atlas.IsFolder) {
 
-		// Type
-		GenericPopupUI.AddItem(MENU_ATLAS_TYPE, Const.EmptyMethod);
-		GenericPopupUI.BeginSubItem();
-		int currentType = (int)EditingSheet.Atlas[atlasIndex].Type;
-		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
-			GenericPopupUI.AddItem(
-				ATLAS_TYPE_NAMES[i], AtlasType,
-				enabled: true, @checked: currentType == i, data: i
-			);
+			// Delete
+			GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteAtlasConfirm, enabled: atlasList.Count > 1, data: atlasIndex);
+
+			GenericPopupUI.AddSeparator();
+
+			// Type
+			GenericPopupUI.AddItem(MENU_ATLAS_TYPE, Const.EmptyMethod, data: atlasIndex);
+			GenericPopupUI.BeginSubItem();
+			int currentType = (int)atlas.Type;
+			for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
+				GenericPopupUI.AddItem(
+					ATLAS_TYPE_NAMES[i], AtlasType,
+					enabled: true,
+					@checked: currentType == i,
+					data: (atlasIndex, i)
+				);
+			}
+			GenericPopupUI.EndSubItem();
 		}
-		GenericPopupUI.EndSubItem();
 
 		// Func
 		static void DeleteAtlasConfirm () {
+			if (GenericPopupUI.InvokingItemData is not int targetIndex) return;
 			var atlasList = EditingSheet.Atlas;
-			int targetIndex = Instance.AtlasMenuTargetIndex;
 			if (atlasList.Count <= 1) return;
 			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
 			GenericDialogUI.SpawnDialog_Button(
@@ -535,10 +542,11 @@ public partial class PixelEditor {
 				BuiltInText.UI_CANCEL, Const.EmptyMethod
 			);
 			GenericDialogUI.SetItemTint(GUI.Skin.DeleteTint);
+			GenericDialogUI.SetCustomData(targetIndex);
 			static void DeleteAtlas () {
 				var atlasList = EditingSheet.Atlas;
 				if (atlasList.Count <= 1) return;
-				int targetIndex = Instance.AtlasMenuTargetIndex;
+				if (GenericDialogUI.InvokingData is not int targetIndex) return;
 				if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
 				int newSelectingAtlasIndex = Instance.CurrentAtlasIndex;
 				EditingSheet.RemoveAtlasAndAllSpritesInside(targetIndex);
@@ -548,14 +556,20 @@ public partial class PixelEditor {
 			}
 		}
 		static void AtlasType () {
-			if (GenericPopupUI.InvokingItemData is not int index) return;
-			int currentAtlasIndex = Instance.AtlasMenuTargetIndex;
+			if (GenericPopupUI.InvokingItemData is not (int currentAtlasIndex, int index)) return;
 			var atlasList = EditingSheet.Atlas;
 			if (index < 0 || index >= ATLAS_TYPE_COUNT) return;
 			if (currentAtlasIndex < 0 || currentAtlasIndex >= atlasList.Count) return;
 			var atlas = atlasList[currentAtlasIndex];
 			atlas.Type = (AtlasType)index;
 			Instance.SetDirty();
+		}
+		static void StartRename () {
+			if (GenericPopupUI.InvokingItemData is not int targetIndex) return;
+			var atlasList = EditingSheet.Atlas;
+			if (atlasList.Count <= 1) return;
+			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
+			Instance.RequireStartRenameAtlasIndex = targetIndex;
 		}
 	}
 

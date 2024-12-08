@@ -219,6 +219,7 @@ public static partial class GUI {
 		BeamLength = 0;
 		BeamBlinkFrame = Game.PauselessFrame;
 		InvokeTypingStartID = controlID;
+		TypingTextFieldUpdateFrame = Game.PauselessFrame;
 	}
 
 	public static void CancelTyping () {

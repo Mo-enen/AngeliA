@@ -37,6 +37,7 @@ public partial class PixelEditor {
 	private int HoveringResizeStageIndex = -1;
 	private int ResizingStageIndex = 0;
 	private int PaintFailedCount = 0;
+	private int LastClickedSpriteIndex = -1;
 	private bool DragChanged = false;
 	private bool ResizeForBorder = false;
 	private bool HoveringResizeForBorder = false;
@@ -402,6 +403,17 @@ public partial class PixelEditor {
 				var mouseDownPixPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 				var mousePixPos = Stage_to_Pixel(Input.MouseGlobalPosition);
 				var pixDelta = mousePixPos - mouseDownPixPos;
+				if (pixDelta == default) {
+					// Double Click Sprite to Rename
+					if (
+						Game.GlobalFrame < Input.LastMouseLeftButtonDownFrame.prev + 30 &&
+						LastClickedSpriteIndex == HoveringSpriteStageIndex
+					) {
+						GUI.StartTyping(BASIC_INPUT_ID + (int)InputName.Name);
+					}
+					LastClickedSpriteIndex = HoveringSpriteStageIndex;
+					break;
+				}
 				int checkedCount = 0;
 				for (int i = 0; i < StagedSprites.Count && checkedCount < SelectingSpriteCount; i++) {
 					var spData = StagedSprites[i];

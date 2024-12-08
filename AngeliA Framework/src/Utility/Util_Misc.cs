@@ -216,7 +216,7 @@ public static partial class Util {
 		for (int i = start; i < content.Length && i >= 0; i += delta) {
 			result = i;
 			char c = content[i];
-			if (char.IsWhiteSpace(c) || char.IsSymbol(c)) {
+			if (char.IsWhiteSpace(c) || (!char.IsLetter(c) && !char.IsNumber(c) && c != '_')) {
 				if (flag) return i;
 			} else {
 				flag = true;
