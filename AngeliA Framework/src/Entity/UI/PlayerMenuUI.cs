@@ -55,7 +55,6 @@ public class PlayerMenuUI : EntityUI {
 	public int TakingCount { get; private set; } = 0;
 
 	// Data
-	private readonly Cell[] InfoBgFrameCacheCells = new Cell[9];
 	private int TakingFromIndex = 0;
 	private int ActionKeyDownFrame = int.MinValue;
 	private int CancelKeyDownFrame = int.MinValue;
@@ -194,34 +193,80 @@ public class PlayerMenuUI : EntityUI {
 
 		int panelWidth = Unify(INFO_WIDTH);
 		int windowPadding = Unify(WINDOW_PADDING);
-		int labelHeight = Unify(24);
 		int framePadding = Unify(6);
-		var topRootRect = TopPanelRect;
-		var bottomRootRect = BottomPanelRect;
-		var topPanelRect = new IRect(
-			topRootRect.xMax + windowPadding,
-			topRootRect.y,
-			panelWidth, topRootRect.height
-		);
-		var bottomPanelRect = new IRect(
-			bottomRootRect.xMax + windowPadding,
-			bottomRootRect.y,
-			panelWidth, bottomRootRect.height
-		);
-		var panelRect = CursorInBottomPanel ? bottomPanelRect : topPanelRect;
-		var panelRectAlt = CursorInBottomPanel ? topPanelRect : bottomPanelRect;
-		panelRect = panelRect.Shrink(framePadding);
-		panelRectAlt = panelRectAlt.Shrink(framePadding);
 
-		// Mouse in Panel
-		MouseInPanel = MouseInPanel || panelRect.MouseInside();
+		// Top
+		if (!CursorInBottomPanel || Partner == null || Partner is InventoryPartnerUI || RequireBuffInfoID != 0) {
 
-		// Background
-		var bgCell = Renderer.DrawPixel(panelRect.Expand(framePadding + windowPadding), Color32.BLACK);
-		var altBgCell = Renderer.DrawPixel(panelRectAlt.Expand(framePadding + windowPadding), Color32.BLACK);
+			var panelRect = new IRect(
+				TopPanelRect.xMax + windowPadding,
+				TopPanelRect.y,
+				panelWidth, TopPanelRect.height
+			).Shrink(framePadding);
 
-		// For Item
-		if (itemID != 0 && TakingID == 0 && (RequireBuffInfoID == 0 || CursorInBottomPanel)) {
+			// Mouse in Panel
+			MouseInPanel = MouseInPanel || panelRect.MouseInside();
+
+			// Background
+			var bgCell = Renderer.DrawPixel(panelRect.Expand(framePadding + windowPadding), Color32.BLACK);
+
+			// Content
+			IRect desBounds = default, nameBounds = default;
+			if (RequireBuffInfoID != 0) {
+				DrawBuffInfo(panelRect, RequireBuffInfoID, out desBounds, out nameBounds);
+			} else if (!CursorInBottomPanel && itemID != 0 && TakingID == 0) {
+				DrawItemInfo(panelRect, itemID, out desBounds, out nameBounds);
+			}
+
+			// Final
+			if (desBounds != default && nameBounds != default) {
+				var finalBgRect = IRect.MinMaxRect(
+					panelRect.x,
+					Util.Min(panelRect.y, desBounds.y),
+					Util.Max(panelRect.xMax, desBounds.xMax, nameBounds.xMax),
+					panelRect.yMax
+				).Expand(windowPadding);
+				bgCell.SetRect(finalBgRect.Expand(framePadding));
+			}
+
+		}
+
+		// Bottom
+		{
+			var panelRect = new IRect(
+				BottomPanelRect.xMax + windowPadding,
+				BottomPanelRect.y,
+				panelWidth, BottomPanelRect.height
+			).Shrink(framePadding);
+
+			// Mouse in Panel
+			MouseInPanel = MouseInPanel || panelRect.MouseInside();
+
+			// Background
+			var bgCell = Renderer.DrawPixel(panelRect.Expand(framePadding + windowPadding), Color32.BLACK);
+
+			// Content
+			if (CursorInBottomPanel && itemID != 0 && TakingID == 0) {
+
+				// Content
+				DrawItemInfo(panelRect, itemID, out var desBounds, out var nameBounds);
+
+				// Final
+				var finalBgRect = IRect.MinMaxRect(
+					panelRect.x,
+					Util.Min(panelRect.y, desBounds.y),
+					Util.Max(panelRect.xMax, desBounds.xMax, nameBounds.xMax),
+					panelRect.yMax
+				).Expand(windowPadding);
+				bgCell.SetRect(finalBgRect.Expand(framePadding));
+			}
+
+		}
+
+		// Func
+		static void DrawItemInfo (IRect panelRect, int itemID, out IRect desBounds, out IRect nameBounds) {
+
+			int labelHeight = Unify(24);
 
 			// Type Icon
 			Renderer.Draw(
@@ -231,7 +276,6 @@ public class PlayerMenuUI : EntityUI {
 
 			// Name
 			var nameRect = new IRect(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
-			IRect nameBounds;
 			using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
 				GUI.SmallLabel(nameRect, ItemSystem.GetItemDisplayName(itemID), out nameBounds);
 			}
@@ -240,60 +284,34 @@ public class PlayerMenuUI : EntityUI {
 			GUI.Label(
 				panelRect.Shrink(0, 0, 0, labelHeight + Unify(12)),
 				ItemSystem.GetItemDescription(itemID),
-				out var desBounds, GUI.Skin.SmallTextArea
+				out desBounds, GUI.Skin.SmallTextArea
 			);
 
-			// Final
-			var finalBgRect = IRect.MinMaxRect(
-				panelRect.x,
-				Util.Min(panelRect.y, desBounds.y),
-				Util.Max(panelRect.xMax, desBounds.xMax, nameBounds.xMax),
-				panelRect.yMax
-			).Expand(windowPadding);
-			bgCell.SetRect(finalBgRect.Expand(framePadding));
-
 		}
+		static void DrawBuffInfo (IRect buffPanelRect, int buffID, out IRect desBounds, out IRect nameBounds) {
 
-		// For Buff
-		if (RequireBuffInfoID != 0) {
-			var buffPanelRect = CursorInBottomPanel ? panelRectAlt : panelRect;
+			int labelHeight = Unify(24);
 
 			// Type Icon
 			Renderer.Draw(
-				RequireBuffInfoID,
+				buffID,
 				new IRect(buffPanelRect.x, buffPanelRect.yMax - labelHeight, labelHeight, labelHeight)
 			);
 
 			// Name
 			var nameRect = new IRect(buffPanelRect.x + labelHeight + labelHeight / 4, buffPanelRect.yMax - labelHeight, buffPanelRect.width, labelHeight);
-			IRect nameBounds;
 			using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
-				GUI.SmallLabel(nameRect, Buff.GetBuffDisplayName(RequireBuffInfoID), out nameBounds);
+				GUI.SmallLabel(nameRect, Buff.GetBuffDisplayName(buffID), out nameBounds);
 			}
 
 			// Description
 			GUI.Label(
 				buffPanelRect.Shrink(0, 0, 0, labelHeight + Unify(12)),
-				Buff.GetBuffDescription(RequireBuffInfoID),
-				out var desBounds, GUI.Skin.SmallTextArea
+				Buff.GetBuffDescription(buffID),
+				out desBounds, GUI.Skin.SmallTextArea
 			);
 
-			// Final
-			var finalBgRect = IRect.MinMaxRect(
-				buffPanelRect.x,
-				Util.Min(buffPanelRect.y, desBounds.y),
-				Util.Max(buffPanelRect.xMax, desBounds.xMax, nameBounds.xMax),
-				buffPanelRect.yMax
-			).Expand(windowPadding);
-
-			if (CursorInBottomPanel) {
-				altBgCell.SetRect(finalBgRect.Expand(framePadding));
-			} else {
-				bgCell.SetRect(finalBgRect.Expand(framePadding));
-			}
-
 		}
-
 	}
 
 
@@ -508,7 +526,7 @@ public class PlayerMenuUI : EntityUI {
 
 		int size = Unify(ITEM_SIZE);
 		var itemRect = UsingMouseMode ?
-			new IRect(Input.MouseGlobalPosition.x - size / 2, Input.MouseGlobalPosition.y - size / 2, size, size) :
+			new IRect(Input.MouseGlobalPosition.x - size / 2, Input.MouseGlobalPosition.y - size / 4, size, size) :
 			HoveringItemUiRect;
 
 		// Item Icon
@@ -526,8 +544,10 @@ public class PlayerMenuUI : EntityUI {
 		}
 
 		// Item Count
-		var countRect = itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3);
-		DrawItemCount(countRect, TakingCount);
+		if (ItemSystem.GetItem(TakingID) is not HandTool tool || !tool.UseStackAsUsage) {
+			var countRect = itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3);
+			DrawItemCount(countRect, TakingCount);
+		}
 	}
 
 
