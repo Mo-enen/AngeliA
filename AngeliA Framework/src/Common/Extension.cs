@@ -633,6 +633,8 @@ public static class Extension {
 		}
 	}
 	[MethodImpl(INLINE)] public static IRect Expand (this IRect rect, int offset) => rect.Expand(offset, offset, offset, offset);
+	[MethodImpl(INLINE)] public static IRect ExpandHorizontal (this IRect rect, int offset) => rect.Expand(offset, offset, 0, 0);
+	[MethodImpl(INLINE)] public static IRect ExpandVertical (this IRect rect, int offset) => rect.Expand(0, 0, offset, offset);
 	[MethodImpl(INLINE)]
 	public static IRect Expand (this IRect rect, int l, int r, int d, int u) {
 		rect.x -= l;
@@ -864,9 +866,15 @@ public static class Extension {
 		return rect;
 	}
 	[MethodImpl(INLINE)]
-	public static IRect MidHalf (this IRect rect) {
+	public static IRect HorizontalMidHalf (this IRect rect) {
 		rect.width /= 2;
 		rect.x += rect.width / 2;
+		return rect;
+	}
+	[MethodImpl(INLINE)]
+	public static IRect VerticalMidHalf (this IRect rect) {
+		rect.height /= 2;
+		rect.y += rect.height / 2;
 		return rect;
 	}
 	[MethodImpl(INLINE)]

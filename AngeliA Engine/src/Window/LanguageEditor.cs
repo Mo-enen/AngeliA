@@ -209,7 +209,7 @@ public partial class LanguageEditor : WindowUI {
 
 		// Search
 		rect.width = panelRect.xMax - rect.x;
-		var searchRect = rect.Shrink(Unify(6)).MidHalf();
+		var searchRect = rect.Shrink(Unify(6)).HorizontalMidHalf();
 		SearchingText = GUI.SmallInputField(SEARCH_ID, searchRect, SearchingText, out _, out bool confirm);
 		if (GUI.TypingTextFieldID != SEARCH_ID && string.IsNullOrEmpty(SearchingText)) {
 			GUI.Icon(

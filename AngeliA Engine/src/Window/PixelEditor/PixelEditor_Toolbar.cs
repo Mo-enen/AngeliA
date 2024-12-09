@@ -346,10 +346,24 @@ public partial class PixelEditor {
 
 		// Slider
 		bool noStep = Input.HoldingAlt;
-		int newH = DrawSlider(239045, rect.Part(0, 4).Shrink(padding, padding, 0, 0), ColorAdjustData.h, -180, 180, step: noStep ? 0 : 10);
-		int newS = DrawSlider(239046, rect.Part(1, 4).Shrink(padding, padding, 0, 0), ColorAdjustData.s, -100, 100, step: noStep ? 0 : 10);
-		int newV = DrawSlider(239047, rect.Part(2, 4).Shrink(padding, padding, 0, 0), ColorAdjustData.v, -100, 100, step: noStep ? 0 : 10);
-		int newA = DrawSlider(239048, rect.Part(3, 4).Shrink(padding, padding, 0, 0), ColorAdjustData.a, -255, 255, step: noStep ? 0 : 5);
+
+		var cell = Renderer.Draw(BuiltInSprite.COLOR_HUE_ALT, default);
+		int newH = DrawSlider(239045, rect.Part(0, 4).Shrink(padding), "H", ColorAdjustData.h, -180, 180, step: noStep ? 0 : 10, out var sliderRect);
+		cell.SetRect(sliderRect);
+
+		cell = Renderer.Draw(BuiltInSprite.COLOR_WHITE_BAR, sliderRect, Color32.RED_BETTER);
+		int newS = DrawSlider(239046, rect.Part(1, 4).Shrink(padding), "S", ColorAdjustData.s, -100, 100, step: noStep ? 0 : 10, out sliderRect);
+		cell.SetRect(sliderRect);
+
+		cell = Renderer.Draw(BuiltInSprite.COLOR_WHITE_BAR, sliderRect, Color32.WHITE);
+		int newV = DrawSlider(239047, rect.Part(2, 4).Shrink(padding), "V", ColorAdjustData.v, -100, 100, step: noStep ? 0 : 10, out sliderRect);
+		cell.SetRect(sliderRect);
+
+		var chCell = Renderer.Draw(BuiltInSprite.CHECKER_BOARD_8, sliderRect, Color32.WHITE);
+		cell = Renderer.Draw(BuiltInSprite.COLOR_WHITE_BAR, sliderRect, Color32.WHITE);
+		int newA = DrawSlider(239048, rect.Part(3, 4).Shrink(padding), "A", ColorAdjustData.a, -255, 255, step: noStep ? 0 : 5, out sliderRect);
+		cell.SetRect(sliderRect);
+		chCell.SetRect(sliderRect);
 
 		// Adjust Logic
 		if (newH != ColorAdjustData.h || newS != ColorAdjustData.s || newV != ColorAdjustData.v || newA != ColorAdjustData.a) {
@@ -370,11 +384,41 @@ public partial class PixelEditor {
 			ColorAdjustData.a = newA;
 		}
 		rect.SlideRight(padding);
+
 		// Func
-		static int DrawSlider (int ctrlID, IRect rect, int value, int min, int max, int step) {
-			int labelWidth = rect.height * 3 / 2;
-			value = GUI.HandleSlider(ctrlID, rect.ShrinkRight(labelWidth), value, min, max, step: step);
-			GUI.IntLabel(rect.EdgeRight(labelWidth), value, GUI.Skin.SmallCenterGreyLabel);
+		static int DrawSlider (int ctrlID, IRect rect, string label, int value, int min, int max, int step, out IRect sliderRect) {
+
+			int labelWidth = Unify(48);
+			int lineExp = Unify(2);
+
+			// Slider
+			sliderRect = rect.ShrinkLeft(labelWidth);
+			value = GUI.BlankSlider(ctrlID, sliderRect, value, min, max, out _, step: step);
+
+			int lineWidth = Unify(2);
+			var lineRect = new IRect(
+				sliderRect.CenterX(),
+				sliderRect.y, lineWidth, sliderRect.height
+			);
+
+			// Middle Line
+			var midLineRect = lineRect.VerticalMidHalf().Shift(-lineWidth / 2, 0);
+			Renderer.Draw(BuiltInSprite.SOFT_LINE_V, midLineRect.ExpandHorizontal(lineExp), Color32.BLACK);
+			Renderer.DrawPixel(midLineRect, Color32.GREY_196);
+
+			// Draw Handle Manually 
+			lineRect.x = Util.RemapUnclamped(min, max, sliderRect.x, sliderRect.xMax, value) - lineWidth / 2;
+			Renderer.Draw(BuiltInSprite.SOFT_LINE_V, lineRect.ExpandHorizontal(lineExp), Color32.BLACK);
+			Renderer.DrawPixel(lineRect);
+
+			// Label
+			GUI.IntLabel(rect.EdgeLeft(labelWidth).Shift(-GUI.FieldPadding, 0), value, out var bounds, GUI.Skin.SmallRightLabel);
+			GUI.Label(
+				bounds.EdgeOutside(Direction4.Left, labelWidth / 2).Shift(-GUI.FieldPadding, 0),
+				label, GUI.Skin.SmallRightLabel
+			);
+
+			// Logic
 			if (rect.MouseInside()) {
 				if (Input.MouseWheelDelta != 0) {
 					value += Input.MouseWheelDelta * (step == 0 ? 1 : step);
