@@ -69,6 +69,7 @@ public static class PlayerSystem {
 
 	// Frame Based
 	public static readonly FrameBasedInt TargetViewHeight = new(Const.CEL * 26);
+	public static readonly FrameBasedBool IgnorePlayerView = new(false);
 
 	// Saving
 	private static readonly SavingInt SelectingPlayerID = new("Player.SelectingPlayerID", 0, SavingLocation.Slot);
@@ -505,6 +506,8 @@ public static class PlayerSystem {
 
 
 	private static void UpdateView () {
+
+		if (IgnorePlayerView.FinalValue) return;
 
 		var mov = Selecting.Movement;
 
