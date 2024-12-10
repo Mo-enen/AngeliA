@@ -127,7 +127,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		bool prevInWater = InWater;
 		int checkingMask = PhysicsMask.MAP & CollisionMask;
 		InWater = Physics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Tag.Water);
-		OnSlippy = !InWater && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderOnly, Tag.Slip);
+		OnSlippy = !InWater && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderAndTrigger, Tag.Slip);
 
 		// Inside Ground Check
 		IsInsideGround = Game.GlobalFrame > SpawnFrame && Game.GlobalFrame > IgnoreInsideGroundFrame && InsideGroundCheck();

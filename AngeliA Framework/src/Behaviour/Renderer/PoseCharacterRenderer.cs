@@ -623,11 +623,14 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			}
 		}
 
-		// Z Offset
+		// Z Offset / Tint
 		RenderedCellZ = PlayerSystem.Selecting == TargetCharacter ? 40 : GlobalPoseRenderingZOffset;
 		if (Renderer.GetCells(out var cells, out int count)) {
+			bool tinted = Tint != Color32.WHITE;
 			for (int i = cellIndexStart; i < count; i++) {
-				cells[i].Z += RenderedCellZ;
+				var cell = cells[i];
+				cell.Z += RenderedCellZ;
+				if (tinted) cell.Color *= Tint;
 			}
 		}
 		GlobalPoseRenderingZOffset -= 40;

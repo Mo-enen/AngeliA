@@ -42,7 +42,7 @@ public abstract class Burner : Entity, IBlockEntity {
 		base.OnActivated();
 
 		var dirNormal = Direction.Normal();
-		FireTypeID = Fire.DefaultFireID;
+		FireTypeID = Fire.TYPE_ID;
 		NextFireSpawnedFrame = int.MinValue;
 		Burning = false;
 

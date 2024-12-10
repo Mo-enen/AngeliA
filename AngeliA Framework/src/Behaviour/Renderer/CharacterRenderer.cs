@@ -12,6 +12,7 @@ public abstract class CharacterRenderer (Character target) {
 	public int CurrentAnimationFrame { get; set; } = 0;
 	public int CurrentRenderingBounce { get; private set; } = 1000;
 	public bool SpinOnGroundPound { get; set; } = false;
+	public FrameBasedColor Tint { get; set; } = new();
 
 	// MSG
 	public virtual void OnActivated () {

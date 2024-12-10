@@ -175,13 +175,4 @@ public abstract class Bullet : Entity {
 
 
 
-	#region --- LGC ---
-
-
-
-	#endregion
-
-
-
-
 }

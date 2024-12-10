@@ -165,26 +165,28 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 
 		// Damage
 		if (Health.TakingDamage) {
-			Renderer.DrawAnimation(
+			RenderedCell = Renderer.DrawAnimation(
 				sheet.Damaging,
 				X, Y, 500, 0, 0,
 				Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 				Const.ORIGINAL_SIZE,
 				Game.GlobalFrame
 			);
+			RenderedCell.Color = Tint;
 			return;
 		}
 
 		// Door
 		if (Teleporting) {
 			TargetCharacter.LastRequireBounceFrame = int.MinValue;
-			Renderer.DrawAnimation(
+			RenderedCell = Renderer.DrawAnimation(
 				TargetCharacter.TeleportToFrontSide ? sheet.DoorFront : sheet.DoorBack,
 				X, Y, 500, 0, 0,
 				Movement.FacingRight ? Const.ORIGINAL_SIZE : Const.ORIGINAL_SIZE_NEGATAVE,
 				Const.ORIGINAL_SIZE,
 				Game.GlobalFrame
 			);
+			RenderedCell.Color = Tint;
 			return;
 		}
 
@@ -194,6 +196,7 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 			default:
 			case CharacterState.GamePlay:
 				RenderedCell = DrawSheetBody(sheet);
+				RenderedCell.Color = Tint;
 				BounceCellForSheet(RenderedCell, CurrentRenderingBounce);
 				break;
 			case CharacterState.Sleep:
@@ -201,6 +204,7 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 					sheet.Sleep, X, Y, 500, 0, 0,
 					Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, Game.GlobalFrame
 				);
+				RenderedCell.Color = Tint;
 				if (Renderer.TryGetSprite(sheet.Sleep, out var sleepSprite)) {
 					if (sleepSprite.GlobalBorder.down > 0) {
 						RenderedCell.Y -= sleepSprite.GlobalBorder.down;
@@ -221,6 +225,7 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 					Const.ORIGINAL_SIZE,
 					Game.GlobalFrame
 				);
+				RenderedCell.Color = Tint;
 				break;
 		}
 	}

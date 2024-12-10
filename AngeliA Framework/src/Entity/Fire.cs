@@ -5,7 +5,7 @@ namespace AngeliA;
 
 
 [EntityAttribute.RepositionWhenInactive]
-public abstract class Fire : Entity {
+public class Fire : Entity {
 
 
 
@@ -14,8 +14,8 @@ public abstract class Fire : Entity {
 
 
 	// Api
+	public static readonly int TYPE_ID = typeof(Fire).AngeHash();
 	public static event System.Action<int, IRect> OnFirePutout;
-	public static int DefaultFireID { get; set; } = 0;
 	protected virtual int PowerAmount => 1000;
 	protected virtual int WeakenDuration => 22;
 	protected virtual int SpreadDuration => 60;
@@ -50,11 +50,11 @@ public abstract class Fire : Entity {
 		Bullet.OnBulletHitEnvironment += OnBulletHitEnvironment;
 		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
 			if (!damageType.HasAll(Tag.FireDamage)) return;
-			SpreadFire(DefaultFireID, bullet.Rect.Expand(Const.CEL));
+			SpreadFire(TYPE_ID, bullet.Rect.Expand(Const.CEL));
 		}
 		static void OnBulletHitEnvironment (Bullet bullet, Tag damageType) {
 			if (!damageType.HasAll(Tag.FireDamage)) return;
-			SpreadFire(DefaultFireID, bullet.Rect.Expand(Const.CEL));
+			SpreadFire(TYPE_ID, bullet.Rect.Expand(Const.CEL));
 		}
 	}
 

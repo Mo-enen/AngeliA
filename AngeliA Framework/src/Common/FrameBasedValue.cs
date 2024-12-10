@@ -111,3 +111,21 @@ public class FrameBasedBool (bool value) : FrameBasedValue<bool>(value) {
 	public FrameBasedBool () : this(true) { }
 	public static implicit operator bool (FrameBasedBool bBool) => bBool.FinalValue;
 }
+
+
+public class FrameBasedColor (Color32 value) : FrameBasedValue<Color32>(value) {
+	public void Tint (Color32 tint, int duration = 0, int priority = 0) {
+		if (Overrided) {
+			if (priority < OverridePriority) return;
+			OverrideFrame = Util.Max(Game.PauselessFrame + duration, OverrideFrame);
+			OverrideValue = tint * OverrideValue;
+		} else {
+			OverrideFrame = Game.PauselessFrame + duration;
+			OverrideValue = tint * BaseValue;
+		}
+		OverridePriority = priority;
+	}
+	public FrameBasedColor () : this(Color32.WHITE) { }
+	public static implicit operator Color32 (FrameBasedColor bColor) => bColor.FinalValue;
+}
+
