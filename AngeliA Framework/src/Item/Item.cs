@@ -36,6 +36,7 @@ public abstract class Item : IMapItem {
 	public virtual void OnItemUpdate_FromInventory (Entity holder, int stackCount) { }
 	public virtual void OnPoseAnimationUpdate_FromInventory (PoseCharacterRenderer rendering, int stackCount) { }
 	public virtual void OnTakeDamage_FromInventory (Entity holder, int stackCount, Entity sender, ref Damage damage) { }
+	public virtual void OnCharacterAttack_FromInventory (Character character, Bullet bullet) { }
 
 	// Equipment
 	public virtual void BeforeItemUpdate_FromEquipment (Entity holder) { }
@@ -47,7 +48,7 @@ public abstract class Item : IMapItem {
 	public virtual bool TryRepairEquipment (Entity holder) => false;
 
 	// Ground
-	public virtual void OnItemUpdate_FromGround (Entity holder, int count) { }
+	public virtual void OnItemUpdate_FromItemHolder (ItemHolder holder, int count) { }
 
 	// Misc
 	public virtual void OnCollect (Entity holder) { }

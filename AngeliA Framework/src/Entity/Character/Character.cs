@@ -26,7 +26,7 @@ public enum CharacterAnimationType {
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
-public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCharacterMovement {
+public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCharacterMovement, IWithCharacterAttackness {
 
 
 
@@ -66,6 +66,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public virtual CharacterInventoryType InventoryType => CharacterInventoryType.None;
 	bool ICarrier.AllowBeingCarry => true;
 	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
+	CharacterAttackness IWithCharacterAttackness.CurrentAttackness => Attackness;
 	public int Bouncy { get; set; } = 150;
 	public bool HelmetInteractable { get; set; } = true;
 	public bool BodySuitInteractable { get; set; } = true;
@@ -552,16 +553,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 			bool eventAvailable = CharacterState == CharacterState.GamePlay && !TaskSystem.HasTask() && !Health.TakingDamage;
 			int attackLocalFrame = eventAvailable && Attackness.IsAttacking ? Game.GlobalFrame - Attackness.LastAttackFrame : -1;
 
-			// Inventory
-			ResetInventoryUpdate(invCapacity);
-			for (int i = 0; i < invCapacity; i++) {
-				int id = Inventory.GetItemAt(InventoryID, i, out int stackCount);
-				var item = id != 0 ? ItemSystem.GetItem(id) : null;
-				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
-				item.OnItemUpdate_FromInventory(this, stackCount);
-			}
-
 			// Equipping
+			bool attacking = false;
+			Bullet attaclingBullet = null;
 			for (int i = 0; i < Const.EquipmentTypeCount; i++) {
 				int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
 				var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
@@ -569,10 +563,23 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 				item.OnItemUpdate_FromEquipment(this);
 				if (item is HandTool tool) {
 					if (attackLocalFrame == tool.BulletDelayFrame) {
-						var bullet = tool.SpawnBullet(this);
-						item.OnCharacterAttack_FromEquipment(this, bullet);
-						Buff.ApplyOnAttack(bullet);
+						attaclingBullet = tool.SpawnBullet(this);
+						item.OnCharacterAttack_FromEquipment(this, attaclingBullet);
+						Buff.ApplyOnAttack(attaclingBullet);
+						attacking = true;
 					}
+				}
+			}
+
+			// Inventory
+			ResetInventoryUpdate(invCapacity);
+			for (int i = 0; i < invCapacity; i++) {
+				int id = Inventory.GetItemAt(InventoryID, i, out int stackCount);
+				var item = id != 0 ? ItemSystem.GetItem(id) : null;
+				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
+				item.OnItemUpdate_FromInventory(this, stackCount);
+				if (attacking) {
+					item.OnCharacterAttack_FromInventory(this, attaclingBullet);
 				}
 			}
 

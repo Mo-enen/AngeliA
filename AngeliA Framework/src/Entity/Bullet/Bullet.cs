@@ -19,17 +19,18 @@ public abstract class Bullet : Entity {
 	// Api
 	public static event System.Action<Bullet, IDamageReceiver, Tag> OnBulletDealDamage;
 	public static event System.Action<Bullet, Tag> OnBulletHitEnvironment;
+	public int AttackIndex => Sender is IWithCharacterAttackness attSender ? attSender.CurrentAttackness.AttackStyleIndex : 0;
+	public bool AttackCharged => Sender is IWithCharacterAttackness attSender && attSender.CurrentAttackness.LastAttackCharged;
+
 	public readonly FrameBasedInt Damage = new(1);
+	public Tag DamageType { get; set; } = Tag.PhysicalDamage;
 	public Entity Sender { get; set; } = null;
-	public int AttackIndex { get; set; } = 0;
-	public bool AttackCharged { get; set; } = false;
 	protected virtual int EnvironmentMask => PhysicsMask.MAP;
 	protected virtual int ReceiverMask => PhysicsMask.ENTITY;
 	protected virtual int EnvironmentHitCount => int.MaxValue;
 	protected virtual int ReceiverHitCount => int.MaxValue;
 	protected virtual bool RoundHitCheck => false;
 	public virtual int Duration => 60;
-	public virtual Tag DamageType => Tag.PhysicalDamage;
 
 	// Data
 	private int CurrentEnvironmentHitCount;
@@ -52,6 +53,7 @@ public abstract class Bullet : Entity {
 		CurrentEnvironmentHitCount = EnvironmentHitCount;
 		CurrentReceiverHitCount = ReceiverHitCount;
 		Damage.ClearOverride();
+		DamageType = Tag.PhysicalDamage;
 	}
 
 

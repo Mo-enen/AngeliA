@@ -337,8 +337,6 @@ public abstract class HandTool : Equipment {
 		var sourceRect = sender.Rect;
 		bullet.X = sourceRect.CenterX() - bullet.Width / 2;
 		bullet.Y = sourceRect.CenterY() - bullet.Height / 2;
-		bullet.AttackIndex = sender.Attackness.AttackStyleIndex;
-		bullet.AttackCharged = sender.Attackness.LastAttackCharged;
 		return bullet;
 	}
 

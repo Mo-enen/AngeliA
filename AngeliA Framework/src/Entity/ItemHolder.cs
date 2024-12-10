@@ -156,11 +156,6 @@ public class ItemHolder : Rigidbody {
 			return;
 		}
 
-		// Update
-		if (ItemSystem.GetItem(ItemID) is Item item) {
-			item?.OnItemUpdate_FromGround(this, ItemCount);
-		}
-
 		// Make Room
 		if (IsGrounded) {
 			int dir = 0;
@@ -221,11 +216,17 @@ public class ItemHolder : Rigidbody {
 		// Shadow
 		FrameworkUtil.DrawEnvironmentShadow(cell);
 
+		// Update
+		var _item = ItemSystem.GetItem(ItemID);
+		if (_item is Item item) {
+			item?.OnItemUpdate_FromItemHolder(this, ItemCount);
+		}
+
 		// UI
 		if (ItemCount > 1 && !TaskSystem.HasTask() && !PlayerMenuUI.ShowingUI) {
-			if (ItemSystem.GetItem(ItemID) is HandTool wItem && wItem.UseStackAsUsage) {
+			if (_item is HandTool tool && tool.UseStackAsUsage) {
 				// Usage
-				FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), ItemCount, wItem.MaxStackCount);
+				FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), ItemCount, tool.MaxStackCount);
 			} else {
 				// Count
 				var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
