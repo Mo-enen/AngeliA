@@ -4,10 +4,13 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 public struct Damage (int amount, Entity sender, Entity bullet = null, Tag type = Tag.PhysicalDamage) {
+
 	public int Amount = amount;
 	public Tag Type = type;
 	public Entity Sender = sender;
 	public Entity Bullet = bullet;
+	public bool IgnoreInvincible = false;
+	public bool IgnoreStun = false;
 
 	[OnGameUpdateLater]
 	public static void DamageUpdateFromLevel () {

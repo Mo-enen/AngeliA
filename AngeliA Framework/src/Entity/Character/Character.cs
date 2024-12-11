@@ -303,15 +303,15 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		if (invCapacity > 0) {
 
 			// Inventory
-			ResetInventoryUpdate(invCapacity);
 			for (int i = 0; i < invCapacity; i++) {
-				int id = Inventory.GetItemAt(InventoryID, i, out int stackCount);
+				int id = Inventory.GetItemAt(InventoryID, i);
 				var item = id != 0 ? ItemSystem.GetItem(id) : null;
 				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
-				item.BeforeItemUpdate_FromInventory(this, stackCount);
+				item.BeforeItemUpdate_FromInventory(this, InventoryID, i);
 			}
 
 			// Equipping
+			ResetInventoryUpdate(invCapacity);
 			for (int i = 0; i < Const.EquipmentTypeCount; i++) {
 				var type = (EquipmentType)i;
 				int id = Inventory.GetEquipment(InventoryID, type, out int equipmentCount);
@@ -574,12 +574,12 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 			// Inventory
 			ResetInventoryUpdate(invCapacity);
 			for (int i = 0; i < invCapacity; i++) {
-				int id = Inventory.GetItemAt(InventoryID, i, out int stackCount);
+				int id = Inventory.GetItemAt(InventoryID, i);
 				var item = id != 0 ? ItemSystem.GetItem(id) : null;
 				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
-				item.OnItemUpdate_FromInventory(this, stackCount);
+				item.OnItemUpdate_FromInventory(this, InventoryID, i);
 				if (attacking) {
-					item.OnCharacterAttack_FromInventory(this, attaclingBullet);
+					item.OnCharacterAttack_FromInventory(this, attaclingBullet, InventoryID, i);
 				}
 			}
 
@@ -707,31 +707,37 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		if (Health.InvincibleOnRush && Movement.IsRushing) return;
 		if (Health.InvincibleOnDash && Movement.IsDashing) return;
 
+		// Inventory
+		int invCapacity = Inventory.GetInventoryCapacity(InventoryID);
+		for (int i = 0; i < invCapacity && damage.Amount > 0; i++) {
+			int id = Inventory.GetItemAt(InventoryID, i);
+			var item = id != 0 ? ItemSystem.GetItem(id) : null;
+			if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
+			item.OnTakeDamage_FromInventory(this, InventoryID, i, ref damage);
+		}
+
 		// Equipment
+		ResetInventoryUpdate(invCapacity);
 		for (int i = 0; i < Const.EquipmentTypeCount && damage.Amount > 0; i++) {
 			int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
 			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 			item?.OnTakeDamage_FromEquipment(this, damage.Sender, ref damage);
 		}
 
-		// Inventory
-		int invCapacity = Inventory.GetInventoryCapacity(InventoryID);
-		ResetInventoryUpdate(invCapacity);
-		for (int i = 0; i < invCapacity && damage.Amount > 0; i++) {
-			int id = Inventory.GetItemAt(InventoryID, i, out int stackCount);
-			var item = id != 0 ? ItemSystem.GetItem(id) : null;
-			if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
-			item.OnTakeDamage_FromInventory(this, stackCount, damage.Sender, ref damage);
-		}
-
 		// Deal Damage
 		damage.Amount = damage.Amount.GreaterOrEquelThanZero();
 		Health.HP = (Health.HP - damage.Amount).Clamp(0, Health.MaxHP);
 
-		VelocityX = Movement.FacingRight ? -Health.KnockBackSpeed : Health.KnockBackSpeed;
+		// Knock Back
+		if (!damage.IgnoreStun) {
+			VelocityX = Movement.FacingRight ? -Health.KnockBackSpeed : Health.KnockBackSpeed;
+			Health.LastDamageFrame = Game.GlobalFrame;
+		}
 
-		Health.InvincibleEndFrame = Game.GlobalFrame + Health.InvincibleDuration;
-		Health.LastDamageFrame = Game.GlobalFrame;
+		// Make Invincible
+		if (!damage.IgnoreInvincible) {
+			Health.InvincibleEndFrame = Game.GlobalFrame + Health.InvincibleDuration;
+		}
 
 	}
 

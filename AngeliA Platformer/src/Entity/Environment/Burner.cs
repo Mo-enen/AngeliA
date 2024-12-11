@@ -59,7 +59,7 @@ public abstract class Burner : Entity, IBlockEntity {
 			}
 		}
 
-		if (Renderer.TryGetSprite(FireTypeID, out var fSprite)) {
+		if (Renderer.TryGetSprite(FireTypeID, out var fSprite, false)) {
 			FireTint = fSprite.SummaryTint;
 		} else {
 			FireTint = Color32.WHITE;

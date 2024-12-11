@@ -163,7 +163,7 @@ public abstract class Bullet : Entity {
 		bool grounded =
 			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out var hit, Sender) ||
 			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out hit, Sender, OperationMode.TriggerOnly, Tag.OnewayUp);
-		if (grounded && Renderer.TryGetSprite(hit.SourceID, out var groundSprite)) {
+		if (grounded && Renderer.TryGetSprite(hit.SourceID, out var groundSprite, false)) {
 			groundTint = groundSprite.SummaryTint;
 		}
 		return grounded;

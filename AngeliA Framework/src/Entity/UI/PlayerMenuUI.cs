@@ -1275,7 +1275,7 @@ public class PlayerMenuUI : EntityUI {
 	private static void DrawItemIcon (IRect rect, int id, Color32 tint, int z) {
 		if (id == 0) return;
 		if (!Renderer.TryGetSpriteForGizmos(id, out var sprite)) {
-			Renderer.TryGetSprite(Const.PIXEL, out sprite);
+			Renderer.TryGetSprite(Const.PIXEL, out sprite, false);
 			rect = rect.Shrink(rect.width / 6);
 		}
 		int iconShrink = Unify(7);

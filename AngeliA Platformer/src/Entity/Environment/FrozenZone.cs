@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
-public class IceZone : Entity {
+public class FrozenZone : Entity {
 
 
 
@@ -19,8 +20,8 @@ public class IceZone : Entity {
 
 	// Api
 	private const int DESPAWN_DURATION = 30;
-	public static readonly int TYPE_ID = typeof(IceZone).AngeHash();
-	public static event System.Action<Rigidbody, IceZone> OnTouchingIce;
+	public static readonly int TYPE_ID = typeof(FrozenZone).AngeHash();
+	public static event System.Action<Rigidbody, FrozenZone> OnTouchingIce;
 	public int Duration { get; set; } = 300;
 	public bool Fullscreen { get; set; } = false;
 
@@ -46,13 +47,13 @@ public class IceZone : Entity {
 			if (!damageType.HasAll(Tag.IceDamage)) return;
 			var range = bullet.Rect.Expand(Const.HALF);
 			SpreadIce(TYPE_ID, range);
-			Fire.PutoutFire(range);
+			IFire.PutoutFire(range);
 		}
 		static void OnBulletHitEnvironment (Bullet bullet, Tag damageType) {
 			if (!damageType.HasAll(Tag.IceDamage)) return;
 			var range = bullet.Rect.Expand(Const.HALF);
 			SpreadIce(TYPE_ID, range);
-			Fire.PutoutFire(range);
+			IFire.PutoutFire(range);
 		}
 	}
 
@@ -89,13 +90,13 @@ public class IceZone : Entity {
 					FullscreenUpdateFrame = Game.GlobalFrame;
 					FullscreenTouch(EntityLayer.ENVIRONMENT, this);
 					FullscreenTouch(EntityLayer.CHARACTER, this);
-					static void FullscreenTouch (int entityLayer, IceZone zone) {
+					static void FullscreenTouch (int entityLayer, FrozenZone zone) {
 						Stage.TryGetEntities(entityLayer, out var entities, out int count);
 						for (int i = 0; i < count; i++) {
 							var entity = entities[i];
 							if (entity is Rigidbody rig) {
 								OnTouchingIce?.Invoke(rig, zone);
-							} else if (entity is Fire) {
+							} else if (entity is IFire) {
 								zone.RequireDespawnFrame = Game.GlobalFrame + DESPAWN_DURATION;
 								return;
 							}
@@ -109,7 +110,7 @@ public class IceZone : Entity {
 					var hit = hits[i];
 					if (hit.Entity is Rigidbody rig) {
 						OnTouchingIce?.Invoke(rig, this);
-					} else if (hit.Entity is Fire) {
+					} else if (hit.Entity is IFire) {
 						RequireDespawnFrame = Game.GlobalFrame + DESPAWN_DURATION;
 						break;
 					}
@@ -132,6 +133,7 @@ public class IceZone : Entity {
 		if (!Active) return;
 		if (Fullscreen) {
 			DrawIceEffect(null);
+			Game.PassEffect_Tint(new Color32(230, 245, 255, 255), 1);
 		} else {
 			DrawIceEffect(Rect);
 		}
@@ -142,10 +144,11 @@ public class IceZone : Entity {
 
 		if (!Renderer.TryGetSprite(Const.PIXEL, out var sprite, true)) return;
 
-		var rect = range ?? Renderer.CameraRect;
+		var cameraRect = Renderer.CameraRect;
+		var rect = range ?? cameraRect;
 		int left = rect.x;
-		int right = rect.xMax;
 		int down = rect.y;
+		int width = rect.width;
 		int height = rect.height;
 
 		int seed = SpawnFrame + X + Y * 128 + InstanceOrder * 347345634;
@@ -161,12 +164,14 @@ public class IceZone : Entity {
 		int COUNT = Fullscreen ? 128 : Duration < 0 ? 16 : 32;
 		float frame01 = frame / 120f;
 		float fixedFrame01 = frame01 * Const.CEL / height;
+		int paraX = Fullscreen ? cameraRect.x / 2 : 0;
+		int paraY = Fullscreen ? cameraRect.y / 2 : 0;
 		for (int i = 0; i < COUNT; i++) {
 			float lerp01 = i / (float)COUNT;
 			if (lerp01 > frame01) break;
 			if (Util.QuickRandom(0, 100) < 30) continue;
-			int x = Util.QuickRandomWithSeed(seed + i * 21632, left, right);
-			int y = down + (((fixedFrame01 + lerp01) % 1f) * height).RoundToInt();
+			int x = left + (Util.QuickRandomWithSeed(seed + i * 21632, 0, width) - paraX).UMod(width);
+			int y = down + (((fixedFrame01 + lerp01) * height).RoundToInt() - paraY).UMod(height);
 			int size = Util.QuickRandomWithSeed(seed + i * 1673 + TypeID, 16, 142);
 			int rot = Util.QuickRandom(0, 360);
 			Renderer.Draw(sprite, x, y, 500, 500, rot, size, size / 7, tint);
@@ -183,7 +188,7 @@ public class IceZone : Entity {
 
 
 	public static void SpreadIce (int iceID, IRect range) {
-		if (Stage.SpawnEntity(iceID, range.x, range.y) is not IceZone ice) return;
+		if (Stage.SpawnEntity(iceID, range.x, range.y) is not FrozenZone ice) return;
 		ice.Width = range.width;
 		ice.Height = range.height;
 	}

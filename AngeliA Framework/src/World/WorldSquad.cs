@@ -342,7 +342,7 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	private void DrawLevelBlock (int id, int unitX, int unitY) {
-		if (!Renderer.TryGetSprite(id, out var sp)) return;
+		if (!Renderer.TryGetSprite(id, out var sp, false)) return;
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 		if (CullingCameraRect.Overlaps(rect)) {
 			Renderer.Draw(sp, rect);

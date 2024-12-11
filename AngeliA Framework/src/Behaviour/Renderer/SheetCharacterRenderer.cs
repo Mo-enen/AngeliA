@@ -205,7 +205,7 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 					Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE, Game.GlobalFrame
 				);
 				RenderedCell.Color = Tint;
-				if (Renderer.TryGetSprite(sheet.Sleep, out var sleepSprite)) {
+				if (Renderer.TryGetSprite(sheet.Sleep, out var sleepSprite, false)) {
 					if (sleepSprite.GlobalBorder.down > 0) {
 						RenderedCell.Y -= sleepSprite.GlobalBorder.down;
 					}
@@ -260,7 +260,7 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 		}
 
 		// Draw
-		if (Renderer.TryGetSprite(ani, out var sprite)) {
+		if (Renderer.TryGetSprite(ani, out var sprite, false)) {
 			return Renderer.DrawAnimation(
 				ani, X, Y, sprite.PivotX, sprite.PivotY, 0,
 				Movement.FacingRight || Movement.IsClimbing || Movement.IsPounding ? sprite.GlobalWidth : -sprite.GlobalWidth,

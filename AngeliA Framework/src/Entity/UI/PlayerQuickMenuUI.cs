@@ -397,7 +397,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			!Renderer.TryGetSprite(id, out var sprite, true) &&
 			!Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
 		) {
-			Renderer.TryGetSprite(Const.PIXEL, out sprite);
+			Renderer.TryGetSprite(Const.PIXEL, out sprite, false);
 			rect = rect.Shrink(rect.width / 6);
 		}
 		Renderer.Draw(

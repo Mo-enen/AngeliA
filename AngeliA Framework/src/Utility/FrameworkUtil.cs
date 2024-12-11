@@ -267,7 +267,7 @@ public static class FrameworkUtil {
 
 
 	public static void DrawMagicEncircleAurora (int spriteID, int count, int centerX, int centerY, int localFrame, Color32 tint, int scale = 1000, int rotateSpeed = 16, int swingDuration = 20, int swingAmout = 240, int growDuration = 10, int z = int.MinValue) {
-		if (!Renderer.TryGetSprite(spriteID, out var sprite)) return;
+		if (!Renderer.TryGetSprite(spriteID, out var sprite, false)) return;
 		// Swing
 		int pivotSwing = localFrame.PingPong(swingDuration) * swingAmout / swingDuration - swingAmout / 2;
 		// Grow
@@ -386,7 +386,7 @@ public static class FrameworkUtil {
 
 
 	public static void DrawBullet (Bullet bullet, int artworkID, bool facingRight, int rotation, int scale, int z = int.MaxValue - 16) {
-		if (!Renderer.TryGetSprite(artworkID, out var sprite)) return;
+		if (!Renderer.TryGetSprite(artworkID, out var sprite, false)) return;
 		int facingSign = facingRight ? 1 : -1;
 		int x = bullet.X + bullet.Width / 2;
 		int y = bullet.Y + bullet.Height / 2;
@@ -969,7 +969,7 @@ public static class FrameworkUtil {
 
 		bool IsSolidLevel (int x, int y) {
 			int id = squad.GetBlockAt(x, y, z, BlockType.Level);
-			return id != 0 && (!Renderer.TryGetSprite(id, out var sp) || !sp.IsTrigger);
+			return id != 0 && (!Renderer.TryGetSprite(id, out var sp, false) || !sp.IsTrigger);
 		}
 	}
 

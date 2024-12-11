@@ -12,8 +12,8 @@ public sealed class CharacterBuff {
 
 
 	private class State {
-		public bool IsActived => Frame >= Game.GlobalFrame;
-		public int Frame;
+		public bool IsActived => Game.GlobalFrame <= EndFrame;
+		public int EndFrame = -1;
 		public object Data;
 	}
 
@@ -58,7 +58,9 @@ public sealed class CharacterBuff {
 			var state = span[i];
 			if (!state.IsActived) continue;
 			ActivedCountData++;
-			Buff.GetBuffAtIndex(i).BeforeUpdate(Character, ref state.Data);
+			try {
+				Buff.GetBuffAtIndex(i).BeforeUpdate(Character);
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 	}
 
@@ -68,7 +70,9 @@ public sealed class CharacterBuff {
 		for (int i = 0; i < span.Length; i++) {
 			var state = span[i];
 			if (!state.IsActived) continue;
-			Buff.GetBuffAtIndex(i).LateUpdate(Character, ref state.Data);
+			try {
+				Buff.GetBuffAtIndex(i).LateUpdate(Character);
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 	}
 
@@ -78,8 +82,9 @@ public sealed class CharacterBuff {
 		for (int i = 0; i < span.Length; i++) {
 			var state = span[i];
 			if (!state.IsActived) continue;
-			var buff = Buff.GetBuffAtIndex(i);
-			buff.OnCharacterAttack(Character, bullet, ref state.Data);
+			try {
+				Buff.GetBuffAtIndex(i).OnCharacterAttack(Character, bullet);
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 	}
 
@@ -107,14 +112,14 @@ public sealed class CharacterBuff {
 	public void GiveBuff (int id, int duration = 1) {
 		if (!Buff.TryGetBuffIndex(id, out int index)) return;
 		var state = BuffStates[index];
-		state.Frame = Util.Max(state.Frame, Game.GlobalFrame + duration);
+		state.EndFrame = Util.Max(state.EndFrame, Game.GlobalFrame + duration);
 	}
 
 
 	public void ClearBuff (int id) {
 		if (!Buff.TryGetBuffIndex(id, out int index)) return;
 		var state = BuffStates[index];
-		state.Frame = -1;
+		state.EndFrame = -1;
 		state.Data = null;
 	}
 
@@ -123,7 +128,7 @@ public sealed class CharacterBuff {
 		var span = BuffStates.GetReadOnlySpan();
 		for (int i = 0; i < span.Length; i++) {
 			var state = span[i];
-			state.Frame = -1;
+			state.EndFrame = -1;
 			state.Data = null;
 		}
 	}
@@ -136,6 +141,9 @@ public sealed class CharacterBuff {
 		if (!Buff.TryGetBuffIndex(id, out int index)) return;
 		BuffStates[index].Data = data;
 	}
+
+
+	public int GetBuffEndFrame (int id) => Buff.TryGetBuffIndex(id, out int index) ? BuffStates[index].EndFrame : -1;
 
 
 	#endregion

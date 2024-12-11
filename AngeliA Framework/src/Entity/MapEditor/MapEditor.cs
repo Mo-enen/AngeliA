@@ -1464,7 +1464,7 @@ public sealed partial class MapEditor : WindowUI {
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 		if (EntityArtworkRedirectPool.TryGetValue(id, out int newID)) id = newID;
 		if (
-			Renderer.TryGetSprite(id, out var sprite) ||
+			Renderer.TryGetSprite(id, out var sprite, false) ||
 			Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
 		) {
 			rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
@@ -1478,7 +1478,7 @@ public sealed partial class MapEditor : WindowUI {
 	private void DrawElement (int id, int unitX, int unitY) {
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 		if (
-			Renderer.TryGetSprite(id, out var sprite) ||
+			Renderer.TryGetSprite(id, out var sprite, false) ||
 			Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
 		) {
 			rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
@@ -1491,7 +1491,7 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void DrawBlock (int id, int unitX, int unitY) {
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
-		if (Renderer.TryGetSprite(id, out var sprite)) {
+		if (Renderer.TryGetSprite(id, out var sprite, false)) {
 			Renderer.Draw(sprite, rect);
 		} else {
 			Renderer.DrawPixel(rect.Shrink(16));

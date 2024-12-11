@@ -103,7 +103,7 @@ public sealed class BlockBuilder : HandTool {
 		);
 		// Block
 		if (allowPut && (
-			Renderer.TryGetSprite(BlockID, out var sp, true) ||
+			Renderer.TryGetSprite(BlockID, out var sp) ||
 			Renderer.TryGetSpriteFromGroup(BlockID, 0, out sp)
 		)) {
 			const int GAP = Const.CEL / 10;

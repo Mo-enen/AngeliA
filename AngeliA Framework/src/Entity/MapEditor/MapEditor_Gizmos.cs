@@ -271,7 +271,7 @@ public partial class MapEditor {
 	private AngeSprite GetRealGizmosSprite (int artworkID) {
 		if (!Renderer.TryGetSpriteForGizmos(artworkID, out var sprite)) {
 			if (EntityArtworkRedirectPool.TryGetValue(artworkID, out int newID)) {
-				Renderer.TryGetSprite(newID, out sprite);
+				Renderer.TryGetSprite(newID, out sprite, false);
 			}
 		}
 		return sprite ?? AngeSprite.EMPTY;

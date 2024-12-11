@@ -56,13 +56,9 @@ public abstract class Buff {
 	}
 
 
-	public virtual void BeforeUpdate (Character target, ref object data) { }
-
-
-	public virtual void LateUpdate (Character target, ref object data) { }
-
-
-	public virtual void OnCharacterAttack (Character target, Bullet bullet, ref object data) { }
+	public virtual void BeforeUpdate (Character target) { }
+	public virtual void LateUpdate (Character target) { }
+	public virtual void OnCharacterAttack (Character target, Bullet bullet) { }
 
 
 	#endregion

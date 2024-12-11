@@ -582,7 +582,7 @@ public class CharacterMovement (Rigidbody rig) {
 
 		// Putout Fire
 		if (requirePutoutFire) {
-			Fire.PutoutFire(Rect.Expand(Const.HALF));
+			IFire.PutoutFire(Rect.Expand(Const.HALF));
 		}
 
 	}

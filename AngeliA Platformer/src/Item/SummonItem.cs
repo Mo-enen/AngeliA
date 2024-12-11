@@ -10,9 +10,9 @@ public abstract class SummonItem<T> : Item where T : ItemBasedSummon {
 	private static int UpdatingFrame = -1;
 	public override int MaxStackCount => 1;
 
-	public override void OnItemUpdate_FromInventory (Entity holder, int stackCount) {
+	public override void OnItemUpdate_FromInventory (Entity holder, int inventoryID, int itemIndex) {
 		const int SYNC_FREQ = 30;
-		base.OnItemUpdate_FromInventory(holder, stackCount);
+		base.OnItemUpdate_FromInventory(holder, inventoryID, itemIndex);
 		// Sync Summon Count
 		if (
 			Game.GlobalFrame % SYNC_FREQ != 0 ||

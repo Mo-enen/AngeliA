@@ -35,7 +35,7 @@ public abstract class FireSprinkler : Furniture {
 			if (frame >= SprinklingFrame && frame <= SprinklingFrame + SprinklingDuration) {
 				// Putout Fire
 				if ((frame - SprinklingFrame) % 42 == 0) {
-					Fire.PutoutFire(Rect.Expand(SprinklingRange, SprinklingRange, SprinklingRange, 0));
+					IFire.PutoutFire(Rect.Expand(SprinklingRange, SprinklingRange, SprinklingRange, 0));
 				}
 			}
 			// End Sprinkling Check

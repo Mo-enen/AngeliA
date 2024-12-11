@@ -69,7 +69,7 @@ public abstract class CheckAltar<CP> : Entity, IBlockEntity where CP : CheckPoin
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		var border = Renderer.TryGetSprite(TypeID, out var sprite) ? sprite.GlobalBorder : Int4.zero;
+		var border = Renderer.TryGetSprite(TypeID, out var sprite, false) ? sprite.GlobalBorder : Int4.zero;
 		Physics.FillBlock(
 			PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, Tag.OnewayUp
 		);

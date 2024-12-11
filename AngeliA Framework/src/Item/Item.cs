@@ -32,11 +32,11 @@ public abstract class Item : IMapItem {
 	}
 
 	// Inventory
-	public virtual void BeforeItemUpdate_FromInventory (Entity holder, int stackCount) { }
-	public virtual void OnItemUpdate_FromInventory (Entity holder, int stackCount) { }
-	public virtual void OnPoseAnimationUpdate_FromInventory (PoseCharacterRenderer rendering, int stackCount) { }
-	public virtual void OnTakeDamage_FromInventory (Entity holder, int stackCount, Entity sender, ref Damage damage) { }
-	public virtual void OnCharacterAttack_FromInventory (Character character, Bullet bullet) { }
+	public virtual void BeforeItemUpdate_FromInventory (Entity holder, int inventoryID, int itemIndex) { }
+	public virtual void OnItemUpdate_FromInventory (Entity holder, int inventoryID, int itemIndex) { }
+	public virtual void OnPoseAnimationUpdate_FromInventory (PoseCharacterRenderer rendering, int inventoryID, int itemIndex) { }
+	public virtual void OnTakeDamage_FromInventory (Entity holder, int inventoryID, int itemIndex, ref Damage damage) { }
+	public virtual void OnCharacterAttack_FromInventory (Character character, Bullet bullet, int inventoryID, int itemIndex) { }
 
 	// Equipment
 	public virtual void BeforeItemUpdate_FromEquipment (Entity holder) { }

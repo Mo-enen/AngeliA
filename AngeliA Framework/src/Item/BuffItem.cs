@@ -10,8 +10,8 @@ public abstract class BuffItem : Item {
 	public override bool AllowDuplicateUpdate => false;
 	public override int MaxStackCount => 1;
 	public int BuffID { get; init; }
-	public override void OnItemUpdate_FromInventory (Entity holder, int stackCount) {
-		base.OnItemUpdate_FromInventory(holder, stackCount);
+	public override void OnItemUpdate_FromInventory (Entity holder, int inventoryID, int itemIndex) {
+		base.OnItemUpdate_FromInventory(holder, inventoryID, itemIndex);
 		if (holder is Character character) {
 			character.Buff.GiveBuff(BuffID);
 		}

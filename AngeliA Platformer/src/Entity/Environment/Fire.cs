@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.RepositionWhenInactive]
-public class Fire : Entity {
+public class Fire : Entity, IFire {
 
 
 
 
 	#region --- VAR ---
-
 
 	// Api
 	public static readonly int TYPE_ID = typeof(Fire).AngeHash();
@@ -50,11 +50,11 @@ public class Fire : Entity {
 		Bullet.OnBulletHitEnvironment += OnBulletHitEnvironment;
 		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
 			if (!damageType.HasAll(Tag.FireDamage)) return;
-			SpreadFire(TYPE_ID, bullet.Rect.Expand(Const.CEL));
+			IFire.SpreadFire(TYPE_ID, bullet.Rect.Expand(Const.CEL));
 		}
 		static void OnBulletHitEnvironment (Bullet bullet, Tag damageType) {
 			if (!damageType.HasAll(Tag.FireDamage)) return;
-			SpreadFire(TYPE_ID, bullet.Rect.Expand(Const.CEL));
+			IFire.SpreadFire(TYPE_ID, bullet.Rect.Expand(Const.CEL));
 		}
 	}
 
@@ -257,37 +257,6 @@ public class Fire : Entity {
 	#region --- API ---
 
 
-	public static void SpreadFire (int fireID, IRect rect, Entity ignore = null) {
-		var hits = Physics.OverlapAll(
-			PhysicsMask.ENTITY,
-			rect, out int count,
-			ignore, OperationMode.ColliderAndTrigger
-		);
-		for (int i = 0; i < count; i++) {
-			var hit = hits[i];
-			if (hit.Entity is not ICombustible com || !hit.Entity.Active || com.IsBurning) continue;
-			if (Stage.TrySpawnEntity(fireID, hit.Rect.x, hit.Rect.y, out var fEntity) && fEntity is Fire fire) {
-				fire.Setup(com);
-			}
-		}
-	}
-
-
-	public static void PutoutFire (IRect rect) {
-		// Remove Fire Entities
-		var hits = Physics.OverlapAll(
-			PhysicsMask.ENVIRONMENT,
-			rect, out int count,
-			null, OperationMode.TriggerOnly
-		);
-		for (int i = 0; i < count; i++) {
-			var e = hits[i].Entity;
-			if (e is not Fire fire) continue;
-			fire.Putout(true);
-		}
-	}
-
-
 	public void Setup (int burnDuration, Direction4 direction, int width = Const.CEL, int height = Const.CEL) {
 		Width = width;
 		Height = height;
@@ -317,7 +286,7 @@ public class Fire : Entity {
 	}
 
 
-	public void Spread () => SpreadFire(TypeID, Rect.Expand(SpreadRange), ignore: this);
+	public void Spread () => IFire.SpreadFire(TypeID, Rect.Expand(SpreadRange), ignore: this);
 
 
 	public void Putout (bool manually) {

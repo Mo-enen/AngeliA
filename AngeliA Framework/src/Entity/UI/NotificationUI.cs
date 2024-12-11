@@ -67,7 +67,7 @@ public class NotificationUI : EntityUI {
 		Renderer.DrawPixel(panelRect.Expand(Unify(12)), Color32.BLACK, int.MaxValue - 1);
 
 		// Icon
-		if (Renderer.TryGetSprite(Icon, out var icon)) {
+		if (Renderer.TryGetSprite(Icon, out var icon, false)) {
 			Renderer.Draw(
 				Icon,
 				new IRect(panelRect.x, panelRect.y, panelRect.height, panelRect.height).Fit(icon),

@@ -166,7 +166,7 @@ public class World (Int3 pos) {
 				int x = reader.ReadByte();
 				int y = reader.ReadByte();
 				if (x < SIZE && y >= SIZE) continue;
-				if (Renderer.TryGetSprite(id, out var sprite)) {
+				if (Renderer.TryGetSprite(id, out var sprite, false)) {
 					if (x >= SIZE) x -= SIZE;
 					if (y >= SIZE) y -= SIZE;
 					CacheMapPixels[y * SIZE + x] = sprite.SummaryTint;
@@ -183,17 +183,17 @@ public class World (Int3 pos) {
 			int len = Const.MAP * Const.MAP;
 			for (int i = 0; i < len; i++) {
 				int id = Entities[i];
-				if (id != 0 && Renderer.TryGetSprite(id, out var sprite)) {
+				if (id != 0 && Renderer.TryGetSprite(id, out var sprite, false)) {
 					CacheMapPixels[i] = sprite.SummaryTint;
 					continue;
 				}
 				id = Levels[i];
-				if (id != 0 && Renderer.TryGetSprite(id, out sprite)) {
+				if (id != 0 && Renderer.TryGetSprite(id, out sprite, false)) {
 					CacheMapPixels[i] = sprite.SummaryTint;
 					continue;
 				}
 				id = Backgrounds[i];
-				if (id != 0 && Renderer.TryGetSprite(id, out sprite)) {
+				if (id != 0 && Renderer.TryGetSprite(id, out sprite, false)) {
 					CacheMapPixels[i] = sprite.SummaryTint;
 					continue;
 				}

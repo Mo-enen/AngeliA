@@ -296,10 +296,10 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		int invCapacity = Inventory.GetInventoryCapacity(TargetCharacter.InventoryID);
 		TargetCharacter.ResetInventoryUpdate(invCapacity);
 		for (int i = 0; i < invCapacity; i++) {
-			int id = Inventory.GetItemAt(TargetCharacter.InventoryID, i, out int stackCount);
+			int id = Inventory.GetItemAt(TargetCharacter.InventoryID, i);
 			var item = id != 0 ? ItemSystem.GetItem(id) : null;
 			if (item == null || !item.CheckUpdateAvailable(TargetCharacter.TypeID)) continue;
-			item.OnPoseAnimationUpdate_FromInventory(this, stackCount);
+			item.OnPoseAnimationUpdate_FromInventory(this, TargetCharacter.InventoryID, i);
 		}
 		CalculateBodypartGlobalPosition();
 	}

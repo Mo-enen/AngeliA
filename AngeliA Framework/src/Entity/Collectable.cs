@@ -13,7 +13,7 @@ public abstract class Collectable : Entity, IBlockEntity {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		if (Renderer.TryGetSprite(TypeID, out var sprite)) {
+		if (Renderer.TryGetSprite(TypeID, out var sprite, false)) {
 			X += (Width - sprite.GlobalWidth) / 2;
 			Y += (Height - sprite.GlobalHeight) / 2;
 			Width = sprite.GlobalWidth;

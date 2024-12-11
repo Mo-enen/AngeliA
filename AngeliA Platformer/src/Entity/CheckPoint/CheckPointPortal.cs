@@ -40,7 +40,7 @@ public class CheckPointPortal : CircleFlamePortal {
 		base.LateUpdate();
 
 		// Draw Cp Icon
-		if (Renderer.TryGetSprite(TargetCheckPointID, out var sprite)) {
+		if (Renderer.TryGetSprite(TargetCheckPointID, out var sprite, false)) {
 			const int SIZE = 196;
 			var rect = new IRect(Rect.CenterX() - SIZE / 2, Rect.CenterY() - SIZE / 2, SIZE, SIZE);
 			var tint = Color32.LerpUnclamped(Color32.WHITE_0, Color32.WHITE, (Game.GlobalFrame - SpawnFrame).PingPong(60) / 60f);
