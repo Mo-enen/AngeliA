@@ -1,4 +1,6 @@
-﻿namespace AngeliA;
+﻿using System;
+
+namespace AngeliA;
 
 public readonly struct ReverseCellsScope : System.IDisposable {
 	private readonly int LayerIndex;
@@ -10,7 +12,10 @@ public readonly struct ReverseCellsScope : System.IDisposable {
 	public readonly void Dispose () {
 		int start = UsedCount;
 		if (Renderer.GetCells(LayerIndex, out var cells, out int count) && start < count) {
-			System.Array.Reverse(cells, start, count - start);
+			//System.Array.Reverse(cells, start, count - start);
+			for (int i = start, j = count - 1; i < j; i++, j--) {
+				(cells[i], cells[j]) = (cells[j], cells[i]);
+			}
 		}
 	}
 }

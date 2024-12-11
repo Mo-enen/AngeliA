@@ -18,6 +18,10 @@ public static class EntityAttribute {
 	public class ExcludeInMapEditorAttribute : Attribute { }
 
 
+	[AttributeUsage(AttributeTargets.Class)]
+	public class IncludeInMapEditorAttribute : Attribute { }
+
+
 	[AttributeUsage(AttributeTargets.Class, Inherited = true)]
 	public class MapEditorGroupAttribute (string groupName, int order = 0) : Attribute {
 		public string GroupName = groupName;

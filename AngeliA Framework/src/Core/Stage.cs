@@ -622,10 +622,10 @@ public static class Stage {
 	}
 
 
-	public static bool TryGetEntities (int layer, out Entity[] entities, out int count) {
+	public static bool TryGetEntities (int layer, out ReadOnlySpan<Entity> entities, out int count) {
 		if (Enable && layer >= 0 && layer < EntityLayer.COUNT) {
 			count = EntityCounts[layer];
-			entities = Entities[layer];
+			entities = Entities[layer].GetReadOnlySpan();
 			return true;
 		} else {
 			count = 0;

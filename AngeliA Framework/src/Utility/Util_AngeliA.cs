@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Linq;
+using System;
 
 namespace AngeliA;
 
@@ -14,7 +15,8 @@ public static partial class Util {
 
 
 	// API
-	public static void ClampCells (Cell[] cells, IRect rect, int startIndex, int endIndex) {
+	public static void ClampCells (Cell[] cells, IRect rect, int startIndex, int endIndex) => ClampCells(cells.GetSpan(), rect, startIndex, endIndex);
+	public static void ClampCells (Span<Cell> cells, IRect rect, int startIndex, int endIndex) {
 		if (cells == null) return;
 		endIndex = endIndex.LessOrEquel(cells.Length);
 		for (int i = startIndex; i < endIndex; i++) {

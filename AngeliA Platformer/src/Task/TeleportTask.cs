@@ -202,7 +202,7 @@ public class TeleportTask : Task {
 
 
 	// LGC
-	private static void ParaLogic (Cell[] cells, Int2 center, int count, float ease) {
+	private static void ParaLogic (System.Span<Cell> cells, Int2 center, int count, float ease) {
 		for (int i = 0; i < count; i++) {
 			var cell = cells[i];
 			if (cell.Rotation1000 == 0) {

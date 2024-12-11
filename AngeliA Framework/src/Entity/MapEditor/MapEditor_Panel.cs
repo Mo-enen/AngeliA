@@ -253,7 +253,12 @@ public partial class MapEditor {
 
 			// Check Exclude Attr
 			var atts = type.GetCustomAttributes(typeof(EntityAttribute.ExcludeInMapEditorAttribute), true);
-			if (atts != null && atts.Length > 0) continue;
+			if (atts != null && atts.Length > 0) {
+				atts = type.GetCustomAttributes(typeof(EntityAttribute.IncludeInMapEditorAttribute), true);
+				if (atts == null || atts.Length == 0) {
+					continue;
+				}
+			}
 
 			// Check Group Name
 			string groupName = "Default";

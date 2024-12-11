@@ -832,8 +832,8 @@ public static class Renderer {
 
 
 	// Layer Access
-	public static bool GetCells (out Cell[] cells, out int count) => GetCells(CurrentLayerIndex, out cells, out count);
-	public static bool GetCells (int layer, out Cell[] cells, out int count) {
+	public static bool GetCells (out Span<Cell> cells, out int count) => GetCells(CurrentLayerIndex, out cells, out count);
+	public static bool GetCells (int layer, out Span<Cell> cells, out int count) {
 		if (layer >= 0 && layer < LayerCount) {
 			var item = Layers[layer];
 			count = item.Count;

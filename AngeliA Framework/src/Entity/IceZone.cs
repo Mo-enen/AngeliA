@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+
+[EntityAttribute.ExcludeInMapEditor]
+[EntityAttribute.UpdateOutOfRange]
+[EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.DontDestroyOnZChanged]
 public class IceZone : Entity {
 
 
@@ -13,12 +18,16 @@ public class IceZone : Entity {
 
 
 	// Api
+	private const int DESPAWN_DURATION = 30;
 	public static readonly int TYPE_ID = typeof(IceZone).AngeHash();
 	public static event System.Action<Rigidbody, IceZone> OnTouchingIce;
 	public int Duration { get; set; } = 300;
+	public bool Fullscreen { get; set; } = false;
 
 	// Data
-	private IRect Range;
+	private static int FullscreenUpdateFrame = -1;
+	private int SpawnedZ;
+	private int RequireDespawnFrame = int.MaxValue;
 
 
 	#endregion
@@ -50,71 +59,70 @@ public class IceZone : Entity {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		Range = default;
-		if (FromWorld) {
-			Duration = -1;
-			int grow = Const.HALF;
-			X -= grow;
-			Y -= grow;
-			Width += grow * 2;
-			Height += grow * 2;
-		} else {
-			Duration = 300;
-		}
-	}
-
-
-	public override void FirstUpdate () {
-		base.FirstUpdate();
-		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Tag.Slip);
+		Duration = 300;
+		Fullscreen = false;
+		SpawnedZ = Stage.ViewZ;
+		RequireDespawnFrame = int.MaxValue;
 	}
 
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 
-		// Lifetime Check
-		if (Duration >= 0 && Game.GlobalFrame - SpawnFrame > Duration) {
-			Active = false;
-			return;
-		}
+		if (RequireDespawnFrame == int.MaxValue) {
 
-		// Touch Rigidbody
-		var hits = Physics.OverlapAll(PhysicsMask.SOLID, Rect, out int count, this, OperationMode.ColliderAndTrigger);
-		for (int i = 0; i < count; i++) {
-			var hit = hits[i];
-			if (hit.Entity is Rigidbody rig) {
-				OnTouchingIce?.Invoke(rig, this);
-			} else if (hit.Entity is Fire) {
+			// Lifetime Check
+			// Z Check
+			// Out of Range Check
+			if (
+				(Duration >= 0 && Game.GlobalFrame - SpawnFrame > Duration) ||
+				Stage.ViewZ != SpawnedZ ||
+				!Rect.Overlaps(Stage.SpawnRect)
+			) {
+				RequireDespawnFrame = Game.GlobalFrame + DESPAWN_DURATION;
+			}
+
+			// Touch Rigidbody
+			if (Fullscreen) {
+				// Fullscreen
+				if (Game.GlobalFrame != FullscreenUpdateFrame) {
+					FullscreenUpdateFrame = Game.GlobalFrame;
+					FullscreenTouch(EntityLayer.ENVIRONMENT, this);
+					FullscreenTouch(EntityLayer.CHARACTER, this);
+					static void FullscreenTouch (int entityLayer, IceZone zone) {
+						Stage.TryGetEntities(entityLayer, out var entities, out int count);
+						for (int i = 0; i < count; i++) {
+							var entity = entities[i];
+							if (entity is Rigidbody rig) {
+								OnTouchingIce?.Invoke(rig, zone);
+							} else if (entity is Fire) {
+								zone.RequireDespawnFrame = Game.GlobalFrame + DESPAWN_DURATION;
+								return;
+							}
+						}
+					}
+				}
+			} else {
+				// Ranged
+				var hits = Physics.OverlapAll(PhysicsMask.ENTITY, Rect, out int count, this, OperationMode.ColliderAndTrigger);
+				for (int i = 0; i < count; i++) {
+					var hit = hits[i];
+					if (hit.Entity is Rigidbody rig) {
+						OnTouchingIce?.Invoke(rig, this);
+					} else if (hit.Entity is Fire) {
+						RequireDespawnFrame = Game.GlobalFrame + DESPAWN_DURATION;
+						break;
+					}
+				}
+			}
+
+		} else {
+			// Performing Despawn
+			if (Game.GlobalFrame >= RequireDespawnFrame) {
 				Active = false;
 				return;
 			}
 		}
-
-		// Tint Blocks Overlapping
-		int minX = X;
-		int minY = Y;
-		int maxX = X + Width;
-		int maxY = Y + Height;
-		using (new LayerScope(RenderLayer.COLOR)) {
-			byte alpha = Duration > 0 ?
-				(byte)Util.LerpUnclamped(512f, 0f, (Game.GlobalFrame - SpawnFrame) / (float)Duration).Clamp(0, 64) :
-				(byte)64;
-			for (int i = 0; i < count; i++) {
-				var hit = hits[i];
-				if (hit.Entity == null || hit.Entity is IBlockEntity) {
-					var rect = hit.Rect;
-					if (hit.Entity == null) {
-						rect = new IRect(rect.x.ToUnifyGlobal(), rect.y.ToUnifyGlobal(), Const.CEL, Const.CEL);
-					}
-					minX = Util.Min(minX, rect.x);
-					minY = Util.Min(minY, rect.y);
-					maxX = Util.Max(maxX, rect.xMax);
-					maxY = Util.Max(maxY, rect.yMax);
-				}
-			}
-		}
-		Range = IRect.MinMaxRect(minX, minY, maxX, maxY);
 
 	}
 
@@ -122,31 +130,46 @@ public class IceZone : Entity {
 	public override void LateUpdate () {
 		base.LateUpdate();
 		if (!Active) return;
-		// Draw Particle Effect
+		if (Fullscreen) {
+			DrawIceEffect(null);
+		} else {
+			DrawIceEffect(Rect);
+		}
+	}
+
+
+	private void DrawIceEffect (IRect? range) {
+
+		if (!Renderer.TryGetSprite(Const.PIXEL, out var sprite, true)) return;
+
+		var rect = range ?? Renderer.CameraRect;
+		int left = rect.x;
+		int right = rect.xMax;
+		int down = rect.y;
+		int height = rect.height;
+
 		int seed = SpawnFrame + X + Y * 128 + InstanceOrder * 347345634;
-		if (Renderer.TryGetSprite(Const.PIXEL, out var sprite, true)) {
-			int left = Range.x;
-			int right = Range.xMax;
-			int down = Range.y;
-			int height = Range.height;
-			int frame = Game.GlobalFrame - SpawnFrame;
-			byte alpha = Duration > 0 ?
-				(byte)Util.LerpUnclamped(385f, 0f, (Game.GlobalFrame - SpawnFrame) / (float)Duration).Clamp(0, 200) :
-				(byte)150;
-			var tint = new Color32(200, 225, 255, alpha);
-			int COUNT = Duration < 0 ? 16 : 32;
-			float frame01 = frame / 120f;
-			float fixedFrame01 = frame01 * Const.CEL / height;
-			for (int i = 0; i < COUNT; i++) {
-				float lerp01 = i / (float)COUNT;
-				if (lerp01 > frame01) break;
-				if (Util.QuickRandom(0, 100) < 30) continue;
-				int x = Util.QuickRandomWithSeed(seed + i * 21632, left, right);
-				int y = down + (((fixedFrame01 + lerp01) % 1f) * height).RoundToInt();
-				int size = Util.QuickRandomWithSeed(seed + i * 1673 + TypeID, 16, 142);
-				int rot = Util.QuickRandom(0, 360);
-				Renderer.Draw(sprite, x, y, 500, 500, rot, size, size / 7, tint);
-			}
+		int frame = Game.GlobalFrame - SpawnFrame;
+		byte alpha = Duration > 0 ?
+			(byte)Util.LerpUnclamped(385f, 0f, (Game.GlobalFrame - SpawnFrame) / (float)Duration).Clamp(0, 200) :
+			(byte)150;
+		if (RequireDespawnFrame != int.MaxValue) {
+			alpha = (byte)Util.Lerp(0, alpha, (RequireDespawnFrame - Game.GlobalFrame) / (float)DESPAWN_DURATION);
+		}
+
+		var tint = new Color32(200, 225, 255, alpha);
+		int COUNT = Fullscreen ? 128 : Duration < 0 ? 16 : 32;
+		float frame01 = frame / 120f;
+		float fixedFrame01 = frame01 * Const.CEL / height;
+		for (int i = 0; i < COUNT; i++) {
+			float lerp01 = i / (float)COUNT;
+			if (lerp01 > frame01) break;
+			if (Util.QuickRandom(0, 100) < 30) continue;
+			int x = Util.QuickRandomWithSeed(seed + i * 21632, left, right);
+			int y = down + (((fixedFrame01 + lerp01) % 1f) * height).RoundToInt();
+			int size = Util.QuickRandomWithSeed(seed + i * 1673 + TypeID, 16, 142);
+			int rot = Util.QuickRandom(0, 360);
+			Renderer.Draw(sprite, x, y, 500, 500, rot, size, size / 7, tint);
 		}
 	}
 
@@ -164,15 +187,6 @@ public class IceZone : Entity {
 		ice.Width = range.width;
 		ice.Height = range.height;
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
 
 
 	#endregion
