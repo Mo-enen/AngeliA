@@ -854,11 +854,14 @@ public static class FrameworkUtil {
 			case BlockType.Level:
 			case BlockType.Background:
 				// Set Block to Map
-				if (
-					Renderer.TryGetSprite(blockID, out var sprite, true) ||
-					Renderer.TryGetSpriteFromGroup(blockID, 0, out sprite)
-				) {
-					WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, blockType, sprite.ID);
+				int finalID = 0;
+				if (Renderer.TryGetSprite(blockID, out var sprite, false)) {
+					finalID = blockID;
+				} else if (Renderer.TryGetSpriteFromGroup(blockID, 0, out sprite)) {
+					finalID = sprite.ID;
+				}
+				if (finalID != 0) {
+					WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, blockType, finalID);
 					// Rule
 					if (sprite.Group != null && sprite.Group.WithRule) {
 						RedirectForRule(

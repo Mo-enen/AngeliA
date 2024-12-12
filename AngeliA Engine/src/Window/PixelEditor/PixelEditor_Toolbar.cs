@@ -771,11 +771,21 @@ public partial class PixelEditor {
 		// Log Sprite Names
 #if DEBUG
 		if (GUI.Button(rect, BuiltInSprite.ICON_INFO, Skin.SmallDarkButton)) {
-			string result = "";
+			var list = new List<AngeSprite>();
 			foreach (var data in StagedSprites) {
 				if (!data.Selecting) continue;
-				result += data.Sprite.RealName + "\n";
+				list.Add(data.Sprite);
 			}
+			list.Sort((a, b) => {
+				if (a.Group != null && a.Group == b.Group) {
+					int indexA = a.Group.Sprites.IndexOf(a);
+					int indexB = b.Group.Sprites.IndexOf(b);
+					return indexA.CompareTo(indexB);
+				} else {
+					return a.RealName.CompareTo(b.RealName);
+				}
+			});
+			string result = list.JoinArray(a => a.RealName, '\n');
 			Debug.Log(result);
 			Game.SetClipboardText(result);
 		}
