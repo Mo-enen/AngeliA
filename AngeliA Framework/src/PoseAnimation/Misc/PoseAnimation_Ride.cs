@@ -54,10 +54,10 @@ public class PoseAnimation_Ride : PoseAnimation {
 		FootR.LimbRotate(0);
 
 		// Grab Rot
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + 90;
-		Rendering.HandGrabScaleL = 500;
-		Rendering.HandGrabScaleR = 500;
+		Rendering.HandGrabRotationL = (LowerArmL.Rotation + FacingSign * 90);
+		Rendering.HandGrabRotationR = (LowerArmR.Rotation + FacingSign * 90);
+		//Rendering.HandGrabScaleL = 500;
+		//Rendering.HandGrabScaleR = 500;
 
 		// Z
 		Body.Z = 1;

@@ -591,7 +591,8 @@ public static class Inventory {
 		if (player == null) return;
 		if (CheatSystem.CurrentParam is not int id) return;
 		ItemSystem.SetItemUnlocked(id, true);
-		GiveItemToTarget(player, id, 1);
+		int maxCount = ItemSystem.GetItemMaxStackCount(id);
+		GiveItemToTarget(player, id, maxCount);
 	}
 
 

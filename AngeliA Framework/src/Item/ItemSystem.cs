@@ -405,30 +405,43 @@ public static class ItemSystem {
 	private static void LoadCombinationPoolFromCode () {
 		CombinationPool.Clear();
 		foreach (var type in typeof(Item).AllChildClass()) {
-			var iComs = type.GetCustomAttributes<ItemCombinationAttribute>(false);
+			var iComs = type.GetCustomAttributes<BasicItemCombinationAttribute>(false);
 			if (iComs == null) continue;
+			LoadCombinationsIntoPool(type, iComs);
+		}
+		foreach (var assembly in Util.AllAssemblies) {
+			var iComs = assembly.GetCustomAttributes<BasicItemCombinationAttribute>();
+			if (iComs == null) continue;
+			LoadCombinationsIntoPool(null, iComs);
+		}
+		// Func
+		static void LoadCombinationsIntoPool (System.Type type, IEnumerable<BasicItemCombinationAttribute> iComs) {
+			int typeID = type != null ? type.AngeHash() : 0;
 			foreach (var com in iComs) {
 				if (com.Count <= 0) continue;
 				if (
-					com.ItemA == null && com.ItemB == null &&
-					com.ItemC == null && com.ItemD == null
+					string.IsNullOrEmpty(com.ItemA) &&
+					string.IsNullOrEmpty(com.ItemB) &&
+					string.IsNullOrEmpty(com.ItemC) &&
+					string.IsNullOrEmpty(com.ItemD)
 				) continue;
-				int idA = com.ItemA != null ? com.ItemA.AngeHash() : 0;
-				int idB = com.ItemB != null ? com.ItemB.AngeHash() : 0;
-				int idC = com.ItemC != null ? com.ItemC.AngeHash() : 0;
-				int idD = com.ItemD != null ? com.ItemD.AngeHash() : 0;
+				int idA = !string.IsNullOrEmpty(com.ItemA) ? com.ItemA.AngeHash() : 0;
+				int idB = !string.IsNullOrEmpty(com.ItemB) ? com.ItemB.AngeHash() : 0;
+				int idC = !string.IsNullOrEmpty(com.ItemC) ? com.ItemC.AngeHash() : 0;
+				int idD = !string.IsNullOrEmpty(com.ItemD) ? com.ItemD.AngeHash() : 0;
 				var key = GetSortedCombination(idA, idB, idC, idD);
 				if (CombinationPool.ContainsKey(key)) {
 #if DEBUG
 					var resultItem = GetItem(CombinationPool[key].Result);
 					if (resultItem != null) {
-						Debug.Log($"Item Combination Collistion: \"{type.Name}\" & \"{resultItem.GetType().Name}\"");
+						string tName = type != null ? type.Name : com is BasicGlobalItemCombinationAttribute _gCom ? _gCom.Result : "";
+						Debug.Log($"Item Combination Collistion: \"{tName}\" & \"{resultItem.GetType().Name}\"");
 					}
 #endif
 					continue;
 				}
 				CombinationPool.Add(key, new CombinationData() {
-					Result = type.AngeHash(),
+					Result = com is BasicGlobalItemCombinationAttribute gCom ? gCom.Result.AngeHash() : typeID,
 					ResultCount = com.Count,
 					Keep0 = com.ConsumeA ? 0 : idA,
 					Keep1 = com.ConsumeB ? 0 : idB,
