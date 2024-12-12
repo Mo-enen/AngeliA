@@ -129,8 +129,8 @@ public class PlayerMenuUI : EntityUI {
 
 		HoveringItemUiRect = default;
 
-		Update_PanelUI();
 		Update_InfoUI();
+		Update_PanelUI();
 		Update_MoveCursor();
 		Update_Actions();
 		DrawTakingItemMouseCursor();
