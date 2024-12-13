@@ -21,7 +21,7 @@ public class MovementEditor {
 		public int DefaultValue = 0;
 	}
 
-	// Api
+	// Const
 	public const int SETTING_PANEL = 3632167;
 
 	// Data
@@ -64,7 +64,7 @@ public class MovementEditor {
 		if (PlayerSystem.Selecting == null) return;
 		Cursor.RequireCursor();
 		using var _ = new UILayerScope();
-		var panelRect = Renderer.CameraRect.CornerInside(Alignment.TopRight, GUI.Unify(220), 0);
+		var panelRect = Renderer.CameraRect.CornerInside(Alignment.TopRight, GUI.Unify(296), 0);
 		var bgCell = Renderer.DrawPixel(panelRect, Color32.BLACK);
 		Instance.DrawMovementPanel(PlayerSystem.Selecting.NativeMovement, ref panelRect);
 		bgCell.SetRect(panelRect);
@@ -194,12 +194,6 @@ public class MovementEditor {
 		int playerID = PlayerSystem.Selecting.TypeID;
 
 		if (playerID == 0 || !ConfigPool.TryGetValue(playerID, out var configMap)) return;
-
-		// Min Width
-		int minWidth = GUI.Unify(296);
-		if (panelRect.width < minWidth) {
-			panelRect.xMin -= minWidth - panelRect.width;
-		}
 
 		// Content
 		int panelPadding = GUI.Unify(12);

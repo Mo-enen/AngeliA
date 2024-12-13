@@ -316,6 +316,10 @@ public partial class Engine {
 			calling.RequireRemoteSetting(MovementEditor.SETTING_PANEL, gameEDT.RequireOpenOrCloseMovementPanel.Value);
 			gameEDT.RequireOpenOrCloseMovementPanel = null;
 		}
+		if (gameEDT.RequireOpenOrCloseItemPanel.HasValue) {
+			calling.RequireRemoteSetting(ItemEditor.SETTING_PANEL, gameEDT.RequireOpenOrCloseItemPanel.Value);
+			gameEDT.RequireOpenOrCloseItemPanel = null;
+		}
 		if (gameEDT.RequireSetViewPos.HasValue) {
 			var pos = gameEDT.RequireSetViewPos.Value;
 			calling.RequireRemoteSetting(Stage.SETTING_SET_VIEW_X, pos.x);
