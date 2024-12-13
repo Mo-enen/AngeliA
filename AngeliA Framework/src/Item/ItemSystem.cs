@@ -430,12 +430,42 @@ public static class ItemSystem {
 				int idC = !string.IsNullOrEmpty(com.ItemC) ? com.ItemC.AngeHash() : 0;
 				int idD = !string.IsNullOrEmpty(com.ItemD) ? com.ItemD.AngeHash() : 0;
 				var key = GetSortedCombination(idA, idB, idC, idD);
+#if DEBUG
+				// Check for Invalid Name
+				if (idA != 0 && GetItem(idA) == null) {
+					string tName = type != null ? type.Name : com is BasicGlobalItemCombinationAttribute _gCom ? _gCom.Result : "";
+					Debug.Log($"Item name \"{com.ItemA}\" is invalid for combination.({tName})");
+					continue;
+				}
+				if (idB != 0 && GetItem(idB) == null) {
+					string tName = type != null ? type.Name : com is BasicGlobalItemCombinationAttribute _gCom ? _gCom.Result : "";
+					Debug.Log($"Item name \"{com.ItemB}\" is invalid for combination.({tName})");
+					continue;
+				}
+				if (idC != 0 && GetItem(idC) == null) {
+					string tName = type != null ? type.Name : com is BasicGlobalItemCombinationAttribute _gCom ? _gCom.Result : "";
+					Debug.Log($"Item name \"{com.ItemC}\" is invalid for combination.({tName})");
+					continue;
+				}
+				if (idD != 0 && GetItem(idD) == null) {
+					string tName = type != null ? type.Name : com is BasicGlobalItemCombinationAttribute _gCom ? _gCom.Result : "";
+					Debug.Log($"Item name \"{com.ItemD}\" is invalid for combination.({tName})");
+					continue;
+				}
+#endif
+				// Check for Duplicate Combination
 				if (CombinationPool.ContainsKey(key)) {
 #if DEBUG
 					var resultItem = GetItem(CombinationPool[key].Result);
 					if (resultItem != null) {
 						string tName = type != null ? type.Name : com is BasicGlobalItemCombinationAttribute _gCom ? _gCom.Result : "";
-						Debug.Log($"Item Combination Collistion: \"{tName}\" & \"{resultItem.GetType().Name}\"");
+						string rName;
+						if (resultItem is BlockBuilder rBuilder && Renderer.TryGetSpriteForGizmos(rBuilder.BlockID, out var bSprite)) {
+							rName = bSprite.RealName;
+						} else {
+							rName = resultItem.GetType().Name;
+						}
+						Debug.Log($"Item Combination Collistion: \"{tName}\" & \"{rName}\"");
 					}
 #endif
 					continue;

@@ -61,6 +61,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		ContentColorDown = Color32.GREY_12,
 		ContentColorHover = Color32.GREY_12,
 		ContentColorDisable = Color32.GREY_12,
+		CharSize = 14,
 	};
 	private readonly Item[] Items = new Item[128];
 	private Color32 LabelTint = Color32.WHITE;
@@ -263,6 +264,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 						// Label
 						var labelBounds = rect;
 						if (item.Editable) {
+							// Editable Input
 							item.Label = GUI.InputField(
 								161267 + i, rect.Shrink(indent, 0, 0, 0), item.Label, out _, out bool confirm,
 								bodyStyle: TextInputStyle
@@ -279,6 +281,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 								Active = false;
 							}
 						} else {
+							// General Label
 							GUI.Label(
 								rect.Shrink(indent, 0, 0, 0),
 								item.Label,

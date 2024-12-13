@@ -246,7 +246,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 			iRect.x -= iconSize;
 			bool resultUnlocked = ItemSystem.IsItemUnlocked(result);
 			if (Renderer.TryGetSpriteForGizmos(resultUnlocked ? result : QUESTION_MARK_CODE, out var resultSp)) {
-				Renderer.Draw(resultSp, iRect, int.MinValue + 4);
+				Renderer.Draw(resultSp, iRect.Fit(resultSp), int.MinValue + 4);
 			}
 			if (resultUnlocked && Input.LastActionFromMouse && iRect.MouseInside()) {
 				tipID = result;
@@ -265,7 +265,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 				// Icon
 				iRect.x -= iconSize + iconPadding;
 				if (Renderer.TryGetSpriteForGizmos(unlocked ? id : QUESTION_MARK_CODE, out var iconSP)) {
-					Renderer.Draw(iconSP, iRect, int.MinValue + 4);
+					Renderer.Draw(iconSP, iRect.Fit(iconSP), int.MinValue + 4);
 				}
 				// Tip
 				if (unlocked && Input.LastActionFromMouse && iRect.MouseInside()) {
@@ -330,7 +330,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 		// Item
 		if (CombineResultID != 0) {
 			if (Renderer.TryGetSpriteForGizmos(CombineResultID, out var sprite)) {
-				Renderer.Draw(sprite, resultItemRect.Shrink(Unify(12)), int.MinValue + 4);
+				Renderer.Draw(sprite, resultItemRect.Fit(sprite).Shrink(Unify(12)), int.MinValue + 4);
 			}
 			if (CombineResultCount > 1) {
 				int countSize = resultItemRect.width / 4;
@@ -340,7 +340,7 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 					countSize, countSize
 				);
 				Renderer.DrawPixel(countRect, Color32.BLACK, int.MinValue + 8);
-				GUI.IntLabel(countRect, CombineResultCount);
+				GUI.IntLabel(countRect, CombineResultCount, GUI.Skin.CenterLabel);
 			}
 		}
 
