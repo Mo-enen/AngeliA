@@ -19,7 +19,7 @@ public partial class GameEditor : WindowUI {
 	}
 
 
-	private enum PanelType { None, Profiler, Movement, Lighting, Location, Item, }
+	private enum PanelType { None, Profiler, Movement, Lighting, Location, }
 
 
 	#endregion
@@ -40,7 +40,6 @@ public partial class GameEditor : WindowUI {
 	private static readonly SpriteCode BTN_MOVEMENT = "Engine.Game.Movement";
 	private static readonly SpriteCode BTN_LIGHTING = "Engine.Game.Lighting";
 	private static readonly SpriteCode BTN_LOCATION = "Engine.Game.Location";
-	private static readonly SpriteCode BTN_ITEM = "Engine.Game.Item";
 	private static readonly SpriteCode TOOLBAR_BG = "Engine.Game.Toolbar";
 	private static readonly SpriteCode PANEL_BG = "Engine.Game.PanelBG";
 
@@ -50,7 +49,6 @@ public partial class GameEditor : WindowUI {
 	private static readonly LanguageCode TIP_ENTITY_CLICER = ("Engine.Game.Tip.EntityClicker", "Entity Debugger");
 	private static readonly LanguageCode TIP_COLLIDER = ("Engine.Game.Tip.Collider", "Collider");
 	private static readonly LanguageCode TIP_LIGHTING = ("Engine.Game.Tip.Lighting", "Lighting System");
-	private static readonly LanguageCode TIP_ITEM = ("Engine.Game.Tip.Item", "Item System");
 	private static readonly LanguageCode TIP_LOCATION = ("Engine.Game.Tip.Location", "View Positions");
 	private static readonly LanguageCode TIP_MOVEMENT = ("Engine.Game.Tip.Movement", "Movement System");
 
@@ -65,7 +63,6 @@ public partial class GameEditor : WindowUI {
 	public bool RequireNextFrame { get; set; } = false;
 	public bool HavingGamePlay { get; set; } = false;
 	public bool? RequireOpenOrCloseMovementPanel { get; set; } = null;
-	public bool? RequireOpenOrCloseItemPanel { get; set; } = null;
 	public int ToolbarWidth => Unify(40);
 	public bool IgnoreInGameGizmos => CurrentPanel == PanelType.Location && HavingGamePlay;
 
@@ -129,10 +126,6 @@ public partial class GameEditor : WindowUI {
 					RequireOpenOrCloseMovementPanel = false;
 					CurrentPanel = PanelType.None;
 					break;
-				case PanelType.Item:
-					RequireOpenOrCloseItemPanel = false;
-					CurrentPanel = PanelType.None;
-					break;
 				case PanelType.Lighting:
 					CurrentPanel = PanelType.None;
 					break;
@@ -168,7 +161,6 @@ public partial class GameEditor : WindowUI {
 				case PanelType.Movement: break;
 				case PanelType.Lighting: DrawLightingPanel(ref panelRect); break;
 				case PanelType.Location: DrawLocationPanel(ref panelRect); break;
-				case PanelType.Item: break;
 			}
 
 			if (bgPainted) {
@@ -263,17 +255,6 @@ public partial class GameEditor : WindowUI {
 				rect.SlideDown(padding);
 			}
 
-			// Item 
-			isOn = CurrentPanel == PanelType.Item;
-			newIsOn = GUI.IconToggle(rect, isOn, BTN_ITEM);
-			if (isOn != newIsOn) {
-				CurrentPanel = newIsOn ? PanelType.Item : PanelType.None;
-			}
-			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_ITEM, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
-			}
-			rect.SlideDown(padding);
-
 			// Collider
 			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
 			if (rect.MouseInside()) {
@@ -319,11 +300,6 @@ public partial class GameEditor : WindowUI {
 		// Require Open/Close Movement 
 		if ((oldPanel == PanelType.Movement) != (CurrentPanel == PanelType.Movement)) {
 			RequireOpenOrCloseMovementPanel = CurrentPanel == PanelType.Movement;
-		}
-
-		// Require Open/Close Item 
-		if ((oldPanel == PanelType.Item) != (CurrentPanel == PanelType.Item)) {
-			RequireOpenOrCloseItemPanel = CurrentPanel == PanelType.Item;
 		}
 
 		// Click Outside to Close Panel

@@ -50,6 +50,7 @@ public abstract class Explosion : Entity {
 	public override void Update () {
 		base.Update();
 		if (!Active) return;
+
 		// Explode
 		if (ExplodedFrame < 0 && (!FromWorld || Stage.ViewRect.Shrink(Const.CEL * 0).Overlaps(Rect))) {
 			ExplodedFrame = Game.GlobalFrame;
@@ -67,6 +68,7 @@ public abstract class Explosion : Entity {
 				if (!Util.OverlapRectCircle(Radius, X, Y, hitRect.xMin, hitRect.yMin, hitRect.xMax, hitRect.yMax)) continue;
 				receiver.TakeDamage(new Damage(Damage, Sender ?? this, this, Tag.ExplosiveDamage));
 			}
+
 			// Destroy Block
 			if (DestroyBlocks) {
 				for (int x = range.x; x < range.xMax; x += Const.CEL) {
@@ -84,8 +86,20 @@ public abstract class Explosion : Entity {
 					}
 				}
 			}
+
 			// Callback
 			OnExplode(range);
+
+			// On Break
+			if (BreakObjectArtwork != 0) {
+				FrameworkUtil.InvokeObjectBreak(BreakObjectArtwork, new IRect(X, Y, Const.CEL, Const.CEL));
+			}
+
+			// Remove from World
+			if (FromWorld) {
+				FrameworkUtil.RemoveFromWorldMemory(this);
+			}
+
 		}
 	}
 

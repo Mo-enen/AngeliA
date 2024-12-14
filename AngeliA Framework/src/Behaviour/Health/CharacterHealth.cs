@@ -11,6 +11,7 @@ public partial class CharacterHealth {
 	#region --- VAR ---
 
 
+	// Api
 	public int HP { get; set; } = 1;
 	public int LastDamageFrame { get; set; } = int.MinValue;
 	public int InvincibleEndFrame { get; set; } = int.MinValue;
@@ -18,6 +19,15 @@ public partial class CharacterHealth {
 	public bool IsEmptyHealth => HP <= 0;
 	public bool IsInvincible => Game.GlobalFrame < InvincibleEndFrame;
 	public bool TakingDamage => Game.GlobalFrame < LastDamageFrame + DamageStunDuration;
+
+	// Meta
+	public readonly FrameBasedInt MaxHP = new(1);
+	public readonly FrameBasedInt InvincibleDuration = new(120);
+	public readonly FrameBasedInt DamageStunDuration = new(24);
+	public readonly FrameBasedInt KnockBackSpeed = new(64);
+	public readonly FrameBasedInt KnockbackDeceleration = new(16);
+	public readonly FrameBasedBool InvincibleOnDash = new(false);
+	public readonly FrameBasedBool InvincibleOnRush = new(false);
 
 
 	#endregion
