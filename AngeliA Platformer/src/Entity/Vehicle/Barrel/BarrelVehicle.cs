@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
-using AngeliA;namespace AngeliA.Platformer;
+namespace AngeliA.Platformer;
 
 public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 

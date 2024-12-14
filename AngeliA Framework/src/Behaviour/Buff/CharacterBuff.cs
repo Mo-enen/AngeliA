@@ -32,8 +32,8 @@ public sealed class CharacterBuff {
 
 	// Data
 	private static readonly Dictionary<int, Buff> Pool = [];
-	private readonly Character Character;
 	private readonly Dictionary<int, State> BuffStates = [];
+	private readonly Character Character;
 
 
 	#endregion

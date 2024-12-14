@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+[EntityAttribute.RepositionWhenInactive]
 public abstract class Rigidbody : Entity, ICarrier {
 
 

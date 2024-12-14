@@ -1,5 +1,7 @@
 using AngeliA;
+
 namespace AngeliA.Platformer;
+
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {

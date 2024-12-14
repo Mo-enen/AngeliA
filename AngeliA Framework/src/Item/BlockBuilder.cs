@@ -9,7 +9,7 @@ public sealed class BlockBuilder : HandTool {
 
 
 	// VAR
-	const int MOUSE_RANGE = 6;
+	const int MOUSE_RANGE = 128;
 	public int BlockID { get; init; }
 	public BlockType BlockType { get; init; }
 	public override ToolType ToolType => ToolType.Block;
