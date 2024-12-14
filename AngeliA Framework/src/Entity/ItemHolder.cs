@@ -145,6 +145,10 @@ public class ItemHolder : Rigidbody {
 			// Hint
 			ControlHintUI.AddHint(Gamekey.Down, HINT_PICK);
 		}
+		// Eject Inside Ground
+		if (IsInsideGround) {
+			FrameworkUtil.TryEjectOutsideGround(this);
+		}
 	}
 
 

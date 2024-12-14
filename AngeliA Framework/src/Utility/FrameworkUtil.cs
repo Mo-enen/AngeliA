@@ -1559,6 +1559,7 @@ public static class FrameworkUtil {
 		}
 	}
 
+
 	public static void ResetShoulderAndUpperArmPos (PoseCharacterRenderer rendering, bool resetLeft = true, bool resetRight = true) {
 
 		const int A2G = Const.CEL / Const.ART_CEL;
@@ -1624,6 +1625,7 @@ public static class FrameworkUtil {
 		}
 	}
 
+
 	public static void HighlightBlink (Cell cell, float pivotX = 0.5f, float pivotY = 0f, bool horizontal = true, bool vertical = true) {
 		if (Game.GlobalFrame % 30 > 15) return;
 		const int OFFSET = Const.CEL / 20;
@@ -1631,5 +1633,39 @@ public static class FrameworkUtil {
 		if (horizontal) cell.Width += OFFSET * 2;
 		if (vertical) cell.Height += OFFSET * 2;
 	}
+
+
+	public static void TryEjectOutsideGround (Rigidbody rig, int unitRange = 2, int speed = 32) {
+		var centerPos = rig.Rect.CenterInt();
+		var targetDir = Int2.zero;
+		if (CheckForDir(centerPos, Int2.up, unitRange, rig.CollisionMask)) {
+			// Up
+			targetDir = Int2.up;
+		} else if (CheckForDir(centerPos, Int2.right, unitRange, rig.CollisionMask)) {
+			// Right
+			targetDir = Int2.right;
+		} else if (CheckForDir(centerPos, Int2.left, unitRange, rig.CollisionMask)) {
+			// Left
+			targetDir = Int2.left;
+		} else if (CheckForDir(centerPos, Int2.down, unitRange, rig.CollisionMask)) {
+			// Down
+			targetDir = Int2.down;
+		}
+		// Perform Eject
+		if (targetDir != Int2.zero) {
+			rig.PerformMove(targetDir.x * speed, targetDir.y * speed, ignoreCarry: true);
+		}
+		// Func
+		static bool CheckForDir (Int2 center, Int2 dir, int unitRange, int mask) {
+			for (int i = 1; i <= unitRange; i++) {
+				int delta = i * Const.CEL;
+				if (!Physics.Overlap(mask, IRect.Point(center.x + dir.x * delta, center.y + dir.y * delta))) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
 
 }
