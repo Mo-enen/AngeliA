@@ -11,9 +11,10 @@ public sealed class CharacterBuff {
 	#region --- SUB ---
 
 
-	private class State {
-		public bool IsActived => Game.GlobalFrame <= EndFrame;
+	private struct State () {
+		public readonly bool IsActived => Game.GlobalFrame <= EndFrame;
 		public int EndFrame = -1;
+		public Buff Buff;
 		public object Data;
 	}
 
@@ -27,13 +28,12 @@ public sealed class CharacterBuff {
 
 
 	// Api
-	public int BuffCount => Game.GlobalFrame <= ActivedCountUpdatedFrame + 1 ? ActivedCountData : 0;
+	public int BuffCount => BuffStates.Count;
 
 	// Data
+	private static readonly Dictionary<int, Buff> Pool = [];
 	private readonly Character Character;
-	private readonly State[] BuffStates;
-	private int ActivedCountData = 0;
-	private int ActivedCountUpdatedFrame = -1;
+	private readonly Dictionary<int, State> BuffStates = [];
 
 
 	#endregion
@@ -44,47 +44,40 @@ public sealed class CharacterBuff {
 	#region --- MSG ---
 
 
-	internal CharacterBuff (Character target) {
-		Character = target;
-		BuffStates = new State[Buff.AllBuffCount].FillWithNewValue();
+	[OnGameInitialize(-128)]
+	internal static void OnGameInitialize () {
+		Pool.Clear();
+		foreach (var type in typeof(Buff).AllChildClass()) {
+			if (System.Activator.CreateInstance(type) is not Buff buff) continue;
+			Pool.TryAdd(buff.TypeID, buff);
+		}
 	}
 
 
+	internal CharacterBuff (Character target) => Character = target;
+
+
 	internal void ApplyOnBeforeUpdate () {
-		var span = BuffStates.GetReadOnlySpan();
-		ActivedCountData = 0;
-		ActivedCountUpdatedFrame = Game.GlobalFrame;
-		for (int i = 0; i < span.Length; i++) {
-			var state = span[i];
-			if (!state.IsActived) continue;
-			ActivedCountData++;
-			try {
-				Buff.GetBuffAtIndex(i).BeforeUpdate(Character);
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+		foreach (var (id, state) in BuffStates) {
+			if (!state.IsActived) {
+				BuffStates.Remove(id);
+				continue;
+			}
+			state.Buff.BeforeUpdate(Character);
 		}
 	}
 
 
 	internal void ApplyOnLateUpdate () {
-		var span = BuffStates.GetReadOnlySpan();
-		for (int i = 0; i < span.Length; i++) {
-			var state = span[i];
-			if (!state.IsActived) continue;
-			try {
-				Buff.GetBuffAtIndex(i).LateUpdate(Character);
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+		foreach (var (_, state) in BuffStates) {
+			state.Buff.LateUpdate(Character);
 		}
 	}
 
 
 	internal void ApplyOnAttack (Bullet bullet) {
-		var span = BuffStates.GetReadOnlySpan();
-		for (int i = 0; i < span.Length; i++) {
-			var state = span[i];
-			if (!state.IsActived) continue;
-			try {
-				Buff.GetBuffAtIndex(i).OnCharacterAttack(Character, bullet);
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+		foreach (var (_, state) in BuffStates) {
+			state.Buff.OnCharacterAttack(Character, bullet);
 		}
 	}
 
@@ -97,53 +90,58 @@ public sealed class CharacterBuff {
 	#region --- API ---
 
 
-	public bool HasBuff (int id) {
-		if (Buff.TryGetBuffIndex(id, out int index)) {
-			return BuffStates[index].IsActived;
-		} else {
-			return false;
-		}
-	}
-
-
-	public bool HasBuffAtIndex (int index) => BuffStates[index].IsActived;
+	public bool HasBuff (int id) => BuffStates.ContainsKey(id);
 
 
 	public void GiveBuff (int id, int duration = 1) {
-		if (!Buff.TryGetBuffIndex(id, out int index)) return;
-		var state = BuffStates[index];
+		if (!Pool.TryGetValue(id, out var buff)) return;
+		if (!BuffStates.TryGetValue(id, out var state)) {
+			state = new State() {
+				Buff = buff,
+				Data = default,
+			};
+		}
 		state.EndFrame = Util.Max(state.EndFrame, Game.GlobalFrame + duration);
+		BuffStates[id] = state;
 	}
 
 
-	public void ClearBuff (int id) {
-		if (!Buff.TryGetBuffIndex(id, out int index)) return;
-		var state = BuffStates[index];
-		state.EndFrame = -1;
-		state.Data = null;
+	public void ClearBuff (int id) => BuffStates.Remove(id);
+
+
+	public void ClearAllBuffs () => BuffStates.Clear();
+
+
+	public object GetBuffData (int id) => BuffStates.TryGetValue(id, out var state) ? state.Data : null;
+
+
+	public void SetBuffData (int id, object data) {
+		if (!BuffStates.TryGetValue(id, out var state)) return;
+		state.Data = data;
+		BuffStates[id] = state;
 	}
 
 
-	public void ClearAllBuffs () {
-		var span = BuffStates.GetReadOnlySpan();
-		for (int i = 0; i < span.Length; i++) {
-			var state = span[i];
-			state.EndFrame = -1;
-			state.Data = null;
+	public int GetBuffEndFrame (int id) => BuffStates.TryGetValue(id, out var state) ? state.EndFrame : -1;
+
+
+	public IEnumerable<Buff> ForAllBuffs () {
+		foreach (var (_, state) in BuffStates) {
+			yield return state.Buff;
 		}
 	}
 
 
-	public object GetBuffData (int id) => Buff.TryGetBuffIndex(id, out int index) ? BuffStates[index].Data : null;
-
-
-	public void SetBuffData (int id, object data) {
-		if (!Buff.TryGetBuffIndex(id, out int index)) return;
-		BuffStates[index].Data = data;
+	public static string GetBuffDisplayName (int id) {
+		if (!Pool.TryGetValue(id, out var buff)) return "";
+		return Language.Get(buff.NameID, buff.TypeName);
 	}
 
 
-	public int GetBuffEndFrame (int id) => Buff.TryGetBuffIndex(id, out int index) ? BuffStates[index].EndFrame : -1;
+	public static string GetBuffDescription (int id) {
+		if (!Pool.TryGetValue(id, out var buff)) return "";
+		return Language.Get(buff.DescriptionID);
+	}
 
 
 	#endregion

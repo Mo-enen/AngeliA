@@ -7,6 +7,7 @@ namespace AngeliA;
 
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.Capacity(1, 1)]
 public class PlayerMenuUI : EntityUI {
 
 
@@ -301,13 +302,13 @@ public class PlayerMenuUI : EntityUI {
 			// Name
 			var nameRect = new IRect(buffPanelRect.x + labelHeight + labelHeight / 4, buffPanelRect.yMax - labelHeight, buffPanelRect.width, labelHeight);
 			using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
-				GUI.SmallLabel(nameRect, Buff.GetBuffDisplayName(buffID), out nameBounds);
+				GUI.SmallLabel(nameRect, CharacterBuff.GetBuffDisplayName(buffID), out nameBounds);
 			}
 
 			// Description
 			GUI.Label(
 				buffPanelRect.Shrink(0, 0, 0, labelHeight + Unify(12)),
-				Buff.GetBuffDescription(buffID),
+				CharacterBuff.GetBuffDescription(buffID),
 				out desBounds, GUI.Skin.SmallTextArea
 			);
 
@@ -834,13 +835,11 @@ public class PlayerMenuUI : EntityUI {
 		RequireBuffInfoID = 0;
 		if (pBuff.BuffCount > 0) {
 			var buffPanelRect = panelRect.EdgeDown(buffPanelHeight).ShrinkLeft(previewWidth).Shrink(Unify(6));
-			int allBuffCount = Buff.AllBuffCount;
 			int index = 0;
 			int padding = Unify(4);
 			var itemRect = new IRect(0, 0, buffItemSize - padding * 2, buffItemSize - padding * 2);
-			for (int i = 0; i < allBuffCount && index < pBuff.BuffCount; i++) {
-				if (!pBuff.HasBuffAtIndex(i)) continue;
-				int buffID = Buff.GetBuffAtIndex(i).TypeID;
+			foreach (var buff in pBuff.ForAllBuffs()) {
+				int buffID = buff.TypeID;
 				if (
 					Renderer.TryGetSpriteForGizmos(buffID, out var buffSp) ||
 					Renderer.TryGetSprite(BuiltInSprite.ICON_BUFF, out buffSp, true)

@@ -6,6 +6,7 @@ namespace AngeliA;
 [EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.StageOrder(int.MaxValue)]
+[EntityAttribute.Capacity(1, 1)]
 public class ControlHintUI : EntityUI {
 
 

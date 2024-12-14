@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+
 public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 

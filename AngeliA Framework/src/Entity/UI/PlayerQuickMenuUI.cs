@@ -5,6 +5,7 @@ namespace AngeliA;
 
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.Capacity(1, 1)]
 public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 
