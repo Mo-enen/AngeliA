@@ -19,6 +19,7 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 		if (IgnoreDamageType.HasAll(damage.Type)) return;
 		Active = false;
 		OnBreak();
+		IgnoreReposition = true;
 	}
 
 	public override void LateUpdate () {
@@ -27,13 +28,8 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 	}
 
 	protected virtual void OnBreak () {
-		FrameworkUtil.InvokeObjectBreak(TypeID, Rect);
-		ItemSystem.DropItemFor(this);
-		if (Universe.BuiltInInfo.UseProceduralMap) {
-			FrameworkUtil.PickEntityBlock(this, false);
-		} else {
-			FrameworkUtil.RemoveFromWorldMemory(this);
-		}
+		bool itemDropped = ItemSystem.DropItemFor(this);
+		FrameworkUtil.PickEntityBlock(this, dropItemAfterPick: !itemDropped);
 	}
 
 }

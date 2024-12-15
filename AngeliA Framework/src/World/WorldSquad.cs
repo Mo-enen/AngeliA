@@ -315,7 +315,7 @@ public sealed class WorldSquad : IBlockSquad {
 						for (int i = l; i < r; i++, index++) {
 							// Entity
 							int entityID = eSpan[index];
-							if (entityID != 0 && Stage.RequireDrawEntityBehind(entityID)) {
+							if (entityID != 0 && Stage.IsEntityRequireDrawBehind(entityID)) {
 								DrawBehind(entityID, i, j, true);
 							}
 						}

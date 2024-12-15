@@ -691,12 +691,15 @@ public static class FrameworkUtil {
 				var e = hits[i].Entity;
 				if (e is not IBlockEntity eBlock) continue;
 				e.Active = false;
+				e.IgnoreReposition = true;
 				var mapPos = e.MapUnitPos;
+
 				// Remove from Map
 				if (mapPos.HasValue) {
 					WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, BlockType.Entity, 0);
 					result = true;
 				}
+
 				// Event
 				eBlock.OnEntityPicked();
 				if (dropItemAfterPicked && ItemSystem.HasItem(e.TypeID)) {
@@ -846,7 +849,7 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void PutBlockTo (int blockID, BlockType blockType, Character pHolder, int targetUnitX, int targetUnitY) {
+	public static bool PutBlockTo (int blockID, BlockType blockType, Character pHolder, int targetUnitX, int targetUnitY) {
 
 		bool success = false;
 
@@ -877,11 +880,15 @@ public static class FrameworkUtil {
 
 				if (!BLOCK_ENTITY_TYPE.IsAssignableFrom(Stage.GetEntityType(blockID))) break;
 
-				// Set to Map
-				WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, BlockType.Entity, blockID);
+				// Set to Map & Spawn
+				Entity e;
+				if (!Stage.IsEntityRequireReposition(blockID)) {
+					WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, BlockType.Entity, blockID);
+					e = Stage.SpawnEntityFromWorld(blockID, targetUnitX, targetUnitY, Stage.ViewZ, forceSpawn: true);
+				} else {
+					e = Stage.SpawnEntity(blockID, targetUnitX.ToGlobal(), targetUnitY.ToGlobal());
+				}
 
-				// Spawn Entity
-				var e = Stage.SpawnEntityFromWorld(blockID, targetUnitX, targetUnitY, Stage.ViewZ, forceSpawn: true);
 				if (e is IBlockEntity bEntity) {
 					bEntity.OnEntityPut();
 					success = true;
@@ -912,6 +919,7 @@ public static class FrameworkUtil {
 			}
 		}
 
+		return success;
 	}
 
 
@@ -1635,19 +1643,20 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void TryEjectOutsideGround (Rigidbody rig, int unitRange = 2, int speed = 32) {
+	public static void TryEjectOutsideGround (Rigidbody rig, int collisionMask = 0, int unitRange = 2, int speed = 32) {
 		var centerPos = rig.Rect.CenterInt();
 		var targetDir = Int2.zero;
-		if (CheckForDir(centerPos, Int2.up, unitRange, rig.CollisionMask)) {
+		collisionMask = collisionMask == 0 ? rig.CollisionMask : collisionMask;
+		if (CheckForDir(centerPos, Int2.up, unitRange, collisionMask)) {
 			// Up
 			targetDir = Int2.up;
-		} else if (CheckForDir(centerPos, Int2.right, unitRange, rig.CollisionMask)) {
+		} else if (CheckForDir(centerPos, Int2.right, unitRange, collisionMask)) {
 			// Right
 			targetDir = Int2.right;
-		} else if (CheckForDir(centerPos, Int2.left, unitRange, rig.CollisionMask)) {
+		} else if (CheckForDir(centerPos, Int2.left, unitRange, collisionMask)) {
 			// Left
 			targetDir = Int2.left;
-		} else if (CheckForDir(centerPos, Int2.down, unitRange, rig.CollisionMask)) {
+		} else if (CheckForDir(centerPos, Int2.down, unitRange, collisionMask)) {
 			// Down
 			targetDir = Int2.down;
 		}

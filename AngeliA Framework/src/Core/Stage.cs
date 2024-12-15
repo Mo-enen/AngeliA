@@ -24,6 +24,8 @@ public static class Stage {
 			a.Y != b.Y ? a.Y.CompareTo(b.Y) :
 			a.InstanceOrder.CompareTo(b.InstanceOrder);
 	}
+
+
 	private class ReversedEntityComparer : IComparer<Entity> {
 		public static readonly ReversedEntityComparer Instance = new();
 		public int Compare (Entity b, Entity a) =>
@@ -715,7 +717,13 @@ public static class Stage {
 
 
 	// Misc
-	public static bool RequireDrawEntityBehind (int id) => EntityPool.TryGetValue(id, out var stack) && stack.DrawBehind;
+	public static bool IsEntityRequireDrawBehind (int id) => EntityPool.TryGetValue(id, out var stack) && stack.DrawBehind;
+
+
+	public static int GetEntityCapacity (int typeID) => EntityPool.TryGetValue(typeID, out var stack) ? stack.Capacity : 0;
+
+
+	public static bool IsEntityRequireReposition (int typeID) => EntityPool.TryGetValue(typeID, out var stack) && stack.RequireReposition;
 
 
 	public static Int4 GetCameraCullingPadding () {
@@ -732,9 +740,6 @@ public static class Stage {
 		}
 		return null;
 	}
-
-
-	public static int GetEntityCapacity (int typeID) => EntityPool.TryGetValue(typeID, out var stack) ? stack.Capacity : 0;
 
 
 	#endregion
@@ -827,29 +832,27 @@ public static class Stage {
 				requireClearOriginal = true;
 			}
 		} else {
-			// Entity Not from Map
 			requireRepos = true;
 		}
 
 		// Perform Reposition
-		if (
-			requireRepos &&
-			FrameworkUtil.TryGetEmptyPlaceNearbyForEntity(
-				currentUnitX, currentUnitY, ViewZ,
-				out int resultUnitX, out int resultUnitY
-			)
-		) {
-			// Set Block
-			WorldSquad.Front.SetBlockAt(resultUnitX, resultUnitY, ViewZ, BlockType.Entity, entity.TypeID);
-			// Clear Original
-			if (requireClearOriginal) {
-				var oPos = entity.MapUnitPos.Value;
-				WorldSquad.Front.SetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Entity, 0);
-			}
-			// Fix Inventory
-			if (entity != null) {
-				AfterEntityReposition?.Invoke(entity, entity.MapUnitPos, new Int3(resultUnitX, resultUnitY, ViewZ));
-			}
+		if (!requireRepos || !FrameworkUtil.TryGetEmptyPlaceNearbyForEntity(
+			currentUnitX, currentUnitY, ViewZ,
+			out int resultUnitX, out int resultUnitY
+		)) return;
+
+		// Set Block
+		WorldSquad.Front.SetBlockAt(resultUnitX, resultUnitY, ViewZ, BlockType.Entity, entity.TypeID);
+
+		// Clear Original
+		if (requireClearOriginal) {
+			var oPos = entity.MapUnitPos.Value;
+			WorldSquad.Front.SetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Entity, 0);
+		}
+
+		// Callback
+		if (entity != null && entity.MapUnitPos.HasValue) {
+			AfterEntityReposition?.Invoke(entity, entity.MapUnitPos, new Int3(resultUnitX, resultUnitY, ViewZ));
 		}
 	}
 

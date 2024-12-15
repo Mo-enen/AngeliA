@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
+[EntityAttribute.RepositionWhenInactive]
 public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCharacterMovement where M : VehicleMovement {
 
 

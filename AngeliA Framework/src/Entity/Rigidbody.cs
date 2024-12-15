@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-[EntityAttribute.RepositionWhenInactive]
 public abstract class Rigidbody : Entity, ICarrier {
 
 
@@ -376,7 +375,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	#region --- LGC ---
 
 
-	private bool GroundedCheck () {
+	protected virtual bool GroundedCheck () {
 		if (IsInsideGround) return true;
 		if (Game.GlobalFrame <= IgnoreGroundCheckFrame) return IsGrounded;
 		if (VelocityY > 0) return false;
@@ -386,15 +385,13 @@ public abstract class Rigidbody : Entity, ICarrier {
 	}
 
 
-	private bool InsideGroundCheck () {
+	protected virtual bool InsideGroundCheck () {
 		int mask = PhysicsMask.LEVEL & CollisionMask;
 		if (mask == 0) return false;
-		var rect = new IRect(
+		return Physics.Overlap(mask, IRect.Point(
 			X + OffsetX + Width / 2,
-			Y + OffsetY + Height / 2,
-			1, 1
-		);
-		return Physics.Overlap(mask, rect, this);
+			Y + OffsetY + Height / 2
+		), this);
 	}
 
 

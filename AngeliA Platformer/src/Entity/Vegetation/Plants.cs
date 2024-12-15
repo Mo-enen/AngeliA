@@ -34,10 +34,8 @@ public abstract class Plant : Entity, IBlockEntity, ICombustible, IDamageReceive
 
 
 	protected virtual void OnPlantBreak () {
-		// Drop Item
-		ItemSystem.DropItemFor(this);
-		// Block Break
-		FrameworkUtil.PickEntityBlock(this, false);
+		bool itemDropped = ItemSystem.DropItemFor(this);
+		FrameworkUtil.PickEntityBlock(this, dropItemAfterPick: !itemDropped);
 	}
 
 

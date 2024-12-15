@@ -3,11 +3,13 @@ using System.Collections.Generic;
 
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
+[EntityAttribute.RepositionWhenInactive]
 public abstract class Spring : Rigidbody, IBlockEntity {
 
 

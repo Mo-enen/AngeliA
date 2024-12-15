@@ -21,9 +21,9 @@ public abstract class HandTool : Equipment {
 	public sealed override EquipmentType EquipmentType => EquipmentType.HandTool;
 	public abstract ToolType ToolType { get; }
 	public abstract ToolHandheld Handheld { get; }
-	public int BulletDelayFrame => AttackDuration * BulletDelay / 1000;
+	public int BulletDelayFrame => AttackDuration * BulletDelayRate / 1000;
 	public string TypeName { get; init; }
-	public virtual int BulletDelay => 0;
+	public virtual int BulletDelayRate => 0;
 	public virtual int AttackDuration => 12;
 	public virtual int AttackCooldown => 2;
 	public virtual int HoldAttackPunish => 4;

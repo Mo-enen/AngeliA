@@ -34,14 +34,14 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 			var itemRect = Rect;
 			for (int i = 0; i < 4; i++) {
 				int id = Inventory.GetItemAt(TypeID, i);
-				if (id == 0) continue;
+				if (!Renderer.TryGetSpriteForGizmos(id, out var icon)) continue;
 				Renderer.Draw(
-					id, new IRect(
+					icon, new IRect(
 						itemRect.x + (i % 2) * itemRect.width / 2,
 						itemRect.y + (i / 2) * itemRect.height / 2,
 						itemRect.width / 2,
 						itemRect.height / 2
-					).Shrink(itemRect.width / 16),
+					).Fit(sprite).Shrink(itemRect.width / 16),
 					sprite.LocalZ + 1
 				);
 			}

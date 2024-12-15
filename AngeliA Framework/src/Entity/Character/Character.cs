@@ -555,7 +555,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 			// Equipping
 			bool attacking = false;
-			Bullet attaclingBullet = null;
+			Bullet attackingBullet = null;
 			for (int i = 0; i < Const.EquipmentTypeCount; i++) {
 				int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
 				var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
@@ -563,9 +563,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 				item.OnItemUpdate_FromEquipment(this);
 				if (item is HandTool tool) {
 					if (attackLocalFrame == tool.BulletDelayFrame) {
-						attaclingBullet = tool.SpawnBullet(this);
-						item.OnCharacterAttack_FromEquipment(this, attaclingBullet);
-						Buff.ApplyOnAttack(attaclingBullet);
+						attackingBullet = tool.SpawnBullet(this);
+						item.OnCharacterAttack_FromEquipment(this, attackingBullet);
+						Buff.ApplyOnAttack(attackingBullet);
 						attacking = true;
 					}
 				}
@@ -579,7 +579,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
 				item.OnItemUpdate_FromInventory(this, InventoryID, i);
 				if (attacking) {
-					item.OnCharacterAttack_FromInventory(this, attaclingBullet, InventoryID, i);
+					item.OnCharacterAttack_FromInventory(this, attackingBullet, InventoryID, i);
 				}
 			}
 

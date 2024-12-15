@@ -43,6 +43,7 @@ public class ItemHolder : Rigidbody {
 	public override int CollisionMask => PhysicsMask.MAP;
 	public int ItemID { get; set; } = 0;
 	public int ItemCount { get; set; } = 1;
+	public override bool CarryOtherOnTop => false;
 
 	// Data
 	private static readonly Dictionary<Int3, Pipe<Int4>> HoldingPool = [];
@@ -313,6 +314,9 @@ public class ItemHolder : Rigidbody {
 
 
 	#region --- LGC ---
+
+
+	protected override bool InsideGroundCheck () => Physics.Overlap(CollisionMask, IRect.Point(X + OffsetX + Width / 2, Y + OffsetY + Height / 2), this);
 
 
 	private static void HoldToPool (int id, int count, Int3 globalPos) {

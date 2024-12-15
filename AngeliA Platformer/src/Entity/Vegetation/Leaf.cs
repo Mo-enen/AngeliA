@@ -89,10 +89,8 @@ public abstract class Leaf : Entity, IBlockEntity, ICombustible, IDamageReceiver
 
 
 	protected virtual void OnLeafBreak () {
-		// Item
-		ItemSystem.DropItemFor(this);
-		// Block
-		FrameworkUtil.PickEntityBlock(this, false);
+		bool itemDropped = ItemSystem.DropItemFor(this);
+		FrameworkUtil.PickEntityBlock(this, dropItemAfterPick: !itemDropped);
 	}
 
 

@@ -25,6 +25,8 @@ public abstract class PickTool : HandTool {
 	public virtual int MouseUnitRange => 6;
 	public override bool UseStackAsUsage => true;
 	public override int MaxStackCount => 4096;
+	public override int BulletDelayRate => 250;
+	public override int AttackDuration => 16;
 
 
 	// MSG
@@ -71,21 +73,6 @@ public abstract class PickTool : HandTool {
 			DrawPickTargetHighlight(targetUnitX, targetUnitY, hasTraget);
 		}
 
-		// Pick Block
-		if (inRange && Game.GlobalFrame == pHolder.Attackness.LastAttackFrame) {
-			// Erase Block from Map
-			bool picked = FrameworkUtil.PickBlockAt(
-				targetUnitX, targetUnitY,
-				allowPickBlockEntity: AllowPickBlockEntity,
-				allowPickLevelBlock: AllowPickLevelBlock,
-				allowPickBackgroundBlock: AllowPickBackgroundBlock
-			);
-			// Reduce Weapon Usage
-			if (picked) {
-				Inventory.ReduceEquipmentCount(pHolder.InventoryID, 1, EquipmentType.HandTool);
-			}
-		}
-
 		// Base
 		base.OnPoseAnimationUpdate_FromEquipment(rendering);
 
@@ -104,7 +91,51 @@ public abstract class PickTool : HandTool {
 	}
 
 
-	public override Bullet SpawnBullet (Character sender) => null;
+	public override Bullet SpawnBullet (Character sender) {
+
+		var pHolder = sender;
+		if (
+			pHolder.CharacterState != CharacterState.GamePlay ||
+			TaskSystem.HasTask()
+		) return null;
+
+		// Get Target Pos
+		int targetUnitX, targetUnitY;
+		bool hasTraget, inRange = true;
+		if (UseMouseToPick && Game.IsMouseAvailable) {
+			Cursor.RequireCursor();
+			hasTraget = FrameworkUtil.GetAimingPickerPositionFromMouse(
+				pHolder, MouseUnitRange, out targetUnitX, out targetUnitY, out inRange,
+				AllowPickBlockEntity, AllowPickLevelBlock, AllowPickBackgroundBlock
+			);
+		} else {
+			hasTraget = FrameworkUtil.GetAimingPickerPositionFromKey(
+				pHolder, out targetUnitX, out targetUnitY,
+				AllowPickBlockEntity, AllowPickLevelBlock, AllowPickBackgroundBlock
+			);
+		}
+
+		// Pick Block
+		if (hasTraget && inRange) {
+			// Erase Block from Map
+			bool picked = FrameworkUtil.PickBlockAt(
+				targetUnitX, targetUnitY,
+				allowPickBlockEntity: AllowPickBlockEntity,
+				allowPickLevelBlock: AllowPickLevelBlock,
+				allowPickBackgroundBlock: AllowPickBackgroundBlock
+			);
+			// Reduce Weapon Usage
+			if (picked) {
+				Inventory.ReduceEquipmentCount(pHolder.InventoryID, 1, EquipmentType.HandTool);
+			} else {
+				pHolder.Attackness.CancelAttack();
+			}
+		} else {
+			pHolder.Attackness.CancelAttack();
+		}
+
+		return null;
+	}
 
 
 }
