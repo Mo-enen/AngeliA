@@ -250,10 +250,11 @@ public static class ItemSystem {
 	public static void ClearCombination () => CombinationPool.Clear();
 
 
-	public static void GetRelatedCombinations (Int4 combination, List<Int4> output) {
+	public static void GetRelatedCombinations (Int4 combination, List<Int4> output, int materialCountLimit) {
 		if (combination.IsZero) return;
 		bool includeResult = combination.Count(0) == 3;
 		foreach (var (craft, result) in CombinationPool) {
+			if (4 - craft.Count(0) > materialCountLimit) continue;
 			if (includeResult && combination.Contains(result.Result)) {
 				output.Add(craft);
 				continue;

@@ -14,7 +14,6 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 	// Const
 	private const int DOC_ITEM_HEIGHT = 22;
 	private const int DOC_ITEM_PADDING = 4;
-	private static readonly SpriteCode CRAFTING_FRAME_CODE = "CraftingTableFrame";
 	private static readonly int QUESTION_MARK_CODE = BuiltInSprite.ICON_QUESTION_MARK;
 	private static readonly int PLUS_CODE = BuiltInSprite.PLUS_16;
 	private static readonly int EQUAL_CODE = BuiltInSprite.EQUAL_16;
@@ -27,6 +26,7 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 	public override int ItemFieldSize => 96;
 	public override int Column => _Column;
 	public override int Row => _Row;
+	public SpriteCode FrameCode { get; set; } = "CraftingTableFrame";
 
 	// Data
 	private readonly List<Int4> DocumentContent = [];
@@ -104,7 +104,7 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 		if (crafting != CurrentCraftingItems) {
 			CurrentCraftingItems = crafting;
 			DocumentContent.Clear();
-			ItemSystem.GetRelatedCombinations(crafting, DocumentContent);
+			ItemSystem.GetRelatedCombinations(crafting, DocumentContent, Column * Row);
 		}
 
 		// Craft Result
@@ -271,7 +271,7 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 			itemRect.x = panelRect.x + (i % Column) * itemSize;
 			itemRect.y = panelRect.y + (i / Column) * itemSize;
 			Renderer.DrawSlice(
-				CRAFTING_FRAME_CODE, itemRect.Shrink(itemSize / 32),
+				FrameCode, itemRect.Shrink(itemSize / 32),
 				itemBorder, itemBorder, itemBorder, itemBorder
 			);
 			PlayerMenuUI.DrawItemFieldUI(

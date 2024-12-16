@@ -9,9 +9,15 @@ namespace AngeliA.Platformer;
 public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 
 
+	private static readonly SpriteCode CRAFTING_FRAME_CODE = "CraftingTableFrame";
 	public static readonly CraftingUI UiInstance = new();
 
-	public CraftingTable () => Inventory.InitializeInventoryData(GetType().AngeName(), 4);
+	// MSG
+	public CraftingTable () {
+		Inventory.InitializeInventoryData(GetType().AngeName(), 4);
+		UiInstance.SetColumnAndRow(2, 2);
+		UiInstance.FrameCode = CRAFTING_FRAME_CODE;
+	}
 
 	public override void LateUpdate () {
 		base.LateUpdate();
@@ -40,7 +46,6 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 
 	bool IActionTarget.Invoke () {
 		if (PlayerSystem.Selecting == null) return false;
-		UiInstance.SetColumnAndRow(2, 2);
 		if (!PlayerMenuUI.OpenMenuWithPartner(UiInstance, TypeID)) return false;
 		if (!Open) {
 			SetOpen(true);
