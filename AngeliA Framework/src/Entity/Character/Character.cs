@@ -161,16 +161,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		// Init Inventory
 		if (InventoryType == CharacterInventoryType.Unique) {
 			InventoryID = TypeID;
-			const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
-			if (Inventory.HasInventory(InventoryID)) {
-				int invCount = Inventory.GetInventoryCapacity(InventoryID);
-				if (invCount != COUNT) {
-					Inventory.ResizeInventory(InventoryID, COUNT);
-				}
-			} else {
-				// Create New
-				Inventory.AddNewEquipmentInventoryData(TypeName, COUNT);
-			}
+			Inventory.InitializeInventoryData(TypeName, INVENTORY_COLUMN * INVENTORY_ROW);
 		}
 
 	}

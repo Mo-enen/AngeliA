@@ -561,6 +561,12 @@ public class PlayerMenuUI : EntityUI {
 
 
 	public static bool OpenMenuWithPartner (PlayerMenuPartnerUI partner, int partnerInventoryID) {
+		// Reload Current Menu
+		if (ShowingUI) {
+			Instance?.OnInactivated();
+			Instance?.OnActivated();
+		}
+		// Open New Menu
 		var ins = OpenMenu();
 		if (ins != null && partner != null) {
 			ins.Partner = partner;

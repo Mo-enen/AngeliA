@@ -5,7 +5,7 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
-public sealed class CraftingTableUI : PlayerMenuPartnerUI {
+public sealed class CraftingUI : PlayerMenuPartnerUI {
 
 
 	// SUB
@@ -24,10 +24,9 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 	private static readonly LanguageCode HINT_CRAFT = ("CtrlHint.Craft", "Craft");
 
 	// Api
-	public static readonly CraftingTableUI Instance = new();
 	public override int ItemFieldSize => 96;
-	public override int Column => 2;
-	public override int Row => 2;
+	public override int Column => _Column;
+	public override int Row => _Row;
 
 	// Data
 	private readonly List<Int4> DocumentContent = [];
@@ -39,6 +38,8 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 	private int CombineResultCount = 0;
 	private int DocumentScrollY = 0;
 	private int DocumentPageSize = 1;
+	private int _Column = 2;
+	private int _Row = 2;
 
 
 	// MSG
@@ -51,16 +52,38 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 
 	public override void DrawPanel (IRect panelRect) {
 		base.DrawPanel(panelRect);
-		int sidePanelGap = Unify(64);
-		int docPanelSize = panelRect.height;
+		int sidePanelGapL = Unify(24);
+		int sidePanelGapR = Unify(64);
+		int docPanelWidth = Unify(196);
+		int docPanelHeight = panelRect.height;
 		int resultPanelSize = panelRect.height;
-		var resultRect = new IRect(panelRect.xMax, panelRect.y, resultPanelSize + sidePanelGap, panelRect.height);
-		var resultItemRect = new IRect(resultRect.xMax - resultPanelSize, resultRect.y, resultPanelSize, resultPanelSize);
-		var docRect = new IRect(panelRect.x - docPanelSize - sidePanelGap, panelRect.y, docPanelSize + sidePanelGap, docPanelSize);
-		var docItemRect = new IRect(panelRect.x - docPanelSize - sidePanelGap, panelRect.y, docPanelSize, docPanelSize);
+		var resultRect = new IRect(
+			panelRect.xMax,
+			panelRect.y,
+			resultPanelSize + sidePanelGapR,
+			panelRect.height
+		);
+		var resultItemRect = new IRect(
+			resultRect.xMax - resultPanelSize,
+			resultRect.y,
+			resultPanelSize,
+			resultPanelSize
+		);
+		var docRect = new IRect(
+			panelRect.x - docPanelWidth - sidePanelGapL,
+			panelRect.y,
+			docPanelWidth + sidePanelGapL,
+			docPanelHeight
+		);
+		var docItemRect = new IRect(
+			panelRect.x - docPanelWidth - sidePanelGapL,
+			panelRect.y,
+			docPanelWidth,
+			docPanelHeight
+		);
 		BackgroundRect = panelRect.Expand(docItemRect.width, resultPanelSize, 0, 0);
 		Update_Cache();
-		DocumentPageSize = panelRect.height / Unify(DOC_ITEM_HEIGHT + DOC_ITEM_PADDING);
+		DocumentPageSize = panelRect.height.CeilDivide(Unify(DOC_ITEM_HEIGHT + DOC_ITEM_PADDING));
 		var action = Update_Action(docItemRect, resultItemRect);
 		MouseInPanel = MouseInPanel || new IRect(docRect.x, panelRect.y, resultRect.xMax - docRect.x, panelRect.height).MouseInside();
 		Update_Inventory(panelRect);
@@ -98,83 +121,15 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 
 
 	private CraftActionType Update_Action (IRect docItemRect, IRect resultItemRect) {
+
 		var action = CraftActionType.None;
 		var menu = PlayerMenuUI.Instance;
-		bool craftAll = Input.HoldingShift;
 		if (Input.LastActionFromMouse) {
-			// Result
-			CursorInResult = resultItemRect.MouseInside();
-			if (CursorInResult && CombineResultID != 0) {
-				if (Input.GameKeyDown(Gamekey.Action)) {
-					Input.UseGameKey(Gamekey.Action);
-					action = craftAll ? CraftActionType.TakeAll : CraftActionType.TakeOne;
-				} else if (Input.GameKeyDown(Gamekey.Jump)) {
-					Input.UseGameKey(Gamekey.Jump);
-					action = craftAll ? CraftActionType.QuickDropAll : CraftActionType.QuickDropOne;
-				}
-			}
-			// Doc
-			CursorInDoc = docItemRect.MouseInside();
-			if (CursorInDoc && Input.MouseWheelDelta != 0 && DocumentContent.Count > DocumentPageSize) {
-				// Scroll Doc
-				DocumentScrollY = (DocumentScrollY - Input.MouseWheelDelta).Clamp(
-					0, DocumentContent.Count - DocumentPageSize
-				);
-			}
+			// Mouse
+			action = Update_Action_Mouse(docItemRect, resultItemRect);
 		} else if (!menu.CursorInBottomPanel) {
 			// Result
-			if (menu.TakingID != 0) {
-				CursorInResult = false;
-				CursorInDoc = false;
-			}
-			if (CursorInResult) {
-				if (Input.GameKeyDown(Gamekey.Action)) {
-					Input.UseGameKey(Gamekey.Action);
-					if (CombineResultID != 0) {
-						action = craftAll ? CraftActionType.TakeAll : CraftActionType.TakeOne;
-					}
-				} else if (Input.GameKeyDown(Gamekey.Jump)) {
-					Input.UseGameKey(Gamekey.Jump);
-					if (CombineResultID != 0) {
-						action = craftAll ? CraftActionType.QuickDropAll : CraftActionType.QuickDropOne;
-					}
-				}
-				if (Input.GameKeyDown(Gamekey.Down)) {
-					int x = (Character.INVENTORY_COLUMN - 1).Clamp(0, Character.INVENTORY_COLUMN - 1);
-					int y = Character.INVENTORY_ROW - 1;
-					menu.CursorIndex = x + Character.INVENTORY_COLUMN * y;
-					menu.CursorInBottomPanel = true;
-				}
-				if (Input.GameKeyDown(Gamekey.Left)) {
-					CursorInResult = false;
-					menu.CursorIndex = 1;
-				}
-			} else if (menu.CursorIndex % 2 == 1) {
-				if (Input.GameKeyDown(Gamekey.Right)) {
-					if (menu.TakingID == 0) CursorInResult = true;
-				}
-			}
-			// Doc
-			if (CursorInDoc) {
-				if (Input.GameKeyDown(Gamekey.Right)) {
-					CursorInDoc = false;
-					menu.CursorIndex = 0;
-				}
-				if (Input.GameKeyDown(Gamekey.Down)) {
-					DocumentScrollY = (DocumentScrollY + 4).Clamp(
-						0, DocumentContent.Count - DocumentPageSize
-					);
-				}
-				if (Input.GameKeyDown(Gamekey.Up)) {
-					DocumentScrollY = (DocumentScrollY - 4).Clamp(
-						0, DocumentContent.Count - DocumentPageSize
-					);
-				}
-			} else if (menu.CursorIndex % 2 == 0) {
-				if (Input.GameKeyDown(Gamekey.Left)) {
-					if (menu.TakingID == 0) CursorInDoc = true;
-				}
-			}
+			action = Update_Action_Key();
 		}
 		// Hint
 		if (CombineResultID != 0 && CursorInResult) {
@@ -186,16 +141,135 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 	}
 
 
+	private CraftActionType Update_Action_Mouse (IRect docItemRect, IRect resultItemRect) {
+
+		var action = CraftActionType.None;
+		bool craftAll = Input.HoldingShift;
+
+		// Result
+		CursorInResult = resultItemRect.MouseInside();
+		if (CursorInResult && CombineResultID != 0) {
+			if (Input.GameKeyDown(Gamekey.Action)) {
+				Input.UseGameKey(Gamekey.Action);
+				action = craftAll ? CraftActionType.TakeAll : CraftActionType.TakeOne;
+			} else if (Input.GameKeyDown(Gamekey.Jump)) {
+				Input.UseGameKey(Gamekey.Jump);
+				action = craftAll ? CraftActionType.QuickDropAll : CraftActionType.QuickDropOne;
+			}
+		}
+
+		// Doc
+		CursorInDoc = docItemRect.MouseInside();
+		if (CursorInDoc && Input.MouseWheelDelta != 0 && DocumentContent.Count > DocumentPageSize) {
+			// Scroll Doc
+			DocumentScrollY = (DocumentScrollY - Input.MouseWheelDelta).Clamp(
+				0, (DocumentContent.Count - DocumentPageSize / 2).GreaterOrEquelThanZero()
+			);
+		}
+
+		return action;
+	}
+
+
+	private CraftActionType Update_Action_Key () {
+
+		bool craftAll = Input.HoldingShift;
+		var menu = PlayerMenuUI.Instance;
+		var action = CraftActionType.None;
+
+		if (menu.TakingID != 0) {
+			CursorInResult = false;
+			CursorInDoc = false;
+		}
+
+		// Result
+		if (CursorInResult) {
+
+			if (Input.GameKeyDown(Gamekey.Action)) {
+				// Action Key
+				Input.UseGameKey(Gamekey.Action);
+				if (CombineResultID != 0) {
+					action = craftAll ? CraftActionType.TakeAll : CraftActionType.TakeOne;
+				}
+			} else if (Input.GameKeyDown(Gamekey.Jump)) {
+				// Cancel Key
+				Input.UseGameKey(Gamekey.Jump);
+				if (CombineResultID != 0) {
+					action = craftAll ? CraftActionType.QuickDropAll : CraftActionType.QuickDropOne;
+				}
+			}
+
+			// Down Key
+			if (Input.GameKeyDown(Gamekey.Down)) {
+				Input.UseGameKey(Gamekey.Down);
+				int x = (Character.INVENTORY_COLUMN - 1).Clamp(0, Character.INVENTORY_COLUMN - 1);
+				int y = Character.INVENTORY_ROW - 1;
+				menu.CursorIndex = x + Character.INVENTORY_COLUMN * y;
+				menu.CursorInBottomPanel = true;
+			}
+
+			// Left Key
+			if (Input.GameKeyDown(Gamekey.Left)) {
+				Input.UseGameKey(Gamekey.Left);
+				CursorInResult = false;
+				menu.CursorIndex = Column - 1;
+			}
+
+		} else if (menu.CursorIndex % Column == Column - 1) {
+			// Right Key >> Into Result Field
+			if (Input.GameKeyDown(Gamekey.Right)) {
+				Input.UseGameKey(Gamekey.Right);
+				if (menu.TakingID == 0) CursorInResult = true;
+			}
+		}
+
+		// Doc
+		if (CursorInDoc) {
+
+			// Right Key
+			if (Input.GameKeyDown(Gamekey.Right)) {
+				Input.UseGameKey(Gamekey.Right);
+				CursorInDoc = false;
+				menu.CursorIndex = 0;
+			}
+
+			// Down Key
+			if (Input.GameKeyDown(Gamekey.Down)) {
+				Input.UseGameKey(Gamekey.Down);
+				DocumentScrollY = (DocumentScrollY + 4).Clamp(
+					0, DocumentContent.Count - DocumentPageSize
+				);
+			}
+
+			// Up Key
+			if (Input.GameKeyDown(Gamekey.Up)) {
+				Input.UseGameKey(Gamekey.Up);
+				DocumentScrollY = (DocumentScrollY - 4).Clamp(
+					0, DocumentContent.Count - DocumentPageSize
+				);
+			}
+		} else if (menu.CursorIndex % Column == 0) {
+			// Left Key >> Into Doc Field
+			if (Input.GameKeyDown(Gamekey.Left)) {
+				if (menu.TakingID == 0) CursorInDoc = true;
+			}
+		}
+
+		return action;
+	}
+
+
 	private void Update_Inventory (IRect panelRect) {
 		int itemSize = Unify(ItemFieldSize);
 		var itemRect = new IRect(0, 0, itemSize, itemSize);
 		int padding = Unify(12);
 		int itemBorder = Unify(6);
 		bool cursorInInventory = !CursorInResult && !CursorInDoc;
-		for (int i = 0; i < 4; i++) {
+		int len = Column * Row;
+		for (int i = 0; i < len; i++) {
 			int itemID = Inventory.GetItemAt(InventoryID, i, out int count);
-			itemRect.x = panelRect.x + (i % 2) * itemSize;
-			itemRect.y = panelRect.y + (i / 2) * itemSize;
+			itemRect.x = panelRect.x + (i % Column) * itemSize;
+			itemRect.y = panelRect.y + (i / Column) * itemSize;
 			Renderer.DrawSlice(
 				CRAFTING_FRAME_CODE, itemRect.Shrink(itemSize / 32),
 				itemBorder, itemBorder, itemBorder, itemBorder
@@ -226,11 +300,12 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 		}
 
 		// Content
-		int startIndex = Renderer.GetUsedCellCount();
-		var lineRect = new IRect(docItemRect.x, 0, docItemRect.width, Unify(DOC_ITEM_HEIGHT));
-		DocumentScrollY = DocumentScrollY.Clamp(0, DocumentContent.Count);
+		int itemHeight = Unify(DOC_ITEM_HEIGHT);
 		int iconPadding = Unify(4);
 		int linePadding = Unify(DOC_ITEM_PADDING);
+		int startIndex = Renderer.GetUsedCellCount();
+		var lineRect = new IRect(docItemRect.x, 0, docItemRect.width, itemHeight);
+		DocumentScrollY = DocumentScrollY.Clamp(0, Util.Max(DocumentContent.Count - DocumentPageSize / 2, 0));
 		int iconSize = lineRect.height;
 		int tipID = 0;
 		IRect tipRect = default;
@@ -397,6 +472,13 @@ public sealed class CraftingTableUI : PlayerMenuPartnerUI {
 			Inventory.SetItemAt(InventoryID, i, itemID, count);
 		}
 
+	}
+
+
+	// API
+	public void SetColumnAndRow (int newColumn, int newRow) {
+		_Column = newColumn;
+		_Row = newRow;
 	}
 
 

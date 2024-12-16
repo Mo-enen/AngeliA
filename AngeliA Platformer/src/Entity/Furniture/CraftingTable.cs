@@ -8,20 +8,10 @@ namespace AngeliA.Platformer;
 
 public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 
-	public CraftingTable () {
-		int invID = GetType().AngeHash();
-		const int TARGET_COUNT = 4;
-		if (Inventory.HasInventory(invID)) {
-			int iCount = Inventory.GetInventoryCapacity(invID);
-			if (iCount != TARGET_COUNT) {
-				// Resize
-				Inventory.ResizeInventory(invID, TARGET_COUNT);
-			}
-		} else {
-			// Create New Items
-			Inventory.AddNewInventoryData(GetType().AngeName(), TARGET_COUNT);
-		}
-	}
+
+	public static readonly CraftingUI UiInstance = new();
+
+	public CraftingTable () => Inventory.InitializeInventoryData(GetType().AngeName(), 4);
 
 	public override void LateUpdate () {
 		base.LateUpdate();
@@ -50,7 +40,8 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 
 	bool IActionTarget.Invoke () {
 		if (PlayerSystem.Selecting == null) return false;
-		if (!PlayerMenuUI.OpenMenuWithPartner(CraftingTableUI.Instance, TypeID)) return false;
+		UiInstance.SetColumnAndRow(2, 2);
+		if (!PlayerMenuUI.OpenMenuWithPartner(UiInstance, TypeID)) return false;
 		if (!Open) {
 			SetOpen(true);
 		}

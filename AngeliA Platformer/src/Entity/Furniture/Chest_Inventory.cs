@@ -39,17 +39,7 @@ public abstract class InventoryChest : OpenableFurniture, IActionTarget {
 
 		// Init Inventory
 		if (InventoryID != 0 && !string.IsNullOrEmpty(InventoryName)) {
-			int targetCount = InventoryColumn * InventoryRow;
-			if (Inventory.HasInventory(InventoryID)) {
-				int iCount = Inventory.GetInventoryCapacity(InventoryID);
-				// Resize
-				if (iCount != targetCount) {
-					Inventory.ResizeInventory(InventoryID, targetCount);
-				}
-			} else {
-				// Create New Items
-				Inventory.AddNewInventoryData(InventoryName, targetCount);
-			}
+			Inventory.InitializeInventoryData(InventoryName, InventoryColumn * InventoryRow);
 		}
 	}
 

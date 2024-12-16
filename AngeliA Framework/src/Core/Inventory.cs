@@ -171,6 +171,19 @@ public static class Inventory {
 
 
 	// Inventory Data
+	public static void InitializeInventoryData (string name, int capacity) {
+		int invID = name.AngeHash();
+		if (HasInventory(invID)) {
+			int iCount = GetInventoryCapacity(invID);
+			if (iCount != capacity) {
+				ResizeInventory(invID, capacity);
+			}
+		} else {
+			AddNewInventoryData(name, capacity);
+		}
+	}
+
+
 	public static void AddNewInventoryData (string inventoryName, int itemCount) {
 		if (itemCount <= 0) return;
 		int inventoryID = inventoryName.AngeHash();
