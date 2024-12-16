@@ -546,9 +546,10 @@ public class CharacterMovement (Rigidbody rig) {
 		bool oldFacingRight = FacingRight;
 		if (frame <= LockedFacingFrame && !IsSliding && !IsGrabbingSide) {
 			FacingRight = LockedFacingRight;
-		} else if (IntendedX != 0) {
-			FacingRight = IntendedX > 0;
 		}
+		//else if (IntendedX != 0) {
+		//FacingRight = IntendedX > 0;
+		//}
 		if (FacingRight != oldFacingRight) {
 			LastFacingChangeFrame = frame;
 		}
@@ -1139,7 +1140,12 @@ public class CharacterMovement (Rigidbody rig) {
 	// Move
 	protected void MoveLogic (int x, int y, bool walk = false) {
 		if (IntendedX != 0 && x == 0) LastEndMoveFrame = Game.GlobalFrame;
-		if (IntendedX == 0 && x != 0) LastStartMoveFrame = Game.GlobalFrame;
+		if (IntendedX == 0 && x != 0) {
+			LastStartMoveFrame = Game.GlobalFrame;
+		}
+		if (IntendedX != x && x != 0) {
+			FacingRight = x > 0;
+		}
 		IntendedX = x;
 		IntendedY = y;
 		walk &= WalkAvailable;

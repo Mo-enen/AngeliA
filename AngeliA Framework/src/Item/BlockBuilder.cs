@@ -22,8 +22,8 @@ public sealed class BlockBuilder : HandTool {
 	public override int? RunningSpeedRateOnAttack => 618;
 	public override int? WalkingSpeedRateOnAttack => 618;
 	public override int MaxStackCount => 256;
-	public override int BulletDelayRate => 250;
-	public override int AttackDuration => 16;
+	public override int BulletDelayRate => 0;
+	public override int AttackDuration => 12;
 
 
 	// MSG
@@ -41,7 +41,6 @@ public sealed class BlockBuilder : HandTool {
 
 		if (
 			!pHolder.IsAttackAllowedByMovement() ||
-			pHolder.Attackness.IsAttackIgnored ||
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||
 			TaskSystem.HasTask() ||
@@ -70,8 +69,13 @@ public sealed class BlockBuilder : HandTool {
 			);
 		}
 
+		// Ignore Attack
+		if (!available) {
+			pHolder.Attackness.IgnoreAttack(1);
+		}
+
 		// Target Block Highlight
-		if (inRange) {
+		if (inRange && !pHolder.Attackness.IsAttackIgnored) {
 			DrawTargetHighlight(targetUnitX, targetUnitY, available);
 		}
 
@@ -150,46 +154,18 @@ public sealed class BlockBuilder : HandTool {
 			Renderer.Draw(
 				sp,
 				new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL).Shrink(GAP).Fit(sp),
-				allowPut ? Color32.GREY_230 : Color32.WHITE_96, z: int.MaxValue
+				allowPut ? Color32.GREY_230 : Color32.WHITE_46, z: int.MaxValue
 			);
 		}
 	}
 
 
-	private bool IsBlockEmptyAt (int unitX, int unitY) {
-		switch (BlockType) {
-			case BlockType.Entity:
-				// Check for Block Entity
-				var hits = Physics.OverlapAll(
-					PhysicsMask.MAP,
-					new IRect(unitX.ToGlobal() + 1, unitY.ToGlobal() + 1, Const.CEL - 2, Const.CEL - 2),
-					out int count, null, OperationMode.ColliderAndTrigger
-				);
-				for (int i = 0; i < count; i++) {
-					if (hits[i].Entity is IBlockEntity) return false;
-				}
-				return true;
-
-			case BlockType.Level:
-				// Check for Level Block
-				return WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Level) == 0;
-
-			case BlockType.Background:
-				// Check for BG Block
-				return WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Background) == 0;
-
-		}
-		return false;
-	}
-
-
 	private bool GetTargetUnitPosFromAI (Character holder, out int targetUnitX, out int targetUnitY) {
-
-		// TODO
 
 		targetUnitX = holder.X.ToUnit();
 		targetUnitY = holder.Y.ToUnit();
-		return IsBlockEmptyAt(targetUnitX, targetUnitY);
+
+		return false;
 	}
 
 

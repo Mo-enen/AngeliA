@@ -649,29 +649,27 @@ public static class FrameworkUtil {
 	}
 
 
-	public static bool PickEntityBlock (Entity target, bool dropItemAfterPick = true) {
+	public static bool BreakEntityBlock (Entity target, bool dropItemAfterPick = true) {
 
-		if (!target.MapUnitPos.HasValue) return false;
+		if (!target.MapUnitPos.HasValue || target is not IBlockEntity eBlock) {
+			InvokeObjectBreak(target.TypeID, target.Rect);
+			return false;
+		}
 
-		var e = target;
-		if (e is not IBlockEntity eBlock) return false;
-		e.Active = false;
-		var mapPos = e.MapUnitPos.Value;
+		target.Active = false;
+		var mapPos = target.MapUnitPos.Value;
 
 		// Remove from Map
 		WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, BlockType.Entity, 0);
 
 		// Event
 		eBlock.OnEntityPicked();
-		if (dropItemAfterPick && ItemSystem.HasItem(e.TypeID)) {
+		if (dropItemAfterPick && ItemSystem.HasItem(target.TypeID)) {
 			// Drop Item
-			ItemSystem.SpawnItem(e.TypeID, e.X, e.Y, jump: false);
-			InvokeBlockPicked(e.TypeID, e.Rect);
-		} else {
-			// Break
-			InvokeObjectBreak(e.TypeID, e.Rect);
+			ItemSystem.SpawnItem(target.TypeID, target.X, target.Y, jump: false);
 		}
 
+		InvokeObjectBreak(target.TypeID, target.Rect);
 		return true;
 	}
 
@@ -704,8 +702,9 @@ public static class FrameworkUtil {
 				eBlock.OnEntityPicked();
 				if (dropItemAfterPicked && ItemSystem.HasItem(e.TypeID)) {
 					// Drop Item
-					ItemSystem.SpawnItem(e.TypeID, e.X, e.Y, jump: false);
-					InvokeBlockPicked(e.TypeID, e.Rect);
+					var rect = e.Rect;
+					ItemSystem.SpawnItem(e.TypeID, rect.CenterX(), rect.CenterY(), jump: false);
+					InvokeBlockPicked(e.TypeID, rect);
 				} else {
 					// Break
 					InvokeObjectBreak(e.TypeID, new IRect(e.X, e.Y, Const.CEL, Const.CEL));
@@ -761,11 +760,11 @@ public static class FrameworkUtil {
 				// Final
 				if (dropItemAfterPicked && ItemSystem.HasItem(blockID)) {
 					// Drop Item
-					ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), jump: false);
+					ItemSystem.SpawnItem(blockID, unitX.ToGlobal() + Const.HALF, unitY.ToGlobal() + Const.HALF, jump: false);
 					InvokeBlockPicked(blockID, blockRect);
 				} else {
 					// Break
-					InvokeObjectBreak(realBlockID, blockRect);
+					InvokeBlockPicked(realBlockID, blockRect);
 				}
 
 				if (!allowMultiplePick) {
@@ -798,7 +797,7 @@ public static class FrameworkUtil {
 				// Spawn Embedded Item
 				int ele = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element);
 				if (ele != 0 && ItemSystem.GetItem(ele) is Item _ele && _ele.EmbedIntoLevel) {
-					ItemSystem.SpawnItem(ele, unitX.ToGlobal(), unitY.ToGlobal(), 1, false);
+					ItemSystem.SpawnItem(ele, unitX.ToGlobal() + Const.HALF, unitY.ToGlobal() + Const.HALF, 1, false);
 					WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Element, 0);
 				}
 
@@ -809,7 +808,7 @@ public static class FrameworkUtil {
 					InvokeBlockPicked(realBlockID, blockRect);
 				} else {
 					// Break
-					InvokeObjectBreak(realBlockID, blockRect);
+					InvokeBlockPicked(realBlockID, blockRect);
 				}
 
 				if (!allowMultiplePick) {
@@ -1161,27 +1160,6 @@ public static class FrameworkUtil {
 	}
 
 
-	public static bool IsBlockEmptyAt (int unitX, int unitY, BlockType blockType) {
-		switch (blockType) {
-			case BlockType.Entity:
-				// Check for Block Entity
-				var hits = Physics.OverlapAll(
-					PhysicsMask.MAP,
-					new IRect(unitX.ToGlobal() + 1, unitY.ToGlobal() + 1, Const.CEL - 2, Const.CEL - 2),
-					out int count, null, OperationMode.ColliderAndTrigger
-				);
-				for (int i = 0; i < count; i++) {
-					if (hits[i].Entity is IBlockEntity) return false;
-				}
-				return true;
-
-			default:
-				// Other Type
-				return WorldSquad.Front.GetBlockAt(unitX, unitY, blockType) == 0;
-		}
-	}
-
-
 	// Block Aiming
 	public static bool GetAimingBuilderPositionFromMouse (Character holder, int unitRange, BlockType blockType, out int targetUnitX, out int targetUnitY, out bool inRange) {
 
@@ -1207,23 +1185,15 @@ public static class FrameworkUtil {
 			return false;
 		}
 
-		// Overlap with Entity Check
-		if (
-			blockType == BlockType.Entity &&
-			Physics.Overlap(PhysicsMask.ENTITY, mouseRect, null, OperationMode.ColliderAndTrigger
-		)) {
-			return false;
-		}
-
 		// Block Empty Check
-		return IsBlockEmptyAt(targetUnitX, targetUnitY, blockType);
+		return ValidForPutBlock(targetUnitX, targetUnitY, blockType);
 
 	}
 
 
 	public static bool GetAimingBuilderPositionFromKey (Character holder, BlockType blockType, out int targetUnitX, out int targetUnitY) {
 
-		bool result;
+		bool valid;
 		var aim = holder.Attackness.AimingDirection;
 		var aimNormal = aim.Normal();
 		if (!holder.Movement.IsClimbing) {
@@ -1240,10 +1210,10 @@ public static class FrameworkUtil {
 			targetUnitY = pointY.ToUnit() + aimNormal.y;
 		}
 
-		result = IsBlockEmptyAt(targetUnitX, targetUnitY, blockType);
+		valid = ValidForPutBlock(targetUnitX, targetUnitY, blockType);
 
 		// Redirect
-		if (!result) {
+		if (!valid) {
 			int oldTargetX = targetUnitX;
 			int oldTargetY = targetUnitX;
 			if (aim.IsBottom()) {
@@ -1258,11 +1228,26 @@ public static class FrameworkUtil {
 				targetUnitY++;
 			}
 			if (oldTargetX != targetUnitX || oldTargetY != targetUnitY) {
-				result = IsBlockEmptyAt(targetUnitX, targetUnitY, blockType);
+				valid = ValidForPutBlock(targetUnitX, targetUnitY, blockType);
 			}
 		}
 
-		return result;
+		return valid;
+	}
+
+
+	private static bool ValidForPutBlock (int unitX, int unitY, BlockType blockType) {
+		// Non Entity
+		if (blockType != BlockType.Entity) {
+			return WorldSquad.Front.GetBlockAt(unitX, unitY, blockType) == 0;
+		}
+		// Entity
+		var rect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
+		return !Physics.Overlap(
+			PhysicsMask.LEVEL, rect, null, OperationMode.ColliderOnly
+		) && !Physics.Overlap(
+			PhysicsMask.ENTITY, rect, null, OperationMode.ColliderAndTrigger
+		);
 	}
 
 
@@ -1280,6 +1265,7 @@ public static class FrameworkUtil {
 		int holderUnitY = (holder.Rect.y + Const.HALF).ToUnit();
 		inRange = targetUnitX.InRangeInclude(holderUnitX - unitRange, holderUnitX + unitRange) &&
 				targetUnitY.InRangeInclude(holderUnitY - unitRange, holderUnitY + unitRange);
+
 		if (!inRange) return false;
 
 		// Pickable Check

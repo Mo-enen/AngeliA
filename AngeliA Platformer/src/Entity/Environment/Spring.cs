@@ -50,7 +50,8 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 				PhysicsMask.ENTITY, new(X - 1, Y, Const.HALF, Const.CEL), this, OperationMode.ColliderAndTrigger
 			)) {
 				PerformBounce(Direction4.Left);
-			} else if (Physics.Overlap(
+			}
+			if (Physics.Overlap(
 				PhysicsMask.ENTITY, new(X + Const.HALF, Y, Const.HALF + 1, Const.CEL), this, OperationMode.ColliderAndTrigger
 			)) {
 				PerformBounce(Direction4.Right);
@@ -87,8 +88,7 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 
 	// LGC
 	private void PerformBounce (Direction4 side) {
-		LastBounceFrame = Game.GlobalFrame;
-		BounceSide = side;
+		bool bounced = false;
 		var globalRect = FullRect.Edge(side, 16);
 		Entity ignore = this;
 		for (int safe = 0; safe < 2048; safe++) {
@@ -97,6 +97,7 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is not Rigidbody rig) continue;
+				bounced = true;
 				var hitRect = hit.Entity.Rect;
 				if (Horizontal) {
 					globalRect.y = hitRect.y;
@@ -114,6 +115,10 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 				break;
 			}
 		}
+		if (bounced) {
+			LastBounceFrame = Game.GlobalFrame;
+			BounceSide = side;
+		}
 	}
 
 
@@ -122,9 +127,19 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 		if (Horizontal) {
 			// Horizontal
 			if (BounceSide == Direction4.Left) {
-				if (target.VelocityX > -Power) target.VelocityX = -Power;
+				if (target.VelocityX > -Power) {
+					target.VelocityX = -Power;
+					if (target is IWithCharacterMovement wMov) {
+						wMov.CurrentMovement.FacingRight = false;
+					}
+				}
 			} else {
-				if (target.VelocityX < Power) target.VelocityX = Power;
+				if (target.VelocityX < Power) {
+					target.VelocityX = Power;
+					if (target is IWithCharacterMovement wMov) {
+						wMov.CurrentMovement.FacingRight = true;
+					}
+				}
 			}
 		} else {
 			// Vertical

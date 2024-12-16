@@ -21,7 +21,6 @@ public class OpeningTask : Task {
 	public int TargetViewY { get; set; } = 0;
 	public int TargetViewZ { get; set; } = 0;
 	public bool FadeOut { get; set; } = true;
-	public bool TryGotoBed { get; set; } = false;
 
 	// Data
 	private int SkipFrame = int.MaxValue;
@@ -86,7 +85,14 @@ public class OpeningTask : Task {
 					player.Y = PlayerSpawnY;
 				}
 				player?.OnActivated();
-				if (player != null && TryGotoBed && Stage.TryGetEntityNearby<Bed>(new Int2(PlayerSpawnX, PlayerSpawnY), out var bed)) {
+				if (
+					player != null &&
+					Physics.GetEntity<Bed>(
+						IRect.Point(PlayerSpawnX, PlayerSpawnY),
+						PhysicsMask.ENVIRONMENT, null,
+						OperationMode.ColliderAndTrigger
+					) is Bed bed
+				) {
 					bed.GetTargetOnBed(PlayerSystem.Selecting);
 					TargetViewX = player.Rect.CenterX();
 					TargetViewY = player.Y + Stage.ViewRect.height / 2 - PlayerSystem.GetCameraShiftOffset(Stage.ViewRect.height);
@@ -150,7 +156,6 @@ public class OpeningTask : Task {
 			oTask.TargetViewY = startUnitPosition.y.ToGlobal();
 			oTask.TargetViewZ = startUnitPosition.z;
 			oTask.FadeOut = false;
-			oTask.TryGotoBed = !PlayerSystem.RespawnCpUnitPosition.HasValue;
 		}
 	}
 

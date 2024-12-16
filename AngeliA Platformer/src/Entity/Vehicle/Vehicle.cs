@@ -151,6 +151,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 				Y + OffsetY + offste.y - Driver.Y
 			);
 		}
+		Driver.NativeMovement.FacingRight = Movement.FacingRight;
 		Driver = null;
 		LastDriveChangedFrame = Game.GlobalFrame;
 	}

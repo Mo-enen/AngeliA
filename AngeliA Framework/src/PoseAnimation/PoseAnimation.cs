@@ -117,7 +117,7 @@ public abstract class PoseAnimation {
 			Rendering.HandGrabScaleR = (int)Util.LerpUnclamped(Rendering.HandGrabScaleR, HandGrabScaleR, blend01);
 			Rendering.HandGrabAttackTwistL = (int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistL, HandGrabAttackTwistL, blend01);
 			Rendering.HandGrabAttackTwistR = (int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistR, HandGrabAttackTwistR, blend01);
-			
+
 
 			// Func
 			static int FixSign (int basicValue, int targetValue) {
@@ -144,6 +144,8 @@ public abstract class PoseAnimation {
 
 	// Api
 	protected virtual bool ValidHeadPosition => true;
+	protected virtual bool DontBlendToNext => false;
+	protected virtual bool DontBlendToPrev => false;
 
 	// Data
 	private static readonly Dictionary<int, PoseAnimation> Pool = [];
@@ -227,8 +229,14 @@ public abstract class PoseAnimation {
 
 
 	public static void PerformAnimationBlendFromPool (int idA, int idB, float blend01, PoseCharacterRenderer renderer) {
+		// Get Animation
 		Pool.TryGetValue(idA, out var resultA);
 		Pool.TryGetValue(idB, out var resultB);
+		// Check for Blend Ignore
+		if (resultA.DontBlendToNext || resultB.DontBlendToPrev) {
+			resultA = null;
+		}
+		// Perform
 		if (resultA != null && resultB != null) {
 			PerformAnimationBlend(resultA, resultB, blend01, renderer);
 		} else if (resultA != null || resultB != null) {

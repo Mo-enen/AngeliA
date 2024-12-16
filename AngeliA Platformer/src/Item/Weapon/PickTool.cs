@@ -25,16 +25,17 @@ public abstract class PickTool : HandTool {
 	public virtual int MouseUnitRange => 6;
 	public override bool UseStackAsUsage => true;
 	public override int MaxStackCount => 4096;
-	public override int BulletDelayRate => 250;
+	public override int BulletDelayRate => 0;
 	public override int AttackDuration => 16;
 
 
 	// MSG
 	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
+
 		var pHolder = rendering.TargetCharacter;
+
 		if (
 			!pHolder.IsAttackAllowedByMovement() ||
-			pHolder.Attackness.IsAttackIgnored ||
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||
 			TaskSystem.HasTask()
@@ -68,8 +69,13 @@ public abstract class PickTool : HandTool {
 			);
 		}
 
+		// Ignore Attack
+		if (!hasTraget) {
+			pHolder.Attackness.IgnoreAttack(1);
+		}
+
 		// Target Block Highlight
-		if (inRange && !PlayerMenuUI.ShowingUI) {
+		if (inRange && !PlayerMenuUI.ShowingUI && !pHolder.Attackness.IsAttackIgnored) {
 			DrawPickTargetHighlight(targetUnitX, targetUnitY, hasTraget);
 		}
 
@@ -86,7 +92,7 @@ public abstract class PickTool : HandTool {
 			BuiltInSprite.FRAME_HOLLOW_16,
 			new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL),
 			border, border, border, border,
-			hasTarget ? Color32.GREY_230 : Color32.WHITE_96, z: int.MaxValue
+			hasTarget ? Color32.GREY_230 : Color32.WHITE_46, z: int.MaxValue
 		);
 	}
 

@@ -1,6 +1,7 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Crash : PoseAnimation {
+	protected override bool DontBlendToPrev => true;
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 
