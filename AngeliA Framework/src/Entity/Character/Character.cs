@@ -26,7 +26,13 @@ public enum CharacterAnimationType {
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
-public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCharacterMovement, IWithCharacterAttackness {
+public abstract class Character : Rigidbody,
+	IDamageReceiver, ICarrier,
+	IWithCharacterMovement,
+	IWithCharacterAttackness,
+	IWithCharacterHealth,
+	IWithCharacterBuff,
+	IWithCharacterRenderer {
 
 
 
@@ -67,6 +73,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	bool ICarrier.AllowBeingCarry => true;
 	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
 	CharacterAttackness IWithCharacterAttackness.CurrentAttackness => Attackness;
+	CharacterHealth IWithCharacterHealth.CurrentHealth => Health;
+	CharacterBuff IWithCharacterBuff.CurrentBuff => Buff;
+	CharacterRenderer IWithCharacterRenderer.CurrentRenderer => Rendering;
 	public int Bouncy { get; set; } = 150;
 	public bool HelmetInteractable { get; set; } = true;
 	public bool BodySuitInteractable { get; set; } = true;

@@ -21,6 +21,7 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 	private static readonly int FRAME_CODE = BuiltInSprite.FRAME_16;
 	private static readonly int ITEM_FRAME_CODE = BuiltInSprite.UI_ITEM_FRAME;
 	private static readonly LanguageCode HINT_CRAFT = ("CtrlHint.Craft", "Craft");
+	private static readonly LanguageCode MARK_KEEP = ("UI.Crafting.Keep", "Keep");
 
 	// Api
 	public override int ItemFieldSize => 96;
@@ -279,6 +280,10 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 				cursorInInventory,
 				cursorInInventory ? i : -2
 			);
+			// No Consume Mark
+			if (itemID != 0 && (IgnoreConsumes[0] == itemID || IgnoreConsumes[1] == itemID || IgnoreConsumes[2] == itemID || IgnoreConsumes[3] == itemID)) {
+				GUI.BackgroundLabel(itemRect.EdgeDown(Unify(18)), MARK_KEEP, Color32.BLACK, Unify(6), style: GUI.Skin.SmallCenterLabel);
+			}
 		}
 	}
 

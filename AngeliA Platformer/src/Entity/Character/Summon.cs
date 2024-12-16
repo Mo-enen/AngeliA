@@ -54,6 +54,12 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	}
 
 
+	public override void OnInactivated () {
+		base.OnInactivated();
+		SetCharacterState(CharacterState.GamePlay);
+	}
+
+
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		Navigation.Owner = Owner;
@@ -124,9 +130,27 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		// Base
 		base.LateUpdate();
 
+		FrameUpdate_Sleep();
+
 		// Highlight
 		if (Rendering is SheetCharacterRenderer sRendering) {
 			(this as IActionTarget).BlinkIfHighlight(sRendering.RenderedCell);
+		}
+
+	}
+
+
+	private void FrameUpdate_Sleep () {
+		if (Owner == null || !Owner.Active) return;
+
+		// Sleep when Owner Sleep
+		if (Owner.CharacterState == CharacterState.Sleep && CharacterState != CharacterState.Sleep) {
+			SetCharacterState(CharacterState.Sleep);
+		}
+
+		// Wake when Owner Awake
+		if (CharacterState == CharacterState.Sleep && Owner.CharacterState != CharacterState.Sleep) {
+			SetCharacterState(CharacterState.GamePlay);
 		}
 
 	}
