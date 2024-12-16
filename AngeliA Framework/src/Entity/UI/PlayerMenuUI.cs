@@ -23,10 +23,10 @@ public class PlayerMenuUI : EntityUI {
 	private static readonly SpriteCode ARMOR_EMPTY_ICON = "ArmorEmptyIcon";
 	private static readonly LanguageCode HINT_HIDE_MENU = ("CtrlHint.HideMenu", "Hide Menu");
 	private static readonly LanguageCode HINT_TAKE = ("CtrlHint.PlayerMenu.Take", "Take");
+	private static readonly LanguageCode HINT_TRANSFER = ("CtrlHint.Transfer", "Transfer (Hold to Use)");
 	private static readonly LanguageCode HINT_DROP = ("CtrlHint.Drop", "Drop");
 	private static readonly LanguageCode HINT_THROW = ("CtrlHint.Throw", "Throw");
 	private static readonly LanguageCode HINT_HUSE = ("CtrlHint.HoldToUse", "Hold to Use");
-	private static readonly LanguageCode HINT_TRANSFER = ("CtrlHint.Transfer", "Transfer (Hold to Use)");
 	private static readonly LanguageCode HINT_EQUIP = ("CtrlHint.Equip", "Equip");
 	private static readonly LanguageCode UI_HELMET = ("UI.Equipment.Helmet", "Helmet");
 	private static readonly LanguageCode UI_HAND_TOOL = ("UI.Equipment.HandTool", "Tool");
@@ -121,7 +121,6 @@ public class PlayerMenuUI : EntityUI {
 
 	public override void UpdateUI () {
 		base.UpdateUI();
-
 		if (PlayerSystem.Selecting == null) {
 			Active = false;
 			return;
@@ -606,7 +605,7 @@ public class PlayerMenuUI : EntityUI {
 	public static void DrawItemFieldUI (int itemID, int itemCount, int frameCode, IRect itemRect, bool interactable, int uiIndex) => Instance?.DrawItemField(itemID, itemCount, frameCode, itemRect, interactable, uiIndex);
 
 
-	public void SetTaking (int takingID, int takingCount = 1) {
+	public void SetTaking (int takingID, int takingCount) {
 		TakingID = takingID;
 		TakingCount = takingCount;
 	}

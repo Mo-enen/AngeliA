@@ -171,7 +171,7 @@ public static class Inventory {
 
 
 	// Inventory Data
-	public static void InitializeInventoryData (string name, int capacity) {
+	public static void InitializeInventoryData (string name, int capacity, bool hasEquipment = false) {
 		int invID = name.AngeHash();
 		if (HasInventory(invID)) {
 			int iCount = GetInventoryCapacity(invID);
@@ -179,7 +179,11 @@ public static class Inventory {
 				ResizeInventory(invID, capacity);
 			}
 		} else {
-			AddNewInventoryData(name, capacity);
+			if (hasEquipment) {
+				AddNewEquipmentInventoryData(name, capacity);
+			} else {
+				AddNewInventoryData(name, capacity);
+			}
 		}
 	}
 
