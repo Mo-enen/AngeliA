@@ -134,6 +134,9 @@ public sealed class CharacterBuff {
 	}
 
 
+	public bool IsBuffPrevented (int id) => BuffPrevents.ContainsKey(id);
+
+
 	public object GetBuffData (int id) => BuffStates.TryGetValue(id, out var state) ? state.Data : null;
 
 

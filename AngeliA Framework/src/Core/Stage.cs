@@ -332,7 +332,10 @@ public static class Stage {
 				int count = EntityCounts[layer];
 				for (int i = 0; i < count; i++) {
 					var e = entities[i];
-					if (e.DespawnOutOfRange || e.DestroyOnZChanged) {
+					if (
+						Game.GlobalFrame > e.IgnoreDestroyFromMapFrame &&
+						(e.DespawnOutOfRange || e.DestroyOnZChanged)
+					) {
 						e.Active = false;
 					}
 				}
@@ -742,6 +745,73 @@ public static class Stage {
 	}
 
 
+	public static void TryRepositionEntity (Entity entity, bool carryThoughZ = false) {
+
+		bool requireRepos = false;
+		bool requireClearOriginal = false;
+
+		// Get Position
+		int currentUnitX;
+		int currentUnitY;
+		if (entity is Rigidbody rig) {
+			currentUnitX = (rig.X + rig.OffsetX + Const.HALF).ToUnit();
+			currentUnitY = (rig.Y + rig.OffsetY + Const.HALF).ToUnit();
+		} else {
+			currentUnitX = (entity.X + Const.HALF).ToUnit();
+			currentUnitY = (entity.Y + Const.HALF).ToUnit();
+		}
+
+		// Get Info for Original Block
+		if (entity.MapUnitPos.HasValue) {
+			var mapPos = entity.MapUnitPos.Value;
+			int blockIdAtMapPos = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
+			// Get Require Mode
+			if (blockIdAtMapPos != entity.TypeID) {
+				// Overlaped by Other Entity
+				requireRepos = true;
+			} else if (carryThoughZ || currentUnitX != mapPos.x || currentUnitY != mapPos.y) {
+				// Position Moved
+				requireRepos = true;
+				requireClearOriginal = true;
+			}
+		} else {
+			requireRepos = true;
+		}
+
+		// Carry Logic
+		if (carryThoughZ && !requireClearOriginal) return;
+
+		// Perform Reposition
+		if (!requireRepos || !FrameworkUtil.TryGetEmptyPlaceNearbyForEntity(
+			currentUnitX, currentUnitY, ViewZ,
+			out int resultUnitX, out int resultUnitY
+		)) return;
+
+		var newInsID = new Int3(resultUnitX, resultUnitY, ViewZ);
+		if (carryThoughZ) {
+			StagedEntityHash.Remove(entity.InstanceID);
+			StagedEntityHash.Add(newInsID);
+		}
+
+		// Set Block
+		WorldSquad.Front.SetBlockAt(resultUnitX, resultUnitY, ViewZ, BlockType.Entity, entity.TypeID);
+
+		// Clear Original
+		if (requireClearOriginal) {
+			var oPos = entity.MapUnitPos.Value;
+			WorldSquad.Front.SetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Entity, 0);
+		}
+
+		// Callback
+		if (entity != null && entity.MapUnitPos.HasValue) {
+			AfterEntityReposition?.Invoke(entity, entity.MapUnitPos, new Int3(resultUnitX, resultUnitY, ViewZ));
+		}
+		if (carryThoughZ) {
+			entity.InstanceID = newInsID;
+		}
+	}
+
+
 	#endregion
 
 
@@ -799,61 +869,6 @@ public static class Stage {
 		}
 
 		EntityCounts[layer] = count;
-	}
-
-
-	private static void TryRepositionEntity (Entity entity) {
-
-		bool requireRepos = false;
-		bool requireClearOriginal = false;
-
-		// Get Position
-		int currentUnitX;
-		int currentUnitY;
-		if (entity is Rigidbody rig) {
-			currentUnitX = (rig.X + rig.OffsetX + Const.HALF).ToUnit();
-			currentUnitY = (rig.Y + rig.OffsetY + Const.HALF).ToUnit();
-		} else {
-			currentUnitX = (entity.X + Const.HALF).ToUnit();
-			currentUnitY = (entity.Y + Const.HALF).ToUnit();
-		}
-
-		// Get Info for Original Block
-		if (entity.MapUnitPos.HasValue) {
-			var mapPos = entity.MapUnitPos.Value;
-			int blockIdAtMapPos = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
-			// Get Require Mode
-			if (blockIdAtMapPos != entity.TypeID) {
-				// Overlaped by Other Entity
-				requireRepos = true;
-			} else if (currentUnitX != mapPos.x || currentUnitY != mapPos.y) {
-				// Position Moved
-				requireRepos = true;
-				requireClearOriginal = true;
-			}
-		} else {
-			requireRepos = true;
-		}
-
-		// Perform Reposition
-		if (!requireRepos || !FrameworkUtil.TryGetEmptyPlaceNearbyForEntity(
-			currentUnitX, currentUnitY, ViewZ,
-			out int resultUnitX, out int resultUnitY
-		)) return;
-
-		// Set Block
-		WorldSquad.Front.SetBlockAt(resultUnitX, resultUnitY, ViewZ, BlockType.Entity, entity.TypeID);
-
-		// Clear Original
-		if (requireClearOriginal) {
-			var oPos = entity.MapUnitPos.Value;
-			WorldSquad.Front.SetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Entity, 0);
-		}
-
-		// Callback
-		if (entity != null && entity.MapUnitPos.HasValue) {
-			AfterEntityReposition?.Invoke(entity, entity.MapUnitPos, new Int3(resultUnitX, resultUnitY, ViewZ));
-		}
 	}
 
 

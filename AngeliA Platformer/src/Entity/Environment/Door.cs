@@ -25,6 +25,7 @@ public abstract class Door : Entity, IBlockEntity {
 		base.OnActivated();
 		Open = false;
 		PlayerOverlaps = false;
+		Height = Const.CEL * 2;
 	}
 
 
@@ -34,8 +35,8 @@ public abstract class Door : Entity, IBlockEntity {
 	}
 
 
-	public override void Update () {
-		base.Update();
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
 		const int OVERLAP_SHRINK = Const.CEL / 8;
 		var player = PlayerSystem.Selecting;
 		if (player != null) {

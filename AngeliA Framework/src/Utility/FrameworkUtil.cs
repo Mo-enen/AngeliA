@@ -489,6 +489,25 @@ public static class FrameworkUtil {
 	public static float TimeDigit_to_Time01 (int hour, int minute, int second) => ((hour + (minute + second / 60f) / 60f) / 24f).UMod(1f);
 
 
+	public static void SpiralSpinningCellEffect (int localFrame, int pointX, int pointY, int duration, int cellIndexStart, bool reverseSpin = false) {
+		if (!Renderer.GetCells(out var cells, out int count)) return;
+		for (int i = cellIndexStart; i < count; i++) {
+			float lerp01 = localFrame.PingPong(duration / 2) / (duration / 2f);
+			int offsetX = (int)((1f - lerp01) * Const.CEL * Util.Sin(lerp01 * 720f * Util.Deg2Rad));
+			int offsetY = (int)((1f - lerp01) * Const.CEL * Util.Cos(lerp01 * 720f * Util.Deg2Rad));
+			var cell = cells[i];
+			cell.X += offsetX;
+			cell.Y += offsetY;
+			int spinSpeed = reverseSpin ? -720 : 720;
+			cell.RotateAround(localFrame * spinSpeed / duration, pointX + offsetX, pointY + offsetY);
+			cell.ScaleFrom(
+				Util.RemapUnclamped(0, duration / 2, 1000, 0, localFrame.PingPong(duration / 2)),
+				pointX + offsetX, pointY + offsetY
+			);
+		}
+	}
+
+
 	// FrameBasedValue Load/Save
 	public static bool NameAndIntFile_to_List (List<(string name, int value)> list, string path) {
 		if (!Util.FileExists(path)) return false;

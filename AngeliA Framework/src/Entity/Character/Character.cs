@@ -56,6 +56,8 @@ public abstract class Character : Rigidbody,
 
 	// Api
 	public bool Teleporting => Game.GlobalFrame < _TeleportEndFrame.Abs();
+	public int TeleportEndFrame => _TeleportEndFrame.Abs();
+	public bool TeleportingWithPortal => Teleporting && _TeleportDuration < 0;
 	public bool TeleportToFrontSide => _TeleportEndFrame > 0;
 	public int CurrentAttackSpeedRate => Movement.MovementState switch {
 		CharacterMovementState.Walk => Attackness.WalkingSpeedRateOnAttack,
@@ -369,6 +371,7 @@ public abstract class Character : Rigidbody,
 				AnimationType = _poseType;
 			}
 			Movement.FacingFront = TeleportToFrontSide;
+			IgnorePhysics(1);
 			return;
 		}
 
@@ -461,39 +464,21 @@ public abstract class Character : Rigidbody,
 		Rendering.LateUpdate();
 		Rendering.GrowAnimationFrame();
 
-		// Cell Effect
-		bool teleportingWithPortal = Teleporting && _TeleportDuration < 0;
-		if (
-			(colorFlash || teleportingWithPortal) &&
-			Renderer.GetCells(out var cells, out int count)
-		) {
-			// Color Flash
-			if (colorFlash) {
-				for (int i = cellIndexStart; i < count; i++) {
-					var cell = cells[i];
-					cell.Color = Color32.WHITE;
-				}
+		// Flash Cell Effect
+		if (colorFlash && Renderer.GetCells(out var cells, out int count)) {
+			for (int i = cellIndexStart; i < count; i++) {
+				var cell = cells[i];
+				cell.Color = Color32.WHITE;
 			}
-			// Portal
-			if (teleportingWithPortal) {
-				int pointX = X;
-				int pointY = Y + Const.CEL;
-				int duration = _TeleportDuration.Abs();
-				int localFrame = Game.GlobalFrame - _TeleportEndFrame.Abs() + duration;
-				for (int i = cellIndexStart; i < count; i++) {
-					float lerp01 = localFrame.PingPong(duration / 2) / (duration / 2f);
-					int offsetX = (int)((1f - lerp01) * Const.CEL * Util.Sin(lerp01 * 720f * Util.Deg2Rad));
-					int offsetY = (int)((1f - lerp01) * Const.CEL * Util.Cos(lerp01 * 720f * Util.Deg2Rad));
-					var cell = cells[i];
-					cell.X += offsetX;
-					cell.Y += offsetY;
-					cell.RotateAround(localFrame * 720 / duration, pointX + offsetX, pointY + offsetY);
-					cell.ScaleFrom(
-						Util.RemapUnclamped(0, duration / 2, 1000, 0, localFrame.PingPong(duration / 2)),
-						pointX + offsetX, pointY + offsetY
-					);
-				}
-			}
+		}
+
+		// Portal Teleporting
+		if (Teleporting && _TeleportDuration < 0) {
+			int pointX = X;
+			int pointY = Y + Const.CEL;
+			int duration = _TeleportDuration.Abs();
+			int localFrame = Game.GlobalFrame - _TeleportEndFrame.Abs() + duration;
+			FrameworkUtil.SpiralSpinningCellEffect(localFrame, pointX, pointY, duration, cellIndexStart);
 		}
 
 	}

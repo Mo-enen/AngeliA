@@ -33,6 +33,7 @@ public abstract class Entity : IMapItem {
 	internal bool DespawnOutOfRange { get; set; } = true;
 	internal bool UpdateOutOfRange { get; set; } = false;
 	internal int Order { get; set; } = 0;
+	internal int IgnoreDestroyFromMapFrame { get; private set; } = -1;
 
 	// MSG
 	public Entity () => TypeID = GetType().AngeHash();
@@ -65,5 +66,8 @@ public abstract class Entity : IMapItem {
 		LateUpdate();
 		UpdateStep = 4;
 	}
+
+	public void IgnoreDestroyFromMap (int duration = 1) => IgnoreDestroyFromMapFrame = Game.GlobalFrame + duration;
+	public void CancelIgnoreDestroyFromMap () => IgnoreDestroyFromMapFrame = -1;
 
 }

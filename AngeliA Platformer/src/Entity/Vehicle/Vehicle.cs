@@ -35,6 +35,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 	private int LastDriveChangedFrame = int.MinValue;
 	private int CurrentTeam = Const.TEAM_ENVIRONMENT;
 	private int CurrentPhysicsLayer = PhysicsLayer.ENVIRONMENT;
+	private int PrevZ;
 
 
 	#endregion
@@ -53,10 +54,12 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 		Driver = null;
 		OffsetX = -Width / 2;
 		OffsetY = 0;
+		PrevZ = Stage.ViewZ;
 		LastDriveChangedFrame = int.MinValue;
 		if (FromWorld) {
 			X += Const.HALF;
 		}
+		Movement.FacingRight = true;
 	}
 
 
@@ -69,6 +72,15 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 			if (IsGrounded) {
 				Driver.MakeGrounded(0, GroundedID);
 			}
+			IgnoreDestroyFromMap(1);
+			if (PrevZ != Stage.ViewZ) {
+				PrevZ = Stage.ViewZ;
+				if (FromWorld) {
+					Stage.TryRepositionEntity(this, carryThoughZ: true);
+				}
+			}
+		} else {
+			CancelIgnoreDestroyFromMap();
 		}
 	}
 
@@ -95,6 +107,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 
 	public override void Update () {
 		base.Update();
+		if (!Active) return;
 		if (Driver != null) {
 			// Driving
 			TakeDriver();
@@ -165,7 +178,6 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 
 	protected virtual bool CheckForStopDrive () {
 		if (Driver == null || !Driver.Active) return true;
-		if (Driver.Teleporting) return true;
 		return false;
 	}
 
