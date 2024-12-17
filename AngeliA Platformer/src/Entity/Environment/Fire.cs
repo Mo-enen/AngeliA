@@ -14,6 +14,7 @@ public class Fire : Entity, IFire {
 	#region --- VAR ---
 
 	// Api
+	private const int ON_FIRE_DUR = 200;
 	public static readonly int TYPE_ID = typeof(Fire).AngeHash();
 	public static event System.Action<int, IRect> OnFirePutout;
 	protected virtual int PowerAmount => 1000;
@@ -51,6 +52,9 @@ public class Fire : Entity, IFire {
 		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
 			if (!damageType.HasAll(Tag.FireDamage)) return;
 			IFire.SpreadFire(TYPE_ID, bullet.Rect.Expand(Const.CEL));
+			if (receiver is IWithCharacterBuff wBuff) {
+				wBuff.CurrentBuff.GiveBuff(OnFireBuff.TYPE_ID, ON_FIRE_DUR);
+			}
 		}
 		static void OnBulletHitEnvironment (Bullet bullet, Tag damageType) {
 			if (!damageType.HasAll(Tag.FireDamage)) return;
@@ -169,6 +173,7 @@ public class Fire : Entity, IFire {
 				} else if (Game.GlobalFrame > DamageCharacterStartFrame + DamageCooldown) {
 					DamageCharacterStartFrame = Game.GlobalFrame;
 					ch.TakeDamage(new Damage(1, this, this, Tag.FireDamage));
+					ch.Buff.GiveBuff(OnFireBuff.TYPE_ID, ON_FIRE_DUR);
 				}
 			}
 		}
