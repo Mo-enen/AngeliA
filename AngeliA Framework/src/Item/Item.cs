@@ -32,28 +32,28 @@ public abstract class Item : IMapItem {
 	}
 
 	// Inventory
-	public virtual void BeforeItemUpdate_FromInventory (Entity holder, int inventoryID, int itemIndex) { }
-	public virtual void OnItemUpdate_FromInventory (Entity holder, int inventoryID, int itemIndex) { }
+	public virtual void BeforeItemUpdate_FromInventory (Character holder, int inventoryID, int itemIndex) { }
+	public virtual void OnItemUpdate_FromInventory (Character holder, int inventoryID, int itemIndex) { }
 	public virtual void OnPoseAnimationUpdate_FromInventory (PoseCharacterRenderer rendering, int inventoryID, int itemIndex) { }
-	public virtual void OnTakeDamage_FromInventory (Entity holder, int inventoryID, int itemIndex, ref Damage damage) { }
+	public virtual void OnTakeDamage_FromInventory (Character holder, int inventoryID, int itemIndex, ref Damage damage) { }
 	public virtual void OnCharacterAttack_FromInventory (Character character, Bullet bullet, int inventoryID, int itemIndex) { }
 
 	// Equipment
-	public virtual void BeforeItemUpdate_FromEquipment (Entity holder) { }
-	public virtual void OnItemUpdate_FromEquipment (Entity holder) { }
+	public virtual void BeforeItemUpdate_FromEquipment (Character holder) { }
+	public virtual void OnItemUpdate_FromEquipment (Character holder) { }
 	public virtual void BeforePoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) { }
 	public virtual void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) { }
-	public virtual void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref Damage damage) { }
+	public virtual void OnTakeDamage_FromEquipment (Character holder, Entity sender, ref Damage damage) { }
 	public virtual void OnCharacterAttack_FromEquipment (Character character, Bullet bullet) { }
-	public virtual bool TryRepairEquipment (Entity holder) => false;
+	public virtual bool TryRepairEquipment (Character holder) => false;
 
 	// Ground
 	public virtual void OnItemUpdate_FromItemHolder (ItemHolder holder, int count) { }
 
 	// Misc
-	public virtual void OnCollect (Entity holder) { }
-	public virtual bool CanUse (Entity holder) => false;
-	public virtual bool Use (Entity holder, int inventoryID, int itemIndex, out bool consume) {
+	public virtual void OnCollect (Character holder) { }
+	public virtual bool CanUse (Character holder) => false;
+	public virtual bool Use (Character holder, int inventoryID, int itemIndex, out bool consume) {
 		consume = false;
 		return false;
 	}

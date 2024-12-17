@@ -20,9 +20,9 @@ public abstract class PlayerMenuItem<UI> : Item where UI : PlayerMenuPartnerUI {
 
 	protected virtual void OnPanelOpened (UI panelUI) { }
 
-	public override bool Use (Entity holder, int inventoryID, int itemIndex, out bool consume) {
+	public override bool Use (Character character, int inventoryID, int itemIndex, out bool consume) {
 		consume = false;
-		if (holder != PlayerSystem.Selecting) return false;
+		if (character != PlayerSystem.Selecting) return false;
 		if (!PlayerMenuItem<PlayerMenuPartnerUI>.Pool.TryGetValue(TypeID, out var ui)) return false;
 		if (PlayerMenuUI.OpenMenuWithPartner(ui, TypeID)) {
 			if (ui is UI) OnPanelOpened(ui as UI);
@@ -31,6 +31,6 @@ public abstract class PlayerMenuItem<UI> : Item where UI : PlayerMenuPartnerUI {
 		return false;
 	}
 
-	public override bool CanUse (Entity holder) => holder == PlayerSystem.Selecting;
+	public override bool CanUse (Character character) => character == PlayerSystem.Selecting;
 
 }

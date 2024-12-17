@@ -230,7 +230,7 @@ public static class ItemSystem {
 	public static bool HasItem (int id) => ItemPool.ContainsKey(id);
 
 
-	public static bool CanUseItem (int id, Entity target) {
+	public static bool CanUseItem (int id, Character target) {
 		var item = GetItem(id);
 		return item != null && item.CanUse(target);
 	}

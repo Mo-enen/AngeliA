@@ -1195,14 +1195,16 @@ public sealed partial class MapEditor : WindowUI {
 			Stage.DespawnAllNonUiEntities(refreshImmediately: true);
 
 			// Despawn Player
-			if (PlayerSystem.Selecting != null) {
-				PlayerSystem.Selecting.Active = false;
-				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Helmet);
-				RepairEquipment(PlayerSystem.Selecting, EquipmentType.BodyArmor);
-				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Gloves);
-				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Shoes);
-				RepairEquipment(PlayerSystem.Selecting, EquipmentType.Jewelry);
-				RepairEquipment(PlayerSystem.Selecting, EquipmentType.HandTool);
+			var player = PlayerSystem.Selecting;
+			if (player != null) {
+				player.Active = false;
+				player.Buff.ClearAllBuffs();
+				RepairEquipment(player, EquipmentType.Helmet);
+				RepairEquipment(player, EquipmentType.BodyArmor);
+				RepairEquipment(player, EquipmentType.Gloves);
+				RepairEquipment(player, EquipmentType.Shoes);
+				RepairEquipment(player, EquipmentType.Jewelry);
+				RepairEquipment(player, EquipmentType.HandTool);
 				// Func
 				static void RepairEquipment (Entity holder, EquipmentType type) {
 					int invID = holder is Character cHolder ? cHolder.InventoryID : holder.TypeID;

@@ -102,24 +102,24 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 	protected abstract void DrawArmor (PoseCharacterRenderer renderer);
 
 
-	public override void OnTakeDamage_FromEquipment (Entity holder, Entity sender, ref Damage damage) {
-		base.OnTakeDamage_FromEquipment(holder, sender, ref damage);
+	public override void OnTakeDamage_FromEquipment (Character character, Entity sender, ref Damage damage) {
+		base.OnTakeDamage_FromEquipment(character, sender, ref damage);
 		var progItem = this as IProgressiveItem;
 		if (progItem.PrevItemID != 0 && damage.Amount > 0) {
-			int invID = holder is Character cHolder ? cHolder.InventoryID : holder.TypeID;
+			int invID = character.InventoryID;
 			Inventory.GetEquipment(invID, EquipmentType, out int oldEqCount);
 			Inventory.SetEquipment(invID, EquipmentType, progItem.PrevItemID, oldEqCount);
-			FrameworkUtil.InvokeItemDamage(holder as Character, TypeID, progItem.PrevItemID);
+			FrameworkUtil.InvokeItemDamage(character, TypeID, progItem.PrevItemID);
 			damage.Amount--;
 		}
 	}
 
 
-	public override bool TryRepairEquipment (Entity holder) {
-		base.TryRepairEquipment(holder);
+	public override bool TryRepairEquipment (Character character) {
+		base.TryRepairEquipment(character);
 		if ((this as IProgressiveItem).NextItemID == 0) return false;
 		foreach (int materialID in RepairMaterialsID) {
-			if (RepairArmor(holder, materialID)) {
+			if (RepairArmor(character, materialID)) {
 				return true;
 			}
 		}
@@ -127,14 +127,14 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 	}
 
 
-	public virtual bool RepairArmor (Entity holder, int materialID) {
+	public virtual bool RepairArmor (Character character, int materialID) {
 		if (materialID == 0) return false;
-		int invID = holder is Character character ? character.InventoryID : holder.TypeID;
+		int invID = character.InventoryID;
 		int tookCount = Inventory.FindAndTakeItem(invID, materialID, 1);
 		if (tookCount <= 0) return false;
 		Inventory.GetEquipment(invID, EquipmentType, out int oldEqCount);
 		Inventory.SetEquipment(invID, EquipmentType, (this as IProgressiveItem).NextItemID, oldEqCount);
-		FrameworkUtil.InvokeItemLost(holder as Character, materialID);
+		FrameworkUtil.InvokeItemLost(character, materialID);
 		return true;
 	}
 

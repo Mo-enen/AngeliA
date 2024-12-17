@@ -33,6 +33,7 @@ public sealed class CharacterBuff {
 	// Data
 	private static readonly Dictionary<int, Buff> Pool = [];
 	private readonly Dictionary<int, State> BuffStates = [];
+	private readonly Dictionary<int, int> BuffPrevents = [];
 	private readonly Character Character;
 
 
@@ -54,10 +55,21 @@ public sealed class CharacterBuff {
 	}
 
 
+	[OnGameRestart]
+	internal static void OnGameRestart () => PlayerSystem.Selecting?.Buff.ClearAllBuffs();
+
+
 	internal CharacterBuff (Character target) => Character = target;
 
 
 	internal void ApplyOnBeforeUpdate () {
+		// Refresh Prevents
+		foreach (var (id, endFrame) in BuffPrevents) {
+			if (Game.GlobalFrame >= endFrame) {
+				BuffPrevents.Remove(id);
+			}
+		}
+		// Update States
 		foreach (var (id, state) in BuffStates) {
 			if (!state.IsActived) {
 				BuffStates.Remove(id);
@@ -95,6 +107,7 @@ public sealed class CharacterBuff {
 
 	public void GiveBuff (int id, int duration = 1) {
 		if (!Pool.TryGetValue(id, out var buff)) return;
+		if (BuffPrevents.ContainsKey(id)) return;
 		if (!BuffStates.TryGetValue(id, out var state)) {
 			state = new State() {
 				Buff = buff,
@@ -109,7 +122,16 @@ public sealed class CharacterBuff {
 	public void ClearBuff (int id) => BuffStates.Remove(id);
 
 
-	public void ClearAllBuffs () => BuffStates.Clear();
+	public void ClearAllBuffs () {
+		BuffStates.Clear();
+		BuffPrevents.Clear();
+	}
+
+
+	public void PreventBuff (int id, int duration = 1) {
+		BuffStates.Remove(id);
+		BuffPrevents.TryAdd(id, Game.GlobalFrame + duration);
+	}
 
 
 	public object GetBuffData (int id) => BuffStates.TryGetValue(id, out var state) ? state.Data : null;

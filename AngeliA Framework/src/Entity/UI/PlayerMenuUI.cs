@@ -546,6 +546,7 @@ public class PlayerMenuUI : EntityUI {
 		// Item Count
 		if (ItemSystem.GetItem(TakingID) is not HandTool tool || !tool.UseStackAsUsage) {
 			var countRect = itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3);
+			countRect.y -= itemRect.height / 2;
 			DrawItemCount(countRect, TakingCount);
 		}
 	}
@@ -1214,7 +1215,7 @@ public class PlayerMenuUI : EntityUI {
 		var item = ItemSystem.GetItem(cursorID);
 		if (item != null && item.Use(PlayerSystem.Selecting, invID, CursorIndex, out bool consume)) {
 			if (consume) {
-				Inventory.TakeItemAt(invID, CursorIndex);
+				Inventory.TakeItemAt(invID, CursorIndex, count: 1);
 			}
 		}
 	}

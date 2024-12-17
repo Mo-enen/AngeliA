@@ -696,7 +696,10 @@ public abstract class Character : Rigidbody,
 	}
 
 
-	public void GetBonusFromFullSleep () => Health.Heal(Health.MaxHP);
+	public void GetBonusFromFullSleep () {
+		Health.Heal(Health.MaxHP);
+		Buff.ClearAllBuffs();
+	}
 
 
 	// Damage
