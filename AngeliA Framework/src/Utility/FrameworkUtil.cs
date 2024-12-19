@@ -36,6 +36,30 @@ public static class FrameworkUtil {
 		BuiltInSprite.ITEM_ICON_FOOD,
 		BuiltInSprite.ITEM_ICON_ITEM,
 	];
+	private static readonly Dictionary<int, int> SYSTEM_NUMBER_POOL = new(10) {
+		{ NumberZero.TYPE_ID, 0 },
+		{ NumberOne.TYPE_ID, 1 },
+		{ NumberTwo.TYPE_ID, 2 },
+		{ NumberThree.TYPE_ID, 3 },
+		{ NumberFour.TYPE_ID, 4 },
+		{ NumberFive.TYPE_ID, 5 },
+		{ NumberSix.TYPE_ID, 6 },
+		{ NumberSeven.TYPE_ID, 7 },
+		{ NumberEight.TYPE_ID, 8 },
+		{ NumberNine.TYPE_ID, 9 },
+	};
+	private static readonly Dictionary<int, int> SYSTEM_NUMBER_POOL_ALT = new(10) {
+		{ 0, NumberZero.TYPE_ID},
+		{ 1, NumberOne.TYPE_ID},
+		{ 2, NumberTwo.TYPE_ID},
+		{ 3, NumberThree.TYPE_ID},
+		{ 4, NumberFour.TYPE_ID},
+		{ 5, NumberFive.TYPE_ID},
+		{ 6, NumberSix.TYPE_ID},
+		{ 7, NumberSeven.TYPE_ID},
+		{ 8, NumberEight.TYPE_ID},
+		{ 9, NumberNine.TYPE_ID},
+	};
 	private static readonly Int3[] WorldPosInViewCache = new Int3[256];
 	private static readonly PhysicsCell[] BlockOperationCache = new PhysicsCell[32];
 
@@ -1179,6 +1203,74 @@ public static class FrameworkUtil {
 	}
 
 
+	// System Number
+	public static int SystemNumberID_to_Number (int id) => SYSTEM_NUMBER_POOL.TryGetValue(id, out int number) ? number : -1;
+
+
+	public static int Number_to_SystemNumberID (int number) => SYSTEM_NUMBER_POOL_ALT.TryGetValue(number, out int id) ? id : 0;
+
+
+	public static bool ReadSystemNumber (IBlockSquad squad, int unitX, int unitY, int z, out int number) {
+		number = 0;
+		bool hasH = ReadSystemNumber(squad, unitX, unitY, z, Direction4.Right, out int numberH);
+		bool hasV = ReadSystemNumber(squad, unitX, unitY, z, Direction4.Down, out int numberV);
+		if (!hasH && !hasV) return false;
+		if (hasH == hasV) {
+			number = Util.Max(numberH, numberV);
+			return true;
+		} else {
+			number = hasH ? numberH : numberV;
+			return true;
+		}
+	}
+
+
+	public static bool ReadSystemNumber (IBlockSquad squad, int unitX, int unitY, int z, Direction4 direction, out int number) {
+
+		number = 0;
+		int digitCount = 0;
+		int x = unitX;
+		int y = unitY;
+		var delta = direction.Normal();
+
+		// Find Start
+		int left = int.MinValue;
+		int down = int.MinValue;
+		while (HasSystemNumber(squad, x, y, z)) {
+			left = x;
+			down = y;
+			x -= delta.x;
+			y -= delta.y;
+		}
+		if (left == int.MinValue) return false;
+
+		// Get Number
+		x = left;
+		y = down;
+		while (digitCount < 9 && TryGetSingleSystemNumber(squad, x, y, z, out int digit)) {
+			number *= 10;
+			number += digit;
+			digitCount++;
+			x += delta.x;
+			y += delta.y;
+		}
+		return digitCount > 0;
+	}
+
+
+	public static bool HasSystemNumber (IBlockSquad squad, int unitX, int unitY, int z) {
+		int id = squad.GetBlockAt(unitX, unitY, z, BlockType.Element);
+		return id != 0 && SystemNumberID_to_Number(id) != -1;
+	}
+
+
+	public static bool TryGetSingleSystemNumber (IBlockSquad squad, int unitX, int unitY, int z, out int digitValue) {
+		int id = squad.GetBlockAt(unitX, unitY, z, BlockType.Element);
+		digitValue = SystemNumberID_to_Number(id);
+		return digitValue >= 0;
+	}
+
+
 	// Block Aiming
 	public static bool GetAimingBuilderPositionFromMouse (Character holder, int unitRange, BlockType blockType, out int targetUnitX, out int targetUnitY, out bool inRange) {
 
@@ -1210,7 +1302,7 @@ public static class FrameworkUtil {
 	}
 
 
-	public static bool GetAimingBuilderPositionFromKey (Character holder, BlockType blockType, out int targetUnitX, out int targetUnitY) {
+	public static bool GetAimingBuilderPositionFromKey (Character holder, BlockType blockType, out int targetUnitX, out int targetUnitY, bool ignoreValid = false) {
 
 		bool valid;
 		var aim = holder.Attackness.AimingDirection;
@@ -1229,7 +1321,7 @@ public static class FrameworkUtil {
 			targetUnitY = pointY.ToUnit() + aimNormal.y;
 		}
 
-		valid = ValidForPutBlock(targetUnitX, targetUnitY, blockType);
+		valid = ignoreValid || ValidForPutBlock(targetUnitX, targetUnitY, blockType);
 
 		// Redirect
 		if (!valid) {
@@ -1247,7 +1339,7 @@ public static class FrameworkUtil {
 				targetUnitY++;
 			}
 			if (oldTargetX != targetUnitX || oldTargetY != targetUnitY) {
-				valid = ValidForPutBlock(targetUnitX, targetUnitY, blockType);
+				valid = ignoreValid || ValidForPutBlock(targetUnitX, targetUnitY, blockType);
 			}
 		}
 

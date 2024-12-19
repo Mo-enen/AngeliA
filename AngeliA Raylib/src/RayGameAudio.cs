@@ -81,12 +81,13 @@ public partial class RayGame {
 		}
 	}
 
-	protected override void _PlaySound (int id, float volume) {
+	protected override void _PlaySound (int id, float volume, float pitch) {
 		if (!SoundPool.TryGetValue(id, out var soundObj) || soundObj == null) return;
 		var sound = (Sound)soundObj.Data;
 		if (!Raylib.IsSoundReady(sound)) return;
 		Raylib.PlaySound(sound);
 		Raylib.SetSoundVolume(sound, ScaledSoundVolume * volume);
+		Raylib.SetSoundPitch(sound, pitch);
 	}
 
 	protected override void _StopAllSounds () {

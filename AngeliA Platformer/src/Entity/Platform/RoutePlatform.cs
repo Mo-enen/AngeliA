@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 [EntityAttribute.UpdateOutOfRange]
 public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
@@ -162,8 +163,8 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 		// Get Speed from Map
 		MoveSpeed = DefaultSpeed;
 		if (
-			squad.ReadSystemNumber(unitX, unitY + 1, Stage.ViewZ, Direction4.Down, out int number) ||
-			squad.ReadSystemNumber(unitX, unitY - 1, Stage.ViewZ, Direction4.Down, out number)
+			FrameworkUtil.ReadSystemNumber(squad, unitX, unitY + 1, Stage.ViewZ, Direction4.Down, out int number) ||
+			FrameworkUtil.ReadSystemNumber(squad, unitX, unitY - 1, Stage.ViewZ, Direction4.Down, out number)
 		) {
 			MoveSpeed = number;
 		}

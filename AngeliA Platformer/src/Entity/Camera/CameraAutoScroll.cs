@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 [EntityAttribute.Capacity(16)]
 [EntityAttribute.MapEditorGroup("System", -512)]
@@ -50,8 +51,8 @@ public sealed class CameraAutoScroll : Entity {
 		UpdatedPlayerPos = PlayerSystem.Selecting != null ? new(PlayerSystem.Selecting.X, PlayerSystem.Selecting.Y) : default;
 		var squad = WorldSquad.Front as IBlockSquad;
 		Speed =
-			squad.ReadSystemNumber(X.ToUnit(), Y.ToUnit() + 1, Stage.ViewZ, Direction4.Right, out int speed) ? speed :
-			squad.ReadSystemNumber(X.ToUnit(), Y.ToUnit() - 1, Stage.ViewZ, Direction4.Right, out speed) ? speed : 24;
+			FrameworkUtil.ReadSystemNumber(squad, X.ToUnit(), Y.ToUnit() + 1, Stage.ViewZ, Direction4.Right, out int speed) ? speed :
+			FrameworkUtil.ReadSystemNumber(squad, X.ToUnit(), Y.ToUnit() - 1, Stage.ViewZ, Direction4.Right, out speed) ? speed : 24;
 		Speed = Speed.Clamp(1, Const.CEL);
 	}
 

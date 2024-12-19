@@ -68,9 +68,8 @@ public abstract class Burner : Entity, IBlockEntity {
 
 		// Fire Offset
 		FireFrameOffset = 0;
-		var squad = WorldSquad.Front as IBlockSquad;
-		if (squad.TryGetSingleSystemNumber(
-			(X + 1).ToUnit() - dirNormal.x, (Y + 1).ToUnit() - dirNormal.y, Stage.ViewZ, out int fireOffset
+		if (FrameworkUtil.TryGetSingleSystemNumber(
+			WorldSquad.Front, (X + 1).ToUnit() - dirNormal.x, (Y + 1).ToUnit() - dirNormal.y, Stage.ViewZ, out int fireOffset
 		)) {
 			FireFrameOffset = FireFrequency * fireOffset.Clamp(0, 9) / 10;
 		}

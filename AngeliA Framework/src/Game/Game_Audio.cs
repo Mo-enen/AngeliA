@@ -42,8 +42,8 @@ public partial class Game {
 	public static void UnloadSound (SoundData sound) => Instance._UnloadSound(sound);
 	protected abstract void _UnloadSound (SoundData sound);
 
-	public static void PlaySound (int id, float volume = 1f) => Instance._PlaySound(id, volume);
-	protected abstract void _PlaySound (int id, float volume);
+	public static void PlaySound (int id, float volume = 1f, float pitch = 1f) => Instance._PlaySound(id, volume, pitch);
+	protected abstract void _PlaySound (int id, float volume, float pitch);
 
 	public static void StopAllSounds () => Instance._StopAllSounds();
 	protected abstract void _StopAllSounds ();

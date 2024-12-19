@@ -109,6 +109,7 @@ public class RigRespondMessage {
 	public int RequireSetMusicVolume;
 	public int RequirePlaySoundID;
 	public float RequirePlaySoundVolume;
+	public float RequirePlaySoundPitch;
 	public int RequireSetSoundVolume;
 
 	public int CharRequiringCount;
@@ -172,6 +173,7 @@ public class RigRespondMessage {
 		RequireSetMusicVolume = -1;
 		RequirePlaySoundID = 0;
 		RequirePlaySoundVolume = -1f;
+		RequirePlaySoundPitch = 1f;
 		RequireSetSoundVolume = -1;
 		CharRequiringCount = 0;
 		RequireGizmosRectCount = 0;
@@ -236,7 +238,7 @@ public class RigRespondMessage {
 			Game.PlayMusic(RequirePlayMusicID);
 		}
 		if (RequirePlaySoundID != 0) {
-			Game.PlaySound(RequirePlaySoundID, RequirePlaySoundVolume);
+			Game.PlaySound(RequirePlaySoundID, RequirePlaySoundVolume, RequirePlaySoundPitch);
 		}
 		if (AudioActionRequirement.GetBit(0)) {
 			Game.StopMusic();
@@ -478,6 +480,7 @@ public class RigRespondMessage {
 			RequireSetMusicVolume = Util.ReadInt(ref pointer, end);
 			RequirePlaySoundID = Util.ReadInt(ref pointer, end);
 			RequirePlaySoundVolume = Util.ReadFloat(ref pointer, end);
+			RequirePlaySoundPitch = Util.ReadFloat(ref pointer, end);
 			RequireSetSoundVolume = Util.ReadInt(ref pointer, end);
 
 			CharRequiringCount = Util.ReadInt(ref pointer, end);
@@ -705,6 +708,7 @@ public class RigRespondMessage {
 			Util.Write(ref pointer, RequireSetMusicVolume, end);
 			Util.Write(ref pointer, RequirePlaySoundID, end);
 			Util.Write(ref pointer, RequirePlaySoundVolume, end);
+			Util.Write(ref pointer, RequirePlaySoundPitch, end);
 			Util.Write(ref pointer, RequireSetSoundVolume, end);
 
 			Util.Write(ref pointer, CharRequiringCount, end);
