@@ -148,7 +148,7 @@ public abstract partial class Game {
 			_IsFullscreen.Value = false;
 #endif
 			OnGameTryingToQuitMethods = Util.AllStaticMethodWithAttribute<OnGameTryingToQuitAttribute>().Select(selector => selector.Key).ToArray();
-			
+
 			OrderedAttribute.InvokeAsAutoOrderingTask<OnGameInitializeAttribute>();
 
 			_SetFullscreen(_IsFullscreen.Value);
@@ -442,11 +442,17 @@ public abstract partial class Game {
 				if (SoundPool.ContainsKey(id)) continue;
 				var soundObj = LoadSound(path);
 				if (soundObj == null) continue;
+				var sObjs = new object[Const.SOUND_CHANNEL_COUNT];
+				sObjs[0] = soundObj;
+				for (int i = 1; i < Const.SOUND_CHANNEL_COUNT; i++) {
+					sObjs[i] = LoadSoundAlias(soundObj);
+				}
 				SoundPool.Add(id, new SoundData() {
 					ID = id,
 					Name = Util.GetNameWithoutExtension(path),
 					Path = path,
-					Data = soundObj,
+					SoundObjects = sObjs,
+					StartFrames = new int[Const.SOUND_CHANNEL_COUNT].FillWithValue(int.MinValue),
 				});
 			}
 		}

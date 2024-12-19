@@ -63,9 +63,7 @@ public abstract class AudioData {
 	public string Path;
 
 	[OnGameInitializeLater(4096)]
-	internal static void OnGameInitializeLater () {
-		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot);
-	}
+	internal static void OnGameInitializeLater () => Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot);
 
 }
 
@@ -77,6 +75,7 @@ public class MusicData : AudioData {
 
 public class SoundData : AudioData {
 
-	public object Data;
+	public object[] SoundObjects;
+	public int[] StartFrames;
 
 }

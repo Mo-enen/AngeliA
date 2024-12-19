@@ -73,29 +73,67 @@ public partial class RayGame {
 	// Sound
 	protected override object _LoadSound (string filePath) => Raylib.LoadSound(filePath);
 
+	protected override object _LoadSoundAlias (object source) {
+		if (source is not Sound sound) return null;
+		return Raylib.LoadSoundAlias(sound);
+	}
+
 	protected override void _UnloadSound (SoundData sound) {
 		if (sound == null) return;
-		var s = (Sound)sound.Data;
-		if (Raylib.IsSoundReady(s)) {
-			Raylib.UnloadSound(s);
+		for (int i = 0; i < Const.SOUND_CHANNEL_COUNT; i++) {
+			if (sound.SoundObjects[i] is Sound s && Raylib.IsSoundReady(s)) {
+				if (i != 0) {
+					Raylib.UnloadSoundAlias(s);
+				} else {
+					Raylib.UnloadSound(s);
+				}
+			}
 		}
 	}
 
-	protected override void _PlaySound (int id, float volume, float pitch) {
-		if (!SoundPool.TryGetValue(id, out var soundObj) || soundObj == null) return;
-		var sound = (Sound)soundObj.Data;
-		if (!Raylib.IsSoundReady(sound)) return;
-		Raylib.PlaySound(sound);
-		Raylib.SetSoundVolume(sound, ScaledSoundVolume * volume);
-		Raylib.SetSoundPitch(sound, pitch);
+	protected override void _PlaySound (int id, float volume, float pitch, float pan) {
+		if (!SoundPool.TryGetValue(id, out var soundData) || soundData == null) return;
+		bool played = false;
+		int earlistIndex = -1;
+		int earlistFrame = int.MaxValue;
+		for (int i = 0; i < Const.SOUND_CHANNEL_COUNT; i++) {
+			var sound = (Sound)soundData.SoundObjects[i];
+			if (!Raylib.IsSoundReady(sound)) continue;
+			if (Raylib.IsSoundPlaying(sound)) {
+				int frame = soundData.StartFrames[i];
+				if (frame < earlistFrame) {
+					earlistFrame = frame;
+					earlistIndex = i;
+				}
+				continue;
+			}
+			Raylib.PlaySound(sound);
+			Raylib.SetSoundVolume(sound, ScaledSoundVolume * volume);
+			Raylib.SetSoundPitch(sound, pitch);
+			Raylib.SetSoundPan(sound, 1f - pan);
+			soundData.StartFrames[i] = GlobalFrame;
+			played = true;
+			break;
+		}
+		// Force Play
+		if (!played && earlistIndex >= 0) {
+			var sound = (Sound)soundData.SoundObjects[earlistIndex];
+			Raylib.PlaySound(sound);
+			Raylib.SetSoundVolume(sound, ScaledSoundVolume * volume);
+			Raylib.SetSoundPitch(sound, pitch);
+			Raylib.SetSoundPan(sound, 1f - pan);
+			soundData.StartFrames[earlistIndex] = GlobalFrame;
+		}
 	}
 
 	protected override void _StopAllSounds () {
 		foreach (var (_, soundObj) in SoundPool) {
 			if (soundObj == null) continue;
-			var sound = (Sound)soundObj.Data;
-			if (Raylib.IsSoundReady(sound)) {
-				Raylib.StopSound(sound);
+			for (int i = 0; i < Const.SOUND_CHANNEL_COUNT; i++) {
+				var sound = (Sound)soundObj.SoundObjects[i];
+				if (Raylib.IsSoundReady(sound)) {
+					Raylib.StopSound(sound);
+				}
 			}
 		}
 	}

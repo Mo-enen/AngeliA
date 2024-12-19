@@ -316,6 +316,8 @@ public partial class RayGame : Game {
 		// Unload Shader
 		Raylib.UnloadShader(LerpShader);
 		Raylib.UnloadShader(ColorShader);
+		Raylib.UnloadShader(InverseShader);
+
 		for (int i = 0; i < Const.SCREEN_EFFECT_COUNT; i++) Raylib.UnloadShader(ScreenEffectShaders[i]);
 
 		// Unload Texture
@@ -323,7 +325,10 @@ public partial class RayGame : Game {
 
 		// Quit Game
 		WindowMaximized.Value = !Raylib.IsWindowFullscreen() && Raylib.IsWindowMaximized();
-		InvokeGameQuitting();
+		try {
+			InvokeGameQuitting();
+		} catch (Exception ex) { Debug.LogException(ex); }
+
 		Raylib.CloseWindow();
 
 #if DEBUG

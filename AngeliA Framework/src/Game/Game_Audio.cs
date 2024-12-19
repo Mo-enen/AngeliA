@@ -39,11 +39,14 @@ public partial class Game {
 	public static object LoadSound (string filePath) => Instance._LoadSound(filePath);
 	protected abstract object _LoadSound (string filePath);
 
+	protected static object LoadSoundAlias (object source) => Instance._LoadSoundAlias(source);
+	protected abstract object _LoadSoundAlias (object source);
+
 	public static void UnloadSound (SoundData sound) => Instance._UnloadSound(sound);
 	protected abstract void _UnloadSound (SoundData sound);
 
-	public static void PlaySound (int id, float volume = 1f, float pitch = 1f) => Instance._PlaySound(id, volume, pitch);
-	protected abstract void _PlaySound (int id, float volume, float pitch);
+	public static void PlaySound (int id, float volume = 1f, float pitch = 1f, float pan = 0.5f) => Instance._PlaySound(id, volume, pitch, pan);
+	protected abstract void _PlaySound (int id, float volume, float pitch, float pan);
 
 	public static void StopAllSounds () => Instance._StopAllSounds();
 	protected abstract void _StopAllSounds ();

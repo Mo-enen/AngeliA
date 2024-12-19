@@ -69,6 +69,14 @@ public class RigRespondMessage {
 	}
 
 
+	public class PlaySoundRequirement {
+		public int ID;
+		public float Volume;
+		public float Pitch;
+		public float Pan;
+	}
+
+
 	#endregion
 
 
@@ -107,9 +115,9 @@ public class RigRespondMessage {
 	public int RequirePlayMusicID;
 	public byte AudioActionRequirement;
 	public int RequireSetMusicVolume;
-	public int RequirePlaySoundID;
-	public float RequirePlaySoundVolume;
-	public float RequirePlaySoundPitch;
+
+	public int RequirePlaySoundCount;
+	public PlaySoundRequirement[] PlaySoundRequirements = new PlaySoundRequirement[16];
 	public int RequireSetSoundVolume;
 
 	public int CharRequiringCount;
@@ -171,9 +179,7 @@ public class RigRespondMessage {
 		RequirePlayMusicID = 0;
 		AudioActionRequirement = 0;
 		RequireSetMusicVolume = -1;
-		RequirePlaySoundID = 0;
-		RequirePlaySoundVolume = -1f;
-		RequirePlaySoundPitch = 1f;
+		RequirePlaySoundCount = 0;
 		RequireSetSoundVolume = -1;
 		CharRequiringCount = 0;
 		RequireGizmosRectCount = 0;
@@ -237,8 +243,9 @@ public class RigRespondMessage {
 		if (RequirePlayMusicID != 0) {
 			Game.PlayMusic(RequirePlayMusicID);
 		}
-		if (RequirePlaySoundID != 0) {
-			Game.PlaySound(RequirePlaySoundID, RequirePlaySoundVolume, RequirePlaySoundPitch);
+		for (int i = 0; i < RequirePlaySoundCount; i++) {
+			var req = PlaySoundRequirements[i];
+			Game.PlaySound(req.ID, req.Volume, req.Pitch, req.Pan);
 		}
 		if (AudioActionRequirement.GetBit(0)) {
 			Game.StopMusic();
@@ -478,10 +485,15 @@ public class RigRespondMessage {
 			RequirePlayMusicID = Util.ReadInt(ref pointer, end);
 			AudioActionRequirement = Util.ReadByte(ref pointer, end);
 			RequireSetMusicVolume = Util.ReadInt(ref pointer, end);
-			RequirePlaySoundID = Util.ReadInt(ref pointer, end);
-			RequirePlaySoundVolume = Util.ReadFloat(ref pointer, end);
-			RequirePlaySoundPitch = Util.ReadFloat(ref pointer, end);
 			RequireSetSoundVolume = Util.ReadInt(ref pointer, end);
+			RequirePlaySoundCount = Util.ReadByte(ref pointer, end);
+			for (int i = 0; i < RequirePlaySoundCount; i++) {
+				var req = PlaySoundRequirements[i];
+				req.ID = Util.ReadInt(ref pointer, end);
+				req.Volume = Util.ReadFloat(ref pointer, end);
+				req.Pitch = Util.ReadFloat(ref pointer, end);
+				req.Pan = Util.ReadFloat(ref pointer, end);
+			}
 
 			CharRequiringCount = Util.ReadInt(ref pointer, end);
 			for (int i = 0; i < CharRequiringCount; i++) {
@@ -706,10 +718,16 @@ public class RigRespondMessage {
 			Util.Write(ref pointer, RequirePlayMusicID, end);
 			Util.Write(ref pointer, AudioActionRequirement, end);
 			Util.Write(ref pointer, RequireSetMusicVolume, end);
-			Util.Write(ref pointer, RequirePlaySoundID, end);
-			Util.Write(ref pointer, RequirePlaySoundVolume, end);
-			Util.Write(ref pointer, RequirePlaySoundPitch, end);
 			Util.Write(ref pointer, RequireSetSoundVolume, end);
+
+			Util.Write(ref pointer, (byte)RequirePlaySoundCount, end);
+			for (int i = 0; i < RequirePlaySoundCount; i++) {
+				var req = PlaySoundRequirements[i];
+				Util.Write(ref pointer, req.ID, end);
+				Util.Write(ref pointer, req.Volume, end);
+				Util.Write(ref pointer, req.Pitch, end);
+				Util.Write(ref pointer, req.Pan, end);
+			}
 
 			Util.Write(ref pointer, CharRequiringCount, end);
 			for (int i = 0; i < CharRequiringCount; i++) {
