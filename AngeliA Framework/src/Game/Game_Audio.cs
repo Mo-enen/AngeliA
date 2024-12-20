@@ -45,6 +45,15 @@ public partial class Game {
 	public static void UnloadSound (SoundData sound) => Instance._UnloadSound(sound);
 	protected abstract void _UnloadSound (SoundData sound);
 
+	public static void PlaySoundAtPosition (int id, Int2 globalPosition, float volume = 1f, float pitch = 1f) {
+		const float PAN_GAP = -0.2f;
+		var viewRect = Stage.ViewRect;
+		float pan = Util.RemapUnclamped(viewRect.xMin, viewRect.xMax, 0f - PAN_GAP, 1f + PAN_GAP, globalPosition.x).Clamp01();
+		float sqDis = Util.SquareDistanceF(globalPosition.x, globalPosition.y, viewRect.CenterX(), viewRect.CenterY());
+		float maxSqDis = viewRect.width * viewRect.width / 4f;
+		volume *= Util.RemapUnclamped(0f, maxSqDis, 1f, 0f, sqDis).Clamp01();
+		PlaySound(id, volume, pitch, pan);
+	}
 	public static void PlaySound (int id, float volume = 1f, float pitch = 1f, float pan = 0.5f) => Instance._PlaySound(id, volume, pitch, pan);
 	protected abstract void _PlaySound (int id, float volume, float pitch, float pan);
 

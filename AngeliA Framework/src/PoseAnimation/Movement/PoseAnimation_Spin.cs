@@ -23,6 +23,7 @@ public class PoseAnimation_Spin : PoseAnimation {
 
 		Head.FrontSide = facingFront;
 		Body.FrontSide = facingFront;
+		Hip.FrontSide = facingFront;
 
 		Body.Width = FacingSign * (facingFront ? 1 : -1) * (Body.SizeX - pingpong2 * A2G);
 		Body.Height += A2G;

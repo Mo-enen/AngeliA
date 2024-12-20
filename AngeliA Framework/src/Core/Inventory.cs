@@ -576,14 +576,42 @@ public static class Inventory {
 	}
 
 
-	public static int ItemTotalCount (int inventoryID, int itemID, bool ignoreStack = false) {
+	public static int ItemTotalCount (int inventoryID, int itemID, bool ignoreStack = false) => ItemTotalCount(inventoryID, itemID, -1, out _, ignoreStack);
+	public static int ItemTotalCount (int inventoryID, int itemID, int targetIndex, out int targetOrder, bool ignoreStack = false) {
 		int result = 0;
+		int order = 0;
+		targetOrder = -1;
 		if (Pool.TryGetValue(inventoryID, out var data)) {
 			int len = Util.Min(data.Items.Length, data.Counts.Length);
 			for (int i = 0; i < len; i++) {
-				if (data.Items[i] == itemID) {
-					result += ignoreStack ? 1 : data.Counts[i];
+				if (data.Items[i] != itemID) continue;
+				result += ignoreStack ? 1 : data.Counts[i];
+				if (targetIndex == i) {
+					targetOrder = order;
 				}
+				order++;
+			}
+		}
+		return result;
+	}
+
+
+	public static int ItemTotalCount<I> (int inventoryID, bool ignoreStack = false) where I : Item => ItemTotalCount<I>(inventoryID, -1, out _, ignoreStack);
+	public static int ItemTotalCount<I> (int inventoryID, int targetIndex, out int targetOrder, bool ignoreStack = false) where I : Item {
+		int result = 0;
+		int order = 0;
+		targetOrder = -1;
+		if (Pool.TryGetValue(inventoryID, out var data)) {
+			int len = Util.Min(data.Items.Length, data.Counts.Length);
+			for (int i = 0; i < len; i++) {
+				int id = data.Items[i];
+				if (id == 0) continue;
+				if (ItemSystem.GetItem(id) is not I) continue;
+				result += ignoreStack ? 1 : data.Counts[i];
+				if (targetIndex == i) {
+					targetOrder = order;
+				}
+				order++;
 			}
 		}
 		return result;
