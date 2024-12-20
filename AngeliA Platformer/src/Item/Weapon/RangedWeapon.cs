@@ -18,12 +18,12 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 	public sealed override ToolType ToolType => ToolType.Ranged;
 	public sealed override ToolHandheld Handheld => IsBow ? ToolHandheld.Bow : ToolHandheld.Shooting;
 	protected override ProjectileValidDirection ValidDirection => ProjectileValidDirection.Eight;
-	public override int AttackCooldown => base.AttackCooldown;
+	public override int Cooldown => base.Cooldown;
 	private int SpriteIdString { get; init; }
-	public override bool AttackWhenSquatting => true;
-	public override int? DefaultSpeedRateOnAttack => 1000;
-	public override int? WalkingSpeedRateOnAttack => 1000;
-	public override int? RunningSpeedRateOnAttack => 618;
+	public override bool AvailableWhenSquatting => true;
+	public override int? DefaultMovementSpeedRateOnUse => 1000;
+	public override int? WalkingMovementSpeedRateOnUse => 1000;
+	public override int? RunningMovementSpeedRateOnUse => 618;
 	public override int BulletDelayRate => 500;
 
 
@@ -86,7 +86,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			var attack = renderer.TargetCharacter.Attackness;
 			if (attack.IsAttacking || attack.IsChargingAttack) {
 				int localFrame = attack.IsAttacking ?
-					(Game.GlobalFrame - attack.LastAttackFrame) * SpriteFrameCount / AttackDuration :
+					(Game.GlobalFrame - attack.LastAttackFrame) * SpriteFrameCount / Duration :
 					SpriteFrameCount - 1;
 				if (Renderer.TryGetSpriteFromGroup(SpriteIdAttack, localFrame, out var attackSprite, false, true)) {
 					cell.Sprite = attackSprite;
@@ -120,7 +120,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 		if (attackness.IsAttacking || attackness.IsChargingAttack) {
 
 			// Attacking
-			int duration = AttackDuration;
+			int duration = Duration;
 			int localFrame = attackness.IsAttacking ? Game.GlobalFrame - attackness.LastAttackFrame : duration / 2 - 1;
 			Int2 centerPos;
 			var cornerU = mainCell.LocalToGlobal(borderL, mainCell.Height - borderU) + offsetUp;

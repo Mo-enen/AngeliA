@@ -14,16 +14,16 @@ public sealed class BlockBuilder : HandTool {
 	public BlockType BlockType { get; init; }
 	public override ToolType ToolType => ToolType.Block;
 	public override ToolHandheld Handheld => ToolHandheld.SingleHanded;
-	public override bool AttackWhenSquatting => true;
-	public override bool AttackWhenWalking => true;
-	public override bool AttackWhenSliding => true;
-	public override bool AttackWhenClimbing => true;
-	public override int? DefaultSpeedRateOnAttack => 618;
-	public override int? RunningSpeedRateOnAttack => 618;
-	public override int? WalkingSpeedRateOnAttack => 618;
+	public override bool AvailableWhenSquatting => true;
+	public override bool AvailableWhenWalking => true;
+	public override bool AvailableWhenSliding => true;
+	public override bool AvailableWhenClimbing => true;
+	public override int? DefaultMovementSpeedRateOnUse => 618;
+	public override int? RunningMovementSpeedRateOnUse => 618;
+	public override int? WalkingMovementSpeedRateOnUse => 618;
 	public override int MaxStackCount => 256;
 	public override int BulletDelayRate => 0;
-	public override int AttackDuration => 12;
+	public override int Duration => 12;
 
 
 	// MSG

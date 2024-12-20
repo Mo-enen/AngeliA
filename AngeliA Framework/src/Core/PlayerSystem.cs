@@ -388,13 +388,15 @@ public static class PlayerSystem {
 
 		var att = Selecting.Attackness;
 		var mov = Selecting.Movement;
+		bool actionHolding = Input.GameKeyHolding(Gamekey.Action);
+		att.HoldingAttack = actionHolding;
 
 		att.IsChargingAttack =
 			att.MinimalChargeAttackDuration != int.MaxValue &&
 			Game.GlobalFrame >= att.LastAttackFrame + att.AttackDuration + att.AttackCooldown + att.MinimalChargeAttackDuration &&
 			!TaskSystem.HasTask() &&
 			!LockingInput &&
-			Input.GameKeyHolding(Gamekey.Action) &&
+			actionHolding &&
 			Selecting.IsAttackAllowedByMovement() &&
 			Selecting.IsAttackAllowedByEquipment();
 
@@ -404,8 +406,7 @@ public static class PlayerSystem {
 		// Try Perform Attack
 		ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_ATTACK);
 		bool attDown = Input.GameKeyDown(Gamekey.Action);
-		bool attHolding = Input.GameKeyHolding(Gamekey.Action) && att.RepeatAttackWhenHolding;
-		if (attDown || attHolding) {
+		if (attDown || (actionHolding && att.RepeatAttackWhenHolding)) {
 			if (Game.GlobalFrame >= att.LastAttackFrame + att.AttackDuration + att.AttackCooldown + (attDown ? 0 : att.HoldAttackPunishFrame)) {
 				att.Attack(mov.FacingRight);
 			} else if (attDown) {
@@ -415,10 +416,7 @@ public static class PlayerSystem {
 		}
 
 		// Reset Require on Move
-		if (
-			Input.GameKeyDown(Gamekey.Left) || Input.GameKeyDown(Gamekey.Right) ||
-			Input.GameKeyDown(Gamekey.Down) || Input.GameKeyDown(Gamekey.Up)
-		) {
+		if (Input.GameKeyDown(Gamekey.Left) || Input.GameKeyDown(Gamekey.Right) || Input.GameKeyDown(Gamekey.Down) || Input.GameKeyDown(Gamekey.Up)) {
 			AttackRequiringFrame = int.MinValue;
 		}
 
@@ -431,7 +429,6 @@ public static class PlayerSystem {
 			AttackRequiringFrame = int.MinValue;
 			att.Attack(mov.FacingRight);
 		}
-
 
 	}
 

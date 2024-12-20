@@ -28,15 +28,18 @@ public class Water : Entity {
 
 	// Const
 	private const int REPRODUCE_MIN_VOLUME = 200;
+	public static readonly int TYPE_ID = typeof(Water).AngeHash();
 
 	// Api
 	public int Volume { get; private set; } = 1000;
+	protected virtual int ArtworkID => TypeID;
+	protected virtual int ProduceID => TypeID;
 
 	// Data
 	private int GlobalX;
 	private int GlobalY;
 	private Water Source;
-	private bool Vanishing;
+	protected bool Vanishing;
 	private BlockType BlockL;
 	private BlockType BlockR;
 	private BlockType BlockD;
@@ -79,7 +82,7 @@ public class Water : Entity {
 		base.BeforeUpdate();
 		if (!Vanishing) {
 			// Vanish Check
-			if (!FromWorld && (Source == null || !Source.Active)) {
+			if (RequireVanishCheck()) {
 				Vanishing = true;
 			}
 			// Blocks
@@ -101,13 +104,16 @@ public class Water : Entity {
 	}
 
 
+	protected virtual bool RequireVanishCheck () => !FromWorld && (Source == null || !Source.Active);
+
+
 	// Rendering
 	public override void LateUpdate () {
 
 		base.LateUpdate();
 
 		if (!Active) return;
-		if (!Renderer.TryGetSpriteGroup(TypeID, out var group)) return;
+		if (!Renderer.TryGetSpriteGroup(ArtworkID, out var group)) return;
 		if (!Renderer.CurrentSheet.TryGetSpriteFromAnimationFrame(group, Game.GlobalFrame, out var sprite)) return;
 
 		int spMidWidth = sprite.GlobalWidth - sprite.GlobalBorder.horizontal;
@@ -204,7 +210,7 @@ public class Water : Entity {
 	private void IterateForReproduce () {
 		if (BlockD == BlockType.Empty) {
 			// Reproduce Down
-			if (Stage.SpawnEntity(TypeID, X, Y - Const.CEL) is Water water) {
+			if (Stage.SpawnEntity(ProduceID, X, Y - Const.CEL) is Water water) {
 				BlockD = BlockType.Water;
 				water.Volume = 1000;
 				water.FirstUpdate();
@@ -213,13 +219,13 @@ public class Water : Entity {
 		} else if (BlockD == BlockType.Block) {
 			// Reproduce Side
 			if (Volume > REPRODUCE_MIN_VOLUME) {
-				if (BlockL == BlockType.Empty && Stage.SpawnEntity(TypeID, X - Const.CEL, Y) is Water waterL) {
+				if (BlockL == BlockType.Empty && Stage.SpawnEntity(ProduceID, X - Const.CEL, Y) is Water waterL) {
 					BlockL = BlockType.Water;
 					waterL.Volume = Volume / 2;
 					waterL.FirstUpdate();
 					waterL.Source = this;
 				}
-				if (BlockR == BlockType.Empty && Stage.SpawnEntity(TypeID, X + Const.CEL, Y) is Water waterR) {
+				if (BlockR == BlockType.Empty && Stage.SpawnEntity(ProduceID, X + Const.CEL, Y) is Water waterR) {
 					BlockR = BlockType.Water;
 					waterR.Volume = Volume / 2;
 					waterR.FirstUpdate();

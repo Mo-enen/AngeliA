@@ -58,7 +58,7 @@ public abstract class Flail : MeleeWeapon {
 		if (isAttacking) {
 			// Attack
 			int localFrame = Game.GlobalFrame - attack.LastAttackFrame;
-			int duration = AttackDuration;
+			int duration = Duration;
 			int swingX = Const.CEL.LerpTo(-Const.CEL, Ease.OutBack((float)localFrame / duration));
 			headPos = handleCell.LocalToGlobal(
 				handleCell.Width / 2 + (movement.FacingRight ? -swingX : swingX) + headIndex * 96,

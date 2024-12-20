@@ -11,12 +11,12 @@ public abstract class PickTool : HandTool {
 	// VAR
 	public sealed override ToolType ToolType => ToolType.Pick;
 	public override ToolHandheld Handheld => ToolHandheld.SingleHanded;
-	public override bool AttackWhenSquatting => true;
-	public override bool AttackWhenWalking => true;
-	public override bool AttackWhenSliding => true;
-	public override int? DefaultSpeedRateOnAttack => 0;
-	public override int? RunningSpeedRateOnAttack => 0;
-	public override int? WalkingSpeedRateOnAttack => 0;
+	public override bool AvailableWhenSquatting => true;
+	public override bool AvailableWhenWalking => true;
+	public override bool AvailableWhenSliding => true;
+	public override int? DefaultMovementSpeedRateOnUse => 0;
+	public override int? RunningMovementSpeedRateOnUse => 0;
+	public override int? WalkingMovementSpeedRateOnUse => 0;
 	public virtual bool AllowPickLevelBlock => true;
 	public virtual bool AllowPickBackgroundBlock => true;
 	public virtual bool AllowPickBlockEntity => true;
@@ -26,7 +26,7 @@ public abstract class PickTool : HandTool {
 	public override bool UseStackAsUsage => true;
 	public override int MaxStackCount => 4096;
 	public override int BulletDelayRate => 0;
-	public override int AttackDuration => 16;
+	public override int Duration => 16;
 
 
 	// MSG

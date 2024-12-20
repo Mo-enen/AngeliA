@@ -21,33 +21,34 @@ public abstract class HandTool : Equipment {
 	public sealed override EquipmentType EquipmentType => EquipmentType.HandTool;
 	public abstract ToolType ToolType { get; }
 	public abstract ToolHandheld Handheld { get; }
-	public int BulletDelayFrame => AttackDuration * BulletDelayRate / 1000;
+	public int BulletDelayFrame => Duration * BulletDelayRate / 1000;
 	public string TypeName { get; init; }
 	public virtual int BulletDelayRate => 0;
-	public virtual int AttackDuration => 12;
-	public virtual int AttackCooldown => 2;
-	public virtual int HoldAttackPunish => 4;
-	public virtual int ChargeAttackDuration => int.MaxValue;
-	public virtual int? DefaultSpeedRateOnAttack => null;
-	public virtual int? WalkingSpeedRateOnAttack => null;
-	public virtual int? RunningSpeedRateOnAttack => null;
+	public virtual int Duration => 12;
+	public virtual int Cooldown => 2;
+	public virtual int HoldPunish => 4;
+	public virtual int ChargeDuration => int.MaxValue;
+	public virtual int? DefaultMovementSpeedRateOnUse => null;
+	public virtual int? WalkingMovementSpeedRateOnUse => null;
+	public virtual int? RunningMovementSpeedRateOnUse => null;
 	public virtual bool UseStackAsUsage => false;
-	public virtual bool RepeatAttackWhenHolding => false;
-	public virtual bool LockFacingOnAttack => false;
-	public virtual bool AttackInAir => true;
-	public virtual bool AttackInWater => true;
-	public virtual bool AttackWhenWalking => true;
-	public virtual bool AttackWhenRunning => true;
-	public virtual bool AttackWhenClimbing => false;
-	public virtual bool AttackWhenFlying => false;
-	public virtual bool AttackWhenRolling => false;
-	public virtual bool AttackWhenSquatting => false;
-	public virtual bool AttackWhenDashing => false;
-	public virtual bool AttackWhenSliding => false;
-	public virtual bool AttackWhenGrabbing => false;
-	public virtual bool AttackWhenRushing => false;
-	public virtual bool AttackWhenPounding => false;
+	public virtual bool RepeatWhenHolding => false;
+	public virtual bool CancelUseWhenRelease => false;
+	public virtual bool LockFacingOnUse => false;
 	public virtual bool IgnoreGrabTwist => false;
+	public virtual bool AvailableInAir => true;
+	public virtual bool AvailableInWater => true;
+	public virtual bool AvailableWhenWalking => true;
+	public virtual bool AvailableWhenRunning => true;
+	public virtual bool AvailableWhenClimbing => false;
+	public virtual bool AvailableWhenFlying => false;
+	public virtual bool AvailableWhenRolling => false;
+	public virtual bool AvailableWhenSquatting => false;
+	public virtual bool AvailableWhenDashing => false;
+	public virtual bool AvailableWhenSliding => false;
+	public virtual bool AvailableWhenGrabbing => false;
+	public virtual bool AvailableWhenRushing => false;
+	public virtual bool AvailableWhenPounding => false;
 
 
 	// MSG
@@ -163,7 +164,7 @@ public abstract class HandTool : Equipment {
 		if (toolType == ToolType.Throwing) {
 			if (
 				attacking &&
-				Game.GlobalFrame - renderer.TargetCharacter.Attackness.LastAttackFrame > AttackDuration / 6
+				Game.GlobalFrame - renderer.TargetCharacter.Attackness.LastAttackFrame > Duration / 6
 			) return;
 			grabScale = 700;
 			z = renderer.TargetCharacter.Movement.FacingFront ? renderer.HandR.Z.Abs() + 1 : -renderer.HandR.Z.Abs() - 1;
@@ -174,7 +175,7 @@ public abstract class HandTool : Equipment {
 				grabRotation = 0;
 			} else {
 				grabRotation = Util.RemapUnclamped(
-					0, AttackDuration,
+					0, Duration,
 					facingSign * 90, 0,
 					Game.GlobalFrame - renderer.TargetCharacter.Attackness.LastAttackFrame
 				);
@@ -279,14 +280,14 @@ public abstract class HandTool : Equipment {
 			int height = sprite.GlobalHeight;
 			if (!sprite.IsTrigger) {
 				int localFrame = Game.GlobalFrame - attack.LastAttackFrame;
-				if (localFrame < AttackDuration / 2) {
+				if (localFrame < Duration / 2) {
 					// Pulling
-					float ease01 = Ease.OutQuad(localFrame / (AttackDuration / 2f));
+					float ease01 = Ease.OutQuad(localFrame / (Duration / 2f));
 					width += Util.LerpUnclamped(0, width * 2 / 3, ease01).RoundToInt();
 					height -= Util.LerpUnclamped(0, height / 2, ease01).RoundToInt();
 				} else {
 					// Release
-					float ease01 = Ease.OutQuad((localFrame - AttackDuration / 2f) / (AttackDuration / 2f));
+					float ease01 = Ease.OutQuad((localFrame - Duration / 2f) / (Duration / 2f));
 					width += Util.LerpUnclamped(width * 2 / 3, 0, ease01).RoundToInt();
 					height -= Util.LerpUnclamped(height / 2, 0, ease01).RoundToInt();
 				}
@@ -323,7 +324,7 @@ public abstract class HandTool : Equipment {
 	);
 
 
-	public virtual bool AllowingAttack (Character character) => true;
+	public virtual bool AllowingUse (Character character) => true;
 
 
 	public virtual Bullet SpawnBullet (Character sender) => SpawnRawBullet(sender, BulletID);

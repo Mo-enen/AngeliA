@@ -321,34 +321,37 @@ public abstract class Character : Rigidbody,
 				if (item == null) continue;
 				item.BeforeItemUpdate_FromEquipment(this);
 				if (item is HandTool tool) {
-					Attackness.AttackDuration = tool.AttackDuration;
-					Attackness.AttackCooldown = tool.AttackCooldown;
-					Attackness.MinimalChargeAttackDuration = tool.ChargeAttackDuration;
-					Attackness.RepeatAttackWhenHolding = tool.RepeatAttackWhenHolding;
-					Attackness.LockFacingOnAttack = tool.LockFacingOnAttack;
-					Attackness.HoldAttackPunishFrame.Min(tool.HoldAttackPunish, 1);
-					if (tool.DefaultSpeedRateOnAttack.HasValue) {
-						Attackness.DefaultSpeedRateOnAttack.Max(tool.DefaultSpeedRateOnAttack.Value, 1);
+					Attackness.AttackDuration = tool.Duration;
+					Attackness.AttackCooldown = tool.Cooldown;
+					Attackness.MinimalChargeAttackDuration = tool.ChargeDuration;
+					Attackness.RepeatAttackWhenHolding = tool.RepeatWhenHolding;
+					Attackness.LockFacingOnAttack = tool.LockFacingOnUse;
+					Attackness.HoldAttackPunishFrame.Min(tool.HoldPunish, 1);
+					if (tool.CancelUseWhenRelease && Attackness.IsAttacking && !Attackness.HoldingAttack) {
+						Attackness.CancelAttack();
 					}
-					if (tool.WalkingSpeedRateOnAttack.HasValue) {
-						Attackness.WalkingSpeedRateOnAttack.Max(tool.WalkingSpeedRateOnAttack.Value, 1);
+					if (tool.DefaultMovementSpeedRateOnUse.HasValue) {
+						Attackness.DefaultSpeedRateOnAttack.Max(tool.DefaultMovementSpeedRateOnUse.Value, 1);
 					}
-					if (tool.RunningSpeedRateOnAttack.HasValue) {
-						Attackness.RunningSpeedRateOnAttack.Max(tool.RunningSpeedRateOnAttack.Value, 1);
+					if (tool.WalkingMovementSpeedRateOnUse.HasValue) {
+						Attackness.WalkingSpeedRateOnAttack.Max(tool.WalkingMovementSpeedRateOnUse.Value, 1);
 					}
-					Attackness.AttackInAir.Override(tool.AttackInAir, 1);
-					Attackness.AttackInWater.Override(tool.AttackInWater, 1);
-					Attackness.AttackWhenWalking.Override(tool.AttackWhenWalking, 1);
-					Attackness.AttackWhenRunning.Override(tool.AttackWhenRunning, 1);
-					Attackness.AttackWhenClimbing.Override(tool.AttackWhenClimbing, 1);
-					Attackness.AttackWhenFlying.Override(tool.AttackWhenFlying, 1);
-					Attackness.AttackWhenRolling.Override(tool.AttackWhenRolling, 1);
-					Attackness.AttackWhenSquatting.Override(tool.AttackWhenSquatting, 1);
-					Attackness.AttackWhenDashing.Override(tool.AttackWhenDashing, 1);
-					Attackness.AttackWhenSliding.Override(tool.AttackWhenSliding, 1);
-					Attackness.AttackWhenGrabbing.Override(tool.AttackWhenGrabbing, 1);
-					Attackness.AttackWhenRush.Override(tool.AttackWhenRushing, 1);
-					Attackness.AttackWhenPounding.Override(tool.AttackWhenPounding, 1);
+					if (tool.RunningMovementSpeedRateOnUse.HasValue) {
+						Attackness.RunningSpeedRateOnAttack.Max(tool.RunningMovementSpeedRateOnUse.Value, 1);
+					}
+					Attackness.AttackInAir.Override(tool.AvailableInAir, 1);
+					Attackness.AttackInWater.Override(tool.AvailableInWater, 1);
+					Attackness.AttackWhenWalking.Override(tool.AvailableWhenWalking, 1);
+					Attackness.AttackWhenRunning.Override(tool.AvailableWhenRunning, 1);
+					Attackness.AttackWhenClimbing.Override(tool.AvailableWhenClimbing, 1);
+					Attackness.AttackWhenFlying.Override(tool.AvailableWhenFlying, 1);
+					Attackness.AttackWhenRolling.Override(tool.AvailableWhenRolling, 1);
+					Attackness.AttackWhenSquatting.Override(tool.AvailableWhenSquatting, 1);
+					Attackness.AttackWhenDashing.Override(tool.AvailableWhenDashing, 1);
+					Attackness.AttackWhenSliding.Override(tool.AvailableWhenSliding, 1);
+					Attackness.AttackWhenGrabbing.Override(tool.AvailableWhenGrabbing, 1);
+					Attackness.AttackWhenRush.Override(tool.AvailableWhenRushing, 1);
+					Attackness.AttackWhenPounding.Override(tool.AvailableWhenPounding, 1);
 				}
 			}
 		}
@@ -846,7 +849,7 @@ public abstract class Character : Rigidbody,
 	public virtual bool IsAttackAllowedByEquipment () {
 		int id = Inventory.GetEquipment(InventoryID, EquipmentType.HandTool, out int equipmentCount);
 		var tool = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as HandTool : null;
-		return tool != null && tool.AllowingAttack(this);
+		return tool != null && tool.AllowingUse(this);
 	}
 
 
