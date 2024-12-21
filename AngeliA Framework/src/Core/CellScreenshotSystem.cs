@@ -219,7 +219,7 @@ public static class CellScreenshotSystem {
 	}
 
 
-	public static Screenshot TakeScreenshotImmediately (IRect cameraRange) {
+	public static Screenshot TakeScreenshotImmediately (IRect cameraRange, bool saveToSystem = true) {
 		var now = System.DateTime.UtcNow;
 		var result = new Screenshot {
 			Locked = false,
@@ -231,9 +231,11 @@ public static class CellScreenshotSystem {
 			CellsShadow = GetRawCells(RenderLayer.SHADOW, cameraRange),
 			CellsDefault = GetRawCells(RenderLayer.DEFAULT, cameraRange),
 		};
-		Screenshots.Add(result);
-		Screenshots.Sort(ScreenshotComparer.Instance);
-		SaveScreenshotToFile(result);
+		if (saveToSystem) {
+			Screenshots.Add(result);
+			Screenshots.Sort(ScreenshotComparer.Instance);
+			SaveScreenshotToFile(result);
+		}
 		return result;
 		// Func
 		static RawCell[] GetRawCells (int layer, IRect cameraRange) {
@@ -274,32 +276,65 @@ public static class CellScreenshotSystem {
 	}
 
 
-	public static void DrawScreenshot (Screenshot screenshot, IRect rect) => DrawScreenshot(screenshot, rect, Color32.WHITE);
-	public static void DrawScreenshot (Screenshot screenshot, IRect rect, Color32 tint) {
+	public static void DrawScreenshot (Screenshot screenshot, IRect rect, int z = 0, int layer = RenderLayer.UI, bool fit = true) => DrawScreenshot(screenshot, rect, new FRect(0, 0, 1, 1), Color32.WHITE, z, layer, fit);
+	public static void DrawScreenshot (Screenshot screenshot, IRect rect, FRect sourceRange, int z = 0, int layer = RenderLayer.UI, bool fit = true) => DrawScreenshot(screenshot, rect, sourceRange, Color32.WHITE, z, layer, fit);
+	public static void DrawScreenshot (Screenshot screenshot, IRect rect, Color32 tint, int z = 0, int layer = RenderLayer.UI, bool fit = true) => DrawScreenshot(screenshot, rect, new FRect(0, 0, 1, 1), tint, z, layer, fit);
+	public static void DrawScreenshot (Screenshot screenshot, IRect rect, FRect sourceRange, Color32 tint, int z = 0, int layer = RenderLayer.UI, bool fit = true) {
 		if (screenshot == null) return;
+		if (sourceRange.width.AlmostZero() || sourceRange.height.AlmostZero()) return;
 		int oldLayer = Renderer.CurrentLayerIndex;
 		try {
-			Renderer.SetLayer(RenderLayer.UI);
-			var photoRect = rect.Fit(screenshot.Range.width, screenshot.Range.height);
-			// Sky BG
-			Renderer.DrawPixel(photoRect, Color32.Lerp(screenshot.SkyTop, screenshot.SkyBottom, 0.5f));
-			// Cells
+			var screenshotRange = screenshot.Range;
+			Renderer.SetLayer(layer);
+			var photoRect = fit ?
+				rect.Fit(screenshotRange.width, screenshotRange.height) :
+				rect.Envelope(screenshotRange.width, screenshotRange.height);
+			// Draw Sky BG
+			Renderer.DrawPixel(
+				fit ? photoRect : rect,
+				Color32.Lerp(screenshot.SkyTop, screenshot.SkyBottom, 0.5f),
+				z: z - 1
+			);
+			// Draw Cells
 			int cellStart = Renderer.GetUsedCellCount();
-			using var _ = new ClampCellsScope(photoRect);
-			DrawCells(screenshot.CellsShadow, tint);
-			DrawCells(screenshot.CellsDefault, tint);
+			using var _ = new ClampCellsScope(fit ? photoRect : rect);
+			var targetRange = IRect.MinMaxRect(
+				Util.LerpUnclamped(screenshotRange.x, screenshotRange.xMax, sourceRange.x).RoundToInt(),
+				Util.LerpUnclamped(screenshotRange.y, screenshotRange.yMax, sourceRange.y).RoundToInt(),
+				Util.LerpUnclamped(screenshotRange.x, screenshotRange.xMax, sourceRange.xMax).RoundToInt(),
+				Util.LerpUnclamped(screenshotRange.y, screenshotRange.yMax, sourceRange.yMax).RoundToInt()
+			);
+			if (!fit) {
+				targetRange = targetRange.Fit(rect.width, rect.height);
+			}
+			DrawCells(screenshot.CellsShadow, targetRange, tint, z);
+			DrawCells(screenshot.CellsDefault, targetRange, tint, z);
+			// Remap Cell Position
 			if (Renderer.GetCells(out var cells, out int count)) {
 				int cellEnd = Renderer.GetUsedCellCount().LessOrEquel(count);
-				FrameworkUtil.RemapCells(cells, cellStart, cellEnd, screenshot.Range, rect, round: true);
+				FrameworkUtil.RemapCells(
+					cells, cellStart, cellEnd,
+					screenshotRange,
+					rect.ScaleFrom(
+						1f / sourceRange.width,
+						1f / sourceRange.height,
+						(rect.x + rect.width * sourceRange.center.x).RoundToInt(),
+						(rect.y + rect.height * sourceRange.center.y).RoundToInt()
+					),
+					round: true, fit: fit
+				);
 			}
 			// Func
-			static void DrawCells (RawCell[] cells, Color32 tint) {
+			static void DrawCells (RawCell[] cells, IRect targetRange, Color32 tint, int z) {
 				if (!Renderer.TryGetSprite(Const.PIXEL, out var sprite, true)) return;
 				for (int i = 0; i < cells.Length; i++) {
 					var raw = cells[i];
+					var bounds = raw.GetGlobalBounds();
+					if (!bounds.Overlaps(targetRange)) continue;
 					var cell = Renderer.Draw(sprite, default);
 					cell.LoadFromRawData(raw);
 					cell.Color *= tint;
+					cell.Z = z;
 				}
 			}
 		} catch (System.Exception ex) { Debug.LogException(ex); }

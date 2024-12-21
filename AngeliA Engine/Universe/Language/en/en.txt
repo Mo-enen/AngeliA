@@ -22,7 +22,7 @@ CtrlHint.ShowMenu:Show Menu
 CtrlHint.StopDrive:Stop Driving
 CtrlHint.SwitchPlayer:Select Player
 CtrlHint.Throw:Throw
-CtrlHint.Transfer:Transfer
+CtrlHint.Transfer:Transfer (Hold to Use)
 CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake
 CtrlHint.Wardrobe.Type:Suit Type
@@ -43,9 +43,12 @@ FileBrowser.FolderName:Folder Name
 GameEditor:Game
 Hint.Cheat.Match:Press Enter to Perform Cheat Code
 Hint.EmptyMsg:No message here...
+Hint.PickItem:Pick Item
 Hint.Publishing:Publishing
 Hub.Add:Add Existing Project
 Hub.Create:Create New Project
+iDes.BlockBuilder:
+iName.BlockBuilder:Block Builder
 Label.B:B
 Label.Border:Border
 Label.Bottom:Bottom
@@ -171,7 +174,7 @@ Noti.RedoPaint:Redo: Paint
 Noti.RedoSpriteMeta:Redo: Sprite meta
 Noti.RedoSpriteSize:Redo: Sprite size
 Noti.SpriteCreated:Sprite Created
-Noti.ThemeLoaded:Theme Loaded
+Noti.ThemeLoaded:Fail to Load Theme
 Noti.UndoCreateSprite:Undo: Create sprite
 Noti.UndoDeleteSprite:Undo: Delete sprite
 Noti.UndoMoveSprite:Undo: Move sprite
@@ -201,7 +204,7 @@ Setting.MaxViewHeight:Max View Height (block)
 Setting.MinViewHeight:Min View Height (block)
 Setting.ViewRatio:View Ratio
 SettingWindow:Setting
-Tip.AddAtlas:Create new atlas
+Tip.AddAtlas:Create new folder
 Tip.BorderD:Border bottom
 Tip.BorderL:Border left
 Tip.BorderR:Border right
@@ -352,6 +355,7 @@ UI.LanguageEditor.Key:Key
 UI.LanguageEditor.LanCodeAddedMsg:{0} lines of language code added
 UI.LanguageEditor.RemoveEmpty:Remove Empty
 UI.LanguageEditor.RemoveEmptyMsg:Remove all lines without any content?\nLines with only a key will also be removed.
+UI.Lock:Lock
 UI.Menu:Menu
 UI.MovementProp.AllowJumpWhenClimbing:Allow Jump When Climbing
 UI.MovementProp.ClimbAvailable:Climb Available
@@ -486,6 +490,7 @@ UI.Project.DeleteSoundMsg:Delete sound "{0}" ? This will delete the file.
 UI.Quit:Quit
 UI.QuitGame:Quit Game
 UI.QuitMessage:Close engine window ?
+UI.Rename:Rename
 UI.Reset:Reset
 UI.Restart:Restart
 UI.Rig.BuildError:Compile Error in Game Script :(\nAll errors must be fixed otherwise the game cannot run
@@ -496,6 +501,7 @@ UI.RigEditor.AirIlluDay:Air Illuminance (Day)
 UI.RigEditor.AirIlluNight:Air Illuminance (Night)
 UI.RigEditor.BgTint:Background Tint
 UI.RigEditor.Daytime:In-Game Daytime
+UI.RigEditor.DeleteLocationMsg:Delete Location {0}?
 UI.RigEditor.LvRemain:Solid Illuminate Remain
 UI.RigEditor.PixelStyle:Use Pixel Style
 UI.RigEditor.SelfLerp:Self Lerp
@@ -508,4 +514,5 @@ UI.Suit.Glove:Gloves
 UI.Suit.Hat:Hat
 UI.Suit.Pants:Pants
 UI.Suit.Shoes:Shoes
+UI.Unlock:Unlock
 UI.Yes:Yes

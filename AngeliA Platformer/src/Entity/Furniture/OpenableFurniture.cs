@@ -1,5 +1,6 @@
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
 
+namespace AngeliA.Platformer;
 
 public abstract class OpenableFurniture : Furniture, IActionTarget {
 

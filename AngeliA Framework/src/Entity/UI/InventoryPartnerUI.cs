@@ -1,6 +1,7 @@
 ﻿namespace AngeliA;
 
-public sealed class InventoryPartnerUI : PlayerMenuPartnerUI {
+public class InventoryPartnerUI : PlayerMenuPartnerUI {
+	public static readonly int TYPE_ID = typeof(InventoryPartnerUI).AngeHash();
 	public static readonly InventoryPartnerUI Instance = new();
 	public override int Column => _Column;
 	public override int Row => _Row;

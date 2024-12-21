@@ -1,4 +1,6 @@
-﻿using AngeliA;namespace AngeliA.Platformer;
+﻿using AngeliA;
+
+namespace AngeliA.Platformer;
 
 public abstract class OpenableUiFurniture : OpenableFurniture {
 
@@ -17,7 +19,7 @@ public abstract class OpenableUiFurniture : OpenableFurniture {
 			Cursor.RequireCursor();
 			var size = WindowSize;
 			using (new UILayerScope()) {
-				FrameUpdateUI(new IRect(
+				UpdateUI(new IRect(
 					Renderer.CameraRect.CenterX() - Unify(size.x) / 2,
 					Renderer.CameraRect.CenterY() - Unify(size.y) / 2,
 					Unify(size.x), Unify(size.y)
@@ -37,7 +39,7 @@ public abstract class OpenableUiFurniture : OpenableFurniture {
 		base.SetOpen(open);
 	}
 
-	protected abstract void FrameUpdateUI (IRect windowRect);
+	protected abstract void UpdateUI (IRect windowRect);
 	protected virtual void OnUiOpen () { }
 	protected virtual void OnUiClose () { }
 

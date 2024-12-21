@@ -16,6 +16,34 @@ public struct RawCell () {
 	public Color32 Color = Color32.WHITE;
 	public Int4 Shift;
 	public Alignment BorderSide = Alignment.Full;
+	public readonly IRect GetGlobalBounds () {
+		if (Rotation1000.UMod(360_000) == 0) {
+			int pOffsetX = (int)(PivotX * Width);
+			int pOffsetY = (int)(PivotY * Height);
+			return new IRect(X - pOffsetX, Y - pOffsetY, Width, Height);
+		} else {
+			var bl = GlobalLerp(0f, 0f);
+			var br = GlobalLerp(1f, 0f);
+			var tl = GlobalLerp(0f, 1f);
+			var tr = GlobalLerp(1f, 1f);
+			return IRect.MinMaxRect(
+				Util.Min(Util.Min(bl.x, br.x), Util.Min(tl.x, tr.x)),
+				Util.Min(Util.Min(bl.y, br.y), Util.Min(tl.y, tr.y)),
+				Util.Max(Util.Max(bl.x, br.x), Util.Max(tl.x, tr.x)),
+				Util.Max(Util.Max(bl.y, br.y), Util.Max(tl.y, tr.y))
+			);
+		}
+	}
+	private readonly Int2 GlobalLerp (float x01, float y01) {
+		var result = new Int2(X, Y);
+		var v = new Float2(
+			x01 * Width - Width * PivotX,
+			y01 * Height - Height * PivotY
+		).Rotate(Rotation1000 / 1000f);
+		result.x += (int)v.x;
+		result.y += (int)v.y;
+		return result;
+	}
 }
 
 

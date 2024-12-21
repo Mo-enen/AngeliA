@@ -104,7 +104,16 @@ public class Water : Entity {
 	}
 
 
-	protected virtual bool RequireVanishCheck () => !FromWorld && (Source == null || !Source.Active);
+	protected virtual bool RequireVanishCheck () {
+		if (FromWorld) return false;
+		if (Source == null || !Source.Active) return true;
+		int sourceUnitX = Source.X.ToUnit();
+		int sourceUnitY = Source.Y.ToUnit();
+		int unitX = X.ToUnit();
+		int unitY = Y.ToUnit();
+		if ((unitX - sourceUnitX).Abs() > 1 || (unitY - sourceUnitY).Abs() > 1) return true;
+		return false;
+	}
 
 
 	// Rendering

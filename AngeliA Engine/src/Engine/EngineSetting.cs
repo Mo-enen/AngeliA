@@ -11,6 +11,7 @@ public class EngineSetting {
 	[EngineSetting("Engine", "Show Tooltip")] public static readonly SavingBool UseTooltip = new("Engine.UseTooltip", true, SavingLocation.Global);
 	[EngineSetting("Engine", "Show Notification")] public static readonly SavingBool UseNotification = new("Engine.UseNotification", true, SavingLocation.Global);
 	[EngineSetting("Engine", "Auto Recompile when Script Changed", gameOnly: true)] public static readonly SavingBool AutoRecompile = new("Engine.AutoRecompile", true, SavingLocation.Global);
+	[EngineSetting("Engine", "Backup Game Saving Data when Open Project", gameOnly: true)] public static readonly SavingBool BackupSaving = new("Engine.BackupSaving", true, SavingLocation.Global);
 
 	// Pixel Editor
 	[EngineSetting("Artwork", "Background Color")] public static readonly SavingColor32NoAlpha BackgroundColor = new("PixEdt.BGColor", new Color32(32, 33, 37, 255), SavingLocation.Global);

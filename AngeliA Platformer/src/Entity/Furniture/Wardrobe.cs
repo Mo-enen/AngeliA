@@ -86,7 +86,7 @@ public abstract class Wardrobe : OpenableUiFurniture, IActionTarget {
 	}
 
 
-	protected override void FrameUpdateUI (IRect windowRect) {
+	protected override void UpdateUI (IRect windowRect) {
 		var player = PlayerSystem.Selecting;
 		if (player == null) return;
 		windowRect.x = player.Rect.CenterX() - windowRect.width / 2;

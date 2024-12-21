@@ -44,6 +44,7 @@ public static class EngineUtil {
 	public static string TemplateFrameworkDll_Release => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "ProjectTemplate", "lib", "Release", "AngeliA Framework.dll");
 	public static string EntryExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Entry.exe");
 	public static string RiggedExePath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Rigged.exe");
+	public static string AngeRaylibDllPath => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Debug", "AngeliA Raylib.dll");
 	public static string EntryProjectFolder => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release");
 	public static string EntryProjectCsproj => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Runtime", "Release", "AngeliA Entry for Publish.csproj");
 	public static string ThemeRoot => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Theme");
@@ -359,6 +360,16 @@ public static class EngineUtil {
 	public static bool ImportIconFile (Project project, string filePath) {
 		if (project == null) return false;
 		return CreateIcoFromPng(filePath, project.IconPath);
+	}
+
+
+	// Misc
+	public static void BackupSaving (Project project) {
+		string from = project.Universe.SavingRoot;
+		string to = project.BackupSavingDataRoot;
+		if (!Util.FolderExists(from)) return;
+		Util.DeleteFolder(project.BackupSavingDataRoot);
+		Util.CopyFolder(from, to, true, false, true);
 	}
 
 

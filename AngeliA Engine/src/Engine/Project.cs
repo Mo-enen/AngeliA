@@ -18,6 +18,8 @@ public class Project {
 	public string UniversePath { get; init; }
 	public string IconPath { get; init; }
 	public string CsprojPath { get; init; }
+	public string LocalEntryRoot { get; init; }
+	public string BackupSavingDataRoot { get; init; }
 	public bool IsEngineInternalProject { get; init; }
 	public Universe Universe { get; init; }
 
@@ -34,6 +36,8 @@ public class Project {
 			IconPath = Util.CombinePaths(projectPath, "Icon.ico"),
 			UniversePath = AngePath.GetUniverseRoot(projectPath),
 			CsprojPath = Util.EnumerateFiles(projectPath, true, "*.csproj").FirstOrDefault(path => !path.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase), defaultValue: ""),
+			LocalEntryRoot = Util.CombinePaths(projectPath, "Entry"),
+			BackupSavingDataRoot = Util.CombinePaths(projectPath, "Backup Saving Data"),
 			IsEngineInternalProject =
 				Util.IsSamePath(Util.GetParentPath(projectPath), Universe.BuiltIn.UniverseRoot) ||
 				Util.IsSamePath(Util.GetParentPath(Util.GetParentPath(projectPath)), Universe.BuiltIn.UniverseRoot),

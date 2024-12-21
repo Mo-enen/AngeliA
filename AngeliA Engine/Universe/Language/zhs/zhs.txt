@@ -43,9 +43,12 @@ FileBrowser.FolderName:文件夹名
 GameEditor:游 戏
 Hint.Cheat.Match:按下回车键作弊
 Hint.EmptyMsg:无内容
+Hint.PickItem:拾起物品
 Hint.Publishing:正在发布
 Hub.Add:添加现有工程
 Hub.Create:创建新工程
+iDes.BlockBuilder:
+iName.BlockBuilder:块
 Label.B:B
 Label.Border:边框
 Label.Bottom:下面
@@ -352,6 +355,7 @@ UI.LanguageEditor.Key:键
 UI.LanguageEditor.LanCodeAddedMsg:已添加语言码{0}行
 UI.LanguageEditor.RemoveEmpty:删除所有空内容
 UI.LanguageEditor.RemoveEmptyMsg:是否删除所有内容为空的行？（键不算内容）
+UI.Lock:锁定
 UI.Menu:菜单
 UI.MovementProp.AllowJumpWhenClimbing:攀爬时允许跳跃
 UI.MovementProp.ClimbAvailable:允许攀爬
@@ -486,6 +490,7 @@ UI.Project.DeleteSoundMsg:是否删除音效 {0} ？这会删除文件。
 UI.Quit:退出
 UI.QuitGame:退出游戏
 UI.QuitMessage:是否关闭引擎窗口？
+UI.Rename:重命名
 UI.Reset:重置
 UI.Restart:重启
 UI.Rig.BuildError:编译错误 :(\n必须解决所有编译错误才能运行游戏
@@ -496,6 +501,7 @@ UI.RigEditor.AirIlluDay:空气亮度（白天）
 UI.RigEditor.AirIlluNight:空气亮度（夜间）
 UI.RigEditor.BgTint:背景亮度
 UI.RigEditor.Daytime:游戏内时间
+UI.RigEditor.DeleteLocationMsg:删除位置{0}?
 UI.RigEditor.LvRemain:光穿固体后残留
 UI.RigEditor.PixelStyle:像素风格
 UI.RigEditor.SelfLerp:自插值
@@ -508,4 +514,5 @@ UI.Suit.Glove:手套
 UI.Suit.Hat:帽子
 UI.Suit.Pants:裤子
 UI.Suit.Shoes:鞋
+UI.Unlock:解锁
 UI.Yes:是

@@ -819,7 +819,9 @@ public static class Extension {
 		width, height
 	);
 	[MethodImpl(INLINE)] public static IRect ScaleFrom (this IRect rect, int scale, int pointX, int pointY) => ResizeFrom(rect, rect.width * scale / 1000, rect.height * scale / 1000, pointX, pointY);
+	[MethodImpl(INLINE)] public static IRect ScaleFrom (this IRect rect, int scaleX, int scaleY, int pointX, int pointY) => ResizeFrom(rect, rect.width * scaleX / 1000, rect.height * scaleY / 1000, pointX, pointY);
 	[MethodImpl(INLINE)] public static IRect ScaleFrom (this IRect rect, float scale01, int pointX, int pointY) => ResizeFrom(rect, (rect.width * scale01).RoundToInt(), (rect.height * scale01).RoundToInt(), pointX, pointY);
+	[MethodImpl(INLINE)] public static IRect ScaleFrom (this IRect rect, float scaleX01, float scaleY01, int pointX, int pointY) => ResizeFrom(rect, (rect.width * scaleX01).RoundToInt(), (rect.height * scaleY01).RoundToInt(), pointX, pointY);
 	[MethodImpl(INLINE)]
 	public static IRect ResizeFrom (this IRect rect, int newWidth, int newHeight, int pointX, int pointY) {
 		rect.x = pointX - (pointX - rect.x) * newWidth / rect.width;

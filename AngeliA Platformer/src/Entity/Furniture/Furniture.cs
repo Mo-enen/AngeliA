@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 [EntityAttribute.MapEditorGroup("Furniture")]
@@ -43,9 +43,7 @@ public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
 	}
 
 
-	public override void FirstUpdate () {
-		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Tag.OnewayUp);
-	}
+	public override void FirstUpdate () => Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Tag.OnewayUp);
 
 
 	public override void BeforeUpdate () {
@@ -108,20 +106,6 @@ public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
 	bool IActionTarget.AllowInvoke () => false;
 
 
-	protected AngeSprite GetSpriteFromPose () {
-		if (Renderer.TryGetSpriteFromGroup(TypeID, Pose switch {
-			FittingPose.Left => 1,
-			FittingPose.Mid => 2,
-			FittingPose.Right => 3,
-			FittingPose.Single => 0,
-			_ => 0,
-		}, out var sprite, false, true) ||
-			Renderer.TryGetSprite(TypeID, out sprite)
-		) return sprite;
-		return null;
-	}
-
-
 	protected bool GetIsHighlighted () {
 		if (PlayerSystem.Selecting == null || PlayerSystem.TargetActionEntity == null) return false;
 		var target = PlayerSystem.TargetActionEntity;
@@ -148,6 +132,28 @@ public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
 		bool useHorizontal = ModuleType != Direction3.Horizontal || Pose != FittingPose.Mid;
 		bool useVertical = ModuleType != Direction3.Vertical || Pose == FittingPose.Up;
 		(this as IActionTarget).BlinkIfHighlight(cell, pivotX, 0f, useHorizontal, useVertical);
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private AngeSprite GetSpriteFromPose () {
+		if (Renderer.TryGetSpriteFromGroup(TypeID, Pose switch {
+			FittingPose.Left => 1,
+			FittingPose.Mid => 2,
+			FittingPose.Right => 3,
+			FittingPose.Single => 0,
+			_ => 0,
+		}, out var sprite, false, true) ||
+			Renderer.TryGetSprite(TypeID, out sprite)
+		) return sprite;
+		return null;
 	}
 
 

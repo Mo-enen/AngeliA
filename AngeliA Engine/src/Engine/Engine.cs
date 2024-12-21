@@ -948,6 +948,10 @@ public partial class Engine {
 			case ProjectType.Game:
 				// Build
 				EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
+				// Backup
+				if (EngineSetting.BackupSaving.Value) {
+					EngineUtil.BackupSaving(CurrentProject);
+				}
 				break;
 
 			case ProjectType.Artwork:
@@ -1157,6 +1161,9 @@ public partial class Engine {
 		// Framework Dll Files
 		Util.UpdateFile(EngineUtil.TemplateFrameworkDll_Debug, Util.CombinePaths(CurrentProject.DllLibPath_Debug, "AngeliA Framework.dll"));
 		Util.UpdateFile(EngineUtil.TemplateFrameworkDll_Release, Util.CombinePaths(CurrentProject.DllLibPath_Release, "AngeliA Framework.dll"));
+
+		// Raylib Dll Files for Entry
+		Util.UpdateFile(EngineUtil.AngeRaylibDllPath, Util.CombinePaths(CurrentProject.LocalEntryRoot, "AngeliA Raylib.dll"));
 
 		// Sync Package Dll Files
 		PackageManager.Instance.SyncPackageDllWithProject(CurrentProject);
