@@ -61,6 +61,11 @@
 		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\$(AssemblyName).dll" ContinueOnError="true" />
 	</Target>
 
+	<!--Delete Package Dlls from Engine Lib Folder-->
+	<Target Name="DeletePakDll" AfterTargets="Build">
+		<Delete Files="$(OutputPath)Library\com.angelia.platformer.dll" ContinueOnError="true" />
+	</Target>
+
 	<!--Copy Framework dll/exe to Runtime Folder-->
 	<Target Name="Copy AngeFramework Dll and Project Template" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<Copy SourceFiles="$(OutputPath)AngeliA Framework.dll" DestinationFiles="$(SolutionDir)Universe\ProjectTemplate\lib\Debug\AngeliA Framework.dll" ContinueOnError="true" />

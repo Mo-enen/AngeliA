@@ -31,6 +31,8 @@ public class CharacterNavigation (Character character) {
 	public virtual int NavigationStartFlyDistance => Const.CEL * 18;
 	public virtual int NavigationEndFlyDistance => Const.CEL * 3;
 	public virtual int NavigationMinimumFlyDuration => 60;
+	public virtual int NavigationJumpSpeed => 32;
+	public virtual int NavigationMaxJumpDuration => 120;
 
 	// Short
 	private IRect Rect => TargetCharacter.Rect;
@@ -251,31 +253,23 @@ public class CharacterNavigation (Character character) {
 			// Jump
 			case NavigationOperateMotion.Jump:
 
-				const int JUMP_SPEED = 52;
+
 
 				if (NavJumpDuration == 0) {
 					// Jump Start
 					int dis = Util.DistanceInt(X, Y, targetX, targetY);
 					NavJumpFrame = 0;
-					NavJumpDuration = (dis / JUMP_SPEED).Clamp(dis < Const.HALF ? 3 : 24, 120);
+					NavJumpDuration = (dis / NavigationJumpSpeed).Clamp(dis < Const.HALF ? 3 : 24, NavigationMaxJumpDuration);
 					NavJumpFromPosition.x = X;
 					NavJumpFromPosition.y = Y;
 				}
 
 				if (NavJumpDuration > 0 && NavJumpFrame <= NavJumpDuration) {
 					// Jumping
-					int newX = Util.Remap(
-						0, NavJumpDuration,
-						NavJumpFromPosition.x, targetX,
-						NavJumpFrame
-					);
-					int newY = Util.Remap(
-						0,
-						NavJumpDuration,
-						NavJumpFromPosition.y,
-						targetY,
-						NavJumpFrame
-					);
+					float lerp01 = NavJumpFrame / (float)NavJumpDuration;
+					float jump01 = Ease.OutSine(lerp01);
+					int newX = NavJumpFromPosition.x.LerpTo(targetX, jump01);
+					int newY = NavJumpFromPosition.y.LerpTo(targetY, lerp01);
 					if (NavJumpDuration > 3) {
 						int deltaY = Util.Abs(NavJumpFrame - NavJumpDuration / 2);
 						int arc = (Util.DistanceInt(
