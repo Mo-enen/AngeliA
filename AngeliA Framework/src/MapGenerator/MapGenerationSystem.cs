@@ -65,7 +65,7 @@ public static class MapGenerationSystem {
 						continue;
 					}
 					while (AllTasks.TryPopHead(out var param)) {
-						GenerateLogic(param.gen, param.worldPos);
+						GenerateLogic(param.gen, WorldSquad.Stream, param.worldPos);
 					}
 				} catch (System.Exception ex) {
 					Debug.LogException(ex);
@@ -112,19 +112,19 @@ public static class MapGenerationSystem {
 	public static bool IsGenerating (Int3 worldPosition, int generatorID) => StatePool.TryGetValue(worldPosition, out var pair) && pair.state == MapState.Generating && pair.id == generatorID;
 
 
-	public static void GenerateMap (int generatorID, Int3 worldPos, bool async) {
+	public static void GenerateMap (int generatorID, WorldStream stream, Int3 worldPos, bool async) {
 		if (!Enable || !Pool.TryGetValue(generatorID, out var gen)) return;
-		GenerateMap(gen, worldPos, async);
+		GenerateMap(gen, stream, worldPos, async);
 	}
 
 
-	public static void GenerateMap (MapGenerator generator, Int3 worldPos, bool async) {
+	public static void GenerateMap (MapGenerator generator, WorldStream stream, Int3 worldPos, bool async) {
 		if (!Enable) return;
 		StatePool[worldPos] = (generator.TypeID, MapState.Generating);
 		if (async) {
 			AllTasks.LinkToTail((generator, worldPos));
 		} else {
-			GenerateLogic(generator, worldPos);
+			GenerateLogic(generator, stream, worldPos);
 		}
 	}
 
@@ -140,11 +140,11 @@ public static class MapGenerationSystem {
 	#region --- LGC ---
 
 
-	private static void GenerateLogic (MapGenerator generator, Int3 worldPos) {
+	private static void GenerateLogic (MapGenerator generator, WorldStream stream, Int3 worldPos) {
 		bool success = true;
 		try {
 			generator.ErrorMessage = "";
-			var result = generator.GenerateMap(worldPos);
+			var result = generator.GenerateMap(stream, worldPos);
 			switch (result) {
 				case MapGenerationResult.Success:
 				case MapGenerationResult.Skipped:
