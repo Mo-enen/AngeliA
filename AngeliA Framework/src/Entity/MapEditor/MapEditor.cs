@@ -1387,7 +1387,7 @@ public sealed partial class MapEditor : WindowUI {
 			player.Y = posY;
 		}
 		player.SetCharacterState(CharacterState.GamePlay);
-		player.ForceStayOnStage(1);
+		player.IgnoreDespawnFromMap(1);
 		player.Movement.CurrentJumpCount = 0;
 		RequireSetMode = true;
 		PlayerSystem.ForceUpdateGroundedForView(1);

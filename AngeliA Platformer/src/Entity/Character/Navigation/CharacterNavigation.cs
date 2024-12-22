@@ -19,8 +19,8 @@ public class CharacterNavigation (Character character) {
 	// Api
 	public readonly Character TargetCharacter = character;
 	public CharacterNavigationState NavigationState { get; set; } = CharacterNavigationState.Idle;
-	public Int2 NavigationAim { get; private set; } = default;
-	public bool NavigationAimGrounded { get; private set; } = default;
+	public Int2 NavigationAim { get; protected set; } = default;
+	public bool NavigationAimGrounded { get; protected set; } = default;
 	public bool HasPerformableOperation => CurrentNavOperationIndex < CurrentNavOperationCount || CurrentNavOperationCount == 0;
 
 	// Override
@@ -130,16 +130,6 @@ public class CharacterNavigation (Character character) {
 		int END_MOVE_DISTANCE_SQ = NavigationEndMoveDistance * NavigationEndMoveDistance;
 		int START_FLY_DISTANCE_SQ = NavigationStartFlyDistance * NavigationStartFlyDistance;
 		int END_FLY_DISTANCE_SQ = NavigationEndFlyDistance * NavigationEndFlyDistance;
-
-		// Nav Logic Start
-		var navAim = GetNavigationAim(out bool _navAimGrounded);
-		if (navAim.HasValue) {
-			NavigationAim = navAim.Value;
-			NavigationAimGrounded = _navAimGrounded;
-			CurrentNavOperationIndex = 0;
-			CurrentNavOperationCount = 0;
-			NavJumpDuration = 0;
-		}
 
 		// Fly When No Grounded Aim Position
 		if (!NavigationAimGrounded) {
@@ -392,6 +382,15 @@ public class CharacterNavigation (Character character) {
 	#region --- API ---
 
 
+	public void SetNavigationAim (Int2 newAim, bool grounded) {
+		NavigationAim = newAim;
+		NavigationAimGrounded = grounded;
+		CurrentNavOperationIndex = 0;
+		CurrentNavOperationCount = 0;
+		NavJumpDuration = 0;
+	}
+
+
 	public void ResetNavigation () {
 		NavigationState = CharacterNavigationState.Idle;
 		NavFlyStartFrame = int.MinValue;
@@ -403,12 +402,6 @@ public class CharacterNavigation (Character character) {
 		NavJumpDuration = 0;
 		NavMoveDoneX = false;
 		NavMoveDoneY = false;
-	}
-
-
-	protected virtual Int2? GetNavigationAim (out bool grounded) {
-		grounded = true;
-		return null;
 	}
 
 

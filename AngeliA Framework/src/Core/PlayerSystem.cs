@@ -176,7 +176,7 @@ public static class PlayerSystem {
 		if (!Enable) return;
 		if (Selecting == null || !Selecting.Active) return;
 
-		Selecting.ForceStayOnStage();
+		Selecting.IgnoreDespawnFromMap(1);
 		Selecting.DespawnAfterPassoutDelay = -1;
 
 		// Update Player
@@ -658,7 +658,7 @@ public static class PlayerSystem {
 		}
 		target.Team = Const.TEAM_PLAYER;
 		target.AttackTargetTeam = Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
-		target.ForceStayOnStage();
+		target.IgnoreDespawnFromMap(1);
 		SelectingPlayerID.Value = target.TypeID;
 		LockInputFrame = -1;
 		TargetActionEntity = null;

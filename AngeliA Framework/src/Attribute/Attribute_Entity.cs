@@ -44,7 +44,7 @@ public static class EntityAttribute {
 
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public class DontDestroyOutOfRangeAttribute : Attribute { }
+	public class DontDespawnOutOfRangeAttribute : Attribute { }
 
 
 	[AttributeUsage(AttributeTargets.Class)]

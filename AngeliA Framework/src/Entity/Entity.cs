@@ -29,11 +29,11 @@ public abstract class Entity : IMapItem {
 	// Inter
 	internal byte UpdateStep { get; set; } = 0;
 	internal int Stamp { get; set; } = int.MaxValue;
-	internal bool DestroyOnZChanged { get; set; } = true;
+	internal bool DespawnOnZChanged { get; set; } = true;
 	internal bool DespawnOutOfRange { get; set; } = true;
 	internal bool UpdateOutOfRange { get; set; } = false;
 	internal int Order { get; set; } = 0;
-	internal int IgnoreDestroyFromMapFrame { get; private set; } = -1;
+	internal int IgnoreDespawnFromMapFrame { get; private set; } = -1;
 
 	// MSG
 	public Entity () => TypeID = GetType().AngeHash();
@@ -67,7 +67,7 @@ public abstract class Entity : IMapItem {
 		UpdateStep = 4;
 	}
 
-	public void IgnoreDestroyFromMap (int duration = 1) => IgnoreDestroyFromMapFrame = Game.GlobalFrame + duration;
-	public void CancelIgnoreDestroyFromMap () => IgnoreDestroyFromMapFrame = -1;
+	public void IgnoreDespawnFromMap (int duration = 1) => IgnoreDespawnFromMapFrame = Game.GlobalFrame + duration;
+	public void CancelIgnoreDespawnFromMap () => IgnoreDespawnFromMapFrame = -1;
 
 }

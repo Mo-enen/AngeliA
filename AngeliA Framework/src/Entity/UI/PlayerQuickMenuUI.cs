@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 [EntityAttribute.DontDestroyOnZChanged]
-[EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.Capacity(1, 1)]
 public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 

@@ -14,7 +14,7 @@ public interface IWindowEntityUI {
 [EntityAttribute.MapEditorGroup("UI")]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDrawBehind]
-[EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.Capacity(1, 0)]
 [EntityAttribute.Layer(EntityLayer.UI)]
 public abstract class EntityUI : Entity {

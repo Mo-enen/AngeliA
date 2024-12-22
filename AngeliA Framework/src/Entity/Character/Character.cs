@@ -21,8 +21,6 @@ public enum CharacterAnimationType {
 }
 
 
-[EntityAttribute.DontDestroyOnZChanged]
-[EntityAttribute.DontDestroyOutOfRange]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
@@ -127,10 +125,8 @@ public abstract class Character : Rigidbody,
 	private int _TeleportDuration = 0;
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
 	private int LockedAnimationTypeFrame = int.MinValue;
-	private int ForceStayFrame = -1;
 	private int ForceTriggerFrame = -1;
 	private int IgnoreDamageFromLevelFrame = -1;
-	private int PrevZ;
 
 
 	#endregion
@@ -228,8 +224,6 @@ public abstract class Character : Rigidbody,
 		IgnoreDamageType = Tag.None;
 		AttackTargetTeam = Const.TEAM_ALL;
 		DespawnAfterPassoutDelay = 60;
-		ForceStayFrame = -1;
-		PrevZ = Stage.ViewZ;
 		Bouncy = 150;
 		bool allowInv = InventoryType != CharacterInventoryType.None;
 		HelmetInteractable = allowInv;
@@ -250,17 +244,6 @@ public abstract class Character : Rigidbody,
 
 	// Physics Update
 	public override void FirstUpdate () {
-
-		// Force Stay on Stage Check
-		if (
-			Game.GlobalFrame > ForceStayFrame &&
-			(Stage.ViewZ != PrevZ || !Stage.SpawnRect.Expand(Const.CEL).Overlaps(Rect))
-		) {
-			// Leave Stage
-			Active = false;
-			return;
-		}
-		PrevZ = Stage.ViewZ;
 
 		// Update Behaviour
 		Movement = Game.GlobalFrame <= OverridingMovementFrame && MovementOverride != null ? MovementOverride : NativeMovement;
@@ -851,9 +834,6 @@ public abstract class Character : Rigidbody,
 		var tool = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as HandTool : null;
 		return tool != null && tool.AllowingUse(this);
 	}
-
-
-	public void ForceStayOnStage (int duration = 1) => ForceStayFrame = Game.GlobalFrame + duration;
 
 
 	public void ForceFillTrigger (int duration = 1) => ForceTriggerFrame = Game.GlobalFrame + duration;

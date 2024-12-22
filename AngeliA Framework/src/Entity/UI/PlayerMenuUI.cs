@@ -6,7 +6,7 @@ namespace AngeliA;
 
 
 [EntityAttribute.DontDestroyOnZChanged]
-[EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.Capacity(1, 1)]
 public class PlayerMenuUI : EntityUI {
 
@@ -190,6 +190,7 @@ public class PlayerMenuUI : EntityUI {
 
 		int itemID = HoveringItemID;
 		if (!CursorInBottomPanel && Partner != null && Partner is not InventoryPartnerUI) return;
+		if (Game.GlobalFrame == SpawnFrame) return;
 
 		int panelWidth = Unify(INFO_WIDTH);
 		int windowPadding = Unify(WINDOW_PADDING);

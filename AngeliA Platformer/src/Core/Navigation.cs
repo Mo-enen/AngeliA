@@ -126,8 +126,9 @@ public static class Navigation {
 	#region --- API ---
 
 
-	[OnGameInitializeLater(64)]
+	[OnGameInitialize]
 	public static void Initialize () {
+		
 		int maxHeigh = Universe.BuiltInInfo.MaxViewHeight;
 		CellWidth = Universe.BuiltInInfo.ViewRatio * maxHeigh / 1000 / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
 		CellHeight = maxHeigh / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
@@ -327,7 +328,7 @@ public static class Navigation {
 		out int resultX, out int resultY,
 		bool endInAir = false, IExpandRangeValidator rangeValidator = null
 	) {
-
+		
 		GlobalFrame = globalFrame;
 		RefreshFrameCache(viewRect);
 		OperationStamp++;

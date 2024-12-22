@@ -5,7 +5,7 @@ namespace AngeliA;
 
 [EntityAttribute.Capacity(6, 0)]
 [EntityAttribute.DontDestroyOnZChanged]
-[EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.DontDespawnOutOfRange]
 public class NotificationUI : EntityUI {
 
 	// VAR

@@ -72,7 +72,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 			if (IsGrounded) {
 				Driver.MakeGrounded(0, GroundedID);
 			}
-			IgnoreDestroyFromMap(1);
+			IgnoreDespawnFromMap(1);
 			if (PrevZ != Stage.ViewZ) {
 				PrevZ = Stage.ViewZ;
 				if (FromWorld) {
@@ -80,7 +80,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 				}
 			}
 		} else {
-			CancelIgnoreDestroyFromMap();
+			CancelIgnoreDespawnFromMap();
 		}
 	}
 

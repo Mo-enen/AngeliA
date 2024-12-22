@@ -6,12 +6,11 @@ namespace AngeliA.Platformer;
 
 
 [EntityAttribute.UpdateOutOfRange]
-[EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.Capacity(128)]
 [EntityAttribute.ExcludeInMapEditor]
 public abstract class Summon : Character, IDamageReceiver, IActionTarget {
-
 
 
 

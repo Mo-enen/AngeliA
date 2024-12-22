@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using AngeliA;namespace AngeliA.Platformer;
 
 
-[EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDrawBehind]
 [EntityAttribute.UpdateOutOfRange]

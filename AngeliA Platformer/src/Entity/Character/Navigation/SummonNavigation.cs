@@ -31,7 +31,21 @@ public class SummonNavigation (Character character) : CharacterNavigation(charac
 		CurrentWanderingPos.y = StartY;
 	}
 
-	protected override Int2? GetNavigationAim (out bool grounded) {
+	public override void PhysicsUpdate () {
+		base.PhysicsUpdate();
+		UpdateNavigationAim();
+	}
+
+	private void UpdateNavigationAim () {
+
+		// Scan Frequency Gate
+		int insIndex = TargetCharacter.InstanceOrder;
+		if (
+			!RequireAimRefresh &&
+			(Game.GlobalFrame + insIndex) % AIM_REFRESH_FREQUENCY != 0 &&
+			HasPerformableOperation
+		) return;
+		RequireAimRefresh = false;
 
 		// Get Aim at Ground
 		var aimPosition = new Int2(StartX, StartY);
@@ -44,16 +58,7 @@ public class SummonNavigation (Character character) : CharacterNavigation(charac
 				aimPosition = CurrentWanderingPos;
 				break;
 		}
-		grounded = false;
-
-		// Scan Frequency Gate
-		int insIndex = TargetCharacter.InstanceOrder;
-		if (
-			!RequireAimRefresh &&
-			(Game.GlobalFrame + insIndex) % AIM_REFRESH_FREQUENCY != 0 &&
-			HasPerformableOperation
-		) return null;
-		RequireAimRefresh = false;
+		NavigationAimGrounded = false;
 
 		// Freedom Shift
 		const int SHIFT_AMOUNT = Const.CEL * 10;
@@ -74,10 +79,10 @@ public class SummonNavigation (Character character) : CharacterNavigation(charac
 		)) {
 			aimPosition.x = groundX;
 			aimPosition.y = groundY;
-			grounded = true;
+			NavigationAimGrounded = true;
 		} else {
 			aimPosition.x += offsetX;
-			grounded = false;
+			NavigationAimGrounded = false;
 		}
 
 		// Instance Shift
@@ -86,7 +91,7 @@ public class SummonNavigation (Character character) : CharacterNavigation(charac
 			aimPosition.y
 		);
 
-		return aimPosition;
+		NavigationAim = aimPosition;
 	}
 
 	// API

@@ -59,9 +59,14 @@
 		<None Remove="desktop.ini" />
 	</ItemGroup>
 
-	<!--Copy Packages Dll to Runtime Folder-->
+	<!--Copy Package Dll to Runtime Folder-->
 	<Target Name="Copy Dll To Engine Runtime Debug Folder" AfterTargets="Build">
 		<Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\Packages\com.angelia.platformer\com.angelia.platformer.dll" ContinueOnError="true" />
+	</Target>
+
+	<!--Move Package Dll into Library Folder-->
+	<Target Name="CopyDll" AfterTargets="Build">
+		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\com.angelia.platformer.dll" ContinueOnError="true" />
 	</Target>
 
 </Project>

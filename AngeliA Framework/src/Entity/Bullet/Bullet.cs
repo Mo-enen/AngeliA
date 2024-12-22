@@ -6,7 +6,7 @@ namespace AngeliA;
 [EntityAttribute.Capacity(128, 0)]
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.UpdateOutOfRange]
-[EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.Layer(EntityLayer.BULLET)]
 public abstract class Bullet : Entity {
 

@@ -46,7 +46,7 @@ public static class Stage {
 		public Stack<Entity> Entities = null;
 		public Type EntityType = null;
 		public bool DrawBehind = false;
-		public bool DestroyOnZChanged = true;
+		public bool DespawnOnZChanged = true;
 		public bool DontSpawnFromWorld = false;
 		public int Capacity = 0;
 		public bool DespawnOutOfRange = true;
@@ -70,7 +70,7 @@ public static class Stage {
 		public Entity CreateInstance () {
 			if (Activator.CreateInstance(EntityType) is not Entity e) return null;
 			e.Active = false;
-			e.DestroyOnZChanged = DestroyOnZChanged;
+			e.DespawnOnZChanged = DespawnOnZChanged;
 			e.DespawnOutOfRange = DespawnOutOfRange;
 			e.UpdateOutOfRange = UpdateOutOfRange;
 			e.Order = Order;
@@ -182,7 +182,7 @@ public static class Stage {
 			int capacity = 64;
 			var att_Layer = eType.GetCustomAttribute<EntityAttribute.LayerAttribute>(true);
 			var att_Capacity = eType.GetCustomAttribute<EntityAttribute.CapacityAttribute>(true);
-			var att_DontDespawn = eType.GetCustomAttribute<EntityAttribute.DontDestroyOutOfRangeAttribute>(true);
+			var att_DontDespawn = eType.GetCustomAttribute<EntityAttribute.DontDespawnOutOfRangeAttribute>(true);
 			var att_ForceUpdate = eType.GetCustomAttribute<EntityAttribute.UpdateOutOfRangeAttribute>(true);
 			var att_DontDrawBehind = eType.GetCustomAttribute<EntityAttribute.DontDrawBehindAttribute>(true);
 			var att_DontDestroyOnTran = eType.GetCustomAttribute<EntityAttribute.DontDestroyOnZChangedAttribute>(true);
@@ -197,7 +197,7 @@ public static class Stage {
 			var stack = new EntityStack() {
 				Entities = new Stack<Entity>(preSpawn),
 				DrawBehind = att_DontDrawBehind == null,
-				DestroyOnZChanged = att_DontDestroyOnTran == null,
+				DespawnOnZChanged = att_DontDestroyOnTran == null,
 				Capacity = capacity,
 				EntityType = eType,
 				DespawnOutOfRange = att_DontDespawn == null,
@@ -333,8 +333,8 @@ public static class Stage {
 				for (int i = 0; i < count; i++) {
 					var e = entities[i];
 					if (
-						Game.GlobalFrame > e.IgnoreDestroyFromMapFrame &&
-						(e.DespawnOutOfRange || e.DestroyOnZChanged)
+						Game.GlobalFrame > e.IgnoreDespawnFromMapFrame &&
+						(e.DespawnOutOfRange || e.DespawnOnZChanged)
 					) {
 						e.Active = false;
 					}
@@ -830,7 +830,12 @@ public static class Stage {
 		// Inactive Out of Range Entities
 		for (int i = 0; i < count; i++) {
 			var entity = entities[i];
-			if (entity.Active && entity.DespawnOutOfRange && !SpawnRect.Overlaps(entity.Rect)) {
+			if (
+				entity.Active &&
+				entity.DespawnOutOfRange &&
+				Game.GlobalFrame > entity.IgnoreDespawnFromMapFrame &&
+				!SpawnRect.Overlaps(entity.Rect)
+			) {
 				entity.Active = false;
 			}
 		}

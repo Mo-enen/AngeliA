@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 [EntityAttribute.Capacity(128, 0)]
-[EntityAttribute.DontDestroyOutOfRange]
+[EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.ExcludeInMapEditor]
