@@ -9,6 +9,11 @@ namespace AngeliA;
 public abstract class Item : IMapItem {
 
 
+
+
+	#region --- VAR ---
+
+
 	// Api
 	public abstract int MaxStackCount { get; }
 	public virtual bool AllowDuplicateUpdate => true;
@@ -20,7 +25,14 @@ public abstract class Item : IMapItem {
 	internal int LastUpdateFrame = -1;
 
 
-	// MSG
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
 	public Item () => TypeID = GetType().AngeHash();
 
 	internal bool CheckUpdateAvailable (int inventoryID) {
@@ -57,5 +69,37 @@ public abstract class Item : IMapItem {
 		consume = false;
 		return false;
 	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public virtual void DrawItem (IRect rect, Color32 tint, int z) {
+		if (Renderer.TryGetSpriteForGizmos(TypeID, out var sprite)) {
+			Renderer.Draw(sprite, rect.Fit(sprite), tint, z: z);
+		} else {
+			Renderer.Draw(BuiltInSprite.ICON_ENTITY, rect, tint, z: z);
+		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+
+	#endregion
+
+
+
 
 }

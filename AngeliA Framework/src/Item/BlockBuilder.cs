@@ -100,7 +100,7 @@ public sealed class BlockBuilder : HandTool {
 			if (Game.IsMouseAvailable) {
 				Cursor.RequireCursor();
 				available = FrameworkUtil.GetAimingBuilderPositionFromMouse(
-					pHolder, MOUSE_RANGE, BlockType, out targetUnitX, out targetUnitY, out bool inRange
+					pHolder, MOUSE_RANGE, BlockType, out targetUnitX, out targetUnitY, out _
 				);
 			} else {
 				if (!pHolder.IsInsideGround) {
@@ -131,6 +131,15 @@ public sealed class BlockBuilder : HandTool {
 		}
 
 		return null;
+	}
+
+
+	public override void DrawItem (IRect rect, Color32 tint, int z) {
+		if (Renderer.TryGetSpriteForGizmos(BlockID, out var sprite)) {
+			Renderer.Draw(sprite, rect.Fit(sprite), tint, z: z);
+		} else {
+			Renderer.Draw(BuiltInSprite.ICON_ENTITY, rect, tint, z: z);
+		}
 	}
 
 

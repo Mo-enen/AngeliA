@@ -92,6 +92,7 @@ public static class Inventory {
 	internal static TaskResult OnGameInitializeLater () {
 
 		if (!ItemSystem.ItemPoolReady) return TaskResult.Continue;
+		if (!Cloth.ClothSystemReady) return TaskResult.Continue;
 
 		// Init Cheat Code
 		var giveItemCheatInfo = typeof(Inventory).GetMethod(
@@ -101,9 +102,9 @@ public static class Inventory {
 
 		// Cheat from Code
 		var BLOCK_ITEM = typeof(BlockBuilder);
+		var CLOTH_ITEM = typeof(ClothItem);
 		foreach (var type in typeof(Item).AllChildClass()) {
-			if (type == BLOCK_ITEM) continue;
-			if (System.Activator.CreateInstance(type) is not Item item) continue;
+			if (type == BLOCK_ITEM || type == CLOTH_ITEM) continue;
 			string angeName = type.AngeName();
 			int id = angeName.AngeHash();
 			CheatSystem.TryAddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
@@ -113,8 +114,12 @@ public static class Inventory {
 		foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
 			string angeName = type.AngeName();
 			int id = angeName.AngeHash();
-			var blockItem = new BlockBuilder(id, angeName, BlockType.Entity);
 			CheatSystem.TryAddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
+		}
+
+		// Cheat from Cloth Entity
+		foreach (var (id, cloth) in Cloth.ForAllCloth()) {
+			CheatSystem.TryAddCheatAction($"Give{cloth.ClothName}", giveItemCheatInfo, id);
 		}
 
 		return TaskResult.End;
@@ -635,6 +640,7 @@ public static class Inventory {
 		var player = PlayerSystem.Selecting;
 		if (player == null) return;
 		if (CheatSystem.CurrentParam is not int id) return;
+		Debug.Log(id + " " + ItemSystem.HasItem(id));
 		ItemSystem.SetItemUnlocked(id, true);
 		int maxCount = ItemSystem.GetItemMaxStackCount(id);
 		GiveItemToTarget(player, id, maxCount);

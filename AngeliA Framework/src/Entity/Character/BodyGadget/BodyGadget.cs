@@ -75,6 +75,11 @@ public abstract class BodyGadget {
 
 
 	// API
+	public static IEnumerable<KeyValuePair<int, BodyGadget>> ForAllGadget () {
+		foreach (var pair in Pool) yield return pair;
+	}
+
+
 	public static bool TryGetDefaultGadgetID (int characterID, BodyGadgetType type, out int gadgetID) {
 		gadgetID = 0;
 		int typeIndex = (int)type;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Linq;
+using System;
 
 namespace AngeliA;
 
@@ -85,15 +86,17 @@ public static class ItemSystem {
 
 
 	[OnGameInitialize(-128)]
-	internal static void OnGameInitialize () {
+	internal static TaskResult OnGameInitialize () {
 
-		if (Game.IsToolApplication) return;
+		if (Game.IsToolApplication) return TaskResult.End;
+		if (!Cloth.ClothSystemReady) return TaskResult.Continue;
 
 		// Init Item Pool from Code
 		var BLOCK_ITEM = typeof(BlockBuilder);
+		var CLOTH_ITEM = typeof(ClothItem);
 		foreach (var type in typeof(Item).AllChildClass()) {
-			if (type == BLOCK_ITEM) continue;
-			if (System.Activator.CreateInstance(type) is not Item item) continue;
+			if (type == BLOCK_ITEM || type == CLOTH_ITEM) continue;
+			if (Activator.CreateInstance(type) is not Item item) continue;
 			string angeName = type.AngeName();
 			int id = angeName.AngeHash();
 			ItemPool.TryAdd(id, new ItemData(
@@ -119,6 +122,18 @@ public static class ItemSystem {
 			));
 		}
 
+		// Add Cloth Entity
+		foreach (var (id, cloth) in Cloth.ForAllCloth()) {
+			string angeName = cloth.ClothName;
+			var clothItem = new ClothItem(id);
+			cloth.GetDisplayName(out int lanID);
+			ItemPool.TryAdd(id, new ItemData(
+				clothItem,
+				lanID, $"iDes.{angeName}".AngeHash(),
+				angeName, clothItem.MaxStackCount
+			));
+		}
+
 		ItemPoolReady = true;
 
 		// Init Drop Pool from Code
@@ -139,6 +154,7 @@ public static class ItemSystem {
 
 		// Final
 		ItemUnlockReady = true;
+		return TaskResult.End;
 	}
 
 
@@ -154,7 +170,7 @@ public static class ItemSystem {
 
 
 	[OnMainSheetReload]
-	internal static void AddBlockItemsFromSheet () {
+	internal static void AddItemsFromSheet () {
 
 		if (Game.IsToolApplication) return;
 
@@ -504,6 +520,10 @@ public static class ItemSystem {
 		resultCount = 0;
 		keep0 = keep1 = keep2 = keep3 = 0;
 		return false;
+	}
+
+	public static Item GetItem (object resultID) {
+		throw new NotImplementedException();
 	}
 
 

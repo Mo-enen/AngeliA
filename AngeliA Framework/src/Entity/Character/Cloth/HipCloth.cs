@@ -1,22 +1,13 @@
 ﻿namespace AngeliA;
 
 
-public sealed class DefaultHipSuit : HipCloth {
-	public static readonly int TYPE_ID = typeof(DefaultHipSuit).AngeHash();
-	public DefaultHipSuit () => FillFromSheet(GetType().AngeName());
-}
-
-
-public sealed class ModularHipSuit : HipCloth, IModularCloth { }
-
-
 public abstract class HipCloth : Cloth {
 
 	// SUB
 	public enum HipClothType { None, Pants, Skirt, }
 
 	// VAR
-	protected sealed override ClothType ClothType => ClothType.Hip;
+	public sealed override ClothType ClothType => ClothType.Hip;
 	public override bool SpriteLoaded => SpriteHip.IsValid;
 	protected virtual bool CoverLegs => true;
 

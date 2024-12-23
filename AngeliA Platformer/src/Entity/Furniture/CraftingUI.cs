@@ -318,18 +318,24 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 			var com = DocumentContent[i];
 			lineRect.y = docItemRect.yMax - (i + 1 - DocumentScrollY) * (lineRect.height + linePadding);
 			if (lineRect.yMax < docRect.y) break;
-			bool haveResult = ItemSystem.TryGetCombination(com.x, com.y, com.z, com.w, out int result, out _, out _, out _, out _, out _);
+			bool haveResult = ItemSystem.TryGetCombination(com.x, com.y, com.z, com.w, out int resultID, out _, out _, out _, out _, out _);
 			if (!haveResult) continue;
 			var iRect = new IRect(lineRect.xMax, lineRect.y, iconSize, iconSize);
 
 			// Draw Result
 			iRect.x -= iconSize;
-			bool resultUnlocked = ItemSystem.IsItemUnlocked(result);
-			if (Renderer.TryGetSpriteForGizmos(resultUnlocked ? result : QUESTION_MARK_CODE, out var resultSp)) {
-				Renderer.Draw(resultSp, iRect.Fit(resultSp), int.MinValue + 4);
+			bool resultUnlocked = ItemSystem.IsItemUnlocked(resultID);
+			if (resultUnlocked) {
+				// Draw Item Icon
+				if (ItemSystem.GetItem(resultID) is Item conItem) {
+					conItem.DrawItem(iRect, Color32.WHITE, int.MinValue + 4);
+				}
+			} else {
+				// Draw "?"
+				Renderer.Draw(QUESTION_MARK_CODE, iRect, int.MinValue + 4);
 			}
 			if (resultUnlocked && Input.LastActionFromMouse && iRect.MouseInside()) {
-				tipID = result;
+				tipID = resultID;
 				tipRect = iRect;
 			}
 
@@ -344,8 +350,14 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 				bool unlocked = ItemSystem.IsItemUnlocked(id);
 				// Icon
 				iRect.x -= iconSize + iconPadding;
-				if (Renderer.TryGetSpriteForGizmos(unlocked ? id : QUESTION_MARK_CODE, out var iconSP)) {
-					Renderer.Draw(iconSP, iRect.Fit(iconSP), int.MinValue + 4);
+				if (unlocked) {
+					// Draw Item Icon
+					if (ItemSystem.GetItem(id) is Item conItem) {
+						conItem.DrawItem(iRect, Color32.WHITE, int.MinValue + 4);
+					}
+				} else {
+					// Draw "?"
+					Renderer.Draw(QUESTION_MARK_CODE, iRect, int.MinValue + 4);
 				}
 				// Tip
 				if (unlocked && Input.LastActionFromMouse && iRect.MouseInside()) {
@@ -407,11 +419,13 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 		// Item Frame
 		Renderer.DrawSlice(ITEM_FRAME_CODE, resultItemRect, Color32.WHITE, int.MinValue + 3);
 
-		// Item
+		// Result Item
 		if (CombineResultID != 0) {
-			if (Renderer.TryGetSpriteForGizmos(CombineResultID, out var sprite)) {
-				Renderer.Draw(sprite, resultItemRect.Fit(sprite).Shrink(Unify(12)), int.MinValue + 4);
+			// Icon
+			if (ItemSystem.GetItem(CombineResultID) is Item resultItem) {
+				resultItem.DrawItem(resultItemRect.Shrink(Unify(12)), Color32.WHITE, int.MinValue + 4);
 			}
+			// Count
 			if (CombineResultCount > 1) {
 				int countSize = resultItemRect.width / 4;
 				var countRect = new IRect(

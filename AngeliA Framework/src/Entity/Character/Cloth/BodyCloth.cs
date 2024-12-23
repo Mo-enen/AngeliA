@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 namespace AngeliA;
 
 
-public sealed class DefaultBodySuit : BodyCloth {
-	public static readonly int TYPE_ID = typeof(DefaultBodySuit).AngeHash();
-	public DefaultBodySuit () => FillFromSheet(GetType().AngeName());
-}
-
-
-public sealed class ModularBodySuit : BodyCloth, IModularCloth { }
-
-
 public abstract class BodyCloth : Cloth {
 
-	protected sealed override ClothType ClothType => ClothType.Body;
+
+
+
+	#region --- VAR ---
+
+
+	// Api
+	public sealed override ClothType ClothType => ClothType.Body;
 	public override bool SpriteLoaded => SpriteBody.IsValid;
+	protected virtual int TwistShiftTopAmount => 300;
+	protected virtual int LocalZ => 7;
+
+	// Data
 	private OrientedSprite SpriteBody;
 	private OrientedSprite SpriteCape;
 	private OrientedSprite SpriteShoulderLeft;
@@ -28,8 +30,24 @@ public abstract class BodyCloth : Cloth {
 	private OrientedSprite SpriteUpperArmRight;
 	private OrientedSprite SpriteLowerArmLeft;
 	private OrientedSprite SpriteLowerArmRight;
-	protected virtual int TwistShiftTopAmount => 300;
-	protected virtual int LocalZ => 7;
+
+
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
 
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
@@ -44,12 +62,6 @@ public abstract class BodyCloth : Cloth {
 		return SpriteLoaded;
 	}
 
-	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
-		if (renderer.SuitBody != 0 && Pool.TryGetValue(renderer.SuitBody, out var cloth)) {
-			cloth.DrawCloth(renderer);
-		}
-	}
-
 	public override void DrawCloth (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
@@ -58,6 +70,24 @@ public abstract class BodyCloth : Cloth {
 		DrawClothForShoulder(renderer, SpriteShoulderLeft, SpriteShoulderRight);
 		DrawClothForUpperArm(renderer, SpriteUpperArmLeft, SpriteUpperArmRight);
 		DrawClothForLowerArm(renderer, SpriteLowerArmLeft, SpriteLowerArmRight);
+	}
+
+	public override void DrawCoverGizmos (IRect rect, Color32 tint, int z) {
+		// Body
+		if (SpriteBody.TryGetSpriteForGizmos(out var bodySP)) {
+
+
+		}
+
+
+	}
+
+
+	// Static Draw
+	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.SuitBody != 0 && Pool.TryGetValue(renderer.SuitBody, out var cloth)) {
+			cloth.DrawCloth(renderer);
+		}
 	}
 
 	public static void DrawClothForBody (PoseCharacterRenderer renderer, OrientedSprite clothSprite, int localZ, int twistShiftTopAmount) {
@@ -238,5 +268,20 @@ public abstract class BodyCloth : Cloth {
 		}
 
 	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+
+	#endregion
+
+
+
 
 }

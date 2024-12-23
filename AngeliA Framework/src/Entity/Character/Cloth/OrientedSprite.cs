@@ -97,5 +97,6 @@ public struct OrientedSprite {
 			return false;
 		}
 	}
+	public readonly bool TryGetSpriteForGizmos (out AngeSprite sprite) => Renderer.TryGetSpriteForGizmos(GetID(true, true), out sprite);
 
 }

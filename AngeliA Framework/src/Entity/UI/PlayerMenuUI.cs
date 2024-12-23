@@ -756,7 +756,7 @@ public class PlayerMenuUI : EntityUI {
 		}
 
 		// Icon
-		DrawItemIcon(itemRect, itemID, Color32.WHITE, int.MinValue + 4);
+		DrawItemIcon(itemRect, item, Color32.WHITE, int.MinValue + 4);
 
 		if (!stackAsUsage) {
 			// Count
@@ -921,7 +921,7 @@ public class PlayerMenuUI : EntityUI {
 
 		// Icon
 		if (!equipAvailable || !interactable) enableTint.a = 96;
-		DrawItemIcon(itemRect, itemID, enableTint, int.MinValue + 3);
+		DrawItemIcon(itemRect, item, enableTint, int.MinValue + 3);
 
 		if (stackAsUsage) {
 			// Usage 
@@ -1278,15 +1278,7 @@ public class PlayerMenuUI : EntityUI {
 
 
 	// Util
-	private static void DrawItemIcon (IRect rect, int id, Color32 tint, int z) {
-		if (id == 0) return;
-		if (!Renderer.TryGetSpriteForGizmos(id, out var sprite)) {
-			Renderer.TryGetSprite(Const.PIXEL, out sprite, false);
-			rect = rect.Shrink(rect.width / 6);
-		}
-		int iconShrink = Unify(7);
-		Renderer.Draw(sprite, rect.Shrink(iconShrink).Fit(sprite), tint, z);
-	}
+	private static void DrawItemIcon (IRect rect, Item item, Color32 tint, int z) => item?.DrawItem(rect.Shrink(Unify(7)), tint, z);
 
 
 	private void DrawItemCount (IRect rect, int number) {

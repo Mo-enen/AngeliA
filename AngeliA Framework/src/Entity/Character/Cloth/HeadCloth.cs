@@ -7,15 +7,9 @@ using System.Threading.Tasks;
 namespace AngeliA;
 
 
-public enum HatFrontMode { FrontOfHead, BackOfHead, AlwaysFrontOfHead, AlwaysBackOfHead, }
-
-
-public sealed class ModularHeadSuit : HeadCloth, IModularCloth { }
-
-
 public abstract class HeadCloth : Cloth {
 
-	protected sealed override ClothType ClothType => ClothType.Head;
+	public sealed override ClothType ClothType => ClothType.Head;
 	public override bool SpriteLoaded => SpriteHead.IsValid;
 	protected virtual HatFrontMode Front => HatFrontMode.FrontOfHead;
 	private OrientedSprite SpriteHead;

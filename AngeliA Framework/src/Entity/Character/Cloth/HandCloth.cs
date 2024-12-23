@@ -3,11 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public sealed class ModularHandSuit : HandCloth, IModularCloth { }
-
 public abstract class HandCloth : Cloth {
 
-	protected sealed override ClothType ClothType => ClothType.Hand;
+	public sealed override ClothType ClothType => ClothType.Hand;
 	public override bool SpriteLoaded => SpriteHandLeft.IsValid || SpriteHandRight.IsValid;
 	private OrientedSprite SpriteHandLeft;
 	private OrientedSprite SpriteHandRight;

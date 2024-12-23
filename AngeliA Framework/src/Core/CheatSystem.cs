@@ -77,7 +77,6 @@ public static class CheatSystem {
 		// Update Input
 		bool changed = false;
 		foreach (char c in Game.ForAllPressingCharsThisFrame()) {
-			if (!char.IsLetter(c) && !char.IsDigit(c)) continue;
 			if (CheatInput.Length == CheatInput.Capacity) {
 				CheatInput.TryPopTail(out _);
 			}

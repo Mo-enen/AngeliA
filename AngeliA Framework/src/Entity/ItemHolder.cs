@@ -200,29 +200,18 @@ public class ItemHolder : Rigidbody {
 
 		if (!Active || ItemCount <= 0 || ItemID == 0) return;
 
-		int renderingOffsetX = 0;
-		int redneringSizeOffset = 0;
+		var _item = ItemSystem.GetItem(ItemID);
 
 		// Draw
 		var rect = new IRect(
 			X + Width / 2 - ITEM_RENDER_SIZE / 2,
 			Y, ITEM_RENDER_SIZE, ITEM_RENDER_SIZE
 		);
-		var renderingRect = rect.Shift(renderingOffsetX, 0).Expand(redneringSizeOffset);
-		Cell cell;
-		if (Renderer.TryGetSprite(ItemID, out var sprite, true) ||
-			Renderer.TryGetSpriteFromGroup(ItemID, 0, out sprite)
-		) {
-			cell = Renderer.Draw(sprite, renderingRect.Fit(sprite), z: RENDERING_Z);
-		} else {
-			cell = Renderer.Draw(BuiltInSprite.ICON_ENTITY, renderingRect, z: RENDERING_Z);
+		using (new EnvironmentShadowScope()) {
+			_item.DrawItem(rect, Color32.WHITE, RENDERING_Z);
 		}
 
-		// Shadow
-		FrameworkUtil.DrawEnvironmentShadow(cell);
-
 		// Update
-		var _item = ItemSystem.GetItem(ItemID);
 		if (_item is Item item) {
 			item?.OnItemUpdate_FromItemHolder(this, ItemCount);
 		}

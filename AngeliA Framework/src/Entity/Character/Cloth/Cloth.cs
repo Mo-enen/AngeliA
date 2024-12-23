@@ -3,28 +3,39 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public enum ClothType { Head, Body, Hand, Hip, Foot, }
-
-internal interface IModularCloth { }
-
 public abstract class Cloth {
+
+
+
+
+	#region --- VAR ---
 
 
 	// Const
 	private static readonly Cell[] SINGLE_CELL = [Cell.EMPTY];
 
 	// Api
-	public int TypeID { get; init; }
-	protected abstract ClothType ClothType { get; }
+	public static bool ClothSystemReady { get; private set; } = false;
+	public int ClothID { get; private set; }
+	public string ClothName { get; private set; }
+	public abstract ClothType ClothType { get; }
 	public virtual bool SpriteLoaded => true;
 	public int SheetIndex { get; private set; } = -1;
+	public int CoverSpriteID { get; private set; }
 
 	// Data
 	protected static readonly Dictionary<int, Cloth> Pool = [];
 	protected static Dictionary<int, int>[] DefaultPool = null;
 
 
-	// MSG
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
 	[OnGameInitialize(-129)]
 	internal static TaskResult OnGameInitializeCloth () {
 
@@ -36,17 +47,20 @@ public abstract class Cloth {
 		foreach (var type in clothType.AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not Cloth cloth) continue;
 			cloth.FillFromSheet(type.AngeName());
-			int suitID = type.AngeHash();
-			Pool.TryAdd(suitID, cloth);
+			cloth.ClothName = type.AngeName();
+			cloth.ClothID = cloth.ClothName.AngeHash();
+			Pool.TryAdd(cloth.ClothID, cloth);
 		}
 
 		// Get Modular Types
 		int clothTypeCount = typeof(ClothType).EnumLength();
 		var modularTypes = new System.Type[clothTypeCount];
+		var modularNames = new string[clothTypeCount];
 		foreach (var mType in typeof(IModularCloth).AllClassImplemented()) {
 			if (System.Activator.CreateInstance(mType) is not Cloth cloth) continue;
 			int typeIndex = (int)cloth.ClothType;
 			modularTypes[typeIndex] = mType;
+			modularNames[typeIndex] = (cloth as IModularCloth).ModularName;
 		}
 
 		// Init Default Pool
@@ -59,27 +73,37 @@ public abstract class Cloth {
 				var clType = modularTypes[i];
 				var dPool = DefaultPool[i];
 				if (dPool.ContainsKey(charID)) continue;
-				if (System.Activator.CreateInstance(clType) is not Cloth temp) continue;
-				if (!temp.FillFromSheet(cName)) continue;
-				int sID = $"{cName}.{clType.AngeName()}".AngeHash();
-				Pool.TryAdd(sID, temp);
+				if (System.Activator.CreateInstance(clType) is not Cloth cloth) continue;
+				if (!cloth.FillFromSheet(cName)) continue;
+				string sName = $"{cName}.{modularNames[i]}";
+				int sID = sName.AngeHash();
+				cloth.ClothID = sID;
+				cloth.ClothName = sName;
+				Pool.TryAdd(sID, cloth);
 				dPool.Add(charID, sID);
 			}
 		}
 
+		ClothSystemReady = true;
 		return TaskResult.End;
 
 	}
 
 
-	public Cloth () => TypeID = GetType().AngeHash();
-
-
 	public abstract void DrawCloth (PoseCharacterRenderer renderer);
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
 
 
 	public virtual bool FillFromSheet (string name) {
 		SheetIndex = Renderer.CurrentSheetIndex;
+		CoverSpriteID = $"{name}.Cover".AngeHash();
 		return true;
 	}
 
@@ -98,6 +122,11 @@ public abstract class Cloth {
 			return true;
 		}
 		return false;
+	}
+
+
+	public static IEnumerable<KeyValuePair<int, Cloth>> ForAllCloth () {
+		foreach (var pair in Pool) yield return pair;
 	}
 
 
@@ -173,10 +202,33 @@ public abstract class Cloth {
 	}
 
 
-	public string GetDisplayName () {
-		string typeName = (GetType().DeclaringType ?? GetType()).AngeName();
-		return $"{Language.Get($"{typeName}.{ClothType}".AngeHash(), Util.GetDisplayName(typeName))}";
+	// UI
+	public string GetDisplayName (out int languageID) {
+		string typeName = GetType().AngeName();
+		languageID = $"{typeName}.{ClothType}".AngeHash();
+		return $"{Language.Get(languageID, Util.GetDisplayName(typeName))}";
 	}
+
+
+	public virtual void DrawCoverGizmos (IRect rect, Color32 tint, int z) {
+		if (Renderer.TryGetSpriteForGizmos(CoverSpriteID, out var sprite)) {
+			Renderer.Draw(sprite, rect, tint, z);
+		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+
+	#endregion
+
+
 
 
 }

@@ -1058,7 +1058,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		foreach (var (pat, name) in Util.ForEachPlayerCustomizeSpritePattern(Suit_Heads, ""))
 			Patterns_Suit_Head.Add(new PatternUnit() {
 				Data = pat,
-				DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName() : Util.GetDisplayName(name),
+				DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName(out _) : Util.GetDisplayName(name),
 				PatternName = name,
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_Head.Count == 0,
 			});
@@ -1067,7 +1067,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		foreach (var (pat, name) in Util.ForEachPlayerCustomizeSpritePattern(Suit_BodyShoulderArmArms, ""))
 			Patterns_Suit_BodyShoulderArmArm.Add(new PatternUnit() {
 				Data = pat,
-				DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName() : Util.GetDisplayName(name),
+				DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName(out _) : Util.GetDisplayName(name),
 				PatternName = name,
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_BodyShoulderArmArm.Count == 0,
 			});
@@ -1076,7 +1076,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		foreach (var (pat, name) in Util.ForEachPlayerCustomizeSpritePattern(Suit_HipSkirtLegLegs, ""))
 			Patterns_Suit_HipSkirtLegLeg.Add(new PatternUnit() {
 				Data = pat,
-				DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName() : Util.GetDisplayName(name),
+				DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName(out _) : Util.GetDisplayName(name),
 				PatternName = name,
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_HipSkirtLegLeg.Count == 0,
 			});
@@ -1085,7 +1085,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		foreach (var (pat, name) in Util.ForEachPlayerCustomizeSpritePattern(Suit_Hands, ""))
 			Patterns_Suit_Hand.Add(new PatternUnit() {
 				Data = pat,
-				DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName() : Util.GetDisplayName(name),
+				DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName(out _) : Util.GetDisplayName(name),
 				PatternName = name,
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_Hand.Count == 0,
 			});
@@ -1094,7 +1094,7 @@ public abstract class PlayerCustomizer : MiniGame, IActionTarget {
 		foreach (var (pat, name) in Util.ForEachPlayerCustomizeSpritePattern(Suit_Foots, ""))
 			Patterns_Suit_Foot.Add(new PatternUnit() {
 				Data = pat,
-				DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName() : Util.GetDisplayName(name),
+				DisplayName = Cloth.TryGetCloth(pat.x, out cloth) ? cloth.GetDisplayName(out _) : Util.GetDisplayName(name),
 				PatternName = name,
 				IsEmpty = string.IsNullOrEmpty(name) && Patterns_Suit_Foot.Count == 0,
 			});
