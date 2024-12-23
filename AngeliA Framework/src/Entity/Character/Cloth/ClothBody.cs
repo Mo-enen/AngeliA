@@ -72,16 +72,57 @@ public abstract class BodyCloth : Cloth {
 		DrawClothForLowerArm(renderer, SpriteLowerArmLeft, SpriteLowerArmRight);
 	}
 
-	public override void DrawCoverGizmos (IRect rect, Color32 tint, int z) {
+	public override void DrawClothGizmos (IRect rect, Color32 tint, int z) {
+
+		int limbSize = rect.width / 8;
+		int limbShift = limbSize / 4;
+
 		// Body
+		var bodyRect = rect.CornerInside(Alignment.TopMid, rect.width - limbSize * 2, rect.height);
 		if (SpriteBody.TryGetSpriteForGizmos(out var bodySP)) {
-
-
+			Renderer.Draw(bodySP, bodyRect, tint, z);
+			bodyRect.y -= bodyRect.height * Const.ART_SCALE / bodySP.GlobalHeight;
 		}
 
+		// Shoulder
+		int shoulderHeight = rect.height / 3;
+		var shoulderRectL = bodyRect.CornerOutside(Alignment.TopLeft, limbSize, shoulderHeight).Shift(0, -shoulderHeight);
+		var shoulderRectR = bodyRect.CornerOutside(Alignment.TopRight, limbSize, shoulderHeight).Shift(0, -shoulderHeight);
+		if (SpriteShoulderLeft.TryGetSpriteForGizmos(out var shoulderSpL)) {
+			Renderer.Draw(shoulderSpL, shoulderRectL, tint, z);
+		}
+		if (SpriteShoulderRight.TryGetSpriteForGizmos(out var shoulderSpR)) {
+			Renderer.Draw(shoulderSpR, shoulderRectR.GetFlipHorizontal(), tint, z);
+		}
+		shoulderRectL.yMin += shoulderRectL.height / 2;
+		shoulderRectR.yMin += shoulderRectR.height / 2;
+
+		// Upper Arm
+		int armHeight = rect.height / 3;
+		var uArmRectL = shoulderRectL.EdgeOutside(Direction4.Down, armHeight);
+		var uArmRectR = shoulderRectR.EdgeOutside(Direction4.Down, armHeight);
+		uArmRectL.x -= limbShift;
+		uArmRectR.x += limbShift;
+		if (SpriteUpperArmLeft.TryGetSpriteForGizmos(out var uArmSpL)) {
+			Renderer.Draw(uArmSpL, uArmRectL, tint, z);
+		}
+		if (SpriteUpperArmRight.TryGetSpriteForGizmos(out var uArmSpR)) {
+			Renderer.Draw(uArmSpR, uArmRectR.GetFlipHorizontal(), tint, z);
+		}
+
+		// Lower Arm
+		var lArmRectL = uArmRectL.EdgeOutside(Direction4.Down, armHeight);
+		var lArmRectR = uArmRectR.EdgeOutside(Direction4.Down, armHeight);
+		lArmRectL.x -= limbShift * 2;
+		lArmRectR.x += limbShift * 2;
+		if (SpriteLowerArmLeft.TryGetSpriteForGizmos(out var lArmSpL)) {
+			Renderer.Draw(lArmSpL, lArmRectL, tint, z);
+		}
+		if (SpriteLowerArmRight.TryGetSpriteForGizmos(out var lArmSpR)) {
+			Renderer.Draw(lArmSpR, lArmRectR.GetFlipHorizontal(), tint, z);
+		}
 
 	}
-
 
 	// Static Draw
 	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {

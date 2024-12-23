@@ -4,14 +4,13 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 [EntityAttribute.ExcludeInMapEditor]
-public sealed class ClothItem (int id) : Item {
+public sealed class ClothItem (int id) : NonStackableItem {
 
-	public override int MaxStackCount => 32;
 	public int ClothID { get; init; } = id;
 
 	public override void DrawItem (IRect rect, Color32 tint, int z) {
 		if (Cloth.TryGetCloth(ClothID, out var cloth)) {
-			cloth.DrawCoverGizmos(rect, tint, z);
+			cloth.DrawClothGizmos(rect, tint, z);
 		} else {
 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, rect, z: z);
 		}
@@ -38,7 +37,7 @@ public sealed class ClothItem (int id) : Item {
 				rendering.SuitFoot.BaseValue = ClothID;
 				break;
 		}
-		rendering.SaveCharacterToConfig();
+		rendering.SaveCharacterToConfig(saveToFile: true);
 		return true;
 	}
 

@@ -7,13 +7,20 @@ using System.Threading.Tasks;
 namespace AngeliA;
 
 
+
+
 public abstract class HeadCloth : Cloth {
 
+	// SUB
+	public enum HatFrontMode { FrontOfHead, BackOfHead, AlwaysFrontOfHead, AlwaysBackOfHead, }
+
+	// VAR
 	public sealed override ClothType ClothType => ClothType.Head;
 	public override bool SpriteLoaded => SpriteHead.IsValid;
 	protected virtual HatFrontMode Front => HatFrontMode.FrontOfHead;
 	private OrientedSprite SpriteHead;
 
+	// MSG
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
 		SpriteHead = new OrientedSprite(name, "HeadSuit");
@@ -30,6 +37,12 @@ public abstract class HeadCloth : Cloth {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
 		DrawClothForHead(renderer, SpriteHead, Front);
+	}
+
+	public override void DrawClothGizmos (IRect rect, Color32 tint, int z) {
+		if (SpriteHead.TryGetSpriteForGizmos(out var headSP)) {
+			Renderer.Draw(headSP, rect.Fit(headSP), tint, z);
+		}
 	}
 
 	public static void DrawClothForHead (PoseCharacterRenderer renderer, OrientedSprite clothSprite, HatFrontMode frontMode) {

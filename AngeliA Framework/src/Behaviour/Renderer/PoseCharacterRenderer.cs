@@ -712,7 +712,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	}
 
 
-	public void SaveCharacterToConfig () {
+	public void SaveCharacterToConfig (bool saveToFile = false) {
 
 		if (!ConfigPool_Rendering.TryGetValue(TargetCharacter.TypeID, out var config)) return;
 
@@ -751,6 +751,13 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		config.SuitHip = SuitHip.BaseValue;
 		config.SuitHand = SuitHand.BaseValue;
 		config.SuitFoot = SuitFoot.BaseValue;
+
+		// File
+		if (saveToFile) {
+			string renderRoot = Universe.BuiltIn.SlotCharacterRenderingConfigRoot;
+			string path = Util.CombinePaths(renderRoot, $"{TargetCharacter.GetType().AngeName()}.json");
+			JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
+		}
 
 	}
 

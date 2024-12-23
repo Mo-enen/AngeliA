@@ -531,17 +531,11 @@ public class PlayerMenuUI : EntityUI {
 			HoveringItemUiRect;
 
 		// Item Icon
-		if (
-			Renderer.TryGetSprite(TakingID, out var iconSp, true) ||
-			Renderer.TryGetSpriteFromGroup(TakingID, 0, out iconSp)
-		) {
-			var fittingRect = new IRect(itemRect.x + size / 2, itemRect.y, size, size).Fit(iconSp);
-			Renderer.Draw(
-				iconSp,
-				fittingRect.x, fittingRect.y, 500, 500,
-				Game.GlobalFrame.PingPong(30) - 15,
-				fittingRect.width, fittingRect.height, Color32.WHITE, int.MaxValue
-			);
+		if (ItemSystem.GetItem(TakingID) is Item takingItem) {
+			var _rect = new IRect(itemRect.x, itemRect.y - size / 6, size, size);
+			using (new RotateCellScope(Game.GlobalFrame.PingPong(30) - 15, _rect.CenterX(), _rect.CenterY())) {
+				takingItem.DrawItem(_rect, Color32.WHITE, int.MaxValue);
+			}
 		}
 
 		// Item Count

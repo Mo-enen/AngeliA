@@ -58,6 +58,71 @@ public abstract class HipCloth : Cloth {
 		DrawDoubleClothTailsOnHip(rendering, SpriteClothTail);
 	}
 
+	public override void DrawClothGizmos (IRect rect, Color32 tint, int z) {
+
+		int legHeight = rect.height / 4;
+		int limbSize = rect.width / 8;
+		int limbShift = -limbSize / 8;
+
+		// Hip
+		IRect hipRect;
+		switch (HipType) {
+			default:
+			case HipClothType.Pants:
+				hipRect = rect.CornerInside(Alignment.TopMid, rect.width - limbSize * 2, rect.height / 3);
+				legHeight = rect.height / 3;
+				if (!SpriteHip.TryGetSpriteForGizmos(out var hipSP)) break;
+				hipRect.x = hipRect.CenterX() - limbSize * 3 / 2;
+				hipRect.width = limbSize * 3;
+				Renderer.Draw(hipSP, hipRect, tint, z);
+				break;
+			case HipClothType.Skirt:
+				hipRect = rect.CornerInside(Alignment.TopMid, rect.width - limbSize * 2, rect.height / 2);
+				if (!SpriteHip.TryGetSpriteGroup(true, true, out var group)) break;
+				int maxWidth = 0;
+				for (int i = 0; i < group.Count.LessOrEquel(3); i++) {
+					maxWidth = Util.Max(maxWidth, group.Sprites[i].GlobalWidth);
+				}
+				for (int i = 0; i < group.Count.LessOrEquel(3); i++) {
+					var sp = group.Sprites[i];
+					var _rect = hipRect.PartVertical(2 - i, 3);
+					int x = _rect.CenterX();
+					_rect.width = _rect.width * sp.GlobalWidth / maxWidth;
+					Renderer.Draw(
+						sp,
+						x, _rect.y, 500, 0, 0, _rect.width, _rect.height,
+						tint, z
+					);
+				}
+				break;
+		}
+
+		// Upper Leg
+		var uLegRectL = hipRect.CornerOutside(Alignment.BottomMid, limbSize, legHeight);
+		var uLegRectR = hipRect.CornerOutside(Alignment.BottomMid, limbSize, legHeight);
+		uLegRectL.x -= limbSize + limbShift;
+		uLegRectR.x += limbSize + limbShift;
+		if (SpriteUpperLegLeft.TryGetSpriteForGizmos(out var uLegSpL)) {
+			Renderer.Draw(uLegSpL, uLegRectL, tint, z);
+		}
+		if (SpriteUpperLegRight.TryGetSpriteForGizmos(out var uLegSpR)) {
+			Renderer.Draw(uLegSpR, uLegRectR.GetFlipHorizontal(), tint, z);
+		}
+
+		// Lower Arm
+		var lLegRectL = uLegRectL.EdgeOutside(Direction4.Down, legHeight);
+		var lLegRectR = uLegRectR.EdgeOutside(Direction4.Down, legHeight);
+		lLegRectL.x -= limbShift * 2;
+		lLegRectR.x += limbShift * 2;
+		if (SpriteLowerLegLeft.TryGetSpriteForGizmos(out var lLegSpL)) {
+			Renderer.Draw(lLegSpL, lLegRectL, tint, z);
+		}
+		if (SpriteLowerLegRight.TryGetSpriteForGizmos(out var lLegSpR)) {
+			Renderer.Draw(lLegSpR, lLegRectR.GetFlipHorizontal(), tint, z);
+		}
+
+	}
+
 	public static void DrawClothAsPants (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 1) {
 
 		var hip = rendering.Hip;

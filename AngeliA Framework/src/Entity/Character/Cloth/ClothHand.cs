@@ -29,6 +29,12 @@ public abstract class HandCloth : Cloth {
 		DrawClothForHand(renderer, SpriteHandLeft, SpriteHandRight);
 	}
 
+	public override void DrawClothGizmos (IRect rect, Color32 tint, int z) {
+		if (SpriteHandRight.TryGetSpriteForGizmos(out var handSP)) {
+			Renderer.Draw(handSP, rect.Fit(handSP), tint, z);
+		}
+	}
+
 	public static void DrawClothForHand (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
 		if (spriteLeft.IsValid) {
 			spriteLeft.TryGetSprite(renderer.HandL.FrontSide, renderer.HandL.Width > 0, renderer.CurrentAnimationFrame, out var sprite);

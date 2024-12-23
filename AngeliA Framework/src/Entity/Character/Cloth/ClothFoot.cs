@@ -30,6 +30,12 @@ public abstract class FootCloth : Cloth {
 		DrawClothForFoot(renderer, SpriteFootLeft, SpriteFootRight);
 	}
 
+	public override void DrawClothGizmos (IRect rect, Color32 tint, int z) {
+		if (SpriteFootRight.TryGetSpriteForGizmos(out var footSP)) {
+			Renderer.Draw(footSP, rect.Fit(footSP), tint, z);
+		}
+	}
+
 	public static void DrawClothForFoot (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
 		if (spriteLeft.IsValid) {
 			spriteLeft.TryGetSprite(renderer.FootL.FrontSide, renderer.FootL.Width > 0, renderer.CurrentAnimationFrame, out var sprite);

@@ -691,6 +691,16 @@ public static class Extension {
 		rect.y += rect.height;
 		rect.height = -rect.height;
 	}
+	public static IRect GetFlipHorizontal (this ref IRect rect) {
+		rect.x += rect.width;
+		rect.width = -rect.width;
+		return rect;
+	}
+	public static IRect GetFlipVertical (this ref IRect rect) {
+		rect.y += rect.height;
+		rect.height = -rect.height;
+		return rect;
+	}
 	public static void FlipNegative (this ref IRect rect) {
 		if (rect.width < 0) {
 			rect.x += rect.width;
@@ -880,9 +890,15 @@ public static class Extension {
 		return rect;
 	}
 	[MethodImpl(INLINE)]
-	public static IRect Part (this IRect rect, int index, int count) {
+	public static IRect PartHorizontal (this IRect rect, int index, int count) {
 		rect.width /= count;
 		rect.x += index * rect.width;
+		return rect;
+	}
+	[MethodImpl(INLINE)]
+	public static IRect PartVertical (this IRect rect, int index, int count) {
+		rect.height /= count;
+		rect.y += index * rect.height;
 		return rect;
 	}
 	[MethodImpl(INLINE)]

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+public enum ClothType { Head, Body, Hand, Hip, Foot, }
+
 public abstract class Cloth {
 
 
@@ -21,7 +23,6 @@ public abstract class Cloth {
 	public abstract ClothType ClothType { get; }
 	public virtual bool SpriteLoaded => true;
 	public int SheetIndex { get; private set; } = -1;
-	public int CoverSpriteID { get; private set; }
 
 	// Data
 	protected static readonly Dictionary<int, Cloth> Pool = [];
@@ -93,6 +94,13 @@ public abstract class Cloth {
 	public abstract void DrawCloth (PoseCharacterRenderer renderer);
 
 
+	public virtual void DrawClothGizmos (IRect rect, Color32 tint, int z) {
+		if (Renderer.TryGetSpriteForGizmos(ClothID, out var sprite)) {
+			Renderer.Draw(sprite, rect.Fit(sprite), tint, z);
+		}
+	}
+
+
 	#endregion
 
 
@@ -103,7 +111,6 @@ public abstract class Cloth {
 
 	public virtual bool FillFromSheet (string name) {
 		SheetIndex = Renderer.CurrentSheetIndex;
-		CoverSpriteID = $"{name}.Cover".AngeHash();
 		return true;
 	}
 
@@ -207,13 +214,6 @@ public abstract class Cloth {
 		string typeName = GetType().AngeName();
 		languageID = $"{typeName}.{ClothType}".AngeHash();
 		return $"{Language.Get(languageID, Util.GetDisplayName(typeName))}";
-	}
-
-
-	public virtual void DrawCoverGizmos (IRect rect, Color32 tint, int z) {
-		if (Renderer.TryGetSpriteForGizmos(CoverSpriteID, out var sprite)) {
-			Renderer.Draw(sprite, rect, tint, z);
-		}
 	}
 
 
