@@ -358,9 +358,14 @@ public sealed class WorldSquad : IBlockSquad {
 	}
 
 
-	private void DrawEntity (int id, int unitX, int unitY, int unitZ) => Stage.SpawnEntityFromWorld(id, unitX, unitY, unitZ);
+	private void DrawEntity (int id, int unitX, int unitY, int unitZ) {
+		Stage.SpawnEntityFromWorld(id, unitX, unitY, unitZ, out bool requireDrawAsBlock);
+		if (requireDrawAsBlock) {
+			DrawLevelBlock(id, unitX, unitY);
+		}
+	}
 
-
+	
 	private void DrawBehind (int id, int unitX, int unitY, bool fixRatio) {
 
 		if (

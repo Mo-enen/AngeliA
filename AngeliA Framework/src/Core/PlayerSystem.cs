@@ -697,7 +697,7 @@ public static class PlayerSystem {
 		if (!Enable) return 0;
 		System.Type result = null;
 		int currentPriority = int.MinValue;
-		foreach (var (type, attribute) in Util.AllClassWithAttribute<EntityAttribute.DefaultSelectPlayerAttribute>()) {
+		foreach (var (type, attribute) in Util.AllClassWithAttribute<EntityAttribute.DefaultSelectedPlayerAttribute>()) {
 			if (type.IsSubclassOf(typeof(Character)) && attribute.Priority >= currentPriority) {
 				result = type;
 				currentPriority = attribute.Priority;

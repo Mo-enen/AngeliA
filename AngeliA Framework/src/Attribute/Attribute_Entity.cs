@@ -8,7 +8,7 @@ public static class EntityAttribute {
 
 	// Character
 	[AttributeUsage(AttributeTargets.Class)]
-	public class DefaultSelectPlayerAttribute (int priority = 0) : Attribute {
+	public class DefaultSelectedPlayerAttribute (int priority = 0) : Attribute {
 		public int Priority = priority;
 	}
 
@@ -48,7 +48,9 @@ public static class EntityAttribute {
 
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public class DontSpawnFromWorld : Attribute { }
+	public class DontSpawnFromWorld (bool drawAsBlock = false) : Attribute {
+		public bool DrawAsBlock = drawAsBlock;
+	}
 
 
 	[AttributeUsage(AttributeTargets.Class)]
@@ -71,12 +73,6 @@ public static class EntityAttribute {
 
 	[AttributeUsage(AttributeTargets.Class)]
 	public class RepositionWhenInactiveAttribute : Attribute { }
-
-
-	[AttributeUsage(AttributeTargets.Class)]
-	public class SpawnFromLevelBlock (string levelBlockName) : Attribute {
-		public int LevelID = levelBlockName.AngeHash();
-	}
 
 
 }

@@ -52,6 +52,7 @@ public static class Stage {
 		public bool DespawnOutOfRange = true;
 		public bool UpdateOutOfRange = false;
 		public bool RequireReposition = false;
+		public bool DrawAsBlock = false;
 		public int Order = 0;
 		public int Layer = 0;
 		private int InstanceCount = 0;
@@ -203,6 +204,7 @@ public static class Stage {
 				DespawnOutOfRange = att_DontDespawn == null,
 				UpdateOutOfRange = att_ForceUpdate != null,
 				DontSpawnFromWorld = att_DontSpawnFromWorld != null,
+				DrawAsBlock = att_DontSpawnFromWorld != null && att_DontSpawnFromWorld.DrawAsBlock,
 				Order = att_Order != null ? att_Order.Order : 0,
 				RequireReposition = att_Repos != null,
 				Layer = layer,
@@ -542,11 +544,16 @@ public static class Stage {
 	}
 
 
-	public static Entity SpawnEntityFromWorld (int typeID, int unitX, int unitY, int unitZ, bool forceSpawn = false) {
+	public static Entity SpawnEntityFromWorld (int typeID, int unitX, int unitY, int unitZ, bool forceSpawn = false) => SpawnEntityFromWorld(typeID, unitX, unitY, unitZ, out _, forceSpawn);
+	public static Entity SpawnEntityFromWorld (int typeID, int unitX, int unitY, int unitZ, out bool requireDrawAsBlock, bool forceSpawn = false) {
+		requireDrawAsBlock = false;
 		var uPos = new Int3(unitX, unitY, unitZ);
 		if (!forceSpawn && StagedEntityHash.Contains(uPos)) return null;
 		if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
-		if (stack.DontSpawnFromWorld) return null;
+		if (stack.DontSpawnFromWorld) {
+			requireDrawAsBlock = true;
+			return null;
+		}
 		int x = unitX * Const.CEL;
 		int y = unitY * Const.CEL;
 		if (!forceSpawn && AntiSpawnRect.Overlaps(new IRect(x, y, Const.CEL, Const.CEL))) return null;
