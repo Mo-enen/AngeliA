@@ -348,20 +348,20 @@ public partial class PixelEditor {
 		bool noStep = Input.HoldingAlt;
 
 		var cell = Renderer.Draw(BuiltInSprite.COLOR_HUE_ALT, default);
-		int newH = DrawSlider(239045, rect.Part(0, 4).Shrink(padding), "H", ColorAdjustData.h, -180, 180, step: noStep ? 0 : 10, out var sliderRect);
+		int newH = DrawSlider(239045, rect.PartHorizontal(0, 4).Shrink(padding), "H", ColorAdjustData.h, -180, 180, step: noStep ? 0 : 10, out var sliderRect);
 		cell.SetRect(sliderRect);
 
 		cell = Renderer.Draw(BuiltInSprite.COLOR_WHITE_BAR, sliderRect, Color32.RED_BETTER);
-		int newS = DrawSlider(239046, rect.Part(1, 4).Shrink(padding), "S", ColorAdjustData.s, -100, 100, step: noStep ? 0 : 10, out sliderRect);
+		int newS = DrawSlider(239046, rect.PartHorizontal(1, 4).Shrink(padding), "S", ColorAdjustData.s, -100, 100, step: noStep ? 0 : 10, out sliderRect);
 		cell.SetRect(sliderRect);
 
 		cell = Renderer.Draw(BuiltInSprite.COLOR_WHITE_BAR, sliderRect, Color32.WHITE);
-		int newV = DrawSlider(239047, rect.Part(2, 4).Shrink(padding), "V", ColorAdjustData.v, -100, 100, step: noStep ? 0 : 10, out sliderRect);
+		int newV = DrawSlider(239047, rect.PartHorizontal(2, 4).Shrink(padding), "V", ColorAdjustData.v, -100, 100, step: noStep ? 0 : 10, out sliderRect);
 		cell.SetRect(sliderRect);
 
 		var chCell = Renderer.Draw(BuiltInSprite.CHECKER_BOARD_8, sliderRect, Color32.WHITE);
 		cell = Renderer.Draw(BuiltInSprite.COLOR_WHITE_BAR, sliderRect, Color32.WHITE);
-		int newA = DrawSlider(239048, rect.Part(3, 4).Shrink(padding), "A", ColorAdjustData.a, -255, 255, step: noStep ? 0 : 5, out sliderRect);
+		int newA = DrawSlider(239048, rect.PartHorizontal(3, 4).Shrink(padding), "A", ColorAdjustData.a, -255, 255, step: noStep ? 0 : 5, out sliderRect);
 		cell.SetRect(sliderRect);
 		chCell.SetRect(sliderRect);
 

@@ -2,17 +2,28 @@
 using System.Collections.Generic;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 public abstract class TriggerablePlatform : Platform, IUnitable {
 
 	// Api
 	protected virtual IUnitable.UniteMode TriggerMode => IUnitable.UniteMode.Horizontal;
+	protected virtual bool AllowMultipleTrigger => false;
 	protected object TriggeredData { get; set; } = null;
-	int IUnitable.LocalUniteStamp { get; set; }
 	public int LastTriggerFrame { get; private set; } = -1;
+	int IUnitable.LocalUniteStamp { get; set; }
 
 	// MSG
+	[ButtonOperator]
+	internal static void Operate (IBlockSquad _, Int3 operatorUnitPos, Int3 __) {
+		if (Physics.GetEntity<TriggerablePlatform>(
+			IRect.Point(operatorUnitPos.x.ToGlobal() + Const.HALF, operatorUnitPos.y.ToGlobal() + Const.HALF),
+			PhysicsMask.ENVIRONMENT, null, OperationMode.ColliderAndTrigger
+		) is not TriggerablePlatform platform) return;
+		platform.Trigger();
+	}
+
 	public override void OnActivated () {
 		base.OnActivated();
 		TriggeredData = null;
@@ -23,8 +34,9 @@ public abstract class TriggerablePlatform : Platform, IUnitable {
 
 	// API
 	public virtual void Trigger (object data = null) {
+		if (!AllowMultipleTrigger && LastTriggerFrame >= 0) return;
 		LastTriggerFrame = Game.GlobalFrame;
-		IUnitable.ForAllPartializedEntity<TriggerablePlatform>(
+		IUnitable.ForAllUnitedEntity<TriggerablePlatform>(
 			PhysicsMask.ENVIRONMENT, TypeID, Rect, OperationMode.ColliderAndTrigger, TriggerMode,
 			OnTrigger, data
 		);

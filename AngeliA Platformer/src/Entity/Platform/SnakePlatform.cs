@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 public abstract class SnakePlatform : StepTriggerPlatform, IRouteWalker {
@@ -98,6 +99,8 @@ public abstract class SnakePlatform : StepTriggerPlatform, IRouteWalker {
 
 	public override void Trigger (object data = null) {
 		base.Trigger(data);
+
+		if (!AllowMultipleTrigger && LastTriggerFrame >= 0) return;
 
 		var left = this;
 		var right = this;

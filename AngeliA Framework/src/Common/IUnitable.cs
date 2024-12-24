@@ -9,7 +9,7 @@ public interface IUnitable {
 	public static readonly Pipe<Int2> UnitedPositions = new(1024);
 	public int LocalUniteStamp { get; set; }
 
-	public static void ForAllPartializedEntity<E> (int physicsMask, int entityID, IRect rect, OperationMode mode, UniteMode partialMode, System.Action<E> results, object param = null) where E : IUnitable {
+	public static void ForAllUnitedEntity<E> (int physicsMask, int entityID, IRect rect, OperationMode mode, UniteMode partialMode, System.Action<E> results, object param = null) where E : IUnitable {
 		UniteTempParam = param;
 		int eWidth = rect.width;
 		int eHeight = rect.height;

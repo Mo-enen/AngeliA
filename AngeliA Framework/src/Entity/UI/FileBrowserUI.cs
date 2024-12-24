@@ -4,9 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 [EntityAttribute.StageOrder(4095)]
-[EntityAttribute.Capacity(1, 0)]
-
-
+[EntityAttribute.Capacity(1, 1)]
 public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 

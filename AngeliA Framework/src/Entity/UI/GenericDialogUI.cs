@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 [EntityAttribute.StageOrder(4097)]
+[EntityAttribute.Capacity(1, 1)]
 public class GenericDialogUI : MenuUI {
 
 

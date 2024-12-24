@@ -110,7 +110,7 @@ public abstract class RoutinePlatform : StepTriggerPlatform, IRouteWalker {
 		// Spread Leadership
 		if (RequireSpreadLeadership) {
 			RequireSpreadLeadership = false;
-			IUnitable.ForAllPartializedEntity<RoutinePlatform>(
+			IUnitable.ForAllUnitedEntity<RoutinePlatform>(
 				PhysicsMask.ENVIRONMENT, TypeID, Rect,
 				OperationMode.ColliderAndTrigger, TriggerMode,
 				SetLeader, this
