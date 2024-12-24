@@ -6,10 +6,6 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
-[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = false)]
-public class ButtonOperatorAttribute : System.Attribute { }
-
-
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Button : Entity, IBlockEntity {
 
@@ -21,6 +17,8 @@ public abstract class Button : Entity, IBlockEntity {
 
 	// Const
 	private const int MAX_TRIGGER_DIS = Const.MAP;
+	[OnButtonWireActived] internal static System.Action<IBlockSquad, Int3, int> OnButtonWireActived;
+	[OnButtonOperatorTriggered] internal static System.Action<IBlockSquad, Int3> OnButtonOperatorTriggered;
 
 	// Data
 	private static readonly Dictionary<int, MethodInfo> OperatorPool = [];
@@ -66,7 +64,10 @@ public abstract class Button : Entity, IBlockEntity {
 			OperateParamCache[0] = WorldSquad.Stream;
 			OperateParamCache[1] = opUnitPos;
 			OperateParamCache[2] = btnUnitPos;
-			method?.Invoke(null, OperateParamCache);
+			var result = method?.Invoke(null, OperateParamCache);
+			if (result is not bool bResult || bResult) {
+				OnButtonOperatorTriggered?.Invoke(WorldSquad.Stream, opUnitPos);
+			}
 		}
 	}
 
@@ -88,6 +89,7 @@ public abstract class Button : Entity, IBlockEntity {
 	public virtual void PressButton () {
 		TriggerTaskQueue.Clear();
 		TriggerTaskHash.Clear();
+		int step = 0;
 		var squad = WorldSquad.Stream;
 		int z = Stage.ViewZ;
 		var startPos = new Int2((X + 1).ToUnit(), (Y + 1).ToUnit());
@@ -98,29 +100,33 @@ public abstract class Button : Entity, IBlockEntity {
 			int id = squad.GetBlockAt(pos.x, pos.y, z, BlockType.Entity);
 			if (id == 0) continue;
 			if (pos.x > startPos.x - MAX_TRIGGER_DIS) {
-				Interate(squad, pos.ShiftX(-1), buttonPos, z);
+				Interate(squad, pos.ShiftX(-1), buttonPos, z, step);
 			}
 			if (pos.x < startPos.x + MAX_TRIGGER_DIS) {
-				Interate(squad, pos.ShiftX(1), buttonPos, z);
+				Interate(squad, pos.ShiftX(1), buttonPos, z, step);
 			}
 			if (pos.y > startPos.y - MAX_TRIGGER_DIS) {
-				Interate(squad, pos.ShiftY(-1), buttonPos, z);
+				Interate(squad, pos.ShiftY(-1), buttonPos, z, step);
 			}
 			if (pos.y < startPos.y + MAX_TRIGGER_DIS) {
-				Interate(squad, pos.ShiftY(1), buttonPos, z);
+				Interate(squad, pos.ShiftY(1), buttonPos, z, step);
 			}
+			step++;
 			// Func
-			static void Interate (IBlockSquad _squad, Int2 _pos, Int3 _buttonPos, int _z) {
+			static void Interate (IBlockSquad _squad, Int2 _pos, Int3 _buttonPos, int _z, int step) {
 				if (TriggerTaskHash.Contains(_pos)) return;
 				TriggerTaskHash.Add(_pos);
 				int _id = _squad.GetBlockAt(_pos.x, _pos.y, _z, BlockType.Entity);
+				if (_id == 0) return;
+				var _pos3 = new Int3(_pos.x, _pos.y, _z);
 				// Check for Btn Operators
 				if (OperatorPool.TryGetValue(_id, out var method)) {
-					OperationRequest.Enqueue((method, new Int3(_pos.x, _pos.y, _z), _buttonPos));
+					OperationRequest.Enqueue((method, _pos3, _buttonPos));
 				}
 				// Check for Wire Expand
 				if (IWire.IsWire(_id)) {
 					TriggerTaskQueue.Enqueue(_pos);
+					OnButtonWireActived?.Invoke(_squad, _pos3, step);
 				}
 			}
 		}

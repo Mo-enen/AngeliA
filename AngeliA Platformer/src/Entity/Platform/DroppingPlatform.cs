@@ -9,7 +9,7 @@ public abstract class DroppingPlatform : StepTriggerPlatform {
 
 	// Api
 	protected virtual int InitialDropSpeed => 0;
-	protected virtual int MaxDropSpeed => 96;
+	protected virtual int MaxDropSpeed => 42;
 	protected virtual int DropAcceleration => -3;
 	public bool Dropping { get; private set; }
 

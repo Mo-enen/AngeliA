@@ -16,12 +16,14 @@ public abstract class TriggerablePlatform : Platform, IUnitable {
 
 	// MSG
 	[ButtonOperator]
-	internal static void Operate (IBlockSquad _, Int3 operatorUnitPos, Int3 __) {
+	internal static bool Operate (IBlockSquad _, Int3 operatorUnitPos, Int3 __) {
 		if (Physics.GetEntity<TriggerablePlatform>(
 			IRect.Point(operatorUnitPos.x.ToGlobal() + Const.HALF, operatorUnitPos.y.ToGlobal() + Const.HALF),
 			PhysicsMask.ENVIRONMENT, null, OperationMode.ColliderAndTrigger
-		) is not TriggerablePlatform platform) return;
+		) is not TriggerablePlatform platform) return false;
+		bool result = platform.AllowMultipleTrigger || platform.LastTriggerFrame < 0;
 		platform.Trigger();
+		return result;
 	}
 
 	public override void OnActivated () {
