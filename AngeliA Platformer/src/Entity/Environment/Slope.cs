@@ -86,7 +86,7 @@ public abstract class Slope : Entity, IBlockEntity {
 			// ◿ ◺
 			if (target.VelocityY > 0) return;
 			// Fix Pos
-			target.MakeGrounded(4);
+			target.MakeGrounded(1);
 			target.PerformMove(
 				DirectionHorizontal == Direction2.Left ? -distance / 2 : distance / 2,
 				DirectionVertical == Direction2.Down ? -distance / 2 : distance / 2

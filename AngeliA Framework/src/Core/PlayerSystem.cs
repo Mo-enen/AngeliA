@@ -44,8 +44,8 @@ public static class PlayerSystem {
 	}
 	public static bool AllowPlayerMenuUI => Selecting != null && Selecting.InventoryType != CharacterInventoryType.None && Game.GlobalFrame > IgnorePlayerMenuFrame;
 	public static bool AllowQuickPlayerMenuUI => Selecting != null && Selecting.InventoryType != CharacterInventoryType.None && Game.GlobalFrame > IgnorePlayerQuickMenuFrame;
-	public static bool LockingInput => Game.GlobalFrame <= LockInputFrame;
-	public static int LockInputFrame { get; private set; } = -1;
+	public static bool LockingInput => Game.GlobalFrame <= IgnoreInputFrame;
+	public static int IgnoreInputFrame { get; private set; } = -1;
 	public static int AimViewX { get; private set; } = 0;
 	public static int AimViewY { get; private set; } = 0;
 	public static IActionTarget TargetActionEntity { get; private set; } = null;
@@ -187,7 +187,7 @@ public static class PlayerSystem {
 
 				if (allowGamePlay) {
 					if (PlayerMenuUI.ShowingUI || PlayerQuickMenuUI.ShowingUI) {
-						LockInput(0);
+						IgnoreInput(0);
 					}
 				}
 
@@ -378,7 +378,7 @@ public static class PlayerSystem {
 
 		// Lock Input from Highlight Target
 		if (TargetActionEntity != null && TargetActionEntity.LockInput) {
-			LockInput(1);
+			IgnoreInput(1);
 		}
 
 	}
@@ -660,7 +660,7 @@ public static class PlayerSystem {
 		target.AttackTargetTeam = Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 		target.IgnoreDespawnFromMap(1);
 		SelectingPlayerID.Value = target.TypeID;
-		LockInputFrame = -1;
+		IgnoreInputFrame = -1;
 		TargetActionEntity = null;
 		PlayerMenuUI.CloseMenu();
 		UnlockedPlayer.Add(target.TypeID);
@@ -744,7 +744,7 @@ public static class PlayerSystem {
 
 
 	// Ignore
-	public static void LockInput (int duration = 1) => LockInputFrame = Game.GlobalFrame + duration;
+	public static void IgnoreInput (int duration = 1) => IgnoreInputFrame = Game.GlobalFrame + duration;
 
 
 	public static void IgnoreAction (int duration = 1) => IgnoreActionFrame = Game.GlobalFrame + duration;

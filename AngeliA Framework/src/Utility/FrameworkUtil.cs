@@ -71,7 +71,7 @@ public static class FrameworkUtil {
 	[OnCameOutOfWater] internal static Action<Rigidbody> OnCameOutOfWater;
 	[OnItemCollected] internal static Action<Entity, int, int> OnItemCollected;
 	[OnItemLost] internal static Action<Character, int> OnItemLost;
-	[OnItemInsufficient] internal static Action<Character, int> OnItemErrorHint;
+	[OnItemError] internal static Action<Character, int> OnItemErrorHint;
 	[OnItemDamage] internal static Action<Character, int, int> OnItemDamage;
 	[OnItemUnlocked] internal static Action<int> OnItemUnlocked;
 	[OnCheatPerformed] internal static Action<string> OnCheatPerformed;

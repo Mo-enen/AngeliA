@@ -110,11 +110,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 		if (!IgnoringPhysics) {
 			Physics.FillEntity(PhysicalLayer, this);
 		}
-	}
-
-
-	public override void BeforeUpdate () {
-		base.BeforeUpdate();
 		RefreshPrevPosition();
 	}
 

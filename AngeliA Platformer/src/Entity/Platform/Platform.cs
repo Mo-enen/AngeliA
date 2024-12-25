@@ -137,6 +137,7 @@ public abstract class Platform : Entity, IBlockEntity {
 
 
 	private void AntiFallThrough () {
+		int platformDeltaY = Y - PrevY;
 		int limitY = PrevY + Height / 2;
 		int top = Rect.yMax;
 		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect, out int count, this);
@@ -146,6 +147,7 @@ public abstract class Platform : Entity, IBlockEntity {
 			if (OneWay && rig.IgnoringOneway) continue;
 			var rRect = rig.Rect;
 			if (rRect.y < limitY) continue;
+			if (rig is Character && rig.DeltaPositionY > platformDeltaY) continue;
 			Physics.ForcePush(rig, Direction4.Up, top - rig.Y);
 		}
 	}

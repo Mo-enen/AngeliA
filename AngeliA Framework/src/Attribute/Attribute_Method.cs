@@ -77,7 +77,7 @@ public class OnCheatPerformedAttribute : EventAttribute { }
 // Item
 public class OnItemCollectedAttribute : EventAttribute { }
 public class OnItemLostAttribute : EventAttribute { }
-public class OnItemInsufficientAttribute : EventAttribute { }
+public class OnItemErrorAttribute : EventAttribute { }
 public class OnItemDamageAttribute : EventAttribute { }
 public class OnItemUnlockedAttribute : EventAttribute { }
 

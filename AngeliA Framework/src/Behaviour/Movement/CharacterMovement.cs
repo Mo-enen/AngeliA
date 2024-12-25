@@ -1077,6 +1077,7 @@ public class CharacterMovement (Rigidbody rig) {
 	public virtual void Jump () {
 		IntendedJump = true;
 		RequireJumpFrame = Game.GlobalFrame;
+		Target.CancelMakeGrounded();
 	}
 
 
