@@ -99,7 +99,7 @@ public static class Stage {
 		1024,	//WATER 
 		1024,	//BULLET 
 		1024,	//ITEM
-		128,	//DECORATE
+		1024,	//DECORATE
 	];
 	public const int SETTING_SET_VIEW_X = 92173623_5;
 	public const int SETTING_SET_VIEW_Y = 92173623_6;
@@ -551,7 +551,7 @@ public static class Stage {
 		if (!forceSpawn && StagedEntityHash.Contains(uPos)) return null;
 		if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
 		if (stack.DontSpawnFromWorld) {
-			requireDrawAsBlock = true;
+			requireDrawAsBlock = stack.DrawAsBlock;
 			return null;
 		}
 		int x = unitX * Const.CEL;

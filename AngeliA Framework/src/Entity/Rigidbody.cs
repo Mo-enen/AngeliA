@@ -390,7 +390,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	}
 
 
-	private void RefreshPrevPosition () {
+	protected void RefreshPrevPosition () {
 		if (Game.GlobalFrame <= PrevPositionUpdateFrame) return;
 		PrevPositionUpdateFrame = Game.GlobalFrame;
 		PrevX = X;

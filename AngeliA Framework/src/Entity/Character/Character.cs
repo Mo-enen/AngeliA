@@ -260,6 +260,7 @@ public abstract class Character : Rigidbody,
 			Movement.PushAvailable.Override(false, priority: 4096);
 		}
 
+		RefreshPrevPosition();
 	}
 
 

@@ -147,7 +147,7 @@ public abstract class Platform : Entity, IBlockEntity {
 			if (OneWay && rig.IgnoringOneway) continue;
 			var rRect = rig.Rect;
 			if (rRect.y < limitY) continue;
-			if (rig is Character && rig.DeltaPositionY > platformDeltaY) continue;
+			if (rig is Character && rig.VelocityY > platformDeltaY) continue;
 			Physics.ForcePush(rig, Direction4.Up, top - rig.Y);
 		}
 	}

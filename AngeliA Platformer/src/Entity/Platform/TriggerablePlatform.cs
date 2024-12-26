@@ -15,7 +15,7 @@ public abstract class TriggerablePlatform : Platform, IUnitable {
 	int IUnitable.LocalUniteStamp { get; set; }
 
 	// MSG
-	[ButtonOperator]
+	[CircuitOperator]
 	internal static bool Operate (IBlockSquad _, Int3 operatorUnitPos, Int3 __) {
 		if (Physics.GetEntity<TriggerablePlatform>(
 			IRect.Point(operatorUnitPos.x.ToGlobal() + Const.HALF, operatorUnitPos.y.ToGlobal() + Const.HALF),
