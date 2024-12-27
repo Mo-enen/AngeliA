@@ -18,7 +18,7 @@ public abstract class CircuitTrigger : Entity, IBlockEntity {
 		}
 	}
 
-	public virtual void TriggerCircuit () => CircuitSystem.TriggerCircuit((X + 1).ToUnit(), (Y + 1).ToUnit(), Stage.ViewZ, maxUnitDistance: Const.MAP);
+	public virtual void TriggerCircuit () => CircuitSystem.TriggerCircuit((X + 1).ToUnit(), (Y + 1).ToUnit(), Stage.ViewZ);
 
 	// API
 	public static bool IsCircuitTrigger (int typeID) => TriggerSet.Contains(typeID);
