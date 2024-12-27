@@ -125,28 +125,6 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	// Get Block
-	public bool FindBlock (int id, int unitX, int unitY, Direction4 direction, BlockType type, out int resultX, out int resultY, int maxDistance = Const.MAP) {
-		resultX = default;
-		resultY = default;
-		int l = unitX - maxDistance;
-		int r = unitX + maxDistance;
-		int d = unitY - maxDistance;
-		int u = unitY + maxDistance;
-		var delta = direction.Normal();
-		while (unitX >= l && unitX <= r && unitY >= d && unitY <= u) {
-			int _id = GetBlockAt(unitX, unitY, type);
-			if (_id == id) {
-				resultX = unitX;
-				resultY = unitY;
-				return true;
-			}
-			unitX += delta.x;
-			unitY += delta.y;
-		}
-		return false;
-	}
-
-
 	public (int level, int bg, int entity, int element) GetAllBlocksAt (int unitX, int unitY, int z) => Stream.GetAllBlocksAt(unitX, unitY, z);
 
 
