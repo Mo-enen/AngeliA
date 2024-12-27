@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
-using AngeliA;
 
-namespace AngeliA.Platformer;
+namespace AngeliA;
 
-public interface IWire {
+public static class CircuitSystem {
 
 
-	// VAR
+
+
+	#region --- VAR ---
+
+
+	// Data
 	private static readonly Dictionary<int, (bool left, bool right, bool down, bool up)> WireIdPool = [];
-	private static readonly int[] WireConnectionPool = new int[16];
 	private static readonly Dictionary<int, MethodInfo> OperatorPool = [];
 	private static readonly Queue<(Int2 pos, int bit, int step)> TriggerTaskQueue = [];
 	private static readonly HashSet<Int2> TriggerTaskHash = [];
@@ -19,25 +22,22 @@ public interface IWire {
 	[OnCircuitWireActived] internal static System.Action<IBlockSquad, Int3, int> OnCircuitWireActived;
 	[OnCircuitOperatorTriggered] internal static System.Action<IBlockSquad, Int3> OnCircuitOperatorTriggered;
 
-	public bool ConnectedLeft { get; }
-	public bool ConnectedRight { get; }
-	public bool ConnectedDown { get; }
-	public bool ConnectedUp { get; }
+
+	#endregion
 
 
-	// MSG
+
+
+	#region --- MSG ---
+
+
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
 		// Init Wire Pool
 		WireIdPool.Clear();
 		foreach (var type in typeof(IWire).AllClassImplemented()) {
 			if (System.Activator.CreateInstance(type) is not IWire wire) continue;
-			int id = type.AngeHash();
-			bool added = WireIdPool.TryAdd(id, (wire.ConnectedLeft, wire.ConnectedRight, wire.ConnectedDown, wire.ConnectedUp));
-			if (added) {
-				int bitInt = WireConnection_to_BitInt(wire.ConnectedLeft, wire.ConnectedRight, wire.ConnectedDown, wire.ConnectedUp);
-				WireConnectionPool[bitInt] = id;
-			}
+			WireIdPool.TryAdd(type.AngeHash(), (wire.ConnectedLeft, wire.ConnectedRight, wire.ConnectedDown, wire.ConnectedUp));
 		}
 		// Init Operation Pool
 		OperatorPool.Clear();
@@ -77,10 +77,18 @@ public interface IWire {
 	}
 
 
-	// API
-	public static void TriggerCircuit (IBlockSquad squad, int unitX, int unitY, int unitZ, int maxUnitDistance) {
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public static void TriggerCircuit (int unitX, int unitY, int unitZ, int maxUnitDistance) {
 		TriggerTaskQueue.Clear();
 		TriggerTaskHash.Clear();
+		var squad = WorldSquad.Stream;
 		var startPos = new Int2(unitX, unitY);
 		var startPos3 = new Int3(unitX, unitY, unitZ);
 		int startWireID = squad.GetBlockAt(unitX, unitY, unitZ, BlockType.Element);
@@ -154,26 +162,36 @@ public interface IWire {
 	}
 
 
-	public static int WireConnection_to_WireEntityID (bool connectL, bool connectR, bool connectD, bool connectU) => WireConnectionPool[WireConnection_to_BitInt(connectL, connectR, connectD, connectU)];
-
-
 	public static bool IsCircuitOperator (int typeID) => OperatorPool.ContainsKey(typeID);
 
 
 	public static bool IsWire (int typeID) => WireIdPool.ContainsKey(typeID);
 
 
-	// UTL
-	private static int WireConnection_to_BitInt (bool connectL, bool connectR, bool connectD, bool connectU) => (connectL ? 0b1000 : 0b0000) | (connectR ? 0b0100 : 0b0000) | (connectD ? 0b0010 : 0b0000) | (connectU ? 0b0001 : 0b0000);
+	public static int WireConnection_to_BitInt (bool connectL, bool connectR, bool connectD, bool connectU) => (connectL ? 0b1000 : 0b0000) | (connectR ? 0b0100 : 0b0000) | (connectD ? 0b0010 : 0b0000) | (connectU ? 0b0001 : 0b0000);
 
 
-	private static bool CheckConnectWithBitInt (int bitInt, Direction4 dir) => dir switch {
+	public static bool CheckConnectWithBitInt (int bitInt, Direction4 dir) => dir switch {
 		Direction4.Left => (bitInt & 0b1000) != 0,
 		Direction4.Right => (bitInt & 0b0100) != 0,
 		Direction4.Down => (bitInt & 0b0010) != 0,
 		Direction4.Up => (bitInt & 0b0001) != 0,
 		_ => false,
 	};
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+
+	#endregion
+
+
 
 
 }

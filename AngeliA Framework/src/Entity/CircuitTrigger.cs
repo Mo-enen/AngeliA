@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using AngeliA;
 
-namespace AngeliA.Platformer;
-
+namespace AngeliA;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class CircuitTrigger : Entity, IBlockEntity {
@@ -21,11 +18,7 @@ public abstract class CircuitTrigger : Entity, IBlockEntity {
 		}
 	}
 
-	public virtual void TriggerCircuit () => IWire.TriggerCircuit(
-		WorldSquad.Stream,
-		(X + 1).ToUnit(), (Y + 1).ToUnit(), Stage.ViewZ,
-		maxUnitDistance: Const.MAP
-	);
+	public virtual void TriggerCircuit () => CircuitSystem.TriggerCircuit((X + 1).ToUnit(), (Y + 1).ToUnit(), Stage.ViewZ, maxUnitDistance: Const.MAP);
 
 	// API
 	public static bool IsCircuitTrigger (int typeID) => TriggerSet.Contains(typeID);
