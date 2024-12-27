@@ -1219,9 +1219,10 @@ public class CharacterMovement (Rigidbody rig) {
 			1, 1
 		);
 		if (SlideOnAnyBlock) {
-			var hits = Physics.OverlapAll(PhysicsMask.MAP, rect, out int count, Target, OperationMode.ColliderOnly);
+			var hits = Physics.OverlapAll(PhysicsMask.MAP, rect, out int count, Target, OperationMode.ColliderAndTrigger);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
+				if (hit.IsTrigger && !hit.Tag.HasAny(Tag.OnewayLeft | Tag.OnewayRight)) continue;
 				if (hit.Tag.HasAny(Tag.NoSlide | Tag.GrabTop | Tag.GrabSide)) continue;
 				return true;
 			}

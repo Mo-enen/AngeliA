@@ -59,10 +59,6 @@
 		<None Remove="desktop.ini" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="src\Entity\Circuit\" />
-	</ItemGroup>
-
 	<!--Copy Package Dll to Runtime Folder-->
 	<Target Name="Copy Dll To Engine Runtime Debug Folder" AfterTargets="Build">
 		<Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\Packages\com.angelia.platformer\com.angelia.platformer.dll" ContinueOnError="true" />

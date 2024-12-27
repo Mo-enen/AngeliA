@@ -763,8 +763,8 @@ public static class FrameworkUtil {
 				);
 				for (int j = 0; j < nearByCount; j++) {
 					var nearByHit = BlockOperationCache[j];
-					if (nearByHit.Entity is not IBlockEntity) continue;
-					nearByHit.Entity.OnActivated();
+					if (nearByHit.Entity is not IBlockEntity nearByEntity) continue;
+					nearByEntity.OnEntityRefresh();
 				}
 
 				// Mul Gate
@@ -945,8 +945,8 @@ public static class FrameworkUtil {
 					);
 					for (int j = 0; j < nearByCount; j++) {
 						var nearByHit = BlockOperationCache[j];
-						if (nearByHit.Entity is not IBlockEntity) continue;
-						nearByHit.Entity.OnActivated();
+						if (nearByHit.Entity is not IBlockEntity nearbyEntity) continue;
+						nearbyEntity.OnEntityRefresh();
 					}
 
 				}

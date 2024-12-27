@@ -43,6 +43,13 @@ public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
 	}
 
 
+	void IBlockEntity.OnEntityRefresh () {
+		Pose = FittingPose.Unknown;
+		FurnitureLeftOrDown = null;
+		FurnitureRightOrUp = null;
+	}
+
+
 	public override void FirstUpdate () => Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Tag.OnewayUp);
 
 
