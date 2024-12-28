@@ -168,13 +168,13 @@ public static class Physics {
 
 
 	// Entity
-	public static T GetEntity<T> (IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) where T : Entity {
+	public static T GetEntity<T> (IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);
 		for (int i = 0; i < count; i++) {
 			var e = c_GetEntity[i].Entity;
 			if (e is T et && e.Active) return et;
 		}
-		return null;
+		return default;
 	}
 	public static Entity GetEntity (int typeID, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);

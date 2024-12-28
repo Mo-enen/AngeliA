@@ -582,7 +582,7 @@ public static class PlayerSystem {
 		for (int i = 0; i < count; i++) {
 			var cell = cells[i];
 			if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
-			holder.Collect(Selecting, onlyStackOnExisting: true, ignoreEquipment: true);
+			holder.Collect(Selecting, onlyStackOnExisting: true, ignoreEquipment: false);
 		}
 	}
 

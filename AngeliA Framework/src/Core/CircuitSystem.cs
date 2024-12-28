@@ -4,6 +4,21 @@ using System.Reflection;
 
 namespace AngeliA;
 
+
+public interface ICircuitOperator {
+	private static readonly HashSet<int> OperatorSet = [];
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		OperatorSet.Clear();
+		foreach (var type in typeof(ICircuitOperator).AllClassImplemented()) {
+			OperatorSet.Add(type.AngeHash());
+		}
+	}
+	public static bool IsOperator (int typeID) => OperatorSet.Contains(typeID);
+	public void TriggerCircuit ();
+}
+
+
 public static class CircuitSystem {
 
 
@@ -17,7 +32,7 @@ public static class CircuitSystem {
 	private static readonly Queue<(Int3 pos, bool left, bool right, bool down, bool up, int stamp)> TriggeringTask = [];
 	private static readonly Dictionary<Int3, int> TriggeredTaskStamp = [];
 	private static readonly Dictionary<int, MethodInfo> OperatorPool = [];
-	private static readonly object[] OperateParamCache = [null, null, null];
+	private static readonly object[] OperateParamCache = [null];
 	[OnCircuitWireActived] internal static System.Action<Int3> OnCircuitWireActived;
 	[OnCircuitOperatorTriggered] internal static System.Action<Int3> OnCircuitOperatorTriggered;
 
@@ -32,13 +47,15 @@ public static class CircuitSystem {
 
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
+
 		// Init Wire Pool
 		WireIdPool.Clear();
 		foreach (var type in typeof(IWire).AllClassImplemented()) {
 			if (System.Activator.CreateInstance(type) is not IWire wire) continue;
 			WireIdPool.TryAdd(type.AngeHash(), (wire.ConnectedLeft, wire.ConnectedRight, wire.ConnectedDown, wire.ConnectedUp));
 		}
-		// Init Operation Pool
+
+		// Init Operator Pool
 		OperatorPool.Clear();
 		foreach (var (method, _) in Util.AllStaticMethodWithAttribute<CircuitOperatorAttribute>()) {
 			if (method.DeclaringType == null) continue;
@@ -51,6 +68,7 @@ public static class CircuitSystem {
 				OperatorPool.Add(type.AngeHash(), method);
 			}
 		}
+
 	}
 
 
@@ -85,14 +103,20 @@ public static class CircuitSystem {
 				}
 				// Check for Operators
 				int entityId = _squad.GetBlockAt(_pos.x, _pos.y, _pos.z, BlockType.Entity);
-				if (OperatorPool.TryGetValue(entityId, out var method)) {
+				if (entityId != 0 && OperatorPool.TryGetValue(entityId, out var method)) {
 					TriggeredTaskStamp[_pos] = _stamp;
-					OperateParamCache[0] = WorldSquad.Stream;
-					OperateParamCache[1] = _pos;
+					OperateParamCache[0] = _pos;
 					var result = method?.Invoke(null, OperateParamCache);
 					if (result is not bool bResult || bResult) {
 						OnCircuitOperatorTriggered?.Invoke(_pos);
 					}
+				}
+				if (Physics.GetEntity<ICircuitOperator>(
+						IRect.Point(_pos.x.ToGlobal() + Const.HALF, _pos.y.ToGlobal() + Const.HALF),
+						PhysicsMask.ENTITY, null, OperationMode.ColliderAndTrigger
+					) is ICircuitOperator _operator
+				) {
+					_operator.TriggerCircuit();
 				}
 			}
 			static bool ConnectionValid (Direction4 requireCon, (bool, bool, bool, bool) wireCons) => requireCon switch {
@@ -146,7 +170,7 @@ public static class CircuitSystem {
 	}
 
 
-	public static bool IsCircuitOperator (int typeID) => OperatorPool.ContainsKey(typeID);
+	public static bool IsCircuitOperator (int typeID) => OperatorPool.ContainsKey(typeID) || ICircuitOperator.IsOperator(typeID);
 
 
 	public static bool IsWire (int typeID) => WireIdPool.ContainsKey(typeID);

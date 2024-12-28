@@ -5,7 +5,7 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-public abstract class TriggerablePlatform : Platform, IUnitable {
+public abstract class TriggerablePlatform : Platform, IUnitable, ICircuitOperator {
 
 	// Api
 	protected virtual IUnitable.UniteMode TriggerMode => IUnitable.UniteMode.Horizontal;
@@ -15,17 +15,6 @@ public abstract class TriggerablePlatform : Platform, IUnitable {
 	int IUnitable.LocalUniteStamp { get; set; }
 
 	// MSG
-	[CircuitOperator]
-	internal static bool Operate (IBlockSquad _, Int3 operatorUnitPos, Int3 __) {
-		if (Physics.GetEntity<TriggerablePlatform>(
-			IRect.Point(operatorUnitPos.x.ToGlobal() + Const.HALF, operatorUnitPos.y.ToGlobal() + Const.HALF),
-			PhysicsMask.ENVIRONMENT, null, OperationMode.ColliderAndTrigger
-		) is not TriggerablePlatform platform) return false;
-		bool result = platform.AllowMultipleTrigger || platform.LastTriggerFrame < 0;
-		platform.Trigger();
-		return result;
-	}
-
 	public override void OnActivated () {
 		base.OnActivated();
 		TriggeredData = null;
@@ -48,5 +37,7 @@ public abstract class TriggerablePlatform : Platform, IUnitable {
 			platform.OnTriggered(IUnitable.UniteTempParam);
 		}
 	}
+
+	void ICircuitOperator.TriggerCircuit () => Trigger();
 
 }
