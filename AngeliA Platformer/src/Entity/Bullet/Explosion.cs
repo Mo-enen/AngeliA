@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.Layer(EntityLayer.BULLET)]
@@ -12,7 +13,7 @@ public abstract class Explosion : Entity {
 	protected virtual int CollisionMask => PhysicsMask.DYNAMIC;
 	protected virtual int Duration => 10;
 	protected virtual int Damage => 1;
-	protected virtual int Radius => Const.CEL * 2;
+	protected virtual int Radius => Const.CEL * 2 + Const.HALF;
 	protected virtual Color32 WaveColor => new(255, 255, 255, 255);
 	protected virtual Color32 RingColor => new(255, 0, 0, 255);
 	protected virtual Color32 FireColor => new(255, 255, 0, 255);
@@ -26,15 +27,12 @@ public abstract class Explosion : Entity {
 	public override void OnActivated () {
 		base.OnActivated();
 		if (FromWorld) {
-			X++;
-			Y++;
+			X += Const.HALF;
+			Y += Const.HALF;
 		}
-		X = X.ToUnifyGlobal() + Const.HALF;
-		Y = Y.ToUnifyGlobal() + Const.HALF;
 		Sender = null;
 		BreakObjectArtwork = 0;
 		ExplodedFrame = -1;
-
 	}
 
 
@@ -71,8 +69,8 @@ public abstract class Explosion : Entity {
 
 			// Destroy Block
 			if (DestroyBlocks) {
-				for (int x = range.x; x < range.xMax; x += Const.CEL) {
-					for (int y = range.y; y < range.yMax; y += Const.CEL) {
+				for (int x = range.x; x <= range.xMax; x += Const.CEL) {
+					for (int y = range.y; y <= range.yMax; y += Const.CEL) {
 						if (!Util.OverlapRectCircle(
 							Radius, X, Y,
 							x + Const.HALF, y + Const.HALF, x + Const.HALF + 1, y + Const.HALF + 1

@@ -23,6 +23,7 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 	}
 
 	public override void LateUpdate () {
+		if (!Active) return;
 		base.LateUpdate();
 		Renderer.Draw(TypeID, Rect);
 	}

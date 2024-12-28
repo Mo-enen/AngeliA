@@ -125,7 +125,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		OnSlippy = !InWater && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderAndTrigger, Tag.Slip);
 
 		// Inside Ground Check
-		IsInsideGround = Game.GlobalFrame > SpawnFrame && Game.GlobalFrame > IgnoreInsideGroundFrame && InsideGroundCheck();
+		IsInsideGround = Game.GlobalFrame > IgnoreInsideGroundFrame && InsideGroundCheck();
 
 		// Ignoring Physics
 		if (IgnoringPhysics) {
@@ -139,7 +139,9 @@ public abstract class Rigidbody : Entity, ICarrier {
 			if (DestroyWhenInsideGround) {
 				Active = false;
 			} else {
-				PerformMove(VelocityX, VelocityY);
+				if (VelocityX != 0 || VelocityY != 0) {
+					PerformMove(VelocityX, VelocityY);
+				}
 				IsGrounded = GroundedCheck();
 			}
 			return;

@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
 public abstract class ExplosiveMovableBullet : MovableBullet {
 	public override int Duration => 600;
