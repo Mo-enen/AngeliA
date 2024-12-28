@@ -47,7 +47,7 @@ public abstract class Door : Entity, IBlockEntity {
 				player.Rect.Overlaps(Rect.Shrink(OVERLAP_SHRINK, OVERLAP_SHRINK, 0, 0));
 
 			// Invoke
-			if (!InputLock && !PlayerSystem.LockingInput && PlayerOverlaps) {
+			if (!InputLock && !PlayerSystem.IgnoringInput && PlayerOverlaps) {
 				if (Input.GameKeyHolding(Gamekey.Up)) {
 					Invoke(player);
 				}

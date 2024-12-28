@@ -44,7 +44,8 @@ public static class PlayerSystem {
 	}
 	public static bool AllowPlayerMenuUI => Selecting != null && Selecting.InventoryType != CharacterInventoryType.None && Game.GlobalFrame > IgnorePlayerMenuFrame;
 	public static bool AllowQuickPlayerMenuUI => Selecting != null && Selecting.InventoryType != CharacterInventoryType.None && Game.GlobalFrame > IgnorePlayerQuickMenuFrame;
-	public static bool LockingInput => Game.GlobalFrame <= IgnoreInputFrame;
+	public static bool IgnoringInput => Game.GlobalFrame <= IgnoreInputFrame;
+	public static bool IgnoringAction => Game.GlobalFrame <= IgnoreActionFrame;
 	public static int IgnoreInputFrame { get; private set; } = -1;
 	public static int AimViewX { get; private set; } = 0;
 	public static int AimViewY { get; private set; } = 0;
@@ -191,7 +192,7 @@ public static class PlayerSystem {
 					}
 				}
 
-				if (allowGamePlay && !LockingInput) {
+				if (allowGamePlay && !IgnoringInput) {
 
 					// Update Aiming
 					UpdateAiming();
@@ -258,7 +259,7 @@ public static class PlayerSystem {
 
 	private static void UpdateJumpDashPoundRush () {
 
-		if (LockingInput) return;
+		if (IgnoringInput) return;
 
 		var att = Selecting.Attackness;
 		var mov = Selecting.Movement;
@@ -395,13 +396,13 @@ public static class PlayerSystem {
 			att.MinimalChargeAttackDuration != int.MaxValue &&
 			Game.GlobalFrame >= att.LastAttackFrame + att.AttackDuration + att.AttackCooldown + att.MinimalChargeAttackDuration &&
 			!TaskSystem.HasTask() &&
-			!LockingInput &&
+			!IgnoringInput &&
 			actionHolding &&
 			Selecting.IsAttackAllowedByMovement() &&
 			Selecting.IsAttackAllowedByEquipment();
 
 
-		if (LockingInput || Game.GlobalFrame <= IgnoreAttackFrame) return;
+		if (IgnoringInput || Game.GlobalFrame <= IgnoreAttackFrame) return;
 
 		// Try Perform Attack
 		ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_ATTACK);
@@ -446,7 +447,7 @@ public static class PlayerSystem {
 		bool showingQuickMenu = PlayerQuickMenuUI.ShowingUI;
 
 		// Quick Menu
-		if (AllowQuickPlayerMenuUI && !showingMenu && !showingQuickMenu && !LockingInput) {
+		if (AllowQuickPlayerMenuUI && !showingMenu && !showingQuickMenu && !IgnoringInput) {
 			if (Input.GameKeyDown(Gamekey.Select) || Input.GameKeyDown(Gamekey.Start)) {
 				PlayerQuickMenuUI.OpenMenu();
 			}
@@ -458,7 +459,7 @@ public static class PlayerSystem {
 		if (
 			AllowPlayerMenuUI &&
 			!showingMenu &&
-			(showingQuickMenu || !LockingInput) &&
+			(showingQuickMenu || !IgnoringInput) &&
 			(!showingQuickMenu || !PlayerQuickMenuUI.Instance.IsDirty)
 		) {
 			if (Input.GameKeyUp(Gamekey.Select)) {

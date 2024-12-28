@@ -140,7 +140,7 @@ public abstract class MiniGame : Entity, IActionTarget, IBlockEntity {
 		var act = this as IActionTarget;
 		if (!IsPlaying) {
 			// Blink
-			act.BlinkIfHighlight(cell);
+			IActionTarget.MakeCellAsActionTarget(this, cell);
 			// Display Name
 			if (act.IsHighlighted) {
 				ControlHintUI.DrawGlobalHint(X, Y + Const.CEL * 2 + Const.HALF, Gamekey.Action, DisplayName, true);

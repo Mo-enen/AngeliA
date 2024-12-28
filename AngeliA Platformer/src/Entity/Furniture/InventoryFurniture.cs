@@ -38,15 +38,29 @@ public abstract class InventoryFurniture<UI> : OpenableFurniture, IActionTarget 
 	public override void OnActivated () {
 		base.OnActivated();
 
+		// Get Inv Pos
+		var invPos = new Int3((X + 1).ToUnit(), (Y + 1).ToUnit(), Stage.ViewZ);
+		if (ModuleType != Direction3.None) {
+			var (deltaX, deltaY) = ModuleType == Direction3.Horizontal ? (-1, 0) : (0, -1);
+			var squad = WorldSquad.Stream;
+			var pos = invPos;
+			for (int safe = 0; safe < 2048; safe++) {
+				int id = squad.GetBlockAt(pos.x, pos.y, pos.z, BlockType.Entity);
+				if (id != TypeID) break;
+				invPos = pos;
+				pos.x += deltaX;
+				pos.y += deltaY;
+			}
+		}
+
 		// Get Inv ID
-		var mPos = MapUnitPos ?? new Int3(int.MinValue, int.MinValue, int.MinValue);
-		var key = new Int4(mPos.x, mPos.y, mPos.z, TypeID);
+		var key = new Int4(invPos.x, invPos.y, invPos.z, TypeID);
 		if (InventoryFurniture<InventoryPartnerUI>.InventoryIdPool.TryGetValue(key, out var pair)) {
 			(InventoryName, InventoryID) = pair;
 		} else {
-			(InventoryID, InventoryName) = GetInventoryIdAndName();
-			pair = (InventoryName, InventoryID);
-			InventoryIdPool.Add(key, pair);
+			InventoryName = Inventory.GetPositionBasedInventoryName(GetType().AngeName(), invPos);
+			InventoryID = InventoryName.AngeHash();
+			InventoryIdPool.Add(key, (InventoryName, InventoryID));
 		}
 
 		// Init Inventory
@@ -67,7 +81,8 @@ public abstract class InventoryFurniture<UI> : OpenableFurniture, IActionTarget 
 
 
 	// API
-	public virtual bool Invoke () {
+	public override bool Invoke () {
+		if (InventoryID == 0) return false;
 		if (!Open) SetOpen(true);
 		// Spawn UI Entity
 		if (PlayerSystem.Selecting == null) return false;
@@ -85,7 +100,7 @@ public abstract class InventoryFurniture<UI> : OpenableFurniture, IActionTarget 
 	}
 
 
-	bool IActionTarget.AllowInvoke () => PlayerSystem.Selecting != null;
+	public override bool AllowInvoke () => InventoryID != 0 && base.AllowInvoke();
 
 
 	protected override void SetOpen (bool open) {
@@ -93,18 +108,6 @@ public abstract class InventoryFurniture<UI> : OpenableFurniture, IActionTarget 
 			PlayerMenuUI.CloseMenu();
 		}
 		base.SetOpen(open);
-	}
-
-
-	// LGC
-	protected virtual (int id, string name) GetInventoryIdAndName () {
-		if (MapUnitPos.HasValue) {
-			string name = Inventory.GetPositionBasedInventoryName(GetType().AngeName(), MapUnitPos.Value);
-			int id = name.AngeHash();
-			return (id, name);
-		} else {
-			return (TypeID, GetType().AngeName());
-		}
 	}
 
 

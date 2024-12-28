@@ -432,7 +432,7 @@ public static class ItemSystem {
 			LoadCombinationsIntoPool(null, iComs);
 		}
 		// Func
-		static void LoadCombinationsIntoPool (System.Type type, IEnumerable<BasicItemCombinationAttribute> iComs) {
+		static void LoadCombinationsIntoPool (Type type, IEnumerable<BasicItemCombinationAttribute> iComs) {
 			int typeID = type != null ? type.AngeHash() : 0;
 			foreach (var com in iComs) {
 				if (com.Count <= 0) continue;
@@ -487,8 +487,20 @@ public static class ItemSystem {
 #endif
 					continue;
 				}
+
+				// Check Result Item Exists
+				int resultID = com is BasicGlobalItemCombinationAttribute gCom ? gCom.Result.AngeHash() : typeID;
+				if (GetItem(resultID) == null) {
+#if DEBUG
+					if (com is BasicGlobalItemCombinationAttribute _gCom) {
+						Debug.Log($"Item name \"{_gCom.Result}\" is invalid for combination.");
+					}
+#endif
+					continue;
+				}
+
 				CombinationPool.Add(key, new CombinationData() {
-					Result = com is BasicGlobalItemCombinationAttribute gCom ? gCom.Result.AngeHash() : typeID,
+					Result = resultID,
 					ResultCount = com.Count,
 					Keep0 = com.ConsumeA ? 0 : idA,
 					Keep1 = com.ConsumeB ? 0 : idB,

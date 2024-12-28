@@ -24,7 +24,7 @@ public abstract class Portal : Entity {
 		// Invoke
 		var player = PlayerSystem.Selecting;
 		if (player != null && player.Rect.Overlaps(Rect)) {
-			if (!PlayerSystem.LockingInput && !player.Teleporting && CooldownFrame > 2) {
+			if (!PlayerSystem.IgnoringInput && !player.Teleporting && CooldownFrame > 2) {
 				Invoke(player);
 			}
 			CooldownFrame = 0;

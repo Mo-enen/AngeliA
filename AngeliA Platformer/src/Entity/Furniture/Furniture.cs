@@ -7,7 +7,7 @@ namespace AngeliA.Platformer;
 [EntityAttribute.MapEditorGroup("Furniture")]
 [EntityAttribute.Capacity(32)]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
+public abstract class Furniture : Entity, IBlockEntity {
 
 
 
@@ -21,7 +21,6 @@ public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
 	public Furniture FurnitureLeftOrDown { get; private set; } = null;
 	public Furniture FurnitureRightOrUp { get; private set; } = null;
 	protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
-	bool IActionTarget.IsHighlighted => GetIsHighlighted();
 
 	// Data
 	protected Int4 ColliderBorder = Int4.zero;
@@ -71,6 +70,8 @@ public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
 			// Shrink Rect
 			var sprite = GetSpriteFromPose();
 			if (sprite != null) {
+				X = X.ToUnifyGlobal();
+				Y = Y.ToUnifyGlobal();
 				ColliderBorder = sprite.GlobalBorder;
 				if (ColliderBorder != Int4.zero) {
 					int rWidth = sprite.GlobalWidth;
@@ -90,12 +91,7 @@ public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
 		base.LateUpdate();
 		if (Pose == FittingPose.Unknown) return;
 		var sprite = GetSpriteFromPose();
-		if (sprite != null) {
-			var cell = Renderer.Draw(sprite, RenderingRect);
-			if ((this as IActionTarget).IsHighlighted) {
-				BlinkCellAsFurniture(cell);
-			}
-		}
+		Renderer.Draw(sprite, RenderingRect);
 	}
 
 
@@ -105,12 +101,6 @@ public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
 
 
 	#region --- API ---
-
-
-	bool IActionTarget.Invoke () => false;
-
-
-	bool IActionTarget.AllowInvoke () => false;
 
 
 	protected bool GetIsHighlighted () {
@@ -127,21 +117,6 @@ public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
 	}
 
 
-	protected void BlinkCellAsFurniture (Cell cell) {
-		float pivotX = 0.5f;
-		if (ModuleType == Direction3.Horizontal) {
-			if (Pose == FittingPose.Left) {
-				pivotX = 1f;
-			} else if (Pose == FittingPose.Right) {
-				pivotX = 0f;
-			}
-		}
-		bool useHorizontal = ModuleType != Direction3.Horizontal || Pose != FittingPose.Mid;
-		bool useVertical = ModuleType != Direction3.Vertical || Pose == FittingPose.Up;
-		(this as IActionTarget).BlinkIfHighlight(cell, pivotX, 0f, useHorizontal, useVertical);
-	}
-
-
 	#endregion
 
 
@@ -150,7 +125,7 @@ public abstract class Furniture : Entity, IBlockEntity, IActionTarget {
 	#region --- LGC ---
 
 
-	private AngeSprite GetSpriteFromPose () {
+	protected AngeSprite GetSpriteFromPose () {
 		if (Renderer.TryGetSpriteFromGroup(TypeID, Pose switch {
 			FittingPose.Left => 1,
 			FittingPose.Mid => 2,

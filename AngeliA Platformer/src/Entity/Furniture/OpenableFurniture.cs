@@ -2,7 +2,7 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-public abstract class OpenableFurniture : Furniture, IActionTarget {
+public abstract class OpenableFurniture : ActionFurniture, IActionTarget {
 
 
 	public bool Open { get; private set; } = false;
@@ -21,9 +21,7 @@ public abstract class OpenableFurniture : Furniture, IActionTarget {
 		var act = this as IActionTarget;
 		if (Renderer.TryGetSpriteFromGroup(TypeID, Open ? 1 : 0, out var sprite)) {
 			var cell = Renderer.Draw(sprite, RenderingRect, act.AllowInvoke() ? Color32.WHITE : Color32.WHITE_96);
-			if (act.IsHighlighted) {
-				BlinkCellAsFurniture(cell);
-			}
+			IActionTarget.MakeCellAsActionTarget(this, cell);
 		}
 
 		if (Open) {
@@ -38,15 +36,12 @@ public abstract class OpenableFurniture : Furniture, IActionTarget {
 	}
 
 
-	bool IActionTarget.Invoke () {
+	public override bool Invoke () {
 		if (!Open) {
 			SetOpen(true);
 		}
 		return true;
 	}
-
-
-	bool IActionTarget.AllowInvoke () => true;
 
 
 	protected virtual void SetOpen (bool open) {

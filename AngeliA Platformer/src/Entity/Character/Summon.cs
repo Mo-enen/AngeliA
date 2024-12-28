@@ -132,8 +132,8 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		FrameUpdate_Sleep();
 
 		// Highlight
-		if (Rendering is SheetCharacterRenderer sRendering) {
-			(this as IActionTarget).BlinkIfHighlight(sRendering.RenderedCell);
+		if (CharacterState == CharacterState.PassOut && Rendering is SheetCharacterRenderer sRendering) {
+			IActionTarget.MakeCellAsActionTarget(this, sRendering.RenderedCell);
 		}
 
 	}

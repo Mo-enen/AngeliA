@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 
 public abstract class CabinetIdol : Furniture, IActionTarget {
@@ -16,8 +17,7 @@ public abstract class CabinetIdol : Furniture, IActionTarget {
 		if (Renderer.TryGetSpriteFromGroup(
 			TypeID, s_ArtworkIndex.Value, out var sprite, true, true
 		)) {
-			var cell = Renderer.Draw(sprite, RenderingRect);
-			(this as IActionTarget).BlinkIfHighlight(cell);
+			IActionTarget.DrawActionTarget(this, sprite, RenderingRect);
 		}
 	}
 
