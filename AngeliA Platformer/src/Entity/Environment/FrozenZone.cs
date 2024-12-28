@@ -21,7 +21,6 @@ public class FrozenZone : Entity {
 	// Api
 	private const int DESPAWN_DURATION = 30;
 	public static readonly int TYPE_ID = typeof(FrozenZone).AngeHash();
-	public static event System.Action<Rigidbody, FrozenZone> OnTouchingIce;
 	public int Duration { get; set; } = 300;
 	public bool Fullscreen { get; set; } = false;
 
@@ -46,13 +45,13 @@ public class FrozenZone : Entity {
 		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
 			if (!damageType.HasAll(Tag.IceDamage)) return;
 			var range = bullet.Rect.Expand(Const.HALF);
-			SpreadIce(TYPE_ID, range);
+			SpreadFrozenZone(TYPE_ID, range);
 			IFire.PutoutFire(range);
 		}
 		static void OnBulletHitEnvironment (Bullet bullet, Tag damageType) {
 			if (!damageType.HasAll(Tag.IceDamage)) return;
 			var range = bullet.Rect.Expand(Const.HALF);
-			SpreadIce(TYPE_ID, range);
+			SpreadFrozenZone(TYPE_ID, range);
 			IFire.PutoutFire(range);
 		}
 	}
@@ -95,7 +94,7 @@ public class FrozenZone : Entity {
 						for (int i = 0; i < count; i++) {
 							var entity = entities[i];
 							if (entity is Rigidbody rig) {
-								OnTouchingIce?.Invoke(rig, zone);
+								zone.OnTouchingZone(rig);
 							} else if (entity is IFire) {
 								zone.RequireDespawnFrame = Game.GlobalFrame + DESPAWN_DURATION;
 								return;
@@ -109,7 +108,7 @@ public class FrozenZone : Entity {
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
 					if (hit.Entity is Rigidbody rig) {
-						OnTouchingIce?.Invoke(rig, this);
+						OnTouchingZone(rig);
 					} else if (hit.Entity is IFire) {
 						RequireDespawnFrame = Game.GlobalFrame + DESPAWN_DURATION;
 						break;
@@ -132,15 +131,15 @@ public class FrozenZone : Entity {
 		base.LateUpdate();
 		if (!Active) return;
 		if (Fullscreen) {
-			DrawIceEffect(null);
+			DrawFrozenEffect(null);
 			Game.PassEffect_Tint(new Color32(230, 245, 255, 255), 1);
 		} else {
-			DrawIceEffect(Rect);
+			DrawFrozenEffect(Rect);
 		}
 	}
 
 
-	private void DrawIceEffect (IRect? range) {
+	private void DrawFrozenEffect (IRect? range) {
 
 		if (!Renderer.TryGetSprite(Const.PIXEL, out var sprite, true)) return;
 
@@ -179,6 +178,13 @@ public class FrozenZone : Entity {
 	}
 
 
+	protected virtual void OnTouchingZone (Rigidbody rig) {
+		if (rig is IWithCharacterBuff wBuff) {
+			wBuff.CurrentBuff.GiveBuff(FreezeBuff.TYPE_ID, 1);
+		}
+	}
+
+
 	#endregion
 
 
@@ -187,10 +193,10 @@ public class FrozenZone : Entity {
 	#region --- API ---
 
 
-	public static void SpreadIce (int iceID, IRect range) {
-		if (Stage.SpawnEntity(iceID, range.x, range.y) is not FrozenZone ice) return;
-		ice.Width = range.width;
-		ice.Height = range.height;
+	public static void SpreadFrozenZone (int zoneID, IRect range) {
+		if (Stage.SpawnEntity(zoneID, range.x, range.y) is not FrozenZone zone) return;
+		zone.Width = range.width;
+		zone.Height = range.height;
 	}
 
 

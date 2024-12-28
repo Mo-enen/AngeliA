@@ -6,12 +6,27 @@ namespace AngeliA.Platformer;
 
 public class OnFireBuff : Buff {
 
-
 	private const int DAMAGE_FREQUENCY = 40;
 	public static readonly int TYPE_ID = typeof(OnFireBuff).AngeHash();
 	private static readonly SpriteCode FireSprite = "Fire";
 
-	// MSG
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		Bullet.OnBulletDealDamage += OnBulletDealDamage;
+		Bullet.OnBulletHitEnvironment += OnBulletHitEnvironment;
+		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
+			if (!damageType.HasAll(Tag.FireDamage)) return;
+			IFire.SpreadFire(TYPE_ID, bullet.Rect.Expand(Const.CEL));
+			if (receiver is IWithCharacterBuff wBuff) {
+				wBuff.CurrentBuff.GiveBuff(TYPE_ID, 200);
+			}
+		}
+		static void OnBulletHitEnvironment (Bullet bullet, Tag damageType) {
+			if (!damageType.HasAll(Tag.FireDamage)) return;
+			IFire.SpreadFire(TYPE_ID, bullet.Rect.Expand(Const.CEL));
+		}
+	}
+
 	public override void BeforeUpdate (Character target) {
 		// Take Damage
 		int endFrame = target.Buff.GetBuffEndFrame(TypeID);

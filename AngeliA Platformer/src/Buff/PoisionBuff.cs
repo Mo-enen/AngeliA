@@ -9,6 +9,18 @@ public class PoisonBuff : Buff {
 	public static readonly int TYPE_ID = typeof(PoisonBuff).AngeHash();
 	private const int DAMAGE_FREQUENCY = 300;
 
+
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		Bullet.OnBulletDealDamage += OnBulletDealDamage;
+		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
+			if (!damageType.HasAll(Tag.IceDamage)) return;
+			if (receiver is IWithCharacterBuff wBuff) {
+				wBuff.CurrentBuff.GiveBuff(TYPE_ID, 900);
+			}
+		}
+	}
+
 	public override void BeforeUpdate (Character target) {
 		// Take Damage
 		int endFrame = target.Buff.GetBuffEndFrame(TypeID);

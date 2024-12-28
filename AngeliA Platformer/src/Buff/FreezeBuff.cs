@@ -8,15 +8,6 @@ public class FreezeBuff : Buff {
 
 	public static readonly int TYPE_ID = typeof(FreezeBuff).AngeHash();
 
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		FrozenZone.OnTouchingIce += OnTouchingIce;
-		static void OnTouchingIce (Rigidbody rig, FrozenZone ice) {
-			if (rig is not Character character) return;
-			character.Buff.GiveBuff(TYPE_ID, 1);
-		}
-	}
-
 	public override void BeforeUpdate (Character target) {
 		base.BeforeUpdate(target);
 		var mov = target.Movement;
