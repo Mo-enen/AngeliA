@@ -37,21 +37,21 @@ public sealed class BlockBuilder : HandTool {
 
 	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
 		base.OnPoseAnimationUpdate_FromEquipment(rendering);
+
 		var pHolder = rendering.TargetCharacter;
+		if (pHolder == PlayerSystem.Selecting) {
+			PlayerSystem.IgnoreAction(1);
+		}
 
 		if (
 			!pHolder.IsAttackAllowedByMovement() ||
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			PlayerMenuUI.ShowingUI ||
-			TaskSystem.HasTask() ||
-			pHolder != PlayerSystem.Selecting
+			TaskSystem.HasTask()
 		) return;
 
 		int targetUnitX, targetUnitY;
 		bool available, inRange = true;
-
-		// For Player
-		PlayerSystem.IgnoreAction(1);
 
 		// Get Target Pos
 		if (Game.IsMouseAvailable) {

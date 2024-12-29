@@ -33,6 +33,9 @@ public abstract class PickTool : HandTool {
 	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
 
 		var pHolder = rendering.TargetCharacter;
+		if (pHolder == PlayerSystem.Selecting) {
+			PlayerSystem.IgnoreAction(1);
+		}
 
 		if (
 			!pHolder.IsAttackAllowedByMovement() ||
@@ -48,9 +51,6 @@ public abstract class PickTool : HandTool {
 		if (!pHolder.IsInsideGround) {
 			pHolder.Movement.SquatMoveSpeed.Override(0, 1, priority: 4096);
 			pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
-		}
-		if (pHolder == PlayerSystem.Selecting) {
-			PlayerSystem.IgnoreAction(1);
 		}
 
 		// Get Target Pos

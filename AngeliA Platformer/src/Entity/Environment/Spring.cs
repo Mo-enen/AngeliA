@@ -20,9 +20,9 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	protected abstract bool Horizontal { get; }
 	protected abstract int Power { get; }
-
-	// Short
-	private IRect FullRect => new(X, Y, Const.CEL, Const.CEL);
+	protected int ArtworkRotation { get; set; } = 0;
+	protected int ArtworkID { get; set; }
+	public override bool AllowBeingPush => !Horizontal;
 
 	// Data
 	private int LastBounceFrame = int.MinValue;
@@ -33,11 +33,10 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		Width = Horizontal ? Const.CEL - 64 : Const.CEL;
-		Height = !Horizontal ? Const.CEL - 32 : Const.CEL;
-		if (Horizontal) OffsetX = (Const.CEL - Width) / 2;
 		LastBounceFrame = int.MinValue;
 		BounceSide = default;
+		ArtworkID = TypeID;
+		ArtworkRotation = 0;
 	}
 
 
@@ -47,19 +46,19 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 		if (Horizontal) {
 			// Horizontal
 			if (Physics.Overlap(
-				PhysicsMask.ENTITY, new(X - 1, Y, Const.HALF, Const.CEL), this, OperationMode.ColliderAndTrigger
+				PhysicsMask.DYNAMIC, Rect.EdgeOutside(Direction4.Left, 1), this, OperationMode.ColliderAndTrigger
 			)) {
 				PerformBounce(Direction4.Left);
 			}
 			if (Physics.Overlap(
-				PhysicsMask.ENTITY, new(X + Const.HALF, Y, Const.HALF + 1, Const.CEL), this, OperationMode.ColliderAndTrigger
+				PhysicsMask.DYNAMIC, Rect.EdgeOutside(Direction4.Right, 1), this, OperationMode.ColliderAndTrigger
 			)) {
 				PerformBounce(Direction4.Right);
 			}
 		} else {
 			// Vertical
 			if (Physics.Overlap(
-				PhysicsMask.ENTITY, new(X, Y + Const.HALF, Const.CEL, Const.HALF + 1), this, OperationMode.ColliderAndTrigger
+				PhysicsMask.DYNAMIC, Rect.EdgeOutside(Direction4.Up, 1), this, OperationMode.ColliderAndTrigger
 			)) {
 				PerformBounce(Direction4.Up);
 			}
@@ -75,21 +74,23 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 			CurrentArtworkFrame = 0;
 		}
 		int frame = CurrentArtworkFrame.UMod(BOUNCE_ANI.Length);
-		if (Renderer.TryGetSpriteFromGroup(TypeID, BOUNCE_ANI[frame], out var sprite, false, true)) {
+		if (Renderer.TryGetSpriteFromGroup(ArtworkID, BOUNCE_ANI[frame], out var sprite, false, true)) {
 			Renderer.Draw(
 				sprite,
-				X + Const.HALF, Y,
-				500, 0, 0,
+				X + Width / 2,
+				Y + Height / 2,
+				500, 500, ArtworkRotation,
 				Const.CEL, Const.CEL, Color32.WHITE
 			);
 		}
+		ArtworkRotation = ArtworkRotation.LerpTo(0, 0.3f);
 	}
 
 
 	// LGC
-	private void PerformBounce (Direction4 side) {
-		bool bounced = false;
-		var globalRect = FullRect.Edge(side, 16);
+	private void PerformBounce (Direction4 side, bool forceBounce = false) {
+		bool bounced = forceBounce;
+		var globalRect = Rect.EdgeOutside(side, 16);
 		Entity ignore = this;
 		for (int safe = 0; safe < 2048; safe++) {
 			var hits = Physics.OverlapAll(PhysicsMask.ENTITY, globalRect, out int count, ignore, OperationMode.ColliderAndTrigger);
