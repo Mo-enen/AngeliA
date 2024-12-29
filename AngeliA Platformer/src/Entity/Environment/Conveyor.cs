@@ -17,21 +17,39 @@ public abstract class Conveyor : Entity, IBlockEntity {
 	protected abstract int ArtCodeRight { get; }
 	protected abstract int ArtCodeSingle { get; }
 
+	// Data
+	private static readonly HashSet<int> ConveyorSet = [];
+
 
 	// MSG
+
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		ConveyorSet.Clear();
+		foreach (var type in typeof(Conveyor).AllChildClass()) {
+			ConveyorSet.Add(type.AngeHash());
+		}
+	}
+
+
 	public override void OnActivated () {
 		base.OnActivated();
 		// Get Pose
 		int unitX = X.ToUnit();
 		int unitY = Y.ToUnit();
-		bool hasLeft = WorldSquad.Front.GetBlockAt(unitX - 1, unitY, BlockType.Entity) == TypeID;
-		bool hasRight = WorldSquad.Front.GetBlockAt(unitX + 1, unitY, BlockType.Entity) == TypeID;
+		int idL = WorldSquad.Front.GetBlockAt(unitX - 1, unitY, BlockType.Entity);
+		int idR = WorldSquad.Front.GetBlockAt(unitX + 1, unitY, BlockType.Entity);
+		bool hasLeft = ConveyorSet.Contains(idL);
+		bool hasRight = ConveyorSet.Contains(idR);
 		Pose =
 			hasLeft && hasRight ? FittingPose.Mid :
 			hasLeft && !hasRight ? FittingPose.Right :
 			!hasLeft && hasRight ? FittingPose.Left :
 			FittingPose.Single;
 	}
+
+
+	void IBlockEntity.OnEntityRefresh () => OnActivated();
 
 
 	public override void FirstUpdate () {
@@ -42,7 +60,20 @@ public abstract class Conveyor : Entity, IBlockEntity {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
+
+		// Carry Objects on Top
 		ICarrier.CarryTargetsOnTopHorizontally(this, MoveSpeed, OperationMode.ColliderAndTrigger);
+
+		// Scratch Objects on Bottom
+		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect.EdgeOutside(Direction4.Down), out int count, this, OperationMode.ColliderAndTrigger);
+		for (int i = 0; i < count; i++) {
+			var hit = hits[i];
+			if (hit.Entity is not Rigidbody rig) continue;
+			rig.SetMomentum(-MoveSpeed, 0);
+
+
+		}
+
 	}
 
 

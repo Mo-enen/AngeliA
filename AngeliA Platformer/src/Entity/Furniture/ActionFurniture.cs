@@ -9,7 +9,7 @@ public abstract class ActionFurniture : Furniture, IActionTarget {
 	bool IActionTarget.IsHighlighted => GetIsHighlighted();
 
 	public override void LateUpdate () {
-		base.LateUpdate();
+		//base.LateUpdate();
 		if (Pose == FittingPose.Unknown) return;
 		var sprite = GetSpriteFromPose();
 		float pivotX = 0.5f;
@@ -24,7 +24,7 @@ public abstract class ActionFurniture : Furniture, IActionTarget {
 		bool useVertical = ModuleType != Direction3.Vertical || Pose == FittingPose.Up;
 		IActionTarget.DrawActionTarget(this, sprite, RenderingRect, pivotX, 0f, useHorizontal, useVertical);
 	}
-
+	
 	public abstract bool Invoke ();
 
 	public virtual bool AllowInvoke () => PlayerSystem.Selecting != null && !PlayerSystem.IgnoringInput && !PlayerSystem.IgnoringAction;

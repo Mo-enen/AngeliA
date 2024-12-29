@@ -14,7 +14,7 @@ public class PoisonBuff : Buff {
 	internal static void OnGameInitialize () {
 		Bullet.OnBulletDealDamage += OnBulletDealDamage;
 		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
-			if (!damageType.HasAll(Tag.IceDamage)) return;
+			if (!damageType.HasAll(Tag.PoisonDamage)) return;
 			if (receiver is IWithCharacterBuff wBuff) {
 				wBuff.CurrentBuff.GiveBuff(TYPE_ID, 900);
 			}

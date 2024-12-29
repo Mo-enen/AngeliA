@@ -928,7 +928,7 @@ public static class FrameworkUtil {
 				Entity e;
 				if (!Stage.IsEntityRequireReposition(blockID)) {
 					WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, BlockType.Entity, blockID);
-					e = Stage.SpawnEntityFromWorld(blockID, targetUnitX, targetUnitY, Stage.ViewZ, forceSpawn: true);
+					e = Stage.SpawnEntityFromWorld(blockID, targetUnitX.ToGlobal(), targetUnitY.ToGlobal(), Stage.ViewZ, forceSpawn: true);
 				} else {
 					e = Stage.SpawnEntity(blockID, targetUnitX.ToGlobal(), targetUnitY.ToGlobal());
 				}

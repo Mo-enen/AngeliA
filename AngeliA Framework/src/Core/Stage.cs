@@ -544,20 +544,18 @@ public static class Stage {
 	}
 
 
-	public static Entity SpawnEntityFromWorld (int typeID, int unitX, int unitY, int unitZ, bool forceSpawn = false) => SpawnEntityFromWorld(typeID, unitX, unitY, unitZ, out _, forceSpawn);
-	public static Entity SpawnEntityFromWorld (int typeID, int unitX, int unitY, int unitZ, out bool requireDrawAsBlock, bool forceSpawn = false) {
+	public static Entity SpawnEntityFromWorld (int typeID, int x, int y, int z, bool forceSpawn = false) => SpawnEntityFromWorld(typeID, x, y, z, out _, forceSpawn);
+	public static Entity SpawnEntityFromWorld (int typeID, int x, int y, int z, out bool requireDrawAsBlock, bool forceSpawn = false) {
 		requireDrawAsBlock = false;
-		var uPos = new Int3(unitX, unitY, unitZ);
+		var uPos = new Int3(x.ToUnit(), y.ToUnit(), z);
 		if (!forceSpawn && StagedEntityHash.Contains(uPos)) return null;
 		if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
 		if (stack.DontSpawnFromWorld) {
 			requireDrawAsBlock = stack.DrawAsBlock;
 			return null;
 		}
-		int x = unitX * Const.CEL;
-		int y = unitY * Const.CEL;
 		if (!forceSpawn && AntiSpawnRect.Overlaps(new IRect(x, y, Const.CEL, Const.CEL))) return null;
-		return SpawnEntityLogic(typeID, x, y, uPos);
+		return SpawnEntityLogic(typeID, x, y, uPos, forceSpawn);
 	}
 
 
@@ -884,14 +882,18 @@ public static class Stage {
 	}
 
 
-	private static Entity SpawnEntityLogic (int typeID, int x, int y, Int3 globalUnitPos) {
-		if (!Enable) return null;
+	private static Entity SpawnEntityLogic (int typeID, int x, int y, Int3 globalUnitPos, bool forceSpawn = false) {
 		try {
+
+			if (!Enable) return null;
+
 			if (
+				!forceSpawn &&
 				globalUnitPos.x != int.MinValue &&
 				StagedEntityHash.Contains(globalUnitPos)
 			) return null;
-			if (!EntityPool.TryGetValue(typeID, out var eMeta)) {
+
+			if (!EntityPool.TryGetValue(typeID, out var stack)) {
 #if DEBUG
 				if (typeID != 0 && !EntityPool.ContainsKey(typeID)) {
 					Debug.LogWarning($"Invalid Entity Type ID {typeID}");
@@ -899,39 +901,39 @@ public static class Stage {
 #endif
 				return null;
 			}
-			if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
+
 			int layer = stack.Layer;
 			int count = EntityCounts[layer];
 			var entities = Entities[layer];
-			Entity entity = null;
 			if (count >= entities.Length) return null;
-			// Normal Spawn
-			if (entity == null) {
-				entity = eMeta.Pop();
-				if (entity == null) return null;
-				entities[count] = entity;
-				count++;
-				EntityCounts[layer] = count;
-			}
+
+			// Spawn
+			var entity = stack.Pop();
+			if (entity == null) return null;
+			entities[count] = entity;
+			count++;
+			EntityCounts[layer] = count;
+
 			// Init Entity
-			if (entity != null) {
-				if (globalUnitPos.x != int.MinValue) {
-					StagedEntityHash.Add(globalUnitPos);
-				} else {
-					globalUnitPos.y = stack.SpawnedCount;
-				}
-				entity.InstanceID = globalUnitPos;
-				entity.X = x;
-				entity.Y = y;
-				entity.Width = Const.CEL;
-				entity.Height = Const.CEL;
-				entity.Active = true;
-				entity.OnActivated();
-				entity.UpdateStep = 0;
-				entity.SpawnFrame = Game.GlobalFrame;
-				return entity;
+			if (globalUnitPos.x != int.MinValue) {
+				StagedEntityHash.Add(globalUnitPos);
+			} else {
+				globalUnitPos.y = stack.SpawnedCount;
 			}
+			entity.InstanceID = globalUnitPos;
+			entity.X = x;
+			entity.Y = y;
+			entity.Width = Const.CEL;
+			entity.Height = Const.CEL;
+			entity.Active = true;
+			entity.OnActivated();
+			entity.UpdateStep = 0;
+			entity.SpawnFrame = Game.GlobalFrame;
+
+			return entity;
+
 		} catch (Exception ex) { Debug.LogException(ex); }
+
 		return null;
 	}
 

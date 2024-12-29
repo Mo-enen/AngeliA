@@ -99,6 +99,7 @@ public abstract class Bullet : Entity {
 			var fixedDamageType = DamageType & ~receiver.IgnoreDamageType;
 			if (fixedDamageType == Tag.None) continue;
 			if (receiver is Entity e && !e.Active) continue;
+			if (receiver is IWithCharacterHealth health && health.CurrentHealth.IsInvincible) continue;
 			// Round Shape Gate
 			if (RoundHitCheck) {
 				int dis = Util.DistanceInt(rect.CenterX(), rect.CenterY(), hit.Rect.CenterX(), hit.Rect.CenterY());

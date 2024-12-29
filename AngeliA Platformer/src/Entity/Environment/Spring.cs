@@ -20,8 +20,7 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	protected abstract bool Horizontal { get; }
 	protected abstract int Power { get; }
-	protected int ArtworkRotation { get; set; } = 0;
-	protected int ArtworkID { get; set; }
+	public int ArtworkRotation { get; set; } = 0;
 	public override bool AllowBeingPush => !Horizontal;
 
 	// Data
@@ -35,7 +34,6 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 		base.OnActivated();
 		LastBounceFrame = int.MinValue;
 		BounceSide = default;
-		ArtworkID = TypeID;
 		ArtworkRotation = 0;
 	}
 
@@ -74,7 +72,7 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 			CurrentArtworkFrame = 0;
 		}
 		int frame = CurrentArtworkFrame.UMod(BOUNCE_ANI.Length);
-		if (Renderer.TryGetSpriteFromGroup(ArtworkID, BOUNCE_ANI[frame], out var sprite, false, true)) {
+		if (Renderer.TryGetSpriteFromGroup(TypeID, BOUNCE_ANI[frame], out var sprite, false, true)) {
 			Renderer.Draw(
 				sprite,
 				X + Width / 2,
@@ -93,7 +91,7 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 		var globalRect = Rect.EdgeOutside(side, 16);
 		Entity ignore = this;
 		for (int safe = 0; safe < 2048; safe++) {
-			var hits = Physics.OverlapAll(PhysicsMask.ENTITY, globalRect, out int count, ignore, OperationMode.ColliderAndTrigger);
+			var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, globalRect, out int count, ignore, OperationMode.ColliderAndTrigger);
 			if (count == 0) break;
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];

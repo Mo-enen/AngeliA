@@ -705,7 +705,7 @@ public abstract class Character : Rigidbody,
 
 		// Knock Back
 		if (!damage.IgnoreStun) {
-			VelocityX = Movement.FacingRight ? -Health.KnockBackSpeed : Health.KnockBackSpeed;
+			VelocityX = Movement.FacingRight ? -Health.KnockbackSpeed : Health.KnockbackSpeed;
 			Health.LastDamageFrame = Game.GlobalFrame;
 		}
 

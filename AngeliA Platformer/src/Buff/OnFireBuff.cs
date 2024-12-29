@@ -16,14 +16,14 @@ public class OnFireBuff : Buff {
 		Bullet.OnBulletHitEnvironment += OnBulletHitEnvironment;
 		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
 			if (!damageType.HasAll(Tag.FireDamage)) return;
-			IFire.SpreadFire(TYPE_ID, bullet.Rect.Expand(Const.CEL));
+			IFire.SpreadFire(Fire.TYPE_ID, bullet.Rect.Expand(Const.CEL));
 			if (receiver is IWithCharacterBuff wBuff) {
-				wBuff.CurrentBuff.GiveBuff(TYPE_ID, 200);
+				wBuff.CurrentBuff.GiveBuff(OnFireBuff.TYPE_ID, 200);
 			}
 		}
 		static void OnBulletHitEnvironment (Bullet bullet, Tag damageType) {
 			if (!damageType.HasAll(Tag.FireDamage)) return;
-			IFire.SpreadFire(TYPE_ID, bullet.Rect.Expand(Const.CEL));
+			IFire.SpreadFire(Fire.TYPE_ID, bullet.Rect.Expand(Const.CEL));
 		}
 	}
 

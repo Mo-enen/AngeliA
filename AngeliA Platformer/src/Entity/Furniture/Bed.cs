@@ -6,7 +6,7 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
-public abstract class Bed : Furniture, IActionTarget {
+public abstract class Bed : ActionFurniture {
 
 
 	protected override Direction3 ModuleType => Direction3.Horizontal;
@@ -85,13 +85,11 @@ public abstract class Bed : Furniture, IActionTarget {
 		target.Y = Y + offsetY + 2;
 	}
 
-	bool IActionTarget.Invoke () {
+	public override bool Invoke () {
 		if (PlayerSystem.Selecting == null) return false;
 		GetTargetOnBed(PlayerSystem.Selecting);
 		RequireRestartGame = true;
 		return true;
 	}
-
-	bool IActionTarget.AllowInvoke () => PlayerSystem.Selecting != null;
 
 }
