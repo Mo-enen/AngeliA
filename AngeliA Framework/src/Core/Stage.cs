@@ -134,7 +134,7 @@ public static class Stage {
 	[AfterLayerFrameUpdate] internal static Action<int> AfterLayerFrameUpdate;
 	[AfterEntityReposition] internal static Action<Entity, Int3?, Int3> AfterEntityReposition;
 	private static readonly Dictionary<int, EntityStack> EntityPool = [];
-	private static readonly HashSet<Int3> StagedEntityHash = [];
+	private static readonly Dictionary<Int3, Entity> StagedEntityPool = [];
 	private static int ViewLerpRate = 1000;
 	private static int? RequireSetViewZ = null;
 
@@ -548,7 +548,7 @@ public static class Stage {
 	public static Entity SpawnEntityFromWorld (int typeID, int x, int y, int z, out bool requireDrawAsBlock, bool forceSpawn = false) {
 		requireDrawAsBlock = false;
 		var uPos = new Int3(x.ToUnit(), y.ToUnit(), z);
-		if (!forceSpawn && StagedEntityHash.Contains(uPos)) return null;
+		if (!forceSpawn && StagedEntityPool.ContainsKey(uPos)) return null;
 		if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
 		if (stack.DontSpawnFromWorld) {
 			requireDrawAsBlock = stack.DrawAsBlock;
@@ -664,6 +664,9 @@ public static class Stage {
 
 
 	public static int GetSpawnedEntityCount (int id) => EntityPool.TryGetValue(id, out var meta) ? meta.SpawnedCount : 0;
+
+
+	public static bool TryGetStagedEntity (Int3 instanceID, out Entity instance) => StagedEntityPool.TryGetValue(instanceID, out instance);
 
 
 	// Despawn
@@ -794,8 +797,8 @@ public static class Stage {
 
 		var newInsID = new Int3(resultUnitX, resultUnitY, ViewZ);
 		if (carryThoughZ) {
-			StagedEntityHash.Remove(entity.InstanceID);
-			StagedEntityHash.Add(newInsID);
+			StagedEntityPool.Remove(entity.InstanceID);
+			StagedEntityPool.TryAdd(newInsID, entity);
 		}
 
 		// Set Block
@@ -860,7 +863,7 @@ public static class Stage {
 				e.OnInactivated();
 			} catch (Exception ex) { Debug.LogException(ex); }
 
-			StagedEntityHash.Remove(e.InstanceID);
+			StagedEntityPool.Remove(e.InstanceID);
 
 			// Push Back
 			if (EntityPool.TryGetValue(e.TypeID, out var stack)) {
@@ -890,7 +893,7 @@ public static class Stage {
 			if (
 				!forceSpawn &&
 				globalUnitPos.x != int.MinValue &&
-				StagedEntityHash.Contains(globalUnitPos)
+				StagedEntityPool.ContainsKey(globalUnitPos)
 			) return null;
 
 			if (!EntityPool.TryGetValue(typeID, out var stack)) {
@@ -916,7 +919,7 @@ public static class Stage {
 
 			// Init Entity
 			if (globalUnitPos.x != int.MinValue) {
-				StagedEntityHash.Add(globalUnitPos);
+				StagedEntityPool[globalUnitPos] = entity;
 			} else {
 				globalUnitPos.y = stack.SpawnedCount;
 			}

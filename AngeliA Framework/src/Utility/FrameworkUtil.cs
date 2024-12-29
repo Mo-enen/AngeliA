@@ -534,6 +534,21 @@ public static class FrameworkUtil {
 	}
 
 
+	public static void DrawLoopingActivatedHighlight (IRect targetRect, Color32 tint, int lineCount = 4, int duration = 22) {
+		int localFrame = Game.GlobalFrame % duration;
+		var rect = targetRect;
+		Renderer.SetLayerToAdditive();
+		for (int i = 0; i < lineCount; i++) {
+			tint.a = (byte)(i == lineCount - 1 ? Util.RemapUnclamped(0, duration, 64, 0, localFrame) : 64);
+			rect.y = targetRect.y;
+			rect.height = i * targetRect.height / lineCount;
+			rect.height += Util.RemapUnclamped(0, duration, 0, targetRect.height / lineCount, localFrame);
+			Renderer.Draw(BuiltInSprite.SOFT_LINE_H, rect, tint);
+		}
+		Renderer.SetLayerToDefault();
+	}
+
+
 	// FrameBasedValue Load/Save
 	public static bool NameAndIntFile_to_List (List<(string name, int value)> list, string path) {
 		if (!Util.FileExists(path)) return false;

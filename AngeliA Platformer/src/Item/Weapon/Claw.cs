@@ -12,7 +12,7 @@ public abstract class Claw : MeleeWeapon {
 	public override int? DefaultMovementSpeedRateOnUse => 1000;
 	public override int? WalkingMovementSpeedRateOnUse => 1000;
 	public override int? RunningMovementSpeedRateOnUse => 1000;
-	public override int RangeXLeft => 275;
-	public override int RangeXRight => 275;
+	public override int RangeXLeft => 375;
+	public override int RangeXRight => 375;
 	public override int RangeY => 432;
 }

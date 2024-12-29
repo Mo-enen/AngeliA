@@ -24,13 +24,7 @@ public enum CharacterAnimationType {
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
-public abstract class Character : Rigidbody,
-	IDamageReceiver, ICarrier,
-	IWithCharacterMovement,
-	IWithCharacterAttackness,
-	IWithCharacterHealth,
-	IWithCharacterBuff,
-	IWithCharacterRenderer {
+public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCharacterMovement, IWithCharacterAttackness, IWithCharacterHealth, IWithCharacterBuff, IWithCharacterRenderer {
 
 
 
@@ -705,7 +699,7 @@ public abstract class Character : Rigidbody,
 
 		// Knock Back
 		if (!damage.IgnoreStun) {
-			VelocityX = Movement.FacingRight ? -Health.KnockbackSpeed : Health.KnockbackSpeed;
+			VelocityX = damage.Bullet != null && damage.Bullet.Rect.CenterX() > Rect.CenterX() ? -Health.KnockbackSpeed : Health.KnockbackSpeed;
 			Health.LastDamageFrame = Game.GlobalFrame;
 		}
 

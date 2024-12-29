@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
-
 using AngeliA;
+
 namespace AngeliA.Platformer;
+
 [EntityAttribute.Capacity(16)]
 [EntityAttribute.MapEditorGroup("CheckPoint")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public abstract class CheckPoint : Entity, IBlockEntity {
+public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 
 
 
@@ -17,13 +17,12 @@ public abstract class CheckPoint : Entity, IBlockEntity {
 
 
 	// Api
-	public delegate void TouchedHandler (CheckPoint checkPoint, Character target);
-	public static event TouchedHandler OnCheckPointTouched;
+	public static event System.Action<CheckPoint, Character> OnCheckPointTouched;
 	public static Int3? LastTriggeredCheckPointUnitPosition { get; private set; } = null;
 	public static int LastTriggeredCheckPointID { get; private set; } = 0;
 
 	// Short
-	private bool AltarAvailable => LinkedAltarID != 0 && CheckAltar<CheckPoint>.CurrentAltarID == LinkedAltarID;
+	private bool AltarAvailable => LinkedAltarID != 0 && CheckAltar.CurrentAltarID == LinkedAltarID;
 
 	// Data
 	private readonly int LinkedAltarID = 0;
@@ -37,6 +36,10 @@ public abstract class CheckPoint : Entity, IBlockEntity {
 	#region --- MSG ---
 
 
+	[CircuitOperator]
+	internal static void CircuitOperator (Int3 unitPos) => TriggerCheckPoint(unitPos);
+
+
 	[OnGameRestart]
 	public static void OnGameRestart () {
 		LastTriggeredCheckPointUnitPosition = null;
@@ -44,7 +47,7 @@ public abstract class CheckPoint : Entity, IBlockEntity {
 	}
 
 
-	public CheckPoint () => CheckAltar<CheckPoint>.TryGetLinkedID(TypeID, out LinkedAltarID);
+	public CheckPoint () => CheckAltar.TryGetLinkedID(TypeID, out LinkedAltarID);
 
 
 	public override void FirstUpdate () {
@@ -71,24 +74,7 @@ public abstract class CheckPoint : Entity, IBlockEntity {
 		// Player Touch Check
 		if (!highlighting && available && player.Rect.Overlaps(Rect)) {
 			highlighting = true;
-
-			LastTriggeredCheckPointUnitPosition = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
-			LastTriggeredCheckPointID = TypeID;
-
-			// Clear Portal
-			if (
-				Stage.GetSpawnedEntityCount(CheckPointPortal.TYPE_ID) != 0 &&
-				Stage.TryGetEntity(CheckPointPortal.TYPE_ID, out var portal)
-			) {
-				portal.Active = false;
-			}
-
-			// Player Respawn
-			PlayerSystem.RespawnCpUnitPosition = unitPos;
-
-			// Particle
-			OnCheckPointTouched?.Invoke(this, PlayerSystem.Selecting);
-
+			Touch();
 		}
 
 		// Spawn Portal
@@ -96,10 +82,10 @@ public abstract class CheckPoint : Entity, IBlockEntity {
 			available && highlighting &&
 			Stage.GetSpawnedEntityCount(CheckPointPortal.TYPE_ID) == 0 &&
 			LinkedAltarID != 0 &&
-			CheckAltar<CheckPoint>.CurrentAltarID == LinkedAltarID &&
+			CheckAltar.CurrentAltarID == LinkedAltarID &&
 			Stage.GetOrSpawnEntity(CheckPointPortal.TYPE_ID, X, Y + Const.CEL * 4) is CheckPointPortal cpPortal
 		) {
-			cpPortal.SetCheckPoint(LinkedAltarID, CheckAltar<CheckPoint>.CurrentAltarUnitPos);
+			cpPortal.SetCheckPoint(LinkedAltarID, CheckAltar.CurrentAltarUnitPos);
 		}
 
 	}
@@ -122,10 +108,14 @@ public abstract class CheckPoint : Entity, IBlockEntity {
 		if (available) {
 			var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 			if (PlayerSystem.RespawnCpUnitPosition == unitPos) {
-				DrawActivatedHighlight(Rect);
+				var tint = new Color32(128, 255, 128, 255);
+				FrameworkUtil.DrawLoopingActivatedHighlight(Rect, tint);
 			}
 		}
 	}
+
+
+	void ICircuitOperator.TriggerCircuit () => Touch();
 
 
 	#endregion
@@ -136,21 +126,31 @@ public abstract class CheckPoint : Entity, IBlockEntity {
 	#region --- API ---
 
 
-	public static void DrawActivatedHighlight (IRect targetRect) {
-		const int LINE_COUNT = 4;
-		const int DURATION = 22;
-		int localFrame = Game.GlobalFrame % DURATION;
-		var rect = targetRect;
-		var tint = new Color32(128, 255, 128, 255);
-		Renderer.SetLayerToAdditive();
-		for (int i = 0; i < LINE_COUNT; i++) {
-			tint.a = (byte)(i == LINE_COUNT - 1 ? Util.RemapUnclamped(0, DURATION, 64, 0, localFrame) : 64);
-			rect.y = targetRect.y;
-			rect.height = i * targetRect.height / LINE_COUNT;
-			rect.height += Util.RemapUnclamped(0, DURATION, 0, targetRect.height / LINE_COUNT, localFrame);
-			Renderer.Draw(BuiltInSprite.SOFT_LINE_H, rect, tint);
+	public virtual void Touch () {
+		TriggerCheckPoint(new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ));
+		OnCheckPointTouched?.Invoke(this, PlayerSystem.Selecting);
+	}
+
+
+	public static void TriggerCheckPoint (Int3 unitPos) {
+
+		int id = WorldSquad.Stream.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
+		if (!CheckAltar.TryGetLinkedID(id, out _)) return;
+
+		LastTriggeredCheckPointUnitPosition = unitPos;
+		LastTriggeredCheckPointID = id;
+
+		// Clear Portal
+		if (
+			Stage.GetSpawnedEntityCount(CheckPointPortal.TYPE_ID) != 0 &&
+			Stage.TryGetEntity(CheckPointPortal.TYPE_ID, out var portal)
+		) {
+			portal.Active = false;
 		}
-		Renderer.SetLayerToDefault();
+
+		// Player Respawn
+		PlayerSystem.RespawnCpUnitPosition = unitPos;
+
 	}
 
 

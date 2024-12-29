@@ -94,23 +94,27 @@ public class ControlHintUI : EntityUI {
 
 #if DEBUG
 		// Draw Debug Gizmos
-		var pos = Input.MouseGlobalPosition.ToUnit();
-		int padding = Unify(6);
-		GUI.IntLabel(
-			Renderer.CameraRect.CornerInside(Alignment.BottomRight, 1, Unify(16)).Shift(-padding, 0),
-			Stage.ViewZ, out var bounds,
-			GUI.Skin.SmallRightLabel
-		);
-		GUI.IntLabel(
-			bounds.EdgeOutside(Direction4.Left, 1).Shift(-padding, 0),
-			pos.y, out bounds,
-			GUI.Skin.SmallRightLabel
-		);
-		GUI.IntLabel(
-			bounds.EdgeOutside(Direction4.Left, 1).Shift(-padding, 0),
-			pos.x,
-			GUI.Skin.SmallRightLabel
-		);
+		if (!Game.IsToolApplication && Input.HoldingAlt) {
+			using (new UILayerScope(ignoreSorting: true)) {
+				var pos = Input.MouseGlobalPosition.ToUnit();
+				int padding = Unify(6);
+				GUI.IntLabel(
+					Renderer.CameraRect.CornerInside(Alignment.BottomRight, 1, Unify(16)).Shift(-padding, 0),
+					Stage.ViewZ, out var bounds,
+					GUI.Skin.SmallRightLabel
+				);
+				GUI.IntLabel(
+					bounds.EdgeOutside(Direction4.Left, 1).Shift(-padding, 0),
+					pos.y, out bounds,
+					GUI.Skin.SmallRightLabel
+				);
+				GUI.IntLabel(
+					bounds.EdgeOutside(Direction4.Left, 1).Shift(-padding, 0),
+					pos.x,
+					GUI.Skin.SmallRightLabel
+				);
+			}
+		}
 #endif
 
 	}

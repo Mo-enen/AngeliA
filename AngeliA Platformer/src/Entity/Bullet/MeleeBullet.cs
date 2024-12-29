@@ -25,7 +25,7 @@ public class MeleeBullet : Bullet {
 	public void FollowSender () {
 		if (Sender is not Character character) return;
 		var characterRect = character.Rect;
-		X = character.Movement.FacingRight ? characterRect.xMax : characterRect.xMin - Width;
+		X = character.Movement.FacingRight ? characterRect.xMin : characterRect.xMax - Width;
 		Y = character.Y - 1;
 	}
 
