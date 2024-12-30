@@ -687,6 +687,14 @@ public static class Stage {
 	}
 
 
+	public static void RemoveStagedEntity (Int3 instanceID) {
+		if (StagedEntityPool.TryGetValue(instanceID, out var entity)) {
+			StagedEntityPool.Remove(instanceID);
+			if (entity != null) entity.Active = false;
+		}
+	}
+
+
 	// Stage Workflow
 	public static void DespawnAllNonUiEntities (bool refreshImmediately = false) {
 		if (!Enable) return;

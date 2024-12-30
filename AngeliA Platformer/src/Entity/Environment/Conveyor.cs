@@ -54,8 +54,8 @@ public abstract class Conveyor : Entity, IBlockEntity {
 	public override void LateUpdate () {
 		base.LateUpdate();
 
-		if (Pose == FittingPose.Unknown || Game.GlobalFrame < SpawnFrame + 2) {
-			ReloadPose();
+		if (Pose == FittingPose.Unknown) {
+			ReloadPose(out _);
 		}
 
 		int aFrame = (Game.GlobalFrame * Util.Abs(MoveSpeed) / 16).UMod(8);
@@ -75,18 +75,20 @@ public abstract class Conveyor : Entity, IBlockEntity {
 
 
 	// LGC
-	private void ReloadPose () {
-		int unitX = X.ToUnit();
-		int unitY = Y.ToUnit();
+	protected void ReloadPose (out bool sameBlockID) {
+		int unitX = (X + 1).ToUnit();
+		int unitY = (Y + 1).ToUnit();
+		int idM = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Entity);
 		int idL = WorldSquad.Front.GetBlockAt(unitX - 1, unitY, BlockType.Entity);
 		int idR = WorldSquad.Front.GetBlockAt(unitX + 1, unitY, BlockType.Entity);
-		bool hasLeft = idL == TypeID;
-		bool hasRight = idR == TypeID;
+		bool hasLeft = idL == idM;
+		bool hasRight = idR == idM;
 		Pose =
 			hasLeft && hasRight ? FittingPose.Mid :
 			hasLeft && !hasRight ? FittingPose.Right :
 			!hasLeft && hasRight ? FittingPose.Left :
 			FittingPose.Single;
+		sameBlockID = idM == TypeID;
 	}
 
 

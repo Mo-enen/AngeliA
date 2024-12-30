@@ -4,7 +4,7 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-public abstract class FireSprinkler : Furniture {
+public abstract class FireSprinkler : Furniture, ICircuitOperator {
 
 
 	// Api
@@ -101,6 +101,12 @@ public abstract class FireSprinkler : Furniture {
 				tint.a = (byte)(i * 256 / len + 64).Clamp(64, 255);
 				Renderer.Draw(waterSP, x, y, px, py, 0, w, h, tint);
 			}
+		}
+	}
+
+	void ICircuitOperator.TriggerCircuit () {
+		if (SprinklingFrame < 0) {
+			SprinklingFrame = Game.GlobalFrame + RespondDelay;
 		}
 	}
 
