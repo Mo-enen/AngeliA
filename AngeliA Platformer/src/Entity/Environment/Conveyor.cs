@@ -17,39 +17,15 @@ public abstract class Conveyor : Entity, IBlockEntity {
 	protected abstract int ArtCodeRight { get; }
 	protected abstract int ArtCodeSingle { get; }
 
-	// Data
-	private static readonly HashSet<int> ConveyorSet = [];
-
 
 	// MSG
-
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		ConveyorSet.Clear();
-		foreach (var type in typeof(Conveyor).AllChildClass()) {
-			ConveyorSet.Add(type.AngeHash());
-		}
-	}
-
-
 	public override void OnActivated () {
 		base.OnActivated();
-		// Get Pose
-		int unitX = X.ToUnit();
-		int unitY = Y.ToUnit();
-		int idL = WorldSquad.Front.GetBlockAt(unitX - 1, unitY, BlockType.Entity);
-		int idR = WorldSquad.Front.GetBlockAt(unitX + 1, unitY, BlockType.Entity);
-		bool hasLeft = ConveyorSet.Contains(idL);
-		bool hasRight = ConveyorSet.Contains(idR);
-		Pose =
-			hasLeft && hasRight ? FittingPose.Mid :
-			hasLeft && !hasRight ? FittingPose.Right :
-			!hasLeft && hasRight ? FittingPose.Left :
-			FittingPose.Single;
+		Pose = FittingPose.Unknown;
 	}
 
 
-	void IBlockEntity.OnEntityRefresh () => OnActivated();
+	void IBlockEntity.OnEntityRefresh () => Pose = FittingPose.Unknown;
 
 
 	public override void FirstUpdate () {
@@ -70,8 +46,6 @@ public abstract class Conveyor : Entity, IBlockEntity {
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig) continue;
 			rig.SetMomentum(-MoveSpeed, 0);
-
-
 		}
 
 	}
@@ -79,6 +53,11 @@ public abstract class Conveyor : Entity, IBlockEntity {
 
 	public override void LateUpdate () {
 		base.LateUpdate();
+
+		if (Pose == FittingPose.Unknown || Game.GlobalFrame < SpawnFrame + 2) {
+			ReloadPose();
+		}
+
 		int aFrame = (Game.GlobalFrame * Util.Abs(MoveSpeed) / 16).UMod(8);
 		if (MoveSpeed > 0) aFrame = 7 - aFrame;
 		if (Renderer.TryGetSpriteFromGroup(
@@ -92,6 +71,22 @@ public abstract class Conveyor : Entity, IBlockEntity {
 		)) {
 			Renderer.Draw(sprite, base.Rect);
 		}
+	}
+
+
+	// LGC
+	private void ReloadPose () {
+		int unitX = X.ToUnit();
+		int unitY = Y.ToUnit();
+		int idL = WorldSquad.Front.GetBlockAt(unitX - 1, unitY, BlockType.Entity);
+		int idR = WorldSquad.Front.GetBlockAt(unitX + 1, unitY, BlockType.Entity);
+		bool hasLeft = idL == TypeID;
+		bool hasRight = idR == TypeID;
+		Pose =
+			hasLeft && hasRight ? FittingPose.Mid :
+			hasLeft && !hasRight ? FittingPose.Right :
+			!hasLeft && hasRight ? FittingPose.Left :
+			FittingPose.Single;
 	}
 
 

@@ -17,8 +17,8 @@ public abstract class Enemy : Character, IDamageReceiver {
 		Movement.MovementHeight.BaseValue = 256;
 		Health.MaxHP.BaseValue = Health.HP = 3;
 		Health.InvincibleDuration.BaseValue = 24;
-		Health.KnockbackSpeed.BaseValue = 128;
-		Health.KnockbackDeceleration.BaseValue = 2;
+		Health.KnockbackSpeed.BaseValue = 48;
+		Health.KnockbackDeceleration.BaseValue = 4;
 	}
 
 	public override void TakeDamage (Damage damage) {

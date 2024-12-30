@@ -348,7 +348,17 @@ public static class FrameworkUtil {
 	}
 
 
-	public static void DrawAllCollidersAsGizmos (float brightness = 1f, bool ignoreNonOnewayTrigger = false, bool useTechEffect = false) {
+	public static void DrawAllCollidersAsGizmos (
+		int physicsMask = PhysicsMask.ALL,
+		Int2 offset = default,
+		float brightness = 1f,
+		bool ignoreNonOnewayTrigger = false,
+		bool ignoreOnewayTrigger = false,
+		bool useTechEffect = false,
+		Color32[] layerTints = null
+	) {
+
+		layerTints ??= COLLIDER_TINTS;
 
 		// Init Cells
 		if (CellPhysicsCells.Count == 0) {
@@ -358,7 +368,7 @@ public static class FrameworkUtil {
 					var layerObj = layers.GetValue(layerIndex);
 					CellPhysicsCells.Add(Util.GetFieldValue(layerObj, Physics.CellsName) as PhysicsCell[,,]);
 				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+			} catch (Exception ex) { Debug.LogException(ex); }
 			if (CellPhysicsCells.Count == 0) CellPhysicsCells.Add(null);
 		}
 
@@ -370,7 +380,8 @@ public static class FrameworkUtil {
 			framePingPong01 /= 4f;
 			for (int layer = 0; layer < CellPhysicsCells.Count; layer++) {
 				try {
-					var tint = COLLIDER_TINTS[layer.Clamp(0, COLLIDER_TINTS.Length - 1)];
+					if ((physicsMask & (1 << layer)) == 0) continue;
+					var tint = layerTints[layer.Clamp(0, layerTints.Length - 1)];
 					tint = Color32.LerpUnclamped(Color32.BLACK, tint, brightness);
 					var cells = CellPhysicsCells[layer];
 					int cellWidth = cells.GetLength(0);
@@ -381,10 +392,14 @@ public static class FrameworkUtil {
 							for (int d = 0; d < celDepth; d++) {
 								var cell = cells[x, y, d];
 								if (cell.Frame != Physics.CurrentFrame) break;
-								if (ignoreNonOnewayTrigger && cell.IsTrigger && !Util.HasOnewayTag(cell.Tag) && !cell.Tag.HasAny(Tag.Climb | Tag.ClimbStable)) continue;
+								if (cell.IsTrigger) {
+									bool isNonOnewayTrigger = !Util.HasOnewayTag(cell.Tag) && !cell.Tag.HasAny(Tag.Climb | Tag.ClimbStable);
+									if (ignoreNonOnewayTrigger && isNonOnewayTrigger) continue;
+									if (ignoreOnewayTrigger && !isNonOnewayTrigger) continue;
+								}
 								if (!cell.Rect.Overlaps(cameraRect)) continue;
 								// Effect
-								var rect = cell.Rect;
+								var rect = cell.Rect.Shift(offset);
 								var _tint = tint;
 								if (useTechEffect) {
 									const int RANDOM_SHAKE = 5;
@@ -405,7 +420,7 @@ public static class FrameworkUtil {
 							}
 						}
 					}
-				} catch (System.Exception ex) { Debug.LogException(ex); }
+				} catch (Exception ex) { Debug.LogException(ex); }
 			}
 		}
 	}
@@ -911,6 +926,8 @@ public static class FrameworkUtil {
 	public static bool PutBlockTo (int blockID, BlockType blockType, Character pHolder, int targetUnitX, int targetUnitY) {
 
 		bool success = false;
+		var squad = WorldSquad.Stream;
+		int z = Stage.ViewZ;
 
 		switch (blockType) {
 			case BlockType.Level:
@@ -923,15 +940,15 @@ public static class FrameworkUtil {
 					finalID = sprite.ID;
 				}
 				if (finalID != 0) {
-					WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, blockType, finalID);
+					squad.SetBlockAt(targetUnitX, targetUnitY, z, blockType, finalID);
 					// Rule
 					if (sprite.Group != null && sprite.Group.WithRule) {
 						RedirectForRule(
-							WorldSquad.Stream, new IRect(targetUnitX - 1, targetUnitY - 1, 3, 3), Stage.ViewZ
+							squad, new IRect(targetUnitX - 1, targetUnitY - 1, 3, 3), Stage.ViewZ
 						);
 					}
 				} else {
-					WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, blockType, blockID);
+					squad.SetBlockAt(targetUnitX, targetUnitY, z, blockType, blockID);
 				}
 				success = true;
 				break;
@@ -940,13 +957,8 @@ public static class FrameworkUtil {
 				if (!BLOCK_ENTITY_TYPE.IsAssignableFrom(Stage.GetEntityType(blockID))) break;
 
 				// Set to Map & Spawn
-				Entity e;
-				if (!Stage.IsEntityRequireReposition(blockID)) {
-					WorldSquad.Front.SetBlockAt(targetUnitX, targetUnitY, BlockType.Entity, blockID);
-					e = Stage.SpawnEntityFromWorld(blockID, targetUnitX.ToGlobal(), targetUnitY.ToGlobal(), Stage.ViewZ, forceSpawn: true);
-				} else {
-					e = Stage.SpawnEntity(blockID, targetUnitX.ToGlobal(), targetUnitY.ToGlobal());
-				}
+				squad.SetBlockAt(targetUnitX, targetUnitY, z, BlockType.Entity, blockID);
+				var e = Stage.SpawnEntityFromWorld(blockID, targetUnitX.ToGlobal(), targetUnitY.ToGlobal(), Stage.ViewZ, forceSpawn: true);
 
 				if (e is IBlockEntity bEntity) {
 					bEntity.OnEntityPut();

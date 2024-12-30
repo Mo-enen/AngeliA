@@ -1,4 +1,4 @@
-﻿namespace AngeliA; 
+﻿namespace AngeliA;
 
 public static class PhysicsLayer {
 	public const int LEVEL = 0;
@@ -10,7 +10,10 @@ public static class PhysicsLayer {
 }
 
 public static class PhysicsMask {
+
 	public const int NONE = 0;
+	public const int ALL = 0b11111;
+
 	public const int LEVEL = 0b1;
 	public const int ENVIRONMENT = 0b10;
 	public const int ITEM = 0b100;

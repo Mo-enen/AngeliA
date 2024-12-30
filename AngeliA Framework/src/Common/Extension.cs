@@ -265,8 +265,7 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static bool InLength (this int value, int length) => value >= 0 && value < length;
 
 	[MethodImpl(INLINE)]
-	public static int LerpTo (this int from, int to, float lerp01) =>
-		from + ((to - from) * lerp01).RoundToInt();
+	public static int LerpTo (this int from, int to, float lerp01) => from + ((to - from) * lerp01).RoundToInt();
 	[MethodImpl(INLINE)]
 	public static int LerpTo (this int from, int to, int lerpRate) {
 		int result = from + ((to - from) * lerpRate / 1000);

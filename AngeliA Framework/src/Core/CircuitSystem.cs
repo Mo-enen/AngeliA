@@ -5,20 +5,6 @@ using System.Reflection;
 namespace AngeliA;
 
 
-public interface ICircuitOperator {
-	private static readonly HashSet<int> OperatorSet = [];
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		OperatorSet.Clear();
-		foreach (var type in typeof(ICircuitOperator).AllClassImplemented()) {
-			OperatorSet.Add(type.AngeHash());
-		}
-	}
-	public static bool IsOperator (int typeID) => OperatorSet.Contains(typeID);
-	public void TriggerCircuit ();
-}
-
-
 public static class CircuitSystem {
 
 
@@ -111,7 +97,7 @@ public static class CircuitSystem {
 						OnCircuitOperatorTriggered?.Invoke(_pos);
 					}
 				}
-				if (Physics.GetEntity<ICircuitOperator>(
+				if (_pos.z == Stage.ViewZ && Physics.GetEntity<ICircuitOperator>(
 						IRect.Point(_pos.x.ToGlobal() + Const.HALF, _pos.y.ToGlobal() + Const.HALF),
 						PhysicsMask.ENTITY, null, OperationMode.ColliderAndTrigger
 					) is ICircuitOperator _operator
