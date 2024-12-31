@@ -64,6 +64,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public override int AirDragY => 0;
 	public override bool CarryOtherOnTop => false;
 	public virtual CharacterInventoryType InventoryType => CharacterInventoryType.None;
+	public virtual int FinalCharacterHeight => Movement.MovementHeight;
 	bool ICarrier.AllowBeingCarry => true;
 	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
 	CharacterAttackness IWithCharacterAttackness.CurrentAttackness => Attackness;

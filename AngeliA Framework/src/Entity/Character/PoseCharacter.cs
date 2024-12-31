@@ -5,13 +5,10 @@ namespace AngeliA;
 
 public abstract class PoseCharacter : Character {
 
+	// VAR
 	protected override CharacterRenderer CreateNativeRenderer () => new PoseCharacterRenderer(this);
-
-	public override void OnActivated () {
-		base.OnActivated();
-		if (Rendering is PoseCharacterRenderer rendering) {
-			Movement.FinalCharacterHeight = Movement.MovementHeight * rendering.CharacterHeight / 160;
-		}
-	}
+	public override int FinalCharacterHeight => Rendering is PoseCharacterRenderer rendering ?
+		base.FinalCharacterHeight * rendering.CharacterHeight / 160 : 
+		base.FinalCharacterHeight;
 
 }

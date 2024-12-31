@@ -24,6 +24,8 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	public int InventoryUpdatedFrame { get; set; } = -1;
 	public SummonNavigation Navigation { get; init; }
 	public virtual bool RequireOwner => false;
+	public override bool AllowBeingPush => false;
+	public override bool CarryOtherOnTop => false;
 
 	// Data
 	private int SummonFrame = int.MinValue;
@@ -49,6 +51,8 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		Navigation.Refresh();
 		Navigation.MakeFollowOwner();
 		Movement.PushAvailable.BaseValue = false;
+		Movement.MovementWidth.BaseValue = 256;
+		Movement.MovementHeight.BaseValue = 256;
 		DespawnAfterPassoutDelay = -1;
 	}
 

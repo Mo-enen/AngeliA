@@ -8,13 +8,9 @@ public abstract class PlayableCharacter : Character, IActionTarget {
 
 	protected override CharacterRenderer CreateNativeRenderer () => new PoseCharacterRenderer(this);
 	public override CharacterInventoryType InventoryType => CharacterInventoryType.Unique;
-
-	public override void OnActivated () {
-		base.OnActivated();
-		if (Rendering is PoseCharacterRenderer rendering) {
-			Movement.FinalCharacterHeight = Movement.MovementHeight * rendering.CharacterHeight / 160;
-		}
-	}
+	public override int FinalCharacterHeight => Rendering is PoseCharacterRenderer rendering ?
+		base.FinalCharacterHeight * rendering.CharacterHeight / 160 :
+		base.FinalCharacterHeight;
 
 	public virtual bool Invoke () {
 		PlayerSystem.SetCharacterAsPlayer(this);

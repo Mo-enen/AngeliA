@@ -79,6 +79,7 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly LanguageCode MEDT_CANCEL_DROP = ("MEDT.CancelDrop", "Cancel Drop");
 	private static readonly LanguageCode MEDT_ENTITY_ONLY = ("MEDT.EntityOnly", "Entity Only");
 	private static readonly LanguageCode MEDT_LEVEL_ONLY = ("MEDT.LevelOnly", "Level Only");
+	private static readonly LanguageCode MEDT_AS_ELEMENT = ("MEDT.AsElement", "As Element");
 	private static readonly LanguageCode MEDT_BG_ONLY = ("MEDT.BackgroundOnly", "Background Only");
 	private static readonly LanguageCode HINT_MEDT_SWITCH_EDIT = ("CtrlHint.MEDT.SwitchMode.Edit", "Back to Edit");
 	private static readonly LanguageCode HINT_MEDT_SWITCH_PLAY = ("CtrlHint.MEDT.SwitchMode.Play", "Play");

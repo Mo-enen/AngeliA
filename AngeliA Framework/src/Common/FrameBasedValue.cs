@@ -30,6 +30,7 @@ public abstract class FrameBasedValue<T> : FrameBasedValue {
 		OverrideValue = value;
 		OverridePriority = priority;
 	}
+	public override string ToString () => FinalValue.ToString();
 }
 
 

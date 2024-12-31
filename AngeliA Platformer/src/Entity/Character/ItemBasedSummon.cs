@@ -3,10 +3,14 @@
 namespace AngeliA.Platformer;
 
 public abstract class ItemBasedSummon : Summon {
+
 	public int OriginItemID { get; set; } = 0;
+
 	public override void OnActivated () {
+		base.OnActivated();
 		OriginItemID = 0;
 	}
+
 	public override void Update () {
 		base.Update();
 		// Check Item Exists
@@ -20,4 +24,5 @@ public abstract class ItemBasedSummon : Summon {
 			return;
 		}
 	}
+
 }

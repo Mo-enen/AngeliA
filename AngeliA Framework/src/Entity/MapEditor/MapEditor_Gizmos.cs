@@ -232,7 +232,19 @@ public partial class MapEditor {
 			DrawModifyFilterLabel(cursorRect);
 		} else {
 			// Pal Thumbnail
-			DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, cursorRect, true);
+			var cell = DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, cursorRect, true);
+			if (SelectingPaletteItem.BlockType == BlockType.Element) {
+				cell.ReturnPivots(0.5f, 0.5f);
+				cell.Rotation = Game.GlobalFrame.PingPong(12) - 6;
+			}
+			// Modify Label
+			if (Modify_EntityOnly) {
+				int height = Unify(22);
+				GUI.Label(
+					new IRect(cursorRect.x + cursorRect.width / 2, cursorRect.y - height, 1, height),
+					MEDT_AS_ELEMENT
+				);
+			}
 		}
 	}
 
@@ -259,12 +271,12 @@ public partial class MapEditor {
 	}
 
 
-	private void DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null) => DrawSpriteGizmos(artworkID, rect, Color32.WHITE, shrink, sprite);
-	private void DrawSpriteGizmos (int artworkID, IRect rect, Color32 tint, bool shrink = false, AngeSprite sprite = null) {
+	private Cell DrawSpriteGizmos (int artworkID, IRect rect, bool shrink = false, AngeSprite sprite = null) => DrawSpriteGizmos(artworkID, rect, Color32.WHITE, shrink, sprite);
+	private Cell DrawSpriteGizmos (int artworkID, IRect rect, Color32 tint, bool shrink = false, AngeSprite sprite = null) {
 		sprite ??= GetRealGizmosSprite(artworkID);
-		if (sprite == null) return;
+		if (sprite == null) return Cell.EMPTY;
 		if (shrink) rect = rect.Shrink(rect.width * 2 / 10);
-		Renderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), tint, z: int.MaxValue - 1);
+		return Renderer.Draw(sprite, rect.Fit(sprite, sprite.PivotX, sprite.PivotY), tint, z: int.MaxValue - 1);
 	}
 
 

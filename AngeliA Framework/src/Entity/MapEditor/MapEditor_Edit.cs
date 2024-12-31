@@ -209,7 +209,7 @@ public partial class MapEditor {
 						}
 					}
 					// Set Data
-					UserSetBlock(i, j, type, id);
+					UserSetBlock(i, j, Modify_EntityOnly ? BlockType.Element : type, id);
 				} else if (mouseDownUnitPos == mouseUnitPos) {
 					// Single Erase
 

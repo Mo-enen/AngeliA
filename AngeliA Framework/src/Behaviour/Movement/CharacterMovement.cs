@@ -190,7 +190,6 @@ public class CharacterMovement (Rigidbody rig) {
 	public bool FacingRight { get; set; } = true;
 	public bool FacingFront { get; set; } = true;
 	public bool ShouldRun { get; private set; } = true;
-	public int FinalCharacterHeight { get; set; }
 	public virtual bool SyncFromConfigFile => true;
 
 	// Frame Cache
@@ -316,7 +315,6 @@ public class CharacterMovement (Rigidbody rig) {
 
 	public virtual void OnActivated () {
 
-		FinalCharacterHeight = MovementHeight;
 		Width = MovementWidth;
 		Height = MovementHeight;
 		OffsetX = -MovementWidth / 2;
@@ -511,7 +509,7 @@ public class CharacterMovement (Rigidbody rig) {
 		}
 		if (IsGrabbingTop) {
 			Y = grabbingY;
-			Height = FinalCharacterHeight * GrabTopHeightAmount / 1000;
+			Height = TargetCharacter.FinalCharacterHeight * GrabTopHeightAmount / 1000;
 		}
 		if (IsGrabbingTop || IsGrabbingSide) LastGrabbingFrame = frame;
 
@@ -547,9 +545,6 @@ public class CharacterMovement (Rigidbody rig) {
 		if (frame <= LockedFacingFrame && !IsSliding && !IsGrabbingSide) {
 			FacingRight = LockedFacingRight;
 		}
-		//else if (IntendedX != 0) {
-		//FacingRight = IntendedX > 0;
-		//}
 		if (FacingRight != oldFacingRight) {
 			LastFacingChangeFrame = frame;
 		}
@@ -558,7 +553,7 @@ public class CharacterMovement (Rigidbody rig) {
 		FacingFront = !IsClimbing;
 
 		// Physics
-		int growingHeight = FinalCharacterHeight;
+		int growingHeight = TargetCharacter.FinalCharacterHeight;
 		int width = InWater ? MovementWidth * SwimWidthAmount / 1000 : MovementWidth;
 		int height =
 			IsSquatting ? growingHeight * SquatHeightAmount / 1000 :
@@ -1256,7 +1251,7 @@ public class CharacterMovement (Rigidbody rig) {
 			PhysicsMask.MAP, rect, out hit, Target,
 			OperationMode.ColliderOnly, Tag.Grab
 		)) {
-			grabbingY = hit.Rect.yMin - (FinalCharacterHeight * GrabTopHeightAmount / 1000);
+			grabbingY = hit.Rect.yMin - (TargetCharacter.FinalCharacterHeight * GrabTopHeightAmount / 1000);
 			return true;
 		}
 		return false;
@@ -1322,7 +1317,7 @@ public class CharacterMovement (Rigidbody rig) {
 			// No Block Above
 			if (Physics.Overlap(
 				PhysicsMask.MAP,
-				new IRect(x, Y + (FinalCharacterHeight * GrabTopHeightAmount / 1000) + Const.CEL + Const.HALF, width, 1),
+				new IRect(x, Y + (TargetCharacter.FinalCharacterHeight * GrabTopHeightAmount / 1000) + Const.CEL + Const.HALF, width, 1),
 				Target
 			)) return false;
 			return true;

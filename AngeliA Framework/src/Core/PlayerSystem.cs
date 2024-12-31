@@ -635,10 +635,11 @@ public static class PlayerSystem {
 			characterTypeID = GetDefaultPlayerID();
 		}
 
-		if (characterTypeID != 0 && Stage.GetOrSpawnEntity(
-			characterTypeID, Stage.ViewRect.CenterX(), Stage.ViewRect.CenterY()
-		) is Character target) {
-			SetCharacterAsPlayer(target);
+		if (characterTypeID != 0) {
+			var unitPos = GetPlayerFinalRespawnUnitPosition();
+			if (Stage.GetOrSpawnEntity(characterTypeID, unitPos.x.ToGlobal(), unitPos.y.ToGlobal()) is Character target) {
+				SetCharacterAsPlayer(target);
+			}
 		}
 
 	}
