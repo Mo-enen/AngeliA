@@ -31,8 +31,6 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	// Const 
-	private const int START_RELEASE_COUNT = 256;
-	private const int END_RELEASE_COUNT = 128;
 	private static readonly object STREAM_LOCK = new();
 	private static readonly object POOL_LOCK = new();
 
@@ -49,8 +47,6 @@ public sealed class WorldStream : IBlockSquad {
 	private static readonly WorldPathPool PathPoolBuiltIn = [];
 	private readonly Dictionary<Int3, WorldData> WorldPool = [];
 	private readonly WorldPathPool PathPool = [];
-	private readonly List<KeyValuePair<Int3, WorldData>> CacheReleaseList = new(START_RELEASE_COUNT);
-	private int CurrentValidMapCount = 0;
 	private int InternalFrame = int.MinValue;
 
 
@@ -86,7 +82,6 @@ public sealed class WorldStream : IBlockSquad {
 		PathPool.SetMapRoot(mapFolder);
 		MapRoot = mapFolder;
 		WorldPool.Clear();
-		CurrentValidMapCount = 0;
 		InternalFrame = int.MinValue;
 	}
 
@@ -149,9 +144,6 @@ public sealed class WorldStream : IBlockSquad {
 	public void AddWorld (World world, bool overrideExists = false) {
 		if (WorldPool.TryGetValue(world.WorldPosition, out var data)) {
 			if (data.World == null || overrideExists) {
-				if (data.World == null) {
-					CurrentValidMapCount++;
-				}
 				data.World = world;
 				data.IsDirty = true;
 				IsDirty = true;
@@ -164,7 +156,6 @@ public sealed class WorldStream : IBlockSquad {
 			};
 			IsDirty = true;
 			WorldPool.Add(world.WorldPosition, data);
-			CurrentValidMapCount++;
 		}
 	}
 
@@ -298,8 +289,6 @@ public sealed class WorldStream : IBlockSquad {
 
 			// Check if Loaded
 			if (loaded) {
-				CurrentValidMapCount++;
-				TryReleaseOverload();
 				OnWorldLoaded?.Invoke(this, worldData.World);
 			} else {
 				worldData.World = null;
@@ -340,8 +329,6 @@ public sealed class WorldStream : IBlockSquad {
 			}
 
 			// Final
-			CurrentValidMapCount++;
-			TryReleaseOverload();
 			if (!loaded) {
 				OnWorldCreated?.Invoke(this, newWorld);
 				IsDirty = true;
@@ -351,27 +338,6 @@ public sealed class WorldStream : IBlockSquad {
 			OnWorldLoaded?.Invoke(this, newWorld);
 
 			return data;
-		}
-	}
-
-
-	private void TryReleaseOverload () {
-		if (CurrentValidMapCount < START_RELEASE_COUNT) return;
-		lock (POOL_LOCK) {
-			// Get Release List
-			CacheReleaseList.Clear();
-			foreach (var pair in WorldPool) {
-				if (pair.Value.World == null) continue;
-				CacheReleaseList.Add(pair);
-			}
-			CacheReleaseList.Sort((a, b) => a.Value.CreateFrame.CompareTo(b.Value.CreateFrame));
-			// Release
-			SaveAllDirty();
-			for (int i = END_RELEASE_COUNT; i < CacheReleaseList.Count; i++) {
-				WorldPool.Remove(CacheReleaseList[i].Key, out var worldData);
-				CurrentValidMapCount--;
-			}
-			CacheReleaseList.Clear();
 		}
 	}
 

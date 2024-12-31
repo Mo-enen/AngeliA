@@ -5,12 +5,10 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
-[EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 public class FrozenZone : Entity {
-
 
 
 
@@ -59,10 +57,15 @@ public class FrozenZone : Entity {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		Duration = 300;
 		Fullscreen = false;
 		SpawnedZ = Stage.ViewZ;
 		RequireDespawnFrame = int.MaxValue;
+		Duration = -1;
+		int gap = Const.HALF / 2;
+		X -= gap;
+		Y -= gap;
+		Width += gap * 2;
+		Height += gap * 2;
 	}
 
 
@@ -193,10 +196,13 @@ public class FrozenZone : Entity {
 	#region --- API ---
 
 
-	public static void SpreadFrozenZone (int zoneID, IRect range) {
+	public static void SpreadFrozenZone (int zoneID, IRect range, int duration = 300) {
 		if (Stage.SpawnEntity(zoneID, range.x, range.y) is not FrozenZone zone) return;
+		zone.X = range.x;
+		zone.Y = range.y;
 		zone.Width = range.width;
 		zone.Height = range.height;
+		zone.Duration = duration;
 	}
 
 

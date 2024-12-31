@@ -1465,10 +1465,7 @@ public sealed partial class MapEditor : WindowUI {
 	private void DrawEntity (int id, int unitX, int unitY) {
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 		if (EntityArtworkRedirectPool.TryGetValue(id, out int newID)) id = newID;
-		if (
-			Renderer.TryGetSprite(id, out var sprite, false) ||
-			Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
-		) {
+		if (Renderer.TryGetSpriteForGizmos(id, out var sprite)) {
 			rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
 			Renderer.Draw(sprite, rect);
 		} else {
@@ -1478,15 +1475,25 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	private void DrawElement (int id, int unitX, int unitY) {
-		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
-		if (
-			Renderer.TryGetSprite(id, out var sprite, false) ||
-			Renderer.TryGetSpriteFromGroup(id, 0, out sprite)
-		) {
-			rect = rect.Fit(sprite, sprite.PivotX, sprite.PivotY);
-			Renderer.Draw(sprite.ID, rect);
+		if (Renderer.TryGetSpriteForGizmos(id, out var sprite)) {
+			int width = Const.CEL;
+			int height = Const.CEL;
+			if (sprite.GlobalWidth != sprite.GlobalHeight) {
+				if (sprite.GlobalWidth > sprite.GlobalHeight) {
+					height = Const.CEL * sprite.GlobalHeight / sprite.GlobalWidth;
+				} else {
+					height = Const.CEL * sprite.GlobalWidth / sprite.GlobalHeight;
+				}
+			}
+			Renderer.Draw(
+				sprite.ID,
+				unitX.ToGlobal() + Const.HALF,
+				unitY.ToGlobal() + Const.HALF,
+				500, 500, Game.GlobalFrame.PingPong(12) - 6,
+				width, height
+			);
 		} else {
-			Renderer.Draw(ENTITY_CODE, rect);
+			Renderer.Draw(ENTITY_CODE, new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL));
 		}
 	}
 
