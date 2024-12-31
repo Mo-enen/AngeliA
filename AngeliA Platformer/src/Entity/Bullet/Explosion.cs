@@ -26,10 +26,8 @@ public abstract class Explosion : Entity {
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		if (FromWorld) {
-			X += Const.HALF;
-			Y += Const.HALF;
-		}
+		X = X.ToUnifyGlobal() + Const.HALF;
+		Y = Y.ToUnifyGlobal() + Const.HALF;
 		Sender = null;
 		BreakObjectArtwork = 0;
 		ExplodedFrame = -1;

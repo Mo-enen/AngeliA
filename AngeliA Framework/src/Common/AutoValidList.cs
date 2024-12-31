@@ -6,6 +6,7 @@ namespace AngeliA;
 public class AutoValidList<T> (int capacity, System.Func<T, bool> updateFunc) {
 
 	public int Count { get; private set; } = 0;
+	public int Capacity => Data.Length;
 	private readonly T[] Data = new T[capacity];
 	private readonly System.Func<T, bool> UpdateFunc = updateFunc;
 

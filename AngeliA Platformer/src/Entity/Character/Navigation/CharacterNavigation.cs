@@ -32,7 +32,7 @@ public class CharacterNavigation (Character character) {
 	public virtual int NavigationEndFlyDistance => Const.CEL * 3;
 	public virtual int NavigationMinimumFlyDuration => 60;
 	public virtual int NavigationJumpSpeed => 32;
-	public virtual int NavigationMaxJumpDuration => 120;
+	public virtual int NavigationMaxJumpDuration => 80;
 
 	// Short
 	private IRect Rect => TargetCharacter.Rect;

@@ -1476,6 +1476,7 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	private void DrawElement (int id, int unitX, int unitY) {
+		if (EntityArtworkRedirectPool.TryGetValue(id, out int newID)) id = newID;
 		if (Renderer.TryGetSpriteForGizmos(id, out var sprite)) {
 			int width = Const.CEL;
 			int height = Const.CEL;
@@ -1483,7 +1484,7 @@ public sealed partial class MapEditor : WindowUI {
 				if (sprite.GlobalWidth > sprite.GlobalHeight) {
 					height = Const.CEL * sprite.GlobalHeight / sprite.GlobalWidth;
 				} else {
-					height = Const.CEL * sprite.GlobalWidth / sprite.GlobalHeight;
+					width = Const.CEL * sprite.GlobalWidth / sprite.GlobalHeight;
 				}
 			}
 			Renderer.Draw(
@@ -1491,10 +1492,14 @@ public sealed partial class MapEditor : WindowUI {
 				unitX.ToGlobal() + Const.HALF,
 				unitY.ToGlobal() + Const.HALF,
 				500, 500, Game.GlobalFrame.PingPong(12) - 6,
-				width, height
+				width, height, z: int.MaxValue
 			);
 		} else {
-			Renderer.Draw(ENTITY_CODE, new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL));
+			Renderer.Draw(
+				ENTITY_CODE,
+				new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL),
+				z: int.MaxValue
+			);
 		}
 	}
 

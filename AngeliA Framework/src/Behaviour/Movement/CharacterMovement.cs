@@ -553,7 +553,7 @@ public class CharacterMovement (Rigidbody rig) {
 		FacingFront = !IsClimbing;
 
 		// Physics
-		int growingHeight = TargetCharacter.FinalCharacterHeight;
+		int growingHeight = TargetCharacter != null ? TargetCharacter.FinalCharacterHeight : MovementHeight;
 		int width = InWater ? MovementWidth * SwimWidthAmount / 1000 : MovementWidth;
 		int height =
 			IsSquatting ? growingHeight * SquatHeightAmount / 1000 :
