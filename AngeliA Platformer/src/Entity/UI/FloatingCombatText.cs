@@ -87,7 +87,7 @@ public class FloatingCombatText : Entity {
 		var rect = new IRect(X, Y, 1, GlobalHeight);
 		if (BackgroundColor.a > 0) {
 			// With BG
-			GUI.BackgroundLabel(rect, Chars, BackgroundColor, Const.HALF / 2, style: Style);
+			GUI.BackgroundLabel(rect, Chars, BackgroundColor.WithNewA(TextColor.a), Const.QUARTER / 3, style: Style);
 		} else {
 			// No BG
 			GUI.Label(rect, Chars, Style);

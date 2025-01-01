@@ -4,10 +4,17 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-public abstract class InventoryFurniture<UI> : OpenableFurniture, IActionTarget where UI : InventoryPartnerUI {
+
+public abstract class InventoryFurniture<UI> : InventoryFurniture where UI : InventoryPartnerUI {
+	public InventoryFurniture () => PartnerID = typeof(UI).AngeHash();
+}
+
+
+public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 
 
 	// VAR
+	protected int PartnerID { get; init; }
 	protected int InventoryID { get; private set; } = 0;
 	protected string InventoryName { get; private set; } = "";
 	protected abstract int InventoryColumn { get; }
@@ -16,23 +23,18 @@ public abstract class InventoryFurniture<UI> : OpenableFurniture, IActionTarget 
 
 	private static readonly Dictionary<int, InventoryPartnerUI> UiPool = [];
 	private static readonly Dictionary<Int4, (string name, int id)> InventoryIdPool = [];
-	private int PartnerID { get; init; }
 
 
 	// MSG
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
-		var pool = InventoryFurniture<InventoryPartnerUI>.UiPool;
-		pool.Clear();
-		pool.Add(InventoryPartnerUI.TYPE_ID, InventoryPartnerUI.Instance);
+		UiPool.Clear();
+		UiPool.Add(InventoryPartnerUI.TYPE_ID, InventoryPartnerUI.Instance);
 		foreach (var type in typeof(InventoryPartnerUI).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not InventoryPartnerUI ui) continue;
-			pool.TryAdd(type.AngeHash(), ui);
+			UiPool.TryAdd(type.AngeHash(), ui);
 		}
 	}
-
-
-	public InventoryFurniture () => PartnerID = typeof(UI).AngeHash();
 
 
 	public override void OnActivated () {
@@ -86,7 +88,7 @@ public abstract class InventoryFurniture<UI> : OpenableFurniture, IActionTarget 
 		if (!Open) SetOpen(true);
 		// Spawn UI Entity
 		if (PlayerSystem.Selecting == null) return false;
-		if (!InventoryFurniture<InventoryPartnerUI>.UiPool.TryGetValue(PartnerID, out var ins)) return false;
+		if (!UiPool.TryGetValue(PartnerID, out var ins)) return false;
 		if (!PlayerMenuUI.OpenMenuWithPartner(ins, InventoryID)) {
 			return false;
 		}

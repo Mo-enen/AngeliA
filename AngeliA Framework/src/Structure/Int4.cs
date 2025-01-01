@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace AngeliA;
 [Serializable]
-public struct Int4 : IEquatable<Int4>, IFormattable {
+public struct Int4 (int x, int y, int z, int w) : IEquatable<Int4>, IFormattable {
 
 	public static readonly Int4 zero = new(0, 0, 0, 0);
 	public static readonly Int4 one = new(1, 1, 1, 1);
@@ -26,7 +26,7 @@ public struct Int4 : IEquatable<Int4>, IFormattable {
 				case 1: y = value; break;
 				case 2: z = value; break;
 				case 3: w = value; break;
-				default: throw new ArgumentOutOfRangeException();
+				default: break;
 			}
 		}
 	}
@@ -38,17 +38,11 @@ public struct Int4 : IEquatable<Int4>, IFormattable {
 	public readonly int horizontal => left + right;
 	public readonly int vertical => down + up;
 
-	public int x;
-	public int y;
-	public int z;
-	public int w;
+	public int x = x;
+	public int y = y;
+	public int z = z;
+	public int w = w;
 
-	public Int4 (int x, int y, int z, int w) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.w = w;
-	}
 	public static Int4 Direction (int left, int right, int down, int up) => new(left, right, down, up);
 
 	public static Int4 operator * (int b, Int4 a) => a * b;
@@ -68,6 +62,8 @@ public struct Int4 : IEquatable<Int4>, IFormattable {
 		a.w += b.w;
 		return a;
 	}
+	public static explicit operator Int2 (Int4 i) => new(i.x, i.y);
+	public static explicit operator Int3 (Int4 i) => new(i.x, i.y, i.z);
 
 	public override readonly bool Equals (object other) {
 		if (other is not Int4) return false;
@@ -84,6 +80,13 @@ public struct Int4 : IEquatable<Int4>, IFormattable {
 		if (z == value) count++;
 		if (w == value) count++;
 		return count;
+	}
+	public readonly int FindIndex (int value) {
+		if (x == value) return 0;
+		if (y == value) return 1;
+		if (z == value) return 2;
+		if (w == value) return 3;
+		return -1;
 	}
 
 	public override readonly string ToString () {

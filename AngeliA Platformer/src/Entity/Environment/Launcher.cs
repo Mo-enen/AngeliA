@@ -44,7 +44,7 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 		LaunchedEntities ??= new(MaxLaunchCount.LessOrEquel(256), ValidFunc);
 		if (LaunchOverlapingElement) {
 			int id = WorldSquad.Front.GetBlockAt((X + 1).ToUnit(), (Y + 1).ToUnit(), BlockType.Element);
-			TargetEntityIdFromMap = Stage.IsValidEntityID(id) ? id : 0;
+			TargetEntityIdFromMap = Stage.IsValidEntityID(id) || ItemSystem.HasItem(id) ? id : 0;
 		} else {
 			TargetEntityIdFromMap = 0;
 		}
@@ -89,7 +89,13 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 		if (!LaunchWhenEntranceBlocked && Physics.Overlap(
 			PhysicsMask.ENTITY, Rect, this, OperationMode.ColliderOnly
 		)) return null;
-		if (Stage.SpawnEntity(TargetEntityID, X + LaunchOffset.x, Y + LaunchOffset.y) is not Entity entity) return null;
+		Entity entity = null;
+		if (Stage.IsValidEntityID(TargetEntityID)) {
+			entity = Stage.SpawnEntity(TargetEntityID, X + LaunchOffset.x, Y + LaunchOffset.y);
+		} else if (ItemSystem.HasItem(TargetEntityID)) {
+			entity = ItemSystem.SpawnItem(TargetEntityID, X + LaunchOffset.x, Y + LaunchOffset.y);
+		}
+		if (entity == null) return null;
 		if (!KeepLaunchedEntityInMap) entity.IgnoreReposition = true;
 		if (entity is Rigidbody rig) {
 			rig.VelocityX = LaunchVelocity.x;

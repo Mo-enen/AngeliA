@@ -31,7 +31,8 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 
 	// Data
 	private readonly List<Int4> DocumentContent = [];
-	private readonly int[] IgnoreConsumes = [0, 0, 0, 0,];
+	private readonly int[] KeepIDs = [0, 0, 0, 0,];
+	private readonly int[] KeepIDsAlt = [0, 0, 0, 0,];
 	private Int4 CurrentCraftingItems = default;
 	private bool CursorInDoc = false;
 	private bool CursorInResult = false;
@@ -111,11 +112,11 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 		// Craft Result
 		if (!ItemSystem.TryGetCombination(
 			invItem0, invItem1, invItem2, invItem3, out CombineResultID, out CombineResultCount,
-			out IgnoreConsumes[0], out IgnoreConsumes[1], out IgnoreConsumes[2], out IgnoreConsumes[3]
+			out KeepIDs[0], out KeepIDs[1], out KeepIDs[2], out KeepIDs[3]
 		)) {
 			CombineResultID = 0;
 			CombineResultCount = 0;
-			IgnoreConsumes[0] = IgnoreConsumes[1] = IgnoreConsumes[2] = IgnoreConsumes[3] = 0;
+			KeepIDs[0] = KeepIDs[1] = KeepIDs[2] = KeepIDs[3] = 0;
 		}
 
 	}
@@ -267,6 +268,10 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 		int itemBorder = Unify(6);
 		bool cursorInInventory = !CursorInResult && !CursorInDoc;
 		int len = Column * Row;
+		KeepIDsAlt[0] = KeepIDs[0];
+		KeepIDsAlt[1] = KeepIDs[1];
+		KeepIDsAlt[2] = KeepIDs[2];
+		KeepIDsAlt[3] = KeepIDs[3];
 		for (int i = 0; i < len; i++) {
 			int itemID = Inventory.GetItemAt(InventoryID, i, out int count);
 			itemRect.x = panelRect.x + (i % Column) * itemSize;
@@ -280,9 +285,14 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 				cursorInInventory,
 				cursorInInventory ? i : -2
 			);
-			// No Consume Mark
-			if (itemID != 0 && (IgnoreConsumes[0] == itemID || IgnoreConsumes[1] == itemID || IgnoreConsumes[2] == itemID || IgnoreConsumes[3] == itemID)) {
-				GUI.BackgroundLabel(itemRect.EdgeDown(Unify(18)), MARK_KEEP, Color32.BLACK, Unify(6), style: GUI.Skin.SmallCenterLabel);
+			// Keep Mark
+			if (itemID != 0) {
+				for (int keepIndex = 0; keepIndex < 4; keepIndex++) {
+					if (KeepIDsAlt[keepIndex] != itemID) continue;
+					KeepIDsAlt[keepIndex] = 0;
+					GUI.BackgroundLabel(itemRect.EdgeDown(Unify(18)), MARK_KEEP, Color32.BLACK, Unify(6), style: GUI.Skin.SmallCenterLabel);
+					break;
+				}
 			}
 		}
 	}
@@ -482,10 +492,21 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 		}
 
 		// Reduce Source Material by One
+		KeepIDsAlt[0] = KeepIDs[0];
+		KeepIDsAlt[1] = KeepIDs[1];
+		KeepIDsAlt[2] = KeepIDs[2];
+		KeepIDsAlt[3] = KeepIDs[3];
 		for (int i = 0; i < 4; i++) {
 			int itemID = Inventory.GetItemAt(InventoryID, i, out int count);
 			if (itemID == 0 || count == 0) continue;
-			if (IgnoreConsumes[0] == itemID || IgnoreConsumes[1] == itemID || IgnoreConsumes[2] == itemID || IgnoreConsumes[3] == itemID) continue;
+			bool keep = false;
+			for (int keepIndex = 0; keepIndex < 4; keepIndex++) {
+				if (KeepIDsAlt[keepIndex] != itemID) continue;
+				KeepIDsAlt[keepIndex] = 0;
+				keep = true;
+				break;
+			}
+			if (keep) continue;
 			count = (count - consumeMatCount).GreaterOrEquelThanZero();
 			if (count == 0) itemID = 0;
 			Inventory.SetItemAt(InventoryID, i, itemID, count);

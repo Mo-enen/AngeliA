@@ -6,25 +6,25 @@ namespace AngeliA;
 
 
 public sealed class ItemCombinationParam {
-	public string Name;
+	public string Name = "";
 	public ItemCombinationParam (Type type) => Name = type.AngeName();
 	public ItemCombinationParam (string name) => Name = name;
 	public static implicit operator ItemCombinationParam (string name) => new(name);
-	public static implicit operator string (ItemCombinationParam param) => param.Name;
 	public static implicit operator ItemCombinationParam (Type type) => new(type);
+	public static implicit operator string (ItemCombinationParam param) => param.Name;
+	public static implicit operator int (ItemCombinationParam param) => param == null ? 0 : param.Name.AngeHash();
 }
 
 
 
-
-// Combination
+// Class Combination
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class ItemCombinationAttribute (
 	int count = 1,
-	bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true,
+	string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = "",
 	string extraA = "", string extraB = "", string extraC = "", string extraD = ""
 ) : BasicItemCombinationAttribute(
-	extraA, extraB, extraC, extraD, count, consumeA, consumeB, consumeC, consumeD
+	extraA, extraB, extraC, extraD, count, keepId0, keepId1, keepId2, keepId3
 ) { }
 
 
@@ -32,10 +32,10 @@ public class ItemCombinationAttribute (
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class ItemCombinationAttribute<I0> (
 	int count = 1,
-	bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true,
+	string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = "",
 	string extraB = "", string extraC = "", string extraD = ""
 ) : BasicItemCombinationAttribute(
-	typeof(I0), extraB, extraC, extraD, count, consumeA, consumeB, consumeC, consumeD
+	typeof(I0), extraB, extraC, extraD, count, keepId0, keepId1, keepId2, keepId3
 ) { }
 
 
@@ -43,10 +43,10 @@ public class ItemCombinationAttribute<I0> (
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class ItemCombinationAttribute<I0, I1> (
 	int count = 1,
-	bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true,
+	string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = "",
 	string extraC = "", string extraD = ""
 ) : BasicItemCombinationAttribute(
-	typeof(I0), typeof(I1), extraC, extraD, count, consumeA, consumeB, consumeC, consumeD
+	typeof(I0), typeof(I1), extraC, extraD, count, keepId0, keepId1, keepId2, keepId3
 ) { }
 
 
@@ -54,40 +54,20 @@ public class ItemCombinationAttribute<I0, I1> (
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class ItemCombinationAttribute<I0, I1, I2> (
 	int count = 1,
-	bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true,
+	string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = "",
 	string extraD = ""
 ) : BasicItemCombinationAttribute(
-	typeof(I0), typeof(I1), typeof(I2), extraD, count, consumeA, consumeB, consumeC, consumeD
+	typeof(I0), typeof(I1), typeof(I2), extraD, count, keepId0, keepId1, keepId2, keepId3
 ) { }
 
 
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class ItemCombinationAttribute<I0, I1, I2, I3> (
-	int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true
+	int count = 1, string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = ""
 ) : BasicItemCombinationAttribute(
-	typeof(I0), typeof(I1), typeof(I2), typeof(I3), count, consumeA, consumeB, consumeC, consumeD
+	typeof(I0), typeof(I1), typeof(I2), typeof(I3), count, keepId0, keepId1, keepId2, keepId3
 ) { }
-
-
-
-public abstract class BasicItemCombinationAttribute (
-	ItemCombinationParam itemA,
-	ItemCombinationParam itemB,
-	ItemCombinationParam itemC,
-	ItemCombinationParam itemD,
-	int count = 1, bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true
-) : Attribute {
-	public string ItemA = itemA;
-	public string ItemB = itemB;
-	public string ItemC = itemC;
-	public string ItemD = itemD;
-	public int Count = count;
-	public bool ConsumeA = consumeA;
-	public bool ConsumeB = consumeB;
-	public bool ConsumeC = consumeC;
-	public bool ConsumeD = consumeD;
-}
 
 
 
@@ -95,22 +75,22 @@ public abstract class BasicItemCombinationAttribute (
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class GlobalItemCombinationAttribute (
 	string result, int count = 1,
-	bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true,
+	string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = "",
 	string extraA = "", string extraB = "", string extraC = "", string extraD = ""
 ) : BasicGlobalItemCombinationAttribute(
 	extraA, extraB, extraC, extraD, result,
-	count, consumeA, consumeB, consumeC, consumeD
+	count, keepId0, keepId1, keepId2, keepId3
 ) { }
 
 
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class GlobalItemCombinationAttribute<I0> (
 	string result, int count = 1,
-	bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true,
+	string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = "",
 	string extraB = "", string extraC = "", string extraD = ""
 ) : BasicGlobalItemCombinationAttribute(
 	typeof(I0), extraB, extraC, extraD, result,
-	count, consumeA, consumeB, consumeC, consumeD
+	count, keepId0, keepId1, keepId2, keepId3
 ) { }
 
 
@@ -118,11 +98,11 @@ public class GlobalItemCombinationAttribute<I0> (
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class GlobalItemCombinationAttribute<I0, I1> (
 	string result, int count = 1,
-	bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true,
+	string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = "",
 	string extraC = "", string extraD = ""
 ) : BasicGlobalItemCombinationAttribute(
 	typeof(I0), typeof(I1), extraC, extraD, result,
-	count, consumeA, consumeB, consumeC, consumeD
+	count, keepId0, keepId1, keepId2, keepId3
 ) { }
 
 
@@ -130,11 +110,11 @@ public class GlobalItemCombinationAttribute<I0, I1> (
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class GlobalItemCombinationAttribute<I0, I1, I2> (
 	string result, int count = 1,
-	bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true,
+	string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = "",
 	string extraD = ""
 ) : BasicGlobalItemCombinationAttribute(
 	typeof(I0), typeof(I1), typeof(I2), extraD, result,
-	count, consumeA, consumeB, consumeC, consumeD
+	count, keepId0, keepId1, keepId2, keepId3
 ) { }
 
 
@@ -142,11 +122,10 @@ public class GlobalItemCombinationAttribute<I0, I1, I2> (
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class GlobalItemCombinationAttribute<I0, I1, I2, I3> (
 	string result, int count = 1,
-	bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true
-
+	string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = ""
 ) : BasicGlobalItemCombinationAttribute(
 	typeof(I0), typeof(I1), typeof(I2), typeof(I3), result,
-	count, consumeA, consumeB, consumeC, consumeD
+	count, keepId0, keepId1, keepId2, keepId3
 ) { }
 
 
@@ -154,11 +133,31 @@ public class GlobalItemCombinationAttribute<I0, I1, I2, I3> (
 public abstract class BasicGlobalItemCombinationAttribute (
 	ItemCombinationParam itemA, ItemCombinationParam itemB, ItemCombinationParam itemC, ItemCombinationParam itemD,
 	string result, int count = 1,
-	bool consumeA = true, bool consumeB = true, bool consumeC = true, bool consumeD = true
-) : BasicItemCombinationAttribute(itemA, itemB, itemC, itemD, count, consumeA, consumeB, consumeC, consumeD) {
+	string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = ""
+) : BasicItemCombinationAttribute(itemA, itemB, itemC, itemD, count, keepId0, keepId1, keepId2, keepId3) {
 	public string Result = result;
 }
 
+
+
+// Basic Combination
+public abstract class BasicItemCombinationAttribute (
+	ItemCombinationParam itemA,
+	ItemCombinationParam itemB,
+	ItemCombinationParam itemC,
+	ItemCombinationParam itemD,
+	int count = 1, string keepId0 = "", string keepId1 = "", string keepId2 = "", string keepId3 = ""
+) : Attribute {
+	public string ItemA = itemA;
+	public string ItemB = itemB;
+	public string ItemC = itemC;
+	public string ItemD = itemD;
+	public int Count = count;
+	public int KeepId0 = Util.GetAngeHashForClassName(keepId0);
+	public int KeepId1 = Util.GetAngeHashForClassName(keepId1);
+	public int KeepId2 = Util.GetAngeHashForClassName(keepId2);
+	public int KeepId3 = Util.GetAngeHashForClassName(keepId3);
+}
 
 
 // Drop

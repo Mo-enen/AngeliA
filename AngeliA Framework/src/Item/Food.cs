@@ -5,5 +5,5 @@ namespace AngeliA;
 
 [EntityAttribute.MapEditorGroup("ItemFood")]
 public abstract class Food : Item {
-	public override int MaxStackCount => 16;
+	public override int MaxStackCount => 64;
 }

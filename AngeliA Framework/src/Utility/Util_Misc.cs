@@ -39,6 +39,13 @@ public static partial class Util {
 
 
 	// Misc
+	public static int GetAngeHashForClassName (string className) {
+		if (string.IsNullOrEmpty(className)) return 0;
+		if (char.IsLower(className[0])) className = className[1..];
+		return className.AngeHash();
+	}
+
+
 	public static void AddEnvironmentVariable (string key, string value) {
 		string oldPath = System.Environment.GetEnvironmentVariable(
 			key, System.EnvironmentVariableTarget.Process

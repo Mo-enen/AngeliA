@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 
 using AngeliA;
-namespace AngeliA.Platformer;
 
+namespace AngeliA.Platformer;
 
 public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 
-
-	private static readonly SpriteCode CRAFTING_FRAME_CODE = "CraftingTableFrame";
+	// VAR
 	public static readonly CraftingUI UiInstance = new();
+	private static readonly SpriteCode CRAFTING_FRAME_CODE = "CraftingTableFrame";
+	protected virtual bool UseInventoryThumbnail => true;
 
 	// MSG
 	public CraftingTable () {
 		Inventory.InitializeInventoryData(GetType().AngeName(), 4);
 		UiInstance.SetColumnAndRow(2, 2);
-		UiInstance.FrameCode = CRAFTING_FRAME_CODE;
 	}
 
 	public override void LateUpdate () {
@@ -26,21 +26,8 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 			SetOpen(false);
 		}
 		// Draw Items
-		if (Renderer.TryGetSprite(TypeID, out var sprite)) {
-			var itemRect = Rect;
-			for (int i = 0; i < 4; i++) {
-				int id = Inventory.GetItemAt(TypeID, i);
-				if (!Renderer.TryGetSpriteForGizmos(id, out var icon)) continue;
-				Renderer.Draw(
-					icon, new IRect(
-						itemRect.x + (i % 2) * itemRect.width / 2,
-						itemRect.y + (i / 2) * itemRect.height / 2,
-						itemRect.width / 2,
-						itemRect.height / 2
-					).Fit(sprite).Shrink(itemRect.width / 16),
-					sprite.LocalZ + 1
-				);
-			}
+		if (UseInventoryThumbnail) {
+			DrawInventoryThumbnail(Rect);// Rect is already shrinked with border of the artwork sprite
 		}
 	}
 
@@ -51,12 +38,30 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 			SetOpen(true);
 		}
 		Inventory.UnlockAllItemsInside(TypeID);
+		UiInstance.FrameCode = CRAFTING_FRAME_CODE;
 		return true;
 	}
 
 	protected override void SetOpen (bool open) {
 		if (Open && !open) PlayerMenuUI.CloseMenu();
 		base.SetOpen(open);
+	}
+
+	protected void DrawInventoryThumbnail (IRect itemRect, bool singleRow = false) {
+		int z = Renderer.TryGetSprite(TypeID, out var sprite) ? sprite.LocalZ + 1 : 1;
+		for (int i = 0; i < 4; i++) {
+			int id = Inventory.GetItemAt(TypeID, i);
+			if (id == 0 || !Renderer.TryGetSpriteForGizmos(id, out var icon)) continue;
+			var rect = singleRow ?
+				itemRect.PartHorizontal(i, 4) :
+				new IRect(
+					itemRect.x + (i % 2) * itemRect.width / 2,
+					itemRect.y + (i / 2) * itemRect.height / 2,
+					itemRect.width / 2,
+					itemRect.height / 2
+				).Shrink(itemRect.width / 16);
+			Renderer.Draw(icon, rect.Fit(icon), z);
+		}
 	}
 
 }

@@ -7,6 +7,7 @@ public static class Const {
 
 	public const int CEL = 256;
 	public const int HALF = CEL / 2;
+	public const int QUARTER = CEL / 4;
 	public const int MAP = 128;
 	public const int ART_CEL = 16;
 	public const int ART_SCALE = CEL / ART_CEL;

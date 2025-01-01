@@ -257,10 +257,22 @@ public static class ItemSystem {
 		int item0, int item1, int item2, int item3,
 		out int result, out int resultCount,
 		out int keep0, out int keep1, out int keep2, out int keep3
-	) => TryGetCombinationFromPool(
-		CombinationPool, item0, item1, item2, item3, out result, out resultCount,
-		out keep0, out keep1, out keep2, out keep3
-	);
+	) {
+		var from = GetSortedCombination(item0, item1, item2, item3);
+		if (CombinationPool.TryGetValue(from, out var resultValue)) {
+			result = resultValue.Result;
+			resultCount = resultValue.ResultCount;
+			keep0 = resultValue.Keep0;
+			keep1 = resultValue.Keep1;
+			keep2 = resultValue.Keep2;
+			keep3 = resultValue.Keep3;
+			return true;
+		}
+		result = 0;
+		resultCount = 0;
+		keep0 = keep1 = keep2 = keep3 = 0;
+		return false;
+	}
 
 
 	public static void ClearCombination () => CombinationPool.Clear();
@@ -502,37 +514,16 @@ public static class ItemSystem {
 				CombinationPool.Add(key, new CombinationData() {
 					Result = resultID,
 					ResultCount = com.Count,
-					Keep0 = com.ConsumeA ? 0 : idA,
-					Keep1 = com.ConsumeB ? 0 : idB,
-					Keep2 = com.ConsumeC ? 0 : idC,
-					Keep3 = com.ConsumeD ? 0 : idD,
+					Keep0 = com.KeepId0,
+					Keep1 = com.KeepId1,
+					Keep2 = com.KeepId2,
+					Keep3 = com.KeepId3,
 					OriginalCombinationKeys = new(idA, idB, idC, idD),
 				});
 			}
 		}
 	}
 
-
-	private static bool TryGetCombinationFromPool (
-		Dictionary<Int4, CombinationData> pool, int item0, int item1, int item2, int item3,
-		out int result, out int resultCount,
-		out int keep0, out int keep1, out int keep2, out int keep3
-	) {
-		var from = GetSortedCombination(item0, item1, item2, item3);
-		if (pool.TryGetValue(from, out var resultValue)) {
-			result = resultValue.Result;
-			resultCount = resultValue.ResultCount;
-			keep0 = resultValue.Keep0;
-			keep1 = resultValue.Keep1;
-			keep2 = resultValue.Keep2;
-			keep3 = resultValue.Keep3;
-			return true;
-		}
-		result = 0;
-		resultCount = 0;
-		keep0 = keep1 = keep2 = keep3 = 0;
-		return false;
-	}
 
 	public static Item GetItem (object resultID) {
 		throw new NotImplementedException();

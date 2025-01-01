@@ -581,6 +581,42 @@ public static class Inventory {
 	}
 
 
+	public static bool HasEnoughRoomToCollect (int inventoryID, int item, int count) {
+
+		if (item == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return false;
+		int maxStackCount = ItemSystem.GetItemMaxStackCount(item);
+
+		if (count > 0) {
+
+			// Try Append to Exists
+			for (int i = 0; i < data.Items.Length; i++) {
+				int _item = data.Items[i];
+				if (_item != item) continue;
+				int _count = data.Counts[i];
+				if (_count < maxStackCount) {
+					// Append Item
+					int delta = Util.Min(count, maxStackCount - _count);
+					count -= delta;
+				}
+				if (count <= 0) break;
+			}
+			if (count <= 0) return true;
+
+			// Try Add to New Slot
+			for (int i = 0; i < data.Items.Length; i++) {
+				int _item = data.Items[i];
+				if (_item != 0) continue;
+				int delta = Util.Min(count, maxStackCount);
+				count -= delta;
+				if (count <= 0) break;
+			}
+
+		}
+
+		return count <= 0;
+	}
+
+
 	public static int ItemTotalCount (int inventoryID, int itemID, bool ignoreStack = false) => ItemTotalCount(inventoryID, itemID, -1, out _, ignoreStack);
 	public static int ItemTotalCount (int inventoryID, int itemID, int targetIndex, out int targetOrder, bool ignoreStack = false) {
 		int result = 0;

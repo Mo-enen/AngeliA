@@ -107,7 +107,11 @@ public partial class MapEditor {
 				for (int i = PaintingThumbnailStartIndex; i < endIndex; i++) {
 					rect.x = (unitRect.x + (i % unitRect.width)) * Const.CEL;
 					rect.y = (unitRect.y + (i / unitRect.width)) * Const.CEL;
-					DrawSpriteGizmos(SelectingPaletteItem.ArtworkID, rect, false, sprite);
+					DrawSpriteGizmos(
+						SelectingPaletteItem.ArtworkID,
+						SelectingPaletteItem.BlockType == BlockType.Element ? rect.Shrink(Const.QUARTER) : rect,
+						false, sprite
+					);
 				}
 				PaintingThumbnailStartIndex = nextStartIndex;
 			}
@@ -138,7 +142,7 @@ public partial class MapEditor {
 		foreach (var buffer in PastingBuffer) {
 			rect.x = (pastingUnitRect.x + buffer.LocalUnitX).ToGlobal();
 			rect.y = (pastingUnitRect.y + buffer.LocalUnitY).ToGlobal();
-			DrawSpriteGizmos(buffer.ID, rect);
+			DrawSpriteGizmos(buffer.ID, buffer.Type == BlockType.Element ? rect.Shrink(Const.QUARTER) : rect);
 		}
 	}
 
@@ -236,6 +240,8 @@ public partial class MapEditor {
 			if (SelectingPaletteItem.BlockType == BlockType.Element) {
 				cell.ReturnPivots(0.5f, 0.5f);
 				cell.Rotation = Game.GlobalFrame.PingPong(12) - 6;
+				cell.Width = cell.Width * 2 / 3;
+				cell.Height = cell.Height * 2 / 3;
 			}
 			// Modify Label
 			if (Modify_EntityOnly) {

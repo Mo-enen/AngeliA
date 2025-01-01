@@ -133,27 +133,9 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		// Base
 		base.LateUpdate();
 
-		FrameUpdate_Sleep();
-
 		// Highlight
 		if (CharacterState == CharacterState.PassOut && Rendering is SheetCharacterRenderer sRendering) {
 			IActionTarget.MakeCellAsActionTarget(this, sRendering.RenderedCell);
-		}
-
-	}
-
-
-	private void FrameUpdate_Sleep () {
-		if (Owner == null || !Owner.Active) return;
-
-		// Sleep when Owner Sleep
-		if (Owner.CharacterState == CharacterState.Sleep && CharacterState != CharacterState.Sleep) {
-			SetCharacterState(CharacterState.Sleep);
-		}
-
-		// Wake when Owner Awake
-		if (CharacterState == CharacterState.Sleep && Owner.CharacterState != CharacterState.Sleep) {
-			SetCharacterState(CharacterState.GamePlay);
 		}
 
 	}

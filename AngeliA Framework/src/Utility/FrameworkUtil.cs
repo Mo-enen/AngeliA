@@ -69,9 +69,9 @@ public static class FrameworkUtil {
 	[OnBlockPicked] internal static Action<int, IRect> OnBlockPicked;
 	[OnFallIntoWater] internal static Action<Rigidbody> OnFallIntoWater;
 	[OnCameOutOfWater] internal static Action<Rigidbody> OnCameOutOfWater;
-	[OnItemCollected] internal static Action<Entity, int, int> OnItemCollected;
+	[OnItemCollected] internal static Action<Entity, Int2, int, int> OnItemCollected;
 	[OnItemLost] internal static Action<Character, int> OnItemLost;
-	[OnItemError] internal static Action<Character, int> OnItemErrorHint;
+	[OnItemError] internal static Action<Entity, Int2, int> OnItemErrorHint;
 	[OnItemDamage] internal static Action<Character, int, int> OnItemDamage;
 	[OnItemUnlocked] internal static Action<int> OnItemUnlocked;
 	[OnCheatPerformed] internal static Action<string> OnCheatPerformed;
@@ -1544,9 +1544,14 @@ public static class FrameworkUtil {
 	public static void InvokeBlockPicked (int spriteID, IRect rect) => OnBlockPicked?.Invoke(spriteID, rect);
 	public static void InvokeFallIntoWater (Rigidbody rig) => OnFallIntoWater?.Invoke(rig);
 	public static void InvokeCameOutOfWater (Rigidbody rig) => OnCameOutOfWater?.Invoke(rig);
-	public static void InvokeItemCollected (Entity collector, int id, int count) => OnItemCollected?.Invoke(collector, id, count);
+	public static void InvokeItemCollected (int id, int x, int y, int count) => OnItemCollected?.Invoke(null, new Int2(x, y), id, count);
+	public static void InvokeItemCollected (Entity collector, int id, int count) => OnItemCollected?.Invoke(collector, new Int2(collector.X, collector.Y + Const.CEL * 2), id, count);
 	public static void InvokeItemLost (Character holder, int id) => OnItemLost?.Invoke(holder, id);
-	public static void InvokeItemErrorHint (Character holder, int id) => OnItemErrorHint?.Invoke(holder, id);
+	public static void InvokeItemErrorHint (int x, int y, int id) => OnItemErrorHint?.Invoke(null, new Int2(x, y), id);
+	public static void InvokeItemErrorHint (Entity holder, int id) {
+		if (holder == null) return;
+		OnItemErrorHint?.Invoke(holder, new(holder.X, holder.Y), id);
+	}
 	public static void InvokeItemDamage (Character holder, int fromID, int toID) => OnItemDamage?.Invoke(holder, fromID, toID);
 	public static void InvokeItemUnlocked (int itemID) => OnItemUnlocked?.Invoke(itemID);
 	public static void InvokeCheatPerformed (string cheatCode) => OnCheatPerformed?.Invoke(cheatCode);
