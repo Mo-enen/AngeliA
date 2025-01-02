@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 [EntityAttribute.ExcludeInMapEditor]
+[NoItemCombination]
 public sealed class ClothItem (int id) : NonStackableItem {
 
 	public int ClothID { get; init; } = id;

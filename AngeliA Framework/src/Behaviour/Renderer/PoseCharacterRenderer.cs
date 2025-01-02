@@ -189,7 +189,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	[BeforeBeforeUpdate]
 	internal static void BeforeBeforeUpdate () => GlobalPoseRenderingZOffset = 0;
 
-
+	
 	// Renderer Msg
 	public override void OnActivated () {
 		base.OnActivated();
@@ -202,13 +202,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		SyncRenderingConfigFromPool();
-		// Give Default Wing
-		if (WingID.BaseValue == 0 && TargetCharacter.Movement.FlyAvailable) {
-			int targetID = TargetCharacter.Movement.GlideOnFlying.BaseValue ? DefaultWing.TYPE_ID : DefaultPropellerWing.TYPE_ID;
-			if (WingID.FinalValue == 0 || WingID.FinalValue == targetID) {
-				WingID.Override(targetID, duration: 1);
-			}
-		}
 	}
 
 

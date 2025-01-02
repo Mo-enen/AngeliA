@@ -52,7 +52,6 @@ public class CharacterMovement (Rigidbody rig) {
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool JumpBreakDash = new(true);
 	public readonly FrameBasedBool JumpDownThoughOneway = new(false);
 
-
 	[PropGroup("Squat")]
 	public readonly FrameBasedBool SquatAvailable = new(true);
 	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatHeightAmount = new(521);

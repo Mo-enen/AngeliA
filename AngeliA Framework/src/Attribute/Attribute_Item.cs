@@ -5,16 +5,15 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public sealed class ItemCombinationParam {
-	public string Name = "";
-	public ItemCombinationParam (Type type) => Name = type.AngeName();
-	public ItemCombinationParam (string name) => Name = name;
-	public static implicit operator ItemCombinationParam (string name) => new(name);
-	public static implicit operator ItemCombinationParam (Type type) => new(type);
-	public static implicit operator string (ItemCombinationParam param) => param.Name;
-	public static implicit operator int (ItemCombinationParam param) => param == null ? 0 : param.Name.AngeHash();
-}
 
+// Drop
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class ItemDropAttribute (Type itemType, int dropCount = 1, int dropChance = 1000) : Attribute {
+	public Type ItemType = itemType;
+	public readonly int ItemTypeID = itemType.AngeHash();
+	public int DropCount = dropCount;
+	public int DropChance = dropChance;
+}
 
 
 // Class Combination
@@ -160,14 +159,19 @@ public abstract class BasicItemCombinationAttribute (
 }
 
 
-// Drop
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class ItemDropAttribute (Type itemType, int dropCount = 1, int dropChance = 1000) : Attribute {
-	public Type ItemType = itemType;
-	public readonly int ItemTypeID = itemType.AngeHash();
-	public int DropCount = dropCount;
-	public int DropChance = dropChance;
+public sealed class ItemCombinationParam {
+	public string Name = "";
+	public ItemCombinationParam (Type type) => Name = type.AngeName();
+	public ItemCombinationParam (string name) => Name = name;
+	public static implicit operator ItemCombinationParam (string name) => new(name);
+	public static implicit operator ItemCombinationParam (Type type) => new(type);
+	public static implicit operator string (ItemCombinationParam param) => param.Name;
+	public static implicit operator int (ItemCombinationParam param) => param == null ? 0 : param.Name.AngeHash();
 }
 
+
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class NoItemCombinationAttribute : Attribute { }
 
 

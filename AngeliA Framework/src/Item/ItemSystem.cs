@@ -110,9 +110,10 @@ public static class ItemSystem {
 
 		// Add Block Entity
 		foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
+			if (Activator.CreateInstance(type) is not IBlockEntity bEntity) continue;
 			string angeName = type.AngeName();
 			int id = angeName.AngeHash();
-			var blockItem = new BlockBuilder(id, angeName, BlockType.Entity);
+			var blockItem = new BlockBuilder(id, angeName, BlockType.Entity, bEntity.MaxStackCount);
 			ItemPool.TryAdd(id, new ItemData(
 				blockItem,
 				$"iName.{angeName}".AngeHash(),
@@ -199,7 +200,8 @@ public static class ItemSystem {
 			string itemName = sprite.Group != null ? sprite.Group.Name : sprite.RealName;
 			var blockItem = new BlockBuilder(
 				itemID, itemName,
-				bType == AtlasType.Level ? BlockType.Level : BlockType.Background
+				bType == AtlasType.Level ? BlockType.Level : BlockType.Background,
+				256
 			);
 			ItemPool.TryAdd(itemID, new ItemData(
 				blockItem,
@@ -434,14 +436,41 @@ public static class ItemSystem {
 	private static void LoadCombinationPoolFromCode () {
 		CombinationPool.Clear();
 		foreach (var type in typeof(Item).AllChildClass()) {
+			int prevCount = CombinationPool.Count;
 			var iComs = type.GetCustomAttributes<BasicItemCombinationAttribute>(false);
-			if (iComs == null) continue;
-			LoadCombinationsIntoPool(type, iComs);
+			if (iComs != null) {
+				LoadCombinationsIntoPool(type, iComs);
+			}
+#if DEBUG
+			if (CombinationPool.Count == prevCount) {
+				var nc = type.GetCustomAttributes<NoItemCombinationAttribute>(true);
+				if (nc == null || !nc.Any()) {
+					Debug.LogWarning($"Item \"{type.AngeName()}\" have no valid combination. Add attribute \"NoItemCombinationAttribute\" to ignore this warning.");
+				}
+			}
+#endif
+		}
+		foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
+			int prevCount = CombinationPool.Count;
+			var iComs = type.GetCustomAttributes<BasicItemCombinationAttribute>(false);
+			if (iComs != null) {
+				LoadCombinationsIntoPool(type, iComs);
+			}
+#if DEBUG
+			if (CombinationPool.Count == prevCount) {
+				var nc = type.GetCustomAttributes<NoItemCombinationAttribute>(true);
+				if (nc == null || !nc.Any()) {
+					Debug.LogWarning($"Item \"{type.AngeName()}\" have no valid combination. Add attribute \"NoItemCombinationAttribute\" to ignore this warning.");
+				}
+			}
+#endif
 		}
 		foreach (var assembly in Util.AllAssemblies) {
+			int prevCount = CombinationPool.Count;
 			var iComs = assembly.GetCustomAttributes<BasicItemCombinationAttribute>();
-			if (iComs == null) continue;
-			LoadCombinationsIntoPool(null, iComs);
+			if (iComs != null) {
+				LoadCombinationsIntoPool(null, iComs);
+			}
 		}
 		// Func
 		static void LoadCombinationsIntoPool (Type type, IEnumerable<BasicItemCombinationAttribute> iComs) {

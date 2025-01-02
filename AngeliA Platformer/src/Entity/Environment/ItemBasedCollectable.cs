@@ -1,4 +1,5 @@
-﻿using AngeliA;namespace AngeliA.Platformer;
+﻿using AngeliA;
+namespace AngeliA.Platformer;
 
 public abstract class ItemBasedCollectable<I> : Collectable where I : Item {
 	private int ItemID { get; init; }

@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AngeliA; 
+namespace AngeliA;
 
 [EntityAttribute.MapEditorGroup("ItemFood")]
+[NoItemCombination]
 public abstract class Food : Item {
 	public override int MaxStackCount => 64;
 }

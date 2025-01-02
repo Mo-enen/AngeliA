@@ -5,6 +5,7 @@ namespace AngeliA;
 
 
 [EntityAttribute.ExcludeInMapEditor]
+[NoItemCombination]
 public sealed class BlockBuilder : HandTool {
 
 
@@ -21,17 +22,19 @@ public sealed class BlockBuilder : HandTool {
 	public override int? DefaultMovementSpeedRateOnUse => 618;
 	public override int? RunningMovementSpeedRateOnUse => 618;
 	public override int? WalkingMovementSpeedRateOnUse => 618;
-	public override int MaxStackCount => 256;
+	public override int MaxStackCount => _MaxStackCount;
 	public override int BulletDelayRate => 0;
 	public override int Duration => 12;
+	private int _MaxStackCount { get; init; }
 
 
 	// MSG
-	public BlockBuilder (int blockID, string blockName, BlockType blockType) {
+	public BlockBuilder (int blockID, string blockName, BlockType blockType, int maxStackCount) {
 		BlockID = blockID;
 		BlockType = blockType;
 		SpriteID = blockID;
 		TypeName = blockName;
+		_MaxStackCount = maxStackCount;
 	}
 
 
@@ -179,3 +182,4 @@ public sealed class BlockBuilder : HandTool {
 
 
 }
+
