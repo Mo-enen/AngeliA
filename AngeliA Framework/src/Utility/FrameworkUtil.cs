@@ -724,7 +724,7 @@ public static class FrameworkUtil {
 	}
 
 
-	public static bool BreakEntityBlock (Entity target, bool dropItemAfterPick = true) {
+	public static bool BreakEntityBlock (Entity target) {
 
 		if (!target.MapUnitPos.HasValue || target is not IBlockEntity eBlock) {
 			InvokeObjectBreak(target.TypeID, target.Rect);
@@ -739,11 +739,6 @@ public static class FrameworkUtil {
 
 		// Event
 		eBlock.OnEntityPicked();
-		if (dropItemAfterPick && ItemSystem.HasItem(target.TypeID)) {
-			// Drop Item
-			ItemSystem.SpawnItem(target.TypeID, target.X, target.Y, jump: false);
-		}
-
 		InvokeObjectBreak(target.TypeID, target.Rect);
 		return true;
 	}

@@ -22,7 +22,7 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 	public virtual bool AllowingAutoLaunch => true;
 	public virtual bool LaunchOverlapingElement => true;
 	public virtual bool LaunchWhenEntranceBlocked => false;
-	public virtual bool KeepLaunchedEntityInMap => true;
+	public virtual bool KeepLaunchedEntityInMap => false;
 	public virtual bool LaunchWhenTriggeredByCircuit => false;
 	public int LastLaunchedFrame { get; private set; }
 

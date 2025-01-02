@@ -88,49 +88,40 @@ public sealed class BlockBuilder : HandTool {
 	public override Bullet SpawnBullet (Character sender) {
 
 		var pHolder = sender;
-		if (
+		if (pHolder != PlayerSystem.Selecting ||
 			!pHolder.IsAttackAllowedByMovement() ||
 			pHolder.Attackness.IsAttackIgnored ||
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			TaskSystem.HasTask()
-		) return null;
+			) return null;
 
-		if (pHolder == PlayerSystem.Selecting) {
-			int targetUnitX, targetUnitY;
-			bool available;
+		int targetUnitX, targetUnitY;
+		bool available;
 
-			// Get Target Pos
-			if (Game.IsMouseAvailable) {
-				Cursor.RequireCursor();
-				available = FrameworkUtil.GetAimingBuilderPositionFromMouse(
-					pHolder, MOUSE_RANGE, BlockType, out targetUnitX, out targetUnitY, out _
-				);
-			} else {
-				if (!pHolder.IsInsideGround) {
-					pHolder.Movement.SquatMoveSpeed.Override(0, 1, priority: 4096);
-					pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
-				}
-				available = FrameworkUtil.GetAimingBuilderPositionFromKey(
-					pHolder, BlockType, out targetUnitX, out targetUnitY
-				);
+		// Get Target Pos
+		if (Game.IsMouseAvailable) {
+			Cursor.RequireCursor();
+			available = FrameworkUtil.GetAimingBuilderPositionFromMouse(
+				pHolder, MOUSE_RANGE, BlockType, out targetUnitX, out targetUnitY, out _
+			);
+		} else {
+			if (!pHolder.IsInsideGround) {
+				pHolder.Movement.SquatMoveSpeed.Override(0, 1, priority: 4096);
+				pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
 			}
+			available = FrameworkUtil.GetAimingBuilderPositionFromKey(
+				pHolder, BlockType, out targetUnitX, out targetUnitY
+			);
+		}
 
-			// Put Block
-			if (available) {
-				bool success = FrameworkUtil.PutBlockTo(BlockID, BlockType, pHolder, targetUnitX, targetUnitY);
-				if (!success) {
-					pHolder.Attackness.CancelAttack();
-				}
-			} else {
+		// Put Block
+		if (available) {
+			bool success = FrameworkUtil.PutBlockTo(BlockID, BlockType, pHolder, targetUnitX, targetUnitY);
+			if (!success) {
 				pHolder.Attackness.CancelAttack();
 			}
-
 		} else {
-			// For NPC
-			if (GetTargetUnitPosFromAI(pHolder, out int targetUnitX, out int targetUnitY)) {
-				// Put Block
-				FrameworkUtil.PutBlockTo(BlockID, BlockType, pHolder, targetUnitX, targetUnitY);
-			}
+			pHolder.Attackness.CancelAttack();
 		}
 
 		return null;
@@ -169,15 +160,6 @@ public sealed class BlockBuilder : HandTool {
 				allowPut ? Color32.GREY_230 : Color32.WHITE_46, z: int.MaxValue
 			);
 		}
-	}
-
-
-	private bool GetTargetUnitPosFromAI (Character holder, out int targetUnitX, out int targetUnitY) {
-
-		targetUnitX = holder.X.ToUnit();
-		targetUnitY = holder.Y.ToUnit();
-
-		return false;
 	}
 
 

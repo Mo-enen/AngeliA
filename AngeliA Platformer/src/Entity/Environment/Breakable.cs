@@ -29,8 +29,10 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 	}
 
 	protected virtual void OnBreak () {
-		bool itemDropped = ItemSystem.DropItemFor(this);
-		FrameworkUtil.BreakEntityBlock(this, dropItemAfterPick: !itemDropped && !IgnoreReposition);
+		if (!IgnoreReposition) {
+			ItemSystem.DropItemFor(this);
+		}
+		FrameworkUtil.BreakEntityBlock(this);
 	}
 
 }

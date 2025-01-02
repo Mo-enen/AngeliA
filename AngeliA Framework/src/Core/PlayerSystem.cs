@@ -594,25 +594,9 @@ public static class PlayerSystem {
 		if (!Enable) return;
 		if (Selecting == null || !Selecting.Active) return;
 		if (!Stage.ViewRect.Overlaps(Selecting.Rect)) return;
-		UpdateCollect();
 		if (UnlockPlayerDirty) {
 			UnlockPlayerDirty = false;
 			SaveUnlockedPlayerListToFile();
-		}
-	}
-
-
-	private static void UpdateCollect () {
-		var hits = Physics.OverlapAll(
-			PhysicsMask.DYNAMIC, Selecting.Rect, out int count, Selecting, OperationMode.TriggerOnly
-		);
-		for (int i = 0; i < count; i++) {
-			var hit = hits[i];
-			if (hit.Entity is not Collectable col) continue;
-			bool success = col.OnCollect(Selecting);
-			if (success) {
-				hit.Entity.Active = false;
-			}
 		}
 	}
 
