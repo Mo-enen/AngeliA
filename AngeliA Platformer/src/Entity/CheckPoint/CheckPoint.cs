@@ -36,8 +36,8 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 	#region --- MSG ---
 
 
-	[CircuitOperator_Int3UnitPos_IntStamp]
-	internal static void CircuitOperator (Int3 unitPos, int _) => TriggerCheckPoint(unitPos);
+	[CircuitOperator_Int3UnitPos_IntStamp_Direction5From]
+	internal static void CircuitOperator (Int3 unitPos, int _, Direction5 __) => TriggerCheckPoint(unitPos);
 
 
 	[OnGameRestart]

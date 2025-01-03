@@ -4,7 +4,7 @@ namespace AngeliA;
 
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-public class CircuitOperator_Int3UnitPos_IntStampAttribute : Attribute { }
+public class CircuitOperator_Int3UnitPos_IntStamp_Direction5From : Attribute { }
 
 public class OnCircuitWireActived_Int3UnitPosAttribute : EventAttribute { }
 

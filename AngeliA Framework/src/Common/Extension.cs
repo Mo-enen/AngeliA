@@ -427,6 +427,15 @@ public static class Extension {
 	};
 
 	[MethodImpl(INLINE)]
+	public static Direction5 Opposite (this Direction5 dir) => dir switch {
+		Direction5.Down => Direction5.Up,
+		Direction5.Up => Direction5.Down,
+		Direction5.Left => Direction5.Right,
+		Direction5.Right => Direction5.Left,
+		_ => Direction5.Center,
+	};
+
+	[MethodImpl(INLINE)]
 	public static Direction3 Opposite (this Direction3 dir) => dir switch {
 		Direction3.Down => Direction3.Up,
 		Direction3.Up => Direction3.Down,

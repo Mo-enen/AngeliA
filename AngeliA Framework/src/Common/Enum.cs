@@ -49,6 +49,15 @@ public enum Direction4 : byte {
 }
 
 
+public enum Direction5 : byte {
+	Center = 0,
+	Up = 1,
+	Down = 2,
+	Left = 3,
+	Right = 4,
+}
+
+
 public enum Direction8 : byte {
 	Top = 0,
 	TopRight = 1,
