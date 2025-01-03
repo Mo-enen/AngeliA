@@ -40,8 +40,8 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 	#region --- MSG ---
 
 
-	[CircuitOperator_Int3UnitPos]
-	internal static void CircuitOperator (Int3 unitPos) => TriggerCheckAltar(unitPos);
+	[CircuitOperator_Int3UnitPos_IntStamp]
+	internal static void CircuitOperator (Int3 unitPos, int _) => TriggerCheckAltar(unitPos);
 
 
 	[OnGameInitialize(-64)]

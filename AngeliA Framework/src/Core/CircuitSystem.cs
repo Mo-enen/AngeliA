@@ -18,7 +18,7 @@ public static class CircuitSystem {
 	private static readonly Queue<(Int3 pos, bool left, bool right, bool down, bool up, int stamp)> TriggeringTask = [];
 	private static readonly Dictionary<Int3, int> TriggeredTaskStamp = [];
 	private static readonly Dictionary<int, MethodInfo> OperatorPool = [];
-	private static readonly object[] OperateParamCache = [null];
+	private static readonly object[] OperateParamCache = [null, 0];
 	[OnCircuitWireActived_Int3UnitPos] internal static System.Action<Int3> OnCircuitWireActived;
 	[OnCircuitOperatorTriggered_Int3UnitPos] internal static System.Action<Int3> OnCircuitOperatorTriggered;
 
@@ -33,17 +33,9 @@ public static class CircuitSystem {
 
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
-
-		// Init Wire Pool
-		WireIdPool.Clear();
-		foreach (var type in typeof(IWire).AllClassImplemented()) {
-			if (System.Activator.CreateInstance(type) is not IWire wire) continue;
-			WireIdPool.TryAdd(type.AngeHash(), (wire.ConnectedLeft, wire.ConnectedRight, wire.ConnectedDown, wire.ConnectedUp));
-		}
-
 		// Init Operator Pool
 		OperatorPool.Clear();
-		foreach (var (method, _) in Util.AllStaticMethodWithAttribute<CircuitOperator_Int3UnitPosAttribute>()) {
+		foreach (var (method, _) in Util.AllStaticMethodWithAttribute<CircuitOperator_Int3UnitPos_IntStampAttribute>()) {
 			if (method.DeclaringType == null) continue;
 			var type = method.DeclaringType;
 			if (type.IsAbstract) {
@@ -72,26 +64,30 @@ public static class CircuitSystem {
 				if (TriggeredTaskStamp.TryGetValue(_pos, out int triggeredStamp) && _stamp <= triggeredStamp) return;
 				var _squad = WorldSquad.Stream;
 				// Check for Wire Expand
-				int _id = _squad.GetBlockAt(_pos.x, _pos.y, _pos.z, BlockType.Element);
-				if (
-					_id != 0 &&
-					WireIdPool.TryGetValue(_id, out var connectDirections) &&
-					ConnectionValid(requireCon, connectDirections)
-				) {
-					TriggeredTaskStamp[_pos] = _stamp;
-					TriggeringTask.Enqueue((
-						_pos,
-						connectDirections.left, connectDirections.right,
-						connectDirections.down, connectDirections.up,
-						_stamp
-					));
-					OnCircuitWireActived?.Invoke(_pos);
+				for (int bTypeIndex = 0; bTypeIndex < 4; bTypeIndex++) {
+					int _id = _squad.GetBlockAt(_pos.x, _pos.y, _pos.z, (BlockType)bTypeIndex);
+					if (
+						_id != 0 &&
+						WireIdPool.TryGetValue(_id, out var connectDirections) &&
+						ConnectionValid(requireCon, connectDirections)
+					) {
+						TriggeredTaskStamp[_pos] = _stamp;
+						TriggeringTask.Enqueue((
+							_pos,
+							connectDirections.left, connectDirections.right,
+							connectDirections.down, connectDirections.up,
+							_stamp
+						));
+						OnCircuitWireActived?.Invoke(_pos);
+					}
 				}
+
 				// Check for Operators
 				int entityId = _squad.GetBlockAt(_pos.x, _pos.y, _pos.z, BlockType.Entity);
 				if (entityId != 0 && OperatorPool.TryGetValue(entityId, out var method)) {
 					TriggeredTaskStamp[_pos] = _stamp;
 					OperateParamCache[0] = _pos;
+					OperateParamCache[1] = _stamp;
 					var result = method?.Invoke(null, OperateParamCache);
 					if (result is not bool bResult || bResult) {
 						OnCircuitOperatorTriggered?.Invoke(_pos);
@@ -125,17 +121,26 @@ public static class CircuitSystem {
 	#region --- API ---
 
 
-	public static void TriggerCircuit (int unitX, int unitY, int unitZ) {
-		int startWireID = WorldSquad.Stream.GetBlockAt(unitX, unitY, unitZ, BlockType.Element);
-		if (startWireID == 0 || !WireIdPool.TryGetValue(startWireID, out var startCon)) return;
-		var startPos = new Int3(unitX, unitY, unitZ);
-		int stamp = Game.PauselessFrame;
-		TriggeringTask.Enqueue((
-			startPos,
-			startCon.left, startCon.right, startCon.down, startCon.up,
-			stamp
-		));
-		TriggeredTaskStamp[startPos] = stamp;
+	public static void RegisterWire (int id, bool connectL, bool connectR, bool connectD, bool connectU) => WireIdPool[id] = (connectL, connectR, connectD, connectU);
+
+
+	public static bool IsWire (int typeID) => WireIdPool.ContainsKey(typeID);
+
+
+	public static void TriggerCircuit (int unitX, int unitY, int unitZ, int stamp = int.MinValue) {
+		for (int bTypeIndex = 0; bTypeIndex < 4; bTypeIndex++) {
+			int startWireID = WorldSquad.Stream.GetBlockAt(unitX, unitY, unitZ, (BlockType)bTypeIndex);
+			if (startWireID == 0 || !WireIdPool.TryGetValue(startWireID, out var startCon)) continue;
+			var startPos = new Int3(unitX, unitY, unitZ);
+			stamp = stamp == int.MinValue ? Game.PauselessFrame : stamp;
+			TriggeringTask.Enqueue((
+				startPos,
+				startCon.left, startCon.right, startCon.down, startCon.up,
+				stamp
+			));
+			TriggeredTaskStamp[startPos] = stamp;
+			break;
+		}
 	}
 
 
@@ -159,10 +164,15 @@ public static class CircuitSystem {
 	public static bool IsCircuitOperator (int typeID) => OperatorPool.ContainsKey(typeID) || ICircuitOperator.IsOperator(typeID);
 
 
-	public static bool IsWire (int typeID) => WireIdPool.ContainsKey(typeID);
-
-
 	public static int WireConnection_to_BitInt (bool connectL, bool connectR, bool connectD, bool connectU) => (connectL ? 0b1000 : 0b0000) | (connectR ? 0b0100 : 0b0000) | (connectD ? 0b0010 : 0b0000) | (connectU ? 0b0001 : 0b0000);
+
+
+	public static void BitInt_to_WireConnection (int bitInt, out bool connectL, out bool connectR, out bool connectD, out bool connectU) {
+		connectL = (bitInt & 0b1000) != 0;
+		connectR = (bitInt & 0b0100) != 0;
+		connectD = (bitInt & 0b0010) != 0;
+		connectU = (bitInt & 0b0001) != 0;
+	}
 
 
 	#endregion

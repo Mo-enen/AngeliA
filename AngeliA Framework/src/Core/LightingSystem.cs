@@ -140,7 +140,8 @@ public static class LightingSystem {
 		for (int j = CellHeight - 2; j >= 0; j--) {
 			int unitY = OriginUnitY + j;
 			for (int i = 0; i < CellWidth; i++) {
-				if (WorldSquad.Front.GetBlockAt(OriginUnitX + i, unitY, BlockType.Background) != 0) {
+				int id = WorldSquad.Front.GetBlockAt(OriginUnitX + i, unitY, BlockType.Background);
+				if (id != 0 && Renderer.TryGetSprite(id, out var sp) && !sp.IsTrigger) {
 					Illuminances[i, j] *= bgIllu;
 				}
 			}
