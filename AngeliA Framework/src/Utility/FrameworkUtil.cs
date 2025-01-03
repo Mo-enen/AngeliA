@@ -64,18 +64,19 @@ public static class FrameworkUtil {
 	private static readonly PhysicsCell[] BlockOperationCache = new PhysicsCell[32];
 
 	// Event
-	[OnObjectBreak] internal static Action<int, IRect> OnObjectBreak;
-	[OnObjectFreeFall] internal static Action<int, Int4, Int4> OnObjectFreeFall;
-	[OnBlockPicked] internal static Action<int, IRect> OnBlockPicked;
-	[OnFallIntoWater] internal static Action<Rigidbody> OnFallIntoWater;
-	[OnCameOutOfWater] internal static Action<Rigidbody> OnCameOutOfWater;
-	[OnItemCollected] internal static Action<Entity, Int2, int, int> OnItemCollected;
-	[OnItemLost] internal static Action<Character, int> OnItemLost;
-	[OnItemError] internal static Action<Entity, Int2, int> OnItemErrorHint;
-	[OnItemDamage] internal static Action<Character, int, int> OnItemDamage;
-	[OnItemUnlocked] internal static Action<int> OnItemUnlocked;
-	[OnCheatPerformed] internal static Action<string> OnCheatPerformed;
-	[OnFootStepped] internal static Action<int, int, int> OnFootStepped;
+	[OnObjectBreak_IntSpriteID_IRect] internal static Action<int, IRect> OnObjectBreak;
+	[OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravity]
+	internal static Action<int, Int2, int, bool, Int2, int, int> OnObjectFreeFall;
+	[OnBlockPicked_IntSpriteID_Irect] internal static Action<int, IRect> OnBlockPicked;
+	[OnFallIntoWater_Rigidbody] internal static Action<Rigidbody> OnFallIntoWater;
+	[OnCameOutOfWater_Rigidbody] internal static Action<Rigidbody> OnCameOutOfWater;
+	[OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCount] internal static Action<Entity, Int2, int, int> OnItemCollected;
+	[OnItemLost_Character_IntItemID] internal static Action<Character, int> OnItemLost;
+	[OnItemError_Entity_Int2Pos_IntItemID] internal static Action<Entity, Int2, int> OnItemErrorHint;
+	[OnItemDamage_Character_IntItemBefore_IntItemAfter] internal static Action<Character, int, int> OnItemDamage;
+	[OnItemUnlocked_IntItemID] internal static Action<int> OnItemUnlocked;
+	[OnCheatPerformed_StringCode] internal static Action<string> OnCheatPerformed;
+	[OnFootStepped_IntX_IntY_IntGroundID] internal static Action<int, int, int> OnFootStepped;
 
 
 	// Drawing
@@ -1536,7 +1537,7 @@ public static class FrameworkUtil {
 
 	// Event
 	public static void InvokeObjectBreak (int spriteID, IRect rect) => OnObjectBreak?.Invoke(spriteID, rect);
-	public static void InvokeObjectFreeFall (int spriteID, int x, int y, int speedX = 0, int speedY = 0, int rotation = int.MinValue, int rotationSpeed = 0, int gravity = 5, bool flipX = false) => OnObjectFreeFall?.Invoke(spriteID, new(x, y, rotation, flipX ? 1 : 0), new(speedX, speedY, rotationSpeed, gravity));
+	public static void InvokeObjectFreeFall (int spriteID, int x, int y, int speedX = 0, int speedY = 0, int rotation = int.MinValue, int rotationSpeed = 0, int gravity = 5, bool flipX = false) => OnObjectFreeFall?.Invoke(spriteID, new(x, y), rotation, flipX, new(speedX, speedY), rotationSpeed, gravity);
 	public static void InvokeBlockPicked (int spriteID, IRect rect) => OnBlockPicked?.Invoke(spriteID, rect);
 	public static void InvokeFallIntoWater (Rigidbody rig) => OnFallIntoWater?.Invoke(rig);
 	public static void InvokeCameOutOfWater (Rigidbody rig) => OnCameOutOfWater?.Invoke(rig);

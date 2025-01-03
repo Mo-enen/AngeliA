@@ -37,14 +37,14 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public const int INVENTORY_ROW = 3;
 
 	// Event
-	[OnCharacterSleeping] internal static System.Action<Character> OnSleeping;
-	[OnCharacterJump] internal static System.Action<Character> OnJump;
-	[OnCharacterPound] internal static System.Action<Character> OnPound;
-	[OnCharacterFly] internal static System.Action<Character> OnFly;
-	[OnCharacterSlideStepped] internal static System.Action<Character> OnSlideStepped;
-	[OnCharacterPassOut] internal static System.Action<Character> OnPassOut;
-	[OnCharacterTeleport] internal static System.Action<Character> OnTeleport;
-	[OnCharacterCrash] internal static System.Action<Character> OnCrash;
+	[OnCharacterSleeping_Character] internal static System.Action<Character> OnSleeping;
+	[OnCharacterJump_Character] internal static System.Action<Character> OnJump;
+	[OnCharacterPound_Character] internal static System.Action<Character> OnPound;
+	[OnCharacterFly_Character] internal static System.Action<Character> OnFly;
+	[OnCharacterSlideStepped_Character] internal static System.Action<Character> OnSlideStepped;
+	[OnCharacterPassOut_Character] internal static System.Action<Character> OnPassOut;
+	[OnCharacterTeleport_Character] internal static System.Action<Character> OnTeleport;
+	[OnCharacterCrash_Character] internal static System.Action<Character> OnCrash;
 
 	// Api
 	public bool Teleporting => Game.GlobalFrame < _TeleportEndFrame.Abs();
@@ -132,17 +132,16 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	#region --- MSG ---
 
 
-	[AfterEntityReposition]
-	internal static void AfterEntityReposition (Entity entity, Int3? from, Int3 to) {
+	[AfterEntityReposition_Entity_Int3From_Int3To]
+	internal static void AfterEntityReposition (Entity entity, Int3 from, Int3 to) {
 
 		if (
-			!from.HasValue ||
 			entity is not Character character ||
 			character.InventoryType != CharacterInventoryType.Map
 		) return;
 
 		// Repos Inventory
-		string fromInvName = Inventory.GetPositionBasedInventoryName(character.TypeName, from.Value);
+		string fromInvName = Inventory.GetPositionBasedInventoryName(character.TypeName, from);
 		string toInvName = Inventory.GetPositionBasedInventoryName(character.TypeName, to);
 		Inventory.RenameEquipInventory(fromInvName, toInvName);
 

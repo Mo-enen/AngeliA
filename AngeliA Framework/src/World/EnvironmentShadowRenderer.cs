@@ -24,7 +24,7 @@ internal static class EnvironmentShadowRenderer {
 	}
 
 
-	[BeforeLayerFrameUpdate]
+	[BeforeLayerFrameUpdate_IntLayer]
 	public static void BeforeLayerFrameUpdate (int layerIndex) {
 		if (layerIndex != EntityLayer.ENVIRONMENT) return;
 		CellStartIndex = Renderer.GetUsedCellCount(RenderLayer.DEFAULT);
@@ -32,7 +32,7 @@ internal static class EnvironmentShadowRenderer {
 	}
 
 
-	[AfterLayerFrameUpdate]
+	[AfterLayerFrameUpdate_IntLayer]
 	public static void AfterLayerFrameUpdate (int layerIndex) {
 		if (layerIndex != EntityLayer.ENVIRONMENT) return;
 		if (CellUpdateFrame != Game.GlobalFrame) return;

@@ -199,6 +199,10 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			CurrentSlotIndex = (CurrentSlotIndex + 1).UMod(HandToolCount);
 			IsDirty = true;
 		}
+		if (Input.GameKeyDown(Gamekey.Down) || Input.GameKeyDown(Gamekey.Up)) {
+			CurrentSlotIndex = 0;
+			IsDirty = true;
+		}
 
 		// Hint
 		ControlHintUI.AddHint(Gamekey.Left, BuiltInText.HINT_MOVE);

@@ -45,7 +45,7 @@ public abstract partial class Game {
 	[OnGameFocused] internal static System.Action OnGameFocused;
 	[OnGameLostFocus] internal static System.Action OnGameLostFocus;
 	[OnWindowSizeChanged] internal static System.Action OnWindowSizeChanged;
-	[OnFileDropped] internal static System.Action<string> OnFileDropped;
+	[OnFileDropped_StringPath] internal static System.Action<string> OnFileDropped;
 	private static MethodInfo[] OnGameTryingToQuitMethods;
 
 	// Data

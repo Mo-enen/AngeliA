@@ -464,7 +464,11 @@ public class PlayerMenuUI : EntityUI {
 				if (cursorID != 0) {
 					if (intendedStartTake) {
 						// Start Take
-						TakeItemAtCursor();
+						if (Input.HoldingAlt) {
+							SplitItemAtCursor(onlyTakeOne: true);
+						} else {
+							TakeItemAtCursor();
+						}
 					} else if (intendedHoldAction) {
 						// Hold
 						if (cursorCount > 1) SplitItemAtCursor();
@@ -1216,7 +1220,7 @@ public class PlayerMenuUI : EntityUI {
 	}
 
 
-	private void SplitItemAtCursor () {
+	private void SplitItemAtCursor (bool onlyTakeOne = false) {
 		if (TakingID != 0) return;
 		int invID = CursorInBottomPanel ? PlayerSystem.Selecting.InventoryID : Partner != null ? Partner.InventoryID : 0;
 		if (invID == 0) return;
@@ -1226,7 +1230,7 @@ public class PlayerMenuUI : EntityUI {
 		if (cursorID == 0) return;
 		if (ItemSystem.GetItem(cursorID) is HandTool tool && tool.UseStackAsUsage) return;
 		if (cursorCount > 1) {
-			int deltaCount = cursorCount / 2;
+			int deltaCount = onlyTakeOne ? 1 : cursorCount / 2;
 			TakingID = cursorID;
 			TakingCount = deltaCount;
 			Inventory.SetItemAt(invID, CursorIndex, cursorID, cursorCount - deltaCount);

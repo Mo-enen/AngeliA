@@ -4,9 +4,9 @@ namespace AngeliA;
 
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-public class CircuitOperatorAttribute : Attribute { }
+public class CircuitOperator_Int3UnitPosAttribute : Attribute { }
 
-public class OnCircuitWireActived : EventAttribute { }
+public class OnCircuitWireActived_Int3UnitPosAttribute : EventAttribute { }
 
-public class OnCircuitOperatorTriggered : EventAttribute { }
+public class OnCircuitOperatorTriggered_Int3UnitPosAttribute : EventAttribute { }
 

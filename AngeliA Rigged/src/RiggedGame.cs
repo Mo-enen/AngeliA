@@ -23,7 +23,7 @@ public partial class RiggedGame : Game {
 	// Data
 	private static RiggedGame Instance;
 	private static readonly List<string> FontNamesCache = [];
-	[OnRemoteSettingChanged] internal static System.Action<int, int> OnRemoteSettingChanged;
+	[OnRemoteSettingChanged_IntID_IntData] internal static System.Action<int, int> OnRemoteSettingChanged;
 	private readonly Process HostProcess;
 	private readonly string MapName = "RiggedGameMapName";
 	private readonly int StartWithZ = 0;

@@ -204,7 +204,7 @@ public partial class Engine {
 
 
 	// Misc
-	[OnFileDropped]
+	[OnFileDropped_StringPath]
 	internal static void OnFileDropped (string path) {
 
 		var project = Instance.CurrentProject;

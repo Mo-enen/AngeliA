@@ -120,7 +120,7 @@ public static class PlayerSystem {
 
 
 	// Message
-	[OnRemoteSettingChanged(1)]
+	[OnRemoteSettingChanged_IntID_IntData(1)]
 	internal static void OnRemoteSettingChanged (int id, int data) {
 		if (Selecting == null) return;
 		switch (id) {

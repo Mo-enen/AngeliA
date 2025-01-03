@@ -42,7 +42,7 @@ public class MovementEditor {
 
 
 	// MSG
-	[OnRemoteSettingChanged]
+	[OnRemoteSettingChanged_IntID_IntData]
 	internal static void OnRemoteSettingChanged (int id, int data) {
 		switch (id) {
 			case SETTING_PANEL:

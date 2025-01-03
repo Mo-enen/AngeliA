@@ -31,9 +31,9 @@ public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 	}
 
 
-	[OnMapEditorModeChange]
-	public static void ClearOpenedMarks (OnMapEditorModeChange.Mode mode) {
-		if (mode == OnMapEditorModeChange.Mode.ExitEditMode) {
+	[OnMapEditorModeChange_Mode]
+	public static void ClearOpenedMarks (OnMapEditorModeChange_ModeAttribute.Mode mode) {
+		if (mode == OnMapEditorModeChange_ModeAttribute.Mode.ExitEditMode) {
 			OpenedChest.Clear();
 		}
 	}

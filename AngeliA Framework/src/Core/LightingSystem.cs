@@ -64,7 +64,7 @@ public static class LightingSystem {
 	}
 
 
-	[OnRemoteSettingChanged]
+	[OnRemoteSettingChanged_IntID_IntData]
 	internal static void OnRemoteSettingChanged (int id, int data) {
 		switch (id) {
 			case SETTING_IN_GAME_DAYTIME:

@@ -40,7 +40,7 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 	#region --- MSG ---
 
 
-	[CircuitOperator]
+	[CircuitOperator_Int3UnitPos]
 	internal static void CircuitOperator (Int3 unitPos) => TriggerCheckAltar(unitPos);
 
 
@@ -60,9 +60,9 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 	}
 
 
-	[OnMapEditorModeChange]
-	internal static void OnMapEditorEditModeChanged (OnMapEditorModeChange.Mode mode) {
-		if (mode == OnMapEditorModeChange.Mode.ExitEditMode) {
+	[OnMapEditorModeChange_Mode]
+	internal static void OnMapEditorEditModeChanged (OnMapEditorModeChange_ModeAttribute.Mode mode) {
+		if (mode == OnMapEditorModeChange_ModeAttribute.Mode.ExitEditMode) {
 			CurrentAltarID = 0;
 			CurrentAltarUnitPos = default;
 		}

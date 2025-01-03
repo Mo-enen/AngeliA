@@ -31,8 +31,8 @@ public class OnGameLostFocusAttribute : EventAttribute { }
 
 // System
 public class OnWindowSizeChangedAttribute : EventAttribute { }
-public class OnRemoteSettingChangedAttribute (int order = 0) : EventAttribute(order) { }
-public class OnFileDroppedAttribute : EventAttribute { }
+public class OnRemoteSettingChanged_IntID_IntDataAttribute (int order = 0) : EventAttribute(order) { }
+public class OnFileDropped_StringPathAttribute : EventAttribute { }
 
 
 // Rendering
@@ -41,26 +41,26 @@ public class OnMainSheetReloadAttribute : EventAttribute { }
 
 // Stage
 public class OnViewZChangedAttribute : EventAttribute { }
-public class BeforeLayerFrameUpdateAttribute : EventAttribute { }
-public class AfterLayerFrameUpdateAttribute : EventAttribute { }
+public class BeforeLayerFrameUpdate_IntLayerAttribute : EventAttribute { }
+public class AfterLayerFrameUpdate_IntLayerAttribute : EventAttribute { }
 public class BeforeFirstUpdateAttribute : EventAttribute { }
 public class BeforeBeforeUpdateAttribute : EventAttribute { }
 public class BeforeUpdateUpdateAttribute : EventAttribute { }
 public class BeforeLateUpdateAttribute : EventAttribute { }
 public class AfterLateUpdateAttribute : EventAttribute { }
-public class AfterEntityRepositionAttribute : EventAttribute { }
+public class AfterEntityReposition_Entity_Int3From_Int3ToAttribute : EventAttribute { }
 
 
 // World
 public class BeforeLevelRenderedAttribute (int order = 0) : EventAttribute(order) { }
 public class AfterLevelRenderedAttribute (int order = 0) : EventAttribute(order) { }
-public class OnWorldCreatedBySquadAttribute (int order = 0) : EventAttribute(order) { }
-public class OnWorldLoadedBySquadAttribute (int order = 0) : EventAttribute(order) { }
+public class OnWorldCreatedBySquad_WorldAttribute (int order = 0) : EventAttribute(order) { }
+public class OnWorldLoadedBySquad_WorldAttribute (int order = 0) : EventAttribute(order) { }
 
 
 // Map Editor
-public class OnWorldSavedByMapEditorAttribute : EventAttribute { }
-public class OnMapEditorModeChange : EventAttribute {
+public class OnWorldSavedByMapEditor_WorldAttribute : EventAttribute { }
+public class OnMapEditorModeChange_ModeAttribute : EventAttribute {
 	public enum Mode { EnterPlayMode, ExitPlayMode, EnterEditMode, ExitEditMode, }
 }
 
@@ -71,35 +71,35 @@ public class OnLanguageChangedAttribute : EventAttribute { }
 
 // Cheat
 public class CheatCodeAttribute (string code) : EventAttribute { public string Code = code; }
-public class OnCheatPerformedAttribute : EventAttribute { }
+public class OnCheatPerformed_StringCodeAttribute : EventAttribute { }
 
 
-// Item
-public class OnItemCollectedAttribute : EventAttribute { }
-public class OnItemLostAttribute : EventAttribute { }
-public class OnItemErrorAttribute : EventAttribute { }
-public class OnItemDamageAttribute : EventAttribute { }
-public class OnItemUnlockedAttribute : EventAttribute { }
+// Item 
+public class OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute : EventAttribute { }
+public class OnItemLost_Character_IntItemIDAttribute : EventAttribute { }
+public class OnItemError_Entity_Int2Pos_IntItemIDAttribute : EventAttribute { }
+public class OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute : EventAttribute { }
+public class OnItemUnlocked_IntItemIDAttribute : EventAttribute { }
 
 
 // Character
-public class OnCharacterSleeping : EventAttribute { }
-public class OnCharacterJump : EventAttribute { }
-public class OnCharacterPound : EventAttribute { }
-public class OnCharacterFly : EventAttribute { }
-public class OnCharacterSlideStepped : EventAttribute { }
-public class OnCharacterPassOut : EventAttribute { }
-public class OnCharacterTeleport : EventAttribute { }
-public class OnCharacterCrash : EventAttribute { }
+public class OnCharacterSleeping_CharacterAttribute : EventAttribute { }
+public class OnCharacterJump_CharacterAttribute : EventAttribute { }
+public class OnCharacterPound_CharacterAttribute : EventAttribute { }
+public class OnCharacterFly_CharacterAttribute : EventAttribute { }
+public class OnCharacterSlideStepped_CharacterAttribute : EventAttribute { }
+public class OnCharacterPassOut_CharacterAttribute : EventAttribute { }
+public class OnCharacterTeleport_CharacterAttribute : EventAttribute { }
+public class OnCharacterCrash_CharacterAttribute : EventAttribute { }
 
 
 // Misc
-public class OnFootStepped : EventAttribute { }
-public class OnObjectBreakAttribute : EventAttribute { }
-public class OnObjectFreeFallAttribute : EventAttribute { }
-public class OnBlockPickedAttribute : EventAttribute { }
-public class OnFallIntoWaterAttribute : EventAttribute { }
-public class OnCameOutOfWaterAttribute : EventAttribute { }
+public class OnFootStepped_IntX_IntY_IntGroundIDAttribute : EventAttribute { }
+public class OnObjectBreak_IntSpriteID_IRectAttribute : EventAttribute { }
+public class OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute : EventAttribute { }
+public class OnBlockPicked_IntSpriteID_IrectAttribute : EventAttribute { }
+public class OnFallIntoWater_RigidbodyAttribute : EventAttribute { }
+public class OnCameOutOfWater_RigidbodyAttribute : EventAttribute { }
 
 
 

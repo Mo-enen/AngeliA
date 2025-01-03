@@ -130,9 +130,9 @@ public static class Stage {
 	[BeforeLateUpdate] internal static Action BeforeLateUpdate;
 	[AfterLateUpdate] internal static Action AfterLateUpdate;
 	[OnViewZChanged] internal static Action OnViewZChanged;
-	[BeforeLayerFrameUpdate] internal static Action<int> BeforeLayerFrameUpdate;
-	[AfterLayerFrameUpdate] internal static Action<int> AfterLayerFrameUpdate;
-	[AfterEntityReposition] internal static Action<Entity, Int3?, Int3> AfterEntityReposition;
+	[BeforeLayerFrameUpdate_IntLayer] internal static Action<int> BeforeLayerFrameUpdate;
+	[AfterLayerFrameUpdate_IntLayer] internal static Action<int> AfterLayerFrameUpdate;
+	[AfterEntityReposition_Entity_Int3From_Int3To] internal static Action<Entity, Int3, Int3> AfterEntityReposition;
 	private static readonly Dictionary<int, EntityStack> EntityPool = [];
 	private static readonly Dictionary<Int3, Entity> StagedEntityPool = [];
 	private static int ViewLerpRate = 1000;
@@ -233,7 +233,7 @@ public static class Stage {
 	internal static void OnGameQuitting () => DespawnAllNonUiEntities(refreshImmediately: true);
 
 
-	[OnRemoteSettingChanged]
+	[OnRemoteSettingChanged_IntID_IntData]
 	internal static void OnRemoteSettingChanged (int id, int data) {
 		switch (id) {
 			case SETTING_SET_VIEW_X: {
@@ -820,7 +820,7 @@ public static class Stage {
 
 		// Callback
 		if (entity != null && entity.MapUnitPos.HasValue) {
-			AfterEntityReposition?.Invoke(entity, entity.MapUnitPos, new Int3(resultUnitX, resultUnitY, ViewZ));
+			AfterEntityReposition?.Invoke(entity, entity.MapUnitPos.Value, new Int3(resultUnitX, resultUnitY, ViewZ));
 		}
 		if (carryThoughZ) {
 			entity.InstanceID = newInsID;
@@ -877,12 +877,11 @@ public static class Stage {
 			if (EntityPool.TryGetValue(e.TypeID, out var stack)) {
 				stack.Push(e);
 				if (stack.RequireReposition) {
-					if (e.IgnoreReposition) {
-						e.IgnoreReposition = false;
-					} else {
+					if (!e.IgnoreReposition) {
 						TryRepositionEntity(e);
 					}
 				}
+				e.IgnoreReposition = false;
 			}
 
 			// Next

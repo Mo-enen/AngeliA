@@ -53,6 +53,12 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+	}
+
+
 	public override void Update () {
 		base.Update();
 		if (

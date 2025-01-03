@@ -87,8 +87,8 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly LanguageCode HINT_SWITCH_TO_NAV = ("CtrlHint.MEDT.Nav", "Navigation Mode");
 
 	// Api
-	[OnWorldSavedByMapEditor] internal static System.Action<World> OnWorldSavedByMapEditor;
-	[OnMapEditorModeChange] internal static System.Action<OnMapEditorModeChange.Mode> OnMapEditorModeChange;
+	[OnWorldSavedByMapEditor_World] internal static System.Action<World> OnWorldSavedByMapEditor;
+	[OnMapEditorModeChange_Mode] internal static System.Action<OnMapEditorModeChange_ModeAttribute.Mode> OnMapEditorModeChange;
 	public static MapEditor Instance { get; private set; }
 	public static bool IsActived => Instance != null && Instance.Active;
 	public static bool IsEditing => IsActived && !Instance.PlayingGame;
@@ -179,7 +179,7 @@ public sealed partial class MapEditor : WindowUI {
 	}
 
 
-	[OnRemoteSettingChanged]
+	[OnRemoteSettingChanged_IntID_IntData]
 	internal static void OnRemoteSettingChanged (int id, int data) {
 		switch (id) {
 			case SETTING_QUICK_PLAYER_DROP:
@@ -1158,8 +1158,8 @@ public sealed partial class MapEditor : WindowUI {
 	private void SetEditorMode (bool toPlayMode) {
 
 		OnMapEditorModeChange?.Invoke(toPlayMode ?
-			AngeliA.OnMapEditorModeChange.Mode.ExitEditMode :
-			AngeliA.OnMapEditorModeChange.Mode.ExitPlayMode
+			AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.ExitEditMode :
+			AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.ExitPlayMode
 		);
 
 		if (Game.GlobalFrame != 0 && toPlayMode) {
@@ -1236,8 +1236,8 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		OnMapEditorModeChange?.Invoke(toPlayMode ?
-			AngeliA.OnMapEditorModeChange.Mode.EnterPlayMode :
-			AngeliA.OnMapEditorModeChange.Mode.EnterEditMode
+			AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.EnterPlayMode :
+			AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.EnterEditMode
 		);
 
 	}

@@ -19,8 +19,8 @@ public static class CircuitSystem {
 	private static readonly Dictionary<Int3, int> TriggeredTaskStamp = [];
 	private static readonly Dictionary<int, MethodInfo> OperatorPool = [];
 	private static readonly object[] OperateParamCache = [null];
-	[OnCircuitWireActived] internal static System.Action<Int3> OnCircuitWireActived;
-	[OnCircuitOperatorTriggered] internal static System.Action<Int3> OnCircuitOperatorTriggered;
+	[OnCircuitWireActived_Int3UnitPos] internal static System.Action<Int3> OnCircuitWireActived;
+	[OnCircuitOperatorTriggered_Int3UnitPos] internal static System.Action<Int3> OnCircuitOperatorTriggered;
 
 
 	#endregion
@@ -43,7 +43,7 @@ public static class CircuitSystem {
 
 		// Init Operator Pool
 		OperatorPool.Clear();
-		foreach (var (method, _) in Util.AllStaticMethodWithAttribute<CircuitOperatorAttribute>()) {
+		foreach (var (method, _) in Util.AllStaticMethodWithAttribute<CircuitOperator_Int3UnitPosAttribute>()) {
 			if (method.DeclaringType == null) continue;
 			var type = method.DeclaringType;
 			if (type.IsAbstract) {
