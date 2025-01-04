@@ -95,7 +95,9 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		// Init Item List
 		int invID = PlayerSystem.Selecting.InventoryID;
 		int currentIndex = 0;
-		bool allowHand = Inventory.GetEquipment(invID, EquipmentType.HandTool, out _) == 0 || Inventory.IndexOfItem(invID, 0) >= 0;
+		bool allowHand =
+			Inventory.GetEquipment(invID, EquipmentType.HandTool, out _) == 0 ||
+			Inventory.HasItem(invID, 0, includeEquipment: false);
 
 		// Hand
 		if (allowHand) {

@@ -18,6 +18,7 @@ public static class PlayerSystem {
 	private static readonly LanguageCode HINT_WAKE = ("CtrlHint.WakeUp", "Wake");
 
 	// Api
+	public static bool Enable { get; private set; } = false;
 	public static Character Selecting { get; private set; } = null;
 	public static Int3? RespawnCpUnitPosition { get; set; } = null;
 	public static Int3? HomeUnitPosition {
@@ -50,10 +51,9 @@ public static class PlayerSystem {
 	public static int AimViewX { get; private set; } = 0;
 	public static int AimViewY { get; private set; } = 0;
 	public static IActionTarget TargetActionEntity { get; private set; } = null;
-	public static bool Enable { get; private set; } = false;
 	public static int UnlockedPlayerCount => UnlockedPlayer.Count;
 	public static int PlayableCharactersCount => AllPlayablesID.Count;
-
+	
 	// Data
 	private static readonly HashSet<int> UnlockedPlayer = [];
 	private static readonly List<int> AllPlayablesID = [];
@@ -172,7 +172,7 @@ public static class PlayerSystem {
 
 	// Before Update
 	[BeforeBeforeUpdate]
-	internal static void BeforeUpdate () {
+	internal static void BeforeBeforeUpdate () {
 
 		if (!Enable) return;
 		if (Selecting == null || !Selecting.Active) return;
@@ -583,14 +583,16 @@ public static class PlayerSystem {
 		for (int i = 0; i < count; i++) {
 			var cell = cells[i];
 			if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
-			holder.Collect(Selecting, onlyStackOnExisting: true, ignoreEquipment: false);
+			if (holder.ItemID == 0 || holder.ItemCount <= 0) continue;
+			if (!Inventory.HasItem(Selecting.InventoryID, holder.ItemID)) continue;
+			holder.Collect(Selecting);
 		}
 	}
 
 
 	// Update
 	[BeforeUpdateUpdate]
-	internal static void Update () {
+	internal static void BeforeUpdateUpdate () {
 		if (!Enable) return;
 		if (Selecting == null || !Selecting.Active) return;
 		if (!Stage.ViewRect.Overlaps(Selecting.Rect)) return;

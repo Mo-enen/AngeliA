@@ -106,6 +106,7 @@ public sealed partial class MapEditor : WindowUI {
 	private readonly Dictionary<int, AngeSprite> SpritePool = [];
 	private readonly Dictionary<int, int> EntityArtworkRedirectPool = [];
 	private readonly Dictionary<int, PaletteItem> PalettePool = [];
+	private readonly HashSet<int> RequireEmbedEntity = [];
 
 	// Cache List
 	private readonly List<PaletteGroup> PaletteGroups = [];
@@ -271,6 +272,7 @@ public sealed partial class MapEditor : WindowUI {
 		EditorMeta = JsonUtil.LoadOrCreateJson<MapEditorMeta>(universe.BuiltInMapRoot);
 		FrameworkUtil.DeleteAllEmptyMaps(universe.BuiltInMapRoot);
 
+		Initialize_CodeBasedPool();
 		Initialize_Pool();
 		Initialize_Palette();
 		Initialize_Navigation();
@@ -314,6 +316,18 @@ public sealed partial class MapEditor : WindowUI {
 		PanelRect.x = Renderer.CameraRect.x - PanelRect.width;
 		WorldBehindAlpha = info.WorldBehindAlpha;
 		WorldBehindParallax = info.WorldBehindParallax;
+	}
+
+
+	private void Initialize_CodeBasedPool () {
+		// Embed Pool
+		RequireEmbedEntity.Clear();
+		foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
+			if (System.Activator.CreateInstance(type) is not Entity e || e is not IBlockEntity bEntity) continue;
+			if (bEntity.ContainEntityAsElement) {
+				RequireEmbedEntity.Add(e.TypeID);
+			}
+		}
 	}
 
 

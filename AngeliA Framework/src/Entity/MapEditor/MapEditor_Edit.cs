@@ -367,7 +367,7 @@ public partial class MapEditor {
 		foreach (var buffer in PastingBuffer) {
 			int unitX = buffer.LocalUnitX + unitRect.x;
 			int unitY = buffer.LocalUnitY + unitRect.y;
-			UserSetBlock(unitX, unitY, buffer.Type, buffer.ID, ignoreStep: true);
+			UserSetBlock(unitX, unitY, buffer.Type, buffer.ID, ignoreStep: true, ignoreEmbedAsElement: true);
 		}
 		FrameworkUtil.RedirectForRule(Stream, unitRect, z);
 		SetDirty();
@@ -439,21 +439,31 @@ public partial class MapEditor {
 	}
 
 
-	private void UserSetBlock (int unitX, int unitY, BlockType type, int id, bool ignoreStep = false) {
+	private void UserSetBlock (int unitX, int unitY, BlockType type, int id, bool ignoreStep = false, bool ignoreEmbedAsElement = false) {
+
 		int blockID = Stream.GetBlockAt(unitX, unitY, CurrentZ, type);
-		if (blockID != id) {
-			// Set Data
-			Stream.SetBlockAt(unitX, unitY, CurrentZ, type, id);
-			// Regist Undo
-			RegisterUndo(new BlockUndoItem() {
-				FromID = blockID,
-				ToID = id,
-				Type = type,
-				UnitX = unitX,
-				UnitY = unitY,
-				UnitZ = CurrentZ,
-			}, ignoreStep);
+		if (blockID == id) return;
+
+		// Embed Redirect
+		if (!ignoreEmbedAsElement && type != BlockType.Element) {
+			int entityID = Stream.GetBlockAt(unitX, unitY, CurrentZ, BlockType.Entity);
+			if (entityID != 0 && RequireEmbedEntity.Contains(entityID)) {
+				type = BlockType.Element;
+			}
 		}
+
+		// Set Data
+		Stream.SetBlockAt(unitX, unitY, CurrentZ, type, id);
+
+		// Regist Undo
+		RegisterUndo(new BlockUndoItem() {
+			FromID = blockID,
+			ToID = id,
+			Type = type,
+			UnitX = unitX,
+			UnitY = unitY,
+			UnitZ = CurrentZ,
+		}, ignoreStep);
 	}
 
 

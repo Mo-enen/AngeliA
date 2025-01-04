@@ -63,6 +63,12 @@ public sealed class CameraAutoScroll : Entity {
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+	}
+
+
 	public override void LateUpdate () {
 		base.LateUpdate();
 #if DEBUG

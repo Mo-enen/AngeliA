@@ -69,6 +69,12 @@ public class FrozenZone : Entity {
 	}
 
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+	}
+
+
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 

@@ -5,6 +5,7 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
+[EntityAttribute.MapEditorGroup("Launcher")]
 public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 
 
@@ -24,6 +25,8 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 	public virtual bool LaunchWhenEntranceBlocked => false;
 	public virtual bool KeepLaunchedEntityInMap => false;
 	public virtual bool LaunchWhenTriggeredByCircuit => false;
+	public virtual bool LaunchTowardsPlayer => true;
+	bool IBlockEntity.ContainEntityAsElement => true;
 	public int LastLaunchedFrame { get; private set; }
 
 	// Data
@@ -42,14 +45,19 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 	public override void OnActivated () {
 		base.OnActivated();
 		LaunchedEntities ??= new(MaxLaunchCount.LessOrEquel(256), ValidFunc);
+		LastLaunchedFrame = int.MinValue;
+		OnEntityRefresh();
+		static bool ValidFunc ((Entity e, int frame) pair) => pair.e.Active && pair.e.SpawnFrame == pair.frame;
+	}
+
+
+	public void OnEntityRefresh () {
 		if (LaunchOverlapingElement) {
 			int id = WorldSquad.Front.GetBlockAt((X + 1).ToUnit(), (Y + 1).ToUnit(), BlockType.Element);
 			TargetEntityIdFromMap = Stage.IsValidEntityID(id) || ItemSystem.HasItem(id) ? id : 0;
 		} else {
 			TargetEntityIdFromMap = 0;
 		}
-		LastLaunchedFrame = int.MinValue;
-		static bool ValidFunc ((Entity e, int frame) pair) => pair.e.Active && pair.e.SpawnFrame == pair.frame;
 	}
 
 
@@ -67,6 +75,27 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 			Game.GlobalFrame % LaunchFrequency == LaunchFrequency - 1
 		) {
 			LaunchEntity();
+		}
+	}
+
+
+	public override void LateUpdate () {
+		base.LateUpdate();
+		// Entity Icon
+		if (
+			TargetEntityID != 0 &&
+			Renderer.TryGetSpriteForGizmos(TargetEntityID, out var iconSp)
+		) {
+			var tool = FrameworkUtil.GetPlayerHoldingHandTool();
+			if (tool is BlockBuilder || tool is PickTool) {
+				using var _ = new UILayerScope();
+				Renderer.Draw(
+					iconSp,
+					X + Width / 2, Y + Height / 2,
+					500, 500, Util.QuickRandom(-6, 7),
+					Width * 3 / 4, Height * 3 / 4
+				);
+			}
 		}
 	}
 
@@ -93,7 +122,7 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 		if (LaunchedEntities.Count >= LaunchedEntities.Capacity) return null;
 		if (TargetEntityID == 0) return null;
 		if (!LaunchWhenEntranceBlocked && Physics.Overlap(
-			PhysicsMask.ENTITY, Rect, this, OperationMode.ColliderOnly
+			PhysicsMask.ENTITY, Rect, this, OperationMode.ColliderAndTrigger
 		)) return null;
 		Entity entity = null;
 		if (Stage.IsValidEntityID(TargetEntityID)) {
@@ -104,8 +133,17 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 		if (entity == null) return null;
 		if (!KeepLaunchedEntityInMap) entity.IgnoreReposition = true;
 		if (entity is Rigidbody rig) {
-			rig.VelocityX = LaunchVelocity.x;
-			rig.VelocityY = LaunchVelocity.y;
+			var vel = LaunchVelocity;
+			if (
+				vel.x != 0 &&
+				LaunchTowardsPlayer &&
+				PlayerSystem.Selecting != null &&
+				PlayerSystem.Selecting.Rect.CenterX() < Rect.CenterX()
+			) {
+				vel.x = -vel.x;
+			}
+			rig.VelocityX = vel.x;
+			rig.VelocityY = vel.y;
 		}
 		OnEntityLaunched(entity, X + LaunchOffset.x, Y + LaunchOffset.y);
 		LastLaunchedFrame = Game.GlobalFrame;

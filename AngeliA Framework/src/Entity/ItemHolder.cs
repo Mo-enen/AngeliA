@@ -138,7 +138,7 @@ public class ItemHolder : Rigidbody {
 		if (TouchingPlayer) {
 			// Collect
 			if (player.Movement.IsSquatting) {
-				bool collected = Collect(player, onlyStackOnExisting: false, ignoreEquipment: false);
+				bool collected = Collect(player);
 				if (collected) {
 					ItemSystem.SetItemUnlocked(ItemID, true);
 				}
@@ -248,7 +248,7 @@ public class ItemHolder : Rigidbody {
 	}
 
 
-	public bool Collect (Character character, bool onlyStackOnExisting = false, bool ignoreEquipment = false) {
+	public bool Collect (Character character) {
 
 		if (ItemID == 0 || character is null) return false;
 		int invID = character.InventoryID;
@@ -261,9 +261,7 @@ public class ItemHolder : Rigidbody {
 
 		// Collect / Append
 		if (ItemCount > 0) {
-			int addCount = onlyStackOnExisting ?
-				Inventory.FindAndAddItem(invID, ItemID, ItemCount, ignoreEquipment) :
-				Inventory.CollectItem(invID, ItemID, ItemCount, ignoreEquipment);
+			int addCount = Inventory.CollectItem(invID, ItemID, ItemCount, ignoreEquipment: false);
 			if (addCount > 0) {
 				int newCount = ItemCount - addCount;
 				if (newCount <= 0) {
@@ -274,7 +272,7 @@ public class ItemHolder : Rigidbody {
 					ItemCount = newCount;
 				}
 				item.OnCollect(character);
-			} else if (!onlyStackOnExisting && IsGrounded) {
+			} else if (IsGrounded) {
 				// Inventory is Full
 				Jump();
 			}

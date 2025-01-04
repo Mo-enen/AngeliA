@@ -327,6 +327,24 @@ public static class Inventory {
 	}
 
 
+	public static bool HasItem (int inventoryID, int itemID, bool includeEquipment = true) {
+		if (!Pool.TryGetValue(inventoryID, out var data)) return false;
+		for (int i = 0; i < data.Items.Length; i++) {
+			if (data.Items[i] == itemID) return true;
+		}
+		if (includeEquipment && data is EquipmentInventoryData eqData) {
+			return
+				(eqData.HandTool == itemID && eqData.HandToolCount > 0) ||
+				(eqData.Helmet == itemID && eqData.HelmetCount > 0) ||
+				(eqData.Shoes == itemID && eqData.ShoesCount > 0) ||
+				(eqData.BodySuit == itemID && eqData.BodySuitCount > 0) ||
+				(eqData.Gloves == itemID && eqData.GlovesCount > 0) ||
+				(eqData.Jewelry == itemID && eqData.JewelryCount > 0);
+		}
+		return false;
+	}
+
+
 	/// <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
 	public static int AddItemAt (int inventoryID, int itemIndex, int count = 1) {
 		if (

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
+namespace AngeliA.Platformer;
 
-namespace AngeliA;
 
 
 [EntityAttribute.Capacity(1024, 0)]
@@ -11,6 +12,8 @@ namespace AngeliA;
 public abstract class Collectable : Entity, IBlockEntity {
 
 	// VAR
+	protected virtual int ItemID => TypeID;
+	protected virtual int ItemCount => 1;
 	private Int4 TriggerExpand;
 
 	// MSG
@@ -35,7 +38,6 @@ public abstract class Collectable : Entity, IBlockEntity {
 			PhysicsMask.CHARACTER, null, OperationMode.ColliderOnly
 		) is Character character) {
 			OnCollect(character);
-			Active = false;
 		}
 	}
 
@@ -45,8 +47,9 @@ public abstract class Collectable : Entity, IBlockEntity {
 	}
 
 	public virtual bool OnCollect (Character collector) {
+		Active = false;
 		FrameworkUtil.RemoveFromWorldMemory(this);
-		return true;
+		return !IgnoreReposition && Inventory.GiveItemToTarget(collector, ItemID, ItemCount);
 	}
 
 }

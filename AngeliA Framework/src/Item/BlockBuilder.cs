@@ -10,7 +10,6 @@ public sealed class BlockBuilder : HandTool {
 
 
 	// VAR
-	const int MOUSE_RANGE = 128;
 	public int BlockID { get; init; }
 	public BlockType BlockType { get; init; }
 	public override ToolType ToolType => ToolType.Block;
@@ -54,13 +53,13 @@ public sealed class BlockBuilder : HandTool {
 		) return;
 
 		int targetUnitX, targetUnitY;
-		bool available, inRange = true;
+		bool available;
 
 		// Get Target Pos
 		if (Game.IsMouseAvailable) {
 			Cursor.RequireCursor();
 			available = FrameworkUtil.GetAimingBuilderPositionFromMouse(
-				pHolder, MOUSE_RANGE, BlockType, out targetUnitX, out targetUnitY, out inRange
+				pHolder, BlockType, out targetUnitX, out targetUnitY, out _
 			);
 		} else {
 			if (!pHolder.IsInsideGround) {
@@ -68,7 +67,7 @@ public sealed class BlockBuilder : HandTool {
 				pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
 			}
 			available = FrameworkUtil.GetAimingBuilderPositionFromKey(
-				pHolder, BlockType, out targetUnitX, out targetUnitY
+				pHolder, BlockType, out targetUnitX, out targetUnitY, out _
 			);
 		}
 
@@ -78,7 +77,7 @@ public sealed class BlockBuilder : HandTool {
 		}
 
 		// Target Block Highlight
-		if (inRange && !pHolder.Attackness.IsAttackIgnored) {
+		if (!pHolder.Attackness.IsAttackIgnored) {
 			DrawTargetHighlight(targetUnitX, targetUnitY, available);
 		}
 
@@ -87,41 +86,56 @@ public sealed class BlockBuilder : HandTool {
 
 	public override Bullet SpawnBullet (Character sender) {
 
-		var pHolder = sender;
-		if (pHolder != PlayerSystem.Selecting ||
-			!pHolder.IsAttackAllowedByMovement() ||
-			pHolder.Attackness.IsAttackIgnored ||
-			pHolder.CharacterState != CharacterState.GamePlay ||
+		if (
+			sender != PlayerSystem.Selecting ||
+			!sender.IsAttackAllowedByMovement() ||
+			sender.Attackness.IsAttackIgnored ||
+			sender.CharacterState != CharacterState.GamePlay ||
 			TaskSystem.HasTask()
-			) return null;
+		) return null;
 
 		int targetUnitX, targetUnitY;
-		bool available;
+		bool available, requireEmbedAsElement;
 
 		// Get Target Pos
 		if (Game.IsMouseAvailable) {
 			Cursor.RequireCursor();
 			available = FrameworkUtil.GetAimingBuilderPositionFromMouse(
-				pHolder, MOUSE_RANGE, BlockType, out targetUnitX, out targetUnitY, out _
+				sender, BlockType, out targetUnitX, out targetUnitY, out requireEmbedAsElement
 			);
 		} else {
-			if (!pHolder.IsInsideGround) {
-				pHolder.Movement.SquatMoveSpeed.Override(0, 1, priority: 4096);
-				pHolder.Movement.WalkSpeed.Override(0, 1, priority: 4096);
+			if (!sender.IsInsideGround) {
+				sender.Movement.SquatMoveSpeed.Override(0, 1, priority: 4096);
+				sender.Movement.WalkSpeed.Override(0, 1, priority: 4096);
 			}
 			available = FrameworkUtil.GetAimingBuilderPositionFromKey(
-				pHolder, BlockType, out targetUnitX, out targetUnitY
+				sender, BlockType, out targetUnitX, out targetUnitY, out requireEmbedAsElement
 			);
 		}
 
 		// Put Block
 		if (available) {
-			bool success = FrameworkUtil.PutBlockTo(BlockID, BlockType, pHolder, targetUnitX, targetUnitY);
-			if (!success) {
-				pHolder.Attackness.CancelAttack();
+			bool success = FrameworkUtil.PutBlockTo(
+				BlockID,
+				requireEmbedAsElement ? BlockType.Element : BlockType,
+				targetUnitX, targetUnitY
+			);
+			if (success) {
+				if (!requireEmbedAsElement) {
+					// Reduce Block Count by 1
+					int eqID = Inventory.GetEquipment(sender.InventoryID, EquipmentType.HandTool, out int eqCount);
+					if (eqID != 0) {
+						int newEqCount = (eqCount - 1).GreaterOrEquelThanZero();
+						if (newEqCount == 0) eqID = 0;
+						Inventory.SetEquipment(sender.InventoryID, EquipmentType.HandTool, eqID, newEqCount);
+					}
+				}
+			} else {
+				// Cancel Attack
+				sender.Attackness.CancelAttack();
 			}
 		} else {
-			pHolder.Attackness.CancelAttack();
+			sender.Attackness.CancelAttack();
 		}
 
 		return null;
