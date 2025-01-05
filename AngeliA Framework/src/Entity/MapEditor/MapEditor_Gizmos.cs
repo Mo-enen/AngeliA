@@ -271,7 +271,7 @@ public partial class MapEditor {
 		particle.Height = globalRect.height;
 		particle.Tint = PARTICLE_CLEAR_TINT;
 		particle.SpriteID = Const.PIXEL;
-		if (SpritePool.TryGetValue(blockTintId, out var sprite)) {
+		if (Renderer.TryGetSprite(blockTintId, out var sprite)) {
 			particle.Tint = sprite.SummaryTint;
 		}
 	}

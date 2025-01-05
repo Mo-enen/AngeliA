@@ -25,6 +25,7 @@ public sealed partial class MapEditor : WindowUI {
 		public int UnitZ;
 	}
 
+
 	// Misc
 	private struct BlockBuffer {
 		public int ID;
@@ -103,9 +104,8 @@ public sealed partial class MapEditor : WindowUI {
 	public override IRect BackgroundRect => default;
 
 	// Pools
-	private readonly Dictionary<int, AngeSprite> SpritePool = [];
-	private readonly Dictionary<int, int> EntityArtworkRedirectPool = [];
 	private readonly Dictionary<int, PaletteItem> PalettePool = [];
+	private readonly Dictionary<int, int> EntityArtworkRedirectPool = [];
 	private readonly HashSet<int> RequireEmbedEntity = [];
 
 	// Cache List
@@ -333,39 +333,13 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void Initialize_Pool () {
 
-		SpritePool.Clear();
 		EntityArtworkRedirectPool.Clear();
-
-		int spriteCount = Renderer.SpriteCount;
-		int groupCount = Renderer.GroupCount;
-
-		// Sprites
-		for (int i = 0; i < spriteCount; i++) {
-			var sprite = Renderer.GetSpriteAt(i);
-			SpritePool.TryAdd(sprite.ID, sprite);
-		}
-
-		// Groups
-		for (int i = 0; i < groupCount; i++) {
-
-			var group = Renderer.GetGroupAt(i);
-			if (group.Count == 0) continue;
-
-			var firstSprite = group.Sprites[0];
-			if (firstSprite == null || firstSprite.ID == 0) continue;
-
-			var pivot = Int2.zero;
-			pivot.x = firstSprite.PivotX;
-			pivot.y = firstSprite.PivotY;
-			SpritePool.TryAdd(group.ID, firstSprite);
-
-		}
 
 		// Entity Artwork Redirect Pool
 		var OBJECT = typeof(object);
 		foreach (var type in typeof(Entity).AllChildClass()) {
 			int id = type.AngeHash();
-			if (SpritePool.ContainsKey(id)) continue;
+			if (Renderer.HasSprite(id)) continue;
 			if (Renderer.TryGetSpriteFromGroup(id, 0, out var sprite)) {
 				EntityArtworkRedirectPool[id] = sprite.ID;
 				continue;
@@ -373,7 +347,7 @@ public sealed partial class MapEditor : WindowUI {
 			// Base Class
 			for (var _type = type.BaseType; _type != null && _type != OBJECT; _type = _type.BaseType) {
 				int _tID = _type.AngeHash();
-				if (SpritePool.ContainsKey(_tID)) {
+				if (Renderer.HasSprite(_tID)) {
 					EntityArtworkRedirectPool[id] = _tID;
 					break;
 				} else if (Renderer.TryGetSpriteFromGroup(_tID, 0, out sprite)) {
@@ -1492,9 +1466,16 @@ public sealed partial class MapEditor : WindowUI {
 	private void DrawElement (int id, int unitX, int unitY) {
 
 		if (EntityArtworkRedirectPool.TryGetValue(id, out int newID)) id = newID;
+
 		if (!Renderer.TryGetSpriteForGizmos(id, out var sprite) &&
 			!Renderer.TryGetSpriteForGizmos(ENTITY_CODE, out sprite)
 		) return;
+
+		if (!sprite.Rule.IsEmpty) {
+			// Full Size for Rule Block
+			Renderer.Draw(sprite, new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL));
+			return;
+		}
 
 		// Icon
 		int width = Const.HALF;
@@ -1506,6 +1487,7 @@ public sealed partial class MapEditor : WindowUI {
 				width = Const.HALF * sprite.GlobalWidth / sprite.GlobalHeight;
 			}
 		}
+
 		Renderer.Draw(
 			sprite.ID,
 			unitX.ToGlobal() + Const.QUARTER + width / 2,

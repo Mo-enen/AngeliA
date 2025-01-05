@@ -264,7 +264,7 @@ public partial class MapEditor {
 				groupOrder = gAtt.Order;
 			}
 
-			// Add
+			// New Group Check
 			if (!entityGroupPool.ContainsKey(groupName)) {
 				entityGroupPool.Add(groupName, new PaletteGroup() {
 					Items = [],
@@ -275,20 +275,23 @@ public partial class MapEditor {
 					DisplayNameID = $"Palette.{groupName}".AngeHash(),
 				});
 			}
-			var group = entityGroupPool[groupName];
+			var palGroup = entityGroupPool[groupName];
 			int typeId = type.AngeHash();
 			int artworkTypeID = EntityArtworkRedirectPool.TryGetValue(typeId, out var _aID) ? _aID : typeId;
+			Renderer.TryGetSpriteGroup(typeId, out var spGroup);
 
-			group.Items.Add(new PaletteItem() {
+			// Add Item into Group
+			palGroup.Items.Add(new PaletteItem() {
 				ID = typeId,
 				CodePath = type.GetTypePath(entityType),
 				ArtworkID = artworkTypeID,
 				BlockType = Stage.IsValidEntityID(typeId) ? BlockType.Entity : BlockType.Element,
 				Name = Util.GetDisplayName((char.IsLower(type.Name[0]) ? type.Name[1..] : type.Name).TrimEnd_NumbersEmpty_()),
-				Group = null,
+				Group = spGroup,
 			});
 		}
 
+		// Sort Group
 		foreach (var (_, group) in entityGroupPool) {
 			group.Items.Sort(PaletteItemComparer.Instance);
 			PaletteGroups.Add(group);

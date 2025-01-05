@@ -131,22 +131,20 @@ public static class CircuitSystem {
 		var _squad = WorldSquad.Stream;
 
 		// Check for Wire Expand
-		for (int bTypeIndex = 0; bTypeIndex < 4; bTypeIndex++) {
-			int _id = _squad.GetBlockAt(pos.x, pos.y, pos.z, (BlockType)bTypeIndex);
-			if (
-				_id != 0 &&
-				WireIdPool.TryGetValue(_id, out var connectDirections) &&
-				(circuitFrom == Direction5.Center || ConnectionValid(circuitFrom, connectDirections))
-			) {
-				TriggeredTaskStamp[pos] = stamp;
-				TriggeringTask.Enqueue((
-					pos,
-					connectDirections.left, connectDirections.right,
-					connectDirections.down, connectDirections.up,
-					stamp
-				));
-				OnCircuitWireActived?.Invoke(pos);
-			}
+		int _id = _squad.GetBlockAt(pos.x, pos.y, pos.z, BlockType.Element);
+		if (
+			_id != 0 &&
+			WireIdPool.TryGetValue(_id, out var connectDirections) &&
+			(circuitFrom == Direction5.Center || ConnectionValid(circuitFrom, connectDirections))
+		) {
+			TriggeredTaskStamp[pos] = stamp;
+			TriggeringTask.Enqueue((
+				pos,
+				connectDirections.left, connectDirections.right,
+				connectDirections.down, connectDirections.up,
+				stamp
+			));
+			OnCircuitWireActived?.Invoke(pos);
 		}
 
 		// Check Block Operator

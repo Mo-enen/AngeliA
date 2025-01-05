@@ -35,6 +35,7 @@ public static partial class FrameworkUtil {
 	private static readonly PhysicsCell[] BlockOperationCache = new PhysicsCell[32];
 	private const int SEARCHLIGHT_DENSITY = 32;
 
+
 	// API
 	public static void RedirectForRule (WorldStream stream, IRect unitRange, int z) {
 		unitRange = unitRange.Expand(1);
@@ -42,6 +43,7 @@ public static partial class FrameworkUtil {
 			for (int j = unitRange.yMin; j < unitRange.yMax; j++) {
 				RedirectForRule(stream, i, j, z, BlockType.Level);
 				RedirectForRule(stream, i, j, z, BlockType.Background);
+				RedirectForRule(stream, i, j, z, BlockType.Element);
 			}
 		}
 	}
