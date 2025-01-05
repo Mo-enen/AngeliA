@@ -31,6 +31,221 @@ public static partial class FrameworkUtil {
 
 
 	// API
+	public static void ClampCells (Cell[] cells, IRect rect, int startIndex, int endIndex) => ClampCells(cells.GetSpan(), rect, startIndex, endIndex);
+
+	public static void ClampCells (Span<Cell> cells, IRect rect, int startIndex, int endIndex) {
+		if (cells == null) return;
+		endIndex = endIndex.LessOrEquel(cells.Length);
+		for (int i = startIndex; i < endIndex; i++) {
+			ClampCell(cells[i], rect);
+		}
+	}
+
+	public static void ClampCell (Cell cell, IRect rect) {
+		var cellRect = new IRect(
+			cell.X - (int)(cell.Width * cell.PivotX),
+			cell.Y - (int)(cell.Height * cell.PivotY),
+			cell.Width, cell.Height
+		);
+		cellRect.FlipNegative();
+		if (cellRect.CompleteInside(rect)) return;
+		if (!cellRect.Overlaps(rect)) {
+			cell.Width = 0;
+			return;
+		}
+		// Clamp
+		int cellL = cellRect.x;
+		int cellR = cellRect.x + cellRect.width;
+		int cellD = cellRect.y;
+		int cellU = cellRect.y + cellRect.height;
+		if (cellL < rect.x) {
+			if (cell.Width > 0) {
+				cell.Shift.left = rect.x - cellL;
+			} else {
+				cell.Shift.right = rect.x - cellL;
+			}
+		}
+		if (cellR > rect.x + rect.width) {
+			if (cell.Width > 0) {
+				cell.Shift.right = cellR - rect.x - rect.width;
+			} else {
+				cell.Shift.left = cellR - rect.x - rect.width;
+			}
+		}
+		if (cellD < rect.y) {
+			if (cell.Height > 0) {
+				cell.Shift.down = rect.y - cellD;
+			} else {
+				cell.Shift.up = rect.y - cellD;
+			}
+		}
+		if (cellU > rect.y + rect.height) {
+			if (cell.Height > 0) {
+				cell.Shift.up = cellU - rect.y - rect.height;
+			} else {
+				cell.Shift.down = cellU - rect.y - rect.height;
+			}
+		}
+	}
+
+
+	public static void LimbRotate (
+		ref int targetX, ref int targetY, ref int targetPivotX, ref int targetPivotY, ref int targetRotation, ref int targetWidth, ref int targetHeight,
+		int rotation, bool useFlip, int grow
+	) {
+		targetPivotY = 1000;
+		targetWidth = targetWidth.Abs();
+		bool bigRot = rotation.Abs() > 90;
+
+		// Rotate
+		targetRotation = rotation;
+		int newPivotX = rotation > 0 != bigRot ? 1000 : 0;
+		if (newPivotX != targetPivotX) {
+			targetPivotX = newPivotX;
+			targetX += newPivotX == 1000 ? targetWidth : -targetWidth;
+		}
+
+		// Flip
+		if (targetPivotX > 500) {
+			targetPivotX = 1000 - targetPivotX;
+			if (bigRot || useFlip) {
+				targetWidth = -targetWidth;
+			} else {
+				targetX -= (int)(Util.Cos(targetRotation * Util.Deg2Rad) * targetWidth);
+				targetY += (int)(Util.Sin(targetRotation * Util.Deg2Rad) * targetWidth);
+			}
+		}
+
+		// Fix for Big Rot
+		if (bigRot) {
+			targetWidth = -targetWidth;
+			targetHeight -= targetWidth.Abs();
+		}
+
+		// Grow
+		if (rotation != 0 && grow != 0) {
+			targetHeight += rotation.Abs() * grow * targetWidth.Abs() / 96000;
+		}
+
+	}
+
+	public static void LimbRotate (
+		ref int targetX, ref int targetY, ref int targetPivotX, ref int targetPivotY, ref int targetRotation, ref int targetWidth, ref int targetHeight,
+		int parentX, int parentY, int parentRotation, int parentWidth, int parentHeight,
+		int rotation, bool useFlip, int grow
+	) {
+		targetPivotY = 1000;
+		targetWidth = targetWidth.Abs();
+		bool bigRot = rotation.Abs() > 90;
+
+		// Rotate
+		targetRotation = parentRotation + rotation;
+		targetX = parentX - (int)(Util.Sin(parentRotation * Util.Deg2Rad) * parentHeight);
+		targetY = parentY - (int)(Util.Cos(parentRotation * Util.Deg2Rad) * parentHeight);
+		targetPivotX = rotation > 0 != bigRot ? 1000 : 0;
+		if (parentWidth < 0 != targetPivotX > 500) {
+			int pWidth = parentWidth.Abs();
+			int sign = targetPivotX > 500 ? -1 : 1;
+			targetX -= (int)(Util.Cos(parentRotation * Util.Deg2Rad) * pWidth) * sign;
+			targetY += (int)(Util.Sin(parentRotation * Util.Deg2Rad) * pWidth) * sign;
+		}
+
+		// Flip
+		if (targetPivotX > 500) {
+			targetPivotX = 1000 - targetPivotX;
+			if (bigRot || useFlip) {
+				targetWidth = -targetWidth;
+			} else {
+				targetX -= (int)(Util.Cos(targetRotation * Util.Deg2Rad) * targetWidth);
+				targetY += (int)(Util.Sin(targetRotation * Util.Deg2Rad) * targetWidth);
+			}
+		}
+
+		// Fix for Big Rot
+		if (bigRot) {
+			targetWidth = -targetWidth;
+			targetHeight -= parentWidth.Abs();
+		}
+
+		// Grow
+		if (rotation != 0 && grow != 0) {
+			targetHeight += rotation.Abs() * grow * targetWidth.Abs() / 96000;
+		}
+
+	}
+
+
+	public static void GetSlicedUvBorder (AngeSprite sprite, Alignment alignment, out Float2 bl, out Float2 br, out Float2 tl, out Float2 tr) {
+
+		bl = new(0f, 0f);
+		br = new(1f, 0f);
+		tl = new(0f, 1f);
+		tr = new(1f, 1f);
+
+		// Y
+		switch (alignment) {
+			case Alignment.TopLeft:
+			case Alignment.TopMid:
+			case Alignment.TopRight:
+				bl.y = br.y = (sprite.GlobalHeight - sprite.GlobalBorder.up) / (float)sprite.GlobalHeight;
+				break;
+			case Alignment.MidLeft:
+			case Alignment.MidMid:
+			case Alignment.MidRight:
+				tl.y = tr.y = (sprite.GlobalHeight - sprite.GlobalBorder.up) / (float)sprite.GlobalHeight;
+				bl.y = br.y = sprite.GlobalBorder.down / (float)sprite.GlobalHeight;
+				break;
+			case Alignment.BottomLeft:
+			case Alignment.BottomMid:
+			case Alignment.BottomRight:
+				tl.y = tr.y = sprite.GlobalBorder.down / (float)sprite.GlobalHeight;
+				break;
+		}
+		// X
+		switch (alignment) {
+			case Alignment.TopLeft:
+			case Alignment.MidLeft:
+			case Alignment.BottomLeft:
+				br.x = tr.x = sprite.GlobalBorder.left / (float)sprite.GlobalWidth;
+				break;
+			case Alignment.TopMid:
+			case Alignment.MidMid:
+			case Alignment.BottomMid:
+				br.x = tr.x = (sprite.GlobalWidth - sprite.GlobalBorder.right) / (float)sprite.GlobalWidth;
+				bl.x = tl.x = sprite.GlobalBorder.left / (float)sprite.GlobalWidth;
+				break;
+			case Alignment.TopRight:
+			case Alignment.MidRight:
+			case Alignment.BottomRight:
+				bl.x = tl.x = (sprite.GlobalWidth - sprite.GlobalBorder.right) / (float)sprite.GlobalWidth;
+				break;
+		}
+	}
+
+
+	public static Color32 GetSummaryTint (Color32[] pixels) {
+		if (pixels == null || pixels.Length == 0) return Color32.CLEAR;
+		var sum = Float3.zero;
+		float len = 0;
+		for (int i = 0; i < pixels.Length; i++) {
+			var pixel = pixels[i];
+			if (pixel.a != 0) {
+				sum.x += pixel.r / 255f;
+				sum.y += pixel.g / 255f;
+				sum.z += pixel.b / 255f;
+				len++;
+			}
+		}
+		return new Color32(
+			(byte)(sum.x * 255f / len),
+			(byte)(sum.y * 255f / len),
+			(byte)(sum.z * 255f / len),
+			255
+		);
+	}
+
+
+	// Draw
 	public static Cell DrawEnvironmentShadow (Cell source, int offsetX = -Const.HALF / 2, int offsetY = 0, byte alpha = 64, int z = -64 * 1024 + 16) {
 		int oldLayer = Renderer.CurrentLayerIndex;
 		Renderer.SetLayer(RenderLayer.SHADOW);
@@ -345,7 +560,7 @@ public static partial class FrameworkUtil {
 								var cell = cells[x, y, d];
 								if (cell.Frame != Physics.CurrentFrame) break;
 								if (cell.IsTrigger) {
-									bool isNonOnewayTrigger = !Util.HasOnewayTag(cell.Tag) && !cell.Tag.HasAny(Tag.Climb | Tag.ClimbStable);
+									bool isNonOnewayTrigger = !HasOnewayTag(cell.Tag) && !cell.Tag.HasAny(Tag.Climb | Tag.ClimbStable);
 									if (ignoreNonOnewayTrigger && isNonOnewayTrigger) continue;
 									if (ignoreOnewayTrigger && !isNonOnewayTrigger) continue;
 								}

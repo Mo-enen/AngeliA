@@ -70,4 +70,6 @@ public abstract class Entity : IMapItem {
 	public void IgnoreDespawnFromMap (int duration = 1) => IgnoreDespawnFromMapFrame = Game.GlobalFrame + duration;
 	public void CancelIgnoreDespawnFromMap () => IgnoreDespawnFromMapFrame = -1;
 
+	public Cell Draw () => Renderer.Draw(TypeID, Rect);
+
 }

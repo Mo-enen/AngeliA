@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System;
 using System.Globalization;
 
-
 namespace AngeliA;
+
 [Serializable]
 public struct IRect : IEquatable<IRect>, IFormattable {
 

@@ -51,7 +51,7 @@ public abstract class Slope : Entity, IBlockEntity {
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-		Renderer.Draw(TypeID, Rect);
+		Draw();
 	}
 
 

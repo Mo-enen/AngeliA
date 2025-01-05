@@ -92,7 +92,7 @@ public abstract class MovableBullet : Bullet {
 		var hits = Physics.OverlapAll(EnvironmentMask, Rect, out int count, Sender, OperationMode.TriggerOnly);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
-			if (hit.Tag == 0 || !Util.TryGetOnewayDirection(hit.Tag, out var onewayDir)) continue;
+			if (hit.Tag == 0 || !FrameworkUtil.TryGetOnewayDirection(hit.Tag, out var onewayDir)) continue;
 			// Collide Check X
 			bool collide = false;
 			if (Velocity.x > 0) {

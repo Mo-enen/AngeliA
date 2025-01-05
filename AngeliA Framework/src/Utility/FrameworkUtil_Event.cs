@@ -19,6 +19,7 @@ public static partial class FrameworkUtil {
 	[OnCheatPerformed_StringCode] internal static Action<string> OnCheatPerformed;
 	[OnFootStepped_IntX_IntY_IntGroundID] internal static Action<int, int, int> OnFootStepped;
 
+	// API
 	public static void InvokeObjectBreak (int spriteID, IRect rect) => OnObjectBreak?.Invoke(spriteID, rect);
 	public static void InvokeObjectFreeFall (int spriteID, int x, int y, int speedX = 0, int speedY = 0, int rotation = int.MinValue, int rotationSpeed = 0, int gravity = 5, bool flipX = false) => OnObjectFreeFall?.Invoke(spriteID, new(x, y), rotation, flipX, new(speedX, speedY), rotationSpeed, gravity);
 	public static void InvokeBlockPicked (int spriteID, IRect rect) => OnBlockPicked?.Invoke(spriteID, rect);

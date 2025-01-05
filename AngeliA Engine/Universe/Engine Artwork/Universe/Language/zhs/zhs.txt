@@ -1,4 +1,5 @@
-﻿AtlasType.Background:背景
+﻿UI.EngineSetting.BackupSaving:打开工程时备份游戏存档
+AtlasType.Background:背景
 AtlasType.General:通用
 AtlasType.Level:关卡
 ConsoleWindow:终 端
@@ -47,8 +48,10 @@ Hint.PickItem:拾起物品
 Hint.Publishing:正在发布
 Hub.Add:添加现有工程
 Hub.Create:创建新工程
-iDes.BlockBuilder:
+iDes.BlockBuilder:块
+iDes.ClothItem:服装
 iName.BlockBuilder:块
+iName.ClothItem:服装
 Label.B:B
 Label.Border:边框
 Label.Bottom:下面
@@ -116,6 +119,7 @@ Log.DevNameEmpty:开发者名不能为空
 Log.DevNameInvalid:开发者名包含不支持的字符
 Log.ProductNameEmpty:产品名不能为空
 Log.ProductNameInvalid:产品名包含不支持的字符
+MEDT.AsElement:作为元素
 MEDT.BackgroundOnly:仅背景
 MEDT.CancelDrop:取消放下
 MEDT.Drop:按鼠标左键放下

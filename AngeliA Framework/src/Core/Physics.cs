@@ -203,7 +203,7 @@ public static class Physics {
 		int count = OverlapAll(
 			c_RoomOneway,
 			mask, rect.EdgeOutside(direction), entity, OperationMode.TriggerOnly,
-			Util.GetOnewayTag(gateDir)
+FrameworkUtil.GetOnewayTag(gateDir)
 		);
 		for (int i = 0; i < count; i++) {
 			hit = c_RoomOneway[i];
@@ -514,7 +514,7 @@ public static class Physics {
 		int oCount = OverlapAll(
 			c_Oneway, mask, new(to.x, to.y, size.x, size.y), entity,
 			OperationMode.TriggerOnly,
-			Util.GetOnewayTag(gateDir)
+FrameworkUtil.GetOnewayTag(gateDir)
 		);
 		for (int i = 0; i < oCount; i++) {
 			var hit = c_Oneway[i];

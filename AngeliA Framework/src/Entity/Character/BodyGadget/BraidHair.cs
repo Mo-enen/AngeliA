@@ -156,7 +156,7 @@ public abstract class BraidHair : Hair {
 			if (rolling) height /= 2;
 			int py = 1000;
 			if (allowLimbRotate && !flipX && !flipY) {
-				Util.LimbRotate(
+				FrameworkUtil.LimbRotate(
 					ref x, ref y, ref px, ref py, ref rot, ref width, ref height, rot, false, 0
 				);
 			}

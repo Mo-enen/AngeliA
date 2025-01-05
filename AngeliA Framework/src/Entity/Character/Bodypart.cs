@@ -139,13 +139,13 @@ public class BodyPart (BodyPart parent, bool useLimbFlip) {
 
 	public void LimbRotate (int rotation, int grow = 1000) {
 		if (LimbParent != null) {
-			Util.LimbRotate(
+			FrameworkUtil.LimbRotate(
 				ref X, ref Y, ref PivotX, ref PivotY, ref Rotation, ref Width, ref Height,
 				LimbParent.X, LimbParent.Y, LimbParent.Rotation, LimbParent.Width, LimbParent.Height,
 				rotation, UseLimbFlip, grow
 			);
 		} else {
-			Util.LimbRotate(
+			FrameworkUtil.LimbRotate(
 				ref X, ref Y, ref PivotX, ref PivotY, ref Rotation, ref Width, ref Height,
 				rotation, UseLimbFlip, grow
 			);

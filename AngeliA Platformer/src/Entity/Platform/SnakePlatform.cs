@@ -77,7 +77,7 @@ public abstract class SnakePlatform : StepTriggerPlatform, IRouteWalker {
 		// Artwork
 		Cell cell;
 		if (EndReachingFrame < 0) {
-			cell = Renderer.Draw(TypeID, Rect);
+			cell = Draw();
 			if (ArtworkScale != 1000) {
 				cell.Width = cell.Width * ArtworkScale / 1000;
 				cell.Height = cell.Height * ArtworkScale / 1000;

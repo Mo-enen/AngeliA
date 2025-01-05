@@ -916,4 +916,69 @@ public static partial class FrameworkUtil {
 	}
 
 
+	// Rule
+	public static BlockRule DigitToBlockRule (int digit) {
+		// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
+		//              000        001        010           011       100
+		// eg: "02022020,11111111,01022020,02012020,..."
+		// digit: int32 10000000 000 000 000 000 000 000 000 000
+		if (!digit.GetBit(0)) return BlockRule.EMPTY;
+		var result = BlockRule.EMPTY;
+		for (int i = 0; i < 8; i++) {
+			int tileStrNumber = 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 0) ? 4 : 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 1) ? 2 : 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 2) ? 1 : 0;
+			result[i] = (Rule)tileStrNumber;
+		}
+		return result;
+	}
+
+	public static void DigitToRuleByte (int digit, byte[] bytes) {
+		if (!digit.GetBit(0)) {
+			System.Array.Clear(bytes);
+			return;
+		}
+		for (int i = 0; i < 8; i++) {
+			int tileStrNumber = 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 0) ? 4 : 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 1) ? 2 : 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 2) ? 1 : 0;
+			bytes[i] = (byte)tileStrNumber;
+		}
+	}
+
+	public static int BlockRuleToDigit (BlockRule ruleStr) {
+		// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
+		//              000        001        010           011       100
+		// eg: "02022020,11111111,01022020,02012020,..."
+		// digit: int32 10000000 000 000 000 000 000 000 000 000
+		int digit = 0;
+		digit.SetBit(0, true);
+		for (int i = 0; i < 8; i++) {
+			byte b = (byte)ruleStr[i];
+			digit.SetBit(8 + i * 3 + 0, (b / 4) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 1, (b / 2) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 2, (b / 1) % 2 == 1);
+		}
+		return digit;
+	}
+
+	public static int RuleByteToDigit (byte[] singleRule) {
+		// ↖↑↗←→↙↓↘ 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty 255=Error
+		//              000        001        010           011       100
+		// eg: "02022020,11111111,01022020,02012020,..."
+		// digit: int32 10000000 000 000 000 000 000 000 000 000
+		int digit = 0;
+		digit.SetBit(0, true);
+		for (int i = 0; i < 8; i++) {
+			byte b = singleRule[i];
+			digit.SetBit(8 + i * 3 + 0, (b / 4) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 1, (b / 2) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 2, (b / 1) % 2 == 1);
+		}
+		return digit;
+	}
+
+
 }

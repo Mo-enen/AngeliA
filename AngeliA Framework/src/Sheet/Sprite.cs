@@ -81,7 +81,7 @@ public class AngeSprite {
 			IsTrigger = reader.ReadByte() == 1;
 
 			// Rule
-			Rule = Util.DigitToBlockRule(reader.ReadInt32());
+			Rule = FrameworkUtil.DigitToBlockRule(reader.ReadInt32());
 
 			// Tag
 			Tag = (Tag)reader.ReadInt32();
@@ -111,7 +111,7 @@ public class AngeSprite {
 		long startPos = writer.BaseStream.Position;
 		if (PixelDirty) {
 			PixelDirty = false;
-			SummaryTint = Util.GetSummaryTint(Pixels);
+			SummaryTint = FrameworkUtil.GetSummaryTint(Pixels);
 		}
 		try {
 
@@ -151,7 +151,7 @@ public class AngeSprite {
 			writer.Write((byte)(IsTrigger ? 1 : 0));
 
 			// Rule
-			writer.Write((int)Util.BlockRuleToDigit(Rule));
+			writer.Write((int)FrameworkUtil.BlockRuleToDigit(Rule));
 
 			// Tag
 			writer.Write((int)Tag);

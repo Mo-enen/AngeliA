@@ -75,7 +75,7 @@ public static class AsepriteUtil {
 		// Load Sprites
 		for (int i = 0; i < flexSprites.Count; i++) {
 			var flex = flexSprites[i];
-			Util.GetSpriteInfoFromName(
+			FrameworkUtil.GetSpriteInfoFromName(
 				flex.FullName, out string realName,
 				out bool isTrigger, out Tag tag,
 				out var blockRule, out bool noCollider, out int offsetZ,
@@ -127,7 +127,7 @@ public static class AsepriteUtil {
 				Rule = blockRule,
 				IsTrigger = isTrigger,
 				Group = null,
-				SummaryTint = Util.GetSummaryTint(flex.Pixels),
+				SummaryTint = FrameworkUtil.GetSummaryTint(flex.Pixels),
 				Pixels = flex.Pixels,
 				Duration = aniDuration,
 			};

@@ -3,7 +3,9 @@
 namespace AngeliA;
 
 public interface ICircuitOperator {
+
 	private static readonly HashSet<int> OperatorSet = [];
+
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
 		OperatorSet.Clear();
@@ -13,4 +15,5 @@ public interface ICircuitOperator {
 	}
 	public static bool IsOperator (int typeID) => OperatorSet.Contains(typeID);
 	public void TriggerCircuit ();
+
 }

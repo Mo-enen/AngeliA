@@ -100,12 +100,12 @@ public abstract class Tail : BodyGadget {
 				if (i == 0) {
 					x = (renderer.UpperLegL.GlobalX + renderer.UpperLegR.GlobalX) / 2;
 					y = (renderer.UpperLegL.GlobalY + renderer.UpperLegR.GlobalY) / 2;
-					Util.LimbRotate(
+					FrameworkUtil.LimbRotate(
 						ref x, ref y, ref px, ref py, ref r, ref w, ref h,
 						facingSign * 60, false, limbGrow
 					);
 				} else {
-					Util.LimbRotate(
+					FrameworkUtil.LimbRotate(
 						ref x, ref y, ref px, ref py, ref r, ref w, ref h,
 						prevX, prevY, prevR, prevW, prevH,
 						facingSign * -5, false, limbGrow
@@ -140,7 +140,7 @@ public abstract class Tail : BodyGadget {
 							(animationFrame - frequency + i * frameDelta).PingPong(frameLen).Clamp(0, frequency) / (float)frequency
 						)
 					);
-					Util.LimbRotate(
+					FrameworkUtil.LimbRotate(
 						ref x, ref y, ref px, ref py, ref r, ref w, ref h,
 						targetRot, false, limbGrow
 					);
@@ -157,7 +157,7 @@ public abstract class Tail : BodyGadget {
 							(animationFrame - frequency + i * frameDelta).PingPong(frameLen).Clamp(0, frequency) / (float)frequency
 						)
 					);
-					Util.LimbRotate(
+					FrameworkUtil.LimbRotate(
 						ref x, ref y, ref px, ref py, ref r, ref w, ref h,
 						prevX, prevY, prevR, prevW, prevH,
 						targetRot, false, limbGrow

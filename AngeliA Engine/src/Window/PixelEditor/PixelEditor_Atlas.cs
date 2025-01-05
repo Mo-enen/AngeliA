@@ -507,11 +507,11 @@ public partial class PixelEditor {
 
 		// Rename
 		GenericPopupUI.AddItem(BuiltInText.UI_RENAME, StartRename, data: atlasIndex);
+		// Delete
+		GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteAtlasConfirm, enabled: atlasList.Count > 1, data: atlasIndex);
 
 		if (!atlas.IsFolder) {
 
-			// Delete
-			GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteAtlasConfirm, enabled: atlasList.Count > 1, data: atlasIndex);
 
 			GenericPopupUI.AddSeparator();
 

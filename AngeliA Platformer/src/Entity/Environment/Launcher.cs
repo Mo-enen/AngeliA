@@ -27,7 +27,7 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 	public virtual bool LaunchWhenTriggeredByCircuit => false;
 	public virtual bool LaunchTowardsPlayer => true;
 	bool IBlockEntity.ContainEntityAsElement => true;
-	public int LastLaunchedFrame { get; private set; }
+	public int LastLaunchedFrame { get; set; }
 
 	// Data
 	private AutoValidList<(Entity e, int frame)> LaunchedEntities = null;
@@ -109,6 +109,9 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 	protected virtual void OnEntityLaunched (Entity entity, int x, int y) { }
 
 
+	protected virtual void OnLaunchBlocked (int x, int y, out bool keepLaunch) => keepLaunch = false;
+
+
 	#endregion
 
 
@@ -119,37 +122,55 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 
 	public Entity LaunchEntity () {
 		LaunchedEntities.Update();
-		if (LaunchedEntities.Count >= LaunchedEntities.Capacity) return null;
+
 		if (TargetEntityID == 0) return null;
+		if (LaunchedEntities.Count >= LaunchedEntities.Capacity) return null;
+		bool rightSide = LaunchToRightSide();
+		var offset = LaunchOffset;
+		if (!rightSide) offset.x = -offset.x;
+
+		// Blocked Check
 		if (!LaunchWhenEntranceBlocked && Physics.Overlap(
-			PhysicsMask.ENTITY, Rect, this, OperationMode.ColliderAndTrigger
-		)) return null;
+			PhysicsMask.ENTITY, Rect.Shift(offset).Shrink(1), this, OperationMode.ColliderAndTrigger
+		)) {
+			OnLaunchBlocked(X + offset.x, Y + offset.y, out bool keepLaunch);
+			if (!keepLaunch) return null;
+		}
+
+		// Spawn Entity
 		Entity entity = null;
 		if (Stage.IsValidEntityID(TargetEntityID)) {
-			entity = Stage.SpawnEntity(TargetEntityID, X + LaunchOffset.x, Y + LaunchOffset.y);
+			entity = Stage.SpawnEntity(TargetEntityID, X + offset.x, Y + offset.y);
 		} else if (ItemSystem.HasItem(TargetEntityID)) {
-			entity = ItemSystem.SpawnItem(TargetEntityID, X + LaunchOffset.x, Y + LaunchOffset.y);
+			entity = ItemSystem.SpawnItem(TargetEntityID, X + offset.x, Y + offset.y);
 		}
 		if (entity == null) return null;
+
 		if (!KeepLaunchedEntityInMap) entity.IgnoreReposition = true;
+
+		// Rigidbody Movement
 		if (entity is Rigidbody rig) {
 			var vel = LaunchVelocity;
 			if (
 				vel.x != 0 &&
 				LaunchTowardsPlayer &&
-				PlayerSystem.Selecting != null &&
-				PlayerSystem.Selecting.Rect.CenterX() < Rect.CenterX()
+				!rightSide
 			) {
 				vel.x = -vel.x;
 			}
 			rig.VelocityX = vel.x;
 			rig.VelocityY = vel.y;
 		}
-		OnEntityLaunched(entity, X + LaunchOffset.x, Y + LaunchOffset.y);
+
+		// Finish
+		OnEntityLaunched(entity, X + offset.x, Y + offset.y);
 		LastLaunchedFrame = Game.GlobalFrame;
 		LaunchedEntities.Add((entity, entity.SpawnFrame));
 		return entity;
 	}
+
+
+	public bool LaunchToRightSide () => PlayerSystem.Selecting == null || PlayerSystem.Selecting.Rect.CenterX() >= Rect.CenterX();
 
 
 	#endregion

@@ -109,7 +109,9 @@ public abstract class Burner : Entity, IBlockEntity {
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-		Renderer.Draw(TypeID, Rect);
+		// Body
+		Draw();
+		// Fire
 		if (Burning && Game.GlobalFrame % 6 < 3) {
 			Renderer.SetLayerToAdditive();
 			Renderer.Draw(TypeID, Rect, FireTint);

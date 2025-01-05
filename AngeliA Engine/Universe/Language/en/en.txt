@@ -1,4 +1,5 @@
-﻿AtlasType.Background:Background
+﻿UI.EngineSetting.BackupSaving:Backup Game Saving Data when Open Project
+AtlasType.Background:Background
 AtlasType.General:General
 AtlasType.Level:Level
 ConsoleWindow:Console
@@ -47,8 +48,10 @@ Hint.PickItem:Pick Item
 Hint.Publishing:Publishing
 Hub.Add:Add Existing Project
 Hub.Create:Create New Project
-iDes.BlockBuilder:
+iDes.BlockBuilder:Block Builder
+iDes.ClothItem:Cloth Item
 iName.BlockBuilder:Block Builder
+iName.ClothItem:Cloth Item
 Label.B:B
 Label.Border:Border
 Label.Bottom:Bottom
@@ -116,6 +119,7 @@ Log.DevNameEmpty:Developer name can not be empty
 Log.DevNameInvalid:Developer name contains invalid characters for file name
 Log.ProductNameEmpty:Product name can not be empty
 Log.ProductNameInvalid:Product name contains invalid characters for file name
+MEDT.AsElement:As Element
 MEDT.BackgroundOnly:Background Only
 MEDT.CancelDrop:Cancel Drop
 MEDT.Drop:Mouse Left Button to Drop

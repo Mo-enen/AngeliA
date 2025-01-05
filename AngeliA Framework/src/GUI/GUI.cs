@@ -420,7 +420,7 @@ public static partial class GUI {
 
 			// Clip Cells
 			if (clip) {
-				Util.ClampCells(textCells, bounds, startCellIndex, textCountInLayer);
+				FrameworkUtil.ClampCells(textCells, bounds, startCellIndex, textCountInLayer);
 			}
 		}
 

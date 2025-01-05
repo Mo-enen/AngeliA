@@ -123,7 +123,7 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 			for (int i = 0; i < spriteSpan.Length; i++) {
 				var sprite = spriteSpan[i];
 
-				if (!Util.GetGroupInfoFromSpriteRealName(
+				if (!FrameworkUtil.GetGroupInfoFromSpriteRealName(
 					sprite.RealName, out string groupName, out int groupIndex
 				)) continue;
 
@@ -470,7 +470,7 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 
 		if (!SpritePool.ContainsKey(basicName.AngeHash())) return basicName;
 
-		if (Util.GetGroupInfoFromSpriteRealName(basicName, out string groupName, out int groupIndex)) {
+		if (FrameworkUtil.GetGroupInfoFromSpriteRealName(basicName, out string groupName, out int groupIndex)) {
 			// Grow Index
 			string name = $"{groupName} {groupIndex}";
 			while (SpritePool.ContainsKey(name.AngeHash())) {

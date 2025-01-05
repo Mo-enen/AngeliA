@@ -31,6 +31,242 @@ public static partial class FrameworkUtil {
 
 
 	// API
+	public static string GetBlockRealName (string name) {
+		int hashIndex = name.IndexOf('#');
+		if (hashIndex >= 0) {
+			name = name[..hashIndex];
+		}
+		return name.TrimEnd(' ');
+	}
+
+
+	public static Tag GetOnewayTag (Direction4 gateDirection) => gateDirection switch {
+		Direction4.Down => Tag.OnewayDown,
+		Direction4.Up => Tag.OnewayUp,
+		Direction4.Left => Tag.OnewayLeft,
+		Direction4.Right => Tag.OnewayRight,
+		_ => Tag.OnewayUp,
+	};
+
+
+	public static bool HasOnewayTag (Tag tag) => tag.HasAny(Tag.OnewayUp | Tag.OnewayDown | Tag.OnewayLeft | Tag.OnewayRight);
+
+
+	public static bool TryGetOnewayDirection (Tag tag, out Direction4 direction) {
+		switch (tag) {
+			case Tag.OnewayUp:
+				direction = Direction4.Up;
+				return true;
+			case Tag.OnewayDown:
+				direction = Direction4.Down;
+				return true;
+			case Tag.OnewayLeft:
+				direction = Direction4.Left;
+				return true;
+			case Tag.OnewayRight:
+				direction = Direction4.Right;
+				return true;
+		}
+		direction = default;
+		return false;
+	}
+
+
+	public static Int2 GetFlyingFormation (Int2 pos, int column, int instanceIndex) {
+
+		int sign = instanceIndex % 2 == 0 ? -1 : 1;
+		int _row = instanceIndex / 2 / column;
+		int _column = (instanceIndex / 2 % column + 1) * sign;
+		int rowSign = (_row % 2 == 0) == (sign == 1) ? 1 : -1;
+
+		int instanceOffsetX = _column * Const.CEL * 3 / 2 + rowSign * Const.HALF / 2;
+		int instanceOffsetY = _row * Const.CEL + Const.CEL - _column.Abs() * Const.HALF / 3;
+
+		return new(pos.x + instanceOffsetX, pos.y + instanceOffsetY);
+	}
+
+
+	public static void GetSpriteInfoFromName (string name, out string realName, out bool isTrigger, out Tag tag, out BlockRule rule, out bool noCollider, out int offsetZ, out int aniDuration, out int? pivotX, out int? pivotY) {
+		tag = Tag.None;
+		isTrigger = false;
+		rule = BlockRule.EMPTY;
+		noCollider = false;
+		offsetZ = 0;
+		pivotX = null;
+		pivotY = null;
+		aniDuration = 0;
+		const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
+		int hashIndex = name.IndexOf('#');
+		if (hashIndex >= 0) {
+			var hashs = name[hashIndex..].Replace(" ", "").Split('#');
+			foreach (var hashTag in hashs) {
+
+				if (string.IsNullOrWhiteSpace(hashTag)) continue;
+
+				// Bool
+				if (hashTag.Equals("isTrigger", OIC)) {
+					isTrigger = true;
+					continue;
+				}
+
+				// Tag
+				bool tagFinded = false;
+				for (int i = 1; i < TagUtil.ALL_TAG_NAMES.Length; i++) {
+					string _tag = TagUtil.ALL_TAG_NAMES[i];
+					if (hashTag.Equals(_tag, OIC)) {
+						tag |= (Tag)(1 << (i - 1));
+						tagFinded = true;
+						break;
+					}
+				}
+				if (tagFinded) continue;
+
+				// Bool-Group
+				if (hashTag.Equals("loopStart", OIC)) {
+					tag |= Tag.LoopStart;
+					continue;
+				}
+
+				if (hashTag.Equals("noCollider", OIC) || hashTag.Equals("ignoreCollider", OIC)) {
+					noCollider = true;
+					continue;
+				}
+
+				if (hashTag.Equals("random", OIC) || hashTag.Equals("ran", OIC)) {
+					tag |= Tag.Random;
+					continue;
+				}
+
+				// Int
+				if (hashTag.StartsWith("ani=", OIC)) {
+					if (int.TryParse(hashTag[4..], out int _aniD)) {
+						aniDuration = _aniD;
+					}
+					continue;
+				}
+				if (hashTag.StartsWith("animated=", OIC)) {
+					if (int.TryParse(hashTag[9..], out int _aniD)) {
+						aniDuration = _aniD;
+					}
+					continue;
+				}
+
+				if (hashTag.StartsWith("tag=", OIC)) {
+					string _tagStr = hashTag[4..];
+					int _tagIndex = System.Array.FindIndex(TagUtil.ALL_TAG_NAMES, _t => _t.Equals(_tagStr, System.StringComparison.OrdinalIgnoreCase));
+					if (_tagIndex >= 0) {
+						tag |= TagUtil.GetTagAt(_tagIndex);
+					}
+					continue;
+				}
+
+				if (hashTag.StartsWith("rule=", OIC)) {
+					string ruleStr = hashTag[5..];
+					for (int i = 0; i < 8; i++) {
+						rule[i] = (Rule)(ruleStr[i] - '0');
+					}
+					continue;
+				}
+
+				if (hashTag.StartsWith("z=", OIC)) {
+					if (int.TryParse(hashTag[2..], out int _offsetZ)) {
+						offsetZ = _offsetZ;
+					}
+					continue;
+				}
+
+				if (hashTag.StartsWith("pivot", OIC)) {
+
+					switch (hashTag) {
+						case var _ when hashTag.StartsWith("pivotX=", OIC):
+							if (int.TryParse(hashTag[7..], out int _px)) pivotX = _px;
+							continue;
+						case var _ when hashTag.StartsWith("pivotY=", OIC):
+							if (int.TryParse(hashTag[7..], out int _py)) pivotY = _py;
+							continue;
+						case var _ when hashTag.StartsWith("pivot=bottomLeft", OIC):
+							pivotX = 0;
+							pivotY = 0;
+							continue;
+						case var _ when hashTag.StartsWith("pivot=bottomRight", OIC):
+							pivotX = 1000;
+							pivotY = 0;
+							continue;
+						case var _ when hashTag.StartsWith("pivot=bottom", OIC):
+							pivotX = 500;
+							pivotY = 0;
+							continue;
+						case var _ when hashTag.StartsWith("pivot=topLeft", OIC):
+							pivotX = 0;
+							pivotY = 1000;
+							continue;
+						case var _ when hashTag.StartsWith("pivot=topRight", OIC):
+							pivotX = 1000;
+							pivotY = 1000;
+							continue;
+						case var _ when hashTag.StartsWith("pivot=top", OIC):
+							pivotX = 500;
+							pivotY = 1000;
+							continue;
+						case var _ when hashTag.StartsWith("pivot=left", OIC):
+							pivotX = 0;
+							pivotY = 500;
+							continue;
+						case var _ when hashTag.StartsWith("pivot=right", OIC):
+							pivotX = 1000;
+							pivotY = 500;
+							continue;
+						case var _ when hashTag.StartsWith("pivot=center", OIC):
+						case var _ when hashTag.StartsWith("pivot=mid", OIC):
+						case var _ when hashTag.StartsWith("pivot=middle", OIC):
+							pivotX = 500;
+							pivotY = 500;
+							continue;
+					}
+				}
+
+			}
+			// Trim Name
+			name = name[..hashIndex];
+		}
+
+		// Always Trigger Check
+		isTrigger = isTrigger ||
+HasOnewayTag(tag) ||
+			tag.HasAll(Tag.Water);
+
+		// Name
+		realName = name.TrimEnd(' ');
+
+	}
+
+
+	public static bool GetGroupInfoFromSpriteRealName (string realName, out string groupName, out int groupIndex) {
+		groupName = realName;
+		groupIndex = -1;
+		if (!string.IsNullOrEmpty(realName) && char.IsNumber(realName[^1])) {
+			string key = realName;
+			int endIndex = key.Length - 1;
+			while (endIndex >= 0) {
+				char c = key[endIndex];
+				if (!char.IsNumber(c)) break;
+				endIndex--;
+			}
+			groupIndex = endIndex < realName.Length - 1 ? int.Parse(realName[(endIndex + 1)..]) : 0;
+			groupName = realName.TrimEnd_NumbersEmpty();
+			return true;
+		}
+		return false;
+	}
+
+
+	public static float GetScaledAudioVolume (int volume, int scale = 1000) {
+		float fVolume = volume / 1000f;
+		if (scale != 1000) fVolume *= scale / 1000f;
+		return fVolume * fVolume;
+	}
+
+
 	public static void ResetShoulderAndUpperArmPos (PoseCharacterRenderer rendering, bool resetLeft = true, bool resetRight = true) {
 
 		const int A2G = Const.CEL / Const.ART_CEL;
@@ -114,6 +350,64 @@ public static partial class FrameworkUtil {
 
 
 	public static float TimeDigit_to_Time01 (int hour, int minute, int second) => ((hour + (minute + second / 60f) / 60f) / 24f).UMod(1f);
+
+
+	public static bool PerformSpringBounce (IRect springRect, Direction4 side, int power, Entity springEntity = null) {
+		bool bounced = false;
+		var globalRect = springRect.EdgeOutside(side, 16);
+		for (int safe = 0; safe < 2048; safe++) {
+			var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, globalRect, out int count, springEntity, OperationMode.ColliderAndTrigger);
+			if (count == 0) break;
+			for (int i = 0; i < count; i++) {
+				var hit = hits[i];
+				if (hit.Entity is not Rigidbody rig) continue;
+				bounced = true;
+				var hitRect = hit.Entity.Rect;
+				if (side.IsHorizontal()) {
+					globalRect.y = hitRect.y;
+					if (side == Direction4.Left) {
+						globalRect.x = Util.Min(globalRect.x, hitRect.x - globalRect.width);
+					} else {
+						globalRect.x = Util.Max(globalRect.x, hitRect.xMax);
+					}
+				} else {
+					globalRect.x = hitRect.x;
+					globalRect.y = Util.Max(globalRect.y, hitRect.yMax);
+				}
+				springEntity = hit.Entity;
+				PerformSpringBounce(rig, side, power);
+				break;
+			}
+		}
+		return bounced;
+	}
+
+
+	public static void PerformSpringBounce (Rigidbody target, Direction4 side, int power) {
+		if (target == null) return;
+		if (side.IsHorizontal()) {
+			// Horizontal
+			if (side == Direction4.Left) {
+				if (target.VelocityX > -power) {
+					target.VelocityX = -power;
+					if (target is IWithCharacterMovement wMov) {
+						wMov.CurrentMovement.FacingRight = false;
+					}
+				}
+			} else {
+				if (target.VelocityX < power) {
+					target.VelocityX = power;
+					if (target is IWithCharacterMovement wMov) {
+						wMov.CurrentMovement.FacingRight = true;
+					}
+				}
+			}
+		} else {
+			// Vertical
+			if (target.VelocityY < power) target.VelocityY = power;
+			target.MakeGrounded(6);
+		}
+	}
 
 
 	// FrameBasedValue Load/Save

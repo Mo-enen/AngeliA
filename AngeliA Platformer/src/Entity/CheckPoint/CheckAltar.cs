@@ -117,7 +117,9 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-		Renderer.Draw(TypeID, Rect);
+		// Body
+		Draw();
+		// Highlight
 		var unitPos = new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ);
 		if (PlayerSystem.RespawnCpUnitPosition == unitPos) {
 			var tint = new Color32(128, 255, 128, 255);

@@ -822,13 +822,13 @@ public static class Renderer {
 	// Clamp
 	public static void ClampCells (IRect rect, int startIndex, int endIndex = -1) {
 		if (endIndex < 0) endIndex = GetUsedCellCount(CurrentLayerIndex);
-		Util.ClampCells(Layers[CurrentLayerIndex].Cells, rect, startIndex, endIndex);
+		FrameworkUtil.ClampCells(Layers[CurrentLayerIndex].Cells, rect, startIndex, endIndex);
 	}
 	public static void ClampCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
 		if (endIndex < 0) endIndex = GetUsedCellCount(layerIndex);
-		Util.ClampCells(Layers[layerIndex].Cells, rect, startIndex, endIndex);
+		FrameworkUtil.ClampCells(Layers[layerIndex].Cells, rect, startIndex, endIndex);
 	}
-	public static void ClampCells (Cell[] cells, IRect rect) => Util.ClampCells(cells, rect, 0, cells.Length);
+	public static void ClampCells (Cell[] cells, IRect rect) => FrameworkUtil.ClampCells(cells, rect, 0, cells.Length);
 
 
 	// Layer Access

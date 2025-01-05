@@ -41,7 +41,7 @@ public abstract class Oneway : Entity, IBlockEntity {
 
 
 	public override void FirstUpdate () {
-		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Util.GetOnewayTag(GateDirection));
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, FrameworkUtil.GetOnewayTag(GateDirection));
 	}
 
 

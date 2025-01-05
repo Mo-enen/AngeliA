@@ -511,7 +511,7 @@ public static class Navigation {
 					PhysicsMask.MAP,
 					blockRect, out var hit,
 					null, OperationMode.TriggerOnly,
-					Util.GetOnewayTag(gateDirection)
+FrameworkUtil.GetOnewayTag(gateDirection)
 				);
 				if (hitted && gateDirection == Direction4.Up) {
 					platformY = hit.Rect.yMax;

@@ -407,7 +407,7 @@ public partial class PixelEditor : WindowUI {
 				for (int y = 0; y < countY; y++) {
 					int globalY = y * sizeY + rect.y;
 					var cell = Renderer.Draw(checkerSprite, globalX, globalY, 0, 0, 0, sizeX, sizeY, z: int.MinValue + 2);
-					Util.ClampCell(cell, StageRect);
+					FrameworkUtil.ClampCell(cell, StageRect);
 				}
 			}
 		}

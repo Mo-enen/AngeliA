@@ -27,8 +27,8 @@ public abstract partial class Game {
 		get => _SoundVolume.Value;
 		set => _SoundVolume.Value = value;
 	}
-	public static float ScaledMusicVolume => Util.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
-	public static float ScaledSoundVolume => Util.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
+	public static float ScaledMusicVolume => FrameworkUtil.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
+	public static float ScaledSoundVolume => FrameworkUtil.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
 	public static int ProcedureAudioVolume { get; set; } = 1000;
 	public static object CurrentBGM { get; protected set; }
 

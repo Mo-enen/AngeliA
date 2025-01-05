@@ -197,7 +197,7 @@ public partial class RayGame {
 						sourceD = 0f;
 						sourceU = pixelHeight;
 					} else {
-						Util.GetSlicedUvBorder(sprite, cell.BorderSide, out var bl, out _, out _, out var tr);
+						FrameworkUtil.GetSlicedUvBorder(sprite, cell.BorderSide, out var bl, out _, out _, out var tr);
 						sourceL = bl.x * sprite.PixelRect.width;
 						sourceR = tr.x * sprite.PixelRect.width;
 						sourceD = pixelHeight - tr.y * pixelHeight;

@@ -26,14 +26,12 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 	// Data
 	private int LastBounceFrame = int.MinValue;
 	private int CurrentArtworkFrame = 0;
-	private Direction4 BounceSide = default;
 
 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
 		LastBounceFrame = int.MinValue;
-		BounceSide = default;
 		ArtworkRotation = 0;
 	}
 
@@ -87,63 +85,8 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 
 	// LGC
 	private void PerformBounce (Direction4 side, bool forceBounce = false) {
-		bool bounced = forceBounce;
-		var globalRect = Rect.EdgeOutside(side, 16);
-		Entity ignore = this;
-		for (int safe = 0; safe < 2048; safe++) {
-			var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, globalRect, out int count, ignore, OperationMode.ColliderAndTrigger);
-			if (count == 0) break;
-			for (int i = 0; i < count; i++) {
-				var hit = hits[i];
-				if (hit.Entity is not Rigidbody rig) continue;
-				bounced = true;
-				var hitRect = hit.Entity.Rect;
-				if (Horizontal) {
-					globalRect.y = hitRect.y;
-					if (side == Direction4.Left) {
-						globalRect.x = Util.Min(globalRect.x, hitRect.x - globalRect.width);
-					} else {
-						globalRect.x = Util.Max(globalRect.x, hitRect.xMax);
-					}
-				} else {
-					globalRect.x = hitRect.x;
-					globalRect.y = Util.Max(globalRect.y, hitRect.yMax);
-				}
-				ignore = hit.Entity;
-				PerformBounce(rig);
-				break;
-			}
-		}
-		if (bounced) {
+		if (FrameworkUtil.PerformSpringBounce(Rect, side, Power, this) || forceBounce) {
 			LastBounceFrame = Game.GlobalFrame;
-			BounceSide = side;
-		}
-	}
-
-
-	private void PerformBounce (Rigidbody target) {
-		if (target == null) return;
-		if (Horizontal) {
-			// Horizontal
-			if (BounceSide == Direction4.Left) {
-				if (target.VelocityX > -Power) {
-					target.VelocityX = -Power;
-					if (target is IWithCharacterMovement wMov) {
-						wMov.CurrentMovement.FacingRight = false;
-					}
-				}
-			} else {
-				if (target.VelocityX < Power) {
-					target.VelocityX = Power;
-					if (target is IWithCharacterMovement wMov) {
-						wMov.CurrentMovement.FacingRight = true;
-					}
-				}
-			}
-		} else {
-			// Vertical
-			if (target.VelocityY < Power) target.VelocityY = Power;
-			target.MakeGrounded(6);
 		}
 	}
 

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using AngeliA;
 
-namespace AngeliA;
- 
+namespace AngeliaEngine;
+
 public class Aseprite {
 
 
@@ -74,7 +75,7 @@ public class Aseprite {
 		Header.AddBytes(list);
 		bytes.InsertRange(0, list);
 
-		return bytes.ToArray();
+		return [.. bytes];
 	}
 
 

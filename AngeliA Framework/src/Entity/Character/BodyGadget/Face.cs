@@ -134,7 +134,7 @@ public abstract class Face : BodyGadget {
 					cell.X += offsetX;
 					cell.Width -= offsetX.Abs() / 2;
 				}
-				Util.ClampCells(cells, headRect, startCellIndex, count);
+				FrameworkUtil.ClampCells(cells, headRect, startCellIndex, count);
 			}
 
 			// Rotate

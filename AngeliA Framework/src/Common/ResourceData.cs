@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+
+// Font
 public abstract class FontData {
 
 	public int ID;
@@ -56,18 +58,7 @@ public abstract class FontData {
 }
 
 
-public abstract class AudioData {
-
-	public int ID;
-	public string Name;
-	public string Path;
-
-	[OnGameInitializeLater(4096)]
-	internal static void OnGameInitializeLater () => Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot);
-
-}
-
-
+// Audio
 public class MusicData : AudioData {
 
 }
@@ -77,5 +68,17 @@ public class SoundData : AudioData {
 
 	public object[] SoundObjects;
 	public int[] StartFrames;
+
+}
+
+
+public abstract class AudioData {
+
+	public int ID;
+	public string Name;
+	public string Path;
+
+	[OnGameInitializeLater(4096)]
+	internal static void OnGameInitializeLater () => Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot);
 
 }
