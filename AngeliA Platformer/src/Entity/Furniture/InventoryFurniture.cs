@@ -19,9 +19,10 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 	protected string InventoryName { get; private set; } = "";
 	protected abstract int InventoryColumn { get; }
 	protected abstract int InventoryRow { get; }
-	protected virtual bool UnlockItemInside => false;
+	protected virtual bool UnlockItemInside => true;
 
 	private static readonly Dictionary<int, InventoryPartnerUI> UiPool = [];
+	private static readonly Dictionary<int, int> InventoryFurniturePool = [];
 	private static readonly Dictionary<Int4, (string name, int id)> InventoryIdPool = [];
 
 
@@ -33,6 +34,12 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 		foreach (var type in typeof(InventoryPartnerUI).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not InventoryPartnerUI ui) continue;
 			UiPool.TryAdd(type.AngeHash(), ui);
+		}
+		// Inv Set
+		InventoryFurniturePool.Clear();
+		foreach (var type in typeof(InventoryFurniture).AllChildClass()) {
+			if (System.Activator.CreateInstance(type) is not InventoryFurniture invF) continue;
+			InventoryFurniturePool.TryAdd(type.AngeHash(), invF.InventoryRow * invF.InventoryColumn);
 		}
 	}
 
@@ -55,19 +62,13 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 			}
 		}
 
-		// Get Inv ID
-		var key = new Int4(invPos.x, invPos.y, invPos.z, TypeID);
-		if (InventoryFurniture<InventoryPartnerUI>.InventoryIdPool.TryGetValue(key, out var pair)) {
-			(InventoryName, InventoryID) = pair;
-		} else {
-			InventoryName = Inventory.GetPositionBasedInventoryName(GetType().AngeName(), invPos);
-			InventoryID = InventoryName.AngeHash();
-			InventoryIdPool.Add(key, (InventoryName, InventoryID));
-		}
-
 		// Init Inventory
-		if (InventoryID != 0 && !string.IsNullOrEmpty(InventoryName)) {
-			Inventory.InitializeInventoryData(InventoryName, InventoryColumn * InventoryRow);
+		if (TryGetInventoryNameAndID(invPos, TypeID, out string invName, out int invID)) {
+			InventoryName = invName;
+			InventoryID = invID;
+			if (InventoryID != 0 && !string.IsNullOrEmpty(InventoryName)) {
+				Inventory.InitializeInventoryData(InventoryID, InventoryName, InventoryColumn * InventoryRow);
+			}
 		}
 
 	}
@@ -106,11 +107,33 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 
 
 	protected override void SetOpen (bool open) {
-		if (Open && !open) {
-			PlayerMenuUI.CloseMenu();
-		}
+		if (Open && !open) PlayerMenuUI.CloseMenu();
 		base.SetOpen(open);
 	}
+
+
+	protected bool TryGetInventoryUI (int typeID, out InventoryPartnerUI result) => UiPool.TryGetValue(typeID, out result);
+
+
+	public static bool TryGetInventoryNameAndID (Int3 unitPos, int typeID, out string invName, out int invID) {
+		var key = new Int4(unitPos.x, unitPos.y, unitPos.z, typeID);
+		if (InventoryIdPool.TryGetValue(key, out var pair)) {
+			(invName, invID) = pair;
+			return true;
+		} else if (Stage.GetEntityType(typeID) is System.Type entityType) {
+			invName = Inventory.GetPositionBasedInventoryName(entityType.AngeName(), unitPos);
+			invID = invName.AngeHash();
+			InventoryIdPool.Add(key, (invName, invID));
+			return true;
+		} else {
+			invName = "";
+			invID = 0;
+			return false;
+		}
+	}
+
+
+	public static bool IsInventoryFurniture (int typeID, out int capacity) => InventoryFurniturePool.TryGetValue(typeID, out capacity);
 
 
 }

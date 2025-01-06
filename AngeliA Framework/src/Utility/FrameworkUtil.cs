@@ -352,9 +352,9 @@ HasOnewayTag(tag) ||
 	public static float TimeDigit_to_Time01 (int hour, int minute, int second) => ((hour + (minute + second / 60f) / 60f) / 24f).UMod(1f);
 
 
-	public static bool PerformSpringBounce (IRect springRect, Direction4 side, int power, Entity springEntity = null) {
+	public static bool PerformSpringBounce (Entity springEntity, Direction4 side, int power, int powerSide = 0) {
 		bool bounced = false;
-		var globalRect = springRect.EdgeOutside(side, 16);
+		var globalRect = springEntity.Rect.EdgeOutside(side, 16);
 		for (int safe = 0; safe < 2048; safe++) {
 			var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, globalRect, out int count, springEntity, OperationMode.ColliderAndTrigger);
 			if (count == 0) break;
@@ -374,8 +374,8 @@ HasOnewayTag(tag) ||
 					globalRect.x = hitRect.x;
 					globalRect.y = Util.Max(globalRect.y, hitRect.yMax);
 				}
+				PerformSpringBounce(rig, springEntity, side, power, powerSide);
 				springEntity = hit.Entity;
-				PerformSpringBounce(rig, side, power);
 				break;
 			}
 		}
@@ -383,7 +383,7 @@ HasOnewayTag(tag) ||
 	}
 
 
-	public static void PerformSpringBounce (Rigidbody target, Direction4 side, int power) {
+	public static void PerformSpringBounce (Rigidbody target, Entity spring, Direction4 side, int power, int powerSide = 0) {
 		if (target == null) return;
 		if (side.IsHorizontal()) {
 			// Horizontal
@@ -402,10 +402,18 @@ HasOnewayTag(tag) ||
 					}
 				}
 			}
+			// Side
+			if (target.VelocityY.Abs() < powerSide) {
+				target.VelocityY = powerSide * (target.Rect.CenterY() > spring.Rect.CenterY() ? 1 : -1);
+			}
 		} else {
 			// Vertical
 			if (target.VelocityY < power) target.VelocityY = power;
 			target.MakeGrounded(6);
+			// Side
+			if (target.VelocityX.Abs() < powerSide) {
+				target.VelocityX = powerSide * (target.Rect.CenterX() > spring.Rect.CenterX() ? 1 : -1);
+			}
 		}
 	}
 

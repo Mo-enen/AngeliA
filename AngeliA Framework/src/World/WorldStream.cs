@@ -16,9 +16,11 @@ public sealed class WorldStream : IBlockSquad {
 
 
 	private struct WorldData {
+		public readonly bool IsDirty => Version != SavedVersion;
 		public World World;
 		public int CreateFrame;
-		public bool IsDirty;
+		public uint Version;
+		public uint SavedVersion;
 	}
 
 
@@ -39,15 +41,18 @@ public sealed class WorldStream : IBlockSquad {
 	public static event System.Action<WorldStream, World> OnWorldLoaded;
 	public static event System.Action<WorldStream, World> OnWorldSaved;
 	public string MapRoot { get; init; }
-	public bool IsDirty { get; private set; } = false;
+	public bool IsDirty => Version != SavedVersion;
 	public bool UseBuiltInAsFailback { get; set; } = false;
 
 	// Data
 	private static readonly Dictionary<string, WorldStream> StreamPool = [];
 	private static readonly WorldPathPool PathPoolBuiltIn = [];
+	private static readonly Stack<World> WorldObjectPool = [];
 	private readonly Dictionary<Int3, WorldData> WorldPool = [];
 	private readonly WorldPathPool PathPool = [];
 	private int InternalFrame = int.MinValue;
+	private uint Version = 0;
+	private uint SavedVersion = 0;
 
 
 	#endregion
@@ -88,7 +93,7 @@ public sealed class WorldStream : IBlockSquad {
 
 	public void SaveAllDirty () {
 		if (!IsDirty) return;
-		IsDirty = false;
+		SavedVersion = Version;
 		lock (POOL_LOCK) {
 			foreach (var pair in WorldPool) {
 				ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pair.Key);
@@ -97,7 +102,7 @@ public sealed class WorldStream : IBlockSquad {
 				var pos = data.World.WorldPosition;
 				string path = PathPool.GetOrAddPath(pos);
 				data.World.SaveToDisk(path);
-				data.IsDirty = false;
+				data.SavedVersion = data.Version;
 				OnWorldSaved?.Invoke(this, data.World);
 			}
 		}
@@ -106,7 +111,7 @@ public sealed class WorldStream : IBlockSquad {
 
 	public void DiscardAllChanges (bool forceDiscard = false) {
 		if (!IsDirty && !forceDiscard) return;
-		IsDirty = false;
+		SavedVersion = Version;
 		lock (POOL_LOCK) {
 			foreach (var pair in WorldPool) {
 				ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pair.Key);
@@ -115,13 +120,21 @@ public sealed class WorldStream : IBlockSquad {
 				var pos = data.World.WorldPosition;
 				string path = PathPool.GetOrAddPath(pos);
 				data.World.LoadFromDisk(path, pos.x, pos.y, pos.z);
-				data.IsDirty = false;
+				data.SavedVersion = data.Version;
 			}
 		}
 	}
 
 
-	public void ClearWorldPool () => WorldPool.Clear();
+	public void ClearWorldPool () {
+		foreach (var (_, data) in WorldPool) {
+			if (data.World != null) {
+				ReturnWorldObject(data.World);
+			}
+		}
+		WorldPool.Clear();
+		SavedVersion = Version;
+	}
 
 
 	// World
@@ -141,29 +154,13 @@ public sealed class WorldStream : IBlockSquad {
 	public World GetOrCreateWorld (int worldX, int worldY, int worldZ) => CreateOrGetWorldData(worldX, worldY, worldZ).World;
 
 
-	public void AddWorld (World world, bool overrideExists = false) {
-		if (WorldPool.TryGetValue(world.WorldPosition, out var data)) {
-			if (data.World == null || overrideExists) {
-				data.World = world;
-				data.IsDirty = true;
-				IsDirty = true;
-			}
+	public bool TryGetWorldVersion (Int3 worldPos, out uint version) {
+		if (TryGetWorldData(worldPos, out var data)) {
+			version = data.Version;
+			return true;
 		} else {
-			data = new WorldData {
-				IsDirty = true,
-				World = world,
-				CreateFrame = InternalFrame++,
-			};
-			IsDirty = true;
-			WorldPool.Add(world.WorldPosition, data);
-		}
-	}
-
-
-	public void SetWorldDirty (Int3 worldPos) {
-		if (TryGetWorldData(worldPos, out var data) && !data.IsDirty && data.World != null) {
-			data.IsDirty = true;
-			IsDirty = true;
+			version = 0;
+			return false;
 		}
 	}
 
@@ -206,13 +203,13 @@ public sealed class WorldStream : IBlockSquad {
 		var worldPos = new Int3(unitX.UDivide(Const.MAP), unitY.UDivide(Const.MAP), z);
 		var worldData = CreateOrGetWorldData(worldPos.x, worldPos.y, z);
 		if (!worldData.IsDirty) {
-			worldData.IsDirty = true;
+			worldData.Version++;
 			WorldPool[worldPos] = worldData;
 		}
 		var world = worldData.World;
 		int localX = unitX.UMod(Const.MAP);
 		int localY = unitY.UMod(Const.MAP);
-		IsDirty = true;
+		Version++;
 		switch (type) {
 			case BlockType.Entity:
 				world.Entities[localY * Const.MAP + localX] = value;
@@ -267,13 +264,15 @@ public sealed class WorldStream : IBlockSquad {
 			if (WorldPool.TryGetValue(worldPos, out worldData)) return worldData.World != null;
 			WorldPool.Add(worldPos, worldData);
 			worldData.CreateFrame = InternalFrame++;
-			worldData.IsDirty = false;
+			worldData.Version = 0;
+			worldData.SavedVersion = 0;
 
 			if (!PathPool.TryGetPath(worldPos, out string path)) return false;
 			if (!UseBuiltInAsFailback && !Util.FileExists(path)) return false;
 
 			// Load New World from Disk
-			var newWorld = new World(worldPos);
+			//var newWorld = new World(worldPos);
+			var newWorld = GetWorldObject(worldPos);
 			worldData.World = newWorld;
 			bool loaded = worldData.World.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
 
@@ -307,10 +306,12 @@ public sealed class WorldStream : IBlockSquad {
 			if (WorldPool.TryGetValue(worldPos, out var data) && data.World != null) return data;
 
 			// Create New
-			var newWorld = new World(worldPos);
+			//var newWorld = new World(worldPos);
+			var newWorld = GetWorldObject(worldPos);
 			data.World = newWorld;
 			data.CreateFrame = InternalFrame++;
-			data.IsDirty = false;
+			data.Version = 0;
+			data.SavedVersion = 0;
 			WorldPool[worldPos] = data;
 
 			// Load Data
@@ -331,14 +332,31 @@ public sealed class WorldStream : IBlockSquad {
 			// Final
 			if (!loaded) {
 				OnWorldCreated?.Invoke(this, newWorld);
-				IsDirty = true;
-				data.IsDirty = true;
+				Version++;
+				data.Version++;
 				WorldPool[worldPos] = data;
 			}
 			OnWorldLoaded?.Invoke(this, newWorld);
 
 			return data;
 		}
+	}
+
+
+	private static World GetWorldObject (Int3 pos) {
+		if (WorldObjectPool.Count > 0) {
+			var world = WorldObjectPool.Pop();
+			world.WorldPosition = pos;
+			return world;
+		} else {
+			return new World(pos);
+		}
+	}
+
+
+	private static void ReturnWorldObject (World world) {
+		world.Clear();
+		WorldObjectPool.Push(world);
 	}
 
 

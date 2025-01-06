@@ -43,6 +43,10 @@ public abstract class Furniture : Entity, IBlockEntity {
 
 
 	void IBlockEntity.OnEntityRefresh () {
+		X = Rect.CenterX().ToUnifyGlobal();
+		Y = Rect.CenterY().ToUnifyGlobal();
+		Width = Const.CEL;
+		Height = Const.CEL;
 		Pose = FittingPose.Unknown;
 		FurnitureLeftOrDown = null;
 		FurnitureRightOrUp = null;

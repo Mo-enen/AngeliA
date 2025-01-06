@@ -132,6 +132,9 @@ public static partial class FrameworkUtil {
 
 		// Event
 		eBlock.OnEntityPicked();
+		if (eBlock.ContainEntityAsElement) {
+			WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, BlockType.Element, 0);
+		}
 		InvokeObjectBreak(target.TypeID, target.Rect);
 		return true;
 	}

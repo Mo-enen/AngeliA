@@ -314,12 +314,12 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 		if (x != 0) {
 			MomentumX.value = x;
-			MomentumX.decay = (x / 2).GreaterOrEquel(1);
+			MomentumX.decay = (x.Abs() / 3).GreaterOrEquel(1);
 		}
 
 		if (y != 0) {
 			MomentumY.value = y;
-			MomentumY.decay = (y / 2).GreaterOrEquel(1);
+			MomentumY.decay = (y.Abs() / 3).GreaterOrEquel(1);
 			if (y < 0) {
 				VelocityY = y;
 			}

@@ -6,7 +6,7 @@ namespace AngeliA.Platformer;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup("Launcher")]
-public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
+public abstract class Launcher : Entity, IBlockEntity {
 
 
 
@@ -24,7 +24,6 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 	public virtual bool LaunchOverlapingElement => true;
 	public virtual bool LaunchWhenEntranceBlocked => false;
 	public virtual bool KeepLaunchedEntityInMap => false;
-	public virtual bool LaunchWhenTriggeredByCircuit => false;
 	public virtual bool LaunchTowardsPlayer => true;
 	bool IBlockEntity.ContainEntityAsElement => true;
 	public int LastLaunchedFrame { get; set; }
@@ -100,16 +99,7 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 	}
 
 
-	void ICircuitOperator.TriggerCircuit () {
-		if (!LaunchWhenTriggeredByCircuit) return;
-		LaunchEntity();
-	}
-
-
 	protected virtual void OnEntityLaunched (Entity entity, int x, int y) { }
-
-
-	protected virtual void OnLaunchBlocked (int x, int y, out bool keepLaunch) => keepLaunch = false;
 
 
 	#endregion
@@ -132,10 +122,7 @@ public abstract class Launcher : Entity, IBlockEntity, ICircuitOperator {
 		// Blocked Check
 		if (!LaunchWhenEntranceBlocked && Physics.Overlap(
 			PhysicsMask.ENTITY, Rect.Shift(offset).Shrink(1), this, OperationMode.ColliderAndTrigger
-		)) {
-			OnLaunchBlocked(X + offset.x, Y + offset.y, out bool keepLaunch);
-			if (!keepLaunch) return null;
-		}
+		)) return null;
 
 		// Spawn Entity
 		Entity entity = null;

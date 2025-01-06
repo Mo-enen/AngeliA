@@ -6,19 +6,13 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-public abstract class CraftingTable : OpenableFurniture, IActionTarget {
+public abstract class CraftingTable : InventoryFurniture<CraftingUI>, IActionTarget {
 
 	// VAR
-	public static readonly CraftingUI UiInstance = new();
 	private static readonly SpriteCode CRAFTING_FRAME_CODE = "CraftingTableFrame";
 	protected virtual bool UseInventoryThumbnail => true;
 
 	// MSG
-	public CraftingTable () {
-		Inventory.InitializeInventoryData(GetType().AngeName(), 4);
-		UiInstance.SetColumnAndRow(2, 2);
-	}
-
 	public override void LateUpdate () {
 		base.LateUpdate();
 		// UI Close Check
@@ -32,25 +26,17 @@ public abstract class CraftingTable : OpenableFurniture, IActionTarget {
 	}
 
 	public override bool Invoke () {
-		if (PlayerSystem.Selecting == null) return false;
-		if (!PlayerMenuUI.OpenMenuWithPartner(UiInstance, TypeID)) return false;
-		if (!Open) {
-			SetOpen(true);
+		bool result = base.Invoke();
+		if (TryGetInventoryUI(TypeID, out var ui) && ui is CraftingUI cUI) {
+			cUI.FrameCode = CRAFTING_FRAME_CODE;
 		}
-		Inventory.UnlockAllItemsInside(TypeID);
-		UiInstance.FrameCode = CRAFTING_FRAME_CODE;
-		return true;
-	}
-
-	protected override void SetOpen (bool open) {
-		if (Open && !open) PlayerMenuUI.CloseMenu();
-		base.SetOpen(open);
+		return result;
 	}
 
 	protected void DrawInventoryThumbnail (IRect itemRect, bool singleRow = false) {
 		int z = Renderer.TryGetSprite(TypeID, out var sprite) ? sprite.LocalZ + 1 : 1;
 		for (int i = 0; i < 4; i++) {
-			int id = Inventory.GetItemAt(TypeID, i);
+			int id = Inventory.GetItemAt(InventoryID, i);
 			if (id == 0 || !Renderer.TryGetSpriteForGizmos(id, out var icon)) continue;
 			var rect = singleRow ?
 				itemRect.PartHorizontal(i, 4) :

@@ -85,7 +85,7 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 
 	// LGC
 	private void PerformBounce (Direction4 side, bool forceBounce = false) {
-		if (FrameworkUtil.PerformSpringBounce(Rect, side, Power, this) || forceBounce) {
+		if (FrameworkUtil.PerformSpringBounce(this, side, Power, 0) || forceBounce) {
 			LastBounceFrame = Game.GlobalFrame;
 		}
 	}

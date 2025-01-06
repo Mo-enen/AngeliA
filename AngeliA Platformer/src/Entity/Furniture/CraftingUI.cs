@@ -5,7 +5,7 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
-public sealed class CraftingUI : PlayerMenuPartnerUI {
+public sealed class CraftingUI : InventoryPartnerUI {
 
 
 	// SUB
@@ -25,8 +25,6 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 
 	// Api
 	public override int ItemFieldSize => 96;
-	public override int Column => _Column;
-	public override int Row => _Row;
 	public SpriteCode FrameCode { get; set; } = "CraftingTableFrame";
 
 	// Data
@@ -40,8 +38,6 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 	private int CombineResultCount = 0;
 	private int DocumentScrollY = 0;
 	private int DocumentPageSize = 1;
-	private int _Column = 2;
-	private int _Row = 2;
 
 
 	// MSG
@@ -53,7 +49,7 @@ public sealed class CraftingUI : PlayerMenuPartnerUI {
 
 
 	public override void DrawPanel (IRect panelRect) {
-		base.DrawPanel(panelRect);
+		BackgroundRect = panelRect;
 		int sidePanelGapL = Unify(24);
 		int sidePanelGapR = Unify(64);
 		int docPanelWidth = Unify(196);
