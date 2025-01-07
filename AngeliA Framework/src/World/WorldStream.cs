@@ -154,15 +154,7 @@ public sealed class WorldStream : IBlockSquad {
 	public World GetOrCreateWorld (int worldX, int worldY, int worldZ) => CreateOrGetWorldData(worldX, worldY, worldZ).World;
 
 
-	public bool TryGetWorldVersion (Int3 worldPos, out uint version) {
-		if (TryGetWorldData(worldPos, out var data)) {
-			version = data.Version;
-			return true;
-		} else {
-			version = 0;
-			return false;
-		}
-	}
+	public uint? GetWorldVersion (Int3 worldPos) => TryGetWorldData(worldPos, out var data) ? data.Version : null;
 
 
 	// Block
