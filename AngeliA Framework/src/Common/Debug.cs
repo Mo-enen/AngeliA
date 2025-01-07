@@ -17,7 +17,7 @@ public static class Debug {
 		if (messages == null || messages.Length == 0) return;
 		ParamsCacheBuilder.Clear();
 		foreach (var message in messages) {
-			ParamsCacheBuilder.Append(message);
+			ParamsCacheBuilder.Append(message ?? "(null)");
 			ParamsCacheBuilder.Append(' ');
 		}
 		Log(ParamsCacheBuilder.ToString());

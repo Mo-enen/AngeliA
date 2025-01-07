@@ -101,7 +101,8 @@ public class OnBlockPicked_IntSpriteID_IrectAttribute : EventAttribute { }
 public class OnFallIntoWater_RigidbodyAttribute : EventAttribute { }
 public class OnCameOutOfWater_RigidbodyAttribute : EventAttribute { }
 
-public class OnTransferArrivedAttribute_Int3UnitPos_ObjectData : EventAttribute { }
+public class OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData : EventAttribute { }
+public class OnTransferPassAttribute_Int3UnitPos_ObjectData : EventAttribute { }
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 public class CircuitOperator_Int3UnitPos_IntStamp_Direction5From : Attribute { }
