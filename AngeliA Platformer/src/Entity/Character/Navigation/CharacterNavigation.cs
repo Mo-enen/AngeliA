@@ -26,6 +26,7 @@ public class CharacterNavigation (Character character) {
 	// Override
 	public virtual bool NavigationEnable => false;
 	public virtual bool ClampInSpawnRect => false;
+	public virtual int InstanceShift => 0;
 	public virtual int NavigationStartMoveDistance => Const.CEL * 4;
 	public virtual int NavigationEndMoveDistance => Const.CEL * 1;
 	public virtual int NavigationStartFlyDistance => Const.CEL * 18;
@@ -207,10 +208,16 @@ public class CharacterNavigation (Character character) {
 
 		if (CurrentNavOperationIndex >= CurrentNavOperationCount) return;
 
+		int insIndex = TargetCharacter.InstanceOrder;
 		var operation = NavOperations[CurrentNavOperationIndex];
 		int targetX = operation.TargetGlobalX;
 		int targetY = operation.TargetGlobalY;
 		var motion = operation.Motion;
+		if (InstanceShift != 0) {
+			targetX += (
+				(insIndex % 2 == 0 ? InstanceShift : -InstanceShift) * (insIndex / 2) + Const.HALF
+			).UMod(Const.CEL) - Const.HALF;
+		}
 
 		switch (motion) {
 

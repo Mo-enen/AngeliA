@@ -53,7 +53,10 @@ public static class TransferSystem {
 	public static bool IsPipe (int pipeID) => PipePool.ContainsKey(pipeID);
 
 
-	public static void StartTransfer (Int3 unitPos, object data, int stamp = int.MinValue) => Iterate(WorldSquad.Stream, unitPos, data, stamp == int.MinValue ? Game.PauselessFrame : stamp);
+	public static void StartTransfer (Int3 unitPos, object data, int stamp = int.MinValue) {
+		OnTransferPass?.Invoke(unitPos, data);
+		Iterate(WorldSquad.Stream, unitPos, data, stamp == int.MinValue ? Game.PauselessFrame : stamp);
+	}
 
 
 	#endregion

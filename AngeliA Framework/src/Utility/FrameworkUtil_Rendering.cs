@@ -721,4 +721,30 @@ public static partial class FrameworkUtil {
 	}
 
 
+	public static void DrawLoopingTriangleMark (IRect range, int frame, Color32 tint, Direction4 direction, int count, int size, int z, int speed) {
+		using var _ = new ClampCellsScope(range);
+		int centerX = range.CenterX();
+		int centerY = range.CenterY();
+		bool vertical = direction.IsVertical();
+		int aniSign = direction == Direction4.Right || direction == Direction4.Up ? speed : -speed;
+		int loopFix = aniSign < 0 ? -size / 2 : 0;
+		for (int i = 0; i < count; i++) {
+			Renderer.Draw(
+				direction switch {
+					Direction4.Left => BuiltInSprite.ICON_TRIANGLE_LEFT,
+					Direction4.Right => BuiltInSprite.ICON_TRIANGLE_RIGHT,
+					Direction4.Down => BuiltInSprite.ICON_TRIANGLE_DOWN,
+					Direction4.Up => BuiltInSprite.ICON_TRIANGLE_UP,
+					_ => 0,
+				},
+				vertical ? centerX : range.x + i * size + loopFix + (aniSign * frame).UMod(size),
+				vertical ? range.y + i * size + loopFix + (aniSign * frame).UMod(size) : centerY,
+				500, 500, 0,
+				size, size,
+				tint, z
+			);
+		}
+	}
+
+
 }

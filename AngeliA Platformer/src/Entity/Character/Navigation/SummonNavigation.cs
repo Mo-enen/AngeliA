@@ -12,6 +12,7 @@ public class SummonNavigation (Character character) : CharacterNavigation(charac
 	private const int AIM_REFRESH_FREQUENCY = 60;
 	public override bool NavigationEnable => TargetCharacter.CharacterState == CharacterState.GamePlay;
 	public override bool ClampInSpawnRect => Owner == PlayerSystem.Selecting;
+	public override int InstanceShift => 17;
 	public Entity Owner { get; set; }
 	public bool IsFollowingOwner => CurrentAmiMode == AimMode.FollowOwner;
 	public bool IsWandering => CurrentAmiMode == AimMode.Wandering;
@@ -85,15 +86,9 @@ public class SummonNavigation (Character character) : CharacterNavigation(charac
 			NavigationAimGrounded = false;
 		}
 
-		// Instance Shift
-		aimPosition = new Int2(
-			aimPosition.x + (insIndex % 2 == 0 ? 8 : -8) * (insIndex / 2),
-			aimPosition.y
-		);
-
 		NavigationAim = aimPosition;
 	}
-
+	
 	// API
 	public void Refresh () => RequireAimRefresh = true;
 
