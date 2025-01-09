@@ -1,12 +1,13 @@
-﻿namespace AngeliA;
+﻿using System.Collections;
+using System.Collections.Generic;
+using AngeliA;
 
+namespace AngeliA.Platformer;
 
 public interface IRouteWalker {
-
 	Direction8 CurrentDirection { get; set; }
 	Int2 TargetPosition { get; set; }
-
-	public static void MoveToRoute (IRouteWalker walker, int pathID, int speed, out int newX, out int newY) {
+	public static void GetNextRoutePosition (IRouteWalker walker, int pathID, int speed, out int newX, out int newY, BlockType pathType = BlockType.Element) {
 
 		newX = 0;
 		newY = 0;
@@ -29,10 +30,11 @@ public interface IRouteWalker {
 			newY -= lostY;
 
 			// Get Direction
-			if (GetRouteFromMap(
+			if (TryGetRouteFromMap(
+				pathID,
 				(newX + eWalker.Width / 2).ToUnit(),
 				(newY + eWalker.Height / 2).ToUnit(),
-				walker.CurrentDirection, out var newDirection, pathID
+				walker.CurrentDirection, out var newDirection, pathType
 			)) {
 				walker.CurrentDirection = newDirection;
 			}
@@ -56,34 +58,27 @@ public interface IRouteWalker {
 		newY += currentNormal.y * speed;
 
 	}
+	public static bool TryGetRouteFromMap (int pathID, int unitX, int unitY, Direction8 currentDirection, out Direction8 result, BlockType pathType = BlockType.Element) {
 
-	public static bool GetRouteFromMap (int unitX, int unitY, Direction8 currentDirection, out Direction8 result, int pathID) {
+		var squad = WorldSquad.Front;
 
 		result = currentDirection;
-		if (WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element) == 0) {
-			return false;
-		}
+		if (squad.GetBlockAt(unitX, unitY, pathType) == 0) return false;
 
 		var dir = currentDirection.Normal();
-		if (HasPathIndicator(pathID, unitX + dir.x, unitY + dir.y)) return true;
+		if (squad.GetBlockAt(unitX + dir.x, unitY + dir.y, pathType) == pathID) return true;
 
 		for (int i = 0; i < 3; i++) {
 			// CW
 			result = currentDirection.Clockwise(i + 1);
 			dir = result.Normal();
-			if (HasPathIndicator(pathID, unitX + dir.x, unitY + dir.y)) return true;
+			if (squad.GetBlockAt(unitX + dir.x, unitY + dir.y, pathType) == pathID) return true;
 			// ACW
 			result = currentDirection.AntiClockwise(i + 1);
 			dir = result.Normal();
-			if (HasPathIndicator(pathID, unitX + dir.x, unitY + dir.y)) return true;
+			if (squad.GetBlockAt(unitX + dir.x, unitY + dir.y, pathType) == pathID) return true;
 		}
 
 		return false;
-
-		// Func
-		static bool HasPathIndicator (int pathID, int unitX, int unitY) {
-			return WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element) == pathID;
-		}
 	}
-
 }

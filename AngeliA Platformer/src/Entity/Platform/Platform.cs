@@ -6,9 +6,9 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
-[EntityAttribute.MapEditorGroup(nameof(Platform))]
 [EntityAttribute.Capacity(128)]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
+[EntityAttribute.MapEditorGroup("Contraption")]
 public abstract class Platform : Entity, IBlockEntity {
 
 

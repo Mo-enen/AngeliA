@@ -4,10 +4,8 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Conveyor : Entity, IBlockEntity {
-
 
 	// Api
 	protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
@@ -17,22 +15,18 @@ public abstract class Conveyor : Entity, IBlockEntity {
 	protected abstract int ArtCodeRight { get; }
 	protected abstract int ArtCodeSingle { get; }
 
-
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
 		Pose = FittingPose.Unknown;
 	}
 
-
 	void IBlockEntity.OnEntityRefresh () => Pose = FittingPose.Unknown;
-
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
 	}
-
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
@@ -49,7 +43,6 @@ public abstract class Conveyor : Entity, IBlockEntity {
 		}
 
 	}
-
 
 	public override void LateUpdate () {
 		base.LateUpdate();
@@ -73,7 +66,6 @@ public abstract class Conveyor : Entity, IBlockEntity {
 		}
 	}
 
-
 	// LGC
 	protected void ReloadPose (out bool sameBlockID) {
 		int unitX = (X + 1).ToUnit();
@@ -90,6 +82,5 @@ public abstract class Conveyor : Entity, IBlockEntity {
 			FittingPose.Single;
 		sameBlockID = idM == TypeID;
 	}
-
 
 }

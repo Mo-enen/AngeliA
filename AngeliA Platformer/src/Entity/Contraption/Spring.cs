@@ -10,6 +10,7 @@ namespace AngeliA.Platformer;
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.RepositionWhenInactive]
+[EntityAttribute.MapEditorGroup("Contraption")]
 public abstract class Spring : Rigidbody, IBlockEntity {
 
 

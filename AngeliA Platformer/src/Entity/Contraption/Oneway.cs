@@ -7,6 +7,7 @@ namespace AngeliA.Platformer;
 
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
+[EntityAttribute.MapEditorGroup("Contraption")]
 public abstract class Oneway : Entity, IBlockEntity {
 
 

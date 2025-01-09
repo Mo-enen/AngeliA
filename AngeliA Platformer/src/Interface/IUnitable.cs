@@ -1,4 +1,6 @@
-﻿namespace AngeliA;
+﻿using AngeliA;
+
+namespace AngeliA.Platformer;
 
 public interface IUnitable {
 

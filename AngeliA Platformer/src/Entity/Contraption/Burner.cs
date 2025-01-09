@@ -8,6 +8,7 @@ namespace AngeliA.Platformer;
 
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
+[EntityAttribute.MapEditorGroup("Contraption")]
 public abstract class Burner : Entity, IBlockEntity {
 
 

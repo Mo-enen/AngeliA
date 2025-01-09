@@ -5,7 +5,7 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-[EntityAttribute.MapEditorGroup("Launcher")]
+[EntityAttribute.MapEditorGroup("Contraption")]
 public abstract class Launcher : Entity, IBlockEntity {
 
 
