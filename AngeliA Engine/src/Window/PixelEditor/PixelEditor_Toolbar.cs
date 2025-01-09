@@ -676,12 +676,12 @@ public partial class PixelEditor {
 
 		// Z Label
 		rect.x += padding;
-		rect.width = Unify(128);
+		rect.width = 1;
 		GUI.Label(rect.Shrink(0, 0, 0, padding), "z", out var labelBounds, Skin.SmallGreyLabel);
 		rect.x += labelBounds.width + padding;
 
 		// Local Z
-		rect.width = fieldWidth;
+		rect.width = Unify(64);
 		var inputRect = rect.Shrink(0, 0, 0, padding);
 		if (InputField(InputName.Z, inputRect)) {
 			TryApplySpriteInputFields(forceApply: true);

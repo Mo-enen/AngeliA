@@ -417,6 +417,11 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static bool IsHorizontal (this Direction4 dir) => dir == Direction4.Left || dir == Direction4.Right;
 	[MethodImpl(INLINE)] public static bool IsVertical (this Direction4 dir) => dir == Direction4.Down || dir == Direction4.Up;
 
+	[MethodImpl(INLINE)] public static bool IsHorizontal (this Direction5 dir) => dir == Direction5.Left || dir == Direction5.Right;
+	[MethodImpl(INLINE)] public static bool IsVertical (this Direction5 dir) => dir == Direction5.Down || dir == Direction5.Up;
+
+	
+
 	[MethodImpl(INLINE)]
 	public static Direction4 Opposite (this Direction4 dir) => dir switch {
 		Direction4.Down => Direction4.Up,
