@@ -420,7 +420,7 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static bool IsHorizontal (this Direction5 dir) => dir == Direction5.Left || dir == Direction5.Right;
 	[MethodImpl(INLINE)] public static bool IsVertical (this Direction5 dir) => dir == Direction5.Down || dir == Direction5.Up;
 
-	
+
 
 	[MethodImpl(INLINE)]
 	public static Direction4 Opposite (this Direction4 dir) => dir switch {
@@ -500,7 +500,22 @@ public static class Extension {
 	public static Direction8 Opposite (this Direction8 dir) => (Direction8)(((int)dir + 4) % 8);
 	[MethodImpl(INLINE)]
 	public static int GetRotation (this Direction8 dir) => (int)dir * 45;
-
+	[MethodImpl(INLINE)]
+	public static bool IsTilted (this Direction8 dir) => dir switch {
+		Direction8.BottomLeft => true,
+		Direction8.BottomRight => true,
+		Direction8.TopLeft => true,
+		Direction8.TopRight => true,
+		_ => false,
+	};
+	[MethodImpl(INLINE)]
+	public static bool IsPositive (this Direction8 dir) => dir switch {
+		Direction8.Top => true,
+		Direction8.TopRight => true,
+		Direction8.Right => true,
+		Direction8.BottomRight => true,
+		_ => false,
+	};
 	[MethodImpl(INLINE)] public static bool IsLeft (this Direction8 dir) => dir == Direction8.Left || dir == Direction8.BottomLeft || dir == Direction8.TopLeft;
 	[MethodImpl(INLINE)] public static bool IsRight (this Direction8 dir) => dir == Direction8.Right || dir == Direction8.BottomRight || dir == Direction8.TopRight;
 	[MethodImpl(INLINE)] public static bool IsVertical (this Direction8 dir) => dir == Direction8.Top || dir == Direction8.Bottom;

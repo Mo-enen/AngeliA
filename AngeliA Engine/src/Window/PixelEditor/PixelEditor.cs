@@ -107,14 +107,14 @@ public partial class PixelEditor : WindowUI {
 	private int SelectingSpriteCount = 0;
 	private int ZoomLevel = 1;
 	private int GizmosThickness = 1;
+	private int SelectingPaletteIndex = -1;
+	private int PixelStageSize = 1;
 	private object PixelBufferGizmosTexture = null;
 	private Int2 MousePixelPos;
 	private Int2 MousePixelPosRound;
 	private FRect CanvasRect;
 	private IRect CopyBufferPixRange;
 	private IRect StageRect;
-	private int SelectingPaletteIndex = -1;
-	private int PixelStageSize = 1;
 	private Tool CurrentTool = Tool.Rect;
 	private Tag SelectionTagCache = Tag.None;
 
@@ -933,7 +933,7 @@ public partial class PixelEditor : WindowUI {
 				toNext ? 0 : palSprite.Pixels.Length - 1,
 				palSprite.PixelRect.width
 			);
-			return;
+			goto _END_;
 		}
 
 		// Find
@@ -972,6 +972,10 @@ public partial class PixelEditor : WindowUI {
 				targetIndex = (targetIndex + delta).UMod(PALETTE_PIXELS.Length);
 			}
 		}
+
+		_END_:;
+		PaintingColorF = PaintingColor.ToColorF();
+		ColorFieldCode = Util.ColorToHtml(PaintingColor);
 
 		// Func
 		static Color32 GetPixelFromPal (Color32[] pixels, int index, int width) {
