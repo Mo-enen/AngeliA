@@ -63,7 +63,7 @@ public class SummonNavigation (Character character) : CharacterNavigation(charac
 
 		// Freedom Shift
 		const int SHIFT_AMOUNT = Const.CEL * 10;
-		const int SHIFT_FREQ = 15 * 60;
+		const int SHIFT_FREQ = 30 * 60;
 		int freeShiftX = Util.QuickRandomWithSeed(
 			TargetCharacter.TypeID + (insIndex + (Game.GlobalFrame / SHIFT_FREQ)) * TargetCharacter.TypeID
 		) % SHIFT_AMOUNT;

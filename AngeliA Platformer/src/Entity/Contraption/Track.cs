@@ -37,9 +37,9 @@ public sealed class Track : Entity, IBlockEntity {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
-
+		
 	}
-
+	
 
 	public override void LateUpdate () {
 		base.LateUpdate();
