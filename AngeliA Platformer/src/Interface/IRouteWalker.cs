@@ -7,33 +7,32 @@ namespace AngeliA.Platformer;
 public interface IRouteWalker {
 	Direction8 CurrentDirection { get; set; }
 	Int2 TargetPosition { get; set; }
-	public static void GetNextRoutePosition (IRouteWalker walker, int pathID, int speed, out int newX, out int newY, BlockType pathType = BlockType.Element) {
+	public static Int2 GetNextRoutePosition (IRouteWalker walker, int pathID, int speed, BlockType pathType = BlockType.Element) {
 
-		newX = 0;
-		newY = 0;
-		if (walker is not Entity eWalker) return;
-		newX = eWalker.X;
-		newY = eWalker.Y;
+		var newPos = new Int2();
+		if (walker is not Entity eWalker) return newPos;
+		newPos.x = eWalker.X;
+		newPos.y = eWalker.Y;
 
 		// Over Moved
 		if (walker.CurrentDirection switch {
-			Direction8.Left or Direction8.TopLeft => newX <= walker.TargetPosition.x,
-			Direction8.Right or Direction8.BottomRight => newX >= walker.TargetPosition.x,
-			Direction8.Bottom or Direction8.BottomLeft => newY <= walker.TargetPosition.y,
-			Direction8.Top or Direction8.TopRight => newY >= walker.TargetPosition.y,
+			Direction8.Left or Direction8.TopLeft => newPos.x <= walker.TargetPosition.x,
+			Direction8.Right or Direction8.BottomRight => newPos.x >= walker.TargetPosition.x,
+			Direction8.Bottom or Direction8.BottomLeft => newPos.y <= walker.TargetPosition.y,
+			Direction8.Top or Direction8.TopRight => newPos.y >= walker.TargetPosition.y,
 			_ => false,
 		}) {
 			// Fix Position Back
-			int lostX = (newX + Const.HALF).UMod(Const.CEL) - Const.HALF;
-			int lostY = (newY + Const.HALF).UMod(Const.CEL) - Const.HALF;
-			newX -= lostX;
-			newY -= lostY;
+			int lostX = (newPos.x + Const.HALF).UMod(Const.CEL) - Const.HALF;
+			int lostY = (newPos.y + Const.HALF).UMod(Const.CEL) - Const.HALF;
+			newPos.x -= lostX;
+			newPos.y -= lostY;
 
 			// Get Direction
 			if (TryGetRouteFromMap(
 				pathID,
-				(newX + eWalker.Width / 2).ToUnit(),
-				(newY + eWalker.Height / 2).ToUnit(),
+				(newPos.x + eWalker.Width / 2).ToUnit(),
+				(newPos.y + eWalker.Height / 2).ToUnit(),
 				walker.CurrentDirection, out var newDirection, pathType
 			)) {
 				walker.CurrentDirection = newDirection;
@@ -54,9 +53,10 @@ public interface IRouteWalker {
 		if (currentNormal.x != 0 && currentNormal.y != 0) {
 			speed = speed * 100000 / 141421;
 		}
-		newX += currentNormal.x * speed;
-		newY += currentNormal.y * speed;
+		newPos.x += currentNormal.x * speed;
+		newPos.y += currentNormal.y * speed;
 
+		return newPos;
 	}
 	public static bool TryGetRouteFromMap (int pathID, int unitX, int unitY, Direction8 currentDirection, out Direction8 result, BlockType pathType = BlockType.Element) {
 

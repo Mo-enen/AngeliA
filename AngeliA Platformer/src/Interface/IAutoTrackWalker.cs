@@ -4,4 +4,7 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-internal interface IAutoTrackWalker { }
+public interface IAutoTrackWalker : IRouteWalker {
+	public int LastWalkingFrame { get; set; }
+	public int TrackWalkSpeed => 8;
+}

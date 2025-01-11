@@ -774,7 +774,7 @@ public class CharacterMovement (Rigidbody rig) {
 
 		// Jump Though Oneway
 		if (JumpDownThoughOneway && JumpThoughOnewayCheck()) {
-			Target.IgnoreOneway(2);
+			Target.IgnoreOneway.True(2);
 			Target.PerformMove(0, -Const.HALF);
 			//Target.CancelIgnoreOneway();
 			VelocityY = 0;

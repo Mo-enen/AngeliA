@@ -280,7 +280,7 @@ FrameworkUtil.GetOnewayTag(gateDir)
 						break;
 				}
 				hitRig.MakeGrounded(1, source.TypeID);
-				hitRig.IgnoreGravity(1);
+				hitRig.IgnoreGravity.True(1);
 				c_ForcePushCache.LinkToTail((hitRig, hitRect, hitRig.Rect));
 				if (deltaX != 0) hitRig.VelocityX = 0;
 				if (deltaY != 0) hitRig.VelocityY = 0;

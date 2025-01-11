@@ -111,8 +111,8 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 		if (Driver != null) {
 			// Driving
 			TakeDriver();
-			Driver.IgnorePhysics(1);
-			Driver.IgnoreInsideGround(1);
+			Driver.IgnorePhysics.True(1);
+			Driver.IgnoreInsideGround.True(1);
 			Driver.Attackness.IgnoreAttack(1);
 			Driver.OverrideMovement(Movement);
 			Driver.VelocityX = 0;
@@ -144,7 +144,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 		if (Game.GlobalFrame <= LastDriveChangedFrame + StartDriveCooldown) return;
 		if (driver.Movement != driver.NativeMovement) return;
 		Driver = driver;
-		Driver.IgnorePhysics();
+		Driver.IgnorePhysics.True();
 		driver.Movement.Stop();
 		driver.Movement.StopDash();
 		driver.Movement.StopRush();

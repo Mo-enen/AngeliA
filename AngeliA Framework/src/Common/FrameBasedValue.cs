@@ -109,6 +109,8 @@ public class FrameBasedBool (bool value) : FrameBasedValue<bool>(value) {
 		}
 		OverridePriority = priority;
 	}
+	public void True (int duration = 0, int priority = 0) => Override(true, duration, priority);
+	public void False (int duration = 0, int priority = 0) => Override(false, duration, priority);
 	public FrameBasedBool () : this(true) { }
 	public static implicit operator bool (FrameBasedBool bBool) => bBool.FinalValue;
 }

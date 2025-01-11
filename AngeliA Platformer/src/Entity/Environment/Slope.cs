@@ -95,19 +95,17 @@ public abstract class Slope : Entity, IBlockEntity {
 			if (target.VelocityX == 0) {
 				// Fix X (Drop)
 				target.VelocityY = 0;
-				target.IgnoreGravity();
+				target.IgnoreGravity.True();
 			} else {
 				// Fix Y (Walk)
 				if ((DirectionHorizontal == Direction2.Left) == (target.VelocityX > 0)) {
 					// Walk Toward
-					//target.Y += ;
 					target.PerformMove(0, DirectionVertical == Direction2.Down ?
 						-Util.Abs(target.VelocityX) :
 						Util.Abs(target.VelocityX));
 					target.VelocityY = 0;
 				} else {
 					// Walk Away
-					//target.Y -= Util.Abs(target.VelocityX);
 					target.PerformMove(0, -Util.Abs(target.VelocityX));
 					target.VelocityY = 0;
 				}

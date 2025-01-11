@@ -8,7 +8,7 @@ namespace AngeliA.Platformer;
 
 [EntityAttribute.Capacity(128)]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-[EntityAttribute.MapEditorGroup("Contraption")]
+[EntityAttribute.MapEditorGroup(nameof(Platform))]
 public abstract class Platform : Entity, IBlockEntity {
 
 
@@ -144,7 +144,7 @@ public abstract class Platform : Entity, IBlockEntity {
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig) continue;
-			if (OneWay && rig.IgnoringOneway) continue;
+			if (OneWay && rig.IgnoreOneway) continue;
 			var rRect = rig.Rect;
 			if (rRect.y < limitY) continue;
 			if (rig is Character && rig.VelocityY > platformDeltaY) continue;

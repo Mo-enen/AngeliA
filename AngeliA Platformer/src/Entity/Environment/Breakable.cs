@@ -21,7 +21,7 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 		OnBreak();
 		IgnoreReposition = true;
 	}
-
+	
 	public override void LateUpdate () {
 		if (!Active) return;
 		base.LateUpdate();

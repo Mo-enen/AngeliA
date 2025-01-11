@@ -27,8 +27,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public int PrevY { get; private set; } = 0;
 	public int DeltaPositionX => X - PrevX;
 	public int DeltaPositionY => Y - PrevY;
-	public bool IgnoringPhysics => Game.GlobalFrame <= IgnorePhysicsFrame;
-	public bool IgnoringOneway => Game.GlobalFrame <= IgnoreOnewayFrame;
 	public int CurrentMomentumX => MomentumX.value;
 	public int CurrentMomentumY => MomentumY.value;
 
@@ -36,6 +34,13 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public static readonly FrameBasedInt GlobalGravity = new(5);
 	public readonly FrameBasedInt FallingGravityScale = new(1000);
 	public readonly FrameBasedInt RisingGravityScale = new(1000);
+	public readonly FrameBasedBool IgnoreGroundCheck = new(false);
+	public readonly FrameBasedBool IgnoreGravity = new(false);
+	public readonly FrameBasedBool IgnorePhysics = new(false);
+	public readonly FrameBasedBool FillAsTrigger = new(false);
+	public readonly FrameBasedBool IgnoreInsideGround = new(false);
+	public readonly FrameBasedBool IgnoreOneway = new(false);
+	public readonly FrameBasedBool IgnoreMomentum = new(false);
 
 	// Override
 	public abstract int PhysicalLayer { get; }
@@ -54,12 +59,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	int ICarrier.CarryHorizontalFrame { get; set; }
 
 	// Data
-	private int IgnoreGroundCheckFrame = int.MinValue;
-	private int IgnoreGravityFrame = int.MinValue;
-	private int IgnoreInsideGroundFrame = -1;
-	private int IgnoreOnewayFrame = -1;
-	private int IgnorePhysicsFrame = -1;
-	private int IgnoreMomentumFrame = -1;
 	private int PrevPositionUpdateFrame = -1;
 	private int InWaterFloatDuration = 0;
 	private (int value, int decay) MomentumX = (0, 0);
@@ -90,11 +89,11 @@ public abstract class Rigidbody : Entity, ICarrier {
 		VelocityX = 0;
 		VelocityY = 0;
 		BounceSpeedRate = 0;
-		IgnoreGroundCheckFrame = int.MinValue;
-		IgnoreGravityFrame = int.MinValue;
-		IgnoreInsideGroundFrame = -1;
-		IgnoreOnewayFrame = -1;
-		IgnorePhysicsFrame = -1;
+		IgnoreGroundCheck.ClearOverride();
+		IgnoreGravity.ClearOverride();
+		IgnorePhysics.ClearOverride();
+		IgnoreInsideGround.ClearOverride();
+		IgnoreOneway.ClearOverride();
 		PrevPositionUpdateFrame = -1;
 		PrevX = X;
 		PrevY = Y;
@@ -107,8 +106,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		if (!IgnoringPhysics) {
-			Physics.FillEntity(PhysicalLayer, this);
+		if (!IgnorePhysics || FillAsTrigger) {
+			Physics.FillEntity(PhysicalLayer, this, FillAsTrigger);
 		}
 		RefreshPrevPosition();
 	}
@@ -125,10 +124,10 @@ public abstract class Rigidbody : Entity, ICarrier {
 		OnSlippy = !InWater && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderAndTrigger, Tag.Slip);
 
 		// Inside Ground Check
-		IsInsideGround = Game.GlobalFrame > IgnoreInsideGroundFrame && InsideGroundCheck();
+		IsInsideGround = InsideGroundCheck();
 
 		// Ignoring Physics
-		if (IgnoringPhysics) {
+		if (IgnorePhysics) {
 			IsGrounded = GroundedCheck();
 			if (IsInsideGround && DestroyWhenInsideGround) Active = false;
 			return;
@@ -150,7 +149,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		// Gravity
 		int globalGravity = GlobalGravity;
 		int gravityScale = VelocityY <= 0 ? FallingGravityScale : RisingGravityScale;
-		if (gravityScale != 0 && Game.GlobalFrame > IgnoreGravityFrame) {
+		if (gravityScale != 0 && !IgnoreGravity) {
 			int speedScale = InWater ? WaterSpeedRate : 1000;
 			VelocityY = Util.Clamp(
 				VelocityY - globalGravity * gravityScale / 1000,
@@ -221,7 +220,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		// Move
 		int momentumX = MomentumX.value;
 		int momentumY = MomentumY.value;
-		if (Game.GlobalFrame <= IgnoreMomentumFrame) {
+		if (IgnoreMomentum) {
 			momentumX = momentumY = 0;
 		}
 		PerformMove(VelocityX + momentumX, VelocityY + momentumY);
@@ -273,7 +272,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 	public void PerformMove (int speedX, int speedY, bool ignoreCarry = false) {
 
-		if (Game.GlobalFrame <= IgnorePhysicsFrame) return;
+		if (IgnorePhysics) return;
 
 		RefreshPrevPosition();
 		var oldPos = new Int2(X + OffsetX, Y + OffsetY);
@@ -284,7 +283,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		speedX = speedX * speedScale / 1000;
 		speedY = speedY * speedScale / 1000;
 		int mask = IsInsideGround ? CollisionMask & ~PhysicsMask.LEVEL : CollisionMask;
-		if (IgnoringOneway) {
+		if (IgnoreOneway) {
 			newPos = Physics.MoveIgnoreOneway(mask, oldPos, speedX, speedY, new(Width, Height), this);
 		} else {
 			newPos = Physics.Move(mask, oldPos, speedX, speedY, new(Width, Height), this);
@@ -330,7 +329,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 	public void MakeGrounded (int frame = 1, int blockID = 0) {
 		IsGrounded = true;
-		IgnoreGroundCheckFrame = Game.GlobalFrame + frame;
+		IgnoreGroundCheck.True(frame);
 		if (blockID != 0) GroundedID = blockID;
 	}
 
@@ -338,7 +337,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public void CancelMakeGrounded () {
 		IsGrounded = PerformGroundCheck(Rect, out var hit);
 		GroundedID = IsGrounded ? hit.SourceID : 0;
-		IgnoreGroundCheckFrame = Game.GlobalFrame + 1;
+		IgnoreGroundCheck.True(1);
 	}
 
 
@@ -354,16 +353,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	}
 
 
-	// Ignore
-	public void IgnorePhysics (int duration = 1) => IgnorePhysicsFrame = Game.GlobalFrame + duration;
-	public void CancelIgnorePhysics () => IgnorePhysicsFrame = -1;
-	public void IgnoreGravity (int duration = 0) => IgnoreGravityFrame = Game.GlobalFrame + duration;
-	public void IgnoreInsideGround (int duration = 0) => IgnoreInsideGroundFrame = Game.GlobalFrame + duration;
-	public void IgnoreOneway (int duration = 0) => IgnoreOnewayFrame = Game.GlobalFrame + duration;
-	public void CancelIgnoreOneway () => IgnoreOnewayFrame = -1;
-	public void IgnoreMomentum (int duration = 1) => IgnoreMomentumFrame = Game.GlobalFrame + duration;
-
-
 	#endregion
 
 
@@ -374,7 +363,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 	protected virtual bool GroundedCheck () {
 		if (IsInsideGround) return true;
-		if (Game.GlobalFrame <= IgnoreGroundCheckFrame) return IsGrounded;
+		if (IgnoreGroundCheck) return IsGrounded;
 		if (VelocityY > 0) return false;
 		bool result = PerformGroundCheck(Rect, out var hit);
 		GroundedID = result ? hit.SourceID : 0;
@@ -383,6 +372,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 
 	protected virtual bool InsideGroundCheck () {
+		if (IgnoreInsideGround) return IsInsideGround;
 		int mask = PhysicsMask.LEVEL & CollisionMask;
 		if (mask == 0) return false;
 		return Physics.Overlap(mask, IRect.Point(

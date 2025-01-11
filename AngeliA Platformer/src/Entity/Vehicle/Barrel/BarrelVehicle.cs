@@ -161,7 +161,7 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 			Width = BarrelSize;
 			Height = BarrelSize;
 			Driver.VelocityY = Driver.NativeMovement.JumpSpeed + DeltaPositionY;
-			IgnorePhysics();
+			IgnorePhysics.True();
 			return true;
 		}
 		return false;

@@ -38,7 +38,7 @@ public abstract class Conveyor : Entity, IBlockEntity {
 		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect.EdgeOutside(Direction4.Down), out int count, this, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
-			if (hit.Entity is not Rigidbody rig) continue;
+			if (hit.Entity is not Rigidbody rig || rig.IsGrounded) continue;
 			rig.SetMomentum(-MoveSpeed, 0);
 		}
 

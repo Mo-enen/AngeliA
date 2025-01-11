@@ -64,7 +64,7 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 			if (Input.GameKeyDown(Gamekey.Select) && !Physics.Overlap(player.CollisionMask, player.Rect.EdgeUp(Const.HALF), player)) {
 				Input.UseGameKey(Gamekey.Select);
 				Driver.VelocityY = 56;
-				Driver.CancelIgnorePhysics();
+				Driver.IgnorePhysics.False();
 				return true;
 			}
 			ControlHintUI.AddHint(Gamekey.Select, BuiltInText.HINT_STOP_DRIVE);

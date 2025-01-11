@@ -67,7 +67,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		base.FirstUpdate();
 		Navigation.Owner = Owner;
 		if (CharacterState == CharacterState.GamePlay) {
-			IgnorePhysics(1);
+			IgnorePhysics.True(1);
 		}
 		Physics.FillEntity(EntityLayer.CHARACTER, this, true);
 		// Att Team

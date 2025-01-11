@@ -247,7 +247,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 		// Fill Physics
 		bool trigger = Game.GlobalFrame <= ForceTriggerFrame;
-		if (CharacterState == CharacterState.GamePlay && !IgnoringPhysics) {
+		if (CharacterState == CharacterState.GamePlay && !IgnorePhysics) {
 			Physics.FillEntity(PhysicalLayer, this, trigger);
 		}
 		if (trigger) {
@@ -352,7 +352,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 				AnimationType = _poseType;
 			}
 			Movement.FacingFront = TeleportToFrontSide;
-			IgnorePhysics(1);
+			IgnorePhysics.True(1);
 			return;
 		}
 
@@ -391,7 +391,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 				Height = Const.CEL;
 				OffsetX = -Const.HALF;
 				OffsetY = 0;
-				IgnorePhysics(1);
+				IgnorePhysics.True(1);
 				break;
 
 			case CharacterState.PassOut:

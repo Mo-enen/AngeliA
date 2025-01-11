@@ -127,7 +127,10 @@ public class ItemHolder : Rigidbody {
 	}
 
 
-	public override void FirstUpdate () => Physics.FillEntity(PhysicalLayer, this, true);
+	public override void FirstUpdate () {
+		FillAsTrigger.Override(true);
+		base.FirstUpdate();
+	}
 
 
 	public override void BeforeUpdate () {

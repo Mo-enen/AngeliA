@@ -18,7 +18,7 @@ public sealed class Track : Entity, IBlockEntity {
 	public static readonly int TYPE_ID = typeof(Track).AngeHash();
 	private static readonly SpriteCode BODY_SP = "Track.Body";
 	private static readonly SpriteCode BODY_TILT = "Track.Tilt";
-	private static readonly SpriteCode BODY_CENTER = "TrackCenter";
+	private static readonly SpriteCode BODY_CENTER = "Track.Center";
 
 	// Data
 	private readonly bool[] HasTrackArr = [false, false, false, false, false, false, false, false,];
@@ -67,6 +67,35 @@ public sealed class Track : Entity, IBlockEntity {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
+
+		// Link TrackWalker
+		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect, out int count, this, OperationMode.ColliderAndTrigger);
+		for (int i = 0; i < count; i++) {
+			var hit = hits[i];
+			var entity = hit.Entity;
+			if (entity is not IAutoTrackWalker walker) continue;
+			if (Game.GlobalFrame <= walker.LastWalkingFrame) continue;
+			if (Game.GlobalFrame > walker.LastWalkingFrame + 1) {
+				// Start Walk
+				walker.CurrentDirection = Direction8.Right;
+				walker.TargetPosition = new Int2(X, Y);
+				entity.X = X;
+				entity.Y = Y;
+			}
+			// Walking
+			walker.LastWalkingFrame = Game.GlobalFrame;
+			if (entity is Rigidbody rig) {
+				rig.IgnoreGravity.True(1);
+				rig.FillAsTrigger.True(1);
+				rig.IgnorePhysics.True(1);
+				rig.VelocityX = 0;
+				rig.VelocityY = 0;
+			}
+			var newPos = IRouteWalker.GetNextRoutePosition(walker, TYPE_ID, walker.TrackWalkSpeed, BlockType.Entity);
+			entity.X = newPos.x;
+			entity.Y = newPos.y;
+			entity.IgnoreReposition = true;
+		}
 
 	}
 
