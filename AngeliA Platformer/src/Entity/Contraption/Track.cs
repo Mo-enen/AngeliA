@@ -21,7 +21,7 @@ public sealed class Track : Entity, IBlockEntity {
 	private static readonly SpriteCode BODY_CENTER = "Track.Center";
 
 	// Data
-	private readonly bool[] HasTrackArr = [false, false, false, false, false, false, false, false,];
+	private readonly bool[] HasTrackArr = [false, false, false, false, false, false, false, false, false];
 
 
 	#endregion
@@ -55,6 +55,9 @@ public sealed class Track : Entity, IBlockEntity {
 		HasTrackArr[5] = squad.GetBlockAt(unitX - 1, unitY - 1, BlockType.Entity) == TYPE_ID;
 		HasTrackArr[6] = squad.GetBlockAt(unitX - 1, unitY, BlockType.Entity) == TYPE_ID;
 		HasTrackArr[7] = squad.GetBlockAt(unitX - 1, unitY + 1, BlockType.Entity) == TYPE_ID;
+		HasTrackArr[8] =
+			HasTrackArr[0] || HasTrackArr[1] || HasTrackArr[2] || HasTrackArr[3] ||
+			HasTrackArr[4] || HasTrackArr[5] || HasTrackArr[6] || HasTrackArr[7];
 
 	}
 
@@ -68,33 +71,56 @@ public sealed class Track : Entity, IBlockEntity {
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 
+		if (!HasTrackArr[8]) return;
+
 		// Link TrackWalker
 		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect, out int count, this, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
+
 			var hit = hits[i];
 			var entity = hit.Entity;
+
 			if (entity is not IAutoTrackWalker walker) continue;
+
+			// Walked Check
 			if (Game.GlobalFrame <= walker.LastWalkingFrame) continue;
+
+			// Start Walk
 			if (Game.GlobalFrame > walker.LastWalkingFrame + 1) {
-				// Start Walk
-				walker.CurrentDirection = Direction8.Right;
-				walker.TargetPosition = new Int2(X, Y);
-				entity.X = X;
-				entity.Y = Y;
+				if (entity is Rigidbody _rig) {
+					if (_rig.DeltaPositionY > 0) continue;
+					walker.CurrentDirection = Util.GetDirection(_rig.DeltaPositionX, _rig.DeltaPositionY);
+				} else {
+					walker.CurrentDirection =
+						HasTrackArr[1] || HasTrackArr[2] || HasTrackArr[3] || HasTrackArr[5] || HasTrackArr[6] || HasTrackArr[7] ?
+						Direction8.Right : Direction8.Top;
+				}
+				if (!walker.CurrentDirection.IsVertical()) entity.Y = Y;
+				if (!walker.CurrentDirection.IsHorizontal()) entity.X = X;
+				walker.TargetPosition = new Int2(entity.X, entity.Y);
+				walker.WalkStartFrame = Game.GlobalFrame;
 			}
+
 			// Walking
 			walker.LastWalkingFrame = Game.GlobalFrame;
-			if (entity is Rigidbody rig) {
-				rig.IgnoreGravity.True(1);
-				rig.FillAsTrigger.True(1);
-				rig.IgnorePhysics.True(1);
-				rig.VelocityX = 0;
-				rig.VelocityY = 0;
-			}
 			var newPos = IRouteWalker.GetNextRoutePosition(walker, TYPE_ID, walker.TrackWalkSpeed, BlockType.Entity);
+			int deltaX = newPos.x - entity.X;
+			int deltaY = newPos.y - entity.Y;
 			entity.X = newPos.x;
 			entity.Y = newPos.y;
 			entity.IgnoreReposition = true;
+			if (entity is Rigidbody rig) {
+				rig.FillAsTrigger(1);
+				rig.IgnoreGravity.True(1);
+				rig.IgnorePhysics.True(1);
+				rig.VelocityX = deltaX;
+				rig.VelocityY = deltaY;
+			}
+
+			// Draw Hook
+
+
+
 		}
 
 	}
@@ -107,7 +133,7 @@ public sealed class Track : Entity, IBlockEntity {
 		if (!Renderer.TryGetSprite(BODY_TILT, out var bodyTilt)) return;
 
 		int centerX = X + Width / 2;
-		int centerY = Y + Height / 2;
+		int centerY = Y + Height;
 
 		// Line
 		const int SIZE = Const.HALF + 2;

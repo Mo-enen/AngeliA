@@ -37,7 +37,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public readonly FrameBasedBool IgnoreGroundCheck = new(false);
 	public readonly FrameBasedBool IgnoreGravity = new(false);
 	public readonly FrameBasedBool IgnorePhysics = new(false);
-	public readonly FrameBasedBool FillAsTrigger = new(false);
 	public readonly FrameBasedBool IgnoreInsideGround = new(false);
 	public readonly FrameBasedBool IgnoreOneway = new(false);
 	public readonly FrameBasedBool IgnoreMomentum = new(false);
@@ -63,6 +62,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	private int InWaterFloatDuration = 0;
 	private (int value, int decay) MomentumX = (0, 0);
 	private (int value, int decay) MomentumY = (0, 0);
+	private readonly FrameBasedInt FillModeIndex = new(0);
 
 
 	#endregion
@@ -106,8 +106,12 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		if (!IgnorePhysics || FillAsTrigger) {
-			Physics.FillEntity(PhysicalLayer, this, FillAsTrigger);
+		if (!IgnorePhysics || FillModeIndex != 0) {
+			Physics.FillEntity(
+				PhysicalLayer,
+				this,
+				FillModeIndex != 0, FillModeIndex == 2 ? Tag.OnewayUp : Tag.None
+			);
 		}
 		RefreshPrevPosition();
 	}
@@ -351,6 +355,10 @@ public abstract class Rigidbody : Entity, ICarrier {
 			CollisionMask, rect, this, Direction4.Down, out hit, true
 		);
 	}
+
+
+	public void FillAsTrigger (int duration = 0, int priority = 0) => FillModeIndex.Override(1, duration, priority);
+	public void FillAsOnewayUp (int duration = 0, int priority = 0) => FillModeIndex.Override(2, duration, priority);
 
 
 	#endregion

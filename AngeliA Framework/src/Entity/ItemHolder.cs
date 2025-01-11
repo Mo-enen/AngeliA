@@ -128,7 +128,7 @@ public class ItemHolder : Rigidbody {
 
 
 	public override void FirstUpdate () {
-		FillAsTrigger.Override(true);
+		FillAsTrigger();
 		base.FirstUpdate();
 	}
 

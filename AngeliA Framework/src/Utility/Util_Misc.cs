@@ -536,6 +536,14 @@ public static partial class Util {
 	}
 
 
+	public static Direction8 GetDirection (int deltaX, int deltaY) {
+		if (deltaX == 0 && deltaY == 0) return Direction8.Right;
+		var normal = new Float2(deltaX, deltaY);
+		float angle = Float2.SignedAngle(Float2.up, normal).UMod(360f);
+		return (Direction8)((angle / 22.5f).RoundToInt().UMod(8));
+	}
+
+
 	// Pointer
 	public static unsafe byte ReadByte (ref byte* p, byte* end) {
 		if (p > end) throw new IndexOutOfRangeException();
