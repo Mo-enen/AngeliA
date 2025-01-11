@@ -156,7 +156,6 @@ public static partial class FrameworkUtil {
 				var e = hits[i].Entity;
 				if (e is not IBlockEntity eBlock) continue;
 
-				bool ignoreRepos = e.IgnoreReposition;
 				e.Active = false;
 				e.IgnoreReposition = true;
 				var mapPos = e.MapUnitPos;
@@ -173,7 +172,7 @@ public static partial class FrameworkUtil {
 
 				// Event
 				eBlock.OnEntityPicked();
-				if (dropItemAfterPicked && !ignoreRepos && ItemSystem.HasItem(e.TypeID)) {
+				if (dropItemAfterPicked && e.FromWorld && ItemSystem.HasItem(e.TypeID)) {
 					// Drop Item
 					var rect = e.Rect;
 					ItemSystem.SpawnItem(e.TypeID, rect.CenterX(), rect.CenterY(), jump: false);
