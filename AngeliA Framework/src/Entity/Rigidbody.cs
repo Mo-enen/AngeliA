@@ -16,7 +16,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public bool IsGrounded { get; private set; } = false;
 	public bool IsInsideGround { get; private set; } = false;
 	public bool InWater { get; private set; } = false;
-	public bool OnSlippy { get; private set; } = false;
 	public int VelocityX { get; set; } = 0;
 	public int VelocityY { get; set; } = 0;
 	public int BounceSpeedRate { get; set; } = 0;
@@ -29,6 +28,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public int DeltaPositionY => Y - PrevY;
 	public int CurrentMomentumX => MomentumX.value;
 	public int CurrentMomentumY => MomentumY.value;
+	//public bool RequireDodgeOverlapRigidbody { get; internal set; } = false;
 
 	// Based Value
 	public static readonly FrameBasedInt GlobalGravity = new(5);
@@ -85,7 +85,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public override void OnActivated () {
 		base.OnActivated();
 		InWater = false;
-		OnSlippy = false;
 		VelocityX = 0;
 		VelocityY = 0;
 		BounceSpeedRate = 0;
@@ -123,9 +122,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		var rect = Rect;
 
 		bool prevInWater = InWater;
-		int checkingMask = PhysicsMask.MAP & CollisionMask;
-		InWater = Physics.Overlap(checkingMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Tag.Water);
-		OnSlippy = !InWater && Physics.Overlap(checkingMask, rect.EdgeOutside(Direction4.Down), this, OperationMode.ColliderAndTrigger, Tag.Slip);
+		InWater = Physics.Overlap(PhysicsMask.MAP & CollisionMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Tag.Water);
 
 		// Inside Ground Check
 		IsInsideGround = InsideGroundCheck();

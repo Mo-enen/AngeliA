@@ -247,7 +247,6 @@ public class CharacterMovement (Rigidbody rig) {
 	protected bool IsInsideGround => Target.IsInsideGround;
 	protected bool InWater => Target.InWater;
 	protected bool IsGrounded => Target.IsGrounded;
-	protected bool OnSlippy => Target.OnSlippy;
 	protected int CollisionMask => Target.CollisionMask;
 
 	// Data
@@ -267,6 +266,7 @@ public class CharacterMovement (Rigidbody rig) {
 	private bool GrabFlipUpLock = true;
 	private bool AllowGrabSideMoveUp = false;
 	private bool LockedFacingRight = true;
+	private bool OnSlippy;
 	private int? ClimbPositionCorrect = null;
 	private int LockedFacingFrame = int.MinValue;
 	private int RequireJumpFrame = int.MinValue;
@@ -325,6 +325,7 @@ public class CharacterMovement (Rigidbody rig) {
 		FacingFront = true;
 		LastRushFrame = int.MinValue;
 		LastDashFrame = int.MinValue;
+		OnSlippy = false;
 
 		// Sync Movement Config from Pool
 		if (
@@ -390,6 +391,10 @@ public class CharacterMovement (Rigidbody rig) {
 		PrevGrounded = IsGrounded;
 
 		// Slip
+		OnSlippy = !InWater && Physics.Overlap(
+			CollisionMask, Rect.EdgeOutside(Direction4.Down), 
+			TargetCharacter, OperationMode.ColliderAndTrigger, Tag.Slip
+		);
 		if (OnSlippy && IsGrounded && !IsCrashing && IsRunning && !IsSquatting) {
 			if (LastSlippyMoveStartFrame < 0) {
 				LastSlippyMoveStartFrame = Game.GlobalFrame;
