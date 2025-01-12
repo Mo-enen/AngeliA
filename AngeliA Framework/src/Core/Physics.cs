@@ -461,6 +461,7 @@ FrameworkUtil.GetOnewayTag(gateDir)
 
 		int count = 0;
 		var globalRect = new IRect(to, size);
+		var fromRect = new IRect(from, size);
 		for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
 			if ((mask & (1 << layerIndex)) == 0) continue;
 			count = OverlapAllLogic(c_Movement, count, layerIndex, globalRect, entity, OperationMode.ColliderOnly, 0, true);
@@ -472,6 +473,17 @@ FrameworkUtil.GetOnewayTag(gateDir)
 			var hitRect = hit.Rect;
 			bool _heavyPush = hit.Entity == null;
 			if (heavyPushed && !_heavyPush) continue;
+			// Ignore Overlap Check
+			if (
+				entity is Rigidbody rig &&
+				hit.Entity is Rigidbody hitRig &&
+				(rig.RequireDodgeOverlap || hitRig.RequireDodgeOverlap) &&
+				fromRect.Overlaps(hitRect)
+			) {
+				rig.RequireDodgeOverlap = true;
+				hitRig.RequireDodgeOverlap = true;
+				continue;
+			}
 			// H or V
 			center.x = hitRect.x + hitRect.width / 2;
 			center.y = hitRect.y + hitRect.height / 2;

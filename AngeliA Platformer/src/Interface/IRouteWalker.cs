@@ -7,7 +7,7 @@ namespace AngeliA.Platformer;
 public interface IRouteWalker {
 	Direction8 CurrentDirection { get; set; }
 	Int2 TargetPosition { get; set; }
-	public static Int2 GetNextRoutePosition (IRouteWalker walker, int pathID, int speed, BlockType pathType = BlockType.Element) {
+	public static Int2 GetNextRoutePosition (IRouteWalker walker, int pathID, int speed, bool allowTurnBack = false, BlockType pathType = BlockType.Element) {
 
 		var newPos = new Int2();
 		if (walker is not Entity eWalker) return newPos;
@@ -36,6 +36,8 @@ public interface IRouteWalker {
 				walker.CurrentDirection, out var newDirection, pathType
 			)) {
 				walker.CurrentDirection = newDirection;
+			} else if (allowTurnBack) {
+				walker.CurrentDirection = walker.CurrentDirection.Opposite();
 			}
 			var normal = walker.CurrentDirection.Normal();
 			var targetPos = walker.TargetPosition;

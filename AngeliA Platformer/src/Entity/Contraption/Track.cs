@@ -116,12 +116,15 @@ public sealed class Track : Entity, IBlockEntity {
 			// Walking
 			walker.LastWalkingFrame = Game.GlobalFrame;
 			entity.Y += HANG_GAP;
-			var newPos = IRouteWalker.GetNextRoutePosition(walker, TYPE_ID, walker.TrackWalkSpeed, BlockType.Entity);
+			var newPos = IRouteWalker.GetNextRoutePosition(
+				walker,
+				TYPE_ID,
+				walker.TrackWalkSpeed,
+				allowTurnBack: true,
+				pathType: BlockType.Entity
+			);
 			if (entity is Rigidbody rig) {
-				//int speedX = newPos.x - entity.X;
-				//int speedY = newPos.y - entity.Y - HANG_GAP;
-				//rig.IgnorePhysics.False();
-				//rig.PerformMove(speedX, speedY, ignoreCarry: true);
+				rig.RequireDodgeOverlap = true;
 				rig.FillAsTrigger(1);
 				rig.IgnoreGravity.True(1);
 				rig.IgnorePhysics.True(1);

@@ -28,7 +28,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public int DeltaPositionY => Y - PrevY;
 	public int CurrentMomentumX => MomentumX.value;
 	public int CurrentMomentumY => MomentumY.value;
-	//public bool RequireDodgeOverlapRigidbody { get; internal set; } = false;
+	public bool RequireDodgeOverlap { get; set; } = false;
 
 	// Based Value
 	public static readonly FrameBasedInt GlobalGravity = new(5);
@@ -100,6 +100,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		MomentumX = (0, 0);
 		MomentumY = (0, 0);
 		IsInsideGround = false;
+		RequireDodgeOverlap = false;
 	}
 
 

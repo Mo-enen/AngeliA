@@ -1,25 +1,35 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-
+using System.Runtime.CompilerServices;
 
 namespace AngeliA;
+
 public static partial class Util {
 
 
+	private static readonly System.Data.DataTable DataTable = new();
+
+
+	[MethodImpl(INLINE)]
 	public static bool IsPowerOfTwo (int x) => (x != 0) && (x & (x - 1)) == 0;
 
+
+	[MethodImpl(INLINE)]
 	public static float SquareDistanceF (float aX, float aY, float bX, float bY) {
 		float x = aX - bX;
 		float y = aY - bY;
 		return x * x + y * y;
 	}
+
+	[MethodImpl(INLINE)]
 	public static int SquareDistance (Int2 a, Int2 b) {
 		int x = a.x - b.x;
 		int y = a.y - b.y;
 		return x * x + y * y;
 	}
+
+	[MethodImpl(INLINE)]
 	public static int SquareDistance (int aX, int aY, int bX, int bY) {
 		int x = aX - bX;
 		int y = aY - bY;
@@ -27,11 +37,14 @@ public static partial class Util {
 	}
 
 
+	[MethodImpl(INLINE)]
 	public static float DistanceFloat (Float2 a, Float2 b) {
 		float x = a.x - b.x;
 		float y = a.y - b.y;
 		return Sqrt(x * x + y * y);
 	}
+
+	[MethodImpl(INLINE)]
 	public static float DistanceFloat (float aX, float aY, float bX, float bY) {
 		float x = aX - bX;
 		float y = aY - bY;
@@ -39,11 +52,14 @@ public static partial class Util {
 	}
 
 
+	[MethodImpl(INLINE)]
 	public static int DistanceInt (Int2 a, Int2 b) {
 		int x = a.x - b.x;
 		int y = a.y - b.y;
 		return BabylonianSqrt(x * x + y * y);
 	}
+
+	[MethodImpl(INLINE)]
 	public static int DistanceInt (int aX, int aY, int bX, int bY) {
 		int x = aX - bX;
 		int y = aY - bY;
@@ -51,6 +67,7 @@ public static partial class Util {
 	}
 
 
+	[MethodImpl(INLINE)]
 	public static int BabylonianSqrt (int n) {
 		int x = n;
 		int y = 1;
@@ -63,6 +80,7 @@ public static partial class Util {
 
 
 	public static bool PointInTriangle (Float2 p, Float2 a, Float2 b, Float2 c) => PointInTriangle(p.x, p.y, a.x, a.y, b.x, b.y, c.x, c.y);
+
 	public static bool PointInTriangle (float px, float py, float p0x, float p0y, float p1x, float p1y, float p2x, float p2y) {
 		var s = p0y * p2x - p0x * p2y + (p2y - p0y) * px + (p0x - p2x) * py;
 		var t = p0x * p1y - p0y * p1x + (p0y - p1y) * px + (p1x - p0x) * py;
@@ -182,7 +200,10 @@ public static partial class Util {
 	}
 
 
+	[MethodImpl(INLINE)]
 	public static Color32 IntToColor (int i) => new((byte)(i >> 24), (byte)(i >> 16), (byte)(i >> 8), (byte)(i));
+
+	[MethodImpl(INLINE)]
 	public static int ColorToInt (Color32 color) => color.r << 24 | color.g << 16 | color.b << 8 | color.a;
 
 
@@ -208,7 +229,6 @@ public static partial class Util {
 	}
 
 
-	private static readonly System.Data.DataTable DataTable = new();
 	public static bool TryCompute (string expression, out int result) {
 		result = 0;
 		try {
