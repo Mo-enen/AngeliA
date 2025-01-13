@@ -44,9 +44,7 @@ public static class EntityAttribute {
 
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public class DontSpawnFromWorld (bool drawAsBlock = false) : Attribute {
-		public bool DrawAsBlock = drawAsBlock;
-	}
+	public class DontSpawnFromWorld : Attribute { }
 
 
 	[AttributeUsage(AttributeTargets.Class)]

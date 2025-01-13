@@ -34,6 +34,7 @@ public static partial class FrameworkUtil {
 	private static readonly Int3[] WorldPosInViewCache = new Int3[256];
 	private static readonly PhysicsCell[] BlockOperationCache = new PhysicsCell[32];
 	private const int SEARCHLIGHT_DENSITY = 32;
+	private const int REPOS_BASIC_ID = 0b0110010010011010_00000000_00000000; // +-16*8
 
 
 	// API
@@ -408,7 +409,7 @@ public static partial class FrameworkUtil {
 
 	public static bool TryGetEmptyPlaceNearbyForEntity (
 		int unitX, int unitY, int z, out int resultUnitX, out int resultUnitY,
-		int maxRange = 6, bool preferNoSolidLevel = true
+		int maxRange = 8, bool preferNoSolidLevel = true
 	) {
 
 		var squad = WorldSquad.Front;
@@ -684,6 +685,37 @@ public static partial class FrameworkUtil {
 				if (Util.IsExistingFileEmpty(path)) Util.DeleteFile(path);
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
+	}
+
+
+	public static int GetRepositionElementCode (int deltaGlobalX, int deltaGlobalY) {
+		const int PAD = 8;
+		const int PAD_SCL = 8;
+		const int MAX_RANGE = PAD_SCL * Const.CEL;
+		const int SCALE = Const.CEL / PAD_SCL;
+		const int HSCALE = Const.CEL / PAD_SCL / 2;
+		deltaGlobalX = deltaGlobalX.Clamp(-MAX_RANGE, MAX_RANGE) + MAX_RANGE;
+		deltaGlobalY = deltaGlobalY.Clamp(-MAX_RANGE, MAX_RANGE) + MAX_RANGE;
+		deltaGlobalX = (deltaGlobalX + HSCALE).UDivide(SCALE);
+		deltaGlobalY = (deltaGlobalY + HSCALE).UDivide(SCALE);
+		return REPOS_BASIC_ID | (deltaGlobalX << PAD) | deltaGlobalY;
+	}
+
+
+	public static bool TryGetRepositionElementDelta (int elementCode, out int deltaGlobalX, out int deltaGlobalY) {
+		deltaGlobalX = 0;
+		deltaGlobalY = 0;
+		const int PAD = 8;
+		const int PAD_SCL = 8;
+		const int PAD_2 = PAD * 2;
+		const int SHIFT_0 = 32 - PAD_2;
+		const int SHIFT_1 = 32 - PAD;
+		const int SCALE = Const.CEL / PAD;
+		const int MAX_RANGE = PAD_SCL * Const.CEL;
+		if ((REPOS_BASIC_ID >> PAD_2) != (elementCode >> PAD_2)) return false;
+		deltaGlobalX = ((elementCode << SHIFT_0) >> SHIFT_1) * SCALE - MAX_RANGE;
+		deltaGlobalY = ((elementCode << SHIFT_1) >> SHIFT_1) * SCALE - MAX_RANGE;
+		return true;
 	}
 
 

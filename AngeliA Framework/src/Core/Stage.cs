@@ -52,7 +52,6 @@ public static class Stage {
 		public bool DespawnOutOfRange = true;
 		public bool UpdateOutOfRange = false;
 		public bool RequireReposition = false;
-		public bool DrawAsBlock = false;
 		public int Order = 0;
 		public int Layer = 0;
 		private int InstanceCount = 0;
@@ -204,7 +203,6 @@ public static class Stage {
 				DespawnOutOfRange = att_DontDespawn == null,
 				UpdateOutOfRange = att_ForceUpdate != null,
 				DontSpawnFromWorld = att_DontSpawnFromWorld != null,
-				DrawAsBlock = att_DontSpawnFromWorld != null && att_DontSpawnFromWorld.DrawAsBlock,
 				Order = att_Order != null ? att_Order.Order : 0,
 				RequireReposition = att_Repos != null,
 				Layer = layer,
@@ -544,18 +542,13 @@ public static class Stage {
 	}
 
 
-	public static Entity SpawnEntityFromWorld (int typeID, int x, int y, int z, bool forceSpawn = false) => SpawnEntityFromWorld(typeID, x, y, z, out _, forceSpawn);
-	public static Entity SpawnEntityFromWorld (int typeID, int x, int y, int z, out bool requireDrawAsBlock, bool forceSpawn = false) {
-		requireDrawAsBlock = false;
+	public static Entity SpawnEntityFromWorld (int typeID, int x, int y, int z, int reposDeltaX = 0, int reposDeltaY = 0, bool forceSpawn = false) {
 		var uPos = new Int3(x.ToUnit(), y.ToUnit(), z);
 		if (!forceSpawn && StagedEntityPool.ContainsKey(uPos)) return null;
 		if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
-		if (stack.DontSpawnFromWorld) {
-			requireDrawAsBlock = stack.DrawAsBlock;
-			return null;
-		}
+		if (stack.DontSpawnFromWorld) return null;
 		if (!forceSpawn && AntiSpawnRect.Overlaps(new IRect(x, y, Const.CEL, Const.CEL))) return null;
-		return SpawnEntityLogic(typeID, x, y, uPos, forceSpawn);
+		return SpawnEntityLogic(typeID, x + reposDeltaX, y + reposDeltaY, uPos, forceSpawn);
 	}
 
 
@@ -767,20 +760,15 @@ public static class Stage {
 		bool requireClearOriginal = false;
 
 		// Get Position
-		int currentUnitX;
-		int currentUnitY;
-		if (entity is Rigidbody rig) {
-			currentUnitX = (rig.X + rig.OffsetX + Const.HALF).ToUnit();
-			currentUnitY = (rig.Y + rig.OffsetY + Const.HALF).ToUnit();
-		} else {
-			currentUnitX = (entity.X + Const.HALF).ToUnit();
-			currentUnitY = (entity.Y + Const.HALF).ToUnit();
-		}
+		var eRect = entity.Rect;
+		int currentUnitX = eRect.CenterX().ToUnit();
+		int currentUnitY = (eRect.y + 1).ToUnit();
+		var stream = WorldSquad.Stream;
 
 		// Get Info for Original Block
 		if (entity.MapUnitPos.HasValue) {
 			var mapPos = entity.MapUnitPos.Value;
-			int blockIdAtMapPos = WorldSquad.Front.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
+			int blockIdAtMapPos = stream.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
 			// Get Require Mode
 			if (blockIdAtMapPos != entity.TypeID) {
 				// Overlaped by Other Entity
@@ -789,6 +777,15 @@ public static class Stage {
 				// Position Moved
 				requireRepos = true;
 				requireClearOriginal = true;
+			} else {
+				// Only Shift
+				stream.SetBlockAt(
+					currentUnitX, currentUnitY, mapPos.z, BlockType.Element,
+					FrameworkUtil.GetRepositionElementCode(
+						eRect.x - currentUnitX.ToGlobal(),
+						eRect.y - currentUnitY.ToGlobal()
+					)
+				);
 			}
 		} else {
 			requireRepos = true;
@@ -810,12 +807,19 @@ public static class Stage {
 		}
 
 		// Set Block
-		WorldSquad.Front.SetBlockAt(resultUnitX, resultUnitY, ViewZ, BlockType.Entity, entity.TypeID);
+		stream.SetBlockAt(resultUnitX, resultUnitY, ViewZ, BlockType.Entity, entity.TypeID);
+		stream.SetBlockAt(
+			resultUnitX, resultUnitY, ViewZ, BlockType.Element,
+			FrameworkUtil.GetRepositionElementCode(
+				eRect.x - resultUnitX.ToGlobal(),
+				eRect.y - resultUnitY.ToGlobal()
+			)
+		);
 
 		// Clear Original
 		if (requireClearOriginal) {
 			var oPos = entity.MapUnitPos.Value;
-			WorldSquad.Front.SetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Entity, 0);
+			stream.SetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Entity, 0);
 		}
 
 		// Callback

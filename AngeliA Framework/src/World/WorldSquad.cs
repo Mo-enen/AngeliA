@@ -272,6 +272,7 @@ public sealed class WorldSquad : IBlockSquad {
 				int d = System.Math.Max(unitRect_Entity.y, worldUnitRect.y);
 				int u = System.Math.Min(unitRect_Entity.yMax, worldUnitRect.yMax);
 				var eSpan = new System.ReadOnlySpan<int>(world.Entities);
+				var eleSpan = new System.Span<int>(world.Elements);
 				if (!isBehind) {
 					// Front Block
 					for (int j = d; j < u; j++) {
@@ -281,7 +282,16 @@ public sealed class WorldSquad : IBlockSquad {
 							// Entity
 							int entityID = eSpan[index];
 							if (entityID != 0) {
-								DrawEntity(entityID, i, j, z);
+								int ele = eleSpan[index];
+								if (ele != 0 && FrameworkUtil.TryGetRepositionElementDelta(ele, out int deltaX, out int deltaY)) {
+									eleSpan[index] = 0;
+									Stage.SpawnEntityFromWorld(
+										entityID, i.ToGlobal(), j.ToGlobal(), z,
+										reposDeltaX: deltaX, reposDeltaY: deltaY
+									);
+								} else {
+									Stage.SpawnEntityFromWorld(entityID, i.ToGlobal(), j.ToGlobal(), z);
+								}
 							}
 						}
 					}
@@ -333,14 +343,6 @@ public sealed class WorldSquad : IBlockSquad {
 			sp.GlobalBorder.left, sp.GlobalBorder.right, sp.GlobalBorder.down, sp.GlobalBorder.up
 		);
 		Physics.FillBlock(PhysicsLayer.LEVEL, id, rect, sp.IsTrigger, sp.Tag);
-	}
-
-
-	private void DrawEntity (int id, int unitX, int unitY, int unitZ) {
-		Stage.SpawnEntityFromWorld(id, unitX.ToGlobal(), unitY.ToGlobal(), unitZ, out bool requireDrawAsBlock);
-		if (requireDrawAsBlock) {
-			DrawLevelBlock(id, unitX, unitY);
-		}
 	}
 
 

@@ -40,7 +40,7 @@ public interface IRouteWalker {
 				walker.CurrentDirection = walker.CurrentDirection.Opposite();
 			}
 			var normal = walker.CurrentDirection.Normal();
-			var targetPos = walker.TargetPosition;
+			var targetPos = walker.TargetPosition.ToUnifyGlobal();
 			targetPos.x += normal.x * Const.CEL;
 			targetPos.y += normal.y * Const.CEL;
 			walker.TargetPosition = targetPos;
@@ -48,6 +48,13 @@ public interface IRouteWalker {
 			// Compensate Lost Length
 			speed += lostX.Abs() + lostY.Abs();
 
+		}
+
+		// Valid Target Pos
+		if (walker.CurrentDirection.IsHorizontal()) {
+			walker.TargetPosition = new Int2(walker.TargetPosition.x, newPos.y.ToUnifyGlobal());
+		} else if (walker.CurrentDirection.IsVertical()) {
+			walker.TargetPosition = new Int2(newPos.x.ToUnifyGlobal(), walker.TargetPosition.y);
 		}
 
 		// Move

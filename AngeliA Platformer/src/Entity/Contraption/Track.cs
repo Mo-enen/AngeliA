@@ -20,6 +20,7 @@ public sealed class Track : Entity, IBlockEntity {
 	private static readonly SpriteCode BODY_TILT = "Track.Tilt";
 	private static readonly SpriteCode BODY_CENTER = "Track.Center";
 	private static readonly SpriteCode BODY_HOOK = "Track.Hook";
+	private static readonly SpriteCode BODY_GEAR = "Track.Gear";
 
 	// Data
 	private readonly bool[] HasTrackArr = [false, false, false, false, false, false, false, false, false];
@@ -84,7 +85,7 @@ public sealed class Track : Entity, IBlockEntity {
 		if (!HasTrackArr[8]) return;
 
 		// Link TrackWalker
-		const int HANG_GAP = Const.CEL;
+		const int HANG_GAP = 196;
 		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect.Shift(0, -HANG_GAP).Shrink(Shrink), out int count, this, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
 
@@ -97,7 +98,7 @@ public sealed class Track : Entity, IBlockEntity {
 			if (Game.GlobalFrame <= walker.LastWalkingFrame) continue;
 
 			// Start Walk
-			if (Game.GlobalFrame > walker.LastWalkingFrame + 1) {
+			if (Game.GlobalFrame <= entity.SpawnFrame + 1 || Game.GlobalFrame > walker.LastWalkingFrame + 1) {
 				if (entity.Y > Y - HANG_GAP) continue;
 				if (entity is Rigidbody _rig) {
 					if (_rig.DeltaPositionY > 0) continue;
@@ -109,7 +110,7 @@ public sealed class Track : Entity, IBlockEntity {
 				}
 				if (!walker.CurrentDirection.IsVertical()) entity.Y = Y - HANG_GAP;
 				if (!walker.CurrentDirection.IsHorizontal()) entity.X = X;
-				walker.TargetPosition = new Int2(entity.X, entity.Y + HANG_GAP);
+				walker.TargetPosition = new Int2((X + 1).ToUnifyGlobal(), (Y + 1).ToUnifyGlobal());
 				walker.WalkStartFrame = Game.GlobalFrame;
 			}
 
@@ -142,6 +143,16 @@ public sealed class Track : Entity, IBlockEntity {
 					eRect.CenterX(), eRect.CenterY() + HANG_GAP,
 					hookSP.PivotX, hookSP.PivotY, 0,
 					HANG_GAP, HANG_GAP
+				);
+			}
+
+			// Draw Gear
+			if (Renderer.TryGetSprite(BODY_GEAR, out var gearSP)) {
+				var eRect = entity.Rect;
+				Renderer.Draw(
+					gearSP, eRect.CenterX(), eRect.CenterY() + HANG_GAP + 32,
+					500, 500, Game.GlobalFrame * (walker.CurrentDirection.IsPositive() ? 4 : -4),
+					86, 86
 				);
 			}
 
