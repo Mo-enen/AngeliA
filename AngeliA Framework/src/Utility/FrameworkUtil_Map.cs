@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 namespace AngeliA;
 
@@ -703,8 +704,6 @@ public static partial class FrameworkUtil {
 
 
 	public static bool TryGetRepositionElementDelta (int elementCode, out int deltaGlobalX, out int deltaGlobalY) {
-		deltaGlobalX = 0;
-		deltaGlobalY = 0;
 		const int PAD = 8;
 		const int PAD_SCL = 8;
 		const int PAD_2 = PAD * 2;
@@ -712,6 +711,8 @@ public static partial class FrameworkUtil {
 		const int SHIFT_1 = 32 - PAD;
 		const int SCALE = Const.CEL / PAD;
 		const int MAX_RANGE = PAD_SCL * Const.CEL;
+		deltaGlobalX = 0;
+		deltaGlobalY = 0;
 		if ((REPOS_BASIC_ID >> PAD_2) != (elementCode >> PAD_2)) return false;
 		deltaGlobalX = ((elementCode << SHIFT_0) >> SHIFT_1) * SCALE - MAX_RANGE;
 		deltaGlobalY = ((elementCode << SHIFT_1) >> SHIFT_1) * SCALE - MAX_RANGE;

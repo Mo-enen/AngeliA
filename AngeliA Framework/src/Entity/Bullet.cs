@@ -15,7 +15,7 @@ public abstract class Bullet : Entity {
 
 	#region --- VAR ---
 
-
+	
 	// Api
 	public static event System.Action<Bullet, IDamageReceiver, Tag> OnBulletDealDamage;
 	public static event System.Action<Bullet, Tag> OnBulletHitEnvironment;

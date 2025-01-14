@@ -548,7 +548,9 @@ public static class Stage {
 		if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
 		if (stack.DontSpawnFromWorld) return null;
 		if (!forceSpawn && AntiSpawnRect.Overlaps(new IRect(x, y, Const.CEL, Const.CEL))) return null;
-		return SpawnEntityLogic(typeID, x + reposDeltaX, y + reposDeltaY, uPos, forceSpawn);
+		var entity = SpawnEntityLogic(typeID, x + reposDeltaX, y + reposDeltaY, uPos, forceSpawn);
+		if (stack.RequireReposition && entity is Rigidbody rig) rig.RequireDodgeOverlap = true;
+		return entity;
 	}
 
 
@@ -762,7 +764,7 @@ public static class Stage {
 		// Get Position
 		var eRect = entity.Rect;
 		int currentUnitX = eRect.CenterX().ToUnit();
-		int currentUnitY = (eRect.y + 1).ToUnit();
+		int currentUnitY = (eRect.y + Const.QUARTER).ToUnit();
 		var stream = WorldSquad.Stream;
 
 		// Get Info for Original Block

@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+
+namespace AngeliA.Platformer;
 
 
 public abstract class Axe : MeleeWeapon {
@@ -12,5 +14,6 @@ public abstract class Axe : MeleeWeapon {
 	public override int Cooldown => 2;
 	public override int RangeXLeft => 275;
 	public override int RangeXRight => 384;
-	public override int RangeY => 512;
+	public override int RangeY => 500;
+	public override int Damage => 5;
 }

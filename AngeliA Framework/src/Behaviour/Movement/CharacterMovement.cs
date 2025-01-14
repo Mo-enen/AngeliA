@@ -366,7 +366,7 @@ public class CharacterMovement (Rigidbody rig) {
 	}
 
 
-	public virtual void PhysicsUpdateLater () {
+	public virtual void UpdateLater () {
 		IntendedJump = false;
 		IntendedDash = false;
 		IntendedPound = false;
@@ -392,7 +392,7 @@ public class CharacterMovement (Rigidbody rig) {
 
 		// Slip
 		OnSlippy = !InWater && Physics.Overlap(
-			CollisionMask, Rect.EdgeOutside(Direction4.Down), 
+			CollisionMask, Rect.EdgeOutside(Direction4.Down),
 			TargetCharacter, OperationMode.ColliderAndTrigger, Tag.Slip
 		);
 		if (OnSlippy && IsGrounded && !IsCrashing && IsRunning && !IsSquatting) {

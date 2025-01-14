@@ -65,10 +65,10 @@ public sealed class Track : Entity, IBlockEntity {
 			HasTrackArr[0] || HasTrackArr[1] || HasTrackArr[2] || HasTrackArr[3] ||
 			HasTrackArr[4] || HasTrackArr[5] || HasTrackArr[6] || HasTrackArr[7];
 
-		Shrink.left = !HasTrackArr[5] && !HasTrackArr[6] && !HasTrackArr[7] ? Const.QUARTER : 0;
-		Shrink.right = !HasTrackArr[1] && !HasTrackArr[2] && !HasTrackArr[3] ? Const.QUARTER : 0;
-		Shrink.down = !HasTrackArr[3] && !HasTrackArr[4] && !HasTrackArr[5] ? Const.QUARTER : 0;
-		Shrink.up = !HasTrackArr[0] && !HasTrackArr[1] && !HasTrackArr[7] ? Const.QUARTER : 0;
+		Shrink.left = !HasTrackArr[5] && !HasTrackArr[6] && !HasTrackArr[7] ? Const.QUARTER : HasTrackArr[5] || HasTrackArr[7] ? -Const.QUARTER : 0;
+		Shrink.right = !HasTrackArr[1] && !HasTrackArr[2] && !HasTrackArr[3] ? Const.QUARTER : HasTrackArr[1] || HasTrackArr[3] ? -Const.QUARTER : 0;
+		Shrink.down = !HasTrackArr[3] && !HasTrackArr[4] && !HasTrackArr[5] ? Const.QUARTER : HasTrackArr[3] || HasTrackArr[5] ? -Const.QUARTER : 0;
+		Shrink.up = !HasTrackArr[0] && !HasTrackArr[1] && !HasTrackArr[7] ? Const.QUARTER : HasTrackArr[1] || HasTrackArr[7] ? -Const.QUARTER : 0;
 
 	}
 
@@ -85,7 +85,7 @@ public sealed class Track : Entity, IBlockEntity {
 		if (!HasTrackArr[8]) return;
 
 		// Link TrackWalker
-		const int HANG_GAP = 196;
+		const int HANG_GAP = 64;
 		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect.Shift(0, -HANG_GAP).Shrink(Shrink), out int count, this, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
 

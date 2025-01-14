@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 public interface IRouteWalker {
-	
+
 	Direction8 CurrentDirection { get; set; }
 	Int2 TargetPosition { get; set; }
-	
+
 	public static Int2 GetNextRoutePosition (IRouteWalker walker, int pathID, int speed, bool allowTurnBack = false, BlockType pathType = BlockType.Element) {
 
 		var newPos = new Int2();
@@ -23,12 +23,6 @@ public interface IRouteWalker {
 			Direction8.Top or Direction8.TopRight => newPos.y >= walker.TargetPosition.y,
 			_ => false,
 		}) {
-			// Fix Position Back
-			int lostX = (newPos.x + Const.HALF).UMod(Const.CEL) - Const.HALF;
-			int lostY = (newPos.y + Const.HALF).UMod(Const.CEL) - Const.HALF;
-			newPos.x -= lostX;
-			newPos.y -= lostY;
-
 			// Get Direction
 			if (TryGetRouteFromMap(
 				pathID,
@@ -46,16 +40,15 @@ public interface IRouteWalker {
 			targetPos.y += normal.y * Const.CEL;
 			walker.TargetPosition = targetPos;
 
-			// Compensate Lost Length
-			speed += lostX.Abs() + lostY.Abs();
-
 		}
 
 		// Valid Target Pos
 		if (walker.CurrentDirection.IsHorizontal()) {
-			walker.TargetPosition = new Int2(walker.TargetPosition.x, newPos.y.ToUnifyGlobal());
+			newPos.y = (newPos.y + eWalker.Height / 2).ToUnifyGlobal();
+			walker.TargetPosition = new Int2(walker.TargetPosition.x, newPos.y);
 		} else if (walker.CurrentDirection.IsVertical()) {
-			walker.TargetPosition = new Int2(newPos.x.ToUnifyGlobal(), walker.TargetPosition.y);
+			newPos.x = (newPos.x + eWalker.Width / 2).ToUnifyGlobal();
+			walker.TargetPosition = new Int2(newPos.x, walker.TargetPosition.y);
 		}
 
 		// Move
@@ -68,7 +61,7 @@ public interface IRouteWalker {
 
 		return newPos;
 	}
-	
+
 	public static bool TryGetRouteFromMap (int pathID, int unitX, int unitY, Direction8 currentDirection, out Direction8 result, BlockType pathType = BlockType.Element) {
 
 		var squad = WorldSquad.Front;

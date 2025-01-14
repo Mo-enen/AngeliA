@@ -398,7 +398,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 				VelocityX = 0;
 				break;
 		}
-		Movement.PhysicsUpdateLater();
+
+		Movement.UpdateLater();
+
 		// Ani Frame
 		var poseType = GetCurrentPoseAnimationType();
 		if (poseType != AnimationType) {

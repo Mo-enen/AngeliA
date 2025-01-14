@@ -143,6 +143,11 @@ public class PlayerMenuUI : EntityUI {
 			Input.UseGameKey(Gamekey.Action);
 			Input.UseGameKey(Gamekey.Jump);
 		}
+
+		if (!MouseInPanel) {
+			Input.IgnoreMouseToActionJump();
+		}
+
 	}
 
 
@@ -865,9 +870,16 @@ public class PlayerMenuUI : EntityUI {
 		if (player.Rendering is PoseCharacterRenderer rendering) {
 			var previewRect = panelRect.EdgeOutside(Direction4.Left, previewWidth).Shift(previewWidth, 0);
 			FrameworkUtil.DrawPoseCharacterAsUI(previewRect, rendering, rendering.CurrentAnimationFrame);
-			if (Input.MouseLeftButtonDown && previewRect.MouseInside()) {
-				player.Movement.FacingRight = !player.Movement.FacingRight;
-				player.Bounce();
+			if (previewRect.MouseInside()) {
+				Input.IgnoreMouseToActionJump();
+				if (Input.LastActionFromMouse) {
+					UsingMouseMode = true;
+				}
+				if (Input.MouseLeftButtonDown) {
+					Input.UseMouseKey(0);
+					player.Movement.FacingRight = !player.Movement.FacingRight;
+					player.Bounce();
+				}
 			}
 		}
 

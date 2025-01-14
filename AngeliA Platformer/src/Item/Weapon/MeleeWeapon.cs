@@ -6,6 +6,7 @@ public abstract class MeleeWeapon : Weapon<MeleeBullet> {
 	public abstract int RangeXLeft { get; }
 	public abstract int RangeXRight { get; }
 	public abstract int RangeY { get; }
+	public virtual int Damage => 1;
 	public override Bullet SpawnBullet (Character sender) {
 
 		if (base.SpawnBullet(sender) is not MeleeBullet bullet) return null;
@@ -17,6 +18,7 @@ public abstract class MeleeWeapon : Weapon<MeleeBullet> {
 		}
 		bullet.Width = rangeX;
 		bullet.Height = RangeY;
+		bullet.Damage.Override(Damage, bullet.Duration + 1);
 
 		// Follow
 		bullet.FollowSender();

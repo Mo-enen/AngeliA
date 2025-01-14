@@ -116,6 +116,8 @@ public class CharacterNavigation (Character character) {
 				break;
 		}
 
+		Movement.UpdateLater();
+
 	}
 
 

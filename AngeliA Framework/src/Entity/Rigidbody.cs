@@ -120,8 +120,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public override void Update () {
 
 		base.Update();
-		var rect = Rect;
 
+		var rect = Rect;
 		bool prevInWater = InWater;
 		InWater = Physics.Overlap(PhysicsMask.MAP & CollisionMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Tag.Water);
 
