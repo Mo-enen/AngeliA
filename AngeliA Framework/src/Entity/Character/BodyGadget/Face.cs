@@ -83,35 +83,7 @@ public abstract class Face : BodyGadget {
 
 		using var _ = new SheetIndexScope(SheetIndex);
 
-		// Get Head Rect
-		int bounce = renderer.CurrentRenderingBounce;
-		var headRect = head.GetGlobalRect();
-		if (bounce.Abs() != 1000) {
-			const int A2G = Const.CEL / Const.ART_CEL;
-			bool reverse = bounce < 0;
-			bounce = bounce.Abs();
-			int newWidth = (reverse ?
-				headRect.width * 1000 / bounce :
-				headRect.width - headRect.width * (1000 - bounce) / 1000
-			).Clamp(headRect.width - A2G * 2, headRect.width + A2G * 2);
-			headRect.x -= (newWidth - headRect.width) / 2;
-			headRect.width = newWidth;
-		}
-
-		// Get Face Rect
-		bool facingRight = head.Width > 0;
-		var faceRect = headRect;
-		var border = head.Border;
-		if (!facingRight) {
-			border.left = head.Border.right;
-			border.right = head.Border.left;
-		}
-		if (!border.IsZero) {
-			if (head.Height < 0) {
-				(border.down, border.up) = (border.up, border.down);
-			}
-			faceRect = headRect.Shrink(border);
-		}
+		var faceRect = GetFaceRect(renderer, out var headRect);
 
 		// Draw Face
 		var expression = GetCurrentExpression(renderer);
@@ -355,6 +327,57 @@ public abstract class Face : BodyGadget {
 			Renderer.DrawSlice(mouth, rect, Color32.WHITE, z: 33);
 		}
 
+	}
+
+
+	public IRect GetFaceRect (PoseCharacterRenderer renderer, out IRect headRect) {
+
+		var head = renderer.Head;
+
+		using var _ = new SheetIndexScope(SheetIndex);
+
+		// Get Head Rect
+		int bounce = renderer.CurrentRenderingBounce;
+		headRect = head.GetGlobalRect();
+		if (bounce.Abs() != 1000) {
+			const int A2G = Const.CEL / Const.ART_CEL;
+			bool reverse = bounce < 0;
+			bounce = bounce.Abs();
+			int newWidth = (reverse ?
+				headRect.width * 1000 / bounce :
+				headRect.width - headRect.width * (1000 - bounce) / 1000
+			).Clamp(headRect.width - A2G * 2, headRect.width + A2G * 2);
+			headRect.x -= (newWidth - headRect.width) / 2;
+			headRect.width = newWidth;
+		}
+
+		// Get Face Rect
+		bool facingRight = head.Width > 0;
+		var faceRect = headRect;
+		var border = head.Border;
+		if (!facingRight) {
+			border.left = head.Border.right;
+			border.right = head.Border.left;
+		}
+		if (!border.IsZero) {
+			if (head.Height < 0) {
+				(border.down, border.up) = (border.up, border.down);
+			}
+			faceRect = headRect.Shrink(border);
+		}
+
+		return faceRect;
+	}
+
+
+	public IRect GetScleraRect (PoseCharacterRenderer renderer, bool leftEye) {
+		var SpriteSclera = leftEye ? SpriteScleraLeft : SpriteScleraRight;
+		bool facingRight = renderer.Head.Width > 0;
+		if (!SpriteSclera.TryGetSprite(true, facingRight, renderer.CurrentAnimationFrame, out var sclera)) return default;
+		var faceRect = GetFaceRect(renderer, out _);
+		return faceRect.CornerInside(
+			leftEye ? Alignment.TopLeft : Alignment.TopRight, sclera.GlobalWidth, sclera.GlobalHeight
+		);
 	}
 
 

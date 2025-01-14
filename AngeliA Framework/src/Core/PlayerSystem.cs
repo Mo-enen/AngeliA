@@ -226,7 +226,6 @@ public static class PlayerSystem {
 
 		// Final
 		UpdateView();
-		UpdateAutoPick();
 	}
 
 
@@ -574,19 +573,6 @@ public static class PlayerSystem {
 			Input.UseGameKey(Gamekey.Action);
 		}
 
-	}
-
-
-	private static void UpdateAutoPick () {
-		if (TaskSystem.HasTask() || PlayerMenuUI.ShowingUI) return;
-		var cells = Physics.OverlapAll(PhysicsMask.ITEM, Selecting.Rect, out int count, null, OperationMode.ColliderAndTrigger);
-		for (int i = 0; i < count; i++) {
-			var cell = cells[i];
-			if (cell.Entity is not ItemHolder holder || !holder.Active) continue;
-			if (holder.ItemID == 0 || holder.ItemCount <= 0) continue;
-			if (!Inventory.HasItem(Selecting.InventoryID, holder.ItemID)) continue;
-			holder.Collect(Selecting);
-		}
 	}
 
 

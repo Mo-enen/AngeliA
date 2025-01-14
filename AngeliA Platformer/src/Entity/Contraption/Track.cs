@@ -97,9 +97,16 @@ public sealed class Track : Entity, IBlockEntity {
 			// Walked Check
 			if (Game.GlobalFrame <= walker.LastWalkingFrame) continue;
 
+			int eOffsetX = 0;
+			int eOffsetY = 0;
+			if (entity is Rigidbody offsetRig) {
+				eOffsetX = offsetRig.OffsetX;
+				eOffsetY = offsetRig.OffsetY;
+			}
+
 			// Start Walk
 			if (Game.GlobalFrame <= entity.SpawnFrame + 1 || Game.GlobalFrame > walker.LastWalkingFrame + 1) {
-				if (entity.Y > Y - HANG_GAP) continue;
+				if (entity.Y + eOffsetY > Y - HANG_GAP) continue;
 				if (entity is Rigidbody _rig) {
 					if (_rig.DeltaPositionY > 0) continue;
 					walker.CurrentDirection = Util.GetDirection(_rig.DeltaPositionX, _rig.DeltaPositionY);
@@ -108,15 +115,16 @@ public sealed class Track : Entity, IBlockEntity {
 						HasTrackArr[1] || HasTrackArr[2] || HasTrackArr[3] || HasTrackArr[5] || HasTrackArr[6] || HasTrackArr[7] ?
 						Direction8.Right : Direction8.Top;
 				}
-				if (!walker.CurrentDirection.IsVertical()) entity.Y = Y - HANG_GAP;
-				if (!walker.CurrentDirection.IsHorizontal()) entity.X = X;
+				if (!walker.CurrentDirection.IsVertical()) entity.Y = Y - HANG_GAP - eOffsetY;
+				if (!walker.CurrentDirection.IsHorizontal()) entity.X = X - eOffsetX;
 				walker.TargetPosition = new Int2((X + 1).ToUnifyGlobal(), (Y + 1).ToUnifyGlobal());
 				walker.WalkStartFrame = Game.GlobalFrame;
 			}
 
 			// Walking
 			walker.LastWalkingFrame = Game.GlobalFrame;
-			entity.Y += HANG_GAP;
+			entity.X += eOffsetX;
+			entity.Y += HANG_GAP + eOffsetY;
 			var newPos = IRouteWalker.GetNextRoutePosition(
 				walker,
 				TYPE_ID,
@@ -132,8 +140,8 @@ public sealed class Track : Entity, IBlockEntity {
 				rig.VelocityX = 0;
 				rig.VelocityY = 0;
 			}
-			entity.X = newPos.x;
-			entity.Y = newPos.y - HANG_GAP;
+			entity.X = newPos.x - eOffsetX;
+			entity.Y = newPos.y - HANG_GAP - eOffsetY;
 
 			// Draw Hook
 			if (Renderer.TryGetSprite(BODY_HOOK, out var hookSP)) {

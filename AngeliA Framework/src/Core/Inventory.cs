@@ -446,8 +446,8 @@ public static class Inventory {
 
 
 	/// <returns>How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.</returns>
-	public static int CollectItem (int inventoryID, int item, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false) => CollectItem(inventoryID, item, out _, count, ignoreEquipment, ignoreInventory);
-	public static int CollectItem (int inventoryID, int item, out int collectIndex, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false) {
+	public static int CollectItem (int inventoryID, int item, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false, bool dontCollectIntoEmptyEquipmentSlot = false) => CollectItem(inventoryID, item, out _, count, ignoreEquipment, ignoreInventory, dontCollectIntoEmptyEquipmentSlot);
+	public static int CollectItem (int inventoryID, int item, out int collectIndex, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false, bool dontCollectIntoEmptyEquipmentSlot = false) {
 
 		collectIndex = -1;
 		if (item == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
@@ -464,7 +464,7 @@ public static class Inventory {
 
 				case EquipmentType.HandTool:
 					// Hand
-					bool emptyH = eData.HandTool == 0;
+					bool emptyH = !dontCollectIntoEmptyEquipmentSlot && eData.HandTool == 0;
 					if (emptyH || (eData.HandTool == item && eData.HandToolCount < maxStackCount)) {
 						int delta = Util.Min(count, maxStackCount - eData.HandToolCount);
 						count -= delta;

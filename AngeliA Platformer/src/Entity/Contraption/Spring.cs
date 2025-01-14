@@ -11,7 +11,7 @@ namespace AngeliA.Platformer;
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.RepositionWhenInactive]
 [EntityAttribute.MapEditorGroup("Contraption")]
-public abstract class Spring : Rigidbody, IBlockEntity {
+public abstract class Spring : Rigidbody, IBlockEntity, IAutoTrackWalker {
 
 
 	// Const
@@ -23,6 +23,10 @@ public abstract class Spring : Rigidbody, IBlockEntity {
 	protected abstract int Power { get; }
 	public int ArtworkRotation { get; set; } = 0;
 	public override bool AllowBeingPush => !Horizontal;
+	int IAutoTrackWalker.LastWalkingFrame { get; set; }
+	int IAutoTrackWalker.WalkStartFrame { get; set; }
+	Direction8 IRouteWalker.CurrentDirection { get; set; }
+	Int2 IRouteWalker.TargetPosition { get; set; }
 
 	// Data
 	private int LastBounceFrame = int.MinValue;

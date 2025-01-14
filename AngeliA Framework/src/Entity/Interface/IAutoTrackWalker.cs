@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using AngeliA;
 
-namespace AngeliA.Platformer;
+namespace AngeliA;
 
 public interface IAutoTrackWalker : IRouteWalker {
+	public bool OnTrack => Game.GlobalFrame <= LastWalkingFrame + 1;
 	public int LastWalkingFrame { get; set; }
 	public int WalkStartFrame { get; set; }
 	public int TrackWalkSpeed => 12;

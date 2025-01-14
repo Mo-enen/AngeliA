@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using AngeliA;
 
-namespace AngeliA.Platformer;
+namespace AngeliA;
 
 public interface IRouteWalker {
+	
 	Direction8 CurrentDirection { get; set; }
 	Int2 TargetPosition { get; set; }
+	
 	public static Int2 GetNextRoutePosition (IRouteWalker walker, int pathID, int speed, bool allowTurnBack = false, BlockType pathType = BlockType.Element) {
 
 		var newPos = new Int2();
@@ -67,6 +68,7 @@ public interface IRouteWalker {
 
 		return newPos;
 	}
+	
 	public static bool TryGetRouteFromMap (int pathID, int unitX, int unitY, Direction8 currentDirection, out Direction8 result, BlockType pathType = BlockType.Element) {
 
 		var squad = WorldSquad.Front;
@@ -90,4 +92,5 @@ public interface IRouteWalker {
 
 		return false;
 	}
+
 }

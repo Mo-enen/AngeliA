@@ -5,7 +5,7 @@ namespace AngeliA;
 
 [EntityAttribute.Capacity(2048, 0)]
 [EntityAttribute.Layer(EntityLayer.ITEM)]
-public class ItemHolder : Rigidbody {
+public class ItemHolder : Rigidbody, IAutoTrackWalker {
 
 
 
@@ -44,6 +44,10 @@ public class ItemHolder : Rigidbody {
 	public int ItemID { get; set; } = 0;
 	public int ItemCount { get; set; } = 1;
 	public override bool CarryOtherOnTop => false;
+	int IAutoTrackWalker.LastWalkingFrame { get; set; }
+	int IAutoTrackWalker.WalkStartFrame { get; set; }
+	Direction8 IRouteWalker.CurrentDirection { get; set; }
+	Int2 IRouteWalker.TargetPosition { get; set; }
 
 	// Data
 	private static readonly Dictionary<Int3, Pipe<Int4>> HoldingPool = [];
@@ -139,13 +143,24 @@ public class ItemHolder : Rigidbody {
 		var player = PlayerSystem.Selecting;
 		TouchingPlayer = player != null && player.Rect.Overlaps(Rect);
 		if (TouchingPlayer) {
-			// Collect
-			if (player.Movement.IsSquatting) {
-				bool collected = Collect(player);
+			bool collected = false;
+
+			// Auto Collect
+			if (Inventory.HasItem(player.InventoryID, ItemID)) {
+				collected = Collect(player);
 				if (collected) {
 					ItemSystem.SetItemUnlocked(ItemID, true);
 				}
 			}
+
+			// Collect
+			if (!collected && player.Movement.IsSquatting) {
+				collected = Collect(player);
+				if (collected) {
+					ItemSystem.SetItemUnlocked(ItemID, true);
+				}
+			}
+
 			// Hint
 			ControlHintUI.AddHint(Gamekey.Down, HINT_PICK);
 		}
@@ -227,10 +242,12 @@ public class ItemHolder : Rigidbody {
 			} else {
 				// Count
 				var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);
-				using var _ = new UILayerScope();
 				var bg = Renderer.DrawPixel(labelRect, Color32.BLACK);
-				GUI.IntLabel(labelRect, ItemCount, out var bounds, GUISkin.Default.SmallLabel);
-				bg.SetRect(bounds);
+				bg.Z = RENDERING_Z + 1;
+				using (new CellZScope(RENDERING_Z + 2)) {
+					GUI.IntLabel(labelRect, ItemCount, out var bounds, GUISkin.Default.SmallLabel);
+					bg.SetRect(bounds);
+				}
 			}
 		}
 
@@ -264,7 +281,13 @@ public class ItemHolder : Rigidbody {
 
 		// Collect / Append
 		if (ItemCount > 0) {
-			int addCount = Inventory.CollectItem(invID, ItemID, ItemCount, ignoreEquipment: false);
+			int addCount = Inventory.CollectItem(
+				invID,
+				ItemID,
+				count: ItemCount,
+				ignoreEquipment: false,
+				dontCollectIntoEmptyEquipmentSlot: true
+			);
 			if (addCount > 0) {
 				int newCount = ItemCount - addCount;
 				if (newCount <= 0) {
