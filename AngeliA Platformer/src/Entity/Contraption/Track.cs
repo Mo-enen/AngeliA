@@ -25,6 +25,7 @@ public sealed class Track : Entity, IBlockEntity {
 	// Data
 	private readonly bool[] HasTrackArr = [false, false, false, false, false, false, false, false, false];
 	private Int4 Shrink;
+	private int Burden;
 
 
 	#endregion
@@ -38,6 +39,7 @@ public sealed class Track : Entity, IBlockEntity {
 	public override void OnActivated () {
 		base.OnActivated();
 		OnEntityRefresh();
+		Burden = 0;
 	}
 
 
@@ -85,8 +87,9 @@ public sealed class Track : Entity, IBlockEntity {
 		if (!HasTrackArr[8]) return;
 
 		// Link TrackWalker
-		const int HANG_GAP = 64;
+		const int HANG_GAP = 196;
 		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect.Shift(0, -HANG_GAP).Shrink(Shrink), out int count, this, OperationMode.ColliderAndTrigger);
+		int burden = 0;
 		for (int i = 0; i < count; i++) {
 
 			var hit = hits[i];
@@ -109,11 +112,13 @@ public sealed class Track : Entity, IBlockEntity {
 				if (entity.Y + eOffsetY > Y - HANG_GAP) continue;
 				if (entity is Rigidbody _rig) {
 					if (_rig.DeltaPositionY > 0) continue;
-					walker.CurrentDirection = Util.GetDirection(_rig.DeltaPositionX, _rig.DeltaPositionY);
-				} else {
-					walker.CurrentDirection =
-						HasTrackArr[1] || HasTrackArr[2] || HasTrackArr[3] || HasTrackArr[5] || HasTrackArr[6] || HasTrackArr[7] ?
-						Direction8.Right : Direction8.Top;
+				}
+				walker.CurrentDirection = Direction8.Right;
+				for (int dir = 0; dir < 8; dir++) {
+					if (HasTrackArr[dir]) {
+						walker.CurrentDirection = (Direction8)dir;
+						break;
+					}
 				}
 				if (!walker.CurrentDirection.IsVertical()) entity.Y = Y - HANG_GAP - eOffsetY;
 				if (!walker.CurrentDirection.IsHorizontal()) entity.X = X - eOffsetX;
@@ -128,7 +133,9 @@ public sealed class Track : Entity, IBlockEntity {
 			var newPos = IRouteWalker.GetNextRoutePosition(
 				walker,
 				TYPE_ID,
-				walker.TrackWalkSpeed,
+				Burden > 1 ? walker.TrackWalkSpeed.MoveTowards(
+					0, (entity.InstanceID.GetHashCode().Abs() % Burden)
+				) : walker.TrackWalkSpeed,
 				allowTurnBack: true,
 				pathType: BlockType.Entity
 			);
@@ -142,6 +149,8 @@ public sealed class Track : Entity, IBlockEntity {
 			}
 			entity.X = newPos.x - eOffsetX;
 			entity.Y = newPos.y - HANG_GAP - eOffsetY;
+
+			burden++;
 
 			// Draw Hook
 			if (Renderer.TryGetSprite(BODY_HOOK, out var hookSP)) {
@@ -165,6 +174,7 @@ public sealed class Track : Entity, IBlockEntity {
 			}
 
 		}
+		Burden = burden;
 
 	}
 
@@ -201,24 +211,6 @@ public sealed class Track : Entity, IBlockEntity {
 		Renderer.Draw(BODY_CENTER, centerX, centerY, 500, 500, 0, Const.HALF, Const.HALF);
 
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- API ---
-
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
 
 
 	#endregion

@@ -35,7 +35,7 @@ public static partial class FrameworkUtil {
 	private static readonly Int3[] WorldPosInViewCache = new Int3[256];
 	private static readonly PhysicsCell[] BlockOperationCache = new PhysicsCell[32];
 	private const int SEARCHLIGHT_DENSITY = 32;
-	private const int REPOS_BASIC_ID = 0b0110010010011010_00000000_00000000; // +-16*8
+	private const int REPOS_BASIC_ID = 0b01100100_000000000000_000000000000;
 
 
 	// API
@@ -689,33 +689,53 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/* // Reposition Element Code Test
+	[OnGameInitialize]
+	internal static void RepositionElementCodeTest () {
+		//var b = new StringBuilder();
+		const int MAX_RANGE = 8 * Const.CEL ;
+		int minX = 9999;
+		int minY = 9999;
+		int maxX = -9999;
+		int maxY = -9999;
+		for (int x = -MAX_RANGE; x < MAX_RANGE; x++) {
+			for (int y = -MAX_RANGE; y < MAX_RANGE; y++) {
+				int code = GetRepositionElementCode(x, y);
+				if (TryGetRepositionElementDelta(code, out int newX, out int newY)
+				) {
+					//b.AppendLine($"({x - newX} {y - newY}) {x} -> {newX} {y} -> {newY}");
+					minX = Util.Min(minX, x - newX);
+					minY = Util.Min(minY, y - newY);
+					maxX = Util.Max(maxX, x - newX);
+					maxY = Util.Max(maxY, y - newY);
+				} else {
+					Debug.LogError("error");
+				}
+			}
+		}
+		Debug.Log("minX", minX, "minY", minY, "maxX", maxX, "maxY", maxY);
+		//string path = Util.CombinePaths(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop), "Test.txt");
+		//Util.TextToFile(b.ToString(), path);
+		//Game.OpenUrl(path);
+	}
+	//*/
+
+
 	public static int GetRepositionElementCode (int deltaGlobalX, int deltaGlobalY) {
-		const int PAD = 8;
-		const int PAD_SCL = 8;
-		const int MAX_RANGE = PAD_SCL * Const.CEL;
-		const int SCALE = Const.CEL / PAD_SCL;
-		const int HSCALE = Const.CEL / PAD_SCL / 2;
+		const int MAX_RANGE = 8 * Const.CEL;
 		deltaGlobalX = deltaGlobalX.Clamp(-MAX_RANGE, MAX_RANGE) + MAX_RANGE;
 		deltaGlobalY = deltaGlobalY.Clamp(-MAX_RANGE, MAX_RANGE) + MAX_RANGE;
-		deltaGlobalX = (deltaGlobalX + HSCALE).UDivide(SCALE);
-		deltaGlobalY = (deltaGlobalY + HSCALE).UDivide(SCALE);
-		return REPOS_BASIC_ID | (deltaGlobalX << PAD) | deltaGlobalY;
+		return REPOS_BASIC_ID | (deltaGlobalX << 12) | deltaGlobalY;
 	}
 
 
 	public static bool TryGetRepositionElementDelta (int elementCode, out int deltaGlobalX, out int deltaGlobalY) {
-		const int PAD = 8;
-		const int PAD_SCL = 8;
-		const int PAD_2 = PAD * 2;
-		const int SHIFT_0 = 32 - PAD_2;
-		const int SHIFT_1 = 32 - PAD;
-		const int SCALE = Const.CEL / PAD;
-		const int MAX_RANGE = PAD_SCL * Const.CEL;
+		const int MAX_RANGE = 8 * Const.CEL;
 		deltaGlobalX = 0;
 		deltaGlobalY = 0;
-		if ((REPOS_BASIC_ID >> PAD_2) != (elementCode >> PAD_2)) return false;
-		deltaGlobalX = ((elementCode << SHIFT_0) >> SHIFT_1) * SCALE - MAX_RANGE;
-		deltaGlobalY = ((elementCode << SHIFT_1) >> SHIFT_1) * SCALE - MAX_RANGE;
+		if ((REPOS_BASIC_ID >> 24) != (elementCode >> 24)) return false;
+		deltaGlobalX = (int)(((uint)(elementCode << 8)) >> 20) - MAX_RANGE;
+		deltaGlobalY = (int)(((uint)(elementCode << 20)) >> 20) - MAX_RANGE;
 		return true;
 	}
 
