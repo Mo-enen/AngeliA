@@ -108,6 +108,8 @@ public class PlayerMenuUI : EntityUI {
 		FlashingField = new(-1, 0, 0);
 		X = Renderer.CameraRect.CenterX();
 		Y = Renderer.CameraRect.CenterY();
+		Input.UseAllMouseKey();
+		Input.UseAllHoldingKeys();
 	}
 
 

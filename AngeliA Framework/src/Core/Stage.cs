@@ -549,7 +549,6 @@ public static class Stage {
 		if (stack.DontSpawnFromWorld) return null;
 		if (!forceSpawn && AntiSpawnRect.Overlaps(new IRect(x, y, Const.CEL, Const.CEL))) return null;
 		var entity = SpawnEntityLogic(typeID, x + reposDeltaX, y + reposDeltaY, uPos, forceSpawn);
-		if (stack.RequireReposition && entity is Rigidbody rig) rig.RequireDodgeOverlap = true;
 		return entity;
 	}
 

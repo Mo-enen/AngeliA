@@ -38,6 +38,7 @@ public abstract class Buff {
 	public virtual void BeforeUpdate (Character target) { }
 	public virtual void LateUpdate (Character target) { }
 	public virtual void OnCharacterAttack (Character target, Bullet bullet) { }
+	public virtual void OnCharacterRenderered (CharacterRenderer renderer) { }
 
 
 	#endregion

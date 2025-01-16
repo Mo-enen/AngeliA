@@ -417,7 +417,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	}
 
 
-	// Frame Update
+	// Late Update
 	public override void LateUpdate () {
 		if (!Active) {
 			base.LateUpdate();
@@ -569,6 +569,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 			Gamekey.Action, BuiltInText.HINT_SWITCH_PLAYER, true
 		);
 	}
+
+
+	internal void OnCharacterRendered () => Buff.ApplyOnCharacterRenderered();
 
 
 	#endregion

@@ -189,7 +189,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	[BeforeBeforeUpdate]
 	internal static void BeforeBeforeUpdate () => GlobalPoseRenderingZOffset = 0;
 
-	
+
 	// Renderer Msg
 	public override void OnActivated () {
 		base.OnActivated();
@@ -217,6 +217,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		RenderInventory();
 		RenderBodyGadgets();
 		RenderCloths();
+		TargetCharacter?.OnCharacterRendered();
 		DrawBodyPart(cellIndexStart);
 	}
 

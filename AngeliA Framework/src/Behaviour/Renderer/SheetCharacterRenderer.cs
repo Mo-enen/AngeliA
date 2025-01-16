@@ -228,6 +228,9 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 				RenderedCell.Color = Tint;
 				break;
 		}
+
+		TargetCharacter?.OnCharacterRendered();
+
 	}
 
 

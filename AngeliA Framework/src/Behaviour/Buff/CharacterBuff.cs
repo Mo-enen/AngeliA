@@ -87,6 +87,13 @@ public sealed class CharacterBuff {
 	}
 
 
+	internal void ApplyOnCharacterRenderered () {
+		foreach (var (_, state) in BuffStates) {
+			state.Buff.OnCharacterRenderered(Character.Rendering);
+		}
+	}
+
+
 	internal void ApplyOnAttack (Bullet bullet) {
 		foreach (var (_, state) in BuffStates) {
 			state.Buff.OnCharacterAttack(Character, bullet);

@@ -5,6 +5,7 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 public class RideableMovement (Rigidbody rig) : VehicleMovement(rig) {
+
 	protected override void InitializeMeta () {
 		base.InitializeMeta();
 		WalkAvailable.BaseValue = true;

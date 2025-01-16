@@ -6,42 +6,27 @@ namespace AngeliA.Platformer;
 
 
 [EntityAttribute.MapEditorGroup("Contraption")]
-public sealed class Track : Entity, IBlockEntity {
+public abstract class Track : Entity, IBlockEntity {
 
-
-
-
-	#region --- VAR ---
-
-
-	// Const
-	public static readonly int TYPE_ID = typeof(Track).AngeHash();
-	private static readonly SpriteCode BODY_SP = "Track.Body";
-	private static readonly SpriteCode BODY_TILT = "Track.Tilt";
-	private static readonly SpriteCode BODY_CENTER = "Track.Center";
-	private static readonly SpriteCode BODY_HOOK = "Track.Hook";
-	private static readonly SpriteCode BODY_GEAR = "Track.Gear";
+	// Api
+	protected virtual int Speed => 12;
+	protected virtual int HangGap => 0;
+	protected virtual bool AllowStraightConnection => true;
+	protected virtual bool AllowTiltConnection => true;
+	protected virtual bool TurnBackWhenReachEnd => true;
+	protected virtual bool SlowDownWhenWalkerOverlap => true;
 
 	// Data
 	private readonly bool[] HasTrackArr = [false, false, false, false, false, false, false, false, false];
 	private Int4 Shrink;
 	private int Burden;
 
-
-	#endregion
-
-
-
-
-	#region --- MSG ---
-
-
+	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
 		OnEntityRefresh();
 		Burden = 0;
 	}
-
 
 	public void OnEntityRefresh () {
 
@@ -53,15 +38,15 @@ public sealed class Track : Entity, IBlockEntity {
 		// 6   2
 		// 5 4 3
 
-		HasTrackArr[0] = squad.GetBlockAt(unitX, unitY + 1, BlockType.Entity) == TYPE_ID;
-		HasTrackArr[2] = squad.GetBlockAt(unitX + 1, unitY, BlockType.Entity) == TYPE_ID;
-		HasTrackArr[4] = squad.GetBlockAt(unitX, unitY - 1, BlockType.Entity) == TYPE_ID;
-		HasTrackArr[6] = squad.GetBlockAt(unitX - 1, unitY, BlockType.Entity) == TYPE_ID;
+		HasTrackArr[0] = AllowStraightConnection && squad.GetBlockAt(unitX, unitY + 1, BlockType.Entity) == TypeID;
+		HasTrackArr[2] = AllowStraightConnection && squad.GetBlockAt(unitX + 1, unitY, BlockType.Entity) == TypeID;
+		HasTrackArr[4] = AllowStraightConnection && squad.GetBlockAt(unitX, unitY - 1, BlockType.Entity) == TypeID;
+		HasTrackArr[6] = AllowStraightConnection && squad.GetBlockAt(unitX - 1, unitY, BlockType.Entity) == TypeID;
 
-		HasTrackArr[1] = squad.GetBlockAt(unitX + 1, unitY + 1, BlockType.Entity) == TYPE_ID;
-		HasTrackArr[3] = squad.GetBlockAt(unitX + 1, unitY - 1, BlockType.Entity) == TYPE_ID;
-		HasTrackArr[5] = squad.GetBlockAt(unitX - 1, unitY - 1, BlockType.Entity) == TYPE_ID;
-		HasTrackArr[7] = squad.GetBlockAt(unitX - 1, unitY + 1, BlockType.Entity) == TYPE_ID;
+		HasTrackArr[1] = AllowTiltConnection && squad.GetBlockAt(unitX + 1, unitY + 1, BlockType.Entity) == TypeID;
+		HasTrackArr[3] = AllowTiltConnection && squad.GetBlockAt(unitX + 1, unitY - 1, BlockType.Entity) == TypeID;
+		HasTrackArr[5] = AllowTiltConnection && squad.GetBlockAt(unitX - 1, unitY - 1, BlockType.Entity) == TypeID;
+		HasTrackArr[7] = AllowTiltConnection && squad.GetBlockAt(unitX - 1, unitY + 1, BlockType.Entity) == TypeID;
 
 		HasTrackArr[8] =
 			HasTrackArr[0] || HasTrackArr[1] || HasTrackArr[2] || HasTrackArr[3] ||
@@ -74,12 +59,10 @@ public sealed class Track : Entity, IBlockEntity {
 
 	}
 
-
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
-
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
@@ -87,8 +70,7 @@ public sealed class Track : Entity, IBlockEntity {
 		if (!HasTrackArr[8]) return;
 
 		// Link TrackWalker
-		const int HANG_GAP = 196;
-		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect.Shift(0, -HANG_GAP).Shrink(Shrink), out int count, this, OperationMode.ColliderAndTrigger);
+		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect.Shift(0, -HangGap).Shrink(Shrink), out int count, this, OperationMode.ColliderAndTrigger);
 		int burden = 0;
 		for (int i = 0; i < count; i++) {
 
@@ -100,6 +82,7 @@ public sealed class Track : Entity, IBlockEntity {
 			// Walked Check
 			if (Game.GlobalFrame <= walker.LastWalkingFrame) continue;
 
+			burden++;
 			int eOffsetX = 0;
 			int eOffsetY = 0;
 			if (entity is Rigidbody offsetRig) {
@@ -109,18 +92,17 @@ public sealed class Track : Entity, IBlockEntity {
 
 			// Start Walk
 			if (Game.GlobalFrame <= entity.SpawnFrame + 1 || Game.GlobalFrame > walker.LastWalkingFrame + 1) {
-				if (entity.Y + eOffsetY > Y - HANG_GAP) continue;
-				if (entity is Rigidbody _rig) {
-					if (_rig.DeltaPositionY > 0) continue;
-				}
-				walker.CurrentDirection = Direction8.Right;
-				for (int dir = 0; dir < 8; dir++) {
+				if (entity.Y + eOffsetY > Y - HangGap) continue;
+				bool movingRight = entity is not Rigidbody _rig || _rig.DeltaPositionX >= 0;
+				walker.CurrentDirection = movingRight ? Direction8.Right : Direction8.Left;
+				for (int dIndex = 0; dIndex < 8; dIndex++) {
+					int dir = movingRight ? dIndex : (8 - dIndex) % 8;
 					if (HasTrackArr[dir]) {
 						walker.CurrentDirection = (Direction8)dir;
 						break;
 					}
 				}
-				if (!walker.CurrentDirection.IsVertical()) entity.Y = Y - HANG_GAP - eOffsetY;
+				if (!walker.CurrentDirection.IsVertical()) entity.Y = Y - HangGap - eOffsetY;
 				if (!walker.CurrentDirection.IsHorizontal()) entity.X = X - eOffsetX;
 				walker.TargetPosition = new Int2((X + 1).ToUnifyGlobal(), (Y + 1).ToUnifyGlobal());
 				walker.WalkStartFrame = Game.GlobalFrame;
@@ -129,14 +111,15 @@ public sealed class Track : Entity, IBlockEntity {
 			// Walking
 			walker.LastWalkingFrame = Game.GlobalFrame;
 			entity.X += eOffsetX;
-			entity.Y += HANG_GAP + eOffsetY;
+			entity.Y += HangGap + eOffsetY;
+			int speed = Speed * walker.TrackWalkSpeedRate / 1000;
 			var newPos = IRouteWalker.GetNextRoutePosition(
 				walker,
-				TYPE_ID,
-				Burden > 1 ? walker.TrackWalkSpeed.MoveTowards(
-					0, (entity.InstanceID.GetHashCode().Abs() % Burden)
-				) : walker.TrackWalkSpeed,
-				allowTurnBack: true,
+				TypeID,
+				Burden > 1 && SlowDownWhenWalkerOverlap ? speed.MoveTowards(
+					0, (entity.InstanceID.GetHashCode().Abs() % Burden) + 1
+				) : speed,
+				allowTurnBack: TurnBackWhenReachEnd,
 				pathType: BlockType.Entity
 			);
 			if (entity is Rigidbody rig) {
@@ -144,78 +127,23 @@ public sealed class Track : Entity, IBlockEntity {
 				rig.FillAsTrigger(1);
 				rig.IgnoreGravity.True(1);
 				rig.IgnorePhysics.True(1);
-				rig.VelocityX = 0;
-				rig.VelocityY = 0;
+				rig.VelocityX = newPos.x - eOffsetX - entity.X;
+				rig.VelocityY = newPos.y - HangGap - eOffsetY - entity.Y;
 			}
 			entity.X = newPos.x - eOffsetX;
-			entity.Y = newPos.y - HANG_GAP - eOffsetY;
+			entity.Y = newPos.y - HangGap - eOffsetY;
 
-			burden++;
-
-			// Draw Hook
-			if (Renderer.TryGetSprite(BODY_HOOK, out var hookSP)) {
-				var eRect = entity.Rect;
-				Renderer.Draw(
-					hookSP,
-					eRect.CenterX(), eRect.CenterY() + HANG_GAP,
-					hookSP.PivotX, hookSP.PivotY, 0,
-					HANG_GAP, HANG_GAP
-				);
-			}
-
-			// Draw Gear
-			if (Renderer.TryGetSprite(BODY_GEAR, out var gearSP)) {
-				var eRect = entity.Rect;
-				Renderer.Draw(
-					gearSP, eRect.CenterX(), eRect.CenterY() + HANG_GAP + 32,
-					500, 500, Game.GlobalFrame * (walker.CurrentDirection.IsPositive() ? 4 : -4),
-					86, 86
-				);
-			}
+			// Callback
+			OnWalking(walker);
 
 		}
 		Burden = burden;
 
 	}
 
+	protected virtual void OnWalking (IAutoTrackWalker walker) { }
 
-	public override void LateUpdate () {
-		base.LateUpdate();
-
-		if (!Renderer.TryGetSprite(BODY_SP, out var bodySP)) return;
-		if (!Renderer.TryGetSprite(BODY_TILT, out var bodyTilt)) return;
-
-		int centerX = X + Width / 2;
-		int centerY = Y + Height / 2;
-
-		// Line
-		const int SIZE = Const.HALF + 2;
-		const int SIZE_TILT = Const.HALF * 141422 / 100000 + 2;
-		for (int i = 0; i < 8; i++) {
-			if (!HasTrackArr[i]) continue;
-			var dir = (Direction8)i;
-			bool positive = dir.IsPositive();
-			int rot = dir.GetRotation();
-			bool tilt = dir.IsTilted();
-			int size = tilt ? SIZE_TILT : SIZE;
-			Renderer.Draw(
-				tilt ? bodyTilt : bodySP,
-				centerX, centerY,
-				500, positive ? 0 : 1000,
-				positive ? rot : rot + 180,
-				size, size
-			);
-		}
-
-		// Center
-		Renderer.Draw(BODY_CENTER, centerX, centerY, 500, 500, 0, Const.HALF, Const.HALF);
-
-	}
-
-
-	#endregion
-
-
-
+	// API
+	public bool IsConnected (Direction8 direction) => HasTrackArr[(int)direction];
 
 }

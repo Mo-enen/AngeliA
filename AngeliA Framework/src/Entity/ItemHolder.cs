@@ -5,7 +5,7 @@ namespace AngeliA;
 
 [EntityAttribute.Capacity(2048, 0)]
 [EntityAttribute.Layer(EntityLayer.ITEM)]
-public class ItemHolder : Rigidbody, IAutoTrackWalker {
+public class ItemHolder : Rigidbody {
 
 
 
@@ -44,10 +44,6 @@ public class ItemHolder : Rigidbody, IAutoTrackWalker {
 	public int ItemID { get; set; } = 0;
 	public int ItemCount { get; set; } = 1;
 	public override bool CarryOtherOnTop => false;
-	int IAutoTrackWalker.LastWalkingFrame { get; set; }
-	int IAutoTrackWalker.WalkStartFrame { get; set; }
-	Direction8 IRouteWalker.CurrentDirection { get; set; }
-	Int2 IRouteWalker.TargetPosition { get; set; }
 
 	// Data
 	private static readonly Dictionary<Int3, Pipe<Int4>> HoldingPool = [];
