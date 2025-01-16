@@ -24,7 +24,7 @@ public abstract class Launcher : Entity, IBlockEntity {
 	public virtual bool LaunchOverlapingElement => true;
 	public virtual bool LaunchWhenEntranceBlocked => false;
 	public virtual bool KeepLaunchedEntityInMap => false;
-	public virtual bool LaunchTowardsPlayer => true;
+	public virtual bool LaunchTowardsPlayer => false;
 	bool IBlockEntity.ContainEntityAsElement => true;
 	public int LastLaunchedFrame { get; set; }
 
@@ -157,7 +157,9 @@ public abstract class Launcher : Entity, IBlockEntity {
 	}
 
 
-	public bool LaunchToRightSide () => PlayerSystem.Selecting == null || PlayerSystem.Selecting.Rect.CenterX() >= Rect.CenterX();
+	public bool LaunchToRightSide () => LaunchTowardsPlayer ?
+		PlayerSystem.Selecting == null || PlayerSystem.Selecting.Rect.CenterX() >= Rect.CenterX() :
+		LaunchVelocity.x >= 0;
 
 
 	#endregion
