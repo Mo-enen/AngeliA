@@ -356,7 +356,7 @@ public sealed partial class MapEditor : WindowUI {
 				}
 			}
 		}
-
+		EntityArtworkRedirectPool.TrimExcess();
 	}
 
 

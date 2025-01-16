@@ -16,7 +16,7 @@ public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 	// MSG
 	[OnGameInitialize(int.MinValue)]
 	internal static void OnGameInitialize () {
-		foreach (var type in Util.AllTypes) {
+		foreach (var type in Util.GetAllTypeSpan()) {
 			foreach (var field in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)) {
 				var att = field.GetCustomAttribute<EventAttribute>(true);
 				if (att == null) continue;

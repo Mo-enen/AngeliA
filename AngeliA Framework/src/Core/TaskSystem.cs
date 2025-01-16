@@ -35,6 +35,7 @@ public static class TaskSystem {
 				Pool.TryAdd(type.AngeHash(), item);
 			}
 		}
+		Pool.TrimExcess();
 	}
 
 

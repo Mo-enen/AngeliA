@@ -84,7 +84,11 @@ public abstract class Cloth {
 				dPool.Add(charID, sID);
 			}
 		}
-
+		
+		Pool.TrimExcess();
+		for (int i = 0; i < DefaultPool.Length; i++) {
+			DefaultPool[i].TrimExcess();
+		}
 		ClothSystemReady = true;
 		return TaskResult.End;
 

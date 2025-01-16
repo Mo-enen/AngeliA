@@ -133,6 +133,7 @@ public partial class MapEditor {
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 		ToolbarButtons.Sort(ToolbarBtnComparer.Instance);
+		ToolbarButtons.TrimExcess();
 	}
 
 

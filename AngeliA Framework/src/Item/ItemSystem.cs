@@ -155,6 +155,8 @@ public static class ItemSystem {
 
 		// Final
 		ItemUnlockReady = true;
+		ItemPool.TrimExcess();
+		ItemDropPool.TrimExcess();
 		return TaskResult.End;
 	}
 
@@ -566,6 +568,7 @@ public static class ItemSystem {
 				});
 			}
 		}
+		CombinationPool.TrimExcess();
 	}
 
 

@@ -54,6 +54,7 @@ public static class MapGenerationSystem {
 			if (System.Activator.CreateInstance(type, type.AngeHash()) is not MapGenerator gen) continue;
 			Pool.TryAdd(gen.TypeID, gen);
 		}
+		Pool.TrimExcess();
 
 		// Start Async Thread
 		System.Threading.Tasks.Task.Run(AsyncUpdate);

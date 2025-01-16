@@ -46,7 +46,7 @@ public static class CircuitSystem {
 				OperatorPool.Add(type.AngeHash(), method);
 			}
 		}
-
+		OperatorPool.TrimExcess();
 	}
 
 

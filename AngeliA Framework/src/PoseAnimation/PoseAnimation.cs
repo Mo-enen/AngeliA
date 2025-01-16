@@ -196,14 +196,14 @@ public abstract class PoseAnimation {
 	[OnGameInitialize(-129)]
 	public static void OnGameInitialize () {
 
-		Pool.Clear();
-
 		// Code >> Pool
+		Pool.Clear();
 		foreach (var type in typeof(PoseAnimation).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not PoseAnimation ani) continue;
 			int aniID = type.AngeHash();
 			Pool.TryAdd(aniID, ani);
 		}
+		Pool.TrimExcess();
 
 	}
 

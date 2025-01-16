@@ -52,6 +52,7 @@ public sealed class CharacterBuff {
 			if (System.Activator.CreateInstance(type) is not Buff buff) continue;
 			Pool.TryAdd(buff.TypeID, buff);
 		}
+		Pool.TrimExcess();
 	}
 
 

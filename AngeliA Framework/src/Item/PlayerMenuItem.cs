@@ -16,6 +16,7 @@ public abstract class PlayerMenuItem<UI> : Item where UI : PlayerMenuPartnerUI {
 			if (System.Activator.CreateInstance(gParams[0]) is not PlayerMenuPartnerUI ui) continue;
 			Pool.TryAdd(type.AngeHash(), ui);
 		}
+		Pool.TrimExcess();
 	}
 
 	protected virtual void OnPanelOpened (UI panelUI) { }

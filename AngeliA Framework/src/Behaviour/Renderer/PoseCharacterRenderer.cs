@@ -703,6 +703,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			// Add to Pool
 			ConfigPool_Rendering.Add(typeID, config);
 		}
+		ConfigPool_Rendering.TrimExcess();
 	}
 
 

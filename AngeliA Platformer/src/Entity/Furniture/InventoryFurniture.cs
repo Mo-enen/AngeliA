@@ -35,12 +35,14 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 			if (System.Activator.CreateInstance(type) is not InventoryPartnerUI ui) continue;
 			UiPool.TryAdd(type.AngeHash(), ui);
 		}
+		UiPool.TrimExcess();
 		// Inv Set
 		InventoryFurniturePool.Clear();
 		foreach (var type in typeof(InventoryFurniture).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not InventoryFurniture invF) continue;
 			InventoryFurniturePool.TryAdd(type.AngeHash(), invF.InventoryRow * invF.InventoryColumn);
 		}
+		InventoryFurniturePool.TrimExcess();
 	}
 
 

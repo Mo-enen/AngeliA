@@ -17,11 +17,21 @@ public abstract class Track : Entity, IBlockEntity {
 	protected virtual bool SlowDownWhenWalkerOverlap => true;
 
 	// Data
+	private static readonly HashSet<int> TrackSet = [];
 	private readonly bool[] HasTrackArr = [false, false, false, false, false, false, false, false, false];
 	private Int4 Shrink;
 	private int Burden;
 
 	// MSG
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		TrackSet.Clear();
+		foreach (var type in typeof(Track).AllChildClass()) {
+			TrackSet.Add(type.AngeHash());
+		}
+		TrackSet.TrimExcess();
+	}
+
 	public override void OnActivated () {
 		base.OnActivated();
 		OnEntityRefresh();
@@ -38,15 +48,15 @@ public abstract class Track : Entity, IBlockEntity {
 		// 6   2
 		// 5 4 3
 
-		HasTrackArr[0] = AllowStraightConnection && squad.GetBlockAt(unitX, unitY + 1, BlockType.Entity) == TypeID;
-		HasTrackArr[2] = AllowStraightConnection && squad.GetBlockAt(unitX + 1, unitY, BlockType.Entity) == TypeID;
-		HasTrackArr[4] = AllowStraightConnection && squad.GetBlockAt(unitX, unitY - 1, BlockType.Entity) == TypeID;
-		HasTrackArr[6] = AllowStraightConnection && squad.GetBlockAt(unitX - 1, unitY, BlockType.Entity) == TypeID;
+		HasTrackArr[0] = AllowStraightConnection && TrackSet.Contains(squad.GetBlockAt(unitX, unitY + 1, BlockType.Entity));
+		HasTrackArr[2] = AllowStraightConnection && TrackSet.Contains(squad.GetBlockAt(unitX + 1, unitY, BlockType.Entity));
+		HasTrackArr[4] = AllowStraightConnection && TrackSet.Contains(squad.GetBlockAt(unitX, unitY - 1, BlockType.Entity));
+		HasTrackArr[6] = AllowStraightConnection && TrackSet.Contains(squad.GetBlockAt(unitX - 1, unitY, BlockType.Entity));
 
-		HasTrackArr[1] = AllowTiltConnection && squad.GetBlockAt(unitX + 1, unitY + 1, BlockType.Entity) == TypeID;
-		HasTrackArr[3] = AllowTiltConnection && squad.GetBlockAt(unitX + 1, unitY - 1, BlockType.Entity) == TypeID;
-		HasTrackArr[5] = AllowTiltConnection && squad.GetBlockAt(unitX - 1, unitY - 1, BlockType.Entity) == TypeID;
-		HasTrackArr[7] = AllowTiltConnection && squad.GetBlockAt(unitX - 1, unitY + 1, BlockType.Entity) == TypeID;
+		HasTrackArr[1] = AllowTiltConnection && TrackSet.Contains(squad.GetBlockAt(unitX + 1, unitY + 1, BlockType.Entity));
+		HasTrackArr[3] = AllowTiltConnection && TrackSet.Contains(squad.GetBlockAt(unitX + 1, unitY - 1, BlockType.Entity));
+		HasTrackArr[5] = AllowTiltConnection && TrackSet.Contains(squad.GetBlockAt(unitX - 1, unitY - 1, BlockType.Entity));
+		HasTrackArr[7] = AllowTiltConnection && TrackSet.Contains(squad.GetBlockAt(unitX - 1, unitY + 1, BlockType.Entity));
 
 		HasTrackArr[8] =
 			HasTrackArr[0] || HasTrackArr[1] || HasTrackArr[2] || HasTrackArr[3] ||
@@ -70,7 +80,10 @@ public abstract class Track : Entity, IBlockEntity {
 		if (!HasTrackArr[8]) return;
 
 		// Link TrackWalker
-		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect.Shift(0, -HangGap).Shrink(Shrink), out int count, this, OperationMode.ColliderAndTrigger);
+		var hits = Physics.OverlapAll(
+			PhysicsMask.DYNAMIC, Rect.Shift(0, -HangGap).Shrink(Shrink),
+			out int count, this, OperationMode.ColliderAndTrigger
+		);
 		int burden = 0;
 		for (int i = 0; i < count; i++) {
 
@@ -120,7 +133,9 @@ public abstract class Track : Entity, IBlockEntity {
 					0, (entity.InstanceID.GetHashCode().Abs() % Burden) + 1
 				) : speed,
 				allowTurnBack: TurnBackWhenReachEnd,
-				pathType: BlockType.Entity
+				pathType: BlockType.Entity,
+				allowTilt: AllowTiltConnection && AllowStraightConnection,
+				TrackSet
 			);
 			if (entity is Rigidbody rig) {
 				rig.RequireDodgeOverlap = true;

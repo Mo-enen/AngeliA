@@ -56,6 +56,7 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 				LinkPool.TryAdd(argID, typeID);
 			}
 		}
+		LinkPool.TrimExcess();
 		LinkPoolReady = true;
 	}
 

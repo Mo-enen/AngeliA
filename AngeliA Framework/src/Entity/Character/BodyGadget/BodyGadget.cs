@@ -60,6 +60,10 @@ public abstract class BodyGadget {
 			}
 		}
 
+		Pool.TrimExcess();
+		for (int i = 0; i < DefaultPool.Length; i++) {
+			DefaultPool[i].TrimExcess();
+		}
 		return TaskResult.End;
 
 	}

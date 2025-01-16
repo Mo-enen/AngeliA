@@ -10,15 +10,21 @@ namespace AngeliA;
 public static partial class Util {
 
 
-	// All Class
 	public static readonly List<Assembly> AllAssemblies = [];
-	public static readonly List<Type> AllTypes = [];
+	private static Type[] AllTypes = [];
+
+
+	public static ReadOnlySpan<Type> GetAllTypeSpan () => AllTypes.GetReadOnlySpan();
 
 
 	public static void AddAssembly (Assembly assembly) {
 		if (AllAssemblies.Contains(assembly)) return;
 		AllAssemblies.Add(assembly);
-		AllTypes.AddRange(assembly.GetTypes());
+		var assemblyTypes = assembly.GetTypes();
+		var newTypes = new Type[AllTypes.Length + assemblyTypes.Length];
+		AllTypes.CopyTo(newTypes, 0);
+		assemblyTypes.CopyTo(newTypes, AllTypes.Length);
+		AllTypes = newTypes;
 	}
 
 
@@ -26,12 +32,19 @@ public static partial class Util {
 		foreach (var t in AllChildClass(type, AllTypes, includeAbstract, includeInterface))
 			yield return t;
 	}
-	private static IEnumerable<Type> AllChildClass (this Type type, List<Type> types, bool includeAbstract = false, bool includeInterface = false) =>
-		types.Where(t =>
-			(includeAbstract || !t.IsAbstract) &&
-			(includeInterface || !t.IsInterface) &&
-			(t.IsSubclassOf(type) || (t.BaseType != null && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == type))
-		);
+	private static IEnumerable<Type> AllChildClass (this Type type, Type[] types, bool includeAbstract = false, bool includeInterface = false) {
+		int len = types.Length;
+		for (int i = 0; i < len; i++) {
+			var t = types[i];
+			if (
+				(includeAbstract || !t.IsAbstract) &&
+				(includeInterface || !t.IsInterface) &&
+				(t.IsSubclassOf(type) || (t.BaseType != null && t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == type))
+			) {
+				yield return t;
+			}
+		}
+	}
 
 	public static IEnumerable<(Assembly assembly, A attribyte)> ForAllAssemblyWithAttribute<A> () where A : Attribute {
 		foreach (var assembly in AllAssemblies) {
@@ -90,7 +103,7 @@ public static partial class Util {
 			foreach (var att in method.GetCustomAttributes<T>(false)) {
 				if (method.DeclaringType.ContainsGenericParameters) {
 					var args = method.DeclaringType.GetGenericArguments();
-					var gTypes = new System.Type[args.Length];
+					var gTypes = new Type[args.Length];
 					for (int i = 0; i < args.Length; i++) gTypes[i] = args[i].BaseType;
 					var newType = method.DeclaringType.MakeGenericType(gTypes);
 					var newMethod = newType.GetMethod(method.Name, flags);

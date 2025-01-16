@@ -216,7 +216,7 @@ public static class Stage {
 			}
 			EntityPool.TryAdd(id, stack);
 		}
-
+		EntityPool.TrimExcess();
 	}
 
 

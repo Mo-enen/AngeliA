@@ -34,6 +34,7 @@ public static class BlockColoringSystem {
 			if (System.Activator.CreateInstance(type) is not BlockColor bColor) continue;
 			COLOR_POOL.TryAdd(type.AngeHash(), bColor.Color);
 		}
+		COLOR_POOL.TrimExcess();
 	}
 
 

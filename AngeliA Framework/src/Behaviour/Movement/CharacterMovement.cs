@@ -299,6 +299,7 @@ public class CharacterMovement (Rigidbody rig) {
 			}
 			ConfigPool.Add(name.AngeHash(), list);
 		}
+		ConfigPool.TrimExcess();
 
 		// Remove Files Not in Pool
 		foreach (string path in Util.EnumerateFiles(movementRoot, true, AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN)) {

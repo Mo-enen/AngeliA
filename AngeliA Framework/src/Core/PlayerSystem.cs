@@ -53,7 +53,7 @@ public static class PlayerSystem {
 	public static IActionTarget TargetActionEntity { get; private set; } = null;
 	public static int UnlockedPlayerCount => UnlockedPlayer.Count;
 	public static int PlayableCharactersCount => AllPlayablesID.Count;
-	
+
 	// Data
 	private static readonly HashSet<int> UnlockedPlayer = [];
 	private static readonly List<int> AllPlayablesID = [];
@@ -154,6 +154,7 @@ public static class PlayerSystem {
 				AllPlayablesID.Add(id);
 			}
 		}
+		AllPlayablesID.TrimExcess();
 	}
 
 

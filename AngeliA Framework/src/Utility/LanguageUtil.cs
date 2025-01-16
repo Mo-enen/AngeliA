@@ -69,7 +69,7 @@ public static partial class LanguageUtil {
 			pairs.AddRange(LoadAllPairsFromDiskAtPath(filePath));
 			bool loadDef = lan == "en";
 			// All Language Code
-			foreach (var type in Util.AllTypes) {
+			foreach (var type in Util.GetAllTypeSpan()) {
 				foreach (var lanCode in type.ForAllStaticFieldValue<LanguageCode>(fieldBinding, inherited: false)) {
 					if (lanCode == null) continue;
 					pairs.Add(new(lanCode.Name, loadDef ? lanCode.DefaultValue : ""));

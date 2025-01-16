@@ -145,6 +145,7 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 		foreach (var type in typeof(Character).AllChildClass()) {
 			AnimationSheetPool.Add(type.AngeHash(), new AnimationSheet(type));
 		}
+		AnimationSheetPool.TrimExcess();
 	}
 
 
