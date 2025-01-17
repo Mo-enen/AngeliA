@@ -9,9 +9,25 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 
 
 	public override int StartDriveCooldown => 42;
+	protected virtual bool FreeWandering => _FreeWandering;
+	protected readonly RigidbodyNavigation Navigation;
+	private Int2 SettledPosition = default;
+	private bool _FreeWandering = true;
 
 
 	// MSG
+	public RideableVehicle () => Navigation = new(this);
+
+
+	public override void OnActivated () {
+		base.OnActivated();
+		_FreeWandering = true;
+		SettledPosition.x = X;
+		SettledPosition.y = Y;
+		Navigation.OnActivated();
+	}
+
+
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		// Driving
@@ -28,21 +44,72 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 	}
 
 
+	public override void Update () {
+		base.Update();
+
+		if (Driver != null || !Navigation.NavigationEnable) return;
+		if (Game.GlobalFrame < LastDriveChangedFrame + 60) return;
+
+		bool firstFrameWandering = false;
+		if (!_FreeWandering) {
+			if (!IsGrounded) return;
+			firstFrameWandering = true;
+			_FreeWandering = true;
+			SettledPosition.x = X;
+			SettledPosition.y = Y;
+			Navigation.ResetNavigation();
+		}
+
+		// Free Time
+		IgnorePhysics.True(1);
+		FillAsTrigger(1);
+		if (Movement.LastStartMoveFrame >= 0) {
+			Movement.RunSpeed.Override(
+				Util.Min(Movement.RunSpeed.BaseValue, Game.GlobalFrame - Movement.LastStartMoveFrame), 1
+			);
+		} else {
+			Movement.RunSpeed.Override(6, 1);
+		}
+
+		// Free Wandering
+		if (Game.GlobalFrame % 60 == 30 || firstFrameWandering) {
+			var aimPosition = PlatformerUtil.NavigationFreeWandering(
+				new Int2(SettledPosition.x + Const.HALF, SettledPosition.y + Const.HALF),
+				this, out bool grounded,
+				frequency: 60 * 30,
+				maxDistance: Const.CEL * 6
+			);
+			Navigation.NavigationAim = aimPosition;
+			Navigation.NavigationAimGrounded = grounded;
+		}
+
+		// Update
+		if (!firstFrameWandering) {
+			Navigation.PhysicsUpdate();
+		}
+	}
+
+
+	public override void StopDrive () {
+		base.StopDrive();
+		_FreeWandering = false;
+	}
+
+
 	protected override bool CheckForStartDrive (out Character driver) {
 
 		driver = null;
 
 		// Check for New Driver Join
-		int shrinkX = DeltaPositionX.Abs() + 16;
 		var hits = Physics.OverlapAll(
 			PhysicsMask.CHARACTER,
-			Rect.Shrink(shrinkX, shrinkX, 0, 0).EdgeOutside(Direction4.Up, 32),
+			Rect.EdgeOutside(Direction4.Up, 32),
 			out int count, this
 		);
 		for (int i = 0; i < count; i++) {
 			if (
 				hits[i].Entity is Character characterHit &&
-				characterHit.Y >= Rect.yMax &&
+				characterHit.Y >= Rect.CenterY() &&
 				characterHit.VelocityY <= VelocityY
 			) {
 				driver = characterHit;
@@ -68,6 +135,7 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 				Driver.IgnorePhysics.False();
 				VelocityY -= Driver.VelocityY / 2;
 				VelocityX = -VelocityX;
+
 				return true;
 			}
 			ControlHintUI.AddHint(Gamekey.Select, BuiltInText.HINT_STOP_DRIVE);

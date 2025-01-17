@@ -66,6 +66,11 @@ public static class CheatSystem {
 			Pool.Clear();
 			AllCheatIDs.Clear();
 		}
+		// Init Entity Spawning
+		var spawnInfo = typeof(CheatSystem).GetMethod(nameof(SpawnEntityMethod), BindingFlags.NonPublic | BindingFlags.Static);
+		foreach (var (type, _) in Util.AllClassWithAttribute<EntityAttribute.SpawnWithCheatCodeAttribute>()) {
+			TryAddCheatAction($"Spawn{type.AngeName()}", spawnInfo, type.AngeHash());
+		}
 	}
 
 
@@ -127,6 +132,21 @@ public static class CheatSystem {
 			backgroundPadding: GUI.Unify(12),
 			style: GUI.Skin.CenterMessage
 		);
+	}
+
+
+	private static void SpawnEntityMethod () {
+		if (CurrentParam is not int typeID || PlayerSystem.Selecting == null) return;
+		int spawnX = PlayerSystem.Selecting.X;
+		int spawnY = PlayerSystem.Selecting.Y;
+		if (FrameworkUtil.TryGetEmptyPlaceNearbyForEntity(
+			spawnX.ToUnit(), spawnY.ToUnit(), Stage.ViewZ,
+			out int unitX, out int unitY
+		)) {
+			spawnX = unitX.ToGlobal() + Const.HALF;
+			spawnY = unitY.ToGlobal();
+		}
+		Stage.SpawnEntity(typeID, spawnX, spawnY);
 	}
 
 

@@ -5,10 +5,10 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
-public enum CharacterNavigationState { Idle, Operation, Fly, }
+public enum RigidbodyNavigationState { Idle, Operation, Fly, }
 
 
-public class CharacterNavigation (Character character) {
+public class RigidbodyNavigation (Rigidbody target) {
 
 
 
@@ -17,36 +17,40 @@ public class CharacterNavigation (Character character) {
 
 
 	// Api
-	public readonly Character TargetCharacter = character;
-	public CharacterNavigationState NavigationState { get; set; } = CharacterNavigationState.Idle;
-	public Int2 NavigationAim { get; protected set; } = default;
-	public bool NavigationAimGrounded { get; protected set; } = default;
+	public readonly Rigidbody Target = target;
+	public RigidbodyNavigationState NavigationState { get; set; } = RigidbodyNavigationState.Idle;
+	public Int2 NavigationAim { get; set; } = default;
+	public bool NavigationAimGrounded { get; set; } = default;
 	public bool HasPerformableOperation => CurrentNavOperationIndex < CurrentNavOperationCount || CurrentNavOperationCount == 0;
 
 	// Override
-	public virtual bool NavigationEnable => false;
+	public virtual bool NavigationEnable => true;
 	public virtual bool ClampInSpawnRect => false;
+	public virtual bool TeleportWhenCantFly => false;
+	public virtual int DefaultRunSpeed => 12;
+	public virtual int DefaultFlySpeed => 32;
 	public virtual int InstanceShift => 0;
 	public virtual int NavigationStartMoveDistance => Const.CEL * 4;
 	public virtual int NavigationEndMoveDistance => Const.CEL * 1;
 	public virtual int NavigationStartFlyDistance => Const.CEL * 18;
-	public virtual int NavigationEndFlyDistance => Const.CEL * 3;
+	public virtual int NavigationEndFlyDistance => Const.CEL * 1;
 	public virtual int NavigationMinimumFlyDuration => 60;
 	public virtual int NavigationJumpSpeed => 32;
 	public virtual int NavigationMaxJumpDuration => 80;
 
 	// Short
-	private IRect Rect => TargetCharacter.Rect;
-	private int X { get => TargetCharacter.X; set => TargetCharacter.X = value; }
-	private int Y { get => TargetCharacter.Y; set => TargetCharacter.Y = value; }
-	private int VelocityX { get => TargetCharacter.VelocityX; set => TargetCharacter.VelocityX = value; }
-	private int VelocityY { get => TargetCharacter.VelocityY; set => TargetCharacter.VelocityY = value; }
-	private bool InWater => TargetCharacter.InWater;
-	private bool IsGrounded => TargetCharacter.IsGrounded;
-	private bool IsInsideGround => TargetCharacter.IsInsideGround;
-	private CharacterMovement Movement => TargetCharacter.Movement;
+	private IRect Rect => Target.Rect;
+	private int X { get => Target.X; set => Target.X = value; }
+	private int Y { get => Target.Y; set => Target.Y = value; }
+	private int VelocityX { get => Target.VelocityX; set => Target.VelocityX = value; }
+	private int VelocityY { get => Target.VelocityY; set => Target.VelocityY = value; }
+	private bool InWater => Target.InWater;
+	private bool IsGrounded => Target.IsGrounded;
+	private bool IsInsideGround => Target.IsInsideGround;
+	private CharacterMovement Movement => (Target is IWithCharacterMovement wMove) ? wMove.CurrentMovement : null;
 
 	// Data
+	private static bool DrawDebugGizmos = true;
 	private readonly Navigation.Operation[] NavOperations = new Navigation.Operation[64];
 	private int CurrentNavOperationIndex = 0;
 	private int CurrentNavOperationCount = 0;
@@ -66,6 +70,11 @@ public class CharacterNavigation (Character character) {
 	#region --- MSG ---
 
 
+
+	[CheatCode("DrawNavGizmos")]
+	internal static void DebugGizmosCheat () => DrawDebugGizmos = true;
+
+
 	public virtual void OnActivated () => ResetNavigation();
 
 
@@ -79,7 +88,7 @@ public class CharacterNavigation (Character character) {
 			if (!range.Overlaps(Rect)) {
 				X = X.Clamp(range.xMin, range.xMax);
 				Y = Y.Clamp(range.yMin, range.yMax);
-				NavigationState = CharacterNavigationState.Fly;
+				NavigationState = RigidbodyNavigationState.Fly;
 				NavFlyStartFrame = Game.GlobalFrame;
 			}
 		}
@@ -91,12 +100,12 @@ public class CharacterNavigation (Character character) {
 		if (CurrentNavOperationIndex >= CurrentNavOperationCount) {
 			CurrentNavOperationCount = 0;
 			CurrentNavOperationIndex = 0;
-			if (NavigationState == CharacterNavigationState.Operation) {
+			if (NavigationState == RigidbodyNavigationState.Operation) {
 				CurrentNavOperationCount = Navigation.NavigateTo(
 					NavOperations, Game.GlobalFrame, Stage.ViewRect, X, Y, NavigationAim.x, NavigationAim.y
 				);
 				if (CurrentNavOperationCount == 0) {
-					NavigationState = CharacterNavigationState.Idle;
+					NavigationState = RigidbodyNavigationState.Idle;
 				}
 				NavMoveDoneX = false;
 				NavMoveDoneY = false;
@@ -105,18 +114,46 @@ public class CharacterNavigation (Character character) {
 
 		// Move to Target
 		switch (NavigationState) {
-			case CharacterNavigationState.Idle:
+			case RigidbodyNavigationState.Idle:
 				NavUpdate_Movement_Idle();
 				break;
-			case CharacterNavigationState.Operation:
+			case RigidbodyNavigationState.Operation:
 				NavUpdate_Movement_Operating();
 				break;
-			case CharacterNavigationState.Fly:
+			case RigidbodyNavigationState.Fly:
 				NavUpdate_Movement_Flying();
 				break;
 		}
 
-		Movement.UpdateLater();
+		Movement?.UpdateLater();
+
+		// Debug Gizmos
+		if (DrawDebugGizmos) {
+			var targetRect = Target.Rect;
+			var pos = targetRect.CenterInt();
+			if (NavigationState == RigidbodyNavigationState.Operation) {
+				for (int i = CurrentNavOperationIndex; i < CurrentNavOperationCount; i++) {
+					var operation = NavOperations[i];
+					Game.DrawGizmosLine(
+						pos.x, pos.y,
+						operation.TargetGlobalX + targetRect.width / 2,
+						operation.TargetGlobalY + targetRect.height / 2,
+						8,
+						operation.Motion == NavigationOperateMotion.Move ? Color32.RED : Color32.GREEN
+					);
+					pos.x = operation.TargetGlobalX + targetRect.width / 2;
+					pos.y = operation.TargetGlobalY + targetRect.height / 2;
+				}
+			} else if (NavigationState == RigidbodyNavigationState.Fly) {
+				Game.DrawGizmosLine(
+					pos.x, pos.y,
+					NavigationAim.x + targetRect.width / 2,
+					NavigationAim.y + targetRect.height / 2,
+					8,
+					Color32.CYAN
+				);
+			}
+		}
 
 	}
 
@@ -125,7 +162,7 @@ public class CharacterNavigation (Character character) {
 
 		// Don't Refresh State when Jumping
 		if (
-			NavigationState == CharacterNavigationState.Operation &&
+			NavigationState == RigidbodyNavigationState.Operation &&
 			CurrentNavOperationIndex >= 0 &&
 			CurrentNavOperationIndex < CurrentNavOperationCount &&
 			NavOperations[CurrentNavOperationIndex].Motion == NavigationOperateMotion.Jump
@@ -138,7 +175,7 @@ public class CharacterNavigation (Character character) {
 
 		// Fly When No Grounded Aim Position
 		if (!NavigationAimGrounded) {
-			NavigationState = CharacterNavigationState.Fly;
+			NavigationState = RigidbodyNavigationState.Fly;
 			NavFlyStartFrame = Game.GlobalFrame;
 			return;
 		}
@@ -146,29 +183,29 @@ public class CharacterNavigation (Character character) {
 		int aimSqrtDis = Util.SquareDistance(NavigationAim.x, NavigationAim.y, X, Y);
 		switch (NavigationState) {
 
-			case CharacterNavigationState.Idle:
+			case RigidbodyNavigationState.Idle:
 				if (aimSqrtDis > START_FLY_DISTANCE_SQ) {
 					// Idle >> Fly
-					NavigationState = CharacterNavigationState.Fly;
+					NavigationState = RigidbodyNavigationState.Fly;
 					NavFlyStartFrame = Game.GlobalFrame;
 				} else if (aimSqrtDis > START_MOVE_DISTANCE_SQ) {
 					// Idle >> Nav
-					NavigationState = CharacterNavigationState.Operation;
+					NavigationState = RigidbodyNavigationState.Operation;
 				}
 				break;
 
-			case CharacterNavigationState.Operation:
+			case RigidbodyNavigationState.Operation:
 				if (aimSqrtDis > START_FLY_DISTANCE_SQ) {
 					// Nav >> Fly
-					NavigationState = CharacterNavigationState.Fly;
+					NavigationState = RigidbodyNavigationState.Fly;
 					NavFlyStartFrame = Game.GlobalFrame;
 				} else if (CurrentNavOperationIndex >= CurrentNavOperationCount && aimSqrtDis < END_MOVE_DISTANCE_SQ) {
 					// Nav >> Idle
-					NavigationState = CharacterNavigationState.Idle;
+					NavigationState = RigidbodyNavigationState.Idle;
 				}
 				break;
 
-			case CharacterNavigationState.Fly:
+			case RigidbodyNavigationState.Fly:
 				if (
 					Game.GlobalFrame > NavFlyStartFrame + NavigationMinimumFlyDuration &&
 					aimSqrtDis < END_FLY_DISTANCE_SQ &&
@@ -176,8 +213,10 @@ public class CharacterNavigation (Character character) {
 				) {
 					// Fly >> ??
 					NavigationState = aimSqrtDis > START_MOVE_DISTANCE_SQ ?
-						CharacterNavigationState.Operation :
-						CharacterNavigationState.Idle;
+						RigidbodyNavigationState.Operation :
+						RigidbodyNavigationState.Idle;
+					CurrentNavOperationIndex = 0;
+					CurrentNavOperationCount = 0;
 				}
 				break;
 
@@ -192,17 +231,20 @@ public class CharacterNavigation (Character character) {
 			if (Navigation.IsGround(Game.GlobalFrame, Stage.ViewRect, X, Y + Const.HALF / 2, out int groundY)) {
 				// Move to Ground
 				VelocityY = groundY - Y;
-				TargetCharacter.MakeGrounded(1);
+				Target.MakeGrounded(1);
 			} else {
 				// Fall Down
-				int gravity = Rigidbody.GlobalGravity * (VelocityY <= 0 ? TargetCharacter.FallingGravityScale / 1000 : TargetCharacter.RisingGravityScale / 1000);
-				VelocityY = (VelocityY - gravity).Clamp(-TargetCharacter.MaxGravitySpeed, int.MaxValue);
+				int gravity = Rigidbody.GlobalGravity * (VelocityY <= 0 ? Target.FallingGravityScale / 1000 : Target.RisingGravityScale / 1000);
+				VelocityY = (VelocityY - gravity).Clamp(-Target.MaxGravitySpeed, int.MaxValue);
 			}
 		} else {
 			VelocityY = 0;
 		}
 		Y += VelocityY;
-		Movement.MovementState = InWater ? CharacterMovementState.SwimIdle : CharacterMovementState.Idle;
+		var mov = Movement;
+		if (mov != null) {
+			mov.MovementState = InWater ? CharacterMovementState.SwimIdle : CharacterMovementState.Idle;
+		}
 	}
 
 
@@ -210,7 +252,9 @@ public class CharacterNavigation (Character character) {
 
 		if (CurrentNavOperationIndex >= CurrentNavOperationCount) return;
 
-		int insIndex = TargetCharacter.InstanceOrder;
+		var mov = Movement;
+
+		int insIndex = Target.InstanceOrder;
 		var operation = NavOperations[CurrentNavOperationIndex];
 		int targetX = operation.TargetGlobalX;
 		int targetY = operation.TargetGlobalY;
@@ -226,7 +270,10 @@ public class CharacterNavigation (Character character) {
 			// Move
 			case NavigationOperateMotion.Move:
 
-				int speed = InWater ? Movement.SwimSpeed * Movement.InWaterSpeedRate / 1000 : Movement.RunSpeed;
+				int speed =
+					mov == null ? DefaultRunSpeed :
+					InWater ? mov.SwimSpeed * mov.InWaterSpeedRate / 1000 :
+					mov.RunSpeed;
 
 				if (targetX == X) NavMoveDoneX = true;
 				if (targetY == Y) NavMoveDoneY = true;
@@ -247,7 +294,7 @@ public class CharacterNavigation (Character character) {
 				// Goto Next Operation
 				if (NavMoveDoneX && NavMoveDoneY) {
 					if (!Navigation.IsGround(Game.GlobalFrame, Stage.ViewRect, targetX, targetY, out _)) {
-						NavigationState = CharacterNavigationState.Fly;
+						NavigationState = RigidbodyNavigationState.Fly;
 						NavFlyStartFrame = Game.GlobalFrame;
 						CurrentNavOperationIndex = 0;
 						CurrentNavOperationCount = 0;
@@ -262,11 +309,9 @@ public class CharacterNavigation (Character character) {
 			// Jump
 			case NavigationOperateMotion.Jump:
 
-
-
 				if (NavJumpDuration == 0) {
 					// Jump Start
-					int dis = Util.DistanceInt(X, Y, targetX, targetY);
+					int dis = (X - targetX).Abs() + (Y - targetY).Abs() / 2;
 					NavJumpFrame = 0;
 					NavJumpDuration = (dis / NavigationJumpSpeed).Clamp(dis < Const.HALF ? 3 : 24, NavigationMaxJumpDuration);
 					NavJumpFromPosition.x = X;
@@ -315,46 +360,34 @@ public class CharacterNavigation (Character character) {
 
 		// Move State
 		if (VelocityX != 0) {
-			Movement.Move(VelocityX > 0 ? Direction3.Right : Direction3.Left, 0);
-		}
-		if (!InWater) {
-			// Move
-			Movement.MovementState =
-				motion == NavigationOperateMotion.Move ? CharacterMovementState.Run :
-				VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown;
-		} else {
-			// Swim
-			Movement.MovementState = VelocityX == 0 ? CharacterMovementState.SwimIdle : CharacterMovementState.SwimMove;
-		}
-
-		// Func
-		void GotoNextOperation () {
-			CurrentNavOperationIndex++;
-			NavJumpFrame = 0;
-			NavJumpDuration = 0;
-			NavMoveDoneX = false;
-			NavMoveDoneY = false;
-			// Skip Too Tiny Jump
-			while (
-				CurrentNavOperationIndex < CurrentNavOperationCount
-			) {
-				var motion = NavOperations[CurrentNavOperationIndex];
-				if (
-					motion.Motion == NavigationOperateMotion.Jump &&
-					Util.SquareDistance(X, Y, motion.TargetGlobalX, motion.TargetGlobalY) <= Const.HALF * Const.HALF
-				) {
-					CurrentNavOperationIndex++;
-				} else break;
+			if (mov != null) {
+				mov.Move(VelocityX > 0 ? Direction3.Right : Direction3.Left, 0);
+				mov.FacingRight = VelocityX > 0;
+			} else {
+				Target.X += VelocityX;
 			}
 		}
+		if (mov != null) {
+			if (!InWater) {
+				// Move
+				mov.MovementState =
+					motion == NavigationOperateMotion.Move ? CharacterMovementState.Run :
+					VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown;
+			} else {
+				// Swim
+				mov.MovementState = VelocityX == 0 ? CharacterMovementState.SwimIdle : CharacterMovementState.SwimMove;
+			}
+		}
+
 	}
 
 
 	private void NavUpdate_Movement_Flying () {
-		int speed = Movement.FlyMoveSpeed;
-		if (InWater) speed = speed * Movement.InWaterSpeedRate / 1000;
+		var mov = Movement;
+		int speed = mov == null ? DefaultFlySpeed : mov.FlyMoveSpeed;
+		if (InWater && mov != null) speed = speed * mov.InWaterSpeedRate / 1000;
 		var flyAim = NavigationAim;
-		if (Movement.FlyAvailable) {
+		if (mov == null || mov.FlyAvailable) {
 			// Can Fly
 			flyAim.x = X.LerpTo(flyAim.x, 100);
 			flyAim.y = Y.LerpTo(flyAim.y, 100);
@@ -363,16 +396,22 @@ public class CharacterNavigation (Character character) {
 			X += VelocityX;
 			Y += VelocityY;
 			// Move State
-			Movement.MovementState = CharacterMovementState.Fly;
-			if ((X - NavigationAim.x).Abs() > 96) {
-				Movement.Move(X < NavigationAim.x ? Direction3.Right : Direction3.Left, 0);
+			if (mov != null) {
+				mov.MovementState = CharacterMovementState.Fly;
+				if ((X - NavigationAim.x).Abs() > 96) {
+					mov.Move(X < NavigationAim.x ? Direction3.Right : Direction3.Left, 0);
+				}
 			}
 		} else {
 			// Can't Fly
-			X = flyAim.x;
-			Y = flyAim.y;
-			NavigationState = CharacterNavigationState.Idle;
-			Movement.MovementState = CharacterMovementState.Idle;
+			if (TeleportWhenCantFly) {
+				X = flyAim.x;
+				Y = flyAim.y;
+			}
+			NavigationState = RigidbodyNavigationState.Idle;
+			if (mov != null) {
+				mov.MovementState = CharacterMovementState.Idle;
+			}
 		}
 	}
 
@@ -395,7 +434,7 @@ public class CharacterNavigation (Character character) {
 
 
 	public void ResetNavigation () {
-		NavigationState = CharacterNavigationState.Idle;
+		NavigationState = RigidbodyNavigationState.Idle;
 		NavFlyStartFrame = int.MinValue;
 		CurrentNavOperationIndex = 0;
 		CurrentNavOperationCount = 0;
@@ -405,6 +444,35 @@ public class CharacterNavigation (Character character) {
 		NavJumpDuration = 0;
 		NavMoveDoneX = false;
 		NavMoveDoneY = false;
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private void GotoNextOperation () {
+		CurrentNavOperationIndex++;
+		NavJumpFrame = 0;
+		NavJumpDuration = 0;
+		NavMoveDoneX = false;
+		NavMoveDoneY = false;
+		// Skip Too Tiny Jump
+		while (
+			CurrentNavOperationIndex < CurrentNavOperationCount
+		) {
+			var motion = NavOperations[CurrentNavOperationIndex];
+			if (
+				motion.Motion == NavigationOperateMotion.Jump &&
+				Util.SquareDistance(X, Y, motion.TargetGlobalX, motion.TargetGlobalY) <= Const.HALF * Const.HALF
+			) {
+				CurrentNavOperationIndex++;
+			} else break;
+		}
 	}
 
 

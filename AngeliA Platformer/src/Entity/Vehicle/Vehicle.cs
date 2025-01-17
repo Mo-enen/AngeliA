@@ -18,6 +18,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 	// Api
 	public readonly M Movement;
 	public Character Driver { get; private set; } = null;
+	public int LastDriveChangedFrame { get; private set; } = int.MinValue;
 	public virtual Int2? DriverLocalPosition => new Int2(Width / 2, 1);
 	public virtual Int2? DriverLeaveLocalPosition => new Int2(Width / 2, Height);
 	public virtual int StartDriveCooldown => 6;
@@ -26,13 +27,12 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 	public override int AirDragX => Driver != null ? 0 : 5;
 	public override int AirDragY => 0;
 	public override bool CarryOtherOnTop => Driver == null;
-	bool ICarrier.AllowBeingCarry => true;
 	public override int CollisionMask => Driver != null ? PhysicsMask.MAP : PhysicsMask.SOLID;
+	bool ICarrier.AllowBeingCarry => true;
 	int IDamageReceiver.Team => CurrentTeam;
 	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
 
 	// Data
-	private int LastDriveChangedFrame = int.MinValue;
 	private int CurrentTeam = Const.TEAM_ENVIRONMENT;
 	private int CurrentPhysicsLayer = PhysicsLayer.ENVIRONMENT;
 	private int PrevZ;

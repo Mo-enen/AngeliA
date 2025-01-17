@@ -69,4 +69,8 @@ public static class EntityAttribute {
 	public class RepositionWhenInactiveAttribute : Attribute { }
 
 
+	[AttributeUsage(AttributeTargets.Class)]
+	public class SpawnWithCheatCodeAttribute : Attribute { }
+
+
 }

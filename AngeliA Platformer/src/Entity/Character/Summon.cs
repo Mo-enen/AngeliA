@@ -47,7 +47,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		base.OnActivated();
 		Owner = null;
 		Navigation.OnActivated();
-		Navigation.NavigationState = CharacterNavigationState.Operation;
+		Navigation.NavigationState = RigidbodyNavigationState.Operation;
 		Navigation.Refresh();
 		Navigation.MakeFollowOwner();
 		Movement.PushAvailable.BaseValue = false;
@@ -79,7 +79,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		Bounce();
 		Navigation.ResetNavigation();
 		SummonFrame = Game.GlobalFrame;
-		Navigation.NavigationState = CharacterNavigationState.Operation;
+		Navigation.NavigationState = RigidbodyNavigationState.Operation;
 		Navigation.Refresh();
 	}
 
@@ -104,7 +104,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 						Y = Owner.Y;
 					}
 					Navigation.ResetNavigation();
-					Navigation.NavigationState = CharacterNavigationState.Operation;
+					Navigation.NavigationState = RigidbodyNavigationState.Operation;
 					Navigation.Refresh();
 				}
 			} else {
