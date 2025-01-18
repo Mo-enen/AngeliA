@@ -215,6 +215,7 @@ public class SheetCharacterRenderer (Character target) : CharacterRenderer(targe
 			case CharacterState.PassOut:
 				// Blink for Passout
 				if (DespawnAfterPassoutDelay >= 0 && (Game.GlobalFrame - PassOutFrame) % 8 >= 4) {
+					RenderedCell = Cell.EMPTY;
 					break;
 				}
 				// Draw Passout

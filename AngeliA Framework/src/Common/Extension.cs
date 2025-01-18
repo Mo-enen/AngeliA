@@ -420,8 +420,6 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static bool IsHorizontal (this Direction5 dir) => dir == Direction5.Left || dir == Direction5.Right;
 	[MethodImpl(INLINE)] public static bool IsVertical (this Direction5 dir) => dir == Direction5.Down || dir == Direction5.Up;
 
-
-
 	[MethodImpl(INLINE)]
 	public static Direction4 Opposite (this Direction4 dir) => dir switch {
 		Direction4.Down => Direction4.Up,
@@ -456,6 +454,7 @@ public static class Extension {
 		Direction4.Right => Direction4.Down,
 		_ => throw new System.NotImplementedException(),
 	};
+
 	[MethodImpl(INLINE)]
 	public static Direction4 AntiClockwise (this Direction4 dir) => dir switch {
 		Direction4.Down => Direction4.Right,
@@ -464,6 +463,25 @@ public static class Extension {
 		Direction4.Left => Direction4.Down,
 		_ => throw new System.NotImplementedException(),
 	};
+
+	[MethodImpl(INLINE)]
+	public static Direction5 Clockwise (this Direction5 dir) => dir switch {
+		Direction5.Down => Direction5.Left,
+		Direction5.Left => Direction5.Up,
+		Direction5.Up => Direction5.Right,
+		Direction5.Right => Direction5.Down,
+		_ => Direction5.Center,
+	};
+
+	[MethodImpl(INLINE)]
+	public static Direction5 AntiClockwise (this Direction5 dir) => dir switch {
+		Direction5.Down => Direction5.Right,
+		Direction5.Right => Direction5.Up,
+		Direction5.Up => Direction5.Left,
+		Direction5.Left => Direction5.Down,
+		_ => Direction5.Center,
+	};
+
 	[MethodImpl(INLINE)]
 	public static Int2 Normal (this Direction4 dir) => dir switch {
 		Direction4.Down => new(0, -1),
@@ -472,6 +490,7 @@ public static class Extension {
 		Direction4.Right => new(1, 0),
 		_ => throw new System.NotImplementedException(),
 	};
+
 	[MethodImpl(INLINE)]
 	public static Int2 Normal (this Direction8 dir) => dir switch {
 		Direction8.Bottom => new(0, -1),
@@ -484,6 +503,7 @@ public static class Extension {
 		Direction8.Right => new(1, 0),
 		_ => throw new System.NotImplementedException(),
 	};
+
 	[MethodImpl(INLINE)]
 	public static int GetRotation (this Direction4 dir) => dir switch {
 		Direction4.Up => 0,
@@ -492,14 +512,19 @@ public static class Extension {
 		Direction4.Right => 90,
 		_ => 0,
 	};
+
 	[MethodImpl(INLINE)]
 	public static Direction8 Clockwise (this Direction8 dir, int count = 1) => (Direction8)(((int)dir + count) % 8);
+
 	[MethodImpl(INLINE)]
 	public static Direction8 AntiClockwise (this Direction8 dir, int count = 1) => (Direction8)((int)dir - count).UMod(8);
+
 	[MethodImpl(INLINE)]
 	public static Direction8 Opposite (this Direction8 dir) => (Direction8)(((int)dir + 4) % 8);
+
 	[MethodImpl(INLINE)]
 	public static int GetRotation (this Direction8 dir) => (int)dir * 45;
+
 	[MethodImpl(INLINE)]
 	public static bool IsTilted (this Direction8 dir) => dir switch {
 		Direction8.BottomLeft => true,
@@ -508,6 +533,7 @@ public static class Extension {
 		Direction8.TopRight => true,
 		_ => false,
 	};
+
 	[MethodImpl(INLINE)]
 	public static bool IsPositive (this Direction8 dir) => dir switch {
 		Direction8.Top => true,
@@ -516,6 +542,7 @@ public static class Extension {
 		Direction8.BottomRight => true,
 		_ => false,
 	};
+
 	[MethodImpl(INLINE)] public static bool IsLeft (this Direction8 dir) => dir == Direction8.Left || dir == Direction8.BottomLeft || dir == Direction8.TopLeft;
 	[MethodImpl(INLINE)] public static bool IsRight (this Direction8 dir) => dir == Direction8.Right || dir == Direction8.BottomRight || dir == Direction8.TopRight;
 	[MethodImpl(INLINE)] public static bool IsVertical (this Direction8 dir) => dir == Direction8.Top || dir == Direction8.Bottom;
@@ -523,6 +550,22 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static bool IsBottom (this Direction8 dir) => dir == Direction8.Bottom || dir == Direction8.BottomLeft || dir == Direction8.BottomRight;
 	[MethodImpl(INLINE)] public static bool IsTop (this Direction8 dir) => dir == Direction8.Top || dir == Direction8.TopLeft || dir == Direction8.TopRight;
 
+	[MethodImpl(INLINE)]
+	public static Direction4 ToDirection4 (this Direction5 dir5, Direction4 center = Direction4.Up) => dir5 switch {
+		Direction5.Down => Direction4.Down,
+		Direction5.Left => Direction4.Left,
+		Direction5.Right => Direction4.Right,
+		Direction5.Up => Direction4.Up,
+		_ => center,
+	};
+
+	[MethodImpl(INLINE)]
+	public static Direction5 ToDirection5 (this Direction4 dir4) => dir4 switch {
+		Direction4.Down => Direction5.Down,
+		Direction4.Left => Direction5.Left,
+		Direction4.Right => Direction5.Right,
+		_ => Direction5.Up,
+	};
 
 	// Rect
 	[MethodImpl(INLINE)]

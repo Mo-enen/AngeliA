@@ -571,9 +571,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	}
 
 
-	internal void OnCharacterRendered () => Buff.ApplyOnCharacterRenderered();
-
-
 	#endregion
 
 
@@ -646,6 +643,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 			_ => CharacterAnimationType.Idle,
 		};
 	}
+
+
+	public virtual void OnCharacterRendered () => Buff.ApplyOnCharacterRenderered();
 
 
 	public void EnterTeleportState (bool front, bool portal, bool lastHalfOnly = false) {

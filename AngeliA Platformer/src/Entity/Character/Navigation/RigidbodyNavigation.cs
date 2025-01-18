@@ -50,7 +50,7 @@ public class RigidbodyNavigation (Rigidbody target) {
 	private CharacterMovement Movement => (Target is IWithCharacterMovement wMove) ? wMove.CurrentMovement : null;
 
 	// Data
-	private static bool DrawDebugGizmos = true;
+	private static bool DrawDebugGizmos = false;
 	private readonly Navigation.Operation[] NavOperations = new Navigation.Operation[64];
 	private int CurrentNavOperationIndex = 0;
 	private int CurrentNavOperationCount = 0;

@@ -9,10 +9,11 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 
 
 	public override int StartDriveCooldown => 42;
-	protected virtual bool FreeWandering => _FreeWandering;
+	protected virtual bool AllowFreeWandering => false;
 	protected readonly RigidbodyNavigation Navigation;
 	private Int2 SettledPosition = default;
 	private bool _FreeWandering = true;
+	private int FreeWanderingRandomShift = 0;
 
 
 	// MSG
@@ -25,6 +26,7 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 		SettledPosition.x = X;
 		SettledPosition.y = Y;
 		Navigation.OnActivated();
+		FreeWanderingRandomShift++;
 	}
 
 
@@ -46,9 +48,16 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 
 	public override void Update () {
 		base.Update();
+		Update_FreeWandering();
+	}
 
+
+	private void Update_FreeWandering () {
+
+		if (!AllowFreeWandering) return;
 		if (Driver != null || !Navigation.NavigationEnable) return;
-		if (Game.GlobalFrame < LastDriveChangedFrame + 60) return;
+		int wanderingCooldown = Util.QuickRandomWithSeed(TypeID + FreeWanderingRandomShift, 60, 300);
+		if (Game.GlobalFrame < LastDriveChangedFrame + wanderingCooldown) return;
 
 		bool firstFrameWandering = false;
 		if (!_FreeWandering) {
@@ -77,7 +86,8 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 				new Int2(SettledPosition.x + Const.HALF, SettledPosition.y + Const.HALF),
 				this, out bool grounded,
 				frequency: 60 * 30,
-				maxDistance: Const.CEL * 6
+				maxDistance: Const.CEL * 6,
+				randomShift: FreeWanderingRandomShift
 			);
 			Navigation.NavigationAim = aimPosition;
 			Navigation.NavigationAimGrounded = grounded;
@@ -93,6 +103,7 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 	public override void StopDrive () {
 		base.StopDrive();
 		_FreeWandering = false;
+		FreeWanderingRandomShift++;
 	}
 
 

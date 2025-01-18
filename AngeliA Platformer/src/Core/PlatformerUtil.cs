@@ -6,12 +6,12 @@ namespace AngeliA.Platformer;
 
 public static class PlatformerUtil {
 
-	
-	public static Int2 NavigationFreeWandering (Int2 aimPosition, Entity target, out bool grounded, int frequency, int maxDistance) {
+
+	public static Int2 NavigationFreeWandering (Int2 aimPosition, Entity target, out bool grounded, int frequency, int maxDistance, int randomShift = 0) {
 
 		int insIndex = target.InstanceOrder;
 		int freeShiftX = Util.QuickRandomWithSeed(
-			target.TypeID + (insIndex + (Game.GlobalFrame / frequency)) * target.TypeID
+			target.TypeID + (insIndex + (Game.GlobalFrame / frequency) + randomShift) * target.TypeID
 		) % maxDistance;
 
 		// Find Available Ground

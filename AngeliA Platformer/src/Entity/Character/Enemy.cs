@@ -24,7 +24,7 @@ public abstract class Enemy : Character, IDamageReceiver {
 	public override void TakeDamage (Damage damage) {
 		base.TakeDamage(damage);
 		// Big Knockback
-
+		
 
 
 	}

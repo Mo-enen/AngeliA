@@ -25,6 +25,13 @@ public abstract class Entity : IMapItem {
 	public Int3? MapUnitPos => InstanceID.x != int.MinValue ? InstanceID : null;
 	public Int3 InstanceID { get; internal set; } = default;
 	public bool IgnoreReposition { get; set; } = false;
+	public Int2 XY {
+		get => new(X, Y);
+		set {
+			X = value.x;
+			Y = value.y;
+		}
+	}
 
 	// Inter
 	internal byte UpdateStep { get; set; } = 0;
