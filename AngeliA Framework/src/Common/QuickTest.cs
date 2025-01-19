@@ -80,6 +80,7 @@ public static class QTest {
 	private static readonly Dictionary<string, object> ObjectPool = [];
 	private static readonly List<KeyData> Keys = [];
 	private static readonly Dictionary<string, bool> GroupFolding = [];
+	private static readonly List<(int startFrame, Int3 pos, int duration, int size, Color32 color)> TrailingMark = [];
 	private static Int2 PanelPositionOffset = new(1024, 1024);
 	private static bool MouseDragMoving;
 	private static bool ShowingWindow = false;
@@ -360,6 +361,28 @@ public static class QTest {
 		if (Testing) {
 			Game.CancelGizmosOnTopOfUI();
 		}
+		// Draw Trailing Mark
+		if (Renderer.TryGetSprite(BuiltInSprite.CIRCLE_32, out var circleSP)) {
+			var cameraRect = Renderer.CameraRect;
+			using var _ = new UILayerScope(ignoreSorting: true);
+			for (int i = 0; i < TrailingMark.Count; i++) {
+				var (frame, pos, dur, size, color) = TrailingMark[i];
+				int localFrame = Game.GlobalFrame - frame;
+				if (localFrame >= dur) {
+					TrailingMark.RemoveAt(i);
+					i--;
+					continue;
+				}
+				if (pos.z != Stage.ViewZ) continue;
+				Renderer.Draw(
+					circleSP,
+					pos.x.Clamp(cameraRect.xMin, cameraRect.xMax),
+					pos.y.Clamp(cameraRect.yMin, cameraRect.yMax),
+					500, 500, 0, size, size,
+					color.WithNewA((dur - localFrame) * 360 / dur), z: int.MaxValue
+				);
+			}
+		}
 	}
 
 
@@ -516,6 +539,11 @@ public static class QTest {
 		}
 	}
 	public static void DrawPixel (int x, int y, Color32 pixel) => CurrentPixels[x, y] = pixel;
+
+
+	// Trailing
+	public static void AddTrailingMark (Int2 pos, int duration = 60, int size = 42) => TrailingMark.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, Color32.RED));
+	public static void AddTrailingMark (Int2 pos, Color32 color, int duration = 60, int size = 42) => TrailingMark.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, color));
 
 
 	// Obj

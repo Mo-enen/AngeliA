@@ -8,40 +8,75 @@ public abstract class Slime : Enemy, ISlimeWalker {
 
 	// VAR
 	protected virtual bool DamageOnTouch => true;
-
-	// Walker
-	Direction5 ISlimeWalker.AttachingDirection { get; set; }
-	Int2 ISlimeWalker.LocalPosition { get; set; }
-	IRect ISlimeWalker.AttachingRect { get; set; }
-	Entity ISlimeWalker.AttachingTarget { get; set; }
-	int ISlimeWalker.WalkSpeed => 12;
-	bool ISlimeWalker.FacingPositive { get; set; }
-
+	public override IRect Rect {
+		get {
+			int width = Movement.MovementWidth;
+			int height = Movement.MovementHeight;
+			return (this as ISlimeWalker).AttachingDirection switch {
+				Direction5.Down => new(X - width / 2, Y, width, height),
+				Direction5.Up => new(X - width / 2, Y - height, width, height),
+				Direction5.Left => new(X, Y - width / 2, height, width),
+				Direction5.Right => new(X - height, Y - width / 2, height, width),
+				_ => base.Rect,
+			};
+		}
+	}
+	public override bool AllowBeingPush => false;
+	public Direction5 AttachingDirection { get; set; }
+	public Int2 LocalPosition { get; set; }
+	public IRect AttachingRect { get; set; }
+	public Entity AttachingTarget { get; set; }
+	public int AttachingID { get; set; }
+	public int WalkSpeed => 12;
+	public bool FacingPositive { get; set; }
+	private float CurrentRotation = 0;
 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
+		if (FromWorld) {
+			X = X.ToUnifyGlobal() + Const.HALF;
+		}
+		Movement.PushAvailable.BaseValue = false;
+		Movement.SquatAvailable.BaseValue = false;
+		Movement.FlyAvailable.BaseValue = false;
+		Movement.RushAvailable.BaseValue = false;
+		Movement.DashAvailable.BaseValue = false;
 		Movement.MovementWidth.BaseValue = 220;
 		Movement.MovementHeight.BaseValue = 136;
 		ISlimeWalker.ActiveWalker(this);
+		FacingPositive = false;
+		CurrentRotation = 0;
 	}
 
 	public override void FirstUpdate () {
-		FillAsTrigger(1);
+		if (!Health.TakingDamage) {
+			FillAsTrigger(0);
+			if (DamageOnTouch) {
+				Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect);
+			}
+		} else {
+			IgnorePhysics.False(1);
+		}
 		base.FirstUpdate();
 		if (CharacterState == CharacterState.GamePlay && IgnorePhysics) {
 			Physics.FillEntity(PhysicalLayer, this, true);
-		}
-		if (DamageOnTouch) {
-			Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect);
 		}
 	}
 
 	public override void Update () {
 		base.Update();
+		if (CharacterState != CharacterState.GamePlay || Health.TakingDamage) return;
+		XY = ISlimeWalker.GetAttachingPosition(this);
 		if (ISlimeWalker.RefreshAttachingDirection(this) != Direction5.Center) {
+			// Walking
 			IgnorePhysics.True(1);
 			XY = ISlimeWalker.GetNextSlimePosition(this);
+			Movement.Move(FacingPositive ? Direction3.Right : Direction3.Left, Direction3.None);
+			Movement.LockFacingRight(FacingPositive);
+		} else {
+			// Falling
+			Movement.Stop();
 		}
 	}
 
@@ -53,11 +88,29 @@ public abstract class Slime : Enemy, ISlimeWalker {
 		var cell = sRenderer.RenderedCell;
 		if (cell == null || cell.Sprite == null) return;
 		var walker = this as ISlimeWalker;
-		var renderingDir = walker.AttachingDirection.ToDirection4();
-		if (renderingDir == Direction4.Up) return;
+		var renderingDir = walker.AttachingDirection.Opposite().ToDirection4();
+		CurrentRotation = Util.LerpAngleUnclamped(
+			CurrentRotation,
+			renderingDir.GetRotation(),
+			0.3f
+		);
+		cell.Rotation = CurrentRotation.RoundToInt();
 
-		cell.Rotation = renderingDir.Opposite().GetRotation();
+	}
 
+	protected override bool GroundedCheck () {
+		var walker = this as ISlimeWalker;
+		GroundedID = walker.AttachingID;
+		return walker.AttachingDirection != Direction5.Center;
+	}
+
+	public override void TakeDamage (Damage damage) {
+		base.TakeDamage(damage);
+		LocalPosition = Int2.zero;
+		AttachingDirection = Direction5.Center;
+		AttachingTarget = null;
+		AttachingRect = default;
+		IgnorePhysics.False(1);
 	}
 
 }

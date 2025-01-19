@@ -21,7 +21,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public int BounceSpeedRate { get; set; } = 0;
 	public int OffsetX { get; set; } = 0;
 	public int OffsetY { get; set; } = 0;
-	public int GroundedID { get; private set; } = 0;
+	public int GroundedID { get; set; } = 0;
 	public int PrevX { get; private set; } = 0;
 	public int PrevY { get; private set; } = 0;
 	public int DeltaPositionX => X - PrevX;
@@ -381,10 +381,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 		if (IgnoreInsideGround) return IsInsideGround;
 		int mask = PhysicsMask.LEVEL & CollisionMask;
 		if (mask == 0) return false;
-		return Physics.Overlap(mask, IRect.Point(
-			X + OffsetX + Width / 2,
-			Y + OffsetY + Height / 2
-		), this);
+		var rect = Rect;
+		return Physics.Overlap(mask, IRect.Point(rect.CenterX(), rect.CenterY()), this);
 	}
 
 

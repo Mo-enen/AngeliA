@@ -50,8 +50,8 @@ public class RigidbodyNavigation (Rigidbody target) {
 	private CharacterMovement Movement => (Target is IWithCharacterMovement wMove) ? wMove.CurrentMovement : null;
 
 	// Data
-	private static bool DrawDebugGizmos = false;
 	private readonly Navigation.Operation[] NavOperations = new Navigation.Operation[64];
+	private static bool DrawDebugGizmos = false;
 	private int CurrentNavOperationIndex = 0;
 	private int CurrentNavOperationCount = 0;
 	private int NavFlyStartFrame = int.MinValue;
@@ -68,7 +68,6 @@ public class RigidbodyNavigation (Rigidbody target) {
 
 
 	#region --- MSG ---
-
 
 
 	[CheatCode("DrawNavGizmos")]
@@ -131,6 +130,9 @@ public class RigidbodyNavigation (Rigidbody target) {
 		if (DrawDebugGizmos) {
 			var targetRect = Target.Rect;
 			var pos = targetRect.CenterInt();
+			if (Target.GetType().Name.StartsWith("H")) {
+				Debug.Log(Target.VelocityY);
+			}
 			if (NavigationState == RigidbodyNavigationState.Operation) {
 				for (int i = CurrentNavOperationIndex; i < CurrentNavOperationCount; i++) {
 					var operation = NavOperations[i];
@@ -228,14 +230,14 @@ public class RigidbodyNavigation (Rigidbody target) {
 	private void NavUpdate_Movement_Idle () {
 		VelocityX = 0;
 		if (!InWater && !IsInsideGround) {
-			if (Navigation.IsGround(Game.GlobalFrame, Stage.ViewRect, X, Y + Const.HALF / 2, out int groundY)) {
+			if (Navigation.IsGround(Game.GlobalFrame, Stage.ViewRect, X, Y + Const.QUARTER, out int groundY)) {
 				// Move to Ground
 				VelocityY = groundY - Y;
 				Target.MakeGrounded(1);
 			} else {
 				// Fall Down
 				int gravity = Rigidbody.GlobalGravity * (VelocityY <= 0 ? Target.FallingGravityScale / 1000 : Target.RisingGravityScale / 1000);
-				VelocityY = (VelocityY - gravity).Clamp(-Target.MaxGravitySpeed, int.MaxValue);
+				VelocityY = (VelocityY - gravity).Clamp(-Target.MaxGravitySpeed, Target.MaxGravitySpeed);
 			}
 		} else {
 			VelocityY = 0;

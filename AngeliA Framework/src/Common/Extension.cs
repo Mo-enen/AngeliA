@@ -492,6 +492,15 @@ public static class Extension {
 	};
 
 	[MethodImpl(INLINE)]
+	public static Int2 Normal (this Direction5 dir) => dir switch {
+		Direction5.Down => new(0, -1),
+		Direction5.Up => new(0, 1),
+		Direction5.Left => new(-1, 0),
+		Direction5.Right => new(1, 0),
+		_ => Int2.zero,
+	};
+
+	[MethodImpl(INLINE)]
 	public static Int2 Normal (this Direction8 dir) => dir switch {
 		Direction8.Bottom => new(0, -1),
 		Direction8.BottomLeft => new(-1, -1),
@@ -511,6 +520,20 @@ public static class Extension {
 		Direction4.Left => -90,
 		Direction4.Right => 90,
 		_ => 0,
+	};
+
+	[MethodImpl(INLINE)]
+	public static Direction3 GetHorizontalDirection (this Direction5 dir) => dir switch {
+		Direction5.Left => Direction3.Left,
+		Direction5.Right => Direction3.Right,
+		_ => Direction3.None,
+	};
+
+	[MethodImpl(INLINE)]
+	public static Direction3 GetVerticalDirection (this Direction5 dir) => dir switch {
+		Direction5.Down => Direction3.Down,
+		Direction5.Up => Direction3.Up,
+		_ => Direction3.None,
 	};
 
 	[MethodImpl(INLINE)]
@@ -543,6 +566,20 @@ public static class Extension {
 		_ => false,
 	};
 
+	[MethodImpl(INLINE)]
+	public static bool IsPositive (this Direction4 dir) => dir switch {
+		Direction4.Up => true,
+		Direction4.Right => true,
+		_ => false,
+	};
+
+	[MethodImpl(INLINE)]
+	public static bool IsPositive (this Direction5 dir) => dir switch {
+		Direction5.Up => true,
+		Direction5.Right => true,
+		_ => false,
+	};
+
 	[MethodImpl(INLINE)] public static bool IsLeft (this Direction8 dir) => dir == Direction8.Left || dir == Direction8.BottomLeft || dir == Direction8.TopLeft;
 	[MethodImpl(INLINE)] public static bool IsRight (this Direction8 dir) => dir == Direction8.Right || dir == Direction8.BottomRight || dir == Direction8.TopRight;
 	[MethodImpl(INLINE)] public static bool IsVertical (this Direction8 dir) => dir == Direction8.Top || dir == Direction8.Bottom;
@@ -565,6 +602,25 @@ public static class Extension {
 		Direction4.Left => Direction5.Left,
 		Direction4.Right => Direction5.Right,
 		_ => Direction5.Up,
+	};
+
+	[MethodImpl(INLINE)]
+	public static Alignment ToAlignment (this Direction5 dir5) => dir5 switch {
+		Direction5.Down => Alignment.BottomMid,
+		Direction5.Left => Alignment.MidLeft,
+		Direction5.Right => Alignment.MidRight,
+		Direction5.Up => Alignment.TopMid,
+		Direction5.Center => Alignment.MidMid,
+		_ => default,
+	};
+
+	[MethodImpl(INLINE)]
+	public static Alignment ToAlignment (this Direction4 dir4) => dir4 switch {
+		Direction4.Down => Alignment.BottomMid,
+		Direction4.Left => Alignment.MidLeft,
+		Direction4.Right => Alignment.MidRight,
+		Direction4.Up => Alignment.TopMid,
+		_ => default,
 	};
 
 	// Rect

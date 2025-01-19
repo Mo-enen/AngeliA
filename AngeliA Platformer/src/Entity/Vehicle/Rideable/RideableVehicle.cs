@@ -27,6 +27,9 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 		SettledPosition.y = Y;
 		Navigation.OnActivated();
 		FreeWanderingRandomShift++;
+		VelocityX = 0;
+		VelocityY = 0;
+		FillAsTrigger();
 	}
 
 
