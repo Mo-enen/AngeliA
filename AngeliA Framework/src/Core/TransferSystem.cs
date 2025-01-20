@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-
 public static class TransferSystem {
 
 
@@ -15,7 +14,7 @@ public static class TransferSystem {
 	// Data
 	[OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData] internal static System.Action<int, Int3, object> OnTransferArrived;
 	[OnTransferPassAttribute_Int3UnitPos_ObjectData] internal static System.Action<Int3, object> OnTransferPass;
-	private static readonly Dictionary<int, Direction4> PipePool = [];
+	private static readonly Dictionary<int, Direction4> TransferPool = [];
 	private static readonly Dictionary<Int3, int> TransferStamp = [];
 	private static readonly Queue<(Int3 unitPos, object data, int stamp)> TransferTask = [];
 
@@ -26,6 +25,16 @@ public static class TransferSystem {
 
 
 	#region --- MSG ---
+
+
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		foreach (var type in typeof(IItemTransfer).AllClassImplemented()) {
+			if (System.Activator.CreateInstance(type) is not IItemTransfer ins) continue;
+			TransferPool.TryAdd(type.AngeHash(), ins.Direction);
+		}
+		TransferPool.TrimExcess();
+	}
 
 
 	[OnGameUpdateLater]
@@ -47,10 +56,7 @@ public static class TransferSystem {
 	#region --- API ---
 
 
-	public static void RegisterPipe (int pipeID, Direction4 direction) => PipePool.TryAdd(pipeID, direction);
-
-
-	public static bool IsPipe (int pipeID) => PipePool.ContainsKey(pipeID);
+	public static bool IsTransfer (int transferID, out Direction4 direction) => TransferPool.TryGetValue(transferID, out direction);
 
 
 	public static void StartTransfer (Int3 unitPos, object data, int stamp = int.MinValue) {
@@ -69,14 +75,14 @@ public static class TransferSystem {
 
 	private static void Iterate (WorldStream stream, Int3 unitPos, object data, int stamp) {
 
-		// Arrive at Non-Pipe Block
+		// Arrive at Non-Transfer Block
 		int id = stream.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
-		if (id == 0 || !PipePool.TryGetValue(id, out var direction)) {
+		if (id == 0 || !TransferPool.TryGetValue(id, out var direction)) {
 			OnTransferArrived?.Invoke(id, unitPos, data);
 			return;
 		}
 
-		// Arrive at Pipe
+		// Arrive at Transfer
 		var normal = direction.Normal();
 		var nextPos = unitPos.Shift(normal.x, normal.y);
 		if (!TransferStamp.TryGetValue(nextPos, out int nextStamp) || stamp > nextStamp) {

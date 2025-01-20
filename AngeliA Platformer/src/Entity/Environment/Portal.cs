@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
 
+namespace AngeliA.Platformer;
 
+[EntityAttribute.MapEditorGroup("Teleport")]
 public abstract class Portal : Entity {
 
 	protected abstract Int3 TargetGlobalPosition { get; }
