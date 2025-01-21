@@ -115,7 +115,7 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 	}
 
 
-	void ICircuitOperator.TriggerCircuit () => Touch();
+	void ICircuitOperator.OnTriggeredByCircuit () => Touch();
 
 
 	#endregion

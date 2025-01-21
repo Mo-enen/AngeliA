@@ -38,6 +38,6 @@ public abstract class TriggerablePlatform : Platform, IUnitable, ICircuitOperato
 		}
 	}
 
-	void ICircuitOperator.TriggerCircuit () => Trigger();
+	void ICircuitOperator.OnTriggeredByCircuit () => Trigger();
 
 }

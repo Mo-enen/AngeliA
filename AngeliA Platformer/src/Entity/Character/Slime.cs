@@ -27,7 +27,7 @@ public abstract class Slime : Enemy, ISlimeWalker {
 	public IRect AttachingRect { get; set; }
 	public Entity AttachingTarget { get; set; }
 	public int AttachingID { get; set; }
-	public int WalkSpeed => 12;
+	public int WalkSpeed => Movement.RunSpeed;
 	public bool FacingPositive { get; set; }
 	private float CurrentRotation = 0;
 
@@ -37,6 +37,7 @@ public abstract class Slime : Enemy, ISlimeWalker {
 		if (FromWorld) {
 			X = X.ToUnifyGlobal() + Const.HALF;
 		}
+		Movement.RunSpeed.BaseValue = 12;
 		Movement.PushAvailable.BaseValue = false;
 		Movement.SquatAvailable.BaseValue = false;
 		Movement.FlyAvailable.BaseValue = false;

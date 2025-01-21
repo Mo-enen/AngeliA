@@ -129,7 +129,7 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 	}
 
 
-	void ICircuitOperator.TriggerCircuit () => Touch();
+	void ICircuitOperator.OnTriggeredByCircuit () => Touch();
 
 
 	#endregion

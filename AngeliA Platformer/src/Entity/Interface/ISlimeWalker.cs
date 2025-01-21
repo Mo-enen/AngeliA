@@ -7,7 +7,7 @@ namespace AngeliA.Platformer;
 internal interface ISlimeWalker {
 
 	// VAR
-	const int CHECKING_GAP = 4;
+	const int CHECKING_GAP = 16;
 
 	/// <summary>
 	/// When this value is "Up" the walker will be upside-down. "Center" means not attaching anything.

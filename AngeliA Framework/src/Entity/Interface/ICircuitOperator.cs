@@ -14,6 +14,6 @@ public interface ICircuitOperator {
 		}
 	}
 	public static bool IsOperator (int typeID) => OperatorSet.Contains(typeID);
-	public void TriggerCircuit ();
+	public void OnTriggeredByCircuit ();
 
 }

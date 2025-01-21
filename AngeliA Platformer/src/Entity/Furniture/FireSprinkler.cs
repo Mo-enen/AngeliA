@@ -104,7 +104,7 @@ public abstract class FireSprinkler : Furniture, ICircuitOperator {
 		}
 	}
 
-	void ICircuitOperator.TriggerCircuit () {
+	void ICircuitOperator.OnTriggeredByCircuit () {
 		if (SprinklingFrame < 0) {
 			SprinklingFrame = Game.GlobalFrame + RespondDelay;
 		}

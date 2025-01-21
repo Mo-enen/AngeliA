@@ -166,7 +166,7 @@ public static class CircuitSystem {
 				PhysicsMask.ENTITY, null, OperationMode.ColliderAndTrigger
 			) is ICircuitOperator _operator
 		) {
-			_operator.TriggerCircuit();
+			_operator.OnTriggeredByCircuit();
 		}
 	}
 
