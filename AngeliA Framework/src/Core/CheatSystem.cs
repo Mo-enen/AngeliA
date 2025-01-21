@@ -68,7 +68,7 @@ public static class CheatSystem {
 		}
 		// Init Entity Spawning
 		var spawnInfo = typeof(CheatSystem).GetMethod(nameof(SpawnEntityMethod), BindingFlags.NonPublic | BindingFlags.Static);
-		foreach (var (type, _) in Util.AllClassWithAttribute<EntityAttribute.SpawnWithCheatCodeAttribute>()) {
+		foreach (var (type, _) in Util.AllClassWithAttribute<EntityAttribute.SpawnWithCheatCodeAttribute>(inherit: true)) {
 			TryAddCheatAction($"Spawn{type.AngeName()}", spawnInfo, type.AngeHash());
 		}
 	}
@@ -143,8 +143,9 @@ public static class CheatSystem {
 			spawnX.ToUnit(), spawnY.ToUnit(), Stage.ViewZ,
 			out int unitX, out int unitY
 		)) {
-			spawnX = unitX.ToGlobal() + Const.HALF;
-			spawnY = unitY.ToGlobal();
+			spawnX = unitX.ToGlobal();
+			spawnY = unitY.ToGlobal() + Const.CEL;
+			spawnX += PlayerSystem.Selecting.Movement.FacingRight ? Const.CEL * 2 : -Const.CEL * 2;
 		}
 		Stage.SpawnEntity(typeID, spawnX, spawnY);
 	}

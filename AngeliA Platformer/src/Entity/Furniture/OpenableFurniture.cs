@@ -20,7 +20,7 @@ public abstract class OpenableFurniture : ActionFurniture, IActionTarget {
 
 		var act = this as IActionTarget;
 		if (Renderer.TryGetSpriteFromGroup(TypeID, Open ? 1 : 0, out var sprite)) {
-			var cell = Renderer.Draw(sprite, RenderingRect, act.AllowInvoke() ? Color32.WHITE : Color32.WHITE_96);
+			var cell = Renderer.Draw(sprite, Rect, act.AllowInvoke() ? Color32.WHITE : Color32.WHITE_96);
 			IActionTarget.MakeCellAsActionTarget(this, cell);
 		}
 

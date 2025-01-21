@@ -16,7 +16,7 @@ public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 	public override void LateUpdate () {
 		bool opened = IsChestOpened(this);
 		if (Renderer.TryGetSpriteFromGroup(TypeID, opened ? 1 : 0, out var sprite, false, true)) {
-			IActionTarget.DrawActionTarget(this, sprite, RenderingRect);
+			IActionTarget.DrawActionTarget(this, sprite, Rect);
 		}
 	}
 

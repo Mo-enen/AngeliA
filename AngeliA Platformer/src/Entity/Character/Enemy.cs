@@ -4,6 +4,7 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+[EntityAttribute.SpawnWithCheatCode]
 public abstract class Enemy : Character, IDamageReceiver {
 
 	// VAR
@@ -24,7 +25,7 @@ public abstract class Enemy : Character, IDamageReceiver {
 	public override void TakeDamage (Damage damage) {
 		base.TakeDamage(damage);
 		// Big Knockback
-		
+
 
 
 	}

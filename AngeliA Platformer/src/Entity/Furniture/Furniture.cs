@@ -17,10 +17,10 @@ public abstract class Furniture : Entity, IBlockEntity {
 
 	// Api
 	protected virtual Direction3 ModuleType => Direction3.None;
-	protected virtual IRect RenderingRect => Rect.Expand(ColliderBorder);
 	public Furniture FurnitureLeftOrDown { get; private set; } = null;
 	public Furniture FurnitureRightOrUp { get; private set; } = null;
 	protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
+	public override IRect ColliderRect => Rect.Shrink(ColliderBorder);
 
 	// Data
 	protected Int4 ColliderBorder = Int4.zero;
@@ -74,18 +74,11 @@ public abstract class Furniture : Entity, IBlockEntity {
 			// Shrink Rect
 			var sprite = GetSpriteFromPose();
 			if (sprite != null) {
-				X = X.ToUnifyGlobal();
-				Y = Y.ToUnifyGlobal();
 				ColliderBorder = sprite.GlobalBorder;
-				if (ColliderBorder != Int4.zero) {
-					int rWidth = sprite.GlobalWidth;
-					int rHeight = sprite.GlobalHeight;
-					var rect = new IRect(X - (rWidth - Const.CEL) / 2, Y, rWidth, rHeight).Shrink(ColliderBorder);
-					X = rect.x;
-					Y = rect.y;
-					Width = rect.width;
-					Height = rect.height;
-				}
+				X = X.ToUnifyGlobal() - (sprite.GlobalWidth - Const.CEL) / 2;
+				Y = Y.ToUnifyGlobal();
+				Width = sprite.GlobalWidth;
+				Height = sprite.GlobalHeight;
 			}
 		}
 	}
@@ -95,7 +88,7 @@ public abstract class Furniture : Entity, IBlockEntity {
 		base.LateUpdate();
 		if (Pose == FittingPose.Unknown) return;
 		var sprite = GetSpriteFromPose();
-		Renderer.Draw(sprite, RenderingRect);
+		Renderer.Draw(sprite, Rect);
 	}
 
 

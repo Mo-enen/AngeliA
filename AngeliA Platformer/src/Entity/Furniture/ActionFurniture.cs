@@ -22,9 +22,9 @@ public abstract class ActionFurniture : Furniture, IActionTarget {
 		}
 		bool useHorizontal = ModuleType != Direction3.Horizontal || Pose != FittingPose.Mid;
 		bool useVertical = ModuleType != Direction3.Vertical || Pose == FittingPose.Up;
-		IActionTarget.DrawActionTarget(this, sprite, RenderingRect, pivotX, 0f, useHorizontal, useVertical);
+		IActionTarget.DrawActionTarget(this, sprite, Rect, pivotX, 0f, useHorizontal, useVertical);
 	}
-	
+
 	public abstract bool Invoke ();
 
 	public virtual bool AllowInvoke () => PlayerSystem.Selecting != null && !PlayerSystem.IgnoringInput && !PlayerSystem.IgnoringAction;

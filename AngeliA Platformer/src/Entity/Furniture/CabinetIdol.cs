@@ -17,7 +17,7 @@ public abstract class CabinetIdol : Furniture, IActionTarget {
 		if (Renderer.TryGetSpriteFromGroup(
 			TypeID, s_ArtworkIndex.Value, out var sprite, true, true
 		)) {
-			IActionTarget.DrawActionTarget(this, sprite, RenderingRect);
+			IActionTarget.DrawActionTarget(this, sprite, Rect);
 		}
 	}
 

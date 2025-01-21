@@ -122,7 +122,7 @@ public static class Physics {
 	public static void FillBlock (int layer, int blockID, IRect globalRect, bool isTrigger = false, Tag tag = 0) => FillLogic(layer, blockID, globalRect, null, 0, 0, isTrigger, tag);
 
 
-	public static void FillEntity (int layer, Entity entity, bool isTrigger = false, Tag tag = 0) => FillLogic(layer, entity != null ? entity.TypeID : 0, entity.Rect, entity, 0, 0, isTrigger, tag);
+	public static void FillEntity (int layer, Entity entity, bool isTrigger = false, Tag tag = 0) => FillLogic(layer, entity != null ? entity.TypeID : 0, entity.ColliderRect, entity, 0, 0, isTrigger, tag);
 
 
 	// Overlap
@@ -247,7 +247,7 @@ FrameworkUtil.GetOnewayTag(gateDir)
 		c_ForcePushCache.Reset();
 		int deltaX = direction.IsHorizontal() ? distance : 0;
 		int deltaY = direction.IsVertical() ? distance : 0;
-		c_ForcePushCache.LinkToTail((host, host.Rect, host.Rect.Shift(deltaX, deltaY)));
+		c_ForcePushCache.LinkToTail((host, host.ColliderRect, host.ColliderRect.Shift(deltaX, deltaY)));
 		host.X += deltaX;
 		host.Y += deltaY;
 		if (deltaX != 0) host.VelocityX = 0;
@@ -260,7 +260,7 @@ FrameworkUtil.GetOnewayTag(gateDir)
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is not Rigidbody hitRig) continue;
-				var hitRect = hitRig.Rect;
+				var hitRect = hitRig.ColliderRect;
 				switch (direction) {
 					case Direction4.Left:
 						if (hitRect.x >= sourceRect.x) continue;
@@ -281,7 +281,7 @@ FrameworkUtil.GetOnewayTag(gateDir)
 				}
 				hitRig.MakeGrounded(1, source.TypeID);
 				hitRig.IgnoreGravity.True(1);
-				c_ForcePushCache.LinkToTail((hitRig, hitRect, hitRig.Rect));
+				c_ForcePushCache.LinkToTail((hitRig, hitRect, hitRig.ColliderRect));
 				if (deltaX != 0) hitRig.VelocityX = 0;
 				if (deltaY != 0) hitRig.VelocityY = 0;
 			}
@@ -309,13 +309,13 @@ FrameworkUtil.GetOnewayTag(gateDir)
 		for (int j = d; j <= u; j++) {
 			for (int i = l; i <= r; i++) {
 				for (int dep = 0; dep < DEPTH; dep++) {
-					ref var cell = ref layerItem.Cells[i, j, dep];
-					if (cell.Frame != CurrentFrame) break;
-					if (ignore != null && cell.Entity == ignore) continue;
-					if (tag != Tag.None && !cell.Tag.HasAll(tag)) continue;
-					if ((!cell.IsTrigger || !useTrigger) && (cell.IsTrigger || !useCollider)) continue;
-					if (globalRect.Overlaps(cell.Entity != null ? cell.Entity.Rect : cell.Rect)) {
-						info = cell;
+					ref var hit = ref layerItem.Cells[i, j, dep];
+					if (hit.Frame != CurrentFrame) break;
+					if (ignore != null && hit.Entity == ignore) continue;
+					if (tag != Tag.None && !hit.Tag.HasAll(tag)) continue;
+					if ((!hit.IsTrigger || !useTrigger) && (hit.IsTrigger || !useCollider)) continue;
+					if (globalRect.Overlaps(hit.Entity != null ? hit.Entity.ColliderRect : hit.Rect)) {
+						info = hit;
 						return true;
 					}
 				}
@@ -344,15 +344,15 @@ FrameworkUtil.GetOnewayTag(gateDir)
 		for (int j = d; j <= u; j++) {
 			for (int i = l; i <= r; i++) {
 				for (int dep = 0; dep < DEPTH; dep++) {
-					ref var cell = ref layerItem.Cells[i, j, dep];
-					if (cell.Frame != CurrentFrame) { break; }
-					if (ignore != null && cell.Entity == ignore) continue;
-					if (tag != Tag.None && !cell.Tag.HasAll(tag)) continue;
-					if ((!cell.IsTrigger || !useTrigger) && (cell.IsTrigger || !useCollider)) continue;
-					if (!ignoreStamp && cell.Entity != null && cell.Entity.Stamp == entityStamp) continue;
-					if (globalRect.Overlaps(cell.Entity != null ? cell.Entity.Rect : cell.Rect)) {
-						if (cell.Entity != null) cell.Entity.Stamp = entityStamp;
-						hits[count] = cell;
+					ref var hit = ref layerItem.Cells[i, j, dep];
+					if (hit.Frame != CurrentFrame) { break; }
+					if (ignore != null && hit.Entity == ignore) continue;
+					if (tag != Tag.None && !hit.Tag.HasAll(tag)) continue;
+					if ((!hit.IsTrigger || !useTrigger) && (hit.IsTrigger || !useCollider)) continue;
+					if (!ignoreStamp && hit.Entity != null && hit.Entity.Stamp == entityStamp) continue;
+					if (globalRect.Overlaps(hit.Entity != null ? hit.Entity.ColliderRect : hit.Rect)) {
+						if (hit.Entity != null) hit.Entity.Stamp = entityStamp;
+						hits[count] = hit;
 						count++;
 						if (count >= maxLength) return count;
 					}
