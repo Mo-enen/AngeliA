@@ -67,7 +67,7 @@ public partial class GameEditor {
 			37423672, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
 			(int)(info.LightMap_SelfLerp * 1000), 0, 1000
 		) / 1000f;
-		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_SelfLerp * 1000), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeInsideRight(digitWidth), (int)(info.LightMap_SelfLerp * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Solid Illuminance
@@ -76,7 +76,7 @@ public partial class GameEditor {
 			37423673, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
 			(int)(info.LightMap_SolidIlluminance * 1000), 1000, 2000
 		) / 1000f;
-		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_SolidIlluminance * 1000), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeInsideRight(digitWidth), (int)(info.LightMap_SolidIlluminance * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Air Illuminance D
@@ -85,7 +85,7 @@ public partial class GameEditor {
 			37423674, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
 			(int)(info.LightMap_AirIlluminanceDay * 1000), 0, 1000
 		) / 1000f;
-		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_AirIlluminanceDay * 1000), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeInsideRight(digitWidth), (int)(info.LightMap_AirIlluminanceDay * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Air Illuminance N
@@ -94,7 +94,7 @@ public partial class GameEditor {
 			37413674, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
 			(int)(info.LightMap_AirIlluminanceNight * 1000), 0, 1000
 		) / 1000f;
-		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_AirIlluminanceNight * 1000), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeInsideRight(digitWidth), (int)(info.LightMap_AirIlluminanceNight * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Background Tint
@@ -103,7 +103,7 @@ public partial class GameEditor {
 			37423675, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
 			(int)(info.LightMap_BackgroundTint * 1000), 0, 1000
 		) / 1000f;
-		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_BackgroundTint * 1000), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeInsideRight(digitWidth), (int)(info.LightMap_BackgroundTint * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Level Illu Remain
@@ -112,7 +112,7 @@ public partial class GameEditor {
 			37423676, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
 			(int)(info.LightMap_LevelIlluminateRemain * 1000), 0, 1000
 		) / 1000f;
-		GUI.IntLabel(rect.EdgeRight(digitWidth), (int)(info.LightMap_LevelIlluminateRemain * 1000), GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeInsideRight(digitWidth), (int)(info.LightMap_LevelIlluminateRemain * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Reset

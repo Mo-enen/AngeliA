@@ -15,7 +15,7 @@ public abstract class Bullet : Entity {
 
 	#region --- VAR ---
 
-	
+
 	// Api
 	public static event System.Action<Bullet, IDamageReceiver, Tag> OnBulletDealDamage;
 	public static event System.Action<Bullet, Tag> OnBulletHitEnvironment;
@@ -162,8 +162,8 @@ public abstract class Bullet : Entity {
 	public bool GroundCheck (out Color32 groundTint) {
 		groundTint = Color32.WHITE;
 		bool grounded =
-			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out var hit, Sender) ||
-			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutside(Direction4.Down, 4), out hit, Sender, OperationMode.TriggerOnly, Tag.OnewayUp);
+			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutsideDown(4), out var hit, Sender) ||
+			Physics.Overlap(PhysicsMask.MAP, Rect.EdgeOutsideDown(4), out hit, Sender, OperationMode.TriggerOnly, Tag.OnewayUp);
 		if (grounded && Renderer.TryGetSprite(hit.SourceID, out var groundSprite, false)) {
 			groundTint = groundSprite.SummaryTint;
 		}

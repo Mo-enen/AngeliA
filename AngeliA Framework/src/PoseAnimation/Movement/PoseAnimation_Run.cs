@@ -8,12 +8,12 @@ public class PoseAnimation_Run : PoseAnimation {
 
 		const int FRAME_LENGTH = 16;
 
-		int runSpeed = (Movement.RunSpeed.FinalValue.Abs() / 2).Clamp(1, 72);
-		int loop = Util.Max(FRAME_LENGTH * 37 / runSpeed / FRAME_LENGTH * FRAME_LENGTH, 1);
-		int frameRate = (loop / FRAME_LENGTH).GreaterOrEquel(1);
-		int fixedAnimationFrame = (CurrentAnimationFrame + frameRate * 2).UMod(loop);
-		int currentFrame = fixedAnimationFrame / frameRate * frameRate;
-		int arrFrame = (currentFrame / frameRate) % FRAME_LENGTH;
+		int runSpeed = Movement.RunSpeed.FinalValue.Abs().GreaterOrEquel(1);
+		int arrFrame = Util.RemapUnclamped(
+			0, FRAME_LENGTH,
+			0, FRAME_LENGTH * runSpeed / 57,
+			CurrentAnimationFrame
+		).UMod(FRAME_LENGTH);
 
 		float ease = EASE[arrFrame];
 		float easeDouble = EASE[arrFrame + FRAME_LENGTH];

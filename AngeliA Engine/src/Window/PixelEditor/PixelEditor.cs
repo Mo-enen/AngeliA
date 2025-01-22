@@ -433,7 +433,7 @@ public partial class PixelEditor : WindowUI {
 			if (DraggingState != DragState.ResizeSprite || ResizingStageIndex != i || ResizeForBorder) {
 				Renderer.Draw(
 					BuiltInSprite.SHADOW_LINE_16,
-					rect.EdgeOutside(Direction4.Down, PixelStageSize),
+					rect.EdgeOutsideDown(PixelStageSize),
 					color: Color32.BLACK_64,
 					z: int.MinValue + 3
 				);
@@ -522,12 +522,12 @@ public partial class PixelEditor : WindowUI {
 				labelHeight: 0
 			);
 			// U
-			var xRect = canvasRectInt.Edge(Direction4.Up, GizmosThickness);
+			var xRect = canvasRectInt.EdgeInside(Direction4.Up, GizmosThickness);
 			if (xRect.Overlaps(StageRect)) {
 				Renderer.DrawPixel(xRect.Clamp(StageRect), tint, z: int.MinValue + 3);
 			}
 			// R
-			var yRect = canvasRectInt.Edge(Direction4.Right, GizmosThickness);
+			var yRect = canvasRectInt.EdgeInside(Direction4.Right, GizmosThickness);
 			if (yRect.Overlaps(StageRect)) {
 				Renderer.DrawPixel(yRect.Clamp(StageRect), tint, z: int.MinValue + 3);
 			}
@@ -596,25 +596,25 @@ public partial class PixelEditor : WindowUI {
 				var hrDir = HoveringResizeDirection.Value;
 				if (hrDir.IsLeft()) {
 					Renderer.DrawPixel(
-						rect.Edge(Direction4.Left, GizmosThickness),
+						rect.EdgeInside(Direction4.Left, GizmosThickness),
 						Skin.HighlightColor, z: int.MaxValue
 					);
 				}
 				if (hrDir.IsRight()) {
 					Renderer.DrawPixel(
-						rect.Edge(Direction4.Right, GizmosThickness),
+						rect.EdgeInside(Direction4.Right, GizmosThickness),
 						Skin.HighlightColor, z: int.MaxValue
 					);
 				}
 				if (hrDir.IsBottom()) {
 					Renderer.DrawPixel(
-						rect.Edge(Direction4.Down, GizmosThickness),
+						rect.EdgeInside(Direction4.Down, GizmosThickness),
 						Skin.HighlightColor, z: int.MaxValue
 					);
 				}
 				if (hrDir.IsTop()) {
 					Renderer.DrawPixel(
-						rect.Edge(Direction4.Up, GizmosThickness),
+						rect.EdgeInside(Direction4.Up, GizmosThickness),
 						Skin.HighlightColor, z: int.MaxValue
 					);
 				}
@@ -1209,20 +1209,20 @@ public partial class PixelEditor : WindowUI {
 	private void DrawFrame (IRect stageRect, Color32 color, int thickness, int z = int.MaxValue) {
 		if (color.a < 255) {
 			if (stageRect.height > thickness) {
-				Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).Edge(Direction4.Left, thickness), color, z);
+				Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Left, thickness), color, z);
 				if (stageRect.width > thickness) {
-					Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).Edge(Direction4.Right, thickness), color, z);
+					Renderer.DrawPixel(stageRect.Shrink(0, 0, thickness, thickness).EdgeInside(Direction4.Right, thickness), color, z);
 				}
 			}
-			Renderer.DrawPixel(stageRect.Edge(Direction4.Down, thickness), color, z);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Down, thickness), color, z);
 			if (stageRect.height > thickness) {
-				Renderer.DrawPixel(stageRect.Edge(Direction4.Up, thickness), color, z);
+				Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Up, thickness), color, z);
 			}
 		} else {
-			Renderer.DrawPixel(stageRect.Edge(Direction4.Left, thickness), color, z);
-			Renderer.DrawPixel(stageRect.Edge(Direction4.Right, thickness), color, z);
-			Renderer.DrawPixel(stageRect.Edge(Direction4.Down, thickness), color, z);
-			Renderer.DrawPixel(stageRect.Edge(Direction4.Up, thickness), color, z);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Left, thickness), color, z);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Right, thickness), color, z);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Down, thickness), color, z);
+			Renderer.DrawPixel(stageRect.EdgeInside(Direction4.Up, thickness), color, z);
 		}
 	}
 
@@ -1230,7 +1230,7 @@ public partial class PixelEditor : WindowUI {
 	private void DrawFrameWithGap (IRect rect, Color32 color, Int4 thickness, Int4 gap) {
 		// Down
 		if (thickness.down > 0) {
-			var edge = rect.Edge(Direction4.Down, thickness.down);
+			var edge = rect.EdgeInside(Direction4.Down, thickness.down);
 			if (gap.down == 0) {
 				Renderer.DrawPixel(edge, color);
 			} else if (gap.down > 0) {
@@ -1239,13 +1239,13 @@ public partial class PixelEditor : WindowUI {
 				Renderer.DrawPixel(edge.Shrink(0, shrink, 0, 0), color);
 			} else {
 				int size = -gap.down;
-				Renderer.DrawPixel(edge.EdgeOutside(Direction4.Left, size), color);
-				Renderer.DrawPixel(edge.EdgeOutside(Direction4.Right, size), color);
+				Renderer.DrawPixel(edge.EdgeOutsideLeft(size), color);
+				Renderer.DrawPixel(edge.EdgeOutsideRight(size), color);
 			}
 		}
 		// Up
 		if (thickness.up > 0) {
-			var edge = rect.Edge(Direction4.Up, thickness.up);
+			var edge = rect.EdgeInside(Direction4.Up, thickness.up);
 			if (gap.up == 0) {
 				Renderer.DrawPixel(edge, color);
 			} else if (gap.up > 0) {
@@ -1254,13 +1254,13 @@ public partial class PixelEditor : WindowUI {
 				Renderer.DrawPixel(edge.Shrink(0, shrink, 0, 0), color);
 			} else {
 				int size = -gap.up;
-				Renderer.DrawPixel(edge.EdgeOutside(Direction4.Left, size), color);
-				Renderer.DrawPixel(edge.EdgeOutside(Direction4.Right, size), color);
+				Renderer.DrawPixel(edge.EdgeOutsideLeft(size), color);
+				Renderer.DrawPixel(edge.EdgeOutsideRight(size), color);
 			}
 		}
 		// Left
 		if (thickness.left > 0) {
-			var edge = rect.Edge(Direction4.Left, thickness.left);
+			var edge = rect.EdgeInside(Direction4.Left, thickness.left);
 			if (gap.left == 0) {
 				Renderer.DrawPixel(edge, color);
 			} else if (gap.left > 0) {
@@ -1269,13 +1269,13 @@ public partial class PixelEditor : WindowUI {
 				Renderer.DrawPixel(edge.Shrink(0, 0, 0, shrink), color);
 			} else {
 				int size = -gap.left;
-				Renderer.DrawPixel(edge.EdgeOutside(Direction4.Down, size), color);
-				Renderer.DrawPixel(edge.EdgeOutside(Direction4.Up, size), color);
+				Renderer.DrawPixel(edge.EdgeOutsideDown(size), color);
+				Renderer.DrawPixel(edge.EdgeOutsideUp(size), color);
 			}
 		}
 		// Right
 		if (thickness.right > 0) {
-			var edge = rect.Edge(Direction4.Right, thickness.right);
+			var edge = rect.EdgeInside(Direction4.Right, thickness.right);
 			if (gap.right == 0) {
 				Renderer.DrawPixel(edge, color);
 			} else if (gap.right > 0) {
@@ -1284,8 +1284,8 @@ public partial class PixelEditor : WindowUI {
 				Renderer.DrawPixel(edge.Shrink(0, 0, 0, shrink), color);
 			} else {
 				int size = -gap.right;
-				Renderer.DrawPixel(edge.EdgeOutside(Direction4.Down, size), color);
-				Renderer.DrawPixel(edge.EdgeOutside(Direction4.Up, size), color);
+				Renderer.DrawPixel(edge.EdgeOutsideDown(size), color);
+				Renderer.DrawPixel(edge.EdgeOutsideUp(size), color);
 			}
 		}
 	}

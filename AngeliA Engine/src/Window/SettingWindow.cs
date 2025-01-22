@@ -145,7 +145,7 @@ public class SettingWindow : WindowUI {
 				panelRect.width = maxPanelWidth;
 			}
 
-			var rect = panelRect.Edge(Direction4.Up, GUI.FieldHeight);
+			var rect = panelRect.EdgeInside(Direction4.Up, GUI.FieldHeight);
 
 			using var _ = new GUILabelWidthScope(Util.Min(Unify(320), rect.width / 2));
 
@@ -165,7 +165,7 @@ public class SettingWindow : WindowUI {
 		}
 		MasterScroll = GUI.ScrollBar(
 			92645,
-			windowRect.Edge(Direction4.Right, GUI.ScrollbarSize),
+			windowRect.EdgeInside(Direction4.Right, GUI.ScrollbarSize),
 			MasterScroll,
 			extendedUISize,
 			windowRect.height

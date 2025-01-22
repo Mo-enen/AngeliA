@@ -47,19 +47,19 @@ public abstract class Spring : Rigidbody, IBlockEntity, IAutoTrackWalker {
 		if (Horizontal) {
 			// Horizontal
 			if (Physics.Overlap(
-				PhysicsMask.DYNAMIC, Rect.EdgeOutside(Direction4.Left, 1), this, OperationMode.ColliderAndTrigger
+				PhysicsMask.DYNAMIC, Rect.EdgeOutsideLeft(1), this, OperationMode.ColliderAndTrigger
 			)) {
 				PerformBounce(Direction4.Left);
 			}
 			if (Physics.Overlap(
-				PhysicsMask.DYNAMIC, Rect.EdgeOutside(Direction4.Right, 1), this, OperationMode.ColliderAndTrigger
+				PhysicsMask.DYNAMIC, Rect.EdgeOutsideRight(1), this, OperationMode.ColliderAndTrigger
 			)) {
 				PerformBounce(Direction4.Right);
 			}
 		} else {
 			// Vertical
 			if (Physics.Overlap(
-				PhysicsMask.DYNAMIC, Rect.EdgeOutside(Direction4.Up, 1), this, OperationMode.ColliderAndTrigger
+				PhysicsMask.DYNAMIC, Rect.EdgeOutsideUp(1), this, OperationMode.ColliderAndTrigger
 			)) {
 				PerformBounce(Direction4.Up);
 			}

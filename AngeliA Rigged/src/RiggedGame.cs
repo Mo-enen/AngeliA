@@ -452,10 +452,10 @@ public partial class RiggedGame : Game {
 					DraggingEntityOffset = Input.MouseGlobalPosition - bounds.position;
 				}
 				// Gizmos
-				DrawGizmosRect(bounds.Edge(Direction4.Down, thick), gizmosTint);
-				DrawGizmosRect(bounds.Edge(Direction4.Up, thick), gizmosTint);
-				DrawGizmosRect(bounds.Edge(Direction4.Left, thick), gizmosTint);
-				DrawGizmosRect(bounds.Edge(Direction4.Right, thick), gizmosTint);
+				DrawGizmosRect(bounds.EdgeInside(Direction4.Down, thick), gizmosTint);
+				DrawGizmosRect(bounds.EdgeInside(Direction4.Up, thick), gizmosTint);
+				DrawGizmosRect(bounds.EdgeInside(Direction4.Left, thick), gizmosTint);
+				DrawGizmosRect(bounds.EdgeInside(Direction4.Right, thick), gizmosTint);
 			}
 		}
 

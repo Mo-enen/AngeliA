@@ -516,7 +516,7 @@ public static partial class GUI {
 
 		// Under Line
 		if (useUnderLine) {
-			Renderer.DrawPixel(bounds.EdgeOutside(Direction4.Down, Unify(1)), tint);
+			Renderer.DrawPixel(bounds.EdgeOutsideDown(Unify(1)), tint);
 		}
 
 		return result;
@@ -584,7 +584,7 @@ public static partial class GUI {
 		bodyStyle ??= Skin.Toggle;
 		labelStyle ??= Skin.Label;
 		markStyle ??= Skin.ToggleMark;
-		var boxRect = rect.Edge(Direction4.Left, rect.height);
+		var boxRect = rect.EdgeInside(Direction4.Left, rect.height);
 		isOn = BlankToggle(boxRect, isOn, out var state);
 		DrawStyleBody(boxRect, bodyStyle, state);
 		Label(rect.Shrink(rect.height * 13 / 10, 0, 0, 0), label, labelStyle);
@@ -614,7 +614,7 @@ public static partial class GUI {
 	public static bool ToggleFold (IRect rect, ref bool folding, int icon, string label, int paddingLeft = 0, int paddingRight = 0) {
 
 		// Fold Icon
-		Icon(rect.Edge(Direction4.Left, rect.height * 3 / 4).Shift(-paddingLeft / 5, 0), icon);
+		Icon(rect.EdgeInside(Direction4.Left, rect.height * 3 / 4).Shift(-paddingLeft / 5, 0), icon);
 
 		// Fold Label
 		if (Button(rect.Expand(paddingLeft, paddingRight, 0, 0), 0, Skin.WeakHighlightPixel)) {
@@ -625,7 +625,7 @@ public static partial class GUI {
 		// Fold Triangle
 		using (new GUIColorScope(Color32.GREY_128)) {
 			Icon(
-				rect.EdgeOutside(Direction4.Left, rect.height / 2).Shift(-paddingLeft / 3, 0),
+				rect.EdgeOutsideLeft(rect.height / 2).Shift(-paddingLeft / 3, 0),
 				folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN
 			);
 		}
@@ -639,7 +639,7 @@ public static partial class GUI {
 		markStyle ??= Skin.ToggleMark;
 		if (label != null) {
 			labelStyle ??= Skin.Label;
-			Label(rect.Edge(Direction4.Left, LabelWidth), label, labelStyle);
+			Label(rect.EdgeInside(Direction4.Left, LabelWidth), label, labelStyle);
 			rect = rect.Shrink(LabelWidth, 0, 0, 0);
 		}
 		rect.width = rect.height;
@@ -676,7 +676,7 @@ public static partial class GUI {
 	}
 	public static void PopupTriangleIcon (IRect rect, int iconSprite = 0) {
 		iconSprite = iconSprite == 0 ? BuiltInSprite.ICON_TRIANGLE_DOWN : iconSprite;
-		Renderer.Draw(iconSprite, rect.Shrink(rect.height / 4).EdgeSquareRight());
+		Renderer.Draw(iconSprite, rect.Shrink(rect.height / 4).EdgeInsideSquareRight());
 	}
 
 
@@ -693,7 +693,7 @@ public static partial class GUI {
 		// Label
 		if (label != null) {
 			labelStyle ??= Skin.Label;
-			Label(rect.Edge(Direction4.Left, LabelWidth), label, labelStyle);
+			Label(rect.EdgeInside(Direction4.Left, LabelWidth), label, labelStyle);
 			rect = rect.ShrinkLeft(LabelWidth);
 		}
 		int buttonSize = Unify(42);
@@ -704,7 +704,7 @@ public static partial class GUI {
 		IntLabel(labelRect, value, bodyStyle);
 
 		// Buttons
-		rect = rect.Edge(Direction4.Right, buttonSize);
+		rect = rect.EdgeInside(Direction4.Right, buttonSize);
 		if (Button(rect.TopHalf(), BuiltInSprite.ICON_TRIANGLE_UP, dialButtonStyle)) {
 			value = (value + delta).Clamp(min, max);
 		}
@@ -825,7 +825,7 @@ public static partial class GUI {
 
 		// Handle
 		if (handleStyle != null) {
-			var handleRect = rect.EdgeLeft(rect.height);
+			var handleRect = rect.EdgeInsideLeft(rect.height);
 			handleRect.x = valuePos - handleRect.size[axis] / 2;
 			DrawStyleBody(handleRect, handleStyle, state);
 		}
@@ -898,12 +898,12 @@ public static partial class GUI {
 		// Label
 		if (label != null) {
 			labelStyle ??= Skin.Label;
-			Label(rect.Edge(Direction4.Left, LabelWidth), label, labelStyle);
+			Label(rect.EdgeInside(Direction4.Left, LabelWidth), label, labelStyle);
 			rect = rect.Shrink(LabelWidth, 0, 0, 0);
 		}
 
 		// Result
-		var resultRect = rect.Edge(Direction4.Left, rect.height);
+		var resultRect = rect.EdgeInside(Direction4.Left, rect.height);
 		var resultColorRect = resultRect.Shrink(Unify(2));
 		Renderer.DrawPixel(resultRect, Color32.BLACK);
 		if (color.a.NotAlmost(1f)) {
@@ -917,15 +917,15 @@ public static partial class GUI {
 			// Default Rect
 			IRect defaultRect = default;
 			if (defaultColor.HasValue) {
-				defaultRect = rect.Edge(Direction4.Right, rect.height);
+				defaultRect = rect.EdgeInside(Direction4.Right, rect.height);
 				rect.width -= rect.height;
 			}
 
 			// Editor
 			if (horizontal) {
-				rect = rect.Edge(Direction4.Left, alpha ? rect.width / 4 : rect.width / 3);
+				rect = rect.EdgeInside(Direction4.Left, alpha ? rect.width / 4 : rect.width / 3);
 			} else {
-				rect = rect.Edge(Direction4.Up, alpha ? rect.height / 4 : rect.height / 3);
+				rect = rect.EdgeInside(Direction4.Up, alpha ? rect.height / 4 : rect.height / 3);
 			}
 			int gapH = horizontal ? Unify(4) : 0;
 			int gapV = horizontal ? 0 : Unify(4);
@@ -1079,7 +1079,7 @@ public static partial class GUI {
 		labelStyle ??= Skin.AutoDarkLabel;
 
 		// X
-		var xRect = rect.Edge(Direction4.Down, thickness);
+		var xRect = rect.EdgeInside(Direction4.Down, thickness);
 		if (clampRect.width > 0) xRect = xRect.Clamp(clampRect);
 		Renderer.DrawPixel(xRect, color: colorX, z: z);
 		if (stepCount.x > 1) {
@@ -1108,7 +1108,7 @@ public static partial class GUI {
 		}
 
 		// Y
-		var yRect = rect.Edge(Direction4.Left, thickness);
+		var yRect = rect.EdgeInside(Direction4.Left, thickness);
 		if (clampRect.height > 0) yRect = yRect.Clamp(clampRect);
 		Renderer.DrawPixel(yRect, color: colorY, z: z);
 		if (stepCount.y > 1) {

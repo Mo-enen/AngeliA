@@ -117,7 +117,7 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 		// Check for New Driver Join
 		var hits = Physics.OverlapAll(
 			PhysicsMask.CHARACTER,
-			Rect.EdgeOutside(Direction4.Up, 32),
+			Rect.EdgeOutsideUp(32),
 			out int count, this
 		);
 		for (int i = 0; i < count; i++) {
@@ -142,7 +142,7 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 		// For Player
 		var player = PlayerSystem.Selecting;
 		if (Driver == player) {
-			if (Input.GameKeyDown(Gamekey.Select) && !Physics.Overlap(player.CollisionMask, player.Rect.EdgeUp(Const.HALF), player)) {
+			if (Input.GameKeyDown(Gamekey.Select) && !Physics.Overlap(player.CollisionMask, player.Rect.EdgeInsideUp(Const.HALF), player)) {
 				Input.UseGameKey(Gamekey.Select);
 				Driver.VelocityX = VelocityX;
 				Driver.VelocityY = 56;

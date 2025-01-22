@@ -110,8 +110,8 @@ public abstract class HipCloth : Cloth {
 		}
 
 		// Lower Arm
-		var lLegRectL = uLegRectL.EdgeOutside(Direction4.Down, legHeight);
-		var lLegRectR = uLegRectR.EdgeOutside(Direction4.Down, legHeight);
+		var lLegRectL = uLegRectL.EdgeOutsideDown(legHeight);
+		var lLegRectR = uLegRectR.EdgeOutsideDown(legHeight);
 		lLegRectL.x -= limbShift * 2;
 		lLegRectR.x += limbShift * 2;
 		if (SpriteLowerLegLeft.TryGetSpriteForGizmos(out var lLegSpL)) {

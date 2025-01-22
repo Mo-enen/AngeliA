@@ -134,7 +134,7 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 		int shrinkX = DeltaPositionX.Abs() + 16;
 		var hits = Physics.OverlapAll(
 			PhysicsMask.CHARACTER,
-			Rect.Shrink(shrinkX, shrinkX, 0, 0).EdgeOutside(Direction4.Up, 1),
+			Rect.Shrink(shrinkX, shrinkX, 0, 0).EdgeOutsideUp(1),
 			out int count, this
 		);
 		for (int i = 0; i < count; i++) {

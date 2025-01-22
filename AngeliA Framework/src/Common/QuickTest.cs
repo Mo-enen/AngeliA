@@ -126,7 +126,7 @@ public static class QTest {
 
 		Input.CancelIgnoreMouseInput();
 		bool mouseHoldingL = Game.IsMouseLeftHolding;
-		var rect = panelRect.EdgeUp(GUI.FieldHeight).Shrink(padding, padding, 0, 0);
+		var rect = panelRect.EdgeInsideUp(GUI.FieldHeight).Shrink(padding, padding, 0, 0);
 
 		// BG
 		int border = GUI.Unify(1);
@@ -147,7 +147,7 @@ public static class QTest {
 		}
 
 		// Ignore Btn
-		var ignoreRect = rect.EdgeRight(rect.height).Shift(PanelMaxExpand, 0);
+		var ignoreRect = rect.EdgeInsideRight(rect.height).Shift(PanelMaxExpand, 0);
 		if (GUI.Button(ignoreRect, BuiltInSprite.ICON_DELETE, GUI.Skin.SmallIconButton)) {
 			IgnoringWindow = true;
 			Input.UseAllMouseKey();
@@ -179,7 +179,7 @@ public static class QTest {
 					// Tri Mark
 					Renderer.Draw(
 						folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN,
-						rect.EdgeOutside(Direction4.Left, rect.height - padding).Shift(-indent - padding / 2, 0).Fit(1, 1),
+						rect.EdgeOutsideLeft(rect.height - padding).Shift(-indent - padding / 2, 0).Fit(1, 1),
 						Color32.GREY_96
 					);
 					// Fold Button
@@ -234,10 +234,10 @@ public static class QTest {
 						step: data.step
 					);
 					if (data.displayLabel == null) {
-						GUI.IntLabel(valueRect.EdgeRight(valueLabelWidth), data.value, GUI.Skin.SmallCenterLabel);
+						GUI.IntLabel(valueRect.EdgeInsideRight(valueLabelWidth), data.value, GUI.Skin.SmallCenterLabel);
 					} else {
 						GUI.BackgroundLabel(
-							valueRect.EdgeRight(valueLabelWidth).Shift(padding, 0),
+							valueRect.EdgeInsideRight(valueLabelWidth).Shift(padding, 0),
 							data.displayLabel,
 							Color32.BLACK, out var bounds, padding,
 							style: GUI.Skin.SmallLabel
@@ -264,13 +264,13 @@ public static class QTest {
 							step: (data.step * 10000f).RoundToInt()
 						) / 10000f;
 						GUI.Label(
-							valueRect.EdgeRight(valueLabelWidth),
+							valueRect.EdgeInsideRight(valueLabelWidth),
 							data.value.ToString("0.00"),
 							GUI.Skin.SmallCenterLabel
 						);
 					} else {
 						GUI.BackgroundLabel(
-							valueRect.EdgeRight(valueLabelWidth).Shift(padding, 0),
+							valueRect.EdgeInsideRight(valueLabelWidth).Shift(padding, 0),
 							data.displayLabel,
 							Color32.BLACK, out var bounds, padding,
 							style: GUI.Skin.SmallLabel
@@ -335,7 +335,7 @@ public static class QTest {
 		panelRect.yMin = rect.yMax - padding;
 		panelRect.width = Util.Max(panelRect.width, basicPanelWidth + PanelMaxExpand);
 		bgCell.SetRect(panelRect);
-		titleCell.SetRect(panelRect.EdgeUp(titleCell.Height));
+		titleCell.SetRect(panelRect.EdgeInsideUp(titleCell.Height));
 		CurrentGroup = "";
 
 		// Clamp

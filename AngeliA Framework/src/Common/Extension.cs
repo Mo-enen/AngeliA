@@ -720,14 +720,16 @@ public static class Extension {
 		return rect;
 	}
 	[MethodImpl(INLINE)] public static IRect ToIRect (this FRect rect) => new((int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
-	[MethodImpl(INLINE)]
-	public static IRect ExpandToIRect (this FRect rect) => IRect.MinMaxRect(
-		rect.xMin.FloorToInt(),
-		rect.yMin.FloorToInt(),
-		rect.xMax.CeilToInt(),
-		rect.yMax.CeilToInt()
-	);
 
+	[MethodImpl(INLINE)]
+	public static IRect ExpandToIRect (this FRect rect) {
+		return IRect.MinMaxRect(
+			rect.xMin.FloorToInt(),
+			rect.yMin.FloorToInt(),
+			rect.xMax.CeilToInt(),
+			rect.yMax.CeilToInt()
+		);
+	}
 
 	// IRect
 	[MethodImpl(INLINE)] public static FRect ToFRect (this IRect rect) => new(rect.x, rect.y, rect.width, rect.height);
@@ -769,9 +771,11 @@ public static class Extension {
 			);
 		}
 	}
+
 	[MethodImpl(INLINE)] public static IRect Expand (this IRect rect, int offset) => rect.Expand(offset, offset, offset, offset);
 	[MethodImpl(INLINE)] public static IRect ExpandHorizontal (this IRect rect, int offset) => rect.Expand(offset, offset, 0, 0);
 	[MethodImpl(INLINE)] public static IRect ExpandVertical (this IRect rect, int offset) => rect.Expand(0, 0, offset, offset);
+
 	[MethodImpl(INLINE)]
 	public static IRect Expand (this IRect rect, int l, int r, int d, int u) {
 		rect.x -= l;
@@ -780,6 +784,7 @@ public static class Extension {
 		rect.height += d + u;
 		return rect;
 	}
+
 	[MethodImpl(INLINE)]
 	public static IRect Expand (this IRect rect, Int4 offset) {
 		rect.x -= offset.left;
@@ -790,6 +795,7 @@ public static class Extension {
 	}
 	[MethodImpl(INLINE)] public static IRect Shrink (this IRect rect, int offset) => rect.Expand(-offset);
 	[MethodImpl(INLINE)] public static IRect Shrink (this IRect rect, int l, int r, int d, int u) => rect.Expand(-l, -r, -d, -u);
+
 	[MethodImpl(INLINE)]
 	public static IRect Shrink (this IRect rect, Int4 offset) {
 		rect.x += offset.left;
@@ -798,23 +804,27 @@ public static class Extension {
 		rect.height -= offset.down + offset.up;
 		return rect;
 	}
+
 	[MethodImpl(INLINE)]
 	public static IRect ShrinkLeft (this IRect rect, int left) {
 		rect.x += left;
 		rect.width -= left;
 		return rect;
 	}
+
 	[MethodImpl(INLINE)]
 	public static IRect ShrinkRight (this IRect rect, int right) {
 		rect.width -= right;
 		return rect;
 	}
+
 	[MethodImpl(INLINE)]
 	public static IRect ShrinkDown (this IRect rect, int down) {
 		rect.y += down;
 		rect.height -= down;
 		return rect;
 	}
+
 	[MethodImpl(INLINE)]
 	public static IRect ShrinkUp (this IRect rect, int up) {
 		rect.height -= up;
@@ -859,18 +869,21 @@ public static class Extension {
 		}
 		return rect;
 	}
+
 	[MethodImpl(INLINE)]
 	public static IRect Shift (this IRect rect, int x, int y) {
 		rect.x += x;
 		rect.y += y;
 		return rect;
 	}
+
 	[MethodImpl(INLINE)]
 	public static IRect Shift (this IRect rect, Int2 offset) {
 		rect.x += offset.x;
 		rect.y += offset.y;
 		return rect;
 	}
+
 	[MethodImpl(INLINE)]
 	public static void SetMinMax (this ref IRect rect, int xMin, int xMax, int yMin, int yMax) {
 		rect.x = xMin;
@@ -878,17 +891,20 @@ public static class Extension {
 		rect.width = xMax - xMin;
 		rect.height = yMax - yMin;
 	}
+
 	[MethodImpl(INLINE)] public static bool IsSame (this IRect a, IRect b) => a.x == b.x && a.y == b.y && a.width == b.width && a.height == b.height;
 	[MethodImpl(INLINE)] public static bool IsNotSame (this IRect a, IRect b) => a.x != b.x || a.y != b.y || a.width != b.width || a.height != b.height;
 	[MethodImpl(INLINE)] public static bool Contains (this IRect rect, int x, int y) => rect.Contains(new Int2(x, y));
 	[MethodImpl(INLINE)] public static int CenterX (this IRect rect) => rect.x + rect.width / 2;
 	[MethodImpl(INLINE)] public static int CenterY (this IRect rect) => rect.y + rect.height / 2;
 	[MethodImpl(INLINE)] public static Int2 CenterInt (this IRect rect) => new(rect.x + rect.width / 2, rect.y + rect.height / 2);
+
 	[MethodImpl(INLINE)]
 	public static IRect UDivide (this IRect rect, int divide) {
 		rect.SetMinMax(rect.min.UDivide(divide), rect.max.UDivide(divide));
 		return rect;
 	}
+
 	[MethodImpl(INLINE)] public static Int2 BottomLeft (this IRect rect) => new(rect.xMin, rect.yMin);
 	[MethodImpl(INLINE)] public static Int2 BottomRight (this IRect rect) => new(rect.xMax, rect.yMin);
 	[MethodImpl(INLINE)] public static Int2 TopLeft (this IRect rect) => new(rect.xMin, rect.yMax);
@@ -897,11 +913,13 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static Int2 MidLeft (this IRect rect) => new(rect.xMin, rect.yMax + rect.height / 2);
 	[MethodImpl(INLINE)] public static Int2 BottomMid (this IRect rect) => new(rect.xMin + rect.width / 2, rect.yMin);
 	[MethodImpl(INLINE)] public static Int2 TopMid (this IRect rect) => new(rect.xMin + rect.width / 2, rect.yMax);
+
 	[MethodImpl(INLINE)]
 	public static void ClampPositionInside (ref this IRect rect, IRect bounds) {
 		rect.x = rect.x.Clamp(bounds.x, bounds.xMax - rect.width);
 		rect.y = rect.y.Clamp(bounds.y, bounds.yMax - rect.height);
 	}
+
 	[MethodImpl(INLINE)]
 	public static IRect LerpTo (this IRect from, IRect to, int lerpRate) {
 		return new IRect(
@@ -913,28 +931,39 @@ public static class Extension {
 	}
 
 	[MethodImpl(INLINE)]
-	public static IRect LerpTo (this IRect from, IRect to, float lerp) => new(
-		from.x.LerpTo(to.x, lerp),
-		from.y.LerpTo(to.y, lerp),
-		from.width.LerpTo(to.width, lerp),
-		from.height.LerpTo(to.height, lerp)
-	);
-	[MethodImpl(INLINE)] public static IRect EdgeLeft (this IRect rect, int size) => rect.Shrink(0, rect.width - size, 0, 0);
-	[MethodImpl(INLINE)] public static IRect EdgeRight (this IRect rect, int size) => rect.Shrink(rect.width - size, 0, 0, 0);
-	[MethodImpl(INLINE)] public static IRect EdgeDown (this IRect rect, int size) => rect.Shrink(0, 0, 0, rect.height - size);
-	[MethodImpl(INLINE)] public static IRect EdgeUp (this IRect rect, int size) => rect.Shrink(0, 0, rect.height - size, 0);
-	[MethodImpl(INLINE)] public static IRect EdgeSquareLeft (this IRect rect) => rect.Shrink(0, rect.width - rect.height, 0, 0);
-	[MethodImpl(INLINE)] public static IRect EdgeSquareRight (this IRect rect) => rect.Shrink(rect.width - rect.height, 0, 0, 0);
-	[MethodImpl(INLINE)] public static IRect EdgeSquareDown (this IRect rect) => rect.Shrink(0, 0, 0, rect.height - rect.width);
-	[MethodImpl(INLINE)] public static IRect EdgeSquareUp (this IRect rect) => rect.Shrink(0, 0, rect.height - rect.width, 0);
+	public static IRect LerpTo (this IRect from, IRect to, float lerp) {
+		return new(
+			from.x.LerpTo(to.x, lerp),
+			from.y.LerpTo(to.y, lerp),
+			from.width.LerpTo(to.width, lerp),
+			from.height.LerpTo(to.height, lerp)
+		);
+	}
+
+	[MethodImpl(INLINE)] public static IRect EdgeInsideLeft (this IRect rect, int size) => rect.Shrink(0, rect.width - size, 0, 0);
+	[MethodImpl(INLINE)] public static IRect EdgeInsideRight (this IRect rect, int size) => rect.Shrink(rect.width - size, 0, 0, 0);
+	[MethodImpl(INLINE)] public static IRect EdgeInsideDown (this IRect rect, int size) => rect.Shrink(0, 0, 0, rect.height - size);
+	[MethodImpl(INLINE)] public static IRect EdgeInsideUp (this IRect rect, int size) => rect.Shrink(0, 0, rect.height - size, 0);
+
+	[MethodImpl(INLINE)] public static IRect EdgeOutsideLeft (this IRect rect, int size) => rect.Shrink(-size, rect.width, 0, 0);
+	[MethodImpl(INLINE)] public static IRect EdgeOutsideRight (this IRect rect, int size) => rect.Shrink(rect.width, -size, 0, 0);
+	[MethodImpl(INLINE)] public static IRect EdgeOutsideDown (this IRect rect, int size) => rect.Shrink(0, 0, -size, rect.height);
+	[MethodImpl(INLINE)] public static IRect EdgeOutsideUp (this IRect rect, int size) => rect.Shrink(0, 0, rect.height, -size);
+
+	[MethodImpl(INLINE)] public static IRect EdgeInsideSquareLeft (this IRect rect) => rect.Shrink(0, rect.width - rect.height, 0, 0);
+	[MethodImpl(INLINE)] public static IRect EdgeInsideSquareRight (this IRect rect) => rect.Shrink(rect.width - rect.height, 0, 0, 0);
+	[MethodImpl(INLINE)] public static IRect EdgeInsideSquareDown (this IRect rect) => rect.Shrink(0, 0, 0, rect.height - rect.width);
+	[MethodImpl(INLINE)] public static IRect EdgeInsideSquareUp (this IRect rect) => rect.Shrink(0, 0, rect.height - rect.width, 0);
+
 	[MethodImpl(INLINE)]
-	public static IRect Edge (this IRect rect, Direction4 edge, int size = 1) => edge switch {
+	public static IRect EdgeInside (this IRect rect, Direction4 edge, int size = 1) => edge switch {
 		Direction4.Up => rect.Shrink(0, 0, rect.height - size, 0),
 		Direction4.Down => rect.Shrink(0, 0, 0, rect.height - size),
 		Direction4.Left => rect.Shrink(0, rect.width - size, 0, 0),
 		Direction4.Right => rect.Shrink(rect.width - size, 0, 0, 0),
 		_ => throw new System.NotImplementedException(),
 	};
+
 	[MethodImpl(INLINE)]
 	public static IRect EdgeExact (this IRect rect, Direction4 edge, int size = 1) => edge switch {
 		Direction4.Up => rect.Shrink(0, 0, rect.height - size / 2, -size / 2),
@@ -943,6 +972,7 @@ public static class Extension {
 		Direction4.Right => rect.Shrink(rect.width - size / 2, -size / 2, 0, 0),
 		_ => throw new System.NotImplementedException(),
 	};
+
 	[MethodImpl(INLINE)]
 	public static IRect EdgeOutside (this IRect rect, Direction4 edge, int size = 1) => edge switch {
 		Direction4.Up => rect.Shrink(0, 0, rect.height, -size),
@@ -951,24 +981,36 @@ public static class Extension {
 		Direction4.Right => rect.Shrink(rect.width, -size, 0, 0),
 		_ => throw new System.NotImplementedException(),
 	};
-	[MethodImpl(INLINE)] public static IRect CornerInside (this IRect rect, Alignment corner, int size) => CornerInside(rect, corner, size, size);
+
 	[MethodImpl(INLINE)]
-	public static IRect CornerInside (this IRect rect, Alignment corner, int width, int height) => new(
-		corner.IsLeft() ? rect.x : corner.IsRight() ? rect.xMax - width : rect.CenterX() - width / 2,
-		corner.IsBottom() ? rect.y : corner.IsTop() ? rect.yMax - height : rect.CenterY() - height / 2,
-		width, height
-	);
-	[MethodImpl(INLINE)] public static IRect CornerOutside (this IRect rect, Alignment corner, int size) => CornerOutside(rect, corner, size, size);
+	public static IRect CornerInside (this IRect rect, Alignment corner, int size) => CornerInside(rect, corner, size, size);
+
 	[MethodImpl(INLINE)]
-	public static IRect CornerOutside (this IRect rect, Alignment corner, int width, int height) => new(
-		corner.IsLeft() ? rect.x - width : corner.IsRight() ? rect.xMax : rect.CenterX() - width / 2,
-		corner.IsBottom() ? rect.y - height : corner.IsTop() ? rect.yMax : rect.CenterY() - height / 2,
-		width, height
-	);
+	public static IRect CornerInside (this IRect rect, Alignment corner, int width, int height) {
+		return new(
+			corner.IsLeft() ? rect.x : corner.IsRight() ? rect.xMax - width : rect.CenterX() - width / 2,
+			corner.IsBottom() ? rect.y : corner.IsTop() ? rect.yMax - height : rect.CenterY() - height / 2,
+			width, height
+		);
+	}
+
+	[MethodImpl(INLINE)]
+	public static IRect CornerOutside (this IRect rect, Alignment corner, int size) => CornerOutside(rect, corner, size, size);
+
+	[MethodImpl(INLINE)]
+	public static IRect CornerOutside (this IRect rect, Alignment corner, int width, int height) {
+		return new(
+			corner.IsLeft() ? rect.x - width : corner.IsRight() ? rect.xMax : rect.CenterX() - width / 2,
+			corner.IsBottom() ? rect.y - height : corner.IsTop() ? rect.yMax : rect.CenterY() - height / 2,
+			width, height
+		);
+	}
+
 	[MethodImpl(INLINE)] public static IRect ScaleFrom (this IRect rect, int scale, int pointX, int pointY) => ResizeFrom(rect, rect.width * scale / 1000, rect.height * scale / 1000, pointX, pointY);
 	[MethodImpl(INLINE)] public static IRect ScaleFrom (this IRect rect, int scaleX, int scaleY, int pointX, int pointY) => ResizeFrom(rect, rect.width * scaleX / 1000, rect.height * scaleY / 1000, pointX, pointY);
 	[MethodImpl(INLINE)] public static IRect ScaleFrom (this IRect rect, float scale01, int pointX, int pointY) => ResizeFrom(rect, (rect.width * scale01).RoundToInt(), (rect.height * scale01).RoundToInt(), pointX, pointY);
 	[MethodImpl(INLINE)] public static IRect ScaleFrom (this IRect rect, float scaleX01, float scaleY01, int pointX, int pointY) => ResizeFrom(rect, (rect.width * scaleX01).RoundToInt(), (rect.height * scaleY01).RoundToInt(), pointX, pointY);
+
 	[MethodImpl(INLINE)]
 	public static IRect ResizeFrom (this IRect rect, int newWidth, int newHeight, int pointX, int pointY) {
 		rect.x = pointX - (pointX - rect.x) * newWidth / rect.width;
@@ -977,19 +1019,28 @@ public static class Extension {
 		rect.height = newHeight;
 		return rect;
 	}
-	[MethodImpl(INLINE)] public static bool CompleteInside (this IRect rect, IRect range) => rect.xMin >= range.xMin && rect.xMax <= range.xMax && rect.yMin >= range.yMin && rect.yMax <= range.yMax;
-	[MethodImpl(INLINE)] public static bool CompleteInside (this FRect rect, FRect range) => rect.xMin >= range.xMin && rect.xMax <= range.xMax && rect.yMin >= range.yMin && rect.yMax <= range.yMax;
+
 	[MethodImpl(INLINE)]
-	public static IRect Clamp (this IRect rect, IRect range) => IRect.MinMaxRect(
-		Util.Max(rect.xMin, range.xMin),
-		Util.Max(rect.yMin, range.yMin),
-		Util.Min(rect.xMax, range.xMax),
-		Util.Min(rect.yMax, range.yMax)
-	);
+	public static bool CompleteInside (this IRect rect, IRect range) => rect.xMin >= range.xMin && rect.xMax <= range.xMax && rect.yMin >= range.yMin && rect.yMax <= range.yMax;
+
+	[MethodImpl(INLINE)]
+	public static bool CompleteInside (this FRect rect, FRect range) => rect.xMin >= range.xMin && rect.xMax <= range.xMax && rect.yMin >= range.yMin && rect.yMax <= range.yMax;
+
+	[MethodImpl(INLINE)]
+	public static IRect Clamp (this IRect rect, IRect range) {
+		return IRect.MinMaxRect(
+			Util.Max(rect.xMin, range.xMin),
+			Util.Max(rect.yMin, range.yMin),
+			Util.Min(rect.xMax, range.xMax),
+			Util.Min(rect.yMax, range.yMax)
+		);
+	}
+
 	[MethodImpl(INLINE)] public static void SlideLeft (ref this IRect rect, int padding = 0) => rect.x -= rect.width + padding;
 	[MethodImpl(INLINE)] public static void SlideRight (ref this IRect rect, int padding = 0) => rect.x += rect.width + padding;
 	[MethodImpl(INLINE)] public static void SlideDown (ref this IRect rect, int padding = 0) => rect.y -= rect.height + padding;
 	[MethodImpl(INLINE)] public static void SlideUp (ref this IRect rect, int padding = 0) => rect.y += rect.height + padding;
+	
 	[MethodImpl(INLINE)]
 	public static IRect TopHalf (this IRect rect) {
 		int delta = rect.height / 2;
@@ -1058,13 +1109,13 @@ public static class Extension {
 		// Top
 		int topHeight = rect.yMax - dodge.yMax;
 		if (topHeight > 0) {
-			resultTop = rect.Edge(Direction4.Up, topHeight);
+			resultTop = rect.EdgeInside(Direction4.Up, topHeight);
 		}
 
 		// Bottom
 		int bottomHeight = dodge.y - rect.y;
 		if (bottomHeight > 0) {
-			resultBottom = rect.Edge(Direction4.Down, bottomHeight);
+			resultBottom = rect.EdgeInside(Direction4.Down, bottomHeight);
 		}
 
 		int midTop = Util.Min(rect.yMax, dodge.yMax);

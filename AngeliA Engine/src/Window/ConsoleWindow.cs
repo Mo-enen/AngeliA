@@ -92,7 +92,7 @@ public class ConsoleWindow : WindowUI {
 		GUI.DrawSlice(UI_BG, windowRect.ShrinkUp(GUI.ToolbarSize));
 
 		// Toolbar
-		OnGUI_Toolbar(windowRect.Edge(Direction4.Up, barHeight));
+		OnGUI_Toolbar(windowRect.EdgeInside(Direction4.Up, barHeight));
 
 		// Lines
 		if (hasLog) {
@@ -117,7 +117,7 @@ public class ConsoleWindow : WindowUI {
 
 		int padding = Unify(6);
 		barRect = barRect.Shrink(padding);
-		var rect = barRect.Edge(Direction4.Left, barRect.height);
+		var rect = barRect.EdgeInside(Direction4.Left, barRect.height);
 
 		// Clear Button
 		if (GUI.Button(rect, BuiltInSprite.ICON_CLEAR, Skin.SmallDarkButton)) {
@@ -150,7 +150,7 @@ public class ConsoleWindow : WindowUI {
 
 		// Empty Hint
 		if (lines.Length == 0) {
-			GUI.Label(panelRect.Edge(Direction4.Up, Unify(42)), HINT_EMPTY_MSG, Skin.SmallCenterGreyLabel);
+			GUI.Label(panelRect.EdgeInside(Direction4.Up, Unify(42)), HINT_EMPTY_MSG, Skin.SmallCenterGreyLabel);
 			return;
 		}
 
@@ -166,7 +166,7 @@ public class ConsoleWindow : WindowUI {
 		int scrollMax = (lines.Length - pageLineCount + EXTRA_SPACES).GreaterOrEquelThanZero();
 		int start = scrollY.Clamp(scrollMin, scrollMax);
 		int end = Util.Min(lines.Length, start + pageLineCount);
-		var rect = panelRect.Edge(Direction4.Up, lineHeight);
+		var rect = panelRect.EdgeInside(Direction4.Up, lineHeight);
 		int iconSize = lineHeight;
 		int iconShrink = iconSize / 10;
 		int padding = Unify(6);
@@ -187,7 +187,7 @@ public class ConsoleWindow : WindowUI {
 			// Icon
 			Renderer.Draw(
 				line.Level == 0 ? BuiltInSprite.ICON_INFO : line.Level == 1 ? BuiltInSprite.ICON_WARNING : BuiltInSprite.ICON_ERROR,
-				rect.Edge(Direction4.Left, iconSize).Shrink(iconShrink)
+				rect.EdgeInside(Direction4.Left, iconSize).Shrink(iconShrink)
 			);
 			// Label
 			GUI.InputField(
@@ -219,7 +219,7 @@ public class ConsoleWindow : WindowUI {
 			// Scroll Bar
 			scrollY = GUI.ScrollBar(
 				controlID,
-				fullPanelRect.Edge(Direction4.Right, GUI.ScrollbarSize),
+				fullPanelRect.EdgeInside(Direction4.Right, GUI.ScrollbarSize),
 				scrollY, scrollMax + pageLineCount, pageLineCount
 			);
 		}

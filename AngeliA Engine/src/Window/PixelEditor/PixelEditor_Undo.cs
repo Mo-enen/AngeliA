@@ -168,16 +168,16 @@ public partial class PixelEditor {
 		IRect inter = default;
 		if (newPixelRect.xMin > oldPixelRect.xMin) {
 			// L
-			inter = oldPixelRect.Edge(Direction4.Left, newPixelRect.xMin - oldPixelRect.xMin);
+			inter = oldPixelRect.EdgeInside(Direction4.Left, newPixelRect.xMin - oldPixelRect.xMin);
 		} else if (newPixelRect.xMax < oldPixelRect.xMax) {
 			// R
-			inter = oldPixelRect.Edge(Direction4.Right, oldPixelRect.xMax - newPixelRect.xMax);
+			inter = oldPixelRect.EdgeInside(Direction4.Right, oldPixelRect.xMax - newPixelRect.xMax);
 		} else if (newPixelRect.yMin > oldPixelRect.yMin) {
 			// D
-			inter = oldPixelRect.Edge(Direction4.Down, newPixelRect.yMin - oldPixelRect.yMin);
+			inter = oldPixelRect.EdgeInside(Direction4.Down, newPixelRect.yMin - oldPixelRect.yMin);
 		} else if (newPixelRect.yMax < oldPixelRect.yMax) {
 			// U
-			inter = oldPixelRect.Edge(Direction4.Up, oldPixelRect.yMax - newPixelRect.yMax);
+			inter = oldPixelRect.EdgeInside(Direction4.Up, oldPixelRect.yMax - newPixelRect.yMax);
 		}
 		if (inter.width == 0) return;
 		RegisterUndo(new PaintUndoItem() {

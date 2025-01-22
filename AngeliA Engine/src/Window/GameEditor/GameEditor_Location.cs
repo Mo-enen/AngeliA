@@ -46,7 +46,7 @@ public partial class GameEditor {
 		panelRect.height = Unify(600);
 		panelRect.y -= panelRect.height;
 		var oldPanelRect = panelRect;
-		var toolbarRect = panelRect.EdgeUp(toolbarSize).Shrink(panelPaddingLarge, panelPaddingLarge, panelPadding, panelPadding);
+		var toolbarRect = panelRect.EdgeInsideUp(toolbarSize).Shrink(panelPaddingLarge, panelPaddingLarge, panelPadding, panelPadding);
 		panelRect = panelRect.Shrink(panelPadding, panelPadding + scrollbarWidth, panelPadding, panelPadding + toolbarSize);
 		int cellStart = Renderer.GetUsedCellCount();
 
@@ -123,7 +123,7 @@ public partial class GameEditor {
 		// Scrollbar
 		if (maxRow > 0) {
 			LocationPanelScrollY = GUI.ScrollBar(
-				8925634, panelRect.EdgeRight(scrollbarWidth),
+				8925634, panelRect.EdgeInsideRight(scrollbarWidth),
 				LocationPanelScrollY, (row + EXTRA_ROW) * itemSize, panelRect.height
 			).Clamp(0, maxRow * panelRect.height);
 		}

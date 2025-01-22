@@ -384,7 +384,7 @@ public partial class Engine {
 				leftSide && !downSide ? Alignment.TopLeft :
 				!leftSide && downSide ? Alignment.BottomRight :
 				Alignment.TopRight;
-			var tipRect = ToolLabelRect.EdgeOutside(Direction4.Down, GUI.Unify(24)).Shift(
+			var tipRect = ToolLabelRect.EdgeOutsideDown(GUI.Unify(24)).Shift(
 				leftSide ? GUI.Unify(20) : GUI.Unify(-20),
 				downSide ? GUI.Unify(10) : GUI.Unify(-10)
 			);
@@ -582,10 +582,10 @@ public partial class Engine {
 
 		// Window
 		int barWidth = GetEngineLeftBarWidth(out int contentPadding);
-		var barRect = Renderer.CameraRect.Edge(Direction4.Left, barWidth);
+		var barRect = Renderer.CameraRect.EdgeInside(Direction4.Left, barWidth);
 		var mousePos = Input.MouseGlobalPosition;
 		bool mousePress = Input.MouseLeftButtonDown;
-		var rect = barRect.Edge(Direction4.Up, GUI.Unify(42));
+		var rect = barRect.EdgeInside(Direction4.Up, GUI.Unify(42));
 		var projectType = CurrentProject.Universe.Info.ProjectType;
 		bool menuButtonClicked = false;
 
@@ -603,7 +603,7 @@ public partial class Engine {
 		}
 
 		// Menu Icon
-		GUI.Icon(menuRect.Edge(Direction4.Left, menuRect.height), BuiltInSprite.ICON_MENU);
+		GUI.Icon(menuRect.EdgeInside(Direction4.Left, menuRect.height), BuiltInSprite.ICON_MENU);
 		rect.y -= rect.height;
 
 		// Window Tabs
@@ -613,7 +613,7 @@ public partial class Engine {
 
 			// Put Setting Icon at Bottom
 			if (window is SettingWindow && index == AllWindows.Length - 1) {
-				rect = barRect.EdgeDown(rect.height).Shift(0, rect.height);
+				rect = barRect.EdgeInsideDown(rect.height).Shift(0, rect.height);
 			}
 
 			bool selecting = index == CurrentWindowIndex;
@@ -657,7 +657,7 @@ public partial class Engine {
 
 			// Icon
 			int iconSize = contentRect.height;
-			var iconRect = contentRect.Edge(Direction4.Left, iconSize);
+			var iconRect = contentRect.EdgeInside(Direction4.Left, iconSize);
 			int iconID = window is GameEditor && CurrentProjectData != null ? CurrentProjectData.IconID : window.TypeID;
 			using (new SheetIndexScope(-1)) {
 				if (Renderer.TryGetSprite(iconID, out var iconSP)) {
@@ -714,7 +714,7 @@ public partial class Engine {
 
 		// Back to Hub
 		if (FullsizeMenu.Value) {
-			var btnRect = barRect.Edge(Direction4.Down, rect.height);
+			var btnRect = barRect.EdgeInside(Direction4.Down, rect.height);
 			if (GUI.Button(btnRect, BuiltInText.UI_BACK, GUI.Skin.SmallCenterLabelButton)) {
 				TryCloseProject();
 			}
@@ -724,7 +724,7 @@ public partial class Engine {
 			);
 		} else {
 			if (GUI.Button(
-				barRect.Edge(Direction4.Down, rect.height),
+				barRect.EdgeInside(Direction4.Down, rect.height),
 				ICON_TAB_BACK, GUI.Skin.IconButton
 			)) {
 				TryCloseProject();

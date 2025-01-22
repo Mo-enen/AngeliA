@@ -58,7 +58,7 @@ public partial class PixelEditor {
 
 	private void Update_AtlasPanel () {
 
-		var panelRect = WindowRect.Edge(Direction4.Left, Unify(PANEL_WIDTH));
+		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
 		var atlasList = EditingSheet.Atlas;
 		bool isFolded = false;
 		bool isSubItem = false;
@@ -91,7 +91,7 @@ public partial class PixelEditor {
 		int labelPadding = Unify(4);
 		int itemPadding = Unify(2);
 		SetCurrentAtlas(CurrentAtlasIndex.Clamp(0, itemCount - 1));
-		var rect = panelRect.Edge(Direction4.Up, Unify(36));
+		var rect = panelRect.EdgeInside(Direction4.Up, Unify(36));
 		int newSelectingIndex = -1;
 		int scrollMax = ((unfoldedItemCount + 6) * rect.height - panelRect.height).GreaterOrEquelThanZero();
 		bool hasScrollbar = scrollMax > 0;
@@ -149,7 +149,7 @@ public partial class PixelEditor {
 				int iconWidth = contentRect.height;
 
 				// Reorder Start
-				var reorderRect = rect.Edge(Direction4.Left, iconWidth);
+				var reorderRect = rect.EdgeInside(Direction4.Left, iconWidth);
 				if (reorderRect.MouseInside()) {
 					// Highlight
 					if (AtlasItemReorderIndex < 0) {
@@ -167,7 +167,7 @@ public partial class PixelEditor {
 				// Reordering
 				if (hover && AtlasItemReorderIndex >= 0 && AtlasItemReorderIndex != i && AtlasItemReorderIndex < atlasList.Count) {
 					// Draw Ghost
-					var _iconRect = contentRect.Edge(Direction4.Left, iconWidth);
+					var _iconRect = contentRect.EdgeInside(Direction4.Left, iconWidth);
 					_iconRect.y = (hoverTopHalf ? rect.yMax : rect.yMin) - _iconRect.height / 2;
 					var reorderingAtlas = atlasList[AtlasItemReorderIndex];
 					int targetAtlasID = reorderingAtlas.ID;
@@ -222,7 +222,7 @@ public partial class PixelEditor {
 				if (AtlasItemReorderIndex != i || hover) {
 
 					// Icon
-					var iconRect = contentRect.Edge(Direction4.Left, iconWidth);
+					var iconRect = contentRect.EdgeInside(Direction4.Left, iconWidth);
 
 					if (isFolder) {
 						bool isEmptyFolder = i >= atlasList.Count - 1 || atlasList[i + 1].State != AtlasState.Sub;
@@ -283,7 +283,7 @@ public partial class PixelEditor {
 				} else {
 					GUI.Icon(reorderGhostRect, reorderGhostID);
 				}
-				GUI.SmallLabel(reorderGhostRect.EdgeOutside(Direction4.Right, rect.width), reorderGhostLabel);
+				GUI.SmallLabel(reorderGhostRect.EdgeOutsideRight(rect.width), reorderGhostLabel);
 			}
 		}
 
@@ -302,7 +302,7 @@ public partial class PixelEditor {
 
 		// Scrollbar
 		if (hasScrollbar) {
-			var barRect = panelRect.Edge(Direction4.Right, scrollbarWidth);
+			var barRect = panelRect.EdgeInside(Direction4.Right, scrollbarWidth);
 			AtlasPanelScrollY = GUI.ScrollBar(
 				1256231, barRect,
 				AtlasPanelScrollY, (unfoldedItemCount + 6) * rect.height, panelRect.height
@@ -316,15 +316,15 @@ public partial class PixelEditor {
 
 	private void Update_AtlasToolbar () {
 
-		var panelRect = WindowRect.Edge(Direction4.Left, Unify(PANEL_WIDTH));
-		var toolbarRect = panelRect.Edge(Direction4.Up, GUI.ToolbarSize);
+		var panelRect = WindowRect.EdgeInside(Direction4.Left, Unify(PANEL_WIDTH));
+		var toolbarRect = panelRect.EdgeInside(Direction4.Up, GUI.ToolbarSize);
 
 		// BG
 		GUI.DrawSlice(UI_ATLAS_TOOLBAR, toolbarRect);
 
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		int padding = Unify(4);
-		var rect = toolbarRect.Edge(Direction4.Left, toolbarRect.height);
+		var rect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
 
 		// Add Atlas
 		if (GUI.Button(rect, BuiltInSprite.ICON_PLUS, Skin.SmallDarkButton)) {

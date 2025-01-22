@@ -575,10 +575,10 @@ public static partial class FrameworkUtil {
 									rect.y += Util.QuickRandom(-RANDOM_SHAKE, RANDOM_SHAKE + 1);
 								}
 								// Frame
-								Game.DrawGizmosRect(rect.Edge(Direction4.Down, thick), _tint);
-								Game.DrawGizmosRect(rect.Edge(Direction4.Up, thick), _tint);
-								Game.DrawGizmosRect(rect.Edge(Direction4.Left, thick), _tint);
-								Game.DrawGizmosRect(rect.Edge(Direction4.Right, thick), _tint);
+								Game.DrawGizmosRect(rect.EdgeInside(Direction4.Down, thick), _tint);
+								Game.DrawGizmosRect(rect.EdgeInside(Direction4.Up, thick), _tint);
+								Game.DrawGizmosRect(rect.EdgeInside(Direction4.Left, thick), _tint);
+								Game.DrawGizmosRect(rect.EdgeInside(Direction4.Right, thick), _tint);
 								// Cross
 								if (!cell.IsTrigger) {
 									Game.DrawGizmosLine(rect.x, rect.y, rect.xMax, rect.yMax, thick, _tint);

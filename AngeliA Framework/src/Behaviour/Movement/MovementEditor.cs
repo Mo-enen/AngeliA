@@ -205,10 +205,10 @@ public class MovementEditor {
 
 		// Tab Bar
 		using (new GUIContentColorScope(Color32.GREY_196)) {
-			if (GUI.Button(rect.EdgeLeft(rect.height), BuiltInSprite.ICON_TRIANGLE_LEFT, GUI.Skin.SmallIconButton)) {
+			if (GUI.Button(rect.EdgeInsideLeft(rect.height), BuiltInSprite.ICON_TRIANGLE_LEFT, GUI.Skin.SmallIconButton)) {
 				MovementTab = (MovementTab - 1).Clamp(0, MovementTabCount - 1);
 			}
-			if (GUI.Button(rect.EdgeRight(rect.height), BuiltInSprite.ICON_TRIANGLE_RIGHT, GUI.Skin.SmallIconButton)) {
+			if (GUI.Button(rect.EdgeInsideRight(rect.height), BuiltInSprite.ICON_TRIANGLE_RIGHT, GUI.Skin.SmallIconButton)) {
 				MovementTab = (MovementTab + 1).Clamp(0, MovementTabCount - 1);
 			}
 		}
@@ -235,7 +235,7 @@ public class MovementEditor {
 
 		// Number Label
 		GUI.Label(
-			bounds.EdgeRight(1),
+			bounds.EdgeInsideRight(1),
 			MovementTabLabelToChars.GetChars(MovementTab + 1),
 			GUI.Skin.SmallGreyLabel
 		);

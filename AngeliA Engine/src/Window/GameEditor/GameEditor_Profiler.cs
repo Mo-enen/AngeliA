@@ -48,8 +48,8 @@ public partial class GameEditor {
 			GUI.Label(rect.ShrinkLeft(padding), data.Name, GUI.Skin.SmallLabel);
 			using (new GUIColorScope(new Color32(96, 96, 96, 255))) {
 				GUI.IntLabel(rect.ShrinkRight(padding), data.Capacity, out var bounds, GUI.Skin.SmallRightLabel);
-				GUI.Label(bounds.EdgeOutside(Direction4.Left, rect.width).ShrinkRight(padding), "/", out bounds, GUI.Skin.SmallRightLabel);
-				GUI.IntLabel(bounds.EdgeOutside(Direction4.Left, rect.width).ShrinkRight(padding), data.Value, GUI.Skin.SmallRightLabel);
+				GUI.Label(bounds.EdgeOutsideLeft(rect.width).ShrinkRight(padding), "/", out bounds, GUI.Skin.SmallRightLabel);
+				GUI.IntLabel(bounds.EdgeOutsideLeft(rect.width).ShrinkRight(padding), data.Value, GUI.Skin.SmallRightLabel);
 			}
 		}
 	}

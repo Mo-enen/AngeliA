@@ -382,7 +382,7 @@ public partial class MapEditor {
 			// Highlight
 			if (selecting) {
 				var cells = Renderer.DrawSlice(
-					BuiltInSprite.UI_TAB, tabRect.EdgeUp(tabBorder),
+					BuiltInSprite.UI_TAB, tabRect.EdgeInsideUp(tabBorder),
 					tabBorder, tabBorder, 0, tabBorder,
 					Color32.GREY_230
 				);
@@ -402,7 +402,7 @@ public partial class MapEditor {
 			// Icon
 			Renderer.Draw(
 				i == (int)PaletteTabType.Listed ? BuiltInSprite.ICON_STAR : BuiltInSprite.ICON_MENU,
-				labelBounds.EdgeOutside(Direction4.Left, labelBounds.height).Shift(-tabRect.height / 4, 0), Color32.WHITE
+				labelBounds.EdgeOutsideLeft(labelBounds.height).Shift(-tabRect.height / 4, 0), Color32.WHITE
 			);
 
 			// Click
@@ -516,7 +516,7 @@ public partial class MapEditor {
 			if (groupRowCount > UI_ROW_MAX) {
 				PaletteGroupScrollY = GUI.ScrollBar(
 					7823563,
-					groupRect.ShrinkDown(TAB_SIZE).EdgeOutside(Direction4.Right, GUI.ScrollbarSize),
+					groupRect.ShrinkDown(TAB_SIZE).EdgeOutsideRight(GUI.ScrollbarSize),
 					PaletteGroupScrollY,
 					groupRowCount + 1,
 					UI_ROW_MAX
@@ -888,7 +888,7 @@ public partial class MapEditor {
 		if (GUI.TypingTextFieldID != SEARCH_BAR_ID && string.IsNullOrEmpty(SearchingText)) {
 			Renderer.Draw(
 				BuiltInSprite.ICON_SEARCH,
-				searchPanel.Edge(Direction4.Left, searchPanel.height).Shrink(PADDING)
+				searchPanel.EdgeInside(Direction4.Left, searchPanel.height).Shrink(PADDING)
 			);
 		}
 
@@ -896,7 +896,7 @@ public partial class MapEditor {
 		if (
 			!string.IsNullOrEmpty(SearchingText) &&
 			GUI.Button(
-				searchPanel.Edge(Direction4.Right, searchPanel.height).Shrink(PADDING),
+				searchPanel.EdgeInside(Direction4.Right, searchPanel.height).Shrink(PADDING),
 				BuiltInSprite.ICON_CROSS, Skin.IconButton
 			)
 		) {

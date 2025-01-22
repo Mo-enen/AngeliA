@@ -768,7 +768,7 @@ public class PlayerMenuUI : EntityUI {
 			DrawItemCount(itemRect.Shrink(itemRect.width * 2 / 3, 0, 0, itemRect.height * 2 / 3), itemCount);
 		} else if (item != null) {
 			// Usage
-			FrameworkUtil.DrawItemUsageBar(itemRect.EdgeDown(itemRect.height / 4), itemCount, item.MaxStackCount);
+			FrameworkUtil.DrawItemUsageBar(itemRect.EdgeInsideDown(itemRect.height / 4), itemCount, item.MaxStackCount);
 		}
 
 		// UI Cursor
@@ -846,7 +846,7 @@ public class PlayerMenuUI : EntityUI {
 		// Buff
 		RequireBuffInfoID = 0;
 		if (pBuff.BuffCount > 0) {
-			var buffPanelRect = panelRect.EdgeDown(buffPanelHeight).ShrinkLeft(previewWidth).Shrink(Unify(6));
+			var buffPanelRect = panelRect.EdgeInsideDown(buffPanelHeight).ShrinkLeft(previewWidth).Shrink(Unify(6));
 			int index = 0;
 			int padding = Unify(4);
 			var itemRect = new IRect(0, 0, buffItemSize - padding * 2, buffItemSize - padding * 2);
@@ -870,7 +870,7 @@ public class PlayerMenuUI : EntityUI {
 
 		// Preview
 		if (player.Rendering is PoseCharacterRenderer rendering) {
-			var previewRect = panelRect.EdgeOutside(Direction4.Left, previewWidth).Shift(previewWidth, 0);
+			var previewRect = panelRect.EdgeOutsideLeft(previewWidth).Shift(previewWidth, 0);
 			FrameworkUtil.DrawPoseCharacterAsUI(previewRect, rendering, rendering.CurrentAnimationFrame);
 			if (previewRect.MouseInside()) {
 				Input.IgnoreMouseToActionJump();
@@ -938,7 +938,7 @@ public class PlayerMenuUI : EntityUI {
 		if (stackAsUsage) {
 			// Usage 
 			if (item != null) {
-				FrameworkUtil.DrawItemUsageBar(itemRect.EdgeDown(itemRect.height / 4), equipmentCount, item.MaxStackCount);
+				FrameworkUtil.DrawItemUsageBar(itemRect.EdgeInsideDown(itemRect.height / 4), equipmentCount, item.MaxStackCount);
 			}
 		} else {
 			// Count

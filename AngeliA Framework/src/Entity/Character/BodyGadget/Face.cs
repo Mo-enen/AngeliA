@@ -308,7 +308,7 @@ public abstract class Face : BodyGadget {
 			rect.height = newHeight;
 			// Draw Tooth
 			if (tooth != null) {
-				var toothRect = rect.Edge(Direction4.Up, tooth.GlobalHeight);
+				var toothRect = rect.EdgeInside(Direction4.Up, tooth.GlobalHeight);
 				if (tooth.GlobalBorder.IsZero) {
 					Renderer.Draw(tooth, toothRect, z: 34);
 				} else {

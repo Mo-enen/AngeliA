@@ -136,7 +136,7 @@ public partial class GameEditor : WindowUI {
 
 		int padding = Unify(6);
 		int buttonSize = ToolbarWidth - padding * 2;
-		var barRect = ToolbarRect = WindowRect.EdgeRight(buttonSize + padding * 2);
+		var barRect = ToolbarRect = WindowRect.EdgeInsideRight(buttonSize + padding * 2);
 		var oldPanel = CurrentPanel;
 		bool allowLocationPanel = !HavingGamePlay || !CurrentProject.Universe.Info.UseProceduralMap;
 		if (!allowLocationPanel && CurrentPanel == PanelType.Location) {
@@ -213,7 +213,7 @@ public partial class GameEditor : WindowUI {
 			CurrentPanel = newIsOn ? PanelType.Profiler : PanelType.None;
 		}
 		if (rect.MouseInside()) {
-			GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_PROFILER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+			GUI.BackgroundLabel(rect.EdgeInsideLeft(1).Shift(-padding, 0), TIP_PROFILER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 		}
 		rect.SlideDown(padding);
 
@@ -225,7 +225,7 @@ public partial class GameEditor : WindowUI {
 				CurrentPanel = newIsOn ? PanelType.Location : PanelType.None;
 			}
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_LOCATION, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+				GUI.BackgroundLabel(rect.EdgeInsideLeft(1).Shift(-padding, 0), TIP_LOCATION, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 		}
@@ -238,7 +238,7 @@ public partial class GameEditor : WindowUI {
 				CurrentPanel = newIsOn ? PanelType.Movement : PanelType.None;
 			}
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_MOVEMENT, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+				GUI.BackgroundLabel(rect.EdgeInsideLeft(1).Shift(-padding, 0), TIP_MOVEMENT, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 
@@ -250,7 +250,7 @@ public partial class GameEditor : WindowUI {
 					CurrentPanel = newIsOn ? PanelType.Lighting : PanelType.None;
 				}
 				if (rect.MouseInside()) {
-					GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_LIGHTING, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+					GUI.BackgroundLabel(rect.EdgeInsideLeft(1).Shift(-padding, 0), TIP_LIGHTING, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 				}
 				rect.SlideDown(padding);
 			}
@@ -258,14 +258,14 @@ public partial class GameEditor : WindowUI {
 			// Collider
 			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_COLLIDER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+				GUI.BackgroundLabel(rect.EdgeInsideLeft(1).Shift(-padding, 0), TIP_COLLIDER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 
 			// Entity Clicker
 			EntityClickerOn = GUI.IconToggle(rect, EntityClickerOn, BTN_ENTITY_CLICKER);
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_ENTITY_CLICER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+				GUI.BackgroundLabel(rect.EdgeInsideLeft(1).Shift(-padding, 0), TIP_ENTITY_CLICER, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 
@@ -279,7 +279,7 @@ public partial class GameEditor : WindowUI {
 					}
 				}
 				if (rect.MouseInside()) {
-					GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), TIP_NEXT_FRAME, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+					GUI.BackgroundLabel(rect.EdgeInsideLeft(1).Shift(-padding, 0), TIP_NEXT_FRAME, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 				}
 				rect.SlideDown(padding);
 			}
@@ -290,7 +290,7 @@ public partial class GameEditor : WindowUI {
 				RequireNextFrame = false;
 			}
 			if (rect.MouseInside()) {
-				GUI.BackgroundLabel(rect.EdgeLeft(1).Shift(-padding, 0), FrameDebugging ? BuiltInText.UI_CONTINUE : TIP_FRAME_DEBUG, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+				GUI.BackgroundLabel(rect.EdgeInsideLeft(1).Shift(-padding, 0), FrameDebugging ? BuiltInText.UI_CONTINUE : TIP_FRAME_DEBUG, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
 			}
 			rect.SlideDown(padding);
 

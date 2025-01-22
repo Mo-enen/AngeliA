@@ -286,7 +286,7 @@ public sealed class CraftingUI : InventoryPartnerUI {
 				for (int keepIndex = 0; keepIndex < 4; keepIndex++) {
 					if (KeepIDsAlt[keepIndex] != itemID) continue;
 					KeepIDsAlt[keepIndex] = 0;
-					GUI.BackgroundLabel(itemRect.EdgeDown(Unify(18)), MARK_KEEP, Color32.BLACK, Unify(6), style: GUI.Skin.SmallCenterLabel);
+					GUI.BackgroundLabel(itemRect.EdgeInsideDown(Unify(18)), MARK_KEEP, Color32.BLACK, Unify(6), style: GUI.Skin.SmallCenterLabel);
 					break;
 				}
 			}

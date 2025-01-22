@@ -234,7 +234,7 @@ public class ItemHolder : Rigidbody {
 		if (ItemCount > 1 && !TaskSystem.HasTask() && !PlayerMenuUI.ShowingUI) {
 			if (_item is HandTool tool && tool.UseStackAsUsage) {
 				// Usage
-				FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), ItemCount, tool.MaxStackCount);
+				FrameworkUtil.DrawItemUsageBar(rect.EdgeInsideDown(rect.height / 4), ItemCount, tool.MaxStackCount);
 			} else {
 				// Count
 				var labelRect = rect.Shrink(rect.width / 2, 0, 0, rect.height / 2);

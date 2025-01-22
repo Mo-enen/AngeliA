@@ -285,7 +285,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 
 				if (tool.UseStackAsUsage) {
 					// Usage
-					FrameworkUtil.DrawItemUsageBar(rect.EdgeDown(rect.height / 4), wCount, tool.MaxStackCount);
+					FrameworkUtil.DrawItemUsageBar(rect.EdgeInsideDown(rect.height / 4), wCount, tool.MaxStackCount);
 				} else {
 					// Count
 					if (wCount > 1 || bItem != null) {

@@ -107,7 +107,7 @@ public partial class MapEditor {
 		var bgCell = Renderer.DrawPixel(barRect, Color32.GREY_32);
 
 		// Btns
-		var btnRect = barRect.EdgeSquareLeft();
+		var btnRect = barRect.EdgeInsideSquareLeft();
 		int btnPadding = Unify(4);
 
 		// Back Btn

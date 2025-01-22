@@ -152,8 +152,8 @@ public class PackageManager : WindowUI {
 	private void Update_Toolbar () {
 
 		int padding = Unify(4);
-		var barRect = WindowRect.EdgeUp(GUI.ToolbarSize);
-		var rect = barRect.Shrink(Unify(6)).EdgeLeft(Unify(30));
+		var barRect = WindowRect.EdgeInsideUp(GUI.ToolbarSize);
+		var rect = barRect.Shrink(Unify(6)).EdgeInsideLeft(Unify(30));
 
 		// BG
 		GUI.DrawSlice(UI_TOOLBAR, barRect);
@@ -211,7 +211,7 @@ public class PackageManager : WindowUI {
 			panelRect.x += (panelRect.width - maxPanelWidth) / 2;
 			panelRect.width = maxPanelWidth;
 		}
-		var rect = panelRect.EdgeUp(cardHeight);
+		var rect = panelRect.EdgeInsideUp(cardHeight);
 		panelRect.height = PackageInfoList.Count * rect.height;
 		int extendedContentSize = panelRect.height + Unify(64);
 		bool isGame = CurrentProject.Universe.Info.ProjectType == ProjectType.Game;
@@ -242,7 +242,7 @@ public class PackageManager : WindowUI {
 					// Creator Name
 					if (!string.IsNullOrWhiteSpace(info.CreatorName)) {
 						GUI.BackgroundLabel(
-							nameBound.Expand(0, itemPadding, 0, 0).EdgeOutside(Direction4.Right),
+							nameBound.Expand(0, itemPadding, 0, 0).EdgeOutsideRight(1),
 							info.CreatorName, Color32.WHITE_20, itemPadding / 3,
 							style: GUI.Skin.SmallLabel
 						);
@@ -318,7 +318,7 @@ public class PackageManager : WindowUI {
 						using var __ = new GUIContentColorScope(Color32.YELLOW);
 						rect.yMin -= GUI.FieldHeight;
 						GUI.Label(
-							rect.EdgeDown(GUI.FieldHeight),
+							rect.EdgeInsideDown(GUI.FieldHeight),
 							string.Format(MSG_GAME_ONLY, CurrentProject.Universe.Info.ProjectType),
 							Skin.SmallLabel
 						);
@@ -339,7 +339,7 @@ public class PackageManager : WindowUI {
 			}
 		}
 		MasterScrollPos = GUI.ScrollBar(
-			891236, windowRect.EdgeRight(GUI.ScrollbarSize),
+			891236, windowRect.EdgeInsideRight(GUI.ScrollbarSize),
 			MasterScrollPos, extendedContentSize, panelRect.height
 		);
 	}
@@ -361,7 +361,7 @@ public class PackageManager : WindowUI {
 			panelRect.x += (panelRect.width - maxPanelWidth) / 2;
 			panelRect.width = maxPanelWidth;
 		}
-		var rect = panelRect.EdgeUp(GUI.FieldHeight);
+		var rect = panelRect.EdgeInsideUp(GUI.FieldHeight);
 
 		// Pack Name
 		GUI.SmallLabel(rect, LABEL_PACK_NAME);

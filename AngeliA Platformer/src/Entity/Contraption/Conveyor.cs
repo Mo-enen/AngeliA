@@ -35,7 +35,7 @@ public abstract class Conveyor : Entity, IBlockEntity {
 		ICarrier.CarryTargetsOnTopHorizontally(this, MoveSpeed, OperationMode.ColliderAndTrigger);
 
 		// Scratch Objects on Bottom
-		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect.EdgeOutside(Direction4.Down), out int count, this, OperationMode.ColliderAndTrigger);
+		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect.EdgeOutsideDown(1), out int count, this, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig || rig.IsGrounded) continue;

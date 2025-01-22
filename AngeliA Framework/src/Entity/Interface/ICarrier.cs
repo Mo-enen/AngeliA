@@ -29,7 +29,7 @@ public interface ICarrier {
 			var deltaX = data.delta;
 			var hits = Physics.OverlapAll(
 				PhysicsMask.DYNAMIC,
-				selfRect.EdgeOutside(Direction4.Up, DETECT_RANGE),
+				selfRect.EdgeOutsideUp(DETECT_RANGE),
 				out int count, null, colMode
 			);
 			for (int i = 0; i < count; i++) {
@@ -83,7 +83,7 @@ public interface ICarrier {
 			var deltaY = data.delta;
 			var hits = Physics.OverlapAll(
 				PhysicsMask.DYNAMIC,
-				selfRect.EdgeOutside(Direction4.Up, DETECT_RANGE),
+				selfRect.EdgeOutsideUp(DETECT_RANGE),
 				out int count, null, colMode
 			);
 			for (int i = 0; i < count; i++) {

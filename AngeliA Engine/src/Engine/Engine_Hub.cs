@@ -106,7 +106,7 @@ public partial class Engine {
 
 			// --- Left Panel ---
 			{
-				var panelRect = cameraRect.Edge(Direction4.Left, hubPanelWidth);
+				var panelRect = cameraRect.EdgeInside(Direction4.Left, hubPanelWidth);
 				int itemPadding = GUI.Unify(8);
 
 				var rect = new IRect(
@@ -135,7 +135,7 @@ public partial class Engine {
 			int scrollWidth = GUI.ScrollbarSize;
 			int itemHeight = GUI.Unify(52);
 			int extendHeight = GUI.Unify(128);
-			var contentRect = cameraRect.Edge(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(
+			var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(
 				padding, padding + scrollWidth, padding, padding
 			);
 
@@ -162,7 +162,7 @@ public partial class Engine {
 
 				var rect = contentRect.Shrink(
 					Renderer.TryGetSprite(PANEL_BG, out var bgSprite) ? bgSprite.GlobalBorder : Int4.zero
-				).Edge(Direction4.Up, itemHeight);
+				).EdgeInside(Direction4.Up, itemHeight);
 
 				bool stepTint = false;
 
@@ -187,7 +187,7 @@ public partial class Engine {
 					}
 
 					// Icon
-					var iconRect = itemContentRect.Edge(Direction4.Left, itemContentRect.height);
+					var iconRect = itemContentRect.EdgeInside(Direction4.Left, itemContentRect.height);
 					using (new SheetIndexScope(-1)) {
 						using var _ = new GUIContentColorScope(folderExists ? Color32.WHITE : Color32.WHITE_128);
 						if (Renderer.TryGetSprite(project.IconID, out var iconSP)) {
@@ -241,7 +241,7 @@ public partial class Engine {
 
 			// Scrollbar
 			HubPanelScroll = GUI.ScrollBar(
-				701635, cameraRect.Edge(Direction4.Right, scrollWidth),
+				701635, cameraRect.EdgeInside(Direction4.Right, scrollWidth),
 				HubPanelScroll, Projects.Count * itemHeight + extendHeight, contentRect.height
 			);
 

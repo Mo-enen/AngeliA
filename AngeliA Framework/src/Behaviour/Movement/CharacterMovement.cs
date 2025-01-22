@@ -393,7 +393,7 @@ public class CharacterMovement (Rigidbody rig) {
 
 		// Slip
 		OnSlippy = !InWater && Physics.Overlap(
-			CollisionMask, Rect.EdgeOutside(Direction4.Down),
+			CollisionMask, Rect.EdgeOutsideDown(1),
 			TargetCharacter, OperationMode.ColliderAndTrigger, Tag.Slip
 		);
 		if (OnSlippy && IsGrounded && !IsCrashing && IsRunning && !IsSquatting) {

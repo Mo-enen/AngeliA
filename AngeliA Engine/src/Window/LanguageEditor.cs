@@ -134,8 +134,8 @@ public partial class LanguageEditor : WindowUI {
 
 		using var _ = new GUIInteractableScope(Game.GlobalFrame > RequireReloadWhenFileChangedFrame);
 
-		Update_Toolbar(panelRect.Edge(Direction4.Up, Unify(84)));
-		Update_Content(panelRect.Edge(Direction4.Down, panelRect.height - Unify(84)));
+		Update_Toolbar(panelRect.EdgeInside(Direction4.Up, Unify(84)));
+		Update_Content(panelRect.EdgeInside(Direction4.Down, panelRect.height - Unify(84)));
 
 		if (Game.GlobalFrame <= RequireReloadWhenFileChangedFrame) {
 			Update_ReloadWhenFileChanged();
@@ -155,7 +155,7 @@ public partial class LanguageEditor : WindowUI {
 		panelRect.y += labelHeight;
 
 		// Line
-		Renderer.DrawPixel(panelRect.Edge(Direction4.Down, Unify(1)), Color32.GREY_12, 1);
+		Renderer.DrawPixel(panelRect.EdgeInside(Direction4.Down, Unify(1)), Color32.GREY_12, 1);
 
 		// + Key
 		var rect = panelRect;
@@ -174,7 +174,7 @@ public partial class LanguageEditor : WindowUI {
 		rect.SlideRight();
 
 		// Line
-		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
+		Renderer.DrawPixel(rect.EdgeOutsideLeft(Unify(1)), Color32.GREY_12, 2);
 
 		// + Language
 		rect.width = Unify(108);
@@ -186,7 +186,7 @@ public partial class LanguageEditor : WindowUI {
 		rect.SlideRight();
 
 		// Line
-		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
+		Renderer.DrawPixel(rect.EdgeOutsideLeft(Unify(1)), Color32.GREY_12, 2);
 
 		// + All Language Code
 		rect.width = Unify(158);
@@ -202,10 +202,10 @@ public partial class LanguageEditor : WindowUI {
 		rect.SlideRight();
 
 		// Line
-		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
+		Renderer.DrawPixel(rect.EdgeOutsideLeft(Unify(1)), Color32.GREY_12, 2);
 
 		// Line
-		Renderer.DrawPixel(rect.EdgeOutside(Direction4.Left, Unify(1)), Color32.GREY_12, 2);
+		Renderer.DrawPixel(rect.EdgeOutsideLeft(Unify(1)), Color32.GREY_12, 2);
 
 		// Search
 		rect.width = panelRect.xMax - rect.x;
@@ -213,7 +213,7 @@ public partial class LanguageEditor : WindowUI {
 		SearchingText = GUI.SmallInputField(SEARCH_ID, searchRect, SearchingText, out _, out bool confirm);
 		if (GUI.TypingTextFieldID != SEARCH_ID && string.IsNullOrEmpty(SearchingText)) {
 			GUI.Icon(
-				searchRect.Edge(Direction4.Left, searchRect.height * 8 / 10).Shift(searchRect.height / 6, 0),
+				searchRect.EdgeInside(Direction4.Left, searchRect.height * 8 / 10).Shift(searchRect.height / 6, 0),
 				BuiltInSprite.ICON_SEARCH
 			);
 		}
@@ -241,7 +241,7 @@ public partial class LanguageEditor : WindowUI {
 		}
 
 		// Help Button
-		if (GUI.Button(panelRect.Edge(Direction4.Right, Unify(36)), "?", Skin.SmallCenterLabelButton)) {
+		if (GUI.Button(panelRect.EdgeInside(Direction4.Right, Unify(36)), "?", Skin.SmallCenterLabelButton)) {
 			GenericDialogUI.SpawnDialog_Button(MSG_HELP, BuiltInText.UI_OK, Const.EmptyMethod);
 			SearchingText = "";
 		}
@@ -343,7 +343,7 @@ public partial class LanguageEditor : WindowUI {
 
 			// Index
 			GUI.IntLabel(
-				rect.EdgeOutside(Direction4.Left, indexWidth).Shift(-itemSpaceX, 0),
+				rect.EdgeOutsideLeft(indexWidth).Shift(-itemSpaceX, 0),
 				i, IndexLabelStyle
 			);
 
@@ -382,7 +382,7 @@ public partial class LanguageEditor : WindowUI {
 
 		// Scrollbar
 		ScrollY = GUI.ScrollBar(
-			56093, WindowRect.ShrinkUp(Unify(42)).Edge(Direction4.Right, scrollBarWidth),
+			56093, WindowRect.ShrinkUp(Unify(42)).EdgeInside(Direction4.Right, scrollBarWidth),
 			ScrollY, shiftedItemCount, pageCount
 		);
 		if (Input.MouseWheelDelta != 0 && pageCount <= shiftedItemCount) {

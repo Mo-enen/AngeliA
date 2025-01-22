@@ -104,12 +104,12 @@ public class ControlHintUI : EntityUI {
 					GUI.Skin.SmallRightLabel
 				);
 				GUI.IntLabel(
-					bounds.EdgeOutside(Direction4.Left, 1).Shift(-padding, 0),
+					bounds.EdgeOutsideLeft(1).Shift(-padding, 0),
 					pos.y, out bounds,
 					GUI.Skin.SmallRightLabel
 				);
 				GUI.IntLabel(
-					bounds.EdgeOutside(Direction4.Left, 1).Shift(-padding, 0),
+					bounds.EdgeOutsideLeft(1).Shift(-padding, 0),
 					pos.x,
 					GUI.Skin.SmallRightLabel
 				);

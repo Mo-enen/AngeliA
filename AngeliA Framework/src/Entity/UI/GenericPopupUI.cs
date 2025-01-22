@@ -351,7 +351,7 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 			// Line Left
 			Renderer.Draw(
 				BuiltInSprite.SOFT_LINE_V,
-				BackgroundRect.Edge(Direction4.Left, lineThickness / 2),
+				BackgroundRect.EdgeInside(Direction4.Left, lineThickness / 2),
 				Color32.GREY_196
 			);
 

@@ -99,8 +99,8 @@ public abstract class BodyCloth : Cloth {
 
 		// Upper Arm
 		int armHeight = rect.height / 3;
-		var uArmRectL = shoulderRectL.EdgeOutside(Direction4.Down, armHeight);
-		var uArmRectR = shoulderRectR.EdgeOutside(Direction4.Down, armHeight);
+		var uArmRectL = shoulderRectL.EdgeOutsideDown(armHeight);
+		var uArmRectR = shoulderRectR.EdgeOutsideDown(armHeight);
 		uArmRectL.x -= limbShift;
 		uArmRectR.x += limbShift;
 		if (SpriteUpperArmLeft.TryGetSpriteForGizmos(out var uArmSpL)) {
@@ -111,8 +111,8 @@ public abstract class BodyCloth : Cloth {
 		}
 
 		// Lower Arm
-		var lArmRectL = uArmRectL.EdgeOutside(Direction4.Down, armHeight);
-		var lArmRectR = uArmRectR.EdgeOutside(Direction4.Down, armHeight);
+		var lArmRectL = uArmRectL.EdgeOutsideDown(armHeight);
+		var lArmRectR = uArmRectR.EdgeOutsideDown(armHeight);
 		lArmRectL.x -= limbShift * 2;
 		lArmRectR.x += limbShift * 2;
 		if (SpriteLowerArmLeft.TryGetSpriteForGizmos(out var lArmSpL)) {

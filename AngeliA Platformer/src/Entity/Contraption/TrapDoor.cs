@@ -64,7 +64,7 @@ public abstract class TrapDoor : Entity, IBlockEntity, ICircuitOperator {
 	}
 
 	protected virtual bool HitCheck () {
-		var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, Rect.EdgeOutside(Direction4.Up, 1), out int count, this, OperationMode.ColliderAndTrigger);
+		var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, Rect.EdgeOutsideUp(1), out int count, this, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Character character) continue;

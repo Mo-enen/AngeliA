@@ -147,12 +147,12 @@ public partial class PixelEditor {
 		if (EditingSheet.Atlas.Count <= 0) return;
 
 		int toolbarSize = GUI.ToolbarSize;
-		var toolbarRect = StageRect.EdgeOutside(Direction4.Up, toolbarSize).Expand(0, toolbarSize, 0, 0);
+		var toolbarRect = StageRect.EdgeOutsideUp(toolbarSize).Expand(0, toolbarSize, 0, 0);
 
 		// BG
 		GUI.DrawSlice(UI_TOOLBAR, toolbarRect);
 		toolbarRect = toolbarRect.Shrink(Unify(6));
-		var rect = toolbarRect.Edge(Direction4.Left, Unify(30));
+		var rect = toolbarRect.EdgeInside(Direction4.Left, Unify(30));
 
 		if (SelectingSpriteCount == 0) {
 			// --- General ---
@@ -169,10 +169,10 @@ public partial class PixelEditor {
 
 		// Tools
 		int padding = Unify(4);
-		var toolRect = WindowRect.EdgeRight(toolbarSize).ShrinkUp(toolbarSize);
+		var toolRect = WindowRect.EdgeInsideRight(toolbarSize).ShrinkUp(toolbarSize);
 		GUI.DrawSlice(UI_TOOL_BG, toolRect);
 		toolRect = toolRect.Shrink(Unify(6));
-		rect = toolRect.Edge(Direction4.Up, Unify(30));
+		rect = toolRect.EdgeInside(Direction4.Up, Unify(30));
 		for (int i = 0; i < ToolCount; i++) {
 			bool selecting = CurrentTool == (Tool)i;
 			bool newSelecting = GUI.ToggleButton(rect, selecting, UI_TOOLS[i], Skin.SmallDarkButton);
@@ -300,7 +300,7 @@ public partial class PixelEditor {
 
 		// Code Field
 		if (!FoldingColorField) {
-			var codeFieldRect = rect.EdgeOutside(Direction4.Right, Unify(108));
+			var codeFieldRect = rect.EdgeOutsideRight(Unify(108));
 			rect = rect.Expand(0, codeFieldRect.width, 0, 0);
 			ColorFieldCode = GUI.SmallInputField(
 				10915243, codeFieldRect, ColorFieldCode, out _, out bool confirm
@@ -322,7 +322,7 @@ public partial class PixelEditor {
 					FoldingColorField = false;
 					ColorFieldCode = Util.ColorToHtml(PaintingColor);
 				}
-			} else if (rect.Edge(Direction4.Left, rect.height).MouseInside()) {
+			} else if (rect.EdgeInside(Direction4.Left, rect.height).MouseInside()) {
 				if (Input.MouseLeftButtonDown) FoldingColorField = true;
 				Cursor.SetCursorAsHand();
 			}
@@ -412,9 +412,9 @@ public partial class PixelEditor {
 			Renderer.DrawPixel(lineRect);
 
 			// Label
-			GUI.IntLabel(rect.EdgeLeft(labelWidth).Shift(-GUI.FieldPadding, 0), value, out var bounds, GUI.Skin.SmallRightLabel);
+			GUI.IntLabel(rect.EdgeInsideLeft(labelWidth).Shift(-GUI.FieldPadding, 0), value, out var bounds, GUI.Skin.SmallRightLabel);
 			GUI.Label(
-				bounds.EdgeOutside(Direction4.Left, labelWidth / 2).Shift(-GUI.FieldPadding, 0),
+				bounds.EdgeOutsideLeft(labelWidth / 2).Shift(-GUI.FieldPadding, 0),
 				label, GUI.Skin.SmallRightLabel
 			);
 
@@ -725,7 +725,7 @@ public partial class PixelEditor {
 			OpenSpriteTagMenu();
 		}
 		if (SelectionTagCache != Tag.None && EngineSetting.ShowTagPreview.Value) {
-			var tagPreviewRect = rect.EdgeOutside(Direction4.Down, Unify(16)).Shift(0, -Unify(4));
+			var tagPreviewRect = rect.EdgeOutsideDown(Unify(16)).Shift(0, -Unify(4));
 			int previewPadding = Unify(2);
 			int startIndex = Renderer.GetUsedCellCount();
 			for (int i = 0; i < TagUtil.TAG_COUNT; i++) {
@@ -814,7 +814,7 @@ public partial class PixelEditor {
 		int pageBarHeight = (panelRect.height - panelRect.width) / 2;
 
 		// Label
-		var labelRect = panelRect.Edge(Direction4.Up, pageBarHeight).Shift(0, -pageBarHeight);
+		var labelRect = panelRect.EdgeInside(Direction4.Up, pageBarHeight).Shift(0, -pageBarHeight);
 
 		// Page
 		int helpButtonWidth = pageBarHeight;

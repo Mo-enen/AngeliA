@@ -163,7 +163,7 @@ public class ProjectEditor : WindowUI {
 
 		using var _ = new GUILabelWidthScope(Util.Min(Unify(256), panelRect.width / 2));
 
-		var rect = panelRect.Edge(Direction4.Up, Unify(50));
+		var rect = panelRect.EdgeInside(Direction4.Up, Unify(50));
 		int extendedContentSize;
 
 		using (var scroll = new GUIVerticalScrollScope(windowRect, MasterScrollPos, 0, MasterScrollMax)) {
@@ -230,7 +230,7 @@ public class ProjectEditor : WindowUI {
 
 		}
 		MasterScrollPos = GUI.ScrollBar(
-			891236, windowRect.Edge(Direction4.Right, GUI.ScrollbarSize),
+			891236, windowRect.EdgeInside(Direction4.Right, GUI.ScrollbarSize),
 			MasterScrollPos, extendedContentSize, panelRect.height
 		);
 
@@ -332,7 +332,7 @@ public class ProjectEditor : WindowUI {
 		var projectType = info.ProjectType;
 
 		// Project Type
-		GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_PROJECT_TYPE);
+		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_PROJECT_TYPE);
 		var popRect = rect.ShrinkLeft(labelWidth).LeftHalf();
 		if (GUI.Button(
 			popRect,
@@ -345,7 +345,7 @@ public class ProjectEditor : WindowUI {
 		rect.SlideDown(padding);
 
 		// Product Name
-		GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_PRODUCT_NAME);
+		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_PRODUCT_NAME);
 		string newProductName = GUI.SmallInputField(834267, rect.Shrink(labelWidth, 0, 0, 0), info.ProductName);
 		if (newProductName != info.ProductName) {
 			if (string.IsNullOrWhiteSpace(newProductName)) {
@@ -363,7 +363,7 @@ public class ProjectEditor : WindowUI {
 		rect.SlideDown(padding);
 
 		// Dev Name
-		GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_DEV_NAME);
+		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_DEV_NAME);
 		string newDevName = GUI.SmallInputField(834268, rect.ShrinkLeft(labelWidth), info.DeveloperName);
 		if (newDevName != info.DeveloperName) {
 			if (string.IsNullOrWhiteSpace(newDevName)) {
@@ -381,7 +381,7 @@ public class ProjectEditor : WindowUI {
 		rect.SlideDown(padding);
 
 		// Version
-		GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_VERSION);
+		GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_VERSION);
 		var versionRect = rect.ShrinkLeft(labelWidth);
 		versionRect.width = Util.Min(versionRect.width / 3, Unify(96));
 
@@ -462,7 +462,7 @@ public class ProjectEditor : WindowUI {
 			int iconButtonSize = Unify(56);
 			rect.y = rect.yMax - iconButtonSize;
 			rect.height = iconButtonSize;
-			var iconButtonRect = rect.ShrinkLeft(GUI.LabelWidth).Edge(Direction4.Left, iconButtonSize);
+			var iconButtonRect = rect.ShrinkLeft(GUI.LabelWidth).EdgeInside(Direction4.Left, iconButtonSize);
 			bool hasIcon = Renderer.TryGetSprite(IconSpriteID, out var iconSP);
 			if (GUI.Button(iconButtonRect, 0, out var state, style: hasIcon ? GUIStyle.None : GUI.Skin.DarkButton)) {
 				FileBrowserUI.OpenFile(TITLE_PICK_ICON, SetIconFromPNG, "*.png");
@@ -548,7 +548,7 @@ public class ProjectEditor : WindowUI {
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}
-		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newBehindPara, GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeInsideRight(digitLabelWidth), newBehindPara, GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Behind Alpha
@@ -562,7 +562,7 @@ public class ProjectEditor : WindowUI {
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}
-		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newBehindTint, GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeInsideRight(digitLabelWidth), newBehindTint, GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// View Ratio
@@ -578,7 +578,7 @@ public class ProjectEditor : WindowUI {
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}
-		GUI.Label(rect.EdgeRight(digitLabelWidth), UI_RATIO[Ratio_to_UiRatio(info.ViewRatio)].label, GUI.Skin.SmallCenterLabel);
+		GUI.Label(rect.EdgeInsideRight(digitLabelWidth), UI_RATIO[Ratio_to_UiRatio(info.ViewRatio)].label, GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Default View Size
@@ -594,7 +594,7 @@ public class ProjectEditor : WindowUI {
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}
-		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newDefViewHeight, GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeInsideRight(digitLabelWidth), newDefViewHeight, GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Min View Size
@@ -610,7 +610,7 @@ public class ProjectEditor : WindowUI {
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}
-		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newMinViewHeight, GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeInsideRight(digitLabelWidth), newMinViewHeight, GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Max View Size
@@ -626,7 +626,7 @@ public class ProjectEditor : WindowUI {
 			RequireRecompileOnSave = true;
 			SetDirty();
 		}
-		GUI.IntLabel(rect.EdgeRight(digitLabelWidth), newMaxViewHeight, GUI.Skin.SmallCenterLabel);
+		GUI.IntLabel(rect.EdgeInsideRight(digitLabelWidth), newMaxViewHeight, GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);
 
 		// Func
@@ -651,7 +651,7 @@ public class ProjectEditor : WindowUI {
 
 		// Music
 		if (Game.MusicPool.Count > 0) {
-			GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_MUSIC);
+			GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_MUSIC);
 			foreach (var (_, data) in Game.MusicPool) {
 				var _rect = rect.ShrinkLeft(labelWidth);
 				bool hover = GUI.Enable && _rect.MouseInside();
@@ -668,7 +668,7 @@ public class ProjectEditor : WindowUI {
 					ShowMenu(data);
 				}
 				// Icon
-				GUI.Icon(_rect.Edge(Direction4.Left, _rect.height), ICON_AUDIO);
+				GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_AUDIO);
 				// Name
 				using (new GUIContentColorScope(Game.CurrentMusicID == data.ID ? Color32.GREEN_BETTER : Color32.WHITE)) {
 					GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), data.Name);
@@ -690,7 +690,7 @@ public class ProjectEditor : WindowUI {
 
 		// Sound
 		if (Game.SoundPool.Count > 0) {
-			GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_SOUND);
+			GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_SOUND);
 			foreach (var (_, data) in Game.SoundPool) {
 				var _rect = rect.ShrinkLeft(labelWidth);
 				// Click
@@ -703,7 +703,7 @@ public class ProjectEditor : WindowUI {
 					ShowMenu(data);
 				}
 				// Icon
-				GUI.Icon(_rect.Edge(Direction4.Left, _rect.height), ICON_AUDIO);
+				GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_AUDIO);
 				// Name
 				GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), data.Name);
 				rect.SlideDown(padding);
@@ -723,7 +723,7 @@ public class ProjectEditor : WindowUI {
 
 		// Font
 		if (Game.Fonts.Count > 0) {
-			GUI.SmallLabel(rect.Edge(Direction4.Left, labelWidth), LABEL_FONT);
+			GUI.SmallLabel(rect.EdgeInside(Direction4.Left, labelWidth), LABEL_FONT);
 			foreach (var fontData in Game.Fonts) {
 				if (fontData.BuiltIn) continue;
 				var _rect = rect.ShrinkLeft(labelWidth);
@@ -736,7 +736,7 @@ public class ProjectEditor : WindowUI {
 					ShowMenu(fontData);
 				}
 				// Icon
-				GUI.Icon(_rect.Edge(Direction4.Left, _rect.height), ICON_FONT);
+				GUI.Icon(_rect.EdgeInside(Direction4.Left, _rect.height), ICON_FONT);
 				// Name
 				GUI.SmallLabel(_rect.ShrinkLeft(_rect.height + padding), fontData.Name);
 				rect.SlideDown(padding);
