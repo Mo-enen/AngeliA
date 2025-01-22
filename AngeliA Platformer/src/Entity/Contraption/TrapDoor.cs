@@ -26,9 +26,8 @@ public abstract class TrapDoor : Entity, IBlockEntity, ICircuitOperator {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		if (!IsOpening || Game.GlobalFrame <= LastSwitchFrame + OpenDelay) {
-			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Tag.OnewayUp);
-		}
+		bool colliderOn = !IsOpening || Game.GlobalFrame <= LastSwitchFrame + OpenDelay;
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, colliderOn ? Tag.OnewayUp : Tag.None);
 	}
 
 	public override void BeforeUpdate () {
@@ -48,7 +47,7 @@ public abstract class TrapDoor : Entity, IBlockEntity, ICircuitOperator {
 	}
 
 	public void OnTriggeredByCircuit () {
-		if (IsOpening || !TriggerByCircuit) return;
+		if (!TriggerByCircuit) return;
 		Open();
 	}
 

@@ -7,7 +7,7 @@ namespace AngeliA.Platformer;
 public abstract class Slime : Enemy, ISlimeWalker {
 
 	// VAR
-	protected virtual bool DamageOnTouch => true;
+	
 	public override IRect Rect {
 		get {
 			int width = Movement.MovementWidth;
@@ -53,9 +53,6 @@ public abstract class Slime : Enemy, ISlimeWalker {
 	public override void FirstUpdate () {
 		if (!Health.TakingDamage) {
 			FillAsTrigger(0);
-			if (DamageOnTouch) {
-				Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect);
-			}
 		} else {
 			IgnorePhysics.False(1);
 		}

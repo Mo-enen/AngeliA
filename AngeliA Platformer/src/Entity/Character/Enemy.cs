@@ -10,6 +10,7 @@ public abstract class Enemy : Character, IDamageReceiver {
 	// VAR
 	int IDamageReceiver.Team => Const.TEAM_ENEMY;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
+	protected virtual bool DamageOnTouch => true;
 
 	// MSG
 	public override void OnActivated () {
@@ -22,10 +23,15 @@ public abstract class Enemy : Character, IDamageReceiver {
 		Health.KnockbackDeceleration.BaseValue = 4;
 	}
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		if (DamageOnTouch && CharacterState == CharacterState.GamePlay && !Health.TakingDamage) {
+			Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect);
+		}
+	}
+
 	public override void TakeDamage (Damage damage) {
 		base.TakeDamage(damage);
-		// Big Knockback
-
 
 
 	}

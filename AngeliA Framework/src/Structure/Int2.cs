@@ -160,6 +160,13 @@ public struct Int2 : IEquatable<Int2>, IFormattable {
 		y = Math.Min(max.y, y);
 	}
 
+	public void Clamp (IRect range) {
+		x = Math.Max(range.xMin, x);
+		x = Math.Min(range.xMax, x);
+		y = Math.Max(range.yMin, y);
+		y = Math.Min(range.yMax, y);
+	}
+
 	public readonly Int2 Shift (int x, int y) => new(m_X + x, m_Y + y);
 
 	public static implicit operator Float2 (Int2 v) {

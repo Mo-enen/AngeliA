@@ -181,6 +181,7 @@ public abstract partial class Game {
 			UpdateWindow();
 			UpdateGuiInput();
 			UpdateCache();
+
 			// Update Callbacks
 			if (IsPlaying) {
 				OnGameUpdate?.Invoke();
@@ -211,15 +212,20 @@ public abstract partial class Game {
 
 	private void UpdateWindow () {
 		// Fix Window Pos in Screen
-		if (PauselessFrame % 30 == 0 && !IsWindowMaximized && !IsWindowMinimized) {
+		if (!IsMouseLeftHolding && PauselessFrame % 42 == 0 && !IsWindowMaximized && !IsWindowMinimized) {
 			var pos = GetWindowPosition();
 			int monitor = Instance._GetCurrentMonitor();
 			int screenW = Instance._GetScreenWidth();
 			int screenH = Instance._GetScreenHeight();
 			int monitorW = Instance._GetMonitorWidth(monitor);
 			int monitorH = Instance._GetMonitorHeight(monitor);
-			const int PADDING = 20;
-			var newPos = pos.Clamped(0, PADDING, monitorW - screenW, monitorH - screenH);
+			int PADDING = (monitorH / 22).GreaterOrEquel(100);
+			var newPos = pos.Clamped(
+				-screenW + PADDING,
+				PADDING,
+				monitorW - PADDING,
+				monitorH - PADDING
+			);
 			if (newPos != pos) {
 				SetWindowPosition(newPos.x, newPos.y);
 			}

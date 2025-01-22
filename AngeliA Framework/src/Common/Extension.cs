@@ -346,6 +346,11 @@ public static class Extension {
 		v.y = Util.Clamp(v.y, minY, maxY);
 	}
 	[MethodImpl(INLINE)]
+	public static void Clamp (this ref Int2 v, IRect range) {
+		v.x = Util.Clamp(v.x, range.xMin, range.xMax);
+		v.y = Util.Clamp(v.y, range.yMin, range.yMax);
+	}
+	[MethodImpl(INLINE)]
 	public static void Clamp (this ref Float2 v, float minX, float minY, float maxX, float maxY) {
 		v.x = Util.Clamp(v.x, minX, maxX);
 		v.y = Util.Clamp(v.y, minY, maxY);
@@ -357,8 +362,13 @@ public static class Extension {
 		return v;
 	}
 	[MethodImpl(INLINE)]
-	public static Int2 Clamped (this Int2 v, int minX, int minY, int maxX = int.MaxValue, int maxY = int.MaxValue) {
+	public static Int2 Clamped (this Int2 v, int minX, int minY, int maxX, int maxY) {
 		v.Clamp(minX, minY, maxX, maxY);
+		return v;
+	}
+	[MethodImpl(INLINE)]
+	public static Int2 Clamped (this Int2 v, IRect range) {
+		v.Clamp(range);
 		return v;
 	}
 	[MethodImpl(INLINE)] public static Int3 ToVector3Int (this Int2 v, int z) => new(v.x, v.y, z);
