@@ -11,6 +11,7 @@ public abstract class MomentumBooster : Entity, IBlockEntity {
 	// VAR
 	protected abstract int BoostSpeed { get; }
 	protected abstract Direction3 BoostDirection { get; }
+	protected virtual int MomentumDecay => 1;
 	protected int LastBoostFrame { get; private set; } = int.MinValue;
 
 	// MSG
@@ -27,11 +28,16 @@ public abstract class MomentumBooster : Entity, IBlockEntity {
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		// Check for Boost
-		var hits = Physics.OverlapAll(PhysicsMask.ENTITY, Rect.EdgeOutsideUp(1), out int count, this);
+		var hits = Physics.OverlapAll(
+			PhysicsMask.DYNAMIC, Rect.EdgeOutsideUp(1), out int count,
+			this, OperationMode.ColliderAndTrigger
+		);
 		for (int i = 0; i < count; i++) {
 
 			var hit = hits[i];
-			if (hit.Entity is not Rigidbody rig) continue;
+			if (hit.Entity is not Rigidbody rig || rig.IgnorePhysics) continue;
+			//if (rig is Character && hit.IsTrigger) continue;
+
 			var wMov = rig as IWithCharacterMovement;
 
 			// Get Boost Direction
@@ -48,7 +54,7 @@ public abstract class MomentumBooster : Entity, IBlockEntity {
 			int momentumX = rig.CurrentMomentumX.Abs();
 			rig.SetMomentum(
 				sign * BoostSpeed.ReverseClamp(-momentumX, momentumX),
-				rig.CurrentMomentumY, 1, 1
+				rig.CurrentMomentumY, MomentumDecay, MomentumDecay
 			);
 
 			// Movement

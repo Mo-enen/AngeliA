@@ -40,11 +40,13 @@ public abstract class Slope : Entity, IBlockEntity {
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		// Fix Rig
-		var hits = Physics.OverlapAll(CollisionMask, Rect, out int count, this, OperationMode.ColliderAndTrigger);
+		var hits = Physics.OverlapAll(CollisionMask, Rect.Expand(1), out int count, this, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig) continue;
-			if (CheckOverlap(rig.Rect, out int dis)) FixPosition(rig, dis);
+			if (CheckOverlap(rig.Rect, out int dis)) {
+				FixPosition(rig, dis);
+			}
 		}
 	}
 
@@ -89,24 +91,25 @@ public abstract class Slope : Entity, IBlockEntity {
 			target.MakeGrounded(1);
 			target.PerformMove(
 				DirectionHorizontal == Direction2.Left ? -distance / 2 : distance / 2,
-				DirectionVertical == Direction2.Down ? -distance / 2 : distance / 2
+				distance / 2
 			);
 			// Fix Velocity
-			if (target.VelocityX == 0) {
+			int finalVelX = target.VelocityX + target.CurrentMomentumX;
+			if (finalVelX == 0) {
 				// Fix X (Drop)
 				target.VelocityY = 0;
 				target.IgnoreGravity.True();
 			} else {
 				// Fix Y (Walk)
-				if ((DirectionHorizontal == Direction2.Left) == (target.VelocityX > 0)) {
+				if ((DirectionHorizontal == Direction2.Left) == (finalVelX > 0)) {
 					// Walk Toward
-					target.PerformMove(0, DirectionVertical == Direction2.Down ?
-						-Util.Abs(target.VelocityX) :
-						Util.Abs(target.VelocityX));
+					target.PerformMove(
+						0, Util.Abs(finalVelX)
+					);
 					target.VelocityY = 0;
 				} else {
 					// Walk Away
-					target.PerformMove(0, -Util.Abs(target.VelocityX));
+					target.PerformMove(0, -Util.Abs(finalVelX));
 					target.VelocityY = 0;
 				}
 			}

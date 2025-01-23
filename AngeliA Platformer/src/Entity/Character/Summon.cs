@@ -24,6 +24,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	public int InventoryUpdatedFrame { get; set; } = -1;
 	public SummonNavigation Navigation { get; init; }
 	public virtual bool RequireOwner => false;
+	public virtual bool AllowRescueWhenPassout => true;
 	public override bool AllowBeingPush => false;
 	public override bool CarryOtherOnTop => false;
 
@@ -65,12 +66,15 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		Navigation.Owner = Owner;
-		if (CharacterState == CharacterState.GamePlay) {
+
+		if (CharacterState == CharacterState.GamePlay && Navigation.NavigationState != RigidbodyNavigationState.Idle) {
 			IgnorePhysics.True(1);
+			Physics.FillEntity(EntityLayer.CHARACTER, this, true);
+		} else if (CharacterState == CharacterState.PassOut) {
+			Physics.FillEntity(EntityLayer.CHARACTER, this, true);
 		}
-		Physics.FillEntity(EntityLayer.CHARACTER, this, true);
-		// Att Team
+		// Nav
+		Navigation.Owner = Owner;
 		AttackTargetTeam = Owner != null ? Owner.AttackTargetTeam : 0;
 	}
 
@@ -205,13 +209,17 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 
 	bool IActionTarget.Invoke () {
+		if (!AllowRescueWhenPassout) return false;
 		Health.HP = Health.MaxHP;
 		SetCharacterState(CharacterState.GamePlay);
 		return true;
 	}
 
 
-	bool IActionTarget.AllowInvoke () => CharacterState == CharacterState.PassOut;
+	bool IActionTarget.AllowInvoke () =>
+		AllowRescueWhenPassout &&
+		CharacterState == CharacterState.PassOut &&
+		Owner == PlayerSystem.Selecting;
 
 
 	#endregion

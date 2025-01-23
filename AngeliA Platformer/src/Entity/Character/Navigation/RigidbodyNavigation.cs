@@ -37,6 +37,7 @@ public class RigidbodyNavigation (Rigidbody target) {
 	public virtual int MinimumFlyDuration => 60;
 	public virtual int JumpSpeed => 32;
 	public virtual int MaxJumpDuration => 80;
+	public virtual int EndMoveSlowDown => 42;
 
 	// Short
 	private IRect Rect => Target.Rect;
@@ -44,9 +45,6 @@ public class RigidbodyNavigation (Rigidbody target) {
 	private int Y { get => Target.Y; set => Target.Y = value; }
 	private int VelocityX { get => Target.VelocityX; set => Target.VelocityX = value; }
 	private int VelocityY { get => Target.VelocityY; set => Target.VelocityY = value; }
-	private bool InWater => Target.InWater;
-	private bool IsGrounded => Target.IsGrounded;
-	private bool IsInsideGround => Target.IsInsideGround;
 	private CharacterMovement Movement => (Target is IWithCharacterMovement wMove) ? wMove.CurrentMovement : null;
 
 	// Data
@@ -130,9 +128,6 @@ public class RigidbodyNavigation (Rigidbody target) {
 		if (DrawDebugGizmos) {
 			var targetRect = Target.Rect;
 			var pos = targetRect.CenterInt();
-			if (Target.GetType().Name.StartsWith("H")) {
-				Debug.Log(Target.VelocityY);
-			}
 			if (NavigationState == RigidbodyNavigationState.Operation) {
 				for (int i = CurrentNavOperationIndex; i < CurrentNavOperationCount; i++) {
 					var operation = NavOperations[i];
@@ -228,24 +223,12 @@ public class RigidbodyNavigation (Rigidbody target) {
 
 
 	private void NavUpdate_Movement_Idle () {
-		VelocityX = 0;
-		if (!InWater && !IsInsideGround) {
-			if (Navigation.IsGround(Game.GlobalFrame, Stage.ViewRect, X, Y + Const.QUARTER, out int groundY)) {
-				// Move to Ground
-				VelocityY = groundY - Y;
-				Target.MakeGrounded(1);
-			} else {
-				// Fall Down
-				int gravity = Rigidbody.GlobalGravity * (VelocityY <= 0 ? Target.FallingGravityScale / 1000 : Target.RisingGravityScale / 1000);
-				VelocityY = (VelocityY - gravity).Clamp(-Target.MaxGravitySpeed, Target.MaxGravitySpeed);
-			}
-		} else {
-			VelocityY = 0;
-		}
-		Y += VelocityY;
 		var mov = Movement;
 		if (mov != null) {
-			mov.MovementState = InWater ? CharacterMovementState.SwimIdle : CharacterMovementState.Idle;
+			mov.Stop();
+			mov.MovementState = Target.InWater ? CharacterMovementState.SwimIdle : CharacterMovementState.Idle;
+		} else {
+			VelocityX = 0;
 		}
 	}
 
@@ -274,9 +257,16 @@ public class RigidbodyNavigation (Rigidbody target) {
 
 				int speed =
 					mov == null ? DefaultRunSpeed :
-					InWater ? mov.SwimSpeed * mov.InWaterSpeedRate / 1000 :
+					Target.InWater ? mov.SwimSpeed * mov.InWaterSpeedRate / 1000 :
 					mov.RunSpeed;
 
+				// Slow Down
+				var endOp = NavOperations[CurrentNavOperationCount - 1];
+				int endDis = (X - endOp.TargetGlobalX).Abs() + (Y - endOp.TargetGlobalY).Abs();
+				int speedLimit = (endDis / EndMoveSlowDown).Clamp(4, speed.Abs());
+				speed = speed.Clamp(-speedLimit, speedLimit);
+
+				// Move
 				if (targetX == X) NavMoveDoneX = true;
 				if (targetY == Y) NavMoveDoneY = true;
 
@@ -370,7 +360,7 @@ public class RigidbodyNavigation (Rigidbody target) {
 			}
 		}
 		if (mov != null) {
-			if (!InWater) {
+			if (!Target.InWater) {
 				// Move
 				mov.MovementState =
 					motion == NavigationOperateMotion.Move ? CharacterMovementState.Run :
@@ -387,7 +377,7 @@ public class RigidbodyNavigation (Rigidbody target) {
 	private void NavUpdate_Movement_Flying () {
 		var mov = Movement;
 		int speed = mov == null ? DefaultFlySpeed : mov.FlyMoveSpeed;
-		if (InWater && mov != null) speed = speed * mov.InWaterSpeedRate / 1000;
+		if (Target.InWater && mov != null) speed = speed * mov.InWaterSpeedRate / 1000;
 		var flyAim = NavigationAim;
 		if (mov == null || mov.FlyAvailable) {
 			// Can Fly
@@ -441,7 +431,7 @@ public class RigidbodyNavigation (Rigidbody target) {
 		CurrentNavOperationIndex = 0;
 		CurrentNavOperationCount = 0;
 		NavigationAim = new Int2(X, Y);
-		NavigationAimGrounded = IsGrounded;
+		NavigationAimGrounded = Target.IsGrounded;
 		NavJumpFrame = 0;
 		NavJumpDuration = 0;
 		NavMoveDoneX = false;

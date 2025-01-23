@@ -18,6 +18,7 @@ public abstract class Particle : Entity {
 	public int Scale { get; set; } = 1000;
 	public virtual int RenderingZ => int.MinValue;
 	public virtual int AutoArtworkID => TypeID;
+	public virtual int RenderingLayer => RenderLayer.DEFAULT;
 
 	// Api
 	public Color32 Tint { get; set; } = Color32.WHITE;
@@ -36,6 +37,7 @@ public abstract class Particle : Entity {
 		Scale = 1000;
 		Tint = Color32.WHITE;
 		Rotation = 0;
+		UserData = null;
 	}
 
 
@@ -52,12 +54,15 @@ public abstract class Particle : Entity {
 		if (!Active || !IsAutoParticle) return;
 		// Artwork ID
 		if (!Renderer.TryGetSpriteGroup(AutoArtworkID, out var group) || group.Count == 0) return;
+		using var _ = new LayerScope(RenderingLayer);
 		float framePerSprite = (float)Duration / group.Count;
 		int spriteIndex = (LocalFrame / framePerSprite).RoundToInt().Clamp(0, group.Count - 1);
 		var sprite = group.Sprites[spriteIndex];
 		Renderer.Draw(
 			sprite, X, Y, sprite.PivotX, sprite.PivotY, Rotation,
-			sprite.GlobalWidth * Scale / 1000, sprite.GlobalHeight * Scale / 1000, Tint, RenderingZ
+			sprite.GlobalWidth * Scale / 1000,
+			sprite.GlobalHeight * Scale / 1000,
+			Tint, RenderingZ
 		);
 	}
 
