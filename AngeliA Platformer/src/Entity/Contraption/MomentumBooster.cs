@@ -48,7 +48,7 @@ public abstract class MomentumBooster : Entity, IBlockEntity {
 			int momentumX = rig.CurrentMomentumX.Abs();
 			rig.SetMomentum(
 				sign * BoostSpeed.ReverseClamp(-momentumX, momentumX),
-				rig.CurrentMomentumY, 3, 3
+				rig.CurrentMomentumY, 1, 1
 			);
 
 			// Movement
@@ -59,7 +59,7 @@ public abstract class MomentumBooster : Entity, IBlockEntity {
 				mov.RushAvailable.False(1);
 				mov.RunAvailable.False(1);
 				mov.WalkAvailable.False(1);
-				mov.RunSpeed.Override(108, 1);
+				mov.RunSpeed.Override(BoostSpeed + 16, 1);
 				mov.PushAvailable.True(1);
 				mov.PushSpeed.Override(BoostSpeed, 1);
 			}

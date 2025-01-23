@@ -72,6 +72,8 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode CIRCLE_OUTLINE = "CircleOutline";
 	public static readonly SpriteCode RING_24 = "Ring24";
 	public static readonly SpriteCode RING_32 = "Ring32";
+	public static readonly SpriteCode RADIAL_DOTTED_RING_24 = "RadialDottedRing24";
+	public static readonly SpriteCode RADIAL_DOTTED_RING_32 = "RadialDottedRing32";
 	public static readonly SpriteCode ICON_BODY_PART_EAR = "Icon.BodyPart.Ear";
 	public static readonly SpriteCode ICON_SUIT_GLOVE = "Icon.Suit.Glove";
 	public static readonly SpriteCode ICON_SUIT_PANTS = "Icon.Suit.Pants";

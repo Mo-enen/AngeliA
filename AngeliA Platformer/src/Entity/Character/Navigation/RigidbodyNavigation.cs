@@ -30,13 +30,13 @@ public class RigidbodyNavigation (Rigidbody target) {
 	public virtual int DefaultRunSpeed => 12;
 	public virtual int DefaultFlySpeed => 32;
 	public virtual int InstanceShift => 0;
-	public virtual int NavigationStartMoveDistance => Const.CEL * 4;
-	public virtual int NavigationEndMoveDistance => Const.CEL * 1;
-	public virtual int NavigationStartFlyDistance => Const.CEL * 18;
-	public virtual int NavigationEndFlyDistance => Const.CEL * 1;
-	public virtual int NavigationMinimumFlyDuration => 60;
-	public virtual int NavigationJumpSpeed => 32;
-	public virtual int NavigationMaxJumpDuration => 80;
+	public virtual int StartMoveDistance => Const.CEL * 4;
+	public virtual int EndMoveDistance => Const.CEL * 1;
+	public virtual int StartFlyDistance => Const.CEL * 18;
+	public virtual int EndFlyDistance => Const.CEL * 1;
+	public virtual int MinimumFlyDuration => 60;
+	public virtual int JumpSpeed => 32;
+	public virtual int MaxJumpDuration => 80;
 
 	// Short
 	private IRect Rect => Target.Rect;
@@ -170,10 +170,10 @@ public class RigidbodyNavigation (Rigidbody target) {
 			NavOperations[CurrentNavOperationIndex].Motion == NavigationOperateMotion.Jump
 		) return;
 
-		int START_MOVE_DISTANCE_SQ = NavigationStartMoveDistance * NavigationStartMoveDistance;
-		int END_MOVE_DISTANCE_SQ = NavigationEndMoveDistance * NavigationEndMoveDistance;
-		int START_FLY_DISTANCE_SQ = NavigationStartFlyDistance * NavigationStartFlyDistance;
-		int END_FLY_DISTANCE_SQ = NavigationEndFlyDistance * NavigationEndFlyDistance;
+		int START_MOVE_DISTANCE_SQ = StartMoveDistance * StartMoveDistance;
+		int END_MOVE_DISTANCE_SQ = EndMoveDistance * EndMoveDistance;
+		int START_FLY_DISTANCE_SQ = StartFlyDistance * StartFlyDistance;
+		int END_FLY_DISTANCE_SQ = EndFlyDistance * EndFlyDistance;
 
 		// Fly When No Grounded Aim Position
 		if (!NavigationAimGrounded) {
@@ -209,7 +209,7 @@ public class RigidbodyNavigation (Rigidbody target) {
 
 			case RigidbodyNavigationState.Fly:
 				if (
-					Game.GlobalFrame > NavFlyStartFrame + NavigationMinimumFlyDuration &&
+					Game.GlobalFrame > NavFlyStartFrame + MinimumFlyDuration &&
 					aimSqrtDis < END_FLY_DISTANCE_SQ &&
 					Y > NavigationAim.y - Const.HALF
 				) {
@@ -315,7 +315,7 @@ public class RigidbodyNavigation (Rigidbody target) {
 					// Jump Start
 					int dis = (X - targetX).Abs() + (Y - targetY).Abs() / 2;
 					NavJumpFrame = 0;
-					NavJumpDuration = (dis / NavigationJumpSpeed).Clamp(dis < Const.HALF ? 3 : 24, NavigationMaxJumpDuration);
+					NavJumpDuration = (dis / JumpSpeed).Clamp(dis < Const.HALF ? 3 : 24, MaxJumpDuration);
 					NavJumpFromPosition.x = X;
 					NavJumpFromPosition.y = Y;
 				}

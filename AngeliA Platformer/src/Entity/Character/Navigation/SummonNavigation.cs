@@ -12,6 +12,13 @@ public class SummonNavigation (Rigidbody target) : RigidbodyNavigation(target) {
 	public override bool NavigationEnable => Target is not Character character || character.CharacterState == CharacterState.GamePlay;
 	public override bool ClampInSpawnRect => Owner == PlayerSystem.Selecting;
 	public override int InstanceShift => 17;
+	public override int StartMoveDistance => Const.CEL * 12;
+	public override int EndMoveDistance => Const.CEL * 6;
+	public override int StartFlyDistance => Const.CEL * 26;
+	public override int EndFlyDistance => Const.CEL * 6;
+	public override int MinimumFlyDuration => 120;
+	public override int JumpSpeed => 42;
+	public override int MaxJumpDuration => 60;
 	public Entity Owner { get; set; }
 	public bool IsFollowingOwner => CurrentAmiMode == AimMode.FollowOwner;
 	public bool IsWandering => CurrentAmiMode == AimMode.Wandering;
