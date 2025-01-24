@@ -175,7 +175,7 @@ public static partial class FrameworkUtil {
 				// Event
 				eBlock.OnEntityPicked();
 				if (dropItemAfterPicked && e.FromWorld && ItemSystem.HasItem(e.TypeID)) {
-					// Drop Item
+					// Drop Block Building Item
 					var rect = e.Rect;
 					ItemSystem.SpawnItem(e.TypeID, rect.CenterX(), rect.CenterY(), jump: false);
 					InvokeBlockPicked(e.TypeID, rect);

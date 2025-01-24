@@ -139,7 +139,7 @@ public static class ItemSystem {
 
 		// Init Drop Pool from Code
 		ItemDropPool.Clear();
-		foreach (var (type, att) in Util.AllClassWithAttribute<ItemDropAttribute>()) {
+		foreach (var (type, att) in Util.AllClassWithAttribute<ItemDropAttribute>(inherit: true)) {
 			ItemDropPool.TryAdd(type.AngeHash(), new() {
 				ItemID = att.ItemTypeID,
 				Chance = att.DropChance,

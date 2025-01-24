@@ -5,11 +5,11 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 [EntityAttribute.SpawnWithCheatCode]
-public abstract class Enemy : Character, IDamageReceiver {
+public abstract class Enemy : Character {
 
 	// VAR
-	int IDamageReceiver.Team => Const.TEAM_ENEMY;
-	bool IDamageReceiver.TakeDamageFromLevel => false;
+	public override int Team => Const.TEAM_ENEMY;
+	public override int AttackTargetTeam => Const.TEAM_PLAYER | Const.TEAM_ENVIRONMENT;
 	protected virtual bool DamageOnTouch => true;
 
 	// MSG
@@ -28,6 +28,11 @@ public abstract class Enemy : Character, IDamageReceiver {
 		if (DamageOnTouch && CharacterState == CharacterState.GamePlay && !Health.TakingDamage) {
 			Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect);
 		}
+	}
+
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
+		IgnoreDamageFromLevel(1);
 	}
 
 	public override void TakeDamage (Damage damage) {

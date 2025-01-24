@@ -65,6 +65,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public override bool CarryOtherOnTop => false;
 	public virtual CharacterInventoryType InventoryType => CharacterInventoryType.None;
 	public virtual int FinalCharacterHeight => Movement.MovementHeight;
+	public virtual int Team => Const.TEAM_NEUTRAL;
+	public virtual int AttackTargetTeam => Const.TEAM_ALL;
+	public virtual Tag IgnoreDamageType => Tag.None;
 	bool ICarrier.AllowBeingCarry => true;
 	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
 	CharacterAttackness IWithCharacterAttackness.CurrentAttackness => Attackness;
@@ -85,9 +88,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public int SleepStartFrame { get; set; } = int.MinValue;
 	public int PassOutFrame { get; private set; } = int.MinValue;
 	public int LastRequireBounceFrame { get; set; } = int.MinValue;
-	public int Team { get; set; } = Const.TEAM_NEUTRAL;
-	public Tag IgnoreDamageType { get; set; } = Tag.None;
-	public int AttackTargetTeam { get; set; } = Const.TEAM_ALL;
 	public int DespawnAfterPassoutDelay { get; set; } = 60;
 	public int InventoryID { get; private set; }
 	public int RenderingCellIndex { get; private set; }
@@ -214,9 +214,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		OverridingAttacknessFrame = int.MinValue;
 		OverridingHealthFrame = int.MinValue;
 		OverridingRendererFrame = int.MinValue;
-		Team = Const.TEAM_NEUTRAL;
-		IgnoreDamageType = Tag.None;
-		AttackTargetTeam = Const.TEAM_ALL;
 		DespawnAfterPassoutDelay = 60;
 		Bouncy = 150;
 		bool allowInv = InventoryType != CharacterInventoryType.None;

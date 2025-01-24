@@ -8,9 +8,11 @@ namespace AngeliA;
 
 // Drop
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class ItemDropAttribute (Type itemType, int dropCount = 1, int dropChance = 1000) : Attribute {
-	public Type ItemType = itemType;
-	public readonly int ItemTypeID = itemType.AngeHash();
+public class ItemDropAttribute<I> (int dropChance, int dropCount = 1) : ItemDropAttribute(
+	typeof(I).AngeHash(), dropChance, dropCount
+) { }
+public abstract class ItemDropAttribute (int typeID, int dropChance, int dropCount = 1) : Attribute {
+	public readonly int ItemTypeID = typeID;
 	public int DropCount = dropCount;
 	public int DropChance = dropChance;
 }

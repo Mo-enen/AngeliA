@@ -899,10 +899,10 @@ public class CharacterMovement (Rigidbody rig) {
 		// Push
 		if (PushAvailable && !IsCrashing && IntendedX != 0 && speed != 0) {
 			var hits = Physics.OverlapAll(
-			PhysicsMask.ENVIRONMENT,
-			Rect.Shrink(0, 0, 4, 4).EdgeOutside(IntendedX < 0 ? Direction4.Left : Direction4.Right),
-			out int count, Target
-		);
+				PhysicsMask.ENVIRONMENT,
+				Rect.Shrink(0, 0, 4, 4).EdgeOutside(IntendedX < 0 ? Direction4.Left : Direction4.Right),
+				out int count, Target
+			);
 			bool pushing = false;
 			int pushSpeed = IntendedX * PushSpeed;
 			for (int i = 0; i < count; i++) {

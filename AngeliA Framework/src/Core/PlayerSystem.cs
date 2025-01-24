@@ -631,8 +631,6 @@ public static class PlayerSystem {
 			SelectingPlayerID.Value = 0;
 			return;
 		}
-		target.Team = Const.TEAM_PLAYER;
-		target.AttackTargetTeam = Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 		target.IgnoreDespawnFromMap(1);
 		SelectingPlayerID.Value = target.TypeID;
 		IgnoreInputFrame = -1;

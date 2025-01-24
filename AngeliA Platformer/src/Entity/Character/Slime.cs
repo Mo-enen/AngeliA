@@ -7,7 +7,7 @@ namespace AngeliA.Platformer;
 public abstract class Slime : Enemy, ISlimeWalker {
 
 	// VAR
-	
+
 	public override IRect Rect {
 		get {
 			int width = Movement.MovementWidth;
@@ -46,7 +46,7 @@ public abstract class Slime : Enemy, ISlimeWalker {
 		Movement.MovementWidth.BaseValue = 220;
 		Movement.MovementHeight.BaseValue = 136;
 		ISlimeWalker.ActiveWalker(this);
-		FacingPositive = false;
+		FacingPositive = true;
 		CurrentRotation = 0;
 	}
 

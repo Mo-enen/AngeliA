@@ -19,7 +19,6 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 	// Api
 	public Character Owner { get; set; } = null;
-	int IDamageReceiver.Team => Owner != null ? (Owner as IDamageReceiver).Team : Const.TEAM_NEUTRAL;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
 	public int InventoryUpdatedFrame { get; set; } = -1;
 	public SummonNavigation Navigation { get; init; }
@@ -27,6 +26,8 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	public virtual bool AllowRescueWhenPassout => true;
 	public override bool AllowBeingPush => false;
 	public override bool CarryOtherOnTop => false;
+	public override int Team => Owner != null ? Owner.Team : Const.TEAM_NEUTRAL;
+	public override int AttackTargetTeam => Owner != null ? Owner.AttackTargetTeam : 0;
 
 	// Data
 	private int SummonFrame = int.MinValue;
@@ -73,9 +74,10 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		} else if (CharacterState == CharacterState.PassOut) {
 			Physics.FillEntity(EntityLayer.CHARACTER, this, true);
 		}
+
 		// Nav
 		Navigation.Owner = Owner;
-		AttackTargetTeam = Owner != null ? Owner.AttackTargetTeam : 0;
+
 	}
 
 
