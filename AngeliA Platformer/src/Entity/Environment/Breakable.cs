@@ -13,7 +13,7 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 	public virtual bool SpawnItemFromMapWhenBreak => false;
 	protected virtual Tag IgnoreDamageType => Tag.None;
 
-	// MSG
+	// MSG 
 	void IDamageReceiver.TakeDamage (Damage damage) {
 		if (!Active || damage.Amount <= 0) return;
 		if (IgnoreDamageType.HasAll(damage.Type)) return;

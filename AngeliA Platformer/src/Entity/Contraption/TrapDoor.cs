@@ -15,7 +15,6 @@ public abstract class TrapDoor : Entity, IBlockEntity, ICircuitOperator {
 	public virtual int OpenDuration => 42;
 	public bool IsOpening { get; set; } = false;
 	public int LastSwitchFrame { get; private set; } = int.MinValue;
-	public override IRect ColliderRect => new(X + 64, Y, Width - 128, Height);
 
 	// MSG
 	public override void OnActivated () {
@@ -26,8 +25,16 @@ public abstract class TrapDoor : Entity, IBlockEntity, ICircuitOperator {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		bool colliderOn = !IsOpening || Game.GlobalFrame <= LastSwitchFrame + OpenDelay;
-		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, colliderOn ? Tag.OnewayUp : Tag.None);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		if (!IsOpening || Game.GlobalFrame <= LastSwitchFrame + OpenDelay) {
+			Physics.FillBlock(
+				PhysicsLayer.ENVIRONMENT,
+				TypeID, 
+				new IRect(X + 64, Y, Width - 128, Height), 
+				true, 
+				Tag.OnewayUp
+			);
+		}
 	}
 
 	public override void BeforeUpdate () {

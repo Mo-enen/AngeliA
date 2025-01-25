@@ -21,7 +21,6 @@ public abstract class Entity : IMapItem {
 	public int SpawnFrame { get; internal protected set; } = int.MinValue;
 	public bool FromWorld => InstanceID.x != int.MinValue;
 	public virtual IRect Rect => new(X, Y, Width, Height);
-	public virtual IRect ColliderRect => Rect;
 	public int InstanceOrder => InstanceID.x != int.MinValue ? 0 : InstanceID.y;
 	public Int3? MapUnitPos => InstanceID.x != int.MinValue ? InstanceID : null;
 	public Int3 InstanceID { get; internal set; } = default;

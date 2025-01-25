@@ -36,19 +36,11 @@ public abstract class MomentumBooster : Entity, IBlockEntity {
 
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig || rig.IgnorePhysics) continue;
-			//if (rig is Character && hit.IsTrigger) continue;
-
-			var wMov = rig as IWithCharacterMovement;
 
 			// Get Boost Direction
-			int sign = 1;
-			if (BoostDirection == Direction3.None) {
-				if (wMov != null) {
-					sign = wMov.CurrentMovement.FacingRight ? 1 : -1;
-				}
-			} else {
-				sign = BoostDirection == Direction3.Right ? 1 : -1;
-			}
+			int sign = BoostDirection == Direction3.None ?
+				rig.FacingRight ? 1 : -1 :
+				BoostDirection == Direction3.Right ? 1 : -1;
 
 			// Boost
 			int momentumX = rig.CurrentMomentumX.Abs();
@@ -58,7 +50,7 @@ public abstract class MomentumBooster : Entity, IBlockEntity {
 			);
 
 			// Movement
-			if (wMov != null) {
+			if (rig is IWithCharacterMovement wMov) {
 				var mov = wMov.CurrentMovement;
 				mov.SquatAvailable.False(1);
 				mov.DashAvailable.False(1);
@@ -77,11 +69,7 @@ public abstract class MomentumBooster : Entity, IBlockEntity {
 
 			// Footstep
 			if (Game.GlobalFrame % 4 == 0) {
-				FrameworkUtil.InvokeOnFootStepped(
-					rig.X + Util.QuickRandom(-32, 33),
-					rig.Y + Util.QuickRandom(-32, 33),
-					TypeID
-				);
+				FrameworkUtil.InvokeOnFootStepped(rig);
 			}
 
 			// Final

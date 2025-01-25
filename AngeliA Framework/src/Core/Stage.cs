@@ -956,6 +956,10 @@ public static class Stage {
 	private static E PeekEntity<E> () where E : Entity => PeekEntity(typeof(E).AngeHash()) as E;
 	private static Entity PeekEntity (int typeID) => EntityPool.TryGetValue(typeID, out var meta) ? meta.Peek() : null;
 
+	public static void TrySpawnEntity (int tYPE_ID, object x, object value, out Entity _) {
+		throw new NotImplementedException();
+	}
+
 
 	#endregion
 

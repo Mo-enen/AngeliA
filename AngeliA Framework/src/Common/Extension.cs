@@ -282,6 +282,7 @@ public static class Extension {
 		value = value.UMod(length * 2);
 		return length - Util.Abs(value - length);
 	}
+
 	[MethodImpl(INLINE)]
 	public static int PingPong (this int value, int min, int max) {
 		int length = max - min;
@@ -1040,7 +1041,7 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static void SlideRight (ref this IRect rect, int padding = 0) => rect.x += rect.width + padding;
 	[MethodImpl(INLINE)] public static void SlideDown (ref this IRect rect, int padding = 0) => rect.y -= rect.height + padding;
 	[MethodImpl(INLINE)] public static void SlideUp (ref this IRect rect, int padding = 0) => rect.y += rect.height + padding;
-	
+
 	[MethodImpl(INLINE)]
 	public static IRect TopHalf (this IRect rect) {
 		int delta = rect.height / 2;

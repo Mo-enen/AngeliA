@@ -29,6 +29,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public int CurrentMomentumX => MomentumX.value;
 	public int CurrentMomentumY => MomentumY.value;
 	public bool RequireDodgeOverlap { get; set; } = false;
+	public virtual bool FacingRight => true;
 
 	// Based Value
 	public static readonly FrameBasedInt GlobalGravity = new(5);

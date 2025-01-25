@@ -73,8 +73,10 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 		}
 
 		// Free Time
-		IgnorePhysics.True(1);
-		FillAsTrigger(1);
+		if (Navigation.NavigationState != RigidbodyNavigationState.Idle) {
+			IgnorePhysics.True(1);
+			FillAsTrigger(1);
+		}
 		if (Movement.LastStartMoveFrame >= 0) {
 			Movement.RunSpeed.Override(
 				Util.Min(Movement.RunSpeed.BaseValue, Game.GlobalFrame - Movement.LastStartMoveFrame), 1

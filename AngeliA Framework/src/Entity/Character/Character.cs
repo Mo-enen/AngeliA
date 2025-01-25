@@ -36,16 +36,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public const int INVENTORY_COLUMN = 6;
 	public const int INVENTORY_ROW = 3;
 
-	// Event
-	[OnCharacterSleeping_Character] internal static System.Action<Character> OnSleeping;
-	[OnCharacterJump_Character] internal static System.Action<Character> OnJump;
-	[OnCharacterPound_Character] internal static System.Action<Character> OnPound;
-	[OnCharacterFly_Character] internal static System.Action<Character> OnFly;
-	[OnCharacterSlideStepped_Character] internal static System.Action<Character> OnSlideStepped;
-	[OnCharacterPassOut_Character] internal static System.Action<Character> OnPassOut;
-	[OnCharacterTeleport_Character] internal static System.Action<Character> OnTeleport;
-	[OnCharacterCrash_Character] internal static System.Action<Character> OnCrash;
-
 	// Api
 	public bool Teleporting => Game.GlobalFrame < _TeleportEndFrame.Abs();
 	public int TeleportEndFrame => _TeleportEndFrame.Abs();
@@ -63,6 +53,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public override int AirDragX => 0;
 	public override int AirDragY => 0;
 	public override bool CarryOtherOnTop => false;
+	public override bool AllowBeingPush => true;
+	public override bool FacingRight => Movement.FacingRight;
 	public virtual CharacterInventoryType InventoryType => CharacterInventoryType.None;
 	public virtual int FinalCharacterHeight => Movement.MovementHeight;
 	public virtual int Team => Const.TEAM_NEUTRAL;
@@ -479,7 +471,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 				if (
 					_TeleportDuration < 0 && frame == _TeleportEndFrame.Abs() - _TeleportDuration.Abs() / 2 + 1
 				) {
-					OnTeleport?.Invoke(targetCharacter);
+					FrameworkUtil.InvokeOnCharacterTeleport(targetCharacter);
 				}
 				// Step
 				if (IsGrounded) {
@@ -489,14 +481,14 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 						(Movement.IsDashing && (frame - Movement.LastDashFrame) % 8 == 0) || // Dash
 						(Movement.IsRushing && (frame - Movement.LastRushFrame) % 3 == 0) // Rush
 					) {
-						FrameworkUtil.InvokeOnFootStepped(targetCharacter.X, targetCharacter.Y, targetCharacter.GroundedID);
+						FrameworkUtil.InvokeOnFootStepped(targetCharacter);
 					}
 				}
-				if (Movement.IsSliding && frame % 24 == 0) OnSlideStepped?.Invoke(targetCharacter);
-				if (frame == Movement.LastJumpFrame) OnJump?.Invoke(targetCharacter);
-				if (IsGrounded && !Movement.IsPounding && frame == Movement.LastPoundingFrame + 1) OnPound?.Invoke(targetCharacter);
-				if (frame == Movement.LastFlyFrame) OnFly?.Invoke(targetCharacter);
-				if (frame == Movement.LastCrashFrame) OnCrash?.Invoke(targetCharacter);
+				if (Movement.IsSliding && frame % 24 == 0) FrameworkUtil.InvokeOnCharacterSlideStepped(targetCharacter);
+				if (frame == Movement.LastJumpFrame) FrameworkUtil.InvokeOnCharacterJump(targetCharacter);
+				if (IsGrounded && !Movement.IsPounding && frame == Movement.LastPoundingFrame + 1) FrameworkUtil.InvokeOnCharacterPound(targetCharacter);
+				if (frame == Movement.LastFlyFrame) FrameworkUtil.InvokeOnCharacterFly(targetCharacter);
+				if (frame == Movement.LastCrashFrame) FrameworkUtil.InvokeOnCharacterCrash(targetCharacter);
 			}
 		}
 
@@ -504,7 +496,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		if (CharacterState == CharacterState.Sleep) {
 			// ZZZ Particle
 			if (frame % 42 == 0) {
-				OnSleeping?.Invoke(this);
+				FrameworkUtil.InvokeOnCharacterSleeping(this);
 			}
 		}
 	}
@@ -601,7 +593,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 			case CharacterState.PassOut:
 				PassOutFrame = Game.GlobalFrame;
-				OnPassOut?.Invoke(this);
+				FrameworkUtil.InvokeOnCharacterPassOut(this);
 				break;
 
 		}

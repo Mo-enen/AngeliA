@@ -13,6 +13,7 @@ public abstract class PlayableCharacter : Character, IActionTarget {
 	public override int FinalCharacterHeight => Rendering is PoseCharacterRenderer rendering ?
 		base.FinalCharacterHeight * rendering.CharacterHeight / 160 :
 		base.FinalCharacterHeight;
+	public override bool AllowBeingPush => true;
 
 	// MSG
 	public virtual bool Invoke () {

@@ -20,7 +20,6 @@ public abstract class Furniture : Entity, IBlockEntity {
 	public Furniture FurnitureLeftOrDown { get; private set; } = null;
 	public Furniture FurnitureRightOrUp { get; private set; } = null;
 	protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
-	public override IRect ColliderRect => Rect.Shrink(ColliderBorder);
 
 	// Data
 	protected Int4 ColliderBorder = Int4.zero;
@@ -53,7 +52,10 @@ public abstract class Furniture : Entity, IBlockEntity {
 	}
 
 
-	public override void FirstUpdate () => Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Tag.OnewayUp);
+	public override void FirstUpdate () {
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		Physics.FillBlock(PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(ColliderBorder), true, Tag.OnewayUp);
+	}
 
 
 	public override void BeforeUpdate () {

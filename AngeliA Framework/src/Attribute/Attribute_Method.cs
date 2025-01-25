@@ -83,18 +83,18 @@ public class OnItemUnlocked_IntItemIDAttribute : EventAttribute { }
 
 
 // Character
-public class OnCharacterSleeping_CharacterAttribute : EventAttribute { }
-public class OnCharacterJump_CharacterAttribute : EventAttribute { }
-public class OnCharacterPound_CharacterAttribute : EventAttribute { }
-public class OnCharacterFly_CharacterAttribute : EventAttribute { }
-public class OnCharacterSlideStepped_CharacterAttribute : EventAttribute { }
-public class OnCharacterPassOut_CharacterAttribute : EventAttribute { }
-public class OnCharacterTeleport_CharacterAttribute : EventAttribute { }
-public class OnCharacterCrash_CharacterAttribute : EventAttribute { }
+public class OnCharacterFootStepped_Entity : EventAttribute { }
+public class OnCharacterSleeping_Entity : EventAttribute { }
+public class OnCharacterJump_Entity : EventAttribute { }
+public class OnCharacterPound_Entity : EventAttribute { }
+public class OnCharacterFly_Entity : EventAttribute { }
+public class OnCharacterSlideStepped_Entity : EventAttribute { }
+public class OnCharacterPassOut_Entity : EventAttribute { }
+public class OnCharacterTeleport_Entity : EventAttribute { }
+public class OnCharacterCrash_Entity : EventAttribute { }
 
 
 // Misc
-public class OnFootStepped_IntX_IntY_IntGroundIDAttribute : EventAttribute { }
 public class OnObjectBreak_IntSpriteID_IRectAttribute : EventAttribute { }
 public class OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute : EventAttribute { }
 public class OnBlockPicked_IntSpriteID_IrectAttribute : EventAttribute { }

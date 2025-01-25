@@ -24,7 +24,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	public SummonNavigation Navigation { get; init; }
 	public virtual bool RequireOwner => false;
 	public virtual bool AllowRescueWhenPassout => true;
-	public override bool AllowBeingPush => false;
+	public override bool AllowBeingPush => true;
 	public override bool CarryOtherOnTop => false;
 	public override int Team => Owner != null ? Owner.Team : Const.TEAM_NEUTRAL;
 	public override int AttackTargetTeam => Owner != null ? Owner.AttackTargetTeam : 0;

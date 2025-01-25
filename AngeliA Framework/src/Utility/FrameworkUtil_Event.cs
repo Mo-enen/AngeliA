@@ -17,7 +17,15 @@ public static partial class FrameworkUtil {
 	[OnItemDamage_Character_IntItemBefore_IntItemAfter] internal static Action<Character, int, int> OnItemDamage;
 	[OnItemUnlocked_IntItemID] internal static Action<int> OnItemUnlocked;
 	[OnCheatPerformed_StringCode] internal static Action<string> OnCheatPerformed;
-	[OnFootStepped_IntX_IntY_IntGroundID] internal static Action<int, int, int> OnFootStepped;
+	[OnCharacterFootStepped_Entity] internal static Action<Entity> OnFootStepped;
+	[OnCharacterSleeping_Entity] internal static Action<Entity> OnCharacterSleeping;
+	[OnCharacterJump_Entity] internal static Action<Entity> OnCharacterJump;
+	[OnCharacterPound_Entity] internal static Action<Entity> OnCharacterPound;
+	[OnCharacterFly_Entity] internal static Action<Entity> OnCharacterFly;
+	[OnCharacterSlideStepped_Entity] internal static Action<Entity> OnCharacterSlideStepped;
+	[OnCharacterPassOut_Entity] internal static Action<Entity> OnCharacterPassOut;
+	[OnCharacterTeleport_Entity] internal static Action<Entity> OnCharacterTeleport;
+	[OnCharacterCrash_Entity] internal static Action<Entity> OnCharacterCrash;
 
 	// API
 	public static void InvokeObjectBreak (int spriteID, IRect rect) => OnObjectBreak?.Invoke(spriteID, rect);
@@ -36,6 +44,14 @@ public static partial class FrameworkUtil {
 	public static void InvokeItemDamage (Character holder, int fromID, int toID) => OnItemDamage?.Invoke(holder, fromID, toID);
 	public static void InvokeItemUnlocked (int itemID) => OnItemUnlocked?.Invoke(itemID);
 	public static void InvokeCheatPerformed (string cheatCode) => OnCheatPerformed?.Invoke(cheatCode);
-	public static void InvokeOnFootStepped (int x, int y, int groundedID) => OnFootStepped?.Invoke(x, y, groundedID);
+	public static void InvokeOnFootStepped (Entity target) => OnFootStepped?.Invoke(target);
+	public static void InvokeOnCharacterSleeping (Entity target) => OnCharacterSleeping?.Invoke(target);
+	public static void InvokeOnCharacterJump (Entity target) => OnCharacterJump?.Invoke(target);
+	public static void InvokeOnCharacterPound (Entity target) => OnCharacterPound?.Invoke(target);
+	public static void InvokeOnCharacterFly (Entity target) => OnCharacterFly?.Invoke(target);
+	public static void InvokeOnCharacterSlideStepped (Entity target) => OnCharacterSlideStepped?.Invoke(target);
+	public static void InvokeOnCharacterPassOut (Entity target) => OnCharacterPassOut?.Invoke(target);
+	public static void InvokeOnCharacterTeleport (Entity target) => OnCharacterTeleport?.Invoke(target);
+	public static void InvokeOnCharacterCrash (Entity target) => OnCharacterCrash?.Invoke(target);
 
 }
