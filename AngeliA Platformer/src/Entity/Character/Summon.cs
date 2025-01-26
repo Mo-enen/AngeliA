@@ -78,6 +78,10 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		// Nav
 		Navigation.Owner = Owner;
 
+		// Buff
+		Buff.PreventBuff(OnFireBuff.TYPE_ID, 1);
+		Buff.PreventBuff(PoisonBuff.TYPE_ID, 1);
+
 	}
 
 
@@ -144,6 +148,12 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 			IActionTarget.MakeCellAsActionTarget(this, sRendering.RenderedCell);
 		}
 
+	}
+
+
+	public override void TakeDamage (Damage damage) {
+		if (damage.Bullet == null) return;
+		base.TakeDamage(damage);
 	}
 
 

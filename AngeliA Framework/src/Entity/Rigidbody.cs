@@ -26,8 +26,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public int PrevY { get; private set; } = 0;
 	public int DeltaPositionX => X - PrevX;
 	public int DeltaPositionY => Y - PrevY;
-	public int CurrentMomentumX => MomentumX.value;
-	public int CurrentMomentumY => MomentumY.value;
+	public (int value, int decay) MomentumX = (0, 1);
+	public (int value, int decay) MomentumY = (0, 1);
 	public bool RequireDodgeOverlap { get; set; } = false;
 	public virtual bool FacingRight => true;
 
@@ -61,8 +61,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	// Data
 	private int PrevPositionUpdateFrame = -1;
 	private int InWaterFloatDuration = 0;
-	private (int value, int decay) MomentumX = (0, 0);
-	private (int value, int decay) MomentumY = (0, 0);
 	private readonly FrameBasedInt FillModeIndex = new(0);
 
 
@@ -98,8 +96,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 		PrevX = X;
 		PrevY = Y;
 		InWaterFloatDuration = 0;
-		MomentumX = (0, 0);
-		MomentumY = (0, 0);
+		MomentumX = (0, 1);
+		MomentumY = (0, 1);
 		IsInsideGround = false;
 		RequireDodgeOverlap = false;
 	}
@@ -132,7 +130,10 @@ public abstract class Rigidbody : Entity, ICarrier {
 		// Ignoring Physics
 		if (IgnorePhysics) {
 			IsGrounded = GroundedCheck();
-			if (IsInsideGround && DestroyWhenInsideGround) Active = false;
+			if (IsInsideGround && DestroyWhenInsideGround) {
+				Active = false;
+				OnInsideGroundDestroyed();
+			}
 			return;
 		}
 
@@ -140,6 +141,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		if (IsInsideGround) {
 			if (DestroyWhenInsideGround) {
 				Active = false;
+				OnInsideGroundDestroyed();
 			} else {
 				if (VelocityX != 0 || VelocityY != 0) {
 					PerformMove(VelocityX, VelocityY);
@@ -304,12 +306,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	}
 
 
-	public void SetMomentum (int x, int y, int decayX = 1, int decayY = 1) {
-		MomentumX = (x, decayX);
-		MomentumY = (y, decayY);
-	}
-
-
 	void ICarrier.PerformCarry (int x, int y) {
 
 		MakeGrounded(1);
@@ -321,9 +317,9 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 		if (y != 0) {
 			MomentumY.value = y;
-			MomentumY.decay = (y.Abs() / 3).GreaterOrEquel(1);
 			if (y < 0) {
 				VelocityY = y;
+				MomentumY.decay = (y.Abs() / 3).GreaterOrEquel(1);
 			}
 		}
 
@@ -358,6 +354,9 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 	public void FillAsTrigger (int duration = 0, int priority = 0) => FillModeIndex.Override(1, duration, priority);
 	public void FillAsOnewayUp (int duration = 0, int priority = 0) => FillModeIndex.Override(2, duration, priority);
+
+
+	protected virtual void OnInsideGroundDestroyed () { }
 
 
 	#endregion

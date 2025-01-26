@@ -24,6 +24,7 @@ public class FrozenZone : Entity {
 
 	// Data
 	private static int FullscreenUpdateFrame = -1;
+	private static int FullscreenRenderedFrame = -1;
 	private int SpawnedZ;
 	private int RequireDespawnFrame = int.MaxValue;
 
@@ -140,8 +141,11 @@ public class FrozenZone : Entity {
 		base.LateUpdate();
 		if (!Active) return;
 		if (Fullscreen) {
-			DrawFrozenEffect(null);
-			Game.PassEffect_Tint(new Color32(230, 245, 255, 255), 1);
+			if (Game.GlobalFrame != FullscreenRenderedFrame) {
+				FullscreenRenderedFrame = Game.GlobalFrame;
+				DrawFrozenEffect(null);
+				Game.PassEffect_Tint(new Color32(230, 245, 255, 255), 1);
+			}
 		} else {
 			DrawFrozenEffect(Rect);
 		}
@@ -149,41 +153,19 @@ public class FrozenZone : Entity {
 
 
 	private void DrawFrozenEffect (IRect? range) {
-
-		if (!Renderer.TryGetSprite(Const.PIXEL, out var sprite, true)) return;
-
 		var cameraRect = Renderer.CameraRect;
 		var rect = range ?? cameraRect;
-		int left = rect.x;
-		int down = rect.y;
-		int width = rect.width;
-		int height = rect.height;
-
-		int seed = SpawnFrame + X + Y * 128 + InstanceOrder * 347345634;
-		int frame = Game.GlobalFrame - SpawnFrame;
 		byte alpha = Duration > 0 ?
 			(byte)Util.LerpUnclamped(385f, 0f, (Game.GlobalFrame - SpawnFrame) / (float)Duration).Clamp(0, 200) :
 			(byte)150;
 		if (RequireDespawnFrame != int.MaxValue) {
 			alpha = (byte)Util.Lerp(0, alpha, (RequireDespawnFrame - Game.GlobalFrame) / (float)DESPAWN_DURATION);
 		}
-
-		var tint = new Color32(200, 225, 255, alpha);
-		int COUNT = Fullscreen ? 128 : Duration < 0 ? 16 : 32;
-		float frame01 = frame / 120f;
-		float fixedFrame01 = frame01 * Const.CEL / height;
+		int count = Fullscreen ? 128 : Duration < 0 ? 16 : 32;
 		int paraX = Fullscreen ? cameraRect.x / 2 : 0;
 		int paraY = Fullscreen ? cameraRect.y / 2 : 0;
-		for (int i = 0; i < COUNT; i++) {
-			float lerp01 = i / (float)COUNT;
-			if (lerp01 > frame01) break;
-			if (Util.QuickRandom(0, 100) < 30) continue;
-			int x = left + (Util.QuickRandomWithSeed(seed + i * 21632, 0, width) - paraX).UMod(width);
-			int y = down + (((fixedFrame01 + lerp01) * height).RoundToInt() - paraY).UMod(height);
-			int size = Util.QuickRandomWithSeed(seed + i * 1673 + TypeID, 16, 142);
-			int rot = Util.QuickRandom(0, 360);
-			Renderer.Draw(sprite, x, y, 500, 500, rot, size, size / 7, tint);
-		}
+		int seed = X.ToUnit() * 1651243 + Y.ToUnit() * 128;
+		FrameworkUtil.DrawFrozenEffect(rect, alpha, count, new Int2(paraX, paraY), seed);
 	}
 
 

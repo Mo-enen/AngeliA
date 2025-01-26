@@ -7,6 +7,9 @@ public class LightenBuff : Buff {
 
 	public static readonly int TYPE_ID = typeof(LightenBuff).AngeHash();
 
+	private static readonly SpriteCode LightenSp = "Lighten";
+
+
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
 		Bullet.OnBulletDealDamage += OnBulletDealDamage;
@@ -33,24 +36,7 @@ public class LightenBuff : Buff {
 
 	public override void LateUpdate (Character target) {
 		base.LateUpdate(target);
-		if (!Renderer.TryGetSpriteForGizmos(TypeID, out var sprite)) return;
-		for (int i = 0; i < 2; i++) {
-			var rect = target.Rect;
-			int size = Util.QuickRandom(169, 196);
-			int x = rect.CenterX();
-			int y = rect.CenterY();
-			int rangeX = rect.width / 2;
-			int rangeY = rect.height / 2;
-			Renderer.Draw(
-				sprite,
-				Util.QuickRandom(x - rangeX, x + rangeX),
-				Util.QuickRandom(y - rangeY, y + rangeY),
-				500, 500,
-				Util.QuickRandom(-150, 150),
-				Util.QuickRandomSign() * size, size,
-				z: int.MaxValue
-			);
-		}
+		FrameworkUtil.DrawLightenEffect(LightenSp, target.Rect.EdgeInsideDown(Const.CEL * 2));
 	}
 
 }

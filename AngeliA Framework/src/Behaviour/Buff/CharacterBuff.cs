@@ -138,7 +138,7 @@ public sealed class CharacterBuff {
 
 	public void PreventBuff (int id, int duration = 1) {
 		BuffStates.Remove(id);
-		BuffPrevents.TryAdd(id, Game.GlobalFrame + duration);
+		BuffPrevents[id] = Game.GlobalFrame + duration;
 	}
 
 

@@ -6,6 +6,9 @@ namespace AngeliA.Platformer;
 
 public class PoisonBuff : Buff {
 
+
+	private static readonly SpriteCode PoisonSprite = "Poison";
+
 	public static readonly int TYPE_ID = typeof(PoisonBuff).AngeHash();
 	private const int DAMAGE_FREQUENCY = 300;
 
@@ -35,32 +38,10 @@ public class PoisonBuff : Buff {
 	public override void LateUpdate (Character target) {
 		base.LateUpdate(target);
 		// Green Tint
-		target.Rendering.Tint.Tint(new Color32(220, 255, 220), 1);
+		target.Rendering.Tint.Tint(new Color32(170, 255, 170), 1);
 		// Draw Effect
-		int endFrame = target.Buff.GetBuffEndFrame(TypeID);
-		DrawPoisonEffect(target.Rect.Expand(32, 32, -32, 32), endFrame);
+		FrameworkUtil.DrawPoisonEffect(PoisonSprite, target.Rect.Expand(32, 32, -32, 0).EdgeInsideDown(Const.CEL * 2), seed: target.TypeID);
 	}
 
-	private void DrawPoisonEffect (IRect range, int endFrame) {
-		if (!Renderer.TryGetSprite(TypeID, out var sprite)) return;
-		var rect = range;
-		int left = rect.x;
-		int down = rect.y;
-		int width = rect.width;
-		int height = rect.height;
-		int seed = endFrame * 347345634;
-		int frame = endFrame - Game.GlobalFrame;
-		var tint = new Color32(200, 225, 255, (byte)(frame * 10).Clamp(0, 255));
-		float frame01 = frame / 120f;
-		float fixedFrame01 = frame01 * Const.CEL / height;
-		const int COUNT = 4;
-		for (int i = 0; i < COUNT; i++) {
-			float lerp01 = i / (float)COUNT;
-			int x = left + (Util.QuickRandomWithSeed(seed + i * 21632, 0, width)).UMod(width);
-			int y = down - (((fixedFrame01 + lerp01) * height).RoundToInt()).UMod(height) + height;
-			Renderer.Draw(sprite, x, y, 500, 500, 0, 132, 132, tint, int.MaxValue);
-		}
-
-	}
 
 }

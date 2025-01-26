@@ -43,11 +43,9 @@ public abstract class MomentumBooster : Entity, IBlockEntity {
 				BoostDirection == Direction3.Right ? 1 : -1;
 
 			// Boost
-			int momentumX = rig.CurrentMomentumX.Abs();
-			rig.SetMomentum(
-				sign * BoostSpeed.ReverseClamp(-momentumX, momentumX),
-				rig.CurrentMomentumY, MomentumDecay, MomentumDecay
-			);
+			int momentumX = rig.MomentumX.value.Abs();
+			rig.MomentumX.value = sign * BoostSpeed.ReverseClamp(-momentumX, momentumX);
+			rig.MomentumX.decay = MomentumDecay;
 
 			// Movement
 			if (rig is IWithCharacterMovement wMov) {

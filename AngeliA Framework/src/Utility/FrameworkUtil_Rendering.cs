@@ -747,4 +747,108 @@ public static partial class FrameworkUtil {
 	}
 
 
+	// Animate Effect
+	public static void DrawOnFireEffect (int spriteID, IRect rect, int count = 2, int loop = 40, int size = 200, int seed = 0, int z = int.MaxValue) {
+		if (!Renderer.TryGetSprite(spriteID, out var sprite, ignoreAnimation: false)) return;
+		DrawOnFireEffect(sprite, rect, count, loop, size, seed, z);
+	}
+	public static void DrawOnFireEffect (AngeSprite sprite, IRect rect, int count = 2, int loop = 40, int size = 200, int seed = 0, int z = int.MaxValue) {
+		int left = rect.x;
+		int down = rect.y;
+		int width = rect.width;
+		int height = rect.height;
+		int frame = Game.GlobalFrame;
+		float frame01 = frame / (float)loop;
+		float fixedFrame01 = frame01 * Const.CEL / height;
+		int hHeight = height / 2;
+		seed = seed == 0 ? 1276344 + rect.x.ToUnit() * 217634 + rect.y.ToUnit() * 1235 : seed;
+		for (int i = 0; i < count; i++) {
+			float lerp01 = i / (float)count;
+			int localSeed = seed + ((int)(fixedFrame01 + lerp01)) * 8254;
+			int x = left + Util.QuickRandomWithSeed(localSeed + i * 21632, 0, width).UMod(width);
+			int y = down + ((fixedFrame01 + lerp01) * height).RoundToInt().UMod(height);
+			int _size = Util.QuickRandomWithSeed(localSeed + i * 2512, size / 2, size);
+			int alpha = ((y - rect.y).PingPong(hHeight) * 512 / hHeight).Clamp(0, 255);
+			Renderer.Draw(sprite, x, y, 500, 500, 0, _size, _size, Color32.WHITE.WithNewA(alpha), z: z);
+		}
+	}
+
+
+	public static void DrawFrozenEffect (IRect rect, byte alpha, int count = 32, Int2 offset = default, int seed = 0, int size = 142) {
+		if (!Renderer.TryGetSprite(Const.PIXEL, out var sprite, true)) return;
+		var tint = new Color32(200, 225, 255, alpha);
+		int left = rect.x;
+		int down = rect.y;
+		int width = rect.width;
+		int height = rect.height;
+		seed = seed == 0 ? rect.x.ToUnit() * 1651243 + rect.y.ToUnit() * 128 : seed;
+		int frame = Game.GlobalFrame;
+		float frame01 = frame / 120f;
+		float fixedFrame01 = frame01 * Const.CEL / height;
+		for (int i = 0; i < count; i++) {
+			float lerp01 = i / (float)count;
+			if (lerp01 > frame01) break;
+			if (Util.QuickRandom(0, 100) < 30) continue;
+			int basicX = Util.QuickRandomWithSeed(seed + i * 21632, 0, width);
+			int _offsetX = offset.x == 0 ? 0 : offset.x * Util.QuickRandomWithSeed(seed + i * 891256, -2000, 2000) / 1000;
+			int x = left + (basicX - _offsetX).UMod(width);
+			int y = down + (((fixedFrame01 + lerp01) * height).RoundToInt() - offset.y).UMod(height);
+			int _size = Util.QuickRandomWithSeed(seed + i * 1673 + 891237623, (size / 8).GreaterOrEquel(1), size);
+			int rot = Util.QuickRandom(0, 360);
+			Renderer.Draw(sprite, x, y, 500, 500, rot, _size, _size / 7, tint);
+		}
+	}
+
+
+	public static void DrawLightenEffect (int spriteID, IRect rect, int count = 2, int size = 196) {
+		if (!Renderer.TryGetSprite(spriteID, out var sprite, ignoreAnimation: false)) return;
+		DrawLightenEffect(sprite, rect, count, size);
+	}
+	public static void DrawLightenEffect (AngeSprite sprite, IRect rect, int count = 2, int size = 196) {
+		for (int i = 0; i < count; i++) {
+			size = Util.QuickRandom(size / 2, size);
+			int x = rect.CenterX();
+			int y = rect.CenterY();
+			int rangeX = rect.width / 2;
+			int rangeY = rect.height / 2;
+			Renderer.Draw(
+				sprite,
+				Util.QuickRandom(x - rangeX, x + rangeX),
+				Util.QuickRandom(y - rangeY, y + rangeY),
+				500, 500,
+				Util.QuickRandom(-150, 150),
+				Util.QuickRandomSign() * size, size,
+				z: int.MaxValue
+			);
+		}
+	}
+
+
+	public static void DrawPoisonEffect (int spriteID, IRect rect, int loop = 120, int count = 4, int seed = 0, int size = 132, int z = int.MaxValue) {
+		if (!Renderer.TryGetSprite(spriteID, out var sprite, ignoreAnimation: false)) return;
+		DrawPoisonEffect(sprite, rect, loop, count, seed, size, z);
+	}
+	public static void DrawPoisonEffect (AngeSprite sprite, IRect rect, int loop = 120, int count = 4, int seed = 0, int size = 132, int z = int.MaxValue) {
+		int left = rect.x;
+		int down = rect.y;
+		int width = rect.width;
+		int height = rect.height;
+		seed = seed == 0 ? 1276344 + rect.x.ToUnit() * 217634 + rect.y.ToUnit() * 1235 : seed;
+		int frame = Game.GlobalFrame;
+		var tint = new Color32(200, 225, 255, (byte)(frame * 10).Clamp(0, 255));
+		float frame01 = frame / (float)loop;
+		float fixedFrame01 = frame01 * Const.CEL / height;
+		int hHeight = height / 2;
+		for (int i = 0; i < count; i++) {
+			float lerp01 = i / (float)count;
+			int localSeed = seed + ((int)(fixedFrame01 + lerp01)) * 8254;
+			int x = left + (Util.QuickRandomWithSeed(localSeed + i * 21632, 0, width)).UMod(width);
+			int y = down + ((fixedFrame01 + lerp01) * height).RoundToInt().UMod(height);
+			int _size = Util.QuickRandomWithSeed(localSeed + i * 2512, size / 2, size);
+			tint.a = (byte)((y - rect.y).PingPong(hHeight) * 512 / hHeight).Clamp(0, 255);
+			Renderer.Draw(sprite, x, y, 500, 500, 0, _size, _size, tint, z);
+		}
+	}
+
+
 }

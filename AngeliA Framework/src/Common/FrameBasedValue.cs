@@ -121,7 +121,7 @@ public class FrameBasedColor (Color32 value) : FrameBasedValue<Color32>(value) {
 		if (Overrided) {
 			if (priority < OverridePriority) return;
 			OverrideFrame = Util.Max(Game.GlobalFrame + duration, OverrideFrame);
-			OverrideValue = tint * OverrideValue;
+			OverrideValue = tint * BaseValue;
 		} else {
 			OverrideFrame = Game.GlobalFrame + duration;
 			OverrideValue = tint * BaseValue;

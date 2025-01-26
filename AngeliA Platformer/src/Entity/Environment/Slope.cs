@@ -94,7 +94,7 @@ public abstract class Slope : Entity, IBlockEntity {
 				distance / 2
 			);
 			// Fix Velocity
-			int finalVelX = target.VelocityX + target.CurrentMomentumX;
+			int finalVelX = target.VelocityX + target.MomentumX.value;
 			if (finalVelX == 0) {
 				// Fix X (Drop)
 				target.VelocityY = 0;

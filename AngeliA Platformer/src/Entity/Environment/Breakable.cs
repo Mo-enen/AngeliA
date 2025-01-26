@@ -46,4 +46,10 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 		FrameworkUtil.BreakEntityBlock(this);
 	}
 
+	protected override void OnInsideGroundDestroyed () {
+		base.OnInsideGroundDestroyed();
+		OnBreak();
+		IgnoreReposition = true;
+	}
+
 }

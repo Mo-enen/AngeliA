@@ -39,7 +39,7 @@ public abstract class Conveyor : Entity, IBlockEntity {
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig || rig.IsGrounded) continue;
-			rig.SetMomentum(-MoveSpeed, 0);
+			rig.MomentumX = (-MoveSpeed, 1);
 		}
 
 	}
