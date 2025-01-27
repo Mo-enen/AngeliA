@@ -780,6 +780,8 @@ public static class Stage {
 				requireClearOriginal = true;
 			} else {
 				// Only Shift
+				stream.SetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity, 0);
+				stream.SetBlockAt(currentUnitX, currentUnitY, mapPos.z, BlockType.Entity, entity.TypeID);
 				stream.SetBlockAt(
 					currentUnitX, currentUnitY, mapPos.z, BlockType.Element,
 					FrameworkUtil.GetRepositionElementCode(
@@ -787,6 +789,7 @@ public static class Stage {
 						eRect.y - currentUnitY.ToGlobal()
 					)
 				);
+				//entity.OnEntityReposition(new Int3(currentUnitX, currentUnitY, mapPos.z));
 			}
 		} else {
 			requireRepos = true;
@@ -816,11 +819,15 @@ public static class Stage {
 				eRect.y - resultUnitY.ToGlobal()
 			)
 		);
+		//entity.OnEntityReposition(new Int3(resultUnitX, resultUnitY, ViewZ));
 
 		// Clear Original
 		if (requireClearOriginal) {
 			var oPos = entity.MapUnitPos.Value;
-			stream.SetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Entity, 0);
+			int eleID = stream.GetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Element);
+			if (!FrameworkUtil.IsRepositionElementCode(eleID)) {
+				stream.SetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Entity, 0);
+			}
 		}
 
 		// Callback

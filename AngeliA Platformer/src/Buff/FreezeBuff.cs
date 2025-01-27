@@ -8,6 +8,14 @@ public class FreezeBuff : Buff {
 
 	public static readonly int TYPE_ID = typeof(FreezeBuff).AngeHash();
 
+	[OnDealDamage_Damage_IDamageReceiver]
+	internal static void OnDealDamage (Damage damage, IDamageReceiver receiver) {
+		if (!damage.Type.HasAll(Tag.IceDamage)) return;
+		if (receiver is IWithCharacterBuff wBuff && !wBuff.CurrentBuff.HasBuff(TYPE_ID)) {
+			wBuff.CurrentBuff.GiveBuff(TYPE_ID, 300);
+		}
+	}
+
 	public override void BeforeUpdate (Character target) {
 		base.BeforeUpdate(target);
 		var mov = target.Movement;

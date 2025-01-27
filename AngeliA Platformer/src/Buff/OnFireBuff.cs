@@ -10,25 +10,13 @@ public class OnFireBuff : Buff {
 	public static readonly int TYPE_ID = typeof(OnFireBuff).AngeHash();
 	private static readonly SpriteCode FireSprite = "Fire";
 
-
 	[OnDealDamage_Damage_IDamageReceiver]
 	internal static void OnDealDamage (Damage damage, IDamageReceiver receiver) {
 		if (!damage.Type.HasAll(Tag.FireDamage)) return;
-		if (damage.Bullet != null) {
-			IFire.SpreadFire(Fire.TYPE_ID, damage.Bullet.Rect.Expand(Const.CEL));
-		}
 		if (receiver is IWithCharacterBuff wBuff && !wBuff.CurrentBuff.HasBuff(TYPE_ID)) {
 			wBuff.CurrentBuff.GiveBuff(TYPE_ID, 200);
 		}
 	}
-
-
-	[OnBulletHitEnvironment_Bullet]
-	internal static void OnBulletHitEnvironment (Bullet bullet) {
-		if (!bullet.DamageType.HasAll(Tag.FireDamage)) return;
-		IFire.SpreadFire(Fire.TYPE_ID, bullet.Rect.Expand(Const.CEL));
-	}
-
 
 	public override void BeforeUpdate (Character target) {
 		// Putout Check
@@ -59,6 +47,5 @@ public class OnFireBuff : Buff {
 			seed: target.TypeID
 		);
 	}
-
 
 }

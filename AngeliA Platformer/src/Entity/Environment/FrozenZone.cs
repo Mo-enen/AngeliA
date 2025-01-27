@@ -37,26 +37,6 @@ public class FrozenZone : Entity {
 	#region --- MSG ---
 
 
-	[OnDealDamage_Damage_IDamageReceiver]
-	internal static void OnDealDamage (Damage damage, IDamageReceiver receiver) {
-		if (!damage.Type.HasAll(Tag.IceDamage)) return;
-		if (receiver is Entity entity) {
-			var range = entity.Rect.Expand(Const.HALF);
-			SpreadFrozenZone(TYPE_ID, range);
-			IFire.PutoutFire(range);
-		}
-	}
-
-
-	[OnBulletHitEnvironment_Bullet]
-	internal static void OnBulletHitEnvironment (Bullet bullet) {
-		if (!bullet.DamageType.HasAll(Tag.IceDamage)) return;
-		var range = bullet.Rect.Expand(Const.HALF);
-		SpreadFrozenZone(TYPE_ID, range);
-		IFire.PutoutFire(range);
-	}
-
-
 	public override void OnActivated () {
 		base.OnActivated();
 		Fullscreen = false;

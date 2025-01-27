@@ -104,7 +104,8 @@ public abstract class Bullet : Entity {
 			}
 
 			// Perform Damage
-			receiver.TakeDamage(new Damage(Damage, targetTeam, this, DamageType));
+			bool damaged = receiver.TakeDamage(new Damage(Damage, targetTeam, this, DamageType));
+			if (!damaged) continue;
 
 			// Destroy Check
 			PerformHitReceiver(receiver, out bool _requireSelfDestroy);
@@ -125,7 +126,7 @@ public abstract class Bullet : Entity {
 	protected virtual void BeforeDespawn (IDamageReceiver receiver) { }
 
 
-	protected void PerformHitEnvironment (out bool requireSelfDestroy) {
+	protected virtual void PerformHitEnvironment (out bool requireSelfDestroy) {
 		CurrentEnvironmentHitCount--;
 		if (CurrentEnvironmentHitCount <= 0) {
 			Active = false;
@@ -138,7 +139,7 @@ public abstract class Bullet : Entity {
 	}
 
 
-	protected void PerformHitReceiver (IDamageReceiver receiver, out bool requireSelfDestroy) {
+	protected virtual void PerformHitReceiver (IDamageReceiver receiver, out bool requireSelfDestroy) {
 		CurrentReceiverHitCount--;
 		if (CurrentReceiverHitCount <= 0) {
 			Active = false;

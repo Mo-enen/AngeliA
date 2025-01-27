@@ -689,38 +689,6 @@ public static partial class FrameworkUtil {
 	}
 
 
-	/* // Reposition Element Code Test
-	[OnGameInitialize]
-	internal static void RepositionElementCodeTest () {
-		//var b = new StringBuilder();
-		const int MAX_RANGE = 8 * Const.CEL ;
-		int minX = 9999;
-		int minY = 9999;
-		int maxX = -9999;
-		int maxY = -9999;
-		for (int x = -MAX_RANGE; x < MAX_RANGE; x++) {
-			for (int y = -MAX_RANGE; y < MAX_RANGE; y++) {
-				int code = GetRepositionElementCode(x, y);
-				if (TryGetRepositionElementDelta(code, out int newX, out int newY)
-				) {
-					//b.AppendLine($"({x - newX} {y - newY}) {x} -> {newX} {y} -> {newY}");
-					minX = Util.Min(minX, x - newX);
-					minY = Util.Min(minY, y - newY);
-					maxX = Util.Max(maxX, x - newX);
-					maxY = Util.Max(maxY, y - newY);
-				} else {
-					Debug.LogError("error");
-				}
-			}
-		}
-		Debug.Log("minX", minX, "minY", minY, "maxX", maxX, "maxY", maxY);
-		//string path = Util.CombinePaths(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop), "Test.txt");
-		//Util.TextToFile(b.ToString(), path);
-		//Game.OpenUrl(path);
-	}
-	//*/
-
-
 	public static int GetRepositionElementCode (int deltaGlobalX, int deltaGlobalY) {
 		const int MAX_RANGE = 8 * Const.CEL;
 		deltaGlobalX = deltaGlobalX.Clamp(-MAX_RANGE, MAX_RANGE) + MAX_RANGE;
@@ -738,6 +706,9 @@ public static partial class FrameworkUtil {
 		deltaGlobalY = (int)(((uint)(elementCode << 20)) >> 20) - MAX_RANGE;
 		return true;
 	}
+
+
+	public static bool IsRepositionElementCode (int elementCode) => (REPOS_BASIC_ID >> 24) == (elementCode >> 24);
 
 
 	// System Number

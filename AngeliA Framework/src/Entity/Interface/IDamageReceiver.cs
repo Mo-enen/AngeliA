@@ -10,15 +10,16 @@ public interface IDamageReceiver {
 
 	void OnDamaged (Damage damage);
 
-	public void TakeDamage (Damage damage) {
-		if (IsInvincible) return;
-		if (damage.Amount <= 0) return;
-		if (this is Entity e && !e.Active) return;
+	public bool TakeDamage (Damage damage) {
+		if (IsInvincible) return false;
+		if (damage.Amount <= 0) return false;
+		if (this is Entity e && !e.Active) return false;
 		damage.Type &= ~IgnoreDamageType;
-		if (damage.Type == Tag.None) return;
-		if ((Team & damage.TargetTeam) != Team) return;
+		if (damage.Type == Tag.None) return false;
+		if ((Team & damage.TargetTeam) != Team) return false;
 		OnDamaged(damage);
 		OnDamagedCallback?.Invoke(damage, this);
+		return true;
 	}
 
 }
