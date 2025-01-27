@@ -4,13 +4,13 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-public class SummonNavigation (Rigidbody target) : RigidbodyNavigation(target) {
+public class SummonNavigation (Summon target) : RigidbodyNavigation(target) {
 
 	private enum AimMode { FollowOwner, Wandering, }
 
 	// VAR
 	public override bool NavigationEnable => Target is not Character character || character.CharacterState == CharacterState.GamePlay;
-	public override bool ClampInSpawnRect => Owner == PlayerSystem.Selecting;
+	public override bool ClampInSpawnRect => (Target as Summon).Owner == PlayerSystem.Selecting;
 	public override int InstanceShift => 17;
 	public override int StartMoveDistance => Const.CEL * 12;
 	public override int EndMoveDistance => Const.CEL * 6;
@@ -19,7 +19,6 @@ public class SummonNavigation (Rigidbody target) : RigidbodyNavigation(target) {
 	public override int MinimumFlyDuration => 120;
 	public override int JumpSpeed => 42;
 	public override int MaxJumpDuration => 60;
-	public Entity Owner { get; set; }
 	public bool IsFollowingOwner => CurrentAmiMode == AimMode.FollowOwner;
 	public bool IsWandering => CurrentAmiMode == AimMode.Wandering;
 
@@ -56,10 +55,11 @@ public class SummonNavigation (Rigidbody target) : RigidbodyNavigation(target) {
 
 			// Get Aim at Ground
 			var aimPosition = new Int2(StartX, StartY);
+			var owner = (Target as Summon).Owner;
 			switch (CurrentAmiMode) {
 				case AimMode.FollowOwner:
-					if (Owner == null || !Owner.Active) break;
-					aimPosition = new Int2(Owner.X, Owner.Y);
+					if (owner == null || !owner.Active) break;
+					aimPosition = new Int2(owner.X, owner.Y);
 					break;
 				case AimMode.Wandering:
 					aimPosition = CurrentWanderingPos;

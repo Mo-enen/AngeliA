@@ -56,6 +56,10 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		Movement.MovementWidth.BaseValue = 256;
 		Movement.MovementHeight.BaseValue = 256;
 		DespawnAfterPassoutDelay = -1;
+		Buff.PreventBuff(OnFireBuff.TYPE_ID, int.MaxValue);
+		Buff.PreventBuff(PoisonBuff.TYPE_ID, int.MaxValue);
+		Buff.PreventBuff(LightenBuff.TYPE_ID, int.MaxValue);
+		Buff.PreventBuff(FreezeBuff.TYPE_ID, int.MaxValue);
 	}
 
 
@@ -67,21 +71,9 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-
-		if (CharacterState == CharacterState.GamePlay && Navigation.NavigationState != RigidbodyNavigationState.Idle) {
-			IgnorePhysics.True(1);
-			Physics.FillEntity(EntityLayer.CHARACTER, this, true);
-		} else if (CharacterState == CharacterState.PassOut) {
+		if (CharacterState != CharacterState.Sleep) {
 			Physics.FillEntity(EntityLayer.CHARACTER, this, true);
 		}
-
-		// Nav
-		Navigation.Owner = Owner;
-
-		// Buff
-		Buff.PreventBuff(OnFireBuff.TYPE_ID, 1);
-		Buff.PreventBuff(PoisonBuff.TYPE_ID, 1);
-
 	}
 
 

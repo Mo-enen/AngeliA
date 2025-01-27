@@ -616,6 +616,14 @@ public static class Extension {
 	};
 
 	[MethodImpl(INLINE)]
+	public static Direction8 ToDirection8 (this Direction4 dir4) => dir4 switch {
+		Direction4.Down => Direction8.Bottom,
+		Direction4.Left => Direction8.Left,
+		Direction4.Right => Direction8.Right,
+		_ => Direction8.Top,
+	};
+
+	[MethodImpl(INLINE)]
 	public static Alignment ToAlignment (this Direction5 dir5) => dir5 switch {
 		Direction5.Down => Alignment.BottomMid,
 		Direction5.Left => Alignment.MidLeft,

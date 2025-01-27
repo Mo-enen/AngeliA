@@ -93,6 +93,11 @@ public class RigidbodyNavigation (Rigidbody target) {
 		// Refresh
 		NavUpdate_State();
 
+		// Physics
+		if (NavigationState != RigidbodyNavigationState.Idle) {
+			Target.IgnorePhysics.True(1);
+		}
+
 		// Perform Navigate
 		if (CurrentNavOperationIndex >= CurrentNavOperationCount) {
 			CurrentNavOperationCount = 0;
