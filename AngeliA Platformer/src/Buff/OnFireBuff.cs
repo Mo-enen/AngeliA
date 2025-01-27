@@ -10,22 +10,25 @@ public class OnFireBuff : Buff {
 	public static readonly int TYPE_ID = typeof(OnFireBuff).AngeHash();
 	private static readonly SpriteCode FireSprite = "Fire";
 
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		Bullet.OnBulletDealDamage += OnBulletDealDamage;
-		Bullet.OnBulletHitEnvironment += OnBulletHitEnvironment;
-		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
-			if (!damageType.HasAll(Tag.FireDamage)) return;
-			IFire.SpreadFire(Fire.TYPE_ID, bullet.Rect.Expand(Const.CEL));
-			if (receiver is IWithCharacterBuff wBuff) {
-				wBuff.CurrentBuff.GiveBuff(OnFireBuff.TYPE_ID, 200);
-			}
+
+	[OnDealDamage_Damage_IDamageReceiver]
+	internal static void OnDealDamage (Damage damage, IDamageReceiver receiver) {
+		if (!damage.Type.HasAll(Tag.FireDamage)) return;
+		if (damage.Bullet != null) {
+			IFire.SpreadFire(Fire.TYPE_ID, damage.Bullet.Rect.Expand(Const.CEL));
 		}
-		static void OnBulletHitEnvironment (Bullet bullet, Tag damageType) {
-			if (!damageType.HasAll(Tag.FireDamage)) return;
-			IFire.SpreadFire(Fire.TYPE_ID, bullet.Rect.Expand(Const.CEL));
+		if (receiver is IWithCharacterBuff wBuff && !wBuff.CurrentBuff.HasBuff(TYPE_ID)) {
+			wBuff.CurrentBuff.GiveBuff(TYPE_ID, 200);
 		}
 	}
+
+
+	[OnBulletHitEnvironment_Bullet]
+	internal static void OnBulletHitEnvironment (Bullet bullet) {
+		if (!bullet.DamageType.HasAll(Tag.FireDamage)) return;
+		IFire.SpreadFire(Fire.TYPE_ID, bullet.Rect.Expand(Const.CEL));
+	}
+
 
 	public override void BeforeUpdate (Character target) {
 		// Putout Check
@@ -41,7 +44,7 @@ public class OnFireBuff : Buff {
 		// Take Damage
 		int endFrame = target.Buff.GetBuffEndFrame(TypeID);
 		if ((endFrame - Game.GlobalFrame) % DAMAGE_FREQUENCY == DAMAGE_FREQUENCY / 2) {
-			target.TakeDamage(new Damage(1, null, null, Tag.FireDamage) {
+			(target as IDamageReceiver).TakeDamage(new Damage(1, type: Tag.FireDamage) {
 				IgnoreInvincible = true,
 			});
 		}

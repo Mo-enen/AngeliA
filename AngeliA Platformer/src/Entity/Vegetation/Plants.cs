@@ -42,7 +42,7 @@ public abstract class Plant : Entity, IBlockEntity, ICombustible, IDamageReceive
 
 
 	// API
-	void IDamageReceiver.TakeDamage (Damage damage) {
+	void IDamageReceiver.OnDamaged (Damage damage) {
 		if (damage.Amount <= 0) return;
 		Active = false;
 		OnPlantBreak();

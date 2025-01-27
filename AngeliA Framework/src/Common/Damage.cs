@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public struct Damage (int amount, Entity sender, Entity bullet = null, Tag type = Tag.PhysicalDamage) {
+public struct Damage (int amount, int targetTeam = Const.TEAM_ALL, Entity bullet = null, Tag type = Tag.PhysicalDamage) {
 
 	public int Amount = amount;
+	public int TargetTeam = targetTeam;
 	public Tag Type = type;
-	public Entity Sender = sender;
 	public Entity Bullet = bullet;
 	public bool IgnoreInvincible = false;
 	public bool IgnoreStun = false;
@@ -29,8 +29,7 @@ public struct Damage (int amount, Entity sender, Entity bullet = null, Tag type 
 				) continue;
 				var hits = Physics.OverlapAll(PhysicsMask.DAMAGE, entity.Rect, out int count, entity, OperationMode.ColliderAndTrigger);
 				for (int j = 0; j < count; j++) {
-					var hit = hits[j];
-					receiver.TakeDamage(new Damage(1, null, null, hit.Tag));
+					receiver.TakeDamage(new Damage(1, type: hits[j].Tag));
 				}
 			}
 		}

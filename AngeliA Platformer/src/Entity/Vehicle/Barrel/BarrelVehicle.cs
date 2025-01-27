@@ -105,7 +105,7 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 		CurrentRollingSpeed = speedX.Sign3() * RollSpeed;
 	}
 
-	void IDamageReceiver.TakeDamage (Damage damage) {
+	void IDamageReceiver.OnDamaged (Damage damage) {
 		if (damage.Amount <= 0 || Driver != null) return;
 		Rolling = true;
 		RollingRotation = 0;
@@ -120,8 +120,8 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 				}
 			}
 			CurrentRollingSpeed = (Rect.CenterX() - bulletX).Sign3() * RollSpeed;
-		} else if (damage.Sender != null) {
-			CurrentRollingSpeed = (Rect.CenterX() - damage.Sender.Rect.CenterX()).Sign3() * RollSpeed;
+		} else if (damage.Bullet != null) {
+			CurrentRollingSpeed = (Rect.CenterX() - damage.Bullet.Rect.CenterX()).Sign3() * RollSpeed;
 		}
 	}
 

@@ -17,20 +17,19 @@ public abstract class Bullet : Entity {
 
 
 	// Api
-	public static event System.Action<Bullet, IDamageReceiver, Tag> OnBulletDealDamage;
-	public static event System.Action<Bullet, Tag> OnBulletHitEnvironment;
+	[OnBulletHitEnvironment_Bullet] internal static System.Action<Bullet> OnBulletHitEnvironment;
 	public int AttackIndex => Sender is IWithCharacterAttackness attSender ? attSender.CurrentAttackness.AttackStyleIndex : 0;
 	public bool AttackCharged => Sender is IWithCharacterAttackness attSender && attSender.CurrentAttackness.LastAttackCharged;
-
-	public readonly FrameBasedInt Damage = new(1);
 	public Tag DamageType { get; set; } = Tag.PhysicalDamage;
 	public Entity Sender { get; set; } = null;
+	protected virtual int BasicDamage => 1;
 	protected virtual int EnvironmentMask => PhysicsMask.MAP;
 	protected virtual int ReceiverMask => PhysicsMask.ENTITY;
 	protected virtual int EnvironmentHitCount => int.MaxValue;
 	protected virtual int ReceiverHitCount => int.MaxValue;
 	protected virtual bool RoundHitCheck => false;
 	public virtual int Duration => 60;
+	public readonly FrameBasedInt Damage = new(1);
 
 	// Data
 	private int CurrentEnvironmentHitCount;
@@ -52,6 +51,7 @@ public abstract class Bullet : Entity {
 		Sender = null;
 		CurrentEnvironmentHitCount = EnvironmentHitCount;
 		CurrentReceiverHitCount = ReceiverHitCount;
+		Damage.BaseValue = BasicDamage;
 		Damage.ClearOverride();
 		DamageType = Tag.PhysicalDamage;
 	}
@@ -93,13 +93,8 @@ public abstract class Bullet : Entity {
 		int targetTeam = Sender is Character chSender ? chSender.AttackTargetTeam : Const.TEAM_ALL;
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
-			// Gate
 			if (hit.Entity is not IDamageReceiver receiver) continue;
-			if ((receiver.Team & targetTeam) != receiver.Team) continue;
-			var fixedDamageType = DamageType & ~receiver.IgnoreDamageType;
-			if (fixedDamageType == Tag.None) continue;
-			if (receiver is Entity e && !e.Active) continue;
-			if (receiver is IWithCharacterHealth health && health.CurrentHealth.IsInvincible) continue;
+
 			// Round Shape Gate
 			if (RoundHitCheck) {
 				int dis = Util.DistanceInt(rect.CenterX(), rect.CenterY(), hit.Rect.CenterX(), hit.Rect.CenterY());
@@ -107,8 +102,10 @@ public abstract class Bullet : Entity {
 				int hitRad = (hit.Rect.width.Abs() + hit.Rect.height.Abs()) / 4;
 				if (dis > rad + hitRad) continue;
 			}
+
 			// Perform Damage
-			PerformDamage(receiver, fixedDamageType);
+			receiver.TakeDamage(new Damage(Damage, targetTeam, this, DamageType));
+
 			// Destroy Check
 			PerformHitReceiver(receiver, out bool _requireSelfDestroy);
 			requireSelfDestroy = _requireSelfDestroy || requireSelfDestroy;
@@ -128,18 +125,12 @@ public abstract class Bullet : Entity {
 	protected virtual void BeforeDespawn (IDamageReceiver receiver) { }
 
 
-	protected virtual void PerformDamage (IDamageReceiver receiver, Tag damageType) {
-		receiver.TakeDamage(new Damage(Damage, Sender, this, damageType));
-		OnBulletDealDamage?.Invoke(this, receiver, damageType);
-	}
-
-
 	protected void PerformHitEnvironment (out bool requireSelfDestroy) {
 		CurrentEnvironmentHitCount--;
 		if (CurrentEnvironmentHitCount <= 0) {
 			Active = false;
 			BeforeDespawn(null);
-			OnBulletHitEnvironment?.Invoke(this, DamageType);
+			OnBulletHitEnvironment?.Invoke(this);
 			requireSelfDestroy = true;
 		} else {
 			requireSelfDestroy = false;

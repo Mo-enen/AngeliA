@@ -109,8 +109,7 @@ public abstract class Leaf : Entity, IBlockEntity, ICombustible, IDamageReceiver
 	}
 
 
-	void IDamageReceiver.TakeDamage (Damage damage) {
-		if (damage.Amount <= 0) return;
+	void IDamageReceiver.OnDamaged (Damage damage) {
 		Active = false;
 		OnLeafBreak();
 	}

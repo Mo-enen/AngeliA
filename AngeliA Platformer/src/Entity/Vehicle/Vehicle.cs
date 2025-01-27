@@ -183,7 +183,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 	}
 
 
-	void IDamageReceiver.TakeDamage (Damage damage) { }
+	public virtual void OnDamaged (Damage damage) { }
 
 
 	#endregion

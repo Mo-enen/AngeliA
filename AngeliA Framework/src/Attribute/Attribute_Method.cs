@@ -14,7 +14,6 @@ public class BeforeSavingSlotChanged (int order = 0) : OrderedAttribute(order) {
 public class OnSavingSlotChanged (int order = 0) : OrderedAttribute(order) { }
 
 
-
 // Game Update
 public class OnGameUpdateAttribute (int order = 0) : EventAttribute(order) { }
 public class OnGameUpdateLaterAttribute (int order = 0) : EventAttribute(order) { }
@@ -100,6 +99,8 @@ public class OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_I
 public class OnBlockPicked_IntSpriteID_IrectAttribute : EventAttribute { }
 public class OnFallIntoWater_RigidbodyAttribute : EventAttribute { }
 public class OnCameOutOfWater_RigidbodyAttribute : EventAttribute { }
+public class OnDealDamage_Damage_IDamageReceiver : EventAttribute { }
+public class OnBulletHitEnvironment_Bullet : EventAttribute { }
 
 public class OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData : EventAttribute { }
 public class OnTransferPassAttribute_Int3UnitPos_ObjectData : EventAttribute { }

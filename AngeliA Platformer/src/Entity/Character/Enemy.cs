@@ -35,8 +35,8 @@ public abstract class Enemy : Character {
 		IgnoreDamageFromLevel(1);
 	}
 
-	public override void TakeDamage (Damage damage) {
-		base.TakeDamage(damage);
+	public override void OnDamaged (Damage damage) {
+		base.OnDamaged(damage);
 
 
 	}

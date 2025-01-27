@@ -153,7 +153,7 @@ public class Fire : Entity, IFire {
 					DamageCharacterStartFrame = Game.GlobalFrame;
 				} else if (Game.GlobalFrame > DamageCharacterStartFrame + DamageCooldown) {
 					DamageCharacterStartFrame = Game.GlobalFrame;
-					ch.TakeDamage(new Damage(1, this, this, Tag.FireDamage));
+					(ch as IDamageReceiver).TakeDamage(new Damage(1, bullet: this, type: Tag.FireDamage));
 					ch.Buff.GiveBuff(OnFireBuff.TYPE_ID, 200);
 				}
 			}

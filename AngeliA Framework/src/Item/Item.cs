@@ -55,7 +55,7 @@ public abstract class Item : IMapItem {
 	public virtual void OnItemUpdate_FromEquipment (Character holder) { }
 	public virtual void BeforePoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) { }
 	public virtual void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) { }
-	public virtual void OnTakeDamage_FromEquipment (Character holder, Entity sender, ref Damage damage) { }
+	public virtual void OnTakeDamage_FromEquipment (Character holder, ref Damage damage) { }
 	public virtual void OnCharacterAttack_FromEquipment (Character character, Bullet bullet) { }
 	public virtual bool TryRepairEquipment (Character holder) => false;
 

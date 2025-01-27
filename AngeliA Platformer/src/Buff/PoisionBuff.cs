@@ -13,27 +13,26 @@ public class PoisonBuff : Buff {
 	private const int DAMAGE_FREQUENCY = 300;
 
 
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		Bullet.OnBulletDealDamage += OnBulletDealDamage;
-		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
-			if (!damageType.HasAll(Tag.PoisonDamage)) return;
-			if (receiver is IWithCharacterBuff wBuff) {
-				wBuff.CurrentBuff.GiveBuff(TYPE_ID, 900);
-			}
+	[OnDealDamage_Damage_IDamageReceiver]
+	internal static void OnDealDamage (Damage damage, IDamageReceiver receiver) {
+		if (!damage.Type.HasAll(Tag.PoisonDamage)) return;
+		if (receiver is IWithCharacterBuff wBuff && !wBuff.CurrentBuff.HasBuff(TYPE_ID)) {
+			wBuff.CurrentBuff.GiveBuff(TYPE_ID, 900);
 		}
 	}
+
 
 	public override void BeforeUpdate (Character target) {
 		// Take Damage
 		int endFrame = target.Buff.GetBuffEndFrame(TypeID);
 		if ((endFrame - Game.GlobalFrame) % DAMAGE_FREQUENCY == DAMAGE_FREQUENCY / 2) {
-			target.TakeDamage(new Damage(1, null, null, Tag.PoisonDamage) {
+			(target as IDamageReceiver).TakeDamage(new Damage(1, type: Tag.PoisonDamage) {
 				IgnoreInvincible = true,
 				IgnoreStun = true,
 			});
 		}
 	}
+
 
 	public override void LateUpdate (Character target) {
 		base.LateUpdate(target);

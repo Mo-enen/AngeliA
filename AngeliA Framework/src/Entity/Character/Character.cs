@@ -61,6 +61,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public virtual int AttackTargetTeam => Const.TEAM_ALL;
 	public virtual Tag IgnoreDamageType => Tag.None;
 	bool ICarrier.AllowBeingCarry => true;
+	bool IDamageReceiver.IsInvincible => Health.IsInvincible;
 	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
 	CharacterAttackness IWithCharacterAttackness.CurrentAttackness => Attackness;
 	CharacterHealth IWithCharacterHealth.CurrentHealth => Health;
@@ -663,7 +664,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 
 	// Damage
-	public virtual void TakeDamage (Damage damage) {
+	public virtual void OnDamaged (Damage damage) {
 
 		if (!Active || damage.Amount <= 0 || Health.HP <= 0) return;
 		if (CharacterState != CharacterState.GamePlay || Health.IsInvincible) return;
@@ -684,7 +685,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		for (int i = 0; i < Const.EquipmentTypeCount && damage.Amount > 0; i++) {
 			int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
 			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
-			item?.OnTakeDamage_FromEquipment(this, damage.Sender, ref damage);
+			item?.OnTakeDamage_FromEquipment(this, ref damage);
 		}
 
 		// Deal Damage

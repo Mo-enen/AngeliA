@@ -102,8 +102,8 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 	protected abstract void DrawArmor (PoseCharacterRenderer renderer);
 
 
-	public override void OnTakeDamage_FromEquipment (Character character, Entity sender, ref Damage damage) {
-		base.OnTakeDamage_FromEquipment(character, sender, ref damage);
+	public override void OnTakeDamage_FromEquipment (Character character, ref Damage damage) {
+		base.OnTakeDamage_FromEquipment(character, ref damage);
 		var progItem = this as IProgressiveItem;
 		if (progItem.PrevItemID != 0 && damage.Amount > 0) {
 			int invID = character.InventoryID;

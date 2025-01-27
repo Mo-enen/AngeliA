@@ -102,8 +102,8 @@ public abstract class Slime : Enemy, ISlimeWalker {
 		return walker.AttachingDirection != Direction5.Center;
 	}
 
-	public override void TakeDamage (Damage damage) {
-		base.TakeDamage(damage);
+	public override void OnDamaged (Damage damage) {
+		base.OnDamaged(damage);
 		LocalPosition = Int2.zero;
 		AttachingDirection = Direction5.Center;
 		AttachingTarget = null;

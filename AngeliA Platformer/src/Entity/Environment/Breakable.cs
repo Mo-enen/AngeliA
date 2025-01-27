@@ -14,9 +14,7 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 	protected virtual Tag IgnoreDamageType => Tag.None;
 
 	// MSG 
-	void IDamageReceiver.TakeDamage (Damage damage) {
-		if (!Active || damage.Amount <= 0) return;
-		if (IgnoreDamageType.HasAll(damage.Type)) return;
+	void IDamageReceiver.OnDamaged (Damage damage) {
 		Active = false;
 		OnBreak();
 		IgnoreReposition = true;

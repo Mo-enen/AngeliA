@@ -37,22 +37,23 @@ public class FrozenZone : Entity {
 	#region --- MSG ---
 
 
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		Bullet.OnBulletDealDamage += OnBulletDealDamage;
-		Bullet.OnBulletHitEnvironment += OnBulletHitEnvironment;
-		static void OnBulletDealDamage (Bullet bullet, IDamageReceiver receiver, Tag damageType) {
-			if (!damageType.HasAll(Tag.IceDamage)) return;
-			var range = bullet.Rect.Expand(Const.HALF);
+	[OnDealDamage_Damage_IDamageReceiver]
+	internal static void OnDealDamage (Damage damage, IDamageReceiver receiver) {
+		if (!damage.Type.HasAll(Tag.IceDamage)) return;
+		if (receiver is Entity entity) {
+			var range = entity.Rect.Expand(Const.HALF);
 			SpreadFrozenZone(TYPE_ID, range);
 			IFire.PutoutFire(range);
 		}
-		static void OnBulletHitEnvironment (Bullet bullet, Tag damageType) {
-			if (!damageType.HasAll(Tag.IceDamage)) return;
-			var range = bullet.Rect.Expand(Const.HALF);
-			SpreadFrozenZone(TYPE_ID, range);
-			IFire.PutoutFire(range);
-		}
+	}
+
+
+	[OnBulletHitEnvironment_Bullet]
+	internal static void OnBulletHitEnvironment (Bullet bullet) {
+		if (!bullet.DamageType.HasAll(Tag.IceDamage)) return;
+		var range = bullet.Rect.Expand(Const.HALF);
+		SpreadFrozenZone(TYPE_ID, range);
+		IFire.PutoutFire(range);
 	}
 
 

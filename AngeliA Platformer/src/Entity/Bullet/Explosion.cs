@@ -62,7 +62,7 @@ public abstract class Explosion : Entity {
 				if (receiver is Entity e && !e.Active) continue;
 				var hitRect = hits[i].Rect;
 				if (!Util.OverlapRectCircle(Radius, X, Y, hitRect.xMin, hitRect.yMin, hitRect.xMax, hitRect.yMax)) continue;
-				receiver.TakeDamage(new Damage(Damage, Sender ?? this, this, Tag.ExplosiveDamage));
+				receiver.TakeDamage(new Damage(Damage, bullet: this, type: Tag.ExplosiveDamage));
 			}
 
 			// Destroy Block

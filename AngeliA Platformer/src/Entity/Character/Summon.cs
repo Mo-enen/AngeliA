@@ -151,9 +151,9 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	}
 
 
-	public override void TakeDamage (Damage damage) {
+	public override void OnDamaged (Damage damage) {
 		if (damage.Bullet == null) return;
-		base.TakeDamage(damage);
+		base.OnDamaged(damage);
 	}
 
 
