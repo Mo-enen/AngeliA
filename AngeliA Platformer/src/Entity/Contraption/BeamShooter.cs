@@ -13,8 +13,7 @@ public abstract class BeamShooter : Entity {
 	protected virtual int ShootOffsetSide => 0;
 	protected abstract int BeamBulletID { get; }
 	protected abstract Direction4 ShootDirection { get; }
-
-	private int LastShootFrame = int.MinValue;
+	protected int LastShootFrame { get; private set; } = int.MinValue;
 
 	// MSG
 	public override void OnActivated () {
@@ -35,20 +34,17 @@ public abstract class BeamShooter : Entity {
 		}
 	}
 
-	public override void LateUpdate () {
-		base.LateUpdate();
-		Draw();
-	}
-
 	// API
 	public void Shoot () {
 		LastShootFrame = Game.GlobalFrame;
-		var offset =
-			ShootDirection.Normal() * ShootOffsetForward +
-			ShootDirection.Clockwise().Normal() * ShootOffsetSide;
+		var forward = ShootDirection.Normal();
+		var side = ShootDirection.Clockwise().Normal();
+		var offset = forward * ShootOffsetForward + side * ShootOffsetSide;
 		var center = Rect.CenterInt() + offset;
 		if (Stage.SpawnEntity(BeamBulletID, center.x, center.y) is BeamBullet beam) {
 			beam.Sender = this;
+			beam.X -= beam.Width / 2;
+			beam.Y -= beam.Height / 2;
 			beam.StartMove(ShootDirection.ToDirection8(), beam.SpeedForward, beam.SpeedSide);
 		}
 	}

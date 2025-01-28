@@ -30,6 +30,7 @@ public abstract class BeamBullet : MovableBullet {
 	protected virtual Color32 HandBurstTint => Color32.WHITE;
 	protected virtual int IllumanteUnitRadius => 3;
 	protected virtual int IllumanteAmount => 300;
+	protected virtual bool OnlyShowBurstWhenHitReceiver => true;
 
 	// Data
 	private bool BeamRendered = false;
@@ -48,7 +49,7 @@ public abstract class BeamBullet : MovableBullet {
 		BeamRendered = true;
 
 		// Render Beam
-		var (x, y, endX, endY, h, rot1000, hitRec) = GetLastUpdatedTramsform();
+		var (x, y, endX, endY, h, rot1000, hitReceiver) = GetLastUpdatedTramsform();
 
 		// Beam
 		if (BeamSpriteID != 0) {
@@ -70,7 +71,7 @@ public abstract class BeamBullet : MovableBullet {
 		}
 
 		// Burst 
-		if (hitRec && BurstSpriteID != 0) {
+		if ((!OnlyShowBurstWhenHitReceiver || hitReceiver) && BurstSpriteID != 0) {
 			GroupAnimationHolder.Spawn(
 				BurstSpriteID, endX, endY, BurstSize, BurstSize,
 				Const.ORIGINAL_PIVOT, Const.ORIGINAL_PIVOT,
