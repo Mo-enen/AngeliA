@@ -11,7 +11,7 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	public override bool DestroyWhenInsideGround => true;
 	public virtual bool SpawnItemFromMapWhenBreak => false;
-	protected virtual Tag IgnoreDamageType => Tag.None;
+	public virtual Tag IgnoreDamageType => Tag.None; // ※ Interface
 
 	// MSG 
 	void IDamageReceiver.OnDamaged (Damage damage) {

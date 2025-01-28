@@ -26,7 +26,7 @@ public abstract class Enemy : Character {
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		if (DamageOnTouch && CharacterState == CharacterState.GamePlay && !Health.TakingDamage) {
-			Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect);
+			Physics.FillBlock(PhysicsLayer.DAMAGE, TypeID, Rect, tag: Tag.PhysicalDamage);
 		}
 	}
 

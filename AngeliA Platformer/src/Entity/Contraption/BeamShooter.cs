@@ -5,7 +5,7 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public abstract class BeamShooter : Entity {
+public abstract class BeamShooter : Entity, IBlockEntity {
 
 	// VAR
 	protected virtual int ShootFrequency => 60;

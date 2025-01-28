@@ -144,7 +144,10 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 
 	public override void OnDamaged (Damage damage) {
-		if (damage.Bullet == null) return;
+		if (
+			damage.Bullet is not Bullet bullet || 
+			bullet.Sender is not Character
+		) return;
 		base.OnDamaged(damage);
 	}
 

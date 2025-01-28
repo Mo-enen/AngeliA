@@ -147,6 +147,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 					PerformMove(VelocityX, VelocityY);
 				}
 				IsGrounded = GroundedCheck();
+				FrameworkUtil.TryEjectOutsideGround(this, CollisionMask, unitRange: 4, speed: 16);
 			}
 			return;
 		}

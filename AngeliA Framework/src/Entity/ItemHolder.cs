@@ -325,7 +325,9 @@ public class ItemHolder : Rigidbody {
 	#region --- LGC ---
 
 
-	protected override bool InsideGroundCheck () => Physics.Overlap(CollisionMask, IRect.Point(X + OffsetX + Width / 2, Y + OffsetY + Height / 2), this);
+	protected override bool InsideGroundCheck () => Physics.Overlap(
+		PhysicsMask.MAP, IRect.Point(X + OffsetX + Width / 2, Y + OffsetY + Height / 2), this
+	);
 
 
 	private static void HoldToPool (int id, int count, Int3 globalPos) {
