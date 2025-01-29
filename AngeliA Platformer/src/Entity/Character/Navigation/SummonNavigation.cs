@@ -83,7 +83,7 @@ public class SummonNavigation (Summon target) : RigidbodyNavigation(target) {
 	public void MakeFollowOwner () => CurrentAmiMode = AimMode.FollowOwner;
 
 	public bool MakeWander<E> () where E : Entity {
-		if (Stage.TryGetEntityNearby(new Int2(Target.X, Target.Y), out E result)) {
+		if (Stage.TryFindEntityNearby(new Int2(Target.X, Target.Y), out E result)) {
 			MakeWander(result.X, result.Y);
 			return true;
 		}

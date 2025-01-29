@@ -157,7 +157,7 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 		if (
 			CheckPoint.LastTriggeredCheckPointID == linkedCheckPointID &&
 			Stage.GetSpawnedEntityCount(CheckPointPortal.TYPE_ID) != 0 &&
-			Stage.TryGetEntity(CheckPointPortal.TYPE_ID, out var cpPortal)
+			Stage.TryFindEntity(CheckPointPortal.TYPE_ID, out var cpPortal)
 		) {
 			cpPortal.Active = false;
 		}

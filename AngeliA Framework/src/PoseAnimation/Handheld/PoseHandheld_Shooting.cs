@@ -3,7 +3,7 @@
 public class PoseHandheld_Shooting : PoseAnimation {
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
-
+		
 		// Charging
 		if (Attackness.IsChargingAttack) {
 			PoseAttack_Ranged.Shooting();

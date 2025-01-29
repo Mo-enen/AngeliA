@@ -10,7 +10,7 @@ public class SpawnEntityTask : Task {
 	public override TaskResult FrameUpdate () {
 		var e = Stage.SpawnEntity(EntityID, X, Y);
 		if (e == null && ForceReactive) {
-			e = Stage.GetEntity(EntityID);
+			e = Stage.FindEntity(EntityID);
 			if (e != null) {
 				e.X = X;
 				e.Y = Y;

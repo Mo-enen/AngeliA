@@ -144,10 +144,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 
 	public override void OnDamaged (Damage damage) {
-		if (
-			damage.Bullet is not Bullet bullet || 
-			bullet.Sender is not Character
-		) return;
+		if (damage.Bullet is not MissileBullet && damage.Bullet is not MeleeBullet) return;
 		base.OnDamaged(damage);
 	}
 
@@ -179,7 +176,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 			summon.Owner = owner;
 			summon.OnSummoned(true);
 			return summon;
-		} else if (forceCreate && Stage.GetEntity(typeID) is Summon stageSummon) {
+		} else if (forceCreate && Stage.FindEntity(typeID) is Summon stageSummon) {
 			// Find from Stage
 			stageSummon.Owner = owner;
 			stageSummon.OnSummoned(false);

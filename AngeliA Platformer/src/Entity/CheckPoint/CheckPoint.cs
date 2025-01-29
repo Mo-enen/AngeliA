@@ -143,7 +143,7 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 		// Clear Portal
 		if (
 			Stage.GetSpawnedEntityCount(CheckPointPortal.TYPE_ID) != 0 &&
-			Stage.TryGetEntity(CheckPointPortal.TYPE_ID, out var portal)
+			Stage.TryFindEntity(CheckPointPortal.TYPE_ID, out var portal)
 		) {
 			portal.Active = false;
 		}

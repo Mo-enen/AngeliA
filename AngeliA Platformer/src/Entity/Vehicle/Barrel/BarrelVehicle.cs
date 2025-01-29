@@ -13,6 +13,7 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 	public override int AirDragX => Rolling ? 0 : 5;
 	public virtual int RollSpeed => 18;
 	public virtual int BarrelSize => Const.CEL;
+	Tag IDamageReceiver.IgnoreDamageType => Tag.None;
 
 	// Data
 	private bool Rolling = false;

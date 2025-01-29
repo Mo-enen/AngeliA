@@ -554,21 +554,11 @@ public static class Stage {
 
 
 	// Get Entity
-	public static T GetEntity<T> () where T : Entity => TryGetEntity<T>(out var result) ? result : null;
-	public static Entity GetEntity (int typeID) => TryGetEntity(typeID, out var result) ? result : null;
+	public static T FindEntity<T> () where T : Entity => TryFindEntity<T>(out var result) ? result : null;
+	public static Entity FindEntity (int typeID) => TryFindEntity(typeID, out var result) ? result : null;
 
 
-	public static bool TryGetEntityLayer (int entityID, out int layer) {
-		if (EntityPool.TryGetValue(entityID, out var stack)) {
-			layer = stack.Layer;
-			return true;
-		}
-		layer = -1;
-		return false;
-	}
-
-
-	public static bool TryGetEntity<E> (out E result) where E : Entity {
+	public static bool TryFindEntity<E> (out E result) where E : Entity {
 		result = null;
 		if (!Enable) return false;
 		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
@@ -584,7 +574,7 @@ public static class Stage {
 		}
 		return false;
 	}
-	public static bool TryGetEntity (int typeID, out Entity result) {
+	public static bool TryFindEntity (int typeID, out Entity result) {
 		result = null;
 		if (!Enable) return false;
 		if (!TryGetEntityLayer(typeID, out int layer)) return false;
@@ -599,9 +589,18 @@ public static class Stage {
 		}
 		result = null;
 		return false;
+		// Func
+		static bool TryGetEntityLayer (int entityID, out int layer) {
+			if (EntityPool.TryGetValue(entityID, out var stack)) {
+				layer = stack.Layer;
+				return true;
+			}
+			layer = -1;
+			return false;
+		}
 	}
-	public static bool TryGetEntityNearby<E> (Int2 pos, out E finalTarget) where E : Entity {
-		finalTarget = null;
+	public static bool TryFindEntityNearby<E> (Int2 pos, out E finalTarget, Func<E, bool> condition = null) {
+		finalTarget = default;
 		if (!Enable) return false;
 		int finalDistance = int.MaxValue;
 		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
@@ -610,11 +609,12 @@ public static class Stage {
 			for (int i = 0; i < count; i++) {
 				var e = entities[i];
 				if (e is not E target) continue;
+				if (condition != null && !condition.Invoke(target)) continue;
 				if (finalTarget == null) {
 					finalTarget = target;
-					finalDistance = Util.SquareDistance(target.Rect.position, pos);
+					finalDistance = Util.SquareDistance(e.Rect.position, pos);
 				} else {
-					int dis = Util.SquareDistance(target.Rect.position, pos);
+					int dis = Util.SquareDistance(e.Rect.position, pos);
 					if (dis < finalDistance) {
 						finalDistance = dis;
 						finalTarget = target;
@@ -707,10 +707,10 @@ public static class Stage {
 
 
 	// Composite
-	public static Entity PeekOrGetEntity (int typeID) => PeekEntity(typeID) ?? GetEntity(typeID);
-	public static T PeekOrGetEntity<T> () where T : Entity => PeekEntity<T>() ?? GetEntity<T>();
+	public static Entity PeekOrGetEntity (int typeID) => PeekEntity(typeID) ?? FindEntity(typeID);
+	public static T PeekOrGetEntity<T> () where T : Entity => PeekEntity<T>() ?? FindEntity<T>();
 	public static Entity GetOrSpawnEntity (int typeID, int x, int y) {
-		if (TryGetEntity(typeID, out var entity)) {
+		if (TryFindEntity(typeID, out var entity)) {
 			entity.X = x;
 			entity.Y = y;
 			return entity;
@@ -719,7 +719,7 @@ public static class Stage {
 		}
 	}
 	public static T GetOrSpawnEntity<T> (int x, int y) where T : Entity {
-		if (TryGetEntity<T>(out var entity)) {
+		if (TryFindEntity<T>(out var entity)) {
 			entity.X = x;
 			entity.Y = y;
 			return entity;

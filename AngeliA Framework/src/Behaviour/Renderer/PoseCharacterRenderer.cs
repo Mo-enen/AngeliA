@@ -521,6 +521,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			case CharacterAnimationType.Idle:
 			case CharacterAnimationType.Walk:
 			case CharacterAnimationType.Run:
+			case CharacterAnimationType.Brake:
 			case CharacterAnimationType.JumpUp:
 			case CharacterAnimationType.JumpDown:
 			case CharacterAnimationType.SwimIdle:

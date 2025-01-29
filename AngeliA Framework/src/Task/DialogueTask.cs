@@ -92,7 +92,7 @@ public class DialogueTask : Task {
 		Main.CurrentSection = 0;
 		Main.LoadedSection = -1;
 		Main.Sections.Clear();
-		Main.DialogueUI = Stage.SpawnEntity<D>(0, 0) ?? Stage.GetEntity<D>();
+		Main.DialogueUI = Stage.SpawnEntity<D>(0, 0) ?? Stage.FindEntity<D>();
 		if (Main.DialogueUI == null) return;
 		Main.DialogueUI.Active = true;
 

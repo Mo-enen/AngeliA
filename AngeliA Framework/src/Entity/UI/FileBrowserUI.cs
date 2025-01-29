@@ -418,7 +418,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	private static void SpawnBrowserLogic (string title, string defaultName, string[] searchPatterns, BrowserActionType actionType, BrowserTargetType targetType, System.Action<string> callback) {
 		FileBrowserUI browser;
 		if (Stage.Enable) {
-			if (Stage.GetEntity(TYPE_ID) != null) return;
+			if (Stage.FindEntity(TYPE_ID) != null) return;
 			browser = Stage.SpawnEntity(TYPE_ID, 0, 0) as FileBrowserUI;
 			if (browser == null) return;
 		} else {

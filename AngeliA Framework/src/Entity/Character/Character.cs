@@ -612,7 +612,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		return Movement.MovementState switch {
 			CharacterMovementState.Walk => CharacterAnimationType.Walk,
 			CharacterMovementState.Run =>
-				VelocityX != 0 && Movement.IntendedX.Sign() == VelocityX.Sign() ?
+				Movement.Target.VelocityX != 0 && Movement.IntendedX.Sign() == Movement.Target.VelocityX.Sign() ?
 				CharacterAnimationType.Run : CharacterAnimationType.Brake,
 			CharacterMovementState.JumpUp => CharacterAnimationType.JumpUp,
 			CharacterMovementState.JumpDown => CharacterAnimationType.JumpDown,

@@ -220,10 +220,6 @@ public struct Float2 : IEquatable<Float2>, IFormattable {
 		return new Float2(num * inNormal.x + inDirection.x, num * inNormal.y + inDirection.y);
 	}
 
-	public static Float2 Perpendicular (Float2 inDirection) {
-		return new Float2(0f - inDirection.y, inDirection.x);
-	}
-
 	public static float Dot (Float2 lhs, Float2 rhs) {
 		return lhs.x * rhs.x + lhs.y * rhs.y;
 	}
@@ -258,14 +254,6 @@ public struct Float2 : IEquatable<Float2>, IFormattable {
 
 	public readonly float SqrMagnitude () {
 		return x * x + y * y;
-	}
-
-	public static Float2 Min (Float2 lhs, Float2 rhs) {
-		return new Float2(Math.Min(lhs.x, rhs.x), Math.Min(lhs.y, rhs.y));
-	}
-
-	public static Float2 Max (Float2 lhs, Float2 rhs) {
-		return new Float2(Math.Max(lhs.x, rhs.x), Math.Max(lhs.y, rhs.y));
 	}
 
 	public static Float2 SmoothDamp (Float2 current, Float2 target, ref Float2 currentVelocity, float smoothTime, float maxSpeed, float deltaTime) {

@@ -31,6 +31,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 	public override bool FacingRight => Movement.FacingRight;
 	bool ICarrier.AllowBeingCarry => true;
 	int IDamageReceiver.Team => CurrentTeam;
+	Tag IDamageReceiver.IgnoreDamageType => TagUtil.AllDamages;
 	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
 
 	// Data

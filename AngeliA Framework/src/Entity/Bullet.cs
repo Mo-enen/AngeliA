@@ -22,6 +22,7 @@ public abstract class Bullet : Entity {
 	public bool AttackCharged => Sender is IWithCharacterAttackness attSender && attSender.CurrentAttackness.LastAttackCharged;
 	public Tag DamageType { get; set; } = Tag.PhysicalDamage;
 	public Entity Sender { get; set; } = null;
+	public int TargetTeam => Sender is Character chSender ? chSender.AttackTargetTeam : Const.TEAM_ALL;
 	protected virtual int BasicDamage => 1;
 	protected virtual int EnvironmentMask => PhysicsMask.MAP;
 	protected virtual int ReceiverMask => PhysicsMask.ENTITY;
@@ -84,13 +85,12 @@ public abstract class Bullet : Entity {
 	#region --- API ---
 
 
-	protected virtual void ReceiverHitCheck (out bool requireSelfDestroy) {
+	protected void ReceiverHitCheck (out bool requireSelfDestroy) {
 		var rect = Rect;
 		requireSelfDestroy = false;
 		var hits = Physics.OverlapAll(
 			ReceiverMask, rect, out int count, Sender, OperationMode.ColliderAndTrigger
 		);
-		int targetTeam = Sender is Character chSender ? chSender.AttackTargetTeam : Const.TEAM_ALL;
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not IDamageReceiver receiver) continue;
@@ -104,7 +104,7 @@ public abstract class Bullet : Entity {
 			}
 
 			// Perform Damage
-			bool damaged = receiver.TakeDamage(new Damage(Damage, targetTeam, this, DamageType));
+			bool damaged = receiver.TakeDamage(GetDamage());
 			if (!damaged) continue;
 
 			// Destroy Check
@@ -114,7 +114,7 @@ public abstract class Bullet : Entity {
 	}
 
 
-	protected virtual void EnvironmentHitCheck (out bool requireSelfDestroy) {
+	protected void EnvironmentHitCheck (out bool requireSelfDestroy) {
 		if (Physics.Overlap(EnvironmentMask, Rect, Sender)) {
 			PerformHitEnvironment(out requireSelfDestroy);
 		} else {
@@ -161,6 +161,9 @@ public abstract class Bullet : Entity {
 		}
 		return grounded;
 	}
+
+
+	public Damage GetDamage () => new(Damage, TargetTeam, this, DamageType);
 
 
 	#endregion
