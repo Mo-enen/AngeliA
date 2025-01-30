@@ -408,7 +408,7 @@ public static class Renderer {
 	public static Cell Draw (AngeSprite sprite, IRect rect, int z = int.MinValue) => Draw(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Color32.WHITE, z);
 	public static Cell Draw (AngeSprite sprite, IRect rect, Color32 color, int z = int.MinValue) => Draw(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
 	public static Cell Draw (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
-	public static Cell Draw (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
+	public static Cell Draw (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue, bool ignoreAttach = false) {
 
 		if (!IsDrawing || sprite == null) return Cell.EMPTY;
 
@@ -455,6 +455,16 @@ public static class Renderer {
 		if (layer.FocusedCell >= layer.CellCount) {
 			layer.FocusedCell = -1;
 		}
+
+		// Draw Attach
+		if (!ignoreAttach && sprite.AttachedSprite != null) {
+			var att = sprite.AttachedSprite;
+			Draw(
+				att, x, y, att.PivotX, att.PivotY, rotation, width, height,
+				color, z: int.MinValue, ignoreAttach: true
+			);
+		}
+
 		return cell;
 	}
 

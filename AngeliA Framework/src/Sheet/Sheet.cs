@@ -113,6 +113,7 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 			var sprite = spriteSpan[i];
 			sprite.Atlas = AtlasPool.TryGetValue(sprite.AtlasID, out var atlas) ? atlas : null;
 			sprite.Group = null;
+			sprite.AttachedSprite = null;
 			SpritePool.TryAdd(sprite.ID, sprite);
 		}
 
@@ -169,6 +170,21 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 			foreach (var group in Groups) {
 				group.Sprites.RemoveAll(_sp => _sp == null || _sp.ID == 0);
 			}
+		}
+
+		// Attachment
+		var spSpan = Sprites.GetSpan();
+		var spriteLen = Sprites.Count;
+		for (int i = 0; i < spriteLen; i++) {
+			try {
+				const string ATTACH = ".attach";
+				var sprite = spSpan[i];
+				if (!sprite.RealName.EndsWith(ATTACH)) continue;
+				int hostID = sprite.RealName.AngeHash(0, sprite.RealName.Length - ATTACH.Length);
+				if (SpritePool.TryGetValue(hostID, out var hostSP)) {
+					hostSP.AttachedSprite = sprite;
+				}
+			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
 
 		// Texture Pool
@@ -346,9 +362,23 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 	}
 
 	// Find
-	public int IndexOfSprite (int id) => Sprites.FindIndex(s => s.ID == id);
+	public int IndexOfSprite (int id) {
+		int len = Sprites.Count;
+		var span = Sprites.AsReadOnly();
+		for (int i = 0; i < len; i++) {
+			if (span[i].ID == id) return i;
+		}
+		return -1;
+	}
 
-	public int IndexOfGroup (int id) => Groups.FindIndex(s => s.ID == id);
+	public int IndexOfGroup (int id) {
+		int len = Groups.Count;
+		var span = Groups.AsReadOnly();
+		for (int i = 0; i < len; i++) {
+			if (span[i].ID == id) return i;
+		}
+		return -1;
+	}
 
 	public bool ContainSprite (int id) => SpritePool.ContainsKey(id);
 
@@ -508,15 +538,15 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 		int spriteByteLength = reader.ReadInt32();
 		long spriteEndPos = stream.Position + spriteByteLength;
 		Sprites.Clear();
-		try {
-			for (int i = 0; i < spriteCount; i++) {
+		for (int i = 0; i < spriteCount; i++) {
+			try {
 				var sprite = new AngeSprite();
 				sprite.LoadFromBinary_v0(reader, IgnoreTextureAndPixels);
 				if (!IgnoreSpriteWithIgnoreTag || !sprite.Tag.HasAll(Tag.Palette)) {
 					Sprites.Add(sprite);
 				}
-			}
-		} catch (System.Exception ex) { Debug.LogException(ex); }
+			} catch (System.Exception ex) { Debug.LogException(ex); }
+		}
 		if (stream.Position != spriteEndPos) stream.Position = spriteEndPos;
 
 		// Atlas

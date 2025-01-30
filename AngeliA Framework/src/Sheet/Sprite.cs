@@ -7,8 +7,8 @@ namespace AngeliA;
 
 public class AngeSprite {
 
+	// VAR
 	public static readonly AngeSprite EMPTY = new();
-
 	private static readonly StringBuilder CacheBuilder = new(256);
 
 	public int ID;
@@ -21,6 +21,7 @@ public class AngeSprite {
 	public int LocalZ;
 	public Int4 GlobalBorder;
 	public int AtlasID;
+	public AngeSprite AttachedSprite;
 	public Atlas Atlas;
 	public SpriteGroup Group;
 	public bool IsTrigger;
@@ -32,6 +33,7 @@ public class AngeSprite {
 
 	private bool PixelDirty = false;
 
+	// API
 	public void LoadFromBinary_v0 (BinaryReader reader, bool ignorePixels) {
 		uint byteLen = reader.ReadUInt32();
 		long endPos = reader.BaseStream.Position + byteLen;
@@ -254,6 +256,7 @@ public class AngeSprite {
 			Duration = Duration,
 			SummaryTint = SummaryTint,
 			Pixels = pixels,
+			AttachedSprite = AttachedSprite,
 		};
 	}
 
