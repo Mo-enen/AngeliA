@@ -7,7 +7,6 @@ namespace AngeliA.Platformer;
 public abstract class Slime : Enemy, ISlimeWalker {
 
 	// VAR
-
 	public override IRect Rect {
 		get {
 			int width = Movement.MovementWidth;

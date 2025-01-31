@@ -104,11 +104,9 @@ public abstract class Bullet : Entity {
 			}
 
 			// Perform Damage
-			bool damaged = receiver.TakeDamage(GetDamage());
-			if (!damaged) continue;
+			PerformHitReceiver(receiver, out bool _requireSelfDestroy);
 
 			// Destroy Check
-			PerformHitReceiver(receiver, out bool _requireSelfDestroy);
 			requireSelfDestroy = _requireSelfDestroy || requireSelfDestroy;
 		}
 	}
@@ -140,6 +138,11 @@ public abstract class Bullet : Entity {
 
 
 	protected virtual void PerformHitReceiver (IDamageReceiver receiver, out bool requireSelfDestroy) {
+
+		requireSelfDestroy = false;
+		bool damaged = receiver.TakeDamage(GetDamage());
+		if (!damaged) return;
+
 		CurrentReceiverHitCount--;
 		if (CurrentReceiverHitCount <= 0) {
 			Active = false;
@@ -148,6 +151,7 @@ public abstract class Bullet : Entity {
 		} else {
 			requireSelfDestroy = false;
 		}
+
 	}
 
 

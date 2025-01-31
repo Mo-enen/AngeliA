@@ -135,7 +135,6 @@ public static class ExtensionRaylib {
 	public static Rectangle ToRaylib (this FRect rect) => new(rect.x, rect.y, rect.width, rect.height);
 	public static FRect ToAngeliaF (this Rectangle rect) => new(rect.X, rect.Y, rect.Width, rect.Height);
 	
-
 	public static void FlipHorizontal (this ref Rectangle rect) {
 		rect.X += rect.Width;
 		rect.Width = -rect.Width;

@@ -7,6 +7,7 @@ namespace AngeliA.Platformer;
 public class HeavyBuff : Buff {
 
 	public static readonly int TYPE_ID = typeof(HeavyBuff).AngeHash();
+	public override int DefaultDuration => 120;
 
 	public override void BeforeUpdate (Character character) {
 		var mov = character.Movement;

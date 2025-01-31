@@ -34,13 +34,13 @@ public abstract class MissileBullet : Bullet {
 	public override void BeforeUpdate () {
 
 		// In-Range Check
-		if (!Rect.Overlaps(Stage.ViewRect)) {
+		if (!Rect.Overlaps(Stage.SpawnRect)) {
 			Active = false;
 			return;
 		}
 
 		// Target Active Check
-		if (MissileTarget != null && (!MissileTarget.Active || !MissileTarget.Rect.Overlaps(Stage.ViewRect))) {
+		if (MissileTarget != null && (!MissileTarget.Active || !MissileTarget.Rect.Overlaps(Stage.SpawnRect))) {
 			MissileTarget = null;
 		}
 
@@ -98,11 +98,19 @@ public abstract class MissileBullet : Bullet {
 	}
 
 	protected override void PerformHitEnvironment (out bool requireSelfDestroy) {
+		requireSelfDestroy = false;
+		if (MissileTarget != null && OnlyHitTarget) return;
 		base.PerformHitEnvironment(out requireSelfDestroy);
 		// Explosion Particle
 		if (requireSelfDestroy && ExplosionParticleID != 0) {
 			SpawnMissileExplosionParticle();
 		}
+	}
+
+	protected virtual void OnMissileLaunchedWithTarget () {
+		CurrentVelocity.x = Sender is IWithCharacterMovement wMov ? wMov.CurrentMovement.FacingRight ? MissileStartSpeed : -MissileStartSpeed : 0;
+		CurrentVelocity.y = Util.QuickRandom(MissileStartSpeed / 2, MissileStartSpeed);
+		CurrentRotation = CurrentVelocity.x >= 0 ? 60 : -60;
 	}
 
 	protected virtual void UpdateMissileMovement () {
@@ -132,11 +140,13 @@ public abstract class MissileBullet : Bullet {
 		Y += CurrentVelocity.y;
 	}
 
-	protected virtual Particle SpawnMissileSmokeParticle () => Stage.SpawnEntity(
-		SmokeParticleID,
-		X + Width / 2 - CurrentVelocity.x / 2,
-		Y + Height / 2 - CurrentVelocity.y / 2
-	) as Particle;
+	protected virtual Particle SpawnMissileSmokeParticle () {
+		return Stage.SpawnEntity(
+			SmokeParticleID,
+			X + Width / 2 - CurrentVelocity.x / 2,
+			Y + Height / 2 - CurrentVelocity.y / 2
+		) as Particle;
+	}
 
 	protected virtual Particle SpawnMissileExplosionParticle () => Stage.SpawnEntity(ExplosionParticleID, X + Width / 2, Y + Height / 2) as Particle;
 
@@ -146,11 +156,14 @@ public abstract class MissileBullet : Bullet {
 	public void SetTarget (Entity target) {
 		MissileTarget = target;
 		if (Game.GlobalFrame < SpawnFrame + 6) {
-			CurrentVelocity.x = Sender is IWithCharacterMovement wMov ? wMov.CurrentMovement.FacingRight ? MissileStartSpeed : -MissileStartSpeed : 0;
-			CurrentVelocity.y = Util.QuickRandom(MissileStartSpeed / 2, MissileStartSpeed);
-			CurrentRotation = CurrentVelocity.x >= 0 ? 60 : -60;
+			OnMissileLaunchedWithTarget();
 		}
-		if (target == null) return;
+	}
+
+	public void SetTransform (int velocityX, int velocityY, int rotation) {
+		CurrentVelocity.x = velocityX;
+		CurrentVelocity.y = velocityY;
+		CurrentRotation = rotation;
 	}
 
 	// LGC

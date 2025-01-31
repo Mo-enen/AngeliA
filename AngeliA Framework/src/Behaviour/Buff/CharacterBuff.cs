@@ -113,7 +113,7 @@ public sealed class CharacterBuff {
 	public bool HasBuff (int id) => BuffStates.ContainsKey(id);
 
 
-	public void GiveBuff (int id, int duration = 1) {
+	public void GiveBuff (int id, int duration = -1) {
 		if (!Pool.TryGetValue(id, out var buff)) return;
 		if (BuffPrevents.ContainsKey(id)) return;
 		if (!BuffStates.TryGetValue(id, out var state)) {
@@ -122,6 +122,7 @@ public sealed class CharacterBuff {
 				Data = default,
 			};
 		}
+		duration = duration < 0 ? buff.DefaultDuration : duration;
 		state.EndFrame = Util.Max(state.EndFrame, Game.GlobalFrame + duration);
 		BuffStates[id] = state;
 	}

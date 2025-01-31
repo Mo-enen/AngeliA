@@ -1172,7 +1172,7 @@ public class CharacterMovement (Rigidbody rig) {
 
 		// Oneway Check
 		if ((IsSquatting || IsDashing) && !Physics.RoomCheckOneway(
-			PhysicsMask.LEVEL, rect, Target, Direction4.Up, false
+			PhysicsMask.MAP, rect, Target, Direction4.Up, false
 		)) return true;
 
 		// Overlap Check
@@ -1308,6 +1308,7 @@ public class CharacterMovement (Rigidbody rig) {
 		);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
+			if (hit.Tag.HasAll(Tag.Mark)) continue;
 			if (hit.Rect.yMax <= Hitbox.y + 16) return true;
 		}
 		return false;

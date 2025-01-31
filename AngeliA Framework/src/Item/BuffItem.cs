@@ -13,7 +13,7 @@ public abstract class BuffItem : Item {
 	public override void OnItemUpdate_FromInventory (Character holder, int inventoryID, int itemIndex) {
 		base.OnItemUpdate_FromInventory(holder, inventoryID, itemIndex);
 		if (holder is Character character) {
-			character.Buff.GiveBuff(BuffID);
+			character.Buff.GiveBuff(BuffID, 1);
 		}
 	}
 }

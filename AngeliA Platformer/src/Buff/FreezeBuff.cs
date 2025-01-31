@@ -7,12 +7,13 @@ namespace AngeliA.Platformer;
 public class FreezeBuff : Buff {
 
 	public static readonly int TYPE_ID = typeof(FreezeBuff).AngeHash();
+	public override int DefaultDuration => 300;
 
 	[OnDealDamage_Damage_IDamageReceiver]
 	internal static void OnDealDamage (Damage damage, IDamageReceiver receiver) {
 		if (!damage.Type.HasAll(Tag.IceDamage)) return;
 		if (receiver is IWithCharacterBuff wBuff && !wBuff.CurrentBuff.HasBuff(TYPE_ID)) {
-			wBuff.CurrentBuff.GiveBuff(TYPE_ID, 300);
+			wBuff.CurrentBuff.GiveBuff(TYPE_ID);
 		}
 	}
 

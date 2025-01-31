@@ -7,6 +7,7 @@ namespace AngeliA.Platformer;
 public class SlowDownBuff : Buff {
 
 	public static readonly int TYPE_ID = typeof(SlowDownBuff).AngeHash();
+	public override int DefaultDuration => 300;
 
 	public override void BeforeUpdate (Character character) {
 		var mov = character.Movement;

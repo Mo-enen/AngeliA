@@ -8,13 +8,13 @@ public class LightenBuff : Buff {
 	public static readonly int TYPE_ID = typeof(LightenBuff).AngeHash();
 
 	private static readonly SpriteCode LightenSp = "Lighten";
-
+	public override int DefaultDuration => 120;
 
 	[OnDealDamage_Damage_IDamageReceiver]
 	internal static void OnDealDamage (Damage damage, IDamageReceiver receiver) {
 		if (!damage.Type.HasAll(Tag.LightenDamage)) return;
 		if (receiver is IWithCharacterBuff wBuff && !wBuff.CurrentBuff.HasBuff(TYPE_ID)) {
-			wBuff.CurrentBuff.GiveBuff(TYPE_ID, 60);
+			wBuff.CurrentBuff.GiveBuff(TYPE_ID);
 		}
 	}
 

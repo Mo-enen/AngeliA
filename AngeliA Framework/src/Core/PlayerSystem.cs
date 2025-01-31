@@ -171,6 +171,14 @@ public static class PlayerSystem {
 	}
 
 
+	[OnViewZChanged]
+	internal static void OnViewZChanged () {
+		if (Selecting != null) {
+			IWithCharacterBuff.GiveBuffFromMap(Selecting);
+		}
+	}
+
+
 	// Before Update
 	[BeforeBeforeUpdate]
 	internal static void BeforeBeforeUpdate () {

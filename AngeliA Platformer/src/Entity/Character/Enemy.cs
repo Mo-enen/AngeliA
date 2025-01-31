@@ -5,6 +5,7 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 [EntityAttribute.SpawnWithCheatCode]
+[EntityAttribute.RepositionWhenInactive]
 public abstract class Enemy : Character {
 
 	// VAR

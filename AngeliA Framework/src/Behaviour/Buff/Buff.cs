@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public abstract class Buff {
+[EntityAttribute.MapEditorGroup("Buff")]
+public abstract class Buff : IMapItem {
 
 
 
@@ -16,6 +17,7 @@ public abstract class Buff {
 	public int NameID { get; init; }
 	public int DescriptionID { get; init; }
 	public string TypeName { get; init; }
+	public abstract int DefaultDuration { get; }
 
 
 	#endregion

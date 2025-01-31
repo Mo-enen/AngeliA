@@ -26,21 +26,36 @@ public abstract class Slope : Entity, IBlockEntity {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
+		// Edge
 		Physics.FillEntity(
 			PhysicsLayer.ENVIRONMENT, this, true,
-			DirectionHorizontal == Direction2.Left ? Tag.OnewayRight : Tag.OnewayLeft
+			(DirectionHorizontal == Direction2.Left ? Tag.OnewayRight : Tag.OnewayLeft) | Tag.Mark
 		);
 		Physics.FillEntity(
 			PhysicsLayer.ENVIRONMENT, this, true,
-			DirectionVertical == Direction2.Down ? Tag.OnewayUp : Tag.OnewayDown
+			(DirectionVertical == Direction2.Down ? Tag.OnewayUp : Tag.OnewayDown) | Tag.Mark
 		);
+		// Anti Through
+		if (DirectionVertical == Direction2.Up) {
+			Physics.FillBlock(
+				PhysicsLayer.ENVIRONMENT, TypeID,
+				DirectionHorizontal == Direction2.Left ? Rect.EdgeInsideRight(1) : Rect.EdgeInsideLeft(1),
+				true, Tag.OnewayUp | Tag.Mark
+			);
+		} else {
+			Physics.FillBlock(
+				PhysicsLayer.ENVIRONMENT, TypeID,
+				DirectionHorizontal == Direction2.Left ? Rect.EdgeOutsideRight(1) : Rect.EdgeOutsideLeft(1),
+				true, Tag.OnewayDown | Tag.Mark
+			);
+		}
 	}
 
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		// Fix Rig
-		var hits = Physics.OverlapAll(CollisionMask, Rect.Expand(1), out int count, this, OperationMode.ColliderAndTrigger);
+		var hits = Physics.OverlapAll(CollisionMask, Rect, out int count, this, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig) continue;

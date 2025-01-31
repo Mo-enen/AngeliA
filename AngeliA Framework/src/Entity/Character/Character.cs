@@ -194,6 +194,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		NativeAttackness.OnActivated();
 		NativeRenderer.OnActivated();
 
+		// Load Buff from Map
+		IWithCharacterBuff.GiveBuffFromMap(this);
+
 		// Misc
 		CharacterState = CharacterState.GamePlay;
 		PassOutFrame = int.MinValue;

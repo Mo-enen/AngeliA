@@ -6,15 +6,16 @@ namespace AngeliA.Platformer;
 
 public class OnFireBuff : Buff {
 
-	private const int DAMAGE_FREQUENCY = 40;
+	private const int DAMAGE_FREQUENCY = 60;
 	public static readonly int TYPE_ID = typeof(OnFireBuff).AngeHash();
 	private static readonly SpriteCode FireSprite = "Fire";
+	public override int DefaultDuration => 200;
 
 	[OnDealDamage_Damage_IDamageReceiver]
 	internal static void OnDealDamage (Damage damage, IDamageReceiver receiver) {
 		if (!damage.Type.HasAll(Tag.FireDamage)) return;
 		if (receiver is IWithCharacterBuff wBuff && !wBuff.CurrentBuff.HasBuff(TYPE_ID)) {
-			wBuff.CurrentBuff.GiveBuff(TYPE_ID, 200);
+			wBuff.CurrentBuff.GiveBuff(TYPE_ID);
 		}
 	}
 

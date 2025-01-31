@@ -11,13 +11,14 @@ public class PoisonBuff : Buff {
 
 	public static readonly int TYPE_ID = typeof(PoisonBuff).AngeHash();
 	private const int DAMAGE_FREQUENCY = 300;
+	public override int DefaultDuration => 900;
 
 
 	[OnDealDamage_Damage_IDamageReceiver]
 	internal static void OnDealDamage (Damage damage, IDamageReceiver receiver) {
 		if (!damage.Type.HasAll(Tag.PoisonDamage)) return;
 		if (receiver is IWithCharacterBuff wBuff && !wBuff.CurrentBuff.HasBuff(TYPE_ID)) {
-			wBuff.CurrentBuff.GiveBuff(TYPE_ID, 900);
+			wBuff.CurrentBuff.GiveBuff(TYPE_ID);
 		}
 	}
 

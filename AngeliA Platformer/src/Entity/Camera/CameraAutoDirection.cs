@@ -1,4 +1,6 @@
 ﻿using AngeliA;
+
 namespace AngeliA.Platformer;
 
-public sealed class CameraAutoDirection : SystemElement { }
+[EntityAttribute.MapEditorGroup("System", -512)]
+public sealed class CameraAutoDirection : IMapItem { }
