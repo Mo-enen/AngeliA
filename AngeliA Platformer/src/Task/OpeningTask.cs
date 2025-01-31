@@ -144,7 +144,7 @@ public class OpeningTask : Task {
 		if (PlayerSystem.Selecting == null) return;
 
 		// Get Start Position
-		Int3 startUnitPosition = PlayerSystem.GetPlayerFinalRespawnUnitPosition();
+		var startUnitPosition = PlayerSystem.GetPlayerFinalRespawnUnitPosition();
 
 		// Start Opening
 		if (

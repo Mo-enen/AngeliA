@@ -160,14 +160,27 @@ internal interface ISlimeWalker {
 			hitDirection = (Direction4)((i + 1) % 4);
 
 			var _rect = rect.EdgeOutside(hitDirection, 1);
-			if (Physics.Overlap(
-				PhysicsMask.MAP, _rect, out hit, walkerEntity
-			)) return true;
 
-			if (Physics.Overlap(
-				PhysicsMask.MAP, _rect, out hit, walkerEntity,
+			// Solid Block Chec
+			var hits = Physics.OverlapAll(PhysicsMask.MAP, _rect, out int count, walkerEntity);
+			for (int j = 0; j < count; j++) {
+				var _hit = hits[j];
+				if (_hit.Tag.HasAll(Tag.Mark)) continue;
+				hit = _hit;
+				return true;
+			}
+
+			// Oneway Check
+			hits = Physics.OverlapAll(
+				PhysicsMask.MAP, _rect, out count, walkerEntity, 
 				OperationMode.TriggerOnly, FrameworkUtil.GetOnewayTag(hitDirection.Opposite())
-			)) return true;
+			);
+			for (int j = 0; j < count; j++) {
+				var _hit = hits[j];
+				if (_hit.Tag.HasAll(Tag.Mark)) continue;
+				hit = _hit;
+				return true;
+			}
 
 		}
 
@@ -198,6 +211,7 @@ internal interface ISlimeWalker {
 		int eY = walkerEntity.Rect.CenterY();
 		for (int i = 0; i < count; i++) {
 			var _hit = hits[i];
+			if (_hit.Tag.HasAll(Tag.Mark)) continue;
 			int dis = (eX - _hit.Rect.CenterX()).Abs() + (eY - _hit.Rect.CenterY()).Abs();
 			if (dis < minDis) {
 				hit = _hit;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 public abstract class AuraItem<B> : BuffItem<B> where B : Buff {

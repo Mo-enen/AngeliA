@@ -4,7 +4,7 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-public abstract class MissileBullet : Bullet {
+public abstract class MissileBullet : Bullet, IDamageReceiver {
 
 	// VAR
 	public override int Duration => 600;
@@ -18,10 +18,14 @@ public abstract class MissileBullet : Bullet {
 	protected virtual int MissileFlyingSpeed => 42;
 	protected virtual int MissileStartSpeed => 96;
 	protected virtual int MissileAcceleration => 2;
+	protected virtual bool DestroyWhenTakeDamage => false;
 	public Entity MissileTarget { get; private set; }
-	public int CurrentRotation { get; private set; }
+	public int CurrentRotation { get; set; }
+	public Int2 CurrentVelocity { get; set; }
 	protected int TargetHitFrame { get; private set; }
-	private Int2 CurrentVelocity;
+	int IDamageReceiver.Team => Const.TEAM_ENVIRONMENT;
+
+	private static Bullet FindingTargetBulletCache;
 
 	// MSG
 	public override void OnActivated () {
@@ -31,12 +35,25 @@ public abstract class MissileBullet : Bullet {
 		CurrentVelocity = default;
 	}
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		if (DestroyWhenTakeDamage) {
+			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
+		}
+	}
+
 	public override void BeforeUpdate () {
+
 
 		// In-Range Check
 		if (!Rect.Overlaps(Stage.SpawnRect)) {
 			Active = false;
 			return;
+		}
+
+		// Try Find Target
+		if (MissileTarget == null) {
+			FindTargetUpdate();
 		}
 
 		// Target Active Check
@@ -45,6 +62,13 @@ public abstract class MissileBullet : Bullet {
 		}
 
 		UpdateMissileMovement();
+
+		// Update Rotation
+		CurrentRotation = Util.LerpAngleUnclamped(
+			CurrentRotation,
+			Float2.SignedAngle(Float2.up, CurrentVelocity),
+			0.2f
+		).RoundToInt();
 
 		base.BeforeUpdate();
 
@@ -58,17 +82,12 @@ public abstract class MissileBullet : Bullet {
 	public override void LateUpdate () {
 		base.LateUpdate();
 		// Body
-		if (Renderer.TryGetSprite(TypeID, out var sprite)) {
+		if (Renderer.TryGetSprite(TypeID, out var sprite, ignoreAnimation: false)) {
 			var fixedRect = new IRect(0, 0, Width, Height).Fit(sprite.GlobalWidth, sprite.GlobalHeight);
-			CurrentRotation = Util.LerpAngleUnclamped(
-				CurrentRotation,
-				Float2.SignedAngle(Float2.up, CurrentVelocity),
-				0.2f
-			).RoundToInt();
 			Renderer.Draw(
 				sprite,
 				X + Width / 2, Y + Height / 2,
-				500, 500, CurrentRotation,
+				sprite.PivotX, sprite.PivotY, CurrentRotation,
 				fixedRect.width, fixedRect.height
 			);
 		}
@@ -108,8 +127,10 @@ public abstract class MissileBullet : Bullet {
 	}
 
 	protected virtual void OnMissileLaunchedWithTarget () {
-		CurrentVelocity.x = Sender is IWithCharacterMovement wMov ? wMov.CurrentMovement.FacingRight ? MissileStartSpeed : -MissileStartSpeed : 0;
-		CurrentVelocity.y = Util.QuickRandom(MissileStartSpeed / 2, MissileStartSpeed);
+		CurrentVelocity = new(
+			Sender is IWithCharacterMovement wMov ? wMov.CurrentMovement.FacingRight ? MissileStartSpeed : -MissileStartSpeed : 0,
+			Util.QuickRandom(MissileStartSpeed / 2, MissileStartSpeed)
+		);
 		CurrentRotation = CurrentVelocity.x >= 0 ? 60 : -60;
 	}
 
@@ -118,22 +139,28 @@ public abstract class MissileBullet : Bullet {
 			if (TargetHitFrame < 0) {
 				// Change Velocity
 				var targetVel = GetTargetVelocity(MissileTarget, this, MissileFlyingSpeed);
-				CurrentVelocity.x = CurrentVelocity.x.MoveTowards(targetVel.x, MissileAcceleration);
-				CurrentVelocity.y = CurrentVelocity.y.MoveTowards(targetVel.y, MissileAcceleration);
+				CurrentVelocity = new(
+					CurrentVelocity.x.MoveTowards(targetVel.x, MissileAcceleration),
+					CurrentVelocity.y.MoveTowards(targetVel.y, MissileAcceleration)
+				);
 			} else {
 				// After Hit Target
 				int randomDelta = Util.QuickRandomSign();
-				CurrentVelocity.x += randomDelta;
-				CurrentVelocity.y -= randomDelta;
+				CurrentVelocity = new(
+					CurrentVelocity.x + randomDelta,
+					CurrentVelocity.y - randomDelta
+				);
 			}
 		} else {
 			// Fly Without Target
+			var vel = CurrentVelocity;
 			if (CurrentVelocity == default && Sender is IWithCharacterMovement wMov) {
-				CurrentVelocity.x = wMov.CurrentMovement.FacingRight ? 1 : -1;
+				vel.x = wMov.CurrentMovement.FacingRight ? 1 : -1;
 			}
 			int targetVelX = CurrentVelocity.x.Sign() * MissileFlyingSpeed;
-			CurrentVelocity.x = CurrentVelocity.x.MoveTowards(targetVelX, MissileAcceleration);
-			CurrentVelocity.y = CurrentVelocity.y.MoveTowards(0, MissileAcceleration);
+			vel.x = CurrentVelocity.x.MoveTowards(targetVelX, MissileAcceleration);
+			vel.y = CurrentVelocity.y.MoveTowards(0, MissileAcceleration);
+			CurrentVelocity = vel;
 		}
 		// Perform Move
 		X += CurrentVelocity.x;
@@ -152,18 +179,53 @@ public abstract class MissileBullet : Bullet {
 
 	protected virtual void OnMissileHit (IDamageReceiver receiver) { }
 
+	protected virtual void FindTargetUpdate () {
+
+		if ((Game.GlobalFrame - SpawnFrame) % 6 != 0) return;
+
+		FindingTargetBulletCache = this;
+
+		if (Stage.TryFindEntityNearby<Character>(new Int2(X, Y), out var target, CharacterCondition)) {
+			SetTarget(target);
+			return;
+		}
+
+		if (Stage.TryFindEntityNearby<IDamageReceiver>(new Int2(X, Y), out var targetReceiver, DamageReceiverCondition)) {
+			SetTarget(targetReceiver as Entity);
+			return;
+		}
+
+		// Func
+		static bool CharacterCondition (Character character) =>
+			character.CharacterState == CharacterState.GamePlay &&
+			character is IDamageReceiver reveiver &&
+			character.Rect.Overlaps(Stage.ViewRect) &&
+			reveiver.ValidDamage(FindingTargetBulletCache.GetDamage());
+
+		static bool DamageReceiverCondition (IDamageReceiver receiver) =>
+			receiver is Entity entity &&
+			entity is not Character &&
+			entity.TypeID != FindingTargetBulletCache.TypeID &&
+			entity.Rect.Overlaps(Stage.ViewRect) &&
+			receiver.ValidDamage(FindingTargetBulletCache.GetDamage());
+	}
+
+	void IDamageReceiver.OnDamaged (Damage damage) {
+		if (DestroyWhenTakeDamage) {
+			Active = false;
+			// Explosion Particle
+			if (ExplosionParticleID != 0) {
+				SpawnMissileExplosionParticle();
+			}
+		}
+	}
+
 	// API
 	public void SetTarget (Entity target) {
 		MissileTarget = target;
 		if (Game.GlobalFrame < SpawnFrame + 6) {
 			OnMissileLaunchedWithTarget();
 		}
-	}
-
-	public void SetTransform (int velocityX, int velocityY, int rotation) {
-		CurrentVelocity.x = velocityX;
-		CurrentVelocity.y = velocityY;
-		CurrentRotation = rotation;
 	}
 
 	// LGC

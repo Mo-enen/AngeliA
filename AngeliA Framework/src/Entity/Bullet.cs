@@ -22,7 +22,8 @@ public abstract class Bullet : Entity {
 	public bool AttackCharged => Sender is IWithCharacterAttackness attSender && attSender.CurrentAttackness.LastAttackCharged;
 	public Tag DamageType { get; set; } = Tag.PhysicalDamage;
 	public Entity Sender { get; set; } = null;
-	public int TargetTeam => Sender is Character chSender ? chSender.AttackTargetTeam : Const.TEAM_ALL;
+	public int FailbackTargetTeam { get; set; } = Const.TEAM_ALL;
+	public int TargetTeam => Sender is Character chSender ? chSender.AttackTargetTeam : FailbackTargetTeam;
 	protected virtual int BasicDamage => 1;
 	protected virtual int EnvironmentMask => PhysicsMask.MAP;
 	protected virtual int ReceiverMask => PhysicsMask.ENTITY;
@@ -55,6 +56,7 @@ public abstract class Bullet : Entity {
 		Damage.BaseValue = BasicDamage;
 		Damage.ClearOverride();
 		DamageType = Tag.PhysicalDamage;
+		FailbackTargetTeam = Const.TEAM_ALL;
 	}
 
 

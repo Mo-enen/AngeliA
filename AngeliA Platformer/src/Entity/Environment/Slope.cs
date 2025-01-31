@@ -59,6 +59,7 @@ public abstract class Slope : Entity, IBlockEntity {
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not Rigidbody rig) continue;
+			if (rig is IAutoTrackWalker || rig is IRouteWalker || rig is ISlimeWalker) continue;
 			if (CheckOverlap(rig.Rect, out int dis)) {
 				FixPosition(rig, dis);
 			}

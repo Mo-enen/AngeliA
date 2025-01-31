@@ -63,7 +63,16 @@ public abstract class Slime : Enemy, ISlimeWalker {
 
 	public override void Update () {
 		base.Update();
+
 		if (CharacterState != CharacterState.GamePlay || Health.TakingDamage) return;
+
+		// Inside Ground
+		if (IsInsideGround) {
+			Movement.Stop();
+			VelocityY = Util.QuickRandom(3,12);
+			return;
+		}
+
 		XY = ISlimeWalker.GetAttachingPosition(this);
 		if (ISlimeWalker.RefreshAttachingDirection(this) != Direction5.Center) {
 			// Walking
@@ -98,7 +107,7 @@ public abstract class Slime : Enemy, ISlimeWalker {
 	protected override bool GroundedCheck () {
 		var walker = this as ISlimeWalker;
 		GroundedID = walker.AttachingID;
-		return walker.AttachingDirection != Direction5.Center;
+		return IsInsideGround || walker.AttachingDirection != Direction5.Center;
 	}
 
 	public override void OnDamaged (Damage damage) {

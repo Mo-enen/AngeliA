@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 public abstract class SummonItem<T> : Item where T : ItemBasedSummon {
