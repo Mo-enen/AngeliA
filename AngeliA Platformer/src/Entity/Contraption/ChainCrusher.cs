@@ -5,6 +5,7 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
+[EntityAttribute.MapEditorGroup("Contraption")]
 public abstract class ChainCrusher : Entity, IBlockEntity, ICircuitOperator, IDamageReceiver {
 
 	// VAR

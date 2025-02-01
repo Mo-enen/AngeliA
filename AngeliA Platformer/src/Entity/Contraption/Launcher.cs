@@ -13,7 +13,7 @@ public abstract class Launcher : Entity, IBlockEntity {
 
 	#region --- VAR ---
 
-	
+
 	// API
 	public virtual Int2 LaunchOffset => default;
 	public virtual Int2 LaunchVelocity => default;
@@ -110,11 +110,11 @@ public abstract class Launcher : Entity, IBlockEntity {
 	#region --- API ---
 
 
-	public Entity LaunchEntity () {
+	public bool ValidForLaunch () {
 		LaunchedEntities.Update();
 
-		if (TargetEntityID == 0) return null;
-		if (LaunchedEntities.Count >= LaunchedEntities.Capacity) return null;
+		if (TargetEntityID == 0) return false;
+		if (LaunchedEntities.Count >= LaunchedEntities.Capacity) return false;
 		bool rightSide = LaunchToRightSide();
 		var offset = LaunchOffset;
 		if (!rightSide) offset.x = -offset.x;
@@ -122,7 +122,19 @@ public abstract class Launcher : Entity, IBlockEntity {
 		// Blocked Check
 		if (!LaunchWhenEntranceBlocked && Physics.Overlap(
 			PhysicsMask.ENTITY, Rect.Shift(offset).Shrink(1), this, OperationMode.ColliderAndTrigger
-		)) return null;
+		)) return false;
+
+		return Stage.IsValidEntityID(TargetEntityID) || ItemSystem.HasItem(TargetEntityID);
+	}
+
+
+	public Entity LaunchEntity () {
+
+		if (!ValidForLaunch()) return null;
+
+		bool rightSide = LaunchToRightSide();
+		var offset = LaunchOffset;
+		if (!rightSide) offset.x = -offset.x;
 
 		// Spawn Entity
 		Entity entity = null;
