@@ -134,7 +134,7 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 
 	public static void TriggerCheckPoint (Int3 unitPos) {
 
-		int id = WorldSquad.Stream.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
+		int id = WorldSquad.Front.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
 		if (!CheckAltar.TryGetLinkedID(id, out _)) return;
 
 		LastTriggeredCheckPointUnitPosition = unitPos;

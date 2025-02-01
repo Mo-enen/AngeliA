@@ -1,5 +1,4 @@
-﻿UI.EngineSetting.BackupSaving:打开工程时备份游戏存档
-AtlasType.Background:背景
+﻿AtlasType.Background:背景
 AtlasType.General:通用
 AtlasType.Level:关卡
 ConsoleWindow:终 端
@@ -78,6 +77,7 @@ Label.Project.AllowQuitFromMenu:允许从菜单中退出游戏
 Label.Project.AllowRestartFromMenu:允许从菜单中重新开始游戏
 Label.Project.Font:字体
 Label.Project.Music:音乐
+Label.Project.ReadonlyMap:地图对玩家只读
 Label.Project.SavePlayerChangesToMap:保存玩家对地图的修改（发布后）
 Label.Project.ScaleUiBasedOnMonitor:根据屏幕高度缩放UI
 Label.Project.Sound:音效
@@ -288,6 +288,7 @@ UI.EngineSetting.AlwaysExpandPaintingColor:绘制颜色框保持展开
 UI.EngineSetting.Artwork:美工
 UI.EngineSetting.AutoRecompile:代码修改时自动编译
 UI.EngineSetting.BackgroundColor:背景颜色
+UI.EngineSetting.BackupSaving:打开工程时备份游戏存档
 UI.EngineSetting.BlinkWhenError:编译错误时闪烁
 UI.EngineSetting.Console:终端
 UI.EngineSetting.Engine:引擎

@@ -21,6 +21,7 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public bool UseProceduralMap = false;
 	public bool UseMapEditor = true;
 	public bool UseLightingSystem = true;
+	public bool ReadonlyMap = false;
 	public bool AllowCheatCode = false;
 	public bool AllowPause = true;
 	public bool AllowQuitFromMenu = true;

@@ -17,7 +17,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 	protected abstract bool IsBow { get; }
 	public sealed override ToolType ToolType => ToolType.Ranged;
 	public sealed override ToolHandheld Handheld => IsBow ? ToolHandheld.Bow : ToolHandheld.Shooting;
-	protected override ProjectileValidDirection ValidDirection => ProjectileValidDirection.Eight;
+	protected override WeaponValidDirection ValidDirection => WeaponValidDirection.Eight;
 	public override int Cooldown => base.Cooldown;
 	private int SpriteIdString { get; init; }
 	public override bool AvailableWhenSquatting => true;

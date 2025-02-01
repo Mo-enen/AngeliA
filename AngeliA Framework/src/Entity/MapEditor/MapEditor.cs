@@ -1215,7 +1215,7 @@ public sealed partial class MapEditor : WindowUI {
 				Util.DeleteFolder(Universe.BuiltIn.SlotUserMapRoot);
 				Util.CreateFolder(Universe.BuiltIn.SlotUserMapRoot);
 			}
-			WorldSquad.Stream.ClearWorldPool();
+			WorldSquad.ClearStreamWorldPool();
 			// Reset Stage
 			Stage.SetViewZ(CurrentZ);
 			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 100, int.MinValue + 1);
@@ -1224,8 +1224,8 @@ public sealed partial class MapEditor : WindowUI {
 		}
 
 		OnMapEditorModeChange?.Invoke(toPlayMode ?
-			AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.EnterPlayMode :
-			AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.EnterEditMode
+			OnMapEditorModeChange_ModeAttribute.Mode.EnterPlayMode :
+			OnMapEditorModeChange_ModeAttribute.Mode.EnterEditMode
 		);
 
 	}

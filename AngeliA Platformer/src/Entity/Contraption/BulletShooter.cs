@@ -44,23 +44,6 @@ public abstract class BulletShooter : Entity, IBlockEntity {
 		}
 	}
 
-	public override void LateUpdate () {
-		base.LateUpdate();
-
-		// Body
-		Draw();
-
-		// Shoot Highlight
-		int highlightDur = ShootFrequency / 4;
-		if (LastShootFrame >= 0 && Game.GlobalFrame < LastShootFrame + highlightDur) {
-			using var _ = new LayerScope(RenderLayer.ADD);
-			var cell = Draw();
-			int alpha = 128 - (Game.GlobalFrame - LastShootFrame) * 128 / highlightDur;
-			cell.Color = Color32.WHITE.WithNewA(alpha);
-		}
-
-	}
-
 	// API
 	public void Shoot () {
 		LastShootFrame = Game.GlobalFrame;
@@ -76,7 +59,10 @@ public abstract class BulletShooter : Entity, IBlockEntity {
 			if (bullet is MovableBullet mBullet) {
 				mBullet.StartMove(ShootDirection.ToDirection8(), mBullet.SpeedForward, mBullet.SpeedSide);
 			}
+			OnBulletShoot(bullet);
 		}
 	}
+
+	protected virtual void OnBulletShoot (Bullet bullet) { }
 
 }

@@ -148,7 +148,7 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 
 	public static void TriggerCheckAltar (Int3 unitPos) {
 
-		int id = WorldSquad.Stream.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
+		int id = WorldSquad.Front.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
 		if (!TryGetLinkedID(id, out int linkedCheckPointID)) return;
 
 		PlayerSystem.RespawnCpUnitPosition = unitPos;

@@ -33,7 +33,7 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 		}
 		// Drop Item from Map
 		if (SpawnItemFromMapWhenBreak && MapUnitPos.HasValue) {
-			int itemID = WorldSquad.Stream.GetBlockAt(
+			int itemID = WorldSquad.Front.GetBlockAt(
 				MapUnitPos.Value.x, MapUnitPos.Value.y, MapUnitPos.Value.z, BlockType.Element
 			);
 			if (itemID != 0 && ItemSystem.HasItem(itemID)) {

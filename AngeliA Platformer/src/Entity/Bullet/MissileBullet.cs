@@ -19,7 +19,7 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 	protected virtual int MissileStartSpeed => 96;
 	protected virtual int MissileAcceleration => 2;
 	protected virtual bool DestroyWhenTakeDamage => false;
-	public Entity MissileTarget { get; private set; }
+	public Entity MissileTarget { get; set; }
 	public int CurrentRotation { get; set; }
 	public Int2 CurrentVelocity { get; set; }
 	protected int TargetHitFrame { get; private set; }
@@ -32,7 +32,11 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 		base.OnActivated();
 		MissileTarget = null;
 		TargetHitFrame = int.MinValue;
-		CurrentVelocity = default;
+		CurrentVelocity = new(
+			Sender is IWithCharacterMovement wMov ? wMov.CurrentMovement.FacingRight ? MissileStartSpeed : -MissileStartSpeed : 0,
+			0
+		);
+		CurrentRotation = 0;
 	}
 
 	public override void FirstUpdate () {
@@ -69,6 +73,14 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 			Float2.SignedAngle(Float2.up, CurrentVelocity),
 			0.2f
 		).RoundToInt();
+
+		// Init Launch
+		if (Game.GlobalFrame == SpawnFrame) {
+			CurrentVelocity = new(
+				Sender is IWithCharacterMovement wMov ? wMov.CurrentMovement.FacingRight ? MissileStartSpeed : -MissileStartSpeed : 0,
+				CurrentVelocity.y
+			);
+		}
 
 		base.BeforeUpdate();
 
@@ -126,14 +138,6 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 		}
 	}
 
-	protected virtual void OnMissileLaunchedWithTarget () {
-		CurrentVelocity = new(
-			Sender is IWithCharacterMovement wMov ? wMov.CurrentMovement.FacingRight ? MissileStartSpeed : -MissileStartSpeed : 0,
-			Util.QuickRandom(MissileStartSpeed / 2, MissileStartSpeed)
-		);
-		CurrentRotation = CurrentVelocity.x >= 0 ? 60 : -60;
-	}
-
 	protected virtual void UpdateMissileMovement () {
 		if (MissileTarget != null) {
 			if (TargetHitFrame < 0) {
@@ -186,12 +190,12 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 		FindingTargetBulletCache = this;
 
 		if (Stage.TryFindEntityNearby<Character>(new Int2(X, Y), out var target, CharacterCondition)) {
-			SetTarget(target);
+			MissileTarget = target;
 			return;
 		}
 
 		if (Stage.TryFindEntityNearby<IDamageReceiver>(new Int2(X, Y), out var targetReceiver, DamageReceiverCondition)) {
-			SetTarget(targetReceiver as Entity);
+			MissileTarget = targetReceiver as Entity;
 			return;
 		}
 
@@ -217,14 +221,6 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 			if (ExplosionParticleID != 0) {
 				SpawnMissileExplosionParticle();
 			}
-		}
-	}
-
-	// API
-	public void SetTarget (Entity target) {
-		MissileTarget = target;
-		if (Game.GlobalFrame < SpawnFrame + 6) {
-			OnMissileLaunchedWithTarget();
 		}
 	}
 

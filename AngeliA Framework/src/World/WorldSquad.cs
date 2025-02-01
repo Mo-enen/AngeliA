@@ -14,7 +14,6 @@ public sealed class WorldSquad : IBlockSquad {
 	// Api
 	public static bool Enable { get; set; } = true;
 	public static bool SquadReady { get; private set; } = false;
-	public static WorldStream Stream { get; private set; } = null;
 	public static WorldSquad Front { get; set; } = null;
 	public static WorldSquad Behind { get; set; } = null;
 
@@ -23,9 +22,10 @@ public sealed class WorldSquad : IBlockSquad {
 	[AfterLevelRendered] internal static System.Action AfterLevelRendered;
 	[OnWorldCreatedBySquad_World] internal static System.Action<World> OnWorldCreated;
 	[OnWorldLoadedBySquad_World] internal static System.Action<World> OnWorldLoaded;
+	private static WorldStream Stream = null;
 	private static byte WorldBehindAlpha;
 	private static int WorldBehindParallax;
-	private static bool SaveChangesToFile = false;
+	private static bool ReadonlyMap = false;
 	private IRect CullingCameraRect = default;
 	private IRect CameraRect = default;
 	private Int2 ParaCenter = default;
@@ -48,7 +48,7 @@ public sealed class WorldSquad : IBlockSquad {
 		var info = Universe.BuiltInInfo;
 		WorldBehindAlpha = info.WorldBehindAlpha;
 		WorldBehindParallax = info.WorldBehindParallax;
-		SaveChangesToFile = true;
+		ReadonlyMap = info.ReadonlyMap;
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
 		WorldStream.OnWorldCreated += _OnWorldCreated;
@@ -90,7 +90,7 @@ public sealed class WorldSquad : IBlockSquad {
 
 	[OnGameQuitting(4096)]
 	internal static void OnGameQuitting () {
-		if (SaveChangesToFile) {
+		if (!ReadonlyMap) {
 			Stream?.SaveAllDirty();
 		}
 	}
@@ -107,7 +107,7 @@ public sealed class WorldSquad : IBlockSquad {
 		Front.RenderCurrentFrame();
 		Behind.RenderCurrentFrame();
 		// Auto Save
-		if (SaveChangesToFile && Game.GlobalFrame % 3600 == 0 && Stream.IsDirty) {
+		if (!ReadonlyMap && Game.GlobalFrame % 3600 == 0 && Stream.IsDirty) {
 			Stream.SaveAllDirty();
 		}
 	}
@@ -119,6 +119,9 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	#region --- API ---
+
+
+	public static void ClearStreamWorldPool () => Stream?.ClearWorldPool();
 
 
 	public bool WorldExists (Int3 worldPos) => Stream.WorldExists(worldPos);
@@ -133,8 +136,11 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	// Set Block
-	public void SetBlockAt (int unitX, int unitY, BlockType type, int newID) => SetBlockAt(unitX, unitY, Stage.ViewZ, type, newID);
-	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) => Stream.SetBlockAt(unitX, unitY, z, type, newID);
+	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) {
+		if (!ReadonlyMap) {
+			Stream.SetBlockAt(unitX, unitY, z, type, newID);
+		}
+	}
 
 
 	#endregion

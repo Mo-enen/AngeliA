@@ -1,5 +1,4 @@
-﻿UI.EngineSetting.BackupSaving:Backup Game Saving Data when Open Project
-AtlasType.Background:Background
+﻿AtlasType.Background:Background
 AtlasType.General:General
 AtlasType.Level:Level
 ConsoleWindow:Console
@@ -78,6 +77,7 @@ Label.Project.AllowQuitFromMenu:Allow Quit from Menu
 Label.Project.AllowRestartFromMenu:Allow Restart from Menu
 Label.Project.Font:Font
 Label.Project.Music:Music
+Label.Project.ReadonlyMap:Map Readonly for Player
 Label.Project.SavePlayerChangesToMap:Save Map Changes from Player (After Release)
 Label.Project.ScaleUiBasedOnMonitor:Scale UI Based On Monitor Height
 Label.Project.Sound:Sound
@@ -288,6 +288,7 @@ UI.EngineSetting.AlwaysExpandPaintingColor:Always Expand Painting Color Field
 UI.EngineSetting.Artwork:Artwork
 UI.EngineSetting.AutoRecompile:Auto Recompile when Script Changed
 UI.EngineSetting.BackgroundColor:Background Color
+UI.EngineSetting.BackupSaving:Backup Game Saving Data when Open Project
 UI.EngineSetting.BlinkWhenError:Blink when Compile Error
 UI.EngineSetting.Console:Console
 UI.EngineSetting.Engine:Engine

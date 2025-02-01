@@ -73,6 +73,7 @@ public class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_ADD_FONT = ("Label.Project.AddFont", "+ Font");
 	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map");
 	private static readonly LanguageCode LABEL_USE_MAP_EDT = ("Label.Project.UseMapEditor", "Use Map Editor");
+	private static readonly LanguageCode LABEL_READONLY_MAP = ("Label.Project.ReadonlyMap", "Map Readonly for Player");
 	private static readonly LanguageCode LABEL_USE_LIGHT_SYS = ("Label.Project.UseLightingSystem", "Use Map Lighting System");
 	private static readonly LanguageCode LABEL_ALLOW_PAUSE = ("Label.Project.AllowPause", "Allow Pause Game");
 	private static readonly LanguageCode LABEL_ALLOW_RESTART_MENU = ("Label.Project.AllowRestartFromMenu", "Allow Restart from Menu");
@@ -400,6 +401,15 @@ public class ProjectEditor : WindowUI {
 		rect.SlideDown(padding);
 
 		if (projectType == ProjectType.Game) {
+
+			// Readonly Map
+			bool newReadonlyMap = GUI.Toggle(rect, info.ReadonlyMap, LABEL_READONLY_MAP, labelStyle: Skin.SmallLabel);
+			if (newReadonlyMap != info.ReadonlyMap) {
+				info.ReadonlyMap = newReadonlyMap;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
 
 			// Use Light Sys
 			bool newUseLightSys = GUI.Toggle(rect, info.UseLightingSystem, LABEL_USE_LIGHT_SYS, labelStyle: Skin.SmallLabel);

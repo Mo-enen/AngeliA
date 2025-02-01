@@ -20,7 +20,7 @@ internal class TestMapGenerator (int typeID) : MapGenerator(typeID) {
 
 
 
-	public override MapGenerationResult GenerateMap (WorldStream stream, Int3 worldPos) {
+	public override MapGenerationResult GenerateMap (IBlockSquad squad, Int3 worldPos) {
 
 
 

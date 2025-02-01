@@ -9,6 +9,7 @@
   "UseProceduralMap": false,
   "UseMapEditor": true,
   "UseLightingSystem": true,
+  "ReadonlyMap": false,
   "AllowCheatCode": false,
   "AllowPause": true,
   "AllowQuitFromMenu": true,

@@ -53,7 +53,7 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 		var invPos = new Int3((X + 1).ToUnit(), (Y + 1).ToUnit(), Stage.ViewZ);
 		if (ModuleType != Direction3.None) {
 			var (deltaX, deltaY) = ModuleType == Direction3.Horizontal ? (-1, 0) : (0, -1);
-			var squad = WorldSquad.Stream;
+			var squad = WorldSquad.Front;
 			var pos = invPos;
 			for (int safe = 0; safe < 2048; safe++) {
 				int id = squad.GetBlockAt(pos.x, pos.y, pos.z, BlockType.Entity);

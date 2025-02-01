@@ -153,7 +153,7 @@ public sealed class WorldStream : IBlockSquad {
 
 	public uint? GetWorldVersion (Int3 worldPos) => TryGetWorldData(worldPos, out var data) ? data.Version : null;
 
-
+	
 	// Block
 	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) {
 		int worldX = unitX.UDivide(Const.MAP);
@@ -213,28 +213,6 @@ public sealed class WorldStream : IBlockSquad {
 				world.Elements[localY * Const.MAP + localX] = value;
 				break;
 		}
-	}
-
-
-	public bool FindBlock (int id, int unitX, int unitY, int unitZ, Direction4 direction, BlockType type, out int resultX, out int resultY, int maxDistance = Const.MAP) {
-		resultX = default;
-		resultY = default;
-		int l = unitX - maxDistance;
-		int r = unitX + maxDistance;
-		int d = unitY - maxDistance;
-		int u = unitY + maxDistance;
-		var delta = direction.Normal();
-		while (unitX >= l && unitX <= r && unitY >= d && unitY <= u) {
-			int _id = GetBlockAt(unitX, unitY, unitZ, type);
-			if (_id == id) {
-				resultX = unitX;
-				resultY = unitY;
-				return true;
-			}
-			unitX += delta.x;
-			unitY += delta.y;
-		}
-		return false;
 	}
 
 

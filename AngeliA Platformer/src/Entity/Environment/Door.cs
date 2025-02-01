@@ -112,7 +112,7 @@ public abstract class Door : Entity, IBlockEntity {
 				}
 				// Swap Door into Unlocked
 				if (UnlockedDoorID != 0 && MapUnitPos.HasValue) {
-					WorldSquad.Stream.SetBlockAt(
+					WorldSquad.Front.SetBlockAt(
 						MapUnitPos.Value.x, MapUnitPos.Value.y, MapUnitPos.Value.z,
 						BlockType.Entity, UnlockedDoorID
 					);

@@ -128,10 +128,10 @@ public static class CircuitSystem {
 	private static void Interate (Int3 pos, int stamp, Direction5 circuitFrom) {
 
 		if (TriggeredTaskStamp.TryGetValue(pos, out int triggeredStamp) && stamp <= triggeredStamp) return;
-		var _squad = WorldSquad.Stream;
+		var squad = WorldSquad.Front;
 
 		// Check for Wire Expand
-		int _id = _squad.GetBlockAt(pos.x, pos.y, pos.z, BlockType.Element);
+		int _id = squad.GetBlockAt(pos.x, pos.y, pos.z, BlockType.Element);
 		if (
 			_id != 0 &&
 			WireIdPool.TryGetValue(_id, out var connectDirections) &&
@@ -148,7 +148,7 @@ public static class CircuitSystem {
 		}
 
 		// Check Block Operator
-		int entityId = _squad.GetBlockAt(pos.x, pos.y, pos.z, BlockType.Entity);
+		int entityId = squad.GetBlockAt(pos.x, pos.y, pos.z, BlockType.Entity);
 		if (entityId != 0 && OperatorPool.TryGetValue(entityId, out var method)) {
 			TriggeredTaskStamp[pos] = stamp;
 			OperateParamCache[0] = pos;

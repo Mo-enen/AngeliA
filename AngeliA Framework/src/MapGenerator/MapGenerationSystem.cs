@@ -66,7 +66,7 @@ public static class MapGenerationSystem {
 						continue;
 					}
 					while (AllTasks.TryPopHead(out var param)) {
-						GenerateLogic(param.gen, WorldSquad.Stream, param.worldPos);
+						GenerateLogic(param.gen, WorldSquad.Front, param.worldPos);
 					}
 				} catch (System.Exception ex) {
 					Debug.LogException(ex);
@@ -96,7 +96,7 @@ public static class MapGenerationSystem {
 	public static void ResetAll () {
 		if (!Enable) return;
 		AllTasks.Reset();
-		WorldSquad.Stream.ClearWorldPool();
+		WorldSquad.ClearStreamWorldPool();
 		var uni = Universe.BuiltIn;
 		// Delete All User Map Files
 		foreach (string path in Util.EnumerateFiles(uni.SlotUserMapRoot, true, AngePath.MAP_SEARCH_PATTERN)) {
@@ -113,19 +113,19 @@ public static class MapGenerationSystem {
 	public static bool IsGenerating (Int3 worldPosition, int generatorID) => StatePool.TryGetValue(worldPosition, out var pair) && pair.state == MapState.Generating && pair.id == generatorID;
 
 
-	public static void GenerateMap (int generatorID, WorldStream stream, Int3 worldPos, bool async) {
+	public static void GenerateMap (int generatorID, IBlockSquad squad, Int3 worldPos, bool async) {
 		if (!Enable || !Pool.TryGetValue(generatorID, out var gen)) return;
-		GenerateMap(gen, stream, worldPos, async);
+		GenerateMap(gen, squad, worldPos, async);
 	}
 
 
-	public static void GenerateMap (MapGenerator generator, WorldStream stream, Int3 worldPos, bool async) {
+	public static void GenerateMap (MapGenerator generator, IBlockSquad squad, Int3 worldPos, bool async) {
 		if (!Enable) return;
 		StatePool[worldPos] = (generator.TypeID, MapState.Generating);
 		if (async) {
 			AllTasks.LinkToTail((generator, worldPos));
 		} else {
-			GenerateLogic(generator, stream, worldPos);
+			GenerateLogic(generator, squad, worldPos);
 		}
 	}
 
@@ -141,11 +141,11 @@ public static class MapGenerationSystem {
 	#region --- LGC ---
 
 
-	private static void GenerateLogic (MapGenerator generator, WorldStream stream, Int3 worldPos) {
+	private static void GenerateLogic (MapGenerator generator, IBlockSquad squad, Int3 worldPos) {
 		bool success = true;
 		try {
 			generator.ErrorMessage = "";
-			var result = generator.GenerateMap(stream, worldPos);
+			var result = generator.GenerateMap(squad, worldPos);
 			switch (result) {
 				case MapGenerationResult.Success:
 				case MapGenerationResult.Skipped:

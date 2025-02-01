@@ -5,87 +5,17 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-public enum ProjectileValidDirection {
-	Two = 2,    // ← →
-	Three = 3,  // ← → ↑
-	Four = 4,   // ← → ↑ ↓
-	Five = 5,   // ← → ↑ ↖ ↗
-	Eight = 8,  // ← → ↑ ↖ ↗ ↓ ↙ ↘
-}
-
 public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 
+	// VAR
 	public virtual int BulletCountInOneShot => 1;
 	protected virtual int BulletPivotY => 500;
 	protected virtual int AdditionalBulletSpeedForward => 0;
 	protected virtual int AdditionalBulletSpeedSide => 0;
 	public virtual int AngleSpeedDelta => 0;
-	protected virtual ProjectileValidDirection ValidDirection => ProjectileValidDirection.Two;
 	protected int ForceBulletCountNextShot { get; set; } = -1;
 
-	[CheatCode("GiveAmmo")]
-	internal static bool Cheat_GiveAmmo () {
-		var player = PlayerSystem.Selecting;
-		if (player == null) return false;
-		int id = Inventory.GetEquipment(player.InventoryID, EquipmentType.HandTool, out int eqCount);
-		if (id == 0 || eqCount <= 0 || ItemSystem.GetItem(id) is not HandTool weapon) return false;
-		bool performed = false;
-		// Fill Bullet
-		if (
-			Stage.GetEntityType(weapon.BulletID) is Type bulletType &&
-			bulletType.IsSubclassOf(typeof(ArrowBullet))
-		) {
-			var bullet = Activator.CreateInstance(bulletType) as ArrowBullet;
-			int itemID = bullet.ArrowItemID;
-			if (ItemSystem.HasItem(itemID)) {
-				int maxCount = ItemSystem.GetItemMaxStackCount(itemID);
-				Inventory.GiveItemToTarget(player, itemID, maxCount);
-				performed = true;
-			}
-		}
-		// Fill Weapon
-		int eqMaxCount = ItemSystem.GetItemMaxStackCount(weapon.TypeID);
-		if (eqMaxCount > eqCount) {
-			Inventory.SetEquipment(player.InventoryID, EquipmentType.HandTool, weapon.TypeID, eqMaxCount);
-			performed = true;
-		}
-		return performed;
-	}
-
-	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
-		base.OnPoseAnimationUpdate_FromEquipment(rendering);
-		var character = rendering.TargetCharacter;
-		var attackness = character.Attackness;
-		switch (ValidDirection) {
-			case ProjectileValidDirection.Two:
-				attackness.IgnoreAimingDirection(Direction8.Bottom);
-				attackness.IgnoreAimingDirection(Direction8.Top);
-				attackness.IgnoreAimingDirection(Direction8.TopLeft);
-				attackness.IgnoreAimingDirection(Direction8.TopRight);
-				attackness.IgnoreAimingDirection(Direction8.BottomLeft);
-				attackness.IgnoreAimingDirection(Direction8.BottomRight);
-				break;
-			case ProjectileValidDirection.Three:
-				attackness.IgnoreAimingDirection(Direction8.Bottom);
-				attackness.IgnoreAimingDirection(Direction8.TopLeft);
-				attackness.IgnoreAimingDirection(Direction8.TopRight);
-				attackness.IgnoreAimingDirection(Direction8.BottomLeft);
-				attackness.IgnoreAimingDirection(Direction8.BottomRight);
-				break;
-			case ProjectileValidDirection.Four:
-				attackness.IgnoreAimingDirection(Direction8.TopLeft);
-				attackness.IgnoreAimingDirection(Direction8.TopRight);
-				attackness.IgnoreAimingDirection(Direction8.BottomLeft);
-				attackness.IgnoreAimingDirection(Direction8.BottomRight);
-				break;
-			case ProjectileValidDirection.Five:
-				attackness.IgnoreAimingDirection(Direction8.BottomLeft);
-				attackness.IgnoreAimingDirection(Direction8.BottomRight);
-				attackness.IgnoreAimingDirection(Direction8.Bottom);
-				break;
-		}
-	}
-
+	// MSG
 	public override Bullet SpawnBullet (Character sender) {
 
 		Bullet result = null;

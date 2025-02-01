@@ -40,10 +40,9 @@ public static class TransferSystem {
 	[OnGameUpdateLater]
 	internal static void OnGameUpdateLater () {
 		int count = TransferTask.Count;
-		var stream = WorldSquad.Stream;
 		for (int i = 0; i < count; i++) {
 			var (unitPos, data, stamp) = TransferTask.Dequeue();
-			Iterate(stream, unitPos, data, stamp);
+			Iterate(unitPos, data, stamp);
 		}
 	}
 
@@ -61,7 +60,7 @@ public static class TransferSystem {
 
 	public static void StartTransfer (Int3 unitPos, object data, int stamp = int.MinValue) {
 		OnTransferPass?.Invoke(unitPos, data);
-		Iterate(WorldSquad.Stream, unitPos, data, stamp == int.MinValue ? Game.PauselessFrame : stamp);
+		Iterate(unitPos, data, stamp == int.MinValue ? Game.PauselessFrame : stamp);
 	}
 
 
@@ -73,10 +72,10 @@ public static class TransferSystem {
 	#region --- LGC ---
 
 
-	private static void Iterate (WorldStream stream, Int3 unitPos, object data, int stamp) {
+	private static void Iterate (Int3 unitPos, object data, int stamp) {
 
 		// Arrive at Non-Transfer Block
-		int id = stream.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
+		int id = WorldSquad.Front.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
 		if (id == 0 || !TransferPool.TryGetValue(id, out var direction)) {
 			OnTransferArrived?.Invoke(id, unitPos, data);
 			return;

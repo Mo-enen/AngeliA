@@ -13,7 +13,7 @@ public abstract class Launcher : Entity, IBlockEntity {
 
 	#region --- VAR ---
 
-
+	
 	// API
 	public virtual Int2 LaunchOffset => default;
 	public virtual Int2 LaunchVelocity => default;

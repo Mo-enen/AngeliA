@@ -39,37 +39,37 @@ public static partial class FrameworkUtil {
 
 
 	// API
-	public static void RedirectForRule (WorldStream stream, IRect unitRange, int z) {
+	public static void RedirectForRule (IBlockSquad squad, IRect unitRange, int z) {
 		unitRange = unitRange.Expand(1);
 		for (int i = unitRange.xMin; i < unitRange.xMax; i++) {
 			for (int j = unitRange.yMin; j < unitRange.yMax; j++) {
-				RedirectForRule(stream, i, j, z, BlockType.Level);
-				RedirectForRule(stream, i, j, z, BlockType.Background);
-				RedirectForRule(stream, i, j, z, BlockType.Element);
+				RedirectForRule(squad, i, j, z, BlockType.Level);
+				RedirectForRule(squad, i, j, z, BlockType.Background);
+				RedirectForRule(squad, i, j, z, BlockType.Element);
 			}
 		}
 	}
-	public static void RedirectForRule (WorldStream stream, int i, int j, int z, BlockType type) {
-		int id = stream.GetBlockAt(i, j, z, type);
+	public static void RedirectForRule (IBlockSquad squad, int i, int j, int z, BlockType type) {
+		int id = squad.GetBlockAt(i, j, z, type);
 		if (id == 0) return;
 		int oldID = id;
 		if (!Renderer.TryGetSprite(id, out var sprite) || sprite.Group == null || !sprite.Group.WithRule) return;
 		var group = sprite.Group;
 		int ruleIndex = GetRuleIndex(
 			group.Sprites, group.ID,
-			stream.GetBlockAt(i - 1, j + 1, z, type),
-			stream.GetBlockAt(i + 0, j + 1, z, type),
-			stream.GetBlockAt(i + 1, j + 1, z, type),
-			stream.GetBlockAt(i - 1, j + 0, z, type),
-			stream.GetBlockAt(i + 1, j + 0, z, type),
-			stream.GetBlockAt(i - 1, j - 1, z, type),
-			stream.GetBlockAt(i + 0, j - 1, z, type),
-			stream.GetBlockAt(i + 1, j - 1, z, type)
+			squad.GetBlockAt(i - 1, j + 1, z, type),
+			squad.GetBlockAt(i + 0, j + 1, z, type),
+			squad.GetBlockAt(i + 1, j + 1, z, type),
+			squad.GetBlockAt(i - 1, j + 0, z, type),
+			squad.GetBlockAt(i + 1, j + 0, z, type),
+			squad.GetBlockAt(i - 1, j - 1, z, type),
+			squad.GetBlockAt(i + 0, j - 1, z, type),
+			squad.GetBlockAt(i + 1, j - 1, z, type)
 		);
 		if (ruleIndex < 0 || ruleIndex >= group.Count) return;
 		int newID = group.Sprites[ruleIndex].ID;
 		if (newID == oldID) return;
-		stream.SetBlockAt(i, j, z, type, newID);
+		squad.SetBlockAt(i, j, z, type, newID);
 	}
 
 
@@ -128,14 +128,15 @@ public static partial class FrameworkUtil {
 
 		target.Active = false;
 		var mapPos = target.MapUnitPos.Value;
+		int z = Stage.ViewZ;
 
 		// Remove from Map
-		WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, BlockType.Entity, 0);
+		WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, z, BlockType.Entity, 0);
 
 		// Event
 		eBlock.OnEntityPicked();
 		if (eBlock.ContainEntityAsElement) {
-			WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, BlockType.Element, 0);
+			WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, z, BlockType.Element, 0);
 		}
 		InvokeObjectBreak(target.TypeID, target.Rect);
 		return true;
@@ -145,6 +146,7 @@ public static partial class FrameworkUtil {
 	public static bool PickBlockAt (int unitX, int unitY, bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true, bool dropItemAfterPicked = true, bool allowMultiplePick = false) {
 
 		bool result = false;
+		int z = Stage.ViewZ;
 
 		// Try Pick Block Entity
 		if (allowPickBlockEntity) {
@@ -164,11 +166,11 @@ public static partial class FrameworkUtil {
 
 				// Remove from Map
 				if (mapPos.HasValue) {
-					WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, BlockType.Entity, 0);
+					WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, mapPos.Value.z, BlockType.Entity, 0);
 					result = true;
 					// Remove Embed Element
 					if (eBlock.ContainEntityAsElement) {
-						WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, BlockType.Element, 0);
+						WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, mapPos.Value.z, BlockType.Element, 0);
 					}
 				}
 
@@ -210,7 +212,7 @@ public static partial class FrameworkUtil {
 				var blockRect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
 
 				// Remove from Map
-				WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Level, 0);
+				WorldSquad.Front.SetBlockAt(unitX, unitY, z, BlockType.Level, 0);
 				result = true;
 
 				// Event
@@ -219,7 +221,7 @@ public static partial class FrameworkUtil {
 					// Rule
 					if (sprite.Group.WithRule) {
 						RedirectForRule(
-							WorldSquad.Stream, new IRect(unitX - 1, unitY - 1, 3, 3), Stage.ViewZ
+							WorldSquad.Front, new IRect(unitX - 1, unitY - 1, 3, 3), Stage.ViewZ
 						);
 					}
 				}
@@ -228,7 +230,7 @@ public static partial class FrameworkUtil {
 				int ele = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element);
 				if (ele != 0 && ItemSystem.GetItem(ele) is Item _ele && _ele.EmbedIntoLevel) {
 					ItemSystem.SpawnItem(ele, unitX.ToGlobal(), unitY.ToGlobal(), 1, false);
-					WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Element, 0);
+					WorldSquad.Front.SetBlockAt(unitX, unitY, z, BlockType.Element, 0);
 				}
 
 				// Final
@@ -255,7 +257,7 @@ public static partial class FrameworkUtil {
 				var blockRect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
 
 				// Remove from Map
-				WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Background, 0);
+				WorldSquad.Front.SetBlockAt(unitX, unitY, z, BlockType.Background, 0);
 				result = true;
 
 				// Rule
@@ -263,7 +265,7 @@ public static partial class FrameworkUtil {
 					blockID = sprite.Group.ID;
 					if (sprite.Group.WithRule) {
 						RedirectForRule(
-							WorldSquad.Stream, new IRect(unitX - 1, unitY - 1, 3, 3), Stage.ViewZ
+							WorldSquad.Front, new IRect(unitX - 1, unitY - 1, 3, 3), Stage.ViewZ
 						);
 					}
 				}
@@ -272,7 +274,7 @@ public static partial class FrameworkUtil {
 				int ele = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Element);
 				if (ele != 0 && ItemSystem.GetItem(ele) is Item _ele && _ele.EmbedIntoLevel) {
 					ItemSystem.SpawnItem(ele, unitX.ToGlobal() + Const.HALF, unitY.ToGlobal() + Const.HALF, 1, false);
-					WorldSquad.Front.SetBlockAt(unitX, unitY, BlockType.Element, 0);
+					WorldSquad.Front.SetBlockAt(unitX, unitY, z, BlockType.Element, 0);
 				}
 
 				// Final
@@ -325,7 +327,7 @@ public static partial class FrameworkUtil {
 	public static bool PutBlockTo (int blockID, BlockType blockType, int targetUnitX, int targetUnitY) {
 
 		bool success = false;
-		var squad = WorldSquad.Stream;
+		var squad = WorldSquad.Front;
 		int z = Stage.ViewZ;
 
 		switch (blockType) {
@@ -473,7 +475,7 @@ public static partial class FrameworkUtil {
 	public static void RemoveFromWorldMemory (Entity entity) {
 		var mapPos = entity.MapUnitPos;
 		if (mapPos.HasValue) {
-			WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, BlockType.Entity, 0);
+			WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, mapPos.Value.z, BlockType.Entity, 0);
 		}
 	}
 
@@ -642,7 +644,7 @@ public static partial class FrameworkUtil {
 		var (lv, bg, _, ele) = squad.GetAllBlocksAt(unitX, unitY, Stage.ViewZ);
 		if (lv == 0 && bg == 0) return;
 		if (!overlapExistingElement && !BlockColoringSystem.TryGetColor(ele, out _) && ele != 0) return;
-		squad.SetBlockAt(unitX, unitY, BlockType.Element, blockColorID);
+		squad.SetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element, blockColorID);
 	}
 
 

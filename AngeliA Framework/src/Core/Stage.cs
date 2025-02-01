@@ -764,12 +764,12 @@ public static class Stage {
 		var eRect = entity.Rect;
 		int currentUnitX = eRect.CenterX().ToUnit();
 		int currentUnitY = (eRect.y + Const.QUARTER).ToUnit();
-		var stream = WorldSquad.Stream;
+		var squad = WorldSquad.Front;
 
 		// Get Info for Original Block
 		if (entity.MapUnitPos.HasValue) {
 			var mapPos = entity.MapUnitPos.Value;
-			int blockIdAtMapPos = stream.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
+			int blockIdAtMapPos = squad.GetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity);
 			// Get Require Mode
 			if (blockIdAtMapPos != entity.TypeID) {
 				// Overlaped by Other Entity
@@ -780,16 +780,15 @@ public static class Stage {
 				requireClearOriginal = true;
 			} else {
 				// Only Shift
-				stream.SetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity, 0);
-				stream.SetBlockAt(currentUnitX, currentUnitY, mapPos.z, BlockType.Entity, entity.TypeID);
-				stream.SetBlockAt(
+				squad.SetBlockAt(mapPos.x, mapPos.y, mapPos.z, BlockType.Entity, 0);
+				squad.SetBlockAt(currentUnitX, currentUnitY, mapPos.z, BlockType.Entity, entity.TypeID);
+				squad.SetBlockAt(
 					currentUnitX, currentUnitY, mapPos.z, BlockType.Element,
 					FrameworkUtil.GetRepositionElementCode(
 						eRect.x - currentUnitX.ToGlobal(),
 						eRect.y - currentUnitY.ToGlobal()
 					)
 				);
-				//entity.OnEntityReposition(new Int3(currentUnitX, currentUnitY, mapPos.z));
 			}
 		} else {
 			requireRepos = true;
@@ -811,22 +810,21 @@ public static class Stage {
 		}
 
 		// Set Block
-		stream.SetBlockAt(resultUnitX, resultUnitY, ViewZ, BlockType.Entity, entity.TypeID);
-		stream.SetBlockAt(
+		squad.SetBlockAt(resultUnitX, resultUnitY, ViewZ, BlockType.Entity, entity.TypeID);
+		squad.SetBlockAt(
 			resultUnitX, resultUnitY, ViewZ, BlockType.Element,
 			FrameworkUtil.GetRepositionElementCode(
 				eRect.x - resultUnitX.ToGlobal(),
 				eRect.y - resultUnitY.ToGlobal()
 			)
 		);
-		//entity.OnEntityReposition(new Int3(resultUnitX, resultUnitY, ViewZ));
 
 		// Clear Original
 		if (requireClearOriginal) {
 			var oPos = entity.MapUnitPos.Value;
-			int eleID = stream.GetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Element);
+			int eleID = squad.GetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Element);
 			if (!FrameworkUtil.IsRepositionElementCode(eleID)) {
-				stream.SetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Entity, 0);
+				squad.SetBlockAt(oPos.x, oPos.y, oPos.z, BlockType.Entity, 0);
 			}
 		}
 
