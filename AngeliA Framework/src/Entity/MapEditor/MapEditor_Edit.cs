@@ -448,6 +448,10 @@ public partial class MapEditor {
 		if (!ignoreEmbedAsElement && type != BlockType.Element) {
 			int entityID = Stream.GetBlockAt(unitX, unitY, CurrentZ, BlockType.Entity);
 			if (entityID != 0 && RequireEmbedEntity.Contains(entityID)) {
+				if (IBlockEntity.IsIgnoreEmbedAsElement(id)) {
+					FrameworkUtil.InvokeErrorHint(unitX.ToGlobal() + Const.HALF, unitY.ToGlobal(), id);
+					return;
+				}
 				type = BlockType.Element;
 			}
 		}

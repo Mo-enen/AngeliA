@@ -295,6 +295,7 @@ UI.EngineSetting.Engine:Engine
 UI.EngineSetting.GradientBackground:Gradient Background
 UI.EngineSetting.Hotkey:Hotkey
 UI.EngineSetting.Hotkey_ClearConsole:Clear Console
+UI.EngineSetting.Hotkey_FrameDebug_End:End Frame Debug
 UI.EngineSetting.Hotkey_FrameDebug_Next:Next Frame
 UI.EngineSetting.Hotkey_Pix_FlipX:Flip Horizontal
 UI.EngineSetting.Hotkey_Pix_FlipY:Flip Vertical

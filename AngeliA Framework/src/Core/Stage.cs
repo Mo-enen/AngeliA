@@ -131,7 +131,6 @@ public static class Stage {
 	[OnViewZChanged] internal static Action OnViewZChanged;
 	[BeforeLayerFrameUpdate_IntLayer] internal static Action<int> BeforeLayerFrameUpdate;
 	[AfterLayerFrameUpdate_IntLayer] internal static Action<int> AfterLayerFrameUpdate;
-	[AfterEntityReposition_Entity_Int3From_Int3To] internal static Action<Entity, Int3, Int3> AfterEntityReposition;
 	private static readonly Dictionary<int, EntityStack> EntityPool = [];
 	private static readonly Dictionary<Int3, Entity> StagedEntityPool = [];
 	private static int ViewLerpRate = 1000;
@@ -548,8 +547,7 @@ public static class Stage {
 		if (!EntityPool.TryGetValue(typeID, out var stack)) return null;
 		if (stack.DontSpawnFromWorld) return null;
 		if (!forceSpawn && AntiSpawnRect.Overlaps(new IRect(x, y, Const.CEL, Const.CEL))) return null;
-		var entity = SpawnEntityLogic(typeID, x + reposDeltaX, y + reposDeltaY, uPos, forceSpawn);
-		return entity;
+		return SpawnEntityLogic(typeID, x + reposDeltaX, y + reposDeltaY, uPos, forceSpawn);
 	}
 
 
@@ -830,7 +828,7 @@ public static class Stage {
 
 		// Callback
 		if (entity != null && entity.MapUnitPos.HasValue) {
-			AfterEntityReposition?.Invoke(entity, entity.MapUnitPos.Value, new Int3(resultUnitX, resultUnitY, ViewZ));
+			entity.AfterReposition(entity.MapUnitPos.Value, new Int3(resultUnitX, resultUnitY, ViewZ));
 		}
 		if (carryThoughZ) {
 			entity.InstanceID = newInsID;

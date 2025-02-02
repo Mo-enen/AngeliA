@@ -69,7 +69,6 @@ public abstract class Slime : Enemy, ISlimeWalker {
 		// Inside Ground
 		if (IsInsideGround) {
 			Movement.Stop();
-			VelocityY = Util.QuickRandom(3,12);
 			return;
 		}
 

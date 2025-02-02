@@ -33,7 +33,6 @@ public static partial class FrameworkUtil {
 		{ 9, NumberNine.TYPE_ID},
 	};
 	private static readonly Int3[] WorldPosInViewCache = new Int3[256];
-	private static readonly PhysicsCell[] BlockOperationCache = new PhysicsCell[32];
 	private const int SEARCHLIGHT_DENSITY = 32;
 	private const int REPOS_BASIC_ID = 0b01100100_000000000000_000000000000;
 
@@ -135,7 +134,7 @@ public static partial class FrameworkUtil {
 
 		// Event
 		eBlock.OnEntityPicked();
-		if (eBlock.ContainEntityAsElement) {
+		if (eBlock.EmbedEntityAsElement) {
 			WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, z, BlockType.Element, 0);
 		}
 		InvokeObjectBreak(target.TypeID, target.Rect);
@@ -169,7 +168,7 @@ public static partial class FrameworkUtil {
 					WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, mapPos.Value.z, BlockType.Entity, 0);
 					result = true;
 					// Remove Embed Element
-					if (eBlock.ContainEntityAsElement) {
+					if (eBlock.EmbedEntityAsElement) {
 						WorldSquad.Front.SetBlockAt(mapPos.Value.x, mapPos.Value.y, mapPos.Value.z, BlockType.Element, 0);
 					}
 				}
@@ -187,16 +186,7 @@ public static partial class FrameworkUtil {
 				}
 
 				// Refresh Nearby
-				int nearByCount = Physics.OverlapAll(
-					BlockOperationCache, PhysicsMask.MAP,
-					new IRect((e.X + 1).ToUnifyGlobal(), (e.Y + 1).ToUnifyGlobal(), Const.CEL, Const.CEL).Expand(Const.CEL - 1),
-					e, OperationMode.ColliderAndTrigger
-				);
-				for (int j = 0; j < nearByCount; j++) {
-					var nearByHit = BlockOperationCache[j];
-					if (nearByHit.Entity is not IBlockEntity nearByEntity) continue;
-					nearByEntity.OnEntityRefresh();
-				}
+				IBlockEntity.RefreshBlockEntitiesNearby(e.XY.ToUnit(), e);
 
 				// Mul Gate
 				if (!allowMultiplePick) return true;
@@ -367,18 +357,7 @@ public static partial class FrameworkUtil {
 				var e = Stage.SpawnEntityFromWorld(blockID, targetUnitX.ToGlobal(), targetUnitY.ToGlobal(), Stage.ViewZ, forceSpawn: true);
 				if (e is IBlockEntity bEntity) {
 					bEntity.OnEntityPut();
-					// Refresh Nearby
-					var hits = Physics.OverlapAll(
-						PhysicsMask.MAP,
-						new IRect((e.X + 1).ToUnifyGlobal(), (e.Y + 1).ToUnifyGlobal(), Const.CEL, Const.CEL).Expand(Const.CEL - 1),
-						out int count,
-						e, OperationMode.ColliderAndTrigger
-					);
-					for (int j = 0; j < count; j++) {
-						var nearByHit = hits[j];
-						if (nearByHit.Entity is not IBlockEntity nearbyEntity) continue;
-						nearbyEntity.OnEntityRefresh();
-					}
+					IBlockEntity.RefreshBlockEntitiesNearby(e.XY.ToUnit(), e);
 				}
 				break;
 			}
@@ -386,6 +365,11 @@ public static partial class FrameworkUtil {
 			case BlockType.Element: {
 
 				// Embed as Element
+				if (IBlockEntity.IsIgnoreEmbedAsElement(blockID)) {
+					InvokeErrorHint(targetUnitX.ToGlobal() + Const.HALF, targetUnitY.ToGlobal(), blockID);
+					break;
+				}
+
 				success = true;
 				squad.SetBlockAt(targetUnitX, targetUnitY, z, BlockType.Element, blockID);
 
@@ -398,7 +382,7 @@ public static partial class FrameworkUtil {
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
 					if (hit.Entity is not IBlockEntity bEntity) return false;
-					if (!bEntity.ContainEntityAsElement) return false;
+					if (!bEntity.EmbedEntityAsElement) return false;
 					bEntity.OnEntityRefresh();
 				}
 
@@ -868,7 +852,7 @@ public static partial class FrameworkUtil {
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not IBlockEntity bEntity) return false;
-			if (!bEntity.ContainEntityAsElement) return false;
+			if (!bEntity.EmbedEntityAsElement) return false;
 			requireEmbedAsElement = true;
 		}
 

@@ -106,7 +106,7 @@ public abstract class Door : Entity, IBlockEntity {
 				} else {
 					if (Game.GlobalFrame > LastBlockedByLockHintFrame + 60) {
 						LastBlockedByLockHintFrame = Game.GlobalFrame;
-						FrameworkUtil.InvokeItemErrorHint(character, KeyItemID);
+						FrameworkUtil.InvokeErrorHint(character, KeyItemID);
 					}
 					return false;
 				}

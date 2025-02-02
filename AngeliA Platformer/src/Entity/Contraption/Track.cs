@@ -15,6 +15,7 @@ public abstract class Track : Entity, IBlockEntity {
 	protected virtual bool AllowTiltConnection => true;
 	protected virtual bool TurnBackWhenReachEnd => true;
 	protected virtual bool SlowDownWhenWalkerOverlap => true;
+	bool IBlockEntity.AllowBeingEmbedAsElement => false;
 
 	// Data
 	private static readonly HashSet<int> TrackSet = [];

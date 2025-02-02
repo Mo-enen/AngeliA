@@ -60,7 +60,7 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			// Item Arrow
 			takenCount = Inventory.FindAndTakeItem(sender.InventoryID, ArrowItemID, BulletCountInOneShot);
 			if (takenCount == 0) {
-				FrameworkUtil.InvokeItemErrorHint(sender, ArrowItemID);
+				FrameworkUtil.InvokeErrorHint(sender, ArrowItemID);
 				return null;
 			}
 		}

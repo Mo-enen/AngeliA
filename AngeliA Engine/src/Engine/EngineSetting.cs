@@ -59,5 +59,6 @@ public class EngineSetting {
 	[EngineSetting("Hotkey", "Artwork - Rotate Selection Clockwise")] public static readonly SavingHotkey Hotkey_Pix_RotC = new("Hotkey.Pix.RotC", new Hotkey(KeyboardKey.W, shift: true), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Artwork - Rotate Selection Counter-Clockwise")] public static readonly SavingHotkey Hotkey_Pix_RotCC = new("Hotkey.Pix.RotCC", new Hotkey(KeyboardKey.Q, shift: true), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Frame Debug - Next Frame", gameOnly: true)] public static readonly SavingHotkey Hotkey_FrameDebug_Next = new("Hotkey.FrameDebug.Next", new Hotkey(KeyboardKey.Period), SavingLocation.Global);
+	[EngineSetting("Hotkey", "Frame Debug - End Debug", gameOnly: true)] public static readonly SavingHotkey Hotkey_FrameDebug_End = new("Hotkey.FrameDebug.End", new Hotkey(KeyboardKey.Comma), SavingLocation.Global);
 
 }

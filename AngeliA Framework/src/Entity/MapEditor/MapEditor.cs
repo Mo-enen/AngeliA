@@ -324,7 +324,7 @@ public sealed partial class MapEditor : WindowUI {
 		RequireEmbedEntity.Clear();
 		foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
 			if (System.Activator.CreateInstance(type) is not Entity e || e is not IBlockEntity bEntity) continue;
-			if (bEntity.ContainEntityAsElement) {
+			if (bEntity.EmbedEntityAsElement) {
 				RequireEmbedEntity.Add(e.TypeID);
 			}
 		}

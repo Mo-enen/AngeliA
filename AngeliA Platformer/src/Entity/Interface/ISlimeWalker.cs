@@ -172,7 +172,7 @@ internal interface ISlimeWalker {
 
 			// Oneway Check
 			hits = Physics.OverlapAll(
-				PhysicsMask.MAP, _rect, out count, walkerEntity, 
+				PhysicsMask.MAP, _rect, out count, walkerEntity,
 				OperationMode.TriggerOnly, FrameworkUtil.GetOnewayTag(hitDirection.Opposite())
 			);
 			for (int j = 0; j < count; j++) {

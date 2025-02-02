@@ -47,7 +47,6 @@ public class BeforeBeforeUpdateAttribute : EventAttribute { }
 public class BeforeUpdateUpdateAttribute : EventAttribute { }
 public class BeforeLateUpdateAttribute : EventAttribute { }
 public class AfterLateUpdateAttribute : EventAttribute { }
-public class AfterEntityReposition_Entity_Int3From_Int3ToAttribute : EventAttribute { }
 
 
 // World
@@ -76,7 +75,7 @@ public class OnCheatPerformed_StringCodeAttribute : EventAttribute { }
 // Item 
 public class OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute : EventAttribute { }
 public class OnItemLost_Character_IntItemIDAttribute : EventAttribute { }
-public class OnItemError_Entity_Int2Pos_IntItemIDAttribute : EventAttribute { }
+public class OnItemError_Entity_Int2Pos_IntIconID : EventAttribute { }
 public class OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute : EventAttribute { }
 public class OnItemUnlocked_IntItemIDAttribute : EventAttribute { }
 

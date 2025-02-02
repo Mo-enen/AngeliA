@@ -295,6 +295,7 @@ UI.EngineSetting.Engine:引擎
 UI.EngineSetting.GradientBackground:渐变背景颜色
 UI.EngineSetting.Hotkey:快捷键
 UI.EngineSetting.Hotkey_ClearConsole:清空终端
+UI.EngineSetting.Hotkey_FrameDebug_End:结束逐帧调试
 UI.EngineSetting.Hotkey_FrameDebug_Next:下一帧
 UI.EngineSetting.Hotkey_Pix_FlipX:水平翻转
 UI.EngineSetting.Hotkey_Pix_FlipY:垂直翻转

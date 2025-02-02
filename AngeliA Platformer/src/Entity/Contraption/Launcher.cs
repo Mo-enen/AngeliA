@@ -25,7 +25,8 @@ public abstract class Launcher : Entity, IBlockEntity {
 	public virtual bool LaunchWhenEntranceBlocked => false;
 	public virtual bool KeepLaunchedEntityInMap => false;
 	public virtual bool LaunchTowardsPlayer => false;
-	bool IBlockEntity.ContainEntityAsElement => true;
+	bool IBlockEntity.EmbedEntityAsElement => true;
+	bool IBlockEntity.AllowBeingEmbedAsElement => false;
 	public int LastLaunchedFrame { get; set; }
 
 	// Data
@@ -52,7 +53,8 @@ public abstract class Launcher : Entity, IBlockEntity {
 
 	public void OnEntityRefresh () {
 		if (LaunchOverlapingElement) {
-			int id = WorldSquad.Front.GetBlockAt((X + 1).ToUnit(), (Y + 1).ToUnit(), BlockType.Element);
+			var pivotPos = PivotUnitPosition;
+			int id = WorldSquad.Front.GetBlockAt(pivotPos.x, pivotPos.y, pivotPos.z, BlockType.Element);
 			TargetEntityIdFromMap = Stage.IsValidEntityID(id) || ItemSystem.HasItem(id) ? id : 0;
 		} else {
 			TargetEntityIdFromMap = 0;
@@ -92,7 +94,8 @@ public abstract class Launcher : Entity, IBlockEntity {
 					iconSp,
 					X + Width / 2, Y + Height / 2,
 					500, 500, Util.QuickRandom(-6, 7),
-					Width * 3 / 4, Height * 3 / 4
+					Const.CEL,
+					Const.CEL
 				);
 			}
 		}
@@ -121,7 +124,8 @@ public abstract class Launcher : Entity, IBlockEntity {
 
 		// Blocked Check
 		if (!LaunchWhenEntranceBlocked && Physics.Overlap(
-			PhysicsMask.ENTITY, Rect.Shift(offset).Shrink(1), this, OperationMode.ColliderAndTrigger
+			PhysicsMask.SOLID, IRect.Point(XY + offset),
+			this, OperationMode.ColliderAndTrigger
 		)) return false;
 
 		return Stage.IsValidEntityID(TargetEntityID) || ItemSystem.HasItem(TargetEntityID);
@@ -143,9 +147,10 @@ public abstract class Launcher : Entity, IBlockEntity {
 		} else if (ItemSystem.HasItem(TargetEntityID)) {
 			entity = ItemSystem.SpawnItem(TargetEntityID, X + offset.x, Y + offset.y);
 		}
+
 		if (entity == null) return null;
 
-		if (!KeepLaunchedEntityInMap) entity.IgnoreReposition = true;
+		entity.X -= entity.Width / 2;
 
 		// Rigidbody Movement
 		if (entity is Rigidbody rig) {
@@ -159,6 +164,11 @@ public abstract class Launcher : Entity, IBlockEntity {
 			}
 			rig.VelocityX = vel.x;
 			rig.VelocityY = vel.y;
+			rig.X -= rig.OffsetX;
+		}
+
+		if (!KeepLaunchedEntityInMap) {
+			entity.IgnoreReposition = true;
 		}
 
 		// Finish

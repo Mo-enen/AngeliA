@@ -106,7 +106,7 @@ public partial class GameEditor : WindowUI {
 
 		if (FrameDebugging) {
 			// Cancel Frame Debugging
-			if (Input.KeyboardDown(KeyboardKey.Escape)) {
+			if (EngineSetting.Hotkey_FrameDebug_End.Value.Down() || Input.KeyboardDown(KeyboardKey.Escape)) {
 				FrameDebugging = false;
 			}
 		}

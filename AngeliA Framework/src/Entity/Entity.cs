@@ -32,6 +32,17 @@ public abstract class Entity : IMapItem {
 			Y = value.y;
 		}
 	}
+	public Int3 PivotUnitPosition {
+		get {
+			Int3 pos;
+			if (MapUnitPos.HasValue) {
+				pos = MapUnitPos.Value;
+			} else {
+				pos = new Int3((X + Width / 2).ToUnit(), (Y + Height / 2).ToUnit(), Stage.ViewZ);
+			}
+			return pos;
+		}
+	}
 
 	// Inter
 	internal byte UpdateStep { get; set; } = 0;
@@ -50,6 +61,7 @@ public abstract class Entity : IMapItem {
 	public virtual void BeforeUpdate () { } // 1 >> 2
 	public virtual void Update () { }       // 2 >> 3
 	public virtual void LateUpdate () { }   // 3 >> 4
+	public virtual void AfterReposition (Int3 fromUnitPos, Int3 toUnitPos) { }
 
 	internal void UpdateToFirst () {
 		FirstUpdate();
@@ -73,6 +85,7 @@ public abstract class Entity : IMapItem {
 		LateUpdate();
 		UpdateStep = 4;
 	}
+
 
 	public void IgnoreDespawnFromMap (int duration = 1) => IgnoreDespawnFromMapFrame = Game.GlobalFrame + duration;
 	public void CancelIgnoreDespawnFromMap () => IgnoreDespawnFromMapFrame = -1;

@@ -219,6 +219,7 @@ public struct IRect : IEquatable<IRect>, IFormattable {
 		return lhs.x == rhs.x && lhs.y == rhs.y && lhs.width == rhs.width && lhs.height == rhs.height;
 	}
 
+	public static IRect Point (Int2 pos) => new(pos.x, pos.y, 1, 1);
 	public static IRect Point (int x, int y) => new(x, y, 1, 1);
 
 	public override readonly int GetHashCode () {

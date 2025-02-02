@@ -125,22 +125,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	#region --- MSG ---
 
 
-	[AfterEntityReposition_Entity_Int3From_Int3To]
-	internal static void AfterEntityReposition (Entity entity, Int3 from, Int3 to) {
-
-		if (
-			entity is not Character character ||
-			character.InventoryType != CharacterInventoryType.Map
-		) return;
-
-		// Repos Inventory
-		string fromInvName = Inventory.GetPositionBasedInventoryName(character.TypeName, from);
-		string toInvName = Inventory.GetPositionBasedInventoryName(character.TypeName, to);
-		Inventory.RenameEquipInventory(fromInvName, toInvName);
-
-	}
-
-
 	public Character () {
 
 		TypeName = GetType().AngeName();
@@ -226,6 +210,18 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		base.OnInactivated();
 		MovementOverride = null;
 		AttacknessOverride = null;
+	}
+
+
+	public override void AfterReposition (Int3 fromUnitPos, Int3 toUnitPos) {
+
+		if (InventoryType != CharacterInventoryType.Map) return;
+
+		// Repos Inventory
+		string fromInvName = Inventory.GetPositionBasedInventoryName(TypeName, fromUnitPos);
+		string toInvName = Inventory.GetPositionBasedInventoryName(TypeName, toUnitPos);
+		Inventory.RenameEquipInventory(fromInvName, toInvName);
+
 	}
 
 
@@ -428,7 +424,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	private void LateUpdate_RenderCharacter () {
 
 		bool blinking = Health.IsInvincible && !Health.TakingDamage && (Game.GlobalFrame - Health.InvincibleEndFrame).UMod(8) < 4;
-		if (blinking) return;
 
 		bool colorFlash = Health.TakingDamage && Health.HP > 0 && (Game.GlobalFrame - Health.LastDamageFrame).UMod(8) < 4;
 		RenderingCellIndex = colorFlash ? -1 : Renderer.GetUsedCellCount(RenderLayer.DEFAULT); ;
@@ -441,10 +436,11 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		Rendering.GrowAnimationFrame();
 
 		// Flash Cell Effect
-		if (colorFlash && Renderer.GetCells(out var cells, out int count)) {
+		if ((blinking || colorFlash) && Renderer.GetCells(out var cells, out int count)) {
+			var targetColor = blinking ? Color32.CLEAR : Color32.WHITE;
 			for (int i = cellIndexStart; i < count; i++) {
 				var cell = cells[i];
-				cell.Color = Color32.WHITE;
+				cell.Color = targetColor;
 			}
 		}
 

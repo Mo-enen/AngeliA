@@ -288,7 +288,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		int speedScale = InWater ? WaterSpeedRate : 1000;
 		speedX = speedX * speedScale / 1000;
 		speedY = speedY * speedScale / 1000;
-		int mask = IsInsideGround ? CollisionMask & ~PhysicsMask.LEVEL : CollisionMask;
+		int mask = IsInsideGround ? CollisionMask & ~PhysicsMask.LEVEL & ~PhysicsMask.ENVIRONMENT : CollisionMask;
 		if (IgnoreOneway) {
 			newPos = Physics.MoveIgnoreOneway(mask, oldPos, speedX, speedY, new(Width, Height), this);
 		} else {
@@ -383,7 +383,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		int mask = PhysicsMask.LEVEL & CollisionMask;
 		if (mask == 0) return false;
 		var rect = Rect;
-		return Physics.Overlap(mask, IRect.Point(rect.CenterX(), rect.CenterY()), this);
+		return Physics.Overlap(mask, IRect.Point(rect.CenterInt()), this);
 	}
 
 
