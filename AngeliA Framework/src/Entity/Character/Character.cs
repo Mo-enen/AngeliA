@@ -55,6 +55,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public override bool CarryOtherOnTop => false;
 	public override bool AllowBeingPush => true;
 	public override bool FacingRight => Movement.FacingRight;
+	public override bool EjectWhenInsideGround => false;
 	public virtual CharacterInventoryType InventoryType => CharacterInventoryType.None;
 	public virtual int FinalCharacterHeight => Movement.MovementHeight;
 	public virtual int Team => Const.TEAM_NEUTRAL;
@@ -659,6 +660,20 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public void GetBonusFromFullSleep () {
 		Health.Heal(Health.MaxHP);
 		Buff.ClearAllBuffs();
+	}
+
+
+	protected override bool InsideGroundCheck () {
+		if (IgnoreInsideGround) return IsInsideGround;
+		int mask = PhysicsMask.LEVEL & CollisionMask;
+		if (mask == 0) return false;
+		var rect = Rect;
+		var point = rect.CenterInt();
+		int shiftY = rect.height / 4;
+		return
+			Physics.Overlap(mask, IRect.Point(point.ShiftY(-shiftY)), this) ||
+			Physics.Overlap(mask, IRect.Point(point.ShiftY(+shiftY)), this)
+		;
 	}
 
 

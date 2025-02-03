@@ -1,6 +1,9 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Idle : PoseAnimation {
+
+	public static readonly int TYPE_ID = typeof(PoseAnimation_Idle).AngeHash();
+
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 

@@ -30,6 +30,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public (int value, int decay) MomentumY = (0, 1);
 	public bool RequireDodgeOverlap { get; set; } = false;
 	public virtual bool FacingRight => true;
+	public virtual bool EjectWhenInsideGround => true;
 
 	// Based Value
 	public static readonly FrameBasedInt GlobalGravity = new(5);
@@ -147,7 +148,9 @@ public abstract class Rigidbody : Entity, ICarrier {
 					PerformMove(VelocityX, VelocityY);
 				}
 				IsGrounded = GroundedCheck();
-				FrameworkUtil.TryEjectOutsideGround(this, CollisionMask, unitRange: 4, speed: 16);
+				if (EjectWhenInsideGround) {
+					FrameworkUtil.TryEjectOutsideGround(this, CollisionMask, unitRange: 4, speed: 16);
+				}
 			}
 			return;
 		}

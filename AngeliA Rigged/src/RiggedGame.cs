@@ -416,6 +416,7 @@ public partial class RiggedGame : Game {
 
 		if (PlayerMenuUI.ShowingUI || !EntityClickerOn) return;
 
+		PlayerSystem.DragPlayerInMiddleButtonToMove_DebugOnly.False(1, 4096);
 		Input.IgnoreMouseToActionJump(ignoreAction: true, ignoreJump: false, useMidButtonAsAction: true);
 		bool mouseDown = Input.MouseLeftButtonDown;
 		bool mouseHolding = Input.MouseLeftButtonHolding;
