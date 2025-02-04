@@ -245,21 +245,20 @@ public static class Inventory {
 
 
 	public static void RenameEquipInventory (string currentName, string newName) {
-
-		// Change Data in Pool
-		int id = currentName.AngeHash();
-		int newID = newName.AngeHash();
-		if (Pool.Remove(id, out var invData)) {
-			invData.Name = newName;
-			Pool[newID] = invData;
+		lock (Pool) {
+			// Change Data in Pool
+			int id = currentName.AngeHash();
+			int newID = newName.AngeHash();
+			if (Pool.Remove(id, out var invData)) {
+				invData.Name = newName;
+				Pool[newID] = invData;
+			}
 		}
-
 		// Move File
 		string root = Universe.BuiltIn.SlotInventoryRoot;
 		string from = Util.CombinePaths(root, $"{currentName}.{AngePath.EQ_INVENTORY_FILE_EXT}");
 		string to = Util.CombinePaths(root, $"{newName}.{AngePath.EQ_INVENTORY_FILE_EXT}");
 		Util.MoveFile(from, to);
-
 	}
 
 
@@ -310,11 +309,13 @@ public static class Inventory {
 
 
 	public static void SetItemAt (int inventoryID, int itemIndex, int newItem, int newCount) {
-		if (!Pool.TryGetValue(inventoryID, out var data) || itemIndex < 0 || itemIndex >= data.Items.Length) return;
-		data.Items[itemIndex] = newCount > 0 ? newItem : 0;
-		data.Counts[itemIndex] = newCount;
-		data.IsDirty = true;
-		IsPoolDirty = true;
+		lock (Pool) {
+			if (!Pool.TryGetValue(inventoryID, out var data) || itemIndex < 0 || itemIndex >= data.Items.Length) return;
+			data.Items[itemIndex] = newCount > 0 ? newItem : 0;
+			data.Counts[itemIndex] = newCount;
+			data.IsDirty = true;
+			IsPoolDirty = true;
+		}
 	}
 
 
@@ -347,243 +348,48 @@ public static class Inventory {
 
 	/// <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
 	public static int AddItemAt (int inventoryID, int itemIndex, int count = 1) {
-		if (
-			count <= 0 ||
-			itemIndex < 0 ||
-			!Pool.TryGetValue(inventoryID, out var data) ||
-			itemIndex >= data.Items.Length
-		) return 0;
-		int itemID = data.Items[itemIndex];
-		if (itemID == 0) return 0;
-		int _count = data.Counts[itemIndex];
-		int delta = Util.Min(count, ItemSystem.GetItemMaxStackCount(itemID) - _count);
-		data.Counts[itemIndex] = _count + delta;
-		if (delta != 0) {
-			data.IsDirty = true;
-			IsPoolDirty = true;
+		lock (Pool) {
+			if (
+				count <= 0 ||
+				itemIndex < 0 ||
+				!Pool.TryGetValue(inventoryID, out var data) ||
+				itemIndex >= data.Items.Length
+			) return 0;
+			int itemID = data.Items[itemIndex];
+			if (itemID == 0) return 0;
+			int _count = data.Counts[itemIndex];
+			int delta = Util.Min(count, ItemSystem.GetItemMaxStackCount(itemID) - _count);
+			data.Counts[itemIndex] = _count + delta;
+			if (delta != 0) {
+				data.IsDirty = true;
+				IsPoolDirty = true;
+			}
+			return delta;
 		}
-		return delta;
 	}
 
 
 	/// <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
 	public static int FindAndAddItem (int inventoryID, int targetItemID, int count = 1, bool ignoreEquipment = true) {
-		if (targetItemID == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
-		int oldCount = count;
-		// Equipment
-		if (!ignoreEquipment) {
-			int collectedCount = CollectItem(inventoryID, targetItemID, count, false, true);
-			count -= collectedCount;
-			if (count <= 0) {
-				return oldCount - count;
-			}
-		}
-		// Inventory
-		int maxCount = ItemSystem.GetItemMaxStackCount(targetItemID);
-		for (int i = 0; i < data.Items.Length; i++) {
-			if (data.Items[i] != targetItemID) continue;
-			int _count = data.Counts[i];
-			int delta = Util.Min(count, maxCount - _count);
-			data.Counts[i] = _count + delta;
-			count -= delta;
-			if (count <= 0) break;
-		}
-		int result = oldCount - count;
-		if (result != 0) {
-			data.IsDirty = true;
-			IsPoolDirty = true;
-		}
-		return result;
-	}
-
-
-	/// <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
-	public static int TakeItemAt (int inventoryID, int itemIndex, int count = 1) {
-		if (
-			count <= 0 ||
-			itemIndex < 0 ||
-			!Pool.TryGetValue(inventoryID, out var data) ||
-			itemIndex >= data.Items.Length ||
-			data.Items[itemIndex] == 0
-		) return 0;
-		int _count = data.Counts[itemIndex];
-		int delta = Util.Min(_count, count).GreaterOrEquelThanZero();
-		if (delta == 0) return delta;
-		int newCount = _count - delta;
-		data.Counts[itemIndex] = newCount;
-		if (newCount <= 0) {
-			data.Items[itemIndex] = 0;
-		}
-		if (delta != 0) {
-			data.IsDirty = true;
-			IsPoolDirty = true;
-		}
-		return delta;
-	}
-
-
-	/// <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
-	public static int FindAndTakeItem (int inventoryID, int targetItemID, int count = 1) {
-		if (targetItemID == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
-		int oldCount = count;
-		for (int i = 0; i < data.Items.Length; i++) {
-			if (data.Items[i] != targetItemID) continue;
-			int _count = data.Counts[i];
-			int delta = Util.Min(_count, count);
-			_count -= delta;
-			count -= delta;
-			data.Counts[i] = _count;
-			if (_count <= 0) data.Items[i] = 0;
-			if (count <= 0) break;
-		}
-		int result = oldCount - count;
-		if (result != 0) {
-			data.IsDirty = true;
-			IsPoolDirty = true;
-		}
-		return result;
-	}
-
-
-	/// <returns>How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.</returns>
-	public static int CollectItem (int inventoryID, int item, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false, bool dontCollectIntoEmptyEquipmentSlot = false) => CollectItem(inventoryID, item, out _, count, ignoreEquipment, ignoreInventory, dontCollectIntoEmptyEquipmentSlot);
-	public static int CollectItem (int inventoryID, int item, out int collectIndex, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false, bool dontCollectIntoEmptyEquipmentSlot = false) {
-
-		collectIndex = -1;
-		if (item == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
-		int oldCount = count;
-		int maxStackCount = ItemSystem.GetItemMaxStackCount(item);
-
-		// Try Append to Equipment
-		if (
-			!ignoreEquipment &&
-			data is EquipmentInventoryData eData &&
-			ItemSystem.IsEquipment(item, out var eqType)
-		) {
-			switch (eqType) {
-
-				case EquipmentType.HandTool:
-					// Hand
-					bool emptyH = !dontCollectIntoEmptyEquipmentSlot && eData.HandTool == 0;
-					if (emptyH || (eData.HandTool == item && eData.HandToolCount < maxStackCount)) {
-						int delta = Util.Min(count, maxStackCount - eData.HandToolCount);
-						count -= delta;
-						eData.HandTool = item;
-						eData.HandToolCount += delta;
-						if (emptyH) {
-							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.HandToolCount, maxStackCount);
-						}
-					}
-					if (count <= 0) return oldCount - count;
-					break;
-
-				case EquipmentType.BodyArmor:
-					// Body
-					bool emptyB = eData.BodySuit == 0;
-					if (emptyB || (eData.BodySuit == item && eData.BodySuitCount < maxStackCount)) {
-						int delta = Util.Min(count, maxStackCount - eData.BodySuitCount);
-						count -= delta;
-						eData.BodySuit = item;
-						eData.BodySuitCount += delta;
-						if (emptyB) {
-							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.BodySuitCount, maxStackCount);
-						}
-					}
-					if (count <= 0) return oldCount - count;
-					break;
-
-				case EquipmentType.Helmet:
-					// Helmet
-					bool emptyHl = eData.Helmet == 0;
-					if (emptyHl || (eData.Helmet == item && eData.HelmetCount < maxStackCount)) {
-						int delta = Util.Min(count, maxStackCount - eData.HelmetCount);
-						count -= delta;
-						eData.Helmet = item;
-						eData.HelmetCount += delta;
-						if (emptyHl) {
-							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.HelmetCount, maxStackCount);
-						}
-					}
-					if (count <= 0) return oldCount - count;
-					break;
-
-				case EquipmentType.Shoes:
-					// Shoes
-					bool emptyS = eData.Shoes == 0;
-					if (emptyS || (eData.Shoes == item && eData.ShoesCount < maxStackCount)) {
-						int delta = Util.Min(count, maxStackCount - eData.ShoesCount);
-						count -= delta;
-						eData.Shoes = item;
-						eData.ShoesCount += delta;
-						if (emptyS) {
-							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.ShoesCount, maxStackCount);
-						}
-					}
-					if (count <= 0) return oldCount - count;
-					break;
-
-				case EquipmentType.Gloves:
-					// Gloves
-					bool emptyG = eData.Gloves == 0;
-					if (emptyG || (eData.Gloves == item && eData.GlovesCount < maxStackCount)) {
-						int delta = Util.Min(count, maxStackCount - eData.GlovesCount);
-						count -= delta;
-						eData.Gloves = item;
-						eData.GlovesCount += delta;
-						if (emptyG) {
-							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.GlovesCount, maxStackCount);
-						}
-					}
-					if (count <= 0) return oldCount - count;
-					break;
-
-				case EquipmentType.Jewelry:
-					// Jewelry
-					bool emptyJ = eData.Jewelry == 0;
-					if (emptyJ || (eData.Jewelry == item && eData.JewelryCount < maxStackCount)) {
-						int delta = Util.Min(count, maxStackCount - eData.JewelryCount);
-						count -= delta;
-						eData.Jewelry = item;
-						eData.JewelryCount += delta;
-						if (emptyJ) {
-							FillEquipmentFromInventoryLogic(eData, eqType, item, eData.JewelryCount, maxStackCount);
-						}
-					}
-					if (count <= 0) return oldCount - count;
-					break;
-
-			}
-
-		}
-
-		if (!ignoreInventory && count > 0) {
-
-			// Try Append to Exists
-			for (int i = 0; i < data.Items.Length; i++) {
-				int _item = data.Items[i];
-				if (_item != item) continue;
-				int _count = data.Counts[i];
-				if (_count < maxStackCount) {
-					// Append Item
-					int delta = Util.Min(count, maxStackCount - _count);
-					count -= delta;
-					_count += delta;
-					data.Counts[i] = _count;
-					collectIndex = i;
+		lock (Pool) {
+			if (targetItemID == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
+			int oldCount = count;
+			// Equipment
+			if (!ignoreEquipment) {
+				int collectedCount = CollectItem(inventoryID, targetItemID, count, false, true);
+				count -= collectedCount;
+				if (count <= 0) {
+					return oldCount - count;
 				}
-				if (count <= 0) break;
 			}
-			if (count <= 0) return oldCount - count;
-
-			// Try Add to New Slot
+			// Inventory
+			int maxCount = ItemSystem.GetItemMaxStackCount(targetItemID);
 			for (int i = 0; i < data.Items.Length; i++) {
-				int _item = data.Items[i];
-				if (_item != 0) continue;
-				int delta = Util.Min(count, maxStackCount);
+				if (data.Items[i] != targetItemID) continue;
+				int _count = data.Counts[i];
+				int delta = Util.Min(count, maxCount - _count);
+				data.Counts[i] = _count + delta;
 				count -= delta;
-				data.Items[i] = item;
-				data.Counts[i] = delta;
-				collectIndex = i;
 				if (count <= 0) break;
 			}
 			int result = oldCount - count;
@@ -591,11 +397,215 @@ public static class Inventory {
 				data.IsDirty = true;
 				IsPoolDirty = true;
 			}
-
 			return result;
 		}
+	}
 
-		return oldCount - count;
+
+	/// <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
+	public static int TakeItemAt (int inventoryID, int itemIndex, int count = 1) {
+		lock (Pool) {
+			if (
+				count <= 0 ||
+				itemIndex < 0 ||
+				!Pool.TryGetValue(inventoryID, out var data) ||
+				itemIndex >= data.Items.Length ||
+				data.Items[itemIndex] == 0
+			) return 0;
+			int _count = data.Counts[itemIndex];
+			int delta = Util.Min(_count, count).GreaterOrEquelThanZero();
+			if (delta == 0) return delta;
+			int newCount = _count - delta;
+			data.Counts[itemIndex] = newCount;
+			if (newCount <= 0) {
+				data.Items[itemIndex] = 0;
+			}
+			if (delta != 0) {
+				data.IsDirty = true;
+				IsPoolDirty = true;
+			}
+			return delta;
+		}
+	}
+
+
+	/// <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
+	public static int FindAndTakeItem (int inventoryID, int targetItemID, int count = 1) {
+		lock (Pool) {
+			if (targetItemID == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
+			int oldCount = count;
+			for (int i = 0; i < data.Items.Length; i++) {
+				if (data.Items[i] != targetItemID) continue;
+				int _count = data.Counts[i];
+				int delta = Util.Min(_count, count);
+				_count -= delta;
+				count -= delta;
+				data.Counts[i] = _count;
+				if (_count <= 0) data.Items[i] = 0;
+				if (count <= 0) break;
+			}
+			int result = oldCount - count;
+			if (result != 0) {
+				data.IsDirty = true;
+				IsPoolDirty = true;
+			}
+			return result;
+		}
+	}
+
+
+	/// <returns>How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.</returns>
+	public static int CollectItem (int inventoryID, int item, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false, bool dontCollectIntoEmptyEquipmentSlot = false) => CollectItem(inventoryID, item, out _, count, ignoreEquipment, ignoreInventory, dontCollectIntoEmptyEquipmentSlot);
+	public static int CollectItem (int inventoryID, int item, out int collectIndex, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false, bool dontCollectIntoEmptyEquipmentSlot = false) {
+		lock (Pool) {
+			collectIndex = -1;
+			if (item == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
+			int oldCount = count;
+			int maxStackCount = ItemSystem.GetItemMaxStackCount(item);
+
+			// Try Append to Equipment
+			if (
+				!ignoreEquipment &&
+				data is EquipmentInventoryData eData &&
+				ItemSystem.IsEquipment(item, out var eqType)
+			) {
+				switch (eqType) {
+
+					case EquipmentType.HandTool:
+						// Hand
+						bool emptyH = !dontCollectIntoEmptyEquipmentSlot && eData.HandTool == 0;
+						if (emptyH || (eData.HandTool == item && eData.HandToolCount < maxStackCount)) {
+							int delta = Util.Min(count, maxStackCount - eData.HandToolCount);
+							count -= delta;
+							eData.HandTool = item;
+							eData.HandToolCount += delta;
+							if (emptyH) {
+								FillEquipmentFromInventoryLogic(eData, eqType, item, eData.HandToolCount, maxStackCount);
+							}
+						}
+						if (count <= 0) return oldCount - count;
+						break;
+
+					case EquipmentType.BodyArmor:
+						// Body
+						bool emptyB = eData.BodySuit == 0;
+						if (emptyB || (eData.BodySuit == item && eData.BodySuitCount < maxStackCount)) {
+							int delta = Util.Min(count, maxStackCount - eData.BodySuitCount);
+							count -= delta;
+							eData.BodySuit = item;
+							eData.BodySuitCount += delta;
+							if (emptyB) {
+								FillEquipmentFromInventoryLogic(eData, eqType, item, eData.BodySuitCount, maxStackCount);
+							}
+						}
+						if (count <= 0) return oldCount - count;
+						break;
+
+					case EquipmentType.Helmet:
+						// Helmet
+						bool emptyHl = eData.Helmet == 0;
+						if (emptyHl || (eData.Helmet == item && eData.HelmetCount < maxStackCount)) {
+							int delta = Util.Min(count, maxStackCount - eData.HelmetCount);
+							count -= delta;
+							eData.Helmet = item;
+							eData.HelmetCount += delta;
+							if (emptyHl) {
+								FillEquipmentFromInventoryLogic(eData, eqType, item, eData.HelmetCount, maxStackCount);
+							}
+						}
+						if (count <= 0) return oldCount - count;
+						break;
+
+					case EquipmentType.Shoes:
+						// Shoes
+						bool emptyS = eData.Shoes == 0;
+						if (emptyS || (eData.Shoes == item && eData.ShoesCount < maxStackCount)) {
+							int delta = Util.Min(count, maxStackCount - eData.ShoesCount);
+							count -= delta;
+							eData.Shoes = item;
+							eData.ShoesCount += delta;
+							if (emptyS) {
+								FillEquipmentFromInventoryLogic(eData, eqType, item, eData.ShoesCount, maxStackCount);
+							}
+						}
+						if (count <= 0) return oldCount - count;
+						break;
+
+					case EquipmentType.Gloves:
+						// Gloves
+						bool emptyG = eData.Gloves == 0;
+						if (emptyG || (eData.Gloves == item && eData.GlovesCount < maxStackCount)) {
+							int delta = Util.Min(count, maxStackCount - eData.GlovesCount);
+							count -= delta;
+							eData.Gloves = item;
+							eData.GlovesCount += delta;
+							if (emptyG) {
+								FillEquipmentFromInventoryLogic(eData, eqType, item, eData.GlovesCount, maxStackCount);
+							}
+						}
+						if (count <= 0) return oldCount - count;
+						break;
+
+					case EquipmentType.Jewelry:
+						// Jewelry
+						bool emptyJ = eData.Jewelry == 0;
+						if (emptyJ || (eData.Jewelry == item && eData.JewelryCount < maxStackCount)) {
+							int delta = Util.Min(count, maxStackCount - eData.JewelryCount);
+							count -= delta;
+							eData.Jewelry = item;
+							eData.JewelryCount += delta;
+							if (emptyJ) {
+								FillEquipmentFromInventoryLogic(eData, eqType, item, eData.JewelryCount, maxStackCount);
+							}
+						}
+						if (count <= 0) return oldCount - count;
+						break;
+
+				}
+
+			}
+
+			if (!ignoreInventory && count > 0) {
+
+				// Try Append to Exists
+				for (int i = 0; i < data.Items.Length; i++) {
+					int _item = data.Items[i];
+					if (_item != item) continue;
+					int _count = data.Counts[i];
+					if (_count < maxStackCount) {
+						// Append Item
+						int delta = Util.Min(count, maxStackCount - _count);
+						count -= delta;
+						_count += delta;
+						data.Counts[i] = _count;
+						collectIndex = i;
+					}
+					if (count <= 0) break;
+				}
+				if (count <= 0) return oldCount - count;
+
+				// Try Add to New Slot
+				for (int i = 0; i < data.Items.Length; i++) {
+					int _item = data.Items[i];
+					if (_item != 0) continue;
+					int delta = Util.Min(count, maxStackCount);
+					count -= delta;
+					data.Items[i] = item;
+					data.Counts[i] = delta;
+					collectIndex = i;
+					if (count <= 0) break;
+				}
+				int result = oldCount - count;
+				if (result != 0) {
+					data.IsDirty = true;
+					IsPoolDirty = true;
+				}
+
+				return result;
+			}
+
+			return oldCount - count;
+		}
 	}
 
 
@@ -679,24 +689,28 @@ public static class Inventory {
 
 	// Give
 	public static bool GiveItemToTarget (Entity target, int itemID, int count = 1, bool spawnWhenInventoryFull = true) {
-		if (target == null) {
-			return
-				spawnWhenInventoryFull &&
-				ItemSystem.SpawnItem(itemID, Renderer.CameraRect.CenterX(), Renderer.CameraRect.CenterY(), count) != null;
-		} else {
-			count -= CollectItem(target is Character cTarget ? cTarget.InventoryID : target.TypeID, itemID, count, ignoreEquipment: false);
-			return count <= 0 || (spawnWhenInventoryFull && ItemSystem.SpawnItem(itemID, target.Rect.x - Const.CEL, target.Y, count) != null);
+		lock (Pool) {
+			if (target == null) {
+				return
+					spawnWhenInventoryFull &&
+					ItemSystem.SpawnItem(itemID, Renderer.CameraRect.CenterX(), Renderer.CameraRect.CenterY(), count) != null;
+			} else {
+				count -= CollectItem(target is Character cTarget ? cTarget.InventoryID : target.TypeID, itemID, count, ignoreEquipment: false);
+				return count <= 0 || (spawnWhenInventoryFull && ItemSystem.SpawnItem(itemID, target.Rect.x - Const.CEL, target.Y, count) != null);
+			}
 		}
 	}
 
 
 	internal static void GiveItemCheat () {
-		var player = PlayerSystem.Selecting;
-		if (player == null) return;
-		if (CheatSystem.CurrentParam is not int id) return;
-		ItemSystem.SetItemUnlocked(id, true);
-		int maxCount = ItemSystem.GetItemMaxStackCount(id);
-		GiveItemToTarget(player, id, maxCount);
+		lock (Pool) {
+			var player = PlayerSystem.Selecting;
+			if (player == null) return;
+			if (CheatSystem.CurrentParam is not int id) return;
+			ItemSystem.SetItemUnlocked(id, true);
+			int maxCount = ItemSystem.GetItemMaxStackCount(id);
+			GiveItemToTarget(player, id, maxCount);
+		}
 	}
 
 
@@ -722,67 +736,72 @@ public static class Inventory {
 
 
 	public static bool SetEquipment (int inventoryID, EquipmentType type, int equipmentID, int equipmentCount) {
-
-		if (
+		lock (Pool) {
+			if (
 			!Pool.TryGetValue(inventoryID, out var data) ||
 			data is not EquipmentInventoryData pData
 		) return false;
 
-		if (
-			equipmentID != 0 &&
-			(!ItemSystem.IsEquipment(equipmentID, out var newEquipmentType) || newEquipmentType != type)
-		) return false;
+			if (
+				equipmentID != 0 &&
+				(!ItemSystem.IsEquipment(equipmentID, out var newEquipmentType) || newEquipmentType != type)
+			) return false;
 
-		if (equipmentID == 0) equipmentCount = 0;
+			if (equipmentID == 0) equipmentCount = 0;
 
-		switch (type) {
-			case EquipmentType.HandTool:
-				pData.HandTool = equipmentID;
-				pData.HandToolCount = equipmentCount;
-				break;
-			case EquipmentType.BodyArmor:
-				pData.BodySuit = equipmentID;
-				pData.BodySuitCount = equipmentCount;
-				break;
-			case EquipmentType.Helmet:
-				pData.Helmet = equipmentID;
-				pData.HelmetCount = equipmentCount;
-				break;
-			case EquipmentType.Shoes:
-				pData.Shoes = equipmentID;
-				pData.ShoesCount = equipmentCount;
-				break;
-			case EquipmentType.Gloves:
-				pData.Gloves = equipmentID;
-				pData.GlovesCount = equipmentCount;
-				break;
-			case EquipmentType.Jewelry:
-				pData.Jewelry = equipmentID;
-				pData.JewelryCount = equipmentCount;
-				break;
+			switch (type) {
+				case EquipmentType.HandTool:
+					pData.HandTool = equipmentID;
+					pData.HandToolCount = equipmentCount;
+					break;
+				case EquipmentType.BodyArmor:
+					pData.BodySuit = equipmentID;
+					pData.BodySuitCount = equipmentCount;
+					break;
+				case EquipmentType.Helmet:
+					pData.Helmet = equipmentID;
+					pData.HelmetCount = equipmentCount;
+					break;
+				case EquipmentType.Shoes:
+					pData.Shoes = equipmentID;
+					pData.ShoesCount = equipmentCount;
+					break;
+				case EquipmentType.Gloves:
+					pData.Gloves = equipmentID;
+					pData.GlovesCount = equipmentCount;
+					break;
+				case EquipmentType.Jewelry:
+					pData.Jewelry = equipmentID;
+					pData.JewelryCount = equipmentCount;
+					break;
+			}
+
+			data.IsDirty = true;
+			IsPoolDirty = true;
+			return true;
 		}
-
-		data.IsDirty = true;
-		IsPoolDirty = true;
-		return true;
 	}
 
 
 	public static void ReduceEquipmentCount (int inventoryID, int delta, EquipmentType type) {
-		int eqID = GetEquipment(inventoryID, type, out int eqCount);
-		if (eqID == 0) return;
-		int newEqCount = (eqCount - delta).GreaterOrEquelThanZero();
-		if (newEqCount == 0) eqID = 0;
-		SetEquipment(inventoryID, type, eqID, newEqCount);
+		lock (Pool) {
+			int eqID = GetEquipment(inventoryID, type, out int eqCount);
+			if (eqID == 0) return;
+			int newEqCount = (eqCount - delta).GreaterOrEquelThanZero();
+			if (newEqCount == 0) eqID = 0;
+			SetEquipment(inventoryID, type, eqID, newEqCount);
+		}
 	}
 
 
 	public static void FillEquipmentFromInventory (int inventoryID, EquipmentType type) {
-		if (!Pool.TryGetValue(inventoryID, out var data) || data is not EquipmentInventoryData pData) return;
-		int itemID = GetEquipment(inventoryID, type, out int count);
-		if (itemID == 0) return;
-		int maxStack = ItemSystem.GetItemMaxStackCount(itemID);
-		FillEquipmentFromInventoryLogic(pData, type, itemID, count, maxStack);
+		lock (Pool) {
+			if (!Pool.TryGetValue(inventoryID, out var data) || data is not EquipmentInventoryData pData) return;
+			int itemID = GetEquipment(inventoryID, type, out int count);
+			if (itemID == 0) return;
+			int maxStack = ItemSystem.GetItemMaxStackCount(itemID);
+			FillEquipmentFromInventoryLogic(pData, type, itemID, count, maxStack);
+		}
 	}
 
 
@@ -795,47 +814,51 @@ public static class Inventory {
 
 
 	private static void LoadInventoryPoolFromDisk () {
-		IsPoolDirty = false;
-		Pool.Clear();
-		string root = Universe.BuiltIn.SlotInventoryRoot;
-		if (!Util.FolderExists(root)) return;
-		foreach (var path in Util.EnumerateFiles(root, true, AngePath.INVENTORY_SEARCH_PATTERN, AngePath.EQ_INVENTORY_SEARCH_PATTERN)) {
-			try {
-				string name = Util.GetNameWithoutExtension(path);
-				int id = name.AngeHash();
-				if (Pool.ContainsKey(id)) continue;
-				InventoryData data;
-				if (path.EndsWith(AngePath.INVENTORY_FILE_EXT)) {
-					data = JsonUtil.LoadOrCreateJsonFromPath<InventoryData>(path);
-				} else {
-					data = JsonUtil.LoadOrCreateJsonFromPath<EquipmentInventoryData>(path);
-				}
-				if (data == null) continue;
-				data.IsDirty = false;
-				data.Name = name;
-				Pool.TryAdd(id, data);
-				// Valid Item Count
-				for (int i = 0; i < data.Items.Length; i++) {
-					int iCount = data.Counts[i];
-					if (iCount <= 0 || data.Items[i] == 0) {
-						data.Counts[i] = 0;
-						data.Items[i] = 0;
+		lock (Pool) {
+			IsPoolDirty = false;
+			Pool.Clear();
+			string root = Universe.BuiltIn.SlotInventoryRoot;
+			if (!Util.FolderExists(root)) return;
+			foreach (var path in Util.EnumerateFiles(root, true, AngePath.INVENTORY_SEARCH_PATTERN, AngePath.EQ_INVENTORY_SEARCH_PATTERN)) {
+				try {
+					string name = Util.GetNameWithoutExtension(path);
+					int id = name.AngeHash();
+					if (Pool.ContainsKey(id)) continue;
+					InventoryData data;
+					if (path.EndsWith(AngePath.INVENTORY_FILE_EXT)) {
+						data = JsonUtil.LoadOrCreateJsonFromPath<InventoryData>(path);
+					} else {
+						data = JsonUtil.LoadOrCreateJsonFromPath<EquipmentInventoryData>(path);
 					}
-				}
-			} catch (System.Exception ex) { Debug.LogException(ex); }
+					if (data == null) continue;
+					data.IsDirty = false;
+					data.Name = name;
+					Pool.TryAdd(id, data);
+					// Valid Item Count
+					for (int i = 0; i < data.Items.Length; i++) {
+						int iCount = data.Counts[i];
+						if (iCount <= 0 || data.Items[i] == 0) {
+							data.Counts[i] = 0;
+							data.Items[i] = 0;
+						}
+					}
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+			}
 		}
 	}
 
 
 	private static void SaveAllToDisk (bool forceSave) {
-		IsPoolDirty = false;
-		string root = Universe.BuiltIn.SlotInventoryRoot;
-		foreach (var (_, data) in Pool) {
-			if (!forceSave && !data.IsDirty) continue;
-			data.IsDirty = false;
-			// Save Inventory
-			string path = Util.CombinePaths(root, $"{data.Name}.{(data is EquipmentInventoryData ? AngePath.EQ_INVENTORY_FILE_EXT : AngePath.INVENTORY_FILE_EXT)}");
-			JsonUtil.SaveJsonToPath(data, path, false);
+		lock (Pool) {
+			IsPoolDirty = false;
+			string root = Universe.BuiltIn.SlotInventoryRoot;
+			foreach (var (_, data) in Pool) {
+				if (!forceSave && !data.IsDirty) continue;
+				data.IsDirty = false;
+				// Save Inventory
+				string path = Util.CombinePaths(root, $"{data.Name}.{(data is EquipmentInventoryData ? AngePath.EQ_INVENTORY_FILE_EXT : AngePath.INVENTORY_FILE_EXT)}");
+				JsonUtil.SaveJsonToPath(data, path, false);
+			}
 		}
 	}
 

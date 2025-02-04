@@ -58,7 +58,7 @@ public static partial class Util {
 	public static string GetTimeString () => System.DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
 
-	public static long GetLongTime () => System.DateTime.Now.Ticks;
+	public static long GetLongTime () => System.DateTime.UtcNow.ToFileTimeUtc();
 
 
 	public static string GetDisplayTimeFromTicks (long ticks) => new System.DateTime(ticks).ToString("yyyy-MM-dd HH:mm");

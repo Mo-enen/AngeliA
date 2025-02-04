@@ -25,7 +25,7 @@ public class OnFireBuff : Buff {
 			Game.GlobalFrame == target.Movement.LastPoundingFrame + 1 ||
 			Game.GlobalFrame == target.Movement.LastSquatFrame + 1 ||
 			Game.GlobalFrame == target.Movement.LastDashFrame + 1 ||
-			Game.GlobalFrame == target.Movement.LastRushFrame + 1
+			Game.GlobalFrame == target.Movement.LastRushStartFrame + 1
 		) {
 			target.Buff.ClearBuff(TypeID);
 			return;

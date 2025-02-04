@@ -104,7 +104,7 @@ public abstract class Bullet : Entity {
 				int hitRad = (hit.Rect.width.Abs() + hit.Rect.height.Abs()) / 4;
 				if (dis > rad + hitRad) continue;
 			}
-
+			
 			// Perform Damage
 			PerformHitReceiver(receiver, out bool _requireSelfDestroy);
 

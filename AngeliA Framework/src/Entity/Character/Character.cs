@@ -480,7 +480,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 						(AnimationType == CharacterAnimationType.Brake && frame % 4 == 0) ||
 						(Movement.LastStartRunFrame >= 0 && (frame - Movement.LastStartRunFrame) % 20 == 19) || // Run
 						(Movement.IsDashing && (frame - Movement.LastDashFrame) % 8 == 0) || // Dash
-						(Movement.IsRushing && (frame - Movement.LastRushFrame) % 3 == 0) // Rush
+						(Movement.IsRushing && (frame - Movement.LastRushStartFrame) % 3 == 0) // Rush
 					) {
 						FrameworkUtil.InvokeOnFootStepped(targetCharacter);
 					}

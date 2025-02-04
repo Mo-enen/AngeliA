@@ -235,7 +235,7 @@ public static class PlayerSystem {
 		}
 
 		// Final
-		UpdateDebug();
+		UpdateDebugDragging();
 		UpdateView();
 
 	}
@@ -588,49 +588,52 @@ public static class PlayerSystem {
 	}
 
 
-	private static void UpdateDebug () {
+	private static void UpdateDebugDragging () {
+
 #if !DEBUG
 		return;
 #endif
-		if (DragPlayerInMiddleButtonToMove_DebugOnly && Selecting != null && Input.MouseMidButtonHolding) {
 
-			// Move Player to Cursor Pos
-			var mousePos = Input.MouseGlobalPosition;
-			Selecting.X = mousePos.x;
-			Selecting.Y = mousePos.y - Const.CEL * 2;
-			IgnorePlayerView.True(1, 4096);
-			if (Selecting.Rendering is PoseCharacterRenderer pRenderer) {
-				pRenderer.ManualPoseAnimate(PoseAnimation_Idle.TYPE_ID, 1);
-			}
-			Selecting.IgnorePhysics.True(1, 4096);
-			Selecting.Health.MakeInvincible(1);
-
-			// Move View when Hover on Edge
-			var cameraRect = Renderer.CameraRect;
-			var center = cameraRect.CenterInt();
-			int startMoveDis = cameraRect.height / 4;
-			int mouseCenterDis = Util.DistanceInt(mousePos, center);
-			if (mouseCenterDis > startMoveDis) {
-				// Move
-				var viewRect = Stage.ViewRect;
-				var delta = (Float2)(mousePos - center);
-				float targetMag = (delta.magnitude - startMoveDis) / 16f;
-				delta = delta.normalized * targetMag;
-				viewRect.x += delta.x.RoundToInt();
-				viewRect.y += delta.y.RoundToInt() * cameraRect.width / cameraRect.height;
-				Stage.SetViewPositionDelay(viewRect.x, viewRect.y, priority: 4096);
-				AimViewX = viewRect.x;
-				AimViewY = viewRect.y;
-			}
-
-			// Task
-			if (!TaskSystem.IsTasking<EntityHookTask>()) {
-				TaskSystem.AddToFirst(EntityHookTask.TYPE_ID, Selecting);
-			}
-
-		} else if (TaskSystem.IsTasking<EntityHookTask>()) {
+		if (!DragPlayerInMiddleButtonToMove_DebugOnly || Selecting == null || !Input.MouseMidButtonHolding) {
 			// End Hook Task
-			TaskSystem.GetCurrentTask().UserData = null;
+			if (TaskSystem.IsTasking<EntityHookTask>()) {
+				TaskSystem.GetCurrentTask().UserData = null;
+			}
+			return;
+		}
+
+		// Move Player to Cursor Pos
+		var mousePos = Input.MouseGlobalPosition;
+		Selecting.X = mousePos.x;
+		Selecting.Y = mousePos.y - Const.CEL * 2;
+		IgnorePlayerView.True(1, 4096);
+		if (Selecting.Rendering is PoseCharacterRenderer pRenderer) {
+			pRenderer.ManualPoseAnimate(PoseAnimation_Idle.TYPE_ID, 1);
+		}
+		Selecting.IgnorePhysics.True(1, 4096);
+		Selecting.Health.MakeInvincible(1);
+
+		// Move View when Hover on Edge
+		var cameraRect = Renderer.CameraRect;
+		var center = cameraRect.CenterInt();
+		int startMoveDis = cameraRect.height / 4;
+		int mouseCenterDis = Util.DistanceInt(mousePos, center);
+		if (mouseCenterDis > startMoveDis) {
+			// Move
+			var viewRect = Stage.ViewRect;
+			var delta = (Float2)(mousePos - center);
+			float targetMag = (delta.magnitude - startMoveDis) / 16f;
+			delta = delta.normalized * targetMag;
+			viewRect.x += delta.x.RoundToInt();
+			viewRect.y += delta.y.RoundToInt() * cameraRect.width / cameraRect.height;
+			Stage.SetViewPositionDelay(viewRect.x, viewRect.y, priority: 4096);
+			AimViewX = viewRect.x;
+			AimViewY = viewRect.y;
+		}
+
+		// Task
+		if (!TaskSystem.IsTasking<EntityHookTask>()) {
+			TaskSystem.AddToFirst(EntityHookTask.TYPE_ID, Selecting);
 		}
 
 	}

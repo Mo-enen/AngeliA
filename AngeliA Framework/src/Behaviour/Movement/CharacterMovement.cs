@@ -199,7 +199,7 @@ public class CharacterMovement (Rigidbody rig) {
 	public int LastJumpFrame { get; private set; } = int.MinValue;
 	public int LastClimbFrame { get; private set; } = int.MinValue;
 	public int LastDashFrame { get; private set; } = int.MinValue;
-	public int LastRushFrame { get; private set; } = int.MinValue;
+	public int LastRushStartFrame { get; private set; } = int.MinValue;
 	public int LastCrashFrame { get; private set; } = int.MinValue;
 	public int LastSlippyMoveStartFrame { get; private set; } = int.MinValue;
 	public int LastSquatFrame { get; private set; } = int.MinValue;
@@ -324,7 +324,7 @@ public class CharacterMovement (Rigidbody rig) {
 		RequireJumpFrame = int.MinValue;
 		FacingRight = true;
 		FacingFront = true;
-		LastRushFrame = int.MinValue;
+		LastRushStartFrame = int.MinValue;
 		LastDashFrame = int.MinValue;
 		OnSlippy = false;
 
@@ -455,7 +455,7 @@ public class CharacterMovement (Rigidbody rig) {
 		// Rush
 		if (
 			IntendedRush && RushAvailable && !IsCrashing &&
-			frame > LastRushFrame + RushDuration + RushStiff + RushCooldown &&
+			frame > LastRushStartFrame + RushDuration + RushStiff + RushCooldown &&
 			(RushWhenSquat || !IsSquatting) &&
 			(RushInWater || !InWater) &&
 			(RushInAir || IsGrounded) &&
@@ -463,10 +463,10 @@ public class CharacterMovement (Rigidbody rig) {
 		) {
 			IsRushing = true;
 			IsClimbing = false;
-			LastRushFrame = frame;
+			LastRushStartFrame = frame;
 			VelocityY = 0;
 		}
-		if (IsRushing && frame > LastRushFrame + RushDuration + RushStiff) {
+		if (IsRushing && frame > LastRushStartFrame + RushDuration + RushStiff) {
 			IsRushing = false;
 			VelocityX = FacingRight ? RushStopSpeed : -RushStopSpeed;
 		}
@@ -715,7 +715,7 @@ public class CharacterMovement (Rigidbody rig) {
 					} else if (IsGrabbingSide) {
 						VelocityX += FacingRight ? -GrabSideJumpKickSpeed : GrabSideJumpKickSpeed;
 					}
-					if (JumpBreakRush) LastRushFrame = int.MinValue;
+					if (JumpBreakRush) LastRushStartFrame = int.MinValue;
 					if (JumpBreakDash) LastDashFrame = int.MinValue;
 					IsDashing = false;
 					IsSliding = false;
@@ -845,7 +845,7 @@ public class CharacterMovement (Rigidbody rig) {
 			// Rush
 			case CharacterMovementState.Rush:
 				speed =
-					Game.GlobalFrame > LastRushFrame + RushDuration ? 0 :
+					Game.GlobalFrame > LastRushStartFrame + RushDuration ? 0 :
 					FacingRight ? RushSpeed : -RushSpeed;
 				acc = RushAcceleration;
 				dcc = RushDeceleration;
@@ -1089,7 +1089,7 @@ public class CharacterMovement (Rigidbody rig) {
 
 
 	public virtual void Rush () => IntendedRush = true;
-	public void StopRush () => LastRushFrame = int.MinValue;
+	public void StopRush () => LastRushStartFrame = int.MinValue;
 
 
 	public virtual void Crash () => LastCrashFrame = Game.GlobalFrame;

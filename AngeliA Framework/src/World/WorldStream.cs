@@ -53,6 +53,7 @@ public sealed class WorldStream : IBlockSquad {
 	private int InternalFrame = int.MinValue;
 	private uint Version = 0;
 	private uint SavedVersion = 0;
+	private long FailbackResetFileDate = -1;
 
 
 	#endregion
@@ -134,6 +135,11 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
+	public void ResetFailbackCopying () {
+		FailbackResetFileDate = Util.GetLongTime();
+	}
+
+
 	// World
 	public bool WorldExists (Int3 worldPos) => TryGetWorldData(worldPos, out _);
 
@@ -153,7 +159,7 @@ public sealed class WorldStream : IBlockSquad {
 
 	public uint? GetWorldVersion (Int3 worldPos) => TryGetWorldData(worldPos, out var data) ? data.Version : null;
 
-	
+
 	// Block
 	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) {
 		int worldX = unitX.UDivide(Const.MAP);
@@ -238,10 +244,13 @@ public sealed class WorldStream : IBlockSquad {
 			if (!UseBuiltInAsFailback && !Util.FileExists(path)) return false;
 
 			// Load New World from Disk
-			//var newWorld = new World(worldPos);
 			var newWorld = GetWorldObject(worldPos);
 			worldData.World = newWorld;
-			bool loaded = worldData.World.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+			bool loaded = false;
+
+			if (FailbackResetFileDate < 0 || Util.GetFileModifyDate(path) >= FailbackResetFileDate) {
+				loaded = worldData.World.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+			}
 
 			// Failback Check
 			if (
@@ -251,6 +260,9 @@ public sealed class WorldStream : IBlockSquad {
 				Util.CopyFile(builtInPath, path)
 			) {
 				loaded = worldData.World.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+				if (loaded) {
+					Util.SetFileModifyDate(path, Util.GetLongTime());
+				}
 			}
 
 			// Check if Loaded
@@ -273,7 +285,6 @@ public sealed class WorldStream : IBlockSquad {
 			if (WorldPool.TryGetValue(worldPos, out var data) && data.World != null) return data;
 
 			// Create New
-			//var newWorld = new World(worldPos);
 			var newWorld = GetWorldObject(worldPos);
 			data.World = newWorld;
 			data.CreateFrame = InternalFrame++;
@@ -284,16 +295,25 @@ public sealed class WorldStream : IBlockSquad {
 			// Load Data
 			bool loaded = false;
 			if (PathPool.TryGetPath(worldPos, out string path)) {
-				loaded = newWorld.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+
+				// Load from Target Folder
+				if (FailbackResetFileDate < 0 || Util.GetFileModifyDate(path) >= FailbackResetFileDate) {
+					loaded = newWorld.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+				}
+
+				// Load from Failback Folder
 				if (
 					!loaded &&
 					UseBuiltInAsFailback &&
 					PathPoolBuiltIn.TryGetPath(worldPos, out string builtInPath) &&
 					Util.CopyFile(builtInPath, path)
 				) {
-					// Load from Failback
 					loaded = newWorld.LoadFromDisk(path, worldPos.x, worldPos.y, worldPos.z);
+					if (loaded) {
+						Util.SetFileModifyDate(path, Util.GetLongTime());
+					}
 				}
+
 			}
 
 			// Final

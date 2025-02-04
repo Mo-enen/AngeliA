@@ -47,19 +47,27 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 	public override void OnActivated () {
 		base.OnActivated();
+
 		Owner = null;
+		DespawnAfterPassoutDelay = -1;
+
 		Navigation.OnActivated();
 		Navigation.NavigationState = RigidbodyNavigationState.Operation;
 		Navigation.Refresh();
 		Navigation.MakeFollowOwner();
+
 		Movement.PushAvailable.BaseValue = false;
 		Movement.MovementWidth.BaseValue = 256;
 		Movement.MovementHeight.BaseValue = 256;
-		DespawnAfterPassoutDelay = -1;
+
 		Buff.PreventBuff(OnFireBuff.TYPE_ID, int.MaxValue);
 		Buff.PreventBuff(PoisonBuff.TYPE_ID, int.MaxValue);
 		Buff.PreventBuff(LightenBuff.TYPE_ID, int.MaxValue);
 		Buff.PreventBuff(FreezeBuff.TYPE_ID, int.MaxValue);
+
+		Health.MaxHP.BaseValue = 12;
+		Health.HP = Health.MaxHP.BaseValue;
+
 	}
 
 
@@ -72,7 +80,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		if (CharacterState != CharacterState.Sleep) {
-			Physics.FillEntity(EntityLayer.CHARACTER, this, true);
+			Physics.FillEntity(PhysicalLayer, this, true);
 		}
 	}
 

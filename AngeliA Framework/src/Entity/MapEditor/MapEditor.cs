@@ -172,6 +172,7 @@ public sealed partial class MapEditor : WindowUI {
 
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
+		// Callback
 		WorldStream.OnWorldSaved += _OnWorldSaved;
 		static void _OnWorldSaved (WorldStream stream, World world) {
 			if (Instance == null || stream != Instance.Stream) return;
@@ -263,6 +264,9 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Init
 		Initialized = true;
+
+		Util.DeleteFolder(Universe.BuiltIn.SlotUserMapRoot);
+		Util.CreateFolder(Universe.BuiltIn.SlotUserMapRoot);
 
 		var universe = Universe.BuiltIn;
 		var info = Universe.BuiltInInfo;
@@ -637,14 +641,7 @@ public sealed partial class MapEditor : WindowUI {
 
 				// Switch Mode
 				if (Input.KeyboardDown(KeyboardKey.Space)) {
-					if (MapGenerationSystem.Enable) {
-						SetEditorMode(true);
-						TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
-						Input.UseAllHoldingKeys();
-						Input.UseGameKey(Gamekey.Start);
-					} else {
-						StartDropPlayer();
-					}
+					StartDropPlayer();
 				}
 				ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_SWITCH_PLAY);
 
@@ -1210,12 +1207,8 @@ public sealed partial class MapEditor : WindowUI {
 
 		} else {
 			// Edit >> Play
-			if (!MapGenerationSystem.Enable) {
-				// Reset User Map
-				Util.DeleteFolder(Universe.BuiltIn.SlotUserMapRoot);
-				Util.CreateFolder(Universe.BuiltIn.SlotUserMapRoot);
-			}
 			WorldSquad.ClearStreamWorldPool();
+			WorldSquad.ResetStreamFailbackCopying();
 			// Reset Stage
 			Stage.SetViewZ(CurrentZ);
 			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 100, int.MinValue + 1);

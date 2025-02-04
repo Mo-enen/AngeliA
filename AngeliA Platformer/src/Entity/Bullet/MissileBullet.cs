@@ -48,7 +48,6 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 
 	public override void BeforeUpdate () {
 
-
 		// In-Range Check
 		if (!Rect.Overlaps(Stage.SpawnRect)) {
 			Active = false;

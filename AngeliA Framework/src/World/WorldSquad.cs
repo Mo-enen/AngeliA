@@ -124,6 +124,9 @@ public sealed class WorldSquad : IBlockSquad {
 	public static void ClearStreamWorldPool () => Stream?.ClearWorldPool();
 
 
+	public static void ResetStreamFailbackCopying () => Stream?.ResetFailbackCopying();
+
+
 	public bool WorldExists (Int3 worldPos) => Stream.WorldExists(worldPos);
 
 

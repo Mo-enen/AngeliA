@@ -27,6 +27,7 @@ public abstract class Slime : Enemy, ISlimeWalker {
 	public Entity AttachingTarget { get; set; }
 	public int AttachingID { get; set; }
 	public int WalkSpeed => Movement.RunSpeed;
+	public override bool EjectWhenInsideGround => true;
 	public bool FacingPositive { get; set; }
 	private float CurrentRotation = 0;
 
@@ -69,6 +70,7 @@ public abstract class Slime : Enemy, ISlimeWalker {
 		// Inside Ground
 		if (IsInsideGround) {
 			Movement.Stop();
+
 			return;
 		}
 
@@ -107,6 +109,14 @@ public abstract class Slime : Enemy, ISlimeWalker {
 		var walker = this as ISlimeWalker;
 		GroundedID = walker.AttachingID;
 		return IsInsideGround || walker.AttachingDirection != Direction5.Center;
+	}
+
+	protected override bool InsideGroundCheck () {
+		if (IgnoreInsideGround) return IsInsideGround;
+		int mask = PhysicsMask.LEVEL & CollisionMask;
+		if (mask == 0) return false;
+		var rect = Rect;
+		return Physics.Overlap(mask, IRect.Point(rect.CenterInt()), this);
 	}
 
 	public override void OnDamaged (Damage damage) {
