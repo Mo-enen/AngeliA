@@ -14,6 +14,9 @@ public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : E
 		var head = renderer.Head;
 		if (!SpriteHelmet.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var sprite)) return;
 
+		var body = renderer.Body;
+		using var _ = new RotateCellScope(body.Rotation, body.GlobalX, body.GlobalY);
+
 		// Draw Helmet
 		switch (WearingMode) {
 			case HelmetWearingMode.Attach:

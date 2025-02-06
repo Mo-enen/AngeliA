@@ -52,8 +52,23 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 
 	protected override void DrawArmor (PoseCharacterRenderer renderer) {
 
-		// Body
-		BodyCloth.DrawClothForBody(renderer, SpriteBody, 8, 200);
+		var body = renderer.Body;
+		using (new RotateCellScope(body.Rotation, body.GlobalX, body.GlobalY)) {
+
+			// Body
+			BodyCloth.DrawClothForBody(renderer, SpriteBody, 8, 200);
+
+			// Cape
+			BodyCloth.DrawCape(renderer, SpriteCape);
+
+			// Shoulder
+			BodyCloth.DrawClothForShoulder(renderer, SpriteShoulderLeft, SpriteShoulderRight);
+
+			// Arm
+			BodyCloth.DrawClothForUpperArm(renderer, SpriteUpperArmLeft, SpriteUpperArmRight, 3);
+			BodyCloth.DrawClothForLowerArm(renderer, SpriteLowerArmLeft, SpriteLowerArmRight, 3);
+
+		}
 
 		// Hip
 		switch (HipType) {
@@ -64,16 +79,6 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 				HipCloth.DrawClothAsSkirt(renderer, SpriteHip, 7);
 				break;
 		}
-
-		// Cape
-		BodyCloth.DrawCape(renderer, SpriteCape);
-
-		// Shoulder
-		BodyCloth.DrawClothForShoulder(renderer, SpriteShoulderLeft, SpriteShoulderRight);
-
-		// Arm
-		BodyCloth.DrawClothForUpperArm(renderer, SpriteUpperArmLeft, SpriteUpperArmRight, 3);
-		BodyCloth.DrawClothForLowerArm(renderer, SpriteLowerArmLeft, SpriteLowerArmRight, 3);
 
 		// Leg
 		HipCloth.DrawClothForUpperLeg(renderer, SpriteUpperLegLeft, SpriteUpperLegRight, 3);

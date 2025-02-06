@@ -46,7 +46,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	public int HandGrabScaleR { get; set; } = 1000;
 	public int HandGrabAttackTwistL { get; set; } = 1000;
 	public int HandGrabAttackTwistR { get; set; } = 1000;
-	public int HideBraidFrame { get; set; } = -1;
 	public int CharacterHeight { get; set; } = 160; // in CM
 	public int RenderedCellZ { get; private set; } = 0;
 	public int BlendDuration { get; set; } = 6;
@@ -146,7 +145,8 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		for (int i = 0; i < BODY_PART_COUNT; i++) {
 			var bodyPart = BodyParts[i] = new BodyPart(
 				parent: (i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null,
-				useLimbFlip: i == 9 || i == 10 || i == 15 || i == 16
+				useLimbFlip: i == 9 || i == 10 || i == 15 || i == 16,
+				rotateWithBody: i != 2 && i != 1 && i < 11
 			);
 			bodyPart.SetData(DEFAULT_BODY_PART_ID[i]);
 		}
@@ -211,6 +211,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		int cellIndexStart = Renderer.GetUsedCellCount();
 		ResetPoseToDefault(false);
 		AnimateForPose();
+		PoseUpdate_BodyRotation();
 		PoseUpdate_HeadTwist();
 		PoseUpdate_HeadRotate();
 		RenderEquipment();
@@ -223,20 +224,24 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 
 	protected virtual void RenderBodyGadgets () {
-		Wing.DrawGadgetFromPool(this);
+		using (new RotateCellScope(Body.Rotation, Body.GlobalX, Body.GlobalY)) {
+			Wing.DrawGadgetFromPool(this);
+			Face.DrawGadgetFromPool(this);
+			Hair.DrawGadgetFromPool(this);
+			Ear.DrawGadgetFromPool(this);
+			Horn.DrawGadgetFromPool(this);
+		}
 		Tail.DrawGadgetFromPool(this);
-		Face.DrawGadgetFromPool(this);
-		Hair.DrawGadgetFromPool(this);
-		Ear.DrawGadgetFromPool(this);
-		Horn.DrawGadgetFromPool(this);
 	}
 
 
 	protected virtual void RenderCloths () {
-		HeadCloth.DrawClothFromPool(this);
-		BodyCloth.DrawClothFromPool(this);
+		using (new RotateCellScope(Body.Rotation, Body.GlobalX, Body.GlobalY)) {
+			HeadCloth.DrawClothFromPool(this);
+			BodyCloth.DrawClothFromPool(this);
+			HandCloth.DrawClothFromPool(this);
+		}
 		HipCloth.DrawClothFromPool(this);
-		HandCloth.DrawClothFromPool(this);
 		FootCloth.DrawClothFromPool(this);
 	}
 
@@ -271,18 +276,25 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 
 	protected virtual void RenderEquipment () {
+
 		for (int i = 0; i < EquipmentTypeCount; i++) {
-			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, (EquipmentType)i, out int equipmentCount);
+			var eqType = (EquipmentType)i;
+			using var _ = new RotateCellScope(eqType == EquipmentType.HandTool ? Body.Rotation : 0, Body.GlobalX, Body.GlobalY);
+			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, eqType, out int equipmentCount);
 			var eq = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 			eq?.BeforePoseAnimationUpdate_FromEquipment(this);
 		}
 		CalculateBodypartGlobalPosition();
+
 		for (int i = 0; i < EquipmentTypeCount; i++) {
-			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, (EquipmentType)i, out int equipmentCount);
+			var eqType = (EquipmentType)i;
+			using var _ = new RotateCellScope(eqType == EquipmentType.HandTool ? Body.Rotation : 0, Body.GlobalX, Body.GlobalY);
+			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, eqType, out int equipmentCount);
 			var eq = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 			eq?.OnPoseAnimationUpdate_FromEquipment(this);
 		}
 		CalculateBodypartGlobalPosition();
+
 	}
 
 
@@ -562,6 +574,27 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	}
 
 
+	private void PoseUpdate_BodyRotation () {
+		Body.Rotation = Body.Rotation.Clamp(-90, 90);
+		if (Body.Rotation != 0) {
+			int offsetX = Body.Rotation * Body.Width.Abs() / -90;
+			int offsetY = Body.Rotation.Abs() * Body.Width.Abs() / -90;
+			Body.X += offsetX;
+			Body.Y += offsetY;
+			Body.GlobalX += offsetX;
+			Body.GlobalY += offsetY;
+			for (int i = 0; i < BODY_PART_COUNT; i++) {
+				var bodypart = BodyParts[i];
+				if (!bodypart.RotateWithBody) continue;
+				bodypart.X += offsetX;
+				bodypart.Y += offsetY;
+				bodypart.GlobalX += offsetX;
+				bodypart.GlobalY += offsetY;
+			}
+		}
+	}
+
+
 	private void PoseUpdate_HeadTwist () {
 		if (HeadTwist == 0) return;
 		if (!Head.FrontSide) {
@@ -598,7 +631,11 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 		// Draw
 		foreach (var bodyPart in BodyParts) {
+
 			if (bodyPart.ID == 0 || bodyPart.IsFullCovered) continue;
+
+			using var _ = new RotateCellScope(bodyPart.RotateWithBody ? Body.Rotation : 0, Body.GlobalX, Body.GlobalY);
+
 			if (bodyPart == Head && Renderer.TryGetSpriteFromGroup(bodyPart.ID, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
 				Renderer.Draw(
 					headSprite,

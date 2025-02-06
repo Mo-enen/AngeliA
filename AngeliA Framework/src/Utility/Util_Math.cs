@@ -11,6 +11,12 @@ public static partial class Util {
 	private static readonly System.Data.DataTable DataTable = new();
 
 
+	public static Int2 RotateAround (int x, int y, int rotation, int originX, int originY) {
+		var v = new Float2(x - originX, y - originY).Rotate(rotation);
+		return new(originX + v.x.RoundToInt(), originY + v.y.RoundToInt());
+	}
+
+
 	[MethodImpl(INLINE)]
 	public static bool IsPowerOfTwo (int x) => (x != 0) && (x & (x - 1)) == 0;
 

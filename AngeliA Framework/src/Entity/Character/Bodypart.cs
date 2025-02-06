@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class BodyPart (BodyPart parent, bool useLimbFlip) {
+public class BodyPart (BodyPart parent, bool useLimbFlip, bool rotateWithBody) {
 
 
 	// Const
@@ -23,6 +23,7 @@ public class BodyPart (BodyPart parent, bool useLimbFlip) {
 	public int FlexableSizeY { get; set; } = Const.HALF;
 	public bool UseLimbFlip { get; init; } = useLimbFlip;
 	public BodyPart LimbParent { get; init; } = parent;
+	public bool RotateWithBody { get; init; } = rotateWithBody;
 	public bool IsFullCovered => Covered == CoverMode.FullCovered;
 	public int FacingSign => Width.Sign();
 	public bool FacingRight => Width > 0;
@@ -40,7 +41,6 @@ public class BodyPart (BodyPart parent, bool useLimbFlip) {
 	public bool FrontSide;
 	public CoverMode Covered;
 	public Color32 Tint;
-
 
 	// API
 	public static bool TryGetSpriteIdFromSheet (System.Type characterType, string bodyPartName, bool checkForGroup, out int id) {

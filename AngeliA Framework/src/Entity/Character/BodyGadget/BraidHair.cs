@@ -25,7 +25,7 @@ public abstract class BraidHair : Hair {
 	public override void DrawGadget (PoseCharacterRenderer renderer) {
 		using var _ = new SheetIndexScope(SheetIndex);
 		var cells = DrawSpriteAsHair(renderer, SpriteHairForward, SpriteHairBackward, FlowAmountX, FlowAmountY);
-		if (Game.GlobalFrame > renderer.HideBraidFrame && (SpriteBraidLeft.IsValid || SpriteBraidRight.IsValid)) {
+		if (SpriteBraidLeft.IsValid || SpriteBraidRight.IsValid) {
 			DrawBraid(renderer, cells, ForceBackOnFlow);
 		}
 	}

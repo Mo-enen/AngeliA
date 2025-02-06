@@ -136,7 +136,6 @@ public abstract class BodyCloth : Cloth {
 		if (!clothSprite.IsValid) return;
 		if (renderer.Body.IsFullCovered) return;
 
-
 		var body = renderer.Body;
 		bool facingRight = body.Width > 0;
 		bool facingFront = body.FrontSide;
@@ -157,12 +156,7 @@ public abstract class BodyCloth : Cloth {
 		// Border
 		if (!suitSprite.GlobalBorder.IsZero) {
 			if (rect.width > 0) {
-				rect = rect.Expand(
-					suitSprite.GlobalBorder.left,
-					suitSprite.GlobalBorder.right,
-					suitSprite.GlobalBorder.down,
-					suitSprite.GlobalBorder.up
-				);
+				rect = rect.Expand(suitSprite.GlobalBorder);
 			} else {
 				rect = rect.Expand(
 					-suitSprite.GlobalBorder.left,
@@ -181,13 +175,13 @@ public abstract class BodyCloth : Cloth {
 		var cell = Renderer.Draw(suitSprite, rect, body.Z + localZ);
 
 		// Twist
-		if (poseTwist != 0 && body.FrontSide && body.Height > 0) {
+		if (poseTwist != 0 && body.FrontSide && body.Height > 0 && body.Rotation == 0) {
 			if (flipX) poseTwist = -poseTwist;
 			int shiftTop = body.Height * twistShiftTopAmount / 1000;
 			int shiftX = poseTwist * cell.Width / 2500;
 			var cellL = Renderer.DrawPixel(default);
-			cellL.CopyFrom(cell);
 			var cellR = Renderer.DrawPixel(default);
+			cellL.CopyFrom(cell);
 			cellR.CopyFrom(cell);
 			cellL.Shift.up = cellR.Shift.up = shiftTop;
 			cellL.Width += body.Width.Sign() * shiftX;
@@ -199,8 +193,7 @@ public abstract class BodyCloth : Cloth {
 		}
 
 		// Hide Limb
-		body.Covered = suitSprite.Tag.HasAll(Tag.HideLimb) ?
-			 BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
+		body.Covered = suitSprite.Tag.HasAll(Tag.HideLimb) ? BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
 
 	}
 
@@ -309,15 +302,6 @@ public abstract class BodyCloth : Cloth {
 		}
 
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
 
 
 	#endregion

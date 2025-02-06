@@ -27,7 +27,7 @@ public abstract class PoseAnimation {
 		public int HandGrabAttackTwistR;
 		public BlendRecord () {
 			for (int i = 0; i < BodyParts.Length; i++) {
-				BodyParts[i] = new BodyPart(null, false);
+				BodyParts[i] = new BodyPart(null, false, false);
 			}
 		}
 		public void ApplyToPose () {
