@@ -16,6 +16,9 @@ public class PoseAnimation_Fly : PoseAnimation {
 		Hip.Y = Head.Y - Body.Height;
 		Body.Y = Hip.Y + Hip.Height;
 
+		Body.Rotation = motionDelta / 6;
+		Head.Rotation = motionDelta / 3;
+
 		// Arm
 		ShoulderL.Y = Body.Y + Body.Height;
 		ShoulderR.Y = Body.Y + Body.Height;

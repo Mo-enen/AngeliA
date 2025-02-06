@@ -13,17 +13,17 @@ public class PoseAnimation_Crash : PoseAnimation {
 		Head.Y = 0;
 
 		// Arm
-		ShoulderL.X = UpperArmL.X = FacingRight ? Head.X - Head.Width / 2 : Head.X + Head.Width / 2;
+		ShoulderL.X = UpperArmL.X = FacingRight ? Body.X - Body.Width / 2 : Body.X + Body.Width / 2;
 		ShoulderL.Y = ShoulderL.Height;
 		UpperArmL.Y = 0;
 		UpperArmL.LimbRotate(FacingRight ? -90 : 90, 0);
-		UpperArmL.Height /= 2;
+		//UpperArmL.Height /= 2;
 
-		ShoulderR.X = UpperArmR.X = FacingRight ? Head.X + Head.Width / 2 : Head.X - Head.Width / 2;
+		ShoulderR.X = UpperArmR.X = FacingRight ? Body.X + Body.Width / 2 : Body.X - Body.Width / 2;
 		ShoulderR.Y = ShoulderR.Height;
 		UpperArmR.Y = 0;
 		UpperArmR.LimbRotate(FacingRight ? -90 : 90, 0);
-		UpperArmR.Height /= 2;
+		//UpperArmR.Height /= 2;
 
 		LowerArmL.LimbRotate(0, 0);
 		LowerArmR.LimbRotate(0, 0);

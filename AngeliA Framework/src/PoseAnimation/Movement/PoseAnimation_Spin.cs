@@ -18,6 +18,9 @@ public class PoseAnimation_Spin : PoseAnimation {
 			FootR.Z -= 2;
 		}
 
+		Head.Rotation = (pingpong - 2) * -10;
+		Body.Rotation = (pingpong - 2) * 8;
+
 		Rendering.BodyTwist = (pingpong - 2) * 1000;
 		Rendering.HeadTwist = (pingpong - 2) * -300;
 
@@ -41,8 +44,8 @@ public class PoseAnimation_Spin : PoseAnimation {
 		ShoulderR.X -= pingpong * (Body.SizeX / 5);
 		UpperArmL.X += pingpong * (Body.SizeX / 5);
 		UpperArmR.X -= pingpong * (Body.SizeX / 5);
-		UpperArmL.LimbRotate(-180 + aFrame / 2 * 12);
-		UpperArmR.LimbRotate(180 + aFrame / 2 * -12);
+		UpperArmL.LimbRotate(FacingSign * (-180 + aFrame / 2 * 12));
+		UpperArmR.LimbRotate(FacingSign * (180 + aFrame / 2 * -12));
 
 		LowerArmL.LimbRotate(0);
 		LowerArmR.LimbRotate(0);

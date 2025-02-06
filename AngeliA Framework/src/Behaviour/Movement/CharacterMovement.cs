@@ -1093,6 +1093,7 @@ public class CharacterMovement (Rigidbody rig) {
 
 
 	public virtual void Crash () => LastCrashFrame = Game.GlobalFrame;
+	public void StopCrash () => LastCrashFrame = int.MinValue;
 
 
 	public void LockFacingRight (bool facingRight, int duration = 1) {

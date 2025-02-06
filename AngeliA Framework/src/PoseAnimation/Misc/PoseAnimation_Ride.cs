@@ -21,11 +21,8 @@ public class PoseAnimation_Ride : PoseAnimation {
 		Hip.Y -= bodyDeltaY;
 		UpperLegL.Y -= bodyDeltaY / 2;
 		UpperLegR.Y -= bodyDeltaY / 2;
-		int bodyOffsetX = FacingSign * 2 * A2G;
-		Body.X += bodyOffsetX;
-		Hip.X = Body.X;
-		UpperLegL.X += bodyOffsetX;
-		UpperLegR.X += bodyOffsetX;
+		Body.Rotation = FacingSign * 20;
+		Head.Rotation = FacingSign * -16;
 		Body.Height = Body.SizeY * 4 / 5 - velX.Abs().Clamp(0, A2G);
 		Head.X = Body.X + FacingSign * A2G + velX.Clamp(-A2G * 3, A2G * 3);
 		Head.Y = Body.Y + Body.Height - 2 * A2G - velX.Abs().Clamp(0, A2G * 2);

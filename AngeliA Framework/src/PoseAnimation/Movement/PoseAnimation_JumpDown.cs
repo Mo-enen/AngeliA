@@ -17,10 +17,14 @@ public class PoseAnimation_JumpDown : PoseAnimation {
 		}
 		Head.Height -= A2G;
 
+		int deltaRot = Target.DeltaPositionX.Clamp(-42, 42) / 2;
+		Head.Rotation = deltaRot * 3 / 2;
+		Body.Rotation = -deltaRot;
+
 		// Arm
-		int motionDelta = Target.DeltaPositionX.Clamp(-8, 8);
-		UpperArmL.LimbRotate((alt ? 135 : 125) + motionDelta);
-		UpperArmR.LimbRotate((alt ? -125 : -135) + motionDelta);
+		int motionDelta = Target.DeltaPositionX.Clamp(-16, 16);
+		UpperArmL.LimbRotate((alt ? 135 : 125) + motionDelta + deltaRot);
+		UpperArmR.LimbRotate((alt ? -125 : -135) + motionDelta + deltaRot);
 
 		LowerArmL.Z = LowerArmL.Z.Abs();
 		LowerArmL.LimbRotate(alt ? 35 : 45);

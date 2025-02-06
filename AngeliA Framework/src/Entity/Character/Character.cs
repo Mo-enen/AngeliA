@@ -660,6 +660,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public void GetBonusFromFullSleep () {
 		Health.Heal(Health.MaxHP);
 		Buff.ClearAllBuffs();
+		Movement.StopCrash();
 	}
 
 

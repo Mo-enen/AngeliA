@@ -211,9 +211,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		int cellIndexStart = Renderer.GetUsedCellCount();
 		ResetPoseToDefault(false);
 		AnimateForPose();
-		PoseUpdate_BodyRotation();
-		PoseUpdate_HeadTwist();
-		PoseUpdate_HeadRotate();
+		PoseUpdateRotationAndTwist();
 		RenderEquipment();
 		RenderInventory();
 		RenderBodyGadgets();
@@ -279,7 +277,10 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 		for (int i = 0; i < EquipmentTypeCount; i++) {
 			var eqType = (EquipmentType)i;
-			using var _ = new RotateCellScope(eqType == EquipmentType.HandTool ? Body.Rotation : 0, Body.GlobalX, Body.GlobalY);
+			using var _ = new RotateCellScope(
+				eqType == EquipmentType.HandTool ? Body.Rotation : 0, Body.GlobalX, Body.GlobalY,
+				keepOriginalRotation: true
+			);
 			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, eqType, out int equipmentCount);
 			var eq = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 			eq?.BeforePoseAnimationUpdate_FromEquipment(this);
@@ -288,7 +289,10 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 		for (int i = 0; i < EquipmentTypeCount; i++) {
 			var eqType = (EquipmentType)i;
-			using var _ = new RotateCellScope(eqType == EquipmentType.HandTool ? Body.Rotation : 0, Body.GlobalX, Body.GlobalY);
+			using var _ = new RotateCellScope(
+				eqType == EquipmentType.HandTool ? Body.Rotation : 0, Body.GlobalX, Body.GlobalY,
+				keepOriginalRotation: true
+			);
 			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, eqType, out int equipmentCount);
 			var eq = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 			eq?.OnPoseAnimationUpdate_FromEquipment(this);
@@ -574,46 +578,43 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	}
 
 
-	private void PoseUpdate_BodyRotation () {
+	private void PoseUpdateRotationAndTwist () {
+
+		//Body.Rotation = QTest.Int("b", 0, -100, 100);
+		//Head.Rotation = QTest.Int("r", 0, -100, 100);
+
+		Head.Rotation = Head.Rotation.Clamp(-90, 90);
+		HeadTwist = !Head.FrontSide ? 0 : HeadTwist.Clamp(-1000, 1000);
+
+		// Head Rot Offset
+		if (Head.Rotation != 0) {
+			Head.Y -= Head.Rotation.Abs() / 2;
+		}
+
+		// Body Rot Offset
 		Body.Rotation = Body.Rotation.Clamp(-90, 90);
 		if (Body.Rotation != 0) {
-			int offsetX = Body.Rotation * Body.Width.Abs() / -90;
-			int offsetY = Body.Rotation.Abs() * Body.Width.Abs() / -90;
-			Body.X += offsetX;
-			Body.Y += offsetY;
-			Body.GlobalX += offsetX;
-			Body.GlobalY += offsetY;
+			int rawX = (-Body.Rotation.Sign() * Ease.OutSine(Body.Rotation.Abs() / 90f) * Body.Width.Abs()).RoundToInt();
+			int rawY = (-Ease.OutQuint(Body.Rotation.Abs() / 90f) * Body.Width.Abs()).RoundToInt();
+			Body.X += rawX;
+			Body.Y += rawY;
+			Body.GlobalX += rawX;
+			Body.GlobalY += rawY;
 			for (int i = 0; i < BODY_PART_COUNT; i++) {
 				var bodypart = BodyParts[i];
 				if (!bodypart.RotateWithBody) continue;
-				bodypart.X += offsetX;
-				bodypart.Y += offsetY;
-				bodypart.GlobalX += offsetX;
-				bodypart.GlobalY += offsetY;
+				bodypart.X += rawX;
+				bodypart.GlobalX += rawX;
 			}
 		}
-	}
 
-
-	private void PoseUpdate_HeadTwist () {
-		if (HeadTwist == 0) return;
-		if (!Head.FrontSide) {
-			HeadTwist = 0;
-			return;
+		// Twist
+		if (HeadTwist != 0) {
+			Head.Width = Head.Width.Sign() * (Head.Width.Abs() - (Head.Width * HeadTwist).Abs() / 2000);
+			Head.X += Head.Width.Abs() * HeadTwist / 2000;
+			Head.GlobalX = TargetCharacter.X + PoseRootX + Head.X;
 		}
-		HeadTwist = HeadTwist.Clamp(-1000, 1000);
-		Head.Width = Head.Width.Sign() * (Head.Width.Abs() - (Head.Width * HeadTwist).Abs() / 2000);
-		Head.X += Head.Width.Abs() * HeadTwist / 2000;
-		Head.GlobalX = TargetCharacter.X + PoseRootX + Head.X;
-	}
 
-
-	private void PoseUpdate_HeadRotate () {
-		if (Head.Rotation == 0) return;
-		Head.Rotation = Head.Rotation.Clamp(-90, 90);
-		int offsetY = Head.Height.Abs() * Head.Rotation.Abs() / 360;
-		Head.Y -= offsetY;
-		Head.GlobalY -= offsetY;
 	}
 
 

@@ -8,12 +8,16 @@ public class PoseAnimation_Rolling : PoseAnimation {
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 
-		int arrFrame = CurrentAnimationFrame.UMod(24) / 3;
+		int rawFrame24 = CurrentAnimationFrame.UMod(24);
+		int arrFrame = rawFrame24 / 3; // 01234567
 		int upsideSign = arrFrame < 2 || arrFrame > 5 ? 1 : -1;
 
 		Rendering.PoseRootY = Rendering.PoseRootY * ROLLING[arrFrame, 0] / 1500;
 
 		Head.FrontSide = Body.FrontSide = arrFrame < 2 || arrFrame > 5;
+
+		Head.Rotation = rawFrame24 - 12;
+		Body.Rotation = 0;
 
 		Body.Width = Hip.Width = Body.Width * 2 / 3;
 		Head.Height = Head.SizeY * ROLLING[arrFrame, 3] / 1000;

@@ -141,8 +141,6 @@ public class OpeningTask : Task {
 	[OnGameRestart]
 	public static void OnGameRestart () {
 
-		if (PlayerSystem.Selecting == null) return;
-
 		// Get Start Position
 		var startUnitPosition = PlayerSystem.GetPlayerFinalRespawnUnitPosition();
 

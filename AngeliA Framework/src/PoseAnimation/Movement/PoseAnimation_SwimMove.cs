@@ -14,14 +14,9 @@ public class PoseAnimation_SwimMove : PoseAnimation {
 
 		Head.X = FacingSign * A2G;
 
-		int bodyOffsetX = FacingSign * 2 * A2G;
-		Body.X += bodyOffsetX;
-		ShoulderL.X += bodyOffsetX;
-		ShoulderR.X += bodyOffsetX;
-		UpperArmL.X += bodyOffsetX / 2;
-		UpperArmR.X += bodyOffsetX / 2;
-		UpperLegL.X += bodyOffsetX;
-		UpperLegR.X += bodyOffsetX;
+		int deltaX = Target.DeltaPositionX.Clamp(-24, 24) / 2;
+		Head.Rotation = -deltaX;
+		Body.Rotation = deltaX;
 
 		// Arm
 		if (FacingRight) {

@@ -17,6 +17,9 @@ public class PoseAnimation_Slide : PoseAnimation {
 			UpperLegR.X -= A2G;
 		}
 
+		Head.Rotation = FacingSign * -6;
+		Body.Rotation = FacingSign * 8;
+
 		// Arm
 		UpperArmL.Z = UpperArmL.Z.Abs();
 		UpperArmR.Z = UpperArmR.Z.Abs();

@@ -29,6 +29,10 @@ public class PoseAnimation_Run : PoseAnimation {
 		Rendering.PoseRootY += (int)((1f - easeDouble) * A2G * 2);
 		Rendering.BodyTwist = (int)Util.LerpUnclamped(1000f, -1000f, frame01 < 0.5f ? frame01 * 2f : 2f - 2f * frame01);
 
+		int deltaX = Target.DeltaPositionX.Clamp(-42, 42) * 2 / 3;
+		Head.Rotation = -deltaX * 2 / 3;
+		Body.Rotation = deltaX;
+
 		// Arm
 		UpperArmL.LimbRotate(ROTS[arrFrame, 0] * FacingSign);
 		UpperArmR.LimbRotate(ROTS[arrFrame, 1] * FacingSign);

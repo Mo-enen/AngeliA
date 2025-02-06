@@ -161,9 +161,8 @@ public abstract class Ear : BodyGadget {
 				(earSpriteL.GlobalHeight + expandSizeL.y) * (flipY ? -1 : 1),
 				frontOfHeadL ? z : -z
 			);
-			if (renderer.Head.Rotation != 0) {
-				cell.RotateAround(renderer.Head.Rotation, renderer.Body.GlobalX, renderer.Body.GlobalY + renderer.Body.Height);
-				cell.Y -= renderer.Head.Height.Abs() * renderer.Head.Rotation.Abs() / 360;
+			if (head.Rotation != 0) {
+				cell.RotateAround(head.Rotation, head.GlobalX, head.GlobalY);
 			}
 		}
 		if (earSpriteR != null) {
@@ -176,9 +175,8 @@ public abstract class Ear : BodyGadget {
 				(earSpriteR.GlobalHeight + expandSizeR.y) * (flipY ? -1 : 1),
 				frontOfHeadR ? z : -z
 			);
-			if (renderer.Head.Rotation != 0) {
-				cell.RotateAround(renderer.Head.Rotation, renderer.Body.GlobalX, renderer.Body.GlobalY + renderer.Body.Height);
-				cell.Y -= renderer.Head.Height.Abs() * renderer.Head.Rotation.Abs() / 360;
+			if (head.Rotation != 0) {
+				cell.RotateAround(head.Rotation, head.GlobalX, head.GlobalY);
 			}
 		}
 

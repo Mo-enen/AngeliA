@@ -17,8 +17,10 @@ public class PoseAnimation_JumpUp : PoseAnimation {
 		}
 		Head.Height += A2G;
 
+		int deltaRot = Target.DeltaPositionX.Clamp(-42, 42) / 2;
+		
 		// Arm
-		int motionDelta = -Target.DeltaPositionX.Clamp(-8, 8);
+		int motionDelta = -Target.DeltaPositionX.Clamp(-12, 12);
 		UpperArmL.LimbRotate((alt ? 65 : 55) + motionDelta);
 		UpperArmR.LimbRotate((alt ? -65 : -55) + motionDelta);
 
@@ -36,10 +38,10 @@ public class PoseAnimation_JumpUp : PoseAnimation {
 
 		// Leg
 		UpperLegL.X += FacingRight ? -A2G / 2 : A2G / 2;
-		UpperLegL.LimbRotate(FacingRight ? 0 : 20);
+		UpperLegL.LimbRotate((FacingRight ? 0 : 20) + deltaRot);
 
 		UpperLegR.X += FacingRight ? -A2G / 2 : A2G / 2;
-		UpperLegR.LimbRotate(FacingRight ? -20 : 0);
+		UpperLegR.LimbRotate((FacingRight ? -20 : 0) + deltaRot);
 
 		LowerLegL.LimbRotate(FacingRight ? 0 : -45);
 		LowerLegL.Height = FacingRight ? LowerLegL.SizeY * 3 / 4 : LowerLegL.SizeY;

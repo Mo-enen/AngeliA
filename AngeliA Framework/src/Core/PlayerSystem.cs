@@ -180,6 +180,11 @@ public static class PlayerSystem {
 	}
 
 
+
+	[OnGameRestart]
+	internal static void OnGameRestart () => Selecting?.GetBonusFromFullSleep();
+
+
 	// Before Update
 	[BeforeBeforeUpdate]
 	internal static void BeforeBeforeUpdate () {

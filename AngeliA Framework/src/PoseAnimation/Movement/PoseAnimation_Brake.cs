@@ -7,6 +7,8 @@ public class PoseAnimation_Brake : PoseAnimation {
 		const float DURATION = 8f;
 		float lerp01 = (CurrentAnimationFrame.Abs() / DURATION).Clamp01();
 
+		Body.Rotation = FacingSign * 10;
+
 		// Arm
 		UpperArmL.LimbRotate(UpperArmL.Rotation.LerpTo(FacingRight ? 130 : 20, lerp01));
 		UpperArmR.LimbRotate(UpperArmR.Rotation.LerpTo(FacingRight ? -20 : -130, lerp01));

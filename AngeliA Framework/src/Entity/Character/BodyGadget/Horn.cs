@@ -74,6 +74,7 @@ public abstract class Horn : BodyGadget {
 			twistWidth -= 16 * twist.Abs() / 500;
 		}
 
+		// Rotate
 		if (spriteL != null) {
 			var cell = Renderer.Draw(
 				spriteL,
@@ -84,9 +85,8 @@ public abstract class Horn : BodyGadget {
 				head.Height.Sign3() * spriteL.GlobalHeight,
 				head.Z + (head.FrontSide == frontOfHeadL ? 34 : -34)
 			);
-			if (renderer.Head.Rotation != 0) {
-				cell.RotateAround(renderer.Head.Rotation, renderer.Body.GlobalX, renderer.Body.GlobalY + renderer.Body.Height);
-				cell.Y -= renderer.Head.Height.Abs() * renderer.Head.Rotation.Abs() / 360;
+			if (head.Rotation != 0) {
+				cell.RotateAround(head.Rotation, head.GlobalX, head.GlobalY);
 			}
 		}
 
@@ -100,9 +100,8 @@ public abstract class Horn : BodyGadget {
 				head.Height.Sign3() * spriteR.GlobalHeight,
 				head.Z + (head.FrontSide == frontOfHeadR ? 34 : -34)
 			);
-			if (renderer.Head.Rotation != 0) {
-				cell.RotateAround(renderer.Head.Rotation, renderer.Body.GlobalX, renderer.Body.GlobalY + renderer.Body.Height);
-				cell.Y -= renderer.Head.Height.Abs() * renderer.Head.Rotation.Abs() / 360;
+			if (head.Rotation != 0) {
+				cell.RotateAround(head.Rotation, head.GlobalX, head.GlobalY);
 			}
 		}
 

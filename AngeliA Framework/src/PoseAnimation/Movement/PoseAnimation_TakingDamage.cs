@@ -17,6 +17,9 @@ public class PoseAnimation_Animation_TakingDamage : PoseAnimation {
 			UpperArmR.Y += A2G / 4;
 		}
 
+		Head.Rotation = FacingSign * -6;
+		Body.Rotation = FacingSign * 12;
+
 		// Arm
 		UpperArmL.LimbRotate(alt ? 85 : 65);
 		UpperArmR.LimbRotate(alt ? -85 : -65);

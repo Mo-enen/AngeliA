@@ -222,42 +222,38 @@ public abstract class Hair : BodyGadget {
 				width > 0 == offset > 0 || offset.Abs() < width.Abs() ? width + offset : 0;
 		}
 		static void RotateHair (PoseCharacterRenderer renderer, Cell[] cells) {
-			int headRot = renderer.Head.Rotation;
-			if (headRot == 0 || cells == null) return;
-			var body = renderer.Body;
-			int offsetY = renderer.Head.Height.Abs() * headRot.Abs() / 360;
+			var head = renderer.Head;
+			int headRot = head.Rotation;
+			int groundRot = -renderer.Body.Rotation - headRot;
+			if (cells == null) return;
 			if (cells.Length == 9) {
 				// 9 Slice
 				foreach (var cell in cells) cell.ReturnPivots(0.5f, 1f);
 
-				RotateCell(cells[0], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
-				RotateCell(cells[1], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
-				RotateCell(cells[2], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+				cells[0].RotateAround(headRot, head.GlobalX, head.GlobalY);
+				cells[1].RotateAround(headRot, head.GlobalX, head.GlobalY);
+				cells[2].RotateAround(headRot, head.GlobalX, head.GlobalY);
 
-				cells[3].Rotation -= headRot / 3;
-				cells[4].Rotation -= headRot / 3;
-				cells[5].Rotation -= headRot / 3;
-				RotateCell(cells[3], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
-				RotateCell(cells[4], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
-				RotateCell(cells[5], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+				cells[3].Rotation = cells[3].Rotation.LerpTo(groundRot, 0.33f);
+				cells[4].Rotation = cells[4].Rotation.LerpTo(groundRot, 0.33f);
+				cells[5].Rotation = cells[5].Rotation.LerpTo(groundRot, 0.33f);
+				cells[3].RotateAround(headRot, head.GlobalX, head.GlobalY);
+				cells[4].RotateAround(headRot, head.GlobalX, head.GlobalY);
+				cells[5].RotateAround(headRot, head.GlobalX, head.GlobalY);
 
-				cells[6].Rotation -= headRot / 2;
-				cells[7].Rotation -= headRot / 2;
-				cells[8].Rotation -= headRot / 2;
-				RotateCell(cells[6], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
-				RotateCell(cells[7], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
-				RotateCell(cells[8], headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+				cells[6].Rotation = cells[6].Rotation.LerpTo(groundRot, 0.67f);
+				cells[7].Rotation = cells[7].Rotation.LerpTo(groundRot, 0.67f);
+				cells[8].Rotation = cells[8].Rotation.LerpTo(groundRot, 0.67f);
+				cells[6].RotateAround(headRot, head.GlobalX, head.GlobalY);
+				cells[7].RotateAround(headRot, head.GlobalX, head.GlobalY);
+				cells[8].RotateAround(headRot, head.GlobalX, head.GlobalY);
 			} else {
 				// All Cells
 				foreach (var cell in cells) {
-					RotateCell(cell, headRot, body.GlobalX, body.GlobalY + body.Height, offsetY);
+					cell.RotateAround(headRot, head.GlobalX, head.GlobalY);
 				}
 			}
-			// Func
-			static void RotateCell (Cell _cell, int rotation, int pointX, int pointY, int offsetY) {
-				_cell.RotateAround(rotation, pointX, pointY);
-				_cell.Y -= offsetY;
-			}
+
 		}
 	}
 

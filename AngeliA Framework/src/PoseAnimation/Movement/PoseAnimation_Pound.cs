@@ -6,6 +6,9 @@ public class PoseAnimation_Pound : PoseAnimation {
 
 		bool alt = CurrentAnimationFrame % 8 < 4;
 
+		Head.Rotation = FacingSign * 8;
+		Body.Rotation = FacingSign * 8;
+
 		HandL.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 		HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
 		UpperLegL.Z = -3;

@@ -11,7 +11,7 @@ public class PoseAnimation_GrabTop : PoseAnimation {
 		UpperArmL.Z = UpperArmR.Z = (FacingFront ? 34 : -34);
 		LowerArmL.Z = LowerArmR.Z = (FacingFront ? 35 : -35);
 		HandL.Z = HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
-
+		Body.Rotation = (pingpong - 1) * 5;
 		Rendering.PoseRootY += pingpongAlt * A2G;
 
 		// Arm
@@ -31,14 +31,14 @@ public class PoseAnimation_GrabTop : PoseAnimation {
 		HandR.LimbRotate(0);
 
 		// Leg
-		UpperLegL.X -= pingpongAlt * A2G / 4;
-		UpperLegR.X += pingpongAlt * A2G / 4;
+		UpperLegL.LimbRotate(pingpong * 5);
+		UpperLegR.LimbRotate(pingpong * -5);
 
-		LowerLegL.X -= pingpongAlt * A2G / 3;
-		LowerLegR.X += pingpongAlt * A2G / 3;
+		LowerLegL.LimbRotate(-3);
+		LowerLegR.LimbRotate(3);
 
-		FootL.X -= pingpongAlt * A2G / 2;
-		FootR.X += pingpongAlt * A2G / 2;
+		FootL.LimbRotate(-FacingSign);
+		FootR.LimbRotate(-FacingSign);
 
 		// Final
 		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;

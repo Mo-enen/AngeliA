@@ -22,6 +22,9 @@ public class PoseAnimation_Dash : PoseAnimation {
 		UpperArmL.X += FacingSign * 2 * A2G;
 		UpperArmR.X += FacingSign * 2 * A2G;
 
+		Body.Rotation += -FacingSign * 40;
+		Head.Rotation += FacingSign * 20;
+
 		Hip.Y = UpperLegL.SizeX;
 		Body.Y = Hip.Y + Hip.Height;
 		Body.Height = Body.SizeY - A2G;

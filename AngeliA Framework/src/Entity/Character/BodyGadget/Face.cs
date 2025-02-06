@@ -115,9 +115,7 @@ public abstract class Face : BodyGadget {
 				var body = renderer.Body;
 				int offsetY = renderer.Head.Height.Abs() * headRot.Abs() / 360;
 				for (int i = startCellIndex; i < count; i++) {
-					var cell = cells[i];
-					cell.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
-					cell.Y -= offsetY;
+					cells[i].RotateAround(headRot, head.GlobalX, head.GlobalY);
 				}
 			}
 		}

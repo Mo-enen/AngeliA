@@ -10,8 +10,10 @@ public class PoseAnimation_Climb : PoseAnimation {
 		int delayFrame = (aFrame + 1) % 10;
 		if (aFrame >= 5) aFrame = 8 - aFrame;
 		if (delayFrame >= 5) delayFrame = 8 - delayFrame;
+		aFrame = aFrame.Clamp(0, 4); // 0 1 2 3 4 3 2 1 0
 
 		Rendering.PoseRootY -= (aFrame - 2).Abs() * A2G;
+		Body.Rotation = aFrame * 2 - 4;
 
 		// Arm
 		UpperArmL.LimbRotate(((3 - delayFrame) * -35 + 135).Clamp(45, 135), 1000);
