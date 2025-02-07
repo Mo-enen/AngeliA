@@ -37,15 +37,6 @@ public abstract class BodyCloth : Cloth {
 
 
 
-	#region --- MSG ---
-
-
-
-	#endregion
-
-
-
-
 	#region --- API ---
 
 
@@ -64,12 +55,15 @@ public abstract class BodyCloth : Cloth {
 
 	public override void DrawCloth (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
+		var body = renderer.Body;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawClothForBody(renderer, SpriteBody, LocalZ, TwistShiftTopAmount);
+		using (new RotateCellScope(body.Rotation, body.GlobalX, body.GlobalY)) {
+			DrawClothForBody(renderer, SpriteBody, LocalZ, TwistShiftTopAmount);
+			DrawClothForShoulder(renderer, SpriteShoulderLeft, SpriteShoulderRight);
+			DrawClothForUpperArm(renderer, SpriteUpperArmLeft, SpriteUpperArmRight);
+			DrawClothForLowerArm(renderer, SpriteLowerArmLeft, SpriteLowerArmRight);
+		}
 		DrawCape(renderer, SpriteCape);
-		DrawClothForShoulder(renderer, SpriteShoulderLeft, SpriteShoulderRight);
-		DrawClothForUpperArm(renderer, SpriteUpperArmLeft, SpriteUpperArmRight);
-		DrawClothForLowerArm(renderer, SpriteLowerArmLeft, SpriteLowerArmRight);
 	}
 
 	public override void DrawClothGizmos (IRect rect, Color32 tint, int z) {
@@ -175,20 +169,24 @@ public abstract class BodyCloth : Cloth {
 		var cell = Renderer.Draw(suitSprite, rect, body.Z + localZ);
 
 		// Twist
-		if (poseTwist != 0 && body.FrontSide && body.Height > 0 && body.Rotation == 0) {
+		if (poseTwist != 0 && body.FrontSide && body.Height > 0) {
 			if (flipX) poseTwist = -poseTwist;
 			int shiftTop = body.Height * twistShiftTopAmount / 1000;
 			int shiftX = poseTwist * cell.Width / 2500;
+
 			var cellL = Renderer.DrawPixel(default);
-			var cellR = Renderer.DrawPixel(default);
 			cellL.CopyFrom(cell);
-			cellR.CopyFrom(cell);
-			cellL.Shift.up = cellR.Shift.up = shiftTop;
+			cellL.Shift.up = shiftTop;
 			cellL.Width += body.Width.Sign() * shiftX;
 			cellL.Shift.right = cellL.Width.Abs() / 2;
+
+			var cellR = Renderer.DrawPixel(default);
+			cellR.CopyFrom(cell);
+			cellR.Shift.up = shiftTop;
 			cellR.Width -= body.Width.Sign() * shiftX;
 			cellR.X = cellL.X + cellL.Width / 2 - cellR.Width / 2;
 			cellR.Shift.left = cellR.Width.Abs() / 2;
+
 			cell.Shift.down = cell.Height - shiftTop;
 		}
 
@@ -266,13 +264,15 @@ public abstract class BodyCloth : Cloth {
 		) return;
 
 		// Draw
-		int height = sprite.GlobalHeight + body.Height.Abs() - body.SizeY;
+		int height = body.Height.Sign() * (sprite.GlobalHeight + body.Height.Abs() - body.SizeY);
 		var cells = Renderer.DrawSlice(
 			sprite,
-			body.GlobalX, body.GlobalY + body.Height,
-			500, 1000, 0,
+			renderer.TargetCharacter.X + renderer.PoseRootX,
+			renderer.TargetCharacter.Y + renderer.PoseRootY + body.Height,
+			500, 1000, body.Rotation / 3,
 			sprite.GlobalWidth,
-			body.Height.Sign() * height, Color32.WHITE, body.FrontSide ? -31 : 31
+			height,
+			z: body.FrontSide ? -31 : 31
 		);
 
 		// Flow Motion

@@ -468,12 +468,14 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 			// Events
 			if (Movement.Target is Character targetCharacter) {
+
 				// Teleport
 				if (
 					_TeleportDuration < 0 && frame == _TeleportEndFrame.Abs() - _TeleportDuration.Abs() / 2 + 1
 				) {
 					FrameworkUtil.InvokeOnCharacterTeleport(targetCharacter);
 				}
+
 				// Step
 				if (IsGrounded) {
 					if (
@@ -485,11 +487,26 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 						FrameworkUtil.InvokeOnFootStepped(targetCharacter);
 					}
 				}
-				if (Movement.IsSliding && frame % 24 == 0) FrameworkUtil.InvokeOnCharacterSlideStepped(targetCharacter);
-				if (frame == Movement.LastJumpFrame) FrameworkUtil.InvokeOnCharacterJump(targetCharacter);
-				if (IsGrounded && !Movement.IsPounding && frame == Movement.LastPoundingFrame + 1) FrameworkUtil.InvokeOnCharacterPound(targetCharacter);
-				if (frame == Movement.LastFlyFrame) FrameworkUtil.InvokeOnCharacterFly(targetCharacter);
-				if (frame == Movement.LastCrashFrame) FrameworkUtil.InvokeOnCharacterCrash(targetCharacter);
+
+				if (Movement.IsSliding && frame % 24 == 0) {
+					FrameworkUtil.InvokeOnCharacterSlideStepped(targetCharacter);
+				}
+
+				if (frame == Movement.LastJumpFrame || frame == Movement.LastGroundFrame) {
+					FrameworkUtil.InvokeOnCharacterJump(targetCharacter);
+				}
+
+				if (IsGrounded && !Movement.IsPounding && frame == Movement.LastPoundingFrame + 1) {
+					FrameworkUtil.InvokeOnCharacterPound(targetCharacter);
+				}
+
+				if (frame == Movement.LastFlyFrame) {
+					FrameworkUtil.InvokeOnCharacterFly(targetCharacter);
+				}
+
+				if (frame == Movement.LastCrashFrame) {
+					FrameworkUtil.InvokeOnCharacterCrash(targetCharacter);
+				}
 			}
 		}
 

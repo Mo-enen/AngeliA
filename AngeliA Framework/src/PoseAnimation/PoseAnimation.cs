@@ -365,6 +365,7 @@ public abstract class PoseAnimation {
 		Head.Y = (Head.Y + headOffsetY).GreaterOrEquel(Body.Y + 1);
 		Head.Rotation = headRotate;
 		Body.Height = Head.Y - Body.Y;
+		Body.Rotation = FacingSign * (int)((ease01 - 0.3f) * 15);
 
 	}
 

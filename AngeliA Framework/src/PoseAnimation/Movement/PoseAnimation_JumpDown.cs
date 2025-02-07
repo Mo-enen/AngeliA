@@ -22,9 +22,8 @@ public class PoseAnimation_JumpDown : PoseAnimation {
 		Body.Rotation = -deltaRot;
 
 		// Arm
-		int motionDelta = Target.DeltaPositionX.Clamp(-16, 16);
-		UpperArmL.LimbRotate((alt ? 135 : 125) + motionDelta + deltaRot);
-		UpperArmR.LimbRotate((alt ? -125 : -135) + motionDelta + deltaRot);
+		UpperArmL.LimbRotate((alt ? 135 : 125) + deltaRot * 2);
+		UpperArmR.LimbRotate((alt ? -125 : -135) + deltaRot * 2);
 
 		LowerArmL.Z = LowerArmL.Z.Abs();
 		LowerArmL.LimbRotate(alt ? 35 : 45);

@@ -551,6 +551,7 @@ public class CharacterMovement (Rigidbody rig) {
 			FacingRight = LockedFacingRight;
 		}
 		if (FacingRight != oldFacingRight) {
+			LastSlippyMoveStartFrame = frame;
 			LastFacingChangeFrame = frame;
 		}
 
@@ -1146,7 +1147,12 @@ public class CharacterMovement (Rigidbody rig) {
 			LastStartMoveFrame = Game.GlobalFrame;
 		}
 		if (IntendedX != x && x != 0) {
+			bool oldFacingRight = FacingRight;
 			FacingRight = x > 0;
+			if (FacingRight != oldFacingRight) {
+				LastSlippyMoveStartFrame = Game.GlobalFrame;
+				LastFacingChangeFrame = Game.GlobalFrame;
+			}
 		}
 		IntendedX = x;
 		IntendedY = y;

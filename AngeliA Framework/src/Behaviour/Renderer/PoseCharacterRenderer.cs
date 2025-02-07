@@ -234,11 +234,9 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 
 	protected virtual void RenderCloths () {
-		using (new RotateCellScope(Body.Rotation, Body.GlobalX, Body.GlobalY)) {
-			HeadCloth.DrawClothFromPool(this);
-			BodyCloth.DrawClothFromPool(this);
-			HandCloth.DrawClothFromPool(this);
-		}
+		HeadCloth.DrawClothFromPool(this);
+		BodyCloth.DrawClothFromPool(this);
+		HandCloth.DrawClothFromPool(this);
 		HipCloth.DrawClothFromPool(this);
 		FootCloth.DrawClothFromPool(this);
 	}
@@ -581,6 +579,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	private void PoseUpdateRotationAndTwist () {
 
 		//Body.Rotation = QTest.Int("b", 0, -100, 100);
+		//BodyTwist = QTest.Int("t", 0, -1000, 1000);
 		//Head.Rotation = QTest.Int("r", 0, -100, 100);
 
 		Head.Rotation = Head.Rotation.Clamp(-90, 90);

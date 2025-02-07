@@ -29,11 +29,12 @@ public class PoseAnimation_Rush : PoseAnimation {
 		FootR.Z -= FacingSign;
 		UpperLegL.X -= FacingSign * A2G + (alt ? 3 : 0);
 		UpperLegR.X -= FacingSign * A2G + (alt ? 3 : 0);
+		int armRotFix = Body.Rotation / 2;
 
 		if (aFrame == 0) {
 			// 0
-			UpperArmL.LimbRotate((FacingRight ? 40 : 0));
-			UpperArmR.LimbRotate((FacingRight ? 0 : -40));
+			UpperArmL.LimbRotate((FacingRight ? 40 : 0) - armRotFix);
+			UpperArmR.LimbRotate((FacingRight ? 0 : -40) - armRotFix);
 
 			LowerArmL.LimbRotate(FacingRight ? 0 : -40);
 			LowerArmR.LimbRotate(FacingRight ? 40 : 0);
@@ -46,8 +47,8 @@ public class PoseAnimation_Rush : PoseAnimation {
 
 		} else if (aFrame == 1) {
 			// 1
-			UpperArmL.LimbRotate((FacingRight ? 70 : 0));
-			UpperArmR.LimbRotate((FacingRight ? 0 : -70));
+			UpperArmL.LimbRotate((FacingRight ? 70 : 0) - armRotFix);
+			UpperArmR.LimbRotate((FacingRight ? 0 : -70) - armRotFix);
 
 			LowerArmL.LimbRotate(FacingRight ? 0 : -70);
 			LowerArmR.LimbRotate(FacingRight ? 70 : 0);
@@ -60,8 +61,8 @@ public class PoseAnimation_Rush : PoseAnimation {
 
 		} else {
 			// 2..
-			UpperArmL.LimbRotate((FacingRight ? 90 : 0) + (alt ? 3 : 0));
-			UpperArmR.LimbRotate((FacingRight ? 0 : -90) + (alt ? -3 : 0));
+			UpperArmL.LimbRotate((FacingRight ? 90 : 0) + (alt ? 3 : 0) - armRotFix);
+			UpperArmR.LimbRotate((FacingRight ? 0 : -90) + (alt ? -3 : 0) - armRotFix);
 
 			LowerArmL.LimbRotate((FacingRight ? 0 : -90) + (alt ? 2 : 0));
 			LowerArmR.LimbRotate((FacingRight ? 90 : 0) + (alt ? -2 : 0));

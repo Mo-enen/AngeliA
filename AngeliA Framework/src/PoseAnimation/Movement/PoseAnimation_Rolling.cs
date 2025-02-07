@@ -16,9 +16,6 @@ public class PoseAnimation_Rolling : PoseAnimation {
 
 		Head.FrontSide = Body.FrontSide = arrFrame < 2 || arrFrame > 5;
 
-		Head.Rotation = rawFrame24 - 12;
-		Body.Rotation = 0;
-
 		Body.Width = Hip.Width = Body.Width * 2 / 3;
 		Head.Height = Head.SizeY * ROLLING[arrFrame, 3] / 1000;
 		Body.Height = Body.SizeY * ROLLING[arrFrame, 4] / 1500;

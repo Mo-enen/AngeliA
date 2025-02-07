@@ -29,13 +29,17 @@ public class PoseAnimation_Run : PoseAnimation {
 		Rendering.PoseRootY += (int)((1f - easeDouble) * A2G * 2);
 		Rendering.BodyTwist = (int)Util.LerpUnclamped(1000f, -1000f, frame01 < 0.5f ? frame01 * 2f : 2f - 2f * frame01);
 
-		int deltaX = Target.DeltaPositionX.Clamp(-42, 42) * 2 / 3;
-		Head.Rotation = -deltaX * 2 / 3;
-		Body.Rotation = deltaX;
+		int bodyRot = Target.DeltaPositionX.Clamp(-42, 42) * 2 / 3;
+		int localTurningFrame = Game.GlobalFrame - Movement.LastFacingChangeFrame;
+		if (localTurningFrame < 24) {
+			bodyRot = bodyRot * localTurningFrame / 24;
+		}
+		Head.Rotation = -bodyRot * 2 / 3;
+		Body.Rotation = bodyRot;
 
 		// Arm
-		UpperArmL.LimbRotate(ROTS[arrFrame, 0] * FacingSign);
-		UpperArmR.LimbRotate(ROTS[arrFrame, 1] * FacingSign);
+		UpperArmL.LimbRotate(ROTS[arrFrame, 0] * FacingSign - bodyRot / 2);
+		UpperArmR.LimbRotate(ROTS[arrFrame, 1] * FacingSign - bodyRot / 2);
 
 		LowerArmL.LimbRotate(ROTS[arrFrame, 2] * FacingSign, 500);
 		LowerArmR.LimbRotate(ROTS[arrFrame, 3] * FacingSign, 500);
@@ -69,4 +73,5 @@ public class PoseAnimation_Run : PoseAnimation {
 		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
 
 	}
+
 }

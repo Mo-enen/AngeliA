@@ -58,9 +58,6 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 			// Body
 			BodyCloth.DrawClothForBody(renderer, SpriteBody, 8, 200);
 
-			// Cape
-			BodyCloth.DrawCape(renderer, SpriteCape);
-
 			// Shoulder
 			BodyCloth.DrawClothForShoulder(renderer, SpriteShoulderLeft, SpriteShoulderRight);
 
@@ -69,6 +66,9 @@ public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N 
 			BodyCloth.DrawClothForLowerArm(renderer, SpriteLowerArmLeft, SpriteLowerArmRight, 3);
 
 		}
+
+		// Cape
+		BodyCloth.DrawCape(renderer, SpriteCape);
 
 		// Hip
 		switch (HipType) {

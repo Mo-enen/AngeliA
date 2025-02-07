@@ -62,6 +62,9 @@ public abstract class HeadCloth : Cloth {
 		if (renderer.HeadTwist != 0) widthAmount -= renderer.HeadTwist.Abs() / 2;
 		if (head.Height < 0) widthAmount = -widthAmount;
 
+		var body = renderer.Body;
+		using var _ = new RotateCellScope(body.Rotation, body.GlobalX, body.GlobalY);
+
 		// Draw
 		var cells = AttachClothOn(
 			head, sprite, 500, 1000,

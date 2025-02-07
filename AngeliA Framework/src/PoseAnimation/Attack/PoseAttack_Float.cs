@@ -13,6 +13,9 @@ public class PoseAttack_Float : PoseAnimation {
 
 		float ease01 = AttackEase;
 
+		Body.Rotation = FacingSign * (int)((ease01 - 0.3f) * 15);
+		Head.Rotation = -Body.Rotation / 2;
+
 		if (IsChargingAttack) {
 			AttackHeadDown(ease01, 100, 800, 100);
 		} else {

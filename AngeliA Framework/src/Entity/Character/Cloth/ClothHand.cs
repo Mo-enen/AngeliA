@@ -36,6 +36,8 @@ public abstract class HandCloth : Cloth {
 	}
 
 	public static void DrawClothForHand (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
+		var body = renderer.Body;
+		using var _ = new RotateCellScope(body.Rotation, body.GlobalX, body.GlobalY);
 		if (spriteLeft.IsValid) {
 			spriteLeft.TryGetSprite(renderer.HandL.FrontSide, renderer.HandL.Width > 0, renderer.CurrentAnimationFrame, out var sprite);
 			CoverClothOn(renderer.HandL, sprite, localZ);

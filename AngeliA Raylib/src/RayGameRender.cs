@@ -312,11 +312,12 @@ public partial class RayGame {
 			// Shift Dest/Source
 			var newDest = dest;
 			var newSource = source;
+			var localDesShift = (Float2)default;
 
 			// L
 			if (cell.Width != 0) {
 				float shift = dest.Width * shiftL;
-				newDest.X -= cell.Width < 0 ? shift : 0;
+				localDesShift.x -= cell.Width < 0 ? shift : 0;
 				newDest.Width -= shift;
 				shift = source.Width * shiftL;
 				newSource.X += shift;
@@ -326,7 +327,7 @@ public partial class RayGame {
 			// R
 			if (cell.Width != 0) {
 				float shift = dest.Width * shiftR;
-				newDest.X += cell.Width < 0 ? shift : 0;
+				localDesShift.x += cell.Width < 0 ? shift : 0;
 				newDest.Width -= shift;
 				newSource.Width -= source.Width * shiftR;
 			}
@@ -334,7 +335,7 @@ public partial class RayGame {
 			// D
 			if (cell.Height != 0) {
 				float shift = dest.Height * shiftD;
-				newDest.Y += cell.Height < 0 ? shift : 0;
+				localDesShift.y += cell.Height < 0 ? shift : 0;
 				newDest.Height -= dest.Height * shiftD;
 				newSource.Height -= source.Height * shiftD;
 			}
@@ -342,18 +343,28 @@ public partial class RayGame {
 			// U
 			if (cell.Height != 0) {
 				float shift = dest.Height * shiftU;
-				newDest.Y -= cell.Height < 0 ? shift : 0;
+				localDesShift.y -= cell.Height < 0 ? shift : 0;
 				newDest.Height -= shift;
 				shift = source.Height * shiftU;
 				newSource.Y += shift;
 				newSource.Height -= shift;
 			}
 
-			if (newDest.Width.AlmostZero() || newDest.Height.AlmostZero()) goto _SKIP_;
+			if (
+				newDest.Width.AlmostZero() ||
+				newDest.Height.AlmostZero()
+			) goto _SKIP_;
+
+			// Rotate Local Shift
+			if (cell.Rotation1000 != 0) {
+				localDesShift = localDesShift.Rotate(-cell.Rotation1000 / 1000f);
+			}
 
 			// Shift Pivot
 			pivotX = (pivotX - shiftL) * dest.Width / newDest.Width;
 			pivotY = (pivotY - shiftU) * dest.Height / newDest.Height;
+			newDest.X += localDesShift.x;
+			newDest.Y += localDesShift.y;
 			dest = newDest;
 			source = newSource;
 

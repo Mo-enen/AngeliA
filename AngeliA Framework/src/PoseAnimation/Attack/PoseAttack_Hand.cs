@@ -119,6 +119,9 @@ public class PoseAttack_Hand : PoseAnimation {
 		int aFrame = (Game.GlobalFrame - Attackness.LastAttackFrame).UDivide(5);
 		if (aFrame >= 4) return;
 
+		Body.Rotation = FacingSign * (int)((aFrame / 4f - 0.3f) * 15);
+		Head.Rotation = -Body.Rotation / 2;
+
 		UpperArmL.Z = FrontSign * UpperArmL.Z.Abs();
 		UpperArmR.Z = FrontSign * UpperArmR.Z.Abs();
 		LowerArmL.Z = FrontSign * LowerArmL.Z.Abs();
