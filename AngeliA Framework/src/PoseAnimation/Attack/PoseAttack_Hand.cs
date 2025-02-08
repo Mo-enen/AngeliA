@@ -1,6 +1,7 @@
 ﻿namespace AngeliA;
 
 public class PoseAttack_Hand : PoseAnimation {
+	public static readonly int TYPE_ID = typeof(PoseAttack_Hand).AngeHash();
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 2;

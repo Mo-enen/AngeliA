@@ -1,11 +1,12 @@
 ﻿namespace AngeliA;
 
 public class PoseHandheld_MagicPole : PoseAnimation {
+	public static readonly int TYPE_ID = typeof(PoseHandheld_MagicPole).AngeHash();
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 		if (Attackness.IsChargingAttack) {
 			// Charge
-			PoseAttack_Magic.Pole();
+			PoseAttack_MagicPole.Wave();
 			return;
 		}
 

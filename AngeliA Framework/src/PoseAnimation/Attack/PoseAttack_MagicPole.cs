@@ -3,54 +3,14 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class PoseAttack_Magic : PoseAnimation {
+public class PoseAttack_MagicPole : PoseAnimation {
+	public static readonly int TYPE_ID = typeof(PoseAttack_MagicPole).AngeHash();
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 1;
-		switch (Target.EquippingToolHeld) {
-			default:
-			case ToolHandheld.Float:
-				PoseAttack_Float.WaveDown();
-				break;
-			case ToolHandheld.SingleHanded:
-				SingleHanded();
-				break;
-			case ToolHandheld.Pole:
-				Pole();
-				break;
-		}
+		Wave();
 	}
-	public static void SingleHanded () {
-
-		float ease01 = AttackEase;
-
-		AttackHeadDown(ease01, 200, 300, 200);
-		ResetShoulderAndUpperArmPos();
-
-		// Arm L
-		UpperArmL.LimbRotate((int)(ease01 * 20f));
-		LowerArmL.LimbRotate((int)(ease01 * -5f));
-		HandL.LimbRotate(FacingSign);
-
-		// Arm R
-		UpperArmR.LimbRotate(FacingSign * (int)Util.LerpUnclamped(-165, -80, ease01));
-		LowerArmR.LimbRotate(0);
-		HandR.LimbRotate(FacingSign);
-
-		// Z
-		UpperArmR.Z = LowerArmR.Z = UpperArmR.Z.Abs();
-		HandR.Z = POSE_Z_HAND;
-
-		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
-			FacingSign * (int)Util.LerpUnclamped(-60, 90, ease01);
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
-			FacingSign * (int)Util.LerpUnclamped(1000, 1200, ease01);
-
-		// Leg
-		AttackLegShake(ease01);
-	}
-	public static void Pole () {
+	public static void Wave () {
 
 		float ease01 = AttackEase;
 

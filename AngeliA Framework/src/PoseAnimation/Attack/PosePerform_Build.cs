@@ -3,24 +3,14 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class PoseAttack_Build : PoseAnimation {
-
+public class PosePerform_Build : PoseAnimation {
+	public static readonly int TYPE_ID = typeof(PosePerform_Build).AngeHash();
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
-		if (Movement.IsClimbing) return;
 		Attackness.AttackStyleLoop = 1;
-		if (Target.EquippingToolType == ToolType.Pick) {
-			if (Target.EquippingToolHeld == ToolHandheld.Float) {
-				PoseAttack_Float.WaveDown();
-			} else {
-				PoseAttack_Wave.Wave();
-			}
-		} else {
-			Block();
-		}
+		Build();
 	}
-
-	public static void Block () {
+	public static void Build () {
 
 		float ease01 = AttackEase;
 
@@ -66,5 +56,4 @@ public class PoseAttack_Build : PoseAnimation {
 		LowerArmR.Z = LowerArmR.Z.Abs();
 		HandR.Z = POSE_Z_HAND;
 	}
-
 }

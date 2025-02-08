@@ -77,8 +77,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public bool HandToolInteractable { get; set; } = true;
 	public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
 	public CharacterAnimationType AnimationType { get; set; } = CharacterAnimationType.Idle;
-	public ToolType EquippingToolType { get; set; } = ToolType.Hand;
-	public ToolHandheld EquippingToolHeld { get; set; } = ToolHandheld.Float;
 	public int SleepStartFrame { get; set; } = int.MinValue;
 	public int PassOutFrame { get; private set; } = int.MinValue;
 	public int LastRequireBounceFrame { get; set; } = int.MinValue;
@@ -526,7 +524,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		if (invCapacity > 0) {
 
 			bool eventAvailable = CharacterState == CharacterState.GamePlay && !TaskSystem.HasTask() && !Health.TakingDamage;
-			int attackLocalFrame = eventAvailable && Attackness.IsAttacking ? Game.GlobalFrame - Attackness.LastAttackFrame : -1;
+			int performLocalFrame = eventAvailable && Attackness.IsAttacking ? Game.GlobalFrame - Attackness.LastAttackFrame : -1;
 
 			// Equipping
 			bool attacking = false;
@@ -536,13 +534,15 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 				var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 				if (item == null) continue;
 				item.OnItemUpdate_FromEquipment(this);
-				if (item is HandTool tool) {
-					if (attackLocalFrame == tool.BulletDelayFrame) {
-						attackingBullet = tool.SpawnBullet(this);
-						item.OnCharacterAttack_FromEquipment(this, attackingBullet);
-						Buff.ApplyOnAttack(attackingBullet);
-						attacking = true;
+				if (item is HandTool tool && performLocalFrame == tool.PerformDelayFrame) {
+					if (tool is Weapon weapon) {
+						attackingBullet = weapon.SpawnBullet(this);
+					} else {
+						tool.OnToolPerform(this);
 					}
+					item.OnCharacterAttack_FromEquipment(this, attackingBullet);
+					Buff.ApplyOnAttack(attackingBullet);
+					attacking = true;
 				}
 			}
 
@@ -559,9 +559,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 			}
 
 		}
-
-		// Equipping
-		UpdateHandToolCache();
 
 	}
 
@@ -763,18 +760,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		EquipmentType.Jewelry => JewelryInteractable,
 		_ => false,
 	};
-
-
-	public void UpdateHandToolCache () {
-		int equippingID = Inventory.GetEquipment(InventoryID, EquipmentType.HandTool, out _);
-		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is HandTool eqTool) {
-			EquippingToolType = eqTool.ToolType;
-			EquippingToolHeld = eqTool.Handheld;
-		} else {
-			EquippingToolType = ToolType.Hand;
-			EquippingToolHeld = ToolHandheld.Float;
-		}
-	}
 
 
 	public int TryRepairAllEquipments (bool requireMultiple = false) {

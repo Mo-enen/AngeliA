@@ -13,7 +13,7 @@ public static class PlatformerUtil {
 		var player = PlayerSystem.Selecting;
 		if (player == null) return false;
 		int id = Inventory.GetEquipment(player.InventoryID, EquipmentType.HandTool, out int eqCount);
-		if (id == 0 || eqCount <= 0 || ItemSystem.GetItem(id) is not HandTool weapon) return false;
+		if (id == 0 || eqCount <= 0 || ItemSystem.GetItem(id) is not Weapon weapon) return false;
 		bool performed = false;
 		// Fill Bullet
 		if (

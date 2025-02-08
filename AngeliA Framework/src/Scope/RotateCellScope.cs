@@ -17,8 +17,11 @@ public readonly struct RotateCellScope (int rotation, int pointX = int.MinValue,
 			} else {
 				var cell = cells[i];
 				int oldRot = cell.Rotation1000;
+				float oldPivotX = cell.PivotX;
+				float oldPivotY = cell.PivotY;
 				cell.RotateAround(Rotation, PointX, PointY);
 				if (KeepRotation) {
+					cell.ReturnPivots(oldPivotX, oldPivotY);
 					cell.Rotation1000 = oldRot;
 				}
 			}

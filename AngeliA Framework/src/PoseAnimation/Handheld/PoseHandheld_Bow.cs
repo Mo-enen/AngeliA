@@ -1,12 +1,13 @@
 ﻿namespace AngeliA;
 
 public class PoseHandheld_Bow : PoseAnimation {
+	public static readonly int TYPE_ID = typeof(PoseHandheld_Bow).AngeHash();
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 
 		// Charging
 		if (Attackness.IsChargingAttack) {
-			PoseAttack_Ranged.Bow();
+			PoseAttack_Bow.Bow();
 			return;
 		}
 

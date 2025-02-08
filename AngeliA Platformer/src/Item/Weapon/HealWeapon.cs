@@ -18,7 +18,6 @@ public abstract class HealWeapon<B> : Weapon<B> where B : HealBullet {
 			SpawnBullet(holder);
 		}
 	}
-
 	public override Bullet SpawnBullet (Character sender) {
 		if (!AllowManuallyAttack) return null;
 		var bullet = base.SpawnBullet(sender);

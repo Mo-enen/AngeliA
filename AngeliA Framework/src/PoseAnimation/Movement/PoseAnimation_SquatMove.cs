@@ -68,12 +68,8 @@ public class PoseAnimation_SquatMove : PoseAnimation {
 		FootR.Y = FootR.Height - above;
 
 		// Final
-		Rendering.HandGrabRotationL =
-			Target.EquippingToolHeld == ToolHandheld.OneOnEachHand ? FacingRight ? 80 : -100 :
-			FacingSign * 100;
-		Rendering.HandGrabRotationR =
-			Target.EquippingToolHeld == ToolHandheld.OneOnEachHand ? FacingRight ? 100 : -80 :
-			FacingSign * 100;
+		Rendering.HandGrabRotationL = FacingSign * 100;
+		Rendering.HandGrabRotationR = FacingSign * 100;
 
 	}
 }

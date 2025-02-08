@@ -438,11 +438,7 @@ public abstract class Face : BodyGadget {
 		}
 
 		// Attack
-		if (
-			renderer.TargetCharacter.Attackness.IsAttacking &&
-			renderer.TargetCharacter.EquippingToolType != ToolType.Magic &&
-			renderer.TargetCharacter.EquippingToolType != ToolType.Ranged
-		) return CharacterFaceExpression.Attack;
+		if (renderer.TargetCharacter.Attackness.IsAttacking) return CharacterFaceExpression.Attack;
 
 		// Blink
 		if (

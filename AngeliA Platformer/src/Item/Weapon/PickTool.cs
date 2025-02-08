@@ -9,8 +9,6 @@ public abstract class PickTool : HandTool {
 
 
 	// VAR
-	public sealed override ToolType ToolType => ToolType.Pick;
-	public override ToolHandheld Handheld => ToolHandheld.SingleHanded;
 	public override bool AvailableWhenSquatting => true;
 	public override bool AvailableWhenWalking => true;
 	public override bool AvailableWhenSliding => true;
@@ -25,9 +23,10 @@ public abstract class PickTool : HandTool {
 	public virtual int MouseUnitRange => 6;
 	public override bool UseStackAsUsage => true;
 	public override int MaxStackCount => 4096;
-	public override int BulletDelayRate => 0;
+	public override int PerformDelayRate => 0;
 	public override int Duration => 16;
-
+	public override int PerformPoseAnimationID => PosePerform_Tool.TYPE_ID;
+	public override int HandheldPoseAnimationID => PoseHandheld_SingleHanded.TYPE_ID;
 
 	// MSG
 	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
@@ -84,7 +83,6 @@ public abstract class PickTool : HandTool {
 
 	}
 
-
 	protected virtual void DrawPickTargetHighlight (int unitX, int unitY, bool hasTarget) {
 		using var _ = new UILayerScope();
 		int border = GUI.Unify(2);
@@ -96,14 +94,13 @@ public abstract class PickTool : HandTool {
 		);
 	}
 
-
-	public override Bullet SpawnBullet (Character sender) {
+	public override void OnToolPerform (Character sender) {
 
 		var pHolder = sender;
 		if (
 			pHolder.CharacterState != CharacterState.GamePlay ||
 			TaskSystem.HasTask()
-		) return null;
+		) return;
 
 		// Get Target Pos
 		int targetUnitX, targetUnitY;
@@ -140,7 +137,6 @@ public abstract class PickTool : HandTool {
 			pHolder.Attackness.CancelAttack();
 		}
 
-		return null;
 	}
 
 

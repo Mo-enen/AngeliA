@@ -6,8 +6,6 @@ namespace AngeliA.Platformer;
 
 public abstract class MissileWeapon<B> : Weapon<B> where B : MissileBullet {
 
-	public override ToolType ToolType => ToolType.Ranged;
-	public override ToolHandheld Handheld => ToolHandheld.Shooting;
 	protected override WeaponValidDirection ValidDirection => WeaponValidDirection.Two;
 	public override int Duration => 16;
 	public override int Cooldown => 32;
@@ -27,6 +25,8 @@ public abstract class MissileWeapon<B> : Weapon<B> where B : MissileBullet {
 	public override bool AvailableWhenGrabbing => true;
 	public override bool AvailableWhenRushing => true;
 	public override bool AvailableWhenPounding => true;
+	public override int PerformPoseAnimationID => PoseAttack_Shooting.TYPE_ID;
+	public override int HandheldPoseAnimationID => PoseHandheld_Shooting.TYPE_ID;
 
 	// MSG
 	public override void BeforeItemUpdate_FromEquipment (Character holder) {

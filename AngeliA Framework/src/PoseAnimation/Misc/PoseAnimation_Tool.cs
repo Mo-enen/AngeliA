@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class PoseAnimation_Tool : PoseAnimation {
+public class PosePerform_Tool : PoseAnimation {
+	public static readonly int TYPE_ID = typeof(PosePerform_Tool).AngeHash();
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 1;
-		Smash();
+		Perform();
 	}
-	private static void Smash () {
+	public static void Perform () {
 
 		int aFrame = (Game.GlobalFrame - Attackness.LastAttackFrame).UDivide(5);
 		if (aFrame >= 4) return;

@@ -12,54 +12,53 @@ public class PoseAttackElite_Wave : PoseAnimation {
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 4;
-		Wave();
+		
 	}
 
 
-	public static void Wave () {
-		var handheld = Target.EquippingToolHeld;
-		var weaponType = Target.EquippingToolType;
-		switch (handheld) {
-
-			// Single Handed
-			default:
-				WaveSingleHanded(
-					Attackness.LastAttackCharged ||
-					weaponType == ToolType.Hand ||
-					weaponType == ToolType.Tool ||
-					weaponType == ToolType.Throwing ||
-					weaponType == ToolType.Flail ?
-						0 : Attackness.AttackStyleIndex % Attackness.AttackStyleLoop
-				);
-				break;
-
-			// Double Handed
-			case ToolHandheld.DoubleHanded:
-				WaveDoubleHanded(
-					Attackness.LastAttackCharged ||
-					weaponType == ToolType.Tool ||
-					weaponType == ToolType.Throwing ||
-					weaponType == ToolType.Flail ?
-						0 : Attackness.AttackStyleIndex % Attackness.AttackStyleLoop
-				);
-				break;
-
-			// Each Hand
-			case ToolHandheld.OneOnEachHand:
-				WaveEachHand(
-					Attackness.LastAttackCharged ? 0 :
-					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop
-				);
-				break;
-
-			// Pole
-			case ToolHandheld.Pole:
-				WavePolearm(Attackness.LastAttackCharged ||
-					Target.EquippingToolType == ToolType.Flail ? 0 :
-					Attackness.AttackStyleIndex % Attackness.AttackStyleLoop);
-				break;
-		}
-	}
+	//public static void Wave () {
+	//
+	//	switch (handheld) {
+	//
+	//		// Single Handed
+	//		default:
+	//			WaveSingleHanded(
+	//				Attackness.LastAttackCharged ||
+	//				weaponType == ToolType.Hand ||
+	//				weaponType == ToolType.Tool ||
+	//				weaponType == ToolType.Throwing ||
+	//				weaponType == ToolType.Flail ?
+	//					0 : Attackness.AttackStyleIndex % Attackness.AttackStyleLoop
+	//			);
+	//			break;
+	//
+	//		// Double Handed
+	//		case ToolHandheld.DoubleHanded:
+	//			WaveDoubleHanded(
+	//				Attackness.LastAttackCharged ||
+	//				weaponType == ToolType.Tool ||
+	//				weaponType == ToolType.Throwing ||
+	//				weaponType == ToolType.Flail ?
+	//					0 : Attackness.AttackStyleIndex % Attackness.AttackStyleLoop
+	//			);
+	//			break;
+	//
+	//		// Each Hand
+	//		case ToolHandheld.OneOnEachHand:
+	//			WaveEachHand(
+	//				Attackness.LastAttackCharged ? 0 :
+	//				Attackness.AttackStyleIndex % Attackness.AttackStyleLoop
+	//			);
+	//			break;
+	//
+	//		// Pole
+	//		case ToolHandheld.Pole:
+	//			WavePolearm(Attackness.LastAttackCharged ||
+	//				Target.EquippingToolType == ToolType.Flail ? 0 :
+	//				Attackness.AttackStyleIndex % Attackness.AttackStyleLoop);
+	//			break;
+	//	}
+	//}
 
 
 	public static void WaveSingleHanded (int style) {

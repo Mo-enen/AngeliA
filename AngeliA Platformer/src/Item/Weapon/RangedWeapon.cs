@@ -15,8 +15,6 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 	private int SpriteIdAttack { get; init; }
 	private int SpriteFrameCount { get; init; }
 	protected abstract bool IsBow { get; }
-	public sealed override ToolType ToolType => ToolType.Ranged;
-	public sealed override ToolHandheld Handheld => IsBow ? ToolHandheld.Bow : ToolHandheld.Shooting;
 	protected override WeaponValidDirection ValidDirection => WeaponValidDirection.Eight;
 	public override int Cooldown => base.Cooldown;
 	private int SpriteIdString { get; init; }
@@ -24,7 +22,9 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 	public override int? DefaultMovementSpeedRateOnUse => 1000;
 	public override int? WalkingMovementSpeedRateOnUse => 1000;
 	public override int? RunningMovementSpeedRateOnUse => 618;
-	public override int BulletDelayRate => 500;
+	public override int PerformDelayRate => 500;
+	public override int HandheldPoseAnimationID => IsBow ? PoseHandheld_Bow.TYPE_ID : PoseHandheld_Shooting.TYPE_ID;
+	public override int PerformPoseAnimationID => IsBow ? PoseAttack_Bow.TYPE_ID : PoseAttack_Shooting.TYPE_ID;
 
 
 	public RangedWeapon () {
@@ -73,15 +73,15 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 		return result;
 	}
 
-	protected override Cell DrawToolSprite (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+	public override Cell OnToolSpriteRendered (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 		if (IsBow) {
 			// Bow
-			var cell = base.DrawToolSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
+			var cell = base.OnToolSpriteRendered(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
 			DrawString(renderer, cell, default, default, default);
 			return cell;
 		} else {
 			// Shooting
-			var cell = base.DrawToolSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
+			var cell = base.OnToolSpriteRendered(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
 			// Draw Attack
 			var attack = renderer.TargetCharacter.Attackness;
 			if (attack.IsAttacking || attack.IsChargingAttack) {
@@ -99,6 +99,19 @@ public abstract class RangedWeapon<B> : ProjectileWeapon<B> where B : ArrowBulle
 			return cell;
 		}
 	}
+
+	public override void OnCharacterAttack_FromEquipment (Character character, Bullet bullet) {
+		base.OnCharacterAttack_FromEquipment(character, bullet);
+
+		// Face Expression
+		if (character.Rendering is PoseCharacterRenderer pRendering) {
+			pRendering.ForceFaceExpressionIndex.Override(
+				(int)CharacterFaceExpression.Normal, Duration - PerformDelayFrame
+			);
+		}
+
+	}
+
 
 	protected void DrawString (PoseCharacterRenderer renderer, Cell mainCell, Int2 offsetDown, Int2 offsetUp, Int2 offsetCenter) {
 		var character = renderer.TargetCharacter;

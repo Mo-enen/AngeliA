@@ -2,22 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
 
+namespace AngeliA.Platformer;
 
 public abstract class Flail : MeleeWeapon {
 
-	public sealed override ToolType ToolType => ToolType.Flail;
-	public override ToolHandheld Handheld => ToolHandheld.SingleHanded;
+	// VAR
 	private int SpriteIdHead { get; init; }
 	private int SpriteIdChain { get; init; }
 	protected virtual int ChainLength => Const.CEL * 7 / 9;
 	protected virtual int ChainLengthAttackGrow => 500;
 	protected virtual int HeadCount => 1;
+	protected virtual bool FixGrabRotation => true;
 	public override int RangeXLeft => 275;
 	public override int RangeXRight => 275;
 	public override int RangeY => 432;
+	public override int HandheldPoseAnimationID => PoseHandheld_SingleHanded.TYPE_ID;
+	public override int PerformPoseAnimationID => PoseAttack_WaveSingleHanded_SmashOnly.TYPE_ID;
 
+	// MSG
 	public Flail () {
 		SpriteIdHead = $"{GetType().AngeName()}.Head".AngeHash();
 		if (!Renderer.HasSprite(SpriteIdHead)) SpriteIdHead = 0;
@@ -25,9 +29,9 @@ public abstract class Flail : MeleeWeapon {
 		if (!Renderer.HasSpriteGroup(SpriteIdChain)) SpriteIdChain = 0;
 	}
 
-	protected override Cell DrawToolSprite (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
+	public override Cell OnToolSpriteRendered (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 		// Fix Grab Rotation
-		if (renderer.TargetCharacter.EquippingToolHeld != ToolHandheld.Pole) {
+		if (FixGrabRotation) {
 			renderer.HandGrabRotationL += (
 				renderer.HandGrabRotationL.Sign() * -Util.Sin(renderer.HandGrabRotationL.Abs() * Util.Deg2Rad) * 30
 			).RoundToInt();
@@ -36,7 +40,7 @@ public abstract class Flail : MeleeWeapon {
 			).RoundToInt();
 		}
 		// Draw
-		var cell = base.DrawToolSprite(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
+		var cell = base.OnToolSpriteRendered(renderer, x, y, width, height, grabRotation, grabScale, sprite, z);
 		for (int i = 0; i < HeadCount; i++) {
 			DrawFlailHead(renderer, cell, i);
 		}

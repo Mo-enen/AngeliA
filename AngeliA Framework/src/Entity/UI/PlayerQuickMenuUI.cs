@@ -21,11 +21,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 			var b = pairB.Tool;
 			if (a is null) return b is null ? 0 : 1;
 			if (b is null) return -1;
-			int result = ((int)a.ToolType).CompareTo((int)b.ToolType);
-			if (result != 0) return result;
-			result = ((int)a.Handheld).CompareTo((int)b.Handheld);
-			if (result != 0) return result;
-			result = a.TypeName.CompareTo(b.TypeName);
+			int result = a.TypeName.CompareTo(b.TypeName);
 			return result;
 		}
 	}

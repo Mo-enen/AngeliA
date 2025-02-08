@@ -1,6 +1,7 @@
 ﻿namespace AngeliA;
 
 public class PoseHandheld_Pole : PoseAnimation {
+	public static readonly int TYPE_ID = typeof(PoseHandheld_Pole).AngeHash();
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 

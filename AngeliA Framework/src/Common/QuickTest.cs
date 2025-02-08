@@ -543,7 +543,9 @@ public static class QTest {
 
 	// Trailing
 	public static void AddTrailingMark (Int2 pos, int duration = 60, int size = 42) => TrailingMark.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, Color32.RED));
+	public static void AddTrailingMark (int x, int y, int duration = 60, int size = 42) => TrailingMark.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, Color32.RED));
 	public static void AddTrailingMark (Int2 pos, Color32 color, int duration = 60, int size = 42) => TrailingMark.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, color));
+	public static void AddTrailingMark (int x, int y, Color32 color, int duration = 60, int size = 42) => TrailingMark.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, color));
 
 
 	// Obj

@@ -12,8 +12,6 @@ public sealed class BlockBuilder : HandTool {
 	// VAR
 	public int BlockID { get; init; }
 	public BlockType BlockType { get; init; }
-	public override ToolType ToolType => ToolType.Block;
-	public override ToolHandheld Handheld => ToolHandheld.SingleHanded;
 	public override bool AvailableWhenSquatting => true;
 	public override bool AvailableWhenWalking => true;
 	public override bool AvailableWhenSliding => true;
@@ -22,10 +20,9 @@ public sealed class BlockBuilder : HandTool {
 	public override int? RunningMovementSpeedRateOnUse => 618;
 	public override int? WalkingMovementSpeedRateOnUse => 618;
 	public override int MaxStackCount => _MaxStackCount;
-	public override int BulletDelayRate => 0;
 	public override int Duration => 12;
 	private int _MaxStackCount { get; init; }
-
+	public override int PerformPoseAnimationID => PosePerform_Build.TYPE_ID;
 
 	// MSG
 	public BlockBuilder (int blockID, string blockName, BlockType blockType, int maxStackCount) {
@@ -84,7 +81,7 @@ public sealed class BlockBuilder : HandTool {
 	}
 
 
-	public override Bullet SpawnBullet (Character sender) {
+	public override void OnToolPerform (Character sender) {
 
 		if (
 			sender != PlayerSystem.Selecting ||
@@ -92,7 +89,7 @@ public sealed class BlockBuilder : HandTool {
 			sender.Attackness.IsAttackIgnored ||
 			sender.CharacterState != CharacterState.GamePlay ||
 			TaskSystem.HasTask()
-		) return null;
+		) return;
 
 		int targetUnitX, targetUnitY;
 		bool available, requireEmbedAsElement;
@@ -138,7 +135,6 @@ public sealed class BlockBuilder : HandTool {
 			sender.Attackness.CancelAttack();
 		}
 
-		return null;
 	}
 
 
@@ -149,6 +145,9 @@ public sealed class BlockBuilder : HandTool {
 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, rect, tint, z: z);
 		}
 	}
+
+
+	protected override void DrawTool (PoseCharacterRenderer renderer, AngeSprite sprite) => FrameworkUtil.DrawTool_Block(this, renderer, sprite);
 
 
 	// LGC

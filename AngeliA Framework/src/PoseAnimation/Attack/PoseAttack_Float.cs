@@ -4,12 +4,13 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 public class PoseAttack_Float : PoseAnimation {
+	public static readonly int TYPE_ID = typeof(PoseAttack_Float).AngeHash();
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 		Attackness.AttackStyleLoop = 1;
-		WaveDown();
+		Wave();
 	}
-	public static void WaveDown () {
+	public static void Wave () {
 
 		float ease01 = AttackEase;
 

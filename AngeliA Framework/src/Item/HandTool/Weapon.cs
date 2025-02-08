@@ -14,7 +14,12 @@ public abstract class Weapon<B> : Weapon where B : Bullet {
 
 
 public abstract class Weapon : HandTool {
+
+	// VAR
+	public int BulletID { get; protected set; }
 	protected virtual WeaponValidDirection ValidDirection => WeaponValidDirection.Two;
+
+	// MSG
 	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
 		base.OnPoseAnimationUpdate_FromEquipment(rendering);
 		var character = rendering.TargetCharacter;
@@ -48,4 +53,16 @@ public abstract class Weapon : HandTool {
 				break;
 		}
 	}
+
+	public virtual Bullet SpawnBullet (Character sender) {
+		if (sender == null || BulletID == 0) return null;
+		var rect = sender.Rect;
+		if (Stage.SpawnEntity(BulletID, rect.x, rect.y) is not Bullet bullet) return null;
+		bullet.Sender = sender;
+		var sourceRect = sender.Rect;
+		bullet.X = sourceRect.CenterX() - bullet.Width / 2;
+		bullet.Y = sourceRect.CenterY() - bullet.Height / 2;
+		return bullet;
+	}
+
 }

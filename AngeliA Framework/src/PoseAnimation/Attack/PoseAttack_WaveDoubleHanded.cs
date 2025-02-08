@@ -1,68 +1,34 @@
 ﻿namespace AngeliA;
 
-public class PoseAttack_Polearm : PoseAnimation {
-	public static readonly int TYPE_ID = typeof(PoseAttack_Polearm).AngeHash();
+public class PoseAttack_WaveDoubleHanded_SmashOnly : PoseAttack_WaveDoubleHanded {
+	public static new readonly int TYPE_ID = typeof(PoseAttack_WaveDoubleHanded_SmashOnly).AngeHash();
+	public override int StyleIndex => 0;
+}
+
+public class PoseAttack_WaveDoubleHanded : PoseAnimation {
+
+	public static readonly int TYPE_ID = typeof(PoseAttack_WaveDoubleHanded).AngeHash();
+	public virtual int StyleIndex => Attackness.LastAttackCharged ? 0 : Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
+
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
-		Attackness.AttackStyleLoop = 8;
-		int style = Attackness.AttackStyleIndex % Attackness.AttackStyleLoop;
-		switch (style) {
+		Attackness.AttackStyleLoop = 4;
+		switch (StyleIndex) {
 			default:
-				Poke();
-				break;
-			case 4:
 				SmashDown();
 				break;
-			case 5:
+			case 1:
 				SmashUp();
 				break;
-			case 6:
+			case 2:
 				SlashIn();
 				break;
-			case 7:
+			case 3:
 				SlashOut();
 				break;
 		}
 	}
-	public static void Poke () {
 
-		float ease01 = AttackEase;
-
-		AttackHeadDown(ease01, 300, 300, 100);
-		ResetShoulderAndUpperArmPos();
-
-		// Upper Arm
-		int uRotA = (int)Util.LerpUnclamped(65, -65, ease01);
-		int uRotB = (int)Util.LerpUnclamped(65, -65, ease01);
-		UpperArmL.LimbRotate(FacingRight ? uRotA : -uRotB);
-		UpperArmR.LimbRotate(FacingRight ? uRotB : -uRotA);
-		var shorterU = FacingRight ? UpperArmR : UpperArmL;
-		var longerU = FacingRight ? UpperArmL : UpperArmR;
-		shorterU.Height = (int)(shorterU.Height * (1f + ease01));
-		longerU.Height = (int)(longerU.Height * (1f + ease01));
-
-		// Lower Arm
-		LowerArmL.LimbRotate(FacingRight ? -10 : 0);
-		LowerArmR.LimbRotate(FacingRight ? 0 : 10);
-
-		// Hand
-		HandL.LimbRotate(FacingSign);
-		HandR.LimbRotate(FacingSign);
-
-		// Leg
-		AttackLegShake(ease01);
-
-		// Z
-		UpperArmL.Z = LowerArmL.Z = FrontSign * UpperArmL.Z.Abs();
-		UpperArmR.Z = LowerArmR.Z = FrontSign * UpperArmR.Z.Abs();
-		HandL.Z = HandR.Z = FrontSign * POSE_Z_HAND;
-
-		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = FacingSign * 90;
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
-			FacingSign * (int)Util.LerpUnclamped(1000, 1200, ease01);
-
-	}
 	public static void SmashDown () {
 
 		float ease01 = AttackEase;
@@ -74,78 +40,104 @@ public class PoseAttack_Polearm : PoseAnimation {
 		}
 		ResetShoulderAndUpperArmPos();
 
+		int upperRotA = (int)Util.LerpUnclamped(180, 42, ease01);
+		int upperRotB = (int)Util.LerpUnclamped(180, 29, ease01);
+		int lowerRotA = (int)Util.LerpUnclamped(0, 28, ease01);
+		int lowerRotB = (int)Util.LerpUnclamped(-98, 14, ease01);
+
+		UpperArmL.LimbRotate(FacingRight ? -upperRotA : upperRotB);
+		UpperArmR.LimbRotate(FacingRight ? -upperRotB : upperRotA);
+		UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1306 : 862) / 1000;
+		UpperArmR.Height = UpperArmR.Height * (FacingRight ? 862 : 1306) / 1000;
+
+		LowerArmL.LimbRotate(FacingRight ? -lowerRotA : -lowerRotB);
+		LowerArmR.LimbRotate(FacingRight ? lowerRotB : lowerRotA);
+		LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1592 : 724) / 1000;
+		LowerArmR.Height = LowerArmR.Height * (FacingRight ? 724 : 1592) / 1000;
+
 		// Upper Arm
-		int uRotA = (int)Util.LerpUnclamped(-130, 63, ease01);
-		int uRotB = (int)Util.LerpUnclamped(-79, 43, ease01);
-		UpperArmL.LimbRotate(FacingRight ? uRotA : -uRotB);
-		UpperArmR.LimbRotate(FacingRight ? uRotB : -uRotA);
+		UpperArmL.Height += A2G;
+		UpperArmR.Height += A2G;
+		LowerArmL.Height += A2G;
+		LowerArmR.Height += A2G;
 
-		// Lower Arm
-		int lRotA = (int)Util.LerpUnclamped(0, -75, ease01);
-		int lRotB = (int)Util.LerpUnclamped(-98, 0, ease01);
-		LowerArmL.LimbRotate(FacingRight ? lRotA : -lRotB);
-		LowerArmR.LimbRotate(FacingRight ? lRotB : -lRotA);
-
-		// Hand
 		HandL.LimbRotate(FacingSign);
+		HandL.Width += HandL.Width.Sign() * A2G;
+		HandL.Height += HandL.Height.Sign() * A2G;
+
 		HandR.LimbRotate(FacingSign);
+		HandR.Width += HandR.Width.Sign() * A2G;
+		HandR.Height += HandR.Height.Sign() * A2G;
 
 		// Leg
 		AttackLegShake(ease01);
 
-		// Grab
+		// Grab Rotation
 		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
-			FacingSign * (int)Util.LerpUnclamped(-58, 107, ease01);
+			FacingSign * (int)Util.LerpUnclamped(-37, 100, ease01);
 		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
 			FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 		// Z
 		UpperArmL.Z = UpperArmL.Z.Abs();
-		LowerArmL.Z = LowerArmL.Z.Abs();
 		UpperArmR.Z = UpperArmR.Z.Abs();
+		LowerArmL.Z = LowerArmL.Z.Abs();
 		LowerArmR.Z = LowerArmR.Z.Abs();
+		HandL.Z = POSE_Z_HAND;
 		HandR.Z = POSE_Z_HAND;
-
 	}
 	public static void SmashUp () {
 
 		float ease01 = AttackEase;
 
-		AttackHeadDown(1f - ease01 + 0.5f, -100, 500, 500);
+		AttackHeadDown(1f - ease01 + 0.5f, -200, 500, 500);
 		ResetShoulderAndUpperArmPos();
 
+		int upperRotA = (int)Util.LerpUnclamped(42, 180, ease01);
+		int upperRotB = (int)Util.LerpUnclamped(29, 180, ease01);
+		int lowerRotA = (int)Util.LerpUnclamped(28, 0, ease01);
+		int lowerRotB = (int)Util.LerpUnclamped(14, -98, ease01);
+
+		UpperArmL.LimbRotate(FacingRight ? -upperRotA : upperRotB);
+		UpperArmR.LimbRotate(FacingRight ? -upperRotB : upperRotA);
+		UpperArmL.Height = UpperArmL.Height * (FacingRight ? 1000 : 862) / 1000;
+		UpperArmR.Height = UpperArmR.Height * (FacingRight ? 862 : 1000) / 1000;
+
+		LowerArmL.LimbRotate(FacingRight ? -lowerRotA : -lowerRotB);
+		LowerArmR.LimbRotate(FacingRight ? lowerRotB : lowerRotA);
+		LowerArmL.Height = LowerArmL.Height * (FacingRight ? 1000 : 724) / 1000;
+		LowerArmR.Height = LowerArmR.Height * (FacingRight ? 724 : 1000) / 1000;
+
 		// Upper Arm
-		int uRotA = (int)Util.LerpUnclamped(63, -130, ease01);
-		int uRotB = (int)Util.LerpUnclamped(43, -79, ease01);
-		UpperArmL.LimbRotate(FacingRight ? uRotA : -uRotB);
-		UpperArmR.LimbRotate(FacingRight ? uRotB : -uRotA);
+		UpperArmL.Height += A2G;
+		UpperArmR.Height += A2G;
+		LowerArmL.Height += A2G;
+		LowerArmR.Height += A2G;
 
-		// Lower Arm
-		int lRotA = (int)Util.LerpUnclamped(-75, 0, ease01);
-		int lRotB = (int)Util.LerpUnclamped(0, -98, ease01);
-		LowerArmL.LimbRotate(FacingRight ? lRotA : -lRotB);
-		LowerArmR.LimbRotate(FacingRight ? lRotB : -lRotA);
-
-		// Hand
 		HandL.LimbRotate(FacingSign);
+		HandL.Width += HandL.Width.Sign() * A2G;
+		HandL.Height += HandL.Height.Sign() * A2G;
+
 		HandR.LimbRotate(FacingSign);
+		HandR.Width += HandR.Width.Sign() * A2G;
+		HandR.Height += HandR.Height.Sign() * A2G;
 
 		// Leg
 		AttackLegShake(ease01);
 
-		// Grab
+		// Grab Rotation
 		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
-			FacingSign * (int)Util.LerpUnclamped(130, 10, ease01);
+			FacingSign * (int)Util.LerpUnclamped(100, -20, ease01);
 		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
-			FacingSign * (int)Util.LerpUnclamped(1000, 1300, ease01);
+			FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
 
 		// Z
 		UpperArmL.Z = UpperArmL.Z.Abs();
-		LowerArmL.Z = LowerArmL.Z.Abs();
 		UpperArmR.Z = UpperArmR.Z.Abs();
+		LowerArmL.Z = LowerArmL.Z.Abs();
 		LowerArmR.Z = LowerArmR.Z.Abs();
+		HandL.Z = POSE_Z_HAND;
 		HandR.Z = POSE_Z_HAND;
-
 	}
 	public static void SlashIn () {
 
@@ -252,4 +244,5 @@ public class PoseAttack_Polearm : PoseAnimation {
 		HandL.Z = POSE_Z_HAND;
 		HandR.Z = POSE_Z_HAND;
 	}
+
 }

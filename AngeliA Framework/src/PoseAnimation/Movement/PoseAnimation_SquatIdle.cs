@@ -82,13 +82,5 @@ public class PoseAnimation_SquatIdle : PoseAnimation {
 		HandL.X -= halfEase;
 		HandR.X += halfEase;
 
-		// Final
-		Rendering.HandGrabRotationL =
-			Target.EquippingToolHeld == ToolHandheld.OneOnEachHand ? FacingRight ? 80 : -100 :
-			FacingSign * 100;
-		Rendering.HandGrabRotationR =
-			Target.EquippingToolHeld == ToolHandheld.OneOnEachHand ? FacingRight ? 100 : -80 :
-			FacingSign * 100;
-
 	}
 }

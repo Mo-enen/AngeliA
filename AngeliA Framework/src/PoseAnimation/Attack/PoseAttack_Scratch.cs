@@ -1,10 +1,11 @@
 ﻿namespace AngeliA;
 
 public class PoseAttack_Scratch : PoseAnimation {
+	public static readonly int TYPE_ID = typeof(PoseAttack_Scratch).AngeHash();
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 		if (Attackness.LastAttackCharged) {
-			PoseAttack_Wave.EachHand_SmashDown();
+			PoseAttack_WaveEachHand.SmashDown();
 			return;
 		}
 		Attackness.AttackStyleLoop = 3;

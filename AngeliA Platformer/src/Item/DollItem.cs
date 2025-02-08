@@ -1,4 +1,6 @@
-﻿namespace AngeliA;
+﻿using AngeliA;
+
+namespace AngeliA.Platformer;
 
 public abstract class DollItem : Item {
 	public override int MaxStackCount => 1;

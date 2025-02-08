@@ -7,7 +7,7 @@ public class PoseHandheld_Double : PoseAnimation {
 
 		if (Attackness.IsChargingAttack) {
 			// Charging
-			PoseAttack_Wave.DoubleHanded_SmashDown();
+			PoseAttack_WaveDoubleHanded.SmashDown();
 			return;
 		}
 

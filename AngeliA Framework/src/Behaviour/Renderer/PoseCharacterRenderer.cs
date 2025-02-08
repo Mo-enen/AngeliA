@@ -19,11 +19,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	private static readonly int[] DEFAULT_BODY_PART_ID = ["DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(),];
 	private static readonly string[] BODY_PART_NAME = ["Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot",];
 	private static readonly int[] DEFAULT_POSE_ANIMATION_IDS = [typeof(PoseAnimation_Idle).AngeHash(), typeof(PoseAnimation_Walk).AngeHash(), typeof(PoseAnimation_Run).AngeHash(), typeof(PoseAnimation_JumpUp).AngeHash(), typeof(PoseAnimation_JumpDown).AngeHash(), typeof(PoseAnimation_SwimIdle).AngeHash(), typeof(PoseAnimation_SwimMove).AngeHash(), typeof(PoseAnimation_SquatIdle).AngeHash(), typeof(PoseAnimation_SquatMove).AngeHash(), typeof(PoseAnimation_Dash).AngeHash(), typeof(PoseAnimation_Rush).AngeHash(), typeof(PoseAnimation_Crash).AngeHash(), typeof(PoseAnimation_Pound).AngeHash(), typeof(PoseAnimation_Brake).AngeHash(), typeof(PoseAnimation_Climb).AngeHash(), typeof(PoseAnimation_Fly).AngeHash(), typeof(PoseAnimation_Slide).AngeHash(), typeof(PoseAnimation_GrabTop).AngeHash(), typeof(PoseAnimation_GrabSide).AngeHash(), typeof(PoseAnimation_Spin).AngeHash(), typeof(PoseAnimation_Animation_TakingDamage).AngeHash(), typeof(PoseAnimation_Sleep).AngeHash(), typeof(PoseAnimation_PassOut).AngeHash(), typeof(PoseAnimation_Rolling).AngeHash(),];
-	private static readonly int[] DEFAULT_POSE_HANDHELD_IDS = [typeof(PoseHandheld_Single).AngeHash(), typeof(PoseHandheld_Double).AngeHash(), typeof(PoseHandheld_EachHand).AngeHash(), typeof(PoseHandheld_Pole).AngeHash(), typeof(PoseHandheld_MagicPole).AngeHash(), typeof(PoseHandheld_Bow).AngeHash(), typeof(PoseHandheld_Shooting).AngeHash(), typeof(PoseHandheld_Float).AngeHash(),];
-	private static readonly int[] DEFAULT_POSE_ATTACK_IDS = [typeof(PoseAttack_Hand).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Ranged).AngeHash(), typeof(PoseAttack_Polearm).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Scratch).AngeHash(), typeof(PoseAttack_Magic).AngeHash(), typeof(PoseAttack_Wave).AngeHash(), typeof(PoseAttack_Build).AngeHash(), typeof(PoseAttack_Build).AngeHash(), typeof(PoseAnimation_Tool).AngeHash()];
 	private static readonly int ANI_TYPE_COUNT = typeof(CharacterAnimationType).EnumLength();
-	private static readonly int HAND_HELD_COUNT = typeof(ToolHandheld).EnumLength();
-	private static readonly int TOOL_TYPE_COUNT = typeof(ToolType).EnumLength();
 	private const int POSE_Z_HEAD = 10;
 	private const int POSE_Z_BODY = 0;
 	private const int POSE_Z_UPPERARM = 8;
@@ -96,8 +92,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	private int BlendAniID = 0;
 	private int AnimationBlendFrame = 0;
 	private readonly FrameBasedInt[] PoseAnimationIDs;
-	private readonly FrameBasedInt[] PoseHandheldIDs;
-	private readonly FrameBasedInt[] PoseAttackIDs;
 	private readonly FrameBasedInt ManualPoseAnimationID = new(0);
 
 
@@ -122,12 +116,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 #if DEBUG
 		if (DEFAULT_POSE_ANIMATION_IDS.Length != ANI_TYPE_COUNT) {
 			Debug.LogWarning($"FAILBACK_POSE_ANIMATION_IDS length have to be {ANI_TYPE_COUNT}");
-		}
-		if (DEFAULT_POSE_HANDHELD_IDS.Length != HAND_HELD_COUNT) {
-			Debug.LogWarning($"FAILBACK_POSE_HANDHELD_IDS length have to be {HAND_HELD_COUNT}");
-		}
-		if (DEFAULT_POSE_ATTACK_IDS.Length != TOOL_TYPE_COUNT) {
-			Debug.LogWarning($"FAILBACK_POSE_ATTACK_IDS length have to be {TOOL_TYPE_COUNT}");
 		}
 #endif
 
@@ -169,17 +157,9 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		FootR = BodyParts[16];
 		// Ani
 		PoseAnimationIDs = new FrameBasedInt[ANI_TYPE_COUNT].FillWithNewValue();
-		PoseHandheldIDs = new FrameBasedInt[HAND_HELD_COUNT].FillWithNewValue();
-		PoseAttackIDs = new FrameBasedInt[TOOL_TYPE_COUNT].FillWithNewValue();
 		// Load Default Ani
 		for (int i = 0; i < ANI_TYPE_COUNT; i++) {
 			PoseAnimationIDs[i].BaseValue = DEFAULT_POSE_ANIMATION_IDS[i];
-		}
-		for (int i = 0; i < HAND_HELD_COUNT; i++) {
-			PoseHandheldIDs[i].BaseValue = DEFAULT_POSE_HANDHELD_IDS[i];
-		}
-		for (int i = 0; i < TOOL_TYPE_COUNT; i++) {
-			PoseAttackIDs[i].BaseValue = DEFAULT_POSE_ATTACK_IDS[i];
 		}
 		SyncRenderingConfigFromPool();
 	}
@@ -520,8 +500,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 		// Movement
 		var Movement = TargetCharacter.Movement;
-		var EquippingToolType = TargetCharacter.EquippingToolType;
-		var EquippingToolHeld = TargetCharacter.EquippingToolHeld;
 
 		HandGrabScaleL = Movement.FacingRight ? 1000 : -1000;
 		HandGrabScaleR = Movement.FacingRight ? 1000 : -1000;
@@ -529,47 +507,27 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		PerformPoseAnimation();
 		CalculateBodypartGlobalPosition();
 
+		// Get Animation ID from Handtool
+		int handheldAniID = 0;
+		int performAniID = 0;
+		int equippingID = Inventory.GetEquipment(TargetCharacter.InventoryID, EquipmentType.HandTool, out _);
+		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is HandTool eqTool) {
+			handheldAniID = eqTool.HandheldPoseAnimationID;
+			performAniID = eqTool.PerformPoseAnimationID;
+		}
+
 		// Handheld
-		switch (TargetCharacter.AnimationType) {
-			case var _ when EquippingToolType == ToolType.Block:
-			case CharacterAnimationType.Idle:
-			case CharacterAnimationType.Walk:
-			case CharacterAnimationType.Run:
-			case CharacterAnimationType.Brake:
-			case CharacterAnimationType.JumpUp:
-			case CharacterAnimationType.JumpDown:
-			case CharacterAnimationType.SwimIdle:
-			case CharacterAnimationType.SwimMove:
-			case CharacterAnimationType.SquatIdle:
-			case CharacterAnimationType.SquatMove:
-			case CharacterAnimationType.Pound:
-			case CharacterAnimationType.Fly:
-			case CharacterAnimationType.Rush when EquippingToolHeld == ToolHandheld.Pole:
-			case CharacterAnimationType.Dash when EquippingToolHeld == ToolHandheld.Pole:
-			case CharacterAnimationType.Rolling when EquippingToolHeld == ToolHandheld.Bow || EquippingToolHeld == ToolHandheld.Shooting:
-				// Handheld
-				PoseAnimation.PerformAnimationFromPool(PoseHandheldIDs[(int)EquippingToolHeld], this);
-				CalculateBodypartGlobalPosition();
-				break;
-			default:
-				// Redirect Handheld for Attack Animation
-				if (
-					EquippingToolHeld == ToolHandheld.DoubleHanded ||
-					EquippingToolHeld == ToolHandheld.Bow ||
-					EquippingToolHeld == ToolHandheld.Shooting ||
-					EquippingToolHeld == ToolHandheld.Pole
-				) {
-					TargetCharacter.EquippingToolHeld = ToolHandheld.SingleHanded;
-				}
-				break;
+		if (handheldAniID != 0) {
+			PoseAnimation.PerformAnimationFromPool(handheldAniID, this);
+			CalculateBodypartGlobalPosition();
 		}
 
 		// Attacking
-		if (TargetCharacter.Attackness.IsAttacking) {
+		if (TargetCharacter.Attackness.IsAttacking && performAniID != 0) {
 			if (TargetCharacter.CurrentAttackSpeedRate == 0 && TargetCharacter.IsGrounded && !Movement.IsSquatting) ResetPoseToDefault(true);
 			HandGrabScaleL = HandGrabScaleR = Movement.FacingRight ? 1000 : -1000;
 			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
-			PoseAnimation.PerformAnimationFromPool(PoseAttackIDs[(int)EquippingToolType], this);
+			PoseAnimation.PerformAnimationFromPool(performAniID, this);
 			CalculateBodypartGlobalPosition();
 		}
 
@@ -871,12 +829,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 
 	public void OverridePoseAnimation (CharacterAnimationType type, int id, int duration = 1) => PoseAnimationIDs[(int)type].Override(id, duration, 4096);
-
-
-	public void OverridePoseHandheldAnimation (ToolHandheld handheld, int id, int duration = 1) => PoseHandheldIDs[(int)handheld].Override(id, duration, 4096);
-
-
-	public void OverridePoseAttackAnimation (ToolType type, int id, int duration = 1) => PoseAttackIDs[(int)type].Override(id, duration, 4096);
 
 
 	public void ManualPoseAnimate (int id, int duration = 1) => ManualPoseAnimationID.Override(id, duration);
