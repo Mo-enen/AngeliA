@@ -1038,11 +1038,17 @@ public static class Extension {
 	[MethodImpl(INLINE)]
 	public static IRect Clamp (this IRect rect, IRect range) {
 		return IRect.MinMaxRect(
-			Util.Max(rect.xMin, range.xMin),
-			Util.Max(rect.yMin, range.yMin),
-			Util.Min(rect.xMax, range.xMax),
-			Util.Min(rect.yMax, range.yMax)
+			rect.xMin.Clamp(range.xMin, range.xMax),
+			rect.yMin.Clamp(range.yMin, range.yMax),
+			rect.xMax.Clamp(range.xMin, range.xMax),
+			rect.yMax.Clamp(range.yMin, range.yMax)
 		);
+		//return IRect.MinMaxRect(
+		//	Util.Max(rect.xMin, range.xMin),
+		//	Util.Max(rect.yMin, range.yMin),
+		//	Util.Min(rect.xMax, range.xMax),
+		//	Util.Min(rect.yMax, range.yMax)
+		//);
 	}
 
 	[MethodImpl(INLINE)] public static void SlideLeft (ref this IRect rect, int padding = 0) => rect.x -= rect.width + padding;

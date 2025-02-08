@@ -1,8 +1,8 @@
 ﻿namespace AngeliA;
 
-public class PoseAttack_Smash : PoseAnimation {
+public class PoseAttack_SmashOnly : PoseAnimation {
 
-	public static readonly int TYPE_ID = typeof(PoseAttack_Smash).AngeHash();
+	public static readonly int TYPE_ID = typeof(PoseAttack_SmashOnly).AngeHash();
 
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);

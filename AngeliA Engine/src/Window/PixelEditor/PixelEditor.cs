@@ -413,6 +413,8 @@ public partial class PixelEditor : WindowUI {
 		}
 
 		// Sprite Content
+		bool showOutBoundsMark = EngineSetting.ShowOutBoundsMark.Value;
+		var outMarkColor = Color32.GREY_128;
 		using var _sheet = new SheetIndexScope(-1);
 		for (int i = 0; i < StagedSprites.Count; i++) {
 			var spriteData = StagedSprites[i];
@@ -427,7 +429,17 @@ public partial class PixelEditor : WindowUI {
 			if (DraggingState == DragState.MoveSprite && spriteData.Selecting) continue;
 
 			var rect = Pixel_to_Stage(sprite.PixelRect, out _, out bool outside, ignoreClamp: true);
-			if (outside) continue;
+			if (outside) {
+				// Outside Mark
+				if (showOutBoundsMark) {
+					int THICKNESS = Unify(1);
+					var markRect = rect.Clamp(StageRect.Shrink(0, THICKNESS, 0, THICKNESS));
+					markRect.width = markRect.width.GreaterOrEquel(THICKNESS);
+					markRect.height = markRect.height.GreaterOrEquel(THICKNESS);
+					Renderer.DrawPixel(markRect, outMarkColor, z: int.MaxValue);
+				}
+				continue;
+			}
 
 			// Draw Shadow
 			if (DraggingState != DragState.ResizeSprite || ResizingStageIndex != i || ResizeForBorder) {
@@ -825,7 +837,10 @@ public partial class PixelEditor : WindowUI {
 		if (!GUI.Interactable) return;
 
 		// Move
-		if (Input.MouseMidButtonHolding && StageRect.Contains(Input.MouseMidDownGlobalPosition)) {
+		if (
+			(Input.MouseMidButtonHolding && StageRect.Contains(Input.MouseMidDownGlobalPosition)) ||
+			(Input.MouseLeftButtonHolding && Input.HoldingCtrl && StageRect.Contains(Input.MouseLeftDownGlobalPosition))
+		) {
 			var delta = Input.MouseGlobalPositionDelta;
 			CanvasRect = CanvasRect.Shift(delta.x, delta.y);
 		}

@@ -115,7 +115,6 @@ public class PoseAttack_Wave : PoseAnimation {
 
 	public static void SingleHanded_SmashDown () {
 
-		bool isThrowing = Target.EquippingToolType == ToolType.Throwing;
 		float ease01 = AttackEase;
 
 		if (IsChargingAttack) {
@@ -146,16 +145,14 @@ public class PoseAttack_Wave : PoseAnimation {
 			_ => (-185, -9),
 		};
 		UpperArmR.LimbRotate(FacingSign * (int)Util.LerpUnclamped(from, to, ease01));
-		if (!isThrowing) UpperArmR.Height += A2G;
+		UpperArmR.Height += A2G;
 		LowerArmR.LimbRotate(0);
-		if (!isThrowing) LowerArmR.Height += A2G;
+		LowerArmR.Height += A2G;
 
 		HandL.LimbRotate(FacingSign);
 		HandR.LimbRotate(FacingSign);
-		if (!isThrowing) {
-			HandR.Width += HandR.Width.Sign() * A2G;
-			HandR.Height += HandR.Height.Sign() * A2G;
-		}
+		HandR.Width += HandR.Width.Sign() * A2G;
+		HandR.Height += HandR.Height.Sign() * A2G;
 
 		// Leg
 		AttackLegShake(ease01);
@@ -172,6 +169,7 @@ public class PoseAttack_Wave : PoseAnimation {
 		LowerArmL.Z = LowerArmL.Z.Abs();
 		LowerArmR.Z = LowerArmR.Z.Abs();
 		HandR.Z = POSE_Z_HAND;
+
 	}
 	public static void SingleHanded_SmashUp () {
 
