@@ -1,10 +1,8 @@
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace AngeliA;
 
-[System.Serializable]
 public abstract class PoseAnimation {
 
 
@@ -280,6 +278,9 @@ public abstract class PoseAnimation {
 		BlendRecordAni.BlendToPose(blend01);
 
 	}
+
+
+	public static bool TryGetAnimationFromPool (int id, out PoseAnimation result) => Pool.TryGetValue(id, out result);
 
 
 	public virtual void Animate (PoseCharacterRenderer renderer) => SetAsAnimating(renderer);

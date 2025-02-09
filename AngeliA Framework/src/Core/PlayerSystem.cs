@@ -149,7 +149,7 @@ public static class PlayerSystem {
 	[OnGameUpdateLater]
 	internal static void OnGameUpdateLater () {
 		AllPlayablesID.Clear();
-		foreach (var ch in typeof(PlayableCharacter).AllChildClass()) {
+		foreach (var ch in typeof(IPlayable).AllClassImplemented()) {
 			int id = ch.AngeHash();
 			if (Stage.IsValidEntityID(id)) {
 				AllPlayablesID.Add(id);

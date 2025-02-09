@@ -63,16 +63,14 @@ public static class JsonUtil {
 	public static T LoadJson<T> (string rootPath, string name = "", string ext = "json") => LoadJsonFromPath<T>(GetJsonPath<T>(rootPath, name, ext));
 	public static T LoadJsonFromPath<T> (string jsonPath) {
 		try {
-			if (Util.FileExists(jsonPath)) {
-				string data = Util.FileToText(jsonPath, Encoding.UTF8);
-				var target = JsonSerializer.Deserialize<T>(data, READ);
-				if (target != null) {
-					if (target is IJsonSerializationCallback ser) {
-						ser.OnAfterLoadedFromDisk();
-					}
-					return target;
-				}
+			if (!Util.FileExists(jsonPath)) return default;
+			string data = Util.FileToText(jsonPath, Encoding.UTF8);
+			var target = JsonSerializer.Deserialize<T>(data, READ);
+			if (target == null) return default;
+			if (target is IJsonSerializationCallback ser) {
+				ser.OnAfterLoadedFromDisk();
 			}
+			return target;
 		} catch (Exception ex) { Debug.LogException(ex); }
 		return default;
 	}

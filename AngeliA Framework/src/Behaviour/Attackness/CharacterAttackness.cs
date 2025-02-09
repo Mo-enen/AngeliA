@@ -8,23 +8,11 @@ public class CharacterAttackness (Character character) {
 
 
 
-	#region --- SUB ---
-
-
-	public enum AttackStyleMode { Combo, Random, Manually, }
-
-
-	#endregion
-
-
-
-
 	#region --- VAR ---
 
 
 	// Api
 	public readonly Character TargetCharacter = character;
-	public virtual AttackStyleMode AttackStyle => AttackStyleMode.Random;
 	public Direction8 AimingDirection { get; set; } = Direction8.Right;
 	public bool IsAttacking => Game.GlobalFrame < LastAttackFrame + AttackDuration;
 	public bool IsAttackIgnored => Game.GlobalFrame <= IgnoreAttackFrame;
@@ -33,7 +21,6 @@ public class CharacterAttackness (Character character) {
 	public int? AttackChargeStartFrame { get; private set; } = null;
 	public bool LastAttackCharged { get; private set; } = false;
 	public int AttackStyleIndex { get; set; } = -1;
-	public int AttackStyleLoop { get; set; } = 1;
 	public bool AttackStartFacingRight { get; set; } = true;
 	public int AttackDuration { get; set; } = 12;
 	public int AttackCooldown { get; set; } = 2;
@@ -79,7 +66,7 @@ public class CharacterAttackness (Character character) {
 	#region --- MSG ---
 
 
-	public void OnActivated () {
+	public virtual void OnActivated () {
 		LastAttackFrame = int.MinValue;
 		AttackChargeStartFrame = null;
 		LastAttackCharged = false;
@@ -87,10 +74,10 @@ public class CharacterAttackness (Character character) {
 	}
 
 
-	public void PhysicsUpdate_Attack () {
+	public virtual void PhysicsUpdate_Attack () {
 
 		// Combo Break
-		if (AttackStyle == AttackStyleMode.Combo && AttackStyleIndex > -1 && Game.GlobalFrame > LastAttackFrame + AttackDuration + AttackCooldown + AttackComboGap) {
+		if (AttackStyleIndex > -1 && Game.GlobalFrame > LastAttackFrame + AttackDuration + AttackCooldown + AttackComboGap) {
 			AttackStyleIndex = -1;
 		}
 
@@ -124,14 +111,7 @@ public class CharacterAttackness (Character character) {
 		if (!TargetCharacter.IsAttackAllowedByEquipment()) return false;
 		LastAttackCharged = charged;
 		LastAttackFrame = Game.GlobalFrame;
-		switch (AttackStyle) {
-			case AttackStyleMode.Combo:
-				AttackStyleIndex++;
-				break;
-			case AttackStyleMode.Random:
-				AttackStyleIndex += Util.QuickRandom(1, Util.Max(2, AttackStyleLoop));
-				break;
-		}
+		AttackStyleIndex++;
 		AttackStartFacingRight = facingRight;
 		return true;
 	}

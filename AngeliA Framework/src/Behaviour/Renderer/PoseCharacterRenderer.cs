@@ -273,7 +273,20 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			);
 			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, eqType, out int equipmentCount);
 			var eq = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
-			eq?.OnPoseAnimationUpdate_FromEquipment(this);
+			if (eq != null) {
+				eq.OnPoseAnimationUpdate_FromEquipment(this);
+				// Draw Tool
+				if (
+					eq is HandTool tool &&
+					PoseAnimation.TryGetAnimationFromPool(tool.HandheldPoseAnimationID, out var poseAni) &&
+					poseAni is HandheldPoseAnimation handheldAni &&
+					TargetCharacter.AnimationType != CharacterAnimationType.Sleep &&
+					TargetCharacter.AnimationType != CharacterAnimationType.PassOut &&
+					TargetCharacter.AnimationType != CharacterAnimationType.Crash
+				) {
+					handheldAni.DrawTool(tool, this);
+				}
+			}
 		}
 		CalculateBodypartGlobalPosition();
 

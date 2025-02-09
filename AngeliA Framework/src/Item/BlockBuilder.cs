@@ -22,7 +22,8 @@ public sealed class BlockBuilder : HandTool {
 	public override int MaxStackCount => _MaxStackCount;
 	public override int Duration => 12;
 	private int _MaxStackCount { get; init; }
-	public override int PerformPoseAnimationID => PosePerform_Build.TYPE_ID;
+	public override int PerformPoseAnimationID => PosePerform_Block.TYPE_ID;
+	public override int HandheldPoseAnimationID => PoseHandheld_Block.TYPE_ID;
 
 	// MSG
 	public BlockBuilder (int blockID, string blockName, BlockType blockType, int maxStackCount) {
@@ -145,9 +146,6 @@ public sealed class BlockBuilder : HandTool {
 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, rect, tint, z: z);
 		}
 	}
-
-
-	protected override void DrawTool (PoseCharacterRenderer renderer, AngeSprite sprite) => FrameworkUtil.DrawTool_Block(this, renderer, sprite);
 
 
 	// LGC

@@ -12,8 +12,9 @@ public class PoseAnimation_Rush : PoseAnimation {
 		Head.Height -= A2G;
 		Body.X -= FacingSign * A2G / 2;
 
-		Head.Rotation = -FacingSign * (16 + aFrame.Clamp(0, 2) * 4);
-		Body.Rotation = FacingSign * (24 + aFrame.Clamp(0, 3) * 6);
+		int bodyRot = FacingSign * (24 + aFrame.Clamp(0, 3) * 6);
+		Head.Rotation = -bodyRot * 2 / 3;
+		Body.Rotation = bodyRot;
 
 		UpperArmL.Z = UpperArmL.Z.Abs();
 		UpperArmR.Z = UpperArmR.Z.Abs();

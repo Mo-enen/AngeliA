@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-
-
 using AngeliA;
 
 namespace AngeliA.Platformer;
-
 
 public abstract class Axe : MeleeWeapon {
 	public override int Duration => 12;
@@ -16,4 +13,5 @@ public abstract class Axe : MeleeWeapon {
 	public override int Damage => 5;
 	public override int HandheldPoseAnimationID => PoseHandheld_SingleHanded.TYPE_ID;
 	public override int PerformPoseAnimationID => PoseAttack_WaveSingleHanded.TYPE_ID;
+
 }

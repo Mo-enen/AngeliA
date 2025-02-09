@@ -47,10 +47,13 @@
 	<ItemGroup>
 		<Compile Remove="Build\**" />
 		<Compile Remove="Publish\**" />
+		<Compile Remove="src\B\**" />
 		<EmbeddedResource Remove="Build\**" />
 		<EmbeddedResource Remove="Publish\**" />
+		<EmbeddedResource Remove="src\B\**" />
 		<None Remove="Build\**" />
 		<None Remove="Publish\**" />
+		<None Remove="src\B\**" />
 	</ItemGroup>
 
 	<ItemGroup>

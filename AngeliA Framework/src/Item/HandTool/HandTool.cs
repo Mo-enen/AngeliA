@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
-
 
 [EntityAttribute.MapEditorGroup("ItemHandTool")]
 public abstract class HandTool : Equipment {
@@ -39,7 +37,7 @@ public abstract class HandTool : Equipment {
 	public virtual bool AvailableWhenGrabbing => false;
 	public virtual bool AvailableWhenRushing => false;
 	public virtual bool AvailableWhenPounding => false;
-	public virtual int HandheldPoseAnimationID => PoseHandheld_SingleHanded.TYPE_ID;
+	public virtual int HandheldPoseAnimationID => PoseHandheld_Tool.TYPE_ID;
 	public virtual int PerformPoseAnimationID => PosePerform_Tool.TYPE_ID;
 
 	// MSG
@@ -55,29 +53,7 @@ public abstract class HandTool : Equipment {
 		if (!Renderer.HasSprite(SpriteID)) SpriteID = TypeID;
 	}
 
-	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
-
-		base.OnPoseAnimationUpdate_FromEquipment(rendering);
-
-		var character = rendering.TargetCharacter;
-		if (
-			character.AnimationType == CharacterAnimationType.Sleep ||
-			character.AnimationType == CharacterAnimationType.PassOut ||
-			character.AnimationType == CharacterAnimationType.Crash
-		) return;
-
-		if (
-			!Renderer.TryGetSprite(SpriteID, out var sprite, true) &&
-			!Renderer.TryGetSpriteFromGroup(SpriteID, 0, out sprite)
-		) return;
-
-		DrawTool(rendering, sprite);
-
-	}
-
 	// API
-	protected virtual void DrawTool (PoseCharacterRenderer renderer, AngeSprite sprite) => FrameworkUtil.DrawWeaponDistribute(this, renderer, sprite, HandheldPoseAnimationID);
-
 	public virtual Cell OnToolSpriteRendered (PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z) {
 		return Renderer.Draw(
 			sprite,

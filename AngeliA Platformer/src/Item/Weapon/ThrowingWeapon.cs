@@ -6,7 +6,7 @@ namespace AngeliA.Platformer;
 
 public abstract class ThrowingWeapon<B> : ProjectileWeapon<B> where B : MovableBullet {
 	public override int MaxStackCount => 128;
-	public override int HandheldPoseAnimationID => PoseHandheld_SingleHanded.TYPE_ID;
+	public override int HandheldPoseAnimationID => PoseHandheld_Throwing.TYPE_ID;
 	public override int PerformPoseAnimationID => PoseAttack_WaveSingleHanded_SmashOnly.TYPE_ID;
 	public override Bullet SpawnBullet (Character sender) {
 		var bullet = base.SpawnBullet(sender);
@@ -15,5 +15,4 @@ public abstract class ThrowingWeapon<B> : ProjectileWeapon<B> where B : MovableB
 		}
 		return bullet;
 	}
-	protected override void DrawTool (PoseCharacterRenderer renderer, AngeSprite sprite) => FrameworkUtil.DrawWeapon_Throwing(this, renderer, sprite);
 }

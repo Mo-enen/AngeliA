@@ -11,5 +11,5 @@ public abstract class Polearm : MeleeWeapon {
 	public override int RangeXRight => 384;
 	public override int RangeY => 432;
 	public override int PerformPoseAnimationID => PoseAttack_WavePolearm.TYPE_ID;
-	public override int HandheldPoseAnimationID => PoseHandheld_Pole.TYPE_ID;
+	public override int HandheldPoseAnimationID => PoseHandheld_Polearm.TYPE_ID;
 }
