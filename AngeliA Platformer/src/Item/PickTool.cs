@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
 using AngeliA;
 
 namespace AngeliA.Platformer;
@@ -25,8 +24,6 @@ public abstract class PickTool : HandTool {
 	public override int MaxStackCount => 4096;
 	public override int PerformDelayRate => 0;
 	public override int Duration => 16;
-	public override int PerformPoseAnimationID => PosePerform_Tool.TYPE_ID;
-	public override int HandheldPoseAnimationID => PoseHandheld_SingleHanded.TYPE_ID;
 
 	// MSG
 	public override void OnPoseAnimationUpdate_FromEquipment (PoseCharacterRenderer rendering) {
@@ -138,6 +135,5 @@ public abstract class PickTool : HandTool {
 		}
 
 	}
-
 
 }

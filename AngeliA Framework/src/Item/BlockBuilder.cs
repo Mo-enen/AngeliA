@@ -22,8 +22,7 @@ public sealed class BlockBuilder : HandTool {
 	public override int MaxStackCount => _MaxStackCount;
 	public override int Duration => 12;
 	private int _MaxStackCount { get; init; }
-	public override int PerformPoseAnimationID => PosePerform_Block.TYPE_ID;
-	public override int HandheldPoseAnimationID => PoseHandheld_Block.TYPE_ID;
+	
 
 	// MSG
 	public BlockBuilder (int blockID, string blockName, BlockType blockType, int maxStackCount) {
@@ -147,6 +146,9 @@ public sealed class BlockBuilder : HandTool {
 		}
 	}
 
+	public override int GetPerformPoseAnimationID (Character character) => PosePerform_Block.TYPE_ID;
+	
+	public override int GetHandheldPoseAnimationID (Character character) => PoseHandheld_Block.TYPE_ID;
 
 	// LGC
 	private void DrawTargetHighlight (int unitX, int unitY, bool allowPut) {

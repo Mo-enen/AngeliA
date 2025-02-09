@@ -37,8 +37,6 @@ public abstract class HandTool : Equipment {
 	public virtual bool AvailableWhenGrabbing => false;
 	public virtual bool AvailableWhenRushing => false;
 	public virtual bool AvailableWhenPounding => false;
-	public virtual int HandheldPoseAnimationID => PoseHandheld_Tool.TYPE_ID;
-	public virtual int PerformPoseAnimationID => PosePerform_Tool.TYPE_ID;
 
 	// MSG
 	public HandTool () : this(true) { }
@@ -68,5 +66,9 @@ public abstract class HandTool : Equipment {
 	public virtual bool AllowingUse (Character character) => true;
 
 	public virtual void OnToolPerform (Character user) { }
+
+	public virtual int GetHandheldPoseAnimationID (Character character) => PoseHandheld_Tool.TYPE_ID;
+
+	public virtual int GetPerformPoseAnimationID (Character character) => PosePerform_Tool.TYPE_ID;
 
 }

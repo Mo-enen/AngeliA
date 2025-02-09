@@ -278,7 +278,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 				// Draw Tool
 				if (
 					eq is HandTool tool &&
-					PoseAnimation.TryGetAnimationFromPool(tool.HandheldPoseAnimationID, out var poseAni) &&
+					PoseAnimation.TryGetAnimationFromPool(tool.GetHandheldPoseAnimationID(TargetCharacter), out var poseAni) &&
 					poseAni is HandheldPoseAnimation handheldAni &&
 					TargetCharacter.AnimationType != CharacterAnimationType.Sleep &&
 					TargetCharacter.AnimationType != CharacterAnimationType.PassOut &&
@@ -525,8 +525,8 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		int performAniID = 0;
 		int equippingID = Inventory.GetEquipment(TargetCharacter.InventoryID, EquipmentType.HandTool, out _);
 		if (equippingID != 0 && ItemSystem.GetItem(equippingID) is HandTool eqTool) {
-			handheldAniID = eqTool.HandheldPoseAnimationID;
-			performAniID = eqTool.PerformPoseAnimationID;
+			handheldAniID = eqTool.GetHandheldPoseAnimationID(TargetCharacter);
+			performAniID = eqTool.GetPerformPoseAnimationID(TargetCharacter);
 		}
 
 		// Handheld

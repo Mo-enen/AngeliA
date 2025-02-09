@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using AngeliA;
+using AngeliA.Platformer;
 
 namespace AngeliA.Platformer;
 
@@ -25,8 +26,6 @@ public abstract class MissileWeapon<B> : Weapon<B> where B : MissileBullet {
 	public override bool AvailableWhenGrabbing => true;
 	public override bool AvailableWhenRushing => true;
 	public override bool AvailableWhenPounding => true;
-	public override int PerformPoseAnimationID => PoseAttack_Shooting.TYPE_ID;
-	public override int HandheldPoseAnimationID => PoseHandheld_Shooting.TYPE_ID;
 
 	// MSG
 	public override void BeforeItemUpdate_FromEquipment (Character holder) {
