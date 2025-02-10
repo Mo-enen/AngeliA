@@ -61,7 +61,7 @@ public class PoseAnimation_JumpDown : PoseAnimation {
 		// Final
 		Rendering.HandGrabRotationL = LowerArmL.Rotation - FacingSign * 90;
 		Rendering.HandGrabRotationR = LowerArmR.Rotation - FacingSign * 90;
-		Rendering.HandGrabScaleL = FacingSign * -1000;
-		Rendering.HandGrabScaleR = FacingSign * -1000;
+		Rendering.HandGrabScaleL = FacingSign * 1000;
+		Rendering.HandGrabScaleR = FacingSign * 1000;
 	}
 }

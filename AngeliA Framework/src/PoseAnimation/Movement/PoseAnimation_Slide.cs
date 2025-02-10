@@ -6,10 +6,7 @@ public class PoseAnimation_Slide : PoseAnimation {
 
 		bool alt = (CurrentAnimationFrame / 4) % 2 == 0;
 
-		Head.X -= FacingSign * 2 * A2G;
 		Head.Width *= -1;
-
-		Body.X -= FacingSign * A2G;
 
 		if (FacingRight) {
 			UpperLegL.X += A2G;

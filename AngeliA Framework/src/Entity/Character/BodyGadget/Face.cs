@@ -438,7 +438,10 @@ public abstract class Face : BodyGadget {
 		}
 
 		// Attack
-		if (renderer.TargetCharacter.Attackness.IsAttacking) return CharacterFaceExpression.Attack;
+		var att = renderer.TargetCharacter.Attackness;
+		if (Game.GlobalFrame < att.LastAttackFrame + 18 && att.AttackStyleIndex % 2 == 0) {
+			return CharacterFaceExpression.Attack;
+		}
 
 		// Blink
 		if (

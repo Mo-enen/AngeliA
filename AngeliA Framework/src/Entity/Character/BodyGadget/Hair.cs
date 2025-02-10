@@ -71,6 +71,13 @@ public abstract class Hair : BodyGadget {
 		FlowHair(renderer, fCells, false, flowAmountX, flowAmountY);
 		TwistHair(renderer, fCells, hairRect);
 		RotateHair(renderer, fCells);
+
+		// Fix Seam
+		if (fCells != null && fCells.Length > 1 && head.Rotation != 0 || renderer.HeadTwist != 0) {
+			fCells[1].Width += fCells[1].Width > 0 ? 4 : -4;
+			fCells[1].Height += fCells[1].Height > 0 ? 4 : -4;
+		}
+
 		return fCells;
 
 		// Func
