@@ -5,20 +5,16 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public sealed class DefaultHair : Hair {
-	public static readonly int TYPE_ID = typeof(DefaultHair).AngeHash();
-	public DefaultHair () => FillFromSheet(GetType().AngeName());
-}
-
-
-public sealed class ModularHair : Hair, IModularBodyGadget { }
-
-
 public abstract class Hair : BodyGadget {
 
 
-	// Const
-	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Hair;
+
+
+	#region --- VAR ---
+
+
+	// Api
+	public sealed override BodyGadgetType GadgetType => BodyGadgetType.Hair;
 	protected virtual int FlowAmountX => 500;
 	protected virtual int FlowAmountY => 500;
 	public override bool SpriteLoaded => SpriteHairForward.IsValid || SpriteHairBackward.IsValid;
@@ -26,7 +22,40 @@ public abstract class Hair : BodyGadget {
 	public OrientedSprite SpriteHairBackward { get; private set; }
 
 
-	// API
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
+	public override void DrawGadget (PoseCharacterRenderer renderer) {
+		if (!SpriteLoaded) return;
+		using var _ = new SheetIndexScope(SheetIndex);
+		DrawSpriteAsHair(renderer, SpriteHairForward, SpriteHairBackward, FlowAmountX, FlowAmountY);
+	}
+
+
+	public override void DrawGadgetGizmos (IRect rect, Color32 tint, int z) {
+		if (SpriteHairBackward.TryGetSpriteForGizmos(out var spriteB)) {
+			rect = rect.Fit(spriteB);
+			Renderer.Draw(spriteB, rect, tint, z);
+		}
+		if (SpriteHairForward.TryGetSpriteForGizmos(out var spriteF)) {
+			Renderer.Draw(spriteF, rect, tint, z);
+		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
 		SpriteHairForward = new OrientedSprite(name, "Hair", "HairF");
@@ -39,13 +68,6 @@ public abstract class Hair : BodyGadget {
 		if (renderer.HairID != 0 && TryGetGadget(renderer.HairID, out var hair)) {
 			hair.DrawGadget(renderer);
 		}
-	}
-
-
-	public override void DrawGadget (PoseCharacterRenderer renderer) {
-		if (!SpriteLoaded) return;
-		using var _ = new SheetIndexScope(SheetIndex);
-		DrawSpriteAsHair(renderer, SpriteHairForward, SpriteHairBackward, FlowAmountX, FlowAmountY);
 	}
 
 
@@ -263,6 +285,11 @@ public abstract class Hair : BodyGadget {
 
 		}
 	}
+
+
+	#endregion
+
+
 
 
 }

@@ -90,12 +90,15 @@ public static class ItemSystem {
 
 		if (Game.IsToolApplication) return TaskResult.End;
 		if (!Cloth.ClothSystemReady) return TaskResult.Continue;
+		if (!BodyGadget.BodyGadgetSystemReady) return TaskResult.Continue;
 
 		// Init Item Pool from Code
 		var BLOCK_ITEM = typeof(BlockBuilder);
 		var CLOTH_ITEM = typeof(ClothItem);
+		var BG_ITEM = typeof(BodyGadgetItem);
+		var BS_ITEM = typeof(BodySetItem);
 		foreach (var type in typeof(Item).AllChildClass()) {
-			if (type == BLOCK_ITEM || type == CLOTH_ITEM) continue;
+			if (type == BLOCK_ITEM || type == CLOTH_ITEM || type == BG_ITEM || type == BS_ITEM) continue;
 			if (Activator.CreateInstance(type) is not Item item) continue;
 			string angeName = type.AngeName();
 			int id = angeName.AngeHash();
@@ -123,7 +126,7 @@ public static class ItemSystem {
 			));
 		}
 
-		// Add Cloth Entity
+		// Add Cloth Item
 		foreach (var (id, cloth) in Cloth.ForAllCloth()) {
 			string angeName = cloth.ClothName;
 			var clothItem = new ClothItem(id);
@@ -132,6 +135,28 @@ public static class ItemSystem {
 				clothItem,
 				lanID, $"iDes.{angeName}".AngeHash(),
 				angeName, clothItem.MaxStackCount
+			));
+		}
+
+		// Add BodyGadget Item
+		foreach (var (id, gadget) in BodyGadget.ForAllGadget()) {
+			var gadgetItem = new BodyGadgetItem(id);
+			gadget.GetDisplayName(gadget.GadgetName, out int lanID);
+			ItemPool.TryAdd(id, new ItemData(
+				gadgetItem,
+				lanID, $"iDes.{gadget.GadgetName}".AngeHash(),
+				gadget.GadgetName, gadgetItem.MaxStackCount
+			));
+		}
+
+		// Add BodySet Item
+		foreach (var (id, type) in BodySetItem.ForAllBodySetCharacterType()) {
+			var item = new BodySetItem(type);
+			item.GetDisplayName(item.TargetCharacterName, out int lanID);
+			ItemPool.TryAdd(id, new ItemData(
+				item,
+				lanID, $"iDes.BodySet.{item.TargetCharacterName}".AngeHash(),
+				item.TargetCharacterName, item.MaxStackCount
 			));
 		}
 

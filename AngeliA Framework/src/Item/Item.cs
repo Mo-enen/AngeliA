@@ -79,7 +79,7 @@ public abstract class Item : IMapItem {
 	#region --- API ---
 
 
-	public virtual void DrawItem (IRect rect, Color32 tint, int z) {
+	public virtual void DrawItem (Entity holder, IRect rect, Color32 tint, int z) {
 		if (Renderer.TryGetSpriteForGizmos(TypeID, out var sprite)) {
 			Renderer.Draw(sprite, rect.Fit(sprite), tint, z: z);
 		} else {

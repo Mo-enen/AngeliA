@@ -160,16 +160,4 @@ public class BodyPart (BodyPart parent, bool useLimbFlip, bool rotateWithBody) {
 	}
 
 
-	public void SetSpriteID (int newID) {
-		ID = newID;
-		Renderer.TryGetSpriteFromGroup(newID, 0, out var sprite, false, true);
-		if (sprite == null) return;
-		SizeX = sprite.GlobalWidth;
-		SizeY = FlexableSizeY = sprite.GlobalHeight;
-		Border = sprite.GlobalBorder;
-		SpritePivotX = sprite.PivotX;
-		SpritePivotY = sprite.PivotY;
-	}
-
-
 }

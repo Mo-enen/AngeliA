@@ -4,14 +4,17 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public sealed class ModularTail : Tail, IModularBodyGadget { }
-
-
 public abstract class Tail : BodyGadget {
 
 
-	// Data
-	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Tail;
+
+
+
+	#region --- VAR ---
+
+
+	// Api
+	public sealed override BodyGadgetType GadgetType => BodyGadgetType.Tail;
 	public override bool SpriteLoaded => SpriteTail.IsValid;
 	public OrientedSprite SpriteTail { get; private set; }
 	protected virtual int LimbGrow => 1000;
@@ -24,6 +27,62 @@ public abstract class Tail : BodyGadget {
 	protected virtual int FrameDelta => 37;
 	protected virtual int OffsetX => 0;
 	protected virtual int OffsetY => 0;
+
+
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
+	public override void DrawGadget (PoseCharacterRenderer renderer) {
+
+		if (!SpriteLoaded) return;
+		if (
+			renderer.TargetCharacter.AnimationType == CharacterAnimationType.Fly &&
+			renderer.WingID != 0 &&
+			Wing.IsPropellerWing(renderer.WingID)
+		) return;
+
+		using var _ = new SheetIndexScope(SheetIndex);
+		var animatedPoseType = renderer.TargetCharacter.AnimationType;
+		bool flying = animatedPoseType == CharacterAnimationType.Fly;
+		bool lyingDown = animatedPoseType.IsLyingDown();
+		int x, y;
+		if (flying) {
+			x = (renderer.UpperLegL.GlobalX + renderer.UpperLegR.GlobalX) / 2;
+			y = (renderer.UpperLegL.GlobalY + renderer.UpperLegR.GlobalY) / 2;
+		} else if (lyingDown) {
+			x = (renderer.UpperLegL.GlobalX + renderer.UpperLegR.GlobalX) / 2;
+			y = (renderer.UpperLegL.GlobalY + renderer.UpperLegR.GlobalY) / 2;
+		} else {
+			x = renderer.Body.GlobalX;
+			y = renderer.Hip.GlobalY + renderer.Hip.Height / 2;
+		}
+		DrawSpriteAsTail(
+			SpriteTail, x, y, renderer.Body.FrontSide, renderer.Body.Width > 0, renderer.Body.Height > 0,
+			Frequency, FrequencyAlt, FrameLen, FrameDelta,
+			AngleAmountRoot, AngleAmountSubsequent, AngleOffset, LimbGrow, OffsetX, OffsetY,
+			flying, frameOffset: renderer.TargetCharacter.TypeID // ※ Intended ※
+		);
+
+	}
+
+
+	public override void DrawGadgetGizmos (IRect rect, Color32 tint, int z) {
+		using var _ = new DynamicClampCellScope(rect);
+		DrawSpriteAsTail(SpriteTail, rect.CenterX(), rect.y, true, true, true, z: z);
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
 
 
 	public override bool FillFromSheet (string name) {
@@ -40,51 +99,37 @@ public abstract class Tail : BodyGadget {
 	}
 
 
-	public override void DrawGadget (PoseCharacterRenderer renderer) {
-		if (!SpriteLoaded) return;
-		if (
-			renderer.TargetCharacter.AnimationType == CharacterAnimationType.Fly &&
-			renderer.WingID != 0 &&
-			Wing.IsPropellerWing(renderer.WingID)
-		) return;
-		using var _ = new SheetIndexScope(SheetIndex);
-		DrawSpriteAsTail(
-			renderer, SpriteTail, Frequency, FrequencyAlt, FrameLen, FrameDelta,
-			AngleAmountRoot, AngleAmountSubsequent, AngleOffset, LimbGrow, OffsetX, OffsetY
-		);
-	}
-
-
 	public static void DrawSpriteAsTail (
-		PoseCharacterRenderer renderer, OrientedSprite oSprite,
-		int frequency, int frequencyAlt, int frameLen, int frameDelta,
-		int angleAmountRoot, int angleAmountSubsequent, int angleOffset, int limbGrow,
-		int offsetX, int offsetY
+		OrientedSprite oSprite, int x, int y, bool facingFront, bool facingRight, bool facingUp,
+		int frequency = 113, int frequencyAlt = 277, int frameLen = 219, int frameDelta = 37,
+		int angleAmountRoot = 1000, int angleAmountSubsequent = 1000, int angleOffset = 0, int limbGrow = 1000,
+		int offsetX = 0, int offsetY = 0,
+		bool isFlying = false, int frameOffset = 0, int z = int.MinValue
 	) {
 
 		if (!oSprite.IsValid) return;
-		if (!oSprite.TryGetSpriteGroup(renderer.Body.FrontSide, renderer.Body.Width > 0, out var group) || group.Count == 0) return;
 		if (frequency <= 0) frequency = 1;
 		if (frequencyAlt <= 0) frequencyAlt = 1;
 		if (frameLen <= 0) frameLen = 1;
+		if (
+			!oSprite.TryGetSpriteGroup(facingFront, facingRight, out var group) ||
+			group.Count == 0
+		) return;
 
 		int count = group.Count;
-		var target = renderer.TargetCharacter;
-		int z = renderer.Body.FrontSide ? -33 : 33;
-		int facingSign = target.Movement.FacingRight || target.AnimationType == CharacterAnimationType.Climb ? 1 : -1;
+		z = z == int.MinValue ? (facingFront ? -33 : 33) : z;
+		int facingSign = facingRight || !facingFront ? 1 : -1;
 		int prevX = 0;
 		int prevY = 0;
 		int prevW = 0;
 		int prevH = 0;
 		int prevR = 0;
-		int x = 0;
-		int y = 0;
 		int w = 0;
 		int h = 0;
 		int r = 0;
 		int px = 0;
 		int py = 0;
-		int animationFrame = (target.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
+		int animationFrame = (frameOffset + Game.GlobalFrame).Abs();
 		for (int i = 0; i < count; i++) {
 
 			var sprite = group.Sprites[i];
@@ -92,14 +137,10 @@ public abstract class Tail : BodyGadget {
 			h = sprite.GlobalHeight;
 			px = 0;
 
-			var animatedPoseType = target.AnimationType;
-
-			if (animatedPoseType == CharacterAnimationType.Fly) {
+			if (isFlying) {
 				// Flying
 				h = sprite.GlobalHeight * 2 / 3;
 				if (i == 0) {
-					x = (renderer.UpperLegL.GlobalX + renderer.UpperLegR.GlobalX) / 2;
-					y = (renderer.UpperLegL.GlobalY + renderer.UpperLegR.GlobalY) / 2;
 					FrameworkUtil.LimbRotate(
 						ref x, ref y, ref px, ref py, ref r, ref w, ref h,
 						facingSign * 60, false, limbGrow
@@ -117,22 +158,12 @@ public abstract class Tail : BodyGadget {
 				);
 				if (i == 0) {
 					// First
-					if (
-						animatedPoseType == CharacterAnimationType.Sleep ||
-						animatedPoseType == CharacterAnimationType.PassOut
-					) {
-						x = (renderer.UpperLegL.GlobalX + renderer.UpperLegR.GlobalX) / 2;
-						y = (renderer.UpperLegL.GlobalY + renderer.UpperLegR.GlobalY) / 2;
-					} else {
-						x = renderer.Body.GlobalX - w / 2;
-						y = renderer.Hip.GlobalY + renderer.Hip.Height / 2;
-					}
-					int MIN_ANGLE = renderer.Body.Height > 0 ? 123 : 63;
-					int MAX_ANGLE = renderer.Body.Height > 0 ? 142 : 82;
-					MIN_ANGLE = MIN_ANGLE * angleAmountRoot / 1000;
-					MAX_ANGLE = MAX_ANGLE * angleAmountRoot / 1000;
+					int minAngle = facingUp ? 123 : 63;
+					int maxAngle = facingUp ? 142 : 82;
+					minAngle = minAngle * angleAmountRoot / 1000;
+					maxAngle = maxAngle * angleAmountRoot / 1000;
 					ANGLE_DELTA = ANGLE_DELTA * angleAmountRoot / 1000;
-					int angle = (Util.Remap(0, count - 1, MIN_ANGLE, MAX_ANGLE, i) + angleOffset) * facingSign;
+					int angle = (Util.Remap(0, count - 1, minAngle, maxAngle, i) + angleOffset) * facingSign;
 					int targetRot = (int)Util.LerpUnclamped(
 						-angle + ANGLE_DELTA * facingSign,
 						angle + ANGLE_DELTA * facingSign,
@@ -181,6 +212,11 @@ public abstract class Tail : BodyGadget {
 		}
 
 	}
+
+
+	#endregion
+
+
 
 
 }

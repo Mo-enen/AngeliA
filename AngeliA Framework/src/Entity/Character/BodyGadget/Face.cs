@@ -17,22 +17,20 @@ public enum CharacterFaceExpression {
 }
 
 
-public sealed class DefaultFace : Face {
-	public static readonly int TYPE_ID = typeof(DefaultFace).AngeHash();
-	public DefaultFace () => FillFromSheet(GetType().AngeName());
-}
-
-
-public sealed class ModularFace : Face, IModularBodyGadget { }
-
-
 public abstract class Face : BodyGadget {
 
 
-	// VAR
-	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Face;
+
+
+
+	#region --- VAR ---
+
+
+	// Api
+	public sealed override BodyGadgetType GadgetType => BodyGadgetType.Face;
 	public override bool SpriteLoaded => (SpriteEyeLeft.IsValid || SpriteEyeRight.IsValid) && (SpriteScleraLeft.IsValid || SpriteScleraRight.IsValid);
 
+	// Data
 	private OrientedSprite SpriteEyeLeft;
 	private OrientedSprite SpriteScleraLeft;
 	private OrientedSprite SpriteEyelashLeft;
@@ -47,31 +45,12 @@ public abstract class Face : BodyGadget {
 	private OrientedSprite SpriteTooth;
 
 
-	// API
-	public override bool FillFromSheet (string keyword) {
-		base.FillFromSheet(keyword);
-		SpriteEyeLeft = new OrientedSprite(keyword, "EyeLeft", "Eye");
-		SpriteScleraLeft = new OrientedSprite(keyword, "ScleraLeft", "Sclera");
-		SpriteEyelashLeft = new OrientedSprite(keyword, "EyelashLeft", "Eyelash");
-		SpriteEyebrowLeft = new OrientedSprite(keyword, "EyebrowLeft", "Eyebrow");
-		SpriteEarLeft = new OrientedSprite(keyword, "HumanEarLeft", "HumanEar");
-
-		SpriteEyeRight = new OrientedSprite(keyword, "EyeRight", "Eye");
-		SpriteScleraRight = new OrientedSprite(keyword, "ScleraRight", "Sclera");
-		SpriteEyelashRight = new OrientedSprite(keyword, "EyelashRight", "Eyelash");
-		SpriteEyebrowRight = new OrientedSprite(keyword, "EyebrowRight", "Eyebrow");
-		SpriteEarRight = new OrientedSprite(keyword, "HumanEarRight", "HumanEar");
-
-		SpriteMouth = new OrientedSprite(keyword, "Mouth");
-		SpriteTooth = new OrientedSprite(keyword, "Tooth");
-		return SpriteLoaded;
-	}
+	#endregion
 
 
-	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
-		if (renderer.FaceID == 0 || !TryGetGadget(renderer.FaceID, out var face)) return;
-		face.DrawGadget(renderer);
-	}
+
+
+	#region --- MSG ---
 
 
 	public override void DrawGadget (PoseCharacterRenderer renderer) {
@@ -88,10 +67,12 @@ public abstract class Face : BodyGadget {
 		// Draw Face
 		var expression = GetCurrentExpression(renderer);
 		int startCellIndex = Renderer.GetUsedCellCount();
+		bool facingRight = renderer.Head.Width > 0;
+		int aniFrame = renderer.CurrentAnimationFrame;
 
-		DrawEye(renderer, expression, faceRect, true);
-		DrawEye(renderer, expression, faceRect, false);
-		DrawMouth(renderer, expression, faceRect);
+		DrawEye(expression, faceRect, true, facingRight, aniFrame);
+		DrawEye(expression, faceRect, false, facingRight, aniFrame);
+		DrawMouth(expression, faceRect, facingRight, aniFrame);
 		DrawSpriteAsHumanEar(renderer, SpriteEarLeft, SpriteEarRight);
 
 		// Move with Head
@@ -122,7 +103,13 @@ public abstract class Face : BodyGadget {
 	}
 
 
-	protected virtual void DrawEye (PoseCharacterRenderer renderer, CharacterFaceExpression expression, IRect faceRect, bool leftEye) {
+	public override void DrawGadgetGizmos (IRect rect, Color32 tint, int z) {
+		DrawEye(CharacterFaceExpression.Normal, rect, true, true, 0);
+		DrawEye(CharacterFaceExpression.Normal, rect, false, true, 0);
+	}
+
+
+	protected virtual void DrawEye (CharacterFaceExpression expression, IRect faceRect, bool leftEye, bool facingRight, int animationFrame) {
 
 		var SpriteEye = leftEye ? SpriteEyeLeft : SpriteEyeRight;
 		var SpriteSclera = leftEye ? SpriteScleraLeft : SpriteScleraRight;
@@ -131,10 +118,9 @@ public abstract class Face : BodyGadget {
 		var SpriteEyebrow = leftEye ? SpriteEyebrowLeft : SpriteEyebrowRight;
 		var SpriteEyelash = leftEye ? SpriteEyelashLeft : SpriteEyelashRight;
 
-		bool facingRight = renderer.Head.Width > 0;
-		if (!SpriteEye.TryGetSprite(true, facingRight, renderer.CurrentAnimationFrame, out var eye)) return;
-		if (!SpriteSclera.TryGetSprite(true, facingRight, renderer.CurrentAnimationFrame, out var sclera)) return;
-		SpriteEyebrow.TryGetSprite(true, facingRight, renderer.CurrentAnimationFrame, out var eyebrow);
+		if (!SpriteEye.TryGetSprite(true, facingRight, animationFrame, out var eye)) return;
+		if (!SpriteSclera.TryGetSprite(true, facingRight, animationFrame, out var sclera)) return;
+		SpriteEyebrow.TryGetSprite(true, facingRight, animationFrame, out var eyebrow);
 
 		var rect = faceRect.CornerInside(leftEye ? Alignment.TopLeft : Alignment.TopRight, sclera.GlobalWidth, sclera.GlobalHeight);
 		bool eyeOpening =
@@ -143,7 +129,7 @@ public abstract class Face : BodyGadget {
 			expression == CharacterFaceExpression.Damage;
 
 		// Expression Redirect
-		if (!SpriteEyelash.TryGetSprite(true, facingRight, renderer.CurrentAnimationFrame, out var eyelash) && !eyeOpening) {
+		if (!SpriteEyelash.TryGetSprite(true, facingRight, animationFrame, out var eyelash) && !eyeOpening) {
 			expression = CharacterFaceExpression.Normal;
 			eyeOpening = true;
 		}
@@ -286,13 +272,12 @@ public abstract class Face : BodyGadget {
 	}
 
 
-	protected virtual void DrawMouth (PoseCharacterRenderer renderer, CharacterFaceExpression expression, IRect faceRect) {
+	protected virtual void DrawMouth (CharacterFaceExpression expression, IRect faceRect, bool facingRight, int animationFrame) {
 
 		if (expression != CharacterFaceExpression.PassOut && expression != CharacterFaceExpression.Damage) return;
 
-		bool facingRight = renderer.Head.Width > 0;
-		if (!SpriteMouth.TryGetSprite(true, facingRight, renderer.CurrentAnimationFrame, out var mouth)) return;
-		SpriteTooth.TryGetSprite(true, facingRight, renderer.CurrentAnimationFrame, out var tooth);
+		if (!SpriteMouth.TryGetSprite(true, facingRight, animationFrame, out var mouth)) return;
+		SpriteTooth.TryGetSprite(true, facingRight, animationFrame, out var tooth);
 
 		var rect = faceRect.CornerInside(Alignment.BottomMid, mouth.GlobalWidth, mouth.GlobalHeight);
 
@@ -325,6 +310,34 @@ public abstract class Face : BodyGadget {
 			Renderer.DrawSlice(mouth, rect, Color32.WHITE, z: 33);
 		}
 
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public override bool FillFromSheet (string keyword) {
+		base.FillFromSheet(keyword);
+		SpriteEyeLeft = new OrientedSprite(keyword, "EyeLeft", "Eye");
+		SpriteScleraLeft = new OrientedSprite(keyword, "ScleraLeft", "Sclera");
+		SpriteEyelashLeft = new OrientedSprite(keyword, "EyelashLeft", "Eyelash");
+		SpriteEyebrowLeft = new OrientedSprite(keyword, "EyebrowLeft", "Eyebrow");
+		SpriteEarLeft = new OrientedSprite(keyword, "HumanEarLeft", "HumanEar");
+
+		SpriteEyeRight = new OrientedSprite(keyword, "EyeRight", "Eye");
+		SpriteScleraRight = new OrientedSprite(keyword, "ScleraRight", "Sclera");
+		SpriteEyelashRight = new OrientedSprite(keyword, "EyelashRight", "Eyelash");
+		SpriteEyebrowRight = new OrientedSprite(keyword, "EyebrowRight", "Eyebrow");
+		SpriteEarRight = new OrientedSprite(keyword, "HumanEarRight", "HumanEar");
+
+		SpriteMouth = new OrientedSprite(keyword, "Mouth");
+		SpriteTooth = new OrientedSprite(keyword, "Tooth");
+		return SpriteLoaded;
 	}
 
 
@@ -376,6 +389,12 @@ public abstract class Face : BodyGadget {
 		return faceRect.CornerInside(
 			leftEye ? Alignment.TopLeft : Alignment.TopRight, sclera.GlobalWidth, sclera.GlobalHeight
 		);
+	}
+
+
+	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.FaceID == 0 || !TryGetGadget(renderer.FaceID, out var face)) return;
+		face.DrawGadget(renderer);
 	}
 
 
@@ -464,6 +483,11 @@ public abstract class Face : BodyGadget {
 			_ => CharacterFaceExpression.Normal,
 		};
 	}
+
+
+	#endregion
+
+
 
 
 }

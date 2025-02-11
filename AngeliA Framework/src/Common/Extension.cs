@@ -847,12 +847,12 @@ public static class Extension {
 		rect.y += rect.height;
 		rect.height = -rect.height;
 	}
-	public static IRect GetFlipHorizontal (this ref IRect rect) {
+	public static IRect GetFlipHorizontal (this IRect rect) {
 		rect.x += rect.width;
 		rect.width = -rect.width;
 		return rect;
 	}
-	public static IRect GetFlipVertical (this ref IRect rect) {
+	public static IRect GetFlipVertical (this IRect rect) {
 		rect.y += rect.height;
 		rect.height = -rect.height;
 		return rect;

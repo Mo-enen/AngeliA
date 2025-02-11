@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-
 public class PoseCharacterRenderer : CharacterRenderer {
 
 
@@ -16,8 +15,8 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	public const int BODY_PART_COUNT = 17;
 	public const int CM_PER_PX = 5;
 	private const int A2G = Const.CEL / Const.ART_CEL;
-	private static readonly int[] DEFAULT_BODY_PART_ID = ["DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(),];
-	private static readonly string[] BODY_PART_NAME = ["Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot",];
+	public static readonly int[] DEFAULT_BODY_PART_ID = ["DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(),];
+	public static readonly string[] BODY_PART_NAME = ["Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot",];
 	private static readonly int[] DEFAULT_POSE_ANIMATION_IDS = [typeof(PoseAnimation_Idle).AngeHash(), typeof(PoseAnimation_Walk).AngeHash(), typeof(PoseAnimation_Run).AngeHash(), typeof(PoseAnimation_JumpUp).AngeHash(), typeof(PoseAnimation_JumpDown).AngeHash(), typeof(PoseAnimation_SwimIdle).AngeHash(), typeof(PoseAnimation_SwimMove).AngeHash(), typeof(PoseAnimation_SquatIdle).AngeHash(), typeof(PoseAnimation_SquatMove).AngeHash(), typeof(PoseAnimation_Dash).AngeHash(), typeof(PoseAnimation_Rush).AngeHash(), typeof(PoseAnimation_Crash).AngeHash(), typeof(PoseAnimation_Pound).AngeHash(), typeof(PoseAnimation_Brake).AngeHash(), typeof(PoseAnimation_Climb).AngeHash(), typeof(PoseAnimation_Fly).AngeHash(), typeof(PoseAnimation_Slide).AngeHash(), typeof(PoseAnimation_GrabTop).AngeHash(), typeof(PoseAnimation_GrabSide).AngeHash(), typeof(PoseAnimation_Spin).AngeHash(), typeof(PoseAnimation_Animation_TakingDamage).AngeHash(), typeof(PoseAnimation_Sleep).AngeHash(), typeof(PoseAnimation_PassOut).AngeHash(), typeof(PoseAnimation_Rolling).AngeHash(),];
 	private static readonly int ANI_TYPE_COUNT = typeof(CharacterAnimationType).EnumLength();
 	private const int POSE_Z_HEAD = 10;
@@ -83,7 +82,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	public readonly FrameBasedInt SuitFoot = new(0);
 
 	// Data
-	private static readonly Dictionary<int, CharacterRenderingConfig> ConfigPool_Rendering = [];
+	private static readonly Dictionary<int, CharacterRenderingConfig> ConfigPoolRendering = [];
 	private static readonly int EquipmentTypeCount = System.Enum.GetValues(typeof(EquipmentType)).Length;
 	private static int GlobalPoseRenderingZOffset;
 	private static int RenderingConfigGlobalVersion = -1;
@@ -104,7 +103,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 
 	[CheatCode("ResetCharacterRenderingConfig")]
-	internal static void CheatCode_ResetConfig () => ReloadRenderingConfigPoolFromFileAndSheet();
+	internal static void CheatCode_ResetConfig () => ReloadRenderingConfigPoolFromFileAndSheet(forceReset: true);
 
 
 	// Init
@@ -113,15 +112,28 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 		if (!Renderer.IsReady) return TaskResult.Continue;
 
+		bool forceResetRendering = false;
+
 #if DEBUG
 		if (DEFAULT_POSE_ANIMATION_IDS.Length != ANI_TYPE_COUNT) {
 			Debug.LogWarning($"FAILBACK_POSE_ANIMATION_IDS length have to be {ANI_TYPE_COUNT}");
 		}
+		forceResetRendering = true;
 #endif
 
-		ReloadRenderingConfigPoolFromFileAndSheet();
+		ReloadRenderingConfigPoolFromFileAndSheet(forceResetRendering);
 		return TaskResult.End;
 	}
+
+
+#if DEBUG
+	[OnGameFocused]
+	internal static void OnGameFocused () {
+		if (Game.GlobalFrame != 0) {
+			ReloadRenderingConfigPoolFromFileAndSheet(true);
+		}
+	}
+#endif
 
 
 	[OnSavingSlotChanged]
@@ -609,6 +621,10 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 			using var _ = new RotateCellScope(bodyPart.RotateWithBody ? Body.Rotation : 0, Body.GlobalX, Body.GlobalY);
 
+
+
+
+
 			if (bodyPart == Head && Renderer.TryGetSpriteFromGroup(bodyPart.ID, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
 				Renderer.Draw(
 					headSprite,
@@ -651,55 +667,31 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	#region --- API ---
 
 
+	public int GetGadgetID (BodyGadgetType type) => type switch {
+		BodyGadgetType.Face => FaceID,
+		BodyGadgetType.Hair => HairID,
+		BodyGadgetType.Ear => EarID,
+		BodyGadgetType.Horn => HornID,
+		BodyGadgetType.Tail => TailID,
+		BodyGadgetType.Wing => WingID,
+		_ => 0,
+	};
+
+
+	public int GetSuitID (ClothType type) => type switch {
+		ClothType.Head => SuitHead,
+		ClothType.Body => SuitBody,
+		ClothType.Hand => SuitHand,
+		ClothType.Hip => SuitHip,
+		ClothType.Foot => SuitFoot,
+		_ => 0,
+	};
+
+
 	// Config
-	public static CharacterRenderingConfig CreateCharacterRenderingConfigFromSheet (System.Type characterType) {
-
-		int typeID = characterType.AngeHash();
-		int bodyPartLen = DEFAULT_BODY_PART_ID.Length;
-		var config = new CharacterRenderingConfig();
-
-		// Body Parts
-		for (int i = 0; i < bodyPartLen; i++) {
-			if (!BodyPart.TryGetSpriteIdFromSheet(characterType, BODY_PART_NAME[i], i == 0, out int id)) {
-				id = DEFAULT_BODY_PART_ID[i];
-			}
-			switch (i) {
-				case 0: config.Head = id; break;
-				case 1: config.Body = id; break;
-				case 2: config.Hip = id; break;
-				case 3 or 4: config.Shoulder = id; break;
-				case 5 or 6: config.UpperArm = id; break;
-				case 7 or 8: config.LowerArm = id; break;
-				case 9 or 10: config.Hand = id; break;
-				case 11 or 12: config.UpperLeg = id; break;
-				case 13 or 14: config.LowerLeg = id; break;
-				case 15 or 16: config.Foot = id; break;
-			}
-		}
-
-		// Gadget
-		config.Face = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Face, out int defaultId0) ? defaultId0 : DefaultFace.TYPE_ID;
-		config.Hair = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Hair, out int defaultId1) ? defaultId1 : DefaultHair.TYPE_ID;
-		config.Ear = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Ear, out int defaultId2) ? defaultId2 : 0;
-		config.Tail = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Tail, out int defaultId3) ? defaultId3 : 0;
-		config.Wing = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Wing, out int defaultId4) ? defaultId4 : 0;
-		config.Horn = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Horn, out int defaultId5) ? defaultId5 : 0;
-
-		// Suit
-		config.SuitHead = Cloth.TryGetDefaultClothID(typeID, ClothType.Head, out int suitId0) ? suitId0 : 0;
-		config.SuitBody = Cloth.TryGetDefaultClothID(typeID, ClothType.Body, out int suitId1) ? suitId1 : DefaultBodySuit.TYPE_ID;
-		config.SuitHip = Cloth.TryGetDefaultClothID(typeID, ClothType.Hip, out int suitId2) ? suitId2 : DefaultHipSuit.TYPE_ID;
-		config.SuitHand = Cloth.TryGetDefaultClothID(typeID, ClothType.Hand, out int suitId3) ? suitId3 : 0;
-		config.SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out int suitId4) ? suitId4 : DefaultFootSuit.TYPE_ID;
-
-		return config;
-
-	}
-
-
 	public static void ReloadRenderingConfigPoolFromFileAndSheet (bool forceReset = false) {
 		RenderingConfigGlobalVersion++;
-		ConfigPool_Rendering.Clear();
+		ConfigPoolRendering.Clear();
 		string renderRoot = Universe.BuiltIn.SlotCharacterRenderingConfigRoot;
 		foreach (var type in typeof(Character).AllChildClass()) {
 			int typeID = type.AngeHash();
@@ -708,19 +700,36 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			var config = !forceReset ? JsonUtil.LoadJsonFromPath<CharacterRenderingConfig>(path) : null;
 			// Create Default Config
 			if (config == null) {
-				config = CreateCharacterRenderingConfigFromSheet(type);
+				config = new CharacterRenderingConfig();
+				config.LoadFromSheet(type);
 				JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
 			}
 			// Add to Pool
-			ConfigPool_Rendering.Add(typeID, config);
+			ConfigPoolRendering.Add(typeID, config);
 		}
-		ConfigPool_Rendering.TrimExcess();
+		ConfigPoolRendering.TrimExcess();
 	}
+
+
+	public static void ResetCharacterConfigInPool (System.Type characterType, bool saveToFile = false) {
+		int id = characterType.AngeHash();
+		if (!ConfigPoolRendering.TryGetValue(id, out var config)) return;
+		config.LoadFromSheet(characterType);
+		// File
+		if (saveToFile) {
+			string renderRoot = Universe.BuiltIn.SlotCharacterRenderingConfigRoot;
+			string path = Util.CombinePaths(renderRoot, $"{characterType.AngeName()}.json");
+			JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
+		}
+	}
+
+
+	public static bool TryGetConfigFromPool (int id, out CharacterRenderingConfig config) => ConfigPoolRendering.TryGetValue(id, out config);
 
 
 	public void SaveCharacterToConfig (bool saveToFile = false) {
 
-		if (!ConfigPool_Rendering.TryGetValue(TargetCharacter.TypeID, out var config)) return;
+		if (!ConfigPoolRendering.TryGetValue(TargetCharacter.TypeID, out var config)) return;
 
 		config.CharacterHeight = CharacterHeight;
 
@@ -768,10 +777,10 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	}
 
 
-	public void SyncRenderingConfigFromPool () {
-		if (LocalRenderingConfigVersion == RenderingConfigGlobalVersion) return;
+	public void SyncRenderingConfigFromPool (bool forceSync = false) {
+		if (!forceSync && LocalRenderingConfigVersion == RenderingConfigGlobalVersion) return;
 		LocalRenderingConfigVersion = RenderingConfigGlobalVersion;
-		if (ConfigPool_Rendering.TryGetValue(TargetCharacter.TypeID, out var rConfig)) {
+		if (ConfigPoolRendering.TryGetValue(TargetCharacter.TypeID, out var rConfig)) {
 			rConfig.LoadToCharacter(this);
 		} else {
 			for (int i = 0; i < DEFAULT_BODY_PART_ID.Length; i++) {

@@ -222,7 +222,7 @@ public class ItemHolder : Rigidbody {
 			Y, ITEM_RENDER_SIZE, ITEM_RENDER_SIZE
 		);
 		using (new EnvironmentShadowScope()) {
-			_item.DrawItem(rect, Color32.WHITE, RENDERING_Z);
+			_item.DrawItem(this, rect, Color32.WHITE, RENDERING_Z);
 		}
 
 		// Update

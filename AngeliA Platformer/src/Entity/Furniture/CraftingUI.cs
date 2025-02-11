@@ -334,7 +334,7 @@ public sealed class CraftingUI : InventoryPartnerUI {
 			if (resultUnlocked) {
 				// Draw Item Icon
 				if (ItemSystem.GetItem(resultID) is Item conItem) {
-					conItem.DrawItem(iRect, Color32.WHITE, int.MinValue + 4);
+					conItem.DrawItem(null, iRect, Color32.WHITE, int.MinValue + 4);
 				}
 			} else {
 				// Draw "?"
@@ -359,7 +359,7 @@ public sealed class CraftingUI : InventoryPartnerUI {
 				if (unlocked) {
 					// Draw Item Icon
 					if (ItemSystem.GetItem(id) is Item conItem) {
-						conItem.DrawItem(iRect, Color32.WHITE, int.MinValue + 4);
+						conItem.DrawItem(null, iRect, Color32.WHITE, int.MinValue + 4);
 					}
 				} else {
 					// Draw "?"
@@ -429,7 +429,7 @@ public sealed class CraftingUI : InventoryPartnerUI {
 		if (CombineResultID != 0) {
 			// Icon
 			if (ItemSystem.GetItem(CombineResultID) is Item resultItem) {
-				resultItem.DrawItem(resultItemRect.Shrink(Unify(12)), Color32.WHITE, int.MinValue + 4);
+				resultItem.DrawItem(null, resultItemRect.Shrink(Unify(12)), Color32.WHITE, int.MinValue + 4);
 			}
 			// Count
 			if (CombineResultCount > 1) {

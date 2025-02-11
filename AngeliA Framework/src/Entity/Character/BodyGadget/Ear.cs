@@ -4,34 +4,29 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public sealed class ModularEar : Ear, IModularBodyGadget { }
-
-
 public abstract class Ear : BodyGadget {
 
 
-	// VAR
-	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Ear;
+
+
+
+	#region --- VAR ---
+
+
+	// Api
+	public sealed override BodyGadgetType GadgetType => BodyGadgetType.Ear;
 	public override bool SpriteLoaded => SpriteEarLeft.IsValid || SpriteEarRight.IsValid;
 	protected virtual int MotionAmount => 618;
 	public OrientedSprite SpriteEarLeft { get; private set; }
 	public OrientedSprite SpriteEarRight { get; private set; }
 
 
-	// MSG
-	public override bool FillFromSheet (string basicName) {
-		base.FillFromSheet(basicName);
-		SpriteEarLeft = new OrientedSprite(basicName, "EarLeft", "Ear");
-		SpriteEarRight = new OrientedSprite(basicName, "EarRight", "Ear");
-		return SpriteLoaded;
-	}
+	#endregion
 
 
-	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
-		if (renderer.EarID != 0 && TryGetGadget(renderer.EarID, out var ear)) {
-			ear.DrawGadget(renderer);
-		}
-	}
+
+
+	#region --- MSG ---
 
 
 	public override void DrawGadget (PoseCharacterRenderer renderer) {
@@ -45,8 +40,44 @@ public abstract class Ear : BodyGadget {
 		);
 	}
 
+
+	public override void DrawGadgetGizmos (IRect rect, Color32 tint, int z) {
+		if (SpriteEarLeft.TryGetSpriteForGizmos(out var spriteL)) {
+			Renderer.Draw(spriteL, rect.LeftHalf().Fit(spriteL).Shift(-rect.width / 10, 0), tint, z);
+		}
+		if (SpriteEarRight.TryGetSpriteForGizmos(out var spriteR)) {
+			Renderer.Draw(spriteR, rect.RightHalf().Fit(spriteR).Shift(rect.width / 10, 0), tint, z);
+		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public override bool FillFromSheet (string basicName) {
+		base.FillFromSheet(basicName);
+		SpriteEarLeft = new OrientedSprite(basicName, "EarLeft", "Ear");
+		SpriteEarRight = new OrientedSprite(basicName, "EarRight", "Ear");
+		return SpriteLoaded;
+	}
+
+
 	protected virtual bool FrontOfHeadL (PoseCharacterRenderer renderer) => true;
+
+
 	protected virtual bool FrontOfHeadR (PoseCharacterRenderer renderer) => true;
+
+
+	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.EarID != 0 && TryGetGadget(renderer.EarID, out var ear)) {
+			ear.DrawGadget(renderer);
+		}
+	}
 
 
 	public static void DrawSpriteAsEar (
@@ -182,6 +213,11 @@ public abstract class Ear : BodyGadget {
 
 
 	}
+
+
+	#endregion
+
+
 
 
 }

@@ -1,5 +1,6 @@
 ﻿namespace AngeliA;
 
+
 public readonly struct EnvironmentShadowScope (int offsetX = -64, int offsetY = 0, byte alpha = 64, int z = -65520) : System.IDisposable {
 	private readonly int StartIndex = Renderer.GetUsedCellCount();
 	private readonly int LayerIndex = Renderer.CurrentLayerIndex;

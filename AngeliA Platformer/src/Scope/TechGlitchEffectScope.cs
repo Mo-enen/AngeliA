@@ -1,4 +1,6 @@
-﻿namespace AngeliA;
+﻿using AngeliA;
+
+namespace AngeliA.Platformer;
 
 public readonly struct TechGlitchEffectScope (int range, Color32 tint = default) : System.IDisposable {
 

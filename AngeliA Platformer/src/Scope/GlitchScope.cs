@@ -1,4 +1,7 @@
-﻿namespace AngeliA;
+﻿using AngeliA;
+
+namespace AngeliA.Platformer;
+
 
 public readonly struct GlitchScope : System.IDisposable {
 	private readonly int LayerIndex;

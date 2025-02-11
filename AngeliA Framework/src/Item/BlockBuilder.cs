@@ -138,7 +138,7 @@ public sealed class BlockBuilder : HandTool {
 	}
 
 
-	public override void DrawItem (IRect rect, Color32 tint, int z) {
+	public override void DrawItem (Entity holder, IRect rect, Color32 tint, int z) {
 		if (Renderer.TryGetSpriteForGizmos(BlockID, out var sprite)) {
 			Renderer.Draw(sprite, rect.Fit(sprite), tint, z: z);
 		} else {

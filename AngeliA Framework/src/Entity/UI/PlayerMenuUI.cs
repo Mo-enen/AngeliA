@@ -545,7 +545,7 @@ public class PlayerMenuUI : EntityUI {
 		if (ItemSystem.GetItem(TakingID) is Item takingItem) {
 			var _rect = new IRect(itemRect.x, itemRect.y - size / 6, size, size);
 			using (new RotateCellScope(Game.GlobalFrame.PingPong(30) - 15, _rect.CenterX(), _rect.CenterY())) {
-				takingItem.DrawItem(_rect, Color32.WHITE, int.MaxValue);
+				takingItem.DrawItem(PlayerSystem.Selecting, _rect, Color32.WHITE, int.MaxValue);
 			}
 		}
 
@@ -1290,7 +1290,7 @@ public class PlayerMenuUI : EntityUI {
 
 
 	// Util
-	private static void DrawItemIcon (IRect rect, Item item, Color32 tint, int z) => item?.DrawItem(rect.Shrink(Unify(7)), tint, z);
+	private static void DrawItemIcon (IRect rect, Item item, Color32 tint, int z) => item?.DrawItem(PlayerSystem.Selecting, rect.Shrink(Unify(7)), tint, z);
 
 
 	private void DrawItemCount (IRect rect, int number) {

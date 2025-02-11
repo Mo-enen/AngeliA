@@ -4,34 +4,29 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public sealed class ModularHorn : Horn, IModularBodyGadget { }
-
-
 public abstract class Horn : BodyGadget {
 
-	// VAR
-	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Horn;
+
+
+
+
+	#region --- VAR ---
+
+
+	// Api
+	public sealed override BodyGadgetType GadgetType => BodyGadgetType.Horn;
 	public override bool SpriteLoaded => SpriteHornLeft.IsValid || SpriteHornRight.IsValid;
 	protected virtual bool AnchorOnFace => false;
 	public OrientedSprite SpriteHornLeft { get; private set; }
 	public OrientedSprite SpriteHornRight { get; private set; }
 
 
-	// MSG
-	public override bool FillFromSheet (string name) {
-		base.FillFromSheet(name);
-		SpriteHornLeft = new OrientedSprite(name, "HornLeft", "Horn");
-		SpriteHornRight = new OrientedSprite(name, "HornRight", "Horn");
-		return SpriteLoaded;
-	}
+	#endregion
 
 
-	// API
-	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
-		if (renderer.HornID != 0 && TryGetGadget(renderer.HornID, out var horn)) {
-			horn.DrawGadget(renderer);
-		}
-	}
+
+
+	#region --- MSG ---
 
 
 	public override void DrawGadget (PoseCharacterRenderer renderer) {
@@ -47,8 +42,43 @@ public abstract class Horn : BodyGadget {
 	}
 
 
+	public override void DrawGadgetGizmos (IRect rect, Color32 tint, int z) {
+		if (SpriteHornLeft.TryGetSpriteForGizmos(out var spriteL)) {
+			Renderer.Draw(spriteL, rect.LeftHalf().Fit(spriteL).Shift(-rect.width / 10, 0), tint, z);
+		}
+		if (SpriteHornRight.TryGetSpriteForGizmos(out var spriteR)) {
+			Renderer.Draw(spriteR, rect.RightHalf().Fit(spriteR).Shift(rect.width / 10, 0), tint, z);
+		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public override bool FillFromSheet (string name) {
+		base.FillFromSheet(name);
+		SpriteHornLeft = new OrientedSprite(name, "HornLeft", "Horn");
+		SpriteHornRight = new OrientedSprite(name, "HornRight", "Horn");
+		return SpriteLoaded;
+	}
+
+
 	protected virtual bool FrontOfHeadL (PoseCharacterRenderer renderer) => true;
+
+
 	protected virtual bool FrontOfHeadR (PoseCharacterRenderer renderer) => true;
+
+
+	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
+		if (renderer.HornID != 0 && TryGetGadget(renderer.HornID, out var horn)) {
+			horn.DrawGadget(renderer);
+		}
+	}
 
 
 	public static void DrawSpriteAsHorn (
@@ -106,6 +136,11 @@ public abstract class Horn : BodyGadget {
 		}
 
 	}
+
+
+	#endregion
+
+
 
 
 }

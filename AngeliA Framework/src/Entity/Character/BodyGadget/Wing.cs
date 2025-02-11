@@ -4,32 +4,63 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public sealed class DefaultWing : Wing {
-	public static readonly int TYPE_ID = typeof(DefaultWing).AngeHash();
-	protected override int Scale => 600;
-}
-
-
-public sealed class DefaultPropellerWing : Wing {
-	public static readonly int TYPE_ID = typeof(DefaultPropellerWing).AngeHash();
-}
-
-
-public sealed class ModularWing : Wing, IModularBodyGadget { }
-
-
 public abstract class Wing : BodyGadget {
 
 
-	// VAR
+
+
+
+	#region --- VAR ---
+
+
+	// Api
 	public bool IsPropeller { get; private set; } = false;
 	public override bool SpriteLoaded => SpriteWing.IsValid;
-	protected sealed override BodyGadgetType GadgetType => BodyGadgetType.Wing;
+	public sealed override BodyGadgetType GadgetType => BodyGadgetType.Wing;
 	protected virtual int Scale => 1000;
 	public OrientedSprite SpriteWing { get; private set; }
 
 
-	// API
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
+	public override void DrawGadget (PoseCharacterRenderer renderer) {
+
+		if (!SpriteLoaded) return;
+		using var _ = new SheetIndexScope(SheetIndex);
+
+		DrawSpriteAsWing(renderer, SpriteWing, IsPropeller, Scale);
+		if (IsPropeller && renderer.TargetCharacter.AnimationType == CharacterAnimationType.Fly) {
+			renderer.TailID.Override(0, 1, priority: 4096);
+		}
+	}
+
+
+	public override void DrawGadgetGizmos (IRect rect, Color32 tint, int z) {
+		if (SpriteWing.TryGetSpriteForGizmos(out var sprite)) {
+			if (IsPropeller) {
+				Renderer.Draw(sprite, rect.Fit(sprite), tint, z);
+			} else {
+				Renderer.Draw(sprite, rect.LeftHalf().Fit(sprite), tint, z);
+				Renderer.Draw(sprite, rect.RightHalf().Fit(sprite).GetFlipHorizontal(), tint, z);
+			}
+		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
 		SpriteWing = new OrientedSprite(name, "Wing", "Propeller");
@@ -41,18 +72,6 @@ public abstract class Wing : BodyGadget {
 	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
 		if (renderer.WingID != 0 && TryGetGadget(renderer.WingID, out var wing)) {
 			wing.DrawGadget(renderer);
-		}
-	}
-
-
-	public override void DrawGadget (PoseCharacterRenderer renderer) {
-
-		if (!SpriteLoaded) return;
-		using var _ = new SheetIndexScope(SheetIndex);
-
-		DrawSpriteAsWing(renderer, SpriteWing, IsPropeller, Scale);
-		if (IsPropeller && renderer.TargetCharacter.AnimationType == CharacterAnimationType.Fly) {
-			renderer.TailID.Override(0, 1, priority: 4096);
 		}
 	}
 
@@ -159,6 +178,11 @@ public abstract class Wing : BodyGadget {
 
 
 	public static bool IsPropellerWing (int wingID) => wingID != 0 && TryGetGadget(wingID, out var gadget) && gadget is Wing wing && wing.IsPropeller;
+
+
+	#endregion
+
+
 
 
 }

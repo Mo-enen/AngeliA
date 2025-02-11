@@ -103,8 +103,10 @@ public static class Inventory {
 		// Cheat from Code
 		var BLOCK_ITEM = typeof(BlockBuilder);
 		var CLOTH_ITEM = typeof(ClothItem);
+		var BG_ITEM = typeof(BodyGadgetItem);
+		var BS_ITEM = typeof(BodySetItem);
 		foreach (var type in typeof(Item).AllChildClass()) {
-			if (type == BLOCK_ITEM || type == CLOTH_ITEM) continue;
+			if (type == BLOCK_ITEM || type == CLOTH_ITEM || type == BG_ITEM || type == BS_ITEM) continue;
 			string angeName = type.AngeName();
 			int id = angeName.AngeHash();
 			CheatSystem.TryAddCheatAction($"Give{angeName}", giveItemCheatInfo, id);
@@ -120,6 +122,16 @@ public static class Inventory {
 		// Cheat from Cloth Entity
 		foreach (var (id, cloth) in Cloth.ForAllCloth()) {
 			CheatSystem.TryAddCheatAction($"Give{cloth.ClothName}", giveItemCheatInfo, id);
+		}
+
+		// Cheat from Body Gadget Entity
+		foreach (var (id, gadget) in BodyGadget.ForAllGadget()) {
+			CheatSystem.TryAddCheatAction($"Give{gadget.GadgetName}", giveItemCheatInfo, id);
+		}
+
+		// Cheat from BodySet Entity
+		foreach (var (id, type) in BodySetItem.ForAllBodySetCharacterType()) {
+			CheatSystem.TryAddCheatAction($"Give{type.AngeName()}.BodySet", giveItemCheatInfo, id);
 		}
 
 		return TaskResult.End;

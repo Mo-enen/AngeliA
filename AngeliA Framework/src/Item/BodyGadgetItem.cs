@@ -5,19 +5,19 @@ namespace AngeliA;
 
 [EntityAttribute.ExcludeInMapEditor]
 [NoItemCombination]
-public sealed class ClothItem (int id) : NonStackableItem {
+public sealed class BodyGadgetItem (int id) : NonStackableItem {
 
-	public int ClothID { get; init; } = id;
+	public int GadgetID { get; init; } = id;
 
 	public override void DrawItem (Entity holder, IRect rect, Color32 tint, int z) {
-		if (Cloth.TryGetCloth(ClothID, out var cloth)) {
+		if (BodyGadget.TryGetGadget(GadgetID, out var gadget)) {
 			// Icon
-			cloth.DrawClothGizmos(rect, tint, z);
+			gadget.DrawGadgetGizmos(rect, tint, z);
 			// Mark
 			if (
 				holder is IWithCharacterRenderer wRen &&
 				wRen.CurrentRenderer is PoseCharacterRenderer pRen &&
-				pRen.GetSuitID(cloth.ClothType) == ClothID
+				pRen.GetGadgetID(gadget.GadgetType) == GadgetID
 			) {
 				Renderer.Draw(
 					BuiltInSprite.CHECK_MARK_32,
@@ -33,17 +33,19 @@ public sealed class ClothItem (int id) : NonStackableItem {
 	public override bool Use (Character holder, int inventoryID, int itemIndex, out bool consume) {
 		consume = false;
 		if (holder.Rendering is not PoseCharacterRenderer rendering) return false;
-		if (!Cloth.TryGetCloth(ClothID, out var cloth)) return false;
-		var fID = cloth.ClothType switch {
-			ClothType.Head => rendering.SuitHead,
-			ClothType.Body => rendering.SuitBody,
-			ClothType.Hand => rendering.SuitHand,
-			ClothType.Hip => rendering.SuitHip,
-			ClothType.Foot => rendering.SuitFoot,
+		if (!BodyGadget.TryGetGadget(GadgetID, out var gadget)) return false;
+		var fID = gadget.GadgetType switch {
+			BodyGadgetType.Face => rendering.FaceID,
+			BodyGadgetType.Hair => rendering.HairID,
+			BodyGadgetType.Ear => rendering.EarID,
+			BodyGadgetType.Horn => rendering.HornID,
+			BodyGadgetType.Tail => rendering.TailID,
+			BodyGadgetType.Wing => rendering.WingID,
 			_ => throw new System.NotImplementedException(),
 		};
-		fID.BaseValue = fID.BaseValue != ClothID ? ClothID :
-			Cloth.TryGetDefaultClothID(holder.TypeID, cloth.ClothType, out int defaultID) ? defaultID : 0;
+		fID.BaseValue =
+			fID.BaseValue != GadgetID ? GadgetID :
+			BodyGadget.TryGetDefaultGadgetID(holder.TypeID, gadget.GadgetType, out int defaultID) ? defaultID : 0;
 		rendering.SaveCharacterToConfig(saveToFile: true);
 		return true;
 	}
