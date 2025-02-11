@@ -4,17 +4,73 @@ namespace AngeliA.Platformer;
 
 public class PoseAttack_WaveSingleHanded_SmashOnly : PoseAttack_WaveSingleHanded {
 	public static new readonly int TYPE_ID = typeof(PoseAttack_WaveSingleHanded_SmashOnly).AngeHash();
-	public override int StyleIndex => 0;
+	public override void Animate (PoseCharacterRenderer renderer) {
+		base.Animate(renderer);
+		Smash();
+	}
+	public static void Smash () {
+		float ease01 = AttackEase;
+
+		if (IsChargingAttack) {
+			AttackHeadDown(ease01, 100, 800, 100);
+			ResetShoulderAndUpperArmPos();
+		} else {
+			AttackHeadDown(ease01);
+			ResetShoulderAndUpperArmPos();
+			// Left Side
+			if (
+				AnimationType == CharacterAnimationType.Idle ||
+				AnimationType == CharacterAnimationType.SquatIdle ||
+				AnimationType == CharacterAnimationType.SquatMove
+			) {
+				UpperArmL.LimbRotate(-15 - (int)(ease01 * 48), 500);
+				LowerArmL.LimbRotate(-100 + (int)(ease01 * 48));
+			}
+		}
+
+		// Upper Arm R
+		const int STEP = 55;
+		(int from, int to) = Attackness.AimingDirection switch {
+			Direction8.Bottom => (-185 + STEP + STEP, -9 + STEP + STEP),
+			Direction8.BottomLeft or Direction8.BottomRight => (-185 + STEP, -9 + STEP),
+			Direction8.Left or Direction8.Right => (-185, -9),
+			Direction8.TopLeft or Direction8.TopRight => (-185 - STEP, -9 - STEP),
+			Direction8.Top => (-185 - STEP - STEP, -9 - STEP - STEP),
+			_ => (-185, -9),
+		};
+		UpperArmR.LimbRotate(FacingSign * (int)Util.LerpUnclamped(from, to, ease01));
+		UpperArmR.Height += A2G;
+		LowerArmR.LimbRotate(0);
+		LowerArmR.Height += A2G;
+
+
+		HandL.LimbRotate(FacingSign);
+		HandR.LimbRotate(FacingSign);
+		HandR.Width += HandR.Width.Sign() * A2G;
+		HandR.Height += HandR.Height.Sign() * A2G;
+
+		// Leg
+		AttackLegShake(ease01);
+
+		// Grab
+		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
+			FacingSign * (int)Util.LerpUnclamped(-80, 100, ease01);
+		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
+			FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
+
+		// Z
+		UpperArmL.Z = UpperArmL.Z.Abs();
+
+	}
 }
 
 public class PoseAttack_WaveSingleHanded : PoseAnimation {
 
 	public static readonly int TYPE_ID = typeof(PoseAttack_WaveSingleHanded).AngeHash();
-	public virtual int StyleIndex => Attackness.LastAttackCharged ? 0 : Attackness.AttackStyleIndex;
 
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
-		switch (StyleIndex % 4) {
+		switch (Attackness.LastAttackCharged ? 0 : Attackness.AttackStyleIndex % 4) {
 			default:
 				SmashDown();
 				break;

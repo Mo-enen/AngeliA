@@ -84,7 +84,7 @@ public abstract class Cloth {
 				dPool.Add(charID, sID);
 			}
 		}
-		
+
 		Pool.TrimExcess();
 		for (int i = 0; i < DefaultPool.Length; i++) {
 			DefaultPool[i].TrimExcess();
@@ -147,7 +147,7 @@ public abstract class Cloth {
 		int widthAmount = 1000, int heightAmount = 1000,
 		int localRotation = 0, int shiftPixelX = 0, int shiftPixelY = 0, bool defaultHideLimb = true
 	) {
-		var location = bodyPart.GlobalLerp(locationX / 1000f, locationY / 1000f);
+		var location = bodyPart.GlobalLerp(locationX / 1000f, locationY / 1000f, true);
 		location.x += shiftPixelX;
 		location.y += shiftPixelY;
 		Cell[] result;

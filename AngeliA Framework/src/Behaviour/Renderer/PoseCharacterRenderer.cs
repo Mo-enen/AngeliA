@@ -564,8 +564,8 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		// Body Rot Offset
 		Body.Rotation = Body.Rotation.Clamp(-90, 90);
 		if (Body.Rotation != 0) {
-			int rawX = (-Body.Rotation.Sign() * Ease.OutSine(Body.Rotation.Abs() / 90f) * Body.Width.Abs()).RoundToInt();
-			int rawY = (-Ease.OutQuint(Body.Rotation.Abs() / 90f) * Body.Width.Abs()).RoundToInt();
+			int rawX = (-Body.Rotation.Sign() * Ease.OutSine(Body.Rotation.Abs() / 90f) * Body.Width.Abs() / 2f).RoundToInt();
+			int rawY = (-Ease.OutQuint(Body.Rotation.Abs() / 90f) * Body.Width.Abs() / 2f).RoundToInt();
 			Body.X += rawX;
 			Body.Y += rawY;
 			Body.GlobalX += rawX;
@@ -575,6 +575,8 @@ public class PoseCharacterRenderer : CharacterRenderer {
 				if (!bodypart.RotateWithBody) continue;
 				bodypart.X += rawX;
 				bodypart.GlobalX += rawX;
+				bodypart.Y += rawY;
+				bodypart.GlobalY += rawY;
 			}
 		}
 
@@ -610,16 +612,16 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			if (bodyPart == Head && Renderer.TryGetSpriteFromGroup(bodyPart.ID, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
 				Renderer.Draw(
 					headSprite,
-					TargetCharacter.X + PoseRootX + bodyPart.X,
-					TargetCharacter.Y + PoseRootY + bodyPart.Y,
+					bodyPart.GlobalX,
+					bodyPart.GlobalY,
 					bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation, bodyPart.Width, bodyPart.Height,
 					bodyPart.Tint, bodyPart.Z
 				);
 			} else {
 				Renderer.Draw(
 					bodyPart.ID,
-					TargetCharacter.X + PoseRootX + bodyPart.X,
-					TargetCharacter.Y + PoseRootY + bodyPart.Y,
+					bodyPart.GlobalX,
+					bodyPart.GlobalY,
 					bodyPart.PivotX, bodyPart.PivotY, bodyPart.Rotation, bodyPart.Width, bodyPart.Height,
 					bodyPart.Tint, bodyPart.Z
 				);

@@ -147,6 +147,10 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public override void OnActivated () {
 		base.OnActivated();
 
+		if (FromWorld) {
+			X = X.ToUnifyGlobal() + Const.HALF;
+		}
+
 		// Inv ID
 		if (InventoryType == CharacterInventoryType.Map) {
 			if (MapUnitPos.HasValue) {

@@ -839,7 +839,7 @@ public partial class PixelEditor : WindowUI {
 		// Move
 		if (
 			(Input.MouseMidButtonHolding && StageRect.Contains(Input.MouseMidDownGlobalPosition)) ||
-			(Input.MouseLeftButtonHolding && Input.HoldingCtrl && StageRect.Contains(Input.MouseLeftDownGlobalPosition))
+			(Input.MouseLeftButtonHolding && Input.KeyboardHolding(KeyboardKey.Space) && StageRect.Contains(Input.MouseLeftDownGlobalPosition))
 		) {
 			var delta = Input.MouseGlobalPositionDelta;
 			CanvasRect = CanvasRect.Shift(delta.x, delta.y);

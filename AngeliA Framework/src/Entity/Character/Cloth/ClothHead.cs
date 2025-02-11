@@ -60,28 +60,19 @@ public abstract class HeadCloth : Cloth {
 		// Width Amount
 		int widthAmount = 1000;
 		if (renderer.HeadTwist != 0) widthAmount -= renderer.HeadTwist.Abs() / 2;
-		if (head.Height < 0) widthAmount = -widthAmount;
+		if ((head.Width < 0 != head.Height < 0) == head.FrontSide) widthAmount = -widthAmount;
 
 		var body = renderer.Body;
 		using var _ = new RotateCellScope(body.Rotation, body.GlobalX, body.GlobalY);
 
 		// Draw
-		var cells = AttachClothOn(
+		AttachClothOn(
 			head, sprite, 500, 1000,
 			(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,
 			0, 0
 		);
 		bool hideHead = sprite.Tag.HasAll(Tag.HideLimb);
 		bool showEar = sprite.Tag.HasAll(Tag.ShowLimb);
-
-		// Head Rotate
-		if (cells != null && renderer.Head.Rotation != 0) {
-			int offsetY = renderer.Head.Height.Abs() * renderer.Head.Rotation.Abs() / 360;
-			foreach (var cell in cells) {
-				cell.RotateAround(renderer.Head.Rotation, renderer.Body.GlobalX, renderer.Body.GlobalY + renderer.Body.Height);
-				cell.Y -= offsetY;
-			}
-		}
 
 		// Show/Hide Limb
 		if (!showEar) {
