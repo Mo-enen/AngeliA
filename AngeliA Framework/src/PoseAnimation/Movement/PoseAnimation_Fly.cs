@@ -9,6 +9,7 @@ public class PoseAnimation_Fly : PoseAnimation {
 		int motionDelta = (Target.DeltaPositionX * 2).Clamp(-30, 30);
 
 		Rendering.PoseRootY = (frame < 6 ? frame / 2 : 8 - frame) * -A2G + 2 * A2G;
+		Rendering.BasicRootY = 0;
 
 		Head.Y = 0;
 

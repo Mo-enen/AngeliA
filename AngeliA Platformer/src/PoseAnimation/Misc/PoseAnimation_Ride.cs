@@ -15,7 +15,7 @@ public class PoseAnimation_Ride : PoseAnimation {
 
 		int bodyDeltaY = 2 * A2G;
 		int velX = Movement.Target.VelocityX;
-		Rendering.PoseRootY = -bodyDeltaY;
+		Rendering.BasicRootY = Rendering.PoseRootY = -bodyDeltaY;
 		Body.Y -= bodyDeltaY;
 		Hip.Y -= bodyDeltaY;
 		UpperLegL.Y -= bodyDeltaY / 2;

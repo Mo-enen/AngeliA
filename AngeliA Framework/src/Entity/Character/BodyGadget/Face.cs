@@ -58,9 +58,13 @@ public abstract class Face : BodyGadget {
 		if (!SpriteLoaded) return;
 
 		var head = renderer.Head;
-		if (head.IsFullCovered || !head.FrontSide) return;
+		if (head.IsFullCovered) return;
 
 		using var _ = new SheetIndexScope(SheetIndex);
+		if (!head.FrontSide) {
+			DrawSpriteAsHumanEar(renderer, SpriteEarLeft, SpriteEarRight);
+			return;
+		}
 
 		var faceRect = GetFaceRect(renderer, out var headRect);
 
@@ -420,33 +424,22 @@ public abstract class Face : BodyGadget {
 		// Draw Ears
 		if (!facingRight) (offsetXL, offsetXR) = (-offsetXR, -offsetXL);
 
-		spriteLeft.TryGetSprite(true, head.Width > 0, renderer.CurrentAnimationFrame, out var spriteL);
-		var cellL = Renderer.Draw(
+		spriteLeft.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var spriteL);
+		Renderer.Draw(
 			spriteL,
 			faceRect.x + offsetXL, faceRect.yMax, 1000, 1000, 0,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
-			facingRight ? 33 : -33
+			head.FrontSide ? facingRight ? 33 : -33 : -33
 		);
 
-		spriteRight.TryGetSprite(true, head.Width > 0, renderer.CurrentAnimationFrame, out var spriteR);
-		var cellR = Renderer.Draw(
+		spriteRight.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var spriteR);
+		Renderer.Draw(
 			spriteR,
 			faceRect.xMax + offsetXR, faceRect.yMax, 0, 1000, 0,
 			Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE,
-			facingRight ? -33 : 33
+			head.FrontSide ? facingRight ? -33 : 33 : -33
 		);
 
-		// Rotate
-		int headRot = renderer.Head.Rotation;
-		if (headRot != 0) {
-			var body = renderer.Body;
-			int offsetY = renderer.Head.Height.Abs() * headRot.Abs() / 360;
-			cellL.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
-			cellL.Y -= offsetY;
-			cellR.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
-			cellR.Y -= offsetY;
-
-		}
 	}
 
 

@@ -6,6 +6,7 @@ public class PoseAnimation_Crash : PoseAnimation {
 		base.Animate(renderer);
 
 		Rendering.PoseRootY = 0;
+		Rendering.BasicRootY = 0;
 
 		Body.Height = Body.SizeY / 4;
 

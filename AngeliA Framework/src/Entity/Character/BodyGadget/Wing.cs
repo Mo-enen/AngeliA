@@ -79,17 +79,19 @@ public abstract class Wing : BodyGadget {
 	public static void DrawSpriteAsWing (PoseCharacterRenderer renderer, OrientedSprite oSprite, bool isPropeller, int scale = 1000) {
 
 		if (!oSprite.IsValid) return;
+
+		var body = renderer.Body;
 		if (!oSprite.TryGetSprite(
-			renderer.Body.FrontSide, renderer.Body.Width > 0, renderer.CurrentAnimationFrame, out var sprite
+			body.FrontSide, body.Width > 0, renderer.CurrentAnimationFrame, out var sprite
 		)) return;
 
 		var singleSprite = oSprite.TryGetSprite(
-			renderer.Body.FrontSide, renderer.Body.Width > 0, 0, out var firstSprite
+			body.FrontSide, body.Width > 0, 0, out var firstSprite
 		) ? firstSprite : sprite;
 
 		var aniType = renderer.TargetCharacter.AnimationType;
-		int z = renderer.Body.FrontSide ? -33 : 33;
-		int signY = aniType == CharacterAnimationType.Rolling && !renderer.Body.FrontSide ? -1 : 1;
+		int z = body.FrontSide ? -33 : 33;
+		int signY = aniType == CharacterAnimationType.Rolling && !body.FrontSide ? -1 : 1;
 
 		// Get Wing Position
 		int xLeft;
@@ -102,7 +104,7 @@ public abstract class Wing : BodyGadget {
 			aniType != CharacterAnimationType.Fly
 		) {
 			// Standing Up
-			var bodyRect = renderer.Body.GetGlobalRect();
+			var bodyRect = body.GetGlobalRect();
 			xLeft = bodyRect.xMin;
 			yLeft = bodyRect.y;
 			xRight = bodyRect.xMax;
@@ -149,17 +151,20 @@ public abstract class Wing : BodyGadget {
 		} else if (!isPropeller) {
 			// Not Flying with Wing
 			int rot = (Game.GlobalFrame.PingPong(120) - 60) / 12;
-			int signW = renderer.Body.Width.Sign3();
+			int rotBodyOffset = body.Rotation / 2;
+			int signW = body.Width.Sign3();
 			int facingScaleL = 1000;
 			int facingScaleR = 1000;
-			if (renderer.Body.FrontSide) {
-				facingScaleL = 1000 + signW * 300;
-				facingScaleR = 1000 - signW * 300;
+			if (body.FrontSide) {
+				var mov = renderer.TargetCharacter.Movement;
+				int facingSclAmount = ((Game.GlobalFrame - mov.LastFacingChangeFrame) * 20).Clamp(0, 200);
+				facingScaleL = 1000 + signW * facingSclAmount;
+				facingScaleR = 1000 - signW * facingSclAmount;
 			}
 			// L
 			Renderer.Draw(
 				singleSprite,
-				xLeft, yLeft, singleSprite.PivotX, singleSprite.PivotY, -rot,
+				xLeft, yLeft, singleSprite.PivotX, singleSprite.PivotY, -rot - rotBodyOffset,
 				singleSprite.GlobalWidth * scale / 1000 * facingScaleL / 1000,
 				signY * singleSprite.GlobalHeight * scale / 1000,
 				z
@@ -167,7 +172,7 @@ public abstract class Wing : BodyGadget {
 			// R
 			Renderer.Draw(
 				singleSprite,
-				xRight, yRight, singleSprite.PivotX, singleSprite.PivotY, rot,
+				xRight, yRight, singleSprite.PivotX, singleSprite.PivotY, rot - rotBodyOffset,
 				-singleSprite.GlobalWidth * scale / 1000 * facingScaleR / 1000,
 				signY * singleSprite.GlobalHeight * scale / 1000,
 				z

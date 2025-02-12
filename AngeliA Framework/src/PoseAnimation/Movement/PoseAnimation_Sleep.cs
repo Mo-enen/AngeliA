@@ -6,6 +6,7 @@ public class PoseAnimation_Sleep : PoseAnimation {
 		bool alt = CurrentAnimationFrame.UMod(120) >= 60;
 
 		Rendering.PoseRootY = 0;
+		Rendering.BasicRootY = 0;
 
 		Body.Height = Body.SizeY / 4;
 

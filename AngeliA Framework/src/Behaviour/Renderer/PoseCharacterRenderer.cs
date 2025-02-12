@@ -30,7 +30,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	private const int POSE_Z_FOOT = 2;
 
 	// Api
-	public int BasicRootY { get; private set; } = 0;
+	public int BasicRootY { get; set; } = 0;
 	public int PoseRootX { get; set; } = 0;
 	public int PoseRootY { get; set; } = 0;
 	public int HeadTwist { get; set; } = 0;

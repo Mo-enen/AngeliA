@@ -13,6 +13,9 @@ public abstract class Hair : BodyGadget {
 	#region --- VAR ---
 
 
+	// Const
+	private static readonly Cell[] SINGLE_CELL = [new()];
+
 	// Api
 	public sealed override BodyGadgetType GadgetType => BodyGadgetType.Hair;
 	protected virtual int FlowAmountX => 500;
@@ -20,6 +23,14 @@ public abstract class Hair : BodyGadget {
 	public override bool SpriteLoaded => SpriteHairForward.IsValid || SpriteHairBackward.IsValid;
 	public OrientedSprite SpriteHairForward { get; private set; }
 	public OrientedSprite SpriteHairBackward { get; private set; }
+	public OrientedSprite SpriteBraidLeft { get; private set; }
+	public OrientedSprite SpriteBraidRight { get; private set; }
+	protected virtual int FacingLeftOffsetX => 0;
+	protected virtual bool UseLimbRotate => false;
+	protected virtual bool ForceBackOnFlow => true;
+	protected virtual int MotionAmount => 618;
+	protected virtual int FlowMotionAmount => 618;
+	protected virtual int DropMotionAmount => 200;
 
 
 	#endregion
@@ -33,7 +44,12 @@ public abstract class Hair : BodyGadget {
 	public override void DrawGadget (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawSpriteAsHair(renderer, SpriteHairForward, SpriteHairBackward, FlowAmountX, FlowAmountY);
+		// Hair
+		var cells = DrawSpriteAsHair(renderer, SpriteHairForward, SpriteHairBackward, FlowAmountX, FlowAmountY);
+		// Braid
+		if (SpriteBraidLeft.IsValid || SpriteBraidRight.IsValid) {
+			DrawBraid(renderer, cells, ForceBackOnFlow);
+		}
 	}
 
 
@@ -60,6 +76,8 @@ public abstract class Hair : BodyGadget {
 		base.FillFromSheet(name);
 		SpriteHairForward = new OrientedSprite(name, "Hair", "HairF");
 		SpriteHairBackward = new OrientedSprite(name, "HairB");
+		SpriteBraidLeft = new OrientedSprite(name, "BraidLeft", "Braid");
+		SpriteBraidRight = new OrientedSprite(name, "BraidRight", "Braid");
 		return SpriteLoaded;
 	}
 
@@ -283,6 +301,173 @@ public abstract class Hair : BodyGadget {
 				}
 			}
 
+		}
+	}
+
+
+	// Braid
+	private void DrawBraid (PoseCharacterRenderer renderer, Cell[] cells, bool forceBackOnFlow) => DrawBraid(
+		renderer, cells, forceBackOnFlow, SpriteBraidLeft, SpriteBraidRight,
+		FacingLeftOffsetX, MotionAmount,
+		FlowMotionAmount, DropMotionAmount, UseLimbRotate, 0, 0
+	);
+
+
+	public static void DrawBraid (
+		PoseCharacterRenderer renderer, bool forceBackOnFlow, OrientedSprite spriteLeft, OrientedSprite spriteRight,
+		int facingLeftOffsetX = 0, int motionAmount = 618, int flowMotionAmount = 618, int dropMotionAmount = 200, bool useLimbRotate = false,
+		int offsetX = 0, int offsetY = 0
+	) => DrawBraid(renderer, null, forceBackOnFlow, spriteLeft, spriteRight, facingLeftOffsetX, motionAmount, flowMotionAmount, dropMotionAmount, useLimbRotate, offsetX, offsetY);
+
+
+	private static void DrawBraid (
+		PoseCharacterRenderer renderer, Cell[] hairCells, bool forceBackOnFlow, OrientedSprite spriteLeft, OrientedSprite spriteRight,
+		int facingLeftOffsetX, int motionAmount, int flowMotionAmount, int dropMotionAmount, bool useLimbRotate,
+		int offsetX, int offsetY
+	) {
+
+		const int A2G = Const.CEL / Const.ART_CEL;
+
+		var head = renderer.Head;
+		bool flipX = !head.FrontSide;
+		bool flipY = head.Height < 0;
+		Int2 hairBL;
+		Int2 hairBR;
+		Int2 hairTL;
+		Int2 hairTR;
+
+		// Based on Head
+		bool positiveLerp = head.Width > 0;
+		hairBL = head.GlobalLerp(positiveLerp ? 0f : 1f, 0f);
+		hairBR = head.GlobalLerp(positiveLerp ? 1f : 0f, 0f);
+		hairTL = head.GlobalLerp(positiveLerp ? 0f : 1f, 1f);
+		hairTR = head.GlobalLerp(positiveLerp ? 1f : 0f, 1f);
+
+		spriteLeft.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var braidL);
+		spriteRight.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var braidR);
+
+		if (braidL == null && braidR == null) return;
+
+		int posAmountXL = braidL.PivotX;
+		int posAmountXR = 1000 - braidR.PivotX;
+		int posAmountYL = braidL.PivotY;
+		int posAmountYR = braidR.PivotY;
+
+		var movement = renderer.TargetCharacter.Movement;
+		int lerpL = flipX ? 1000 : 0;
+		int lerpR = flipX ? 0 : 1000;
+		int lerpLY = flipY ? 1000 : 0;
+		int lerpRY = flipY ? 0 : 1000;
+		int l0 = Util.RemapUnclamped(lerpL, lerpR, hairBL.x, hairBR.x, posAmountXL);
+		int l1 = Util.RemapUnclamped(lerpL, lerpR, hairTL.x, hairTR.x, posAmountXL);
+		int r0 = Util.RemapUnclamped(lerpR, lerpL, hairBL.x, hairBR.x, posAmountXR);
+		int r1 = Util.RemapUnclamped(lerpR, lerpL, hairTL.x, hairTR.x, posAmountXR);
+		int l = Util.RemapUnclamped(lerpLY, lerpRY, l0, l1, posAmountYL);
+		int r = Util.RemapUnclamped(lerpLY, lerpRY, r0, r1, posAmountYR);
+		int yl = Util.RemapUnclamped(lerpLY, lerpRY, hairBL.y, hairTL.y, posAmountYL);
+		int yr = Util.RemapUnclamped(lerpLY, lerpRY, hairBR.y, hairTR.y, posAmountYR);
+		int rot = 0;
+		int deltaHeight = 0;
+		bool rolling = movement.IsRolling;
+		if (!movement.FacingRight && facingLeftOffsetX != 0) {
+			l += facingLeftOffsetX;
+			r += facingLeftOffsetX;
+		}
+
+		int shakePosY = (renderer.PoseRootY - renderer.BasicRootY) / 2;
+		yl += shakePosY;
+		yr += shakePosY;
+
+		int zLeft = braidL != null && braidL.LocalZ > 0 == head.FrontSide ? 33 : -33;
+		int zRight = braidR != null && braidR.LocalZ > 0 == head.FrontSide ? 33 : -33;
+
+		if (motionAmount != 0) {
+			rot = !flipY ? (renderer.TargetCharacter.DeltaPositionX * motionAmount / 1500).Clamp(-90, 90) : 0;
+			deltaHeight = (renderer.TargetCharacter.DeltaPositionY * motionAmount / 500).Clamp(-4 * A2G, 4 * A2G);
+			int braidFlow = (renderer.TargetCharacter.DeltaPositionX * flowMotionAmount / 1200).Clamp(-30, 30);
+			int motionRotY = ((renderer.TargetCharacter.DeltaPositionY * dropMotionAmount) / 1000).Clamp(-70, 0);
+
+			var bCells = DrawBraidLogic(
+				braidL, l + offsetX, yl + offsetY, zLeft, 0,
+				(movement.FacingRight ? rot : rot * 2 / 3) - motionRotY,
+				flipX, flipY, deltaHeight, rolling, useLimbRotate
+			);
+			TwistHair(renderer, bCells, false);
+			Flow(bCells, movement.FacingRight ? braidFlow : braidFlow / 2, forceBackOnFlow);
+
+			bCells = DrawBraidLogic(
+				braidR, r + offsetX, yr + offsetY, zRight, 1000,
+				(movement.FacingRight ? rot * 2 / 3 : rot) + motionRotY,
+				flipX, flipY, deltaHeight, rolling, useLimbRotate
+			);
+			TwistHair(renderer, bCells, true);
+			Flow(bCells, movement.FacingRight ? braidFlow / 2 : braidFlow, forceBackOnFlow);
+
+		} else {
+			var bCells = DrawBraidLogic(braidL, l + offsetX, yl + offsetY, zLeft, 0, rot, flipX, flipY, deltaHeight, rolling, useLimbRotate);
+			TwistHair(renderer, bCells, false);
+			bCells = DrawBraidLogic(braidR, r + offsetX, yr + offsetY, zRight, 1000, rot, flipX, flipY, deltaHeight, rolling, useLimbRotate);
+			TwistHair(renderer, bCells, true);
+		}
+
+		// Func
+		static Cell[] DrawBraidLogic (AngeSprite sprite, int x, int y, int z, int px, int rot, bool flipX, bool flipY, int deltaHeight, bool rolling, bool allowLimbRotate) {
+			if (sprite == null) return null;
+			int width = flipX ? -sprite.GlobalWidth : sprite.GlobalWidth;
+			int height = flipY ? -sprite.GlobalHeight : sprite.GlobalHeight;
+			height = (height + deltaHeight).Clamp(height / 3, height * 3);
+			if (rolling) height /= 2;
+			int py = 1000;
+			if (allowLimbRotate && !flipX && !flipY) {
+				FrameworkUtil.LimbRotate(
+					ref x, ref y, ref px, ref py, ref rot, ref width, ref height, rot, false, 0
+				);
+			}
+			if (!allowLimbRotate) px = 1000 - px;
+			if (sprite.GlobalBorder.IsZero) {
+				SINGLE_CELL[0] = Renderer.Draw(sprite, x, y, px, py, rot, width, height, z);
+				return SINGLE_CELL;
+			} else {
+				return Renderer.DrawSlice(sprite, x, y, px, py, rot, width, height, z);
+			}
+		}
+		static void TwistHair (PoseCharacterRenderer renderer, Cell[] cells, bool isRight) {
+			if (cells == null) return;
+			// Twist
+			int twist = renderer.HeadTwist;
+			if (twist != 0) {
+				int headCenterX = renderer.Head.GlobalX;
+				foreach (var cell in cells) {
+					cell.X = cell.X.LerpTo(headCenterX, twist.Abs());
+					cell.Z *= isRight == twist > 0 ? -1 : 1;
+				}
+			}
+			// Rotate
+			//var body = renderer.Body;
+			//int headRot = renderer.Head.Rotation;
+			//int offsetY = renderer.Head.Height.Abs() * headRot.Abs() / 360;
+			//foreach (var cell in cells) {
+			//	cell.Rotation -= headRot;
+			//	cell.RotateAround(headRot, body.GlobalX, body.GlobalY + body.Height);
+			//	cell.Y -= offsetY;
+			//}
+
+
+		}
+		static void Flow (Cell[] cells, int deltaRot, bool forceBackOnFlow) {
+			if (cells == null || cells.Length != 9 || deltaRot == 0) return;
+			// M
+			for (int i = 3; i < 6; i++) {
+				var cell = cells[i];
+				cell.Rotation = (cell.Rotation + deltaRot / 2).Clamp(-85, 85);
+				if (forceBackOnFlow) cell.Z = -33;
+			}
+			// D
+			for (int i = 6; i < 9; i++) {
+				var cell = cells[i];
+				cell.Rotation = (cell.Rotation + deltaRot).Clamp(-85, 85);
+				if (forceBackOnFlow) cell.Z = -33;
+			}
 		}
 	}
 

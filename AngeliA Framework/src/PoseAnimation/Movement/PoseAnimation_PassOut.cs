@@ -8,6 +8,7 @@ public class PoseAnimation_PassOut : PoseAnimation {
 		base.Animate(renderer);
 
 		Rendering.PoseRootY = 0;
+		Rendering.BasicRootY = 0;
 
 		Body.Height = Body.SizeY / 4;
 
@@ -19,12 +20,12 @@ public class PoseAnimation_PassOut : PoseAnimation {
 		ShoulderL.Y = ShoulderL.Height;
 		UpperArmL.Y = 0;
 		UpperArmL.LimbRotate(FacingRight ? -90 : 90, 0);
-		
+
 		ShoulderR.X = UpperArmR.X = FacingRight ? Body.X + Body.Width / 2 : Body.X - Body.Width / 2;
 		ShoulderR.Y = ShoulderR.Height;
 		UpperArmR.Y = 0;
 		UpperArmR.LimbRotate(FacingRight ? -90 : 90, 0);
-		
+
 		LowerArmL.LimbRotate(0, 0);
 		LowerArmR.LimbRotate(0, 0);
 		LowerArmL.Height /= 2;
