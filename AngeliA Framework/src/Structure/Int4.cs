@@ -55,6 +55,13 @@ public struct Int4 (int x, int y, int z, int w) : IEquatable<Int4>, IFormattable
 		a.w *= b;
 		return a;
 	}
+	public static Int4 operator / (Int4 a, int b) {
+		a.x /= b;
+		a.y /= b;
+		a.z /= b;
+		a.w /= b;
+		return a;
+	}
 	public static Int4 operator + (Int4 a, Int4 b) {
 		a.x += b.x;
 		a.y += b.y;
@@ -62,6 +69,7 @@ public struct Int4 (int x, int y, int z, int w) : IEquatable<Int4>, IFormattable
 		a.w += b.w;
 		return a;
 	}
+
 	public static explicit operator Int2 (Int4 i) => new(i.x, i.y);
 	public static explicit operator Int3 (Int4 i) => new(i.x, i.y, i.z);
 

@@ -393,9 +393,29 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 		return true;
 	}
 
-	public void CombineSheet (Sheet sheet) {
+	public void CombineSheet (Sheet sheet, bool renameDuplicateSprites = false) {
 		foreach (var altas in sheet.Atlas) {
 			Atlas.Add(altas);
+		}
+		foreach (var sprite in sheet.Sprites) {
+			if (SpritePool.ContainsKey(sprite.ID)) {
+				if (renameDuplicateSprites) {
+					sprite.RealName = GetAvailableSpriteName(sprite.RealName);
+					sprite.ID = sprite.RealName.AngeHash();
+					if (
+						sprite.Group != null &&
+						sprite.Group.Count > 0 &&
+						sprite.Group.Sprites[0] == sprite &&
+						FrameworkUtil.GetGroupInfoFromSpriteRealName(sprite.RealName, out string newGroupName, out _)
+					) {
+						sprite.Group.Name = newGroupName;
+						sprite.Group.ID = sprite.Group.Name.AngeHash();
+					}
+				} else continue;
+			}
+			Sprites.Add(sprite);
+			SpritePool.Add(sprite.ID, sprite);
+			SyncSpritePixelsIntoTexturePool(sprite);
 		}
 		if (!IgnoreGroups) {
 			foreach (var group in sheet.Groups) {
@@ -403,12 +423,6 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 				Groups.Add(group);
 				GroupPool.Add(group.ID, group);
 			}
-		}
-		foreach (var sprite in sheet.Sprites) {
-			if (SpritePool.ContainsKey(sprite.ID)) continue;
-			Sprites.Add(sprite);
-			SpritePool.Add(sprite.ID, sprite);
-			SyncSpritePixelsIntoTexturePool(sprite);
 		}
 	}
 
@@ -487,7 +501,7 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithIgnoreTag = 
 		return new() {
 			ID = name.AngeHash(),
 			RealName = name,
-			Atlas = AtlasPool[atlasID],
+			Atlas = AtlasPool.TryGetValue(atlasID, out var atlas) ? atlas : Atlas[0],
 			AtlasID = atlasID,
 			GlobalWidth = pixelRect.width * Const.ART_SCALE,
 			GlobalHeight = pixelRect.height * Const.ART_SCALE,

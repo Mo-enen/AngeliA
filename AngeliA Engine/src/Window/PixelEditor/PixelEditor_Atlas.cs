@@ -395,7 +395,7 @@ public partial class PixelEditor {
 		} else if (ext == ".ase") {
 			// ASE
 			var aseSheet = AsepriteUtil.CreateNewSheet([path]);
-			EditingSheet.CombineSheet(aseSheet);
+			EditingSheet.CombineSheet(aseSheet, renameDuplicateSprites: true);
 			Instance.SetCurrentAtlas(EditingSheet.Atlas.Count - 1);
 		}
 	}

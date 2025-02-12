@@ -10,7 +10,6 @@ public sealed class BodySetItem : NonStackableItem {
 
 
 
-
 	#region --- VAR ---
 
 
@@ -51,11 +50,30 @@ public sealed class BodySetItem : NonStackableItem {
 
 
 	public override void DrawItem (Entity holder, IRect rect, Color32 tint, int z) {
-		
 
+		// Icon
+		if (Renderer.TryGetSpriteForGizmos(TargetCharacterID, out var iconSP)) {
+			Renderer.Draw(iconSP, rect.Fit(iconSP), tint, z);
+		}
 
-
-
+		// Mark
+		if (holder is Character ch && ch.Rendering is PoseCharacterRenderer rendering) {
+			var bodyparts = rendering.BodyParts;
+			bool mark = true;
+			for (int i = 0; i < bodyparts.Length; i++) {
+				if (Data.GetBodyPartID(i) != bodyparts[i].ID) {
+					mark = false;
+					break;
+				}
+			}
+			if (mark) {
+				Renderer.Draw(
+					BuiltInSprite.CHECK_MARK_32,
+					rect.Shrink(rect.height / 8).Shift(rect.width / 3, -rect.height / 3),
+					Color32.GREEN
+				);
+			}
+		}
 	}
 
 
