@@ -127,9 +127,9 @@ public sealed class BodySetItem : NonStackableItem {
 
 
 	public string GetDisplayName (string typeName, out int languageID) {
-		string name = GetType().AngeName();
-		languageID = $"{name}.{typeName}".AngeHash();
-		return Language.Get(languageID, Util.GetDisplayName(name));
+		string basicName = $"{typeName}.BodySet";
+		languageID = basicName.AngeHash();
+		return Language.Get(languageID, basicName);
 	}
 
 

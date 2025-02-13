@@ -6,7 +6,7 @@ namespace AngeliA;
 // SUB
 public class CharacterRenderingConfig {
 
-	public int CharacterHeight = 160;
+	public int CharacterHeight;
 
 	// Body Part
 	public int Head;
@@ -39,7 +39,7 @@ public class CharacterRenderingConfig {
 	// API
 	public void LoadToCharacter (PoseCharacterRenderer renderer) {
 
-		renderer.CharacterHeight = CharacterHeight;
+		renderer.CharacterHeight = CharacterHeight <= 0 ? renderer.TargetCharacter.DefaultCharacterHeight : CharacterHeight;
 
 		// Body Part
 		renderer.Head.SetData(Head);
@@ -104,12 +104,12 @@ public class CharacterRenderingConfig {
 
 		// Gadget
 		if (!ignoreBodyGadget) {
-			Face = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Face, out int defaultId0) ? defaultId0 : DefaultFace.TYPE_ID;
-			Hair = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Hair, out int defaultId1) ? defaultId1 : DefaultHair.TYPE_ID;
-			Ear = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Ear, out int defaultId2) ? defaultId2 : 0;
-			Tail = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Tail, out int defaultId3) ? defaultId3 : 0;
-			Wing = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Wing, out int defaultId4) ? defaultId4 : 0;
-			Horn = BodyGadget.TryGetDefaultGadgetID(typeID, BodyGadgetType.Horn, out int defaultId5) ? defaultId5 : 0;
+			Face = BodyGadget.GetDefaultGadgetID(typeID, BodyGadgetType.Face);
+			Hair = BodyGadget.GetDefaultGadgetID(typeID, BodyGadgetType.Hair);
+			Ear = BodyGadget.GetDefaultGadgetID(typeID, BodyGadgetType.Ear);
+			Tail = BodyGadget.GetDefaultGadgetID(typeID, BodyGadgetType.Tail);
+			Wing = BodyGadget.GetDefaultGadgetID(typeID, BodyGadgetType.Wing);
+			Horn = BodyGadget.GetDefaultGadgetID(typeID, BodyGadgetType.Horn);
 		}
 
 		// Suit

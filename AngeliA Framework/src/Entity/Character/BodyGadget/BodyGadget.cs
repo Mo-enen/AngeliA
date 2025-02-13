@@ -25,7 +25,7 @@ public abstract class BodyGadget {
 
 	// MSG
 	[OnGameInitialize(-129)]
-	public static TaskResult BeforeGameInitialize () {
+	internal static TaskResult InitializePool () {
 
 		if (!Renderer.IsReady) return TaskResult.Continue;
 
@@ -81,6 +81,12 @@ public abstract class BodyGadget {
 	}
 
 
+	[OnMainSheetReload]
+	internal static void OnMainSheetReload () {
+		if (Game.GlobalFrame != 0) InitializePool();
+	}
+
+
 	public abstract void DrawGadget (PoseCharacterRenderer character);
 
 
@@ -103,15 +109,11 @@ public abstract class BodyGadget {
 	}
 
 
-	public static bool TryGetDefaultGadgetID (int characterID, BodyGadgetType type, out int gadgetID) {
-		gadgetID = 0;
+	public static int GetDefaultGadgetID (int characterID, BodyGadgetType type) {
 		int typeIndex = (int)type;
-		if (typeIndex < 0 || typeIndex >= DefaultPool.Length) return false;
-		if (DefaultPool[typeIndex].TryGetValue(characterID, out gadgetID)) {
-			return gadgetID != 0;
-		} else {
-			return false;
-		}
+		if (typeIndex < 0 || typeIndex >= DefaultPool.Length) return 0;
+		DefaultPool[typeIndex].TryGetValue(characterID, out int gadgetID);
+		return gadgetID;
 	}
 
 

@@ -45,7 +45,7 @@ public sealed class BodyGadgetItem (int id) : NonStackableItem {
 		};
 		fID.BaseValue =
 			fID.BaseValue != GadgetID ? GadgetID :
-			BodyGadget.TryGetDefaultGadgetID(holder.TypeID, gadget.GadgetType, out int defaultID) ? defaultID : 0;
+			BodyGadget.GetDefaultGadgetID(holder.TypeID, gadget.GadgetType);
 		rendering.SaveCharacterToConfig(saveToFile: true);
 		return true;
 	}

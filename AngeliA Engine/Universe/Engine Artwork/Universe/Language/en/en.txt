@@ -48,8 +48,12 @@ Hint.Publishing:Publishing
 Hub.Add:Add Existing Project
 Hub.Create:Create New Project
 iDes.BlockBuilder:Block Builder
+iDes.BodyGadgetItem:Body Gadget
+iDes.BodySetItem:Body Set
 iDes.ClothItem:Cloth Item
 iName.BlockBuilder:Block Builder
+iName.BodyGadgetItem:Body Gadget
+iName.BodySetItem:Body Set
 iName.ClothItem:Cloth Item
 Label.B:B
 Label.Border:Border
@@ -208,7 +212,8 @@ Setting.MaxViewHeight:Max View Height (block)
 Setting.MinViewHeight:Min View Height (block)
 Setting.ViewRatio:View Ratio
 SettingWindow:Setting
-Tip.AddAtlas:Create new folder
+Tip.AddAtlas:Create new Atlas
+Tip.AddAtlasFolder:Create new folder
 Tip.BorderD:Border bottom
 Tip.BorderL:Border left
 Tip.BorderR:Border right

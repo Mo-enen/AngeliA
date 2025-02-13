@@ -102,10 +102,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	#region --- MSG ---
 
 
-	[CheatCode("ResetCharacterRenderingConfig")]
-	internal static void CheatCode_ResetConfig () => ReloadRenderingConfigPoolFromFileAndSheet(forceReset: true);
-
-
 	// Init
 	[OnGameInitialize(-128)]
 	internal static TaskResult InitializePose () {
@@ -711,19 +707,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	}
 
 
-	public static void ResetCharacterConfigInPool (System.Type characterType, bool saveToFile = false) {
-		int id = characterType.AngeHash();
-		if (!ConfigPoolRendering.TryGetValue(id, out var config)) return;
-		config.LoadFromSheet(characterType);
-		// File
-		if (saveToFile) {
-			string renderRoot = Universe.BuiltIn.SlotCharacterRenderingConfigRoot;
-			string path = Util.CombinePaths(renderRoot, $"{characterType.AngeName()}.json");
-			JsonUtil.SaveJsonToPath(config, path, prettyPrint: true);
-		}
-	}
-
-
 	public static bool TryGetConfigFromPool (int id, out CharacterRenderingConfig config) => ConfigPoolRendering.TryGetValue(id, out config);
 
 
@@ -790,68 +773,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	}
 
 
-	// Animation
-	public void ResetAllLimbsPosition () {
-
-		var Movement = TargetCharacter.Movement;
-
-		int targetUnitHeight = CharacterHeight * A2G / CM_PER_PX - Head.SizeY;
-		int defaultCharHeight = Body.SizeY + Hip.SizeY + UpperLegL.SizeY + LowerLegL.SizeY + FootL.SizeY;
-		int bodyBorderU = Body.Border.up * targetUnitHeight / defaultCharHeight;
-		int bodyBorderL = (Movement.FacingRight ? Body.Border.left : Body.Border.right) * Body.Width.Abs() / Body.SizeX;
-		int bodyBorderR = (Movement.FacingRight ? Body.Border.right : Body.Border.left) * Body.Width.Abs() / Body.SizeX;
-		int hipBorderL = (Movement.FacingRight ? Hip.Border.left : Hip.Border.right) * Hip.Width.Abs() / Hip.SizeX;
-		int hipBorderR = (Movement.FacingRight ? Hip.Border.right : Hip.Border.left) * Hip.Width.Abs() / Hip.SizeX;
-
-		ShoulderL.X = Body.X - Body.Width.Abs() / 2 + bodyBorderL;
-		ShoulderL.Y = Body.Y + Body.Height - bodyBorderU;
-
-		ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
-		ShoulderR.Y = Body.Y + Body.Height - bodyBorderU;
-
-		UpperArmL.X = ShoulderL.X;
-		UpperArmL.Y = ShoulderL.Y - ShoulderL.Height + ShoulderL.Border.down;
-
-		UpperArmR.X = ShoulderR.X;
-		UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
-
-		LowerArmL.X = UpperArmL.X;
-		LowerArmL.Y = UpperArmL.Y - UpperArmL.Height;
-
-		LowerArmR.X = UpperArmR.X;
-		LowerArmR.Y = UpperArmR.Y - UpperArmR.Height;
-
-		HandL.X = LowerArmL.X;
-		HandL.Y = LowerArmL.Y - LowerArmL.Height;
-
-		HandR.X = LowerArmR.X;
-		HandR.Y = LowerArmR.Y - LowerArmR.Height;
-
-		UpperLegL.X = Hip.X - Hip.Width.Abs() / 2 + hipBorderL;
-		UpperLegL.Y = Hip.Y;
-
-		UpperLegR.X = Hip.X + Hip.Width.Abs() / 2 - hipBorderR;
-		UpperLegR.Y = Hip.Y;
-
-		LowerLegL.X = UpperLegL.X;
-		LowerLegL.Y = UpperLegL.Y - UpperLegL.Height;
-
-		LowerLegR.X = UpperLegR.X;
-		LowerLegR.Y = UpperLegR.Y - UpperLegR.Height;
-
-		FootL.X = Movement.FacingRight ? LowerLegL.X : LowerLegL.X + LowerLegL.SizeX;
-		FootL.Y = LowerLegL.Y - LowerLegL.Height;
-
-		FootR.X = Movement.FacingRight ? LowerLegR.X - FootR.SizeX : LowerLegR.X;
-		FootR.Y = LowerLegR.Y - LowerLegR.Height;
-
-	}
-
-
 	// Animation ID
-	public FrameBasedInt GetPoseAnimationID (CharacterAnimationType type) => PoseAnimationIDs[(int)type];
-
-
 	public void OverridePoseAnimation (CharacterAnimationType type, int id, int duration = 1) => PoseAnimationIDs[(int)type].Override(id, duration, 4096);
 
 

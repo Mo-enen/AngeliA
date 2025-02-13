@@ -530,7 +530,6 @@ public partial class PixelEditor : WindowUI {
 				z: int.MinValue + 3,
 				colorX: tint,
 				colorY: tint,
-				clampRect: StageRect,
 				labelHeight: 0
 			);
 			// U

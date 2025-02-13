@@ -1080,14 +1080,14 @@ public static partial class GUI {
 
 		// X
 		var xRect = rect.EdgeInside(Direction4.Down, thickness);
-		if (clampRect.width > 0) xRect = xRect.Clamp(clampRect);
+		if (clampRect != default) xRect = xRect.Clamp(clampRect);
 		Renderer.DrawPixel(xRect, color: colorX, z: z);
 		if (stepCount.x > 1) {
 			int stepLengthX = length.x / stepCount.x;
 			float f_stepLenX = (float)length.x / stepCount.x;
 			int stepL = (xRect.x - position.x).UDivide(stepLengthX) * stepLengthX + position.x;
 			int stepR = rect.xMax;
-			if (clampRect.width > 0) stepR = Util.Min(stepR, clampRect.xMax);
+			if (clampRect != default) stepR = Util.Min(stepR, clampRect.xMax);
 			stepR = (stepR - position.x).UDivide(stepLengthX) * stepLengthX + position.x;
 			stepRect.width = thickness;
 			stepRect.height = stepThickness;

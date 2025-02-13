@@ -48,8 +48,12 @@ Hint.Publishing:正在发布
 Hub.Add:添加现有工程
 Hub.Create:创建新工程
 iDes.BlockBuilder:块
+iDes.BodyGadgetItem:身体部位
+iDes.BodySetItem:身形
 iDes.ClothItem:服装
 iName.BlockBuilder:块
+iName.BodyGadgetItem:身体部位
+iName.BodySetItem:身形
 iName.ClothItem:服装
 Label.B:B
 Label.Border:边框
@@ -209,6 +213,7 @@ Setting.MinViewHeight:最小场景高度（块）
 Setting.ViewRatio:场景长宽比
 SettingWindow:设 置
 Tip.AddAtlas:创建图集
+Tip.AddAtlasFolder:创建文件夹
 Tip.BorderD:下边框
 Tip.BorderL:左边框
 Tip.BorderR:有边框

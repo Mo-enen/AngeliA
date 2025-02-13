@@ -38,7 +38,7 @@ public abstract class Cloth {
 
 
 	[OnGameInitialize(-129)]
-	internal static TaskResult OnGameInitializeCloth () {
+	internal static TaskResult InitializePool () {
 
 		if (!Renderer.IsReady) return TaskResult.Continue;
 
@@ -92,6 +92,12 @@ public abstract class Cloth {
 		ClothSystemReady = true;
 		return TaskResult.End;
 
+	}
+
+
+	[OnMainSheetReload]
+	internal static void OnMainSheetReload () {
+		if (Game.GlobalFrame != 0) InitializePool();
 	}
 
 

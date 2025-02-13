@@ -29,7 +29,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TITLE_EXPORT_PNG = ("PixelEditor.Title.ExportPNG", "Export PNG file");
 	private static readonly LanguageCode MENU_ATLAS_TYPE = ("Menu.AtlasType", "Type");
 	private static readonly LanguageCode TIP_ADD_ATLAS = ("Tip.AddAtlas", "Create new atlas");
-	private static readonly LanguageCode TIP_ADD_ATLAS_FOLDER = ("Tip.AddAtlas", "Create new folder");
+	private static readonly LanguageCode TIP_ADD_ATLAS_FOLDER = ("Tip.AddAtlasFolder", "Create new folder");
 	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.PixelEditor.ImportPNG", "Import PNG file into current canvas");
 	private static readonly LanguageCode TIP_EXPORT_PNG = ("Tip.PixelEditor.ExportPNG", "Export current canvas to a PNG file");

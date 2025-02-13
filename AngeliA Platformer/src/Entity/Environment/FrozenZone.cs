@@ -146,6 +146,7 @@ public class FrozenZone : Entity {
 		int paraX = Fullscreen ? cameraRect.x / 2 : 0;
 		int paraY = Fullscreen ? cameraRect.y / 2 : 0;
 		int seed = X.ToUnit() * 1651243 + Y.ToUnit() * 128;
+		using var _ = new UILayerScope();
 		FrameworkUtil.DrawFrozenEffect(rect, alpha, count, new Int2(paraX, paraY), seed);
 	}
 

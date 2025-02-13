@@ -1,23 +1,13 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AngeliA;
 
-
-
-
 public abstract class HeadCloth : Cloth {
-
-	// SUB
-	public enum HatFrontMode { FrontOfHead, BackOfHead, AlwaysFrontOfHead, AlwaysBackOfHead, }
 
 	// VAR
 	public sealed override ClothType ClothType => ClothType.Head;
 	public override bool SpriteLoaded => SpriteHead.IsValid;
-	protected virtual HatFrontMode Front => HatFrontMode.FrontOfHead;
 	private OrientedSprite SpriteHead;
 
 	// MSG
@@ -28,7 +18,10 @@ public abstract class HeadCloth : Cloth {
 	}
 
 	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
-		if (renderer.SuitHead != 0 && renderer.TargetCharacter.CharacterState != CharacterState.Sleep && Pool.TryGetValue(renderer.SuitHead, out var cloth)) {
+		if (
+			renderer.SuitHead != 0 &&
+			Pool.TryGetValue(renderer.SuitHead, out var cloth)
+		) {
 			cloth.DrawCloth(renderer);
 		}
 	}
@@ -36,7 +29,7 @@ public abstract class HeadCloth : Cloth {
 	public override void DrawCloth (PoseCharacterRenderer renderer) {
 		if (!SpriteLoaded) return;
 		using var _ = new SheetIndexScope(SheetIndex);
-		DrawClothForHead(renderer, SpriteHead, Front);
+		DrawClothForHead(renderer, SpriteHead);
 	}
 
 	public override void DrawClothGizmos (IRect rect, Color32 tint, int z) {
@@ -45,17 +38,16 @@ public abstract class HeadCloth : Cloth {
 		}
 	}
 
-	public static void DrawClothForHead (PoseCharacterRenderer renderer, OrientedSprite clothSprite, HatFrontMode frontMode) {
+	public static void DrawClothForHead (PoseCharacterRenderer renderer, OrientedSprite clothSprite) {
 
 		var head = renderer.Head;
 		if (!clothSprite.IsValid || head.IsFullCovered) return;
 
 		// Get Sprite
-		bool front = frontMode != HatFrontMode.AlwaysBackOfHead && (
-			frontMode == HatFrontMode.AlwaysFrontOfHead ||
-			frontMode == HatFrontMode.FrontOfHead == head.FrontSide
-		);
-		if (!clothSprite.TryGetSprite(front, head.Width > 0, renderer.CurrentAnimationFrame, out var sprite)) return;
+		if (!clothSprite.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var sprite)) return;
+
+		// Hide when Sleeping
+		if (renderer.TargetCharacter.CharacterState == CharacterState.Sleep && !sprite.Tag.HasAll(Tag.Mark)) return;
 
 		// Width Amount
 		int widthAmount = 1000;
@@ -66,6 +58,7 @@ public abstract class HeadCloth : Cloth {
 		using var _ = new RotateCellScope(body.Rotation, body.GlobalX, body.GlobalY);
 
 		// Draw
+		bool front = sprite.IsTrigger ? sprite.LocalZ >= 0 : sprite.LocalZ >= 0 == head.FrontSide;
 		AttachClothOn(
 			head, sprite, 500, 1000,
 			(front ? 34 : -34) - head.Z, widthAmount, 1000, 0,

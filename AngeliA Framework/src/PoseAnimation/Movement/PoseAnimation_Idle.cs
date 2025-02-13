@@ -7,13 +7,12 @@ public class PoseAnimation_Idle : PoseAnimation {
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 
-		const int LOOP = 128;
-		int currentFrame = (CurrentAnimationFrame.UMod(128) / 16) * (LOOP / 8);
+		int frameLoop = Target.TypeID.UMod(128) + 96;
+		float lerp01 = (CurrentAnimationFrame + Target.TypeID).UMod(frameLoop) * 2f / frameLoop;
+		float ease010 = Ease.InOutCirc(lerp01 < 1f ? lerp01 : 2f - lerp01);
 
-		float ease = Ease.InOutCirc((currentFrame % (LOOP / 2f)) / (LOOP / 2f));
-		if (currentFrame >= LOOP / 2) ease = 1f - ease;
-		int oneEase = (int)(ease * A2G);
-		int halfEase = (int)(ease * A2G / 2);
+		int oneEase = (int)(ease010 * A2G);
+		int halfEase = (int)(ease010 * A2G / 2);
 		int bodyBorderL = FacingRight ? Body.Border.left : Body.Border.right;
 		int bodyBorderR = FacingRight ? Body.Border.right : Body.Border.left;
 

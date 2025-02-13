@@ -773,7 +773,7 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static void DrawFrozenEffect (IRect rect, byte alpha, int count = 32, Int2 offset = default, int seed = 0, int size = 142) {
+	public static void DrawFrozenEffect (IRect rect, byte alpha, int count = 32, Int2 offset = default, int seed = 0, int size = 142, int z = 0) {
 		if (!Renderer.TryGetSprite(Const.PIXEL, out var sprite, true)) return;
 		var tint = new Color32(200, 225, 255, alpha);
 		int left = rect.x;
@@ -794,7 +794,7 @@ public static partial class FrameworkUtil {
 			int y = down + (((fixedFrame01 + lerp01) * height).RoundToInt() - offset.y).UMod(height);
 			int _size = Util.QuickRandomWithSeed(seed + i * 1673 + 891237623, (size / 8).GreaterOrEquel(1), size);
 			int rot = Util.QuickRandom(0, 360);
-			Renderer.Draw(sprite, x, y, 500, 500, rot, _size, _size / 7, tint);
+			Renderer.Draw(sprite, x, y, 500, 500, rot, _size, _size / 7, tint, z);
 		}
 	}
 

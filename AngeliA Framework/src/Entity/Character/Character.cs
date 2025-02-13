@@ -58,11 +58,13 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public override bool EjectWhenInsideGround => false;
 	public virtual CharacterInventoryType InventoryType => CharacterInventoryType.None;
 	public virtual int FinalCharacterHeight => Movement.MovementHeight;
+	public virtual int DefaultCharacterHeight => 160;
 	public virtual int Team => Const.TEAM_NEUTRAL;
 	public virtual int AttackTargetTeam => Const.TEAM_ALL;
 	public virtual Tag IgnoreDamageType => Tag.None;
 	bool ICarrier.AllowBeingCarry => true;
 	bool IDamageReceiver.IsInvincible => Health.IsInvincible;
+	bool IDamageReceiver.TakeDamageFromLevel => Game.GlobalFrame > IgnoreDamageFromLevelFrame;
 	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
 	CharacterAttackness IWithCharacterAttackness.CurrentAttackness => Attackness;
 	CharacterHealth IWithCharacterHealth.CurrentHealth => Health;
@@ -83,7 +85,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public int DespawnAfterPassoutDelay { get; set; } = 60;
 	public int InventoryID { get; private set; }
 	public int RenderingCellIndex { get; private set; }
-	public bool TakeDamageFromLevel => Game.GlobalFrame > IgnoreDamageFromLevelFrame;
+
 	public readonly FrameBasedInt FullSleepDuration = new(90);
 	public readonly FrameBasedInt TeleportDuration = new(30);
 

@@ -71,7 +71,7 @@ public class CharacterMovement (Rigidbody rig) {
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashCancelLoseRate = new(300);
 
 	[PropGroup("Rush")]
-	public readonly FrameBasedBool RushAvailable = new(true);
+	public readonly FrameBasedBool RushAvailable = new(false);
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushHeightAmount = new(1000);
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushInAir = new(false);
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushInWater = new(true);
@@ -92,7 +92,7 @@ public class CharacterMovement (Rigidbody rig) {
 	[PropVisibility(nameof(SlipAvailable))] public readonly FrameBasedInt SlipDeceleration = new(1);
 
 	[PropGroup("Pound")]
-	public readonly FrameBasedBool PoundAvailable = new(true);
+	public readonly FrameBasedBool PoundAvailable = new(false);
 	[PropVisibility(nameof(PoundAvailable))] public readonly FrameBasedBool PoundPutoutFire = new(true);
 	[PropVisibility(nameof(PoundAvailable))] public readonly FrameBasedInt PoundSpeed = new(96);
 
@@ -113,7 +113,7 @@ public class CharacterMovement (Rigidbody rig) {
 	[PropVisibility(nameof(ClimbAvailable))] public readonly FrameBasedInt ClimbSpeedY = new(18);
 
 	[PropGroup("Fly")]
-	public readonly FrameBasedBool FlyAvailable = new(true);
+	public readonly FrameBasedBool FlyAvailable = new(false);
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyHeightAmount = new(521);
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedBool GlideOnFlying = new(false);
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyCooldown = new(24);
