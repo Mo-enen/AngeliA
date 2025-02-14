@@ -23,7 +23,7 @@ public class OnFireBuff : Buff {
 		// Putout Check
 		if (
 			Game.GlobalFrame == target.Movement.LastPoundingFrame + 1 ||
-			Game.GlobalFrame == target.Movement.LastSquatFrame + 1 ||
+			Game.GlobalFrame == target.Movement.LastSquatStartFrame + 1 ||
 			Game.GlobalFrame == target.Movement.LastDashFrame + 1 ||
 			Game.GlobalFrame == target.Movement.LastRushStartFrame + 1
 		) {

@@ -202,7 +202,7 @@ public class CharacterMovement (Rigidbody rig) {
 	public int LastRushStartFrame { get; private set; } = int.MinValue;
 	public int LastCrashFrame { get; private set; } = int.MinValue;
 	public int LastSlippyMoveStartFrame { get; private set; } = int.MinValue;
-	public int LastSquatFrame { get; private set; } = int.MinValue;
+	public int LastSquatStartFrame { get; private set; } = int.MinValue;
 	public int LastSquattingFrame { get; private set; } = int.MinValue;
 	public int LastPoundingFrame { get; private set; } = int.MinValue;
 	public int LastSlidingFrame { get; private set; } = int.MinValue;
@@ -488,7 +488,7 @@ public class CharacterMovement (Rigidbody rig) {
 		bool squatting =
 			SquatAvailable && IsGrounded && !IsClimbing && !IsInsideGround && !IsCrashing &&
 			((!IsDashing && !IsRushing && IntendedY < 0) || ForceSquatCheck());
-		if (!IsSquatting && squatting) LastSquatFrame = frame;
+		if (!IsSquatting && squatting) LastSquatStartFrame = frame;
 		if (squatting) LastSquattingFrame = frame;
 		IsSquatting = squatting;
 

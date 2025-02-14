@@ -251,12 +251,10 @@ public abstract class BodyCloth : Cloth {
 		bool facingFront = body.FrontSide;
 		if (!clothSprite.TryGetSprite(facingFront, facingRight, renderer.CurrentAnimationFrame, out var sprite)) return;
 
-		var animatedPoseType = renderer.TargetCharacter.AnimationType;
+		var target = renderer.TargetCharacter;
+		var animatedPoseType = target.AnimationType;
 
 		if (
-			animatedPoseType == CharacterAnimationType.SquatIdle ||
-			animatedPoseType == CharacterAnimationType.SquatMove ||
-			animatedPoseType == CharacterAnimationType.Dash ||
 			animatedPoseType == CharacterAnimationType.Rolling ||
 			animatedPoseType == CharacterAnimationType.Spin ||
 			animatedPoseType == CharacterAnimationType.Fly ||
@@ -265,10 +263,25 @@ public abstract class BodyCloth : Cloth {
 
 		// Draw
 		int height = body.Height.Sign() * (sprite.GlobalHeight + body.Height.Abs() - body.SizeY);
+		if (
+			animatedPoseType == CharacterAnimationType.SquatIdle ||
+			animatedPoseType == CharacterAnimationType.SquatMove ||
+			animatedPoseType == CharacterAnimationType.Dash
+		) {
+			int lastSqFrame = target.Movement.LastSquatStartFrame;
+			if (lastSqFrame >= 0) {
+				height -= ((Game.GlobalFrame - lastSqFrame) * 10).Clamp(0, height / 2);
+			}
+		} else {
+			int lastSqFrame = target.Movement.LastSquattingFrame;
+			if (lastSqFrame >= 0) {
+				height -= ((lastSqFrame - Game.GlobalFrame) * 10 + height / 2).Clamp(0, height / 2);
+			}
+		}
 		var cells = Renderer.DrawSlice(
 			sprite,
-			renderer.TargetCharacter.X + renderer.PoseRootX,
-			renderer.TargetCharacter.Y + renderer.PoseRootY + body.Height,
+			target.X + renderer.PoseRootX,
+			target.Y + renderer.PoseRootY + body.Height,
 			500, 1000, body.Rotation / 3,
 			sprite.GlobalWidth,
 			height,
@@ -279,7 +292,7 @@ public abstract class BodyCloth : Cloth {
 		if (motionAmount != 0) {
 			// X
 			int maxX = 30 * motionAmount / 1000;
-			int offsetX = (-renderer.TargetCharacter.DeltaPositionX * motionAmount / 1000).Clamp(-maxX, maxX);
+			int offsetX = (-target.DeltaPositionX * motionAmount / 1000).Clamp(-maxX, maxX);
 			cells[3].X += offsetX / 2;
 			cells[4].X += offsetX / 2;
 			cells[5].X += offsetX / 2;
@@ -288,7 +301,7 @@ public abstract class BodyCloth : Cloth {
 			cells[8].X += offsetX;
 			// Y
 			int maxY = 20 * motionAmount / 1000;
-			int offsetAmountY = 1000 + (renderer.TargetCharacter.DeltaPositionY * motionAmount / 10000).Clamp(-maxY, maxY) * 1000 / 20;
+			int offsetAmountY = 1000 + (target.DeltaPositionY * motionAmount / 10000).Clamp(-maxY, maxY) * 1000 / 20;
 			offsetAmountY = offsetAmountY.Clamp(800, 1200);
 			cells[0].Height = cells[0].Height * offsetAmountY / 1000;
 			cells[1].Height = cells[1].Height * offsetAmountY / 1000;

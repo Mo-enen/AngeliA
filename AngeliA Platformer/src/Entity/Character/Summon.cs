@@ -107,7 +107,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		// when Z Changed
 		if (PrevZ != Stage.ViewZ) {
 			PrevZ = Stage.ViewZ;
-			if (Navigation.IsFollowingOwner) {
+			if (Navigation.IsFollowingOwner && Owner == PlayerSystem.Selecting) {
 				if (CharacterState != CharacterState.Sleep) {
 					if (Owner != null) {
 						X = Owner.X;

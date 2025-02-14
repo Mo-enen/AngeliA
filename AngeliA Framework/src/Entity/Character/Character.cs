@@ -406,7 +406,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 
 	private void Update_RepairEquipment () {
-		if (Health.TakingDamage || Game.GlobalFrame != Movement.LastSquatFrame + 1) return;
+		if (Health.TakingDamage || Game.GlobalFrame != Movement.LastSquatStartFrame + 1) return;
 		TryRepairAllEquipments();
 	}
 

@@ -41,9 +41,9 @@ public abstract class CharacterRenderer (Character target) {
 		} else if (TargetCharacter.IsGrounded && frame.InRangeExclude(Movement.LastPoundingFrame, Movement.LastPoundingFrame + duration)) {
 			// Gound Pound End
 			bounce = BOUNCE_AMOUNTS_BIG[frame - Movement.LastPoundingFrame];
-		} else if (isSquatting && frame.InRangeExclude(Movement.LastSquatFrame, Movement.LastSquatFrame + duration)) {
+		} else if (isSquatting && frame.InRangeExclude(Movement.LastSquatStartFrame, Movement.LastSquatStartFrame + duration)) {
 			// Squat Start
-			bounce = BOUNCE_AMOUNTS[frame - Movement.LastSquatFrame];
+			bounce = BOUNCE_AMOUNTS[frame - Movement.LastSquatStartFrame];
 		} else if (!TargetCharacter.InWater && TargetCharacter.IsGrounded && frame.InRangeExclude(Movement.LastGroundFrame, Movement.LastGroundFrame + duration)) {
 			// Gounded Start
 			bounce = BOUNCE_AMOUNTS[frame - Movement.LastGroundFrame];
