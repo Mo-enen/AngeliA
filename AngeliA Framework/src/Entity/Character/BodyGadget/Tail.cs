@@ -46,7 +46,7 @@ public abstract class Tail : BodyGadget {
 			Wing.IsPropellerWing(renderer.WingID)
 		) return;
 
-		using var _ = new SheetIndexScope(SheetIndex);
+		using var __ = new SheetIndexScope(SheetIndex);
 		var animatedPoseType = renderer.TargetCharacter.AnimationType;
 		bool flying = animatedPoseType == CharacterAnimationType.Fly;
 		bool lyingDown = animatedPoseType.IsLyingDown();
@@ -61,19 +61,26 @@ public abstract class Tail : BodyGadget {
 			x = renderer.Body.GlobalX;
 			y = renderer.Hip.GlobalY + renderer.Hip.Height / 2;
 		}
-		DrawSpriteAsTail(
-			SpriteTail, x, y, renderer.Body.FrontSide, renderer.Body.Width > 0, renderer.Body.Height > 0,
-			Frequency, FrequencyAlt, FrameLen, FrameDelta,
-			AngleAmountRoot, AngleAmountSubsequent, AngleOffset, LimbGrow, OffsetX, OffsetY,
-			flying, frameOffset: renderer.TargetCharacter.TypeID // ※ Intended ※
-		);
+		bool front = renderer.Body.FrontSide;
+		bool right = renderer.Body.Width > 0;
+		bool up = renderer.Body.Height > 0;
+		if (SpriteTail.TryGetSpriteGroup(front, right, out _)) {
+			DrawSpriteAsWhipTail(
+				SpriteTail, x, y, front, right, up,
+				Frequency, FrequencyAlt, FrameLen, FrameDelta,
+				AngleAmountRoot, AngleAmountSubsequent, AngleOffset, LimbGrow, OffsetX, OffsetY,
+				flying, frameOffset: renderer.TargetCharacter.TypeID // ※ Intended ※
+			);
+		} else {
+			DrawSpriteAsSimpleTail(SpriteTail, x, y, front, right, up);
+		}
 
 	}
 
 
 	public override void DrawGadgetGizmos (IRect rect, Color32 tint, int z) {
 		using var _ = new DynamicClampCellScope(rect);
-		DrawSpriteAsTail(SpriteTail, rect.CenterX(), rect.y, true, true, true, z: z);
+		DrawSpriteAsWhipTail(SpriteTail, rect.CenterX(), rect.y, true, true, true, z: z);
 	}
 
 
@@ -99,7 +106,7 @@ public abstract class Tail : BodyGadget {
 	}
 
 
-	public static void DrawSpriteAsTail (
+	public static void DrawSpriteAsWhipTail (
 		OrientedSprite oSprite, int x, int y, bool facingFront, bool facingRight, bool facingUp,
 		int frequency = 113, int frequencyAlt = 277, int frameLen = 219, int frameDelta = 37,
 		int angleAmountRoot = 1000, int angleAmountSubsequent = 1000, int angleOffset = 0, int limbGrow = 1000,
@@ -211,6 +218,18 @@ public abstract class Tail : BodyGadget {
 			prevR = r;
 		}
 
+	}
+
+
+	public static void DrawSpriteAsSimpleTail (OrientedSprite oSprite, int x, int y, bool facingFront, bool facingRight, bool facingUp, int z = int.MinValue) {
+		if (!oSprite.IsValid) return;
+		if (!oSprite.TryGetSprite(facingFront, facingRight, Game.GlobalFrame, out var sprite)) return;
+		Renderer.Draw(
+			sprite, x, y,
+			sprite.PivotX, sprite.PivotY, 0,
+			sprite.GlobalWidth, facingUp ? sprite.GlobalHeight : -sprite.GlobalHeight,
+			z == int.MinValue ? (facingFront ? -33 : 33) : z
+		);
 	}
 
 

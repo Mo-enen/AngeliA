@@ -38,9 +38,9 @@ public class PoseAnimation_Climb : PoseAnimation {
 		FootR.LimbRotate(1);
 
 		// Final
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + 90;
-		Rendering.HandGrabScaleL = 1000;
-		Rendering.HandGrabScaleR = 1000;
+		Rendering.HandGrabRotationL.Override(LowerArmL.Rotation + 90);
+		Rendering.HandGrabRotationR.Override(LowerArmR.Rotation + 90);
+		Rendering.HandGrabScaleL.Override(1000);
+		Rendering.HandGrabScaleR.Override(1000);
 	}
 }

@@ -52,10 +52,10 @@ public class PoseAttack_Scratch : PoseAnimation {
 		int rotA = (int)Util.LerpUnclamped(101, 69, ease01);
 		int rotB = (int)Util.LerpUnclamped(54, 94, ease01);
 
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + (FacingRight ? rotA : -rotB);
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + (FacingRight ? rotB : -rotA);
-		Rendering.HandGrabScaleL = FacingRight ? 700 : -1300;
-		Rendering.HandGrabScaleR = FacingRight ? 1300 : -700;
+		Rendering.HandGrabRotationL.Override(LowerArmL.Rotation + (FacingRight ? rotA : -rotB));
+		Rendering.HandGrabRotationR.Override(LowerArmR.Rotation + (FacingRight ? rotB : -rotA));
+		Rendering.HandGrabScaleL.Override(FacingRight ? 700 : -1300);
+		Rendering.HandGrabScaleR.Override(FacingRight ? 1300 : -700);
 
 		// Z
 		UpperArmL.Z = -FacingSign * FrontSign * UpperArmL.Z.Abs();
@@ -96,10 +96,10 @@ public class PoseAttack_Scratch : PoseAnimation {
 		// Grab Rotation
 		int rotA = (int)Util.LerpUnclamped(93, 72, ease01);
 		int rotB = (int)Util.LerpUnclamped(94, 54, ease01);
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + (FacingRight ? rotA : -rotB);
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + (FacingRight ? rotB : -rotA);
-		Rendering.HandGrabScaleL = FacingRight ? 1300 : -700;
-		Rendering.HandGrabScaleR = FacingRight ? 700 : -1300;
+		Rendering.HandGrabRotationL.Override(LowerArmL.Rotation + (FacingRight ? rotA : -rotB));
+		Rendering.HandGrabRotationR.Override(LowerArmR.Rotation + (FacingRight ? rotB : -rotA));
+		Rendering.HandGrabScaleL.Override(FacingRight ? 1300 : -700);
+		Rendering.HandGrabScaleR.Override(FacingRight ? 700 : -1300);
 
 		// Z
 		UpperArmL.Z = FacingSign * FrontSign * UpperArmL.Z.Abs();
@@ -138,10 +138,10 @@ public class PoseAttack_Scratch : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Rendering.HandGrabRotationL = UpperArmL.Rotation + FacingSign * 90;
-		Rendering.HandGrabRotationR = UpperArmR.Rotation + FacingSign * 90;
-		Rendering.HandGrabScaleL = FacingSign * 1300;
-		Rendering.HandGrabScaleR = FacingSign * 1300;
+		Rendering.HandGrabRotationL.Override(UpperArmL.Rotation + FacingSign * 90);
+		Rendering.HandGrabRotationR.Override(UpperArmR.Rotation + FacingSign * 90);
+		Rendering.HandGrabScaleL.Override(FacingSign * 1300);
+		Rendering.HandGrabScaleR.Override(FacingSign * 1300);
 
 		// Z
 		UpperArmL.Z = FacingSign * FrontSign * UpperArmL.Z.Abs();

@@ -70,7 +70,7 @@ public class PoseAnimation_Spin : PoseAnimation {
 		FootR.LimbRotate(facingFront ? -FacingSign : FacingSign);
 
 		// Final
-		Rendering.HandGrabRotationL = LowerArmL.Rotation - 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + 90;
+		Rendering.HandGrabRotationL.Override( LowerArmL.Rotation - 90);
+		Rendering.HandGrabRotationR.Override( LowerArmR.Rotation + 90);
 	}
 }

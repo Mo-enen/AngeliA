@@ -54,8 +54,10 @@ public class PoseHandheld_Polearm : HandheldPoseAnimation {
 
 		// Grab
 		int deltaRot = (Target.DeltaPositionY / 10).Clamp(-10, 10);
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = FacingSign * (80 + deltaRot);
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = FacingSign * 1000;
+		Rendering.HandGrabRotationL.Override(FacingSign * (80 + deltaRot));
+		Rendering.HandGrabRotationR.Override(FacingSign * (80 + deltaRot));
+		Rendering.HandGrabScaleL.Override(FacingSign * 1000);
+		Rendering.HandGrabScaleR.Override(FacingSign * 1000);
 
 	}
 

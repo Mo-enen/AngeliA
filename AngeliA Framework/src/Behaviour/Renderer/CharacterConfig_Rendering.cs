@@ -114,11 +114,11 @@ public class CharacterRenderingConfig {
 
 		// Suit
 		if (!ignoreCloth) {
-			SuitHead = Cloth.TryGetDefaultClothID(typeID, ClothType.Head, out int suitId0) ? suitId0 : 0;
-			SuitBody = Cloth.TryGetDefaultClothID(typeID, ClothType.Body, out int suitId1) ? suitId1 : DefaultBodySuit.TYPE_ID;
-			SuitHip = Cloth.TryGetDefaultClothID(typeID, ClothType.Hip, out int suitId2) ? suitId2 : DefaultHipSuit.TYPE_ID;
-			SuitHand = Cloth.TryGetDefaultClothID(typeID, ClothType.Hand, out int suitId3) ? suitId3 : 0;
-			SuitFoot = Cloth.TryGetDefaultClothID(typeID, ClothType.Foot, out int suitId4) ? suitId4 : DefaultFootSuit.TYPE_ID;
+			SuitHead = Cloth.GetDefaultClothID(typeID, ClothType.Head);
+			SuitBody = Cloth.GetDefaultClothID(typeID, ClothType.Body);
+			SuitHip = Cloth.GetDefaultClothID(typeID, ClothType.Hip);
+			SuitHand = Cloth.GetDefaultClothID(typeID, ClothType.Hand);
+			SuitFoot = Cloth.GetDefaultClothID(typeID, ClothType.Foot);
 		}
 
 	}

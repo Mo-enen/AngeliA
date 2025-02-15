@@ -44,7 +44,7 @@ public class PoseAnimation_Pound : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Final
-		Rendering.HandGrabRotationL = LowerArmL.Rotation - 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + 90;
+		Rendering.HandGrabRotationL.Override( LowerArmL.Rotation - 90);
+		Rendering.HandGrabRotationR.Override( LowerArmR.Rotation + 90);
 	}
 }

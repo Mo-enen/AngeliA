@@ -36,8 +36,8 @@ public class PoseAnimation_GrabSide : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Final
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL.Override( LowerArmL.Rotation + FacingSign * 90);
+		Rendering.HandGrabRotationR.Override( LowerArmR.Rotation + FacingSign * 90);
 
 		// Z
 		HandL.Z = FacingFront ? POSE_Z_HAND : -POSE_Z_HAND;

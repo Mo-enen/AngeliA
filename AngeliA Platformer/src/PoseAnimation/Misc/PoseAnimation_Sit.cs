@@ -67,10 +67,10 @@ public class PoseAnimation_SlidingSit : PoseAnimation {
 		Rendering.HeadTwist = FacingSign * 100;
 
 		// Grab Rot
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + 90;
-		Rendering.HandGrabScaleL = 500;
-		Rendering.HandGrabScaleR = 500;
+		Rendering.HandGrabRotationL.Override(LowerArmL.Rotation + 90);
+		Rendering.HandGrabRotationR.Override(LowerArmR.Rotation + 90);
+		Rendering.HandGrabScaleL.Override(500);
+		Rendering.HandGrabScaleR.Override(500);
 
 		// Z
 		UpperLegL.Z = FacingSign * 6;

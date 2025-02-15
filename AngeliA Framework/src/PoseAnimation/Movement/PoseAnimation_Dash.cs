@@ -90,7 +90,7 @@ public class PoseAnimation_Dash : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Final
-		Rendering.HandGrabRotationL = FacingRight ? 90 : 0;
-		Rendering.HandGrabRotationR = FacingRight ? 0 : -90;
+		Rendering.HandGrabRotationL.Override(FacingRight ? 90 : 0);
+		Rendering.HandGrabRotationR.Override(FacingRight ? 0 : -90);
 	}
 }

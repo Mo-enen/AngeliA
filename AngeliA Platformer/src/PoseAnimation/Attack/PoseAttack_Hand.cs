@@ -113,8 +113,8 @@ public class PoseAttack_Hand : PoseAnimation {
 		}
 
 		// Final
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL.Override(LowerArmL.Rotation + FacingSign * 90);
+		Rendering.HandGrabRotationR.Override(LowerArmR.Rotation + FacingSign * 90);
 	}
 	private static void Smash () {
 
@@ -203,7 +203,7 @@ public class PoseAttack_Hand : PoseAnimation {
 		}
 
 		// Final
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL.Override(LowerArmL.Rotation + FacingSign * 90);
+		Rendering.HandGrabRotationR.Override(LowerArmR.Rotation + FacingSign * 90);
 	}
 }

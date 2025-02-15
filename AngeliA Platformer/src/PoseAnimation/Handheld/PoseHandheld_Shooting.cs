@@ -39,11 +39,14 @@ public class PoseHandheld_Shooting : HandheldPoseAnimation {
 		HandL.Z = HandR.Z = signZ * POSE_Z_HAND;
 
 		// Grab Rotation
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = FacingSign * 1000;
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = FacingSign * (
+		int gRot = FacingSign * (
 			30 - CurrentAnimationFrame.PingPong(120) / 30
 			+ Target.DeltaPositionY.Clamp(-24, 24) / 5
 		) - Target.DeltaPositionX.Clamp(-24, 24) / 4;
+		Rendering.HandGrabScaleL.Override(FacingSign * 1000);
+		Rendering.HandGrabScaleR.Override(FacingSign * 1000);
+		Rendering.HandGrabRotationL.Override(gRot);
+		Rendering.HandGrabRotationR.Override(gRot);
 
 	}
 

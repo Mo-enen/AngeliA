@@ -130,15 +130,12 @@ public abstract class Cloth {
 	public static bool TryGetCloth (int clothID, out Cloth cloth) => Pool.TryGetValue(clothID, out cloth);
 
 
-	public static bool TryGetDefaultClothID (int characterID, ClothType suitType, out int suitID) {
-		suitID = 0;
+	public static int GetDefaultClothID (int characterID, ClothType suitType) {
 		int typeIndex = (int)suitType;
-		if (typeIndex >= DefaultPool.Length) return false;
+		if (typeIndex >= DefaultPool.Length) return 0;
 		var pool = DefaultPool[typeIndex];
-		if (pool.TryGetValue(characterID, out suitID)) {
-			return true;
-		}
-		return false;
+		if (pool.TryGetValue(characterID, out int suitID)) return suitID;
+		return 0;
 	}
 
 

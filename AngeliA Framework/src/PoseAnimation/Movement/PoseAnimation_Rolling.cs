@@ -82,7 +82,7 @@ public class PoseAnimation_Rolling : PoseAnimation {
 		}
 
 		// Final
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + Body.Height.Sign() * FacingSign * 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + Body.Height.Sign() * FacingSign * 90;
+		Rendering.HandGrabRotationL.Override( LowerArmL.Rotation + Body.Height.Sign() * FacingSign * 90);
+		Rendering.HandGrabRotationR.Override( LowerArmR.Rotation + Body.Height.Sign() * FacingSign * 90);
 	}
 }

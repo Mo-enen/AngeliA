@@ -15,17 +15,20 @@ public class PoseAnimation_Ride : PoseAnimation {
 
 		int bodyDeltaY = 2 * A2G;
 		int velX = Movement.Target.VelocityX;
+
 		Rendering.BasicRootY = Rendering.PoseRootY = -bodyDeltaY;
-		Body.Y -= bodyDeltaY;
-		Hip.Y -= bodyDeltaY;
+
 		UpperLegL.Y -= bodyDeltaY / 2;
 		UpperLegR.Y -= bodyDeltaY / 2;
+
 		Body.Rotation = FacingSign * 20;
 		Head.Rotation = FacingSign * -16;
-		Body.Height = Body.SizeY * 4 / 5 - velX.Abs().Clamp(0, A2G);
 		Head.X = Body.X + FacingSign * A2G + velX.Clamp(-A2G * 3, A2G * 3);
-		Head.Y = Body.Y + Body.Height - 2 * A2G - velX.Abs().Clamp(0, A2G * 2);
+		Body.Height /= 2;
+		Head.Y = Body.Y + Body.Height;
+
 		ResetShoulderAndUpperArmPos();
+
 		int armLimbDeltaX = velX.Clamp(-A2G * 2, A2G * 2);
 		ShoulderL.X += armLimbDeltaX;
 		ShoulderR.X += armLimbDeltaX;
@@ -50,10 +53,10 @@ public class PoseAnimation_Ride : PoseAnimation {
 		FootR.LimbRotate(0);
 
 		// Grab Rot
-		Rendering.HandGrabRotationL = (LowerArmL.Rotation + FacingSign * 90);
-		Rendering.HandGrabRotationR = (LowerArmR.Rotation + FacingSign * 90);
-		//Rendering.HandGrabScaleL = 500;
-		//Rendering.HandGrabScaleR = 500;
+		Rendering.HandGrabRotationL.Override(LowerArmL.Rotation + FacingSign * 90);
+		Rendering.HandGrabRotationR.Override(LowerArmR.Rotation + FacingSign * 90);
+		Rendering.HandGrabScaleL.Override(FacingSign * 1000, 0, 64);
+		Rendering.HandGrabScaleR.Override(FacingSign * 1000, 0, 64);
 
 		// Z
 		Body.Z = 1;

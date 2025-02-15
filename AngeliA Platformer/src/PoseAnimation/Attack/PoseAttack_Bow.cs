@@ -130,8 +130,10 @@ public class PoseAttack_Bow : PoseAnimation {
 		HandL.Z = HandR.Z = FrontSign * POSE_Z_HAND;
 
 		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = grabRot;
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = grabScl;
+		Rendering.HandGrabRotationL.Override(grabRot);
+		Rendering.HandGrabRotationR.Override(grabRot);
+		Rendering.HandGrabScaleL.Override(grabScl);
+		Rendering.HandGrabScaleR.Override(grabScl);
 
 	}
 }

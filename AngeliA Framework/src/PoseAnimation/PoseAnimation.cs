@@ -48,12 +48,12 @@ public abstract class PoseAnimation {
 			Rendering.PoseRootY = PoseRootY;
 			Rendering.BodyTwist = BodyTwist;
 			Rendering.HeadTwist = HeadTwist;
-			Rendering.HandGrabRotationL = HandGrabRotationL;
-			Rendering.HandGrabRotationR = HandGrabRotationR;
-			Rendering.HandGrabScaleL = HandGrabScaleL;
-			Rendering.HandGrabScaleR = HandGrabScaleR;
-			Rendering.HandGrabAttackTwistL = HandGrabAttackTwistL;
-			Rendering.HandGrabAttackTwistR = HandGrabAttackTwistR;
+			Rendering.HandGrabRotationL.Override(HandGrabRotationL);
+			Rendering.HandGrabRotationR.Override(HandGrabRotationR);
+			Rendering.HandGrabScaleL.Override(HandGrabScaleL);
+			Rendering.HandGrabScaleR.Override(HandGrabScaleR);
+			Rendering.HandGrabAttackTwistL.Override(HandGrabAttackTwistL);
+			Rendering.HandGrabAttackTwistR.Override(HandGrabAttackTwistR);
 		}
 		public void RecordFromPose () {
 			for (int i = 0; i < BodyParts.Length; i++) {
@@ -102,19 +102,19 @@ public abstract class PoseAnimation {
 				pose.Tint = Color32.Lerp(pose.Tint, record.Tint, blend01);
 			}
 
-			Rendering.HandGrabScaleL = FixSign(Rendering.HandGrabScaleL, HandGrabScaleL);
-			Rendering.HandGrabScaleR = FixSign(Rendering.HandGrabScaleR, HandGrabScaleR);
+			Rendering.HandGrabScaleL.Override(FixSign(Rendering.HandGrabScaleL, HandGrabScaleL));
+			Rendering.HandGrabScaleR.Override(FixSign(Rendering.HandGrabScaleR, HandGrabScaleR));
 
 			Rendering.PoseRootX = (int)Util.LerpUnclamped(Rendering.PoseRootX, PoseRootX, blend01);
 			Rendering.PoseRootY = (int)Util.LerpUnclamped(Rendering.PoseRootY, PoseRootY, blend01);
 			Rendering.BodyTwist = (int)Util.LerpUnclamped(Rendering.BodyTwist, BodyTwist, blend01);
 			Rendering.HeadTwist = (int)Util.LerpUnclamped(Rendering.HeadTwist, HeadTwist, blend01);
-			Rendering.HandGrabRotationL = (int)Util.LerpAngle(Rendering.HandGrabRotationL, HandGrabRotationL, blend01);
-			Rendering.HandGrabRotationR = (int)Util.LerpAngle(Rendering.HandGrabRotationR, HandGrabRotationR, blend01);
-			Rendering.HandGrabScaleL = (int)Util.LerpUnclamped(Rendering.HandGrabScaleL, HandGrabScaleL, blend01);
-			Rendering.HandGrabScaleR = (int)Util.LerpUnclamped(Rendering.HandGrabScaleR, HandGrabScaleR, blend01);
-			Rendering.HandGrabAttackTwistL = (int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistL, HandGrabAttackTwistL, blend01);
-			Rendering.HandGrabAttackTwistR = (int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistR, HandGrabAttackTwistR, blend01);
+			Rendering.HandGrabRotationL.Override((int)Util.LerpAngle(Rendering.HandGrabRotationL, HandGrabRotationL, blend01));
+			Rendering.HandGrabRotationR.Override((int)Util.LerpAngle(Rendering.HandGrabRotationR, HandGrabRotationR, blend01));
+			Rendering.HandGrabScaleL.Override((int)Util.LerpUnclamped(Rendering.HandGrabScaleL, HandGrabScaleL, blend01));
+			Rendering.HandGrabScaleR.Override((int)Util.LerpUnclamped(Rendering.HandGrabScaleR, HandGrabScaleR, blend01));
+			Rendering.HandGrabAttackTwistL.Override((int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistL, HandGrabAttackTwistL, blend01));
+			Rendering.HandGrabAttackTwistR.Override((int)Util.LerpUnclamped(Rendering.HandGrabAttackTwistR, HandGrabAttackTwistR, blend01));
 
 
 			// Func

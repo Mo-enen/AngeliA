@@ -58,9 +58,9 @@ public class PoseAnimation_JumpUp : PoseAnimation {
 		FootR.Z += 2;
 
 		// Final
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
-		Rendering.HandGrabScaleL = FacingSign * 1000;
-		Rendering.HandGrabScaleR = FacingSign * 1000;
+		Rendering.HandGrabRotationL.Override( LowerArmL.Rotation + FacingSign * 90);
+		Rendering.HandGrabRotationR.Override( LowerArmR.Rotation + FacingSign * 90);
+		Rendering.HandGrabScaleL.Override( FacingSign * 1000);
+		Rendering.HandGrabScaleR.Override( FacingSign * 1000);
 	}
 }

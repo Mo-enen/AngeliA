@@ -45,8 +45,8 @@ public class PoseAnimation_PhotoPose : PoseAnimation {
 		FootL.LimbRotate(-FacingSign);
 
 		// Grab Rot
-		Rendering.HandGrabScaleL = 0;
-		Rendering.HandGrabScaleR = 0;
+		Rendering.HandGrabScaleL.Override(0);
+		Rendering.HandGrabScaleR.Override(0);
 
 		// Z
 		UpperArmL.Z = 30;

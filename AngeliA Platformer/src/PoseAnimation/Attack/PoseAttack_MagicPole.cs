@@ -41,10 +41,12 @@ public class PoseAttack_MagicPole : PoseAnimation {
 		HandR.LimbRotate(FacingSign);
 
 		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
-			FacingSign * (int)Util.LerpUnclamped(-5, 60, ease01);
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
-			FacingSign * (int)Util.LerpUnclamped(1000, 1100, ease01);
+		int gRot = FacingSign * (int)Util.LerpUnclamped(-5, 60, ease01);
+		int gScl = FacingSign * (int)Util.LerpUnclamped(1000, 1100, ease01);
+		Rendering.HandGrabRotationL.Override(gRot);
+		Rendering.HandGrabRotationR.Override(gRot);
+		Rendering.HandGrabScaleL.Override(gScl);
+		Rendering.HandGrabScaleR.Override(gScl);
 
 		// Z
 		UpperArmL.Z = LowerArmL.Z = FrontSign * UpperArmL.Z.Abs();

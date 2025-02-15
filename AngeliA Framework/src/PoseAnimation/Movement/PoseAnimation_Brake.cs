@@ -29,7 +29,7 @@ public class PoseAnimation_Brake : PoseAnimation {
 		HandL.Z = 33;
 		HandR.Z = 33;
 		Rendering.BodyTwist = FacingRight ? -1000 : 1000;
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL.Override(LowerArmL.Rotation + FacingSign * 90);
+		Rendering.HandGrabRotationR.Override(LowerArmR.Rotation + FacingSign * 90);
 	}
 }

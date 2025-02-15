@@ -61,7 +61,7 @@ public class PoseAnimation_Fly : PoseAnimation {
 		FootR.Z = -32;
 
 		// Final
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 60;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 60;
+		Rendering.HandGrabRotationL.Override( LowerArmL.Rotation + FacingSign * 60);
+		Rendering.HandGrabRotationR.Override( LowerArmR.Rotation + FacingSign * 60);
 	}
 }

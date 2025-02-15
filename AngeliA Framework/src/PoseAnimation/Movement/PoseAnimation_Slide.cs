@@ -57,7 +57,7 @@ public class PoseAnimation_Slide : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Final
-		Rendering.HandGrabRotationL = LowerArmL.Rotation + FacingSign * 90;
-		Rendering.HandGrabRotationR = LowerArmR.Rotation + FacingSign * 90;
+		Rendering.HandGrabRotationL.Override( LowerArmL.Rotation + FacingSign * 90);
+		Rendering.HandGrabRotationR.Override( LowerArmR.Rotation + FacingSign * 90);
 	}
 }

@@ -6,13 +6,6 @@ namespace AngeliA;
 public static class EntityAttribute {
 
 
-	// Character
-	[AttributeUsage(AttributeTargets.Class)]
-	public class DefaultSelectedPlayerAttribute (int priority = 0) : Attribute {
-		public int Priority = priority;
-	}
-
-
 	// Map Editor
 	[AttributeUsage(AttributeTargets.Class)]
 	public class ExcludeInMapEditorAttribute : Attribute { }

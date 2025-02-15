@@ -43,7 +43,7 @@ public sealed class ClothItem (int id) : NonStackableItem {
 			_ => throw new System.NotImplementedException(),
 		};
 		fID.BaseValue = fID.BaseValue != ClothID ? ClothID :
-			Cloth.TryGetDefaultClothID(holder.TypeID, cloth.ClothType, out int defaultID) ? defaultID : 0;
+			Cloth.GetDefaultClothID(holder.TypeID, cloth.ClothType);
 		rendering.SaveCharacterToConfig(saveToFile: true);
 		return true;
 	}

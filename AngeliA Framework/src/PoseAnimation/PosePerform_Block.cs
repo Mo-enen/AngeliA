@@ -45,8 +45,10 @@ public class PosePerform_Block : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = 0;
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = 618;
+		Rendering.HandGrabRotationL.Override(0);
+		Rendering.HandGrabRotationR.Override(0);
+		Rendering.HandGrabScaleL.Override(618);
+		Rendering.HandGrabScaleR.Override(618);
 
 		// Z
 		UpperArmL.Z = UpperArmL.Z.Abs();

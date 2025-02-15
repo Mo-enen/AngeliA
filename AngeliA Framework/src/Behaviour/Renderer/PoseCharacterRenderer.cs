@@ -35,12 +35,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	public int PoseRootY { get; set; } = 0;
 	public int HeadTwist { get; set; } = 0;
 	public int BodyTwist { get; set; } = 0;
-	public int HandGrabRotationL { get; set; } = 0;
-	public int HandGrabRotationR { get; set; } = 0;
-	public int HandGrabScaleL { get; set; } = 1000;
-	public int HandGrabScaleR { get; set; } = 1000;
-	public int HandGrabAttackTwistL { get; set; } = 1000;
-	public int HandGrabAttackTwistR { get; set; } = 1000;
 	public int CharacterHeight { get; set; } = 160; // in CM
 	public int RenderedCellZ { get; private set; } = 0;
 	public int BlendDuration { get; set; } = 6;
@@ -64,6 +58,14 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	public BodyPart LowerLegR { get; init; } = null;
 	public BodyPart FootL { get; init; } = null;
 	public BodyPart FootR { get; init; } = null;
+
+	// Hand
+	public readonly FrameBasedInt HandGrabRotationL = new(0);
+	public readonly FrameBasedInt HandGrabRotationR = new(0);
+	public readonly FrameBasedInt HandGrabScaleL = new(1000);
+	public readonly FrameBasedInt HandGrabScaleR = new(1000);
+	public readonly FrameBasedInt HandGrabAttackTwistL = new(1000);
+	public readonly FrameBasedInt HandGrabAttackTwistR = new(1000);
 
 	// Gadget
 	public readonly FrameBasedInt FaceID = new(0);
@@ -522,8 +524,8 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		// Movement
 		var Movement = TargetCharacter.Movement;
 
-		HandGrabScaleL = Movement.FacingRight ? 1000 : -1000;
-		HandGrabScaleR = Movement.FacingRight ? 1000 : -1000;
+		HandGrabScaleL.Override(Movement.FacingRight ? 1000 : -1000);
+		HandGrabScaleR.Override(Movement.FacingRight ? 1000 : -1000);
 
 		PerformPoseAnimation();
 		CalculateBodypartGlobalPosition();
@@ -546,8 +548,10 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		// Attacking
 		if (TargetCharacter.Attackness.IsAttacking && performAniID != 0) {
 			if (TargetCharacter.CurrentAttackSpeedRate == 0 && TargetCharacter.IsGrounded && !Movement.IsSquatting) ResetPoseToDefault(true);
-			HandGrabScaleL = HandGrabScaleR = Movement.FacingRight ? 1000 : -1000;
-			HandGrabAttackTwistL = HandGrabAttackTwistR = 1000;
+			HandGrabScaleL.Override(Movement.FacingRight ? 1000 : -1000);
+			HandGrabScaleR.Override(Movement.FacingRight ? 1000 : -1000);
+			HandGrabAttackTwistL.Override(1000);
+			HandGrabAttackTwistR.Override(1000);
 			PoseAnimation.PerformAnimationFromPool(performAniID, this);
 			CalculateBodypartGlobalPosition();
 		}

@@ -129,9 +129,12 @@ public class PoseAttack_Shooting : PoseAnimation {
 		HandL.Z = HandR.Z = FrontSign * POSE_Z_HAND;
 
 		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = grabRot;
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = grabScl;
-		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR = 1000;
+		Rendering.HandGrabRotationL.Override(grabRot);
+		Rendering.HandGrabRotationR.Override(grabRot);
+		Rendering.HandGrabScaleL.Override(grabScl);
+		Rendering.HandGrabScaleR.Override(grabScl);
+		Rendering.HandGrabAttackTwistL.Override(1000);
+		Rendering.HandGrabAttackTwistR.Override(1000);
 
 		// Leg
 		AttackLegShake(ease01);

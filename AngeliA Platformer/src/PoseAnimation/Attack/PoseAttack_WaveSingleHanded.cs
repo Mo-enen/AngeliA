@@ -53,10 +53,12 @@ public class PoseAttack_WaveSingleHanded_SmashOnly : PoseAttack_WaveSingleHanded
 		AttackLegShake(ease01);
 
 		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
-			FacingSign * (int)Util.LerpUnclamped(-80, 100, ease01);
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
-			FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
+		int gRot = FacingSign * (int)Util.LerpUnclamped(-80, 100, ease01);
+		int gScl = FacingSign * (int)Util.LerpUnclamped(1100, 1400, ease01);
+		Rendering.HandGrabRotationL.Override(gRot);
+		Rendering.HandGrabRotationR.Override(gRot);
+		Rendering.HandGrabScaleL.Override(gScl);
+		Rendering.HandGrabScaleR.Override(gScl);
 
 		// Z
 		UpperArmL.Z = UpperArmL.Z.Abs();
@@ -130,13 +132,15 @@ public class PoseAttack_WaveSingleHanded : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
-			FacingSign * (int)Util.LerpUnclamped(-80f, 200f, ease01);
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
-			FacingSign * (int)Util.LerpUnclamped(1000, 1500, ease010);
-		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
-			(int)Util.LerpUnclamped(500, 1000, ease01);
-
+		int gRot = FacingSign * (int)Util.LerpUnclamped(-80f, 200f, ease01);
+		int gTwist = (int)Util.LerpUnclamped(500, 1000, ease01);
+		int gScl = FacingSign * (int)Util.LerpUnclamped(1000, 1500, ease010);
+		Rendering.HandGrabRotationL.Override(gRot);
+		Rendering.HandGrabRotationR.Override(gRot);
+		Rendering.HandGrabScaleL.Override(gScl);
+		Rendering.HandGrabScaleR.Override(gScl);
+		Rendering.HandGrabAttackTwistL.Override(gTwist);
+		Rendering.HandGrabAttackTwistR.Override(gTwist);
 		// Z
 		UpperArmL.Z = UpperArmL.Z.Abs();
 		UpperArmR.Z = UpperArmR.Z.Abs();
@@ -191,12 +195,15 @@ public class PoseAttack_WaveSingleHanded : PoseAnimation {
 		FootR.LimbRotate(-FacingSign);
 
 		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
-			FacingSign * (int)Util.LerpUnclamped(180f, -45f, ease01);
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
-			FacingSign * (int)Util.LerpUnclamped(-1000, -1500, ease010);
-		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
-			(int)Util.LerpUnclamped(800, 1000, ease01);
+		int gRot = FacingSign * (int)Util.LerpUnclamped(180f, -45f, ease01);
+		int gScl = FacingSign * (int)Util.LerpUnclamped(-1000, -1500, ease010);
+		int gTwist = (int)Util.LerpUnclamped(800, 1000, ease01);
+		Rendering.HandGrabRotationL.Override(gRot);
+		Rendering.HandGrabRotationR.Override(gRot);
+		Rendering.HandGrabScaleL.Override(gScl);
+		Rendering.HandGrabScaleR.Override(gScl);
+		Rendering.HandGrabAttackTwistL.Override(gTwist);
+		Rendering.HandGrabAttackTwistR.Override(gTwist);
 
 		// Z
 		UpperArmL.Z = UpperArmL.Z.Abs();
@@ -244,12 +251,15 @@ public class PoseAttack_WaveSingleHanded : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
-			FacingSign * (int)Util.LerpUnclamped(67, 224, ease01);
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
-			FacingSign * (int)Util.LerpUnclamped(1300, 100, ease010);
-		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
-			(int)Util.LerpUnclamped(600, 200, frame01);
+		int gRot = FacingSign * (int)Util.LerpUnclamped(67, 224, ease01);
+		int gScl = FacingSign * (int)Util.LerpUnclamped(1300, 100, ease010);
+		int gTwi = (int)Util.LerpUnclamped(600, 200, frame01);
+		Rendering.HandGrabRotationL.Override(gRot);
+		Rendering.HandGrabRotationR.Override(gRot);
+		Rendering.HandGrabScaleL.Override(gScl);
+		Rendering.HandGrabScaleR.Override(gScl);
+		Rendering.HandGrabAttackTwistL.Override(gTwi);
+		Rendering.HandGrabAttackTwistR.Override(gTwi);
 
 		// Z
 		UpperArmL.Z = UpperArmL.Z.Abs();
@@ -296,12 +306,15 @@ public class PoseAttack_WaveSingleHanded : PoseAnimation {
 		AttackLegShake(ease01);
 
 		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR =
-			FacingSign * (int)Util.LerpUnclamped(197, 128, ease01);
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR =
-			FacingSign * (int)Util.LerpUnclamped(-1300, -100, ease010);
-		Rendering.HandGrabAttackTwistL = Rendering.HandGrabAttackTwistR =
-			(int)Util.LerpUnclamped(600, 200, frame01);
+		int gRot = FacingSign * (int)Util.LerpUnclamped(197, 128, ease01);
+		int gScl = FacingSign * (int)Util.LerpUnclamped(-1300, -100, ease010);
+		int gTwi = (int)Util.LerpUnclamped(600, 200, frame01);
+		Rendering.HandGrabRotationL.Override(gRot);
+		Rendering.HandGrabRotationR.Override(gRot);
+		Rendering.HandGrabScaleL.Override(gScl);
+		Rendering.HandGrabScaleR.Override(gScl);
+		Rendering.HandGrabAttackTwistL.Override(gTwi);
+		Rendering.HandGrabAttackTwistR.Override(gTwi);
 
 		// Z
 		UpperArmL.Z = UpperArmL.Z.Abs();

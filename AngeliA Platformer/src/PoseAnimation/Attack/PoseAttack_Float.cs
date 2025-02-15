@@ -35,8 +35,11 @@ public class PoseAttack_Float : PoseAnimation {
 		handB.Z = POSE_Z_HAND;
 
 		// Grab
-		Rendering.HandGrabRotationL = Rendering.HandGrabRotationR = 0;
-		Rendering.HandGrabScaleL = Rendering.HandGrabScaleR = (int)Util.LerpUnclamped(700, 800, ease01);
+		int handScale = (int)Util.LerpUnclamped(700, 800, ease01);
+		Rendering.HandGrabRotationL.Override(0);
+		Rendering.HandGrabRotationR.Override(0);
+		Rendering.HandGrabScaleL.Override(handScale);
+		Rendering.HandGrabScaleR.Override(handScale);
 
 		// Leg
 		AttackLegShake(ease01);
