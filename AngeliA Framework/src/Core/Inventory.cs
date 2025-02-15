@@ -130,8 +130,8 @@ public static class Inventory {
 		}
 
 		// Cheat from BodySet Entity
-		foreach (var (id, type) in BodySetItem.ForAllBodySetCharacterType()) {
-			CheatSystem.TryAddCheatAction($"Give{type.AngeName()}.BodySet", giveItemCheatInfo, id);
+		foreach (var (id, (_, name)) in BodySetItem.ForAllBodySetCharacterType()) {
+			CheatSystem.TryAddCheatAction($"Give{name}.BodySet", giveItemCheatInfo, id);
 		}
 
 		return TaskResult.End;

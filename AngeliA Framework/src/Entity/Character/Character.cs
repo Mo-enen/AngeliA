@@ -280,7 +280,11 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 			for (int i = 0; i < invCapacity; i++) {
 				int id = Inventory.GetItemAt(InventoryID, i);
 				var item = id != 0 ? ItemSystem.GetItem(id) : null;
-				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
+				if (
+					item == null ||
+					!item.ItemConditionCheck(this) ||
+					!item.CheckUpdateAvailable(TypeID)
+				) continue;
 				item.BeforeItemUpdate_FromInventory(this, InventoryID, i);
 			}
 
@@ -290,7 +294,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 				var type = (EquipmentType)i;
 				int id = Inventory.GetEquipment(InventoryID, type, out int equipmentCount);
 				var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
-				if (item == null) continue;
+				if (item == null || !item.ItemConditionCheck(this)) continue;
 				item.BeforeItemUpdate_FromEquipment(this);
 				if (item is HandTool tool) {
 					Attackness.AttackDuration = tool.Duration;
@@ -538,7 +542,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 			for (int i = 0; i < Const.EquipmentTypeCount; i++) {
 				int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
 				var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
-				if (item == null) continue;
+				if (item == null || !item.ItemConditionCheck(this)) continue;
 				item.OnItemUpdate_FromEquipment(this);
 				if (item is HandTool tool && performLocalFrame == tool.PerformDelayFrame) {
 					if (tool is Weapon weapon) {
@@ -557,7 +561,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 			for (int i = 0; i < invCapacity; i++) {
 				int id = Inventory.GetItemAt(InventoryID, i);
 				var item = id != 0 ? ItemSystem.GetItem(id) : null;
-				if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
+				if (item == null || !item.ItemConditionCheck(this) || !item.CheckUpdateAvailable(TypeID)) continue;
 				item.OnItemUpdate_FromInventory(this, InventoryID, i);
 				if (attacking) {
 					item.OnCharacterAttack_FromInventory(this, attackingBullet, InventoryID, i);
@@ -711,7 +715,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		for (int i = 0; i < invCapacity && damage.Amount > 0; i++) {
 			int id = Inventory.GetItemAt(InventoryID, i);
 			var item = id != 0 ? ItemSystem.GetItem(id) : null;
-			if (item == null || !item.CheckUpdateAvailable(TypeID)) continue;
+			if (item == null || !item.ItemConditionCheck(this) || !item.CheckUpdateAvailable(TypeID)) continue;
 			item.OnTakeDamage_FromInventory(this, InventoryID, i, ref damage);
 		}
 
@@ -720,7 +724,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		for (int i = 0; i < Const.EquipmentTypeCount && damage.Amount > 0; i++) {
 			int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
 			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
-			item?.OnTakeDamage_FromEquipment(this, ref damage);
+			if (item == null || !item.ItemConditionCheck(this)) continue;
+			item.OnTakeDamage_FromEquipment(this, ref damage);
 		}
 
 		// Deal Damage

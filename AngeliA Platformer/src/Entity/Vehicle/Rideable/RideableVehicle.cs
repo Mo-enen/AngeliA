@@ -125,6 +125,8 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 		for (int i = 0; i < count; i++) {
 			if (
 				hits[i].Entity is Character characterHit &&
+				characterHit is IRider ridder &&
+				ridder.ReadyToRide &&
 				characterHit.Y >= Rect.CenterY() &&
 				characterHit.VelocityY <= VelocityY
 			) {
@@ -140,6 +142,8 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 	protected override bool CheckForStopDrive () {
 
 		if (base.CheckForStopDrive()) return true;
+
+		if (Driver is not IRider rider || !rider.ReadyToRide) return true;
 
 		// For Player
 		var player = PlayerSystem.Selecting;

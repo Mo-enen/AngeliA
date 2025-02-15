@@ -19,7 +19,7 @@ public sealed class BodySetItem : NonStackableItem {
 	public CharacterRenderingConfig Data { get; init; }
 
 	// Data
-	private static readonly Dictionary<int, System.Type> Pool = [];
+	private static readonly Dictionary<int, (System.Type type, string name)> Pool = [];
 
 
 	#endregion
@@ -32,11 +32,16 @@ public sealed class BodySetItem : NonStackableItem {
 
 	[OnGameInitialize(-129)]
 	internal static void OnGameInitialize () {
+		// From Character
 		var tempConfig = new CharacterRenderingConfig();
 		foreach (var type in typeof(Character).AllChildClass()) {
 			tempConfig.LoadFromSheet(type, ignoreBodyGadget: true, ignoreCloth: true);
 			if (tempConfig.AllBodyPartIsDefault()) continue;
-			Pool.TryAdd(type.AngeHash(), type);
+			Pool.TryAdd(type.AngeHash(), (type, type.AngeName()));
+		}
+		// From Attribute
+		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<BodySetAttribute>()) {
+			Pool.TryAdd(att.Name.AngeHash(), (null, att.Name));
 		}
 	}
 
@@ -49,11 +54,31 @@ public sealed class BodySetItem : NonStackableItem {
 	}
 
 
+	public BodySetItem (string basicName) {
+		TargetCharacterName = basicName;
+		TargetCharacterID = TargetCharacterName.AngeHash();
+		Data = new() {
+			Head = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[0]}".AngeHash(),
+			Body = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[1]}".AngeHash(),
+			Hip = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[2]}".AngeHash(),
+			Shoulder = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[3]}".AngeHash(),
+			UpperArm = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[5]}".AngeHash(),
+			LowerArm = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[7]}".AngeHash(),
+			Hand = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[9]}".AngeHash(),
+			UpperLeg = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[11]}".AngeHash(),
+			LowerLeg = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[13]}".AngeHash(),
+			Foot = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[15]}".AngeHash(),
+		};
+	}
+
+
 	public override void DrawItem (Entity holder, IRect rect, Color32 tint, int z) {
 
 		// Icon
 		if (Renderer.TryGetSpriteForGizmos(TargetCharacterID, out var iconSP)) {
 			Renderer.Draw(iconSP, rect.Fit(iconSP), tint, z);
+		} else {
+			Renderer.Draw(BuiltInSprite.ICON_ENTITY, rect, tint, z);
 		}
 
 		// Mark
@@ -121,7 +146,7 @@ public sealed class BodySetItem : NonStackableItem {
 	#region --- API ---
 
 
-	public static IEnumerable<KeyValuePair<int, System.Type>> ForAllBodySetCharacterType () {
+	public static IEnumerable<KeyValuePair<int, (System.Type, string)>> ForAllBodySetCharacterType () {
 		foreach (var pair in Pool) yield return pair;
 	}
 

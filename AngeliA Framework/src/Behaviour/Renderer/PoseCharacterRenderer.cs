@@ -269,7 +269,8 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			);
 			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, eqType, out int equipmentCount);
 			var eq = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
-			eq?.BeforePoseAnimationUpdate_FromEquipment(this);
+			if (eq == null || !eq.ItemConditionCheck(TargetCharacter)) continue;
+			eq.BeforePoseAnimationUpdate_FromEquipment(this);
 		}
 		CalculateBodypartGlobalPosition();
 
@@ -281,19 +282,18 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			);
 			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, eqType, out int equipmentCount);
 			var eq = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
-			if (eq != null) {
-				eq.OnPoseAnimationUpdate_FromEquipment(this);
-				// Draw Tool
-				if (
-					eq is HandTool tool &&
-					PoseAnimation.TryGetAnimationFromPool(tool.GetHandheldPoseAnimationID(TargetCharacter), out var poseAni) &&
-					poseAni is HandheldPoseAnimation handheldAni &&
-					TargetCharacter.AnimationType != CharacterAnimationType.Sleep &&
-					TargetCharacter.AnimationType != CharacterAnimationType.PassOut &&
-					TargetCharacter.AnimationType != CharacterAnimationType.Crash
-				) {
-					handheldAni.DrawTool(tool, this);
-				}
+			if (eq == null || !eq.ItemConditionCheck(TargetCharacter)) continue;
+			eq.OnPoseAnimationUpdate_FromEquipment(this);
+			// Draw Tool
+			if (
+				eq is HandTool tool &&
+				PoseAnimation.TryGetAnimationFromPool(tool.GetHandheldPoseAnimationID(TargetCharacter), out var poseAni) &&
+				poseAni is HandheldPoseAnimation handheldAni &&
+				TargetCharacter.AnimationType != CharacterAnimationType.Sleep &&
+				TargetCharacter.AnimationType != CharacterAnimationType.PassOut &&
+				TargetCharacter.AnimationType != CharacterAnimationType.Crash
+			) {
+				handheldAni.DrawTool(tool, this);
 			}
 		}
 		CalculateBodypartGlobalPosition();
@@ -307,7 +307,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		for (int i = 0; i < invCapacity; i++) {
 			int id = Inventory.GetItemAt(TargetCharacter.InventoryID, i);
 			var item = id != 0 ? ItemSystem.GetItem(id) : null;
-			if (item == null || !item.CheckUpdateAvailable(TargetCharacter.TypeID)) continue;
+			if (item == null || !item.ItemConditionCheck(TargetCharacter) || !item.CheckUpdateAvailable(TargetCharacter.TypeID)) continue;
 			item.OnPoseAnimationUpdate_FromInventory(this, TargetCharacter.InventoryID, i);
 		}
 		CalculateBodypartGlobalPosition();

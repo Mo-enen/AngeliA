@@ -150,8 +150,8 @@ public static class ItemSystem {
 		}
 
 		// Add BodySet Item
-		foreach (var (id, type) in BodySetItem.ForAllBodySetCharacterType()) {
-			var item = new BodySetItem(type);
+		foreach (var (id, (type, name)) in BodySetItem.ForAllBodySetCharacterType()) {
+			var item = type != null ? new BodySetItem(type) : new BodySetItem(name);
 			item.GetDisplayName(item.TargetCharacterName, out int lanID);
 			ItemPool.TryAdd(id, new ItemData(
 				item,
@@ -277,7 +277,7 @@ public static class ItemSystem {
 
 	public static bool CanUseItem (int id, Character target) {
 		var item = GetItem(id);
-		return item != null && item.CanUse(target);
+		return item != null && item.ItemConditionCheck(target) && item.CanUse(target);
 	}
 
 

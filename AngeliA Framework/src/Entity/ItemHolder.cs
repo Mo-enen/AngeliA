@@ -277,11 +277,12 @@ public class ItemHolder : Rigidbody {
 
 		// Collect / Append
 		if (ItemCount > 0) {
+			bool conditionCheck = item == null || item.ItemConditionCheck(character);
 			int addCount = Inventory.CollectItem(
 				invID,
 				ItemID,
 				count: ItemCount,
-				ignoreEquipment: false,
+				ignoreEquipment: item != null && !conditionCheck,
 				dontCollectIntoEmptyEquipmentSlot: true
 			);
 			if (addCount > 0) {
