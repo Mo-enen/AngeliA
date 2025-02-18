@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace AngeliA;
 
@@ -28,6 +29,15 @@ public abstract class Buff : IMapItem {
 	#region --- MSG ---
 
 
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		var cheatMethodInfo = typeof(Buff).GetMethod(nameof(CheatMethod), BindingFlags.Static | BindingFlags.NonPublic);
+		foreach (var type in typeof(Buff).AllChildClass()) {
+			CheatSystem.TryAddCheatAction($"Give{type.AngeName()}", cheatMethodInfo, type.AngeHash());
+		}
+	}
+
+
 	public Buff () {
 		string name = GetType().AngeName();
 		TypeID = name.AngeHash();
@@ -41,6 +51,13 @@ public abstract class Buff : IMapItem {
 	public virtual void LateUpdate (Character target) { }
 	public virtual void OnCharacterAttack (Character target, Bullet bullet) { }
 	public virtual void OnCharacterRenderered (CharacterRenderer renderer) { }
+
+
+	private static void CheatMethod () {
+		if (CheatSystem.CurrentParam is not int buffID) return;
+		if (PlayerSystem.Selecting == null) return;
+		PlayerSystem.Selecting.Buff.GiveBuff(buffID);
+	}
 
 
 	#endregion

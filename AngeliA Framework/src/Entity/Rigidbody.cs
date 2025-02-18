@@ -110,7 +110,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 			Physics.FillEntity(
 				PhysicalLayer,
 				this,
-				FillModeIndex != 0, FillModeIndex == 2 ? Tag.OnewayUp : Tag.None
+				FillModeIndex != 0, 
+				FillModeIndex == 2 ? Tag.OnewayUp : Tag.None
 			);
 		}
 		RefreshPrevPosition();

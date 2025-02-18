@@ -513,7 +513,10 @@ HasOnewayTag(tag) ||
 	}
 
 
-	public static void SpawnItemFromMap (IBlockSquad squad, int unitX, int unitY, int z, int maxDeltaX = 1024, int maxDeltaY = 1024, int placeHolderID = 0) {
+	public static void SpawnItemFromMap (
+		IBlockSquad squad, int unitX, int unitY, int z,
+		int maxDeltaX = 1024, int maxDeltaY = 1024, int placeHolderID = 0, bool spawnEntity = true
+	) {
 		for (int y = 1; y < maxDeltaY; y++) {
 			int currentUnitY = unitY - y;
 			int right = -1;
@@ -524,15 +527,27 @@ HasOnewayTag(tag) ||
 			}
 			if (right == -1) break;
 			int itemLocalIndex = Util.QuickRandom(0, right + 1);
-			int itemID = squad.GetBlockAt(unitX + itemLocalIndex, currentUnitY, z, BlockType.Element);
-			if (ItemSystem.SpawnItem(itemID, unitX.ToGlobal(), unitY.ToGlobal(), 1, true) != null) {
-				// Replace with Placeholder
-				if (placeHolderID != 0) {
-					squad.SetBlockAt(unitX + itemLocalIndex, currentUnitY, z, BlockType.Element, placeHolderID);
+			int blockID = squad.GetBlockAt(unitX + itemLocalIndex, currentUnitY, z, BlockType.Element);
+			bool requirePlaceHolding = false;
+			if (spawnEntity && Stage.IsValidEntityID(blockID)) {
+				// As Entity
+				var entity = Stage.SpawnEntity(blockID, unitX.ToGlobal(), unitY.ToGlobal());
+				if (entity != null) {
+					requirePlaceHolding = true;
 				}
+			} else if (ItemSystem.HasItem(blockID)) {
+				// As Item
+				if (ItemSystem.SpawnItem(blockID, unitX.ToGlobal(), unitY.ToGlobal(), 1, true) != null) {
+					requirePlaceHolding = true;
+				}
+			}
+			// Placeholding
+			if (requirePlaceHolding && placeHolderID != 0) {
+				squad.SetBlockAt(unitX + itemLocalIndex, currentUnitY, z, BlockType.Element, placeHolderID);
 			}
 		}
 	}
+
 
 
 	public static HandTool GetPlayerHoldingHandTool () {

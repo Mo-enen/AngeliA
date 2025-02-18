@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {

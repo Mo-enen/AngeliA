@@ -94,8 +94,11 @@ public abstract class Horn : BodyGadget {
 		if (onFace) headRect = headRect.Shrink(head.Border);
 
 		bool flipLR = !head.FrontSide && head.Height > 0;
-		spriteLeft.TryGetSprite(head.FrontSide, flipLR, renderer.CurrentAnimationFrame, out var spriteL);
-		spriteRight.TryGetSprite(head.FrontSide, !flipLR, renderer.CurrentAnimationFrame, out var spriteR);
+		spriteLeft.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var spriteL);
+		spriteRight.TryGetSprite(head.FrontSide, head.Width > 0, renderer.CurrentAnimationFrame, out var spriteR);
+		if (flipLR) {
+			(spriteL, spriteR) = (spriteR, spriteL);
+		}
 
 		// Twist
 		int twist = renderer.HeadTwist;

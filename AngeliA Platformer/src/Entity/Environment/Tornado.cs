@@ -8,10 +8,13 @@ namespace AngeliA.Platformer;
 public abstract class Tornado : Entity {
 
 	// VAR
-	private const int END_DUR = 30;
-	public static readonly int TYPE_ID = typeof(Tornado).AngeHash();
 	private static readonly SpriteCode TOR_PART = "Tornado.Part";
+	private const int END_DUR = 30;
 	protected abstract Int2 Velocity { get; }
+	protected virtual SpriteCode ArtworkPart => TOR_PART;
+	protected virtual int StrengthGrounded => 1000;
+	protected virtual int StrengthInAir => 600;
+	protected virtual int StiffFrameGap => 6;
 	private int TornadingStopFrame = -1;
 
 	// MSG
@@ -33,35 +36,44 @@ public abstract class Tornado : Entity {
 			XY += Velocity;
 
 			// Take Target
+			int still = StiffFrameGap.GreaterOrEquel(1);
 			var hits = Physics.OverlapAll(
 				PhysicsMask.DYNAMIC, Rect, out int count, this, OperationMode.ColliderAndTrigger
 			);
+			var tornadoCenter = Rect.CenterInt();
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is not Rigidbody rig || rig.IgnorePhysics) continue;
+				// Drag
 				int velX = Velocity.x;
 				int velY = Velocity.y;
+				var rect = rig.Rect;
 				if (rig.IsGrounded) {
-					velX -= (rig.X - (X + Width / 2)) / 4;
-					velY -= (rig.Y - Y) / 4;
-				} else {
-					velX -= (rig.X - (X + Width / 2)) / 8;
-					velY -= (rig.Y - Y) / 10;
-				}
-				rig.FillAsTrigger(1);
-				rig.MomentumX = (velX, 1);
-				rig.MomentumY = (velY, 1);
-				if (rig is IWithCharacterMovement wMov) {
-					var mov = wMov.CurrentMovement;
-					if (Game.GlobalFrame % 6 == 0) {
-						mov.RunSpeed.Multiply(-1000, 1);
-						mov.WalkSpeed.Multiply(-1000, 1);
-						mov.SquatMoveSpeed.Multiply(-1000, 1);
-						mov.RushSpeed.Multiply(-1000, 1);
-						mov.DashSpeed.Multiply(-1000, 1);
+					velX -= (rect.CenterX() - tornadoCenter.x) * StrengthGrounded / 6000;
+					velY -= (rect.y - tornadoCenter.y) * StrengthGrounded / 6000;
+					// Stiff
+					if (rig is IWithCharacterMovement wMov) {
+						var mov = wMov.CurrentMovement;
+						if (Game.GlobalFrame % still == 0) {
+							mov.RunSpeed.Multiply(-1000, 1);
+							mov.WalkSpeed.Multiply(-1000, 1);
+							mov.SquatMoveSpeed.Multiply(-1000, 1);
+							mov.RushSpeed.Multiply(-1000, 1);
+							mov.DashSpeed.Multiply(-1000, 1);
+						}
+						mov.LockFacingRight((Game.GlobalFrame / still) % 2 == 0);
 					}
-					mov.LockFacingRight((Game.GlobalFrame / 6) % 2 == 0);
+				} else {
+					velX -= (rect.CenterX() - tornadoCenter.x) * StrengthInAir / 6000;
+					velY -= (rect.y - tornadoCenter.y) * StrengthInAir / 6000;
 				}
+
+				if (rig is not IWithCharacterMovement) {
+					rig.IgnorePhysics.True();
+				}
+				rig.X += velX;
+				rig.Y += velY;
+
 				if (rig is IWithCharacterRenderer wRen && wRen.CurrentRenderer is PoseCharacterRenderer pRen) {
 					pRen.ForceFaceExpressionIndex.Override((int)CharacterFaceExpression.Suffer, 1);
 				}
@@ -82,20 +94,21 @@ public abstract class Tornado : Entity {
 		base.LateUpdate();
 
 		if (!Active) return;
-		if (!Renderer.TryGetSprite(TOR_PART, out var sprite)) return;
+		if (!Renderer.TryGetSprite(ArtworkPart, out var sprite)) return;
 
-		const int FREQ = 42;
+		int freq = 42;
 		const int PART_COUNT = 20;
-		int localFrame = Game.GlobalFrame - SpawnFrame;
+		int localFrame = (Game.GlobalFrame - SpawnFrame) * Util.RemapUnclamped(
+			0, 1000, 1, 2, StrengthGrounded - 1000
+		);
 		int partH = Height * 2 / PART_COUNT;
 		int partStep = Height / PART_COUNT;
 		int randomWidth = Width / 16;
 		int randomHeight = Height / 12;
-		int tightX = Width / 24;
 		for (int i = 0; i < PART_COUNT; i++) {
-			int frame = (localFrame + i * 12) % FREQ;
-			float lerp010 = frame.PingPong(FREQ / 2) / (FREQ / 2f);
-			float lerp010Alt = (frame + FREQ / 4).PingPong(FREQ / 2) / (FREQ / 2f);
+			int frame = (localFrame + i * 12) % freq;
+			float lerp010 = frame.PingPong(freq / 2) / (freq / 2f);
+			float lerp010Alt = (frame + freq / 4).PingPong(freq / 2) / (freq / 2f);
 			float ease010 = Ease.InOutSine(lerp010);
 			var cell = Renderer.Draw(
 				sprite,
@@ -109,14 +122,6 @@ public abstract class Tornado : Entity {
 			cell.Z = (lerp010Alt * 2 - 1).RoundToInt() * 1024;
 		}
 
-	}
-
-	// API
-	public static Tornado Spawn (int x, int y, int width = Const.CEL, int height = Const.CEL * 2) {
-		if (Stage.SpawnEntity(TYPE_ID, x, y) is not Tornado tor) return null;
-		tor.Width = width;
-		tor.Height = height;
-		return tor;
 	}
 
 }
