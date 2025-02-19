@@ -11,7 +11,7 @@ public static class QTest {
 	#region --- SUB ---
 
 
-	private enum DataType { Bool, Int, Float, Pixels, }
+	private enum DataType { Bool, Int, Float, String, Pixels, }
 
 	private class BoolData {
 		public bool value;
@@ -33,6 +33,13 @@ public static class QTest {
 		public float min;
 		public float max;
 		public float step;
+		public string displayLabel;
+		public KeyData Key;
+	}
+
+
+	private class StringData {
+		public string value;
 		public string displayLabel;
 		public KeyData Key;
 	}
@@ -76,6 +83,7 @@ public static class QTest {
 	private static readonly Dictionary<string, BoolData> BoolPool = [];
 	private static readonly Dictionary<string, IntData> IntPool = [];
 	private static readonly Dictionary<string, FloatData> FloatPool = [];
+	private static readonly Dictionary<string, StringData> StringPool = [];
 	private static readonly Dictionary<string, PixelData> PixelsPool = [];
 	private static readonly Dictionary<string, object> ObjectPool = [];
 	private static readonly List<KeyData> Keys = [];
@@ -282,6 +290,29 @@ public static class QTest {
 					}
 					break;
 				}
+				// String
+				case DataType.String: {
+					var data = StringPool[key];
+					// Label
+					GUI.SmallLabel(rect, key);
+					// Value
+					int valueLabelWidth = valueRect.height * 2;
+					if (data.displayLabel == null) {
+						data.value = GUI.InputField(3126784 + index, valueRect.ShrinkRight(valueLabelWidth), data.value);
+					} else {
+						GUI.BackgroundLabel(
+							valueRect.EdgeInsideRight(valueLabelWidth).Shift(padding, 0),
+							data.displayLabel,
+							Color32.BLACK, out var bounds, padding,
+							style: GUI.Skin.SmallLabel
+						);
+						int maxX = bounds.xMax + padding;
+						if (maxX > panelRect.xMax) {
+							panelRect.xMax = maxX;
+						}
+					}
+					break;
+				}
 				// Pixels
 				case DataType.Pixels: {
 					var data = PixelsPool[key];
@@ -359,7 +390,9 @@ public static class QTest {
 	[OnGameUpdateLater]
 	internal static void OnGameUpdateLater () {
 		if (Testing) {
-			Game.CancelGizmosOnTopOfUI();
+			Game.ForceGizmosOnTopOfUI(1);
+			LightingSystem.IgnoreLighting(1);
+			Input.IgnoreMouseToActionJump();
 		}
 		// Draw Trailing Mark
 		if (Renderer.TryGetSprite(BuiltInSprite.CIRCLE_32, out var circleSP)) {
@@ -488,13 +521,69 @@ public static class QTest {
 	}
 
 
+	public static string String (string key, string defaultValue = "", string displayLabel = null) {
+		ShowingWindow = true;
+		CurrentOrder++;
+		if (StringPool.TryGetValue(key, out var result)) {
+			result.displayLabel = displayLabel;
+			var kData = result.Key;
+			kData.Order = CurrentOrder;
+			kData.UpdateFrame = Game.PauselessFrame;
+			return result.value;
+		}
+		var keyData = new KeyData() {
+			key = key,
+			Order = CurrentOrder,
+			type = DataType.String,
+			group = CurrentGroup,
+			groupOrder = CurrentGroupOrder,
+			UpdateFrame = Game.PauselessFrame,
+		};
+		StringPool.Add(key, new StringData() {
+			value = defaultValue,
+			displayLabel = displayLabel,
+			Key = keyData,
+		});
+		Keys.Add(keyData);
+		IgnoringWindow = false;
+		return defaultValue;
+	}
+
+
 	public static void ClearAll () {
 		BoolPool.Clear();
 		IntPool.Clear();
 		FloatPool.Clear();
+		StringPool.Clear();
 		PixelsPool.Clear();
 		ObjectPool.Clear();
 		Keys.Clear();
+	}
+
+
+	// Set Data
+	public static void SetBool (string key, bool value) {
+		if (BoolPool.TryGetValue(key, out var data)) {
+			data.value = value;
+		}
+	}
+
+	public static void SetInt (string key, int value) {
+		if (IntPool.TryGetValue(key, out var data)) {
+			data.value = value;
+		}
+	}
+
+	public static void SetFloat (string key, float value) {
+		if (FloatPool.TryGetValue(key, out var data)) {
+			data.value = value;
+		}
+	}
+
+	public static void SetString (string key, string value) {
+		if (StringPool.TryGetValue(key, out var data)) {
+			data.value = value;
+		}
 	}
 
 

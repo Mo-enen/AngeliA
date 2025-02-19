@@ -353,12 +353,14 @@ public class PauseMenuUI : MenuUI {
 
 #if DEBUG
 		// Restart & Regenerate Map
-		if (DrawItem(BuiltInText.UI_RESTART_REGENERATE)) {
-			Game.UnpauseGame();
-			Active = false;
-			Input.UseAllHoldingKeys();
-			MapGenerationSystem.ResetAll(restartGame: false);
-			TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
+		if (MapGenerationSystem.Enable) {
+			if (DrawItem(BuiltInText.UI_RESTART_REGENERATE)) {
+				Game.UnpauseGame();
+				Active = false;
+				Input.UseAllHoldingKeys();
+				MapGenerationSystem.ResetAll(restartGame: false);
+				TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
+			}
 		}
 #endif
 

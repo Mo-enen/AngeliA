@@ -95,11 +95,9 @@ public static class MapGenerationSystem {
 
 	internal static void ResetAll (bool restartGame = false) {
 
-		if (!Enable) return;
-
-		AllTasks.Reset();
-		WorldSquad.ClearStreamWorldPool();
 		var uni = Universe.BuiltIn;
+		Stage.DespawnAllNonUiEntities(refreshImmediately:true);
+		WorldSquad.ClearStreamWorldPool();
 
 		// Delete All User Map Files
 		foreach (string path in Util.EnumerateFiles(uni.SlotUserMapRoot, true, AngePath.MAP_SEARCH_PATTERN)) {
@@ -132,8 +130,6 @@ public static class MapGenerationSystem {
 		if (!Enable || !Pool.TryGetValue(generatorID, out var gen)) return;
 		GenerateMap(gen, squad, worldPos, async);
 	}
-
-
 	public static void GenerateMap (MapGenerator generator, IBlockSquad squad, Int3 worldPos, bool async) {
 		if (!Enable) return;
 		StatePool[worldPos] = (generator.TypeID, MapState.Generating);
