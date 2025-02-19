@@ -7,6 +7,9 @@ public abstract class PlayerMenuItem<UI> : Item where UI : PlayerMenuPartnerUI {
 
 	public override int MaxStackCount => 1;
 	private static readonly Dictionary<int, PlayerMenuPartnerUI> Pool = [];
+	private readonly int InventoryID;
+	protected abstract int Row { get; }
+	protected abstract int Column { get; }
 
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
@@ -19,14 +22,21 @@ public abstract class PlayerMenuItem<UI> : Item where UI : PlayerMenuPartnerUI {
 		Pool.TrimExcess();
 	}
 
+	public PlayerMenuItem () => InventoryID = Inventory.InitializeInventoryData(GetType().AngeName(), Row * Column, hasEquipment: false);
+
 	protected virtual void OnPanelOpened (UI panelUI) { }
 
 	public override bool Use (Character character, int inventoryID, int itemIndex, out bool consume) {
 		consume = false;
 		if (character != PlayerSystem.Selecting) return false;
+		if (InventoryID == 0) return false;
 		if (!PlayerMenuItem<PlayerMenuPartnerUI>.Pool.TryGetValue(TypeID, out var ui)) return false;
-		if (PlayerMenuUI.OpenMenuWithPartner(ui, TypeID)) {
+		if (PlayerMenuUI.OpenMenuWithPartner(ui, InventoryID)) {
 			if (ui is UI) OnPanelOpened(ui as UI);
+			if (ui is InventoryPartnerUI invUI) {
+				invUI._Column = Column;
+				invUI._Row = Row;
+			}
 			return true;
 		}
 		return false;

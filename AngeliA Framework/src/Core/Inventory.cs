@@ -19,8 +19,10 @@ public static class Inventory {
 
 		public int[] Items;
 		public int[] Counts;
-		[JsonIgnore] public string Name;
+		[JsonIgnore] public string BasicName;
+		[JsonIgnore] public string Path;
 		[JsonIgnore] public bool IsDirty;
+		[JsonIgnore] public Int3 MapUnitPosition;
 
 		public void Valid () {
 			Items ??= [];
@@ -55,7 +57,6 @@ public static class Inventory {
 	}
 
 
-
 	#endregion
 
 
@@ -69,6 +70,7 @@ public static class Inventory {
 
 	// Data
 	private static readonly Dictionary<int, InventoryData> Pool = [];
+	private static readonly Dictionary<Int4, int> BasicIdToInvIdPool = [];
 	private static bool IsPoolDirty = false;
 
 
@@ -83,6 +85,7 @@ public static class Inventory {
 	[OnGameInitialize]
 	[OnSavingSlotChanged]
 	internal static void OnGameInitialize () {
+		PoolReady = false;
 		LoadInventoryPoolFromDisk();
 		PoolReady = true;
 	}
@@ -188,52 +191,56 @@ public static class Inventory {
 
 
 	// Inventory Data
-	public static void InitializeInventoryData (string name, int capacity, bool hasEquipment = false) => InitializeInventoryData(name.AngeHash(), name, capacity, hasEquipment);
-	public static void InitializeInventoryData (int inventoryID, string name, int capacity, bool hasEquipment = false) {
-		if (HasInventory(inventoryID)) {
-			int iCount = GetInventoryCapacity(inventoryID);
-			if (iCount != capacity) {
-				ResizeInventory(inventoryID, capacity);
+	public static int InitializeInventoryData (string basicName, int capacity, bool hasEquipment = false) => InitializeInventoryData(basicName.AngeHash(), basicName, capacity, new Int3(int.MinValue, int.MinValue, int.MinValue), hasEquipment);
+	public static int InitializeInventoryData (string basicName, int capacity, Int3 mapUnitPos, bool hasEquipment = false) => InitializeInventoryData(basicName.AngeHash(), basicName, capacity, mapUnitPos, hasEquipment);
+	public static int InitializeInventoryData (int basicID, string basicName, int capacity, bool hasEquipment = false) => InitializeInventoryData(basicID, basicName, capacity, new Int3(int.MinValue, int.MinValue, int.MinValue), hasEquipment);
+	public static int InitializeInventoryData (int basicID, string basicName, int capacity, Int3 mapUnitPos, bool hasEquipment = false) {
+		int invID = GetInventoryIdFromBasicIdAndPos(basicID, basicName, mapUnitPos);
+		if (HasInventory(invID)) {
+			if (GetInventoryCapacity(invID) != capacity) {
+				ResizeInventory(invID, capacity);
 			}
 		} else {
 			if (hasEquipment) {
-				AddNewEquipmentInventoryData(name, capacity);
+				AddNewInventoryData<EquipmentInventoryData>(basicName, capacity, mapUnitPos);
 			} else {
-				AddNewInventoryData(name, capacity);
+				AddNewInventoryData<InventoryData>(basicName, capacity, mapUnitPos);
 			}
 		}
+		return invID;
 	}
 
 
-	public static void AddNewInventoryData (string inventoryName, int itemCount) {
-		if (itemCount <= 0) return;
-		int inventoryID = inventoryName.AngeHash();
-		if (Pool.ContainsKey(inventoryID)) return;
-		Pool.Add(inventoryID, new InventoryData() {
-			Items = new int[itemCount],
-			Counts = new int[itemCount],
-			IsDirty = true,
-			Name = inventoryName,
-		});
-		IsPoolDirty = true;
+	public static int GetInventoryIdFromBasicIdAndPos (int basicID, string baseName, Int3 mapPos) {
+		var key = new Int4(mapPos.x, mapPos.y, mapPos.z, basicID);
+		if (!BasicIdToInvIdPool.TryGetValue(key, out int id)) {
+			id = GetPositionBasedInventoryName(baseName, mapPos).AngeHash();
+			BasicIdToInvIdPool.Add(key, id);
+			return id;
+		}
+		return id;
 	}
 
 
-	public static void AddNewEquipmentInventoryData (string inventoryName, int itemCount) {
-		if (itemCount <= 0) return;
-		int inventoryID = inventoryName.AngeHash();
-		if (Pool.ContainsKey(inventoryID)) return;
-		Pool.Add(inventoryID, new EquipmentInventoryData() {
-			Items = new int[itemCount],
-			Counts = new int[itemCount],
-			IsDirty = true,
-			Name = inventoryName,
-		});
-		IsPoolDirty = true;
+	public static Int3 GetInventoryMapPosFromName (string invNameWithoutExt, out string basicName) {
+		basicName = invNameWithoutExt;
+		var def = new Int3(int.MinValue, int.MinValue, int.MinValue);
+		int dot0 = invNameWithoutExt.IndexOf('.');
+		if (dot0 < 0) return def;
+		basicName = invNameWithoutExt[..dot0];
+		int dot1 = invNameWithoutExt.IndexOf('.', dot0 + 1);
+		if (dot1 < 0) return def;
+		int dot2 = invNameWithoutExt.IndexOf('.', dot1 + 1);
+		if (dot2 < 0) return def;
+		if (
+			int.TryParse(invNameWithoutExt[(dot0 + 1)..dot1], out int x) &&
+			int.TryParse(invNameWithoutExt[(dot1 + 1)..dot2], out int y) &&
+			int.TryParse(invNameWithoutExt[(dot2 + 1)..], out int z)
+		) {
+			return new Int3(x, y, z);
+		}
+		return def;
 	}
-
-
-	public static string GetPositionBasedInventoryName (string baseName, Int3 unitPosition) => $"{baseName}.{unitPosition.x}.{unitPosition.y}.{unitPosition.z}";
 
 
 	public static void ResizeInventory (int inventoryID, int newSize) {
@@ -256,21 +263,31 @@ public static class Inventory {
 	public static int GetInventoryCapacity (int inventoryID) => Pool.TryGetValue(inventoryID, out var data) ? data.Items.Length : 0;
 
 
-	public static void RenameEquipInventory (string currentName, string newName) {
+	public static void RepositionInventory (int inventoryID, Int3 newMapUnitPosition) {
+
 		lock (Pool) {
-			// Change Data in Pool
-			int id = currentName.AngeHash();
+
+			if (
+				!Pool.TryGetValue(inventoryID, out var invData) ||
+				invData.MapUnitPosition == newMapUnitPosition
+			) return;
+
+			string oldPath = invData.Path;
+			string ext = invData is EquipmentInventoryData ? AngePath.EQ_INVENTORY_FILE_EXT : AngePath.INVENTORY_FILE_EXT;
+			string newName = GetPositionBasedInventoryName(invData.BasicName, newMapUnitPosition);
+			string newPath = Util.CombinePaths(Universe.BuiltIn.SlotInventoryRoot, $"{newName}.{ext}");
 			int newID = newName.AngeHash();
-			if (Pool.Remove(id, out var invData)) {
-				invData.Name = newName;
+
+			// Change Data in Pool
+			if (Pool.Remove(inventoryID)) {
 				Pool[newID] = invData;
 			}
+			invData.Path = newPath;
+			invData.MapUnitPosition = newMapUnitPosition;
+
+			// Move File
+			Util.MoveFile(oldPath, newPath);
 		}
-		// Move File
-		string root = Universe.BuiltIn.SlotInventoryRoot;
-		string from = Util.CombinePaths(root, $"{currentName}.{AngePath.EQ_INVENTORY_FILE_EXT}");
-		string to = Util.CombinePaths(root, $"{newName}.{AngePath.EQ_INVENTORY_FILE_EXT}");
-		Util.MoveFile(from, to);
 	}
 
 
@@ -831,20 +848,24 @@ public static class Inventory {
 			Pool.Clear();
 			string root = Universe.BuiltIn.SlotInventoryRoot;
 			if (!Util.FolderExists(root)) return;
-			foreach (var path in Util.EnumerateFiles(root, true, AngePath.INVENTORY_SEARCH_PATTERN, AngePath.EQ_INVENTORY_SEARCH_PATTERN)) {
+			foreach (var path in Util.EnumerateFiles(
+				root, true, AngePath.INVENTORY_SEARCH_PATTERN, AngePath.EQ_INVENTORY_SEARCH_PATTERN
+			)) {
 				try {
 					string name = Util.GetNameWithoutExtension(path);
 					int id = name.AngeHash();
 					if (Pool.ContainsKey(id)) continue;
 					InventoryData data;
-					if (path.EndsWith(AngePath.INVENTORY_FILE_EXT)) {
-						data = JsonUtil.LoadOrCreateJsonFromPath<InventoryData>(path);
-					} else {
+					if (path.EndsWith(AngePath.EQ_INVENTORY_FILE_EXT)) {
 						data = JsonUtil.LoadOrCreateJsonFromPath<EquipmentInventoryData>(path);
+					} else {
+						data = JsonUtil.LoadOrCreateJsonFromPath<InventoryData>(path);
 					}
 					if (data == null) continue;
 					data.IsDirty = false;
-					data.Name = name;
+					data.Path = path;
+					data.MapUnitPosition = GetInventoryMapPosFromName(name, out string basicName);
+					data.BasicName = basicName;
 					Pool.TryAdd(id, data);
 					// Valid Item Count
 					for (int i = 0; i < data.Items.Length; i++) {
@@ -868,8 +889,7 @@ public static class Inventory {
 				if (!forceSave && !data.IsDirty) continue;
 				data.IsDirty = false;
 				// Save Inventory
-				string path = Util.CombinePaths(root, $"{data.Name}.{(data is EquipmentInventoryData ? AngePath.EQ_INVENTORY_FILE_EXT : AngePath.INVENTORY_FILE_EXT)}");
-				JsonUtil.SaveJsonToPath(data, path, false);
+				JsonUtil.SaveJsonToPath(data, data.Path, false);
 			}
 		}
 	}
@@ -919,6 +939,28 @@ public static class Inventory {
 			}
 		}
 	}
+
+
+	private static void AddNewInventoryData<T> (string basicName, int capacity, Int3 mapUnitPos) where T : InventoryData, new() {
+		if (capacity <= 0) return;
+		int inventoryID = GetPositionBasedInventoryName(basicName, mapUnitPos).AngeHash();
+		if (Pool.ContainsKey(inventoryID)) return;
+		var data = new T() {
+			Items = new int[capacity],
+			Counts = new int[capacity],
+			IsDirty = true,
+			MapUnitPosition = mapUnitPos,
+			BasicName = basicName,
+		};
+		string root = Universe.BuiltIn.SlotInventoryRoot;
+		string ext = data is EquipmentInventoryData ? AngePath.EQ_INVENTORY_FILE_EXT : AngePath.INVENTORY_FILE_EXT;
+		data.Path = Util.CombinePaths(root, $"{GetPositionBasedInventoryName(basicName, mapUnitPos)}.{ext}");
+		Pool.Add(inventoryID, data);
+		IsPoolDirty = true;
+	}
+
+
+	private static string GetPositionBasedInventoryName (string baseName, Int3 unitPosition) => $"{baseName}.{unitPosition.x}.{unitPosition.y}.{unitPosition.z}";
 
 
 	#endregion

@@ -26,6 +26,7 @@ public static class BuiltInText {
 	public static readonly LanguageCode UI_QUIT = ("UI.Quit", "Quit");
 	public static readonly LanguageCode UI_BACK = ("UI.Back", "Back");
 	public static readonly LanguageCode UI_RESTART = ("UI.Restart", "Restart");
+	public static readonly LanguageCode UI_RESTART_REGENERATE = ("UI.RestartAndRegenerateMap", "Restart and Regenerate Map");
 	public static readonly LanguageCode UI_OK = ("UI.OK", "OK");
 	public static readonly LanguageCode UI_GAMEOVER = ("UI.GameOver", "Game Over");
 	public static readonly LanguageCode UI_SETTING = ("UI.Setting", "Setting");

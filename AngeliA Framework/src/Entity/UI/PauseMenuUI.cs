@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
 [EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.Capacity(1, 1)]
-
 [EntityAttribute.StageOrder(4096)]
 public class PauseMenuUI : MenuUI {
 
@@ -351,6 +350,17 @@ public class PauseMenuUI : MenuUI {
 			Input.UseAllHoldingKeys();
 			TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
 		}
+
+#if DEBUG
+		// Restart & Regenerate Map
+		if (DrawItem(BuiltInText.UI_RESTART_REGENERATE)) {
+			Game.UnpauseGame();
+			Active = false;
+			Input.UseAllHoldingKeys();
+			MapGenerationSystem.ResetAll(restartGame: false);
+			TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
+		}
+#endif
 
 	}
 

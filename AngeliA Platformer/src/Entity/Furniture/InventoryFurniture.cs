@@ -16,17 +16,19 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 	// VAR
 	protected int PartnerID { get; init; }
 	protected int InventoryID { get; private set; } = 0;
-	protected string InventoryName { get; private set; } = "";
 	protected abstract int InventoryColumn { get; }
 	protected abstract int InventoryRow { get; }
 	protected virtual bool UnlockItemInside => true;
 
 	private static readonly Dictionary<int, InventoryPartnerUI> UiPool = [];
 	private static readonly Dictionary<int, int> InventoryFurniturePool = [];
-	private static readonly Dictionary<Int4, (string name, int id)> InventoryIdPool = [];
+	private readonly string TypeName;
 
 
 	// MSG
+	public InventoryFurniture () => TypeName = GetType().AngeName();
+
+
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
 		UiPool.Clear();
@@ -64,14 +66,10 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 			}
 		}
 
-		// Init Inventory
-		if (TryGetInventoryNameAndID(invPos, TypeID, out string invName, out int invID)) {
-			InventoryName = invName;
-			InventoryID = invID;
-			if (InventoryID != 0 && !string.IsNullOrEmpty(InventoryName)) {
-				Inventory.InitializeInventoryData(InventoryID, InventoryName, InventoryColumn * InventoryRow);
-			}
-		}
+		// Init Inv
+		InventoryID = Inventory.InitializeInventoryData(
+			TypeID, TypeName, InventoryColumn * InventoryRow, invPos, hasEquipment: false
+		);
 
 	}
 
@@ -115,24 +113,6 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 
 
 	protected bool TryGetInventoryUI (int typeID, out InventoryPartnerUI result) => UiPool.TryGetValue(typeID, out result);
-
-
-	public static bool TryGetInventoryNameAndID (Int3 unitPos, int typeID, out string invName, out int invID) {
-		var key = new Int4(unitPos.x, unitPos.y, unitPos.z, typeID);
-		if (InventoryIdPool.TryGetValue(key, out var pair)) {
-			(invName, invID) = pair;
-			return true;
-		} else if (Stage.GetEntityType(typeID) is System.Type entityType) {
-			invName = Inventory.GetPositionBasedInventoryName(entityType.AngeName(), unitPos);
-			invID = invName.AngeHash();
-			InventoryIdPool.Add(key, (invName, invID));
-			return true;
-		} else {
-			invName = "";
-			invID = 0;
-			return false;
-		}
-	}
 
 
 	public static bool IsInventoryFurniture (int typeID, out int capacity) => InventoryFurniturePool.TryGetValue(typeID, out capacity);

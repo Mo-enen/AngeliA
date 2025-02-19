@@ -84,8 +84,11 @@ public abstract class Launcher : Entity, IBlockEntity {
 		base.LateUpdate();
 		// Entity Icon
 		if (
-			TargetEntityID != 0 &&
-			Renderer.TryGetSpriteForGizmos(TargetEntityID, out var iconSp)
+			!TaskSystem.HasTask() &&
+			Renderer.TryGetSpriteForGizmos(
+				TargetEntityID != 0 ? TargetEntityID : BuiltInSprite.FRAME_HOLLOW_16,
+				out var iconSp
+			)
 		) {
 			var tool = FrameworkUtil.GetPlayerHoldingHandTool();
 			if (tool is BlockBuilder || tool is PickTool) {
@@ -93,9 +96,9 @@ public abstract class Launcher : Entity, IBlockEntity {
 				Renderer.Draw(
 					iconSp,
 					X + Width / 2, Y + Height / 2,
-					500, 500, Util.QuickRandom(-6, 7),
-					Const.CEL,
-					Const.CEL
+					500, 500, 0,
+					Const.CEL, Const.CEL,
+					Color32.WHITE.WithNewA(Game.GlobalFrame.PingPong(0, 60) * 4)
 				);
 			}
 		}

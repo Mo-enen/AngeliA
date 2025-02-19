@@ -146,9 +146,12 @@ public sealed class BlockBuilder : HandTool {
 		}
 	}
 
+
 	public override int GetPerformPoseAnimationID (Character character) => PosePerform_Block.TYPE_ID;
 	
+
 	public override int GetHandheldPoseAnimationID (Character character) => PoseHandheld_Block.TYPE_ID;
+
 
 	// LGC
 	private void DrawTargetHighlight (int unitX, int unitY, bool allowPut) {

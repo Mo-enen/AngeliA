@@ -842,7 +842,7 @@ public static partial class FrameworkUtil {
 
 		// For Entity
 		// Check Overlaping Level Block
-		var rect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
+		var rect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL).Shrink(64);
 		if (Physics.Overlap(
 			PhysicsMask.LEVEL, rect, null, OperationMode.ColliderOnly
 		)) return false;

@@ -139,8 +139,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 		// Init Inventory
 		if (InventoryType == CharacterInventoryType.Unique) {
-			InventoryID = TypeID;
-			Inventory.InitializeInventoryData(TypeName, INVENTORY_COLUMN * INVENTORY_ROW, hasEquipment: true);
+			InventoryID = Inventory.InitializeInventoryData(
+				TypeName, INVENTORY_COLUMN * INVENTORY_ROW, hasEquipment: true
+			);
 		}
 
 	}
@@ -156,18 +157,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		// Inv ID
 		if (InventoryType == CharacterInventoryType.Map) {
 			if (MapUnitPos.HasValue) {
-				const int COUNT = INVENTORY_COLUMN * INVENTORY_ROW;
-				string name = Inventory.GetPositionBasedInventoryName(TypeName, MapUnitPos.Value);
-				InventoryID = name.AngeHash();
-				if (Inventory.HasInventory(InventoryID)) {
-					int invCount = Inventory.GetInventoryCapacity(InventoryID);
-					if (invCount != COUNT) {
-						Inventory.ResizeInventory(InventoryID, COUNT);
-					}
-				} else {
-					// Create New
-					Inventory.AddNewEquipmentInventoryData(name, COUNT);
-				}
+				InventoryID = Inventory.InitializeInventoryData(
+					TypeID, TypeName, INVENTORY_COLUMN * INVENTORY_ROW, MapUnitPos.Value, hasEquipment: true
+				);
 			} else {
 				InventoryID = TypeID;
 			}
@@ -223,9 +215,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		if (InventoryType != CharacterInventoryType.Map) return;
 
 		// Repos Inventory
-		string fromInvName = Inventory.GetPositionBasedInventoryName(TypeName, fromUnitPos);
-		string toInvName = Inventory.GetPositionBasedInventoryName(TypeName, toUnitPos);
-		Inventory.RenameEquipInventory(fromInvName, toInvName);
+		Inventory.RepositionInventory(InventoryID, toUnitPos);
 
 	}
 

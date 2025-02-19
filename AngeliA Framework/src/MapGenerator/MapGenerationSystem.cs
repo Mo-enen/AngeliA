@@ -93,19 +93,34 @@ public static class MapGenerationSystem {
 	#region --- API ---
 
 
-	public static void ResetAll () {
+	internal static void ResetAll (bool restartGame = false) {
+
 		if (!Enable) return;
+
 		AllTasks.Reset();
 		WorldSquad.ClearStreamWorldPool();
 		var uni = Universe.BuiltIn;
+
 		// Delete All User Map Files
 		foreach (string path in Util.EnumerateFiles(uni.SlotUserMapRoot, true, AngePath.MAP_SEARCH_PATTERN)) {
 			Util.DeleteFile(path);
 		}
+
+		// Delete All User Inventory
+		foreach (string path in Util.EnumerateFiles(uni.SlotInventoryRoot, true, AngePath.INVENTORY_SEARCH_PATTERN, AngePath.EQ_INVENTORY_SEARCH_PATTERN)) {
+			var pos = Inventory.GetInventoryMapPosFromName(Util.GetNameWithoutExtension(path), out _);
+			if (pos != new Int3(int.MinValue, int.MinValue, int.MinValue)) {
+				Util.DeleteFile(path);
+			}
+		}
+
 		// Reload Saving Slot
 		uni.ReloadSavingSlot(uni.CurrentSavingSlot, forceReload: true);
+
 		// Start Game
-		Game.RestartGame();
+		if (restartGame) {
+			Game.RestartGame();
+		}
 	}
 
 
