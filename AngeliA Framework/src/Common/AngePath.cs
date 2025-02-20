@@ -29,6 +29,7 @@ public static class AngePath {
 	public static string PersistentDataPath { get; private set; }
 	public static string TempDataPath { get; private set; }
 	public static string BuiltInUniverseRoot { get; internal set; }
+	public static string DesktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
 
 	// Sys

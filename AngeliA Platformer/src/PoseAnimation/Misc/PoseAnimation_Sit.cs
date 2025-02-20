@@ -2,44 +2,19 @@
 
 namespace AngeliA.Platformer;
 
+public class PoseAnimation_Sit : PoseAnimation {
 
-public class PoseAnimation_SlidingSitHigh : PoseAnimation_SlidingSit {
-	public new static readonly int TYPE_ID = typeof(PoseAnimation_SlidingSitHigh).AngeHash();
-	public override void Animate (PoseCharacterRenderer renderer) {
-		BaseAnimate(renderer);
-		SlidingSit(true);
-	}
-}
-
-
-public class PoseAnimation_SlidingSit : PoseAnimation {
-
-	public static readonly int TYPE_ID = typeof(PoseAnimation_SlidingSit).AngeHash();
+	public static readonly int TYPE_ID = typeof(PoseAnimation_Sit).AngeHash();
 
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
-		SlidingSit(false);
+		Sit();
 	}
 
-	public void BaseAnimate (PoseCharacterRenderer renderer) => base.Animate(renderer);
+	public static void Sit () {
 
-	public static void SlidingSit (bool highPos) {
+		Rendering.PoseRootY = 0;
 
-		float deltaX = Target.DeltaPositionX.Clamp(-30, 30) / 30f;
-		float deltaY = Target.DeltaPositionY.Clamp(-20, 20) / 20f;
-
-		Rendering.PoseRootX = (int)(-FacingSign * A2G + deltaX * 30);
-		Rendering.PoseRootY = highPos ? Rendering.PoseRootY : 0;
-		Rendering.PoseRootY += (CurrentAnimationFrame.PingPong(10) - 5) * 3;
-		Body.X += FacingSign * A2G;
-		Head.X += FacingSign * A2G * 2;
-		Hip.X = Body.X;
-		UpperLegL.X += FacingSign * A2G;
-		UpperLegR.X += FacingSign * A2G;
-		Head.Rotation = FacingSign * (int)(10 - deltaX.Abs() * 10);
-
-		Body.Height = Body.SizeY - (int)(deltaX * 16).Abs();
-		Head.Y = Body.Y + Body.Height - (int)(deltaX * 24).Abs();
 		ResetShoulderAndUpperArmPos();
 
 		// Arm
@@ -55,10 +30,10 @@ public class PoseAnimation_SlidingSit : PoseAnimation {
 		HandR.LimbRotate(1);
 
 		// Leg
-		UpperLegL.LimbRotate((int)(FacingSign * (-80 + deltaY * 15)));
-		UpperLegR.LimbRotate((int)(FacingSign * (-80 + deltaY * 15)));
-		LowerLegL.LimbRotate((int)(FacingSign * (120 + deltaY * 8)));
-		LowerLegR.LimbRotate((int)(FacingSign * (120 + deltaY * 8)));
+		UpperLegL.LimbRotate(FacingSign * -80);
+		UpperLegR.LimbRotate(FacingSign * -80);
+		LowerLegL.LimbRotate(FacingSign * 120);
+		LowerLegR.LimbRotate(FacingSign * 120);
 		FootL.LimbRotate(-FacingSign);
 		FootR.LimbRotate(-FacingSign);
 

@@ -337,8 +337,12 @@ HasOnewayTag(tag) ||
 		if (Game.GlobalFrame % 30 > 15) return;
 		const int OFFSET = Const.CEL / 20;
 		cell.ReturnPivots(pivotX, pivotY);
-		if (horizontal) cell.Width += OFFSET * 2;
-		if (vertical) cell.Height += OFFSET * 2;
+		if (horizontal) {
+			cell.Width = cell.Width > 0 ? cell.Width + OFFSET * 2 : cell.Width - OFFSET * 2;
+		}
+		if (vertical) {
+			cell.Height = cell.Height > 0 ? cell.Height + OFFSET * 2 : cell.Height - OFFSET * 2;
+		}
 	}
 
 

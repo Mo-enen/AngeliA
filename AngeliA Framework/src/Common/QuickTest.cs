@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 #if DEBUG
-public static class QTest {
+public class QTest {
 
 
 
@@ -13,11 +13,13 @@ public static class QTest {
 
 	private enum DataType { Bool, Int, Float, String, Pixels, }
 
+
 	private class BoolData {
 		public bool value;
 		public string displayLabel;
 		public KeyData Key;
 	}
+
 
 	private class IntData {
 		public int value;
@@ -27,6 +29,7 @@ public static class QTest {
 		public string displayLabel;
 		public KeyData Key;
 	}
+
 
 	private class FloatData {
 		public float value;
@@ -44,24 +47,27 @@ public static class QTest {
 		public KeyData Key;
 	}
 
+
 	private class PixelData {
 		public Color32[,] pixels;
 		public KeyData Key;
 	}
 
+
 	private class KeyData {
 		public string key;
 		public int Order;
-		public DataType type;
-		public string group;
-		public int groupOrder;
+		public DataType Type;
+		public string Group;
+		public int GroupOrder;
 		public int UpdateFrame;
 	}
+
 
 	private class KeyComparer : IComparer<KeyData> {
 		public static readonly KeyComparer Instance = new();
 		public int Compare (KeyData a, KeyData b) {
-			int result = a.groupOrder.CompareTo(b.groupOrder);
+			int result = a.GroupOrder.CompareTo(b.GroupOrder);
 			return result != 0 ? result : a.Order.CompareTo(b.Order);
 		}
 	}
@@ -76,29 +82,32 @@ public static class QTest {
 
 
 	// Api
+	public const int MAX_WINDOW_COUNT = 16;
 	public static bool Testing => ShowingWindow && !IgnoringWindow;
 	public static bool ShowNotUpdatedData { get; set; } = true;
 
 	// Data
-	private static readonly Dictionary<string, BoolData> BoolPool = [];
-	private static readonly Dictionary<string, IntData> IntPool = [];
-	private static readonly Dictionary<string, FloatData> FloatPool = [];
-	private static readonly Dictionary<string, StringData> StringPool = [];
-	private static readonly Dictionary<string, PixelData> PixelsPool = [];
-	private static readonly Dictionary<string, object> ObjectPool = [];
-	private static readonly List<KeyData> Keys = [];
-	private static readonly Dictionary<string, bool> GroupFolding = [];
-	private static readonly List<(int startFrame, Int3 pos, int duration, int size, Color32 color)> TrailingMark = [];
-	private static Int2 PanelPositionOffset = new(1024, 1024);
-	private static bool MouseDragMoving;
+	private static readonly QTest[] Windows = new QTest[MAX_WINDOW_COUNT].FillWithNewValue();
+	private static readonly List<(int startFrame, Int3 pos, int duration, int size, Color32 color)> Marks = [];
 	private static bool ShowingWindow = false;
 	private static bool IgnoringWindow = false;
-	private static Color32[,] CurrentPixels;
-	private static string CurrentGroup = "";
-	private static int CurrentGroupOrder;
-	private static int CurrentOrder;
-	private static int PrevKeyCount = 0;
-	private static int PanelMaxExpand = 0;
+	private static int CurrentWindowIndex = 0;
+	private static int MouseDragMovingIndex = -1;
+	private readonly Dictionary<string, BoolData> BoolPool = [];
+	private readonly Dictionary<string, IntData> IntPool = [];
+	private readonly Dictionary<string, FloatData> FloatPool = [];
+	private readonly Dictionary<string, StringData> StringPool = [];
+	private readonly Dictionary<string, PixelData> PixelsPool = [];
+	private readonly Dictionary<string, object> ObjectPool = [];
+	private readonly List<KeyData> Keys = [];
+	private readonly Dictionary<string, bool> GroupFolding = [];
+	private Int2 PanelPositionOffset = new(int.MinValue, int.MinValue);
+	private Color32[,] CurrentPixels;
+	private string CurrentGroup = "";
+	private int CurrentGroupOrder;
+	private int CurrentOrder;
+	private int PrevKeyCount = 0;
+	private int PanelMaxExpand = 0;
 
 
 	#endregion
@@ -109,10 +118,59 @@ public static class QTest {
 	#region --- MSG ---
 
 
-	[OnGameUpdate(-256)]
-	internal static void OnGameUpdate () {
+	[OnGameUpdateLater]
+	internal static void UpdateMarks () {
+		if (Testing) {
+			Game.ForceGizmosOnTopOfUI(1);
+			LightingSystem.IgnoreLighting(1);
+			Input.IgnoreMouseToActionJump();
+		}
+		// Draw Trailing Mark
+		if (Renderer.TryGetSprite(BuiltInSprite.CIRCLE_32, out var circleSP)) {
+			var cameraRect = Renderer.CameraRect;
+			using var _ = new UILayerScope(ignoreSorting: true);
+			for (int i = 0; i < Marks.Count; i++) {
+				var (frame, pos, dur, size, color) = Marks[i];
+				int localFrame = Game.GlobalFrame - frame;
+				if (localFrame >= dur) {
+					Marks.RemoveAt(i);
+					i--;
+					continue;
+				}
+				if (pos.z != Stage.ViewZ) continue;
+				Renderer.Draw(
+					circleSP,
+					pos.x.Clamp(cameraRect.xMin, cameraRect.xMax),
+					pos.y.Clamp(cameraRect.yMin, cameraRect.yMax),
+					500, 500, 0, size, size,
+					color.WithNewA((dur - localFrame) * 360 / dur), z: int.MaxValue
+				);
+			}
+		}
+	}
 
-		if (!ShowingWindow || IgnoringWindow) return;
+
+	[OnGameUpdate(-256)]
+	internal static void UpdateAllWindows () {
+		if (!Testing) return;
+		for (int i = 0; i < Windows.Length; i++) {
+			Windows[i].UpdateWindow(i);
+		}
+	}
+
+
+	[OnGameUpdateLater(int.MaxValue)]
+	internal static void ResetWindowIndex () => CurrentWindowIndex = 0;
+
+
+	private void UpdateWindow (int windowIndex) {
+
+		if (Keys.Count == 0) return;
+
+		int validWindowCount = 0;
+		for (int i = 0; i < Windows.Length; i++) {
+			if (Windows[i].Keys.Count > 0) validWindowCount++;
+		}
 
 		CurrentGroup = "";
 		CurrentGroupOrder = 0;
@@ -124,7 +182,11 @@ public static class QTest {
 
 		using var _ = new UILayerScope();
 		var cameraRect = Renderer.CameraRect;
-		int basicPanelWidth = cameraRect.width / 3;
+		int basicPanelWidth = cameraRect.width / (validWindowCount + 1);
+		if (PanelPositionOffset.x == int.MinValue) {
+			PanelPositionOffset.x = 1024 + windowIndex * basicPanelWidth;
+			PanelPositionOffset.y = 1024 + cameraRect.height;
+		}
 		var panelRect = new IRect(
 			cameraRect.x + PanelPositionOffset.x,
 			cameraRect.y + PanelPositionOffset.y,
@@ -142,14 +204,18 @@ public static class QTest {
 
 		// Drag to Move
 		var titleCell = Renderer.DrawPixel(rect, Color32.GREY_20);
-		GUI.Label(rect, "Quick Test", GUI.Skin.SmallCenterGreyLabel);
-		if (!mouseHoldingL) MouseDragMoving = false;
-		if (rect.Expand(0, PanelMaxExpand, 0, 0).MouseInside() || MouseDragMoving) {
+		GUI.Label(rect, $"Quick Test [{windowIndex}]", GUI.Skin.SmallCenterGreyLabel);
+		if (!mouseHoldingL) MouseDragMovingIndex = -1;
+
+		if (
+			(rect.Expand(0, PanelMaxExpand, 0, 0).MouseInside() && MouseDragMovingIndex == -1) ||
+			MouseDragMovingIndex == windowIndex
+		) {
 			Cursor.SetCursorAsMove();
 			if (Input.MouseLeftButtonDown) {
-				MouseDragMoving = true;
+				MouseDragMovingIndex = windowIndex;
 			}
-			if (MouseDragMoving && mouseHoldingL) {
+			if (MouseDragMovingIndex == windowIndex && mouseHoldingL) {
 				PanelPositionOffset += Input.MouseGlobalPositionDelta;
 			}
 		}
@@ -171,7 +237,7 @@ public static class QTest {
 		foreach (var kData in Keys) {
 
 			string key = kData.key;
-			string group = kData.group;
+			string group = kData.Group;
 			bool groupNotEmpty = !string.IsNullOrEmpty(group);
 			bool folding = GroupFolding.TryGetValue(group, out bool _folding) && _folding;
 			rect.x = groupNotEmpty ? rectLeft + indent : rectLeft;
@@ -203,7 +269,7 @@ public static class QTest {
 
 			// Value
 			var valueRect = rect.ShrinkLeft(rect.width / 3);
-			switch (kData.type) {
+			switch (kData.Type) {
 				// Bool
 				case DataType.Bool: {
 					var data = BoolPool[key];
@@ -236,7 +302,7 @@ public static class QTest {
 					// Value
 					int valueLabelWidth = valueRect.height * 2;
 					data.value = GUI.HandleSlider(
-						3126784 + index,
+						3126784 + index + windowIndex * 624123,
 						valueRect.ShrinkRight(valueLabelWidth),
 						data.value, data.min, data.max,
 						step: data.step
@@ -266,7 +332,7 @@ public static class QTest {
 					int valueLabelWidth = valueRect.height * 2;
 					if (data.displayLabel == null) {
 						data.value = GUI.HandleSlider(
-							3126784 + index,
+							3126784 + index + windowIndex * 624123,
 							valueRect.ShrinkRight(valueLabelWidth),
 							(data.value * 10000f).RoundToInt(), (data.min * 10000f).RoundToInt(), (data.max * 10000f).RoundToInt(),
 							step: (data.step * 10000f).RoundToInt()
@@ -298,7 +364,11 @@ public static class QTest {
 					// Value
 					int valueLabelWidth = valueRect.height * 2;
 					if (data.displayLabel == null) {
-						data.value = GUI.InputField(3126784 + index, valueRect.ShrinkRight(valueLabelWidth), data.value);
+						data.value = GUI.InputField(
+							3126784 + index + windowIndex * 624123,
+							valueRect.ShrinkRight(valueLabelWidth),
+							data.value
+						);
 					} else {
 						GUI.BackgroundLabel(
 							valueRect.EdgeInsideRight(valueLabelWidth).Shift(padding, 0),
@@ -378,44 +448,12 @@ public static class QTest {
 		);
 
 		// Block Event
-		if (panelRect.MouseInside() || MouseDragMoving) {
+		if (panelRect.MouseInside() || MouseDragMovingIndex == windowIndex) {
 			Input.IgnoreMouseInput(0);
 			Cursor.SetCursorAsNormal(-1);
 			Cursor.SetCursor(Cursor.CurrentCursorIndex, int.MaxValue - 1);
 		}
 
-	}
-
-
-	[OnGameUpdateLater]
-	internal static void OnGameUpdateLater () {
-		if (Testing) {
-			Game.ForceGizmosOnTopOfUI(1);
-			LightingSystem.IgnoreLighting(1);
-			Input.IgnoreMouseToActionJump();
-		}
-		// Draw Trailing Mark
-		if (Renderer.TryGetSprite(BuiltInSprite.CIRCLE_32, out var circleSP)) {
-			var cameraRect = Renderer.CameraRect;
-			using var _ = new UILayerScope(ignoreSorting: true);
-			for (int i = 0; i < TrailingMark.Count; i++) {
-				var (frame, pos, dur, size, color) = TrailingMark[i];
-				int localFrame = Game.GlobalFrame - frame;
-				if (localFrame >= dur) {
-					TrailingMark.RemoveAt(i);
-					i--;
-					continue;
-				}
-				if (pos.z != Stage.ViewZ) continue;
-				Renderer.Draw(
-					circleSP,
-					pos.x.Clamp(cameraRect.xMin, cameraRect.xMax),
-					pos.y.Clamp(cameraRect.yMin, cameraRect.yMax),
-					500, 500, 0, size, size,
-					color.WithNewA((dur - localFrame) * 360 / dur), z: int.MaxValue
-				);
-			}
-		}
 	}
 
 
@@ -427,8 +465,29 @@ public static class QTest {
 	#region --- API ---
 
 
+	public static void SetCurrentWindow (int index) => CurrentWindowIndex = index.Clamp(0, MAX_WINDOW_COUNT - 1);
+
+
+	public static void LoadAllDataFromFile (string path) {
+		ClearAll();
+		if (!Util.FileExists(path)) return;
+
+
+
+
+	}
+
+
+	public static void SaveAllDataToFile (string path) {
+
+
+
+	}
+
+
 	// Data
-	public static bool Bool (string key, bool defaultValue = false, string displayLabel = null) {
+	public static bool Bool (string key, bool defaultValue = false, string displayLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].BoolLogic(key, defaultValue, displayLabel);
+	private bool BoolLogic (string key, bool defaultValue = false, string displayLabel = null) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (BoolPool.TryGetValue(key, out var result)) {
@@ -441,9 +500,9 @@ public static class QTest {
 		var keyData = new KeyData() {
 			key = key,
 			Order = CurrentOrder,
-			type = DataType.Bool,
-			group = CurrentGroup,
-			groupOrder = CurrentGroupOrder,
+			Type = DataType.Bool,
+			Group = CurrentGroup,
+			GroupOrder = CurrentGroupOrder,
 			UpdateFrame = Game.PauselessFrame,
 		};
 		BoolPool.Add(key, new BoolData() {
@@ -456,23 +515,25 @@ public static class QTest {
 		return defaultValue;
 	}
 
-
-	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null) {
+	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].IntLogic(key, defaultValue, min, max, step, displayLabel);
+	private int IntLogic (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (IntPool.TryGetValue(key, out var result)) {
 			result.displayLabel = displayLabel;
 			var kData = result.Key;
 			kData.Order = CurrentOrder;
+			result.min = min;
+			result.max = max;
 			kData.UpdateFrame = Game.PauselessFrame;
 			return result.value.Clamp(result.min, result.max);
 		}
 		var keyData = new KeyData() {
 			key = key,
 			Order = CurrentOrder,
-			type = DataType.Int,
-			group = CurrentGroup,
-			groupOrder = CurrentGroupOrder,
+			Type = DataType.Int,
+			Group = CurrentGroup,
+			GroupOrder = CurrentGroupOrder,
 			UpdateFrame = Game.PauselessFrame,
 		};
 		IntPool.Add(key, new IntData() {
@@ -488,23 +549,25 @@ public static class QTest {
 		return defaultValue.Clamp(min, max);
 	}
 
-
-	public static float Float (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0f, string displayLabel = null) {
+	public static float Float (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0, string displayLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].FloatLogic(key, defaultValue, min, max, step, displayLabel);
+	private float FloatLogic (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0f, string displayLabel = null) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (FloatPool.TryGetValue(key, out var result)) {
 			result.displayLabel = displayLabel;
 			var kData = result.Key;
 			kData.Order = CurrentOrder;
+			result.min = min;
+			result.max = max;
 			kData.UpdateFrame = Game.PauselessFrame;
 			return result.value.Clamp(result.min, result.max);
 		}
 		var keyData = new KeyData() {
 			key = key,
 			Order = CurrentOrder,
-			type = DataType.Float,
-			group = CurrentGroup,
-			groupOrder = CurrentGroupOrder,
+			Type = DataType.Float,
+			Group = CurrentGroup,
+			GroupOrder = CurrentGroupOrder,
 			UpdateFrame = Game.PauselessFrame,
 		};
 		FloatPool.Add(key, new FloatData() {
@@ -520,8 +583,8 @@ public static class QTest {
 		return defaultValue.Clamp(min, max);
 	}
 
-
-	public static string String (string key, string defaultValue = "", string displayLabel = null) {
+	public static string String (string key, string defaultValue = "", string displayLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].StringLogic(key, defaultValue, displayLabel);
+	private string StringLogic (string key, string defaultValue = "", string displayLabel = null) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (StringPool.TryGetValue(key, out var result)) {
@@ -534,9 +597,9 @@ public static class QTest {
 		var keyData = new KeyData() {
 			key = key,
 			Order = CurrentOrder,
-			type = DataType.String,
-			group = CurrentGroup,
-			groupOrder = CurrentGroupOrder,
+			Type = DataType.String,
+			Group = CurrentGroup,
+			GroupOrder = CurrentGroupOrder,
 			UpdateFrame = Game.PauselessFrame,
 		};
 		StringPool.Add(key, new StringData() {
@@ -549,8 +612,16 @@ public static class QTest {
 		return defaultValue;
 	}
 
-
-	public static void ClearAll () {
+	public static void ClearAll (int windowIndex = -1) {
+		if (windowIndex < 0) {
+			foreach (var win in Windows) {
+				win.ClearAllLogic();
+			}
+		} else {
+			Windows[CurrentWindowIndex].ClearAllLogic();
+		}
+	}
+	private void ClearAllLogic () {
 		BoolPool.Clear();
 		IntPool.Clear();
 		FloatPool.Clear();
@@ -562,34 +633,56 @@ public static class QTest {
 
 
 	// Set Data
-	public static void SetBool (string key, bool value) {
+	public static void SetBool (string key, bool value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetBoolLogic(key, value);
+	private void SetBoolLogic (string key, bool value) {
 		if (BoolPool.TryGetValue(key, out var data)) {
 			data.value = value;
 		}
 	}
 
-	public static void SetInt (string key, int value) {
+	public static void SetInt (string key, int value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetIntLogic(key, value);
+	private void SetIntLogic (string key, int value) {
 		if (IntPool.TryGetValue(key, out var data)) {
 			data.value = value;
 		}
 	}
 
-	public static void SetFloat (string key, float value) {
+	public static void SetFloat (string key, float value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetFloatLogic(key, value);
+	private void SetFloatLogic (string key, float value) {
 		if (FloatPool.TryGetValue(key, out var data)) {
 			data.value = value;
 		}
 	}
 
-	public static void SetString (string key, string value) {
+	public static void SetString (string key, string value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetStringLogic(key, value);
+	private void SetStringLogic (string key, string value) {
 		if (StringPool.TryGetValue(key, out var data)) {
 			data.value = value;
 		}
 	}
 
 
+	// Get Data
+	public static bool GetBool (string key, bool defaultValue = false, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].GetBoolLogic(key, defaultValue);
+	private bool GetBoolLogic (string key, bool defaultValue = false) => BoolPool.TryGetValue(key, out var data) ? data.value : defaultValue;
+
+	public static int GetInt (string key, int defaultValue = 0, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].GetIntLogic(key, defaultValue);
+	private int GetIntLogic (string key, int defaultValue = 0) => IntPool.TryGetValue(key, out var data) ? data.value : defaultValue;
+
+	public static float GetFloat (string key, float defaultValue = 0, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].GetFloatLogic(key, defaultValue);
+	private float GetFloatLogic (string key, float defaultValue = 0f) => FloatPool.TryGetValue(key, out var data) ? data.value : defaultValue;
+
+	public static string GetString (string key, string defaultValue = "", int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].GetStringLogic(key, defaultValue);
+	private string GetStringLogic (string key, string defaultValue = "") => StringPool.TryGetValue(key, out var data) ? data.value : defaultValue;
+
+
 	// Pixels
-	public static void StartDrawColumn (string key, int size, bool clearPrevPixels = true) => StartDrawPixels(key, size, (int)(size * 0.618f), clearPrevPixels);
-	public static void StartDrawPixels (string key, int width, int height, bool clearPrevPixels = true) {
+	public static void StartDrawColumn (string key, int size, bool clearPrevPixels = true, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].StartDrawColumnLogic(key, size, clearPrevPixels);
+	private void StartDrawColumnLogic (string key, int size, bool clearPrevPixels = true) => StartDrawPixelsLogic(key, size, (int)(size * 0.618f), clearPrevPixels);
+
+
+	public static void StartDrawPixels (string key, int width, int height, bool clearPrevPixels = true, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].StartDrawPixelsLogic(key, width, height, clearPrevPixels);
+	private void StartDrawPixelsLogic (string key, int width, int height, bool clearPrevPixels = true) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (PixelsPool.TryGetValue(key, out var result)) {
@@ -606,9 +699,9 @@ public static class QTest {
 		var keyData = new KeyData() {
 			key = key,
 			Order = CurrentOrder,
-			type = DataType.Pixels,
-			group = CurrentGroup,
-			groupOrder = CurrentGroupOrder,
+			Type = DataType.Pixels,
+			Group = CurrentGroup,
+			GroupOrder = CurrentGroupOrder,
 			UpdateFrame = Game.PauselessFrame,
 		};
 		PixelsPool.Add(key, new PixelData() {
@@ -620,28 +713,32 @@ public static class QTest {
 	}
 
 
-	public static void DrawColumn (int x, float value01, Color32 color, Color32 bgColor) {
+	public static void DrawColumn (int x, float value01, Color32 color, Color32 bgColor, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].DrawColumnLogic(x, value01, color, bgColor);
+	private void DrawColumnLogic (int x, float value01, Color32 color, Color32 bgColor) {
 		int height = CurrentPixels.GetLength(1);
 		int valueHeight = (height * value01).RoundToInt().Clamp(0, height);
 		for (int i = 0; i < height; i++) {
 			CurrentPixels[x, i] = i < valueHeight ? color : bgColor;
 		}
 	}
-	public static void DrawPixel (int x, int y, Color32 pixel) => CurrentPixels[x, y] = pixel;
+
+	public static void DrawPixel (int x, int y, Color32 pixel, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].CurrentPixels[x, y] = pixel;
 
 
-	// Trailing
-	public static void AddTrailingMark (Int2 pos, int duration = 60, int size = 42) => TrailingMark.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, Color32.RED));
-	public static void AddTrailingMark (int x, int y, int duration = 60, int size = 42) => TrailingMark.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, Color32.RED));
-	public static void AddTrailingMark (Int2 pos, Color32 color, int duration = 60, int size = 42) => TrailingMark.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, color));
-	public static void AddTrailingMark (int x, int y, Color32 color, int duration = 60, int size = 42) => TrailingMark.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, color));
+	// Mark
+	public static void Mark (Int2 pos, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, Color32.RED));
+	public static void Mark (int x, int y, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, Color32.RED));
+	public static void Mark (Int2 pos, Color32 color, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, color));
+	public static void Mark (int x, int y, Color32 color, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, color));
 
 
 	// Obj
-	public static T SetObject<T> (string key, T obj) => (T)(ObjectPool[key] = obj);
+	public static T SetObject<T> (string key, T obj, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetObjectLogic(key, obj);
+	private T SetObjectLogic<T> (string key, T obj) => (T)(ObjectPool[key] = obj);
 
 
-	public static bool TryGetObject<T> (string key, out T result) {
+	public static bool TryGetObject<T> (string key, out T result, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].TryGetObjectLogic(key, out result);
+	private bool TryGetObjectLogic<T> (string key, out T result) {
 		if (ObjectPool.TryGetValue(key, out var obj) && obj is T tObj) {
 			result = tObj;
 			return true;
@@ -665,7 +762,8 @@ public static class QTest {
 	}
 
 
-	public static void Group (string group, bool folding = false) {
+	public static void Group (string group, bool folding = false, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].GroupLogic(group, folding);
+	private void GroupLogic (string group, bool folding = false) {
 		CurrentGroup = group;
 		CurrentGroupOrder++;
 		if (!GroupFolding.ContainsKey(group)) {
