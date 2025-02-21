@@ -815,16 +815,32 @@ public partial class PixelEditor : WindowUI {
 
 		// Pixel Selection Operation
 		if (EngineSetting.Hotkey_Pix_FlipX.Value.Down()) {
-			FlipPixelSelection(true);
+			if (CurrentTool == Tool.Select) {
+				FlipPixelSelection(true);
+			} else if (CurrentTool == Tool.Sprite) {
+				FlipSpriteSelection(true);
+			}
 		}
 		if (EngineSetting.Hotkey_Pix_FlipY.Value.Down()) {
-			FlipPixelSelection(false);
+			if (CurrentTool == Tool.Select) {
+				FlipPixelSelection(false);
+			} else if (CurrentTool == Tool.Sprite) {
+				FlipSpriteSelection(false);
+			}
 		}
 		if (EngineSetting.Hotkey_Pix_RotC.Value.Down()) {
-			RotatePixelSelection(true);
+			if (CurrentTool == Tool.Select) {
+				RotatePixelSelection(true);
+			} else if (CurrentTool == Tool.Sprite) {
+				RotateSpriteSelection(true);
+			}
 		}
 		if (EngineSetting.Hotkey_Pix_RotCC.Value.Down()) {
-			RotatePixelSelection(false);
+			if (CurrentTool == Tool.Select) {
+				RotatePixelSelection(false);
+			} else if (CurrentTool == Tool.Sprite) {
+				RotateSpriteSelection(false);
+			}
 		}
 
 	}

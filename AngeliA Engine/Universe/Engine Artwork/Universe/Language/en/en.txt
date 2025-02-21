@@ -52,8 +52,8 @@ iDes.BodyGadgetItem:Body Gadget
 iDes.BodySetItem:Body Set
 iDes.ClothItem:Cloth Item
 iName.BlockBuilder:Block Builder
-iName.BodyGadgetItem:Body Gadget
-iName.BodySetItem:Body Set
+iName.BodyGadgetItem:Body Gadget Item
+iName.BodySetItem:Body Set Item
 iName.ClothItem:Cloth Item
 Label.B:B
 Label.Border:Border
@@ -260,6 +260,10 @@ Tip.ShowAxis:Show Axis
 Tip.ShowCheckerBoard:Show Checker Board
 Tip.SizeX:Width
 Tip.SizeY:Height
+Tip.SpriteOperation.FlipH:Flip selected sprites horizontally
+Tip.SpriteOperation.FlipV:Flip selected sprites Vertically
+Tip.SpriteOperation.RotC:Rotate selected sprites Clockwise
+Tip.SpriteOperation.RotCC:Rotate selected sprites Counter-Clockwise
 Tip.Tag:Tag
 Tip.Trigger:Is trigger sprite
 Tip.Z:Sprite Z
@@ -504,6 +508,7 @@ UI.QuitMessage:Close engine window ?
 UI.Rename:Rename
 UI.Reset:Reset
 UI.Restart:Restart
+UI.RestartAndRegenerateMap:Restart and Regenerate Map
 UI.Rig.BuildError:Compile Error in Game Script :(\nAll errors must be fixed otherwise the game cannot run
 UI.Rig.BuildingHint:Recompiling
 UI.Rig.NotRunning:Rigged Game Not Running :(\nThis should not happen. Please contact the developer and report this problem.

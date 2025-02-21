@@ -16,8 +16,16 @@ public partial class LanguageEditor : WindowUI {
 	private class LanguageLine {
 		public string Key;
 		public string Label;
-		public bool Visible;
+		public bool Visible = true;
 		public List<string> Value;
+		public bool HasEmptyValue () {
+			foreach (var value in Value) {
+				if (string.IsNullOrWhiteSpace(value)) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 
 
@@ -47,6 +55,7 @@ public partial class LanguageEditor : WindowUI {
 	private static readonly LanguageCode ADD_ALL_LAN_CODE = ("UI.LanguageEditor.AddAllLanCode", "+ All Language Code");
 	private static readonly LanguageCode MSG_LAN_CODE_ADDED = ("UI.LanguageEditor.LanCodeAddedMsg", "Language code added");
 	private static readonly LanguageCode UI_LABEL_KEY = ("UI.LanguageEditor.Key", "Key");
+	private static readonly LanguageCode UI_ONLY_EMPTY = ("UI.LanguageEditor.OnlyShowEmpty", "Empty Only");
 	private static readonly LanguageCode MSG_ALL_LAN_CODE = ("UI.LanguageEditor.AddAllLanCodeMsg", "Add keys for all language code in game script?");
 	private static readonly LanguageCode MSG_HELP = ("UI.LanguageEditor.HelpMsg", "Empty keys will be deleted when open the project next time");
 	private const int SEARCH_ID = -19223;
@@ -65,6 +74,7 @@ public partial class LanguageEditor : WindowUI {
 	private string SearchingText = string.Empty;
 	private int RequireReloadWhenFileChangedFrame = -1;
 	private long ReloadCheckingDate = 0;
+	private bool EmptyOnly = false;
 
 
 	#endregion
@@ -201,6 +211,18 @@ public partial class LanguageEditor : WindowUI {
 		Cursor.SetCursorAsHand(rect);
 		rect.SlideRight();
 
+		// Empty Only
+		rect.width = Unify(110);
+		if (GUI.Button(rect, UI_ONLY_EMPTY, Skin.SmallCenterLabelButton)) {
+			EmptyOnly = !EmptyOnly;
+			RefreshAllLinesVisible();
+		}
+		if (EmptyOnly) {
+			Renderer.DrawPixel(rect, GUI.Skin.HighlightColor.WithNewA(32));
+		}
+		Cursor.SetCursorAsHand(rect);
+		rect.SlideRight();
+
 		// Line
 		Renderer.DrawPixel(rect.EdgeOutsideLeft(Unify(1)), Color32.GREY_12, 2);
 
@@ -219,25 +241,7 @@ public partial class LanguageEditor : WindowUI {
 		}
 		if (confirm) {
 			ScrollY = 0;
-			const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
-			if (string.IsNullOrWhiteSpace(SearchingText)) {
-				foreach (var line in Lines) line.Visible = true;
-			} else {
-				for (int i = 0; i < Lines.Count; i++) {
-					var line = Lines[i];
-					line.Visible = false;
-					if (!line.Key.Contains(SearchingText, OIC)) {
-						foreach (var value in line.Value) {
-							if (value.Contains(SearchingText, OIC)) {
-								line.Visible = true;
-								break;
-							}
-						}
-					} else {
-						line.Visible = true;
-					}
-				}
-			}
+			RefreshAllLinesVisible();
 		}
 
 		// Help Button
@@ -314,7 +318,6 @@ public partial class LanguageEditor : WindowUI {
 		int ctrlID = 23186 + startLine * (Languages.Count + 1);
 		var rect = new IRect(0, panelRect.yMax, panelRect.width / (Languages.Count + 1), itemHeight);
 		string prevLabel = startLine - 1 >= 0 && startLine - 1 < Lines.Count ? Lines[startLine - 1].Label : string.Empty;
-		bool searching = !string.IsNullOrEmpty(SearchingText) && GUI.TypingTextFieldID != SEARCH_ID;
 
 		for (int i = startLine; i < Lines.Count; i++) {
 			var line = Lines[i];
@@ -324,7 +327,7 @@ public partial class LanguageEditor : WindowUI {
 			if (rect.yMax < panelRect.y) break;
 
 			// Searching Check
-			if (searching && !line.Visible) continue;
+			if (!line.Visible) continue;
 
 			// Label Line
 			string label = line.Label;
@@ -569,6 +572,31 @@ public partial class LanguageEditor : WindowUI {
 		int dot = key.IndexOf('.');
 		if (dot < 0) return char.IsLetter(key[0]) || char.IsNumber(key[0]) ? key : key[0].ToString();
 		return key[..dot];
+	}
+
+
+	private void RefreshAllLinesVisible () {
+		const System.StringComparison OIC = System.StringComparison.OrdinalIgnoreCase;
+		if (string.IsNullOrWhiteSpace(SearchingText)) {
+			foreach (var line in Lines) line.Visible = !EmptyOnly || line.HasEmptyValue();
+		} else {
+			for (int i = 0; i < Lines.Count; i++) {
+				var line = Lines[i];
+				line.Visible = !EmptyOnly || line.HasEmptyValue();
+				if (!line.Visible) continue;
+				line.Visible = false;
+				if (!line.Key.Contains(SearchingText, OIC)) {
+					foreach (var value in line.Value) {
+						if (value.Contains(SearchingText, OIC)) {
+							line.Visible = true;
+							break;
+						}
+					}
+				} else {
+					line.Visible = true;
+				}
+			}
+		}
 	}
 
 

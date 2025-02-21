@@ -260,6 +260,10 @@ Tip.ShowAxis:显示轴标
 Tip.ShowCheckerBoard:显示棋盘格
 Tip.SizeX:宽度
 Tip.SizeY:高度
+Tip.SpriteOperation.FlipH:水平翻转图块
+Tip.SpriteOperation.FlipV:垂直翻转图块
+Tip.SpriteOperation.RotC:顺时针旋转图块
+Tip.SpriteOperation.RotCC:逆时针旋转图块
 Tip.Tag:标签
 Tip.Trigger:虚无模式
 Tip.Z:图块的Z
@@ -504,6 +508,7 @@ UI.QuitMessage:是否关闭引擎窗口？
 UI.Rename:重命名
 UI.Reset:重置
 UI.Restart:重启
+UI.RestartAndRegenerateMap:重开游戏并重置地图
 UI.Rig.BuildError:编译错误 :(\n必须解决所有编译错误才能运行游戏
 UI.Rig.BuildingHint:编译中
 UI.Rig.NotRunning:游戏未运行\n这是意料之外的情况，请向开发者报告该错误

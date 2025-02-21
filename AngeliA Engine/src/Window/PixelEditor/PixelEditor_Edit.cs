@@ -1308,6 +1308,224 @@ public partial class PixelEditor {
 	}
 
 
+	// Sprite Operation
+	private void FlipSpriteSelection (bool horizontal) {
+		if (SelectingSpriteCount == 0) return;
+		int checkedSelectCount = 0;
+		foreach (var sp in StagedSprites) {
+			if (checkedSelectCount >= SelectingSpriteCount) break;
+			if (!sp.Selecting) continue;
+
+			var sprite = sp.Sprite;
+
+			// Pixels
+			var pRect = sprite.PixelRect;
+			var pixels = sprite.Pixels;
+			sp.PixelDirty = true;
+			RegisterUndo(new PaintUndoItem() {
+				SpriteID = sprite.ID,
+				LocalPixelRect = pRect,
+			}, ignoreStep: checkedSelectCount > 0);
+
+			int right = horizontal ? pRect.width / 2 : pRect.width;
+			int top = horizontal ? pRect.height : pRect.height / 2;
+			for (int j = 0; j < top; j++) {
+				int localYIndex = j * pRect.width;
+				for (int i = 0; i < right; i++) {
+					int indexA = localYIndex + i;
+					int indexB = horizontal ?
+						localYIndex + pRect.width - i - 1 :
+						(pRect.height - j - 1) * pRect.width + i;
+					var pixA = pixels[indexA];
+					var pixB = pixels[indexB];
+					(pixels[indexA], pixels[indexB]) = (pixB, pixA);
+					RegisterUndo(new IndexedPixelUndoItem() {
+						LocalPixelIndex = indexA,
+						From = pixA,
+						To = pixB,
+					}, ignoreStep: true);
+					RegisterUndo(new IndexedPixelUndoItem() {
+						LocalPixelIndex = indexB,
+						From = pixB,
+						To = pixA,
+					}, ignoreStep: true);
+				}
+			}
+
+			RegisterUndo(new PaintUndoItem() {
+				SpriteID = sprite.ID,
+				LocalPixelRect = pRect,
+			}, ignoreStep: true);
+
+			// Border
+			var oldBorder = sprite.GlobalBorder;
+			if (horizontal) {
+				if (sprite.GlobalBorder.left != sprite.GlobalBorder.right) {
+					(sprite.GlobalBorder.left, sprite.GlobalBorder.right) = (sprite.GlobalBorder.right, sprite.GlobalBorder.left);
+				}
+			} else {
+				if (sprite.GlobalBorder.down != sprite.GlobalBorder.up) {
+					(sprite.GlobalBorder.down, sprite.GlobalBorder.up) = (sprite.GlobalBorder.up, sprite.GlobalBorder.down);
+				}
+			}
+			if (sprite.GlobalBorder != oldBorder) {
+				RegisterUndo(new SpriteBorderUndoItem() {
+					SpriteID = sprite.ID,
+					From = oldBorder,
+					To = sprite.GlobalBorder,
+				}, ignoreStep: true);
+			}
+
+			// Pivot
+			int oldPivotX = sprite.PivotX;
+			int oldPivotY = sprite.PivotY;
+			if (horizontal) {
+				sprite.PivotX = 1000 - sprite.PivotX;
+			} else {
+				sprite.PivotY = 1000 - sprite.PivotY;
+			}
+			if (oldPivotX != sprite.PivotX || oldPivotY != sprite.PivotY) {
+				RegisterUndo(new SpritePivotUndoItem() {
+					SpriteID = sprite.ID,
+					From = horizontal ? oldPivotX : oldPivotY,
+					To = horizontal ? sprite.PivotX : sprite.PivotY,
+					X = horizontal,
+				}, ignoreStep: true);
+			}
+
+			// Final
+			checkedSelectCount++;
+
+		}
+		SetDirty();
+		RefreshSpriteInputContent();
+	}
+
+
+	private void RotateSpriteSelection (bool clockwise) {
+		if (SelectingSpriteCount == 0) return;
+		int checkedCount = 0;
+		for (int i = 0; i < StagedSprites.Count; i++) {
+			if (checkedCount >= SelectingSpriteCount) break;
+			var sp = StagedSprites[i];
+			if (!sp.Selecting) continue;
+
+			var sprite = sp.Sprite;
+
+			// Remove Sprite
+			RegisterUndo(new SpriteObjectUndoItem() {
+				Sprite = sprite.CreateCopy(),
+				Create = false,
+			}, ignoreStep: checkedCount > 0);
+
+			// Remove from Sheet
+			int index = EditingSheet.IndexOfSprite(sprite.ID);
+			if (index >= 0) {
+				EditingSheet.RemoveSprite(index);
+			}
+
+			// Create New Sprite
+			var oldPixelRect = sprite.PixelRect;
+			var newPixelRect = sprite.PixelRect;
+			(newPixelRect.width, newPixelRect.height) = (newPixelRect.height, newPixelRect.width);
+			var newSprite = EditingSheet.CreateSprite(sprite.RealName, newPixelRect, sprite.AtlasID);
+			newSprite.PivotX = sprite.PivotX;
+			newSprite.PivotY = sprite.PivotY;
+			newSprite.GlobalBorder = sprite.GlobalBorder;
+			newSprite.LocalZ = sprite.LocalZ;
+			newSprite.IsTrigger = sprite.IsTrigger;
+			newSprite.Rule = sprite.Rule;
+			newSprite.Tag = sprite.Tag;
+			newSprite.Duration = sprite.Duration;
+			EditingSheet.AddSprite(newSprite);
+			sp.Sprite = newSprite;
+
+			// Apply Pixels
+			for (int y = 0; y < newPixelRect.height; y++) {
+				for (int x = 0; x < newPixelRect.width; x++) {
+					newSprite.Pixels[y * newPixelRect.width + x] = sprite.Pixels[x * oldPixelRect.width + y];
+				}
+			}
+			int right = clockwise ? newPixelRect.width : newPixelRect.width / 2;
+			int top = clockwise ? newPixelRect.height / 2 : newPixelRect.height;
+			for (int y = 0; y < top; y++) {
+				for (int x = 0; x < right; x++) {
+					int indexA = y * newPixelRect.width + x;
+					int indexB = clockwise ?
+						(newPixelRect.height - y - 1) * newPixelRect.width + x :
+						y * newPixelRect.width + (newPixelRect.width - x - 1);
+					(newSprite.Pixels[indexA], newSprite.Pixels[indexB]) = (newSprite.Pixels[indexB], newSprite.Pixels[indexA]);
+				}
+			}
+
+			sp.PixelDirty = true;
+
+			// Border
+			var oldBorder = newSprite.GlobalBorder;
+			if (clockwise) {
+				newSprite.GlobalBorder = Int4.Direction(
+					newSprite.GlobalBorder.down,
+					newSprite.GlobalBorder.up,
+					newSprite.GlobalBorder.right,
+					newSprite.GlobalBorder.left
+				);
+			} else {
+				newSprite.GlobalBorder = Int4.Direction(
+					newSprite.GlobalBorder.up,
+					newSprite.GlobalBorder.down,
+					newSprite.GlobalBorder.left,
+					newSprite.GlobalBorder.right
+				);
+			}
+
+			if (newSprite.GlobalBorder != oldBorder) {
+				RegisterUndo(new SpriteBorderUndoItem() {
+					SpriteID = newSprite.ID,
+					From = oldBorder,
+					To = newSprite.GlobalBorder,
+				}, ignoreStep: true);
+			}
+
+			// Pivot
+			int oldPivotX = newSprite.PivotX;
+			int oldPivotY = newSprite.PivotY;
+			if (clockwise) {
+				(newSprite.PivotX, newSprite.PivotY) = (newSprite.PivotY, newSprite.PivotX);
+				newSprite.PivotY = 1000 - newSprite.PivotY;
+			} else {
+				(newSprite.PivotX, newSprite.PivotY) = (newSprite.PivotY, newSprite.PivotX);
+				newSprite.PivotX = 1000 - newSprite.PivotX;
+			}
+			if (oldPivotX != newSprite.PivotX || oldPivotY != newSprite.PivotY) {
+				RegisterUndo(new SpritePivotUndoItem() {
+					SpriteID = newSprite.ID,
+					From = oldPivotX,
+					To = newSprite.PivotX,
+					X = true,
+				}, ignoreStep: true);
+				RegisterUndo(new SpritePivotUndoItem() {
+					SpriteID = newSprite.ID,
+					From = oldPivotY,
+					To = newSprite.PivotY,
+					X = false,
+				}, ignoreStep: true);
+			}
+
+			RegisterUndo(new SpriteObjectUndoItem() {
+				Sprite = newSprite.CreateCopy(),
+				Create = true,
+			}, ignoreStep: true);
+
+			// Final
+			checkedCount++;
+
+		}
+		SetDirty();
+		RefreshSpriteInputContent();
+
+	}
+
+
 	// Util
 	private IRect GetDraggingPixRect (bool forLeftButton, int maxSize) {
 		maxSize--;

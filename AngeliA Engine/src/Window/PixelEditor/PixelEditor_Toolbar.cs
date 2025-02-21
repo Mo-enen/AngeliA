@@ -66,6 +66,10 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_OPER_ROT_C = "Icon.PixOperation.RotC";
 	private static readonly SpriteCode ICON_OPER_ROT_CC = "Icon.PixOperation.RotCC";
 	private static readonly SpriteCode ICON_RESET_CAMERA = "Icon.ResetCamera";
+	private static readonly SpriteCode ICON_SP_FLIP_H = "Icon.SpriteOperation.FlipH";
+	private static readonly SpriteCode ICON_SP_FLIP_V = "Icon.SpriteOperation.FlipV";
+	private static readonly SpriteCode ICON_SP_ROT_C = "Icon.SpriteOperation.RotC";
+	private static readonly SpriteCode ICON_SP_ROT_CC = "Icon.SpriteOperation.RotCC";
 	private static SpriteCode[] UI_TOOLS;
 
 	// Language
@@ -101,6 +105,10 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_OPER_FLIP_V = ("Tip.PixOperation.FlipV", "Flip selected pixels Vertically");
 	private static readonly LanguageCode TIP_OPER_ROT_C = ("Tip.PixOperation.RotC", "Rotate selected pixels Clockwise");
 	private static readonly LanguageCode TIP_OPER_ROT_CC = ("Tip.PixOperation.RotCC", "Rotate selected pixels Counter-Clockwise");
+	private static readonly LanguageCode TIP_SP_FLIP_H = ("Tip.SpriteOperation.FlipH", "Flip selected sprites horizontally");
+	private static readonly LanguageCode TIP_SP_FLIP_V = ("Tip.SpriteOperation.FlipV", "Flip selected sprites Vertically");
+	private static readonly LanguageCode TIP_SP_ROT_C = ("Tip.SpriteOperation.RotC", "Rotate selected sprites Clockwise");
+	private static readonly LanguageCode TIP_SP_ROT_CC = ("Tip.SpriteOperation.RotCC", "Rotate selected sprites Counter-Clockwise");
 	private static readonly LanguageCode LABEL_BORDER = ("Label.Border", "Border");
 	private static readonly LanguageCode LABEL_PIVOT = ("Label.Pivot", "Pivot");
 	private static readonly LanguageCode LABEL_SIZE = ("Label.Size", "Size");
@@ -240,37 +248,39 @@ public partial class PixelEditor {
 				rect.x += padding;
 
 				// Pixel Selection Operation
-				using var _ = new GUIEnableScope(PixelSelectionPixelRect != default);
-				// Flip H
-				if (GUI.Button(rect, ICON_OPER_FLIP_H, Skin.SmallDarkButton)) {
-					FlipPixelSelection(true);
-				}
-				RequireTooltip(rect, TIP_OPER_FLIP_H);
-				rect.SlideRight(padding);
+				if (PixelSelectionPixelRect != default) {
 
-				// Flip V
-				if (GUI.Button(rect, ICON_OPER_FLIP_V, Skin.SmallDarkButton)) {
-					FlipPixelSelection(false);
-				}
-				RequireTooltip(rect, TIP_OPER_FLIP_V);
-				rect.SlideRight(padding);
+					// Flip H
+					if (GUI.Button(rect, ICON_OPER_FLIP_H, Skin.SmallDarkButton)) {
+						FlipPixelSelection(true);
+					}
+					RequireTooltip(rect, TIP_OPER_FLIP_H);
+					rect.SlideRight(padding);
 
-				// Rotate Clock
-				if (GUI.Button(rect, ICON_OPER_ROT_C, Skin.SmallDarkButton)) {
-					RotatePixelSelection(true);
-				}
-				RequireTooltip(rect, TIP_OPER_ROT_C);
-				rect.SlideRight(padding);
+					// Flip V
+					if (GUI.Button(rect, ICON_OPER_FLIP_V, Skin.SmallDarkButton)) {
+						FlipPixelSelection(false);
+					}
+					RequireTooltip(rect, TIP_OPER_FLIP_V);
+					rect.SlideRight(padding);
 
-				// Rotate C-Clock
-				if (GUI.Button(rect, ICON_OPER_ROT_CC, Skin.SmallDarkButton)) {
-					RotatePixelSelection(false);
-				}
-				RequireTooltip(rect, TIP_OPER_ROT_CC);
-				rect.SlideRight(padding);
+					// Rotate Clock
+					if (GUI.Button(rect, ICON_OPER_ROT_C, Skin.SmallDarkButton)) {
+						RotatePixelSelection(true);
+					}
+					RequireTooltip(rect, TIP_OPER_ROT_C);
+					rect.SlideRight(padding);
 
-				// Color Adjustment
-				Update_GeneralToolbar_ColorAdjustment(toolbarRect, ref rect);
+					// Rotate C-Clock
+					if (GUI.Button(rect, ICON_OPER_ROT_CC, Skin.SmallDarkButton)) {
+						RotatePixelSelection(false);
+					}
+					RequireTooltip(rect, TIP_OPER_ROT_CC);
+					rect.SlideRight(padding);
+
+					// Color Adjustment
+					Update_GeneralToolbar_ColorAdjustment(toolbarRect, ref rect);
+				}
 
 				break;
 			}
@@ -748,7 +758,6 @@ public partial class PixelEditor {
 
 		// Rule
 		var atlas = EditingSheet.Atlas[CurrentAtlasIndex];
-		//if (CurrentProject.IsEngineInternalProject || atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background) {
 		if (GUI.Button(rect, ICON_RULE, Skin.SmallDarkButton)) {
 			OpeningTilingRuleEditor = !OpeningTilingRuleEditor;
 			if (OpeningTilingRuleEditor) {
@@ -758,7 +767,6 @@ public partial class PixelEditor {
 		}
 		RequireTooltip(rect, TIP_RULE);
 		rect.SlideRight(padding);
-		//	}
 
 		// Delete Sprite
 		rect.width = buttonWidth;
@@ -792,6 +800,41 @@ public partial class PixelEditor {
 		RequireTooltip(rect, "Log and copy selecting sprite names.");
 		rect.SlideRight(padding);
 #endif
+
+
+		// Rot CW
+		rect.x += Unify(12);
+		rect.width = buttonWidth;
+		if (GUI.Button(rect, ICON_SP_ROT_C, Skin.SmallDarkButton)) {
+			RotateSpriteSelection(true);
+		}
+		RequireTooltip(rect, TIP_SP_ROT_C);
+		rect.SlideRight(padding);
+
+		// Rot CCW
+		rect.width = buttonWidth;
+		if (GUI.Button(rect, ICON_SP_ROT_CC, Skin.SmallDarkButton)) {
+			RotateSpriteSelection(false);
+		}
+		RequireTooltip(rect, TIP_SP_ROT_CC);
+		rect.SlideRight(padding);
+
+		// Flip H
+		rect.width = buttonWidth;
+		if (GUI.Button(rect, ICON_SP_FLIP_H, Skin.SmallDarkButton)) {
+			FlipSpriteSelection(true);
+		}
+		RequireTooltip(rect, TIP_SP_FLIP_H);
+		rect.SlideRight(padding);
+
+		// Flip V
+		rect.width = buttonWidth;
+		if (GUI.Button(rect, ICON_SP_FLIP_V, Skin.SmallDarkButton)) {
+			FlipSpriteSelection(false);
+		}
+		RequireTooltip(rect, TIP_SP_FLIP_V);
+		rect.SlideRight(padding);
+
 
 		// Final
 		box.Width = rect.xMin - box.X + boxPadding * 2;
