@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System.IO;
+using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AngeliA;
@@ -11,7 +13,7 @@ public class QTest {
 	#region --- SUB ---
 
 
-	private enum DataType { Bool, Int, Float, String, Pixels, }
+	private enum DataType : byte { Bool, Int, Float, String, Pixels, }
 
 
 	private class BoolData {
@@ -472,15 +474,204 @@ public class QTest {
 		ClearAll();
 		if (!Util.FileExists(path)) return;
 
+		using var fs = File.OpenRead(path);
+		using var rd = new BinaryReader(fs);
 
+		int windowCount = rd.ReadInt32();
+		for (int windowI = 0; windowI < windowCount; windowI++) {
+			int windowIndex = rd.ReadByte();
+			var window = Windows[windowIndex];
 
+			window.PanelPositionOffset.x = rd.ReadInt32();
+			window.PanelPositionOffset.y = rd.ReadInt32();
 
+			// Keys
+			int keyCount = rd.ReadInt32();
+			var keyPool = new Dictionary<(string, DataType), KeyData>();
+			for (int i = 0; i < keyCount; i++) {
+				string key = rd.ReadString();
+				int order = rd.ReadInt32();
+				var type = (DataType)rd.ReadByte();
+				string group = rd.ReadString();
+				int groupOrder = rd.ReadInt32();
+				var keyData = new KeyData() {
+					key = key,
+					Group = group,
+					GroupOrder = groupOrder,
+					Order = order,
+					Type = type,
+				};
+				window.Keys.Add(keyData);
+				keyPool.TryAdd((key, type), keyData);
+			}
+
+			// Bool
+			int boolCount = rd.ReadInt32();
+			for (int i = 0; i < boolCount; i++) {
+				string key = rd.ReadString();
+				bool value = rd.ReadByte() == 1;
+				window.BoolPool.Add(key, new BoolData() {
+					displayLabel = "",
+					Key = keyPool.TryGetValue((key, DataType.Bool), out var kData) ? kData : new KeyData() {
+						key = key,
+						Group = "",
+						GroupOrder = 0,
+						Order = 0,
+						Type = DataType.Bool,
+					},
+					value = value,
+				});
+			}
+
+			// Int
+			int intCount = rd.ReadInt32();
+			for (int i = 0; i < intCount; i++) {
+				string key = rd.ReadString();
+				int value = rd.ReadInt32();
+				int min = rd.ReadInt32();
+				int max = rd.ReadInt32();
+				int step = rd.ReadInt32();
+				window.IntPool.Add(key, new IntData() {
+					displayLabel = "",
+					Key = keyPool.TryGetValue((key, DataType.Int), out var kData) ? kData : new KeyData() {
+						key = key,
+						Group = "",
+						GroupOrder = 0,
+						Order = 0,
+						Type = DataType.Int,
+					},
+					value = value,
+					min = min,
+					max = max,
+					step = step,
+				});
+			}
+
+			// Float
+			int floatCount = rd.ReadInt32();
+			for (int i = 0; i < floatCount; i++) {
+				string key = rd.ReadString();
+				float value = rd.ReadSingle();
+				float min = rd.ReadSingle();
+				float max = rd.ReadSingle();
+				float step = rd.ReadSingle();
+				window.FloatPool.Add(key, new FloatData() {
+					displayLabel = "",
+					Key = keyPool.TryGetValue((key, DataType.Float), out var kData) ? kData : new KeyData() {
+						key = key,
+						Group = "",
+						GroupOrder = 0,
+						Order = 0,
+						Type = DataType.Float,
+					},
+					value = value,
+					min = min,
+					max = max,
+					step = step,
+				});
+			}
+
+			// String
+			int stringCount = rd.ReadInt32();
+			for (int i = 0; i < stringCount; i++) {
+				string key = rd.ReadString();
+				string value = rd.ReadString();
+				window.StringPool.Add(key, new StringData() {
+					displayLabel = "",
+					Key = keyPool.TryGetValue((key, DataType.String), out var kData) ? kData : new KeyData() {
+						key = key,
+						Group = "",
+						GroupOrder = 0,
+						Order = 0,
+						Type = DataType.String,
+					},
+					value = value,
+				});
+			}
+
+			// Group Fold
+			int foldCount = rd.ReadInt32();
+			for (int i = 0; i < foldCount; i++) {
+				string key = rd.ReadString();
+				bool value = rd.ReadByte() == 1;
+				window.GroupFolding.Add(key, value);
+			}
+
+		}
 	}
 
 
 	public static void SaveAllDataToFile (string path) {
 
+		using var fs = File.OpenWrite(path);
+		using var wr = new BinaryWriter(fs);
 
+		wr.Write((int)0);
+		int validContentCount = 0;
+		for (int i = 0; i < Windows.Length; i++) {
+			var window = Windows[i];
+			if (window.Keys.Count == 0) continue;
+			validContentCount++;
+
+			wr.Write((byte)i);
+			wr.Write((int)window.PanelPositionOffset.x);
+			wr.Write((int)window.PanelPositionOffset.y);
+
+			// Keys
+			window.Keys.DistinctBy((_data) => _data.key);
+			wr.Write((int)window.Keys.Count);
+			foreach (var keyData in window.Keys) {
+				wr.Write((string)keyData.key);
+				wr.Write((int)keyData.Order);
+				wr.Write((byte)keyData.Type);
+				wr.Write((string)keyData.Group);
+				wr.Write((int)keyData.GroupOrder);
+			}
+
+			// Bool
+			wr.Write((int)window.BoolPool.Count);
+			foreach (var (key, value) in window.BoolPool) {
+				wr.Write((string)key);
+				wr.Write((byte)(value.value ? 1 : 0));
+			}
+
+			// Int
+			wr.Write((int)window.IntPool.Count);
+			foreach (var (key, value) in window.IntPool) {
+				wr.Write((string)key);
+				wr.Write((int)value.value);
+				wr.Write((int)value.min);
+				wr.Write((int)value.max);
+				wr.Write((int)value.step);
+			}
+
+			// Float
+			wr.Write((int)window.FloatPool.Count);
+			foreach (var (key, value) in window.FloatPool) {
+				wr.Write((string)key);
+				wr.Write((float)value.value);
+				wr.Write((float)value.min);
+				wr.Write((float)value.max);
+				wr.Write((float)value.step);
+			}
+
+			// String
+			wr.Write((int)window.StringPool.Count);
+			foreach (var (key, value) in window.StringPool) {
+				wr.Write((string)key);
+				wr.Write((string)value.value);
+			}
+
+			// Group
+			wr.Write((int)window.GroupFolding.Count);
+			foreach (var (key, value) in window.GroupFolding) {
+				wr.Write((string)key);
+				wr.Write((byte)(value ? 1 : 0));
+			}
+
+		}
+		fs.Seek(0, SeekOrigin.Begin);
+		wr.Write((int)validContentCount);
 
 	}
 

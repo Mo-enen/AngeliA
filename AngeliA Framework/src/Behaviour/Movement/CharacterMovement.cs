@@ -1220,8 +1220,9 @@ public class CharacterMovement (Rigidbody rig) {
 			Game.GlobalFrame < LastJumpFrame + SLIDE_JUMP_CANCEL ||
 			IntendedX == 0 || VelocityY > -SlideDropSpeed
 		) return false;
+		bool right = IntendedX > 0;
 		var rect = new IRect(
-			IntendedX > 0 ? Hitbox.xMax : Hitbox.xMin - 1,
+			right ? Hitbox.xMax : Hitbox.xMin - 1,
 			Hitbox.y + Hitbox.height / 2,
 			1, 1
 		);
@@ -1229,8 +1230,9 @@ public class CharacterMovement (Rigidbody rig) {
 			var hits = Physics.OverlapAll(PhysicsMask.MAP, rect, out int count, Target, OperationMode.ColliderAndTrigger);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
-				if (hit.IsTrigger && !hit.Tag.HasAny(Tag.OnewayLeft | Tag.OnewayRight)) continue;
+				if (hit.IsTrigger && !hit.Tag.HasAny(right ? Tag.OnewayLeft : Tag.OnewayRight)) continue;
 				if (hit.Tag.HasAny(Tag.NoSlide | Tag.GrabTop | Tag.GrabSide)) continue;
+				if (right ? hit.Rect.x < Hitbox.xMax : hit.Rect.xMax > Hitbox.xMin) continue;
 				return true;
 			}
 			return false;
