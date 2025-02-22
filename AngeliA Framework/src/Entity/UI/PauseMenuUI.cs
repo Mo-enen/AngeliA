@@ -208,8 +208,16 @@ public class PauseMenuUI : MenuUI {
 		if (Universe.BuiltInInfo.AllowQuitFromMenu) {
 			using (new GUIContentColorScope(Color32.RED_BETTER)) {
 				if (DrawItem(BuiltInText.UI_QUIT)) {
-					RequireMode = MenuMode.Quit;
-					SetSelection(0);
+					bool quitImmediately = false;
+#if DEBUG
+					quitImmediately = true;
+#endif
+					if (quitImmediately) {
+						Game.QuitApplication();
+					} else {
+						RequireMode = MenuMode.Quit;
+						SetSelection(0);
+					}
 				}
 			}
 		}

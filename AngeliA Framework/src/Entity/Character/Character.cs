@@ -110,6 +110,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 	// Data
 	private readonly string TypeName;
+	private readonly int DisplayNameID;
+	private readonly int DescriptionID;
 	private int _TeleportEndFrame = 0;
 	private int _TeleportDuration = 0;
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
@@ -129,6 +131,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public Character () {
 
 		TypeName = GetType().AngeName();
+		DisplayNameID = $"{TypeName}.Name".AngeHash();
+		DescriptionID = $"{TypeName}.Des".AngeHash();
 
 		// Behaviour
 		Movement = NativeMovement = CreateNativeMovement();
@@ -848,6 +852,12 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 
 	public void IgnoreDamageFromLevel (int duration = 1) => IgnoreDamageFromLevelFrame = Game.GlobalFrame + duration;
+
+
+	public string GetDisplayName () => Language.Get(DisplayNameID, TypeName);
+
+
+	public string GetDescription () => Language.Get(DescriptionID, "");
 
 
 	#endregion

@@ -244,4 +244,51 @@ public class Cell {
 		BorderSide = data.BorderSide;
 	}
 
+	public void Clamp (IRect rect) {
+		var cellRect = new IRect(
+			X - (int)(Width * PivotX),
+			Y - (int)(Height * PivotY),
+			Width, Height
+		);
+		cellRect.FlipNegative();
+		if (cellRect.CompleteInside(rect)) return;
+		if (!cellRect.Overlaps(rect)) {
+			Width = 0;
+			return;
+		}
+		// Clamp
+		int cellL = cellRect.x;
+		int cellR = cellRect.x + cellRect.width;
+		int cellD = cellRect.y;
+		int cellU = cellRect.y + cellRect.height;
+		if (cellL < rect.x) {
+			if (Width > 0) {
+				Shift.left = rect.x - cellL;
+			} else {
+				Shift.right = rect.x - cellL;
+			}
+		}
+		if (cellR > rect.x + rect.width) {
+			if (Width > 0) {
+				Shift.right = cellR - rect.x - rect.width;
+			} else {
+				Shift.left = cellR - rect.x - rect.width;
+			}
+		}
+		if (cellD < rect.y) {
+			if (Height > 0) {
+				Shift.down = rect.y - cellD;
+			} else {
+				Shift.up = rect.y - cellD;
+			}
+		}
+		if (cellU > rect.y + rect.height) {
+			if (Height > 0) {
+				Shift.up = cellU - rect.y - rect.height;
+			} else {
+				Shift.down = cellU - rect.y - rect.height;
+			}
+		}
+	}
+
 }

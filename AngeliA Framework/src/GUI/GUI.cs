@@ -487,6 +487,23 @@ public static partial class GUI {
 	public static void IntLabel (IRect rect, int number, GUIStyle style = null) => IntLabel(rect, number, out _, style);
 	public static void IntLabel (IRect rect, int number, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, "", IntLabelChars.GetChars(number), style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
 
+	public static void FrameBasedIntLabel (IRect rect, FrameBasedInt number, Color32 greaterColor, Color32 lessColor, GUIStyle style = null) => FrameBasedIntLabel(rect, number, greaterColor, lessColor, out _, style);
+	public static void FrameBasedIntLabel (IRect rect, FrameBasedInt number, Color32 greaterColor, Color32 lessColor, out IRect bounds, GUIStyle style = null) {
+		int baseValue = number.BaseValue;
+		int finalValue = number.FinalValue;
+		// Base
+		IntLabel(rect, baseValue, out bounds, style);
+		if (finalValue != baseValue) {
+			int padding = Unify(4);
+			using var _ = new GUIContentColorScope(finalValue > baseValue ? greaterColor : lessColor);
+			// +/-
+			Label(bounds.EdgeOutsideRight(1).Shift(padding, 0), finalValue > baseValue ? "+" : "-", out var markBounds, style);
+			// Delta
+			IntLabel(markBounds.EdgeOutsideRight(1).Shift(padding, 0), (finalValue - baseValue).Abs(), out var deltaBounds, style);
+			bounds.xMax = deltaBounds.xMax;
+		}
+	}
+
 
 	// Button
 	public static bool SmallLinkButton (IRect rect, string label, bool useUnderLine = true, int charSize = -2) => LinkButton(rect, label, out _, Skin.SmallLabel, useUnderLine, charSize);

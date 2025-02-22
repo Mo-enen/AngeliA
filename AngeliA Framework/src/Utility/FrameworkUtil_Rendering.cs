@@ -37,54 +37,7 @@ public static partial class FrameworkUtil {
 		if (cells == null) return;
 		endIndex = endIndex.LessOrEquel(cells.Length);
 		for (int i = startIndex; i < endIndex; i++) {
-			ClampCell(cells[i], rect);
-		}
-	}
-
-	public static void ClampCell (Cell cell, IRect rect) {
-		var cellRect = new IRect(
-			cell.X - (int)(cell.Width * cell.PivotX),
-			cell.Y - (int)(cell.Height * cell.PivotY),
-			cell.Width, cell.Height
-		);
-		cellRect.FlipNegative();
-		if (cellRect.CompleteInside(rect)) return;
-		if (!cellRect.Overlaps(rect)) {
-			cell.Width = 0;
-			return;
-		}
-		// Clamp
-		int cellL = cellRect.x;
-		int cellR = cellRect.x + cellRect.width;
-		int cellD = cellRect.y;
-		int cellU = cellRect.y + cellRect.height;
-		if (cellL < rect.x) {
-			if (cell.Width > 0) {
-				cell.Shift.left = rect.x - cellL;
-			} else {
-				cell.Shift.right = rect.x - cellL;
-			}
-		}
-		if (cellR > rect.x + rect.width) {
-			if (cell.Width > 0) {
-				cell.Shift.right = cellR - rect.x - rect.width;
-			} else {
-				cell.Shift.left = cellR - rect.x - rect.width;
-			}
-		}
-		if (cellD < rect.y) {
-			if (cell.Height > 0) {
-				cell.Shift.down = rect.y - cellD;
-			} else {
-				cell.Shift.up = rect.y - cellD;
-			}
-		}
-		if (cellU > rect.y + rect.height) {
-			if (cell.Height > 0) {
-				cell.Shift.up = cellU - rect.y - rect.height;
-			} else {
-				cell.Shift.down = cellU - rect.y - rect.height;
-			}
+			cells[i].Clamp(rect);
 		}
 	}
 

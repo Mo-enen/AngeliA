@@ -7,6 +7,11 @@ namespace AngeliA;
 public static class Language {
 
 
+
+
+	#region --- VAR ---
+
+
 	// Api
 	public static int LanguageCount => AllLanguages.Length;
 	public static string CurrentLanguage => _LoadedLanguage.Value;
@@ -21,9 +26,16 @@ public static class Language {
 	private static readonly SavingString _LoadedLanguage = new("Game.Language", "", SavingLocation.Global);
 
 
-	// API
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
 	[OnGameInitialize(-128)]
-	public static TaskResult Initialize () {
+	internal static TaskResult Initialize () {
 
 		if (!SavingSystem.PoolReady) return TaskResult.Continue;
 
@@ -47,6 +59,20 @@ public static class Language {
 	}
 
 
+#if DEBUG
+	[OnGameFocused]
+	internal static void OnGameFocused () => SetLanguage(CurrentLanguage);
+#endif
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
 	public static string Get (int id, string failback = "") => Pool.TryGetValue(id, out string value) && !string.IsNullOrEmpty(value) ? value : failback;
 
 
@@ -62,6 +88,11 @@ public static class Language {
 		OnLanguageChanged?.Invoke();
 		return true;
 	}
+
+
+	#endregion
+
+
 
 
 }

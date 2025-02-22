@@ -56,6 +56,7 @@ public class PlayerMenuUI : EntityUI {
 	public int TakingCount { get; private set; } = 0;
 
 	// Data
+	private static readonly GUIStyle InfoMsgStyle = new(GUI.Skin.SmallTextArea) { Clip = false };
 	private int TakingFromIndex = 0;
 	private int ActionKeyDownFrame = int.MinValue;
 	private int CancelKeyDownFrame = int.MinValue;
@@ -75,6 +76,9 @@ public class PlayerMenuUI : EntityUI {
 	private IRect BottomPanelRect = default;
 	private IRect HoveringItemUiRect = default;
 	private Int3 FlashingField = new(-1, 0, 0);
+	private int InfoShiftBottom = 0;
+	private int InfoShiftTop = 0;
+	private int InfoShiftID = 0;
 
 
 	#endregion
@@ -202,10 +206,16 @@ public class PlayerMenuUI : EntityUI {
 		int panelWidth = Unify(INFO_WIDTH);
 		int windowPadding = Unify(WINDOW_PADDING);
 		int framePadding = Unify(6);
+		if (InfoShiftID != itemID) {
+			InfoShiftID = itemID;
+			InfoShiftTop = 0;
+			InfoShiftBottom = 0;
+		}
 
 		// Top
-		if (!CursorInBottomPanel || Partner == null || Partner is InventoryPartnerUI || RequireBuffInfoID != 0) {
+		if (Partner == null || Partner is InventoryPartnerUI || RequireBuffInfoID != 0) {
 
+			int cellStart = Renderer.GetUsedCellCount();
 			var panelRect = new IRect(
 				TopPanelRect.xMax + windowPadding,
 				TopPanelRect.y,
@@ -219,28 +229,48 @@ public class PlayerMenuUI : EntityUI {
 			var bgCell = Renderer.DrawPixel(panelRect.Expand(framePadding + windowPadding), Color32.BLACK);
 
 			// Content
-			IRect desBounds = default, nameBounds = default;
+			IRect bounds;
+			bool requireWheel = !CursorInBottomPanel;
 			if (RequireBuffInfoID != 0) {
-				DrawBuffInfo(panelRect, RequireBuffInfoID, out desBounds, out nameBounds);
+				DrawBuffInfo(panelRect, RequireBuffInfoID, out bounds);
 			} else if (!CursorInBottomPanel && itemID != 0 && TakingID == 0) {
-				DrawItemInfo(panelRect, itemID, out desBounds, out nameBounds);
+				DrawItemInfo(panelRect, itemID, out bounds);
+			} else {
+				DrawCharacterState(panelRect, out bounds);
+				requireWheel = true;
 			}
 
 			// Final
-			if (desBounds != default && nameBounds != default) {
+			if (bounds != default) {
 				var finalBgRect = IRect.MinMaxRect(
 					panelRect.x,
-					Util.Min(panelRect.y, desBounds.y),
-					Util.Max(panelRect.xMax, desBounds.xMax, nameBounds.xMax),
+					Util.Min(panelRect.y, bounds.y),
+					Util.Max(panelRect.xMax, bounds.xMax),
 					panelRect.yMax
 				).Expand(windowPadding);
 				bgCell.SetRect(finalBgRect.Expand(framePadding));
 			}
 
+			// Shift Content
+			if (requireWheel && bounds.y < panelRect.y) {
+				var clampRange = Renderer.CameraRect;
+				clampRange.yMin = BottomPanelRect.yMax;
+				InfoShiftTop -= Input.MouseWheelDelta * 32;
+				InfoShiftTop = InfoShiftTop.Clamp(0, panelRect.y - bounds.y);
+				if (Renderer.GetCells(out var cells, out int count)) {
+					for (int i = cellStart; i < count; i++) {
+						var cell = cells[i];
+						cell.Y += InfoShiftTop;
+						cell.Clamp(clampRange);
+					}
+				}
+			}
 		}
+
 
 		// Bottom
 		{
+			int cellStart = Renderer.GetUsedCellCount();
 			var panelRect = new IRect(
 				BottomPanelRect.xMax + windowPadding,
 				BottomPanelRect.y,
@@ -257,22 +287,36 @@ public class PlayerMenuUI : EntityUI {
 			if (CursorInBottomPanel && itemID != 0 && TakingID == 0) {
 
 				// Content
-				DrawItemInfo(panelRect, itemID, out var desBounds, out var nameBounds);
+				DrawItemInfo(panelRect, itemID, out var bounds);
 
 				// Final
 				var finalBgRect = IRect.MinMaxRect(
 					panelRect.x,
-					Util.Min(panelRect.y, desBounds.y),
-					Util.Max(panelRect.xMax, desBounds.xMax, nameBounds.xMax),
+					Util.Min(panelRect.y, bounds.y),
+					Util.Max(panelRect.xMax, bounds.xMax),
 					panelRect.yMax
 				).Expand(windowPadding);
 				bgCell.SetRect(finalBgRect.Expand(framePadding));
-			}
 
+				// Shift Content
+				if (CursorInBottomPanel && bounds.y < panelRect.y) {
+					var clampRange = Renderer.CameraRect;
+					clampRange.yMax = TopPanelRect.yMin;
+					InfoShiftBottom -= Input.MouseWheelDelta * 32;
+					InfoShiftBottom = InfoShiftBottom.Clamp(0, panelRect.y - bounds.y);
+					if (Renderer.GetCells(out var cells, out int count)) {
+						for (int i = cellStart; i < count; i++) {
+							var cell = cells[i];
+							cell.Y += InfoShiftBottom;
+							cell.Clamp(clampRange);
+						}
+					}
+				}
+			}
 		}
 
 		// Func
-		static void DrawItemInfo (IRect panelRect, int itemID, out IRect desBounds, out IRect nameBounds) {
+		static void DrawItemInfo (IRect panelRect, int itemID, out IRect bounds) {
 
 			int labelHeight = Unify(24);
 
@@ -284,6 +328,7 @@ public class PlayerMenuUI : EntityUI {
 
 			// Name
 			var nameRect = new IRect(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
+			IRect nameBounds;
 			using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
 				GUI.SmallLabel(nameRect, ItemSystem.GetItemDisplayName(itemID), out nameBounds);
 			}
@@ -292,11 +337,19 @@ public class PlayerMenuUI : EntityUI {
 			GUI.Label(
 				panelRect.Shrink(0, 0, 0, labelHeight + Unify(12)),
 				ItemSystem.GetItemDescription(itemID),
-				out desBounds, GUI.Skin.SmallTextArea
+				out var desBounds, InfoMsgStyle
+			);
+
+			// Final
+			bounds = IRect.MinMaxRect(
+				Util.Min(nameBounds.x, desBounds.x),
+				Util.Min(nameBounds.y, desBounds.y),
+				Util.Min(nameBounds.xMax, desBounds.xMax),
+				Util.Min(nameBounds.yMax, desBounds.yMax)
 			);
 
 		}
-		static void DrawBuffInfo (IRect buffPanelRect, int buffID, out IRect desBounds, out IRect nameBounds) {
+		static void DrawBuffInfo (IRect buffPanelRect, int buffID, out IRect bounds) {
 
 			int labelHeight = Unify(24);
 
@@ -308,6 +361,7 @@ public class PlayerMenuUI : EntityUI {
 
 			// Name
 			var nameRect = new IRect(buffPanelRect.x + labelHeight + labelHeight / 4, buffPanelRect.yMax - labelHeight, buffPanelRect.width, labelHeight);
+			IRect nameBounds;
 			using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
 				GUI.SmallLabel(nameRect, CharacterBuff.GetBuffDisplayName(buffID), out nameBounds);
 			}
@@ -316,7 +370,51 @@ public class PlayerMenuUI : EntityUI {
 			GUI.Label(
 				buffPanelRect.Shrink(0, 0, 0, labelHeight + Unify(12)),
 				CharacterBuff.GetBuffDescription(buffID),
-				out desBounds, GUI.Skin.SmallTextArea
+				out var desBounds, InfoMsgStyle
+			);
+
+			// Final
+			bounds = IRect.MinMaxRect(
+				Util.Min(nameBounds.x, desBounds.x),
+				Util.Min(nameBounds.y, desBounds.y),
+				Util.Min(nameBounds.xMax, desBounds.xMax),
+				Util.Min(nameBounds.yMax, desBounds.yMax)
+			);
+		}
+		static void DrawCharacterState (IRect panelRect, out IRect bounds) {
+
+			bounds = default;
+			var player = PlayerSystem.Selecting;
+			if (player == null) return;
+			int labelHeight = Unify(24);
+
+			// Icon
+			if (Renderer.TryGetSpriteForGizmos(player.TypeID, out var icon)) {
+				Renderer.Draw(
+					icon, new IRect(panelRect.x, panelRect.yMax - labelHeight, labelHeight, labelHeight)
+				);
+			}
+
+			// Name
+			var nameRect = new IRect(panelRect.x + labelHeight + labelHeight / 4, panelRect.yMax - labelHeight, panelRect.width, labelHeight);
+			IRect nameBounds;
+			using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
+				GUI.SmallLabel(nameRect, player.GetDisplayName(), out nameBounds);
+			}
+
+			// Description
+			GUI.Label(
+				new IRect(panelRect.x, panelRect.yMax - labelHeight + Unify(12), panelRect.width, 1),
+				player.GetDescription(),
+				out var desBounds, InfoMsgStyle
+			);
+
+			// Final
+			bounds = IRect.MinMaxRect(
+				Util.Min(nameBounds.x, desBounds.x),
+				Util.Min(nameBounds.y, desBounds.y),
+				Util.Min(nameBounds.xMax, desBounds.xMax),
+				Util.Min(nameBounds.yMax, desBounds.yMax)
 			);
 
 		}

@@ -87,6 +87,7 @@ public class QTest {
 	public const int MAX_WINDOW_COUNT = 16;
 	public static bool Testing => ShowingWindow && !IgnoringWindow;
 	public static bool ShowNotUpdatedData { get; set; } = true;
+	public static int FieldHeight { get; set; } = 22;
 
 	// Data
 	private static readonly QTest[] Windows = new QTest[MAX_WINDOW_COUNT].FillWithNewValue();
@@ -195,10 +196,11 @@ public class QTest {
 			basicPanelWidth, 1
 		);
 		int padding = GUI.FieldPadding;
+		int fieldHeight = GUI.Unify(FieldHeight);
 
 		Input.CancelIgnoreMouseInput();
 		bool mouseHoldingL = Game.IsMouseLeftHolding;
-		var rect = panelRect.EdgeInsideUp(GUI.FieldHeight).Shrink(padding, padding, 0, 0);
+		var rect = panelRect.EdgeInsideUp(fieldHeight).Shrink(padding, padding, 0, 0);
 
 		// BG
 		int border = GUI.Unify(1);
@@ -232,7 +234,7 @@ public class QTest {
 
 		// Content
 		int index = 0;
-		int indent = GUI.FieldHeight;
+		int indent = GUI.Unify(26);
 		rect = rect.ShrinkLeft(indent);
 		int rectLeft = rect.x;
 		rect = rect.ShrinkLeft(indent);
@@ -426,8 +428,8 @@ public class QTest {
 
 			// Next
 			rect.SlideDown(padding);
-			if (rect.height != GUI.FieldHeight) {
-				rect.yMin = rect.yMax - GUI.FieldHeight;
+			if (rect.height != fieldHeight) {
+				rect.yMin = rect.yMax - fieldHeight;
 			}
 
 			index++;
