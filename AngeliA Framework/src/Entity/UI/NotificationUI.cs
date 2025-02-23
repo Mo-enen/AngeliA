@@ -83,10 +83,10 @@ public class NotificationUI : EntityUI {
 
 	}
 
-	public static void SpawnNotification (string content, int icon) {
+	public static void SpawnNotification (string content, int icon = int.MinValue) {
 		if (Stage.SpawnEntity(TYPE_ID, 0, 0) is not NotificationUI ui) return;
 		ui.Content = content;
-		ui.Icon = icon;
+		ui.Icon = icon == int.MinValue ? BuiltInSprite.ICON_INFO : icon;
 	}
 
 }

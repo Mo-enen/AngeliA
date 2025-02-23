@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 namespace AngeliA;
 
@@ -66,5 +68,7 @@ public partial class Game {
 	}
 	protected abstract void _SetSoundVolume (int volume);
 
-
+	public static void SetClipboardText (StringBuilder builder) {
+		throw new NotImplementedException();
+	}
 }

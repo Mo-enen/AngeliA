@@ -49,6 +49,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace JordanPeck;
 
@@ -391,6 +392,41 @@ public class FastNoiseLite {
 				DomainWarpFractalIndependent(ref x, ref y, ref z);
 				break;
 		}
+	}
+
+
+	public string GetCSharpCode (string paramName = "noise", StringBuilder builder = null) {
+
+		bool haveBuilder = builder != null;
+		builder ??= new StringBuilder();
+
+		builder.AppendLine($"{paramName}.SetFrequency({CurrentFrequency}f);");
+		builder.AppendLine($"{paramName}.SetNoiseType(NoiseType.{CurrentNoiseType});");
+
+		builder.AppendLine($"// Fractal");
+		builder.AppendLine($"{paramName}.SetFractalType(FractalType.{CurrentFractalType});");
+		if (CurrentFractalType != FractalType.None) {
+			int oct = CurrentOctaves;
+			builder.AppendLine($"{paramName}.SetFractalOctaves({oct});");
+			if (oct > 1) {
+				builder.AppendLine($"{paramName}.SetFractalGain({CurrentGain}f);");
+				builder.AppendLine($"{paramName}.SetFractalLacunarity({CurrentLacunarity}f);");
+				builder.AppendLine($"{paramName}.SetFractalWeightedStrength({CurrentWeightedStrength}f);");
+			}
+			if (CurrentFractalType == FractalType.PingPong) {
+				builder.AppendLine($"{paramName}.SetFractalPingPongStrength({CurrentPingPongStrength}f);");
+			}
+		}
+
+		if (CurrentNoiseType == NoiseType.Cellular) {
+			builder.AppendLine($"// Cellular");
+			builder.AppendLine($"{paramName}.SetCellularDistanceFunction(CellularDistanceFunction.{CurrentCellularDistanceFunction});");
+			builder.AppendLine($"{paramName}.SetCellularReturnType(CellularReturnType.{CurrentCellularReturnType});");
+			builder.AppendLine($"{paramName}.SetCellularJitter({CurrentCellularJitterModifier}f);");
+		}
+
+		return haveBuilder ? "" : builder.ToString();
+
 	}
 
 
@@ -2257,4 +2293,5 @@ public class FastNoiseLite {
 		yr += vy * warpAmp;
 		zr += vz * warpAmp;
 	}
+
 }

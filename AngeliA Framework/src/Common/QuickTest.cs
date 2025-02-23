@@ -13,7 +13,7 @@ public class QTest {
 	#region --- SUB ---
 
 
-	private enum DataType : byte { Bool, Int, Float, String, Pixels, }
+	private enum DataType : byte { Bool, Int, Float, String, Pixels, Button, }
 
 
 	private class BoolData {
@@ -52,6 +52,12 @@ public class QTest {
 
 	private class PixelData {
 		public Color32[,] pixels;
+		public KeyData Key;
+	}
+
+
+	private class ButtonData {
+		public System.Action Action;
 		public KeyData Key;
 	}
 
@@ -101,6 +107,7 @@ public class QTest {
 	private readonly Dictionary<string, FloatData> FloatPool = [];
 	private readonly Dictionary<string, StringData> StringPool = [];
 	private readonly Dictionary<string, PixelData> PixelsPool = [];
+	private readonly Dictionary<string, ButtonData> ButtonPool = [];
 	private readonly Dictionary<string, object> ObjectPool = [];
 	private readonly List<KeyData> Keys = [];
 	private readonly Dictionary<string, bool> GroupFolding = [];
@@ -424,6 +431,14 @@ public class QTest {
 					}
 					break;
 				}
+				// Button
+				case DataType.Button: {
+					var data = ButtonPool[key];
+					if (GUI.Button(rect, key, GUI.Skin.SmallDarkButton)) {
+						data.Action?.Invoke();
+					}
+					break;
+				}
 			}
 
 			// Next
@@ -620,9 +635,9 @@ public class QTest {
 			wr.Write((int)window.PanelPositionOffset.y);
 
 			// Keys
-			window.Keys.DistinctBy((_data) => _data.key);
-			wr.Write((int)window.Keys.Count);
-			foreach (var keyData in window.Keys) {
+			var _keys = window.Keys.DistinctBy((_data) => _data.key);
+			wr.Write((int)_keys.Count());
+			foreach (var keyData in _keys) {
 				wr.Write((string)keyData.key);
 				wr.Write((int)keyData.Order);
 				wr.Write((byte)keyData.Type);
@@ -803,6 +818,32 @@ public class QTest {
 		Keys.Add(keyData);
 		IgnoringWindow = false;
 		return defaultValue;
+	}
+
+	public static void Button (string key, System.Action action, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].ButtonLogic(key, action);
+	public void ButtonLogic (string key, System.Action action) {
+		ShowingWindow = true;
+		CurrentOrder++;
+		if (ButtonPool.TryGetValue(key, out var result)) {
+			var kData = result.Key;
+			kData.Order = CurrentOrder;
+			kData.UpdateFrame = Game.PauselessFrame;
+			return;
+		}
+		var keyData = new KeyData() {
+			key = key,
+			Order = CurrentOrder,
+			Type = DataType.Button,
+			Group = CurrentGroup,
+			GroupOrder = CurrentGroupOrder,
+			UpdateFrame = Game.PauselessFrame,
+		};
+		ButtonPool.Add(key, new ButtonData() {
+			Action = action,
+			Key = keyData,
+		});
+		Keys.Add(keyData);
+		IgnoringWindow = false;
 	}
 
 	public static void ClearAll (int windowIndex = -1) {
