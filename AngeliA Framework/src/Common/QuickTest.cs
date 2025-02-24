@@ -517,6 +517,7 @@ public class QTest {
 					GroupOrder = groupOrder,
 					Order = order,
 					Type = type,
+					UpdateFrame = -1,
 				};
 				window.Keys.Add(keyData);
 				keyPool.TryAdd((key, type), keyData);
@@ -527,15 +528,20 @@ public class QTest {
 			for (int i = 0; i < boolCount; i++) {
 				string key = rd.ReadString();
 				bool value = rd.ReadByte() == 1;
-				window.BoolPool.Add(key, new BoolData() {
-					displayLabel = "",
-					Key = keyPool.TryGetValue((key, DataType.Bool), out var kData) ? kData : new KeyData() {
+				if (!keyPool.TryGetValue((key, DataType.Bool), out var kData)) {
+					kData = new KeyData() {
 						key = key,
 						Group = "",
 						GroupOrder = 0,
 						Order = 0,
 						Type = DataType.Bool,
-					},
+						UpdateFrame = -1,
+					};
+					window.Keys.Add(kData);
+				}
+				window.BoolPool.Add(key, new BoolData() {
+					displayLabel = "",
+					Key = kData,
 					value = value,
 				});
 			}
@@ -548,15 +554,20 @@ public class QTest {
 				int min = rd.ReadInt32();
 				int max = rd.ReadInt32();
 				int step = rd.ReadInt32();
-				window.IntPool.Add(key, new IntData() {
-					displayLabel = "",
-					Key = keyPool.TryGetValue((key, DataType.Int), out var kData) ? kData : new KeyData() {
+				if (!keyPool.TryGetValue((key, DataType.Int), out var kData)) {
+					kData = new KeyData() {
 						key = key,
 						Group = "",
 						GroupOrder = 0,
 						Order = 0,
 						Type = DataType.Int,
-					},
+						UpdateFrame = -1,
+					};
+					window.Keys.Add(kData);
+				}
+				window.IntPool.Add(key, new IntData() {
+					displayLabel = "",
+					Key = kData,
 					value = value,
 					min = min,
 					max = max,
@@ -572,15 +583,20 @@ public class QTest {
 				float min = rd.ReadSingle();
 				float max = rd.ReadSingle();
 				float step = rd.ReadSingle();
-				window.FloatPool.Add(key, new FloatData() {
-					displayLabel = "",
-					Key = keyPool.TryGetValue((key, DataType.Float), out var kData) ? kData : new KeyData() {
+				if (!keyPool.TryGetValue((key, DataType.Float), out var kData)) {
+					kData = new KeyData() {
 						key = key,
 						Group = "",
 						GroupOrder = 0,
 						Order = 0,
 						Type = DataType.Float,
-					},
+						UpdateFrame = -1,
+					};
+					window.Keys.Add(kData);
+				}
+				window.FloatPool.Add(key, new FloatData() {
+					displayLabel = "",
+					Key = kData,
 					value = value,
 					min = min,
 					max = max,
@@ -593,25 +609,22 @@ public class QTest {
 			for (int i = 0; i < stringCount; i++) {
 				string key = rd.ReadString();
 				string value = rd.ReadString();
-				window.StringPool.Add(key, new StringData() {
-					displayLabel = "",
-					Key = keyPool.TryGetValue((key, DataType.String), out var kData) ? kData : new KeyData() {
+				if (!keyPool.TryGetValue((key, DataType.String), out var kData)) {
+					kData = new KeyData() {
 						key = key,
 						Group = "",
 						GroupOrder = 0,
 						Order = 0,
 						Type = DataType.String,
-					},
+						UpdateFrame = -1,
+					};
+					window.Keys.Add(kData);
+				}
+				window.StringPool.Add(key, new StringData() {
+					displayLabel = "",
+					Key = kData,
 					value = value,
 				});
-			}
-
-			// Group Fold
-			int foldCount = rd.ReadInt32();
-			for (int i = 0; i < foldCount; i++) {
-				string key = rd.ReadString();
-				bool value = rd.ReadByte() == 1;
-				window.GroupFolding.Add(key, value);
 			}
 
 		}
@@ -622,6 +635,7 @@ public class QTest {
 
 		using var fs = File.OpenWrite(path);
 		using var wr = new BinaryWriter(fs);
+		string test = "";
 
 		wr.Write((int)0);
 		int validContentCount = 0;
@@ -635,8 +649,9 @@ public class QTest {
 			wr.Write((int)window.PanelPositionOffset.y);
 
 			// Keys
-			var _keys = window.Keys.DistinctBy((_data) => _data.key);
-			wr.Write((int)_keys.Count());
+			var _keys = window.Keys.DistinctBy((_data) => _data.key).ToList();
+			int rCount = _keys.RemoveAll(_data => _data.UpdateFrame < 0);
+			wr.Write((int)_keys.Count);
 			foreach (var keyData in _keys) {
 				wr.Write((string)keyData.key);
 				wr.Write((int)keyData.Order);
@@ -646,6 +661,11 @@ public class QTest {
 			}
 
 			// Bool
+			foreach (var (key, value) in window.BoolPool) {
+				if (value.Key.UpdateFrame < 0) {
+					window.BoolPool.Remove(key);
+				}
+			}
 			wr.Write((int)window.BoolPool.Count);
 			foreach (var (key, value) in window.BoolPool) {
 				wr.Write((string)key);
@@ -653,6 +673,11 @@ public class QTest {
 			}
 
 			// Int
+			foreach (var (key, value) in window.IntPool) {
+				if (value.Key.UpdateFrame < 0) {
+					window.IntPool.Remove(key);
+				}
+			}
 			wr.Write((int)window.IntPool.Count);
 			foreach (var (key, value) in window.IntPool) {
 				wr.Write((string)key);
@@ -663,6 +688,11 @@ public class QTest {
 			}
 
 			// Float
+			foreach (var (key, value) in window.FloatPool) {
+				if (value.Key.UpdateFrame < 0) {
+					window.FloatPool.Remove(key);
+				}
+			}
 			wr.Write((int)window.FloatPool.Count);
 			foreach (var (key, value) in window.FloatPool) {
 				wr.Write((string)key);
@@ -673,22 +703,21 @@ public class QTest {
 			}
 
 			// String
+			foreach (var (key, value) in window.StringPool) {
+				if (value.Key.UpdateFrame < 0) {
+					window.StringPool.Remove(key);
+				}
+			}
 			wr.Write((int)window.StringPool.Count);
 			foreach (var (key, value) in window.StringPool) {
 				wr.Write((string)key);
 				wr.Write((string)value.value);
 			}
 
-			// Group
-			wr.Write((int)window.GroupFolding.Count);
-			foreach (var (key, value) in window.GroupFolding) {
-				wr.Write((string)key);
-				wr.Write((byte)(value ? 1 : 0));
-			}
-
 		}
 		fs.Seek(0, SeekOrigin.Begin);
 		wr.Write((int)validContentCount);
+		Game.SetClipboardText(test);
 
 	}
 
@@ -702,6 +731,8 @@ public class QTest {
 			result.displayLabel = displayLabel;
 			var kData = result.Key;
 			kData.Order = CurrentOrder;
+			kData.Group = CurrentGroup;
+			kData.GroupOrder = CurrentGroupOrder;
 			kData.UpdateFrame = Game.PauselessFrame;
 			return result.value;
 		}
@@ -733,7 +764,10 @@ public class QTest {
 			kData.Order = CurrentOrder;
 			result.min = min;
 			result.max = max;
+			result.step = step;
 			kData.UpdateFrame = Game.PauselessFrame;
+			kData.Group = CurrentGroup;
+			kData.GroupOrder = CurrentGroupOrder;
 			return result.value.Clamp(result.min, result.max);
 		}
 		var keyData = new KeyData() {
@@ -767,7 +801,10 @@ public class QTest {
 			kData.Order = CurrentOrder;
 			result.min = min;
 			result.max = max;
+			result.step = step;
 			kData.UpdateFrame = Game.PauselessFrame;
+			kData.Group = CurrentGroup;
+			kData.GroupOrder = CurrentGroupOrder;
 			return result.value.Clamp(result.min, result.max);
 		}
 		var keyData = new KeyData() {
@@ -800,6 +837,8 @@ public class QTest {
 			var kData = result.Key;
 			kData.Order = CurrentOrder;
 			kData.UpdateFrame = Game.PauselessFrame;
+			kData.Group = CurrentGroup;
+			kData.GroupOrder = CurrentGroupOrder;
 			return result.value;
 		}
 		var keyData = new KeyData() {
@@ -828,6 +867,8 @@ public class QTest {
 			var kData = result.Key;
 			kData.Order = CurrentOrder;
 			kData.UpdateFrame = Game.PauselessFrame;
+			kData.Group = CurrentGroup;
+			kData.GroupOrder = CurrentGroupOrder;
 			return;
 		}
 		var keyData = new KeyData() {
@@ -957,6 +998,22 @@ public class QTest {
 	}
 
 	public static void DrawPixel (int x, int y, Color32 pixel, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].CurrentPixels[x, y] = pixel;
+
+
+	public static byte[] GetPngByteFromPixels (int windowIndex) => Windows[windowIndex].GetPngByteFromPixels();
+	public byte[] GetPngByteFromPixels () {
+		if (CurrentPixels == null || CurrentPixels.Length == 0) return null;
+		int w = CurrentPixels.GetLength(0);
+		int h = CurrentPixels.GetLength(1);
+		int len = w * h;
+		var arr = new Color32[len];
+		var span = arr.GetSpan();
+		for (int i = 0; i < len; i++) {
+			span[i] = CurrentPixels[i % w, i / w];
+		}
+		var texture = Game.GetTextureFromPixels(arr, w, h);
+		return Game.TextureToPngBytes(texture);
+	}
 
 
 	// Mark

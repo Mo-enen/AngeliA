@@ -498,6 +498,9 @@ public abstract partial class Game {
 	}
 
 	protected bool InvokeGameTryingToQuit () {
+#if DEBUG
+		if (!IsKeyboardKeyHolding(KeyboardKey.LeftCtrl) && !IsToolApplication) return true;
+#endif
 		if (!IsToolApplication && !IsPausing) PauseGame();
 		foreach (var method in OnGameTryingToQuitMethods) {
 			if (method.Invoke(null, null) is bool result && !result) {
