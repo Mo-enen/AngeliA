@@ -429,34 +429,35 @@ public class FastNoiseLite {
 	/// Get C# code to setup a noise object (by Moenen)
 	/// </summary>
 	/// <returns>the C# code</returns>
-	public string GetCSharpCode (string paramName = "noise", StringBuilder builder = null) {
+	public string GetCSharpCode (string paramName = "noise", StringBuilder builder = null, int tableCount = 0) {
 
+		string table = new('\t', tableCount);
 		bool haveBuilder = builder != null;
 		builder ??= new StringBuilder();
 
-		builder.AppendLine($"{paramName}.SetFrequency({CurrentFrequency}f);");
-		builder.AppendLine($"{paramName}.SetNoiseType(NoiseType.{CurrentNoiseType});");
+		builder.AppendLine($"{table}{paramName}.SetFrequency({CurrentFrequency:0.####}f);");
+		builder.AppendLine($"{table}{paramName}.SetNoiseType(NoiseType.{CurrentNoiseType});");
 
-		builder.AppendLine($"// Fractal");
-		builder.AppendLine($"{paramName}.SetFractalType(FractalType.{CurrentFractalType});");
+		builder.AppendLine($"{table}// Fractal");
+		builder.AppendLine($"{table}{paramName}.SetFractalType(FractalType.{CurrentFractalType});");
 		if (CurrentFractalType != FractalType.None) {
 			int oct = CurrentOctaves;
-			builder.AppendLine($"{paramName}.SetFractalOctaves({oct});");
+			builder.AppendLine($"{table}{paramName}.SetFractalOctaves({oct});");
 			if (oct > 1) {
-				builder.AppendLine($"{paramName}.SetFractalGain({CurrentGain}f);");
-				builder.AppendLine($"{paramName}.SetFractalLacunarity({CurrentLacunarity}f);");
-				builder.AppendLine($"{paramName}.SetFractalWeightedStrength({CurrentWeightedStrength}f);");
+				builder.AppendLine($"{table}{paramName}.SetFractalGain({CurrentGain:0.####}f);");
+				builder.AppendLine($"{table}{paramName}.SetFractalLacunarity({CurrentLacunarity:0.####}f);");
+				builder.AppendLine($"{table}{paramName}.SetFractalWeightedStrength({CurrentWeightedStrength:0.####}f);");
 			}
 			if (CurrentFractalType == FractalType.PingPong) {
-				builder.AppendLine($"{paramName}.SetFractalPingPongStrength({CurrentPingPongStrength}f);");
+				builder.AppendLine($"{table}{paramName}.SetFractalPingPongStrength({CurrentPingPongStrength:0.####}f);");
 			}
 		}
 
 		if (CurrentNoiseType == NoiseType.Cellular) {
-			builder.AppendLine($"// Cellular");
-			builder.AppendLine($"{paramName}.SetCellularDistanceFunction(CellularDistanceFunction.{CurrentCellularDistanceFunction});");
-			builder.AppendLine($"{paramName}.SetCellularReturnType(CellularReturnType.{CurrentCellularReturnType});");
-			builder.AppendLine($"{paramName}.SetCellularJitter({CurrentCellularJitterModifier}f);");
+			builder.AppendLine($"{table}// Cellular");
+			builder.AppendLine($"{table}{paramName}.SetCellularDistanceFunction(CellularDistanceFunction.{CurrentCellularDistanceFunction});");
+			builder.AppendLine($"{table}{paramName}.SetCellularReturnType(CellularReturnType.{CurrentCellularReturnType});");
+			builder.AppendLine($"{table}{paramName}.SetCellularJitter({CurrentCellularJitterModifier:0.####}f);");
 		}
 
 		return haveBuilder ? "" : builder.ToString();
