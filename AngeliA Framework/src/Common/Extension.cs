@@ -165,9 +165,10 @@ public static class Extension {
 	}
 
 	[MethodImpl(INLINE)] public static bool Almost (this float a, float b) => Util.Approximately(a, b);
-	[MethodImpl(INLINE)] public static bool AlmostZero (this float a) => Util.Approximately(a, 0f);
+	[MethodImpl(INLINE)] public static bool AlmostZero (this float a) => Util.Abs(a) < Util.Max(1E-06f * Util.Max(Abs(a), 0f), Util.Epsilon * 8f);
 	[MethodImpl(INLINE)] public static bool NotAlmost (this float a, float b) => !Util.Approximately(a, b);
-	[MethodImpl(INLINE)] public static bool NotAlmostZero (this float a) => !Util.Approximately(a, 0f);
+	[MethodImpl(INLINE)] public static bool NotAlmostZero (this float a) => Util.Abs(a) >= Util.Max(1E-06f * Util.Max(Abs(a), 0f), Util.Epsilon * 8f);
+
 	[MethodImpl(INLINE)] public static bool GreaterOrAlmost (this float a, float b) => a > b || a.Almost(b);
 	[MethodImpl(INLINE)] public static bool LessOrAlmost (this float a, float b) => a < b || a.Almost(b);
 

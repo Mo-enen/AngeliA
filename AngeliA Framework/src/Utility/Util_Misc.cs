@@ -262,12 +262,7 @@ public static partial class Util {
 			(t - l) / (r - l)
 		);
 	}
-	public static float RemapUnclamped (float l, float r, float newL, float newR, float t) {
-		return l == r ? newL : LerpUnclamped(
-			newL, newR,
-			(t - l) / (r - l)
-		);
-	}
+	public static float RemapUnclamped (float l, float r, float newL, float newR, float t) => l == r ? newL : newL + (newR - newL) * ((t - l) / (r - l));
 	public static int Remap (int l, int r, int newL, int newR, int t) => RemapUnclamped(l, r, newL, newR, t.ClampDisorder(l, r));
 	public static int RemapUnclamped (int l, int r, int newL, int newR, int t) {
 		if (l == r) return newL;

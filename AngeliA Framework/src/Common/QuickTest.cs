@@ -25,6 +25,7 @@ public class QTest {
 
 	private class IntData {
 		public int value;
+		public int defaultValue;
 		public int min;
 		public int max;
 		public int step;
@@ -35,6 +36,7 @@ public class QTest {
 
 	private class FloatData {
 		public float value;
+		public float defaultValue;
 		public float min;
 		public float max;
 		public float step;
@@ -223,6 +225,7 @@ public class QTest {
 
 		Input.CancelIgnoreMouseInput();
 		bool mouseHoldingL = Game.IsMouseLeftHolding;
+		bool mouseMidDown = Input.MouseMidButtonDown;
 		var rect = panelRect.EdgeInsideUp(fieldHeight).Shrink(padding, padding, 0, 0);
 
 		// BG
@@ -336,6 +339,9 @@ public class QTest {
 						data.value, data.min, data.max,
 						step: data.step
 					);
+					if (mouseMidDown && valueRect.MouseInside()) {
+						data.value = data.defaultValue;
+					}
 					if (data.displayLabel == null) {
 						GUI.IntLabel(valueRect.EdgeInsideRight(valueLabelWidth), data.value, GUI.Skin.SmallCenterLabel);
 					} else {
@@ -359,13 +365,16 @@ public class QTest {
 					GUI.SmallLabel(rect, key);
 					// Value
 					int valueLabelWidth = valueRect.height * 2;
+					data.value = GUI.HandleSlider(
+						3126784 + index + windowIndex * 624123,
+						valueRect.ShrinkRight(valueLabelWidth),
+						(data.value * 10000f).RoundToInt(), (data.min * 10000f).RoundToInt(), (data.max * 10000f).RoundToInt(),
+						step: (data.step * 10000f).RoundToInt()
+					) / 10000f;
+					if (mouseMidDown && valueRect.MouseInside()) {
+						data.value = data.defaultValue;
+					}
 					if (data.displayLabel == null) {
-						data.value = GUI.HandleSlider(
-							3126784 + index + windowIndex * 624123,
-							valueRect.ShrinkRight(valueLabelWidth),
-							(data.value * 10000f).RoundToInt(), (data.min * 10000f).RoundToInt(), (data.max * 10000f).RoundToInt(),
-							step: (data.step * 10000f).RoundToInt()
-						) / 10000f;
 						GUI.Label(
 							valueRect.EdgeInsideRight(valueLabelWidth),
 							data.value.ToString("0.00"),
@@ -582,6 +591,7 @@ public class QTest {
 					displayLabel = "",
 					Key = kData,
 					value = value,
+					defaultValue = value,
 					min = min,
 					max = max,
 					step = step,
@@ -610,6 +620,7 @@ public class QTest {
 					displayLabel = "",
 					Key = kData,
 					value = value,
+					defaultValue = value,
 					min = min,
 					max = max,
 					step = step,
@@ -774,6 +785,7 @@ public class QTest {
 			result.min = min;
 			result.max = max;
 			result.step = step;
+			result.defaultValue = defaultValue;
 			kData.UpdateFrame = Game.PauselessFrame;
 			kData.Group = CurrentGroup;
 			return result.value.Clamp(result.min, result.max);
@@ -787,6 +799,7 @@ public class QTest {
 		};
 		IntPool.Add(key, new IntData() {
 			value = defaultValue.Clamp(min, max),
+			defaultValue = defaultValue.Clamp(min, max),
 			displayLabel = displayLabel,
 			min = min,
 			max = max,
@@ -809,6 +822,7 @@ public class QTest {
 			kData.Order = CurrentOrder;
 			result.min = min;
 			result.max = max;
+			result.defaultValue = defaultValue;
 			result.step = step;
 			kData.UpdateFrame = Game.PauselessFrame;
 			kData.Group = CurrentGroup;
@@ -823,6 +837,7 @@ public class QTest {
 		};
 		FloatPool.Add(key, new FloatData() {
 			value = defaultValue.Clamp(min, max),
+			defaultValue = defaultValue.Clamp(min, max),
 			displayLabel = displayLabel,
 			min = min,
 			max = max,
