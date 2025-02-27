@@ -52,55 +52,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace JordanPeck;
-
-public enum NoiseType {
-	OpenSimplex2,
-	OpenSimplex2S,
-	Cellular,
-	Perlin,
-	ValueCubic,
-	Value
-};
-
-public enum FractalType {
-	None,
-	FBm,
-	Ridged,
-	PingPong,
-	DomainWarpProgressive,
-	DomainWarpIndependent
-};
-
-public enum CellularDistanceFunction {
-	Euclidean,
-	EuclideanSq,
-	Manhattan,
-	Hybrid
-};
-
-public enum CellularReturnType {
-	CellValue,
-	Distance,
-	Distance2,
-	Distance2Add,
-	Distance2Sub,
-	Distance2Mul,
-	Distance2Div
-};
-
-public enum DomainWarpType {
-	OpenSimplex2,
-	OpenSimplex2Reduced,
-	BasicGrid
-};
-
-public enum RotationType3D {
-	None,
-	ImproveXYPlanes,
-	ImproveXZPlanes
-};
-
+namespace AngeliA.JordanPeck;
 
 public partial class FastNoiseLite {
 
@@ -150,6 +102,14 @@ public partial class FastNoiseLite {
 		}
 	}
 	public FractalType FractalType { get => mFractalType; set => mFractalType = value; }
+	public RotationType3D RotationType3D {
+		get => mRotationType3D;
+		set {
+			mRotationType3D = value;
+			UpdateTransformType3D();
+			UpdateWarpTransformType3D();
+		}
+	}
 	public int Octaves {
 		get => mOctaves;
 		set {
@@ -177,14 +137,6 @@ public partial class FastNoiseLite {
 			UpdateWarpTransformType3D();
 		}
 	}
-	public RotationType3D RotationType3D {
-		get => mRotationType3D;
-		set {
-			mRotationType3D = value;
-			UpdateTransformType3D();
-			UpdateWarpTransformType3D();
-		}
-	}
 	public int DomainWarpAmp { get => mDomainWarpAmp; set => mDomainWarpAmp = value; }
 
 	private int mSeed;
@@ -192,6 +144,7 @@ public partial class FastNoiseLite {
 	private float mMax = 1f;
 	private float mFrequency = 0.01f;
 	private NoiseType mNoiseType = NoiseType.OpenSimplex2;
+	private RotationType3D mRotationType3D = RotationType3D.None;
 	private FractalType mFractalType = FractalType.None;
 	private int mOctaves = 3;
 	private float mLacunarity = 2.0f;
@@ -201,9 +154,8 @@ public partial class FastNoiseLite {
 	private CellularDistanceFunction mCellularDistanceFunction = CellularDistanceFunction.EuclideanSq;
 	private CellularReturnType mCellularReturnType = CellularReturnType.Distance;
 	private float mCellularJitterModifier = 1.0f;
-	private DomainWarpType mDomainWarpType = DomainWarpType.OpenSimplex2;
-	private RotationType3D mRotationType3D = RotationType3D.None;
 	private int mDomainWarpAmp = 0;
+	private DomainWarpType mDomainWarpType = DomainWarpType.OpenSimplex2;
 
 	// Data
 	private TransformType3D mWarpTransformType3D = TransformType3D.DefaultOpenSimplex2;
@@ -220,7 +172,7 @@ public partial class FastNoiseLite {
 	#region --- API ---
 
 
-	public FastNoiseLite (int seed = 1337) => mSeed = seed;
+	public FastNoiseLite () => mSeed = 28926;
 
 
 	[MethodImpl(OPTIMISE)]
@@ -285,11 +237,14 @@ public partial class FastNoiseLite {
 		bool haveBuilder = builder != null;
 		builder ??= new StringBuilder();
 
+		builder.AppendLine($"{table}{paramName}.Seed = {mSeed};");
 		builder.AppendLine($"{table}{paramName}.Min = {mMin:0.####}f;");
 		builder.AppendLine($"{table}{paramName}.Max = {mMax:0.####}f;");
 		builder.AppendLine($"{table}{paramName}.Frequency = {mFrequency:0.####}f;");
 		builder.AppendLine($"{table}{paramName}.NoiseType = NoiseType.{mNoiseType};");
+		builder.AppendLine($"{table}{paramName}.RotationType3D = RotationType3D.{mRotationType3D};");
 
+		// Fractal
 		builder.AppendLine($"{table}// Fractal");
 		builder.AppendLine($"{table}{paramName}.FractalType = FractalType.{mFractalType};");
 		if (mFractalType != FractalType.None) {
@@ -300,10 +255,11 @@ public partial class FastNoiseLite {
 				builder.AppendLine($"{table}{paramName}.WeightedStrength = {mWeightedStrength:0.####}f;");
 			}
 			if (mFractalType == FractalType.PingPong) {
-				builder.AppendLine($"{table}{paramName}.FractalPingPongStrength = {mPingPongStrength:0.####}f;");
+				builder.AppendLine($"{table}{paramName}.PingPongStrength = {mPingPongStrength:0.####}f;");
 			}
 		}
 
+		// Cellular
 		if (mNoiseType == NoiseType.Cellular) {
 			builder.AppendLine($"{table}// Cellular");
 			builder.AppendLine($"{table}{paramName}.CellularDistanceFunction = CellularDistanceFunction.{mCellularDistanceFunction};");
@@ -311,10 +267,14 @@ public partial class FastNoiseLite {
 			builder.AppendLine($"{table}{paramName}.CellularJitterModifier = {mCellularJitterModifier:0.####}f;");
 		}
 
-
+		// Domain Warp
+		if (mDomainWarpAmp != 0) {
+			builder.AppendLine($"{table}// Domain Warp");
+			builder.AppendLine($"{table}{paramName}.DomainWarpAmp = {mDomainWarpAmp};");
+			builder.AppendLine($"{table}{paramName}.DomainWarpType = DomainWarpType.{mDomainWarpType};");
+		}
 
 		return haveBuilder ? "" : builder.ToString();
-
 	}
 
 

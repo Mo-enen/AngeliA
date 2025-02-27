@@ -361,13 +361,38 @@ public class PauseMenuUI : MenuUI {
 
 #if DEBUG
 		// Restart & Regenerate Map
-		if (MapGenerationSystem.Enable) {
-			if (DrawItem(BuiltInText.UI_RESTART_REGENERATE)) {
-				Game.UnpauseGame();
-				Active = false;
-				Input.UseAllHoldingKeys();
-				MapGenerationSystem.ResetAll(restartGame: false);
-				TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
+		if (Universe.BuiltInInfo.UseProceduralMap && DrawItem(BuiltInText.UI_RESTART_REGENERATE)) {
+			Game.UnpauseGame();
+			Active = false;
+			Input.UseAllHoldingKeys();
+			ResetAll(restartGame: false);
+			TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
+		}
+		static void ResetAll (bool restartGame = false) {
+
+			var uni = Universe.BuiltIn;
+			Stage.DespawnAllNonUiEntities(refreshImmediately: true);
+			WorldSquad.ClearStreamWorldPool();
+
+			// Delete All User Map Files
+			foreach (string path in Util.EnumerateFiles(uni.SlotUserMapRoot, true, AngePath.MAP_SEARCH_PATTERN)) {
+				Util.DeleteFile(path);
+			}
+
+			// Delete All User Inventory
+			foreach (string path in Util.EnumerateFiles(uni.SlotInventoryRoot, true, AngePath.INVENTORY_SEARCH_PATTERN, AngePath.EQ_INVENTORY_SEARCH_PATTERN)) {
+				var pos = Inventory.GetInventoryMapPosFromName(Util.GetNameWithoutExtension(path), out _);
+				if (pos != new Int3(int.MinValue, int.MinValue, int.MinValue)) {
+					Util.DeleteFile(path);
+				}
+			}
+
+			// Reload Saving Slot
+			uni.ReloadSavingSlot(uni.CurrentSavingSlot, forceReload: true);
+
+			// Start Game
+			if (restartGame) {
+				Game.RestartGame();
 			}
 		}
 #endif

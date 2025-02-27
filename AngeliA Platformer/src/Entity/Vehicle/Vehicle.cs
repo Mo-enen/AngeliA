@@ -5,9 +5,15 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+
+public abstract class Vehicle<M> : Vehicle where M : VehicleMovement {
+	public Vehicle () => Movement = System.Activator.CreateInstance(typeof(M), this) as M;
+}
+
+
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.RepositionWhenInactive]
-public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCharacterMovement where M : VehicleMovement {
+public abstract class Vehicle : Rigidbody, IDamageReceiver, ICarrier, IWithCharacterMovement {
 
 
 
@@ -16,7 +22,7 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 
 
 	// Api
-	public readonly M Movement;
+	public VehicleMovement Movement { get; protected set; }
 	public Character Driver { get; private set; } = null;
 	public int LastDriveChangedFrame { get; private set; } = int.MinValue;
 	public virtual Int2? DriverLocalPosition => new Int2(Width / 2, 1);
@@ -46,9 +52,6 @@ public abstract class Vehicle<M> : Rigidbody, IDamageReceiver, ICarrier, IWithCh
 
 
 	#region --- MSG ---
-
-
-	public Vehicle () => Movement = System.Activator.CreateInstance(typeof(M), this) as M;
 
 
 	public override void OnActivated () {

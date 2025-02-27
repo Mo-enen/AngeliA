@@ -4,7 +4,66 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace JordanPeck;
+namespace AngeliA.JordanPeck;
+
+
+public enum NoiseType {
+	OpenSimplex2,
+	OpenSimplex2S,
+	Cellular,
+	Perlin,
+	ValueCubic,
+	Value
+};
+
+
+public enum FractalType {
+	None,
+	FBm,
+	Ridged,
+	PingPong,
+	DomainWarpProgressive,
+	DomainWarpIndependent
+};
+
+
+public enum CellularDistanceFunction {
+	Euclidean,
+	EuclideanSq,
+	Manhattan,
+	Hybrid
+};
+
+
+public enum CellularReturnType {
+	CellValue,
+	Distance,
+	Distance2,
+	Distance2Add,
+	Distance2Sub,
+	Distance2Mul,
+	Distance2Div
+};
+
+
+public enum DomainWarpType {
+	OpenSimplex2,
+	OpenSimplex2Reduced,
+	BasicGrid
+};
+
+
+public enum RotationType3D {
+	None,
+	ImproveXYPlanes,
+	ImproveXZPlanes
+};
+
+
+public enum NoiseMatching {
+	Plus, Minus, Multiply, Divide,
+}
+
 
 public partial class FastNoiseLite {
 
@@ -13,7 +72,7 @@ public partial class FastNoiseLite {
 	private const int PRIME_X = 501125321;
 	private const int PRIME_Y = 1136930381;
 	private const int PRIME_Z = 1720413743;
-	
+
 	private static readonly float[] Gradients2D =
 	[
 		 0.130526192220052f,  0.99144486137381f,   0.38268343236509f,   0.923879532511287f,  0.608761429008721f,  0.793353340291235f,  0.793353340291235f,  0.608761429008721f,

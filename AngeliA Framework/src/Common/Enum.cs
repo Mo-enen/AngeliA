@@ -94,3 +94,6 @@ public enum FittingPose {
 	Up = 3,
 	Single = 4,
 }
+
+
+

@@ -29,9 +29,9 @@ public abstract class TrapDoor : Entity, IBlockEntity, ICircuitOperator {
 		if (!IsOpening || Game.GlobalFrame <= LastSwitchFrame + OpenDelay) {
 			Physics.FillBlock(
 				PhysicsLayer.ENVIRONMENT,
-				TypeID, 
-				new IRect(X + 64, Y, Width - 128, Height), 
-				true, 
+				TypeID,
+				new IRect(X + 64, Y, Width - 128, Height),
+				true,
 				Tag.OnewayUp
 			);
 		}
@@ -74,8 +74,9 @@ public abstract class TrapDoor : Entity, IBlockEntity, ICircuitOperator {
 		var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, Rect.EdgeOutsideUp(1), out int count, this, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
-			if (hit.Entity is not Character character) continue;
-			if (character.VelocityY > 0 || character.Y < Y + Height) continue;
+			if (hit.Entity is not Rigidbody rig) continue;
+			if (hit.Entity is not Character && (hit.Entity is not Vehicle veh || veh.Driver == null)) continue;
+			if (rig.VelocityY > 0 || rig.Y < Y + Height) continue;
 			return true;
 		}
 		return false;

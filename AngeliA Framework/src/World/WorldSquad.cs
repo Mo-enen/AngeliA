@@ -43,7 +43,7 @@ public sealed class WorldSquad : IBlockSquad {
 	[OnGameInitialize(-128)]
 	internal static TaskResult OnGameInitialize () {
 
-		if (!Renderer.IsReady || !MapGenerationSystem.Ready) return TaskResult.Continue;
+		if (!Renderer.IsReady) return TaskResult.Continue;
 
 		var info = Universe.BuiltInInfo;
 		WorldBehindAlpha = info.WorldBehindAlpha;
@@ -62,7 +62,7 @@ public sealed class WorldSquad : IBlockSquad {
 			OnWorldLoaded?.Invoke(world);
 		}
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
-		Stream.UseBuiltInAsFailback = !MapGenerationSystem.Enable;
+		Stream.UseBuiltInAsFailback = !Universe.BuiltInInfo.UseProceduralMap;
 		SquadReady = true;
 
 		return TaskResult.End;
@@ -82,7 +82,7 @@ public sealed class WorldSquad : IBlockSquad {
 		// Reset Stream
 		Stream?.SaveAllDirty();
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
-		Stream.UseBuiltInAsFailback = !MapGenerationSystem.Enable;
+		Stream.UseBuiltInAsFailback = !Universe.BuiltInInfo.UseProceduralMap;
 		Stream.ClearWorldPool();
 		SquadReady = true;
 	}
@@ -169,6 +169,7 @@ public sealed class WorldSquad : IBlockSquad {
 		CameraRect = Renderer.CameraRect;
 		var cullingPadding = Stage.GetCameraCullingPadding();
 		CullingCameraRect = CameraRect.Expand(cullingPadding);
+		bool procedural = Universe.BuiltInInfo.UseProceduralMap;
 
 		if (!isBehind) {
 			// Current
@@ -206,7 +207,7 @@ public sealed class WorldSquad : IBlockSquad {
 			for (int worldJ = worldD; worldJ < worldU; worldJ++) {
 				// Get World
 				World world;
-				if (MapGenerationSystem.Enable) {
+				if (procedural) {
 					world = Stream.GetOrCreateWorld(worldI, worldJ, z);
 				} else {
 					if (!Stream.TryGetWorld(worldI, worldJ, z, out world)) continue;
@@ -263,7 +264,7 @@ public sealed class WorldSquad : IBlockSquad {
 			for (int worldJ = worldD; worldJ < worldU; worldJ++) {
 				// Get World
 				World world;
-				if (MapGenerationSystem.Enable) {
+				if (procedural) {
 					world = Stream.GetOrCreateWorld(worldI, worldJ, z);
 				} else {
 					if (!Stream.TryGetWorld(worldI, worldJ, z, out world)) continue;
