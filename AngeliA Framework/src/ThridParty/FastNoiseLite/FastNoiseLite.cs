@@ -60,7 +60,7 @@ public partial class FastNoiseLite {
 
 
 	#region --- SUB ---
-
+	
 
 	private enum TransformType3D {
 		None,

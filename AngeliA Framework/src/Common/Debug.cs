@@ -5,6 +5,7 @@ namespace AngeliA;
 
 public static class Debug {
 
+	// VAR
 	public static event Action<Exception> OnLogException;
 	public static event Action<object> OnLogError;
 	public static event Action<object> OnLogWarning;
@@ -12,7 +13,10 @@ public static class Debug {
 	public static event Action<int, string> OnLogInternal;
 	public static event Action<int, string> OnLogErrorInternal;
 	private static readonly StringBuilder ParamsCacheBuilder = new();
+	private static int LastLogLabelFrame = -1;
+	private static int LogLabelCount = 0;
 
+	// API
 	public static void Log (params object[] messages) {
 		if (messages == null || messages.Length == 0) return;
 		ParamsCacheBuilder.Clear();
@@ -51,8 +55,24 @@ public static class Debug {
 
 	public static void LogException (Exception ex) => OnLogException?.Invoke(ex);
 
-	public static void LogInternal (int id, string message) => OnLogInternal?.Invoke(id, message);
+	public static void LogLabel (string content) {
+		if (Game.PauselessFrame != LastLogLabelFrame) {
+			LastLogLabelFrame = Game.PauselessFrame;
+			LogLabelCount = 0;
+		}
+		using var _ = new UILayerScope();
+		int padding = GUI.Unify(6);
+		int height = GUI.Unify(18);
+		GUI.BackgroundLabel(
+			Renderer.CameraRect.CornerInside(Alignment.TopRight, 1, height).Shift(0, -LogLabelCount * (height + padding)),
+			content, Color32.BLACK, padding,
+			style: GUI.Skin.AutoRightLabel
+		);
+		LogLabelCount++;
+	}
 
-	public static void LogErrorInternal (int id, string message) => OnLogErrorInternal?.Invoke(id, message);
+	internal static void LogInternal (int id, string message) => OnLogInternal?.Invoke(id, message);
+
+	internal static void LogErrorInternal (int id, string message) => OnLogErrorInternal?.Invoke(id, message);
 
 }
