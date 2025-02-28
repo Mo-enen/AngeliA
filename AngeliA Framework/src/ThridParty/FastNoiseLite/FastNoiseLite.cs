@@ -52,7 +52,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace AngeliA.JordanPeck;
+namespace JordanPeck;
 
 public partial class FastNoiseLite {
 
@@ -60,7 +60,7 @@ public partial class FastNoiseLite {
 
 
 	#region --- SUB ---
-	
+
 
 	private enum TransformType3D {
 		None,

@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using AngeliA;
+using JordanPeck;
 
-namespace AngeliA.JordanPeck;
+namespace AngeliA;
 
 public class FastNoiseGroup (int length) {
 

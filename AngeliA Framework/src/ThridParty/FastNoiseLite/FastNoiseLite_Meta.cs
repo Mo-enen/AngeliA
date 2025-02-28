@@ -4,7 +4,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace AngeliA.JordanPeck;
+namespace JordanPeck;
 
 
 public enum NoiseType {

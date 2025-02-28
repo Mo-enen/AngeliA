@@ -2,7 +2,7 @@
 // This code is distributed under MIT license. Copyright (c) 2013 George Mamaladze
 // See license.txt or http://opensource.org/licenses/mit-license.php
 
-// ※※※ This code is modified by Moenen in 2023 with only basic feature remains. ※※※
+// ※※※ This code is modified by Moenen in 2023. This version has only basic feature remains. ※※※
 
 using System;
 using System.Collections.Generic;

@@ -226,6 +226,7 @@ public class QTest {
 		Input.CancelIgnoreMouseInput();
 		bool mouseHoldingL = Game.IsMouseLeftHolding;
 		bool mouseMidDown = Input.MouseMidButtonDown;
+		bool ignoreStep = Input.HoldingAlt;
 		var rect = panelRect.EdgeInsideUp(fieldHeight).Shrink(padding, padding, 0, 0);
 
 		// BG
@@ -337,7 +338,7 @@ public class QTest {
 						3126784 + index + windowIndex * 624123,
 						valueRect.ShrinkRight(valueLabelWidth),
 						data.value, data.min, data.max,
-						step: data.step
+						step: ignoreStep ? 0 : data.step
 					);
 					if (mouseMidDown && valueRect.MouseInside()) {
 						data.value = data.defaultValue;
@@ -365,15 +366,18 @@ public class QTest {
 					GUI.SmallLabel(rect, key);
 					// Value
 					int valueLabelWidth = valueRect.height * 2;
+
 					data.value = GUI.HandleSlider(
 						3126784 + index + windowIndex * 624123,
 						valueRect.ShrinkRight(valueLabelWidth),
 						(data.value * 10000f).RoundToInt(), (data.min * 10000f).RoundToInt(), (data.max * 10000f).RoundToInt(),
-						step: (data.step * 10000f).RoundToInt()
+						step: ignoreStep ? 0 : (data.step * 10000f).RoundToInt()
 					) / 10000f;
+
 					if (mouseMidDown && valueRect.MouseInside()) {
 						data.value = data.defaultValue;
 					}
+
 					if (data.displayLabel == null) {
 						GUI.Label(
 							valueRect.EdgeInsideRight(valueLabelWidth),
