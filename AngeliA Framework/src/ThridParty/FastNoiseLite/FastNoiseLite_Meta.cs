@@ -60,11 +60,6 @@ public enum RotationType3D {
 };
 
 
-public enum NoiseMatching {
-	Plus, Minus, Multiply, Divide,
-}
-
-
 public partial class FastNoiseLite {
 
 	private const short INLINE = 256; // MethodImplOptions.AggressiveInlining;

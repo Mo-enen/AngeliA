@@ -204,9 +204,14 @@ public static class Extension {
 	[MethodImpl(INLINE)] public static int Abs (this int value) => value > 0 ? value : -value;
 	[MethodImpl(INLINE)] public static float Abs (this float value) => value > 0 ? value : -value;
 
-	[MethodImpl(INLINE)] public static int RoundToInt (this float a) => (int)System.Math.Round(a);
-	[MethodImpl(INLINE)] public static int CeilToInt (this float a) => (int)System.Math.Ceiling(a);
-	[MethodImpl(INLINE)] public static int FloorToInt (this float a) => (int)System.Math.Floor(a);
+	[MethodImpl(INLINE)] public static int RoundToInt (this float a) => (int)System.MathF.Round(a);
+	[MethodImpl(INLINE)] public static int CeilToInt (this float a) => (int)System.MathF.Ceiling(a);
+	[MethodImpl(INLINE)] public static int FloorToInt (this float a) => (int)System.MathF.Floor(a);
+	[MethodImpl(INLINE)] public static float Floor (this float a) => System.MathF.Floor(a);
+	[MethodImpl(INLINE)] public static float Ceil (this float a) => System.MathF.Ceiling(a);
+	[MethodImpl(INLINE)] public static float Round (this float a) => System.MathF.Round(a);
+
+
 	[MethodImpl(INLINE)]
 	public static float UMod (this float value, float gap) =>
 		value > 0 || value % gap == 0 ?
@@ -1389,6 +1394,23 @@ public static class Extension {
 				yield return (pro.Name, (T)pro.GetValue(target));
 			}
 		}
+	}
+
+	// Action
+	public static void InvokeSafe<T0> (this System.Action<T0> action, T0 a) {
+		try {
+			action.Invoke(a);
+		} catch (System.Exception ex) { Debug.LogException(ex); }
+	}
+	public static void InvokeSafe<T0, T1> (this System.Action<T0, T1> action, T0 a, T1 b) {
+		try {
+			action.Invoke(a, b);
+		} catch (System.Exception ex) { Debug.LogException(ex); }
+	}
+	public static void InvokeSafe<T0, T1, T2> (this System.Action<T0, T1, T2> action, T0 a, T1 b, T2 c) {
+		try {
+			action.Invoke(a, b, c);
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 	}
 
 }
