@@ -1455,7 +1455,7 @@ public partial class FastNoiseLite {
 	// Domain Warp Single Wrapper
 	private void DomainWarpSingle (ref float x, ref float y) {
 		int seed = mSeed;
-		float amp = mDomainWarpAmp * mFractalBounding / mFrequency / 100f;
+		float amp = mDomainWarpAmp / mFrequency / 100f;
 		float freq = mFrequency;
 
 		float xs = x;
@@ -1467,7 +1467,7 @@ public partial class FastNoiseLite {
 
 	private void DomainWarpSingle (ref float x, ref float y, ref float z) {
 		int seed = mSeed;
-		float amp = mDomainWarpAmp * mFractalBounding / mFrequency / 100f;
+		float amp = mDomainWarpAmp / mFrequency / 100f;
 		float freq = mFrequency;
 
 		float xs = x;
@@ -1482,7 +1482,7 @@ public partial class FastNoiseLite {
 	// Domain Warp Fractal Progressive
 	private void DomainWarpFractalProgressive (ref float x, ref float y) {
 		int seed = mSeed;
-		float amp = mDomainWarpAmp * mFractalBounding / mFrequency / 100f;
+		float amp = mDomainWarpAmp / mFrequency / 100f;
 		float freq = mFrequency;
 
 		for (int i = 0; i < mOctaves; i++) {
@@ -1500,7 +1500,7 @@ public partial class FastNoiseLite {
 
 	private void DomainWarpFractalProgressive (ref float x, ref float y, ref float z) {
 		int seed = mSeed;
-		float amp = mDomainWarpAmp * mFractalBounding / mFrequency / 100f;
+		float amp = mDomainWarpAmp / mFrequency / 100f;
 		float freq = mFrequency;
 
 		for (int i = 0; i < mOctaves; i++) {
@@ -1525,7 +1525,7 @@ public partial class FastNoiseLite {
 		TransformDomainWarpCoordinate(ref xs, ref ys);
 
 		int seed = mSeed;
-		float amp = mDomainWarpAmp * mFractalBounding / mFrequency / 100f;
+		float amp = mDomainWarpAmp / mFrequency / 100f;
 		float freq = mFrequency;
 
 		for (int i = 0; i < mOctaves; i++) {
@@ -1544,7 +1544,7 @@ public partial class FastNoiseLite {
 		TransformDomainWarpCoordinate(ref xs, ref ys, ref zs);
 
 		int seed = mSeed;
-		float amp = mDomainWarpAmp * mFractalBounding / mFrequency / 100f;
+		float amp = mDomainWarpAmp / mFrequency / 100f;
 		float freq = mFrequency;
 
 		for (int i = 0; i < mOctaves; i++) {

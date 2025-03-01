@@ -23,7 +23,7 @@ public enum FractalType {
 	Ridged,
 	PingPong,
 	DomainWarpProgressive,
-	DomainWarpIndependent
+	DomainWarpIndependent,
 };
 
 
