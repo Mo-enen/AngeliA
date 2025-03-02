@@ -51,10 +51,22 @@ iDes.BlockBuilder:Block Builder
 iDes.BodyGadgetItem:Body Gadget
 iDes.BodySetItem:Body Set
 iDes.ClothItem:Cloth Item
+iDes.FreezeBuff:Freeze Buff
+iDes.HeavyBuff:Heavy Buff
+iDes.LightenBuff:Lighten Buff
+iDes.OnFireBuff:On Fire Buff
+iDes.PoisonBuff:Poison Buff
+iDes.SlowDownBuff:Slow Down Buff
 iName.BlockBuilder:Block Builder
 iName.BodyGadgetItem:Body Gadget Item
 iName.BodySetItem:Body Set Item
 iName.ClothItem:Cloth Item
+iName.FreezeBuff:Freeze Buff
+iName.HeavyBuff:Heavy Buff
+iName.LightenBuff:Lighten Buff
+iName.OnFireBuff:On Fire Buff
+iName.PoisonBuff:Poison Buff
+iName.SlowDownBuff:Slow Down Buff
 Label.B:B
 Label.Border:Border
 Label.Bottom:Bottom
@@ -286,6 +298,7 @@ UI.BodyPart.Tail:Tail
 UI.BodyPart.Wing:Wing
 UI.Cancel:Cancel
 UI.Continue:Continue
+UI.Crafting.Keep:Keep
 UI.CreateProjectTitle:New Project
 UI.Delete:Delete
 UI.DeleteAtlasMsg:Delete atlas "{0}"? All sprites inside will be delete too.
@@ -368,6 +381,7 @@ UI.LanguageEditor.DeleteMsg:Delete Language {0}?
 UI.LanguageEditor.HelpMsg:Empty keys will be deleted when open the project next time
 UI.LanguageEditor.Key:Key
 UI.LanguageEditor.LanCodeAddedMsg:{0} lines of language code added
+UI.LanguageEditor.OnlyShowEmpty:Empty Only
 UI.LanguageEditor.RemoveEmpty:Remove Empty
 UI.LanguageEditor.RemoveEmptyMsg:Remove all lines without any content?\nLines with only a key will also be removed.
 UI.Lock:Lock

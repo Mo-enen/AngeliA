@@ -135,9 +135,7 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
-	public void ResetFailbackCopying () {
-		FailbackResetFileDate = Util.GetLongTime();
-	}
+	public void ResetFailbackCopying () => FailbackResetFileDate = Util.GetLongTime();
 
 
 	// World

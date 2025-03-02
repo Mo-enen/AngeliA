@@ -1143,8 +1143,8 @@ public sealed partial class MapEditor : WindowUI {
 	private void SetEditorMode (bool toPlayMode) {
 
 		OnMapEditorModeChange?.Invoke(toPlayMode ?
-			AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.ExitEditMode :
-			AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.ExitPlayMode
+			OnMapEditorModeChange_ModeAttribute.Mode.ExitEditMode :
+			OnMapEditorModeChange_ModeAttribute.Mode.ExitPlayMode
 		);
 
 		if (Game.GlobalFrame != 0 && toPlayMode) {
@@ -1206,8 +1206,10 @@ public sealed partial class MapEditor : WindowUI {
 
 		} else {
 			// Edit >> Play
-			WorldSquad.ClearStreamWorldPool();
-			WorldSquad.ResetStreamFailbackCopying();
+			if (!Universe.BuiltInInfo.UseProceduralMap) {
+				WorldSquad.ClearStreamWorldPool();
+				WorldSquad.ResetStreamFailbackCopying();
+			}
 			// Reset Stage
 			Stage.SetViewZ(CurrentZ);
 			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 100, int.MinValue + 1);

@@ -22,6 +22,8 @@ public class FastNoiseGroup (int length) {
 	// Api
 	public readonly int Length = length;
 	public FastNoiseLite this[int index] => Noises[index];
+	public float SolidMin { get; set; } = 0f;
+	public float SolidMax { get; set; } = 0.5f;
 
 	// Data
 	private readonly FastNoiseLite[] Noises = new FastNoiseLite[length].FillWithNewValue();
@@ -64,6 +66,11 @@ public class FastNoiseGroup (int length) {
 	}
 
 
+	public bool IsSolid (float value) => SolidMin < SolidMax ? value > SolidMin && value < SolidMax :
+		value < SolidMax || value > SolidMin;
+
+
+	// Workflow
 	public void FillAltitude (int[,] altitude, float left, float down, float z, float deltaX, float deltaY, out int altitudeMax) {
 		altitudeMax = 0;
 		if (Length == 0) return;

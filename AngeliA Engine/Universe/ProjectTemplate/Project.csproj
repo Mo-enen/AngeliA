@@ -55,10 +55,13 @@
 
 	<!--Remove-->
 	<ItemGroup>
+		<Compile Remove="Backup Saving Data\**" />
 		<Compile Remove="Build\**" />
 		<Compile Remove="Entry\**" />
+		<EmbeddedResource Remove="Backup Saving Data\**" />
 		<EmbeddedResource Remove="Build\**" />
 		<EmbeddedResource Remove="Entry\**" />
+		<None Remove="Backup Saving Data\**" />
 		<None Remove="Build\**" />
 		<None Remove="Entry\**" />
 	</ItemGroup>

@@ -44,6 +44,7 @@ public class PauseMenuUI : MenuUI {
 	private static readonly LanguageCode MENU_CONTROL_HINT = ("Menu.Setting.UseControlHint", "Show Control Hint");
 	private static readonly LanguageCode MENU_GAMEPAD_HINT = ("Menu.Setting.UseGamepadHint", "Show Gamepad Hint");
 	private static readonly LanguageCode MENU_ALLOW_GAMEPAD = ("Menu.Setting.AllowGamepad", "Allow Gamepad");
+	private static readonly LanguageCode UI_RESTART_REGENERATE = ("UI.RestartAndRegenerateMap", "Restart and Regenerate Map");
 	private static readonly LanguageCode[] GAMEKEY_UI_CODES = [
 		($"UI.GameKey.{Gamekey.Left}", "Left"),
 		($"UI.GameKey.{Gamekey.Right}", "Right"),
@@ -361,7 +362,7 @@ public class PauseMenuUI : MenuUI {
 
 #if DEBUG
 		// Restart & Regenerate Map
-		if (Universe.BuiltInInfo.UseProceduralMap && DrawItem(BuiltInText.UI_RESTART_REGENERATE)) {
+		if (Universe.BuiltInInfo.UseProceduralMap && DrawItem(UI_RESTART_REGENERATE)) {
 			Game.UnpauseGame();
 			Active = false;
 			Input.UseAllHoldingKeys();
