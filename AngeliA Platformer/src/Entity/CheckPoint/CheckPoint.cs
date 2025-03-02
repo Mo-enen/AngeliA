@@ -36,7 +36,7 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 	#region --- MSG ---
 
 
-	[CircuitOperator_Int3UnitPos_IntStamp_Direction5From]
+	[CircuitOperate_Int3UnitPos_IntStamp_Direction5From]
 	internal static void CircuitOperator (Int3 unitPos, int _, Direction5 __) => TriggerCheckPoint(unitPos);
 
 

@@ -105,9 +105,8 @@ public class OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData : Eve
 public class OnTransferPassAttribute_Int3UnitPos_ObjectData : EventAttribute { }
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-public class CircuitOperator_Int3UnitPos_IntStamp_Direction5From : Attribute { }
+public class CircuitOperate_Int3UnitPos_IntStamp_Direction5From : Attribute { }
 public class OnCircuitWireActived_Int3UnitPosAttribute : EventAttribute { }
-public class OnCircuitOperatorTriggered_Int3UnitPosAttribute : EventAttribute { }
 
 
 

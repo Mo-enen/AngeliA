@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System.Threading;
 
 namespace AngeliA;
 
@@ -13,14 +15,17 @@ public static class CircuitSystem {
 	#region --- VAR ---
 
 
+	// Const
+	private const int MAX_COUNT = 4096 * 2;
+
 	// Data
 	private static readonly Dictionary<int, (bool left, bool right, bool down, bool up)> WireIdPool = [];
 	private static readonly Queue<(Int3 pos, bool left, bool right, bool down, bool up, int stamp)> TriggeringTask = [];
 	private static readonly Dictionary<Int3, int> TriggeredTaskStamp = [];
 	private static readonly Dictionary<int, MethodInfo> OperatorPool = [];
 	private static readonly object[] OperateParamCache = [null, 0, Direction4.Down];
+	private static readonly HashSet<Int4> LoadedBackgroundTrigger = [];
 	[OnCircuitWireActived_Int3UnitPos] internal static System.Action<Int3> OnCircuitWireActived;
-	[OnCircuitOperatorTriggered_Int3UnitPos] internal static System.Action<Int3> OnCircuitOperatorTriggered;
 
 
 	#endregion
@@ -35,7 +40,7 @@ public static class CircuitSystem {
 	internal static void OnGameInitialize () {
 		// Init Operator Pool
 		OperatorPool.Clear();
-		foreach (var (method, _) in Util.AllStaticMethodWithAttribute<CircuitOperator_Int3UnitPos_IntStamp_Direction5From>()) {
+		foreach (var (method, _) in Util.AllStaticMethodWithAttribute<CircuitOperate_Int3UnitPos_IntStamp_Direction5From>()) {
 			if (method.DeclaringType == null) continue;
 			var type = method.DeclaringType;
 			if (type.IsAbstract) {
@@ -47,6 +52,99 @@ public static class CircuitSystem {
 			}
 		}
 		OperatorPool.TrimExcess();
+	}
+
+
+	[OnGameInitialize]
+	internal static void ReloadAllBackgroundTrigger () {
+		lock (LoadedBackgroundTrigger) {
+			// Load Pusher from File
+			LoadedBackgroundTrigger.Clear();
+			string path = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "LoadedBackgroundTrigger");
+			if (!Util.FileExists(path)) return;
+			using var stream = File.Open(path, FileMode.Open);
+			using var reader = new BinaryReader(stream);
+			while (reader.NotEnd()) {
+				if (LoadedBackgroundTrigger.Count >= MAX_COUNT) {
+					break;
+				}
+				LoadedBackgroundTrigger.Add(new Int4(
+					reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32()
+				));
+			}
+		}
+	}
+
+
+	[OnGameInitialize(-64)]
+	internal static void OnGameInitialize_Background () {
+		// Start Background Thread
+		System.Threading.Tasks.Task.Run(TriggerAllLoadedLoop);
+		static void TriggerAllLoadedLoop () {
+			while (true) {
+
+				if (Game.GlobalFrame == 0) goto _SLEEP_;
+
+				try {
+					var squad = WorldSquad.Front;
+					lock (LoadedBackgroundTrigger) {
+						for (int i = 0; i < LoadedBackgroundTrigger.Count; i++) {
+							foreach (var int4 in LoadedBackgroundTrigger) {
+								var unitPos = new Int3(int4.x, int4.y, int4.z);
+								int entityID = int4.w;
+								if (squad.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity) != entityID) {
+									LoadedBackgroundTrigger.Remove(int4);
+									continue;
+								}
+								OperateCircuit(unitPos);
+							}
+						}
+					}
+				} catch (System.Exception ex) { Debug.LogException(ex); }
+
+				// Sleep
+				_SLEEP_:;
+				Thread.Sleep(1000);
+
+			}
+		}
+	}
+
+
+	[OnSavingSlotChanged]
+	internal static void OnSavingSlotChanged () {
+		if (Game.GlobalFrame != 0) {
+			ReloadAllBackgroundTrigger();
+		}
+	}
+
+
+	[OnMapEditorModeChange_Mode]
+	internal static void OnMapEditorModeChange (OnMapEditorModeChange_ModeAttribute.Mode mode) {
+		if (mode == OnMapEditorModeChange_ModeAttribute.Mode.EnterEditMode) {
+			SaveAndClearAllBackgroundTrigger();
+		} else if (mode == OnMapEditorModeChange_ModeAttribute.Mode.EnterPlayMode) {
+			ReloadAllBackgroundTrigger();
+		}
+	}
+
+
+	[BeforeSavingSlotChanged]
+	[OnGameQuitting]
+	public static void SaveAndClearAllBackgroundTrigger () {
+		// Save Pusher to File 
+		string path = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "LoadedBackgroundTrigger");
+		using var stream = File.Open(path, FileMode.Create);
+		using var writer = new BinaryWriter(stream);
+		lock (LoadedBackgroundTrigger) {
+			foreach (var int4 in LoadedBackgroundTrigger) {
+				writer.Write(int4.x);
+				writer.Write(int4.y);
+				writer.Write(int4.z);
+				writer.Write(int4.w);
+			}
+			LoadedBackgroundTrigger.Clear();
+		}
 	}
 
 
@@ -84,6 +182,36 @@ public static class CircuitSystem {
 	}
 
 
+	public static bool OperateCircuit (Int3 unitPos, int stamp = int.MinValue, Direction5 circuitFrom = Direction5.Center) {
+
+		var squad = WorldSquad.Front;
+		bool triggered = false;
+
+		// Check Block Operator
+		int entityId = squad.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
+		if (entityId != 0 && OperatorPool.TryGetValue(entityId, out var method)) {
+			TriggeredTaskStamp[unitPos] = stamp;
+			OperateParamCache[0] = unitPos;
+			OperateParamCache[1] = stamp;
+			OperateParamCache[2] = circuitFrom;
+			method?.Invoke(null, OperateParamCache);
+			triggered = true;
+		}
+
+		// Check Staged Operator
+		if (unitPos.z == Stage.ViewZ && Physics.GetEntity<ICircuitOperator>(
+				IRect.Point(unitPos.x.ToGlobal() + Const.HALF, unitPos.y.ToGlobal() + Const.HALF),
+				PhysicsMask.ENTITY, null, OperationMode.ColliderAndTrigger
+			) is ICircuitOperator _operator
+		) {
+			_operator.OnTriggeredByCircuit();
+			triggered = true;
+		}
+
+		return triggered;
+	}
+
+
 	public static bool WireEntityID_to_WireConnection (int id, out bool connectL, out bool connectR, out bool connectD, out bool connectU) {
 		if (WireIdPool.TryGetValue(id, out var connect)) {
 			connectL = connect.left;
@@ -118,7 +246,19 @@ public static class CircuitSystem {
 	public static int GetStamp (Int3 unitPos) => TriggeredTaskStamp.TryGetValue(unitPos, out var pos) ? pos : -1;
 
 
+	// Background
+	public static bool TryAddBackgroundTrigger (int entityID, Int3 unitPos) {
+		if (LoadedBackgroundTrigger.Count >= MAX_COUNT) return false;
+		LoadedBackgroundTrigger.Add(new Int4(unitPos.x, unitPos.y, unitPos.z, entityID));
+		return true;
+	}
+
+
+	public static bool TryRemoveBackgroundTrigger (int entityID, Int3 unitPos) => LoadedBackgroundTrigger.Remove(new Int4(unitPos.x, unitPos.y, unitPos.z, entityID));
+
+
 	#endregion
+
 
 
 
@@ -147,27 +287,9 @@ public static class CircuitSystem {
 			OnCircuitWireActived?.Invoke(pos);
 		}
 
-		// Check Block Operator
-		int entityId = squad.GetBlockAt(pos.x, pos.y, pos.z, BlockType.Entity);
-		if (entityId != 0 && OperatorPool.TryGetValue(entityId, out var method)) {
-			TriggeredTaskStamp[pos] = stamp;
-			OperateParamCache[0] = pos;
-			OperateParamCache[1] = stamp;
-			OperateParamCache[2] = circuitFrom;
-			var result = method?.Invoke(null, OperateParamCache);
-			if (result is not bool bResult || bResult) {
-				OnCircuitOperatorTriggered?.Invoke(pos);
-			}
-		}
+		OperateCircuit(pos, stamp, circuitFrom);
 
-		// Check Staged Operator
-		if (pos.z == Stage.ViewZ && Physics.GetEntity<ICircuitOperator>(
-				IRect.Point(pos.x.ToGlobal() + Const.HALF, pos.y.ToGlobal() + Const.HALF),
-				PhysicsMask.ENTITY, null, OperationMode.ColliderAndTrigger
-			) is ICircuitOperator _operator
-		) {
-			_operator.OnTriggeredByCircuit();
-		}
+
 	}
 
 
