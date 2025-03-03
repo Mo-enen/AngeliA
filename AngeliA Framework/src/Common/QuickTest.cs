@@ -10,12 +10,12 @@ namespace AngeliA;
 public class QTest {
 
 
-	
+
 
 	#region --- SUB ---
 
 
-	private enum DataType : byte { Bool, Int, Float, String, Pixels, Button, }
+	private enum DataType : byte { Bool, Int, Float, String, Pixels, Button, Func, }
 
 
 	private class BoolData {
@@ -60,10 +60,40 @@ public class QTest {
 
 
 	private class ButtonData {
-		public System.Action Action;
+		public Action this[int index] => index switch {
+			0 => Action,
+			1 => Action1,
+			2 => Action2,
+			3 => Action3,
+			_ => Action,
+		};
+		public string GetLabel (int index) => index switch {
+			0 => Label,
+			1 => Label1,
+			2 => Label2,
+			3 => Label3,
+			_ => Key.key,
+		};
+		public Action Action;
+		public Action Action1;
+		public Action Action2;
+		public Action Action3;
 		public KeyData Key;
+		public string Label;
+		public string Label1;
+		public string Label2;
+		public string Label3;
 		public object Param;
 		public object Icon;
+		public int ActionCount = 1;
+	}
+
+
+	private class FuncData {
+		public KeyData Key;
+		public Func<IRect, int> Func;
+		public bool ShowLabel;
+		public object Param;
 	}
 
 
@@ -121,6 +151,7 @@ public class QTest {
 	private readonly Dictionary<string, StringData> StringPool = [];
 	private readonly Dictionary<string, PixelData> PixelsPool = [];
 	private readonly Dictionary<string, ButtonData> ButtonPool = [];
+	private readonly Dictionary<string, FuncData> FuncPool = [];
 	private readonly Dictionary<string, object> ObjectPool = [];
 	private readonly List<KeyData> Keys = [];
 	private readonly Dictionary<string, GroupData> GroupFolding = [];
@@ -131,6 +162,7 @@ public class QTest {
 	private int CurrentGroupOrder;
 	private int PrevKeyCount = 0;
 	private int PanelMaxExpand = 0;
+	private string Title = "";
 
 
 	#endregion
@@ -191,8 +223,12 @@ public class QTest {
 		if (Keys.Count == 0) return;
 
 		int validWindowCount = 0;
+		int lastWindowIndex = -1;
 		for (int i = 0; i < Windows.Length; i++) {
-			if (Windows[i].Keys.Count > 0) validWindowCount++;
+			if (Windows[i].Keys.Count > 0) {
+				validWindowCount++;
+				lastWindowIndex = i;
+			}
 		}
 
 		CurrentGroup = "";
@@ -237,7 +273,7 @@ public class QTest {
 
 		// Drag to Move
 		var titleCell = Renderer.DrawPixel(rect, Color32.GREY_20);
-		GUI.Label(rect, $"Quick Test [{windowIndex}]", GUI.Skin.SmallCenterGreyLabel);
+		GUI.Label(rect, string.IsNullOrEmpty(Title) ? $"Quick Test [{windowIndex}]" : Title, GUI.Skin.SmallCenterGreyLabel);
 		if (!mouseHoldingL) MouseDragMovingIndex = -1;
 
 		if (
@@ -254,11 +290,15 @@ public class QTest {
 		}
 
 		// Ignore Btn
-		var ignoreRect = rect.EdgeInsideRight(rect.height).Shift(PanelMaxExpand, 0);
-		if (GUI.Button(ignoreRect, BuiltInSprite.ICON_DELETE, GUI.Skin.SmallIconButton)) {
-			IgnoringWindow = true;
-			Input.UseAllMouseKey();
+		if (lastWindowIndex == windowIndex) {
+			var ignoreRect = rect.EdgeInsideRight(rect.height).Shift(PanelMaxExpand, 0);
+			if (GUI.Button(ignoreRect, BuiltInSprite.ICON_DELETE, GUI.Skin.SmallIconButton)) {
+				IgnoringWindow = true;
+				Input.UseAllMouseKey();
+			}
 		}
+
+
 		rect.SlideDown(padding);
 
 		// Content
@@ -453,14 +493,35 @@ public class QTest {
 				// Button
 				case DataType.Button: {
 					var data = ButtonPool[key];
-					if (GUI.Button(rect.ShrinkLeft(data.Icon != null ? rect.height + padding : 0), key, GUI.Skin.SmallDarkButton)) {
-						CurrentInvokingParam = data.Param;
-						data.Action?.Invoke();
-						CurrentInvokingParam = null;
+					var btnRect = rect.ShrinkLeft(data.Icon != null ? rect.height + padding : 0);
+					for (int i = 0; i < data.ActionCount; i++) {
+						if (GUI.Button(
+							rect.PartHorizontal(i, data.ActionCount).ShrinkRight(padding / 2),
+							data.GetLabel(i),
+							GUI.Skin.SmallDarkButton
+						)) {
+							CurrentInvokingParam = data.Param;
+							data[i]?.Invoke();
+							CurrentInvokingParam = null;
+						}
 					}
 					if (data.Icon != null) {
 						Game.DrawGizmosTexture(rect.EdgeInsideLeft(rect.height), data.Icon);
 					}
+					break;
+				}
+				// Func
+				case DataType.Func: {
+					var data = FuncPool[key];
+					// Label
+					if (data.ShowLabel) {
+						GUI.SmallLabel(rect, key);
+					}
+					// Func
+					CurrentInvokingParam = data.Param;
+					int height = data.Func.Invoke(data.ShowLabel ? valueRect : rect);
+					CurrentInvokingParam = null;
+					rect.yMin = rect.yMax - height;
 					break;
 				}
 			}
@@ -512,7 +573,10 @@ public class QTest {
 	#region --- API ---
 
 
-	public static void SetCurrentWindow (int index) => CurrentWindowIndex = index.Clamp(0, MAX_WINDOW_COUNT - 1);
+	public static void SetCurrentWindow (int index, string title = "") {
+		CurrentWindowIndex = index.Clamp(0, MAX_WINDOW_COUNT - 1);
+		Windows[CurrentWindowIndex].Title = title;
+	}
 
 
 	public static void LoadAllDataFromFile (string path, bool ignorePanelOffset = false) {
@@ -884,8 +948,8 @@ public class QTest {
 	}
 
 
-	public static void Button (string key, System.Action action, object icon = null, object param = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].ButtonLogic(key, action, icon, param);
-	public void ButtonLogic (string key, System.Action action, object icon = null, object param = null) {
+	public static void Button (string key, Action action, object icon = null, object param = null, int windowIndex = -1, Action action1 = null, string label = "", string label1 = "", Action action2 = null, string label2 = "", Action action3 = null, string label3 = "") => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].ButtonLogic(key, action, icon, param, action1, action2, action3, label, label1, label2, label3);
+	public void ButtonLogic (string key, Action action, object icon, object param, Action action1, Action action2, Action action3, string label, string label1, string label2, string label3) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (ButtonPool.TryGetValue(key, out var result)) {
@@ -894,8 +958,16 @@ public class QTest {
 			kData.UpdateFrame = Game.PauselessFrame;
 			kData.Group = CurrentGroup;
 			result.Action = action;
+			result.Action1 = action1;
+			result.Action2 = action2;
+			result.Action3 = action3;
 			result.Param = param;
 			result.Icon = icon;
+			result.ActionCount = 1 + (action1 != null ? 1 : 0) + (action2 != null ? 1 : 0) + (action3 != null ? 1 : 0);
+			result.Label = string.IsNullOrEmpty(label) ? key : label;
+			result.Label1 = label1;
+			result.Label2 = label2;
+			result.Label3 = label3;
 			return;
 		}
 		var keyData = new KeyData() {
@@ -910,6 +982,46 @@ public class QTest {
 			Key = keyData,
 			Param = param,
 			Icon = icon,
+			ActionCount = 1 + (action1 != null ? 1 : 0) + (action2 != null ? 1 : 0) + (action3 != null ? 1 : 0),
+			Label = string.IsNullOrEmpty(label) ? key : label,
+			Label1 = label1,
+			Label2 = label2,
+			Label3 = label3,
+			Action1 = action1,
+			Action2 = action2,
+			Action3 = action3,
+		});
+		Keys.Add(keyData);
+		IgnoringWindow = false;
+	}
+
+
+	public static void Func (string key, Func<IRect, int> func, object param = null, bool showLabel = false, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].FuncLogic(key, func, param, showLabel);
+	public void FuncLogic (string key, Func<IRect, int> func, object param, bool showLabel) {
+		ShowingWindow = true;
+		CurrentOrder++;
+		if (FuncPool.TryGetValue(key, out var result)) {
+			var kData = result.Key;
+			kData.Order = CurrentOrder;
+			kData.UpdateFrame = Game.PauselessFrame;
+			kData.Group = CurrentGroup;
+			result.Func = func;
+			result.Param = param;
+			result.ShowLabel = showLabel;
+			return;
+		}
+		var keyData = new KeyData() {
+			key = key,
+			Order = CurrentOrder,
+			Type = DataType.Func,
+			Group = CurrentGroup,
+			UpdateFrame = Game.PauselessFrame,
+		};
+		FuncPool.Add(key, new FuncData() {
+			Func = func,
+			Key = keyData,
+			Param = param,
+			ShowLabel = showLabel,
 		});
 		Keys.Add(keyData);
 		IgnoringWindow = false;
@@ -933,6 +1045,7 @@ public class QTest {
 		PixelsPool.Clear();
 		ObjectPool.Clear();
 		ButtonPool.Clear();
+		FuncPool.Clear();
 		Keys.Clear();
 		GroupFolding.Clear();
 		PrevKeyCount = 0;

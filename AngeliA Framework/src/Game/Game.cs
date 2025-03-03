@@ -216,7 +216,6 @@ public abstract partial class Game {
 			var pos = GetWindowPosition();
 			int monitor = Instance._GetCurrentMonitor();
 			int screenW = Instance._GetScreenWidth();
-			int screenH = Instance._GetScreenHeight();
 			int monitorW = Instance._GetMonitorWidth(monitor);
 			int monitorH = Instance._GetMonitorHeight(monitor);
 			int PADDING = (monitorH / 22).GreaterOrEquel(100);
@@ -494,7 +493,7 @@ public abstract partial class Game {
 		}
 		ClearAndUnloadAudioPool();
 		UnloadFontsFromPool(ignoreBuiltIn: false);
-		OnGameQuitting?.Invoke();
+		OnGameQuitting?.InvokeSafe();
 	}
 
 	protected bool InvokeGameTryingToQuit () {

@@ -1397,6 +1397,11 @@ public static class Extension {
 	}
 
 	// Action
+	public static void InvokeSafe (this System.Action action) {
+		try {
+			action.Invoke();
+		} catch (System.Exception ex) { Debug.LogException(ex); }
+	}
 	public static void InvokeSafe<T0> (this System.Action<T0> action, T0 a) {
 		try {
 			action.Invoke(a);

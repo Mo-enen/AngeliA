@@ -268,61 +268,60 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	private void BeforeUpdate_Inventory () {
 
 		int invCapacity = Inventory.GetInventoryCapacity(InventoryID);
-		if (invCapacity > 0) {
+		if (invCapacity <= 0) return;
 
-			// Inventory
-			for (int i = 0; i < invCapacity; i++) {
-				int id = Inventory.GetItemAt(InventoryID, i);
-				var item = id != 0 ? ItemSystem.GetItem(id) : null;
-				if (
-					item == null ||
-					!item.ItemConditionCheck(this) ||
-					!item.CheckUpdateAvailable(TypeID)
-				) continue;
-				item.BeforeItemUpdate_FromInventory(this, InventoryID, i);
-			}
+		// Inventory
+		for (int i = 0; i < invCapacity; i++) {
+			int id = Inventory.GetItemAt(InventoryID, i);
+			var item = id != 0 ? ItemSystem.GetItem(id) : null;
+			if (
+				item == null ||
+				!item.ItemConditionCheck(this) ||
+				!item.CheckUpdateAvailable(TypeID)
+			) continue;
+			item.BeforeItemUpdate_FromInventory(this, InventoryID, i);
+		}
 
-			// Equipping
-			ResetInventoryUpdate(invCapacity);
-			for (int i = 0; i < Const.EquipmentTypeCount; i++) {
-				var type = (EquipmentType)i;
-				int id = Inventory.GetEquipment(InventoryID, type, out int equipmentCount);
-				var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
-				if (item == null || !item.ItemConditionCheck(this)) continue;
-				item.BeforeItemUpdate_FromEquipment(this);
-				if (item is HandTool tool) {
-					Attackness.AttackDuration = tool.Duration;
-					Attackness.AttackCooldown = tool.Cooldown;
-					Attackness.MinimalChargeAttackDuration = tool.ChargeDuration;
-					Attackness.RepeatAttackWhenHolding = tool.RepeatWhenHolding;
-					Attackness.LockFacingOnAttack = tool.LockFacingOnUse;
-					Attackness.HoldAttackPunishFrame.Min(tool.HoldPunish, 1);
-					if (tool.CancelUseWhenRelease && Attackness.IsAttacking && !Attackness.HoldingAttack) {
-						Attackness.CancelAttack();
-					}
-					if (tool.DefaultMovementSpeedRateOnUse.HasValue) {
-						Attackness.DefaultSpeedRateOnAttack.Max(tool.DefaultMovementSpeedRateOnUse.Value, 1);
-					}
-					if (tool.WalkingMovementSpeedRateOnUse.HasValue) {
-						Attackness.WalkingSpeedRateOnAttack.Max(tool.WalkingMovementSpeedRateOnUse.Value, 1);
-					}
-					if (tool.RunningMovementSpeedRateOnUse.HasValue) {
-						Attackness.RunningSpeedRateOnAttack.Max(tool.RunningMovementSpeedRateOnUse.Value, 1);
-					}
-					Attackness.AttackInAir.Override(tool.AvailableInAir, 1);
-					Attackness.AttackInWater.Override(tool.AvailableInWater, 1);
-					Attackness.AttackWhenWalking.Override(tool.AvailableWhenWalking, 1);
-					Attackness.AttackWhenRunning.Override(tool.AvailableWhenRunning, 1);
-					Attackness.AttackWhenClimbing.Override(tool.AvailableWhenClimbing, 1);
-					Attackness.AttackWhenFlying.Override(tool.AvailableWhenFlying, 1);
-					Attackness.AttackWhenRolling.Override(tool.AvailableWhenRolling, 1);
-					Attackness.AttackWhenSquatting.Override(tool.AvailableWhenSquatting, 1);
-					Attackness.AttackWhenDashing.Override(tool.AvailableWhenDashing, 1);
-					Attackness.AttackWhenSliding.Override(tool.AvailableWhenSliding, 1);
-					Attackness.AttackWhenGrabbing.Override(tool.AvailableWhenGrabbing, 1);
-					Attackness.AttackWhenRush.Override(tool.AvailableWhenRushing, 1);
-					Attackness.AttackWhenPounding.Override(tool.AvailableWhenPounding, 1);
+		// Equipping
+		ResetInventoryUpdate(invCapacity);
+		for (int i = 0; i < Const.EquipmentTypeCount; i++) {
+			var type = (EquipmentType)i;
+			int id = Inventory.GetEquipment(InventoryID, type, out int equipmentCount);
+			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
+			if (item == null || !item.ItemConditionCheck(this)) continue;
+			item.BeforeItemUpdate_FromEquipment(this);
+			if (item is HandTool tool) {
+				Attackness.AttackDuration = tool.Duration;
+				Attackness.AttackCooldown = tool.Cooldown;
+				Attackness.MinimalChargeAttackDuration = tool.ChargeDuration;
+				Attackness.RepeatAttackWhenHolding = tool.RepeatWhenHolding;
+				Attackness.LockFacingOnAttack = tool.LockFacingOnUse;
+				Attackness.HoldAttackPunishFrame.Min(tool.HoldPunish, 1);
+				if (tool.CancelUseWhenRelease && Attackness.IsAttacking && !Attackness.HoldingAttack) {
+					Attackness.CancelAttack();
 				}
+				if (tool.DefaultMovementSpeedRateOnUse.HasValue) {
+					Attackness.DefaultSpeedRateOnAttack.Max(tool.DefaultMovementSpeedRateOnUse.Value, 1);
+				}
+				if (tool.WalkingMovementSpeedRateOnUse.HasValue) {
+					Attackness.WalkingSpeedRateOnAttack.Max(tool.WalkingMovementSpeedRateOnUse.Value, 1);
+				}
+				if (tool.RunningMovementSpeedRateOnUse.HasValue) {
+					Attackness.RunningSpeedRateOnAttack.Max(tool.RunningMovementSpeedRateOnUse.Value, 1);
+				}
+				Attackness.AttackInAir.Override(tool.AvailableInAir, 1);
+				Attackness.AttackInWater.Override(tool.AvailableInWater, 1);
+				Attackness.AttackWhenWalking.Override(tool.AvailableWhenWalking, 1);
+				Attackness.AttackWhenRunning.Override(tool.AvailableWhenRunning, 1);
+				Attackness.AttackWhenClimbing.Override(tool.AvailableWhenClimbing, 1);
+				Attackness.AttackWhenFlying.Override(tool.AvailableWhenFlying, 1);
+				Attackness.AttackWhenRolling.Override(tool.AvailableWhenRolling, 1);
+				Attackness.AttackWhenSquatting.Override(tool.AvailableWhenSquatting, 1);
+				Attackness.AttackWhenDashing.Override(tool.AvailableWhenDashing, 1);
+				Attackness.AttackWhenSliding.Override(tool.AvailableWhenSliding, 1);
+				Attackness.AttackWhenGrabbing.Override(tool.AvailableWhenGrabbing, 1);
+				Attackness.AttackWhenRush.Override(tool.AvailableWhenRushing, 1);
+				Attackness.AttackWhenPounding.Override(tool.AvailableWhenPounding, 1);
 			}
 		}
 
