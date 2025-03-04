@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.Layer(EntityLayer.WATER)]
-public class Water : Entity {
+public abstract class Liquid : Entity {
 
 
 
@@ -26,20 +26,19 @@ public class Water : Entity {
 	#region --- VAR ---
 
 
-	// Const
-	private const int REPRODUCE_MIN_VOLUME = 200;
-	public static readonly int TYPE_ID = typeof(Water).AngeHash();
-
 	// Api
 	public int Volume { get; private set; } = 1000;
 	protected virtual int ArtworkID => TypeID;
 	protected virtual int ProduceID => TypeID;
+	protected virtual int ReproduceVolume => 200;
+	protected virtual int ReproduceFrequency => 5;
+	protected virtual int VanishSpeed => 100;
 
 	// Data
 	private int GlobalX;
 	private int GlobalY;
-	private Water Source;
-	protected bool Vanishing;
+	private Liquid Source;
+	private bool Vanishing;
 	private BlockType BlockL;
 	private BlockType BlockR;
 	private BlockType BlockD;
@@ -91,12 +90,12 @@ public class Water : Entity {
 			BlockD = GetBlockAt(X, Y - Const.CEL);
 			BlockU = GetBlockAt(X, Y + Const.CEL);
 			// Reproduce
-			if (Game.SettleFrame % 5 == 0 && Game.GlobalFrame != SpawnFrame) {
+			if (Game.SettleFrame % ReproduceFrequency == 0 && Game.GlobalFrame != SpawnFrame) {
 				IterateForReproduce();
 			}
 		} else {
 			// Vanishing
-			Volume = (Volume - 100).GreaterOrEquelThanZero();
+			Volume = (Volume - VanishSpeed).GreaterOrEquelThanZero();
 			if (Volume <= 0) {
 				Active = false;
 			}
@@ -208,18 +207,17 @@ public class Water : Entity {
 		const int PADDING = 1;
 		const int PADDING_2 = PADDING * 2;
 		var rect = new IRect(x + PADDING, y + PADDING, Const.CEL - PADDING_2, Const.CEL - PADDING_2);
-		return Physics.Overlap(
-			PhysicsMask.LEVEL, rect, this, OperationMode.ColliderOnly
-		) ? BlockType.Block : Physics.HasEntity<Water>(
-			rect, PhysicsMask.MAP, this, OperationMode.TriggerOnly, Tag.Water
-		) ? BlockType.Water : BlockType.Empty;
+		return
+			Physics.Overlap(PhysicsMask.LEVEL, rect, this, OperationMode.ColliderOnly) ? BlockType.Block :
+			Physics.GetEntity(TypeID, rect, PhysicsMask.MAP, this, OperationMode.TriggerOnly, Tag.Water) != null ? BlockType.Water : 
+			BlockType.Empty;
 	}
 
 
 	private void IterateForReproduce () {
 		if (BlockD == BlockType.Empty) {
 			// Reproduce Down
-			if (Stage.SpawnEntity(ProduceID, X, Y - Const.CEL) is Water water) {
+			if (Stage.SpawnEntity(ProduceID, X, Y - Const.CEL) is Liquid water) {
 				BlockD = BlockType.Water;
 				water.Volume = 1000;
 				water.FirstUpdate();
@@ -227,14 +225,14 @@ public class Water : Entity {
 			}
 		} else if (BlockD == BlockType.Block) {
 			// Reproduce Side
-			if (Volume > REPRODUCE_MIN_VOLUME) {
-				if (BlockL == BlockType.Empty && Stage.SpawnEntity(ProduceID, X - Const.CEL, Y) is Water waterL) {
+			if (Volume > ReproduceVolume) {
+				if (BlockL == BlockType.Empty && Stage.SpawnEntity(ProduceID, X - Const.CEL, Y) is Liquid waterL) {
 					BlockL = BlockType.Water;
 					waterL.Volume = Volume / 2;
 					waterL.FirstUpdate();
 					waterL.Source = this;
 				}
-				if (BlockR == BlockType.Empty && Stage.SpawnEntity(ProduceID, X + Const.CEL, Y) is Water waterR) {
+				if (BlockR == BlockType.Empty && Stage.SpawnEntity(ProduceID, X + Const.CEL, Y) is Liquid waterR) {
 					BlockR = BlockType.Water;
 					waterR.Volume = Volume / 2;
 					waterR.FirstUpdate();

@@ -741,7 +741,7 @@ public static partial class FrameworkUtil {
 			float lerp01 = i / (float)count;
 			if (lerp01 > frame01) break;
 			if (Util.QuickRandom(0, 100) < 30) continue;
-			int basicX = Util.QuickRandomWithSeed(seed + i * 21632, 0, width);
+			int basicX = Util.QuickRandomWithSeed(seed + i * 21632);
 			int _offsetX = offset.x == 0 ? 0 : offset.x * Util.QuickRandomWithSeed(seed + i * 891256, -2000, 2000) / 1000;
 			int x = left + (basicX - _offsetX).UMod(width);
 			int y = down + (((fixedFrame01 + lerp01) * height).RoundToInt() - offset.y).UMod(height);

@@ -135,6 +135,8 @@ public class FrozenZone : Entity {
 
 	private void DrawFrozenEffect (IRect? range) {
 		var cameraRect = Renderer.CameraRect;
+		cameraRect.width = cameraRect.width.ToUnifyGlobal();
+		cameraRect.height = cameraRect.height.ToUnifyGlobal();
 		var rect = range ?? cameraRect;
 		byte alpha = Duration > 0 ?
 			(byte)Util.LerpUnclamped(385f, 0f, (Game.GlobalFrame - SpawnFrame) / (float)Duration).Clamp(0, 200) :
