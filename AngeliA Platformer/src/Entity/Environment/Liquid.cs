@@ -27,12 +27,12 @@ public abstract class Liquid : Entity {
 
 
 	// Api
-	public int Volume { get; private set; } = 1000;
 	protected virtual int ArtworkID => TypeID;
 	protected virtual int ProduceID => TypeID;
 	protected virtual int ReproduceVolume => 200;
 	protected virtual int ReproduceFrequency => 5;
 	protected virtual int VanishSpeed => 100;
+	public int Volume { get; private set; } = 1000;
 
 	// Data
 	private int GlobalX;

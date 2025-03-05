@@ -5,6 +5,7 @@ namespace AngeliA;
 
 [EntityAttribute.Capacity(2048, 0)]
 [EntityAttribute.Layer(EntityLayer.ITEM)]
+[EntityAttribute.ExcludeInMapEditor]
 public class ItemHolder : Rigidbody {
 
 
@@ -100,6 +101,18 @@ public class ItemHolder : Rigidbody {
 
 	[OnGameRestart]
 	internal static void OnGameRestart () => HoldingPool.Clear();
+
+
+	[OnMapEditorModeChange_Mode]
+	internal static void OnMapEditorModeChange (OnMapEditorModeChange_ModeAttribute.Mode mode) {
+		if (mode != OnMapEditorModeChange_ModeAttribute.Mode.ExitPlayMode) return;
+		ClearHoldingPool();
+		foreach (var holder in Stage.ForAllActiveEntities<ItemHolder>(EntityLayer.ITEM)) {
+			holder.Active = false;
+			holder.ItemID = 0;
+			holder.ItemCount = 0;
+		}
+	}
 
 
 	public override void OnActivated () {

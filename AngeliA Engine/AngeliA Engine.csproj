@@ -16,6 +16,7 @@
 		<EnableNETAnalyzers>False</EnableNETAnalyzers>
 		<Optimize>True</Optimize>
 		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<ApplicationIcon>Icon.ico</ApplicationIcon>
 
 		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
@@ -39,6 +40,7 @@
 		<None Remove=".editorconfig" />
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
+		<None Remove="Icon.ico" />
 		<None Remove="publish pause.bat" />
 		<None Remove="publish.bat" />
 		<None Remove="update raylib.dll.bat" />

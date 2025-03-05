@@ -15,7 +15,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public override IRect Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
 	public bool IsGrounded { get; private set; } = false;
 	public bool IsInsideGround { get; private set; } = false;
-	public bool InWater { get; private set; } = false;
+	public bool InWater => InWaterHit.Rect != default;
 	public int VelocityX { get; set; } = 0;
 	public int VelocityY { get; set; } = 0;
 	public int BounceSpeedRate { get; set; } = 0;
@@ -63,6 +63,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	private int PrevPositionUpdateFrame = -1;
 	private int InWaterFloatDuration = 0;
 	private readonly FrameBasedInt FillModeIndex = new(0);
+	private PhysicsCell InWaterHit = default;
 
 
 	#endregion
@@ -84,7 +85,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		InWater = false;
+		InWaterHit = default;
 		VelocityX = 0;
 		VelocityY = 0;
 		BounceSpeedRate = 0;
@@ -110,7 +111,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 			Physics.FillEntity(
 				PhysicalLayer,
 				this,
-				FillModeIndex != 0, 
+				FillModeIndex != 0,
 				FillModeIndex == 2 ? Tag.OnewayUp : Tag.None
 			);
 		}
@@ -124,7 +125,15 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 		var rect = Rect;
 		bool prevInWater = InWater;
-		InWater = Physics.Overlap(PhysicsMask.MAP & CollisionMask, rect.Shrink(0, 0, rect.height / 2, 0), null, OperationMode.TriggerOnly, Tag.Water);
+		var prevWaterEntity = InWaterHit.Entity;
+		Physics.Overlap(
+			PhysicsMask.MAP & CollisionMask,
+			rect.Shrink(0, 0, rect.height / 2, 0),
+			out InWaterHit,
+			null,
+			OperationMode.TriggerOnly,
+			Tag.Water
+		);
 
 		// Inside Ground Check
 		IsInsideGround = InsideGroundCheck();
@@ -252,8 +261,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 		// Water Splash
 		if (prevInWater != InWater && InWater == VelocityY < 0) {
-			if (prevInWater) FrameworkUtil.InvokeCameOutOfWater(this);
-			if (InWater) FrameworkUtil.InvokeFallIntoWater(this);
+			if (prevInWater) FrameworkUtil.InvokeCameOutOfWater(this, prevWaterEntity);
+			if (InWater) FrameworkUtil.InvokeFallIntoWater(this, InWaterHit.Entity);
 		}
 
 		// Water Float

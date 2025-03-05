@@ -96,8 +96,8 @@ public class OnCharacterCrash_Entity : EventAttribute { }
 public class OnObjectBreak_IntSpriteID_IRectAttribute : EventAttribute { }
 public class OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute : EventAttribute { }
 public class OnBlockPicked_IntSpriteID_IrectAttribute : EventAttribute { }
-public class OnFallIntoWater_RigidbodyAttribute : EventAttribute { }
-public class OnCameOutOfWater_RigidbodyAttribute : EventAttribute { }
+public class OnFallIntoWater_Rigidbody_EntityAttribute : EventAttribute { }
+public class OnCameOutOfWater_Rigidbody_EntityAttribute : EventAttribute { }
 public class OnDealDamage_Damage_IDamageReceiver : EventAttribute { }
 public class OnBulletHitEnvironment_Bullet : EventAttribute { }
 

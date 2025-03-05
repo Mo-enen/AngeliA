@@ -9,8 +9,8 @@ public static partial class FrameworkUtil {
 	[OnObjectBreak_IntSpriteID_IRect] internal static Action<int, IRect> OnObjectBreak;
 	[OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravity] internal static Action<int, Int2, int, bool, Int2, int, int> OnObjectFreeFall;
 	[OnBlockPicked_IntSpriteID_Irect] internal static Action<int, IRect> OnBlockPicked;
-	[OnFallIntoWater_Rigidbody] internal static Action<Rigidbody> OnFallIntoWater;
-	[OnCameOutOfWater_Rigidbody] internal static Action<Rigidbody> OnCameOutOfWater;
+	[OnFallIntoWater_Rigidbody_Entity] internal static Action<Rigidbody, Entity> OnFallIntoWater;
+	[OnCameOutOfWater_Rigidbody_Entity] internal static Action<Rigidbody, Entity> OnCameOutOfWater;
 	[OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCount] internal static Action<Entity, Int2, int, int> OnItemCollected;
 	[OnItemLost_Character_IntItemID] internal static Action<Character, int> OnItemLost;
 	[OnItemError_Entity_Int2Pos_IntIconID] internal static Action<Entity, Int2, int> OnErrorHint;
@@ -31,8 +31,8 @@ public static partial class FrameworkUtil {
 	public static void InvokeObjectBreak (int spriteID, IRect rect) => OnObjectBreak?.Invoke(spriteID, rect);
 	public static void InvokeObjectFreeFall (int spriteID, int x, int y, int speedX = 0, int speedY = 0, int rotation = int.MinValue, int rotationSpeed = 0, int gravity = 5, bool flipX = false) => OnObjectFreeFall?.Invoke(spriteID, new(x, y), rotation, flipX, new(speedX, speedY), rotationSpeed, gravity);
 	public static void InvokeBlockPicked (int spriteID, IRect rect) => OnBlockPicked?.Invoke(spriteID, rect);
-	public static void InvokeFallIntoWater (Rigidbody rig) => OnFallIntoWater?.Invoke(rig);
-	public static void InvokeCameOutOfWater (Rigidbody rig) => OnCameOutOfWater?.Invoke(rig);
+	public static void InvokeFallIntoWater (Rigidbody rig, Entity water) => OnFallIntoWater?.Invoke(rig, water);
+	public static void InvokeCameOutOfWater (Rigidbody rig, Entity water) => OnCameOutOfWater?.Invoke(rig, water);
 	public static void InvokeErrorHint (int x, int y, int id) => OnErrorHint?.Invoke(null, new Int2(x, y), id);
 	public static void InvokeErrorHint (Entity holder, int id) {
 		if (holder == null) return;
