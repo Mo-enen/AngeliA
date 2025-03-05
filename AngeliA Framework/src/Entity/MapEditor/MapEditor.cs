@@ -86,6 +86,7 @@ public sealed partial class MapEditor : WindowUI {
 	private static readonly LanguageCode HINT_MEDT_SWITCH_PLAY = ("CtrlHint.MEDT.SwitchMode.Play", "Play");
 	private static readonly LanguageCode HINT_MEDT_PLAY_FROM_BEGIN = ("CtrlHint.MEDT.PlayFromBegin", "Play from Start");
 	private static readonly LanguageCode HINT_SWITCH_TO_NAV = ("CtrlHint.MEDT.Nav", "Navigation Mode");
+	private static readonly LanguageCode NOTI_NO_PLAYER = ("Notify.NoValidPlayer", "No Valid Character in This Project");
 
 	// Api
 	[OnWorldSavedByMapEditor_World] internal static System.Action<World> OnWorldSavedByMapEditor;
@@ -825,13 +826,18 @@ public sealed partial class MapEditor : WindowUI {
 		PlayerSystem.RespawnCpUnitPosition = null;
 		var player = PlayerSystem.Selecting;
 		if (player == null) {
-			int defaultID = PlayerSystem.GetDefaultPlayerID();
+			int defaultID = PlayerSystem.GetDefaultPlayerID(forceSelect: true);
 			if (defaultID != 0) {
 				PlayerSystem.SelectCharacterAsPlayer(defaultID);
 				player = PlayerSystem.Selecting;
 			}
 		}
-		if (player == null) return;
+		if (player == null) {
+			// Fail to Get Player
+			DroppingPlayer = false;
+			NotificationUI.SpawnNotification(NOTI_NO_PLAYER, BuiltInSprite.ICON_WARNING);
+			return;
+		}
 
 		player.OnActivated();
 
@@ -1162,7 +1168,7 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Squad 
 		WorldSquad.Enable = toPlayMode;
-		
+
 		if (!toPlayMode) {
 			// Play >> Edit
 

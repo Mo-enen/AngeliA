@@ -50,6 +50,7 @@ public static class EngineUtil {
 	public static string ThemeRoot => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Theme");
 	public static string PackagesRoot => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Packages");
 	public static string CustomPackagesRoot => Util.CombinePaths(AngePath.PersistentDataPath, "Packages");
+	public static string BuiltInProjectRoot => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Built-In Projects");
 	public static bool BuildingProjectInBackground => BuildProjectTask != null && BuildProjectTask.Status == TaskStatus.Running;
 	public static long LastBackgroundBuildModifyDate { get; private set; }
 	public static int LastBackgroundBuildReturnCode { get; private set; }

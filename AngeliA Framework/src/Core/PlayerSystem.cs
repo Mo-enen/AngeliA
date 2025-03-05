@@ -733,14 +733,22 @@ public static class PlayerSystem {
 
 
 	// Misc
-	public static int GetDefaultPlayerID () {
+	public static int GetDefaultPlayerID (bool forceSelect = false) {
 		if (!Enable) return 0;
 		System.Type result = null;
 		int currentPriority = int.MinValue;
+		// From Attribute
 		foreach (var (type, attribute) in Util.AllClassWithAttribute<CharacterAttribute.DefaultSelectedPlayerAttribute>()) {
 			if (type.IsSubclassOf(typeof(Character)) && attribute.Priority >= currentPriority) {
 				result = type;
 				currentPriority = attribute.Priority;
+			}
+		}
+		// Failback
+		if (result == null && forceSelect) {
+			foreach (var type in typeof(IPlayable).AllClassImplemented()) {
+				result = type;
+				break;
 			}
 		}
 		return result != null ? result.AngeHash() : 0;

@@ -38,9 +38,7 @@ public class Project {
 			CsprojPath = Util.EnumerateFiles(projectPath, true, "*.csproj").FirstOrDefault(path => !path.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase), defaultValue: ""),
 			LocalEntryRoot = Util.CombinePaths(projectPath, "Entry"),
 			BackupSavingDataRoot = Util.CombinePaths(projectPath, "Backup Saving Data"),
-			IsEngineInternalProject =
-				Util.IsSamePath(Util.GetParentPath(projectPath), Universe.BuiltIn.UniverseRoot) ||
-				Util.IsSamePath(Util.GetParentPath(Util.GetParentPath(projectPath)), Universe.BuiltIn.UniverseRoot),
+			IsEngineInternalProject = Util.IsSamePath(Util.GetParentPath(projectPath), EngineUtil.BuiltInProjectRoot),
 			Universe = Universe.LoadFromFile(AngePath.GetUniverseRoot(projectPath)),
 		};
 	}

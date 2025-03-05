@@ -107,4 +107,14 @@ public static partial class Util {
 	public static string ArgPath_to_Path (string path) => path.Replace("#", " ");
 
 
+	public static bool TryGetRelativePath (string relativeTo, string path, out string relativePath) {
+		try {
+			relativePath = Path.GetRelativePath(relativeTo, path);
+			return true;
+		} catch (System.Exception ex) { Debug.LogException(ex); }
+		relativePath = "";
+		return false;
+	}
+
+
 }

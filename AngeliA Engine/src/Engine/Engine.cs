@@ -76,7 +76,7 @@ public partial class Engine {
 	private string DroppingFilePath = "";
 
 	// Saving
-	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "", SavingLocation.Global);
+	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "#", SavingLocation.Global);
 	private static readonly SavingString LastOpenProject = new("Engine.LastOpenProject", "", SavingLocation.Global);
 	private static readonly SavingString CurrentThemeName = new("Engine.CurrentThemeName", "", SavingLocation.Global);
 	private static readonly SavingBool Maximize = new("Engine.Maximize", true, SavingLocation.Global);
@@ -129,10 +129,27 @@ public partial class Engine {
 
 		// Projects
 		engine.Projects.Clear();
+		if (ProjectPaths.Value == "#") {
+			// Init for First Time Open
+			ProjectPaths.Value = "";
+			// Add Built-in Projects
+			foreach (var path in Util.EnumerateFolders(EngineUtil.BuiltInProjectRoot, true)) {
+				engine.Projects.Add(new ProjectData(
+					name: Util.GetNameWithoutExtension(path),
+					path: path,
+					folderExists: true,
+					lastOpenTime: Util.GetFolderModifyDate(path)
+				));
+			}
+		}
 		var projectPaths = ProjectPaths.Value.Split(';');
 		if (projectPaths != null) {
-			foreach (var path in projectPaths) {
+			for (int i = 0; i < projectPaths.Length; i++) {
+				string path = projectPaths[i];
 				if (string.IsNullOrWhiteSpace(path)) continue;
+				if (!System.IO.Path.IsPathRooted(path)) {
+					path = System.IO.Path.GetFullPath(path, Universe.BuiltIn.UniverseRoot);
+				}
 				engine.Projects.Add(new ProjectData(
 					name: Util.GetNameWithoutExtension(path),
 					path: path,
@@ -908,8 +925,8 @@ public partial class Engine {
 		Game.UnloadFontsFromPool(ignoreBuiltIn: true);
 		Game.LoadFontsIntoPool(CurrentProject.Universe.FontRoot, builtIn: false);
 
-		// Built-in Sheet from Engine to Project
-		if (!CurrentProject.IsEngineInternalProject) {
+		// Update Built-in Sheet from Engine Sheet to Project Sheet
+		if (!CurrentProject.IsEngineInternalProject || CurrentProject.Universe.Info.ProjectType != ProjectType.Artwork) {
 			long builtInSheetModDate = Util.GetFileModifyDate(Universe.BuiltIn.GameSheetPath);
 			if (builtInSheetModDate != Util.GetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath)) {
 				var engineSheet = new Sheet();

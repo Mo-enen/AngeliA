@@ -103,6 +103,7 @@ public partial class Engine {
 
 			// --- BG ---
 			GUI.DrawSlice(UI_WINDOW_BG, cameraRect);
+			cameraRect = cameraRect.Shrink(GUI.Unify(36));
 
 			// --- Left Panel ---
 			{
@@ -135,8 +136,8 @@ public partial class Engine {
 			int scrollWidth = GUI.ScrollbarSize;
 			int itemHeight = GUI.Unify(52);
 			int extendHeight = GUI.Unify(128);
-			var contentRect = cameraRect.EdgeInside(Direction4.Right, cameraRect.width - hubPanelWidth).Shrink(
-				padding, padding + scrollWidth, padding, padding
+			var contentRect = cameraRect.Shrink(
+				hubPanelWidth + padding * 2, padding + scrollWidth, padding, padding
 			);
 
 			// BG
