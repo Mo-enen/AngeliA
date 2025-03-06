@@ -257,14 +257,14 @@ public partial class LanguageEditor : WindowUI {
 		GUI.Label(labelRect, UI_LABEL_KEY, Skin.SmallGreyLabel);
 		labelRect.x += labelRect.width;
 		for (int i = 0; i < Languages.Count; i++) {
-			string name = Util.GetLanguageDisplayName(Languages[i]);
+			string name = Util.GetLanguageDisplayNameInEnglish(Languages[i]);
 			GUI.Label(labelRect, name, Skin.SmallGreyLabel);
 			labelRect.x += labelRect.width;
 		}
 
 		// Func
 		static void AddForAllLanguageCode () {
-			if (Instance == null || Instance.Languages.Count == 0) return;
+			if (Instance == null) return;
 			var project = Instance.CurrentProject;
 			if (project == null) return;
 			Instance.Save();
@@ -521,27 +521,34 @@ public partial class LanguageEditor : WindowUI {
 		foreach (string lan in Util.ForAllSystemLanguages()) {
 			string language = lan;
 			int index = Languages.IndexOf(language);
-			GenericPopupUI.AddItem(Util.GetLanguageDisplayName(language), () => {
+			GenericPopupUI.AddItem(
+				Util.GetLanguageDisplayNameInEnglish(language),
+				AddLanguageLogic, true, index >= 0, data: language
+			);
+			static void AddLanguageLogic () {
+				if (Instance == null) return;
+				if (GenericPopupUI.InvokingItemData is not string language) return;
+				int index = Instance.Languages.IndexOf(language);
 				if (index >= 0) {
 					// Delete Language
-					ShowDeleteLanguageDialog(index);
+					Instance.ShowDeleteLanguageDialog(index);
 				} else {
 					// Add Language
-					Languages.Add(language);
-					Languages.Sort();
-					int newIndex = Languages.IndexOf(language);
-					foreach (var data in Lines) {
+					Instance.Languages.Add(language);
+					Instance.Languages.Sort();
+					int newIndex = Instance.Languages.IndexOf(language);
+					foreach (var data in Instance.Lines) {
 						data.Value.Insert(newIndex, string.Empty);
 					}
-					SetDirty();
+					Instance.SetDirty();
 				}
-			}, true, index >= 0);
+			}
 		}
 	}
 
 
 	private void ShowDeleteLanguageDialog (int index) {
-		string lanName = Util.GetLanguageDisplayName(Languages[index]);
+		string lanName = Util.GetLanguageDisplayNameInEnglish(Languages[index]);
 		GenericDialogUI.SpawnDialog_Button(
 			string.Format(DELETE_MSG, lanName),
 			BuiltInText.UI_DELETE,

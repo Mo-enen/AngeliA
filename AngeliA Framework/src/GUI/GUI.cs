@@ -1089,6 +1089,8 @@ public static partial class GUI {
 
 	public static void DrawAxis (Int2 position, Int2 length, Int2 stepCount, int stepNumberGap, int thickness, int stepThickness, int z, Color32 colorX, Color32 colorY, int labelHeight = 0, GUIStyle labelStyle = null, IRect clampRect = default) {
 
+		if (length.x == 0 || length.y == 0) return;
+
 		var rect = new IRect(position, length);
 		IRect stepRect = default;
 		var stepLabelRect = new IRect(0, 0, 1, labelHeight);

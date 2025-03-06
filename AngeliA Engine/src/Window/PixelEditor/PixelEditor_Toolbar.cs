@@ -228,7 +228,7 @@ public partial class PixelEditor {
 
 		// Reset Camera
 		if (GUI.Button(rect, ICON_RESET_CAMERA, Skin.SmallDarkButton)) {
-			ResetCamera();
+			ResetCamera(delay: false);
 		}
 		RequireTooltip(rect, TIP_RESET_CAMERA);
 		rect.SlideRight(padding);

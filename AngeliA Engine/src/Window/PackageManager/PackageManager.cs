@@ -61,6 +61,7 @@ public class PackageManager : WindowUI {
 	// Api
 	public static PackageManager Instance { get; private set; } = null;
 	public int RequiringRebuildFrame { get; set; } = -2;
+	public bool RequiringReloadSheet { get; set; } = false;
 
 	// Data
 	private static readonly GUIStyle DescriptionStyle = new(GUI.Skin.SmallMessage) {
@@ -270,12 +271,14 @@ public class PackageManager : WindowUI {
 						PackageUtil.InstallPackage(CurrentProject, info);
 						info.Installed = PackageUtil.IsPackagedInstalled(CurrentProject, info);
 						RequiringRebuildFrame = Game.GlobalFrame;
+						RequiringReloadSheet = true;
 					}
 					// Uninstall
 					if (!newInstalled && info.Installed) {
 						PackageUtil.UninstallPackage(CurrentProject, info);
 						info.Installed = PackageUtil.IsPackagedInstalled(CurrentProject, info);
 						RequiringRebuildFrame = Game.GlobalFrame;
+						RequiringReloadSheet = true;
 					}
 				}
 
@@ -433,18 +436,33 @@ public class PackageManager : WindowUI {
 	}
 
 
-	public void SyncPackageDllWithProject (Project project) {
-		foreach (var info in PackageInfoList) {
-			string packName = info.PackageName;
-			if (!info.DllFounded) continue;
-			if (!PackageUtil.IsPackagedInstalled(project, info)) continue;
-			string dllName = $"{packName}.dll";
-			string sourcePath = info.DllPath;
-			string targetPathDebug = Util.CombinePaths(CurrentProject.DllLibPath_Debug, dllName);
-			string targetPathRelease = Util.CombinePaths(CurrentProject.DllLibPath_Release, dllName);
-			// Update
-			Util.UpdateFile(sourcePath, targetPathDebug, skipWhenTargetNotExists: false);
-			Util.UpdateFile(sourcePath, targetPathRelease, skipWhenTargetNotExists: false);
+	public void SyncPackageWithProject (Project project, bool syncDll = true, bool syncSheet = true) {
+		// DLL
+		if (syncDll) {
+			foreach (var info in PackageInfoList) {
+				string packName = info.PackageName;
+				if (!info.DllFounded) continue;
+				if (!PackageUtil.IsPackagedInstalled(project, info)) continue;
+				string dllName = $"{packName}.dll";
+				string sourcePath = info.DllPath;
+				string targetPathDebug = Util.CombinePaths(CurrentProject.DllLibPath_Debug, dllName);
+				string targetPathRelease = Util.CombinePaths(CurrentProject.DllLibPath_Release, dllName);
+				// Update
+				Util.UpdateFile(sourcePath, targetPathDebug, skipWhenTargetNotExists: false);
+				Util.UpdateFile(sourcePath, targetPathRelease, skipWhenTargetNotExists: false);
+			}
+		}
+		// Sheet
+		if (syncSheet) {
+			foreach (var info in PackageInfoList) {
+				if (!PackageUtil.IsPackagedInstalled(project, info)) continue;
+				if (!info.SheetFounded) continue;
+				Util.UpdateFile(
+					info.SheetPath,
+					Util.CombinePaths(CurrentProject.Universe.SheetRoot, $"{info.PackageName}.{AngePath.SHEET_FILE_EXT}"),
+					skipWhenTargetNotExists: false
+				);
+			}
 		}
 	}
 

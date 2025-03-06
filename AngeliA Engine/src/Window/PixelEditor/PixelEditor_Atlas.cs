@@ -484,7 +484,8 @@ public partial class PixelEditor {
 			if (sprite.AtlasID != atlas.ID) continue;
 			StagedSprites.Add(new SpriteData(sprite));
 		}
-		ResetCamera();
+		ResetCamera(delay: false);
+		ResetCamera(delay: true);
 		DraggingState = DragState.None;
 		ResizingStageIndex = -1;
 		HoveringResizeDirection = null;
@@ -567,7 +568,7 @@ public partial class PixelEditor {
 		static void StartRename () {
 			if (GenericPopupUI.InvokingItemData is not int targetIndex) return;
 			var atlasList = EditingSheet.Atlas;
-			if (atlasList.Count <= 1) return;
+			if (atlasList.Count == 0) return;
 			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
 			Instance.RequireStartRenameAtlasIndex = targetIndex;
 		}

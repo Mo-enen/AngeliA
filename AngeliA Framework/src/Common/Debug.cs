@@ -55,6 +55,12 @@ public static class Debug {
 
 	public static void LogException (Exception ex) => OnLogException?.Invoke(ex);
 
+	public static void LogLabel (params object[] objs) {
+		foreach (var obj in objs) {
+			LogLabel(obj.ToString());
+		}
+	}
+	public static void LogLabel (object obj) => LogLabel(obj.ToString());
 	public static void LogLabel (string content) {
 		if (Game.PauselessFrame != LastLogLabelFrame) {
 			LastLogLabelFrame = Game.PauselessFrame;

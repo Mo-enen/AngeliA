@@ -8,7 +8,7 @@ namespace AngeliA.Platformer;
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
-public class FrozenZone : Entity {
+public abstract class FrozenZone : Entity {
 
 
 
@@ -18,7 +18,6 @@ public class FrozenZone : Entity {
 
 	// Api
 	private const int DESPAWN_DURATION = 30;
-	public static readonly int TYPE_ID = typeof(FrozenZone).AngeHash();
 	public int Duration { get; set; } = 300;
 	public bool Fullscreen { get; set; } = false;
 

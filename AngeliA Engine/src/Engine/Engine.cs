@@ -844,6 +844,12 @@ public partial class Engine {
 			RequireBackgroundBuildDate = 0;
 		}
 
+		// Reload Sheet
+		if (PackageManager.Instance.RequiringReloadSheet) {
+			PackageManager.Instance.RequiringReloadSheet = false;
+			ReloadRenderingSheet();
+		}
+
 		// Publish
 		if (Game.GlobalFrame == ProjectEditor.Instance.RequiringPublishFrame) {
 			SetCurrentWindow<ConsoleWindow>();
@@ -1183,7 +1189,7 @@ public partial class Engine {
 		Util.UpdateFile(EngineUtil.AngeRaylibDllPath, Util.CombinePaths(CurrentProject.LocalEntryRoot, "AngeliA Raylib.dll"));
 
 		// Sync Package Dll Files
-		PackageManager.Instance.SyncPackageDllWithProject(CurrentProject);
+		PackageManager.Instance.SyncPackageWithProject(CurrentProject, syncDll: true, syncSheet: false);
 
 	}
 
@@ -1191,10 +1197,11 @@ public partial class Engine {
 	private void ReloadRenderingSheet () {
 		if (CurrentProject == null) return;
 		if (!RenderingSheet.LoadFromDisk(CurrentProject.Universe.GameSheetPath)) return;
+		PackageManager.Instance.SyncPackageWithProject(CurrentProject, syncDll: false, syncSheet: true);
 		RenderingSheet.CombineAllSheetInFolder(
 			CurrentProject.Universe.SheetRoot,
 			topOnly: false,
-			Util.GetNameWithExtension(CurrentProject.Universe.GameSheetPath)
+			ignoreNameWithExtension: Util.GetNameWithExtension(CurrentProject.Universe.GameSheetPath)
 		);
 	}
 

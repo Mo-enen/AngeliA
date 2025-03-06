@@ -9,7 +9,7 @@ namespace AngeliA.Platformer;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup("Contraption")]
-public abstract class Burner : Entity, IBlockEntity {
+public abstract class Burner<F> : Entity, IBlockEntity where F : Fire {
 
 
 
@@ -21,6 +21,7 @@ public abstract class Burner : Entity, IBlockEntity {
 	protected virtual int FireFrequency => 480;
 	protected virtual int FireDuration => FireFrequency / 4;
 	protected virtual Direction4 Direction => Direction4.Up;
+	protected virtual bool AllowFireFromMapElement => true;
 
 	// Data
 	private int FireTypeID = 0;
@@ -38,28 +39,34 @@ public abstract class Burner : Entity, IBlockEntity {
 	#region --- MSG ---
 
 
+	public Burner () => FireTypeID = typeof(F).AngeHash();
+
+
 	public override void OnActivated () {
 
 		base.OnActivated();
 
 		var dirNormal = Direction.Normal();
-		FireTypeID = Fire.TYPE_ID;
+
 		NextFireSpawnedFrame = int.MinValue;
 		Burning = false;
 
 		// Get Fire Type from Map
-		int mapFireID = WorldSquad.Front.GetBlockAt(
-			(X + 1).ToUnit() + dirNormal.x,
-			(Y + 1).ToUnit() + dirNormal.y,
-			BlockType.Entity
-		);
-		if (mapFireID != 0) {
-			var fireType = Stage.GetEntityType(mapFireID);
-			if (fireType != null && fireType.IsSubclassOf(typeof(Fire))) {
-				FireTypeID = mapFireID;
+		if (AllowFireFromMapElement) {
+			int mapFireID = WorldSquad.Front.GetBlockAt(
+				(X + 1).ToUnit() + dirNormal.x,
+				(Y + 1).ToUnit() + dirNormal.y,
+				BlockType.Entity
+			);
+			if (mapFireID != 0) {
+				var fireType = Stage.GetEntityType(mapFireID);
+				if (fireType != null && fireType.IsSubclassOf(typeof(Fire))) {
+					FireTypeID = mapFireID;
+				}
 			}
 		}
 
+		// Get Fire Tint
 		if (Renderer.TryGetSprite(FireTypeID, out var fSprite, false)) {
 			FireTint = fSprite.SummaryTint;
 		} else {
@@ -94,7 +101,7 @@ public abstract class Burner : Entity, IBlockEntity {
 			Stage.TrySpawnEntity(FireTypeID, X, Y, out var entity) &&
 			entity is Fire fire
 		) {
-			fire.Setup(FireDuration - localFrame, Direction, Width, Height);
+			fire.Setup(FireDuration - localFrame, Direction, Width, Height, damageImmediately: true);
 			fire.X =
 				Direction == Direction4.Left ? X - Const.CEL :
 				Direction == Direction4.Right ? X + Const.CEL :

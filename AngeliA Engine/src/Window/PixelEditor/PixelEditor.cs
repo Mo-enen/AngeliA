@@ -117,6 +117,7 @@ public partial class PixelEditor : WindowUI {
 	private IRect StageRect;
 	private Tool CurrentTool = Tool.Rect;
 	private Tag SelectionTagCache = Tag.None;
+	private int DelayResetCameraFrame = -2;
 
 	// Saving
 	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false, SavingLocation.Global);
@@ -851,6 +852,16 @@ public partial class PixelEditor : WindowUI {
 		if (EditingSheet.Atlas.Count <= 0) return;
 		if (!GUI.Interactable) return;
 
+		// Valid View Size
+		if (CanvasRect.width <= 1 || CanvasRect.height <= 1) {
+			ResetCamera(delay: true);
+		}
+
+		// Delay Reset Camera
+		if (Game.GlobalFrame == DelayResetCameraFrame) {
+			ResetCamera(delay: false);
+		}
+
 		// Move
 		if (
 			(Input.MouseMidButtonHolding && StageRect.Contains(Input.MouseMidDownGlobalPosition)) ||
@@ -889,6 +900,7 @@ public partial class PixelEditor : WindowUI {
 		RequireChangeThemePath = null;
 		EditingSheet.LoadFromDisk(project.Universe.GameSheetPath);
 		SetCurrentAtlas(project.Universe.Info.LastOpenAtlasIndex, forceChange: true, resetUndo: true);
+		ResetCamera(delay: true);
 	}
 
 
@@ -925,14 +937,6 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	public void ResetCamera () {
-		CanvasRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, GUI.ToolbarSize).Fit(1, 1).ToFRect();
-		CanvasRect.width = Util.Max(CanvasRect.width, 1f);
-		CanvasRect.height = Util.Max(CanvasRect.height, 1f);
-		ZoomLevel = 1;
-	}
-
-
 	#endregion
 
 
@@ -949,6 +953,18 @@ public partial class PixelEditor : WindowUI {
 			fittedStage.height * ZoomLevel,
 			pivot.x, pivot.y
 		);
+	}
+
+
+	private void ResetCamera (bool delay) {
+		if (!delay) {
+			CanvasRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, GUI.ToolbarSize).Fit(1, 1).ToFRect();
+			CanvasRect.width = Util.Max(CanvasRect.width, 1f);
+			CanvasRect.height = Util.Max(CanvasRect.height, 1f);
+			ZoomLevel = 1;
+		} else if (DelayResetCameraFrame != Game.GlobalFrame) {
+			DelayResetCameraFrame = Game.GlobalFrame + 1;
+		}
 	}
 
 

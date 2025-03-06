@@ -6,22 +6,22 @@ namespace AngeliA.Platformer;
 
 
 [EntityAttribute.RepositionWhenInactive]
-public class Fire : Entity, IFire {
+public abstract class Fire : Entity, IFire {
 
 
 
 
 	#region --- VAR ---
 
+
 	// Api
-	public static readonly int TYPE_ID = typeof(Fire).AngeHash();
 	public static event System.Action<int, IRect> OnFirePutout;
 	protected virtual int PowerAmount => 1000;
 	protected virtual int WeakenDuration => 22;
 	protected virtual int SpreadDuration => 60;
 	protected virtual int SpreadRange => Const.CEL;
 	protected virtual bool UseAdditiveShader => false;
-	protected virtual int DamageCooldown => 30;
+	protected virtual int DamageCooldown => DamageImmediately ? 1 : 30;
 	protected virtual Direction4 DefaultDirection => Direction4.Up;
 	protected virtual int IlluminateUnitRadius => 6;
 	protected virtual int IlluminateAmount => 1000;
@@ -34,6 +34,7 @@ public class Fire : Entity, IFire {
 	private int SpreadFrame = int.MaxValue;
 	private int DamageCharacterStartFrame = -1;
 	private bool ManuallyPutout = false;
+	private bool DamageImmediately = false;
 
 
 	#endregion
@@ -51,6 +52,7 @@ public class Fire : Entity, IFire {
 		BurnedFrame = 0;
 		SpreadFrame = Game.GlobalFrame + SpreadDuration;
 		Direction = DefaultDirection;
+		DamageImmediately = false;
 	}
 
 
@@ -243,7 +245,7 @@ public class Fire : Entity, IFire {
 	#region --- API ---
 
 
-	public void Setup (int burnDuration, Direction4 direction, int width = Const.CEL, int height = Const.CEL) {
+	public void Setup (int burnDuration, Direction4 direction, int width = Const.CEL, int height = Const.CEL, bool damageImmediately = false) {
 		Width = width;
 		Height = height;
 		BurnedFrame = Game.GlobalFrame + burnDuration;
@@ -252,6 +254,7 @@ public class Fire : Entity, IFire {
 		Direction = direction;
 		ManuallyPutout = false;
 		IgnoreReposition = false;
+		DamageImmediately = damageImmediately;
 	}
 
 

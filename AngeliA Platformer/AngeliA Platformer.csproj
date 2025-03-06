@@ -46,12 +46,15 @@
 	<!--Remove-->
 	<ItemGroup>
 		<Compile Remove="Build\**" />
+		<Compile Remove="Platformer Artwork\**" />
 		<Compile Remove="Publish\**" />
 		<Compile Remove="src\B\**" />
 		<EmbeddedResource Remove="Build\**" />
+		<EmbeddedResource Remove="Platformer Artwork\**" />
 		<EmbeddedResource Remove="Publish\**" />
 		<EmbeddedResource Remove="src\B\**" />
 		<None Remove="Build\**" />
+		<None Remove="Platformer Artwork\**" />
 		<None Remove="Publish\**" />
 		<None Remove="src\B\**" />
 	</ItemGroup>
@@ -70,6 +73,11 @@
 	<!--Move Package Dll into Library Folder-->
 	<Target Name="CopyDll" AfterTargets="Build">
 		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\com.angelia.platformer.dll" ContinueOnError="true" />
+	</Target>
+
+	<!--Copy Game Sheet to Engine Package Folder-->
+	<Target Name="Copy Game Sheet to Engine Package Folder" AfterTargets="Build">
+		<Copy SourceFiles="$(ProjectDir)Platformer Artwork\Universe\Sheet\Game Sheet.sheet" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\Packages\com.angelia.platformer\com.angelia.platformer.sheet" ContinueOnError="true" />
 	</Target>
 
 </Project>

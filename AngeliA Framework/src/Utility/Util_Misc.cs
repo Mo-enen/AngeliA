@@ -26,8 +26,40 @@ public static partial class Util {
 
 
 	// Language
-	private static readonly Dictionary<string, string> IsoToDisplayName = new() { { "af", "Afrikaans" }, { "am", "Amharic" }, { "ar", "العربية" }, { "as", "অসমীয়া" }, { "az", "azərbaycan" }, { "be", "беларуская" }, { "bg", "български" }, { "bn", "বাংলা" }, { "bo", "藏語" }, { "br", "brezhoneg" }, { "bs", "bosanski" }, { "ca", "català" }, { "cs", "čeština" }, { "cy", "Cymraeg" }, { "da", "dansk" }, { "de", "Deutsch" }, { "el", "Ελληνικά" }, { "en", "English" }, { "es", "español" }, { "et", "eesti" }, { "eu", "euskara" }, { "fa", "فارسی" }, { "ff", "Pulaar" }, { "fi", "suomi" }, { "fo", "føroyskt" }, { "fr", "français" }, { "fy", "West-Frysk" }, { "ga", "Gaeilge" }, { "gd", "Gàidhlig" }, { "gl", "galego" }, { "gu", "ગુજરાતી" }, { "ha", "Hausa" }, { "he", "עברית" }, { "hi", "हिन्दी" }, { "hr", "hrvatski" }, { "hu", "magyar" }, { "hy", "հայերեն" }, { "id", "Indonesia" }, { "ig", "Igbo" }, { "ii", "彜語" }, { "is", "íslenska" }, { "it", "italiano" }, { "iv", "Invariant" }, { "ja", "日本語" }, { "ka", "ქართული" }, { "kk", "қазақ тілі" }, { "kl", "kalaallisut" }, { "km", "Kambodschanisch" }, { "kn", "ಕನ್ನಡ" }, { "ko", "한국어" }, { "ky", "кыргызча" }, { "lb", "Lëtzebuergesch" }, { "lo", "Laotisch" }, { "lt", "lietuvių" }, { "lv", "latviešu" }, { "mk", "македонски" }, { "ml", "മലയാളം" }, { "mn", "монгол" }, { "mr", "मराठी" }, { "ms", "Bahasa Melayu" }, { "mt", "Malti" }, { "my", "Birmanisch" }, { "nb", "norsk" }, { "ne", "नेपाली" }, { "nl", "Nederlands" }, { "nn", "nynorsk" }, { "om", "Oromoo" }, { "or", "ଓଡ଼ିଆ" }, { "pa", "ਪੰਜਾਬੀ" }, { "pl", "polski" }, { "ps", "پښتو" }, { "pt", "português" }, { "rm", "rumantsch" }, { "ro", "română" }, { "ru", "русский" }, { "rw", "Kinyarwanda" }, { "se", "davvisámegiella" }, { "si", "සිංහල" }, { "sk", "slovenčina" }, { "sl", "slovenščina" }, { "so", "Soomaali" }, { "sq", "shqip" }, { "sr", "српски" }, { "st", "Sesotho" }, { "sv", "svenska" }, { "sw", "Kiswahili" }, { "ta", "தமிழ்" }, { "te", "తెలుగు" }, { "tg", "Тоҷикӣ" }, { "th", "ไทย" }, { "ti", "Tigrinja-Sprache" }, { "tk", "türkmençe" }, { "tn", "Setswana" }, { "tr", "Türkçe" }, { "ts", "Xitsonga" }, { "tt", "татар" }, { "ug", "ئۇيغۇرچە" }, { "uk", "українська" }, { "ur", "اردو" }, { "uz", "o‘zbek" }, { "vi", "Tiếng Việt" }, { "xh", "isiXhosa" }, { "yo", "Èdè Yorùbá" }, { "zhs", "简体中文" }, { "zht", "正體中文" }, { "zu", "isiZulu" }, };
+	private static readonly Dictionary<string, string> IsoToDisplayName = new() { { "af", "Afrikaans" }, { "am", "Amharic" }, { "ar", /**/"العربية" }, { "as",/**/ "অসমীয়া" }, { "az", /**/"azərbaycan" }, { "be", "беларуская" }, { "bg", "български" }, { "bn",/**/ "বাংলা" }, { "bo", "藏語" }, { "br", "brezhoneg" }, { "bs", "bosanski" }, { "ca", "català" }, { "cs", /**/"čeština" }, { "cy", "Cymraeg" }, { "da", "dansk" }, { "de", "Deutsch" }, { "el", /**/"Ελληνικά" }, { "en", "English" }, { "es", "español" }, { "et", "eesti" }, { "eu", "euskara" }, { "fa",/**/ "فارسی" }, { "ff", "Pulaar" }, { "fi", "suomi" }, { "fo", "føroyskt" }, { "fr", "français" }, { "fy", "West-Frysk" }, { "ga", "Gaeilge" }, { "gd", "Gàidhlig" }, { "gl", "galego" }, { "gu",/**/ "ગુજરાતી" }, { "ha", "Hausa" }, { "he", /**/"עברית" }, { "hi", /**/"हिन्दी" }, { "hr", "hrvatski" }, { "hu", "magyar" }, { "hy", /**/"հայերեն" }, { "id", "Indonesia" }, { "ig", "Igbo" }, { "ii", "彜語" }, { "is", "íslenska" }, { "it", "italiano" }, { "iv", "Invariant" }, { "ja", "日本語" }, { "ka",/**/ "ქართული" }, { "kk",/**/ "қазақ тілі" }, { "kl", "kalaallisut" }, { "km", "Kambodschanisch" }, { "kn",/**/ "ಕನ್ನಡ" }, { "ko", /**/"한국어" }, { "ky", "кыргызча" }, { "lb", "Lëtzebuergesch" }, { "lo", "Laotisch" }, { "lt", /**/"lietuvių" }, { "lv", /**/"latviešu" }, { "mk", "македонски" }, { "ml",/**/ "മലയാളം" }, { "mn", "монгол" }, { "mr", /**/"मराठी" }, { "ms", "Bahasa Melayu" }, { "mt", "Malti" }, { "my", "Birmanisch" }, { "nb", "norsk" }, { "ne", /**/"नेपाली" }, { "nl", "Nederlands" }, { "nn", "nynorsk" }, { "om", "Oromoo" }, { "or", /**/"ଓଡ଼ିଆ" }, { "pa", /**/"ਪੰਜਾਬੀ" }, { "pl", "polski" }, { "ps", /**/"پښتو" }, { "pt", "português" }, { "rm", "rumantsch" }, { "ro", "română" }, { "ru", "русский" }, { "rw", "Kinyarwanda" }, { "se", "davvisámegiella" }, { "si",/**/ "සිංහල" }, { "sk",/**/ "slovenčina" }, { "sl", /**/"slovenščina" }, { "so", "Soomaali" }, { "sq", "shqip" }, { "sr", "српски" }, { "st", "Sesotho" }, { "sv", "svenska" }, { "sw", "Kiswahili" }, { "ta",/**/ "தமிழ்" }, { "te", /**/"తెలుగు" }, { "tg",/**/ "Тоҷикӣ" }, { "th",/**/ "ไทย" }, { "ti", "Tigrinja-Sprache" }, { "tk", "türkmençe" }, { "tn", "Setswana" }, { "tr", "Türkçe" }, { "ts", "Xitsonga" }, { "tt", "татар" }, { "ug", /**/"ئۇيغۇرچە" }, { "uk",/**/ "українська" }, { "ur", /**/"اردو" }, { "uz", "o‘zbek" }, { "vi", "Tiếng Việt" }, { "xh", "isiXhosa" }, { "yo", "Èdè Yorùbá" }, { "zhs", "简体中文" }, { "zht", "正體中文" }, { "zu", "isiZulu" }, };
+	private static readonly Dictionary<string, string> IsoToEnglishDisplayName = new()
+	{
+		{ "af", "Afrikaans" }, { "am", "Amharic" }, { "ar", "Arabic" }, { "as", "Assamese" },
+		{ "az", "Azerbaijani" }, { "be", "Belarusian" }, { "bg", "Bulgarian" }, { "bn", "Bengali" },
+		{ "bo", "Tibetan" }, { "br", "Breton" }, { "bs", "Bosnian" }, { "ca", "Catalan" },
+		{ "cs", "Czech" }, { "cy", "Welsh" }, { "da", "Danish" }, { "de", "German" },
+		{ "el", "Greek" }, { "en", "English" }, { "es", "Spanish" }, { "et", "Estonian" },
+		{ "eu", "Basque" }, { "fa", "Persian" }, { "ff", "Pulaar" }, { "fi", "Finnish" },
+		{ "fo", "Faroese" }, { "fr", "French" }, { "fy", "West Frisian" }, { "ga", "Irish" },
+		{ "gd", "Scottish Gaelic" }, { "gl", "Galician" }, { "gu", "Gujarati" }, { "ha", "Hausa" },
+		{ "he", "Hebrew" }, { "hi", "Hindi" }, { "hr", "Croatian" }, { "hu", "Hungarian" },
+		{ "hy", "Armenian" }, { "id", "Indonesian" }, { "ig", "Igbo" }, { "ii", "Yi" },
+		{ "is", "Icelandic" }, { "it", "Italian" }, { "iv", "Invariant" }, { "ja", "Japanese" },
+		{ "ka", "Georgian" }, { "kk", "Kazakh" }, { "kl", "Greenlandic" }, { "km", "Khmer" },
+		{ "kn", "Kannada" }, { "ko", "Korean" }, { "ky", "Kyrgyz" }, { "lb", "Luxembourgish" },
+		{ "lo", "Lao" }, { "lt", "Lithuanian" }, { "lv", "Latvian" }, { "mk", "Macedonian" },
+		{ "ml", "Malayalam" }, { "mn", "Mongolian" }, { "mr", "Marathi" }, { "ms", "Malay" },
+		{ "mt", "Maltese" }, { "my", "Burmese" }, { "nb", "Norwegian" }, { "ne", "Nepali" },
+		{ "nl", "Dutch" }, { "nn", "Nynorsk" }, { "om", "Oromo" }, { "or", "Odia" },
+		{ "pa", "Punjabi" }, { "pl", "Polish" }, { "ps", "Pashto" }, { "pt", "Portuguese" },
+		{ "rm", "Romansh" }, { "ro", "Romanian" }, { "ru", "Russian" }, { "rw", "Kinyarwanda" },
+		{ "se", "Northern Sami" }, { "si", "Sinhala" }, { "sk", "Slovak" }, { "sl", "Slovenian" },
+		{ "so", "Somali" }, { "sq", "Albanian" }, { "sr", "Serbian" }, { "st", "Sesotho" },
+		{ "sv", "Swedish" }, { "sw", "Swahili" }, { "ta", "Tamil" }, { "te", "Telugu" },
+		{ "tg", "Tajik" }, { "th", "Thai" }, { "ti", "Tigrinya" }, { "tk", "Turkmen" },
+		{ "tn", "Tswana" }, { "tr", "Turkish" }, { "ts", "Tsonga" }, { "tt", "Tatar" },
+		{ "ug", "Uyghur" }, { "uk", "Ukrainian" }, { "ur", "Urdu" }, { "uz", "Uzbek" },
+		{ "vi", "Vietnamese" }, { "xh", "Xhosa" }, { "yo", "Yoruba" }, { "zhs", "Chinese Simplified" },
+		{ "zht", "Chinese Traditional" }, { "zu", "Zulu" }
+	};
+
 	public static bool TryGetLanguageDisplayName (string iso, out string displayName) => IsoToDisplayName.TryGetValue(iso, out displayName);
+	public static string GetLanguageDisplayNameInEnglish (string iso) => IsoToEnglishDisplayName.TryGetValue(iso, out var displayName) ? displayName : "";
 	public static string GetLanguageDisplayName (string iso) => IsoToDisplayName.TryGetValue(iso, out var displayName) ? displayName : "";
 	public static bool IsSupportedLanguageISO (string iso) => IsoToDisplayName.ContainsKey(iso);
 	public static IEnumerable<string> ForAllSystemLanguages () => IsoToDisplayName.Keys;
