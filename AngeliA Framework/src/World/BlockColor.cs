@@ -1,6 +1,6 @@
 ﻿namespace AngeliA;
 
-[EntityAttribute.MapEditorGroup("BlockColor", -512)]
+[EntityAttribute.MapEditorGroup("System")]
 public abstract class BlockColor : IMapItem {
 	public abstract Color32 Color { get; }
 }

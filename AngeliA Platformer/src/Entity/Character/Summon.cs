@@ -60,11 +60,6 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 		Movement.MovementWidth.BaseValue = 256;
 		Movement.MovementHeight.BaseValue = 256;
 
-		Buff.PreventBuff(OnFireBuff.TYPE_ID, int.MaxValue);
-		Buff.PreventBuff(PoisonBuff.TYPE_ID, int.MaxValue);
-		Buff.PreventBuff(LightenBuff.TYPE_ID, int.MaxValue);
-		Buff.PreventBuff(FreezeBuff.TYPE_ID, int.MaxValue);
-
 		Health.MaxHP.BaseValue = 12;
 		Health.HP = Health.MaxHP.BaseValue;
 

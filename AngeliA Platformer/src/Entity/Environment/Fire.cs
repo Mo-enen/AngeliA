@@ -156,7 +156,6 @@ public abstract class Fire : Entity, IFire {
 				} else if (Game.GlobalFrame > DamageCharacterStartFrame + DamageCooldown) {
 					DamageCharacterStartFrame = Game.GlobalFrame;
 					(ch as IDamageReceiver).TakeDamage(new Damage(1, bullet: this, type: Tag.FireDamage));
-					ch.Buff.GiveBuff(OnFireBuff.TYPE_ID, 200);
 				}
 			}
 		}

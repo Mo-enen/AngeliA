@@ -197,7 +197,12 @@ public static partial class FrameworkUtil {
 		// Try Pick Level Block
 		if (allowPickLevelBlock) {
 			int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Level);
-			if (blockID != 0) {
+			if (
+				blockID != 0 && (
+				!Renderer.TryGetSprite(blockID, out AngeSprite sprite, false) ||
+				!sprite.Tag.HasAll(Tag.Unbreackable)
+			)) {
+
 				int realBlockID = blockID;
 				var blockRect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
 
@@ -206,7 +211,7 @@ public static partial class FrameworkUtil {
 				result = true;
 
 				// Event
-				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
+				if (sprite != null && sprite.Group != null) {
 					blockID = sprite.Group.ID;
 					// Rule
 					if (sprite.Group.WithRule) {
@@ -242,7 +247,11 @@ public static partial class FrameworkUtil {
 		// Try Pick BG Block
 		if (allowPickBackgroundBlock) {
 			int blockID = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Background);
-			if (blockID != 0) {
+			if (
+				blockID != 0 && (
+				!Renderer.TryGetSprite(blockID, out AngeSprite sprite, false) ||
+				!sprite.Tag.HasAll(Tag.Unbreackable)
+			)) {
 				int realBlockID = blockID;
 				var blockRect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL);
 
@@ -251,7 +260,7 @@ public static partial class FrameworkUtil {
 				result = true;
 
 				// Rule
-				if (Renderer.TryGetSprite(blockID, out var sprite, true) && sprite.Group != null) {
+				if (sprite != null && sprite.Group != null) {
 					blockID = sprite.Group.ID;
 					if (sprite.Group.WithRule) {
 						RedirectForRule(
@@ -301,13 +310,23 @@ public static partial class FrameworkUtil {
 		}
 
 		// Check for Level Block
-		if (allowPickLevelBlock && WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Level) != 0) {
-			return true;
+		if (allowPickLevelBlock) {
+			int id = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Level);
+			if (id != 0) {
+				if (!Renderer.TryGetSprite(id, out var sprite, false) || !sprite.Tag.HasAll(Tag.Unbreackable)) {
+					return true;
+				}
+			}
 		}
 
 		// Check for BG Block
-		if (allowPickBackgroundBlock && WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Background) != 0) {
-			return true;
+		if (allowPickBackgroundBlock) {
+			int id = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Background);
+			if (id != 0) {
+				if (!Renderer.TryGetSprite(id, out var sprite, false) || !sprite.Tag.HasAll(Tag.Unbreackable)) {
+					return true;
+				}
+			}
 		}
 
 		return false;

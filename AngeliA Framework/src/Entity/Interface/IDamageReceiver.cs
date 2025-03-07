@@ -11,11 +11,6 @@ public interface IDamageReceiver {
 	void OnDamaged (Damage damage);
 
 	public bool ValidDamage (Damage damage) {
-
-
-
-
-
 		if (IsInvincible) return false;
 		if (damage.Amount <= 0) return false;
 		if (this is Entity e && !e.Active) return false;

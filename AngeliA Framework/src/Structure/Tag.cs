@@ -21,7 +21,8 @@ public enum Tag : int {
 	NoSlide = 1 << 10,
 	GrabTop = 1 << 11,
 	GrabSide = 1 << 12,
-	Grab = 1 << 13,
+
+	Unbreackable = 1 << 13,
 
 	ShowLimb = 1 << 14,
 	HideLimb = 1 << 15,
@@ -64,7 +65,7 @@ public static class TagUtil {
 		Tag.NoSlide.ToString(),
 		Tag.GrabTop.ToString(),
 		Tag.GrabSide.ToString(),
-		Tag.Grab.ToString(),
+		Tag.Unbreackable.ToString(),
 
 		Tag.ShowLimb.ToString(),
 		Tag.HideLimb.ToString(),

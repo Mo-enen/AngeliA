@@ -9,18 +9,22 @@ namespace AngeliA.Platformer;
 [EntityAttribute.MapEditorGroup("Teleport")]
 public abstract class Portal : Entity {
 
+	// VAR
 	protected abstract Int3 TargetGlobalPosition { get; }
 	protected virtual bool DontSpawnAfterUsed => false;
 	private int CooldownFrame = 0;
 
+	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
 		CooldownFrame = 0;
 	}
+
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 	}
+
 	public override void Update () {
 		base.Update();
 		// Invoke
@@ -34,15 +38,18 @@ public abstract class Portal : Entity {
 			CooldownFrame++;
 		}
 	}
+
 	public virtual bool Invoke (Character character) {
 		if (character == PlayerSystem.Selecting) {
 			if (TaskSystem.HasTask()) return false;
 			if (DontSpawnAfterUsed) {
 				FrameworkUtil.RemoveFromWorldMemory(this);
 			}
+			bool samePos = TargetGlobalPosition.x == X && TargetGlobalPosition.y == Y;
 			TeleportTask.TeleportFromPortal(
 				X + Width / 2, Y + Height / 2,
-				TargetGlobalPosition.x, TargetGlobalPosition.y, TargetGlobalPosition.z
+				TargetGlobalPosition.x, TargetGlobalPosition.y, TargetGlobalPosition.z,
+				samePos
 			);
 			character.X = X + Width / 2;
 			character.Y = Y;

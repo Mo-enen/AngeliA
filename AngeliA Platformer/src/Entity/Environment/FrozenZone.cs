@@ -152,11 +152,7 @@ public abstract class FrozenZone : Entity {
 	}
 
 
-	protected virtual void OnTouchingZone (Rigidbody rig) {
-		if (rig is IWithCharacterBuff wBuff) {
-			wBuff.CurrentBuff.GiveBuff(FreezeBuff.TYPE_ID, 1);
-		}
-	}
+	protected virtual void OnTouchingZone (Rigidbody rig) { }
 
 
 	#endregion

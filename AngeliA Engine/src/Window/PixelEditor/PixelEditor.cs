@@ -163,6 +163,14 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
+	public override void OnActivated () {
+		base.OnActivated();
+		if (ZoomLevel == 1) {
+			ResetCamera(delay: false);
+		}
+	}
+
+
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		Cursor.RequireCursor();
@@ -738,7 +746,6 @@ public partial class PixelEditor : WindowUI {
 					SetSelectingSpritesAsCopyBuffer();
 				} else {
 					// Copy Pixel
-					ClearSpriteCopyBuffer();
 					ClearSpriteSelection();
 					CopyCutPixel(cut: false);
 				}
@@ -761,7 +768,7 @@ public partial class PixelEditor : WindowUI {
 			// Ctrl + V
 			if (Input.KeyboardDown(KeyboardKey.V)) {
 				ClearSpriteSelection();
-				if (SpriteCopyBuffer.Count > 0) {
+				if (CurrentTool == Tool.Sprite) {
 					// Paste Sprite
 					PasteSpriteCopyBufferIntoStage();
 				} else {

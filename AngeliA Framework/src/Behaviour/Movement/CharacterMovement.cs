@@ -1261,9 +1261,6 @@ public class CharacterMovement (Rigidbody rig) {
 		if (Physics.Overlap(
 			PhysicsMask.MAP, rect, out var hit, Target,
 			OperationMode.ColliderOnly, Tag.GrabTop
-		) || Physics.Overlap(
-			PhysicsMask.MAP, rect, out hit, Target,
-			OperationMode.ColliderOnly, Tag.Grab
 		)) {
 			grabbingY = hit.Rect.yMin - (TargetCharacter.FinalCharacterHeight * GrabTopHeightAmount / 1000);
 			return true;
@@ -1292,14 +1289,10 @@ public class CharacterMovement (Rigidbody rig) {
 			1,
 			Hitbox.height / 4
 		);
-		bool allowGrab =
-			(AllowCheck(rectD, Tag.GrabSide) || AllowCheck(rectD, Tag.Grab)) &&
-			(AllowCheck(rectU, Tag.GrabSide) || AllowCheck(rectU, Tag.Grab));
+		bool allowGrab = AllowCheck(rectD, Tag.GrabSide) && AllowCheck(rectU, Tag.GrabSide);
 		if (allowGrab) {
 			allowMoveUp = Physics.Overlap(
 				PhysicsMask.MAP, rectU.Shift(0, rectU.height), Target, OperationMode.ColliderOnly, Tag.GrabSide
-			) || Physics.Overlap(
-				PhysicsMask.MAP, rectU.Shift(0, rectU.height), Target, OperationMode.ColliderOnly, Tag.Grab
 			);
 		}
 		return allowGrab;

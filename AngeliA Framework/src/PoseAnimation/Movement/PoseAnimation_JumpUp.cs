@@ -18,7 +18,8 @@ public class PoseAnimation_JumpUp : PoseAnimation {
 		Head.Height += A2G;
 
 		int deltaRot = Target.DeltaPositionX.Clamp(-42, 42) / 2;
-		
+		Body.Rotation = deltaRot / 2;
+
 		// Arm
 		int motionDelta = -Target.DeltaPositionX.Clamp(-12, 12);
 		UpperArmL.LimbRotate((alt ? 65 : 55) + motionDelta);
@@ -58,9 +59,9 @@ public class PoseAnimation_JumpUp : PoseAnimation {
 		FootR.Z += 2;
 
 		// Final
-		Rendering.HandGrabRotationL.Override( LowerArmL.Rotation + FacingSign * 90);
-		Rendering.HandGrabRotationR.Override( LowerArmR.Rotation + FacingSign * 90);
-		Rendering.HandGrabScaleL.Override( FacingSign * 1000);
-		Rendering.HandGrabScaleR.Override( FacingSign * 1000);
+		Rendering.HandGrabRotationL.Override(LowerArmL.Rotation + FacingSign * 90);
+		Rendering.HandGrabRotationR.Override(LowerArmR.Rotation + FacingSign * 90);
+		Rendering.HandGrabScaleL.Override(FacingSign * 1000);
+		Rendering.HandGrabScaleR.Override(FacingSign * 1000);
 	}
 }

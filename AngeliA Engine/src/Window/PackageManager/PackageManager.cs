@@ -315,17 +315,14 @@ public class PackageManager : WindowUI {
 				rect.xMin = panelRect.x;
 
 				// Warning Msg
-				if (!available || !info.AnyResourceFounded) {
-					// Game Only
-					if (!isGame && !info.ThemeFounded) {
-						using var __ = new GUIContentColorScope(Color32.YELLOW);
-						rect.yMin -= GUI.FieldHeight;
-						GUI.Label(
-							rect.EdgeInsideDown(GUI.FieldHeight),
-							string.Format(MSG_GAME_ONLY, CurrentProject.Universe.Info.ProjectType),
-							Skin.SmallLabel
-						);
-					}
+				if (!available && !isGame && !info.ThemeFounded) {
+					using var __ = new GUIContentColorScope(Color32.YELLOW);
+					rect.yMin -= GUI.FieldHeight;
+					GUI.Label(
+						rect.EdgeInsideDown(GUI.FieldHeight),
+						string.Format(MSG_GAME_ONLY, CurrentProject.Universe.Info.ProjectType),
+						Skin.SmallLabel
+					);
 				}
 
 				// Box BG

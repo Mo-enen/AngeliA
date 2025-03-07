@@ -140,9 +140,8 @@ public sealed class WorldSquad : IBlockSquad {
 
 	// Set Block
 	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) {
-		if (!ReadonlyMap) {
-			Stream.SetBlockAt(unitX, unitY, z, type, newID);
-		}
+		if (ReadonlyMap) return;
+		Stream.SetBlockAt(unitX, unitY, z, type, newID);
 	}
 
 
@@ -332,9 +331,18 @@ public sealed class WorldSquad : IBlockSquad {
 
 	// Draw
 	private void DrawBackgroundBlock (int id, int unitX, int unitY) {
+		if (!Renderer.TryGetSprite(id, out var sp, false)) return;
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+		// Shift Pivot
+		if (sp.PivotX != 0) {
+			rect.x -= rect.width * sp.PivotX / 1000;
+		}
+		if (sp.PivotY != 0) {
+			rect.y -= rect.height * sp.PivotY / 1000;
+		}
+		// Draw
 		if (CullingCameraRect.Overlaps(rect)) {
-			Renderer.Draw(id, rect);
+			Renderer.Draw(sp, rect);
 		}
 	}
 
@@ -342,6 +350,14 @@ public sealed class WorldSquad : IBlockSquad {
 	private void DrawLevelBlock (int id, int unitX, int unitY) {
 		if (!Renderer.TryGetSprite(id, out var sp, false)) return;
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
+		// Shift Pivot
+		if (sp.PivotX != 0) {
+			rect.x -= rect.width * sp.PivotX / 1000;
+		}
+		if (sp.PivotY != 0) {
+			rect.y -= rect.height * sp.PivotY / 1000;
+		}
+		// Draw
 		if (CullingCameraRect.Overlaps(rect)) {
 			Renderer.Draw(sp, rect);
 		}
@@ -368,6 +384,15 @@ public sealed class WorldSquad : IBlockSquad {
 			unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL
 		).ScaleFrom(ReversePara01, ParaCenter.x, ParaCenter.y);
 
+		// Shift Pivot
+		if (sprite.PivotX != 0) {
+			rect.x -= rect.width * sprite.PivotX / 1000;
+		}
+		if (sprite.PivotY != 0) {
+			rect.y -= rect.height * sprite.PivotY / 1000;
+		}
+
+		// Ratio
 		if (
 			fixRatio &&
 			(sprite.GlobalWidth != Const.CEL || sprite.GlobalHeight != Const.CEL)
@@ -379,13 +404,15 @@ public sealed class WorldSquad : IBlockSquad {
 			rect.width = width;
 			rect.height = height;
 		}
+
+		// Color
 		var tint = Color32.LerpUnclamped(
 			Sky.SkyTintBottomColor, Sky.SkyTintTopColor,
 			Util.InverseLerp(cameraRect.yMin, cameraRect.yMax, rect.y + rect.height / 2)
 		);
-
 		tint.a = WorldBehindAlpha;
 
+		// Draw
 		Renderer.Draw(sprite, rect, tint, 0);
 	}
 

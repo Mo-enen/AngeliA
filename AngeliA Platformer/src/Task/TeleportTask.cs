@@ -175,9 +175,9 @@ public class TeleportTask : Task {
 
 
 	// API
-	public static TeleportTask TeleportFromDoor (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(false, fromX, fromY, toX, toY, toZ, false, true);
-	public static TeleportTask TeleportFromPortal (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(true, fromX, fromY, toX, toY, toZ, true, false);
-	private static TeleportTask TeleportLogic (bool portal, int fromX, int fromY, int toX, int toY, int toZ, bool useVignette = false, bool useParallax = true) {
+	public static TeleportTask TeleportFromDoor (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(false, fromX, fromY, toX, toY, toZ, useVignette: false, useParallax: true);
+	public static TeleportTask TeleportFromPortal (int fromX, int fromY, int toX, int toY, int toZ, bool samePosition) => TeleportLogic(true, fromX, fromY, toX, toY, toZ, useVignette: !samePosition, useParallax: samePosition);
+	private static TeleportTask TeleportLogic (bool portal, int fromX, int fromY, int toX, int toY, int toZ, bool useVignette, bool useParallax) {
 		if (TaskSystem.HasTask()) return null;
 		if (TaskSystem.TryAddToLast(TYPE_ID, out var task) && task is TeleportTask svTask) {
 			svTask.TeleportFrom = new Int2(fromX, fromY);
