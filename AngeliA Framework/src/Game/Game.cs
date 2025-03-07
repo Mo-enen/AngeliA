@@ -160,7 +160,7 @@ public abstract partial class Game {
 
 			if (!IsToolApplication) {
 				SetWindowTitle(Universe.BuiltInInfo.ProductName);
-				SetWindowIcon("ApplicationIcon".AngeHash());
+				SetWindowIcon("WindowIcon".AngeHash());
 			}
 			System.GC.Collect();
 
