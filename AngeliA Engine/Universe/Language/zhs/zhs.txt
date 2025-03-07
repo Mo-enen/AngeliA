@@ -202,6 +202,7 @@ Noti.UndoPaint:撤销：绘图
 Noti.UndoSpriteMeta:撤销：图块信息
 Noti.UndoSpriteSize:撤销：图块尺寸
 Notify.CheatPerform:已执行作弊码
+Notify.NoValidPlayer:没有可用的角色
 PackageManager:拓 展
 PixelEditor:美 工
 PixelEditor.Title.ExportPNG:导出为PNG文件

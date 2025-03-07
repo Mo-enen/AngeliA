@@ -911,7 +911,7 @@ public partial class Engine {
 			}
 		}
 		SortProjects();
-		Game.SetWindowTitle($"Project - {Util.GetNameWithoutExtension(projectPath)}");
+		Game.SetWindowTitle($"Project - {projectData.Name}");
 		Game.SetWindowIcon(projectData.IconID);
 
 		// Windows

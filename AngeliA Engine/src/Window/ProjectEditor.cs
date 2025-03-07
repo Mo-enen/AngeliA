@@ -358,6 +358,7 @@ public class ProjectEditor : WindowUI {
 				string newSavingRoot = AngePath.GetPersistentDataPath(info.DeveloperName, info.ProductName);
 				CurrentProject.Universe.SetSavingRoot(newSavingRoot, CurrentProject.Universe.CurrentSavingSlot);
 				RequireRecompileOnSave = true;
+				Game.SetWindowTitle($"Project - {newProductName}");
 				SetDirty();
 			}
 		}

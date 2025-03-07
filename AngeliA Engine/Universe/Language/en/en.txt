@@ -202,6 +202,7 @@ Noti.UndoPaint:Undo: Paint
 Noti.UndoSpriteMeta:Undo: Sprite meta
 Noti.UndoSpriteSize:Undo: Sprite size
 Notify.CheatPerform:Cheat Performed
+Notify.NoValidPlayer:No Valid Character in This Project
 PackageManager:Packages
 PixelEditor:Artwork
 PixelEditor.Title.ExportPNG:Export PNG file
