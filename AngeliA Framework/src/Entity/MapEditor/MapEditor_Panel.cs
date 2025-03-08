@@ -88,6 +88,7 @@ public partial class MapEditor {
 	private static readonly LanguageCode MENU_PALETTE_DELETE_LIST = ("Menu.MEDT.DeleteList", "Delete List");
 	private static readonly LanguageCode MENU_PALETTE_DELETE_LIST_MSG = ("Menu.MEDT.DeleteListMsg", "Delete List \"{0}\"?");
 	private static readonly LanguageCode MENU_PALETTE_SET_LIST_COVER = ("Menu.MEDT.SetAsListCover", "Set as List Cover");
+	private static readonly LanguageCode MENU_PALETTE_SET_AS_SELECT_CHARACTER = ("Menu.MEDT.SelectCharacter", "Select as Playing Character");
 	private const int SEARCH_BAR_ID = 3983472;
 	private const int TOOLBAR_BTN_SIZE = 42;
 
@@ -984,15 +985,39 @@ public partial class MapEditor {
 		}
 
 		// Add to New List
-		GenericPopupUI.AddItem(
-			MENU_PALETTE_ADD_TO_NEW_LIST, () => {
-				EditorMeta.PinnedLists.Add(new PinnedList() {
-					Icon = GetRealGizmosSprite(pal.ArtworkID).ID,
-					Items = [pal.ID],
-				});
-			}
-		);
+		GenericPopupUI.AddItem(MENU_PALETTE_ADD_TO_NEW_LIST, AddToNewList, data: pal);
+		static void AddToNewList () {
+			if (Instance == null) return;
+			if (GenericPopupUI.InvokingItemData is not PaletteItem pal) return;
+			Instance.EditorMeta.PinnedLists.Add(new PinnedList() {
+				Icon = Instance.GetRealGizmosSprite(pal.ArtworkID).ID,
+				Items = [pal.ID],
+			});
+		}
 
+		// Character
+		if (pal.BlockType == BlockType.Entity) {
+			var eType = Stage.GetEntityType(pal.ID);
+			if (eType != null && typeof(IPlayable).IsAssignableFrom(eType)) {
+				GenericPopupUI.AddItem(
+					MENU_PALETTE_SET_AS_SELECT_CHARACTER,
+					SetAsSelectCharacter,
+					enabled: PlayerSystem.Selecting == null || PlayerSystem.Selecting.TypeID != pal.ID,
+					@checked: PlayerSystem.Selecting != null && PlayerSystem.Selecting.TypeID == pal.ID,
+					data: pal.ID
+				);
+				static void SetAsSelectCharacter () {
+					if (Instance == null) return;
+					if (GenericPopupUI.InvokingItemData is not int id) return;
+					if (Stage.GetOrSpawnEntity(id, 0, 0) is Character newPlayer) {
+						PlayerSystem.SetCharacterAsPlayer(newPlayer);
+						newPlayer.Active = false;
+					}
+				}
+			}
+		}
+
+		// Listed
 		if (CurrentPaletteTab == PaletteTabType.Listed) {
 			if (SelectingPaletteListIndex >= 0 && SelectingPaletteListIndex < EditorMeta.PinnedLists.Count) {
 				var selectingList = EditorMeta.PinnedLists[SelectingPaletteListIndex];
@@ -1000,10 +1025,17 @@ public partial class MapEditor {
 				int realCoverID = GetRealGizmosSprite(pal.ArtworkID).ID;
 				GenericPopupUI.AddSeparator();
 				GenericPopupUI.AddItem(
-					MENU_PALETTE_SET_LIST_COVER, () => {
-						selectingList.Icon = realCoverID;
-					}, selectingList.Icon != realCoverID
+					MENU_PALETTE_SET_LIST_COVER, SetAsCover, selectingList.Icon != realCoverID,
+					data: new Int2(Instance.SelectingPaletteListIndex, realCoverID)
 				);
+				static void SetAsCover () {
+					if (Instance == null) return;
+					if (GenericPopupUI.InvokingItemData is not Int2 _data) return;
+					int selectingIndex = _data.x;
+					int realCoverID = _data.y;
+					var selectingList = Instance.EditorMeta.PinnedLists[selectingIndex];
+					selectingList.Icon = _data.y;
+				}
 			}
 		}
 

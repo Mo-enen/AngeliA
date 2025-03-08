@@ -167,6 +167,7 @@ Menu.MEDT.CreateList:创建列表
 Menu.MEDT.DeleteList:删除列表
 Menu.MEDT.DeleteListMsg:是否删除列表“{0}”？
 Menu.MEDT.RemoveFromList:移除自：
+Menu.MEDT.SelectCharacter:设为当前角色
 Menu.MEDT.SetAsListCover:设为封面
 Menu.MiniGame.QuitMsg:是否退出迷你游戏？
 Menu.Pause.KeySetter:按键分配
@@ -202,6 +203,7 @@ Noti.UndoPaint:撤销：绘图
 Noti.UndoSpriteMeta:撤销：图块信息
 Noti.UndoSpriteSize:撤销：图块尺寸
 Notify.CheatPerform:已执行作弊码
+Notify.NoValidPlayer:没有可用的角色
 PackageManager:拓 展
 PixelEditor:美 工
 PixelEditor.Title.ExportPNG:导出为PNG文件

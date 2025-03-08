@@ -167,6 +167,7 @@ Menu.MEDT.CreateList:Create List
 Menu.MEDT.DeleteList:Delete List
 Menu.MEDT.DeleteListMsg:Delete List "{0}"?
 Menu.MEDT.RemoveFromList:Remove from List:
+Menu.MEDT.SelectCharacter:Select as Playing Character
 Menu.MEDT.SetAsListCover:Set as List Cover
 Menu.MiniGame.QuitMsg:Quit mini game?
 Menu.Pause.KeySetter:Key Assignment

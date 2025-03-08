@@ -177,7 +177,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 			);
 		}
 
-		// Hori Stopping
+		// Horizontal Stopping
 		if (VelocityX != 0) {
 			if (!Physics.RoomCheckOneway(CollisionMask, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left, true)) {
 				VelocityX = -VelocityX * BounceSpeedRate / 1000;
@@ -185,6 +185,11 @@ public abstract class Rigidbody : Entity, ICarrier {
 				var hits = Physics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityX > 0 ? Direction4.Right : Direction4.Left), out int count, this);
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
+					// Bumpable
+					if (hit.Entity is IBumpable bump) {
+						bump.TryPerformBump(this, true);
+					}
+					// Velocity Bounce
 					if (hit.Entity is not Rigidbody hitRig) {
 						VelocityX = -VelocityX * BounceSpeedRate / 1000;
 						break;
@@ -213,6 +218,11 @@ public abstract class Rigidbody : Entity, ICarrier {
 				var hits = Physics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityY > 0 ? Direction4.Up : Direction4.Down), out int count, this);
 				for (int i = 0; i < count; i++) {
 					var hit = hits[i];
+					// Bumpable
+					if (hit.Entity is IBumpable bump) {
+						bump.TryPerformBump(this, false);
+					}
+					// Velocity
 					if (hit.Entity is not Rigidbody hitRig) {
 						VelocityY = -VelocityY * BounceSpeedRate / 1000;
 						if (VelocityY > 0) {

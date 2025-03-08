@@ -1121,7 +1121,7 @@ public class CharacterMovement (Rigidbody rig) {
 		movement.IsGrabbingSide ? CharacterMovementState.GrabSide :
 		movement.IsRushing ? CharacterMovementState.Rush :
 		movement.IsDashing ? CharacterMovementState.Dash :
-		movement.IsSquatting ? (movement.IsMoving ? CharacterMovementState.SquatMove : CharacterMovementState.SquatIdle) :
+		movement.IsSquatting ? (movement.IsMoving && movement.SquatMoveSpeed != 0 ? CharacterMovementState.SquatMove : CharacterMovementState.SquatIdle) :
 		movement.SwimAvailable && movement.InWater && !movement.IsGrounded ? (movement.IsMoving ? CharacterMovementState.SwimMove : CharacterMovementState.SwimIdle) :
 		!movement.IsGrounded && !movement.InWater && !movement.IsClimbing ? (movement.VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown) :
 		movement.IsMoving && (movement.ShouldRun ? movement.RunSpeed : movement.WalkSpeed) != 0 ? (movement.ShouldRun && !movement.IsInsideGround ? CharacterMovementState.Run : CharacterMovementState.Walk) :
