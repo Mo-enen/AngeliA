@@ -46,10 +46,12 @@ public class CharacterMovement (Rigidbody rig) {
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpSpeed = new(73);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpReleaseSpeedRate = new(700);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpRiseGravityRate = new(600);
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpBoostFromMoveRate = new(500);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool FirstJumpWithRoll = new(false);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 1)] public readonly FrameBasedBool SubsequentJumpWithRoll = new(true);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool JumpBreakRush = new(false);
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool JumpBreakDash = new(true);
+	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool AllowSquatJump = new(false);
 	public readonly FrameBasedBool JumpDownThoughOneway = new(false);
 
 	[PropGroup("Squat")]
@@ -177,6 +179,7 @@ public class CharacterMovement (Rigidbody rig) {
 	private const int GRAB_DROP_CANCEL = 12;
 	private const int GRAB_TOP_CHECK_GAP = 128;
 	private const int CLIP_CORRECT_TOLERANCE = Const.CEL / 4;
+	private const int JUMP_BOOST_TOLERANCE = 12;
 
 	// Api
 	public readonly Rigidbody Target = rig;
@@ -266,6 +269,7 @@ public class CharacterMovement (Rigidbody rig) {
 	private bool GrabFlipUpLock = true;
 	private bool AllowGrabSideMoveUp = false;
 	private bool LockedFacingRight = true;
+	private bool SquatJumpping;
 	private bool OnSlippy;
 	private int? ClimbPositionCorrect = null;
 	private int LockedFacingFrame = int.MinValue;
@@ -390,6 +394,11 @@ public class CharacterMovement (Rigidbody rig) {
 		if (IsGrounded) LastGroundingFrame = frame;
 		if (!PrevGrounded && IsGrounded) LastGroundFrame = frame;
 		PrevGrounded = IsGrounded;
+
+		// Reset LastJumpIsSquatJump
+		if (SquatJumpping && IsGrounded && frame > RequireJumpFrame.GreaterOrEquel(LastJumpFrame) + JUMP_REQUIRE_TOLERANCE) {
+			SquatJumpping = false;
+		}
 
 		// Slip
 		OnSlippy = !InWater && Physics.Overlap(
@@ -562,7 +571,7 @@ public class CharacterMovement (Rigidbody rig) {
 		int growingHeight = TargetCharacter != null ? TargetCharacter.FinalCharacterHeight : MovementHeight;
 		int width = InWater ? MovementWidth * SwimWidthAmount / 1000 : MovementWidth;
 		int height =
-			IsSquatting ? growingHeight * SquatHeightAmount / 1000 :
+			IsSquatting || SquatJumpping ? growingHeight * SquatHeightAmount / 1000 :
 			IsRolling ? growingHeight * SquatHeightAmount / 1000 :
 			IsDashing ? growingHeight * DashHeightAmount / 1000 :
 			IsRushing ? growingHeight * RushHeightAmount / 1000 :
@@ -688,20 +697,27 @@ public class CharacterMovement (Rigidbody rig) {
 		int frame = Game.GlobalFrame;
 
 		bool movementAllowJump =
-			!IsSquatting && !IsGrabbingTop && !IsInsideGround &&
+			(AllowSquatJump || !IsSquatting) &&
+			!IsGrabbingTop && !IsInsideGround &&
 			(JumpBreakRush || !IsRushing) &&
 			(JumpBreakDash || !IsDashing) &&
-			!IsGrabFlipping && !IsCrashing;
+			!IsGrabFlipping && !IsCrashing &&
+			(!IsClimbing || AllowJumpWhenClimbing);
 
 		// Perform Jump/Fly
-		if (movementAllowJump && (!IsClimbing || AllowJumpWhenClimbing)) {
+		if (movementAllowJump) {
 			// Jump
 			if (CurrentJumpCount < JumpCount) {
 				// Jump
 				if (IntendedJump || frame < RequireJumpFrame + JUMP_REQUIRE_TOLERANCE) {
 					// Perform Jump
 					CurrentJumpCount++;
-					VelocityY = Util.Max(InWater ? SwimJumpSpeed : JumpSpeed, VelocityY);
+					int jumpSpeed = InWater ? SwimJumpSpeed : JumpSpeed;
+					if (IntendedX != 0) {
+						int boostFrame = (frame - LastStartMoveFrame).Clamp(0, JUMP_BOOST_TOLERANCE);
+						jumpSpeed += RunSpeed * JumpBoostFromMoveRate * boostFrame / 1000 / JUMP_BOOST_TOLERANCE;
+					}
+					VelocityY = Util.Max(jumpSpeed, VelocityY);
 					if (InWater) {
 						TargetCharacter?.Bounce();
 					}
@@ -818,9 +834,17 @@ public class CharacterMovement (Rigidbody rig) {
 			// Squat
 			case CharacterMovementState.SquatIdle:
 			case CharacterMovementState.SquatMove:
-				speed = IntendedX * SquatMoveSpeed;
-				acc = SquatAcceleration;
-				dcc = SquatDeceleration;
+				if (SquatJumpping) {
+					// Squat Jump
+					speed = IntendedX * RunSpeed;
+					acc = RunAcceleration;
+					dcc = RunDeceleration;
+				} else {
+					// Squat Move
+					speed = IntendedX * SquatMoveSpeed;
+					acc = SquatAcceleration;
+					dcc = SquatDeceleration;
+				}
 				break;
 
 			// Swim
@@ -1075,8 +1099,9 @@ public class CharacterMovement (Rigidbody rig) {
 	public virtual void HoldJump (bool holding) => HoldingJump = holding;
 
 
-	public virtual void Jump () {
+	public virtual void Jump (bool isSquatJump = false) {
 		IntendedJump = true;
+		SquatJumpping = isSquatJump;
 		RequireJumpFrame = Game.GlobalFrame;
 		Target.CancelMakeGrounded();
 	}
@@ -1123,7 +1148,7 @@ public class CharacterMovement (Rigidbody rig) {
 		movement.IsDashing ? CharacterMovementState.Dash :
 		movement.IsSquatting ? (movement.IsMoving && movement.SquatMoveSpeed != 0 ? CharacterMovementState.SquatMove : CharacterMovementState.SquatIdle) :
 		movement.SwimAvailable && movement.InWater && !movement.IsGrounded ? (movement.IsMoving ? CharacterMovementState.SwimMove : CharacterMovementState.SwimIdle) :
-		!movement.IsGrounded && !movement.InWater && !movement.IsClimbing ? (movement.VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown) :
+		movement.SquatJumpping ? CharacterMovementState.SquatIdle : !movement.IsGrounded && !movement.InWater && !movement.IsClimbing ? (movement.VelocityY > 0 ? CharacterMovementState.JumpUp : CharacterMovementState.JumpDown) :
 		movement.IsMoving && (movement.ShouldRun ? movement.RunSpeed : movement.WalkSpeed) != 0 ? (movement.ShouldRun && !movement.IsInsideGround ? CharacterMovementState.Run : CharacterMovementState.Walk) :
 		CharacterMovementState.Idle;
 	}

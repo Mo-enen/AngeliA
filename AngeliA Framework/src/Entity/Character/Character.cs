@@ -259,6 +259,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 			return;
 		}
 		// Update
+		IsGrounded = GroundedCheck();
 		BeforeUpdate_Inventory();
 		Buff.ApplyOnBeforeUpdate();
 		Rendering.BeforeUpdate();

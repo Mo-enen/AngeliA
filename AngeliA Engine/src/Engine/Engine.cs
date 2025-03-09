@@ -86,6 +86,7 @@ public partial class Engine {
 	private static readonly SavingInt WindowPositionX = new("Engine.WindowPosX", 128, SavingLocation.Global);
 	private static readonly SavingInt WindowPositionY = new("Engine.WindowPosY", 128, SavingLocation.Global);
 	private static readonly SavingInt LastOpenedWindowIndex = new("Engine.LastOpenedWindowIndex", 0, SavingLocation.Global);
+	private static readonly SavingInt ProjectSortIndex = new("Engine.ProjectSortIndex", 0, SavingLocation.Global);
 
 
 	#endregion
@@ -127,6 +128,8 @@ public partial class Engine {
 		}
 #endif
 
+		engine.ProjectSort = (ProjectSortMode)ProjectSortIndex.Value;
+
 		// Projects
 		engine.Projects.Clear();
 		if (ProjectPaths.Value == "#") {
@@ -135,7 +138,6 @@ public partial class Engine {
 			// Add Built-in Projects
 			foreach (var path in Util.EnumerateFolders(EngineUtil.BuiltInProjectRoot, true)) {
 				engine.Projects.Add(new ProjectData(
-					name: Util.GetNameWithoutExtension(path),
 					path: path,
 					folderExists: true,
 					lastOpenTime: Util.GetFolderModifyDate(path)
@@ -151,7 +153,6 @@ public partial class Engine {
 					path = System.IO.Path.GetFullPath(path, Universe.BuiltIn.UniverseRoot);
 				}
 				engine.Projects.Add(new ProjectData(
-					name: Util.GetNameWithoutExtension(path),
 					path: path,
 					folderExists: Util.FolderExists(path),
 					lastOpenTime: Util.GetFolderModifyDate(path)
@@ -160,6 +161,7 @@ public partial class Engine {
 		}
 		engine.RefreshProjectCache();
 		engine.SortProjects();
+		engine.RefreshAllProjectDisplayName();
 		SyncIconSpriteToMainSheet();
 
 		// Engine Window
@@ -318,6 +320,7 @@ public partial class Engine {
 			WindowPositionX.Value = windowPos.x;
 			WindowPositionY.Value = windowPos.y;
 		}
+		ProjectSortIndex.Value = (int)Instance.ProjectSort;
 		ProjectPaths.Value = Instance.Projects.JoinArray(p => p.Path, ';');
 		foreach (var win in Instance.AllWindows) win.OnInactivated();
 	}
@@ -911,7 +914,7 @@ public partial class Engine {
 			}
 		}
 		SortProjects();
-		Game.SetWindowTitle($"Project - {projectData.Name}");
+		Game.SetWindowTitle($"AngeliA Engine - {projectData.Name}");
 		Game.SetWindowIcon(projectData.IconID);
 
 		// Windows
@@ -1012,8 +1015,17 @@ public partial class Engine {
 			Close();
 		}
 		static void Close () {
+			if (Instance.CurrentProject != null) {
+				foreach (var pData in Instance.Projects) {
+					if (Util.IsSamePath(pData.Path, Instance.CurrentProject.ProjectPath)) {
+						pData.Name = Instance.CurrentProject.Universe.Info.ProductName;
+						break;
+					}
+				}
+			}
 			Instance.CurrentProject = null;
 			Instance.CurrentProjectData = null;
+			LastOpenProject.Value = "";
 			foreach (var ui in Instance.AllWindows) {
 				ui.Active = false;
 				ui.OnInactivated();
@@ -1031,7 +1043,7 @@ public partial class Engine {
 			PackageManager.Instance.SetCurrentProject(null);
 			ConsoleWindow.Instance.SetCurrentProject(null);
 			Game.SetWindowTitle("AngeliA Engine");
-			Game.SetWindowIcon(0);
+			Game.SetWindowIcon("WindowIcon".AngeHash());
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
 			Instance.Transceiver.Abort();
 		}

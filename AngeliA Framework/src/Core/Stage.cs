@@ -450,18 +450,20 @@ public static class Stage {
 	}
 
 
-	public static void SetViewRectImmediately (IRect newRect, bool remapAllRenderingCells = false) {
+	public static void SetViewRectImmediately (IRect newRect, bool remapAllRenderingCells = false, bool resetDelay = true) {
 
 		newRect.width = newRect.width.GreaterOrEquel(1);
 		newRect.height = newRect.height.GreaterOrEquel(1);
 
-		// Stop Delay
-		ViewDelayX.value = null;
-		ViewDelayY.value = null;
-		ViewDelayHeight.value = null;
-		ViewDelayX.priority = int.MinValue;
-		ViewDelayY.priority = int.MinValue;
-		ViewDelayHeight.priority = int.MinValue;
+		// Reset Delay
+		if (resetDelay) {
+			ViewDelayX.value = null;
+			ViewDelayY.value = null;
+			ViewDelayHeight.value = null;
+			ViewDelayX.priority = int.MinValue;
+			ViewDelayY.priority = int.MinValue;
+			ViewDelayHeight.priority = int.MinValue;
+		}
 
 		// Remap Rendering Cells
 		if (remapAllRenderingCells) {

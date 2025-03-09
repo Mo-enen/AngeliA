@@ -21,26 +21,12 @@ public static class PlayerSystem {
 	public static bool Enable { get; private set; } = false;
 	public static Character Selecting { get; private set; } = null;
 	public static Int3? RespawnCpUnitPosition { get; set; } = null;
-	public static Int3? HomeUnitPosition {
-		get {
-			if (
-				HomeUnitPositionX.Value == int.MinValue ||
-				HomeUnitPositionY.Value == int.MinValue ||
-				HomeUnitPositionZ.Value == int.MinValue
-			) return null;
-			return new Int3(HomeUnitPositionX.Value, HomeUnitPositionY.Value, HomeUnitPositionZ.Value);
-		}
+	public static Int3 HomeUnitPosition {
+		get => new(HomeUnitPositionX.Value, HomeUnitPositionY.Value, HomeUnitPositionZ.Value);
 		set {
-			if (value.HasValue) {
-				HomeUnitPositionX.Value = value.Value.x;
-				HomeUnitPositionY.Value = value.Value.y;
-				HomeUnitPositionZ.Value = value.Value.z;
-			} else {
-				HomeUnitPositionX.Value = int.MinValue;
-				HomeUnitPositionY.Value = int.MinValue;
-				HomeUnitPositionZ.Value = int.MinValue;
-			}
-
+			HomeUnitPositionX.Value = value.x;
+			HomeUnitPositionY.Value = value.y;
+			HomeUnitPositionZ.Value = value.z;
 		}
 	}
 	public static bool AllowPlayerMenuUI => Selecting != null && Selecting.InventoryType != CharacterInventoryType.None && Game.GlobalFrame > IgnorePlayerMenuFrame;
@@ -75,9 +61,9 @@ public static class PlayerSystem {
 
 	// Saving
 	private static readonly SavingInt SelectingPlayerID = new("Player.SelectingPlayerID", 0, SavingLocation.Slot);
-	private static readonly SavingInt HomeUnitPositionX = new("Player.HomeX", int.MinValue, SavingLocation.Slot);
-	private static readonly SavingInt HomeUnitPositionY = new("Player.HomeY", int.MinValue, SavingLocation.Slot);
-	private static readonly SavingInt HomeUnitPositionZ = new("Player.HomeZ", int.MinValue, SavingLocation.Slot);
+	private static readonly SavingInt HomeUnitPositionX = new("Player.HomeX", 0, SavingLocation.Slot);
+	private static readonly SavingInt HomeUnitPositionY = new("Player.HomeY", 0, SavingLocation.Slot);
+	private static readonly SavingInt HomeUnitPositionZ = new("Player.HomeZ", 0, SavingLocation.Slot);
 
 
 	#endregion
@@ -287,7 +273,11 @@ public static class PlayerSystem {
 		if (Input.GameKeyDown(Gamekey.Jump)) {
 			// Movement Jump
 			if (Input.GameKeyHolding(Gamekey.Down)) {
-				mov.Dash();
+				if (mov.DashAvailable) {
+					mov.Dash();
+				} else if (mov.AllowSquatJump) {
+					mov.Jump(isSquatJump: true);
+				}
 			} else {
 				mov.Jump();
 				if (att.CancelAttackOnJump) att.CancelAttack();
@@ -558,11 +548,14 @@ public static class PlayerSystem {
 
 		// Clamp
 		if (!Stage.ViewRect.Contains(Selecting.X, Selecting.Y)) {
-			if (Selecting.X >= Stage.ViewRect.xMax) AimViewX = Selecting.X - Stage.ViewRect.width + 1;
-			if (Selecting.X <= Stage.ViewRect.xMin) AimViewX = Selecting.X - 1;
-			if (Selecting.Y >= Stage.ViewRect.yMax) AimViewY = Selecting.Y - Stage.ViewRect.height + 1;
-			if (Selecting.Y <= Stage.ViewRect.yMin) AimViewY = Selecting.Y - 1;
-			Stage.SetViewPositionDelay(AimViewX, AimViewY, 1000, int.MinValue + 1);
+			var viewRect = Stage.ViewRect;
+			if (Selecting.X >= viewRect.xMax) AimViewX = Selecting.X - viewRect.width + 1;
+			if (Selecting.X <= viewRect.xMin) AimViewX = Selecting.X - 1;
+			if (Selecting.Y >= viewRect.yMax) AimViewY = Selecting.Y - viewRect.height + 1;
+			if (Selecting.Y <= viewRect.yMin) AimViewY = Selecting.Y - 1;
+			viewRect.x = AimViewX;
+			viewRect.y = AimViewY;
+			Stage.SetViewRectImmediately(viewRect, resetDelay: false);
 		}
 
 	}
@@ -766,23 +759,9 @@ public static class PlayerSystem {
 		if (RespawnCpUnitPosition.HasValue) {
 			// CP Respawn Pos
 			result = RespawnCpUnitPosition.Value;
-		} else if (HomeUnitPosition.HasValue) {
-			// Home Pos
-			result = new Int3(
-				HomeUnitPosition.Value.x,
-				HomeUnitPosition.Value.y,
-				HomeUnitPosition.Value.z
-			);
-		} else if (Selecting != null && Selecting.Active) {
-			// Player
-			result = new Int3(
-				Selecting.X.ToUnit(),
-				Selecting.Y.ToUnit(),
-				Stage.ViewZ
-			);
 		} else {
-			// Fail
-			result = default;
+			// Home Pos
+			result = HomeUnitPosition;
 		}
 		return result;
 	}

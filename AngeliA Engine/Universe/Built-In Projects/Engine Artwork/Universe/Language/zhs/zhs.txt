@@ -1,4 +1,7 @@
-﻿AtlasType.Background:背景
+﻿UI.MovementProp.JumpBreakRush:跳跃打断突进
+UI.MovementProp.JumpBreakDash:跳跃打断冲刺
+UI.MovementProp.AllowSquatJump:允许蹲跳
+AtlasType.Background:背景
 AtlasType.General:通用
 AtlasType.Level:关卡
 ConsoleWindow:终 端

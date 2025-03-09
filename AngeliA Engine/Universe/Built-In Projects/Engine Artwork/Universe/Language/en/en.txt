@@ -1,4 +1,7 @@
-﻿AtlasType.Background:Background
+﻿UI.MovementProp.JumpBreakRush:Jump Break Rush
+UI.MovementProp.JumpBreakDash:Jump Break Dash
+UI.MovementProp.AllowSquatJump:Allow Squat Jump
+AtlasType.Background:Background
 AtlasType.General:General
 AtlasType.Level:Level
 ConsoleWindow:Console

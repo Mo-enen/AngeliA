@@ -22,6 +22,7 @@ public sealed class WorldSquad : IBlockSquad {
 	[AfterLevelRendered] internal static System.Action AfterLevelRendered;
 	[OnWorldCreatedBySquad_World] internal static System.Action<World> OnWorldCreated;
 	[OnWorldLoadedBySquad_World] internal static System.Action<World> OnWorldLoaded;
+	private static readonly Dictionary<int, int> BlockRedirect = [];
 	private static WorldStream Stream = null;
 	private static byte WorldBehindAlpha;
 	private static int WorldBehindParallax;
@@ -79,8 +80,11 @@ public sealed class WorldSquad : IBlockSquad {
 
 	[OnSavingSlotChanged]
 	internal static void OnSavingSlotChanged () {
+		BlockRedirect.Clear();
 		// Reset Stream
-		Stream?.SaveAllDirty();
+		if (!ReadonlyMap) {
+			Stream?.SaveAllDirty();
+		}
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
 		Stream.UseBuiltInAsFailback = !Universe.BuiltInInfo.UseProceduralMap;
 		Stream.ClearWorldPool();
@@ -139,10 +143,14 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	// Set Block
-	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) {
-		if (ReadonlyMap) return;
-		Stream.SetBlockAt(unitX, unitY, z, type, newID);
-	}
+	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) => Stream.SetBlockAt(unitX, unitY, z, type, newID);
+
+
+	// Redirect
+	public static void AddBlockRedirect (int fromID, int toID) => BlockRedirect[fromID] = toID;
+
+
+	public static bool RemoveBlockRedirect (int fromID) => BlockRedirect.Remove(fromID);
 
 
 	#endregion
@@ -331,6 +339,7 @@ public sealed class WorldSquad : IBlockSquad {
 
 	// Draw
 	private void DrawBackgroundBlock (int id, int unitX, int unitY) {
+		if (BlockRedirect.TryGetValue(id, out int newID)) id = newID;
 		if (!Renderer.TryGetSprite(id, out var sp, false)) return;
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 		// Shift Pivot
@@ -348,6 +357,7 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	private void DrawLevelBlock (int id, int unitX, int unitY) {
+		if (BlockRedirect.TryGetValue(id, out int newID)) id = newID;
 		if (!Renderer.TryGetSprite(id, out var sp, false)) return;
 		var rect = new IRect(unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL);
 		// Shift Pivot
@@ -373,6 +383,8 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	private void DrawBehind (int id, int unitX, int unitY, bool fixRatio) {
+
+		if (BlockRedirect.TryGetValue(id, out int newID)) id = newID;
 
 		if (
 			!Renderer.TryGetSprite(id, out var sprite) &&

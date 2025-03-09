@@ -14,11 +14,13 @@ public abstract class Conveyor : Entity, IBlockEntity {
 	protected abstract int ArtCodeMid { get; }
 	protected abstract int ArtCodeRight { get; }
 	protected abstract int ArtCodeSingle { get; }
+	private int CurrentAnimationFrame = 0;
 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
 		Pose = FittingPose.Unknown;
+		CurrentAnimationFrame = 0;
 	}
 
 	void IBlockEntity.OnEntityRefresh () => Pose = FittingPose.Unknown;
@@ -51,8 +53,9 @@ public abstract class Conveyor : Entity, IBlockEntity {
 			ReloadPose(out _);
 		}
 
-		int aFrame = (Game.GlobalFrame * Util.Abs(MoveSpeed) / 16).UMod(8);
-		if (MoveSpeed > 0) aFrame = 7 - aFrame;
+		CurrentAnimationFrame -= MoveSpeed;
+		int aFrame = (CurrentAnimationFrame / 16).UMod(8);
+
 		if (Renderer.TryGetSpriteFromGroup(
 			Pose switch {
 				FittingPose.Left => ArtCodeLeft,
@@ -70,7 +73,7 @@ public abstract class Conveyor : Entity, IBlockEntity {
 	protected void ReloadPose (out bool sameBlockID) {
 		int unitX = (X + 1).ToUnit();
 		int unitY = (Y + 1).ToUnit();
-		int idM = WorldSquad.Front.GetBlockAt(unitX, unitY, BlockType.Entity);
+		int idM = TypeID;
 		int idL = WorldSquad.Front.GetBlockAt(unitX - 1, unitY, BlockType.Entity);
 		int idR = WorldSquad.Front.GetBlockAt(unitX + 1, unitY, BlockType.Entity);
 		bool hasLeft = idL == idM;

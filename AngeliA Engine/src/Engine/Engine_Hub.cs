@@ -13,8 +13,8 @@ public partial class Engine {
 	#region --- SUB ---
 
 
-	private class ProjectData (string name, string path, bool folderExists, long lastOpenTime) {
-		public string Name = name;
+	private class ProjectData (string path, bool folderExists, long lastOpenTime) {
+		public string Name = "";
 		public string Path = path;
 		public bool FolderExists = folderExists;
 		public long LastOpenTime = lastOpenTime;
@@ -22,7 +22,7 @@ public partial class Engine {
 	}
 
 
-	private enum ProjectSortMode { Name, OpenTime, }
+	private enum ProjectSortMode { OpenTime, Name, }
 
 
 	#endregion
@@ -201,7 +201,7 @@ public partial class Engine {
 					// Name
 					GUI.SmallLabel(
 						itemContentRect.Shrink(itemContentRect.height + padding, 0, itemContentRect.height / 2, 0),
-						Util.GetNameWithoutExtension(projectPath)
+						project.Name
 					);
 
 					// Path
@@ -290,7 +290,6 @@ public partial class Engine {
 		// Add to Path List
 		long time = Util.GetLongTime();
 		var item = new ProjectData(
-			name: Util.GetNameWithoutExtension(path),
 			path: path,
 			folderExists: true,
 			lastOpenTime: time
@@ -299,6 +298,21 @@ public partial class Engine {
 		Projects.Add(item);
 		SortProjects();
 		SyncIconSpriteToMainSheet();
+		RefreshAllProjectDisplayName();
+	}
+
+
+	private void RefreshAllProjectDisplayName () {
+		foreach (var projectData in Projects) {
+			if (!string.IsNullOrEmpty(projectData.Name)) continue;
+			string infoPath = AngePath.GetUniverseInfoPath(AngePath.GetUniverseRoot(projectData.Path));
+			var info = JsonUtil.LoadJsonFromPath<UniverseInfo>(infoPath);
+			if (info != null) {
+				projectData.Name = info.ProductName;
+			} else {
+				projectData.Name = Util.GetNameWithoutExtension(projectData.Path);
+			}
+		}
 	}
 
 

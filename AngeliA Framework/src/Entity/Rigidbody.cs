@@ -13,7 +13,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 	// Api
 	public override IRect Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
-	public bool IsGrounded { get; private set; } = false;
+	public bool IsGrounded { get; protected set; } = false;
 	public bool IsInsideGround { get; private set; } = false;
 	public bool InWater => InWaterHit.Rect != default;
 	public int VelocityX { get; set; } = 0;
@@ -183,12 +183,14 @@ public abstract class Rigidbody : Entity, ICarrier {
 				VelocityX = -VelocityX * BounceSpeedRate / 1000;
 			} else {
 				var hits = Physics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityX > 0 ? Direction4.Right : Direction4.Left), out int count, this);
+				// Bumpable
 				for (int i = 0; i < count; i++) {
-					var hit = hits[i];
-					// Bumpable
-					if (hit.Entity is IBumpable bump) {
+					if (hits[i].Entity is IBumpable bump) {
 						bump.TryPerformBump(this, true);
 					}
+				}
+				for (int i = 0; i < count; i++) {
+					var hit = hits[i];
 					// Velocity Bounce
 					if (hit.Entity is not Rigidbody hitRig) {
 						VelocityX = -VelocityX * BounceSpeedRate / 1000;
@@ -216,12 +218,14 @@ public abstract class Rigidbody : Entity, ICarrier {
 				}
 			} else {
 				var hits = Physics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityY > 0 ? Direction4.Up : Direction4.Down), out int count, this);
+				// Bumpable
 				for (int i = 0; i < count; i++) {
-					var hit = hits[i];
-					// Bumpable
-					if (hit.Entity is IBumpable bump) {
+					if (hits[i].Entity is IBumpable bump) {
 						bump.TryPerformBump(this, false);
 					}
+				}
+				for (int i = 0; i < count; i++) {
+					var hit = hits[i];
 					// Velocity
 					if (hit.Entity is not Rigidbody hitRig) {
 						VelocityY = -VelocityY * BounceSpeedRate / 1000;

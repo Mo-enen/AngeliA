@@ -273,7 +273,7 @@ public class RigRespondMessage {
 
 		// View
 		var info = universe.Info;
-		ViewHeight = ViewHeight.GreaterOrEquel(info.MinViewHeight);
+		//ViewHeight = ViewHeight.GreaterOrEquel(info.MinViewHeight);
 		int oldViewHeight = Stage.ViewRect.height;
 		var engineViewRect = new IRect(ViewX, ViewY, ViewWidth, ViewHeight);
 		Stage.SetViewRectImmediately(engineViewRect, remapAllRenderingCells: true);

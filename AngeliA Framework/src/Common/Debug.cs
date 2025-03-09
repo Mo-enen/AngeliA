@@ -57,7 +57,11 @@ public static class Debug {
 
 	public static void LogLabel (params object[] objs) {
 		foreach (var obj in objs) {
-			LogLabel(obj.ToString());
+			if (obj == null) {
+				LogLabel("(null)");
+			} else {
+				LogLabel(obj.ToString());
+			}
 		}
 	}
 	public static void LogLabel (object obj) => LogLabel(obj.ToString());

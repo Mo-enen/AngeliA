@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+namespace AngeliA.Platformer;
 
 public abstract class VehicleMovement : CharacterMovement {
 
@@ -71,8 +72,8 @@ public abstract class VehicleMovement : CharacterMovement {
 		VelocityX = 0;
 	}
 
-	public override void Jump () {
-		if (JumpCount > 0) base.Jump();
+	public override void Jump (bool isSquatJump = false) {
+		if (JumpCount > 0) base.Jump(isSquatJump);
 	}
 
 	public override void HoldJump (bool holding) {
