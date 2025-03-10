@@ -24,9 +24,9 @@ public abstract class DonutBlock : Entity, IBlockEntity {
 	protected virtual int FallingVelocity => 24;
 	protected bool IsFalling { get; private set; } = false;
 	protected bool IsHolding { get; private set; } = false;
+	protected int HoldStartFrame { get; private set; } = int.MaxValue;
 
 	// Data
-	private int HoldStartFrame = int.MaxValue;
 	private bool LastHolding = false;
 
 
@@ -51,8 +51,14 @@ public abstract class DonutBlock : Entity, IBlockEntity {
 		int frame = Game.GlobalFrame;
 		var rect = Rect;
 
-		// Fall Check
-		if (!IsFalling) {
+		if (IsFalling) {
+			// Falling
+			IsHolding = false;
+			LastHolding = false;
+			Y -= FallingVelocity;
+			ICarrier.CarryTargetsOnTopVertically(this, -FallingVelocity, OperationMode.ColliderAndTrigger);
+		} else {
+			// Idle
 			IsHolding = !Physics.RoomCheck(PhysicsMask.CHARACTER, rect, this, Direction4.Up);
 			if (IsHolding) {
 				if (!LastHolding) HoldStartFrame = frame;
@@ -61,11 +67,7 @@ public abstract class DonutBlock : Entity, IBlockEntity {
 				}
 			}
 			LastHolding = IsHolding;
-		} else {
-			IsHolding = false;
-			LastHolding = false;
 		}
-
 		// Break Check
 		if (IsFalling) {
 			switch (BreakCondition) {
@@ -83,7 +85,6 @@ public abstract class DonutBlock : Entity, IBlockEntity {
 					break;
 				}
 			}
-			Y -= FallingVelocity;
 		}
 
 		base.Update();

@@ -14,13 +14,11 @@ public abstract class Conveyor : Entity, IBlockEntity {
 	protected abstract int ArtCodeMid { get; }
 	protected abstract int ArtCodeRight { get; }
 	protected abstract int ArtCodeSingle { get; }
-	private int CurrentAnimationFrame = 0;
 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
 		Pose = FittingPose.Unknown;
-		CurrentAnimationFrame = 0;
 	}
 
 	void IBlockEntity.OnEntityRefresh () => Pose = FittingPose.Unknown;
@@ -50,11 +48,10 @@ public abstract class Conveyor : Entity, IBlockEntity {
 		base.LateUpdate();
 
 		if (Pose == FittingPose.Unknown) {
-			ReloadPose(out _);
+			ReloadPose();
 		}
 
-		CurrentAnimationFrame -= MoveSpeed;
-		int aFrame = (CurrentAnimationFrame / 16).UMod(8);
+		int aFrame = (Game.GlobalFrame * MoveSpeed / -16).UMod(8);
 
 		if (Renderer.TryGetSpriteFromGroup(
 			Pose switch {
@@ -70,20 +67,25 @@ public abstract class Conveyor : Entity, IBlockEntity {
 	}
 
 	// LGC
-	protected void ReloadPose (out bool sameBlockID) {
-		int unitX = (X + 1).ToUnit();
-		int unitY = (Y + 1).ToUnit();
-		int idM = TypeID;
-		int idL = WorldSquad.Front.GetBlockAt(unitX - 1, unitY, BlockType.Entity);
-		int idR = WorldSquad.Front.GetBlockAt(unitX + 1, unitY, BlockType.Entity);
-		bool hasLeft = idL == idM;
-		bool hasRight = idR == idM;
+	protected void ReloadPose () {
+		bool hasLeft;
+		bool hasRight;
+		if (FromWorld) {
+			int unitX = (X + 1).ToUnit();
+			int unitY = (Y + 1).ToUnit();
+			int idL = WorldSquad.Front.GetBlockAt(unitX - 1, unitY, BlockType.Entity);
+			int idR = WorldSquad.Front.GetBlockAt(unitX + 1, unitY, BlockType.Entity);
+			hasLeft = idL == TypeID;
+			hasRight = idR == TypeID;
+		} else {
+			hasLeft = Physics.GetEntity(TypeID, Rect.EdgeOutsideLeft(1), PhysicsMask.MAP, this) != null;
+			hasRight = Physics.GetEntity(TypeID, Rect.EdgeOutsideRight(1), PhysicsMask.MAP, this) != null;
+		}
 		Pose =
 			hasLeft && hasRight ? FittingPose.Mid :
 			hasLeft && !hasRight ? FittingPose.Right :
 			!hasLeft && hasRight ? FittingPose.Left :
 			FittingPose.Single;
-		sameBlockID = idM == TypeID;
 	}
 
 }

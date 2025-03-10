@@ -32,7 +32,7 @@ public class MarioWallpaper : Wallpaper {
 	[OnGameUpdatePauseless]
 	internal static void OnGameUpdatePauseless () {
 		if (MapEditor.IsEditing) {
-			Sky.ForceSkyboxTint(new Color32(63, 70, 162), new Color32(83, 105, 201));
+			Sky.ForceSkyboxTint(new Color32(63, 70, 162));
 		} else {
 			Sky.ForceSkyboxTint(new Color32(118, 133, 253));
 		}
@@ -40,6 +40,8 @@ public class MarioWallpaper : Wallpaper {
 
 
 	protected override void DrawBackground (IRect backgroundRect) {
+
+		if (MapEditor.IsEditing) return;
 
 		// Cloud
 		if (Renderer.TryGetSpriteGroup(CLOUD_SP, out var cloudGroup)) {

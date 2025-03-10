@@ -95,6 +95,7 @@ public sealed partial class MapEditor : WindowUI {
 	public static bool IsActived => Instance != null && Instance.Active;
 	public static bool IsEditing => IsActived && !Instance.PlayingGame;
 	public static bool IsPlaying => IsActived && Instance.PlayingGame;
+	public static bool IsEditorNavigating => Instance != null && Instance.IsNavigating;
 	public static bool ResetCameraAtStart { get; set; } = true;
 	public static bool QuickPlayerDrop { get; set; } = false;
 	public static bool ShowState { get; set; } = false;

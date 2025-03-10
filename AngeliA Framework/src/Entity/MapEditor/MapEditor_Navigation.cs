@@ -9,7 +9,6 @@ public partial class MapEditor {
 	// VAR
 	private const int NAV_UNIT_RANGE = 10 * Const.MAP;
 	private IRect NavWorldDoodledUnitRange;
-	private Color32 BackgroundColor;
 	private int NavWorldDoodledZ = int.MinValue;
 	private int WindowSizeChangedFrame = int.MinValue;
 	private bool NavPrevHolderMouseLeft = false;
@@ -39,7 +38,8 @@ public partial class MapEditor {
 		if (TaskingRoute) return;
 
 		// BG
-		Sky.ForceSkyboxTint(BackgroundColor);
+		//BackgroundColor = Color32.Lerp(Sky.SkyTintTopColor, Sky.SkyTintBottomColor, 0.5f);
+		//Sky.ForceSkyboxTint(BackgroundColor);
 
 		// Switch Mode Hotkey
 		if (Input.KeyboardDown(KeyboardKey.Tab)) {
@@ -207,7 +207,7 @@ public partial class MapEditor {
 		var unitRect = new IRect(unitX, unitY, unitRangeW, unitRangeH);
 		float screenOffsetX = (float)unitRect.x * gameScreenH / unitRangeH;
 		float screenOffsetY = (float)unitRect.y * gameScreenH / unitRangeH;
-		var bgColor = BackgroundColor;
+		var bgColor = Color32.Lerp(Sky.SkyTintTopColor, Sky.SkyTintBottomColor, 0.5f);
 		bool inTransition = Game.GlobalFrame < TransitionFrame + TransitionDuration;
 
 		Game.ShowDoodle();
@@ -314,9 +314,6 @@ public partial class MapEditor {
 		NavPrevHolderMouseLeft = false;
 		NavMouseLeftDragged = false;
 		if (navigating) {
-			var topColor = Sky.GradientTop.Evaluate(Sky.InGameDaytime01);
-			var bottomColor = Sky.GradientBottom.Evaluate(Sky.InGameDaytime01);
-			BackgroundColor = Color32.Lerp(topColor, bottomColor, 0.5f);
 			NavWorldDoodledZ = int.MinValue;
 			Game.ResetDoodle();
 			Save();

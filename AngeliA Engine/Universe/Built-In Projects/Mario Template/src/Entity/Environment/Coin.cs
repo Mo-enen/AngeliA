@@ -8,7 +8,7 @@ public class Coin : Entity, IBumpable {
 
 	// VAR
 	public static readonly int TYPE_ID = typeof(Coin).AngeHash();
-
+	public static int CurrentCoinCount { get; private set; } = 0;
 	int IBumpable.LastBumpedFrame { get; set; }
 	Direction4 IBumpable.LastBumpFrom { get; set; }
 
@@ -42,8 +42,8 @@ public class Coin : Entity, IBumpable {
 	}
 
 	public static void Collect (int count) {
+		CurrentCoinCount++;
 
-		// TODO
 
 	}
 

@@ -547,16 +547,16 @@ public static class PlayerSystem {
 		Stage.SetViewSizeDelay(TargetViewHeight, 96, int.MinValue, centralized: true);
 
 		// Clamp
-		if (!Stage.ViewRect.Contains(Selecting.X, Selecting.Y)) {
-			var viewRect = Stage.ViewRect;
-			if (Selecting.X >= viewRect.xMax) AimViewX = Selecting.X - viewRect.width + 1;
-			if (Selecting.X <= viewRect.xMin) AimViewX = Selecting.X - 1;
-			if (Selecting.Y >= viewRect.yMax) AimViewY = Selecting.Y - viewRect.height + 1;
-			if (Selecting.Y <= viewRect.yMin) AimViewY = Selecting.Y - 1;
-			viewRect.x = AimViewX;
-			viewRect.y = AimViewY;
-			Stage.SetViewRectImmediately(viewRect, resetDelay: false);
-		}
+		//if (!Stage.ViewRect.Contains(Selecting.X, Selecting.Y)) {
+		//	var viewRect = Stage.ViewRect;
+		//	if (Selecting.X >= viewRect.xMax) AimViewX = Selecting.X - viewRect.width + 1;
+		//	if (Selecting.X <= viewRect.xMin) AimViewX = Selecting.X - 1;
+		//	if (Selecting.Y >= viewRect.yMax) AimViewY = Selecting.Y - viewRect.height + 1;
+		//	if (Selecting.Y <= viewRect.yMin) AimViewY = Selecting.Y - 1;
+		//	viewRect.x = AimViewX;
+		//	viewRect.y = AimViewY;
+		//	Stage.SetViewRectImmediately(viewRect, resetDelay: false);
+		//}
 
 	}
 

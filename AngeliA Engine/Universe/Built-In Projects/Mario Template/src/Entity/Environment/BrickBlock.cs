@@ -4,7 +4,8 @@ using AngeliA;
 
 namespace MarioTemplate;
 
-public class BrickBlock : Entity, IBumpable {
+[NoItemCombination]
+public class BrickBlock : Entity, IBumpable, IBlockEntity {
 
 	// VAR
 	private static readonly SpriteCode REVEALED_SP = "RevealedBlock";
@@ -12,6 +13,7 @@ public class BrickBlock : Entity, IBumpable {
 	public static readonly int TYPE_ID = typeof(BrickBlock).AngeHash();
 	int IBumpable.LastBumpedFrame { get; set; }
 	Direction4 IBumpable.LastBumpFrom { get; set; }
+	bool IBlockEntity.EmbedEntityAsElement => true;
 	private bool IsCoin => SpawnItemStartFrame < 0 && PSwitch.Triggering;
 
 	private int ItemInside;
@@ -21,12 +23,7 @@ public class BrickBlock : Entity, IBumpable {
 	public override void OnActivated () {
 		base.OnActivated();
 		SpawnItemStartFrame = int.MinValue;
-		// Item Inside
-		ItemInside = WorldSquad.Front.GetBlockAt((X + 1).ToUnit(), (Y + 1).ToUnit(), Stage.ViewZ, BlockType.Element);
-		if (!Stage.IsValidEntityID(ItemInside)) {
-			ItemInside = 0;
-		}
-
+		ItemInside = MarioUtil.GetEmbedItemID(Rect);
 	}
 
 	public override void FirstUpdate () {
@@ -73,16 +70,8 @@ public class BrickBlock : Entity, IBumpable {
 				}
 				// Spawn
 				if (ItemInside != 0 && Game.GlobalFrame == SpawnItemStartFrame + RISE_DUR) {
-					var entity = Stage.SpawnEntity(ItemInside, X, Y + Height);
-					if (entity != null) {
-						var eRect = entity.Rect;
-						entity.X += X + Width / 2 - eRect.CenterX();
-						entity.Y += Y + Height - eRect.y;
-					}
+					MarioUtil.SpawnEmbedItem(ItemInside, Rect, Direction4.Up);
 					ItemInside = 0;
-					WorldSquad.Front.SetBlockAt(
-						(X + 1).ToUnit(), (Y + 1).ToUnit(), Stage.ViewZ, BlockType.Element, 0
-					);
 				}
 			}
 		}
