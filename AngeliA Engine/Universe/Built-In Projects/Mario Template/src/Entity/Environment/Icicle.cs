@@ -26,6 +26,11 @@ public class Icicle : Rigidbody {
 		}
 	}
 
+	public override void FirstUpdate () {
+		base.FirstUpdate();
+		Physics.FillBlock(PhysicsLayer.ENVIRONMENT, TypeID, Rect.EdgeInsideUp(Const.CEL), true, Tag.OnewayUp);
+	}
+
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
 		FillAsTrigger(1);
