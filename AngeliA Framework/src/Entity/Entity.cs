@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-[EntityAttribute.Capacity(1024, 0)]
+[EntityAttribute.Capacity(4096, 0)]
 [EntityAttribute.MapEditorGroup("Entity")]
 [EntityAttribute.Layer(EntityLayer.GAME)]
 public abstract class Entity : IMapItem {

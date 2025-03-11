@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AngeliA;
 using AngeliA.Platformer;
 
-namespace AngeliaGame;
+namespace MarioTemplate;
 
 [EntityAttribute.Capacity(1, 1)]
 [EntityAttribute.StageOrder(4096)]

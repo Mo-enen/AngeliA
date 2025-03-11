@@ -5,7 +5,6 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 [EntityAttribute.MapEditorGroup("Furniture")]
-[EntityAttribute.Capacity(32)]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Furniture : Entity, IBlockEntity {
 

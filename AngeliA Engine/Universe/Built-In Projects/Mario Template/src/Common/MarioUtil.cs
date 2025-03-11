@@ -10,15 +10,15 @@ public static class MarioUtil {
 	public static int CurrentScore { get; private set; } = 0;
 	public static int CurrentMajorLevel { get; private set; } = 1;
 	public static int CurrentMinorLevel { get; private set; } = 1;
-	public static string CurrentLevelLabel { get; private set; } = "1-1";
+	private static readonly SpriteCode SPIN_COIN_SP = "CoinSpin";
 
 	// API
 	public static int GetEmbedItemID (IRect sourceRect) {
 		int id = WorldSquad.Front.GetBlockAt(
 			(sourceRect.x + 1).ToUnit(), (sourceRect.y + 1).ToUnit(), Stage.ViewZ, BlockType.Element
 		);
-		if (!Stage.IsValidEntityID(id) && !ItemSystem.HasItem(id)) {
-			id = 0;
+		if (id == 0 || (!Stage.IsValidEntityID(id) && !ItemSystem.HasItem(id))) {
+			id = Coin.TYPE_ID;
 		}
 		return id;
 	}
@@ -64,10 +64,7 @@ public static class MarioUtil {
 
 	public static void ResetScore () => CurrentScore = 0;
 
-	public static void SetLevelCount (int major, int minor) {
-		(CurrentMajorLevel, CurrentMinorLevel) = (major, minor);
-		CurrentLevelLabel = $"{major}-{minor}";
-	}
+	public static void SetLevelCount (int major, int minor) => (CurrentMajorLevel, CurrentMinorLevel) = (major, minor);
 
 	public static void InitMovementForMarioGame (CharacterMovement movement) {
 
@@ -119,6 +116,54 @@ public static class MarioUtil {
 		movement.CrashAvailable.BaseValue = false;
 		movement.PushAvailable.BaseValue = false;
 
+	}
+
+	public static void UpdateForBumpToSpawnItem (IRect sourceRect, int itemInside, int spawnItemStartFrame) {
+
+		const int RISE_DUR = 24;
+		if (spawnItemStartFrame < 0 || Game.GlobalFrame > spawnItemStartFrame + RISE_DUR) return;
+
+		if (itemInside == Coin.TYPE_ID) {
+			// For Coin
+			// Bounce Animation
+			if (Renderer.TryGetSprite(SPIN_COIN_SP, out var iconSp, ignoreAnimation: false)) {
+				int offsetY = Util.RemapUnclamped(
+					0, RISE_DUR / 2,
+					0, sourceRect.height * 3,
+					(Game.GlobalFrame - spawnItemStartFrame).PingPong(RISE_DUR * 2 / 3)
+				);
+				var coinRect = sourceRect.Shift(0, offsetY);
+				var cell = Renderer.Draw(iconSp, coinRect);
+				coinRect.yMin = sourceRect.yMax;
+				cell.Clamp(coinRect);
+			}
+			// Collect Coin
+			if (itemInside != 0) {
+				if (Game.GlobalFrame == spawnItemStartFrame + 1) {
+					Coin.Collect(1);
+					WorldSquad.Front.SetBlockAt(
+						(sourceRect.x + 1).ToUnit(), (sourceRect.y + 1).ToUnit(), Stage.ViewZ, BlockType.Element, 0
+					);
+				} else if (Game.GlobalFrame == spawnItemStartFrame + RISE_DUR) {
+					itemInside = 0;
+				}
+			}
+		} else {
+			// For Entity
+			// Rise Animation
+			if (Renderer.TryGetSpriteForGizmos(itemInside, out var iconSp)) {
+				Renderer.Draw(iconSp, sourceRect.Shift(0, Util.RemapUnclamped(
+					spawnItemStartFrame, spawnItemStartFrame + RISE_DUR,
+					0, sourceRect.height,
+					Game.GlobalFrame
+				)));
+			}
+			// Spawn
+			if (itemInside != 0 && Game.GlobalFrame == spawnItemStartFrame + RISE_DUR) {
+				MarioUtil.SpawnEmbedItem(itemInside, sourceRect, Direction4.Up);
+				itemInside = 0;
+			}
+		}
 	}
 
 }

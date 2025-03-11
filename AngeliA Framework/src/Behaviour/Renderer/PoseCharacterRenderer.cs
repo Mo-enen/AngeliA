@@ -621,10 +621,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 			using var _ = new RotateCellScope(bodyPart.RotateWithBody ? Body.Rotation : 0, Body.GlobalX, Body.GlobalY);
 
-
-
-
-
 			if (bodyPart == Head && Renderer.TryGetSpriteFromGroup(bodyPart.ID, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
 				Renderer.Draw(
 					headSprite,

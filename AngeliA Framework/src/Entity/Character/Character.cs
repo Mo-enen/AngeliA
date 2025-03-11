@@ -428,8 +428,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 		bool blinking = Health.IsInvincible && !Health.TakingDamage && (Game.GlobalFrame - Health.InvincibleEndFrame).UMod(8) < 4;
 
-		bool colorFlash = Health.TakingDamage && Health.HP > 0 && (Game.GlobalFrame - Health.LastDamageFrame).UMod(8) < 4;
-		RenderingCellIndex = colorFlash ? -1 : Renderer.GetUsedCellCount(RenderLayer.DEFAULT); ;
+		bool colorFlash = Health.TakingDamage && Health.HP >= 0 && (Game.GlobalFrame - Health.LastDamageFrame).UMod(8) < 4;
+		RenderingCellIndex = colorFlash ? -1 : Renderer.GetUsedCellCount(RenderLayer.DEFAULT);
 		using var _ = new LayerScope(colorFlash ? RenderLayer.COLOR : RenderLayer.DEFAULT);
 		int cellIndexStart = Renderer.GetUsedCellCount();
 

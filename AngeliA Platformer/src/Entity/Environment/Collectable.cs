@@ -6,7 +6,6 @@ namespace AngeliA.Platformer;
 
 
 
-[EntityAttribute.Capacity(1024, 0)]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup("Collectable")]
 public abstract class Collectable : Entity, IBlockEntity {

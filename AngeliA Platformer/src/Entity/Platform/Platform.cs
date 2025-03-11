@@ -6,7 +6,6 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
-[EntityAttribute.Capacity(128)]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup(nameof(Platform))]
 public abstract class Platform : Entity, IBlockEntity {

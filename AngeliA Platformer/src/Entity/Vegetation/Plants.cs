@@ -7,7 +7,6 @@ namespace AngeliA.Platformer;
 
 
 [EntityAttribute.MapEditorGroup("Vegetation")]
-[EntityAttribute.Capacity(128)]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Plant : Entity, IBlockEntity, ICombustible, IDamageReceiver {
 

@@ -5,7 +5,6 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-[EntityAttribute.Capacity(16)]
 [EntityAttribute.MapEditorGroup("CheckPoint")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {

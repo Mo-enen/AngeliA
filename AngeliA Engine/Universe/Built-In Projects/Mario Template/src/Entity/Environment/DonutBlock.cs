@@ -5,6 +5,7 @@ using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
+[NoItemCombination]
 public class DonutBlock : AngeliA.Platformer.DonutBlock {
 
 

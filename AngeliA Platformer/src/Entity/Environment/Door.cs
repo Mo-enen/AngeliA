@@ -14,7 +14,7 @@ public abstract class Door : Entity, IBlockEntity {
 	private static readonly LanguageCode HINT_ENTER = ("CtrlHint.EnterDoor", "Enter");
 
 	// Api
-	public virtual bool IsFrontDoor => false;
+	public abstract bool IsFrontDoor { get; }
 	public virtual int KeyItemID => 0;
 	public virtual int UnlockedDoorID => 0;
 
@@ -44,7 +44,7 @@ public abstract class Door : Entity, IBlockEntity {
 		base.BeforeUpdate();
 		const int OVERLAP_SHRINK = Const.CEL / 8;
 		var player = PlayerSystem.Selecting;
-		if (player != null) {
+		if (AllowInvoke(player)) {
 			PlayerOverlaps =
 				player != null &&
 				!player.Teleporting &&

@@ -4,6 +4,7 @@ using AngeliA;
 
 namespace MarioTemplate;
 
+[EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public class Coin : Entity, IBumpable {
 
 	// VAR
@@ -43,9 +44,9 @@ public class Coin : Entity, IBumpable {
 
 	public static void Collect (int count) {
 		CurrentCoinCount++;
-
-
 	}
+
+	public static void ResetCoinCount () => CurrentCoinCount = 0;
 
 	void IBumpable.OnBumped (Rigidbody rig) { }
 

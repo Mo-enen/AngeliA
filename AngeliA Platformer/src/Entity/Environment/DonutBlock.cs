@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using AngeliA;
 namespace AngeliA.Platformer;
 
-
-[EntityAttribute.Capacity(256)]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class DonutBlock : Entity, IBlockEntity {
 

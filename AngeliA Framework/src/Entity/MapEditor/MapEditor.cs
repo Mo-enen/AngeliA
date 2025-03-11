@@ -1523,16 +1523,15 @@ public sealed partial class MapEditor : WindowUI {
 			blockSize, blockSize
 		);
 
-		if (
-			fixRatio &&
-			(sprite.GlobalWidth != Const.CEL || sprite.GlobalHeight != Const.CEL)
-		) {
-			int width = sprite.GlobalWidth * rect.width / Const.CEL;
-			int height = sprite.GlobalHeight * rect.height / Const.CEL;
-			rect.x -= Util.RemapUnclamped(0, 1000, 0, width - rect.width, sprite.PivotX);
-			rect.y -= Util.RemapUnclamped(0, 1000, 0, height - rect.height, sprite.PivotY);
-			rect.width = width;
-			rect.height = height;
+		if (fixRatio) {
+			if (sprite.GlobalWidth != Const.CEL || sprite.GlobalHeight != Const.CEL) {
+				int width = sprite.GlobalWidth * rect.width / Const.CEL;
+				int height = sprite.GlobalHeight * rect.height / Const.CEL;
+				rect.x -= Util.RemapUnclamped(0, 1000, 0, width - rect.width, sprite.PivotX);
+				rect.y -= Util.RemapUnclamped(0, 1000, 0, height - rect.height, sprite.PivotY);
+				rect.width = width;
+				rect.height = height;
+			}
 		}
 		var tint = Color32.LerpUnclamped(
 			Sky.SkyTintBottomColor, Sky.SkyTintTopColor,

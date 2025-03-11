@@ -396,25 +396,24 @@ public sealed class WorldSquad : IBlockSquad {
 			unitX * Const.CEL, unitY * Const.CEL, Const.CEL, Const.CEL
 		).ScaleFrom(ReversePara01, ParaCenter.x, ParaCenter.y);
 
-		// Shift Pivot
-		if (sprite.PivotX != 0) {
-			rect.x -= rect.width * sprite.PivotX / 1000;
-		}
-		if (sprite.PivotY != 0) {
-			rect.y -= rect.height * sprite.PivotY / 1000;
-		}
-
 		// Ratio
-		if (
-			fixRatio &&
-			(sprite.GlobalWidth != Const.CEL || sprite.GlobalHeight != Const.CEL)
-		) {
-			int width = sprite.GlobalWidth * rect.width / Const.CEL;
-			int height = sprite.GlobalHeight * rect.height / Const.CEL;
-			rect.x -= Util.RemapUnclamped(0, 1000, 0, width - rect.width, sprite.PivotX);
-			rect.y -= Util.RemapUnclamped(0, 1000, 0, height - rect.height, sprite.PivotY);
-			rect.width = width;
-			rect.height = height;
+		if (fixRatio) {
+			if ((sprite.GlobalWidth != Const.CEL || sprite.GlobalHeight != Const.CEL)) {
+				int width = sprite.GlobalWidth * rect.width / Const.CEL;
+				int height = sprite.GlobalHeight * rect.height / Const.CEL;
+				rect.x -= Util.RemapUnclamped(0, 1000, 0, width - rect.width, sprite.PivotX);
+				rect.y -= Util.RemapUnclamped(0, 1000, 0, height - rect.height, sprite.PivotY);
+				rect.width = width;
+				rect.height = height;
+			}
+		} else {
+			// Shift Pivot
+			if (sprite.PivotX != 0) {
+				rect.x -= rect.width * sprite.PivotX / 1000;
+			}
+			if (sprite.PivotY != 0) {
+				rect.y -= rect.height * sprite.PivotY / 1000;
+			}
 		}
 
 		// Color

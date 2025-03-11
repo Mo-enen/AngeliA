@@ -21,7 +21,6 @@ public class CameraGateRight : CameraGate {
 
 
 [EntityAttribute.UpdateOutOfRange]
-[EntityAttribute.Capacity(16)]
 [EntityAttribute.MapEditorGroup("System", -512)]
 public abstract class CameraGate : Entity {
 

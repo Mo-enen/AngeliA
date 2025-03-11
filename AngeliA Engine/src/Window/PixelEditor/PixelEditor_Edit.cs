@@ -13,7 +13,7 @@ public partial class PixelEditor {
 
 
 	// Const
-	private const int MAX_SELECTION_SIZE = 256;
+	private const int MAX_SELECTION_SIZE = 768;
 	private static readonly LanguageCode NOTI_SPRITE_CREATED = ("Noti.SpriteCreated", "Sprite Created");
 	private static readonly LanguageCode NOTI_PAINT_IN_SPRITE = ("Noti.PaintInSprite", "Only paint in a sprite");
 

@@ -24,7 +24,15 @@ public class MainUI : EntityUI {
 	internal static void OnMapEditorModeChange (OnMapEditorModeChange_ModeAttribute.Mode mode) {
 		if (mode == OnMapEditorModeChange_ModeAttribute.Mode.EnterPlayMode) {
 			Stage.SpawnEntity(TYPE_ID, 0, 0);
+			MarioUtil.ResetScore();
+			Coin.ResetCoinCount();
 		}
+	}
+
+	[OnGameRestart]
+	internal static void OnGameRestart () {
+		MarioUtil.ResetScore();
+		Coin.ResetCoinCount();
 	}
 
 	public override void UpdateUI () {
@@ -62,11 +70,11 @@ public class MainUI : EntityUI {
 
 		// World
 		var rect2 = cameraRect.PartHorizontal(2, 4).EdgeInsideUp(size);
-		GUI.Label(rect2, "WORLD", out var boundWorld, GUI.Skin.AutoCenterLabel);
+		GUI.Label(rect2, "LAYER", out var boundWorld, GUI.Skin.AutoCenterLabel);
 		rect2.SlideDown(padding);
 
-		// World Count
-		GUI.Label(rect2, MarioUtil.CurrentLevelLabel, GUI.Skin.AutoCenterLabel);
+		// Layer Z
+		GUI.IntLabel(rect2, Stage.ViewZ, GUI.Skin.AutoCenterLabel);
 
 		// Time
 		var rect3 = cameraRect.PartHorizontal(3, 4).EdgeInsideUp(size);

@@ -179,74 +179,111 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 		// Horizontal Stopping
 		if (VelocityX != 0) {
-			if (!Physics.RoomCheckOneway(CollisionMask, rect, this, VelocityX > 0 ? Direction4.Right : Direction4.Left, true)) {
-				VelocityX = -VelocityX * BounceSpeedRate / 1000;
-			} else {
-				var hits = Physics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityX > 0 ? Direction4.Right : Direction4.Left), out int count, this);
-				// Bumpable
-				for (int i = 0; i < count; i++) {
-					if (hits[i].Entity is IBumpable bump) {
-						bump.TryPerformBump(this, true);
+
+			var hits = Physics.OverlapAll(
+				CollisionMask,
+				rect.EdgeOutside(VelocityX > 0 ? Direction4.Right : Direction4.Left, 1),
+				out int count,
+				this,
+				OperationMode.ColliderAndTrigger
+			);
+
+			// Bumpable
+			for (int i = 0; i < count; i++) {
+				var hit = hits[i];
+				if (hit.Entity is IBumpable bump) {
+					bump.TryPerformBump(this, true);
+				}
+			}
+
+			for (int i = 0; i < count; i++) {
+				var hit = hits[i];
+
+				// Oneway Check
+				if (hit.IsTrigger) {
+					if (VelocityX > 0) {
+						// R
+						if (!hit.Tag.HasAll(Tag.OnewayLeft) || hit.Rect.x < Rect.xMax) continue;
+					} else {
+						// L
+						if (!hit.Tag.HasAll(Tag.OnewayRight) || hit.Rect.xMax > Rect.x) continue;
 					}
 				}
-				for (int i = 0; i < count; i++) {
-					var hit = hits[i];
-					// Velocity Bounce
-					if (hit.Entity is not Rigidbody hitRig) {
-						VelocityX = -VelocityX * BounceSpeedRate / 1000;
-						break;
-					}
-					// Hit
-					if (
-						VelocityX.Sign() != hitRig.VelocityX.Sign() ||
-						VelocityX.Abs() > hitRig.VelocityX.Abs()
-					) {
-						VelocityX = -VelocityX * BounceSpeedRate / 1000;
-						break;
-					}
-					if (VelocityX == 0) break;
+
+				// Velocity Bounce
+				if (hit.Entity is not Rigidbody hitRig) {
+					VelocityX = -VelocityX * BounceSpeedRate / 1000;
+					break;
 				}
+
+				// Hit
+				if (
+					VelocityX.Sign() != hitRig.VelocityX.Sign() ||
+					VelocityX.Abs() > hitRig.VelocityX.Abs()
+				) {
+					VelocityX = -VelocityX * BounceSpeedRate / 1000;
+					break;
+				}
+
+				if (VelocityX == 0) break;
 			}
 		}
 
 		// Vertical Stopping
 		if (VelocityY != 0) {
-			if (!Physics.RoomCheckOneway(CollisionMask, rect, this, VelocityY > 0 ? Direction4.Up : Direction4.Down, true)) {
-				VelocityY = -VelocityY * BounceSpeedRate / 1000;
-				if (VelocityY > 0) {
-					VelocityY = (VelocityY - globalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
+
+			var hits = Physics.OverlapAll(
+				CollisionMask,
+				rect.EdgeOutside(VelocityY > 0 ? Direction4.Up : Direction4.Down),
+				out int count,
+				this,
+				OperationMode.ColliderAndTrigger
+			);
+
+			// Bumpable
+			for (int i = 0; i < count; i++) {
+				var hit = hits[i];
+				if (hit.Entity is IBumpable bump) {
+					bump.TryPerformBump(this, false);
 				}
-			} else {
-				var hits = Physics.OverlapAll(CollisionMask, rect.EdgeOutside(VelocityY > 0 ? Direction4.Up : Direction4.Down), out int count, this);
-				// Bumpable
-				for (int i = 0; i < count; i++) {
-					if (hits[i].Entity is IBumpable bump) {
-						bump.TryPerformBump(this, false);
+			}
+
+			for (int i = 0; i < count; i++) {
+				var hit = hits[i];
+
+				// Oneway Check
+				if (hit.IsTrigger) {
+					if (VelocityY > 0) {
+						// U
+						if (!hit.Tag.HasAll(Tag.OnewayDown) || hit.Rect.y < Rect.yMax) continue;
+					} else {
+						// D
+						if (!hit.Tag.HasAll(Tag.OnewayUp) || hit.Rect.yMax > Rect.y) continue;
 					}
 				}
-				for (int i = 0; i < count; i++) {
-					var hit = hits[i];
-					// Velocity
-					if (hit.Entity is not Rigidbody hitRig) {
-						VelocityY = -VelocityY * BounceSpeedRate / 1000;
-						if (VelocityY > 0) {
-							VelocityY = (VelocityY - globalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
-						}
-						break;
+
+				// Velocity
+				if (hit.Entity is not Rigidbody hitRig) {
+					VelocityY = -VelocityY * BounceSpeedRate / 1000;
+					if (VelocityY > 0) {
+						VelocityY = (VelocityY - globalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
 					}
-					// Hit
-					if (
-						VelocityY.Sign() != hitRig.VelocityY.Sign() ||
-						VelocityY.Abs() > hitRig.VelocityY.Abs()
-					) {
-						VelocityY = -VelocityY * BounceSpeedRate / 1000;
-						if (VelocityY > 0) {
-							VelocityY = (VelocityY - globalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
-						}
-						break;
-					}
-					if (VelocityY == 0) break;
+					break;
 				}
+
+				// Hit
+				if (
+					VelocityY.Sign() != hitRig.VelocityY.Sign() ||
+					VelocityY.Abs() > hitRig.VelocityY.Abs()
+				) {
+					VelocityY = -VelocityY * BounceSpeedRate / 1000;
+					if (VelocityY > 0) {
+						VelocityY = (VelocityY - globalGravity * gravityScale / 1000).GreaterOrEquelThanZero();
+					}
+					break;
+				}
+
+				if (VelocityY == 0) break;
 			}
 		}
 

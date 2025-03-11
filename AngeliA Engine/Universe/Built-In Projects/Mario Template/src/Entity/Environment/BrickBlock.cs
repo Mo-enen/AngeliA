@@ -5,13 +5,13 @@ using AngeliA;
 namespace MarioTemplate;
 
 [NoItemCombination]
+[EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public class BrickBlock : Entity, IBumpable, IBlockEntity {
 
 	// VAR
 	private static readonly SpriteCode REVEALED_SP = "RevealedBlock";
-	private static readonly SpriteCode SPIN_COIN_SP = "CoinSpin";
 	public static readonly int TYPE_ID = typeof(BrickBlock).AngeHash();
-	int IBumpable.LastBumpedFrame { get; set; }
+	public int LastBumpedFrame { get; set; } = int.MinValue;
 	Direction4 IBumpable.LastBumpFrom { get; set; }
 	bool IBlockEntity.EmbedEntityAsElement => true;
 	private bool IsCoin => SpawnItemStartFrame < 0 && PSwitch.Triggering;
@@ -33,48 +33,10 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity {
 
 	public override void Update () {
 		base.Update();
-		// Spawn Item
-		const int RISE_DUR = 24;
-		if (SpawnItemStartFrame >= 0 && Game.GlobalFrame <= SpawnItemStartFrame + RISE_DUR) {
-			if (ItemInside == Coin.TYPE_ID) {
-				// For Coin
-				// Bounce Animation
-				if (Renderer.TryGetSprite(SPIN_COIN_SP, out var iconSp, ignoreAnimation: false)) {
-					int offsetY = Util.RemapUnclamped(
-						0, RISE_DUR / 2,
-						0, Height * 3,
-						(Game.GlobalFrame - SpawnItemStartFrame).PingPong(RISE_DUR * 2 / 3)
-					);
-					Renderer.Draw(iconSp, Rect.Shift(0, offsetY));
-				}
-				// Collect Coin
-				if (ItemInside != 0) {
-					if (Game.GlobalFrame == SpawnItemStartFrame) {
-						Coin.Collect(1);
-						WorldSquad.Front.SetBlockAt(
-							(X + 1).ToUnit(), (Y + 1).ToUnit(), Stage.ViewZ, BlockType.Element, 0
-						);
-					} else if (Game.GlobalFrame == SpawnItemStartFrame + RISE_DUR) {
-						ItemInside = 0;
-					}
-				}
-			} else {
-				// For Entity
-				// Rise Animation
-				if (Renderer.TryGetSpriteForGizmos(ItemInside, out var iconSp)) {
-					Renderer.Draw(iconSp, Rect.Shift(0, Util.RemapUnclamped(
-						SpawnItemStartFrame, SpawnItemStartFrame + RISE_DUR,
-						0, Height,
-						Game.GlobalFrame
-					)));
-				}
-				// Spawn
-				if (ItemInside != 0 && Game.GlobalFrame == SpawnItemStartFrame + RISE_DUR) {
-					MarioUtil.SpawnEmbedItem(ItemInside, Rect, Direction4.Up);
-					ItemInside = 0;
-				}
-			}
-		}
+
+		// Spawn Item Update
+		MarioUtil.UpdateForBumpToSpawnItem(Rect, ItemInside, SpawnItemStartFrame);
+
 		// Collect As Coin
 		var player = PlayerSystem.Selecting;
 		if (IsCoin && player != null && player.Rect.Overlaps(Rect)) {
@@ -83,6 +45,7 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity {
 			FrameworkUtil.RemoveFromWorldMemory(this);
 			Active = false;
 		}
+
 	}
 
 	public override void LateUpdate () {

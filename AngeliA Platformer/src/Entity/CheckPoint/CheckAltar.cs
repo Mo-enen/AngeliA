@@ -12,7 +12,6 @@ public abstract class CheckAltar<CP> : CheckAltar where CP : CheckPoint {
 
 
 [EntityAttribute.MapEditorGroup("CheckPoint")]
-[EntityAttribute.Capacity(1, 1)]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 
