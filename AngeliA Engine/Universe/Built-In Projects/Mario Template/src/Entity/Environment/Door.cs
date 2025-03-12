@@ -5,28 +5,36 @@ using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
+
+[NoItemCombination]
 [EntityAttribute.MapEditorGroup("Entity")]
 public class DoorFront : Door {
 	public override bool IsFrontDoor => true;
 }
 
+
+[NoItemCombination]
 [EntityAttribute.MapEditorGroup("Entity")]
 public class DoorBack : Door {
 	public override bool IsFrontDoor => false;
 }
 
 
+[NoItemCombination]
 [EntityAttribute.MapEditorGroup("Entity")]
 public class PSwitchDoorFront : PSwitchDoor {
 	public override bool IsFrontDoor => true;
 }
 
+
+[NoItemCombination]
 [EntityAttribute.MapEditorGroup("Entity")]
 public class PSwitchDoorBack : PSwitchDoor {
 	public override bool IsFrontDoor => false;
 }
 
 
+[NoItemCombination]
 [EntityAttribute.MapEditorGroup("Entity")]
 public abstract class PSwitchDoor : Door {
 

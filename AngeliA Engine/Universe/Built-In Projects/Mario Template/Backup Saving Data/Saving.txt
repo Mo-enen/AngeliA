@@ -15,6 +15,6 @@ Input.Pad.Action:5
 Input.Pad.Jump:6
 Input.Pad.Start:12
 Input.Pad.Select:13
-Game.LastUsedWindowWidth:3647
+Game.LastUsedWindowWidth:3646
 Game.LastUsedWindowHeight:2001
 Game.WindowMaximized:1

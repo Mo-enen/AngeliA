@@ -46,6 +46,12 @@ public static partial class Util {
 		}
 	}
 
+	public static IEnumerable<int> AllChildClassID (this Type type, bool includeAbstract = false, bool includeInterface = false) {
+		foreach (var _type in AllChildClass(type, includeAbstract, includeInterface)) {
+			yield return _type.AngeHash();
+		}
+	}
+
 	public static IEnumerable<(Assembly assembly, A attribyte)> ForAllAssemblyWithAttribute<A> () where A : Attribute {
 		foreach (var assembly in AllAssemblies) {
 			var atts = assembly.GetCustomAttributes<A>();

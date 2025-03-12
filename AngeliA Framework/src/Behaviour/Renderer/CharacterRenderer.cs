@@ -13,12 +13,13 @@ public abstract class CharacterRenderer (Character target) {
 	public int CurrentRenderingBounce { get; private set; } = 1000;
 	public bool SpinOnGroundPound { get; set; } = false;
 	public FrameBasedColor Tint { get; set; } = new();
+	public FrameBasedInt Scale { get; set; } = new(1000);
 
 	// MSG
-	public virtual void OnActivated () {
-		SpinOnGroundPound = false;
-	}
+	public virtual void OnActivated () { }
+
 	public virtual void BeforeUpdate () { }
+
 	public void UpdateForBounce () {
 
 		var Movement = TargetCharacter.Movement;
@@ -60,7 +61,9 @@ public abstract class CharacterRenderer (Character target) {
 		}
 		CurrentRenderingBounce = reverse ? -bounce : bounce;
 	}
+
 	public virtual void LateUpdate () { }
+
 	public void GrowAnimationFrame () {
 
 		int frame = CurrentAnimationFrame;

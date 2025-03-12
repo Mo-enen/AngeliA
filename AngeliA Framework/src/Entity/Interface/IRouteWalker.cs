@@ -9,18 +9,25 @@ public interface IRouteWalker {
 	Int2 TargetPosition { get; set; }
 
 	public static Int2 GetNextRoutePosition (IRouteWalker walker, int pathID, int speed, bool allowTurnBack = false, BlockType pathType = BlockType.Element, bool allowTilt = true, HashSet<int> pathSet = null) {
+		if (walker is not Entity eWalker) return default;
+		var currentDir = walker.CurrentDirection;
+		var targetPos = walker.TargetPosition;
+		var result = GetNextRoutePosition(eWalker, ref currentDir, ref targetPos, pathID, speed, allowTurnBack, pathType, allowTilt, pathSet);
+		walker.CurrentDirection = currentDir;
+		walker.TargetPosition = targetPos;
+		return result;
+	}
 
-		var newPos = new Int2();
-		if (walker is not Entity eWalker) return newPos;
-		newPos.x = eWalker.X;
-		newPos.y = eWalker.Y;
+	public static Int2 GetNextRoutePosition (Entity entity, ref Direction8 currentDirection, ref Int2 targetPosition, int pathID, int speed, bool allowTurnBack = false, BlockType pathType = BlockType.Element, bool allowTilt = true, HashSet<int> pathSet = null) {
+
+		var newPos = entity.XY;
 
 		// Over Moved
-		if (walker.CurrentDirection switch {
-			Direction8.Left or Direction8.TopLeft => newPos.x <= walker.TargetPosition.x,
-			Direction8.Right or Direction8.BottomRight => newPos.x >= walker.TargetPosition.x,
-			Direction8.Bottom or Direction8.BottomLeft => newPos.y <= walker.TargetPosition.y,
-			Direction8.Top or Direction8.TopRight => newPos.y >= walker.TargetPosition.y,
+		if (currentDirection switch {
+			Direction8.Left or Direction8.TopLeft => newPos.x <= targetPosition.x,
+			Direction8.Right or Direction8.BottomRight => newPos.x >= targetPosition.x,
+			Direction8.Bottom or Direction8.BottomLeft => newPos.y <= targetPosition.y,
+			Direction8.Top or Direction8.TopRight => newPos.y >= targetPosition.y,
 			_ => false,
 		}) {
 			// Get Direction
@@ -29,41 +36,41 @@ public interface IRouteWalker {
 			if (pathSet != null) {
 				gotRoute = TryGetRouteFromMap(
 					pathSet,
-					(newPos.x + eWalker.Width / 2).ToUnit(),
-					(newPos.y + eWalker.Height / 2).ToUnit(),
-					walker.CurrentDirection, out newDirection, pathType, allowTilt
+					(newPos.x + entity.Width / 2).ToUnit(),
+					(newPos.y + entity.Height / 2).ToUnit(),
+					currentDirection, out newDirection, pathType, allowTilt
 				);
 			} else {
 				gotRoute = TryGetRouteFromMap(
 					pathID,
-					(newPos.x + eWalker.Width / 2).ToUnit(),
-					(newPos.y + eWalker.Height / 2).ToUnit(),
-					walker.CurrentDirection, out newDirection, pathType, allowTilt
+					(newPos.x + entity.Width / 2).ToUnit(),
+					(newPos.y + entity.Height / 2).ToUnit(),
+					currentDirection, out newDirection, pathType, allowTilt
 				);
 			}
 			if (gotRoute) {
-				walker.CurrentDirection = newDirection;
+				currentDirection = newDirection;
 			} else if (allowTurnBack) {
-				walker.CurrentDirection = walker.CurrentDirection.Opposite();
+				currentDirection = currentDirection.Opposite();
 			}
-			var normal = walker.CurrentDirection.Normal();
-			var targetPos = walker.TargetPosition.ToUnifyGlobal();
+			var normal = currentDirection.Normal();
+			var targetPos = targetPosition.ToUnifyGlobal();
 			targetPos.x += normal.x * Const.CEL;
 			targetPos.y += normal.y * Const.CEL;
-			walker.TargetPosition = targetPos;
+			targetPosition = targetPos;
 		}
 
 		// Valid Target Pos
-		if (walker.CurrentDirection.IsHorizontal()) {
-			newPos.y = newPos.y.MoveTowards((newPos.y + eWalker.Height / 2).ToUnifyGlobal(), 6);
-			walker.TargetPosition = new Int2(walker.TargetPosition.x, newPos.y);
-		} else if (walker.CurrentDirection.IsVertical()) {
-			newPos.x = newPos.x.MoveTowards((newPos.x + eWalker.Width / 2).ToUnifyGlobal(), 6);
-			walker.TargetPosition = new Int2(newPos.x, walker.TargetPosition.y);
+		if (currentDirection.IsHorizontal()) {
+			newPos.y = newPos.y.MoveTowards((newPos.y + entity.Height / 2).ToUnifyGlobal(), 6);
+			targetPosition = new Int2(targetPosition.x, newPos.y);
+		} else if (currentDirection.IsVertical()) {
+			newPos.x = newPos.x.MoveTowards((newPos.x + entity.Width / 2).ToUnifyGlobal(), 6);
+			targetPosition = new Int2(newPos.x, targetPosition.y);
 		}
 
 		// Move
-		var currentNormal = walker.CurrentDirection.Normal();
+		var currentNormal = currentDirection.Normal();
 		if (currentNormal.x != 0 && currentNormal.y != 0) {
 			speed = speed * 100000 / 141421;
 		}

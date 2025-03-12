@@ -684,7 +684,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 	protected override bool InsideGroundCheck () {
 		if (IgnoreInsideGround) return IsInsideGround;
-		int mask = PhysicsMask.LEVEL & CollisionMask;
+		int mask = PhysicsMask.MAP & CollisionMask;
 		if (mask == 0) return false;
 		var rect = Rect;
 		var point = rect.CenterInt();

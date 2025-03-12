@@ -273,6 +273,7 @@ public class CharacterMovement (Rigidbody rig) {
 	private bool OnSlippy;
 	private int? ClimbPositionCorrect = null;
 	private int LockedFacingFrame = int.MinValue;
+	private int LockedSquatFrame = int.MinValue;
 	private int RequireJumpFrame = int.MinValue;
 	private int SpeedRateFrame = int.MinValue;
 
@@ -331,6 +332,8 @@ public class CharacterMovement (Rigidbody rig) {
 		LastRushStartFrame = int.MinValue;
 		LastDashFrame = int.MinValue;
 		OnSlippy = false;
+		LockedSquatFrame = int.MinValue;
+		LockedFacingFrame = int.MinValue;
 
 		// Sync Movement Config from Pool
 		if (
@@ -494,9 +497,9 @@ public class CharacterMovement (Rigidbody rig) {
 		if (IsDashing && DashPutoutFire) requirePutoutFire = true;
 
 		// Squat
-		bool squatting =
+		bool squatting = frame <= LockedSquatFrame || (
 			SquatAvailable && IsGrounded && !IsClimbing && !IsInsideGround && !IsCrashing &&
-			((!IsDashing && !IsRushing && IntendedY < 0) || ForceSquatCheck());
+			((!IsDashing && !IsRushing && IntendedY < 0) || ForceSquatCheck()));
 		if (!IsSquatting && squatting) LastSquatStartFrame = frame;
 		if (squatting) LastSquattingFrame = frame;
 		IsSquatting = squatting;
@@ -1126,6 +1129,9 @@ public class CharacterMovement (Rigidbody rig) {
 		LockedFacingFrame = Game.GlobalFrame + duration;
 		LockedFacingRight = facingRight;
 	}
+
+
+	public void LockSquat (int duration = 1) => LockedSquatFrame = Game.GlobalFrame + duration;
 
 
 	public void SetSpeedRate (int newRate, int duration = 1) {

@@ -444,7 +444,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 	protected virtual bool InsideGroundCheck () {
 		if (IgnoreInsideGround) return IsInsideGround;
-		int mask = PhysicsMask.LEVEL & CollisionMask;
+		int mask = PhysicsMask.MAP & CollisionMask;
 		if (mask == 0) return false;
 		var rect = Rect;
 		return Physics.Overlap(mask, IRect.Point(rect.CenterInt()), this);

@@ -18,21 +18,12 @@ public abstract class Track : Entity, IBlockEntity {
 	bool IBlockEntity.AllowBeingEmbedAsElement => false;
 
 	// Data
-	private static readonly HashSet<int> TrackSet = [];
+	private static readonly HashSet<int> TrackSet = new(typeof(Track).AllChildClassID());
 	private readonly bool[] HasTrackArr = [false, false, false, false, false, false, false, false, false];
 	private Int4 Shrink;
 	private int Burden;
 
 	// MSG
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		TrackSet.Clear();
-		foreach (var type in typeof(Track).AllChildClass()) {
-			TrackSet.Add(type.AngeHash());
-		}
-		TrackSet.TrimExcess();
-	}
-
 	public override void OnActivated () {
 		base.OnActivated();
 		OnEntityRefresh();

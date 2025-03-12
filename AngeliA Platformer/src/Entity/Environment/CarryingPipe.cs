@@ -11,24 +11,30 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 	// VAR
 	protected abstract SpriteCode EdgeSprite { get; }
 	protected abstract SpriteCode MidSprite { get; }
+	protected abstract SpriteCode BottomSprite { get; }
 	protected abstract SpriteCode InsertSprite { get; }
 	protected abstract Direction4 Direction { get; }
-	private Direction5? DirL = null;
-	private Direction5? DirR = null;
-	private Direction5? DirD = null;
-	private Direction5? DirU = null;
+	protected virtual int CarryingPoseAnimationID => PoseAnimation_SquatIdle.TYPE_ID;
+
+	private static int LastPlayerInputFrame = int.MinValue;
+	private int LastPlayerInsideFrame = int.MinValue;
+	private Direction5? NeighborPipeDirL = null;
+	private Direction5? NeighborPipeDirR = null;
+	private Direction5? NeighborPipeDirD = null;
+	private Direction5? NeighborPipeDirU = null;
 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
+		LastPlayerInsideFrame = int.MinValue;
 		(this as IBlockEntity).OnEntityRefresh();
 	}
 
 	void IBlockEntity.OnEntityRefresh () {
-		DirL = null;
-		DirR = null;
-		DirD = null;
-		DirU = null;
+		NeighborPipeDirL = null;
+		NeighborPipeDirR = null;
+		NeighborPipeDirD = null;
+		NeighborPipeDirU = null;
 	}
 
 	public override void FirstUpdate () {
@@ -38,32 +44,300 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 
 	public override void Update () {
 		base.Update();
-		TryRefreshAllDirectionCache();
+		Update_Cache();
+		Update_PlayerEnter();
+		Update_PlayerInside();
+	}
+
+	private void Update_Cache () {
+		if (!NeighborPipeDirL.HasValue || Game.GlobalFrame == SpawnFrame + 2) {
+			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X - Width / 2, Y + Height / 2), PhysicsMask.ENVIRONMENT, this);
+			NeighborPipeDirL = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+		}
+		if (!NeighborPipeDirR.HasValue || Game.GlobalFrame == SpawnFrame + 1) {
+			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X + Width + Width / 2, Y + Height / 2), PhysicsMask.ENVIRONMENT, this);
+			NeighborPipeDirR = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+		}
+		if (!NeighborPipeDirD.HasValue || Game.GlobalFrame == SpawnFrame + 1) {
+			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X + Width / 2, Y - Height / 2), PhysicsMask.ENVIRONMENT, this);
+			NeighborPipeDirD = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+		}
+		if (!NeighborPipeDirU.HasValue || Game.GlobalFrame == SpawnFrame + 1) {
+			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X + Width / 2, Y + Height + Height / 2), PhysicsMask.ENVIRONMENT, this);
+			NeighborPipeDirU = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+		}
+	}
+
+	private void Update_PlayerEnter () {
+
+		if (Game.GlobalFrame <= LastPlayerInputFrame + 20) return;
+
+		var player = PlayerSystem.Selecting;
+		if (player == null || !player.Active) return;
+
+		// Overlap Check
+		if (!Rect.EdgeOutside(
+			Direction, Direction == Direction4.Down ? Const.HALF : 1).Overlaps(player.Rect)
+		) return;
+
+		// Center Check
+		switch (Direction) {
+			case Direction4.Left:
+			case Direction4.Right:
+				if (!player.Rect.CenterY().InRangeInclude(Y, Y + Height)) return;
+				break;
+			case Direction4.Down:
+			case Direction4.Up:
+				if (!player.Rect.CenterX().InRangeInclude(X, X + Width)) return;
+				break;
+		}
+
+		// Input Check
+		switch (Direction) {
+			case Direction4.Left:
+				if (!NeighborPipeDirL.HasValue || NeighborPipeDirL.Value != Direction5.Center || player.Movement.IntendedX <= 0) return;
+				break;
+			case Direction4.Right:
+				if (!NeighborPipeDirR.HasValue || NeighborPipeDirR.Value != Direction5.Center || player.Movement.IntendedX >= 0) return;
+				break;
+			case Direction4.Down:
+				if (!NeighborPipeDirD.HasValue || NeighborPipeDirD.Value != Direction5.Center || player.Movement.IntendedY <= 0) return;
+				break;
+			case Direction4.Up:
+				if (!NeighborPipeDirU.HasValue || NeighborPipeDirU.Value != Direction5.Center || player.Movement.IntendedY >= 0) return;
+				break;
+		}
+
+		// Enter
+		CenterPlayer(player);
+		player.IgnorePhysics.True(1, 4096);
+		player.IgnoreGravity.True(1, 4096);
+		player.IgnoreInsideGround.True(1, 4096);
+		PlayerSystem.IgnoreInput(1);
+		PlayerSystem.IgnoreAction(1);
+		LastPlayerInputFrame = Game.GlobalFrame;
+	}
+
+	private void Update_PlayerInside () {
+
+		var player = PlayerSystem.Selecting;
+		if (player == null || !player.Active) {
+			return;
+		}
+
+		if (!Rect.Contains(player.Rect.CenterInt())) return;
+
+		// For Current Pipe
+		LastPlayerInsideFrame = Game.GlobalFrame;
+		player.IgnorePhysics.True(1, 4096);
+		player.IgnoreGravity.True(1, 4096);
+		player.IgnoreInsideGround.True(1, 4096);
+		player.Movement.LockSquat(1);
+		player.MakeGrounded(6, TypeID);
+		PlayerSystem.IgnoreInput(1);
+		PlayerSystem.IgnoreAction(1);
+		CenterPlayer(player);
+
+		// Rendering
+		if (player.Rendering is PoseCharacterRenderer pRen) {
+			pRen.ManualPoseAnimate(CarryingPoseAnimationID, 2);
+			pRen.Tint.Override(Color32.BLACK, 1);
+			pRen.Scale.Override(618, 1);
+		}
+
+		// Player Input
+		if (Game.GlobalFrame > LastPlayerInputFrame + 8) {
+			if (Input.GameKeyHolding(Gamekey.Left) && IsValidCarryDirection(Direction4.Left)) {
+				player.X -= Const.CEL;
+				LastPlayerInputFrame = Game.GlobalFrame;
+				player.Bounce();
+			}
+			if (Input.GameKeyHolding(Gamekey.Right) && IsValidCarryDirection(Direction4.Right)) {
+				player.X += Const.CEL;
+				LastPlayerInputFrame = Game.GlobalFrame;
+				player.Bounce();
+			}
+			if (Input.GameKeyHolding(Gamekey.Down) && IsValidCarryDirection(Direction4.Down)) {
+				player.Y -= Const.CEL;
+				LastPlayerInputFrame = Game.GlobalFrame;
+				player.Bounce();
+			}
+			if (Input.GameKeyHolding(Gamekey.Up) && IsValidCarryDirection(Direction4.Up)) {
+				player.Y += Const.CEL;
+				LastPlayerInputFrame = Game.GlobalFrame;
+				player.Bounce();
+			}
+		}
+		ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE);
+		ControlHintUI.AddHint(Gamekey.Down, Gamekey.Up, BuiltInText.HINT_MOVE);
 
 	}
 
 	public override void LateUpdate () {
 		base.LateUpdate();
+		DrawPipe();
+		DrawGizmos();
+	}
+
+	private void DrawPipe () {
+		switch (Direction) {
+			case Direction4.Left:
+				// Body
+				Renderer.Draw(
+					!NeighborPipeDirL.HasValue || NeighborPipeDirL.Value == Direction5.Center || NeighborPipeDirL.Value == Direction5.Right ? EdgeSprite :
+					!NeighborPipeDirR.HasValue || NeighborPipeDirR.Value == Direction5.Center ? BottomSprite : MidSprite,
+					X + Width / 2, Y + Height / 2, 500, 500, 90, Width, -Height
+				);
+				// Insert
+				if (NeighborPipeDirL.HasValue && NeighborPipeDirL.Value.IsVertical()) {
+					Renderer.Draw(InsertSprite, X, Y + Height / 2, 500, 0, 90, -Width, Const.ORIGINAL_SIZE_NEGATAVE);
+				}
+				if (NeighborPipeDirR.HasValue && NeighborPipeDirR.Value.IsVertical()) {
+					Renderer.Draw(InsertSprite, X + Width, Y + Height / 2, 500, 0, 90, -Width, Const.ORIGINAL_SIZE);
+				}
+				break;
+			case Direction4.Right:
+				// Body
+				Renderer.Draw(
+					!NeighborPipeDirR.HasValue || NeighborPipeDirR.Value == Direction5.Center || NeighborPipeDirR.Value == Direction5.Left ? EdgeSprite :
+					!NeighborPipeDirL.HasValue || NeighborPipeDirL.Value == Direction5.Center ? BottomSprite : MidSprite,
+					X + Width / 2, Y + Height / 2, 500, 500, 90, Width, Height
+				);
+				// Insert
+				if (NeighborPipeDirL.HasValue && NeighborPipeDirL.Value.IsVertical()) {
+					Renderer.Draw(InsertSprite, X, Y + Height / 2, 500, 0, 90, -Width, Const.ORIGINAL_SIZE_NEGATAVE);
+				}
+				if (NeighborPipeDirR.HasValue && NeighborPipeDirR.Value.IsVertical()) {
+					Renderer.Draw(InsertSprite, X + Width, Y + Height / 2, 500, 0, 90, -Width, Const.ORIGINAL_SIZE);
+				}
+				break;
+			case Direction4.Down:
+				// Body
+				Renderer.Draw(
+					!NeighborPipeDirD.HasValue || NeighborPipeDirD.Value == Direction5.Center || NeighborPipeDirD.Value == Direction5.Up ? EdgeSprite :
+					!NeighborPipeDirU.HasValue || NeighborPipeDirU.Value == Direction5.Center ? BottomSprite : MidSprite,
+					X + Width / 2, Y + Height / 2, 500, 500, 0, Width, -Height
+				);
+				// Insert
+				if (NeighborPipeDirD.HasValue && NeighborPipeDirD.Value.IsHorizontal()) {
+					Renderer.Draw(InsertSprite, X + Width / 2, Y, 500, 0, 0, -Width, Const.ORIGINAL_SIZE_NEGATAVE);
+				}
+				if (NeighborPipeDirU.HasValue && NeighborPipeDirU.Value.IsHorizontal()) {
+					Renderer.Draw(InsertSprite, X + Width / 2, Y + Height, 500, 0, 0, -Width, Const.ORIGINAL_SIZE);
+				}
+				break;
+			case Direction4.Up:
+				// Body
+				Renderer.Draw(
+					!NeighborPipeDirU.HasValue || NeighborPipeDirU.Value == Direction5.Center || NeighborPipeDirU.Value == Direction5.Down ? EdgeSprite :
+					!NeighborPipeDirD.HasValue || NeighborPipeDirD.Value == Direction5.Center ? BottomSprite : MidSprite,
+					X + Width / 2, Y + Height / 2, 500, 500, 0, Width, Height
+				);
+				// Insert
+				if (NeighborPipeDirD.HasValue && NeighborPipeDirD.Value.IsHorizontal()) {
+					Renderer.Draw(InsertSprite, X + Width / 2, Y, 500, 0, 0, -Width, Const.ORIGINAL_SIZE_NEGATAVE);
+				}
+				if (NeighborPipeDirU.HasValue && NeighborPipeDirU.Value.IsHorizontal()) {
+					Renderer.Draw(InsertSprite, X + Width / 2, Y + Height, 500, 0, 0, -Width, Const.ORIGINAL_SIZE);
+				}
+				break;
+		}
+	}
+
+	private void DrawGizmos () {
+
+		if (LastPlayerInsideFrame != Game.GlobalFrame) return;
+
+		using var _ = new UILayerScope();
+
+		// Frame
+		Renderer.DrawSlice(BuiltInSprite.FRAME_HOLLOW_16, Rect.Expand(Game.GlobalFrame.PingPong(24) - 12));
+
+		// Arrow
+		int offset = Game.GlobalFrame.PingPong(24);
+		if (IsValidCarryDirection(Direction4.Left)) {
+			Renderer.Draw(
+				BuiltInSprite.LEFT_ARROW,
+				Rect.Shift(-Const.CEL - offset, 0).Shrink(Const.QUARTER / 2),
+				NeighborPipeDirL.HasValue && NeighborPipeDirL.Value == Direction5.Center ? Color32.GREEN : Color32.WHITE
+			);
+		}
+		if (IsValidCarryDirection(Direction4.Right)) {
+			Renderer.Draw(
+				BuiltInSprite.RIGHT_ARROW,
+				Rect.Shift(Const.CEL + offset, 0).Shrink(Const.QUARTER / 2),
+				NeighborPipeDirR.HasValue && NeighborPipeDirR.Value == Direction5.Center ? Color32.GREEN : Color32.WHITE
+			);
+		}
+		if (IsValidCarryDirection(Direction4.Down)) {
+			Renderer.Draw(
+				BuiltInSprite.DOWN_ARROW,
+				Rect.Shift(0, -Const.CEL - offset).Shrink(Const.QUARTER / 2),
+				NeighborPipeDirD.HasValue && NeighborPipeDirD.Value == Direction5.Center ? Color32.GREEN : Color32.WHITE
+			);
+		}
+		if (IsValidCarryDirection(Direction4.Up)) {
+			Renderer.Draw(
+				BuiltInSprite.UP_ARROW,
+				Rect.Shift(0, Const.CEL + offset).Shrink(Const.QUARTER / 2),
+				NeighborPipeDirU.HasValue && NeighborPipeDirU.Value == Direction5.Center ? Color32.GREEN : Color32.WHITE
+			);
+		}
 
 	}
 
-	private void TryRefreshAllDirectionCache () {
-		if (!DirL.HasValue) {
-			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X - Width / 2, Y + Height / 2), PhysicsMask.ENVIRONMENT, this);
-			DirL = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+	// LGC
+	private void CenterPlayer (Entity player) {
+		player.X = X + Width / 2;
+		player.Y = Y + Height / 2 - player.Height / 2;
+	}
+
+	private bool IsValidCarryDirection (Direction4 moveDir) {
+
+		// Blocked Check
+		var hits = Physics.OverlapAll(PhysicsMask.MAP, IRect.Point(Rect.CenterInt() + moveDir.Normal() * Const.CEL), out int count, this);
+		for (int i = 0; i < count; i++) {
+			var hit = hits[i];
+			if (hit.Entity is CarryingPipe) continue;
+			return false;
 		}
-		if (!DirR.HasValue) {
-			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X + Width + Width / 2, Y + Height / 2), PhysicsMask.ENVIRONMENT, this);
-			DirR = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+
+		// Same Dir
+		if (moveDir == Direction) return true;
+
+		// Opposite Dir
+		if (moveDir == Direction.Opposite()) {
+			switch (Direction) {
+				case Direction4.Up:
+					return NeighborPipeDirD.HasValue && NeighborPipeDirD.Value != Direction5.Center;
+				case Direction4.Down:
+					return NeighborPipeDirU.HasValue && NeighborPipeDirU.Value != Direction5.Center;
+				case Direction4.Left:
+					return NeighborPipeDirR.HasValue && NeighborPipeDirR.Value != Direction5.Center;
+				case Direction4.Right:
+					return NeighborPipeDirL.HasValue && NeighborPipeDirL.Value != Direction5.Center;
+			}
 		}
-		if (!DirD.HasValue) {
-			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X - Width / 2, Y - Height / 2), PhysicsMask.ENVIRONMENT, this);
-			DirD = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+
+		// Side
+		switch (Direction) {
+			case Direction4.Down:
+			case Direction4.Up:
+				if (moveDir == Direction4.Left) {
+					return NeighborPipeDirL.HasValue && NeighborPipeDirL.Value.IsHorizontal();
+				} else {
+					return NeighborPipeDirR.HasValue && NeighborPipeDirR.Value.IsHorizontal();
+				}
+			case Direction4.Left:
+			case Direction4.Right:
+				if (moveDir == Direction4.Down) {
+					return NeighborPipeDirD.HasValue && NeighborPipeDirD.Value.IsVertical();
+				} else {
+					return NeighborPipeDirU.HasValue && NeighborPipeDirU.Value.IsVertical();
+				}
 		}
-		if (!DirU.HasValue) {
-			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X - Width / 2, Y + Height + Height / 2), PhysicsMask.ENVIRONMENT, this);
-			DirU = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
-		}
+
+		return false;
 	}
 
 }

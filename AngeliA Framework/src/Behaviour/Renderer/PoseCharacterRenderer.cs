@@ -644,10 +644,16 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		RenderedCellZ = PlayerSystem.Selecting == TargetCharacter ? 40 : GlobalPoseRenderingZOffset;
 		if (Renderer.GetCells(out var cells, out int count)) {
 			bool tinted = Tint != Color32.WHITE;
+			bool scaled = Scale != 1000;
 			for (int i = cellIndexStart; i < count; i++) {
 				var cell = cells[i];
 				cell.Z += RenderedCellZ;
-				if (tinted) cell.Color *= Tint;
+				if (tinted) {
+					cell.Color *= Tint;
+				}
+				if (scaled) {
+					cell.ScaleFrom(Scale, TargetCharacter.X, TargetCharacter.Y);
+				}
 			}
 		}
 		GlobalPoseRenderingZOffset -= 40;

@@ -8,6 +8,9 @@ public static class Const {
 	public const int CEL = 256;
 	public const int HALF = CEL / 2;
 	public const int QUARTER = CEL / 4;
+	public static readonly Int2 CEL2 = new(CEL, CEL);
+	public static readonly Int2 HALF2 = new(HALF, HALF);
+	public static readonly Int2 QUARTER2 = new(QUARTER, QUARTER);
 	public const int MAP = 128;
 	public const int ART_CEL = 16;
 	public const int ART_SCALE = CEL / ART_CEL;
