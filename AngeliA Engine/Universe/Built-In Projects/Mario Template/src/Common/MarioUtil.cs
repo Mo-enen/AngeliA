@@ -5,12 +5,17 @@ using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
+public enum Sound : byte {
+	StepOnEnemy = 0,
+}
+
 public static class MarioUtil {
 
 	public static int CurrentScore { get; private set; } = 0;
 	public static int CurrentMajorLevel { get; private set; } = 1;
 	public static int CurrentMinorLevel { get; private set; } = 1;
 	private static readonly SpriteCode SPIN_COIN_SP = "CoinSpin";
+	private static readonly Dictionary<Sound, int> SoundPool = new(Util.AllEnumIdPairs<Sound>());
 
 	// API
 	public static int GetEmbedItemID (IRect sourceRect) {
@@ -51,12 +56,13 @@ public static class MarioUtil {
 					break;
 			}
 			if (entity is IBlockEntity) {
-				IBlockEntity.RefreshBlockEntitiesNearby(new Int2((sourceRect.x + 1).ToUnit(), (sourceRect.yMax + 1).ToUnit()), entity);
+				entity.FirstUpdate();
+				IBlockEntity.RefreshBlockEntitiesNearby(
+					new Int2((entity.Rect.x + 1).ToUnit(), (entity.Rect.y + 1).ToUnit()),
+					entity
+				);
 			}
 		}
-		WorldSquad.Front.SetBlockAt(
-			(sourceRect.x + 1).ToUnit(), (sourceRect.y + 1).ToUnit(), Stage.ViewZ, BlockType.Element, 0
-		);
 		return entity;
 	}
 
@@ -164,6 +170,11 @@ public static class MarioUtil {
 				itemInside = 0;
 			}
 		}
+	}
+
+	public static void PlayMarioAudio (Sound sound, Int2 pos, float volume = 1f, float pitch = 1f) {
+		if (!SoundPool.TryGetValue(sound, out int id)) return;
+		Game.PlaySoundAtPosition(id, pos, volume, pitch);
 	}
 
 }

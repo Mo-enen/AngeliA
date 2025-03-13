@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
+using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
 [NoItemCombination]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public class BrickBlock : Entity, IBumpable, IBlockEntity {
+public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 
 	// VAR
 	private static readonly SpriteCode REVEALED_SP = "RevealedBlock";
@@ -14,6 +15,11 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity {
 	public int LastBumpedFrame { get; set; } = int.MinValue;
 	Direction4 IBumpable.LastBumpFrom { get; set; }
 	bool IBlockEntity.EmbedEntityAsElement => true;
+	bool IBumpable.TransferWithAttack => true;
+	int IAutoTrackWalker.LastWalkingFrame { get; set; }
+	int IAutoTrackWalker.WalkStartFrame { get; set; }
+	Direction8 IRouteWalker.CurrentDirection { get; set; }
+	Int2 IRouteWalker.TargetPosition { get; set; }
 	private bool IsCoin => SpawnItemStartFrame < 0 && PSwitch.Triggering;
 
 	private int ItemInside;
@@ -28,7 +34,10 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, isTrigger: IsCoin);
+		Physics.FillEntity(
+			PhysicsLayer.ENVIRONMENT, this,
+			isTrigger: IsCoin || (this as IAutoTrackWalker).OnTrack
+		);
 	}
 
 	public override void Update () {
@@ -42,7 +51,6 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity {
 		if (IsCoin && player != null && player.Rect.Overlaps(Rect)) {
 			// Collect Now
 			Coin.Collect(1);
-			FrameworkUtil.RemoveFromWorldMemory(this);
 			Active = false;
 		}
 

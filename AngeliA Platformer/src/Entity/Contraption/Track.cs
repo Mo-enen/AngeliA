@@ -15,6 +15,10 @@ public abstract class Track : Entity, IBlockEntity {
 	protected virtual bool AllowTiltConnection => true;
 	protected virtual bool TurnBackWhenReachEnd => true;
 	protected virtual bool SlowDownWhenWalkerOverlap => true;
+	protected virtual bool LoadItemFromMapElement => true;
+	protected abstract SpriteCode BodySprite { get; }
+	protected abstract SpriteCode BodyTiltSprite { get; }
+	protected abstract SpriteCode CenterSprite { get; }
 	bool IBlockEntity.AllowBeingEmbedAsElement => false;
 
 	// Data
@@ -28,6 +32,12 @@ public abstract class Track : Entity, IBlockEntity {
 		base.OnActivated();
 		OnEntityRefresh();
 		Burden = 0;
+		if (LoadItemFromMapElement) {
+			int id = WorldSquad.Front.GetBlockAt((X + 1).ToUnit(), (Y + 1).ToUnit(), Stage.ViewZ, BlockType.Element);
+			if (id != 0 && IAutoTrackWalker.IsTypeAutoTrackWalker(id) && Stage.SpawnEntity(id, X, Y) is Entity entity) {
+				entity.IgnoreReposition = true;
+			}
+		}
 	}
 
 	public void OnEntityRefresh () {
@@ -145,6 +155,40 @@ public abstract class Track : Entity, IBlockEntity {
 
 		}
 		Burden = burden;
+
+	}
+
+	public override void LateUpdate () {
+
+		base.LateUpdate();
+
+		if (!Renderer.TryGetSprite(BodySprite, out var bodySP)) return;
+		if (!Renderer.TryGetSprite(BodyTiltSprite, out var bodyTilt)) return;
+
+		int centerX = X + Width / 2;
+		int centerY = Y + Height / 2;
+
+		// Line
+		const int SIZE = Const.HALF + 2;
+		const int SIZE_TILT = Const.HALF * 141422 / 100000 + 2;
+		for (int i = 0; i < 8; i++) {
+			var dir = (Direction8)i;
+			if (!IsConnected(dir)) continue;
+			bool positive = dir.IsPositive();
+			int rot = dir.GetRotation();
+			bool tilt = dir.IsTilted();
+			int size = tilt ? SIZE_TILT : SIZE;
+			Renderer.Draw(
+				tilt ? bodyTilt : bodySP,
+				centerX, centerY,
+				500, positive ? 0 : 1000,
+				positive ? rot : rot + 180,
+				size, size
+			);
+		}
+
+		// Center
+		Renderer.Draw(CenterSprite, centerX, centerY, 500, 500, 0, Const.HALF, Const.HALF);
 
 	}
 

@@ -117,7 +117,7 @@ public class RigRespondMessage {
 	public int RequireSetMusicVolume;
 
 	public int RequirePlaySoundCount;
-	public PlaySoundRequirement[] PlaySoundRequirements = new PlaySoundRequirement[16];
+	public PlaySoundRequirement[] PlaySoundRequirements = new PlaySoundRequirement[16].FillWithNewValue();
 	public int RequireSetSoundVolume;
 
 	public int CharRequiringCount;

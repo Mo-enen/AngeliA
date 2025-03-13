@@ -67,6 +67,8 @@ public abstract class Door : Entity, IBlockEntity {
 			if (InputLock && !Input.GameKeyHolding(Gamekey.Up)) {
 				InputLock = false;
 			}
+		} else {
+			PlayerOverlaps = false;
 		}
 	}
 

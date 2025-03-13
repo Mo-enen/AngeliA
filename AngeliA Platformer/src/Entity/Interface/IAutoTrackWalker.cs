@@ -10,5 +10,8 @@ public interface IAutoTrackWalker : IRouteWalker {
 	public int LastWalkingFrame { get; set; }
 	public int WalkStartFrame { get; set; }
 	public int TrackWalkSpeedRate => 1000;
+	private static readonly HashSet<int> WalkerSet = new(typeof(IAutoTrackWalker).AllClassImplementedID());
+
+	public static bool IsTypeAutoTrackWalker (int id) => WalkerSet.Contains(id);
 
 }

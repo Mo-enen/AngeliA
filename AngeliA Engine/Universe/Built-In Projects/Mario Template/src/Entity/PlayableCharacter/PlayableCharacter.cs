@@ -11,9 +11,15 @@ namespace MarioTemplate;
 [EntityAttribute.UpdateOutOfRange]
 public abstract class PlayableCharacter : PoseCharacter, IPlayable, IActionTarget {
 
+	public override int Team => Const.TEAM_PLAYER;
+	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_NEUTRAL;
+	protected virtual bool UseMarioStyleMovement => true;
+
 	public override void OnActivated () {
 		base.OnActivated();
-		MarioUtil.InitMovementForMarioGame(NativeMovement);
+		if (UseMarioStyleMovement) {
+			MarioUtil.InitMovementForMarioGame(NativeMovement);
+		}
 	}
 
 	bool IActionTarget.Invoke () {

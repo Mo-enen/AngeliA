@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
+using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
@@ -12,7 +13,7 @@ public class HiddenBlock : QuestionBlock {
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [NoItemCombination]
-public class QuestionBlock : Entity, IBlockEntity, IBumpable {
+public class QuestionBlock : Entity, IBlockEntity, IBumpable, IAutoTrackWalker {
 
 	// VAR
 	private static readonly SpriteCode REVEALED_SP = "RevealedBlock";
@@ -20,7 +21,12 @@ public class QuestionBlock : Entity, IBlockEntity, IBumpable {
 	bool IBlockEntity.EmbedEntityAsElement => true;
 	int IBumpable.LastBumpedFrame { get; set; }
 	bool IBumpable.FromBelow => true;
+	bool IBumpable.TransferWithAttack => true;
 	public Direction4 LastBumpFrom { get; set; }
+	int IAutoTrackWalker.LastWalkingFrame { get; set; }
+	int IAutoTrackWalker.WalkStartFrame { get; set; }
+	Direction8 IRouteWalker.CurrentDirection { get; set; }
+	Int2 IRouteWalker.TargetPosition { get; set; }
 
 	private int ItemInside;
 	private int SpawnItemStartFrame = int.MinValue;
@@ -34,12 +40,16 @@ public class QuestionBlock : Entity, IBlockEntity, IBumpable {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		if (IsHidden && SpawnItemStartFrame < 0) {
-			// Hide
-			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Tag.OnewayDown);
+		if ((this as IAutoTrackWalker).OnTrack) {
+			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
 		} else {
-			// Reveal
-			Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
+			if (IsHidden && SpawnItemStartFrame < 0) {
+				// Hide
+				Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true, Tag.OnewayDown);
+			} else {
+				// Reveal
+				Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
+			}
 		}
 	}
 

@@ -5,20 +5,32 @@ namespace AngeliA;
 
 public interface IBumpable {
 
+
+	// VAR
 	public bool FromBelow => true;
 	public bool FromAbove => false;
 	public bool FromLeft => false;
 	public bool FromRight => false;
-	public int Cooldown => 16;
+	public bool TransferBumpToOther => true;
+	public bool TransferBumpFromOther => false;
+	public bool TransferWithAttack => true;
+	public int BumpTransferPower => 60;
+	public int BumpCooldown => 16;
 	public int LastBumpedFrame { get; set; }
 	public Direction4 LastBumpFrom { get; set; }
 
+
+	// MSG
 	protected void OnBumped (Rigidbody rig);
 
 	protected bool AllowBump (Rigidbody rig);
 
+	protected Damage GetBumpDamage () => new(1);
+
+
+	// API
 	internal void TryPerformBump (Rigidbody rig, bool horizontal) {
-		if (Game.GlobalFrame < LastBumpedFrame + Cooldown) return;
+		if (Game.GlobalFrame < LastBumpedFrame + BumpCooldown) return;
 		if (this is not Entity entity) return;
 		if (!AllowBump(rig)) return;
 		if (horizontal) {
@@ -28,6 +40,7 @@ public interface IBumpable {
 				if (rig.Rect.xMax > entity.Rect.CenterX()) return;
 				LastBumpedFrame = Game.GlobalFrame;
 				LastBumpFrom = Direction4.Left;
+				PerformTransferBump(Direction4.Right, entity);
 				OnBumped(rig);
 			} else if (rig.VelocityX < 0) {
 				// Left
@@ -35,6 +48,7 @@ public interface IBumpable {
 				if (rig.Rect.x < entity.Rect.CenterX()) return;
 				LastBumpedFrame = Game.GlobalFrame;
 				LastBumpFrom = Direction4.Right;
+				PerformTransferBump(Direction4.Left, entity);
 				OnBumped(rig);
 			}
 		} else {
@@ -44,6 +58,7 @@ public interface IBumpable {
 				if (rig.Rect.yMax > entity.Rect.CenterY()) return;
 				LastBumpedFrame = Game.GlobalFrame;
 				LastBumpFrom = Direction4.Down;
+				PerformTransferBump(Direction4.Up, entity);
 				OnBumped(rig);
 			} else if (rig.VelocityY < 0) {
 				// Down
@@ -51,6 +66,7 @@ public interface IBumpable {
 				if (rig.Rect.y < entity.Rect.CenterY()) return;
 				LastBumpedFrame = Game.GlobalFrame;
 				LastBumpFrom = Direction4.Up;
+				PerformTransferBump(Direction4.Down, entity);
 				OnBumped(rig);
 			}
 		}
@@ -80,6 +96,57 @@ public interface IBumpable {
 		cell.Width += (int)(ease01 * size);
 		cell.Height += (int)(ease01 * size);
 		cell.Z++;
+	}
+
+
+	// LGC
+	private static void PerformTransferBump (Direction4 direction, Entity self) {
+		if (self is not IBumpable selfBump) return;
+		var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, self.Rect.EdgeOutside(direction, 1), out int count, self);
+		for (int i = 0; i < count; i++) {
+			var hit = hits[i];
+
+			if (hit.Entity is IBumpable bump && !bump.TransferBumpFromOther) continue;
+
+			// Perform Bump Transfer
+			if (hit.Entity is Rigidbody rig) {
+				switch (direction) {
+					case Direction4.Up:
+						rig.VelocityY = selfBump.BumpTransferPower.GreaterOrEquel(rig.VelocityY);
+						break;
+					case Direction4.Down:
+						rig.VelocityY = (-selfBump.BumpTransferPower).LessOrEquel(rig.VelocityY);
+						break;
+					case Direction4.Left:
+						rig.VelocityX = (-selfBump.BumpTransferPower).LessOrEquel(rig.VelocityX);
+						break;
+					case Direction4.Right:
+						rig.VelocityX = selfBump.BumpTransferPower.GreaterOrEquel(rig.VelocityX);
+						break;
+				}
+			} else {
+				switch (direction) {
+					case Direction4.Up:
+						hit.Entity.Y += selfBump.BumpTransferPower;
+						break;
+					case Direction4.Down:
+						hit.Entity.Y -= selfBump.BumpTransferPower;
+						break;
+					case Direction4.Left:
+						hit.Entity.X -= selfBump.BumpTransferPower;
+						break;
+					case Direction4.Right:
+						hit.Entity.X += selfBump.BumpTransferPower;
+						break;
+				}
+			}
+
+			// Attack
+			if (selfBump.TransferWithAttack && hit.Entity is IDamageReceiver receiver) {
+				receiver.TakeDamage(selfBump.GetBumpDamage());
+			}
+
+		}
 	}
 
 }

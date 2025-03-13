@@ -1,16 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
+using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public class Icicle : Rigidbody {
+public class Icicle : Rigidbody, IAutoTrackWalker {
 
 	// VAR
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	public override int AirDragX => 0;
 	public override int AirDragY => 0;
+	int IAutoTrackWalker.LastWalkingFrame { get; set; }
+	int IAutoTrackWalker.WalkStartFrame { get; set; }
+	Direction8 IRouteWalker.CurrentDirection { get; set; }
+	Int2 IRouteWalker.TargetPosition { get; set; }
 	private bool Falling;
 	private int FallAccumulationFrame;
 

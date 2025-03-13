@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
+using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
@@ -16,7 +17,7 @@ public class OffSwitch : OnOffSwitch {
 
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public abstract class OnOffSwitch : Entity, IBumpable {
+public abstract class OnOffSwitch : Entity, IBumpable, IAutoTrackWalker {
 
 	// VAR
 	private const int COOL_DOWN = 12;
@@ -26,7 +27,12 @@ public abstract class OnOffSwitch : Entity, IBumpable {
 	private static int LastSwitchFrame = int.MinValue;
 	protected abstract bool ReverseOnOff { get; }
 	int IBumpable.LastBumpedFrame { get; set; } = int.MinValue;
+	bool IBumpable.TransferWithAttack => true;
 	Direction4 IBumpable.LastBumpFrom { get; set; }
+	int IAutoTrackWalker.LastWalkingFrame { get; set; }
+	int IAutoTrackWalker.WalkStartFrame { get; set; }
+	Direction8 IRouteWalker.CurrentDirection { get; set; }
+	Int2 IRouteWalker.TargetPosition { get; set; }
 
 	// MSG
 	[OnMapEditorModeChange_Mode]
@@ -36,7 +42,7 @@ public abstract class OnOffSwitch : Entity, IBumpable {
 
 	public override void FirstUpdate () {
 		base.FirstUpdate();
-		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this);
+		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, (this as IAutoTrackWalker).OnTrack);
 	}
 
 	public override void LateUpdate () {

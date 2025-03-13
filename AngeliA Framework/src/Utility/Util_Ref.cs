@@ -74,10 +74,22 @@ public static partial class Util {
 	}
 
 
+	public static IEnumerable<KeyValuePair<E, int>> AllEnumIdPairs<E> () where E : struct, Enum {
+		foreach (var value in Enum.GetValues<E>()) {
+			yield return new(value, value.ToString().AngeHash());
+		}
+	}
+
+
 	// For All Types
 	public static IEnumerable<Type> AllClassImplemented (this Type interfaceType, bool includeAbstract = false) => AllTypes.Where(
 		t => !t.IsInterface && (includeAbstract || !t.IsAbstract) && interfaceType.IsAssignableFrom(t)
 	);
+	public static IEnumerable<int> AllClassImplementedID (this Type interfaceType, bool includeAbstract = false) {
+		foreach (var t in AllClassImplemented(interfaceType, includeAbstract)) {
+			yield return t.AngeHash();
+		}
+	}
 
 
 	public static IEnumerable<(Type, Attribute)> AllClassWithAttribute (this Type attribute, bool ignoreAbstract = true, bool ignoreInterface = true) {

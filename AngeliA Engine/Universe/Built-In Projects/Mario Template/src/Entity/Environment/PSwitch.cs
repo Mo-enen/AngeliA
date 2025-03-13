@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
+using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public class PSwitch : Rigidbody {
+public class PSwitch : Rigidbody, IAutoTrackWalker {
 
 	// VAR
 	private static readonly int SOLID_BLOCK_ID = "PBlockSolid".AngeHash();
@@ -15,6 +16,12 @@ public class PSwitch : Rigidbody {
 	public static bool Triggering => Game.GlobalFrame < LastTriggerFrame + DURATION;
 	public static int LastTriggerFrame { get; private set; } = int.MinValue;
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
+
+	int IAutoTrackWalker.LastWalkingFrame { get; set; }
+	int IAutoTrackWalker.WalkStartFrame { get; set; }
+	Direction8 IRouteWalker.CurrentDirection { get; set; }
+	Int2 IRouteWalker.TargetPosition { get; set; }
+
 	private int StepOnFrame = int.MinValue;
 
 	// MSG
@@ -40,9 +47,8 @@ public class PSwitch : Rigidbody {
 	}
 
 	public override void FirstUpdate () {
-		base.FirstUpdate();
 		if (StepOnFrame < 0) {
-			Physics.FillEntity(PhysicalLayer, this);
+			base.FirstUpdate();
 		}
 	}
 

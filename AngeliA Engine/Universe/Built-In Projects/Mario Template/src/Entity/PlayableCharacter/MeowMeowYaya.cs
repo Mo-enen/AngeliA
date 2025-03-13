@@ -8,11 +8,12 @@ namespace MarioTemplate;
 [EntityAttribute.Capacity(1, 1)]
 [EntityAttribute.StageOrder(4096)]
 [EntityAttribute.SpawnWithCheatCode]
-public class MeowMeowYaya : PoseCharacter, IPlayable, IActionTarget {
+public class MeowMeowYaya : PlayableCharacter {
 
 
 	// VAR
 	public override int DefaultCharacterHeight => 157;
+	protected override bool UseMarioStyleMovement => false;
 
 	// MSG
 	public override void OnActivated () {
@@ -34,13 +35,5 @@ public class MeowMeowYaya : PoseCharacter, IPlayable, IActionTarget {
 		NativeMovement.JumpDownThoughOneway.BaseValue = true;
 
 	}
-
-	bool IActionTarget.Invoke () {
-		if (PlayerSystem.Selecting == this) return false;
-		PlayerSystem.SetCharacterAsPlayer(this);
-		return true;
-	}
-
-	bool IActionTarget.AllowInvoke () => PlayerSystem.Selecting != this;
 
 }
