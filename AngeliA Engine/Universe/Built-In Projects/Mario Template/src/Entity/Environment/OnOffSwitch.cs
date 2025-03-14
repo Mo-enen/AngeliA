@@ -57,8 +57,10 @@ public abstract class OnOffSwitch : Entity, IBumpable, IAutoTrackWalker {
 		CurrentOn = !CurrentOn;
 	}
 
-	void IBumpable.OnBumped (Rigidbody rig) => TrySwitch();
+	void IBumpable.OnBumped (Rigidbody rig, Damage damage) => TrySwitch();
 
-	bool IBumpable.AllowBump (Rigidbody rig) => rig == PlayerSystem.Selecting;
+	bool IBumpable.AllowBump (Rigidbody rig, Direction4 from) => IBumpable.IsValidBumpDirection(this, from) && rig == PlayerSystem.Selecting;
+
+	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY);
 
 }

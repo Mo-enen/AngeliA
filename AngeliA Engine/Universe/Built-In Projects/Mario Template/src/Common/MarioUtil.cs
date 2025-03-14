@@ -18,12 +18,12 @@ public static class MarioUtil {
 	private static readonly Dictionary<Sound, int> SoundPool = new(Util.AllEnumIdPairs<Sound>());
 
 	// API
-	public static int GetEmbedItemID (IRect sourceRect) {
+	public static int GetEmbedItemID (IRect sourceRect, int failbackID = 0) {
 		int id = WorldSquad.Front.GetBlockAt(
 			(sourceRect.x + 1).ToUnit(), (sourceRect.y + 1).ToUnit(), Stage.ViewZ, BlockType.Element
 		);
 		if (id == 0 || (!Stage.IsValidEntityID(id) && !ItemSystem.HasItem(id))) {
-			id = Coin.TYPE_ID;
+			id = failbackID;
 		}
 		return id;
 	}

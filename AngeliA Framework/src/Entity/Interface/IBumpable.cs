@@ -21,54 +21,55 @@ public interface IBumpable {
 
 
 	// MSG
-	protected void OnBumped (Rigidbody rig);
+	protected void OnBumped (Rigidbody rig, Damage damage);
 
-	protected bool AllowBump (Rigidbody rig);
+	protected bool AllowBump (Rigidbody rig, Direction4 from) => IsValidBumpDirection(this, from);
 
-	protected Damage GetBumpDamage () => new(1);
+	protected Damage GetBumpTransferDamage () => new(1);
 
 
 	// API
-	internal void TryPerformBump (Rigidbody rig, bool horizontal) {
-		if (Game.GlobalFrame < LastBumpedFrame + BumpCooldown) return;
+	internal void TryPerformBump (Rigidbody sender, Direction4 directionTo, bool forceBump = false, Damage damageToBumpedObject = default) {
+
+		if (!forceBump && Game.GlobalFrame < LastBumpedFrame + BumpCooldown) return;
 		if (this is not Entity entity) return;
-		if (!AllowBump(rig)) return;
-		if (horizontal) {
-			if (rig.VelocityX > 0) {
-				// Right
-				if (!FromLeft) return;
-				if (rig.Rect.xMax > entity.Rect.CenterX()) return;
-				LastBumpedFrame = Game.GlobalFrame;
-				LastBumpFrom = Direction4.Left;
-				PerformTransferBump(Direction4.Right, entity);
-				OnBumped(rig);
-			} else if (rig.VelocityX < 0) {
-				// Left
-				if (!FromRight) return;
-				if (rig.Rect.x < entity.Rect.CenterX()) return;
+
+		switch (directionTo) {
+			case Direction4.Left:
+				if (!forceBump && !AllowBump(sender, Direction4.Right)) return;
+				if (sender.Rect.x < entity.Rect.CenterX()) return;
 				LastBumpedFrame = Game.GlobalFrame;
 				LastBumpFrom = Direction4.Right;
 				PerformTransferBump(Direction4.Left, entity);
-				OnBumped(rig);
-			}
-		} else {
-			if (rig.VelocityY > 0) {
-				// Up
-				if (!FromBelow) return;
-				if (rig.Rect.yMax > entity.Rect.CenterY()) return;
+				OnBumped(sender, damageToBumpedObject);
+				break;
+
+			case Direction4.Right:
+				if (!forceBump && !AllowBump(sender, Direction4.Left)) return;
+				if (sender.Rect.xMax > entity.Rect.CenterX()) return;
 				LastBumpedFrame = Game.GlobalFrame;
-				LastBumpFrom = Direction4.Down;
-				PerformTransferBump(Direction4.Up, entity);
-				OnBumped(rig);
-			} else if (rig.VelocityY < 0) {
-				// Down
-				if (!FromAbove) return;
-				if (rig.Rect.y < entity.Rect.CenterY()) return;
+				LastBumpFrom = Direction4.Left;
+				PerformTransferBump(Direction4.Right, entity);
+				OnBumped(sender, damageToBumpedObject);
+				break;
+
+			case Direction4.Down:
+				if (!forceBump && !AllowBump(sender, Direction4.Up)) return;
+				if (sender.Rect.y < entity.Rect.CenterY()) return;
 				LastBumpedFrame = Game.GlobalFrame;
 				LastBumpFrom = Direction4.Up;
 				PerformTransferBump(Direction4.Down, entity);
-				OnBumped(rig);
-			}
+				OnBumped(sender, damageToBumpedObject);
+				break;
+
+			case Direction4.Up:
+				if (!forceBump && !AllowBump(sender, Direction4.Down)) return;
+				if (sender.Rect.yMax > entity.Rect.CenterY()) return;
+				LastBumpedFrame = Game.GlobalFrame;
+				LastBumpFrom = Direction4.Down;
+				PerformTransferBump(Direction4.Up, entity);
+				OnBumped(sender, damageToBumpedObject);
+				break;
 		}
 	}
 
@@ -98,6 +99,22 @@ public interface IBumpable {
 		cell.Z++;
 	}
 
+	public static bool IsValidBumpDirection (IBumpable bump, Direction4 from) => from switch {
+		Direction4.Up => bump.FromAbove,
+		Direction4.Down => bump.FromBelow,
+		Direction4.Left => bump.FromLeft,
+		Direction4.Right => bump.FromRight,
+		_ => true,
+	};
+
+	public static void BumpAllOverlap (Rigidbody sender, Direction4 directionTo, bool forceBump = false, Damage damageToBumpedObject = default) {
+		var hits = Physics.OverlapAll(sender.CollisionMask, sender.Rect.EdgeOutside(directionTo, 1), out int count, sender);
+		for (int i = 0; i < count; i++) {
+			var hit = hits[i];
+			if (hit.Entity is not IBumpable hitBump) continue;
+			hitBump.TryPerformBump(sender, directionTo, forceBump, damageToBumpedObject);
+		}
+	}
 
 	// LGC
 	private static void PerformTransferBump (Direction4 direction, Entity self) {
@@ -143,7 +160,7 @@ public interface IBumpable {
 
 			// Attack
 			if (selfBump.TransferWithAttack && hit.Entity is IDamageReceiver receiver) {
-				receiver.TakeDamage(selfBump.GetBumpDamage());
+				receiver.TakeDamage(selfBump.GetBumpTransferDamage());
 			}
 
 		}

@@ -1,4 +1,5 @@
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
@@ -27,8 +28,8 @@ public abstract class Slope : Entity, IBlockEntity {
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		// Edge
-		Physics.FillEntity(
-			PhysicsLayer.ENVIRONMENT, this, true,
+		Physics.FillBlock(
+			PhysicsLayer.ENVIRONMENT, TypeID, Rect, true,
 			(DirectionHorizontal == Direction2.Left ? Tag.OnewayRight : Tag.OnewayLeft) | Tag.Mark
 		);
 		Physics.FillEntity(

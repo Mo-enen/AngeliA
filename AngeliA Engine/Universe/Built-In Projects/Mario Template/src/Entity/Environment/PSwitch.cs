@@ -30,6 +30,11 @@ public class PSwitch : Rigidbody, IAutoTrackWalker {
 		LastTriggerFrame = int.MinValue;
 	}
 
+	[OnGameRestart]
+	internal static void OnGameRestart () {
+		LastTriggerFrame = int.MinValue;
+	}
+
 	[OnGameUpdateLater]
 	internal static void OnGameUpdateLater () {
 		if (Triggering) {

@@ -9,6 +9,7 @@ namespace MarioTemplate;
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 
+
 	// VAR
 	private static readonly SpriteCode REVEALED_SP = "RevealedBlock";
 	public static readonly int TYPE_ID = typeof(BrickBlock).AngeHash();
@@ -25,11 +26,12 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 	private int ItemInside;
 	private int SpawnItemStartFrame = int.MinValue;
 
+
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
 		SpawnItemStartFrame = int.MinValue;
-		ItemInside = MarioUtil.GetEmbedItemID(Rect);
+		ItemInside = MarioUtil.GetEmbedItemID(Rect, failbackID: Coin.TYPE_ID);
 	}
 
 	public override void FirstUpdate () {
@@ -59,18 +61,33 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 	public override void LateUpdate () {
 		base.LateUpdate();
 		if (IsCoin) {
+			// Coin
 			Renderer.Draw(Coin.TYPE_ID, Rect);
-		} else {
-			var cell = Renderer.Draw(SpawnItemStartFrame < 0 ? TypeID : REVEALED_SP, Rect);
+		} else if (SpawnItemStartFrame < 0) {
+			// Brick
+			var cell = Renderer.Draw(TypeID, Rect);
 			IBumpable.AnimateForBump(this, cell);
+		} else {
+			// Revealed
+			Renderer.Draw(REVEALED_SP, Rect);
 		}
 	}
 
-	bool IBumpable.AllowBump (Rigidbody rig) => rig == PlayerSystem.Selecting && SpawnItemStartFrame < 0;
+	bool IBumpable.AllowBump (Rigidbody rig, Direction4 from) => IBumpable.IsValidBumpDirection(this, from) && rig == PlayerSystem.Selecting && SpawnItemStartFrame < 0;
 
-	void IBumpable.OnBumped (Rigidbody rig) {
-		if (ItemInside == 0 || SpawnItemStartFrame >= 0) return;
-		SpawnItemStartFrame = Game.GlobalFrame;
+	void IBumpable.OnBumped (Rigidbody rig, Damage damage) {
+		if (IsCoin) return;
+		if (damage.Amount > 0 && damage.Type.HasAll(Tag.MagicalDamage)) {
+			// Break
+			Active = false;
+			FrameworkUtil.InvokeObjectBreak(TypeID, Rect);
+		} else {
+			// Spawn Item
+			if (ItemInside == 0 || SpawnItemStartFrame >= 0) return;
+			SpawnItemStartFrame = Game.GlobalFrame;
+		}
 	}
+
+	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY);
 
 }

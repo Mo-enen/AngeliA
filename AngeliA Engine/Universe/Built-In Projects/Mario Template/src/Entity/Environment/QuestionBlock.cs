@@ -34,7 +34,7 @@ public class QuestionBlock : Entity, IBlockEntity, IBumpable, IAutoTrackWalker {
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		ItemInside = MarioUtil.GetEmbedItemID(Rect);
+		ItemInside = MarioUtil.GetEmbedItemID(Rect, failbackID: Coin.TYPE_ID);
 		SpawnItemStartFrame = int.MinValue;
 	}
 
@@ -67,14 +67,17 @@ public class QuestionBlock : Entity, IBlockEntity, IBumpable, IAutoTrackWalker {
 		IBumpable.AnimateForBump(this, cell);
 	}
 
-	void IBumpable.OnBumped (Rigidbody rig) {
+	void IBumpable.OnBumped (Rigidbody rig, Damage damage) {
 		if (ItemInside == 0 || SpawnItemStartFrame >= 0) return;
 		SpawnItemStartFrame = Game.GlobalFrame;
 	}
 
-	bool IBumpable.AllowBump (Rigidbody rig) {
+	bool IBumpable.AllowBump (Rigidbody rig, Direction4 from) {
+		if (!IBumpable.IsValidBumpDirection(this, from)) return false;
 		if (rig != PlayerSystem.Selecting) return false;
 		return SpawnItemStartFrame < 0 && ItemInside != 0;
 	}
+
+	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY);
 
 }

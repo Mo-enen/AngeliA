@@ -34,6 +34,7 @@ public class Goomba : Enemy, IPingPongWalker {
 	bool IPingPongWalker.WalkOffEdge => true;
 	int IPingPongWalker.LastTurnFrame { get; set; }
 	bool IPingPongWalker.WalkingRight { get; set; }
+	int IPingPongWalker.TurningCheckMask => PhysicsMask.SOLID;
 
 	// MSG
 	public override void OnActivated () {

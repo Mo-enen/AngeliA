@@ -56,8 +56,16 @@ public class Coin : Entity, IBumpable, IAutoTrackWalker {
 
 	public static void ResetCoinCount () => CurrentCoinCount = 0;
 
-	void IBumpable.OnBumped (Rigidbody rig) { }
+	void IBumpable.OnBumped (Rigidbody rig, Damage damage) {
+		if (PSwitch.Triggering && damage.Amount > 0 && damage.Type.HasAll(Tag.MagicalDamage)) {
+			Active = false;
+			FrameworkUtil.InvokeObjectBreak(BrickBlock.TYPE_ID, Rect);
+		}
+	}
 
-	bool IBumpable.AllowBump (Rigidbody rig) => PSwitch.Triggering;
+	bool IBumpable.AllowBump (Rigidbody rig, Direction4 from) =>
+		IBumpable.IsValidBumpDirection(this, from) &&
+		rig == PlayerSystem.Selecting &&
+		PSwitch.Triggering;
 
 }

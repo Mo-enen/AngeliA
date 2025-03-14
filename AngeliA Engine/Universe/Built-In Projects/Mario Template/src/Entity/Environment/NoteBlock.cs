@@ -20,16 +20,14 @@ public class NoteBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 	int IAutoTrackWalker.WalkStartFrame { get; set; }
 	Direction8 IRouteWalker.CurrentDirection { get; set; }
 	Int2 IRouteWalker.TargetPosition { get; set; }
-
-
 	private int ItemInside;
-	private int OffsetY;
+	private Int2 ArtworkOffset;
 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
 		ItemInside = MarioUtil.GetEmbedItemID(Rect);
-		OffsetY = 0;
+		ArtworkOffset = default;
 	}
 
 	public override void FirstUpdate () {
@@ -47,45 +45,36 @@ public class NoteBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-		Renderer.Draw(TypeID, Rect.Shift(0, OffsetY));
-		OffsetY = OffsetY.LerpTo(0, 0.4f);
+		Renderer.Draw(TypeID, Rect.Shift(ArtworkOffset));
+		ArtworkOffset.x = ArtworkOffset.x.LerpTo(0, 0.4f);
+		ArtworkOffset.y = ArtworkOffset.y.LerpTo(0, 0.4f);
 	}
 
-	void IBumpable.OnBumped (Rigidbody rig) => NoteBlockBumpLogic(LastBumpFrom);
+	void IBumpable.OnBumped (Rigidbody rig, Damage damage) => NoteBlockBumpLogic(LastBumpFrom);
 
-	bool IBumpable.AllowBump (Rigidbody rig) => true;
+	bool IBumpable.AllowBump (Rigidbody rig, Direction4 from) => IBumpable.IsValidBumpDirection(this, from);
+
+	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY);
 
 	private void NoteBlockBumpLogic (Direction4 bumpFrom) {
 
 		// Bounce
-		if (bumpFrom != Direction4.Down) {
-			FrameworkUtil.PerformSpringBounce(this, bumpFrom, 64);
+		if (bumpFrom == Direction4.Up) {
+			FrameworkUtil.PerformSpringBounce(this, Direction4.Up, 64);
 		}
 
 		// Animation
-		if (bumpFrom == Direction4.Down) {
-			OffsetY = Const.CEL;
-		} else {
-			OffsetY = -Const.CEL;
-		}
+		ArtworkOffset = bumpFrom.Opposite().Normal() * Const.CEL;
 
 		// Spawn Item
 		if (ItemInside != 0) {
-			if (bumpFrom == Direction4.Down) {
-				// From Below
-				// Spawn Item Inside
-				if (MarioUtil.SpawnEmbedItem(ItemInside, Rect, Direction4.Up) is Rigidbody rItem) {
-					rItem.VelocityY = 64;
-				}
-				ItemInside = 0;
-			} else {
-				// From Above
-				// Spawn Item Inside
-				if (MarioUtil.SpawnEmbedItem(ItemInside, Rect, Direction4.Down) is Rigidbody rItem) {
-					rItem.VelocityY = -32;
-				}
-				ItemInside = 0;
+			// Spawn Item Inside
+			if (MarioUtil.SpawnEmbedItem(ItemInside, Rect, bumpFrom.Opposite()) is Rigidbody rItem) {
+				var normal = bumpFrom.Opposite().Normal();
+				rItem.VelocityX = normal.x * 32;
+				rItem.VelocityY = bumpFrom == Direction4.Down ? 64 : normal.y * 32;
 			}
+			ItemInside = 0;
 		}
 	}
 

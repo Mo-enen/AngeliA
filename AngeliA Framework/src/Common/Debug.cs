@@ -56,13 +56,12 @@ public static class Debug {
 	public static void LogException (Exception ex) => OnLogException?.Invoke(ex);
 
 	public static void LogLabel (params object[] objs) {
+		ParamsCacheBuilder.Clear();
 		foreach (var obj in objs) {
-			if (obj == null) {
-				LogLabel("(null)");
-			} else {
-				LogLabel(obj.ToString());
-			}
+			ParamsCacheBuilder.Append(obj ?? "(null)");
+			ParamsCacheBuilder.Append(' ');
 		}
+		LogLabel(ParamsCacheBuilder.ToString());
 	}
 	public static void LogLabel (object obj) => LogLabel(obj.ToString());
 	public static void LogLabel (string content) {

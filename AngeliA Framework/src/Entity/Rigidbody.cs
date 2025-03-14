@@ -124,6 +124,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 		base.Update();
 
 		var rect = Rect;
+
+		// In Water
 		bool prevInWater = InWater;
 		var prevWaterEntity = InWaterHit.Entity;
 		Physics.Overlap(
@@ -192,7 +194,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is IBumpable bump) {
-					bump.TryPerformBump(this, true);
+					bump.TryPerformBump(this, VelocityX > 0 ? Direction4.Right : Direction4.Left);
 				}
 			}
 
@@ -234,7 +236,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 			var hits = Physics.OverlapAll(
 				CollisionMask,
-				rect.EdgeOutside(VelocityY > 0 ? Direction4.Up : Direction4.Down),
+				rect.EdgeOutside(VelocityY > 0 ? Direction4.Up : Direction4.Down, 1),
 				out int count,
 				this,
 				OperationMode.ColliderAndTrigger
@@ -244,7 +246,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 				if (hit.Entity is IBumpable bump) {
-					bump.TryPerformBump(this, false);
+					bump.TryPerformBump(this, VelocityY > 0 ? Direction4.Up : Direction4.Down);
 				}
 			}
 
@@ -271,7 +273,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 					break;
 				}
 
-				// Hit
+				// Rigidbody Hit
 				if (
 					VelocityY.Sign() != hitRig.VelocityY.Sign() ||
 					VelocityY.Abs() > hitRig.VelocityY.Abs()

@@ -6,6 +6,7 @@ namespace AngeliA.Platformer;
 
 public interface IPingPongWalker {
 
+	// VAR
 	public int WalkSpeed { get; }
 	public bool WalkOffEdge { get; }
 	public int TurningCooldown => 20;
@@ -14,6 +15,7 @@ public interface IPingPongWalker {
 	public int LastTurnFrame { get; set; }
 	public bool WalkingRight { get; set; }
 
+	// MSG
 	public static void OnActive (IPingPongWalker walker) {
 		walker.LastTurnFrame = int.MinValue;
 		walker.WalkingRight = true;
@@ -22,13 +24,18 @@ public interface IPingPongWalker {
 	public static void PingPongWalk (IPingPongWalker walker) {
 
 		if (walker is not Entity walkingEntity) return;
-		if (walker.WalkSpeed == 0) return;
+		if (walker.WalkSpeed == 0) {
+			if (walker is Rigidbody _walkingRig) {
+				_walkingRig.VelocityX = 0;
+			}
+			return;
+		}
 
 		// Grounded Check
 		if (walker is Rigidbody rig && walker.OnlyWalkWhenGrounded && !rig.IsGrounded) return;
 
 		// Wall Hit Check
-		if (Game.GlobalFrame > walker.LastTurnFrame + 20) {
+		if (Game.GlobalFrame > walker.LastTurnFrame + walker.TurningCooldown) {
 			var hitCheckRect = walkingEntity.Rect.Shrink(0, 0, 1, 1).EdgeOutside(
 				walker.WalkingRight ? Direction4.Right : Direction4.Left, 1
 			);
@@ -39,16 +46,17 @@ public interface IPingPongWalker {
 				walker.WalkingRight = !walker.WalkingRight;
 				walker.LastTurnFrame = Game.GlobalFrame;
 			}
-		}
 
-		// Walk Off Edge Check
-		if (!walker.WalkOffEdge) {
-			var hitCheckRect = IRect.Point(walker.WalkingRight ? walkingEntity.X + walkingEntity.Width : walkingEntity.X - 1, walkingEntity.Y - 1);
-			if (
-				!Physics.Overlap(walker.TurningCheckMask, hitCheckRect, walkingEntity) &&
-				Physics.RoomCheckOneway(walker.TurningCheckMask, hitCheckRect, walkingEntity, Direction4.Down)
-			) {
-				walker.WalkingRight = !walker.WalkingRight;
+			// Walk Off Edge Check
+			if (!walker.WalkOffEdge) {
+				hitCheckRect = IRect.Point(walker.WalkingRight ? walkingEntity.X + walkingEntity.Width : walkingEntity.X - 1, walkingEntity.Y - 1);
+				if (
+					!Physics.Overlap(walker.TurningCheckMask, hitCheckRect, walkingEntity) &&
+					Physics.RoomCheckOneway(walker.TurningCheckMask, hitCheckRect, walkingEntity, Direction4.Down)
+				) {
+					walker.WalkingRight = !walker.WalkingRight;
+					walker.LastTurnFrame = Game.GlobalFrame;
+				}
 			}
 		}
 

@@ -5,28 +5,28 @@ using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
-public abstract class Enemy : Rigidbody, IBumpable, IDamageReceiver {
+public abstract class Enemy : Rigidbody, IDamageReceiver {
 
-	public bool IsPassout => PassoutFrame >= 0;
+
+	// VAR
+	private const int PASS_COUNT_DELAY = 30;
+	public bool IsPassout => PassoutFrame != int.MinValue;
 	protected virtual bool AllowPlayerStepOn => true;
 	protected virtual bool AttackOnTouchPlayer => true;
 	protected virtual int PlayerStepOnCooldown => 6;
 	public override int PhysicalLayer => PhysicsLayer.CHARACTER;
 	public override int CollisionMask => PhysicsMask.MAP;
+	public override int AirDragX => 0;
 	int IDamageReceiver.Team => Const.TEAM_ENEMY;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
-	bool IBumpable.TransferBumpToOther => false;
-	bool IBumpable.TransferBumpFromOther => true;
-	bool IBumpable.FromBelow => false;
-	int IBumpable.LastBumpedFrame { get; set; }
-	Direction4 IBumpable.LastBumpFrom { get; set; }
-	private int LastPlayerStepOnFrame = int.MinValue;
-	private int PassoutFrame = -1;
+	protected int LastPlayerStepOnFrame { get; private set; } = int.MinValue;
+	private int PassoutFrame = int.MinValue;
+
 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		PassoutFrame = -1;
+		PassoutFrame = int.MinValue;
 		LastPlayerStepOnFrame = int.MinValue;
 	}
 
@@ -34,8 +34,8 @@ public abstract class Enemy : Rigidbody, IBumpable, IDamageReceiver {
 		base.Update();
 
 		// Passout Check
-		if (PassoutFrame >= 0) {
-			if (Game.GlobalFrame > PassoutFrame + 30) {
+		if (PassoutFrame != int.MinValue) {
+			if (Game.GlobalFrame > PassoutFrame + PASS_COUNT_DELAY) {
 				Active = false;
 			}
 			VelocityX = 0;
@@ -81,13 +81,20 @@ public abstract class Enemy : Rigidbody, IBumpable, IDamageReceiver {
 
 	protected virtual void AttackPlayer (IDamageReceiver player) => player.TakeDamage(new Damage(1));
 
-	bool IBumpable.AllowBump (Rigidbody rig) => false;
-
-	void IBumpable.OnBumped (Rigidbody rig) { }
+	public void MakePassout (int spriteID = int.MinValue) {
+		PassoutFrame = Game.GlobalFrame - PASS_COUNT_DELAY - 1;
+		FrameworkUtil.InvokeObjectFreeFall(
+			spriteID != int.MinValue ? spriteID : TypeID, X, Y,
+			speedX: Util.QuickRandomSign() * 32,
+			speedY: 82,
+			rotationSpeed: Util.QuickRandomSign() * 8
+		);
+	}
 
 	void IDamageReceiver.OnDamaged (Damage damage) {
 		if (damage.Amount <= 0) return;
-		PassoutFrame = Game.GlobalFrame;
+		MakePassout();
 	}
+
 
 }
