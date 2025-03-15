@@ -28,13 +28,11 @@ public abstract class Koopa : Enemy, IPingPongWalker, IDamageReceiver {
 
 
 	// VAR
-	public override bool CarryOtherOnTop => !IsRolling;
 	protected override bool AttackOnTouchPlayer => !IsInShell || (IsRolling && Game.GlobalFrame > RollingStartFrame + 12);
 	protected abstract SpriteCode WalkSprite { get; }
 	protected abstract SpriteCode RollingSprite { get; }
 	int IPingPongWalker.WalkSpeed => IsPassout ? 0 : !IsInShell ? 8 : IsRolling ? 32 : 0;
 	bool IPingPongWalker.WalkOffEdge => true;
-	int IPingPongWalker.TurningCooldown => 6;
 	int IPingPongWalker.TurningCheckMask => IsRolling ? PhysicsMask.MAP : PhysicsMask.SOLID;
 	public int LastTurnFrame { get; set; }
 	public bool WalkingRight { get; set; }

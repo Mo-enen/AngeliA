@@ -600,6 +600,12 @@ public static class PlayerSystem {
 			return;
 		}
 
+		// Revive
+		if (Selecting.CharacterState == CharacterState.PassOut) {
+			Selecting.Health.Heal(Selecting.Health.MaxHP);
+			Selecting.SetCharacterState(CharacterState.GamePlay);
+		}
+
 		// Move Player to Cursor Pos
 		var mousePos = Input.MouseGlobalPosition;
 		Selecting.X = mousePos.x;

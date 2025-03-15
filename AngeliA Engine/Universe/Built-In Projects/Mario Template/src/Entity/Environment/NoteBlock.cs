@@ -54,7 +54,7 @@ public class NoteBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 
 	bool IBumpable.AllowBump (Rigidbody rig, Direction4 from) => IBumpable.IsValidBumpDirection(this, from);
 
-	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY);
+	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT);
 
 	private void NoteBlockBumpLogic (Direction4 bumpFrom) {
 

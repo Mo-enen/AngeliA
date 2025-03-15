@@ -9,7 +9,7 @@ public interface IPingPongWalker {
 	// VAR
 	public int WalkSpeed { get; }
 	public bool WalkOffEdge { get; }
-	public int TurningCooldown => 20;
+	public int TurningCooldown => 6;
 	public bool OnlyWalkWhenGrounded => true;
 	public int TurningCheckMask => PhysicsMask.MAP;
 	public int LastTurnFrame { get; set; }

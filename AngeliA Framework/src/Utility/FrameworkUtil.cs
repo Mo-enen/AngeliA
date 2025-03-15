@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace AngeliA;
@@ -626,7 +627,7 @@ HasOnewayTag(tag) ||
 	}
 
 
-	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false, bool fixScriptFileName = false) {
+	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false, bool fixScriptFileName = false, bool checkNoItemCombination = true) {
 
 		if (!onlyLogWhenWarningFounded) {
 			Debug.Log("-------- AngeliA Project Analysis --------");
@@ -669,7 +670,7 @@ HasOnewayTag(tag) ||
 
 			}
 			if (!anyWarning && !onlyLogWhenWarningFounded) {
-				Debug.Log("[✓] No hash collision founded.");
+				Debug.Log("✓ No hash collision founded.");
 			}
 		}
 
@@ -694,7 +695,7 @@ HasOnewayTag(tag) ||
 				Debug.LogWarning($"Fix first char for script file: {oldName} >> {name}");
 			}
 			if (!anyWarning && !onlyLogWhenWarningFounded) {
-				Debug.Log("[✓] No first char of file name need to fix.");
+				Debug.Log("✓ No first char of file name need to fix.");
 			}
 		}
 
@@ -710,7 +711,34 @@ HasOnewayTag(tag) ||
 				Debug.LogWarning($"Item class \"{name}\" is not start with \"i\"");
 			}
 			if (!anyWarning && !onlyLogWhenWarningFounded) {
-				Debug.Log("[✓] No item class name need to fix.");
+				Debug.Log("✓ No item class name need to fix.");
+			}
+		}
+
+		// Check for Item No Combination
+		if (checkNoItemCombination) {
+			bool anyWarning = false;
+			var resultHash = new HashSet<int>();
+			foreach (var (_, result) in ItemSystem.ForAllCombinations()) {
+				resultHash.Add(result);
+			}
+			var typeList = new List<(int id, Type type)>();
+			foreach (var type in typeof(Item).AllChildClass()) {
+				typeList.Add((type.AngeHash(), type));
+			}
+			foreach (var type in typeof(IBlockEntity).AllClassImplemented()) {
+				typeList.Add((type.AngeHash(), type));
+			}
+			foreach (var (id, type) in typeList) {
+				if (resultHash.Contains(id)) continue;
+				var nc = type.GetCustomAttributes<NoItemCombinationAttribute>(true);
+				if (nc == null || !nc.Any()) {
+					Debug.LogWarning($"Item \"{type.AngeName()}\" have no valid combination. Consider add attribute \"[NoItemCombination]\" to the item class.");
+					anyWarning = true;
+				}
+			}
+			if (!anyWarning && !onlyLogWhenWarningFounded) {
+				Debug.Log("✓ Item combinations are properly labeled.");
 			}
 		}
 

@@ -88,6 +88,6 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 		}
 	}
 
-	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY);
+	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT);
 
 }

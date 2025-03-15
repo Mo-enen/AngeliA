@@ -19,9 +19,11 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 	public static event System.Action<CheckPoint, Character> OnCheckPointTouched;
 	public static Int3? LastTriggeredCheckPointUnitPosition { get; private set; } = null;
 	public static int LastTriggeredCheckPointID { get; private set; } = 0;
+	protected virtual bool RequireAltarUnlock => false;
+	protected int LastTriggerFrame = int.MinValue;
 
 	// Short
-	private bool AltarAvailable => LinkedAltarID != 0 && CheckAltar.CurrentAltarID == LinkedAltarID;
+	private bool AltarAvailable => !RequireAltarUnlock || (LinkedAltarID != 0 && CheckAltar.CurrentAltarID == LinkedAltarID);
 
 	// Data
 	private readonly int LinkedAltarID = 0;
@@ -47,6 +49,12 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 
 
 	public CheckPoint () => CheckAltar.TryGetLinkedID(TypeID, out LinkedAltarID);
+
+
+	public override void OnActivated () {
+		base.OnActivated();
+		LastTriggerFrame = int.MinValue;
+	}
 
 
 	public override void FirstUpdate () {
@@ -126,18 +134,21 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 
 
 	public virtual void Touch () {
-		TriggerCheckPoint(new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ));
+		TriggerCheckPoint(TypeID, new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ));
 		OnCheckPointTouched?.Invoke(this, PlayerSystem.Selecting);
+		LastTriggerFrame = Game.GlobalFrame;
 	}
 
 
 	public static void TriggerCheckPoint (Int3 unitPos) {
-
 		int id = WorldSquad.Front.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
-		if (!CheckAltar.TryGetLinkedID(id, out _)) return;
+		TriggerCheckPoint(id, unitPos);
+	}
+	public static void TriggerCheckPoint (int id, Int3 unitPos) {
 
 		LastTriggeredCheckPointUnitPosition = unitPos;
 		LastTriggeredCheckPointID = id;
+		PlayerSystem.RespawnCpUnitPosition = unitPos;
 
 		// Clear Portal
 		if (
@@ -146,9 +157,6 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 		) {
 			portal.Active = false;
 		}
-
-		// Player Respawn
-		PlayerSystem.RespawnCpUnitPosition = unitPos;
 
 	}
 

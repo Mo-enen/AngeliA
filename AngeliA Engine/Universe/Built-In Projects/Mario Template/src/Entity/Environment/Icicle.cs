@@ -68,7 +68,7 @@ public class Icicle : Rigidbody, IAutoTrackWalker {
 			}
 		}
 
-		// Damage Check
+		// Damage Check for Player
 		var player = PlayerSystem.Selecting;
 		if (player != null) {
 			var damageRect = Rect.Shrink(Const.QUARTER, Const.QUARTER, -16, 0);
@@ -78,6 +78,16 @@ public class Icicle : Rigidbody, IAutoTrackWalker {
 				BreakingParticle.SpawnParticles(TypeID, Rect);
 			}
 		}
+
+		// Damage Check for Enemy/Environment
+		if (Falling) {
+			IDamageReceiver.DamageAllOverlap(
+				Rect.EdgeExact(Direction4.Down, 16),
+				new Damage(1, Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT, type: Tag.MagicalDamage),
+				PhysicsMask.DYNAMIC, this
+			);
+		}
+
 	}
 
 	public override void LateUpdate () {

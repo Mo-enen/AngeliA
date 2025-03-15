@@ -276,7 +276,7 @@ public partial class RiggedGame : Game {
 				case FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_SILENTLY_ID:
 					FrameworkUtil.RunAngeliaCodeAnalysis(
 						onlyLogWhenWarningFounded: true,
-						fixScriptFileName: false
+						fixScriptFileName: Universe.BuiltInInfo.RequireFixScriptNamesWhenAnalyse
 					);
 					break;
 				case LanguageUtil.ADD_KEYS_FOR_ALL_LANGUAGE_CODE_SETTING_ID:

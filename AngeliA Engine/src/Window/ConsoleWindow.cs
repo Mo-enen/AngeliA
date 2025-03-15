@@ -134,7 +134,7 @@ public class ConsoleWindow : WindowUI {
 				}
 #if DEBUG
 				string projectFolder = Util.GetParentPath(Universe.BuiltIn.UniverseRoot);
-				FrameworkUtil.RunEmptyScriptFileAnalysis(Util.GetParentPath(projectFolder), false);
+				FrameworkUtil.RunEmptyScriptFileAnalysis(Util.GetParentPath(projectFolder), onlyLogWhenWarningFounded: true);
 				FrameworkUtil.RunBuiltInSpriteAnalysys();
 #endif
 			}

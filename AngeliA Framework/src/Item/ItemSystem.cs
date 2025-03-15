@@ -367,6 +367,13 @@ public static class ItemSystem {
 	}
 
 
+	public static IEnumerable<KeyValuePair<Int4, int>> ForAllCombinations () {
+		foreach (var (key, data) in CombinationPool) {
+			yield return new(key, data.Result);
+		}
+	}
+
+
 	// Equipment
 	public static bool IsEquipment (int itemID) => ItemPool.TryGetValue(itemID, out var data) && data.Item is Equipment;
 	public static bool IsEquipment (int itemID, out EquipmentType type) {
@@ -462,10 +469,6 @@ public static class ItemSystem {
 	// Combination
 	private static void LoadCombinationPoolFromCode () {
 
-#if DEBUG
-		var typeList = new List<(int id, System.Type type)>();
-#endif
-
 		CombinationPool.Clear();
 
 		// Global Combination
@@ -483,9 +486,6 @@ public static class ItemSystem {
 			if (iComs != null) {
 				LoadCombinationsIntoPool(type, iComs);
 			}
-#if DEBUG
-			typeList.Add((type.AngeHash(), type));
-#endif
 		}
 
 		// Block Entity
@@ -494,25 +494,7 @@ public static class ItemSystem {
 			if (iComs != null) {
 				LoadCombinationsIntoPool(type, iComs);
 			}
-#if DEBUG
-			typeList.Add((type.AngeHash(), type));
-#endif
 		}
-
-#if DEBUG
-
-		var resultHash = new HashSet<int>();
-		foreach (var (com, comData) in CombinationPool) {
-			resultHash.Add(comData.Result);
-		}
-		foreach (var (id, type) in typeList) {
-			if (resultHash.Contains(id)) continue;
-			var nc = type.GetCustomAttributes<NoItemCombinationAttribute>(true);
-			if (nc == null || !nc.Any()) {
-				Debug.LogWarning($"Item \"{type.AngeName()}\" have no valid combination. Add attribute \"NoItemCombinationAttribute\" to ignore this warning.");
-			}
-		}
-#endif
 
 		// Func
 		static void LoadCombinationsIntoPool (Type type, IEnumerable<BasicItemCombinationAttribute> iComs) {

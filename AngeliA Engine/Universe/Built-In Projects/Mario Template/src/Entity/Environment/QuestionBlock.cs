@@ -78,6 +78,6 @@ public class QuestionBlock : Entity, IBlockEntity, IBumpable, IAutoTrackWalker {
 		return SpawnItemStartFrame < 0 && ItemInside != 0;
 	}
 
-	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY);
+	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT);
 
 }

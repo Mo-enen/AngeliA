@@ -139,31 +139,32 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 	#region --- API ---
 
 
-	public virtual void Touch () => TriggerCheckAltar(new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ));
+	public virtual void Touch () => TriggerCheckAltar(TypeID, new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ));
 
 
 	public static bool TryGetLinkedID (int id, out int linkedID) => LinkPool.TryGetValue(id, out linkedID);
 
 
 	public static void TriggerCheckAltar (Int3 unitPos) {
-
 		int id = WorldSquad.Front.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
-		if (!TryGetLinkedID(id, out int linkedCheckPointID)) return;
+		TriggerCheckAltar(id, unitPos);
+	}
+	public static void TriggerCheckAltar (int id, Int3 unitPos) {
 
+		// Update Last Checked Pos
+		CurrentAltarID = id;
+		CurrentAltarUnitPos = unitPos;
 		PlayerSystem.RespawnCpUnitPosition = unitPos;
 
 		// Clear Portal
 		if (
+			TryGetLinkedID(id, out int linkedCheckPointID) &&
 			CheckPoint.LastTriggeredCheckPointID == linkedCheckPointID &&
 			Stage.GetSpawnedEntityCount(CheckPointPortal.TYPE_ID) != 0 &&
 			Stage.TryFindEntity(CheckPointPortal.TYPE_ID, out var cpPortal)
 		) {
 			cpPortal.Active = false;
 		}
-
-		// Update Last Checked Pos
-		CurrentAltarID = id;
-		CurrentAltarUnitPos = unitPos;
 
 	}
 

@@ -5,6 +5,7 @@ using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
+[EntityAttribute.MapEditorGroup(nameof(Enemy))]
 public abstract class Enemy : Rigidbody, IDamageReceiver {
 
 
@@ -17,6 +18,7 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 	public override int PhysicalLayer => PhysicsLayer.CHARACTER;
 	public override int CollisionMask => PhysicsMask.MAP;
 	public override int AirDragX => 0;
+	public override bool CarryOtherOnTop => false;
 	int IDamageReceiver.Team => Const.TEAM_ENEMY;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
 	protected int LastPlayerStepOnFrame { get; private set; } = int.MinValue;
@@ -28,6 +30,8 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 		base.OnActivated();
 		PassoutFrame = int.MinValue;
 		LastPlayerStepOnFrame = int.MinValue;
+		Width = 196;
+		Height = 255;
 	}
 
 	public override void Update () {
@@ -47,7 +51,7 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 
 		// Player Interaction Check
 		if (AllowPlayerStepOn || AttackOnTouchPlayer) {
-			var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, Rect, out int count, this);
+			var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, Rect.ExpandHorizontal(2), out int count, this);
 			for (int i = 0; i < count; i++) {
 				var hit = hits[i];
 
