@@ -40,6 +40,8 @@ public class Goomba : Enemy, IPingPongWalker {
 	public override void OnActivated () {
 		base.OnActivated();
 		IPingPongWalker.OnActive(this);
+		Width = 196;
+		Height = 255;
 	}
 
 	public override void Update () {

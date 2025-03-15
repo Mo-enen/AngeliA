@@ -450,9 +450,9 @@ public partial class MapEditor {
 			if (entityID != 0 && RequireEmbedEntity.Contains(entityID)) {
 				if (IBlockEntity.IsIgnoreEmbedAsElement(id)) {
 					FrameworkUtil.InvokeErrorHint(unitX.ToGlobal() + Const.HALF, unitY.ToGlobal(), id);
-					return;
+				} else {
+					type = BlockType.Element;
 				}
-				type = BlockType.Element;
 			}
 		}
 

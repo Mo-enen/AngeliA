@@ -7,7 +7,7 @@ namespace MarioTemplate;
 
 [NoItemCombination]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
+public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker, IDamageReceiver {
 
 
 	// VAR
@@ -21,6 +21,7 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 	int IAutoTrackWalker.WalkStartFrame { get; set; }
 	Direction8 IRouteWalker.CurrentDirection { get; set; }
 	Int2 IRouteWalker.TargetPosition { get; set; }
+	int IDamageReceiver.Team => Const.TEAM_ENVIRONMENT;
 	private bool IsCoin => SpawnItemStartFrame < 0 && PSwitch.Triggering;
 
 	private int ItemInside;
@@ -89,5 +90,12 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 	}
 
 	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT);
+
+	void IDamageReceiver.OnDamaged (Damage damage) {
+		if (damage.Amount <= 0 || !damage.Type.HasAll(Tag.MagicalDamage)) return;
+		if (IsCoin || SpawnItemStartFrame >= 0) return;
+		Active = false;
+		FrameworkUtil.InvokeObjectBreak(TypeID, Rect);
+	}
 
 }

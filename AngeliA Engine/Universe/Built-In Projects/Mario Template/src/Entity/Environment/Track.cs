@@ -7,6 +7,7 @@ namespace MarioTemplate;
 
 [NoItemCombination]
 [EntityAttribute.MapEditorGroup("Entity")]
+[EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public class Track : AngeliA.Platformer.Track {
 
 	// Const

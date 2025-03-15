@@ -6,6 +6,7 @@ namespace AngeliA.Platformer;
 
 
 [EntityAttribute.MapEditorGroup("Contraption")]
+[EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Track : Entity, IBlockEntity {
 
 	// Api
@@ -20,6 +21,7 @@ public abstract class Track : Entity, IBlockEntity {
 	protected abstract SpriteCode BodyTiltSprite { get; }
 	protected abstract SpriteCode CenterSprite { get; }
 	bool IBlockEntity.AllowBeingEmbedAsElement => false;
+	bool IBlockEntity.EmbedEntityAsElement => LoadItemFromMapElement;
 
 	// Data
 	private static readonly HashSet<int> TrackSet = new(typeof(Track).AllChildClassID());

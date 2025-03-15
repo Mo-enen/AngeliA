@@ -17,21 +17,24 @@ public abstract class Launcher : Entity, IBlockEntity {
 	// API
 	public virtual Int2 LaunchOffset => default;
 	public virtual Int2 LaunchVelocity => default;
-	public virtual int TargetEntityID => TargetEntityIdFromMap;
+	public virtual int TargetEntityID => _TargetEntityId;
+	public virtual int FailbackEntityID => 0;
 	public virtual int MaxLaunchCount => 32;
 	public virtual int LaunchFrequency => 120;
+	public virtual int ItemCountPreLaunch => 1;
 	public virtual bool AllowingAutoLaunch => true;
 	public virtual bool LaunchOverlapingElement => true;
 	public virtual bool LaunchWhenEntranceBlocked => false;
 	public virtual bool KeepLaunchedEntityInMap => false;
 	public virtual bool LaunchTowardsPlayer => false;
+	public virtual bool UseMomentum => false;
 	bool IBlockEntity.EmbedEntityAsElement => true;
 	bool IBlockEntity.AllowBeingEmbedAsElement => false;
 	public int LastLaunchedFrame { get; set; }
+	public int CurrentLaunchedCount { get; private set; }
 
 	// Data
-	private AutoValidList<(Entity e, int frame)> LaunchedEntities = null;
-	private int TargetEntityIdFromMap;
+	private int _TargetEntityId;
 
 
 	#endregion
@@ -44,10 +47,9 @@ public abstract class Launcher : Entity, IBlockEntity {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		LaunchedEntities ??= new(MaxLaunchCount.LessOrEquel(256), ValidFunc);
 		LastLaunchedFrame = int.MinValue;
+		CurrentLaunchedCount = 0;
 		OnEntityRefresh();
-		static bool ValidFunc ((Entity e, int frame) pair) => pair.e.Active && pair.e.SpawnFrame == pair.frame;
 	}
 
 
@@ -55,9 +57,9 @@ public abstract class Launcher : Entity, IBlockEntity {
 		if (LaunchOverlapingElement) {
 			var pivotPos = PivotUnitPosition;
 			int id = WorldSquad.Front.GetBlockAt(pivotPos.x, pivotPos.y, pivotPos.z, BlockType.Element);
-			TargetEntityIdFromMap = Stage.IsValidEntityID(id) || ItemSystem.HasItem(id) ? id : 0;
+			_TargetEntityId = Stage.IsValidEntityID(id) || ItemSystem.HasItem(id) ? id : FailbackEntityID;
 		} else {
-			TargetEntityIdFromMap = 0;
+			_TargetEntityId = FailbackEntityID;
 		}
 	}
 
@@ -73,9 +75,12 @@ public abstract class Launcher : Entity, IBlockEntity {
 		if (
 			AllowingAutoLaunch &&
 			LaunchFrequency > 0 &&
-			Game.GlobalFrame % LaunchFrequency == LaunchFrequency - 1
+			Game.SettleFrame % LaunchFrequency == LaunchFrequency / 2 &&
+			CurrentLaunchedCount < MaxLaunchCount
 		) {
-			LaunchEntity();
+			for (int i = 0; i < ItemCountPreLaunch; i++) {
+				LaunchEntity();
+			}
 		}
 	}
 
@@ -117,10 +122,8 @@ public abstract class Launcher : Entity, IBlockEntity {
 
 
 	public bool ValidForLaunch () {
-		LaunchedEntities.Update();
 
 		if (TargetEntityID == 0) return false;
-		if (LaunchedEntities.Count >= LaunchedEntities.Capacity) return false;
 		bool rightSide = LaunchToRightSide();
 		var offset = LaunchOffset;
 		if (!rightSide) offset.x = -offset.x;
@@ -165,8 +168,13 @@ public abstract class Launcher : Entity, IBlockEntity {
 			) {
 				vel.x = -vel.x;
 			}
-			rig.VelocityX = vel.x;
-			rig.VelocityY = vel.y;
+			if (UseMomentum) {
+				rig.MomentumX = (vel.x, 1);
+				rig.MomentumY = (vel.y, 1);
+			} else {
+				rig.VelocityX = vel.x;
+				rig.VelocityY = vel.y;
+			}
 			rig.X -= rig.OffsetX;
 		}
 
@@ -174,10 +182,16 @@ public abstract class Launcher : Entity, IBlockEntity {
 			entity.IgnoreReposition = true;
 		}
 
+		if (entity is IPingPongWalker walker) {
+			walker.WalkingRight = rightSide;
+		}
+
 		// Finish
 		OnEntityLaunched(entity, X + offset.x, Y + offset.y);
-		LastLaunchedFrame = Game.GlobalFrame;
-		LaunchedEntities.Add((entity, entity.SpawnFrame));
+		if (LastLaunchedFrame != Game.GlobalFrame) {
+			LastLaunchedFrame = Game.GlobalFrame;
+			CurrentLaunchedCount++;
+		}
 		return entity;
 	}
 

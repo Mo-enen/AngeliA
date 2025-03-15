@@ -1166,6 +1166,7 @@ public sealed partial class MapEditor : WindowUI {
 		PlayerSystem.RespawnCpUnitPosition = null;
 		if (GenericPopupUI.ShowingPopup) GenericPopupUI.ClosePopup();
 		GUI.CancelTyping();
+		Stage.Settle();
 
 		// Squad 
 		WorldSquad.Enable = toPlayMode;

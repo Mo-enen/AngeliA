@@ -6,11 +6,15 @@ using AngeliA.Platformer;
 namespace MarioTemplate;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public class Coin : Entity, IBumpable, IAutoTrackWalker {
+public class Coin : Rigidbody, IBumpable, IAutoTrackWalker {
 
 	// VAR
+	public override int CollisionMask => PhysicsMask.MAP;
 	public static readonly int TYPE_ID = typeof(Coin).AngeHash();
 	public static int CurrentCoinCount { get; private set; } = 0;
+	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
+	public override int AirDragX => 0;
+	public bool IsLoose { get; set; } = false;
 	int IBumpable.LastBumpedFrame { get; set; }
 	int IAutoTrackWalker.LastWalkingFrame { get; set; }
 	int IAutoTrackWalker.WalkStartFrame { get; set; }
@@ -18,13 +22,25 @@ public class Coin : Entity, IBumpable, IAutoTrackWalker {
 	Int2 IRouteWalker.TargetPosition { get; set; }
 	Direction4 IBumpable.LastBumpFrom { get; set; }
 
+
 	// MSG
+	public override void OnActivated () {
+		base.OnActivated();
+		IsLoose = false;
+		BounceSpeedRate = 800;
+	}
+
 	public override void FirstUpdate () {
+		if (!IsLoose) {
+			if (!PSwitch.Triggering || (this as IAutoTrackWalker).OnTrack) {
+				FillAsTrigger(1);
+				IgnorePhysics.True(1);
+			}
+			IgnoreGravity.True(1);
+		} else {
+			FillAsTrigger(1);
+		}
 		base.FirstUpdate();
-		Physics.FillEntity(
-			PhysicsLayer.ENVIRONMENT, this,
-			!PSwitch.Triggering || (this as IAutoTrackWalker).OnTrack
-		);
 	}
 
 	public override void Update () {

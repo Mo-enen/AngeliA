@@ -270,13 +270,15 @@ public partial class RiggedGame : Game {
 				case FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_ID:
 					FrameworkUtil.RunAngeliaCodeAnalysis(
 						onlyLogWhenWarningFounded: false,
-						fixScriptFileName: Universe.BuiltInInfo.RequireFixScriptNamesWhenAnalyse
+						fixScriptFileName: Universe.BuiltInInfo.RequireFixScriptNamesWhenAnalyse,
+						checkNoItemCombination: true
 					);
 					break;
 				case FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_SILENTLY_ID:
 					FrameworkUtil.RunAngeliaCodeAnalysis(
 						onlyLogWhenWarningFounded: true,
-						fixScriptFileName: Universe.BuiltInInfo.RequireFixScriptNamesWhenAnalyse
+						fixScriptFileName: Universe.BuiltInInfo.RequireFixScriptNamesWhenAnalyse,
+						checkNoItemCombination: false
 					);
 					break;
 				case LanguageUtil.ADD_KEYS_FOR_ALL_LANGUAGE_CODE_SETTING_ID:

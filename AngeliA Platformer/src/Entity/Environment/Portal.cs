@@ -53,6 +53,7 @@ public abstract class Portal : Entity {
 			);
 			character.X = X + Width / 2;
 			character.Y = Y;
+			Stage.Settle();
 			return true;
 		} else if (character != null) {
 			if (TargetGlobalPosition.z != Stage.ViewZ) {

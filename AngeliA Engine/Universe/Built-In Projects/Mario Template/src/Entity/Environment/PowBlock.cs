@@ -5,6 +5,7 @@ using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
+[EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public class PowBlock : Rigidbody, IDamageReceiver, IBumpable {
 
 	// VAR
@@ -29,7 +30,7 @@ public class PowBlock : Rigidbody, IDamageReceiver, IBumpable {
 	public void Explode () {
 		Active = false;
 		PowExpodeParticle.Spawn(X + Width / 2, Y + Height / 2);
-		// Attack All Enemy on Screen
+		// Attack All Enemy on Stage
 		if (Stage.TryGetEntities(EntityLayer.GAME, out var entities, out int count)) {
 			for (int i = 0; i < count; i++) {
 				var entity = entities[i];
@@ -37,6 +38,16 @@ public class PowBlock : Rigidbody, IDamageReceiver, IBumpable {
 				if (entity is not IDamageReceiver receiver) continue;
 				if (!enemy.IsGrounded) continue;
 				receiver.TakeDamage(new Damage(1, Const.TEAM_ENEMY, type: Tag.MagicalDamage));
+			}
+		}
+		// Drop All Coins on Stage
+		if (!PSwitch.Triggering && Stage.TryGetEntities(EntityLayer.ENVIRONMENT, out entities, out count)) {
+			for (int i = 0; i < count; i++) {
+				var entity = entities[i];
+				if (entity is not Coin coin) continue;
+				coin.IsLoose = true;
+				coin.VelocityX = Util.QuickRandom(-12, 12);
+				coin.MomentumY.value = Util.QuickRandom(12, 24);
 			}
 		}
 	}

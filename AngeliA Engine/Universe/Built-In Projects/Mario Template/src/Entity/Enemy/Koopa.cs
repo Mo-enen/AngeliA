@@ -51,6 +51,8 @@ public abstract class Koopa : Enemy, IPingPongWalker, IDamageReceiver {
 		LastDamageFrame = int.MinValue;
 		RollingStartFrame = int.MinValue;
 		IPingPongWalker.OnActive(this);
+		Width = 196;
+		Height = 255;
 	}
 
 	public override void Update () {

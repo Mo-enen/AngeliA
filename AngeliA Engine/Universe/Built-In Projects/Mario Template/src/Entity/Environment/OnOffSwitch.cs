@@ -6,26 +6,19 @@ using AngeliA.Platformer;
 namespace MarioTemplate;
 
 
-public class OnSwitch : OnOffSwitch {
-	protected override bool ReverseOnOff => false;
-}
-
-
-public class OffSwitch : OnOffSwitch {
-	protected override bool ReverseOnOff => true;
-}
-
-
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public abstract class OnOffSwitch : Entity, IBumpable, IAutoTrackWalker {
+public class OnOffSwitch : Entity, IBumpable, IAutoTrackWalker {
 
 	// VAR
 	private const int COOL_DOWN = 12;
 	private static readonly SpriteCode OnSprite = "OnSwitch";
 	private static readonly SpriteCode OffSprite = "OffSwitch";
+	private static readonly int OnBlockID = "OnBlock".AngeHash();
+	private static readonly int OffBlockID = "OffBlock".AngeHash();
+	private static readonly int OnBlockHoloID = "OnBlockHolo".AngeHash();
+	private static readonly int OffBlockHoloID = "OffBlockHolo".AngeHash();
 	public static bool CurrentOn { get; private set; } = true;
 	private static int LastSwitchFrame = int.MinValue;
-	protected abstract bool ReverseOnOff { get; }
 	int IBumpable.LastBumpedFrame { get; set; } = int.MinValue;
 	bool IBumpable.TransferWithAttack => true;
 	Direction4 IBumpable.LastBumpFrom { get; set; }
@@ -36,8 +29,21 @@ public abstract class OnOffSwitch : Entity, IBumpable, IAutoTrackWalker {
 
 	// MSG
 	[OnMapEditorModeChange_Mode]
-	internal static void OnMapEditorModeChange (OnMapEditorModeChange_ModeAttribute.Mode mode) {
-		CurrentOn = true;
+	internal static void OnMapEditorModeChange (OnMapEditorModeChange_ModeAttribute.Mode mode) => CurrentOn = true;
+
+	[OnGameUpdateLater]
+	internal static void OnGameUpdateLater () {
+		if (CurrentOn) {
+			WorldSquad.RemoveBlockRedirect(OnBlockID);
+			WorldSquad.RemoveBlockRedirect(OnBlockHoloID);
+			WorldSquad.AddBlockRedirect(OffBlockID, OffBlockHoloID);
+			WorldSquad.AddBlockRedirect(OffBlockHoloID, OffBlockID);
+		} else {
+			WorldSquad.AddBlockRedirect(OnBlockID, OnBlockHoloID);
+			WorldSquad.AddBlockRedirect(OnBlockHoloID, OnBlockID);
+			WorldSquad.RemoveBlockRedirect(OffBlockID);
+			WorldSquad.RemoveBlockRedirect(OffBlockHoloID);
+		}
 	}
 
 	public override void FirstUpdate () {
@@ -47,7 +53,7 @@ public abstract class OnOffSwitch : Entity, IBumpable, IAutoTrackWalker {
 
 	public override void LateUpdate () {
 		base.LateUpdate();
-		var cell = Renderer.Draw(CurrentOn == ReverseOnOff ? OffSprite : OnSprite, Rect);
+		var cell = Renderer.Draw(CurrentOn ? OnSprite : OffSprite, Rect);
 		IBumpable.AnimateForBump(this, cell);
 	}
 

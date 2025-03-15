@@ -13,7 +13,7 @@ public class HiddenBlock : QuestionBlock {
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [NoItemCombination]
-public class QuestionBlock : Entity, IBlockEntity, IBumpable, IAutoTrackWalker {
+public class QuestionBlock : Entity, IBlockEntity, IBumpable, IAutoTrackWalker, IDamageReceiver {
 
 	// VAR
 	private static readonly SpriteCode REVEALED_SP = "RevealedBlock";
@@ -27,6 +27,7 @@ public class QuestionBlock : Entity, IBlockEntity, IBumpable, IAutoTrackWalker {
 	int IAutoTrackWalker.WalkStartFrame { get; set; }
 	Direction8 IRouteWalker.CurrentDirection { get; set; }
 	Int2 IRouteWalker.TargetPosition { get; set; }
+	int IDamageReceiver.Team => Const.TEAM_ENVIRONMENT;
 
 	private int ItemInside;
 	private int SpawnItemStartFrame = int.MinValue;
@@ -79,5 +80,12 @@ public class QuestionBlock : Entity, IBlockEntity, IBumpable, IAutoTrackWalker {
 	}
 
 	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT);
+
+	void IDamageReceiver.OnDamaged (Damage damage) {
+		if (damage.Amount <= 0 || !damage.Type.HasAll(Tag.MagicalDamage)) return;
+		if (SpawnItemStartFrame >= 0) return;
+		SpawnItemStartFrame = Game.GlobalFrame;
+		LastBumpFrom = Direction4.Up;
+	}
 
 }

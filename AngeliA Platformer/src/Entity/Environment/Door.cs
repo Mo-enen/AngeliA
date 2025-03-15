@@ -129,6 +129,7 @@ public abstract class Door : Entity, IBlockEntity {
 			character.Y = Y;
 			Open = true;
 			InputLock = true;
+			Stage.Settle();
 			return true;
 		} else {
 			character.Active = false;

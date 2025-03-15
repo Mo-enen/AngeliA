@@ -15,6 +15,7 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 	protected virtual bool AllowPlayerStepOn => true;
 	protected virtual bool AttackOnTouchPlayer => true;
 	protected virtual int PlayerStepOnCooldown => 6;
+	protected virtual bool DelayPassoutOnStep => true;
 	public override int PhysicalLayer => PhysicsLayer.CHARACTER;
 	public override int CollisionMask => PhysicsMask.MAP;
 	public override int AirDragX => 0;
@@ -30,8 +31,6 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 		base.OnActivated();
 		PassoutFrame = int.MinValue;
 		LastPlayerStepOnFrame = int.MinValue;
-		Width = 196;
-		Height = 255;
 	}
 
 	public override void Update () {
@@ -79,7 +78,11 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 
 	protected virtual void OnPlayerStepOn (Character player) {
 		player.VelocityY = 64;
-		PassoutFrame = Game.GlobalFrame;
+		if (DelayPassoutOnStep) {
+			PassoutFrame = Game.GlobalFrame;
+		} else {
+			MakePassout();
+		}
 		MarioUtil.PlayMarioAudio(Sound.StepOnEnemy, XY);
 	}
 
@@ -88,14 +91,16 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 	public void MakePassout (int spriteID = int.MinValue) {
 		PassoutFrame = Game.GlobalFrame - PASS_COUNT_DELAY - 1;
 		FrameworkUtil.InvokeObjectFreeFall(
-			spriteID != int.MinValue ? spriteID : TypeID, X, Y,
+			spriteID != int.MinValue ? spriteID : TypeID,
+			X + Width / 2, Y + Height / 2,
 			speedX: Util.QuickRandomSign() * 32,
 			speedY: 82,
 			rotationSpeed: Util.QuickRandomSign() * 8
 		);
+		Active = false;
 	}
 
-	void IDamageReceiver.OnDamaged (Damage damage) {
+	public virtual void OnDamaged (Damage damage) {
 		if (damage.Amount <= 0) return;
 		MakePassout();
 	}
