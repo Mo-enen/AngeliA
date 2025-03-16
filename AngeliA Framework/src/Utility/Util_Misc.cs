@@ -9,6 +9,8 @@ namespace AngeliA;
 
 public static partial class Util {
 
+
+	// VAR
 	private const MethodImplOptions INLINE = MethodImplOptions.AggressiveInlining;
 
 	[StructLayout(LayoutKind.Sequential, Size = 1)]
@@ -262,6 +264,63 @@ public static partial class Util {
 			}
 		}
 		return result + (toRight ? 1 : 0);
+	}
+
+
+	public static Color32[] GetTrimedPixels (Color32[] pixels, int width, int height, out int left, out int right, out int down, out int up) {
+
+		left = 0;
+		right = width - 1;
+		down = 0;
+		up = height - 1;
+
+		// L
+		for (int i = 0; i < width; i++) {
+			left = i;
+			for (int j = 0; j < height; j++) {
+				if (pixels[j * width + i].a > 0) goto _L_FOUND_;
+			}
+		}
+		_L_FOUND_:;
+
+		// R
+		for (int i = width - 1; i >= left; i--) {
+			right = i;
+			for (int j = 0; j < height; j++) {
+				if (pixels[j * width + i].a > 0) goto _R_FOUND_;
+			}
+		}
+		_R_FOUND_:;
+
+		// D
+		for (int j = 0; j < height; j++) {
+			down = j;
+			for (int i = 0; i < width; i++) {
+				if (pixels[j * width + i].a > 0) goto _D_FOUND_;
+			}
+		}
+		_D_FOUND_:;
+
+		// U
+		for (int j = height - 1; j >= down; j--) {
+			up = j;
+			for (int i = 0; i < width; i++) {
+				if (pixels[j * width + i].a > 0) goto _U_FOUND_;
+			}
+		}
+		_U_FOUND_:;
+
+		int newW = right - left + 1;
+		int newH = up - down + 1;
+		var result = new Color32[newW * newH];
+		int index = 0;
+		for (int j = down; j <= up; j++) {
+			for (int i = left; i <= right; i++) {
+				result[index] = pixels[j * width + i];
+				index++;
+			}
+		}
+		return result;
 	}
 
 

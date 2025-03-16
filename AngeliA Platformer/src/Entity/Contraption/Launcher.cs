@@ -15,7 +15,7 @@ public abstract class Launcher : Entity, IBlockEntity {
 
 
 	// API
-	public virtual Int2 LaunchOffset => default;
+	public virtual Int2 LaunchOffset => new(Width / 2, 0);
 	public virtual Int2 LaunchVelocity => default;
 	public virtual int TargetEntityID => _TargetEntityId;
 	public virtual int FailbackEntityID => 0;
@@ -129,10 +129,11 @@ public abstract class Launcher : Entity, IBlockEntity {
 		if (!rightSide) offset.x = -offset.x;
 
 		// Blocked Check
-		if (!LaunchWhenEntranceBlocked && Physics.Overlap(
-			PhysicsMask.SOLID, IRect.Point(XY + offset),
-			this, OperationMode.ColliderAndTrigger
-		)) return false;
+		if (!LaunchWhenEntranceBlocked && (Physics.Overlap(
+			PhysicsMask.SOLID, Rect.Shift(offset), this
+		) || Physics.GetEntity(
+			TargetEntityID, Rect.Shift(offset), PhysicsMask.ALL, this, OperationMode.ColliderAndTrigger
+		) != null)) return false;
 
 		return Stage.IsValidEntityID(TargetEntityID) || ItemSystem.HasItem(TargetEntityID);
 	}
@@ -144,19 +145,22 @@ public abstract class Launcher : Entity, IBlockEntity {
 
 		bool rightSide = LaunchToRightSide();
 		var offset = LaunchOffset;
-		if (!rightSide) offset.x = -offset.x;
+		int launchX = rightSide ? Rect.CenterX() + offset.x : Rect.CenterX() - offset.x;
+		int launchY = Rect.CenterY() + offset.y;
 
 		// Spawn Entity
 		Entity entity = null;
 		if (Stage.IsValidEntityID(TargetEntityID)) {
-			entity = Stage.SpawnEntity(TargetEntityID, X + offset.x, Y + offset.y);
+			entity = Stage.SpawnEntity(TargetEntityID, launchX, launchY);
 		} else if (ItemSystem.HasItem(TargetEntityID)) {
-			entity = ItemSystem.SpawnItem(TargetEntityID, X + offset.x, Y + offset.y);
+			entity = ItemSystem.SpawnItem(TargetEntityID, launchX, launchY);
 		}
 
 		if (entity == null) return null;
 
-		entity.X -= entity.Width / 2;
+		// Fix Launched Entity Position
+		entity.X += launchX - (rightSide ? entity.Rect.xMin : entity.Rect.xMax);
+		entity.Y += launchY - entity.Rect.CenterY();
 
 		// Rigidbody Movement
 		if (entity is Rigidbody rig) {
@@ -182,12 +186,18 @@ public abstract class Launcher : Entity, IBlockEntity {
 			entity.IgnoreReposition = true;
 		}
 
+		// Pingpong Walker
 		if (entity is IPingPongWalker walker) {
 			walker.WalkingRight = rightSide;
 		}
 
+		// Block Entity
+		if (entity is IBlockEntity) {
+			IBlockEntity.RefreshBlockEntitiesNearby(entity.Center.ToUnit(), entity);
+		}
+
 		// Finish
-		OnEntityLaunched(entity, X + offset.x, Y + offset.y);
+		OnEntityLaunched(entity, launchX, launchY);
 		if (LastLaunchedFrame != Game.GlobalFrame) {
 			LastLaunchedFrame = Game.GlobalFrame;
 			CurrentLaunchedCount++;

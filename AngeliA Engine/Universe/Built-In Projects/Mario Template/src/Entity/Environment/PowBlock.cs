@@ -45,7 +45,7 @@ public class PowBlock : Rigidbody, IDamageReceiver, IBumpable {
 			for (int i = 0; i < count; i++) {
 				var entity = entities[i];
 				if (entity is not Coin coin) continue;
-				coin.IsLoose = true;
+				coin.MakeLoose();
 				coin.VelocityX = Util.QuickRandom(-12, 12);
 				coin.MomentumY.value = Util.QuickRandom(12, 24);
 			}

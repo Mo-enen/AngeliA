@@ -226,7 +226,10 @@ public static class PlayerSystem {
 		}
 
 		// Final
+#if DEBUG
 		UpdateDebugDragging();
+		UpdateDebugHotkey();
+#endif
 		UpdateView();
 
 	}
@@ -586,11 +589,8 @@ public static class PlayerSystem {
 	}
 
 
+	// Debug
 	private static void UpdateDebugDragging () {
-
-#if !DEBUG
-		return;
-#endif
 
 		if (!DragPlayerInMiddleButtonToMove_DebugOnly || Selecting == null || !Input.MouseMidButtonHolding) {
 			// End Hook Task
@@ -639,6 +639,21 @@ public static class PlayerSystem {
 		if (!TaskSystem.IsTasking<EntityHookTask>()) {
 			TaskSystem.AddToFirst(EntityHookTask.TYPE_ID, Selecting);
 		}
+
+	}
+
+
+	private static void UpdateDebugHotkey () {
+
+		// Make Invincible
+		if (Input.KeyboardDown(KeyboardKey.I) && Input.HoldingCtrl) {
+			if (Selecting.Health.IsInvincible) {
+				Selecting.Health.MakeInvincible(-1);
+			} else {
+				Selecting.Health.MakeInvincible(int.MinValue - Game.GlobalFrame - 1);
+			}
+		}
+
 
 	}
 

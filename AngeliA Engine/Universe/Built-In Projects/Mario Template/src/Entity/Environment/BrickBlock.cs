@@ -47,7 +47,7 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker, IDa
 		base.Update();
 
 		// Spawn Item Update
-		MarioUtil.UpdateForBumpToSpawnItem(Rect, ItemInside, SpawnItemStartFrame);
+		MarioUtil.UpdateForBumpToSpawnItem(this, ItemInside, SpawnItemStartFrame);
 
 		// Collect As Coin
 		var player = PlayerSystem.Selecting;

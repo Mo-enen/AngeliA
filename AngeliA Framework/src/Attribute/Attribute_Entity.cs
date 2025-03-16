@@ -59,7 +59,9 @@ public static class EntityAttribute {
 
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public class RepositionWhenInactiveAttribute : Attribute { }
+	public class RepositionWhenInactiveAttribute (bool requireReposition = true) : Attribute {
+		public bool RequireReposition = requireReposition;
+	}
 
 
 	[AttributeUsage(AttributeTargets.Class)]

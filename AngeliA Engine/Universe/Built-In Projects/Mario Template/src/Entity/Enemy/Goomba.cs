@@ -30,6 +30,8 @@ public class Goomba : Enemy, IPingPongWalker {
 	protected virtual SpriteCode JumpDownSprite => JUMPD_SP;
 	protected virtual SpriteCode JumpUpSprite => JUMPU_SP;
 	protected virtual SpriteCode PassoutSprite => PASSOUT_SP;
+	protected override bool AllowPlayerStepOn => true;
+	protected override bool AttackOnTouchPlayer => true;
 	int IPingPongWalker.WalkSpeed => IsPassout ? 0 : 8;
 	bool IPingPongWalker.WalkOffEdge => true;
 	int IPingPongWalker.LastTurnFrame { get; set; }

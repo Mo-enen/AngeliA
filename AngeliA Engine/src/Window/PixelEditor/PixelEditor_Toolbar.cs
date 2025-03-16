@@ -70,6 +70,7 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_SP_FLIP_V = "Icon.SpriteOperation.FlipV";
 	private static readonly SpriteCode ICON_SP_ROT_C = "Icon.SpriteOperation.RotC";
 	private static readonly SpriteCode ICON_SP_ROT_CC = "Icon.SpriteOperation.RotCC";
+	private static readonly SpriteCode ICON_SP_TRIM = "Icon.SpriteOperation.Trim";
 	private static SpriteCode[] UI_TOOLS;
 
 	// Language
@@ -107,6 +108,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_OPER_ROT_CC = ("Tip.PixOperation.RotCC", "Rotate selected pixels Counter-Clockwise");
 	private static readonly LanguageCode TIP_SP_FLIP_H = ("Tip.SpriteOperation.FlipH", "Flip selected sprites horizontally");
 	private static readonly LanguageCode TIP_SP_FLIP_V = ("Tip.SpriteOperation.FlipV", "Flip selected sprites Vertically");
+	private static readonly LanguageCode TIP_SP_TRIM = ("Tip.SpriteOperation.Trim", "Trim off transparent edges for selected sprites");
 	private static readonly LanguageCode TIP_SP_ROT_C = ("Tip.SpriteOperation.RotC", "Rotate selected sprites Clockwise");
 	private static readonly LanguageCode TIP_SP_ROT_CC = ("Tip.SpriteOperation.RotCC", "Rotate selected sprites Counter-Clockwise");
 	private static readonly LanguageCode LABEL_BORDER = ("Label.Border", "Border");
@@ -835,6 +837,13 @@ public partial class PixelEditor {
 		RequireTooltip(rect, TIP_SP_FLIP_V);
 		rect.SlideRight(padding);
 
+		// Trim
+		rect.width = buttonWidth;
+		if (GUI.Button(rect, ICON_SP_TRIM, Skin.SmallDarkButton)) {
+			TrimSpriteSelection();
+		}
+		RequireTooltip(rect, TIP_SP_TRIM);
+		rect.SlideRight(padding);
 
 		// Final
 		box.Width = rect.xMin - box.X + boxPadding * 2;

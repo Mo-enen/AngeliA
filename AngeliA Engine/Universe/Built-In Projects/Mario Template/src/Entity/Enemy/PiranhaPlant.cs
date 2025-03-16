@@ -5,10 +5,8 @@ using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
-public class Muncher : Enemy, IAutoTrackWalker {
+public class PiranhaPlant : Enemy, IAutoTrackWalker {
 
-	// VAR
-	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	public override int CollisionMask => PhysicsMask.MAP;
 	protected override bool AllowPlayerStepOn => false;
 	protected override bool AttackOnTouchPlayer => true;
@@ -17,15 +15,9 @@ public class Muncher : Enemy, IAutoTrackWalker {
 	Direction8 IRouteWalker.CurrentDirection { get; set; }
 	Int2 IRouteWalker.TargetPosition { get; set; }
 
-	// MSG
 	public override void LateUpdate () {
 		base.LateUpdate();
-		Draw();
-	}
-
-	public override void OnDamaged (Damage damage) {
-		if (!damage.Type.HasAll(Tag.MagicalDamage)) return;
-		base.OnDamaged(damage);
+		Renderer.Draw(TypeID, X + Width / 2, Y, 500, 0, 0, Const.ORIGINAL_SIZE, Const.ORIGINAL_SIZE);
 	}
 
 }

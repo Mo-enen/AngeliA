@@ -203,7 +203,7 @@ public static class Stage {
 				UpdateOutOfRange = att_ForceUpdate != null,
 				DontSpawnFromWorld = att_DontSpawnFromWorld != null,
 				Order = att_Order != null ? att_Order.Order : 0,
-				RequireReposition = att_Repos != null,
+				RequireReposition = att_Repos != null && att_Repos.RequireReposition,
 				Layer = layer,
 			};
 			for (int i = 0; i < preSpawn; i++) {

@@ -29,6 +29,7 @@ public abstract class Koopa : Enemy, IPingPongWalker, IDamageReceiver {
 
 	// VAR
 	protected override bool AttackOnTouchPlayer => !IsInShell || (IsRolling && Game.GlobalFrame > RollingStartFrame + 12);
+	protected override bool AllowPlayerStepOn => true;
 	protected abstract SpriteCode WalkSprite { get; }
 	protected abstract SpriteCode RollingSprite { get; }
 	int IPingPongWalker.WalkSpeed => IsPassout ? 0 : !IsInShell ? 8 : IsRolling ? 32 : 0;
@@ -126,7 +127,7 @@ public abstract class Koopa : Enemy, IPingPongWalker, IDamageReceiver {
 		RollingStartFrame = IsRolling ? int.MinValue : Game.GlobalFrame;
 	}
 
-	protected override void OnPlayerStepOn (Character player) {
+	protected override void OnPlayerStepOn (PlayableCharacter player) {
 		player.VelocityY = 64;
 		MarioUtil.PlayMarioAudio(Sound.StepOnEnemy, XY);
 		if (IsInShell) {

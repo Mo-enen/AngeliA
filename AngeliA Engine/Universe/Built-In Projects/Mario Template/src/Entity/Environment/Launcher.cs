@@ -15,7 +15,7 @@ public class LauncherBlack : Launcher {
 	protected override int BottomSprite => BOTTOM_SP;
 	public override Int2 LaunchVelocity => TargetEntityID == Coin.TYPE_ID ? new(Util.QuickRandom(32, 52), Util.QuickRandom(-12, 12)) : new(42, 0);
 	public override int LaunchFrequency => 240;
-	public override int FailbackEntityID => BulletBillBlack.TYPE_ID;
+	public override int FailbackEntityID => BulletBillBlackRight.TYPE_ID;
 }
 
 
@@ -28,7 +28,7 @@ public class LauncherRed : Launcher {
 	protected override int BottomSprite => BOTTOM_SP;
 	public override Int2 LaunchVelocity => TargetEntityID == Coin.TYPE_ID ? new(Util.QuickRandom(54, 74), Util.QuickRandom(-12, 12)) : new(64, 0);
 	public override int LaunchFrequency => 120;
-	public override int FailbackEntityID => BulletBillRed.TYPE_ID;
+	public override int FailbackEntityID => BulletBillRedRight.TYPE_ID;
 }
 
 
@@ -39,10 +39,9 @@ public abstract class Launcher : AngeliA.Platformer.Launcher, ICarrier {
 	protected abstract int TopSprite { get; }
 	protected abstract int MidSprite { get; }
 	protected abstract int BottomSprite { get; }
-	public override int MaxLaunchCount => 6;
+	public override int MaxLaunchCount => TargetEntityID == FailbackEntityID ? int.MaxValue : 6;
 	public override int ItemCountPreLaunch => TargetEntityID == Coin.TYPE_ID ? 6 : 1;
-	public override bool AllowingAutoLaunch => Pose == FittingPose.Up;
-	public override Int2 LaunchOffset => new(Const.CEL + Const.HALF, 0);
+	public override bool AllowingAutoLaunch => Pose == FittingPose.Up && PlayerSystem.Selecting != null && !PlayerSystem.Selecting.Rect.CenterX().InRangeInclude(X - Const.HALF, X + Width + Const.HALF);
 	public override bool LaunchWhenEntranceBlocked => false;
 	public override bool KeepLaunchedEntityInMap => false;
 	public override bool LaunchTowardsPlayer => true;
@@ -102,7 +101,7 @@ public abstract class Launcher : AngeliA.Platformer.Launcher, ICarrier {
 	protected override void OnEntityLaunched (Entity entity, int x, int y) {
 		base.OnEntityLaunched(entity, x, y);
 		if (entity is Coin coin) {
-			coin.IsLoose = true;
+			coin.MakeLoose();
 		}
 		if (entity is BulletBill bullet) {
 			bullet.MovingRight = LaunchToRightSide();

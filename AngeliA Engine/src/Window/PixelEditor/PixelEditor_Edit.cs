@@ -1526,6 +1526,64 @@ public partial class PixelEditor {
 	}
 
 
+	private void TrimSpriteSelection () {
+		if (SelectingSpriteCount == 0) return;
+		int checkedCount = 0;
+		for (int i = 0; i < StagedSprites.Count; i++) {
+			if (checkedCount >= SelectingSpriteCount) break;
+			var sp = StagedSprites[i];
+			if (!sp.Selecting) continue;
+
+			var sprite = sp.Sprite;
+
+			// Remove Sprite
+			RegisterUndo(new SpriteObjectUndoItem() {
+				Sprite = sprite.CreateCopy(),
+				Create = false,
+			}, ignoreStep: checkedCount > 0);
+
+			// Remove from Sheet
+			int index = EditingSheet.IndexOfSprite(sprite.ID);
+			if (index >= 0) {
+				EditingSheet.RemoveSprite(index);
+			}
+
+			// Create New Sprite
+			var oldPixelRect = sprite.PixelRect;
+			var trimedPixels = Util.GetTrimedPixels(sprite.Pixels, oldPixelRect.width, oldPixelRect.height, out int trimL, out int trimR, out int trimD, out int trimU);
+			var newPixelRect = new IRect(
+				oldPixelRect.x + trimL,
+				oldPixelRect.y + trimD,
+				trimR - trimL + 1,
+				trimU - trimD + 1
+			);
+			var newSprite = EditingSheet.CreateSprite(sprite.RealName, newPixelRect, sprite.AtlasID);
+			newSprite.PivotX = sprite.PivotX;
+			newSprite.PivotY = sprite.PivotY;
+			newSprite.GlobalBorder = sprite.GlobalBorder;
+			newSprite.LocalZ = sprite.LocalZ;
+			newSprite.IsTrigger = sprite.IsTrigger;
+			newSprite.Rule = sprite.Rule;
+			newSprite.Tag = sprite.Tag;
+			newSprite.Duration = sprite.Duration;
+			newSprite.Pixels = trimedPixels;
+			EditingSheet.AddSprite(newSprite);
+			sp.Sprite = newSprite;
+			sp.PixelDirty = true;
+
+			RegisterUndo(new SpriteObjectUndoItem() {
+				Sprite = newSprite.CreateCopy(),
+				Create = true,
+			}, ignoreStep: true);
+
+			// Final
+			checkedCount++;
+		}
+		SetDirty();
+		RefreshSpriteInputContent();
+	}
+
+
 	// Util
 	private IRect GetDraggingPixRect (bool forLeftButton, int maxSize) {
 		maxSize--;

@@ -14,19 +14,20 @@ public class Coin : Rigidbody, IBumpable, IAutoTrackWalker {
 	public static int CurrentCoinCount { get; private set; } = 0;
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	public override int AirDragX => 0;
-	public bool IsLoose { get; set; } = false;
+	public bool IsLoose => LooseFrame >= 0;
 	int IBumpable.LastBumpedFrame { get; set; }
 	int IAutoTrackWalker.LastWalkingFrame { get; set; }
 	int IAutoTrackWalker.WalkStartFrame { get; set; }
 	Direction8 IRouteWalker.CurrentDirection { get; set; }
 	Int2 IRouteWalker.TargetPosition { get; set; }
 	Direction4 IBumpable.LastBumpFrom { get; set; }
+	private int LooseFrame = int.MinValue;
 
 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		IsLoose = false;
+		LooseFrame = int.MinValue;
 		BounceSpeedRate = 800;
 	}
 
@@ -51,26 +52,33 @@ public class Coin : Rigidbody, IBumpable, IAutoTrackWalker {
 			Collect(1);
 			Active = false;
 		}
+		// Loose Despawn Check
+		if (IsLoose && Game.GlobalFrame > LooseFrame + 240) {
+			Active = false;
+		}
 	}
 
 	public override void LateUpdate () {
 		base.LateUpdate();
 		if (!Active) return;
-		if (PSwitch.Triggering) {
+		// Draw
+		if (PSwitch.Triggering && !IsLoose) {
 			// As Block
 			var cell = Renderer.Draw(BrickBlock.TYPE_ID, Rect);
 			IBumpable.AnimateForBump(this, cell);
 		} else {
 			// As Coin
-			Draw();
+			if (IsLoose && Game.GlobalFrame > LooseFrame + 120) {
+				// Blink Coin
+				if (Game.GlobalFrame % 8 < 4) {
+					Draw();
+				}
+			} else {
+				// Normal Coin
+				Draw();
+			}
 		}
 	}
-
-	public static void Collect (int count) {
-		CurrentCoinCount++;
-	}
-
-	public static void ResetCoinCount () => CurrentCoinCount = 0;
 
 	void IBumpable.OnBumped (Rigidbody rig, Damage damage) {
 		if (PSwitch.Triggering && damage.Amount > 0 && damage.Type.HasAll(Tag.MagicalDamage)) {
@@ -83,5 +91,14 @@ public class Coin : Rigidbody, IBumpable, IAutoTrackWalker {
 		IBumpable.IsValidBumpDirection(this, from) &&
 		rig == PlayerSystem.Selecting &&
 		PSwitch.Triggering;
+
+	// API
+	public void MakeLoose () => LooseFrame = Game.GlobalFrame;
+
+	public static void Collect (int count) {
+		CurrentCoinCount++;
+	}
+
+	public static void ResetCoinCount () => CurrentCoinCount = 0;
 
 }

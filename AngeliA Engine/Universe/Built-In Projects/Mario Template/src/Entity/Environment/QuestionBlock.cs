@@ -57,7 +57,7 @@ public class QuestionBlock : Entity, IBlockEntity, IBumpable, IAutoTrackWalker, 
 	public override void Update () {
 		base.Update();
 		// Spawn Item Update
-		MarioUtil.UpdateForBumpToSpawnItem(Rect, ItemInside, SpawnItemStartFrame);
+		MarioUtil.UpdateForBumpToSpawnItem(this, ItemInside, SpawnItemStartFrame);
 
 	}
 

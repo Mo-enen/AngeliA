@@ -8,6 +8,7 @@ namespace MarioTemplate;
 
 [NoItemCombination]
 [EntityAttribute.MapEditorGroup("Entity")]
+[EntityAttribute.RepositionWhenInactive(requireReposition: false)]
 public class SpringVertical : Spring {
 	protected override bool Horizontal => false;
 	protected override int Power => 52;
@@ -16,6 +17,7 @@ public class SpringVertical : Spring {
 
 [NoItemCombination]
 [EntityAttribute.MapEditorGroup("Entity")]
+[EntityAttribute.RepositionWhenInactive(requireReposition: false)]
 public class SpringHorizontal : Spring {
 	protected override bool Horizontal => true;
 	protected override int Power => 52;

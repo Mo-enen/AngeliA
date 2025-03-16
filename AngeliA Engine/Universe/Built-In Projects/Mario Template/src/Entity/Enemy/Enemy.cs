@@ -11,14 +11,16 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 
 	// VAR
 	private const int PASS_COUNT_DELAY = 30;
+	private static readonly int FCT_FONT = "SuperMarioBros".AngeHash();
+	private static readonly IntToChars StepCountToChar = new();
 	public bool IsPassout => PassoutFrame != int.MinValue;
-	protected virtual bool AllowPlayerStepOn => true;
-	protected virtual bool AttackOnTouchPlayer => true;
+	protected abstract bool AllowPlayerStepOn { get; }
+	protected abstract bool AttackOnTouchPlayer { get; }
 	protected virtual int PlayerStepOnCooldown => 6;
 	protected virtual bool DelayPassoutOnStep => true;
 	public override int PhysicalLayer => PhysicsLayer.CHARACTER;
 	public override int CollisionMask => PhysicsMask.MAP;
-	public override int AirDragX => 0;
+	public override int AirDragX => IsGrounded ? 1 : 0;
 	public override bool CarryOtherOnTop => false;
 	int IDamageReceiver.Team => Const.TEAM_ENEMY;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
@@ -55,7 +57,7 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 				var hit = hits[i];
 
 				if (
-					hit.Entity is not Character ch ||
+					hit.Entity is not PlayableCharacter ch ||
 					ch.CharacterState != CharacterState.GamePlay ||
 					ch.Team != Const.TEAM_PLAYER
 				) continue;
@@ -76,14 +78,23 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 
 	}
 
-	protected virtual void OnPlayerStepOn (Character player) {
+	protected virtual void OnPlayerStepOn (PlayableCharacter player) {
 		player.VelocityY = 64;
 		if (DelayPassoutOnStep) {
 			PassoutFrame = Game.GlobalFrame;
 		} else {
 			MakePassout();
 		}
+		int score = 100 + player.CurrentStepCombo * 100;
 		MarioUtil.PlayMarioAudio(Sound.StepOnEnemy, XY);
+		MarioUtil.GiveScore(score);
+		FloatingCombatText.Spawn(
+			CenterX, Y + Height,
+			StepCountToChar.GetChars(score),
+			fontID: FCT_FONT,
+			style: GUI.Skin.SmallCenterLabel
+		);
+		player.CurrentStepCombo++;
 	}
 
 	protected virtual void AttackPlayer (IDamageReceiver player) => player.TakeDamage(new Damage(1));

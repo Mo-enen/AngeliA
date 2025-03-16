@@ -32,6 +32,9 @@ public abstract class Entity : IMapItem {
 			Y = value.y;
 		}
 	}
+	public Int2 Center => Rect.CenterInt();
+	public int CenterX => Rect.CenterX();
+	public int CenterY => Rect.CenterY();
 	public Int3 PivotUnitPosition {
 		get {
 			Int3 pos;

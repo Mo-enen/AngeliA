@@ -124,10 +124,13 @@ public static class MarioUtil {
 
 	}
 
-	public static void UpdateForBumpToSpawnItem (IRect sourceRect, int itemInside, int spawnItemStartFrame) {
+	public static void UpdateForBumpToSpawnItem (IBumpable source, int itemInside, int spawnItemStartFrame) {
 
 		const int RISE_DUR = 24;
 		if (spawnItemStartFrame < 0 || Game.GlobalFrame > spawnItemStartFrame + RISE_DUR) return;
+		if (source is not Entity sourceEntity) return;
+
+		var sourceRect = sourceEntity.Rect;
 
 		if (itemInside == Coin.TYPE_ID) {
 			// For Coin
@@ -156,18 +159,32 @@ public static class MarioUtil {
 			}
 		} else {
 			// For Entity
-			// Rise Animation
-			if (Renderer.TryGetSpriteForGizmos(itemInside, out var iconSp)) {
-				Renderer.Draw(iconSp, sourceRect.Shift(0, Util.RemapUnclamped(
-					spawnItemStartFrame, spawnItemStartFrame + RISE_DUR,
-					0, sourceRect.height,
-					Game.GlobalFrame
-				)));
-			}
-			// Spawn
-			if (itemInside != 0 && Game.GlobalFrame == spawnItemStartFrame + RISE_DUR) {
-				MarioUtil.SpawnEmbedItem(itemInside, sourceRect, Direction4.Up);
-				itemInside = 0;
+			bool fastSpawn = Stage.GetEntityType(itemInside).IsSubclassOf(typeof(Enemy));
+			var spawnToDir = source.LastBumpFrom.Opposite();
+			if (fastSpawn) {
+				// Fast Spawn
+				if (itemInside != 0 && Game.GlobalFrame == spawnItemStartFrame + 1) {
+					var spawnedEntity = MarioUtil.SpawnEmbedItem(itemInside, sourceRect, spawnToDir);
+					if (spawnedEntity is Rigidbody rig) {
+						rig.VelocityY = 42;
+					}
+					itemInside = 0;
+				}
+			} else {
+				// Rise Animation
+				if (Renderer.TryGetSpriteForGizmos(itemInside, out var iconSp)) {
+					int shift = Util.RemapUnclamped(
+						spawnItemStartFrame, spawnItemStartFrame + RISE_DUR,
+						0, sourceRect.height,
+						Game.GlobalFrame
+					);
+					Renderer.Draw(iconSp, sourceRect.Shift(spawnToDir.Normal() * shift), z: int.MinValue + 1);
+				}
+				// Spawn
+				if (itemInside != 0 && Game.GlobalFrame == spawnItemStartFrame + RISE_DUR) {
+					MarioUtil.SpawnEmbedItem(itemInside, sourceRect, spawnToDir);
+					itemInside = 0;
+				}
 			}
 		}
 	}
