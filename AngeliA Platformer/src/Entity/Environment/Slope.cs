@@ -3,6 +3,7 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
+[EntityAttribute.StageOrder(-2048)]
 public abstract class Slope : Entity, IBlockEntity {
 
 
@@ -40,8 +41,15 @@ public abstract class Slope : Entity, IBlockEntity {
 		if (DirectionVertical == Direction2.Up) {
 			Physics.FillBlock(
 				PhysicsLayer.ENVIRONMENT, TypeID,
-				DirectionHorizontal == Direction2.Left ? Rect.EdgeInsideRight(1) : Rect.EdgeInsideLeft(1),
+				DirectionHorizontal == Direction2.Left ?
+				new IRect(X + Width, Y + 64, 1, 128) : new IRect(X, Y + 64, 1, 128),
 				true, Tag.OnewayUp | Tag.Mark
+			);
+			Physics.FillBlock(
+				PhysicsLayer.ENVIRONMENT, TypeID,
+				DirectionHorizontal == Direction2.Left ?
+				new IRect(X, Y - 1, 128, 1) : new IRect(X + Width - 128, Y - 1, 128, 1),
+				true, DirectionHorizontal == Direction2.Left ? Tag.OnewayLeft | Tag.Mark : Tag.OnewayRight | Tag.Mark
 			);
 		} else {
 			Physics.FillBlock(
@@ -55,6 +63,18 @@ public abstract class Slope : Entity, IBlockEntity {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
+		// Ignore Crossed Blocks
+		if (DirectionVertical == Direction2.Up) {
+			if (Physics.HasEntity<Slope>(IRect.Point(
+				DirectionHorizontal == Direction2.Left ? X - Width / 2 : X + Width + Width / 2,
+				Y - Height / 2
+			), PhysicsMask.ENVIRONMENT, this, OperationMode.TriggerOnly)) {
+				Physics.IgnoreOverlap(PhysicsMask.MAP, IRect.Point(
+					DirectionHorizontal == Direction2.Left ? X + 1 : X + Width - 1,
+					Y - 1
+				), OperationMode.ColliderOnly);
+			}
+		}
 		// Fix Rig
 		var hits = Physics.OverlapAll(CollisionMask, Rect, out int count, this, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
@@ -84,6 +104,7 @@ public abstract class Slope : Entity, IBlockEntity {
 
 	private bool CheckOverlap (IRect rect, out int distance) {
 		distance = 0;
+		//if (DirectionVertical == Direction2.Up && rect.y < Y) return false;
 		int cornerX = DirectionHorizontal == Direction2.Left ? rect.xMax : rect.xMin;
 		if (!cornerX.InRangeInclude(Rect.xMin, Rect.xMax)) return false;
 		int cornerY = DirectionVertical == Direction2.Up ? rect.yMin : rect.yMax;
@@ -120,9 +141,7 @@ public abstract class Slope : Entity, IBlockEntity {
 				// Fix Y (Walk)
 				if ((DirectionHorizontal == Direction2.Left) == (finalVelX > 0)) {
 					// Walk Toward
-					target.PerformMove(
-						0, Util.Abs(finalVelX)
-					);
+					target.PerformMove(0, Util.Abs(finalVelX));
 					target.VelocityY = 0;
 				} else {
 					// Walk Away

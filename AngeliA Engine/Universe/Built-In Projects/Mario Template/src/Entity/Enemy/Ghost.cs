@@ -9,7 +9,7 @@ public class Ghost : Enemy {
 
 	// VAR
 	private static readonly SpriteCode SHY_SP = "Ghost.Shy";
-	public override int CollisionMask => 0;
+	public override int SelfCollisionMask => 0;
 	protected override bool AllowPlayerStepOn => false;
 	protected override bool AttackOnTouchPlayer => true;
 	private bool CurrentFacingRight;

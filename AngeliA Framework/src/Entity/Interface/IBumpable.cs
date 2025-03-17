@@ -107,8 +107,11 @@ public interface IBumpable {
 		_ => true,
 	};
 
-	public static void BumpAllOverlap (Rigidbody sender, Direction4 directionTo, bool forceBump = false, Damage damageToBumpedObject = default) {
-		var hits = Physics.OverlapAll(sender.CollisionMask, sender.Rect.EdgeOutside(directionTo, 1), out int count, sender);
+	public static void BumpAllOverlap (Rigidbody sender, Direction4 directionTo, bool forceBump = false, Damage damageToBumpedObject = default, int collisionMask = int.MinValue) {
+		var hits = Physics.OverlapAll(
+			collisionMask == int.MinValue ? sender.CollisionMask : collisionMask,
+			sender.Rect.EdgeOutside(directionTo, 1), out int count, sender
+		);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 			if (hit.Entity is not IBumpable hitBump) continue;
@@ -139,21 +142,6 @@ public interface IBumpable {
 						break;
 					case Direction4.Right:
 						rig.VelocityX = selfBump.BumpTransferPower.GreaterOrEquel(rig.VelocityX);
-						break;
-				}
-			} else {
-				switch (direction) {
-					case Direction4.Up:
-						hit.Entity.Y += selfBump.BumpTransferPower;
-						break;
-					case Direction4.Down:
-						hit.Entity.Y -= selfBump.BumpTransferPower;
-						break;
-					case Direction4.Left:
-						hit.Entity.X -= selfBump.BumpTransferPower;
-						break;
-					case Direction4.Right:
-						hit.Entity.X += selfBump.BumpTransferPower;
 						break;
 				}
 			}

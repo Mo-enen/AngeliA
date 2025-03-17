@@ -32,6 +32,13 @@ public abstract class Entity : IMapItem {
 			Y = value.y;
 		}
 	}
+	public Int2 Size {
+		get => new(Width, Height);
+		set {
+			Width = value.x;
+			Height = value.y;
+		}
+	}
 	public Int2 Center => Rect.CenterInt();
 	public int CenterX => Rect.CenterX();
 	public int CenterY => Rect.CenterY();

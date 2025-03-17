@@ -40,7 +40,7 @@ public class CheepCheepRight : CheepCheep { // The Red One
 public abstract class CheepCheep : Enemy {
 
 	// VAR
-	public override int CollisionMask => 0;
+	public override int SelfCollisionMask => 0;
 	protected abstract SpriteCode BodySprite { get; }
 	protected abstract bool ChasePlayer { get; }
 	protected abstract bool MoveToRight { get; }

@@ -36,6 +36,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	public static readonly FrameBasedInt GlobalGravity = new(5);
 	public readonly FrameBasedInt FallingGravityScale = new(1000);
 	public readonly FrameBasedInt RisingGravityScale = new(1000);
+	public readonly FrameBasedInt CollisionMask = new();
 	public readonly FrameBasedBool IgnoreGroundCheck = new(false);
 	public readonly FrameBasedBool IgnoreGravity = new(false);
 	public readonly FrameBasedBool IgnorePhysics = new(false);
@@ -45,7 +46,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 	// Override
 	public abstract int PhysicalLayer { get; }
-	public virtual int CollisionMask => PhysicsMask.SOLID;
+	public virtual int SelfCollisionMask => PhysicsMask.SOLID;
 	public virtual int MaxGravitySpeed => 96;
 	public virtual int AirDragX => 3;
 	public virtual int AirDragY => 0;
@@ -89,6 +90,8 @@ public abstract class Rigidbody : Entity, ICarrier {
 		VelocityX = 0;
 		VelocityY = 0;
 		BounceSpeedRate = 0;
+		CollisionMask.BaseValue = SelfCollisionMask;
+		CollisionMask.ClearOverride();
 		IgnoreGroundCheck.ClearOverride();
 		IgnoreGravity.ClearOverride();
 		IgnorePhysics.ClearOverride();

@@ -33,7 +33,7 @@ public abstract class Vehicle : Rigidbody, IDamageReceiver, ICarrier, IWithChara
 	public override int AirDragX => Driver != null ? 0 : 5;
 	public override int AirDragY => 0;
 	public override bool CarryOtherOnTop => Driver == null;
-	public override int CollisionMask => Driver != null ? PhysicsMask.MAP : PhysicsMask.SOLID;
+	public override int SelfCollisionMask => Driver != null ? PhysicsMask.MAP : PhysicsMask.SOLID;
 	public override bool FacingRight => Movement.FacingRight;
 	bool ICarrier.AllowBeingCarry => true;
 	int IDamageReceiver.Team => CurrentTeam;

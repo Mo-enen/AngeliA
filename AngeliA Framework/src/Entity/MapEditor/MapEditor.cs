@@ -1486,8 +1486,8 @@ public sealed partial class MapEditor : WindowUI {
 
 		Renderer.Draw(
 			sprite.ID,
-			unitX.ToGlobal() + Const.QUARTER + width / 2,
-			unitY.ToGlobal() + Const.QUARTER + height / 2,
+			unitX.ToGlobal() + Const.HALF,
+			unitY.ToGlobal() + Const.HALF,
 			500, 500, Game.GlobalFrame.PingPong(12) - 6,
 			width, height, z: int.MaxValue
 		);

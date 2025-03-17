@@ -190,10 +190,10 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 				);
 				// Insert
 				if (NeighborPipeDirL.HasValue && NeighborPipeDirL.Value.IsVertical()) {
-					Renderer.Draw(InsertSprite, X, Y + Height / 2, 500, 0, 90, -Width, Const.ORIGINAL_SIZE_NEGATAVE);
+					Renderer.Draw(InsertSprite, X, Y + Height / 2, 500, 0, 90, Width, Const.ORIGINAL_SIZE_NEGATAVE);
 				}
 				if (NeighborPipeDirR.HasValue && NeighborPipeDirR.Value.IsVertical()) {
-					Renderer.Draw(InsertSprite, X + Width, Y + Height / 2, 500, 0, 90, -Width, Const.ORIGINAL_SIZE);
+					Renderer.Draw(InsertSprite, X + Width, Y + Height / 2, 500, 0, 90, Width, Const.ORIGINAL_SIZE);
 				}
 				break;
 			case Direction4.Right:
@@ -205,10 +205,10 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 				);
 				// Insert
 				if (NeighborPipeDirL.HasValue && NeighborPipeDirL.Value.IsVertical()) {
-					Renderer.Draw(InsertSprite, X, Y + Height / 2, 500, 0, 90, -Width, Const.ORIGINAL_SIZE_NEGATAVE);
+					Renderer.Draw(InsertSprite, X, Y + Height / 2, 500, 0, 90, Width, Const.ORIGINAL_SIZE_NEGATAVE);
 				}
 				if (NeighborPipeDirR.HasValue && NeighborPipeDirR.Value.IsVertical()) {
-					Renderer.Draw(InsertSprite, X + Width, Y + Height / 2, 500, 0, 90, -Width, Const.ORIGINAL_SIZE);
+					Renderer.Draw(InsertSprite, X + Width, Y + Height / 2, 500, 0, 90, Width, Const.ORIGINAL_SIZE);
 				}
 				break;
 			case Direction4.Down:
@@ -285,6 +285,15 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 		}
 
 	}
+
+	// API
+	public bool IsEdge (bool requireOpenSpace) => Direction switch {
+		Direction4.Left => !NeighborPipeDirL.HasValue || NeighborPipeDirL.Value == Direction5.Center || (!requireOpenSpace && NeighborPipeDirL.Value == Direction5.Right),
+		Direction4.Right => !NeighborPipeDirR.HasValue || NeighborPipeDirR.Value == Direction5.Center || (!requireOpenSpace && NeighborPipeDirR.Value == Direction5.Left),
+		Direction4.Down => !NeighborPipeDirD.HasValue || NeighborPipeDirD.Value == Direction5.Center || (!requireOpenSpace && NeighborPipeDirD.Value == Direction5.Up),
+		Direction4.Up => !NeighborPipeDirU.HasValue || NeighborPipeDirU.Value == Direction5.Center || (!requireOpenSpace && NeighborPipeDirU.Value == Direction5.Down),
+		_ => false,
+	};
 
 	// LGC
 	private void CenterPlayer (Entity player) {

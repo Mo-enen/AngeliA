@@ -58,6 +58,9 @@ public class NoteBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 
 	private void NoteBlockBumpLogic (Direction4 bumpFrom) {
 
+		if (Game.GlobalFrame < LastBumpedFrame + 12) return;
+		LastBumpedFrame = Game.GlobalFrame;
+
 		// Bounce
 		if (bumpFrom == Direction4.Up) {
 			FrameworkUtil.PerformSpringBounce(this, Direction4.Up, 64);

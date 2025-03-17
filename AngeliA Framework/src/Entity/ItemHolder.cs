@@ -41,7 +41,7 @@ public class ItemHolder : Rigidbody {
 
 	// Api
 	public override int PhysicalLayer => PhysicsLayer.ITEM;
-	public override int CollisionMask => PhysicsMask.MAP;
+	public override int SelfCollisionMask => PhysicsMask.MAP;
 	public int ItemID { get; set; } = 0;
 	public int ItemCount { get; set; } = 1;
 	public override bool CarryOtherOnTop => false;

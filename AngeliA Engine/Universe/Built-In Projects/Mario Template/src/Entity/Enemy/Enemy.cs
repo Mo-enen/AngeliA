@@ -19,7 +19,7 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 	protected virtual int PlayerStepOnCooldown => 6;
 	protected virtual bool DelayPassoutOnStep => true;
 	public override int PhysicalLayer => PhysicsLayer.CHARACTER;
-	public override int CollisionMask => PhysicsMask.MAP;
+	public override int SelfCollisionMask => PhysicsMask.MAP;
 	public override int AirDragX => IsGrounded ? 1 : 0;
 	public override bool CarryOtherOnTop => false;
 	int IDamageReceiver.Team => Const.TEAM_ENEMY;

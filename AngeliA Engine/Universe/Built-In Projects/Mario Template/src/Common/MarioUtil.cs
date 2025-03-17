@@ -55,6 +55,7 @@ public static class MarioUtil {
 					entity.Y += sourceRect.yMax - eRect.y;
 					break;
 			}
+			entity.OnActivated();
 			if (entity is IBlockEntity) {
 				entity.FirstUpdate();
 				IBlockEntity.RefreshBlockEntitiesNearby(
@@ -124,13 +125,14 @@ public static class MarioUtil {
 
 	}
 
-	public static void UpdateForBumpToSpawnItem (IBumpable source, int itemInside, int spawnItemStartFrame) {
+	public static void UpdateForBumpToSpawnItem (Entity entity, int itemInside, int spawnItemStartFrame, Direction4 spawnDirection, int frame = -1) {
+
+		frame = frame < 0 ? Game.GlobalFrame : frame;
 
 		const int RISE_DUR = 24;
-		if (spawnItemStartFrame < 0 || Game.GlobalFrame > spawnItemStartFrame + RISE_DUR) return;
-		if (source is not Entity sourceEntity) return;
+		if (spawnItemStartFrame < 0 || frame > spawnItemStartFrame + RISE_DUR) return;
 
-		var sourceRect = sourceEntity.Rect;
+		var sourceRect = entity.Rect;
 
 		if (itemInside == Coin.TYPE_ID) {
 			// For Coin
@@ -139,7 +141,7 @@ public static class MarioUtil {
 				int offsetY = Util.RemapUnclamped(
 					0, RISE_DUR / 2,
 					0, sourceRect.height * 3,
-					(Game.GlobalFrame - spawnItemStartFrame).PingPong(RISE_DUR * 2 / 3)
+					(frame - spawnItemStartFrame).PingPong(RISE_DUR * 2 / 3)
 				);
 				var coinRect = sourceRect.Shift(0, offsetY);
 				var cell = Renderer.Draw(iconSp, coinRect);
@@ -148,23 +150,23 @@ public static class MarioUtil {
 			}
 			// Collect Coin
 			if (itemInside != 0) {
-				if (Game.GlobalFrame == spawnItemStartFrame + 1) {
+				if (frame == spawnItemStartFrame + 1) {
 					Coin.Collect(1);
 					WorldSquad.Front.SetBlockAt(
 						(sourceRect.x + 1).ToUnit(), (sourceRect.y + 1).ToUnit(), Stage.ViewZ, BlockType.Element, 0
 					);
-				} else if (Game.GlobalFrame == spawnItemStartFrame + RISE_DUR) {
+				} else if (frame == spawnItemStartFrame + RISE_DUR) {
 					itemInside = 0;
 				}
 			}
 		} else {
 			// For Entity
-			bool fastSpawn = Stage.GetEntityType(itemInside).IsSubclassOf(typeof(Enemy));
-			var spawnToDir = source.LastBumpFrom.Opposite();
+			var itemType = Stage.GetEntityType(itemInside);
+			bool fastSpawn = itemType != null && itemType.IsSubclassOf(typeof(Enemy));
 			if (fastSpawn) {
 				// Fast Spawn
-				if (itemInside != 0 && Game.GlobalFrame == spawnItemStartFrame + 1) {
-					var spawnedEntity = MarioUtil.SpawnEmbedItem(itemInside, sourceRect, spawnToDir);
+				if (itemInside != 0 && frame == spawnItemStartFrame + 1) {
+					var spawnedEntity = MarioUtil.SpawnEmbedItem(itemInside, sourceRect, spawnDirection);
 					if (spawnedEntity is Rigidbody rig) {
 						rig.VelocityY = 42;
 					}
@@ -176,13 +178,13 @@ public static class MarioUtil {
 					int shift = Util.RemapUnclamped(
 						spawnItemStartFrame, spawnItemStartFrame + RISE_DUR,
 						0, sourceRect.height,
-						Game.GlobalFrame
+						frame
 					);
-					Renderer.Draw(iconSp, sourceRect.Shift(spawnToDir.Normal() * shift), z: int.MinValue + 1);
+					Renderer.Draw(iconSp, sourceRect.Shift(spawnDirection.Normal() * shift), z: int.MinValue + 1);
 				}
 				// Spawn
-				if (itemInside != 0 && Game.GlobalFrame == spawnItemStartFrame + RISE_DUR) {
-					MarioUtil.SpawnEmbedItem(itemInside, sourceRect, spawnToDir);
+				if (itemInside != 0 && frame == spawnItemStartFrame + RISE_DUR) {
+					MarioUtil.SpawnEmbedItem(itemInside, sourceRect, spawnDirection);
 					itemInside = 0;
 				}
 			}

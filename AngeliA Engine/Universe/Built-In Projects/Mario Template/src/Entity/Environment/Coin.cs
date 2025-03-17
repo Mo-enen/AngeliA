@@ -9,7 +9,7 @@ namespace MarioTemplate;
 public class Coin : Rigidbody, IBumpable, IAutoTrackWalker {
 
 	// VAR
-	public override int CollisionMask => PhysicsMask.MAP;
+	public override int SelfCollisionMask => PhysicsMask.MAP;
 	public static readonly int TYPE_ID = typeof(Coin).AngeHash();
 	public static int CurrentCoinCount { get; private set; } = 0;
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;

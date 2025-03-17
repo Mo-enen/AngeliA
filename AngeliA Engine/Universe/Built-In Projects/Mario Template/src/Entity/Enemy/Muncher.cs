@@ -9,7 +9,7 @@ public class Muncher : Enemy, IAutoTrackWalker {
 
 	// VAR
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
-	public override int CollisionMask => PhysicsMask.MAP;
+	public override int SelfCollisionMask => PhysicsMask.MAP;
 	protected override bool AllowPlayerStepOn => false;
 	protected override bool AttackOnTouchPlayer => true;
 	int IAutoTrackWalker.LastWalkingFrame { get; set; }

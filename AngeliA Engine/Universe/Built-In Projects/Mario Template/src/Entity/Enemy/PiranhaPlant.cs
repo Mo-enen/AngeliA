@@ -7,7 +7,7 @@ namespace MarioTemplate;
 
 public class PiranhaPlant : Enemy, IAutoTrackWalker {
 
-	public override int CollisionMask => PhysicsMask.MAP;
+	public override int SelfCollisionMask => PhysicsMask.MAP;
 	protected override bool AllowPlayerStepOn => false;
 	protected override bool AttackOnTouchPlayer => true;
 	int IAutoTrackWalker.LastWalkingFrame { get; set; }

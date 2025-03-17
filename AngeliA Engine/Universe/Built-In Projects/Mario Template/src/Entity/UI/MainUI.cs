@@ -13,6 +13,7 @@ public class MainUI : EntityUI {
 	public static readonly int TYPE_ID = typeof(MainUI).AngeHash();
 	private static readonly IntToChars CoinCountToChars = new("×");
 	private static readonly int FONT_ID = "SuperMarioBros".AngeHash();
+	private static int LastGameResetTime = 0;
 
 	// MSG
 	[OnGameInitializeLater]
@@ -26,6 +27,7 @@ public class MainUI : EntityUI {
 			Stage.SpawnEntity(TYPE_ID, 0, 0);
 			MarioUtil.ResetScore();
 			Coin.ResetCoinCount();
+			LastGameResetTime = Game.GlobalFrame;
 		}
 	}
 
@@ -83,7 +85,7 @@ public class MainUI : EntityUI {
 
 		// Time Count
 		rect3.xMax = boundTime.xMax;
-		GUI.IntLabel(rect3, Game.GlobalFrame / 60, GUI.Skin.AutoRightLabel);
+		GUI.IntLabel(rect3, (Game.GlobalFrame - LastGameResetTime) / 60, GUI.Skin.AutoRightLabel);
 
 	}
 

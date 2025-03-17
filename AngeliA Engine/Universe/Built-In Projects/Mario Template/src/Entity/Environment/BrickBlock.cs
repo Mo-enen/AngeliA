@@ -14,8 +14,8 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker, IDa
 	private static readonly SpriteCode REVEALED_SP = "RevealedBlock";
 	public static readonly int TYPE_ID = typeof(BrickBlock).AngeHash();
 	public int LastBumpedFrame { get; set; } = int.MinValue;
-	Direction4 IBumpable.LastBumpFrom { get; set; }
 	bool IBlockEntity.EmbedEntityAsElement => true;
+	public Direction4 LastBumpFrom { get; set; }
 	bool IBumpable.TransferWithAttack => true;
 	int IAutoTrackWalker.LastWalkingFrame { get; set; }
 	int IAutoTrackWalker.WalkStartFrame { get; set; }
@@ -47,7 +47,7 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker, IDa
 		base.Update();
 
 		// Spawn Item Update
-		MarioUtil.UpdateForBumpToSpawnItem(this, ItemInside, SpawnItemStartFrame);
+		MarioUtil.UpdateForBumpToSpawnItem(this, ItemInside, SpawnItemStartFrame, LastBumpFrom.Opposite());
 
 		// Collect As Coin
 		var player = PlayerSystem.Selecting;
@@ -70,7 +70,8 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker, IDa
 			IBumpable.AnimateForBump(this, cell);
 		} else {
 			// Revealed
-			Renderer.Draw(REVEALED_SP, Rect);
+			var cell = Renderer.Draw(REVEALED_SP, Rect);
+			IBumpable.AnimateForBump(this, cell);
 		}
 	}
 

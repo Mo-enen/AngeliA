@@ -20,6 +20,7 @@ public abstract class PlayableCharacter : PoseCharacter, IPlayable, IActionTarge
 		base.OnActivated();
 		if (UseMarioStyleMovement) {
 			MarioUtil.InitMovementForMarioGame(NativeMovement);
+			NativeMovement.WalkAvailable.BaseValue = true;
 		}
 	}
 

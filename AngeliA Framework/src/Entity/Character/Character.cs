@@ -49,7 +49,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		_ => Attackness.DefaultSpeedRateOnAttack,
 	};
 	public sealed override int PhysicalLayer => PhysicsLayer.CHARACTER;
-	public sealed override int CollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.MAP;
+	public sealed override int SelfCollisionMask => Movement.IsGrabFlipping ? 0 : PhysicsMask.MAP;
 	public override int AirDragX => 0;
 	public override int AirDragY => 0;
 	public override bool CarryOtherOnTop => false;

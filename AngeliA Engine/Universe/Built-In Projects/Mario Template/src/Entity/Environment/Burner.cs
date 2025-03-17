@@ -94,10 +94,10 @@ public abstract class Burner : Entity, IAutoTrackWalker {
 		if (FireLocalFrame < Duration) {
 			// Fire Damage
 			var rect = Direction switch {
-				Direction4.Left => Rect.CornerOutside(Alignment.MidLeft, Const.CEL * 3 / 2, 64),
-				Direction4.Right => Rect.CornerOutside(Alignment.MidRight, Const.CEL * 3 / 2, 64),
-				Direction4.Down => Rect.CornerOutside(Alignment.BottomMid, 64, Const.CEL * 3 / 2),
-				Direction4.Up => Rect.CornerOutside(Alignment.TopMid, 64, Const.CEL * 3 / 2),
+				Direction4.Left => Rect.CornerOutside(Alignment.MidLeft, Const.CEL * 2, 64),
+				Direction4.Right => Rect.CornerOutside(Alignment.MidRight, Const.CEL * 2, 64),
+				Direction4.Down => Rect.CornerOutside(Alignment.BottomMid, 64, Const.CEL * 2),
+				Direction4.Up => Rect.CornerOutside(Alignment.TopMid, 64, Const.CEL * 2),
 				_ => default,
 			};
 			IDamageReceiver.DamageAllOverlap(

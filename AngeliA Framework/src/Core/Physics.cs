@@ -82,8 +82,6 @@ public static class Physics {
 	private static readonly PhysicsCell[] c_OverlapAll = new PhysicsCell[1024];
 	private static readonly Pipe<(Rigidbody rig, IRect from, IRect to)> c_ForcePushCache = new(256);
 	private static Layer[] Layers = null;
-	private static Layer CurrentLayer = null;
-	private static int CurrentLayerEnum = -1;
 	private static int LayerCount = 0;
 	private static int GlobalOperationStamp = int.MinValue;
 
@@ -104,7 +102,7 @@ public static class Physics {
 		LayerCount = PhysicsLayer.COUNT;
 		Layers = new Layer[PhysicsLayer.COUNT];
 		for (int i = 0; i < PhysicsLayer.COUNT; i++) {
-			Layers[i] = CurrentLayer = new Layer(CellWidth, CellHeight);
+			Layers[i] = new Layer(CellWidth, CellHeight);
 		}
 		IsReady = true;
 	}
@@ -123,6 +121,35 @@ public static class Physics {
 
 
 	public static void FillEntity (int layer, Entity entity, bool isTrigger = false, Tag tag = 0) => FillLogic(layer, entity != null ? entity.TypeID : 0, entity.Rect, entity, 0, 0, isTrigger, tag);
+
+
+	public static void IgnoreOverlap (int mask, IRect globalRect, OperationMode mode = OperationMode.ColliderAndTrigger) {
+		for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
+			if ((mask & (1 << layerIndex)) == 0) continue;
+			var layerItem = Layers[layerIndex];
+			int l = Util.Max(GlobalX_to_CellX(globalRect.xMin) - 1, 0);
+			int d = Util.Max(GlobalY_to_CellY(globalRect.yMin) - 1, 0);
+			int r = Util.Min(GlobalX_to_CellX(globalRect.xMax - 1) + 1, CellWidth - 1);
+			int u = Util.Min(GlobalY_to_CellY(globalRect.yMax - 1) + 1, CellHeight - 1);
+			bool useCollider = mode != OperationMode.TriggerOnly;
+			bool useTrigger = mode != OperationMode.ColliderOnly;
+			for (int j = d; j <= u; j++) {
+				for (int i = l; i <= r; i++) {
+					for (int dep = 0; dep < DEPTH; dep++) {
+						ref var hit = ref layerItem.Cells[i, j, dep];
+						if (hit.Frame != CurrentFrame) { break; }
+						if ((!hit.IsTrigger || !useTrigger) && (hit.IsTrigger || !useCollider)) continue;
+						if (!globalRect.Overlaps(hit.Entity != null ? hit.Entity.Rect : hit.Rect)) continue;
+						hit.Rect = new IRect(int.MinValue, int.MinValue, 0, 0);
+						hit.Entity = null;
+						hit.SourceID = 0;
+						hit.IsTrigger = true;
+						hit.Tag = Tag.None;
+					}
+				}
+			}
+		}
+	}
 
 
 	// Overlap
@@ -337,8 +364,8 @@ public static class Physics {
 		int d = Util.Max(GlobalY_to_CellY(globalRect.yMin) - 1, 0);
 		int r = Util.Min(GlobalX_to_CellX(globalRect.xMax - 1) + 1, CellWidth - 1);
 		int u = Util.Min(GlobalY_to_CellY(globalRect.yMax - 1) + 1, CellHeight - 1);
-		bool useCollider = mode == OperationMode.ColliderOnly || mode == OperationMode.ColliderAndTrigger;
-		bool useTrigger = mode == OperationMode.TriggerOnly || mode == OperationMode.ColliderAndTrigger;
+		bool useCollider = mode != OperationMode.TriggerOnly;
+		bool useTrigger = mode != OperationMode.ColliderOnly;
 		int entityStamp = GlobalOperationStamp++;
 		for (int j = d; j <= u; j++) {
 			for (int i = l; i <= r; i++) {
@@ -349,12 +376,11 @@ public static class Physics {
 					if (tag != Tag.None && !hit.Tag.HasAll(tag)) continue;
 					if ((!hit.IsTrigger || !useTrigger) && (hit.IsTrigger || !useCollider)) continue;
 					if (!ignoreStamp && hit.Entity != null && hit.Entity.Stamp == entityStamp) continue;
-					if (globalRect.Overlaps(hit.Entity != null ? hit.Entity.Rect : hit.Rect)) {
-						if (hit.Entity != null) hit.Entity.Stamp = entityStamp;
-						hits[count] = hit;
-						count++;
-						if (count >= maxLength) return count;
-					}
+					if (!globalRect.Overlaps(hit.Entity != null ? hit.Entity.Rect : hit.Rect)) continue;
+					if (hit.Entity != null) hit.Entity.Stamp = entityStamp;
+					hits[count] = hit;
+					count++;
+					if (count >= maxLength) return count;
 				}
 			}
 		}
@@ -378,14 +404,10 @@ public static class Physics {
 		int i = GlobalX_to_CellX(globalRect.x);
 		int j = GlobalY_to_CellY(globalRect.y);
 		if (i < 0 || j < 0 || i >= CellWidth || j >= CellHeight) { return; }
-		if (layer != CurrentLayerEnum) {
-			CurrentLayerEnum = layer;
-			CurrentLayer = Layers[layer];
-		}
-
 		// Fill
+		var currentLayer = Layers[layer];
 		for (int dep = 0; dep < DEPTH; dep++) {
-			ref var cell = ref CurrentLayer.Cells[i, j, dep];
+			ref var cell = ref currentLayer.Cells[i, j, dep];
 			if (cell.Frame != CurrentFrame) {
 				cell.Rect = globalRect;
 				cell.Entity = entity;

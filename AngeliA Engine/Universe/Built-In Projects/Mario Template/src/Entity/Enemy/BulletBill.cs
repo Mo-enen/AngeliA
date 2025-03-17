@@ -33,7 +33,7 @@ public class BulletBillBlackRight : BulletBill {
 public abstract class BulletBill : Enemy {
 
 	// VAR
-	public override int CollisionMask => 0;
+	public override int SelfCollisionMask => 0;
 	protected override bool DelayPassoutOnStep => false;
 	protected override bool AllowPlayerStepOn => true;
 	protected override bool AttackOnTouchPlayer => true;

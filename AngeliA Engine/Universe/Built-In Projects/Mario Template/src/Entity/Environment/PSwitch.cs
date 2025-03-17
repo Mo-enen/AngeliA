@@ -6,7 +6,7 @@ using AngeliA.Platformer;
 namespace MarioTemplate;
 
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public class PSwitch : Rigidbody, IAutoTrackWalker {
+public class PSwitch : Rigidbody, IAutoTrackWalker, IBumpable {
 
 	// VAR
 	private static readonly int SOLID_BLOCK_ID = "PBlockSolid".AngeHash();
@@ -21,6 +21,8 @@ public class PSwitch : Rigidbody, IAutoTrackWalker {
 	int IAutoTrackWalker.WalkStartFrame { get; set; }
 	Direction8 IRouteWalker.CurrentDirection { get; set; }
 	Int2 IRouteWalker.TargetPosition { get; set; }
+	int IBumpable.LastBumpedFrame { get; set; }
+	Direction4 IBumpable.LastBumpFrom { get; set; }
 
 	private int StepOnFrame = int.MinValue;
 
@@ -63,8 +65,7 @@ public class PSwitch : Rigidbody, IAutoTrackWalker {
 		if (StepOnFrame < 0) {
 			var player = PlayerSystem.Selecting;
 			if (player != null && player.Rect.Overlaps(Rect.EdgeOutsideUp(1))) {
-				StepOnFrame = Game.GlobalFrame;
-				LastTriggerFrame = Game.GlobalFrame;
+				Trigger();
 				player.Bounce();
 				player.VelocityY = 0;
 			}
@@ -81,6 +82,15 @@ public class PSwitch : Rigidbody, IAutoTrackWalker {
 			height = Util.Remap(StepOnFrame, StepOnFrame + STEP_DUR, Height, 0, Game.GlobalFrame);
 		}
 		Renderer.Draw(TypeID, X, Y, 0, 0, 0, Width, height);
+	}
+
+	void IBumpable.OnBumped (Rigidbody rig, Damage damage) {
+		Trigger();
+	}
+
+	public void Trigger () {
+		StepOnFrame = Game.GlobalFrame;
+		LastTriggerFrame = Game.GlobalFrame;
 	}
 
 }
