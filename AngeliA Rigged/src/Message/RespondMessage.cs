@@ -269,15 +269,16 @@ public class RigRespondMessage {
 	}
 
 
-	public void ApplyRenderingToEngine (Universe universe, int sheetIndex, int leftPadding, int rightPadding, bool ignoreInGameGizmos) {
+	public void ApplyRenderingToEngine (Universe universe, int sheetIndex, int leftPadding, int rightPadding, bool ignoreInGameGizmos, bool ignoreViewRect) {
 
 		// View
 		var info = universe.Info;
-		//ViewHeight = ViewHeight.GreaterOrEquel(info.MinViewHeight);
 		int oldViewHeight = Stage.ViewRect.height;
 		var engineViewRect = new IRect(ViewX, ViewY, ViewWidth, ViewHeight);
-		Stage.SetViewRectImmediately(engineViewRect, remapAllRenderingCells: true);
-		Stage.SetViewZ(ViewZ, true);
+		if (!ignoreViewRect) {
+			Stage.SetViewRectImmediately(engineViewRect, remapAllRenderingCells: true);
+			Stage.SetViewZ(ViewZ, true);
+		}
 		if (oldViewHeight != ViewHeight) {
 			leftPadding = leftPadding * ViewHeight / oldViewHeight;
 			rightPadding = rightPadding * ViewHeight / oldViewHeight;

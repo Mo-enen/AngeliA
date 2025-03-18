@@ -6,13 +6,12 @@ using AngeliA.Platformer;
 namespace MarioTemplate;
 
 [EntityAttribute.MapEditorGroup(nameof(Enemy))]
+[EntityAttribute.DontDrawBehind()]
 public abstract class Enemy : Rigidbody, IDamageReceiver {
 
 
 	// VAR
 	private const int PASS_COUNT_DELAY = 30;
-	private static readonly int FCT_FONT = "SuperMarioBros".AngeHash();
-	private static readonly IntToChars StepCountToChar = new();
 	public bool IsPassout => PassoutFrame != int.MinValue;
 	protected abstract bool AllowPlayerStepOn { get; }
 	protected abstract bool AttackOnTouchPlayer { get; }
@@ -87,13 +86,7 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 		}
 		int score = 100 + player.CurrentStepCombo * 100;
 		MarioUtil.PlayMarioAudio(Sound.StepOnEnemy, XY);
-		MarioUtil.GiveScore(score);
-		FloatingCombatText.Spawn(
-			CenterX, Y + Height,
-			StepCountToChar.GetChars(score),
-			fontID: FCT_FONT,
-			style: GUI.Skin.SmallCenterLabel
-		);
+		MarioUtil.GiveScore(score, CenterX, Y + Height);
 		player.CurrentStepCombo++;
 	}
 

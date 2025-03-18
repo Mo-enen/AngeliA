@@ -53,6 +53,7 @@ public class ThwompUp : Thwomp {
 [EntityAttribute.MapEditorGroup(nameof(Enemy))]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
+[EntityAttribute.DontDrawBehind()]
 public abstract class Thwomp : Rigidbody, IDamageReceiver {
 
 	// VAR

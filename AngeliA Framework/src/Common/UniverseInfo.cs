@@ -42,6 +42,8 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public byte WorldBehindAlpha = 64;
 	public bool RequireFixScriptNamesWhenAnalyse = false;
 	public int LastOpenAtlasIndex = 0;
+	public Int3 LastEdittingViewPos = default;
+	public int LastEdittingViewHeight = -1;
 
 	public void OnAfterLoadedFromDisk () => Valid(true);
 	public void OnBeforeSaveToDisk () => Valid(true);

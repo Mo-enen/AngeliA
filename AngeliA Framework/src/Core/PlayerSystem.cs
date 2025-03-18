@@ -399,6 +399,7 @@ public static class PlayerSystem {
 		var att = Selecting.Attackness;
 		var mov = Selecting.Movement;
 		bool actionHolding = Input.GameKeyHolding(Gamekey.Action);
+		bool attackAllowByEq = Selecting.IsAttackAllowedByEquipment();
 		att.HoldingAttack = actionHolding;
 
 		att.IsChargingAttack =
@@ -408,13 +409,15 @@ public static class PlayerSystem {
 			!IgnoringInput &&
 			actionHolding &&
 			Selecting.IsAttackAllowedByMovement() &&
-			Selecting.IsAttackAllowedByEquipment();
+			attackAllowByEq;
 
 
 		if (IgnoringInput || Game.GlobalFrame <= IgnoreAttackFrame) return;
 
 		// Try Perform Attack
-		ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_ATTACK);
+		if (attackAllowByEq) {
+			ControlHintUI.AddHint(Gamekey.Action, BuiltInText.HINT_ATTACK);
+		}
 		bool attDown = Input.GameKeyDown(Gamekey.Action);
 		if (attDown || (actionHolding && att.RepeatAttackWhenHolding)) {
 			if (Game.GlobalFrame >= att.LastAttackFrame + att.AttackDuration + att.AttackCooldown + (attDown ? 0 : att.HoldAttackPunishFrame)) {

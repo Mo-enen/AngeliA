@@ -32,7 +32,7 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker, IDa
 	public override void OnActivated () {
 		base.OnActivated();
 		SpawnItemStartFrame = int.MinValue;
-		ItemInside = MarioUtil.GetEmbedItemID(Rect, failbackID: Coin.TYPE_ID);
+		ItemInside = MarioUtil.GetEmbedItemID(Rect, failbackID: 0);
 	}
 
 	public override void FirstUpdate () {
@@ -75,11 +75,13 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker, IDa
 		}
 	}
 
-	bool IBumpable.AllowBump (Rigidbody rig, Direction4 from) => IBumpable.IsValidBumpDirection(this, from) && rig == PlayerSystem.Selecting && SpawnItemStartFrame < 0;
+	bool IBumpable.AllowBump (Entity entity, Direction4 from) => IBumpable.IsValidBumpDirection(this, from) && entity == PlayerSystem.Selecting && SpawnItemStartFrame < 0;
 
-	void IBumpable.OnBumped (Rigidbody rig, Damage damage) {
+	void IBumpable.OnBumped (Entity entity, Damage damage) {
 		if (IsCoin) return;
-		if (damage.Amount > 0 && damage.Type.HasAll(Tag.MagicalDamage)) {
+		bool bigPlayer = entity is PlayableCharacter pCh && pCh.Health.HP >= 2;
+		bool withMagDamage = damage.Amount > 0 && damage.Type.HasAll(Tag.MagicalDamage);
+		if (ItemInside == 0 && (bigPlayer || withMagDamage)) {
 			// Break
 			Active = false;
 			FrameworkUtil.InvokeObjectBreak(TypeID, Rect);

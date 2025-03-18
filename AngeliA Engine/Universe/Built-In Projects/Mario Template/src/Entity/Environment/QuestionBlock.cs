@@ -68,14 +68,14 @@ public class QuestionBlock : Entity, IBlockEntity, IBumpable, IAutoTrackWalker, 
 		IBumpable.AnimateForBump(this, cell);
 	}
 
-	void IBumpable.OnBumped (Rigidbody rig, Damage damage) {
+	void IBumpable.OnBumped (Entity entity, Damage damage) {
 		if (ItemInside == 0 || SpawnItemStartFrame >= 0) return;
 		SpawnItemStartFrame = Game.GlobalFrame;
 	}
 
-	bool IBumpable.AllowBump (Rigidbody rig, Direction4 from) {
+	bool IBumpable.AllowBump (Entity entity, Direction4 from) {
 		if (!IBumpable.IsValidBumpDirection(this, from)) return false;
-		if (rig != PlayerSystem.Selecting) return false;
+		if (entity != PlayerSystem.Selecting) return false;
 		return SpawnItemStartFrame < 0 && ItemInside != 0;
 	}
 

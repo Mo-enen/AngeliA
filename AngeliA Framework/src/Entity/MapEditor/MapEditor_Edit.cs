@@ -443,6 +443,7 @@ public partial class MapEditor {
 
 		int blockID = Stream.GetBlockAt(unitX, unitY, CurrentZ, type);
 		if (blockID == id) return;
+		int fromID = blockID;
 
 		// Embed Redirect
 		if (!ignoreEmbedAsElement && type != BlockType.Element) {
@@ -452,6 +453,7 @@ public partial class MapEditor {
 					FrameworkUtil.InvokeErrorHint(unitX.ToGlobal() + Const.HALF, unitY.ToGlobal(), id);
 				} else {
 					type = BlockType.Element;
+					fromID = Stream.GetBlockAt(unitX, unitY, CurrentZ, BlockType.Element);
 				}
 			}
 		}
@@ -461,7 +463,7 @@ public partial class MapEditor {
 
 		// Regist Undo
 		RegisterUndo(new BlockUndoItem() {
-			FromID = blockID,
+			FromID = fromID,
 			ToID = id,
 			Type = type,
 			UnitX = unitX,

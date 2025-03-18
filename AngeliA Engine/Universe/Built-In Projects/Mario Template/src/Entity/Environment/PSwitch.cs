@@ -84,7 +84,7 @@ public class PSwitch : Rigidbody, IAutoTrackWalker, IBumpable {
 		Renderer.Draw(TypeID, X, Y, 0, 0, 0, Width, height);
 	}
 
-	void IBumpable.OnBumped (Rigidbody rig, Damage damage) {
+	void IBumpable.OnBumped (Entity entity, Damage damage) {
 		Trigger();
 	}
 

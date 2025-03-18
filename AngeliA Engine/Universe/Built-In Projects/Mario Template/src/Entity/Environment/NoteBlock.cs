@@ -50,9 +50,9 @@ public class NoteBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 		ArtworkOffset.y = ArtworkOffset.y.LerpTo(0, 0.4f);
 	}
 
-	void IBumpable.OnBumped (Rigidbody rig, Damage damage) => NoteBlockBumpLogic(LastBumpFrom);
+	void IBumpable.OnBumped (Entity entity, Damage damage) => NoteBlockBumpLogic(LastBumpFrom);
 
-	bool IBumpable.AllowBump (Rigidbody rig, Direction4 from) => IBumpable.IsValidBumpDirection(this, from);
+	bool IBumpable.AllowBump (Entity entity, Direction4 from) => IBumpable.IsValidBumpDirection(this, from);
 
 	Damage IBumpable.GetBumpTransferDamage () => new(1, Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT);
 

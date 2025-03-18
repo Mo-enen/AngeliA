@@ -175,14 +175,7 @@ public partial class Engine {
 		Game.ProcedureAudioVolume = 1000;
 
 		// Rig Start Setting
-		if (EngineSetting.LastMapEditorViewHeight.Value > 0) {
-			engine.Transceiver.SetStartViewPos(
-				EngineSetting.LastMapEditorViewX.Value,
-				EngineSetting.LastMapEditorViewY.Value,
-				EngineSetting.LastMapEditorViewZ.Value,
-				EngineSetting.LastMapEditorViewHeight.Value
-			);
-		}
+		//engine.Transceiver.SetStartViewPos(0, 0, 0, Const.CEL * 33);
 
 		// UI Window
 		for (int i = 0; i < engine.AllWindows.Length; i++) {

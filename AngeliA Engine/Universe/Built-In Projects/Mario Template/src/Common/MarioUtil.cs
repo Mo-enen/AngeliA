@@ -14,8 +14,10 @@ public static class MarioUtil {
 	public static int CurrentScore { get; private set; } = 0;
 	public static int CurrentMajorLevel { get; private set; } = 1;
 	public static int CurrentMinorLevel { get; private set; } = 1;
+	private static readonly int FCT_FONT = "SuperMarioBros".AngeHash();
 	private static readonly SpriteCode SPIN_COIN_SP = "CoinSpin";
 	private static readonly Dictionary<Sound, int> SoundPool = new(Util.AllEnumIdPairs<Sound>());
+	private static readonly IntToChars ScoreToChar = new();
 
 	// API
 	public static int GetEmbedItemID (IRect sourceRect, int failbackID = 0) {
@@ -67,61 +69,81 @@ public static class MarioUtil {
 		return entity;
 	}
 
-	public static void GiveScore (int score) => CurrentScore += score;
+	public static void GiveScore (int score, int x, int y) {
+		CurrentScore += score;
+		FloatingCombatText.Spawn(
+			x, y,
+			ScoreToChar.GetChars(score),
+			fontID: FCT_FONT,
+			style: GUI.Skin.SmallCenterLabel
+		);
+	}
 
 	public static void ResetScore () => CurrentScore = 0;
 
 	public static void SetLevelCount (int major, int minor) => (CurrentMajorLevel, CurrentMinorLevel) = (major, minor);
 
-	public static void InitMovementForMarioGame (CharacterMovement movement) {
+	public static void InitCharacterForMarioGame (PlayableCharacter character) {
 
-		movement.RunAvailable.BaseValue = true;
-		movement.RunSpeed.BaseValue = 48;
-		movement.RunAcceleration.BaseValue = 1;
-		movement.RunDeceleration.BaseValue = 2;
-		movement.RunBrakeAcceleration.BaseValue = 3;
+		// Health
+		var health = character.NativeHealth;
+		health.MaxHP.BaseValue = 2;
+		health.HP = 1;
 
-		movement.JumpCount.BaseValue = 1;
-		movement.JumpSpeed.BaseValue = 80;
-		movement.JumpReleaseSpeedRate.BaseValue = 700;
-		movement.JumpRiseGravityRate.BaseValue = 600;
-		movement.FirstJumpWithRoll.BaseValue = false;
-		movement.AllowSquatJump.BaseValue = true;
+		// Mov
+		var mov = character.NativeMovement;
 
-		movement.SquatAvailable.BaseValue = true;
-		movement.SquatHeightAmount.BaseValue = 521;
-		movement.SquatMoveSpeed.BaseValue = 0;
-		movement.SquatAcceleration.BaseValue = 1;
-		movement.SquatDeceleration.BaseValue = 1;
+		mov.RunAvailable.BaseValue = true;
+		mov.RunSpeed.BaseValue = 48;
+		mov.RunAcceleration.BaseValue = 1;
+		mov.RunDeceleration.BaseValue = 2;
+		mov.RunBrakeAcceleration.BaseValue = 3;
 
-		movement.SlipAvailable.BaseValue = true;
-		movement.SlipAcceleration.BaseValue = 1;
-		movement.SlipAcceleration.BaseValue = 1;
+		mov.JumpCount.BaseValue = 1;
+		mov.JumpSpeed.BaseValue = 80;
+		mov.JumpReleaseSpeedRate.BaseValue = 700;
+		mov.JumpRiseGravityRate.BaseValue = 600;
+		mov.FirstJumpWithRoll.BaseValue = false;
+		mov.AllowSquatJump.BaseValue = true;
 
-		movement.SwimAvailable.BaseValue = true;
-		movement.InWaterSpeedRate.BaseValue = 500;
-		movement.SwimWidthAmount.BaseValue = 1333;
-		movement.SwimHeightAmount.BaseValue = 1000;
-		movement.SwimSpeed.BaseValue = 42;
-		movement.SwimJumpSpeed.BaseValue = 128;
-		movement.SwimAcceleration.BaseValue = 2;
-		movement.SwimDeceleration.BaseValue = 2;
+		mov.SquatAvailable.BaseValue = true;
+		mov.SquatHeightAmount.BaseValue = 521;
+		mov.SquatMoveSpeed.BaseValue = 0;
+		mov.SquatAcceleration.BaseValue = 1;
+		mov.SquatDeceleration.BaseValue = 1;
 
-		movement.ClimbAvailable.BaseValue = true;
-		movement.AllowJumpWhenClimbing.BaseValue = true;
-		movement.ClimbSpeedX.BaseValue = 12;
-		movement.ClimbSpeedY.BaseValue = 18;
+		mov.SlipAvailable.BaseValue = true;
+		mov.SlipAcceleration.BaseValue = 1;
+		mov.SlipAcceleration.BaseValue = 1;
 
-		movement.WalkAvailable.BaseValue = false;
-		movement.DashAvailable.BaseValue = false;
-		movement.RushAvailable.BaseValue = false;
-		movement.PoundAvailable.BaseValue = false;
-		movement.FlyAvailable.BaseValue = false;
-		movement.SlideAvailable.BaseValue = false;
-		movement.GrabTopAvailable.BaseValue = false;
-		movement.GrabSideAvailable.BaseValue = false;
-		movement.CrashAvailable.BaseValue = false;
-		movement.PushAvailable.BaseValue = false;
+		mov.SwimAvailable.BaseValue = true;
+		mov.InWaterSpeedRate.BaseValue = 500;
+		mov.SwimWidthAmount.BaseValue = 1333;
+		mov.SwimHeightAmount.BaseValue = 1000;
+		mov.SwimSpeed.BaseValue = 42;
+		mov.SwimJumpSpeed.BaseValue = 128;
+		mov.SwimAcceleration.BaseValue = 2;
+		mov.SwimDeceleration.BaseValue = 2;
+
+		mov.ClimbAvailable.BaseValue = true;
+		mov.AllowJumpWhenClimbing.BaseValue = true;
+		mov.ClimbSpeedX.BaseValue = 12;
+		mov.ClimbSpeedY.BaseValue = 18;
+
+		mov.WalkAvailable.BaseValue = true;
+		mov.WalkSpeed.BaseValue = 20;
+		mov.WalkAcceleration.BaseValue = 3;
+		mov.WalkDeceleration.BaseValue = 4;
+
+		mov.DashAvailable.BaseValue = false;
+		mov.RushAvailable.BaseValue = false;
+		mov.PoundAvailable.BaseValue = false;
+		mov.FlyAvailable.BaseValue = false;
+		mov.SlideAvailable.BaseValue = false;
+		mov.GrabTopAvailable.BaseValue = false;
+		mov.GrabSideAvailable.BaseValue = false;
+		mov.CrashAvailable.BaseValue = false;
+		mov.PushAvailable.BaseValue = false;
 
 	}
 

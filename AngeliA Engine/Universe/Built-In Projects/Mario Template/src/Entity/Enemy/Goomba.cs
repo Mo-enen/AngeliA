@@ -6,7 +6,7 @@ using AngeliA.Platformer;
 namespace MarioTemplate;
 
 
-public class Goombrat : Goomba, IPingPongWalker {
+public class GoombratLeft : Goomba, IPingPongWalker {
 	private static readonly SpriteCode WALK_SP = "Goombrat.Walk";
 	private static readonly SpriteCode JUMPD_SP = "Goombrat.JumpD";
 	private static readonly SpriteCode JUMPU_SP = "Goombrat.JumpU";
@@ -16,10 +16,35 @@ public class Goombrat : Goomba, IPingPongWalker {
 	protected override SpriteCode JumpUpSprite => JUMPU_SP;
 	protected override SpriteCode PassoutSprite => PASSOUT_SP;
 	bool IPingPongWalker.WalkOffEdge => false;
+	protected override bool StartWithWalkingRight => false;
 }
 
 
-public class Goomba : Enemy, IPingPongWalker {
+public class GoombratRight : Goomba, IPingPongWalker {
+	private static readonly SpriteCode WALK_SP = "Goombrat.Walk";
+	private static readonly SpriteCode JUMPD_SP = "Goombrat.JumpD";
+	private static readonly SpriteCode JUMPU_SP = "Goombrat.JumpU";
+	private static readonly SpriteCode PASSOUT_SP = "Goombrat.Passout";
+	protected override SpriteCode WalkSprite => WALK_SP;
+	protected override SpriteCode JumpDownSprite => JUMPD_SP;
+	protected override SpriteCode JumpUpSprite => JUMPU_SP;
+	protected override SpriteCode PassoutSprite => PASSOUT_SP;
+	bool IPingPongWalker.WalkOffEdge => false;
+	protected override bool StartWithWalkingRight => true;
+}
+
+
+public class GoombaLeft : Goomba {
+	protected override bool StartWithWalkingRight => false;
+}
+
+
+public class GoombaRight : Goomba {
+	protected override bool StartWithWalkingRight => true;
+}
+
+
+public abstract class Goomba : Enemy, IPingPongWalker {
 
 	// VAR
 	private static readonly SpriteCode WALK_SP = "Goomba.Walk";
@@ -30,6 +55,7 @@ public class Goomba : Enemy, IPingPongWalker {
 	protected virtual SpriteCode JumpDownSprite => JUMPD_SP;
 	protected virtual SpriteCode JumpUpSprite => JUMPU_SP;
 	protected virtual SpriteCode PassoutSprite => PASSOUT_SP;
+	protected abstract bool StartWithWalkingRight { get; }
 	protected override bool AllowPlayerStepOn => true;
 	protected override bool AttackOnTouchPlayer => true;
 	int IPingPongWalker.WalkSpeed => IsPassout ? 0 : 8;
@@ -42,6 +68,7 @@ public class Goomba : Enemy, IPingPongWalker {
 	public override void OnActivated () {
 		base.OnActivated();
 		IPingPongWalker.OnActive(this);
+		(this as IPingPongWalker).WalkingRight = StartWithWalkingRight;
 		Width = 196;
 		Height = 255;
 	}

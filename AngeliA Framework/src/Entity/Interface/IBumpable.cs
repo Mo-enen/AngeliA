@@ -21,15 +21,15 @@ public interface IBumpable {
 
 
 	// MSG
-	protected void OnBumped (Rigidbody rig, Damage damage);
+	protected void OnBumped (Entity rig, Damage damage);
 
-	protected bool AllowBump (Rigidbody rig, Direction4 from) => IsValidBumpDirection(this, from);
+	protected bool AllowBump (Entity rig, Direction4 from) => IsValidBumpDirection(this, from);
 
 	protected Damage GetBumpTransferDamage () => new(1);
 
 
 	// API
-	internal void TryPerformBump (Rigidbody sender, Direction4 directionTo, bool forceBump = false, Damage damageToBumpedObject = default) {
+	internal void TryPerformBump (Entity sender, Direction4 directionTo, bool forceBump = false, Damage damageToBumpedObject = default) {
 
 		if (!forceBump && Game.GlobalFrame < LastBumpedFrame + BumpCooldown) return;
 		if (this is not Entity entity) return;
@@ -107,9 +107,9 @@ public interface IBumpable {
 		_ => true,
 	};
 
-	public static void BumpAllOverlap (Rigidbody sender, Direction4 directionTo, bool forceBump = false, Damage damageToBumpedObject = default, int collisionMask = int.MinValue) {
+	public static void BumpAllOverlap (Entity sender, Direction4 directionTo, bool forceBump = false, Damage damageToBumpedObject = default, int collisionMask = PhysicsMask.MAP) {
 		var hits = Physics.OverlapAll(
-			collisionMask == int.MinValue ? sender.CollisionMask : collisionMask,
+			collisionMask,
 			sender.Rect.EdgeOutside(directionTo, 1), out int count, sender
 		);
 		for (int i = 0; i < count; i++) {
@@ -126,7 +126,11 @@ public interface IBumpable {
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];
 
-			if (hit.Entity is IBumpable bump && !bump.TransferBumpFromOther) continue;
+			if (hit.Entity is IBumpable bump) {
+				if (!bump.TransferBumpFromOther) continue;
+				bump.LastBumpFrom = direction.Opposite();
+				bump.OnBumped(self, selfBump.GetBumpTransferDamage());
+			}
 
 			// Perform Bump Transfer
 			if (hit.Entity is Rigidbody rig) {

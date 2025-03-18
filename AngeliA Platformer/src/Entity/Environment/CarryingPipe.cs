@@ -16,6 +16,7 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 	protected abstract Direction4 Direction { get; }
 	protected virtual int CarryingPoseAnimationID => PoseAnimation_SquatIdle.TYPE_ID;
 
+	private static readonly Dictionary<int, Direction4> PipePool = [];
 	private static int LastPlayerInputFrame = int.MinValue;
 	private int LastPlayerInsideFrame = int.MinValue;
 	private Direction5? NeighborPipeDirL = null;
@@ -24,6 +25,15 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 	private Direction5? NeighborPipeDirU = null;
 
 	// MSG
+	[OnGameUpdate]
+	internal static void OnGameUpdate () {
+		foreach (var type in typeof(CarryingPipe).AllChildClass()) {
+			if (System.Activator.CreateInstance(type) is not CarryingPipe pipe) continue;
+			PipePool.TryAdd(type.AngeHash(), pipe.Direction);
+		}
+		PipePool.TrimExcess();
+	}
+
 	public override void OnActivated () {
 		base.OnActivated();
 		LastPlayerInsideFrame = int.MinValue;
@@ -50,21 +60,41 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 	}
 
 	private void Update_Cache () {
-		if (!NeighborPipeDirL.HasValue || Game.GlobalFrame == SpawnFrame + 2) {
-			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X - Width / 2, Y + Height / 2), PhysicsMask.ENVIRONMENT, this);
-			NeighborPipeDirL = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+		if (!NeighborPipeDirL.HasValue) {
+			int leftID = WorldSquad.Front.GetBlockAt((X + 1).ToUnit() - 1, (Y + 1).ToUnit(), BlockType.Entity);
+			if (PipePool.TryGetValue(leftID, out var leftDir)) {
+				NeighborPipeDirL = leftDir.ToDirection5();
+			} else {
+				var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X - Width / 2, Y + Height / 2), PhysicsMask.ENVIRONMENT, this);
+				NeighborPipeDirL = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+			}
 		}
-		if (!NeighborPipeDirR.HasValue || Game.GlobalFrame == SpawnFrame + 1) {
-			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X + Width + Width / 2, Y + Height / 2), PhysicsMask.ENVIRONMENT, this);
-			NeighborPipeDirR = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+		if (!NeighborPipeDirR.HasValue) {
+			int rightID = WorldSquad.Front.GetBlockAt((X + 1).ToUnit() + 1, (Y + 1).ToUnit(), BlockType.Entity);
+			if (PipePool.TryGetValue(rightID, out var rightDir)) {
+				NeighborPipeDirR = rightDir.ToDirection5();
+			} else {
+				var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X + Width + Width / 2, Y + Height / 2), PhysicsMask.ENVIRONMENT, this);
+				NeighborPipeDirR = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+			}
 		}
-		if (!NeighborPipeDirD.HasValue || Game.GlobalFrame == SpawnFrame + 1) {
-			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X + Width / 2, Y - Height / 2), PhysicsMask.ENVIRONMENT, this);
-			NeighborPipeDirD = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+		if (!NeighborPipeDirD.HasValue) {
+			int downID = WorldSquad.Front.GetBlockAt((X + 1).ToUnit(), (Y + 1).ToUnit() - 1, BlockType.Entity);
+			if (PipePool.TryGetValue(downID, out var downDir)) {
+				NeighborPipeDirD = downDir.ToDirection5();
+			} else {
+				var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X + Width / 2, Y - Height / 2), PhysicsMask.ENVIRONMENT, this);
+				NeighborPipeDirD = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+			}
 		}
-		if (!NeighborPipeDirU.HasValue || Game.GlobalFrame == SpawnFrame + 1) {
-			var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X + Width / 2, Y + Height + Height / 2), PhysicsMask.ENVIRONMENT, this);
-			NeighborPipeDirU = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+		if (!NeighborPipeDirU.HasValue) {
+			int upID = WorldSquad.Front.GetBlockAt((X + 1).ToUnit(), (Y + 1).ToUnit() + 1, BlockType.Entity);
+			if (PipePool.TryGetValue(upID, out var upDir)) {
+				NeighborPipeDirU = upDir.ToDirection5();
+			} else {
+				var pipe = Physics.GetEntity<CarryingPipe>(IRect.Point(X + Width / 2, Y + Height + Height / 2), PhysicsMask.ENVIRONMENT, this);
+				NeighborPipeDirU = pipe != null ? pipe.Direction.ToDirection5() : Direction5.Center;
+			}
 		}
 	}
 

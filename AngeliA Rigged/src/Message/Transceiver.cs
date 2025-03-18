@@ -159,7 +159,7 @@ public class RigTransceiver {
 				if (*BufferPointer == 1) goto _HANDLE_;
 			}
 			if (!ignoreRendering) {
-				UpdateLastRespondedRender(universe, sheetIndex, false, ignoreInGameGizmos);
+				UpdateLastRespondedRender(universe, sheetIndex, false, ignoreInGameGizmos, true);
 			}
 			return false;
 		}
@@ -168,7 +168,7 @@ public class RigTransceiver {
 		RespondMessage.ReadDataFromPipe(BufferPointer + 1);
 		RespondMessage.ApplyToEngine(CallingMessage, ignoreMouseInput);
 		if (!ignoreRendering) {
-			RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, PaddingL, PaddingR, ignoreInGameGizmos);
+			RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, PaddingL, PaddingR, ignoreInGameGizmos, false);
 		}
 		// Update Setting
 		if (updateViewCache) {
@@ -179,14 +179,14 @@ public class RigTransceiver {
 	}
 
 
-	public void UpdateLastRespondedRender (Universe universe, int sheetIndex, bool coverWithBlackTint, bool ignoreInGameGizmos) {
+	public void UpdateLastRespondedRender (Universe universe, int sheetIndex, bool coverWithBlackTint, bool ignoreInGameGizmos, bool ignoreViewRect) {
 		if (coverWithBlackTint) {
 			int oldLayer = Renderer.CurrentLayerIndex;
 			Renderer.SetLayer(RenderLayer.UI);
 			Renderer.DrawPixel(Renderer.CameraRect, Color32.BLACK_128);
 			Renderer.SetLayer(oldLayer);
 		}
-		RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, PaddingL, PaddingR, ignoreInGameGizmos);
+		RespondMessage.ApplyRenderingToEngine(universe, sheetIndex, PaddingL, PaddingR, ignoreInGameGizmos, ignoreViewRect);
 	}
 
 

@@ -80,16 +80,16 @@ public class Coin : Rigidbody, IBumpable, IAutoTrackWalker {
 		}
 	}
 
-	void IBumpable.OnBumped (Rigidbody rig, Damage damage) {
+	void IBumpable.OnBumped (Entity entity, Damage damage) {
 		if (PSwitch.Triggering && damage.Amount > 0 && damage.Type.HasAll(Tag.MagicalDamage)) {
 			Active = false;
 			FrameworkUtil.InvokeObjectBreak(BrickBlock.TYPE_ID, Rect);
 		}
 	}
 
-	bool IBumpable.AllowBump (Rigidbody rig, Direction4 from) =>
+	bool IBumpable.AllowBump (Entity entity, Direction4 from) =>
 		IBumpable.IsValidBumpDirection(this, from) &&
-		rig == PlayerSystem.Selecting &&
+		entity == PlayerSystem.Selecting &&
 		PSwitch.Triggering;
 
 	// API

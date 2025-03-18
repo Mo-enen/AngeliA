@@ -13,22 +13,22 @@ public abstract class PlayableCharacter : PoseCharacter, IPlayable, IActionTarge
 
 	public override int Team => Const.TEAM_PLAYER;
 	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_NEUTRAL;
-	protected virtual bool UseMarioStyleMovement => true;
 	public int CurrentStepCombo { get; set; } = 0;
 
 	public override void OnActivated () {
 		base.OnActivated();
-		if (UseMarioStyleMovement) {
-			MarioUtil.InitMovementForMarioGame(NativeMovement);
-			NativeMovement.WalkAvailable.BaseValue = true;
-		}
+		MarioUtil.InitCharacterForMarioGame(this);
 	}
 
 	public override void Update () {
 		base.Update();
+		// Combo
 		if (Game.GlobalFrame <= Movement.LastGroundingFrame + 2) {
 			CurrentStepCombo = 0;
 		}
+		// Body Height
+		var ren = Rendering as PoseCharacterRenderer;
+		ren.CharacterHeight = Health.HP == 2 ? DefaultCharacterHeight : 95;
 	}
 
 	bool IActionTarget.Invoke () {

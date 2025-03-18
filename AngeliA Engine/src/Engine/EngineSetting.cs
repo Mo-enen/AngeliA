@@ -31,11 +31,7 @@ public class EngineSetting {
 	[EngineSetting("MapEditor", "Show State Info on Bottom-Right", gameOnly: true)] public static readonly SavingBool MapEditor_ShowState = new("MapEditor.ShowState", true, SavingLocation.Global);
 	[EngineSetting("MapEditor", "Show Map Behind", gameOnly: true)] public static readonly SavingBool MapEditor_ShowBehind = new("MapEditor.ShowBehind", true, SavingLocation.Global);
 	[EngineSetting("MapEditor", "Show Gizmos", gameOnly: true)] public static readonly SavingBool MapEditor_ShowGizmos = new("MapEditor.ShowGizmos", true, SavingLocation.Global);
-	public static readonly SavingInt LastMapEditorViewX = new("Map.LastMapEditorViewX", 0, SavingLocation.Global);
-	public static readonly SavingInt LastMapEditorViewY = new("Map.LastMapEditorViewY", 0, SavingLocation.Global);
-	public static readonly SavingInt LastMapEditorViewZ = new("Map.LastMapEditorViewZ", 0, SavingLocation.Global);
-	public static readonly SavingInt LastMapEditorViewHeight = new("Map.LastMapEditorViewHeight", -1, SavingLocation.Global);
-
+	
 	// Hotkey
 	[EngineSetting("Hotkey", "Recompile", gameOnly: true)] public static readonly SavingHotkey Hotkey_Recompile = new("Hotkey.Recompile", new Hotkey(KeyboardKey.R, ctrl: true), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Run", gameOnly: true)] public static readonly SavingHotkey Hotkey_Run = new("Hotkey.Run", new Hotkey(KeyboardKey.R, ctrl: true, shift: true), SavingLocation.Global);

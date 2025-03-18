@@ -30,7 +30,6 @@ public partial class RiggedGame : Game {
 	private unsafe byte* BufferPointer = null;
 	private MemoryMappedFile MemMap = null;
 	private MemoryMappedViewAccessor ViewAccessor = null;
-	private (int x, int y, int height) StartWithView = default;
 	private bool DrawCollider = false;
 	private bool EntityClickerOn = false;
 	private Entity DraggingEntity = null;
@@ -77,29 +76,7 @@ public partial class RiggedGame : Game {
 					RiggedFontCount = fCount;
 				}
 			}
-			// View
-			if (arg.StartsWith("-view:")) {
-				string[] viewStrs = arg[6..].Split(',');
-				int _viewX = StartWithView.x;
-				int _viewY = StartWithView.y;
-				int _viewHeight = StartWithView.height;
-				int _z = 0;
-				if (viewStrs.Length >= 4) {
-					if (int.TryParse(viewStrs[0], out _viewX)) { }
-					if (int.TryParse(viewStrs[1], out _viewY)) { }
-					if (int.TryParse(viewStrs[2], out _viewHeight)) {
-						_viewHeight = _viewHeight.GreaterOrEquel(1);
-					}
-					if (int.TryParse(viewStrs[3], out _z)) { }
-					StartWithView.x = _viewX;
-					StartWithView.y = _viewY;
-					StartWithView.height = _viewHeight;
-					StartWithZ = _z;
-				}
-			}
 		}
-
-		MapEditor.ResetCameraAtStart = StartWithView == default;
 
 		// Init Stream
 		Debug.OnLogException += LogException;
@@ -292,15 +269,6 @@ public partial class RiggedGame : Game {
 
 
 	private void Update_MapEditor () {
-
-		// Set View at Start
-		if (StartWithView != default && MapEditor.Instance != null) {
-			MapEditor.Instance.SetView(
-				new IRect(StartWithView.x, StartWithView.y, GetViewWidthFromViewHeight(StartWithView.height), StartWithView.height),
-				StartWithZ
-			);
-			StartWithView = default;
-		}
 
 		// Fix View Height
 		bool editing = MapEditor.IsEditing;

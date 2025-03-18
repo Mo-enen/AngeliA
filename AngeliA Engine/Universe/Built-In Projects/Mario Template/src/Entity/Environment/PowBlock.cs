@@ -52,8 +52,8 @@ public class PowBlock : Rigidbody, IDamageReceiver, IBumpable {
 		}
 	}
 
-	bool IBumpable.AllowBump (Rigidbody rig, Direction4 from) => IBumpable.IsValidBumpDirection(this, from) && rig == PlayerSystem.Selecting;
+	bool IBumpable.AllowBump (Entity entity, Direction4 from) => IBumpable.IsValidBumpDirection(this, from) && entity == PlayerSystem.Selecting;
 
-	void IBumpable.OnBumped (Rigidbody rig, Damage damage) => Explode();
+	void IBumpable.OnBumped (Entity entity, Damage damage) => Explode();
 
 }

@@ -145,19 +145,7 @@ public partial class Engine {
 
 
 	[OnGameQuitting(1)]
-	internal static void OnEngineQuittingRig () {
-		Instance.Transceiver.Quit();
-		var viewPos = Instance.Transceiver.LastRigViewPos;
-		var viewHeight = Instance.Transceiver.LastRigViewHeight;
-		if (viewPos.HasValue) {
-			EngineSetting.LastMapEditorViewX.Value = viewPos.Value.x;
-			EngineSetting.LastMapEditorViewY.Value = viewPos.Value.y;
-			EngineSetting.LastMapEditorViewZ.Value = viewPos.Value.z;
-		}
-		if (viewHeight.HasValue) {
-			EngineSetting.LastMapEditorViewHeight.Value = viewHeight.Value;
-		}
-	}
+	internal static void OnEngineQuittingRig () => Instance.Transceiver.Quit();
 
 
 	private void OnGUI_RiggedGame () {
@@ -217,7 +205,7 @@ public partial class Engine {
 		if (buildingProjectInBackground) {
 			// Building in Background
 			if (currentWindowRequireRigGame && requireRigGameRender) {
-				Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, true, ignoreInGameGizmos);
+				Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, true, ignoreInGameGizmos, true);
 			}
 		} else if (Transceiver.RigProcessRunning) {
 			// Rig Running
@@ -236,7 +224,7 @@ public partial class Engine {
 						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
 					}
 				} else if (requireRigGameRender) {
-					Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, false, ignoreInGameGizmos);
+					Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, false, ignoreInGameGizmos, false);
 				}
 			}
 		} else if (
@@ -261,7 +249,7 @@ public partial class Engine {
 			}
 			if (currentWindowRequireRigGame && requireRigGameRender) {
 				// Still Render Last Image
-				Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, true, ignoreInGameGizmos);
+				Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, true, ignoreInGameGizmos, true);
 			}
 		}
 

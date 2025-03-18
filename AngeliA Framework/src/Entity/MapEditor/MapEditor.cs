@@ -96,7 +96,6 @@ public sealed partial class MapEditor : WindowUI {
 	public static bool IsEditing => IsActived && !Instance.PlayingGame;
 	public static bool IsPlaying => IsActived && Instance.PlayingGame;
 	public static bool IsEditorNavigating => Instance != null && Instance.IsNavigating;
-	public static bool ResetCameraAtStart { get; set; } = true;
 	public static bool QuickPlayerDrop { get; set; } = false;
 	public static bool ShowState { get; set; } = false;
 	public static bool ShowBehind { get; set; } = true;
@@ -161,6 +160,12 @@ public sealed partial class MapEditor : WindowUI {
 	private float TransitionScaleStart;
 	private float TransitionScaleEnd;
 	private int TransitionDuration = 20;
+
+	// Saving
+	public static readonly SavingInt LastEdittingViewX = new("MapEditor.LastEdittingViewX", Const.CEL * -10, SavingLocation.Global);
+	public static readonly SavingInt LastEdittingViewY = new("MapEditor.LastEdittingViewY", Const.CEL * -5, SavingLocation.Global);
+	public static readonly SavingInt LastEdittingViewZ = new("MapEditor.LastEdittingViewZ", 0, SavingLocation.Global);
+	public static readonly SavingInt LastEdittingViewH = new("MapEditor.LastEdittingViewH", Const.CEL * 33, SavingLocation.Global);
 
 
 	#endregion
@@ -243,6 +248,10 @@ public sealed partial class MapEditor : WindowUI {
 		}
 		JsonUtil.SaveJson(Instance.EditorMeta, Universe.BuiltIn.BuiltInMapRoot);
 		FrameworkUtil.DeleteAllEmptyMaps(Universe.BuiltIn.BuiltInMapRoot);
+		LastEdittingViewX.Value = Instance.ViewRect.x;
+		LastEdittingViewY.Value = Instance.ViewRect.y;
+		LastEdittingViewH.Value = Instance.ViewRect.height;
+		LastEdittingViewZ.Value = Instance.CurrentZ;
 	}
 
 
@@ -287,11 +296,9 @@ public sealed partial class MapEditor : WindowUI {
 
 		// Start
 		SetEditorMode(false);
-		if (ResetCameraAtStart) ResetCamera(true);
 
 		// Reset
 		RequireSetMode = null;
-		CurrentZ = 0;
 		PastingBuffer.Clear();
 		CopyBuffer.Clear();
 		UndoRedo.Reset();
@@ -322,6 +329,15 @@ public sealed partial class MapEditor : WindowUI {
 		PanelRect.x = Renderer.CameraRect.x - PanelRect.width;
 		WorldBehindAlpha = info.WorldBehindAlpha;
 		WorldBehindParallax = info.WorldBehindParallax;
+
+		// Init View
+		SetView(new IRect(
+			LastEdittingViewX.Value,
+			LastEdittingViewY.Value,
+			Game.GetViewWidthFromViewHeight(LastEdittingViewH.Value),
+			LastEdittingViewH.Value
+		), LastEdittingViewZ.Value, true);
+
 	}
 
 
@@ -770,11 +786,6 @@ public sealed partial class MapEditor : WindowUI {
 					SelectionUnitRect = null;
 					UndoRedo.Redo();
 				}
-				// Reset Camera
-				if (Input.KeyboardDown(KeyboardKey.R)) {
-					ResetCamera();
-					Input.UseAllHoldingKeys();
-				}
 				// Up
 				if (Input.MouseWheelDelta > 0) {
 					if (CurrentZ != int.MaxValue) {
@@ -1214,8 +1225,12 @@ public sealed partial class MapEditor : WindowUI {
 			}
 			// Reset Stage
 			Stage.SetViewZ(CurrentZ);
-			Stage.SetViewPositionDelay(ViewRect.x, ViewRect.y, 100, int.MinValue + 1);
-			Stage.SetViewSizeDelay(ViewRect.height, 100, int.MinValue + 1);
+			var viewCenter = ViewRect.CenterInt();
+			ViewRect.height = Universe.BuiltInInfo.DefaultViewHeight;
+			ViewRect.width = Game.GetViewWidthFromViewHeight(ViewRect.height);
+			ViewRect.x = viewCenter.x - ViewRect.width / 2;
+			ViewRect.y = viewCenter.y - ViewRect.height / 2;
+			Stage.SetViewRectImmediately(ViewRect, remapAllRenderingCells: true, resetDelay: true);
 			LightingSystem.ForceCameraScale(0, 1);
 		}
 
