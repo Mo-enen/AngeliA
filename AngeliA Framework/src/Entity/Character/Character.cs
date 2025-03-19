@@ -335,6 +335,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 		if (Health.IsEmptyHealth) {
 			SetCharacterState(CharacterState.PassOut);
+		} else if (CharacterState == CharacterState.PassOut) {
+			SetCharacterState(CharacterState.GamePlay);
 		}
 
 		if (Teleporting) {

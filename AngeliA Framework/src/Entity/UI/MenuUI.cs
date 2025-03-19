@@ -439,8 +439,8 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 				// Mouse Hover and Highlight
 				if (AllowMouseClick && AllowMouseClick && Interactable) {
-					mouseHoverArrowL = rectL_H.MouseInside();
-					mouseHoverArrowR = rectR_H.MouseInside();
+					mouseHoverArrowL = useLeftArrow && rectL_H.MouseInside();
+					mouseHoverArrowR = useRightArrow && rectR_H.MouseInside();
 				}
 
 				// Draw Hover
@@ -482,10 +482,10 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 				if (Input.GameKeyDown(Gamekey.Action) || Input.KeyboardDown(KeyboardKey.Enter)) {
 					invoke = true;
 				}
-				if (useArrows && (Input.GameKeyDownGUI(Gamekey.Left) || Input.KeyboardDownGUI(KeyboardKey.LeftArrow))) {
+				if (useLeftArrow && (Input.GameKeyDownGUI(Gamekey.Left) || Input.KeyboardDownGUI(KeyboardKey.LeftArrow))) {
 					delta = -1;
 				}
-				if (useArrows && (Input.GameKeyDownGUI(Gamekey.Right) || Input.KeyboardDownGUI(KeyboardKey.RightArrow))) {
+				if (useRightArrow && (Input.GameKeyDownGUI(Gamekey.Right) || Input.KeyboardDownGUI(KeyboardKey.RightArrow))) {
 					delta = 1;
 				}
 			}

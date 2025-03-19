@@ -107,7 +107,7 @@ public abstract class Launcher : AngeliA.Platformer.Launcher, ICarrier {
 		if (entity is BulletBill bullet) {
 			bullet.MovingRight = LaunchToRightSide();
 		}
-		Game.PlaySoundAtPosition(SPAWN_AC, XY, 0.5f);
+		Game.PlaySoundAtPosition(SPAWN_AC, XY);
 	}
 
 	void ICarrier.PerformCarry (int x, int y) {

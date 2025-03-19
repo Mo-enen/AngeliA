@@ -1,6 +1,6 @@
 ﻿Game.LastUsedWindowWidth:3646
 Game.LastUsedWindowHeight:2001
-MapEditor.LastEdittingViewX:-2037
+MapEditor.LastEdittingViewX:-1991
 MapEditor.LastEdittingViewY:-1280
 MapEditor.LastEdittingViewH:5632
 MapEditor.LastEdittingViewZ:0
@@ -21,5 +21,8 @@ Input.Pad.Action:5
 Input.Pad.Jump:6
 Input.Pad.Start:12
 Input.Pad.Select:13
-Game.SoundVolume:500
+Game.SoundVolume:700
 Game.WindowMaximized:1
+Game.IsFullscreen:0
+Hint.ShowGamePadUI:1
+Game.MusicVolume:500

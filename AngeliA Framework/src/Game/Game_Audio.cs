@@ -12,8 +12,8 @@ public partial class Game {
 	public static void UnloadMusic (object music) => Instance._UnloadMusic(music);
 	protected abstract void _UnloadMusic (object music);
 
-	public static void PlayMusic (int id) => Instance._PlayMusic(id);
-	protected abstract void _PlayMusic (int id);
+	public static void PlayMusic (int id, bool fromStart = false) => Instance._PlayMusic(id, fromStart);
+	protected abstract void _PlayMusic (int id, bool fromStart);
 
 	public static void StopMusic () => Instance._StopMusic();
 	protected abstract void _StopMusic ();

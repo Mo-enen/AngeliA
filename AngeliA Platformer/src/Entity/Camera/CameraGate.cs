@@ -20,6 +20,7 @@ public class CameraGateRight : CameraGate {
 }
 
 
+[EntityAttribute.DontDrawBehind]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("System", -512)]
 public abstract class CameraGate : Entity {

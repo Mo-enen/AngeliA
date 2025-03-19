@@ -225,8 +225,9 @@ public partial class RiggedGame {
 	// Music
 	protected override void _UnloadMusic (object music) { }
 
-	protected override void _PlayMusic (int id) {
+	protected override void _PlayMusic (int id, bool fromStart) {
 		RespondMessage.RequirePlayMusicID = id;
+		RespondMessage.RequirePlayMusicFromStart = fromStart;
 		CurrentBgmID = id;
 	}
 

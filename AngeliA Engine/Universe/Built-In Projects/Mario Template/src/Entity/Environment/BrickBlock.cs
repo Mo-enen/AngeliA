@@ -87,11 +87,11 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker, IDa
 			// Break
 			Active = false;
 			FrameworkUtil.InvokeObjectBreak(TypeID, Rect);
-			Game.PlaySoundAtPosition(BREAK_AC, XY, 0.5f);
+			Game.PlaySoundAtPosition(BREAK_AC, XY);
 		} else {
 			// Spawn Item
 			if (ItemInside == 0) {
-				Game.PlaySoundAtPosition(BUMP_AC, XY, 0.5f);
+				Game.PlaySoundAtPosition(BUMP_AC, XY);
 			}
 			if (ItemInside == 0 || SpawnItemStartFrame >= 0) return;
 			SpawnItemStartFrame = Game.GlobalFrame;

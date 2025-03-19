@@ -53,7 +53,7 @@ public class CheckPointFlag : CheckPoint {
 
 	public override void Touch () {
 		base.Touch();
-		Game.PlaySoundAtPosition(TOUCH_AC, XY, 0.5f);
+		Game.PlaySoundAtPosition(TOUCH_AC, XY);
 	}
 
 }

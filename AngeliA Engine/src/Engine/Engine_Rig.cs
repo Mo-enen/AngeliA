@@ -41,6 +41,7 @@ public partial class Engine {
 	private bool IgnoreInputForRig = false;
 	private bool CurrentWindowRequireRigGame = false;
 	private bool HasCompileError = false;
+	private bool RequireBgmForRiggedGame = false;
 	private int NoGameRunningFrameCount = 0;
 	private int ForceRigGameRunInBackgroundFrame = -1;
 	private int RenderingSheetIndex;
@@ -223,6 +224,7 @@ public partial class Engine {
 					if (openingGameEditor) {
 						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);
 					}
+					RequireBgmForRiggedGame = Game.IsMusicPlaying;
 				} else if (requireRigGameRender) {
 					Transceiver.UpdateLastRespondedRender(currentUniverse, sheetIndex, false, ignoreInGameGizmos, false);
 				}

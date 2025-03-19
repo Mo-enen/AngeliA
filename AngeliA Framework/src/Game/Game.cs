@@ -29,7 +29,14 @@ public abstract partial class Game {
 	}
 	public static float ScaledMusicVolume => FrameworkUtil.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
 	public static float ScaledSoundVolume => FrameworkUtil.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
-	public static int ProcedureAudioVolume { get; set; } = 1000;
+	public static int ProcedureAudioVolume {
+		get => _ProcedureAudioVolume;
+		set {
+			if (_ProcedureAudioVolume == value) return;
+			_ProcedureAudioVolume = value;
+			SetMusicVolume(_MusicVolume.Value);
+		}
+	}
 	public static object CurrentBGM { get; protected set; }
 
 	// Attribute Info
@@ -56,15 +63,15 @@ public abstract partial class Game {
 	private static readonly HashSet<int> CacheForAudioSync = [];
 	private static readonly List<int> CacheForAudioSyncRemove = [];
 	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
+	private static int _ProcedureAudioVolume = 1000;
 	private readonly char[] PressingCharsForCurrentFrame = new char[256];
 	private readonly KeyboardKey[] PressingKeysForCurrentFrame = new KeyboardKey[256];
 	private int PressingCharCount = 0;
 	private int PressingKeyCount = 0;
-
 	// Saving
 	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false, SavingLocation.Global);
 	private static readonly SavingInt _MusicVolume = new("Game.MusicVolume", 500, SavingLocation.Global);
-	private static readonly SavingInt _SoundVolume = new("Game.SoundVolume", 500, SavingLocation.Global);
+	private static readonly SavingInt _SoundVolume = new("Game.SoundVolume", 700, SavingLocation.Global);
 	private static readonly SavingInt _LastUsedWindowWidth = new("Game.LastUsedWindowWidth", 1024 * 16 / 9, SavingLocation.Global);
 	private static readonly SavingInt _LastUsedWindowHeight = new("Game.LastUsedWindowHeight", 1024, SavingLocation.Global);
 

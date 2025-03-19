@@ -11,12 +11,26 @@ public partial class RayGame {
 	// Music
 	protected override void _UnloadMusic (object music) {
 		if (music is not Music rMusic) return;
-		if (Raylib.IsAudioStreamReady(rMusic.Stream)) {
+		if (Raylib.IsMusicReady(rMusic)) {
 			Raylib.UnloadMusicStream(rMusic);
 		}
 	}
 
-	protected override void _PlayMusic (int id) {
+	protected override void _PlayMusic (int id, bool fromStart) {
+
+		if (CurrentBgmID == id) {
+			if (CurrentBGM is Music music && Raylib.IsMusicReady(music)) {
+				music.Looping = true;
+				if (!Raylib.IsMusicStreamPlaying(music)) {
+					Raylib.PlayMusicStream(music);
+				}
+				if (fromStart) {
+					Raylib.SeekMusicStream(music, 0);
+				}
+				SetMusicVolume(MusicVolume);
+			}
+			return;
+		}
 
 		if (!MusicPool.TryGetValue(id, out var data)) return;
 
@@ -31,18 +45,24 @@ public partial class RayGame {
 		// Play New
 		if (Util.FileExists(data.Path)) {
 			var music = Raylib.LoadMusicStream(data.Path);
-			Raylib.PlayMusicStream(music);
 			music.Looping = true;
+			Raylib.PlayMusicStream(music);
+			if (fromStart) {
+				Raylib.SeekMusicStream(music, 0);
+			}
 			CurrentBGM = music;
 			CurrentBgmID = id;
+			SetMusicVolume(MusicVolume);
 		}
 
 	}
 
 	protected override void _StopMusic () {
-		if (CurrentBGM == null) return;
-		if (CurrentBGM is Music bgm && Raylib.IsMusicStreamPlaying(bgm)) {
-			Raylib.StopMusicStream(bgm);
+		if (CurrentBGM is not Music bgm) return;
+		if (Raylib.IsMusicReady(bgm)) {
+			if (Raylib.IsMusicStreamPlaying(bgm)) {
+				Raylib.StopMusicStream(bgm);
+			}
 			Raylib.UnloadMusicStream(bgm);
 		}
 		CurrentBGM = null;
@@ -50,23 +70,23 @@ public partial class RayGame {
 	}
 
 	protected override void _PauseMusic () {
-		if (CurrentBGM == null) return;
-		Raylib.PauseMusicStream((Music)CurrentBGM);
+		if (CurrentBGM is not Music bgm || !Raylib.IsMusicReady(bgm) || !Raylib.IsMusicStreamPlaying(bgm)) return;
+		Raylib.PauseMusicStream(bgm);
 	}
 
 	protected override void _UnPauseMusic () {
-		if (CurrentBGM == null) return;
-		Raylib.ResumeMusicStream((Music)CurrentBGM);
+		if (CurrentBGM is not Music bgm || !Raylib.IsMusicReady(bgm) || Raylib.IsMusicStreamPlaying(bgm)) return;
+		Raylib.ResumeMusicStream(bgm);
 	}
 
 	protected override void _SetMusicVolume (int volume) {
-		if (CurrentBGM == null) return;
-		Raylib.SetMusicVolume((Music)CurrentBGM, ScaledMusicVolume);
+		if (CurrentBGM is not Music bgm || !Raylib.IsMusicReady(bgm)) return;
+		Raylib.SetMusicVolume(bgm, ScaledMusicVolume);
 	}
 
 	protected override bool _IsMusicPlaying () {
-		if (CurrentBGM == null) return false;
-		return Raylib.IsMusicStreamPlaying((Music)CurrentBGM);
+		if (CurrentBGM is not Music bgm || !Raylib.IsMusicReady(bgm)) return false;
+		return Raylib.IsMusicStreamPlaying(bgm);
 	}
 
 	protected override int _GetCurrentMusicID () => CurrentBgmID;
@@ -95,6 +115,7 @@ public partial class RayGame {
 
 	protected override void _PlaySound (int id, float volume, float pitch, float pan) {
 		if (!SoundPool.TryGetValue(id, out var soundData) || soundData == null) return;
+		if (soundData.LastPlayFrame == GlobalFrame) return;
 		bool played = false;
 		int earlistIndex = -1;
 		int earlistFrame = int.MaxValue;
@@ -114,6 +135,7 @@ public partial class RayGame {
 			Raylib.SetSoundPitch(sound, pitch);
 			Raylib.SetSoundPan(sound, 1f - pan);
 			soundData.StartFrames[i] = GlobalFrame;
+			soundData.LastPlayFrame = GlobalFrame;
 			played = true;
 			break;
 		}
@@ -125,6 +147,7 @@ public partial class RayGame {
 			Raylib.SetSoundPitch(sound, pitch);
 			Raylib.SetSoundPan(sound, 1f - pan);
 			soundData.StartFrames[earlistIndex] = GlobalFrame;
+			soundData.LastPlayFrame = GlobalFrame;
 		}
 	}
 

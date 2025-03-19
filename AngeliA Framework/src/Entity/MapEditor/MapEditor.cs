@@ -1185,6 +1185,9 @@ public sealed partial class MapEditor : WindowUI {
 		if (!toPlayMode) {
 			// Play >> Edit
 
+			Game.PauseMusic();
+			Game.StopAllSounds();
+
 			// View Rect
 			ViewRect = Stage.ViewRect;
 			SetViewZ(Stage.ViewZ);

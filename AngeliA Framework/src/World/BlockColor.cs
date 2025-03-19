@@ -5,11 +5,6 @@ public abstract class BlockColor : IMapItem {
 	public abstract Color32 Color { get; }
 }
 
-public sealed class BlockColorWhite : BlockColor {
-
-	public static readonly int TYPE_ID = typeof(BlockColorWhite).AngeHash();
-	public override Color32 Color => Color32.WHITE;
-}
 public sealed class BlockColorBlack : BlockColor {
 	public static readonly int TYPE_ID = typeof(BlockColorBlack).AngeHash();
 	public override Color32 Color => Color32.BLACK;

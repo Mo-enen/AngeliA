@@ -272,6 +272,7 @@ public class PipeBlueUp : MarioPipe {
 public abstract class MarioPipe : CarryingPipe, IBlockEntity {
 
 	// VAR
+	private static readonly AudioCode ENTER_AC = "EnterPipe";
 	protected abstract int SpawnFrequency { get; }
 	protected abstract int BlockedCooldown { get; }
 	bool IBlockEntity.EmbedEntityAsElement => true;
@@ -314,6 +315,16 @@ public abstract class MarioPipe : CarryingPipe, IBlockEntity {
 			MarioUtil.UpdateForBumpToSpawnItem(this, ItemInside, LastItemSpawnStartFrame, Direction, frame: Game.SettleFrame);
 		}
 
+	}
+
+	protected override void OnPlayerEnter (Character player) {
+		base.OnPlayerEnter(player);
+		Game.PlaySoundAtPosition(ENTER_AC, XY);
+	}
+
+	protected override void OnPlayerExit (Character player) {
+		base.OnPlayerExit(player);
+		Game.PlaySoundAtPosition(ENTER_AC, XY);
 	}
 
 }

@@ -86,7 +86,7 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 			MakePassout();
 		}
 		int score = 100 + player.CurrentStepCombo * 100;
-		Game.PlaySoundAtPosition(KICK_AC, XY, 0.5f);
+		Game.PlaySoundAtPosition(KICK_AC, XY);
 		MarioUtil.GiveScore(score, CenterX, Y + Height);
 		player.CurrentStepCombo++;
 	}
@@ -102,7 +102,7 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 			speedY: 82,
 			rotationSpeed: Util.QuickRandomSign() * 8
 		);
-		Game.PlaySoundAtPosition(KICK_AC, XY, 0.5f);
+		Game.PlaySoundAtPosition(KICK_AC, XY);
 		Active = false;
 	}
 

@@ -89,7 +89,7 @@ public abstract class Koopa : Enemy, IPingPongWalker, IDamageReceiver {
 				bool toRight = player.Rect.CenterX() < X + Width / 2;
 				(this as IPingPongWalker).WalkingRight = toRight;
 				MomentumX = (toRight ? 32 : -32, 8);
-				Game.PlaySoundAtPosition(KICK_AC, XY, 0.5f);
+				Game.PlaySoundAtPosition(KICK_AC, XY);
 			}
 		}
 
@@ -143,7 +143,7 @@ public abstract class Koopa : Enemy, IPingPongWalker, IDamageReceiver {
 			RollingStartFrame = int.MinValue;
 		}
 		int score = 100 + player.CurrentStepCombo * 100;
-		Game.PlaySoundAtPosition(KICK_AC, XY, 0.5f);
+		Game.PlaySoundAtPosition(KICK_AC, XY);
 		MarioUtil.GiveScore(score, CenterX, Y + Height);
 		player.CurrentStepCombo++;
 	}

@@ -59,7 +59,7 @@ public abstract class MarioDoor : Door {
 	public override bool Invoke (Character character) {
 		bool result = base.Invoke(character);
 		if (result) {
-			Game.PlaySoundAtPosition(OPEN_AC, XY, 0.5f);
+			Game.PlaySoundAtPosition(OPEN_AC, XY);
 		}
 		return result;
 	}

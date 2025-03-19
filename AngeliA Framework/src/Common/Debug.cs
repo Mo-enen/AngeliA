@@ -69,7 +69,7 @@ public static class Debug {
 			LastLogLabelFrame = Game.PauselessFrame;
 			LogLabelCount = 0;
 		}
-		using var _ = new UILayerScope();
+		using var _ = new UILayerScope(true);
 		int padding = GUI.Unify(6);
 		int height = GUI.Unify(18);
 		GUI.BackgroundLabel(

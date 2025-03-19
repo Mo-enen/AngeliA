@@ -37,7 +37,7 @@ public abstract class PlayableCharacter : PoseCharacter, IPlayable, IActionTarge
 		ren.CharacterHeight = Health.HP == 2 ? DefaultCharacterHeight : 95;
 		// SoundFX
 		if (Game.GlobalFrame == Movement.LastJumpFrame) {
-			Game.PlaySoundAtPosition(Health.HP >= 2 ? JUMP_BIG_AC : JUMP_AC, XY, 0.4f);
+			Game.PlaySoundAtPosition(Health.HP >= 2 ? JUMP_BIG_AC : JUMP_AC, XY);
 		}
 	}
 
@@ -50,9 +50,14 @@ public abstract class PlayableCharacter : PoseCharacter, IPlayable, IActionTarge
 	bool IActionTarget.AllowInvoke () => PlayerSystem.Selecting != this;
 
 	public override void OnDamaged (Damage damage) {
+		if (Health.HP == 0) return;
 		base.OnDamaged(damage);
 		if (damage.Amount > 0) {
-			Game.PlaySoundAtPosition(Health.HP == 0 ? PASSOUT_AC : HIT_AC, XY, 0.5f);
+			bool zeroHP = Health.HP == 0;
+			Game.PlaySoundAtPosition(zeroHP ? PASSOUT_AC : HIT_AC, XY);
+			if (zeroHP) {
+				Game.PauseMusic();
+			}
 		}
 	}
 

@@ -68,6 +68,7 @@ public class SoundData : AudioData {
 
 	public object[] SoundObjects;
 	public int[] StartFrames;
+	public int LastPlayFrame = -1;
 
 }
 

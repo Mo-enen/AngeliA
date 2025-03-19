@@ -140,6 +140,7 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 
 		// Enter
 		CenterPlayer(player);
+		OnPlayerEnter(player);
 		player.IgnorePhysics.True(1, 4096);
 		player.IgnoreGravity.True(1, 4096);
 		player.IgnoreInsideGround.True(1, 4096);
@@ -177,25 +178,29 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 
 		// Player Input
 		if (Game.GlobalFrame > LastPlayerInputFrame + 8) {
-			if (Input.GameKeyHolding(Gamekey.Left) && IsValidCarryDirection(Direction4.Left)) {
+			if (Input.GameKeyHolding(Gamekey.Left) && IsValidCarryDirection(Direction4.Left, out bool exit)) {
 				player.X -= Const.CEL;
 				LastPlayerInputFrame = Game.GlobalFrame;
 				player.Bounce();
+				if (exit) OnPlayerExit(player);
 			}
-			if (Input.GameKeyHolding(Gamekey.Right) && IsValidCarryDirection(Direction4.Right)) {
+			if (Input.GameKeyHolding(Gamekey.Right) && IsValidCarryDirection(Direction4.Right, out exit)) {
 				player.X += Const.CEL;
 				LastPlayerInputFrame = Game.GlobalFrame;
 				player.Bounce();
+				if (exit) OnPlayerExit(player);
 			}
-			if (Input.GameKeyHolding(Gamekey.Down) && IsValidCarryDirection(Direction4.Down)) {
+			if (Input.GameKeyHolding(Gamekey.Down) && IsValidCarryDirection(Direction4.Down, out exit)) {
 				player.Y -= Const.CEL;
 				LastPlayerInputFrame = Game.GlobalFrame;
 				player.Bounce();
+				if (exit) OnPlayerExit(player);
 			}
-			if (Input.GameKeyHolding(Gamekey.Up) && IsValidCarryDirection(Direction4.Up)) {
+			if (Input.GameKeyHolding(Gamekey.Up) && IsValidCarryDirection(Direction4.Up, out exit)) {
 				player.Y += Const.CEL;
 				LastPlayerInputFrame = Game.GlobalFrame;
 				player.Bounce();
+				if (exit) OnPlayerExit(player);
 			}
 		}
 		ControlHintUI.AddHint(Gamekey.Left, Gamekey.Right, BuiltInText.HINT_MOVE);
@@ -285,32 +290,32 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 
 		// Arrow
 		int offset = Game.GlobalFrame.PingPong(24);
-		if (IsValidCarryDirection(Direction4.Left)) {
+		if (IsValidCarryDirection(Direction4.Left, out bool exit)) {
 			Renderer.Draw(
 				BuiltInSprite.LEFT_ARROW,
 				Rect.Shift(-Const.CEL - offset, 0).Shrink(Const.QUARTER / 2),
-				NeighborPipeDirL.HasValue && NeighborPipeDirL.Value == Direction5.Center ? Color32.GREEN : Color32.WHITE
+				exit ? Color32.GREEN : Color32.WHITE
 			);
 		}
-		if (IsValidCarryDirection(Direction4.Right)) {
+		if (IsValidCarryDirection(Direction4.Right, out exit)) {
 			Renderer.Draw(
 				BuiltInSprite.RIGHT_ARROW,
 				Rect.Shift(Const.CEL + offset, 0).Shrink(Const.QUARTER / 2),
-				NeighborPipeDirR.HasValue && NeighborPipeDirR.Value == Direction5.Center ? Color32.GREEN : Color32.WHITE
+				exit ? Color32.GREEN : Color32.WHITE
 			);
 		}
-		if (IsValidCarryDirection(Direction4.Down)) {
+		if (IsValidCarryDirection(Direction4.Down, out exit)) {
 			Renderer.Draw(
 				BuiltInSprite.DOWN_ARROW,
 				Rect.Shift(0, -Const.CEL - offset).Shrink(Const.QUARTER / 2),
-				NeighborPipeDirD.HasValue && NeighborPipeDirD.Value == Direction5.Center ? Color32.GREEN : Color32.WHITE
+				exit ? Color32.GREEN : Color32.WHITE
 			);
 		}
-		if (IsValidCarryDirection(Direction4.Up)) {
+		if (IsValidCarryDirection(Direction4.Up, out exit)) {
 			Renderer.Draw(
 				BuiltInSprite.UP_ARROW,
 				Rect.Shift(0, Const.CEL + offset).Shrink(Const.QUARTER / 2),
-				NeighborPipeDirU.HasValue && NeighborPipeDirU.Value == Direction5.Center ? Color32.GREEN : Color32.WHITE
+				exit ? Color32.GREEN : Color32.WHITE
 			);
 		}
 
@@ -325,13 +330,18 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 		_ => false,
 	};
 
+	protected virtual void OnPlayerEnter (Character player) { }
+	protected virtual void OnPlayerExit (Character player) { }
+
 	// LGC
 	private void CenterPlayer (Entity player) {
 		player.X = X + Width / 2;
 		player.Y = Y + Height / 2 - player.Height / 2;
 	}
 
-	private bool IsValidCarryDirection (Direction4 moveDir) {
+	private bool IsValidCarryDirection (Direction4 moveDir, out bool exit) {
+
+		exit = false;
 
 		// Blocked Check
 		var hits = Physics.OverlapAll(PhysicsMask.MAP, IRect.Point(Rect.CenterInt() + moveDir.Normal() * Const.CEL), out int count, this);
@@ -342,7 +352,16 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 		}
 
 		// Same Dir
-		if (moveDir == Direction) return true;
+		if (moveDir == Direction) {
+			exit = Direction switch {
+				Direction4.Up => !NeighborPipeDirU.HasValue || NeighborPipeDirU.Value == Direction5.Center,
+				Direction4.Down => !NeighborPipeDirD.HasValue || NeighborPipeDirD.Value == Direction5.Center,
+				Direction4.Left => !NeighborPipeDirL.HasValue || NeighborPipeDirL.Value == Direction5.Center,
+				Direction4.Right => !NeighborPipeDirR.HasValue || NeighborPipeDirR.Value == Direction5.Center,
+				_ => false,
+			};
+			return true;
+		}
 
 		// Opposite Dir
 		if (moveDir == Direction.Opposite()) {

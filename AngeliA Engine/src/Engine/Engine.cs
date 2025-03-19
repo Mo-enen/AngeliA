@@ -1067,18 +1067,23 @@ public partial class Engine {
 		if (CurrentWindowRequireRigGame) {
 			// Rig Window
 			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireFocusInvoke();
+			if (RequireBgmForRiggedGame) {
+				Game.UnpauseMusic();
+			}
 		} else {
 			// Normal Window
 			if (Transceiver.RigProcessRunning) Transceiver.CallingMessage.RequireLostFocusInvoke();
 			ResetViewRect(remapAllRenderingCells: true);
 			Game.MusicVolume = 1000;
 			Game.SoundVolume = 1000;
+			Game.PauseMusic();
 		}
 		CurrentWindowIndex = index;
 		LastOpenedWindowIndex.Value = index;
 		if (!CurrentWindowRequireRigGame) {
 			Game.HideDoodle();
 		}
+		Game.StopAllSounds();
 	}
 
 

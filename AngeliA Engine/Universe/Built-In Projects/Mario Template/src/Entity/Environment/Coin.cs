@@ -10,6 +10,7 @@ public class Coin : Rigidbody, IBumpable, IAutoTrackWalker {
 
 	// VAR
 	private static readonly AudioCode COIN_AC = "Coin";
+	private static readonly AudioCode BUMP_AC = "Bump";
 	public override int SelfCollisionMask => PhysicsMask.MAP;
 	public static readonly int TYPE_ID = typeof(Coin).AngeHash();
 	public static int CurrentCoinCount { get; private set; } = 0;
@@ -82,9 +83,14 @@ public class Coin : Rigidbody, IBumpable, IAutoTrackWalker {
 	}
 
 	void IBumpable.OnBumped (Entity entity, Damage damage) {
-		if (PSwitch.Triggering && damage.Amount > 0 && damage.Type.HasAll(Tag.MagicalDamage)) {
+		if (!PSwitch.Triggering) return;
+		if (damage.Amount > 0 && damage.Type.HasAll(Tag.MagicalDamage)) {
+			// Break
 			Active = false;
 			FrameworkUtil.InvokeObjectBreak(BrickBlock.TYPE_ID, Rect);
+		} else {
+			// Bump
+			Game.PlaySoundAtPosition(BUMP_AC, XY);
 		}
 	}
 

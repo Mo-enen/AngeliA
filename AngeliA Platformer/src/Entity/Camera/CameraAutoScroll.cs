@@ -6,6 +6,7 @@ namespace AngeliA.Platformer;
 
 [EntityAttribute.MapEditorGroup("System", -512)]
 [EntityAttribute.UpdateOutOfRange]
+[EntityAttribute.DontDrawBehind]
 public sealed class CameraAutoScroll : Entity {
 
 

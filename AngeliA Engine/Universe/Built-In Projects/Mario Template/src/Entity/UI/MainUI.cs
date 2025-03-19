@@ -10,6 +10,8 @@ namespace MarioTemplate;
 public class MainUI : EntityUI {
 
 	// VAR
+	private static readonly AudioCode BGM_AC = "Overworld";
+	private static readonly AudioCode PSWITCH_AC = "PSwitch";
 	public static readonly int TYPE_ID = typeof(MainUI).AngeHash();
 	private static readonly IntToChars CoinCountToChars = new("×");
 	private static readonly int FONT_ID = "SuperMarioBros".AngeHash();
@@ -21,25 +23,23 @@ public class MainUI : EntityUI {
 
 	[OnMapEditorModeChange_Mode]
 	internal static void OnMapEditorModeChange (OnMapEditorModeChange_ModeAttribute.Mode mode) {
-		if (mode == OnMapEditorModeChange_ModeAttribute.Mode.EnterPlayMode) {
-			Stage.SpawnEntity(TYPE_ID, 0, 0);
-			MarioUtil.ResetScore();
-			Coin.ResetCoinCount();
-			LastGameResetTime = Game.GlobalFrame;
-			if (Game.CurrentMusicID == 0) {
-				Game.PlayMusic("Overworld".AngeHash());
-			} else {
-				Game.UnpauseMusic();
-			}
-		} else if (mode == OnMapEditorModeChange_ModeAttribute.Mode.EnterEditMode) {
-			Game.PauseMusic();
-		}
+		if (mode != OnMapEditorModeChange_ModeAttribute.Mode.EnterPlayMode) return;
+		// Edit >> Play
+		Stage.SpawnEntity(TYPE_ID, 0, 0);
+		MarioUtil.ResetScore();
+		Coin.ResetCoinCount();
+		LastGameResetTime = Game.GlobalFrame;
+		Game.PlayMusic(BGM_AC, true);
 	}
 
 	[OnGameRestart]
 	internal static void OnGameRestart () {
 		MarioUtil.ResetScore();
 		Coin.ResetCoinCount();
+		if (Game.GlobalFrame > 6) {
+			Game.PlayMusic(BGM_AC, true);
+			Game.UnpauseMusic();
+		}
 	}
 
 	public override void UpdateUI () {
@@ -47,6 +47,21 @@ public class MainUI : EntityUI {
 
 		if (MapEditor.IsEditing) return;
 
+		// BGM
+		bool requirePSwitchBGM = Game.GlobalFrame > 6 && Game.IsPlaying && PSwitch.Triggering;
+		if ((!Game.IsMusicPlaying || Game.CurrentMusicID != PSWITCH_AC) && requirePSwitchBGM) {
+			Game.PlayMusic(PSWITCH_AC);
+			Game.UnpauseMusic();
+		}
+		var player = PlayerSystem.Selecting;
+		bool requireOverworldBGM = !requirePSwitchBGM && Game.GlobalFrame > 6 && Game.IsPlaying && player != null && player.Health.HP > 0 && !PSwitch.Triggering;
+		if ((!Game.IsMusicPlaying || Game.CurrentMusicID != BGM_AC) && requireOverworldBGM) {
+			Game.PlayMusic(BGM_AC);
+			Game.UnpauseMusic();
+		}
+		Game.ProcedureAudioVolume = Game.GlobalFrame.LessOrEquel(120) * 1000 / 120;
+
+		// UI
 		using var _ = new FontScope(FONT_ID);
 		using var __ = new GUIContentColorScope(new Color32(232, 240, 252));
 
