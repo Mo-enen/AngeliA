@@ -1,4 +1,10 @@
-﻿Game.Language:zhs
+﻿Game.LastUsedWindowWidth:3646
+Game.LastUsedWindowHeight:2001
+MapEditor.LastEdittingViewX:-2037
+MapEditor.LastEdittingViewY:-1280
+MapEditor.LastEdittingViewH:5632
+MapEditor.LastEdittingViewZ:0
+Game.Language:zhs
 Input.Left:15
 Input.Right:18
 Input.Down:33
@@ -15,10 +21,5 @@ Input.Pad.Action:5
 Input.Pad.Jump:6
 Input.Pad.Start:12
 Input.Pad.Select:13
-Game.LastUsedWindowWidth:3647
-Game.LastUsedWindowHeight:2001
+Game.SoundVolume:500
 Game.WindowMaximized:1
-MapEditor.LastEdittingViewX:43450
-MapEditor.LastEdittingViewY:-2501
-MapEditor.LastEdittingViewH:8604
-MapEditor.LastEdittingViewZ:0

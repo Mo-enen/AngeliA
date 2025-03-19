@@ -8,14 +8,14 @@ namespace MarioTemplate;
 
 [NoItemCombination]
 [EntityAttribute.MapEditorGroup("Entity")]
-public class DoorFront : Door {
+public class DoorFront : MarioDoor {
 	public override bool IsFrontDoor => true;
 }
 
 
 [NoItemCombination]
 [EntityAttribute.MapEditorGroup("Entity")]
-public class DoorBack : Door {
+public class DoorBack : MarioDoor {
 	public override bool IsFrontDoor => false;
 }
 
@@ -34,9 +34,8 @@ public class PSwitchDoorBack : PSwitchDoor {
 }
 
 
-[NoItemCombination]
-[EntityAttribute.MapEditorGroup("Entity")]
-public abstract class PSwitchDoor : Door {
+
+public abstract class PSwitchDoor : MarioDoor {
 
 	private static readonly SpriteCode EMPTY_SP = "PSwitchDoorEmpty";
 
@@ -52,3 +51,16 @@ public abstract class PSwitchDoor : Door {
 
 }
 
+
+[EntityAttribute.MapEditorGroup("Entity")]
+public abstract class MarioDoor : Door {
+
+	private static readonly AudioCode OPEN_AC = "DoorOpen";
+	public override bool Invoke (Character character) {
+		bool result = base.Invoke(character);
+		if (result) {
+			Game.PlaySoundAtPosition(OPEN_AC, XY, 0.5f);
+		}
+		return result;
+	}
+}

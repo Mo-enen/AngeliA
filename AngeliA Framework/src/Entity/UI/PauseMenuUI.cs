@@ -15,7 +15,7 @@ public class PauseMenuUI : MenuUI {
 	#region --- SUB ---
 
 
-	private enum MenuMode { Root, Setting, KeySetter, Restart, Quit, Setter_Keyboard, Setter_Gamepad }
+	private enum MenuMode { Root, Setting, KeySetter, Restart, Debug, Quit, Setter_Keyboard, Setter_Gamepad }
 
 
 	#endregion
@@ -28,6 +28,7 @@ public class PauseMenuUI : MenuUI {
 
 	// Const 
 	private static readonly LanguageCode MENU_QUIT_MESSAGE = ("Menu.Pause.QuitMessage", "Quit Game?");
+	private static readonly LanguageCode MENU_DEBUG_MESSAGE = ("Menu.Pause.DebugMessage", "This menu is not included in the publish version.");
 	private static readonly LanguageCode MENU_RESTART_MESSAGE = ("Menu.Pause.RestartMessage", "Restart Game?");
 	private static readonly LanguageCode MENU_KEYSETTER_GAMEPAD_MESSAGE = ("Menu.KeySetter.GamepadMessage", "Press F1 key to reset");
 	private static readonly LanguageCode MENU_KEYSETTER_KEYBOARD_MESSAGE = ("Menu.KeySetter.KeyboardMessage", "Press F1 key to reset");
@@ -45,6 +46,8 @@ public class PauseMenuUI : MenuUI {
 	private static readonly LanguageCode MENU_GAMEPAD_HINT = ("Menu.Setting.UseGamepadHint", "Show Gamepad Hint");
 	private static readonly LanguageCode MENU_ALLOW_GAMEPAD = ("Menu.Setting.AllowGamepad", "Allow Gamepad");
 	private static readonly LanguageCode UI_RESTART_REGENERATE = ("UI.RestartAndRegenerateMap", "Restart and Regenerate Map");
+	private static readonly LanguageCode UI_RESET_SAVING = ("UI.ResetSaving", "Reset Game Saving");
+	private static readonly LanguageCode NOTI_SAVING_RESETED = ("Notify.SavingReseted", "Saving Reseted");
 	private static readonly LanguageCode[] GAMEKEY_UI_CODES = [
 		($"UI.GameKey.{Gamekey.Left}", "Left"),
 		($"UI.GameKey.{Gamekey.Right}", "Right"),
@@ -161,6 +164,9 @@ public class PauseMenuUI : MenuUI {
 			case MenuMode.Restart:
 				MenuRestart();
 				break;
+			case MenuMode.Debug:
+				MenuDebug();
+				break;
 			case MenuMode.Quit:
 				MenuQuit();
 				break;
@@ -178,26 +184,26 @@ public class PauseMenuUI : MenuUI {
 	// Menus
 	private void MenuRoot () {
 
-		// 0-Continue
+		// Continue
 		if (DrawItem(BuiltInText.UI_CONTINUE) || Input.GameKeyDown(Gamekey.Jump)) {
 			Game.UnpauseGame();
 			Active = false;
 			Input.UseAllHoldingKeys();
 		}
 
-		// 1-Key Setter
+		// Key Setter
 		if (DrawItem(MENU_KEY_SETTER)) {
 			RequireMode = MenuMode.KeySetter;
 			SetSelection(0);
 		}
 
-		// 2-Setting
+		// Setting
 		if (DrawItem(BuiltInText.UI_SETTING)) {
 			RequireMode = MenuMode.Setting;
 			SetSelection(0);
 		}
 
-		// 3-Restart Game
+		// Restart Game
 		if (Universe.BuiltInInfo.AllowRestartFromMenu) {
 			if (DrawItem(BuiltInText.UI_RESTART)) {
 				RequireMode = MenuMode.Restart;
@@ -205,7 +211,17 @@ public class PauseMenuUI : MenuUI {
 			}
 		}
 
-		// 3/4-Quit
+		// Debug
+#if DEBUG
+		using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
+			if (DrawItem(BuiltInText.UI_DEBUG)) {
+				RequireMode = MenuMode.Debug;
+				SetSelection(0);
+			}
+		}
+#endif
+
+		// Quit
 		if (Universe.BuiltInInfo.AllowQuitFromMenu) {
 			using (new GUIContentColorScope(Color32.RED_BETTER)) {
 				if (DrawItem(BuiltInText.UI_QUIT)) {
@@ -397,6 +413,34 @@ public class PauseMenuUI : MenuUI {
 			}
 		}
 #endif
+
+	}
+
+
+	private void MenuDebug () {
+
+#if !DEBUG
+		return;
+#endif
+		Message = MENU_DEBUG_MESSAGE;
+
+		// Delete Saving Folder and Quit
+		using (new GUIContentColorScope(Color32.RED_BETTER)) {
+			if (DrawItem(UI_RESET_SAVING)) {
+				Util.DeleteFolder(Universe.BuiltIn.SavingRoot);
+				Universe.BuiltIn.ReloadSavingSlot(Universe.BuiltIn.CurrentSavingSlot, true);
+				Game.UnpauseGame();
+				Active = false;
+				Input.UseAllHoldingKeys();
+				NotificationUI.SpawnNotification(NOTI_SAVING_RESETED);
+			}
+		}
+
+		// Back
+		if (DrawItem(BuiltInText.UI_BACK) || Input.GameKeyDown(Gamekey.Jump)) {
+			RequireMode = MenuMode.Root;
+			SetSelection(2);
+		}
 
 	}
 

@@ -9,6 +9,8 @@ namespace MarioTemplate;
 public class Icicle : Rigidbody, IAutoTrackWalker {
 
 	// VAR
+	private static readonly AudioCode BREAK_AC = "IcicleBreak";
+	private static readonly AudioCode FALL_AC = "IcicleFall";
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	public override int AirDragX => 0;
 	public override int AirDragY => 0;
@@ -49,6 +51,7 @@ public class Icicle : Rigidbody, IAutoTrackWalker {
 		} else if (IsGrounded) {
 			// Touch Ground to Break
 			BreakingParticle.SpawnParticles(TypeID, Rect);
+			Game.PlaySoundAtPosition(BREAK_AC, XY, 0.75f);
 			Active = false;
 		}
 	}
@@ -61,7 +64,9 @@ public class Icicle : Rigidbody, IAutoTrackWalker {
 			if (IsPlayerNearby()) {
 				FallAccumulationFrame++;
 				if (FallAccumulationFrame > 60) {
+					// Start Fall
 					Falling = true;
+					Game.PlaySoundAtPosition(FALL_AC, XY, 0.75f);
 				}
 			} else {
 				FallAccumulationFrame = 0;
@@ -74,8 +79,10 @@ public class Icicle : Rigidbody, IAutoTrackWalker {
 			var damageRect = Rect.Shrink(Const.QUARTER, Const.QUARTER, -16, 0);
 			if (player.Rect.Overlaps(damageRect)) {
 				(player as IDamageReceiver).TakeDamage(new Damage(1));
+				// Break when Touch Player
 				Active = false;
 				BreakingParticle.SpawnParticles(TypeID, Rect);
+				Game.PlaySoundAtPosition(BREAK_AC, XY, 0.75f);
 			}
 		}
 

@@ -11,6 +11,7 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 
 
 	// VAR
+	private static readonly AudioCode KICK_AC = "Kick";
 	private const int PASS_COUNT_DELAY = 30;
 	public bool IsPassout => PassoutFrame != int.MinValue;
 	protected abstract bool AllowPlayerStepOn { get; }
@@ -85,7 +86,7 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 			MakePassout();
 		}
 		int score = 100 + player.CurrentStepCombo * 100;
-		MarioUtil.PlayMarioAudio(Sound.StepOnEnemy, XY);
+		Game.PlaySoundAtPosition(KICK_AC, XY, 0.5f);
 		MarioUtil.GiveScore(score, CenterX, Y + Height);
 		player.CurrentStepCombo++;
 	}
@@ -101,6 +102,7 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 			speedY: 82,
 			rotationSpeed: Util.QuickRandomSign() * 8
 		);
+		Game.PlaySoundAtPosition(KICK_AC, XY, 0.5f);
 		Active = false;
 	}
 
@@ -108,6 +110,5 @@ public abstract class Enemy : Rigidbody, IDamageReceiver {
 		if (damage.Amount <= 0) return;
 		MakePassout();
 	}
-
 
 }

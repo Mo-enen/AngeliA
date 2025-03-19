@@ -15,6 +15,8 @@ public class OneUpMushroom : Mushroom {
 public class Mushroom : Rigidbody, IPingPongWalker, IAutoTrackWalker, IBumpable {
 
 	// VAR
+	private static readonly AudioCode ONE_UP_AC = "OneUp";
+	private static readonly AudioCode MUSHROOM_AC = "GetPowerUp";
 	public override int SelfCollisionMask => PhysicsMask.MAP;
 	public override int PhysicalLayer => PhysicsLayer.ITEM;
 	public override bool CarryOtherOnTop => false;
@@ -49,10 +51,12 @@ public class Mushroom : Rigidbody, IPingPongWalker, IAutoTrackWalker, IBumpable 
 			if (Heal) {
 				player.Health.Heal(1);
 				player.Bounce();
+				Game.PlaySoundAtPosition(MUSHROOM_AC, XY, 0.5f);
 			}
 			if (GiveExtraLife) {
 				// ※ No Life Count System ※
 				MarioUtil.GiveScore(500, CenterX, Y + Height);
+				Game.PlaySoundAtPosition(ONE_UP_AC, XY, 0.5f);
 			}
 			Active = false;
 		}

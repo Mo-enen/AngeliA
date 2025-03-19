@@ -41,8 +41,10 @@ public partial class RayGame {
 
 	protected override void _StopMusic () {
 		if (CurrentBGM == null) return;
-		Raylib.StopMusicStream((Music)CurrentBGM);
-		_UnloadMusic(CurrentBGM);
+		if (CurrentBGM is Music bgm && Raylib.IsMusicStreamPlaying(bgm)) {
+			Raylib.StopMusicStream(bgm);
+			Raylib.UnloadMusicStream(bgm);
+		}
 		CurrentBGM = null;
 		CurrentBgmID = 0;
 	}

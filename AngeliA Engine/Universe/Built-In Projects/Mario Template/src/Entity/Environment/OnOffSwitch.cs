@@ -10,6 +10,7 @@ namespace MarioTemplate;
 public class OnOffSwitch : Entity, IBumpable, IAutoTrackWalker {
 
 	// VAR
+	private static readonly AudioCode SWITCH_AC = "OnOffSwitch";
 	private const int COOL_DOWN = 12;
 	private static readonly SpriteCode OnSprite = "OnSwitch";
 	private static readonly SpriteCode OffSprite = "OffSwitch";
@@ -57,13 +58,18 @@ public class OnOffSwitch : Entity, IBumpable, IAutoTrackWalker {
 		IBumpable.AnimateForBump(this, cell);
 	}
 
-	public static void TrySwitch () {
-		if (Game.GlobalFrame < LastSwitchFrame + COOL_DOWN) return;
+	public static bool TrySwitch () {
+		if (Game.GlobalFrame < LastSwitchFrame + COOL_DOWN) return false;
 		LastSwitchFrame = Game.GlobalFrame;
 		CurrentOn = !CurrentOn;
+		return true;
 	}
 
-	void IBumpable.OnBumped (Entity entity, Damage damage) => TrySwitch();
+	void IBumpable.OnBumped (Entity entity, Damage damage) {
+		if (TrySwitch()) {
+			Game.PlaySoundAtPosition(SWITCH_AC, XY, 1f);
+		}
+	}
 
 	bool IBumpable.AllowBump (Entity entity, Direction4 from) => IBumpable.IsValidBumpDirection(this, from) && entity == PlayerSystem.Selecting;
 

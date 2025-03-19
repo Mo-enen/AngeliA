@@ -63,6 +63,7 @@ public abstract class Burner : Entity, IAutoTrackWalker {
 
 
 	// VAR
+	private static readonly AudioCode FIRE_AC = "BurnerFire";
 	private static readonly SpriteCode BODY_SP = "Burner";
 	private static readonly SpriteCode FIRE_SP = "Burner.Fire";
 	int IAutoTrackWalker.LastWalkingFrame { get; set; }
@@ -103,6 +104,10 @@ public abstract class Burner : Entity, IAutoTrackWalker {
 			IDamageReceiver.DamageAllOverlap(
 				rect, new Damage(1, Const.TEAM_PLAYER, type: Tag.FireDamage)
 			);
+			// Audio
+			if (FireLocalFrame == 0) {
+				Game.PlaySoundAtPosition(FIRE_AC, XY, 0.5f);
+			}
 		} else {
 			FireLocalFrame = int.MinValue;
 		}

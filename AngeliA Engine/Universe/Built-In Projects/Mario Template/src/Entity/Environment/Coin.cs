@@ -9,6 +9,7 @@ namespace MarioTemplate;
 public class Coin : Rigidbody, IBumpable, IAutoTrackWalker {
 
 	// VAR
+	private static readonly AudioCode COIN_AC = "Coin";
 	public override int SelfCollisionMask => PhysicsMask.MAP;
 	public static readonly int TYPE_ID = typeof(Coin).AngeHash();
 	public static int CurrentCoinCount { get; private set; } = 0;
@@ -97,6 +98,7 @@ public class Coin : Rigidbody, IBumpable, IAutoTrackWalker {
 
 	public static void Collect (int count) {
 		CurrentCoinCount++;
+		Game.PlaySound(COIN_AC, 0.5f);
 	}
 
 	public static void ResetCoinCount () => CurrentCoinCount = 0;

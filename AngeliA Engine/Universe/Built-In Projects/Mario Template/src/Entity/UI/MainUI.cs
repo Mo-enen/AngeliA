@@ -17,9 +17,7 @@ public class MainUI : EntityUI {
 
 	// MSG
 	[OnGameInitializeLater]
-	internal static void OnGameInitializeLater () {
-		Stage.SpawnEntity(TYPE_ID, 0, 0);
-	}
+	internal static void OnGameInitializeLater () => Stage.SpawnEntity(TYPE_ID, 0, 0);
 
 	[OnMapEditorModeChange_Mode]
 	internal static void OnMapEditorModeChange (OnMapEditorModeChange_ModeAttribute.Mode mode) {
@@ -28,6 +26,13 @@ public class MainUI : EntityUI {
 			MarioUtil.ResetScore();
 			Coin.ResetCoinCount();
 			LastGameResetTime = Game.GlobalFrame;
+			if (Game.CurrentMusicID == 0) {
+				Game.PlayMusic("Overworld".AngeHash());
+			} else {
+				Game.UnpauseMusic();
+			}
+		} else if (mode == OnMapEditorModeChange_ModeAttribute.Mode.EnterEditMode) {
+			Game.PauseMusic();
 		}
 	}
 

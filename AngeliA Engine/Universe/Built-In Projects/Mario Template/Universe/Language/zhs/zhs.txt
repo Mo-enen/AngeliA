@@ -1,7 +1,4 @@
-﻿UI.MovementProp.JumpBreakRush:跳跃打断突进
-UI.MovementProp.JumpBreakDash:跳跃打断冲刺
-UI.MovementProp.AllowSquatJump:允许蹲跳
-AtlasType.Background:背景
+﻿AtlasType.Background:背景
 AtlasType.General:通用
 AtlasType.Level:关卡
 ConsoleWindow:终 端
@@ -173,6 +170,7 @@ Menu.MEDT.RemoveFromList:移除自：
 Menu.MEDT.SelectCharacter:设为当前角色
 Menu.MEDT.SetAsListCover:设为封面
 Menu.MiniGame.QuitMsg:是否退出迷你游戏？
+Menu.Pause.DebugMessage:本菜单不会出现在发布后的版本中
 Menu.Pause.KeySetter:按键分配
 Menu.Pause.QuitMessage:是否退出游戏？
 Menu.Pause.RestartMessage:是否重新开始游戏？
@@ -207,6 +205,7 @@ Noti.UndoSpriteMeta:撤销：图块信息
 Noti.UndoSpriteSize:撤销：图块尺寸
 Notify.CheatPerform:已执行作弊码
 Notify.NoValidPlayer:没有可用的角色
+Notify.SavingReseted:存档已重置
 PackageManager:拓 展
 PixelEditor:美 工
 PixelEditor.Title.ExportPNG:导出为PNG文件
@@ -281,6 +280,7 @@ Tip.SpriteOperation.FlipH:水平翻转图块
 Tip.SpriteOperation.FlipV:垂直翻转图块
 Tip.SpriteOperation.RotC:顺时针旋转图块
 Tip.SpriteOperation.RotCC:逆时针旋转图块
+Tip.SpriteOperation.Trim:去除图块的空白边缘
 Tip.Tag:标签
 Tip.Trigger:虚无模式
 Tip.Z:图块的Z
@@ -305,6 +305,7 @@ UI.Cancel:取消
 UI.Continue:继续
 UI.Crafting.Keep:保留
 UI.CreateProjectTitle:新工程
+UI.Debug:调试
 UI.Delete:删除
 UI.DeleteAtlasMsg:是否删除图集“{0}”？所有包含的图块都将被删除
 UI.DeleteProjectMsg:是否移除工程“{0}”？\n这不会删除文件
@@ -392,6 +393,7 @@ UI.LanguageEditor.RemoveEmptyMsg:是否删除所有内容为空的行？（键�
 UI.Lock:锁定
 UI.Menu:菜单
 UI.MovementProp.AllowJumpWhenClimbing:攀爬时允许跳跃
+UI.MovementProp.AllowSquatJump:允许蹲跳
 UI.MovementProp.ClimbAvailable:允许攀爬
 UI.MovementProp.ClimbSpeedX:攀爬速度X
 UI.MovementProp.ClimbSpeedY:攀爬速度Y
@@ -433,6 +435,8 @@ UI.MovementProp.GrabTopAvailable:允许上抓爬
 UI.MovementProp.GrabTopHeightAmount:上抓爬身高率
 UI.MovementProp.GrowJumpCountWhenFallOffEdge:走落边缘消耗跳跃数
 UI.MovementProp.InWaterSpeedRate:水中速率
+UI.MovementProp.JumpBreakDash:跳跃打断冲刺
+UI.MovementProp.JumpBreakRush:跳跃打断突进
 UI.MovementProp.JumpCount:跳跃数
 UI.MovementProp.JumpDownThoughOneway:允许下跳翻越单向板
 UI.MovementProp.JumpReleaseSpeedRate:松开跳跃键乘速率
@@ -526,6 +530,7 @@ UI.QuitGame:退出游戏
 UI.QuitMessage:是否关闭引擎窗口？
 UI.Rename:重命名
 UI.Reset:重置
+UI.ResetSaving:重置游戏存档
 UI.Restart:重启
 UI.RestartAndRegenerateMap:重开游戏并重置地图
 UI.Rig.BuildError:编译错误 :(\n必须解决所有编译错误才能运行游戏

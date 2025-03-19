@@ -23,6 +23,7 @@ public static class BuiltInText {
 	public static readonly LanguageCode UI_CONTINUE = ("UI.Continue", "Continue");
 	public static readonly LanguageCode UI_NONE = ("UI.None", "None");
 	public static readonly LanguageCode UI_EMPTY = ("UI.Empty", "Empty");
+	public static readonly LanguageCode UI_DEBUG = ("UI.Debug", "Debug");
 	public static readonly LanguageCode UI_QUIT = ("UI.Quit", "Quit");
 	public static readonly LanguageCode UI_BACK = ("UI.Back", "Back");
 	public static readonly LanguageCode UI_RESTART = ("UI.Restart", "Restart");

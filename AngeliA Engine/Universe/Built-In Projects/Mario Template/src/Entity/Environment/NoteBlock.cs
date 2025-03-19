@@ -10,6 +10,7 @@ namespace MarioTemplate;
 public class NoteBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 
 	// VAR
+	private static readonly AudioCode BUMP_AC = "Bump";
 	bool IBumpable.FromAbove => true;
 	bool IBumpable.FromBelow => true;
 	public int LastBumpedFrame { get; set; } = int.MinValue;
@@ -38,8 +39,17 @@ public class NoteBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 	public override void Update () {
 		base.Update();
 		// Spring Check
-		if (Physics.Overlap(PhysicsMask.DYNAMIC, Rect.EdgeOutsideUp(1), this)) {
-			NoteBlockBumpLogic(Direction4.Up);
+		if (Game.GlobalFrame > LastBumpedFrame + 12) {
+			var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, Rect.EdgeOutsideUp(1), out int count, this);
+			for (int i = 0; i < count; i++) {
+				var hit = hits[i];
+				if (hit.Entity is not Rigidbody) continue;
+				LastBumpedFrame = Game.GlobalFrame;
+				Game.PlaySoundAtPosition(BUMP_AC, XY, 0.5f);
+				FrameworkUtil.PerformSpringBounce(this, Direction4.Up, 64);
+				ArtworkOffset.x = 0;
+				ArtworkOffset.y = -Const.CEL;
+			}
 		}
 	}
 
@@ -58,8 +68,7 @@ public class NoteBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 
 	private void NoteBlockBumpLogic (Direction4 bumpFrom) {
 
-		if (Game.GlobalFrame < LastBumpedFrame + 12) return;
-		LastBumpedFrame = Game.GlobalFrame;
+		Game.PlaySoundAtPosition(BUMP_AC, XY, 0.5f);
 
 		// Bounce
 		if (bumpFrom == Direction4.Up) {

@@ -29,5 +29,11 @@
   "WorldBehindParallax": 1300,
   "WorldBehindAlpha": 64,
   "RequireFixScriptNamesWhenAnalyse": false,
-  "LastOpenAtlasIndex": 1
+  "LastOpenAtlasIndex": 0,
+  "LastEdittingViewPos": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "LastEdittingViewHeight": -1
 }

@@ -5,18 +5,14 @@ using AngeliA.Platformer;
 
 namespace MarioTemplate;
 
-public enum Sound : byte {
-	StepOnEnemy = 0,
-}
-
 public static class MarioUtil {
 
 	public static int CurrentScore { get; private set; } = 0;
 	public static int CurrentMajorLevel { get; private set; } = 1;
 	public static int CurrentMinorLevel { get; private set; } = 1;
 	private static readonly int FCT_FONT = "SuperMarioBros".AngeHash();
+	private static readonly AudioCode SPAWN_AC = "SpawnItem";
 	private static readonly SpriteCode SPIN_COIN_SP = "CoinSpin";
-	private static readonly Dictionary<Sound, int> SoundPool = new(Util.AllEnumIdPairs<Sound>());
 	private static readonly IntToChars ScoreToChar = new();
 
 	// API
@@ -193,6 +189,7 @@ public static class MarioUtil {
 						rig.VelocityY = 42;
 					}
 					itemInside = 0;
+					Game.PlaySoundAtPosition(SPAWN_AC, entity.XY, 0.5f);
 				}
 			} else {
 				// Rise Animation
@@ -205,17 +202,17 @@ public static class MarioUtil {
 					Renderer.Draw(iconSp, sourceRect.Shift(spawnDirection.Normal() * shift), z: int.MinValue + 1);
 				}
 				// Spawn
-				if (itemInside != 0 && frame == spawnItemStartFrame + RISE_DUR) {
-					MarioUtil.SpawnEmbedItem(itemInside, sourceRect, spawnDirection);
-					itemInside = 0;
+				if (itemInside != 0) {
+					if (frame == spawnItemStartFrame) {
+						Game.PlaySoundAtPosition(SPAWN_AC, entity.XY, 0.5f);
+					}
+					if (frame == spawnItemStartFrame + RISE_DUR) {
+						MarioUtil.SpawnEmbedItem(itemInside, sourceRect, spawnDirection);
+						itemInside = 0;
+					}
 				}
 			}
 		}
-	}
-
-	public static void PlayMarioAudio (Sound sound, Int2 pos, float volume = 1f, float pitch = 1f) {
-		if (!SoundPool.TryGetValue(sound, out int id)) return;
-		Game.PlaySoundAtPosition(id, pos, volume, pitch);
 	}
 
 }

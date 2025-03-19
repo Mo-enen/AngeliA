@@ -124,8 +124,6 @@ public class ProjectEditor : WindowUI {
 	public override void OnInactivated () {
 		base.OnInactivated();
 		MenuItem = null;
-		Game.StopMusic();
-		Game.StopAllSounds();
 #if DEBUG
 		if (PROJECT_TYPE_COUNT != PROJECT_TYPE_LABELS.Length) {
 			Debug.LogError("PROJECT_TYPE_LABELS length is not the enum's length");

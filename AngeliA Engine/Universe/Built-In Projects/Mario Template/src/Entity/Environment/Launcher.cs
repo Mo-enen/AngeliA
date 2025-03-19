@@ -36,6 +36,7 @@ public class LauncherRed : Launcher {
 public abstract class Launcher : AngeliA.Platformer.Launcher, ICarrier {
 
 	// VAR
+	private static readonly AudioCode SPAWN_AC = "LauncherSpawn";
 	protected abstract int TopSprite { get; }
 	protected abstract int MidSprite { get; }
 	protected abstract int BottomSprite { get; }
@@ -106,6 +107,7 @@ public abstract class Launcher : AngeliA.Platformer.Launcher, ICarrier {
 		if (entity is BulletBill bullet) {
 			bullet.MovingRight = LaunchToRightSide();
 		}
+		Game.PlaySoundAtPosition(SPAWN_AC, XY, 0.5f);
 	}
 
 	void ICarrier.PerformCarry (int x, int y) {

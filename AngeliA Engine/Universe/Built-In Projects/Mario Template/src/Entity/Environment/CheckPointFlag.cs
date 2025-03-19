@@ -11,6 +11,7 @@ public class CheckPointFlag : CheckPoint {
 
 
 	// VAR
+	private static readonly AudioCode TOUCH_AC = "CheckPoint";
 	private static readonly SpriteCode FLAG_SP = "CheckPointFlag.Basic";
 	private static readonly Dictionary<int, int> FlagPool = [];
 
@@ -50,5 +51,9 @@ public class CheckPointFlag : CheckPoint {
 
 	}
 
+	public override void Touch () {
+		base.Touch();
+		Game.PlaySoundAtPosition(TOUCH_AC, XY, 0.5f);
+	}
 
 }

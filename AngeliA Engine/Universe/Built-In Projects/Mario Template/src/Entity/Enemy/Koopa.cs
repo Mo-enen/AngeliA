@@ -28,6 +28,7 @@ public abstract class Koopa : Enemy, IPingPongWalker, IDamageReceiver {
 
 
 	// VAR
+	private static readonly AudioCode KICK_AC = "Kick";
 	protected override bool AttackOnTouchPlayer => !IsInShell || (IsRolling && Game.GlobalFrame > RollingStartFrame + 12);
 	protected override bool AllowPlayerStepOn => true;
 	protected abstract SpriteCode WalkSprite { get; }
@@ -88,6 +89,7 @@ public abstract class Koopa : Enemy, IPingPongWalker, IDamageReceiver {
 				bool toRight = player.Rect.CenterX() < X + Width / 2;
 				(this as IPingPongWalker).WalkingRight = toRight;
 				MomentumX = (toRight ? 32 : -32, 8);
+				Game.PlaySoundAtPosition(KICK_AC, XY, 0.5f);
 			}
 		}
 
@@ -129,7 +131,6 @@ public abstract class Koopa : Enemy, IPingPongWalker, IDamageReceiver {
 
 	protected override void OnPlayerStepOn (PlayableCharacter player) {
 		player.VelocityY = 64;
-		MarioUtil.PlayMarioAudio(Sound.StepOnEnemy, XY);
 		if (IsInShell) {
 			if (IsRolling) {
 				RollingStartFrame = int.MinValue;
@@ -141,6 +142,10 @@ public abstract class Koopa : Enemy, IPingPongWalker, IDamageReceiver {
 			IsInShell = true;
 			RollingStartFrame = int.MinValue;
 		}
+		int score = 100 + player.CurrentStepCombo * 100;
+		Game.PlaySoundAtPosition(KICK_AC, XY, 0.5f);
+		MarioUtil.GiveScore(score, CenterX, Y + Height);
+		player.CurrentStepCombo++;
 	}
 
 

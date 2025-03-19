@@ -11,6 +11,8 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker, IDa
 
 
 	// VAR
+	private static readonly AudioCode BUMP_AC = "Bump";
+	private static readonly AudioCode BREAK_AC = "BrickBreak";
 	private static readonly SpriteCode REVEALED_SP = "RevealedBlock";
 	public static readonly int TYPE_ID = typeof(BrickBlock).AngeHash();
 	public int LastBumpedFrame { get; set; } = int.MinValue;
@@ -85,8 +87,12 @@ public class BrickBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker, IDa
 			// Break
 			Active = false;
 			FrameworkUtil.InvokeObjectBreak(TypeID, Rect);
+			Game.PlaySoundAtPosition(BREAK_AC, XY, 0.5f);
 		} else {
 			// Spawn Item
+			if (ItemInside == 0) {
+				Game.PlaySoundAtPosition(BUMP_AC, XY, 0.5f);
+			}
 			if (ItemInside == 0 || SpawnItemStartFrame >= 0) return;
 			SpawnItemStartFrame = Game.GlobalFrame;
 		}
