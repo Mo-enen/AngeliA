@@ -1,18 +1,18 @@
 #  <img src="AngeliA Engine\Resources\Icon.png" width="50"/> AngeliA Engine
 
-2d game engine that focus on open world platformer games in C#.
+A 2D game engine focused on open-world platformer games, built with C#.
 
 ## Features
 
-- Play test anytime while editing map with the best map editor in the world. The map it creates is in open-world style without boundary. You can paint blocks from your own coded entities and pixel art. 
-- Your game can run in the engine window. No need to open a new window every time.
-- The engine provides a built-in pixel art editor that designed for paint and manage sprite sheet for game. Support import from Aseprite.
-- Both the engine and the game it creates is PC only. I only made a Raylib-based implementation at this point.
+- **Seamless Playtesting**: Test your game in real time while editing the map using the most advanced map editor available. The engine supports open-world-style maps without boundaries.
+- **Integrated Game Window**: Run your game directly within the engine. No need to launch a separate window every time.
+- **Built-in Pixel Art Editor**: A dedicated pixel art editor designed for creating and managing sprite sheets. Supports importing assets from Aseprite.
+- **PC-Only**: Currently, the engine and the games it produces are PC only. The implementation is based on Raylib. It is possible to support other platforms by making more implementation of the AngeliA.Game class.
 
 ## Download & Setup
 
-- Download the latest version in the [Release](https://github.com/Mo-enen/AngeliA/releases) section.
-- Unzip the file and it's ready to go.
+- Download the latest version from the [Release](https://github.com/Mo-enen/AngeliA/releases) section.
+- Extract the file and you're ready to go!
 
 ## Screenshots
 
@@ -22,6 +22,10 @@
 <img src="AngeliA Engine\Resources\ScreenshotGameplay.png" width="100%"/>
 
 
+
+-------------
+
+More features and improvements are coming soon. Stay tuned (｡･∀･)ﾉﾞ
 
 
 
