@@ -174,9 +174,6 @@ public partial class Engine {
 		Game.SetEventWaiting(false);
 		Game.ProcedureAudioVolume = 1000;
 
-		// Rig Start Setting
-		//engine.Transceiver.SetStartViewPos(0, 0, 0, Const.CEL * 33);
-
 		// UI Window
 		for (int i = 0; i < engine.AllWindows.Length; i++) {
 			var win = engine.AllWindows[i];
@@ -211,6 +208,9 @@ public partial class Engine {
 					break;
 				}
 			}
+		} else {
+			Game.SetWindowTitle("AngeliA Engine");
+			Game.SetWindowIcon("WindowIcon".AngeHash());
 		}
 	}
 
@@ -985,6 +985,10 @@ public partial class Engine {
 				throw new System.NotImplementedException();
 		}
 
+		// Final
+		Input.UseAllHoldingKeys();
+		Input.UseAllMouseKey();
+
 	}
 
 
@@ -1039,6 +1043,8 @@ public partial class Engine {
 			Game.SetWindowIcon("WindowIcon".AngeHash());
 			Instance.Transceiver.RespondMessage.Reset(clearLastRendering: true);
 			Instance.Transceiver.Abort();
+			Input.UseAllHoldingKeys();
+			Input.UseAllMouseKey();
 		}
 	}
 

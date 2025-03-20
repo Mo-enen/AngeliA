@@ -39,6 +39,7 @@ public partial class Engine {
 	private static readonly SpriteCode PROJECT_ICON = "UI.Project";
 	private static readonly SpriteCode LABEL_PROJECTS = "Label.Projects";
 	public static readonly SpriteCode UI_WINDOW_BG = "UI.MainBG";
+	public static readonly SpriteCode UI_DISCORD = "DiscordIcon";
 
 
 	#endregion
@@ -128,13 +129,21 @@ public partial class Engine {
 				if (GUI.DarkButton(rect, BTN_ADD)) {
 					FileBrowserUI.OpenFolder(ADD_PRO_TITLE, AddExistsProjectAt);
 				}
+
+				// Community
+				rect = panelRect.Shrink(itemPadding).EdgeInsideDown(GUI.FieldHeight);
+				GUI.Icon(rect.EdgeInsideSquareLeft(), UI_DISCORD);
+				if (GUI.LinkButton(rect.ShrinkLeft(rect.height + GUI.FieldPadding), "Discord AngeliA Official", GUI.Skin.SmallLabel)) {
+					Game.OpenUrl("https://discord.gg/JVTQcev3P3");
+				}
+
 			}
 
 			// --- Right Content ---
 
-			int padding = GUI.Unify(8);
+			int padding = GUI.Unify(12);
 			int scrollWidth = GUI.ScrollbarSize;
-			int itemHeight = GUI.Unify(52);
+			int itemHeight = GUI.Unify(64);
 			int extendHeight = GUI.Unify(128);
 			var contentRect = cameraRect.Shrink(
 				hubPanelWidth + padding * 2, padding + scrollWidth, padding, padding
@@ -165,17 +174,11 @@ public partial class Engine {
 					Renderer.TryGetSprite(PANEL_BG, out var bgSprite) ? bgSprite.GlobalBorder : Int4.zero
 				).EdgeInside(Direction4.Up, itemHeight);
 
-				bool stepTint = false;
-
 				for (int i = 0; i < Projects.Count; i++) {
 					var project = Projects[i];
 					string projectPath = project.Path;
 					bool folderExists = project.FolderExists;
 					var itemContentRect = rect.Shrink(padding);
-
-					// Step Tint
-					if (stepTint) Renderer.DrawPixel(rect, Color32.WHITE_6);
-					stepTint = !stepTint;
 
 					// Red Highlight
 					if (!folderExists && GUI.Enable && rect.MouseInside()) {

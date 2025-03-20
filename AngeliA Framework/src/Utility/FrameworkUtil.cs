@@ -394,14 +394,16 @@ HasOnewayTag(tag) ||
 			// Horizontal
 			if (side == Direction4.Left) {
 				if (target.VelocityX > -power) {
-					target.VelocityX = -power;
+					//target.VelocityX = -power;
+					target.MomentumX = (-power, 1);
 					if (target is IWithCharacterMovement wMov) {
 						wMov.CurrentMovement.FacingRight = false;
 					}
 				}
 			} else {
 				if (target.VelocityX < power) {
-					target.VelocityX = power;
+					//target.VelocityX = power;
+					target.MomentumX = (power, 1);
 					if (target is IWithCharacterMovement wMov) {
 						wMov.CurrentMovement.FacingRight = true;
 					}
@@ -417,7 +419,8 @@ HasOnewayTag(tag) ||
 			target.MakeGrounded(6);
 			// Side
 			if (target.VelocityX.Abs() < powerSide) {
-				target.VelocityX = powerSide * (target.Rect.CenterX() > spring.Rect.CenterX() ? 1 : -1);
+				//target.VelocityX = powerSide * (target.Rect.CenterX() > spring.Rect.CenterX() ? 1 : -1);
+				target.MomentumX = (powerSide * (target.Rect.CenterX() > spring.Rect.CenterX() ? 1 : -1), 1);
 			}
 		}
 	}

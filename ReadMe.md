@@ -15,7 +15,7 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
 ## Community & Support
 
-- <img src="AngeliA Engine\Resources\Discord.png" width="30"/> Discord [AngeliA Official](https://discord.gg/JVTQcev3P3)
+- <img src="AngeliA Engine\Resources\Discord.png" width="16"/> Discord [AngeliA Official](https://discord.gg/JVTQcev3P3)
 
 ## Screenshots
 
