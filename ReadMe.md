@@ -11,8 +11,11 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
 ## Download & Setup
 
-- Download the latest version from the [Release](https://github.com/Mo-enen/AngeliA/releases) section.
-- Extract the file and you're ready to go!
+- Download the latest version from the [Release](https://github.com/Mo-enen/AngeliA/releases) section, extract the file and you're ready to go!
+
+## Community & Support
+
+- <img src="AngeliA Engine\Resources\Discord.png" width="30"/> Discord [AngeliA Official](https://discord.gg/JVTQcev3P3)
 
 ## Screenshots
 
