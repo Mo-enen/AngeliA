@@ -23,9 +23,7 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
 
 
--------------
-
-More features and improvements are coming soon. Stay tuned (｡･∀･)ﾉﾞ
+More features and improvements are coming soon. Stay tuned :)
 
 
 
