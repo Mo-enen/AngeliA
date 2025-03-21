@@ -1,0 +1,135 @@
+﻿CtrlHint.Adjust:Adjust
+CtrlHint.Attack:Attack
+CtrlHint.Craft:Craft
+CtrlHint.Drive:Drive
+CtrlHint.Drop:Drop
+CtrlHint.EnterDoor:Enter
+CtrlHint.Equip:Equip
+CtrlHint.HideMenu:Hide Menu
+CtrlHint.HoldToUse:Hold to Use
+CtrlHint.Jump:Jump
+CtrlHint.MEDT.Nav:Navigation Mode
+CtrlHint.MEDT.PlayFromBegin:Play from Start
+CtrlHint.MEDT.SwitchMode.Edit:Back to Edit
+CtrlHint.MEDT.SwitchMode.Play:Play
+CtrlHint.Move:Move
+CtrlHint.PlayerMenu.Take:Take
+CtrlHint.ShowMenu:Show Menu
+CtrlHint.StopDrive:Stop Driving
+CtrlHint.SwitchPlayer:Select Player
+CtrlHint.Throw:Throw
+CtrlHint.Transfer:Transfer (Hold to Use)
+CtrlHint.Use:Use
+CtrlHint.WakeUp:Wake
+FileBrowser.Error.NameEmpty:Name can't be empty
+FileBrowser.Error.NameInValid:Name contains invalid char
+FileBrowser.Fav.Desktop:Desktop
+FileBrowser.Fav.Pic:My Picture
+FileBrowser.FileName:File Name
+FileBrowser.FolderName:Folder Name
+Hint.Cheat.Match:Press Enter to Perform Cheat Code
+Hint.PickItem:Pick Item
+iDes.BlockBuilder:Block Builder
+iDes.BodyGadgetItem:Body Gadget
+iDes.BodySetItem:Body Set
+iDes.ClothItem:Cloth
+iName.BlockBuilder:Block Builder
+iName.BodyGadgetItem:Body Gadget Item
+iName.BodySetItem:Body Set Item
+iName.ClothItem:Cloth Item
+Label.B:B
+Label.Bottom:Bottom
+Label.D:D
+Label.Down:Down
+Label.L:L
+Label.Left:Left
+Label.R:R
+Label.Right:Right
+Label.T:T
+Label.Top:Top
+Label.U:U
+Label.Up:Up
+MEDT.AsElement:As Element
+MEDT.BackgroundOnly:Background Only
+MEDT.CancelDrop:Cancel Drop
+MEDT.Drop:Mouse Left Button to Drop
+MEDT.EntityOnly:Entity Only
+MEDT.LevelOnly:Level Only
+Menu.KeySetter.ConfirmMessage:Save the changes?
+Menu.KeySetter.Gamepad:Gamepad
+Menu.KeySetter.GamepadMessage:Press F1 key to reset
+Menu.KeySetter.Keyboard:Keyboard
+Menu.KeySetter.KeyboardMessage:Press F1 key to reset
+Menu.KeySetter.Record:Press key u want
+Menu.KeySetter.SaveAndBack:Save and Back
+Menu.MEDT.AddToList:Add to List:
+Menu.MEDT.AddToNewList:Add to New List
+Menu.MEDT.CreateList:Create List
+Menu.MEDT.DeleteList:Delete List
+Menu.MEDT.DeleteListMsg:Delete List "{0}"?
+Menu.MEDT.RemoveFromList:Remove from List:
+Menu.MEDT.SelectCharacter:Select as Playing Character
+Menu.MEDT.SetAsListCover:Set as List Cover
+Menu.MiniGame.QuitMsg:Quit mini game?
+Menu.Pause.DebugMessage:This menu is not included in the publish version.
+Menu.Pause.KeySetter:Key Assignment
+Menu.Pause.QuitMessage:Quit Game?
+Menu.Pause.RestartMessage:Restart Game?
+Menu.Setting.AllowGamepad:Allow Gamepad
+Menu.Setting.Fullscreen.Label:Fullscreen
+Menu.Setting.Language:Language
+Menu.Setting.MusicVolume:Music Volume
+Menu.Setting.SoundVolume:Sound Volume
+Menu.Setting.UseControlHint:Show Control Hint
+Menu.Setting.UseGamepadHint:Show Gamepad Hint
+Notify.NoValidPlayer:No Valid Character in This Project
+Notify.SavingReseted:Saving Reseted
+PlayerQMenu.Hand:Hand
+UI.Add:Add
+UI.Apply:Apply
+UI.Back:Back
+UI.Cancel:Cancel
+UI.Continue:Continue
+UI.Crafting.Keep:Keep
+UI.Debug:Debug
+UI.Delete:Delete
+UI.DontSave:Don't Save
+UI.Empty:Empty
+UI.Equipment.Bodysuit:Cloth
+UI.Equipment.Gloves:Gloves
+UI.Equipment.HandTool:Tool
+UI.Equipment.Helmet:Helmet
+UI.Equipment.Jewelry:Jewelry
+UI.Equipment.Shoes:Shoes
+UI.Explore:Open in Explorer
+UI.GameKey.Action:Action
+UI.GameKey.Down:Down
+UI.GameKey.Jump:Jump
+UI.GameKey.Left:Left
+UI.GameKey.Right:Right
+UI.GameKey.Select:Select
+UI.GameKey.Start:Start
+UI.GameKey.Up:Up
+UI.GameOver:Game Over
+UI.Ignore:Ignore
+UI.Lock:Lock
+UI.Menu:Menu
+UI.No:No
+UI.None:None
+UI.OFF:OFF
+UI.OK:OK
+UI.ON:ON
+UI.Open:Open
+UI.PaletteTab.All:All
+UI.PaletteTab.Pinned:Favorite
+UI.Quit:Quit
+UI.QuitGame:Quit Game
+UI.Rename:Rename
+UI.Reset:Reset
+UI.ResetSaving:Reset Game Saving
+UI.Restart:Restart
+UI.RestartAndRegenerateMap:Restart and Regenerate Map
+UI.Save:Save
+UI.Setting:Setting
+UI.Unlock:Unlock
+UI.Yes:Yes

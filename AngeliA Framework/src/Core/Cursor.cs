@@ -18,12 +18,19 @@ public static class Cursor {
 			// No Cursor
 			CursorPriority = int.MinValue;
 			CursorEndFrame = int.MinValue;
+
 #if DEBUG
-			Game.ShowCursor();
-			Game.SetCursorToNormal();
+			const bool IS_DEBUG = true;
 #else
-			Game.HideCursor();
+			const bool IS_DEBUG = false;
 #endif
+			if (IS_DEBUG || Game.IsToolApplication) {
+				Game.ShowCursor();
+				Game.SetCursorToNormal();
+			} else {
+				Game.HideCursor();
+			}
+
 		} else if (CursorPriority != int.MinValue) {
 			// Has Cursor
 			CursorPriority = int.MinValue;

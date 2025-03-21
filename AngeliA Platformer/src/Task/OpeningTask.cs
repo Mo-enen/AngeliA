@@ -15,6 +15,7 @@ public class OpeningTask : Task {
 	private const int BLACK_DURATION = 120;
 	private const int SKIP_DURATION = 12;
 	private const int DOLLY_HEIGHT = Const.CEL * 10;
+	private const int PRIORITY = 1;
 
 	// Api
 	public int TargetViewX { get; set; } = 0;
@@ -162,7 +163,7 @@ public class OpeningTask : Task {
 	private void SetViewPosition (int x, int y) => Stage.SetViewPositionDelay(
 		x - Stage.ViewRect.width / 2,
 		y - Stage.ViewRect.height / 2,
-		1000, 0
+		1000, PRIORITY
 	);
 
 

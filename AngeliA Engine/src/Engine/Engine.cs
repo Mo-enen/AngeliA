@@ -968,8 +968,10 @@ public partial class Engine {
 				// Build
 				EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
 				// Backup
-				if (EngineSetting.BackupSaving.Value) {
+				long timeNow = Util.GetLongTime();
+				if (EngineSetting.BackupSaving.Value && !Util.IsSameDay(CurrentProject.Universe.Info.LastBackupSavingDate, timeNow)) {
 					EngineUtil.BackupSaving(CurrentProject);
+					CurrentProject.Universe.Info.LastBackupSavingDate = timeNow;
 				}
 				break;
 

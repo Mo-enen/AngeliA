@@ -61,6 +61,9 @@ public static partial class Util {
 	public static long GetLongTime () => System.DateTime.UtcNow.ToFileTimeUtc();
 
 
+	public static bool IsSameDay (long timeA, long timeB) => new System.DateTime(timeA).Day == new System.DateTime(timeB).Day;
+
+
 	public static string GetDisplayTimeFromTicks (long ticks) => new System.DateTime(ticks).ToString("yyyy-MM-dd HH:mm");
 
 

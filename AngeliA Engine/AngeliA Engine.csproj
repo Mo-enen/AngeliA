@@ -16,7 +16,7 @@
 		<EnableNETAnalyzers>False</EnableNETAnalyzers>
 		<Optimize>True</Optimize>
 		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
-		<ApplicationIcon>Icon.ico</ApplicationIcon>
+		<Version>0.0.1</Version>
 
 		<OutputPath>$(SolutionDir)Build</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
@@ -44,14 +44,20 @@
 		<None Remove="publish pause.bat" />
 		<None Remove="publish.bat" />
 		<None Remove="update raylib.dll.bat" />
+		<Compile Remove="Entry\**" />
 		<Compile Remove="Properties\**" />
+		<Compile Remove="Publish\**" />
 		<Compile Remove="Resources\**" />
 		<Compile Remove="Universe\**" />
+		<EmbeddedResource Remove="Entry\**" />
 		<EmbeddedResource Remove="Properties\**" />
+		<EmbeddedResource Remove="Publish\**" />
 		<EmbeddedResource Remove="Resources\**" />
 		<EmbeddedResource Remove="Universe\**" />
 		<None Remove="dotnet sdk\**" />
+		<None Remove="Entry\**" />
 		<None Remove="Properties\**" />
+		<None Remove="Publish\**" />
 		<None Remove="Resources\**" />
 		<None Remove="Universe\**" />
 	</ItemGroup>

@@ -1,0 +1,88 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>AngeliA</AssemblyName>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<StartupObject></StartupObject>
+		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+		<RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<EnableNETAnalyzers>False</EnableNETAnalyzers>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<ErrorReport>none</ErrorReport>
+		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+		<Optimize>True</Optimize>
+		<ApplicationIcon>Icon.ico</ApplicationIcon>
+
+		<Version>0.0.0.1</Version>
+		<AssemblyVersion>0.0.0.1</AssemblyVersion>
+		<FileVersion>0.0.0.1</FileVersion>
+		<Company>Moenen</Company>
+		<Authors>Moenen</Authors>
+		<Product>AngeliA Engine</Product>
+
+		<OutputPath>$(SolutionDir)Build</OutputPath>
+		<PublishDir>$(SolutionDir)Publish</PublishDir>
+
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+
+	</PropertyGroup>
+
+	<!--Debug Only-->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>portable</DebugType>
+		<OutputType>Exe</OutputType>
+
+	</PropertyGroup>
+
+	<!--Release Only-->
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>none</DebugType>
+		<OutputType>WinExe</OutputType>
+
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>true</SelfContained>
+		<PublishTrimmed>false</PublishTrimmed>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
+		<PublishReadyToRun>False</PublishReadyToRun>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+
+		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Properties\**" />
+		<Compile Remove="Publish\**" />
+		<Compile Remove="Universe\**" />
+		<EmbeddedResource Remove="Properties\**" />
+		<EmbeddedResource Remove="Publish\**" />
+		<EmbeddedResource Remove="Universe\**" />
+		<None Remove="Properties\**" />
+		<None Remove="Publish\**" />
+		<None Remove="Universe\**" />
+	</ItemGroup>
+
+	<!--Ref Project-->
+
+	<!--Remove-->
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="desktop.ini" />
+		<None Remove="Icon.ico" />
+		<None Remove="publish.bat" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\AngeliA Raylib\AngeliA Raylib.csproj" />
+	</ItemGroup>
+
+</Project>

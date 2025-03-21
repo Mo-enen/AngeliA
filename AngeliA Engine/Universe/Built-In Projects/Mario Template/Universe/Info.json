@@ -5,7 +5,7 @@
   "MajorVersion": 0,
   "MinorVersion": 0,
   "PatchVersion": 1,
-  "EngineBuildVersion": 16,
+  "EngineBuildVersion": 17,
   "UseProceduralMap": false,
   "UseMapEditor": true,
   "UseLightingSystem": false,
@@ -35,5 +35,6 @@
     "y": -3227,
     "z": 0
   },
-  "LastEdittingViewHeight": 8448
+  "LastEdittingViewHeight": 8448,
+  "LastBackupSavingDate": 133870286834624256
 }

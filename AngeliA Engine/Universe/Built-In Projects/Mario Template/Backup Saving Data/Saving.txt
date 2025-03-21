@@ -1,8 +1,8 @@
-﻿Game.LastUsedWindowWidth:3647
+﻿Game.LastUsedWindowWidth:3646
 Game.LastUsedWindowHeight:2001
-MapEditor.LastEdittingViewX:30976
-MapEditor.LastEdittingViewY:-592
-MapEditor.LastEdittingViewH:5960
+MapEditor.LastEdittingViewX:25317
+MapEditor.LastEdittingViewY:-2549
+MapEditor.LastEdittingViewH:8397
 MapEditor.LastEdittingViewZ:1
 Game.Language:zhs
 Input.Left:15

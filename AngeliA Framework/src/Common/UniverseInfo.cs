@@ -20,7 +20,7 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public uint EngineBuildVersion = 0;
 	public bool UseProceduralMap = false;
 	public bool UseMapEditor = true;
-	public bool UseLightingSystem = true;
+	public bool UseLightingSystem = false;
 	public bool ReadonlyMap = false;
 	public bool AllowCheatCode = false;
 	public bool AllowPause = true;
@@ -44,6 +44,7 @@ public class UniverseInfo : IJsonSerializationCallback {
 	public int LastOpenAtlasIndex = 0;
 	public Int3 LastEdittingViewPos = default;
 	public int LastEdittingViewHeight = -1;
+	public long LastBackupSavingDate = 0;
 
 	public void OnAfterLoadedFromDisk () => Valid(true);
 	public void OnBeforeSaveToDisk () => Valid(true);

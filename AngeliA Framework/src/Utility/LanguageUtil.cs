@@ -63,10 +63,11 @@ public static partial class LanguageUtil {
 		var fieldBinding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 		foreach (string folderPath in Util.EnumerateFolders(languageRoot, true)) {
 			string lan = Util.GetNameWithoutExtension(folderPath);
-			string filePath = Util.CombinePaths(folderPath, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}");
-			if (!Util.FileExists(filePath)) continue;
 			var pairs = new List<KeyValuePair<string, string>>();
-			pairs.AddRange(LoadAllPairsFromDiskAtPath(filePath));
+			string filePath = Util.CombinePaths(folderPath, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}");
+			if (Util.FileExists(filePath)) {
+				pairs.AddRange(LoadAllPairsFromDiskAtPath(filePath));
+			}
 			bool loadDef = lan == "en";
 			// All Language Code
 			foreach (var type in Util.GetAllTypeSpan()) {

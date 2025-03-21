@@ -5,8 +5,6 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Engine", "AngeliA Engine.csproj", "{7373E199-EB7C-4B04-949E-034D902B4E7C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Entry", "..\AngeliA Entry\AngeliA Entry.csproj", "{25145FC0-2E4C-48F3-846E-EBE2FA094081}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Framework", "..\AngeliA Framework\AngeliA Framework.csproj", "{018705B7-1C29-4A76-9A98-AB224434C460}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Raylib", "..\AngeliA Raylib\AngeliA Raylib.csproj", "{151A4201-FDAA-463E-9804-BE21AAE2FFC5}"
@@ -14,6 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Rigged", "..\AngeliA Rigged\AngeliA Rigged.csproj", "{767A2864-EF37-4389-B4D7-A3EB944FFBA3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngeliA Platformer", "..\AngeliA Platformer\AngeliA Platformer.csproj", "{C73E6008-0FF9-46B8-B8D2-514AE22CDB13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entry", "Entry\Entry.csproj", "{13BDB17E-719F-4566-9FBC-8C274DB2466C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,6 @@ Global
 		{7373E199-EB7C-4B04-949E-034D902B4E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7373E199-EB7C-4B04-949E-034D902B4E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7373E199-EB7C-4B04-949E-034D902B4E7C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{25145FC0-2E4C-48F3-846E-EBE2FA094081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{25145FC0-2E4C-48F3-846E-EBE2FA094081}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{25145FC0-2E4C-48F3-846E-EBE2FA094081}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{25145FC0-2E4C-48F3-846E-EBE2FA094081}.Release|Any CPU.Build.0 = Release|Any CPU
 		{018705B7-1C29-4A76-9A98-AB224434C460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{018705B7-1C29-4A76-9A98-AB224434C460}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{018705B7-1C29-4A76-9A98-AB224434C460}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{C73E6008-0FF9-46B8-B8D2-514AE22CDB13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C73E6008-0FF9-46B8-B8D2-514AE22CDB13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C73E6008-0FF9-46B8-B8D2-514AE22CDB13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13BDB17E-719F-4566-9FBC-8C274DB2466C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13BDB17E-719F-4566-9FBC-8C274DB2466C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13BDB17E-719F-4566-9FBC-8C274DB2466C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13BDB17E-719F-4566-9FBC-8C274DB2466C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

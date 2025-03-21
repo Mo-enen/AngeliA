@@ -58,12 +58,15 @@
 		<Compile Remove="Backup Saving Data\**" />
 		<Compile Remove="Build\**" />
 		<Compile Remove="Entry\**" />
+		<Compile Remove="Universe\**" />
 		<EmbeddedResource Remove="Backup Saving Data\**" />
 		<EmbeddedResource Remove="Build\**" />
 		<EmbeddedResource Remove="Entry\**" />
+		<EmbeddedResource Remove="Universe\**" />
 		<None Remove="Backup Saving Data\**" />
 		<None Remove="Build\**" />
 		<None Remove="Entry\**" />
+		<None Remove="Universe\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -71,6 +74,7 @@
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
 		<None Remove="Icon.ico" />
+		<None Remove="Icon.png" />
 	</ItemGroup>
 
 	<!--Copy Game Lib into Library Folder-->

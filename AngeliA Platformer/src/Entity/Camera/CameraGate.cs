@@ -27,7 +27,7 @@ public abstract class CameraGate : Entity {
 
 
 	// Api
-	private const int PRIORITY = 0;
+	private const int PRIORITY = 2;
 	protected abstract Direction4 Direction { get; }
 
 	// Data
