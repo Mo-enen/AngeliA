@@ -4,7 +4,7 @@ namespace AngeliaEngine;
 
 
 [EngineSetting]
-public class EngineSetting {
+internal class EngineSetting {
 
 	// Engine
 	[EngineSetting("Engine", "Open Last Project on Start")] public static readonly SavingBool OpenLastProjectOnStart = new("Engine.OpenLastProjectOnStart", false, SavingLocation.Global);
@@ -31,7 +31,7 @@ public class EngineSetting {
 	[EngineSetting("MapEditor", "Show State Info on Bottom-Right", gameOnly: true)] public static readonly SavingBool MapEditor_ShowState = new("MapEditor.ShowState", true, SavingLocation.Global);
 	[EngineSetting("MapEditor", "Show Map Behind", gameOnly: true)] public static readonly SavingBool MapEditor_ShowBehind = new("MapEditor.ShowBehind", true, SavingLocation.Global);
 	[EngineSetting("MapEditor", "Show Gizmos", gameOnly: true)] public static readonly SavingBool MapEditor_ShowGizmos = new("MapEditor.ShowGizmos", true, SavingLocation.Global);
-	
+
 	// Hotkey
 	[EngineSetting("Hotkey", "Recompile", gameOnly: true)] public static readonly SavingHotkey Hotkey_Recompile = new("Hotkey.Recompile", new Hotkey(KeyboardKey.R, ctrl: true), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Run", gameOnly: true)] public static readonly SavingHotkey Hotkey_Run = new("Hotkey.Run", new Hotkey(KeyboardKey.R, ctrl: true, shift: true), SavingLocation.Global);

@@ -6,7 +6,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public class Aseprite {
+internal class Aseprite {
 
 
 

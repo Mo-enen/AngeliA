@@ -4,7 +4,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public class ProjectEditor : WindowUI {
+internal class ProjectEditor : WindowUI {
 
 
 

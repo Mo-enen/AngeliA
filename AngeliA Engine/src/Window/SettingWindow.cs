@@ -6,7 +6,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public class SettingWindow : WindowUI {
+internal class SettingWindow : WindowUI {
 
 
 

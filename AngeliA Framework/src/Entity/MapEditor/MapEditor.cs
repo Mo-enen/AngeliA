@@ -863,7 +863,7 @@ public sealed partial class MapEditor : WindowUI {
 		FrameworkUtil.DrawPoseCharacterAsUI(
 			new IRect(
 				PlayerDropPos.x - Const.HALF,
-				PlayerDropPos.y - Const.CEL * 2,
+				PlayerDropPos.y - Const.CEL,
 				Const.CEL, Const.CEL * 2
 			),
 			player.Rendering as PoseCharacterRenderer, Game.GlobalFrame
@@ -881,7 +881,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (!quickDrop) {
 			GUI.BackgroundLabel(new IRect(
 				Input.MouseGlobalPosition.x - DropHintWidth / 2,
-				Input.MouseGlobalPosition.y + Const.HALF,
+				Input.MouseGlobalPosition.y + Const.HALF * 2,
 				DropHintWidth, Const.CEL
 			), MEDT_DROP, Color32.BLACK, out var bounds);
 			DropHintWidth = bounds.width;
@@ -894,7 +894,7 @@ public sealed partial class MapEditor : WindowUI {
 			drop = true;
 		}
 		if (drop) {
-			DropPlayerLogic(PlayerDropPos.x, PlayerDropPos.y - Const.CEL * 2);
+			DropPlayerLogic(PlayerDropPos.x, PlayerDropPos.y - Const.CEL);
 		} else {
 			player.Active = false;
 		}

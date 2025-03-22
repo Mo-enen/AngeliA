@@ -5,7 +5,7 @@ using AngeliA;
 namespace AngeliaEngine;
 
 
-public partial class LanguageEditor : WindowUI {
+internal class LanguageEditor : WindowUI {
 
 
 

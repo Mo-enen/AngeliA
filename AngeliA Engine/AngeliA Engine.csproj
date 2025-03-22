@@ -44,16 +44,19 @@
 		<None Remove="publish pause.bat" />
 		<None Remove="publish.bat" />
 		<None Remove="update raylib.dll.bat" />
+		<Compile Remove="API\**" />
 		<Compile Remove="Entry\**" />
 		<Compile Remove="Properties\**" />
 		<Compile Remove="Publish\**" />
 		<Compile Remove="Resources\**" />
 		<Compile Remove="Universe\**" />
+		<EmbeddedResource Remove="API\**" />
 		<EmbeddedResource Remove="Entry\**" />
 		<EmbeddedResource Remove="Properties\**" />
 		<EmbeddedResource Remove="Publish\**" />
 		<EmbeddedResource Remove="Resources\**" />
 		<EmbeddedResource Remove="Universe\**" />
+		<None Remove="API\**" />
 		<None Remove="dotnet sdk\**" />
 		<None Remove="Entry\**" />
 		<None Remove="Properties\**" />
@@ -63,7 +66,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
 		<ProjectReference Include="..\AngeliA Rigged\AngeliA Rigged.csproj" />
 	</ItemGroup>
 

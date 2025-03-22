@@ -5,11 +5,18 @@ using System.Reflection;
 namespace AngeliA;
 
 
+/// <summary>
+/// Attribute apply to method and call all of them in given order
+/// </summary>
+/// <param name="order"></param>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 public abstract class OrderedAttribute (int order) : Attribute {
 
-	public int Order { get; init; } = order;
+	internal int Order { get; init; } = order;
 
+	/// <summary>
+	/// Call all static methods in order with given type of attribute
+	/// </summary>
 	public static void InvokeAsAutoOrderingTask<A> () where A : Attribute {
 
 		var methods = new List<KeyValuePair<MethodInfo, A>>(Util.AllStaticMethodWithAttribute<A>());

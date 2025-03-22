@@ -4,7 +4,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public partial class PixelEditor : WindowUI {
+internal partial class PixelEditor : WindowUI {
 
 
 

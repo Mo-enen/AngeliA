@@ -6,6 +6,9 @@ using System.Reflection;
 namespace AngeliA;
 
 
+#pragma warning disable CS1591 // I have no idea what are these anymore (ˉ▽ˉ；)...
+
+
 public enum CompareMode {
 	GreaterThan,
 	GreaterOrEqual,

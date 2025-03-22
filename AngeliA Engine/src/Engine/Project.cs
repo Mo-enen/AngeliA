@@ -5,7 +5,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public class Project {
+internal class Project {
 
 	public string ProjectPath { get; init; }
 	public string SourceCodePath { get; init; }

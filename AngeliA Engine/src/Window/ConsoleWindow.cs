@@ -4,7 +4,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public class ConsoleWindow : WindowUI {
+internal class ConsoleWindow : WindowUI {
 
 
 

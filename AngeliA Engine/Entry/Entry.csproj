@@ -82,7 +82,7 @@
 		<None Remove="publish.bat" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\AngeliA Raylib\AngeliA Raylib.csproj" />
+	  <ProjectReference Include="..\..\AngeliA Rigged\AngeliA Rigged.csproj" />
 	</ItemGroup>
 
 </Project>

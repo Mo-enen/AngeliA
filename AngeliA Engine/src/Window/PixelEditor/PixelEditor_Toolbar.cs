@@ -5,7 +5,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public partial class PixelEditor {
+internal partial class PixelEditor {
 
 
 

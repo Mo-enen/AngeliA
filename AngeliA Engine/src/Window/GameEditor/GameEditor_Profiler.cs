@@ -4,7 +4,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public partial class GameEditor {
+internal partial class GameEditor {
 
 	// VAR
 	private readonly ProfilerUiBarData[] RenderingUsages = new ProfilerUiBarData[RenderLayer.COUNT];

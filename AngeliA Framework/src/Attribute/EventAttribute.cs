@@ -5,6 +5,9 @@ using System.Text;
 
 namespace AngeliA;
 
+/// <summary>
+/// Attribute for link all static methods with a System.Action. When the action is invoked, all methods get called.
+/// </summary>
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Field, AllowMultiple = false)]
 public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 
@@ -30,8 +33,8 @@ public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 	internal static void ClearAllMethodCache () => MethodCache = null;
 
 
-	// API
-	public static IEnumerable<(MethodInfo method, EventAttribute att)> ForAllStaticMethodWithEventAttribute () {
+	// LGC
+	private static IEnumerable<(MethodInfo method, EventAttribute att)> ForAllStaticMethodWithEventAttribute () {
 		if (MethodCache == null) {
 			MethodCache = [];
 			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<EventAttribute>()) {
@@ -45,7 +48,6 @@ public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 	}
 
 
-	// LGC
 	private static void LinkEventWithAttribute (Type attributeType, Type sender, FieldInfo actionField) {
 
 		if (!IsAction(actionField.FieldType)) return;

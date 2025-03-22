@@ -1,0 +1,406 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AngeliA Framework</name>
+    </assembly>
+    <members>
+        <member name="T:AngeliA.ToolApplicationAttribute">
+            <summary>
+            If application with current assembly should be treat as a "tool" rather than "game"
+            </summary>
+        </member>
+        <member name="T:AngeliA.IgnoreArtworkPixelsAttribute">
+            <summary>
+            Current application do not load pixel data from sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.DefaultKeyboardGamekeyAttribute">
+            <summary>
+            Default keyboard binding for the given gamekey
+            </summary>
+            <param name="gamekey"></param>
+            <param name="inputKey"></param>
+        </member>
+        <member name="M:AngeliA.DefaultKeyboardGamekeyAttribute.#ctor(AngeliA.Gamekey,AngeliA.KeyboardKey)">
+            <summary>
+            Default keyboard binding for the given gamekey
+            </summary>
+            <param name="gamekey"></param>
+            <param name="inputKey"></param>
+        </member>
+        <member name="T:AngeliA.DefaultGamepadGamekeyAttribute">
+            <summary>
+            Default gamepad binding for the given gamekey
+            </summary>
+            <param name="gamekey"></param>
+            <param name="inputKey"></param>
+        </member>
+        <member name="M:AngeliA.DefaultGamepadGamekeyAttribute.#ctor(AngeliA.Gamekey,AngeliA.GamepadKey)">
+            <summary>
+            Default gamepad binding for the given gamekey
+            </summary>
+            <param name="gamekey"></param>
+            <param name="inputKey"></param>
+        </member>
+        <member name="T:AngeliA.EntityLayerCapacityAttribute">
+            <summary>
+            Max entity count for the layer
+            </summary>
+            <param name="layer"></param>
+            <param name="capacity"></param>
+        </member>
+        <member name="M:AngeliA.EntityLayerCapacityAttribute.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Max entity count for the layer
+            </summary>
+            <param name="layer"></param>
+            <param name="capacity"></param>
+        </member>
+        <member name="T:AngeliA.RendererLayerCapacityAttribute">
+            <summary>
+            Max rendering cell count for the layer
+            </summary>
+            <param name="layer"></param>
+            <param name="capacity"></param>
+        </member>
+        <member name="M:AngeliA.RendererLayerCapacityAttribute.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Max rendering cell count for the layer
+            </summary>
+            <param name="layer"></param>
+            <param name="capacity"></param>
+        </member>
+        <member name="T:AngeliA.GlobalGravityAttribute">
+            <summary>
+            The gravity value applys on all rigidbody
+            </summary>
+            <param name="gravity"></param>
+        </member>
+        <member name="M:AngeliA.GlobalGravityAttribute.#ctor(System.Int32)">
+            <summary>
+            The gravity value applys on all rigidbody
+            </summary>
+            <param name="gravity"></param>
+        </member>
+        <member name="T:AngeliA.EnablePlayerSystemAttribute">
+            <summary>
+            The current application use player system or not
+            </summary>
+        </member>
+        <member name="T:AngeliA.BodySetAttribute">
+            <summary>
+            Treat specified sprites as bodyset for pose-characters
+            </summary>
+            <param name="name">The name of the bodyset</param>
+        </member>
+        <member name="M:AngeliA.BodySetAttribute.#ctor(System.String)">
+            <summary>
+            Treat specified sprites as bodyset for pose-characters
+            </summary>
+            <param name="name">The name of the bodyset</param>
+        </member>
+        <member name="T:AngeliA.CharacterAttribute">
+            <summary>
+            Attribute for character class
+            </summary>
+        </member>
+        <member name="T:AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute">
+            <summary>
+            Make the character as default selected player
+            </summary>
+            <param name="priority"></param>
+        </member>
+        <member name="M:AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute.#ctor(System.Int32)">
+            <summary>
+            Make the character as default selected player
+            </summary>
+            <param name="priority"></param>
+        </member>
+        <member name="T:AngeliA.EntityAttribute">
+            <summary>
+            Attribute for entities
+            </summary>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.ExcludeInMapEditorAttribute">
+            <summary>
+            Do not show this entity inside the palette panel of map editor.
+            </summary>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.MapEditorGroupAttribute">
+            <summary>
+            Which map editor palette group should this entity in 
+            </summary>
+            <param name="groupName"></param>
+            <param name="order"></param>
+        </member>
+        <member name="M:AngeliA.EntityAttribute.MapEditorGroupAttribute.#ctor(System.String,System.Int32)">
+            <summary>
+            Which map editor palette group should this entity in 
+            </summary>
+            <param name="groupName"></param>
+            <param name="order"></param>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.LayerAttribute">
+            <summary>
+            Which layer should this entity spawn inside.
+            </summary>
+            <param name="layer"></param>
+        </member>
+        <member name="M:AngeliA.EntityAttribute.LayerAttribute.#ctor(System.Int32)">
+            <summary>
+            Which layer should this entity spawn inside.
+            </summary>
+            <param name="layer"></param>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.CapacityAttribute">
+            <summary>
+            Spawn limit count of this entity 
+            </summary>
+            <param name="capacity"></param>
+            <param name="preSpawn">Create this many instance of the entity when game initialize</param>
+        </member>
+        <member name="M:AngeliA.EntityAttribute.CapacityAttribute.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Spawn limit count of this entity 
+            </summary>
+            <param name="capacity"></param>
+            <param name="preSpawn">Create this many instance of the entity when game initialize</param>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.DontDespawnOutOfRangeAttribute">
+            <summary>
+            Do not despawn this entity when it's out of view rect
+            </summary>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.DontSpawnFromWorld">
+            <summary>
+            Do not spawn this entity when it's painted into the map
+            </summary>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.UpdateOutOfRangeAttribute">
+            <summary>
+            This entity will update when it's outside view rect
+            </summary>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.DontDrawBehindAttribute">
+            <summary>
+            This entity will not display on the behind layer
+            </summary>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.DontDestroyOnZChangedAttribute">
+            <summary>
+            This entity do not despawn when player enter another map layer
+            </summary>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.StageOrderAttribute">
+            <summary>
+            The order in which this entity gets updated in it's layer
+            </summary>
+            <param name="order"></param>
+        </member>
+        <member name="M:AngeliA.EntityAttribute.StageOrderAttribute.#ctor(System.Int32)">
+            <summary>
+            The order in which this entity gets updated in it's layer
+            </summary>
+            <param name="order"></param>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.RepositionWhenInactiveAttribute">
+            <summary>
+            When the entity despawn, reset the position in map. So next time it will be load from the position where it last appeared
+            </summary>
+            <param name="requireReposition">Disable reposition by setting this to False</param>
+        </member>
+        <member name="M:AngeliA.EntityAttribute.RepositionWhenInactiveAttribute.#ctor(System.Boolean)">
+            <summary>
+            When the entity despawn, reset the position in map. So next time it will be load from the position where it last appeared
+            </summary>
+            <param name="requireReposition">Disable reposition by setting this to False</param>
+        </member>
+        <member name="T:AngeliA.EntityAttribute.SpawnWithCheatCodeAttribute">
+            <summary>
+            Player can use "Spawn---" to spawn this entity to stage.
+            </summary>
+        </member>
+        <member name="T:AngeliA.ItemDropAttribute`1">
+            <summary>
+            Register item drop for the entity, use ItemSystem.DropItemFor(Entity) to perform the item drop.
+            </summary>
+            <typeparam name="I">Which item does it drops</typeparam>
+            <param name="dropChance">Probability of dropping this item. 0 means 0%, 1000 means 100%</param>
+            <param name="dropCount">How many items does it drop at once</param>
+        </member>
+        <member name="M:AngeliA.ItemDropAttribute`1.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Register item drop for the entity, use ItemSystem.DropItemFor(Entity) to perform the item drop.
+            </summary>
+            <typeparam name="I">Which item does it drops</typeparam>
+            <param name="dropChance">Probability of dropping this item. 0 means 0%, 1000 means 100%</param>
+            <param name="dropCount">How many items does it drop at once</param>
+        </member>
+        <member name="T:AngeliA.ItemDropAttribute">
+            <inheritdoc cref="T:AngeliA.ItemDropAttribute`1" />
+        </member>
+        <member name="M:AngeliA.ItemDropAttribute.#ctor(System.Int32,System.Int32,System.Int32)">
+            <inheritdoc cref="T:AngeliA.ItemDropAttribute`1" />
+        </member>
+        <member name="T:AngeliA.ItemCombinationAttribute">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="M:AngeliA.ItemCombinationAttribute.#ctor(System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="T:AngeliA.ItemCombinationAttribute`1">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="M:AngeliA.ItemCombinationAttribute`1.#ctor(System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="T:AngeliA.ItemCombinationAttribute`2">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="M:AngeliA.ItemCombinationAttribute`2.#ctor(System.Int32,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="T:AngeliA.ItemCombinationAttribute`3">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="M:AngeliA.ItemCombinationAttribute`3.#ctor(System.Int32,System.String,System.String,System.String,System.String,System.String)">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="T:AngeliA.ItemCombinationAttribute`4">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="M:AngeliA.ItemCombinationAttribute`4.#ctor(System.Int32,System.String,System.String,System.String,System.String)">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="T:AngeliA.GlobalItemCombinationAttribute">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="M:AngeliA.GlobalItemCombinationAttribute.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="T:AngeliA.GlobalItemCombinationAttribute`1">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="M:AngeliA.GlobalItemCombinationAttribute`1.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="T:AngeliA.GlobalItemCombinationAttribute`2">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="M:AngeliA.GlobalItemCombinationAttribute`2.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="T:AngeliA.GlobalItemCombinationAttribute`3">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="M:AngeliA.GlobalItemCombinationAttribute`3.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.String)">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="T:AngeliA.GlobalItemCombinationAttribute`4">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="M:AngeliA.GlobalItemCombinationAttribute`4.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String)">
+            <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
+        </member>
+        <member name="T:AngeliA.BasicGlobalItemCombinationAttribute">
+            <summary></summary>
+        </member>
+        <member name="M:AngeliA.BasicGlobalItemCombinationAttribute.#ctor(AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,System.String,System.Int32,System.String,System.String,System.String,System.String)">
+            <summary></summary>
+        </member>
+        <member name="T:AngeliA.BasicItemCombinationAttribute">
+            <summary>
+            Define a item combination to craft the item.
+            </summary>
+            <param name="count">How many item does it craft at once</param>
+            <param name="keepId0">Do not consume this item</param>
+            <param name="keepId1">Do not consume this item</param>
+            <param name="keepId2">Do not consume this item</param>
+            <param name="keepId3">Do not consume this item</param>
+            <param name="extraA">Use this if the item is not based on class</param>
+            <param name="extraB">Use this if the item is not based on class</param>
+            <param name="extraC">Use this if the item is not based on class</param>
+            <param name="extraD">Use this if the item is not based on class</param>
+            <param name="itemA">An item required to craft the result item</param>
+            <param name="itemB">An item required to craft the result item</param>
+            <param name="itemC">An item required to craft the result item</param>
+            <param name="itemD">An item required to craft the result item</param>
+        </member>
+        <member name="M:AngeliA.BasicItemCombinationAttribute.#ctor(AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,System.Int32,System.String,System.String,System.String,System.String)">
+            <summary>
+            Define a item combination to craft the item.
+            </summary>
+            <param name="count">How many item does it craft at once</param>
+            <param name="keepId0">Do not consume this item</param>
+            <param name="keepId1">Do not consume this item</param>
+            <param name="keepId2">Do not consume this item</param>
+            <param name="keepId3">Do not consume this item</param>
+            <param name="extraA">Use this if the item is not based on class</param>
+            <param name="extraB">Use this if the item is not based on class</param>
+            <param name="extraC">Use this if the item is not based on class</param>
+            <param name="extraD">Use this if the item is not based on class</param>
+            <param name="itemA">An item required to craft the result item</param>
+            <param name="itemB">An item required to craft the result item</param>
+            <param name="itemC">An item required to craft the result item</param>
+            <param name="itemD">An item required to craft the result item</param>
+        </member>
+        <member name="T:AngeliA.ItemCombinationParam">
+            <summary></summary>
+        </member>
+        <member name="T:AngeliA.NoItemCombinationAttribute">
+            <summary>
+            Indicates to the system that this item does not require crafting combination
+            </summary>
+        </member>
+        <member name="F:AngeliA.PhysicsMask.ENTITY">
+            <summary>
+            ENVIRONMENT | CHARACTER
+            </summary>
+        </member>
+        <member name="F:AngeliA.PhysicsMask.DYNAMIC">
+            <summary>
+            ENVIRONMENT | ITEM | CHARACTER
+            </summary>
+        </member>
+        <member name="F:AngeliA.PhysicsMask.SOLID">
+            <summary>
+            LEVEL | ENVIRONMENT | CHARACTER
+            </summary>
+        </member>
+        <member name="F:AngeliA.PhysicsMask.MAP">
+            <summary>
+            LEVEL | ENVIRONMENT
+            </summary>
+        </member>
+        <member name="M:AngeliA.Inventory.AddItemAt(System.Int32,System.Int32,System.Int32)">
+            <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
+        </member>
+        <member name="M:AngeliA.Inventory.FindAndAddItem(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
+        </member>
+        <member name="M:AngeliA.Inventory.TakeItemAt(System.Int32,System.Int32,System.Int32)">
+            <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
+        </member>
+        <member name="M:AngeliA.Inventory.FindAndTakeItem(System.Int32,System.Int32,System.Int32)">
+            <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
+        </member>
+        <member name="M:AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+            <returns>How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.</returns>
+        </member>
+        <member name="M:AngeliA.Util.QuickRandom(System.Int32,System.Int32)">
+            <summary>
+            "min" is Included, "max" is Excluded
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.QuickRandomWithSeed(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            "min" is Included, "max" is Excluded
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.QuickRandomWithSeed(System.Int64,System.Int32,System.Int32)">
+            <summary>
+            "min" is Included, "max" is Excluded
+            </summary>
+        </member>
+    </members>
+</doc>

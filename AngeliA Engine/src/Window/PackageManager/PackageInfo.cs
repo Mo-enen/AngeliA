@@ -2,7 +2,7 @@
 
 namespace AngeliaEngine;
 
-public class PackageInfo {
+internal class PackageInfo {
 
 	public bool AnyResourceFounded => DllFounded || SheetFounded || ThemeFounded;
 

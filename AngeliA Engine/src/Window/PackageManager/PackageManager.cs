@@ -6,7 +6,7 @@ using AngeliA;
 namespace AngeliaEngine;
 
 
-public class PackageManager : WindowUI {
+internal class PackageManager : WindowUI {
 
 
 

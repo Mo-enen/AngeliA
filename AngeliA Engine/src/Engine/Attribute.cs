@@ -6,11 +6,11 @@ using AngeliA;
 namespace AngeliaEngine;
 
 
-public class OnProjectBuiltInBackgroundAttribute (int order = 0) : EventAttribute(order) { }
+internal class OnProjectBuiltInBackgroundAttribute (int order = 0) : EventAttribute(order) { }
 
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Field, AllowMultiple = false)]
-public class EngineSettingAttribute : Attribute {
+internal class EngineSettingAttribute : Attribute {
 	public string Group;
 	public string DisplayLabel;
 	public string RequireSettingName;

@@ -5,7 +5,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-public partial class Engine {
+internal partial class Engine {
 
 
 

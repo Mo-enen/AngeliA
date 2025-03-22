@@ -8,7 +8,7 @@ public static partial class FrameworkUtil {
 
 	[OnObjectBreak_IntSpriteID_IRect] internal static Action<int, IRect> OnObjectBreak;
 	[OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravity] internal static Action<int, Int2, int, bool, Int2, int, int> OnObjectFreeFall;
-	[OnBlockPicked_IntSpriteID_Irect] internal static Action<int, IRect> OnBlockPicked;
+	[OnBlockPicked_IntSpriteID_IRect] internal static Action<int, IRect> OnBlockPicked;
 	[OnFallIntoWater_Rigidbody_Entity] internal static Action<Rigidbody, Entity> OnFallIntoWater;
 	[OnCameOutOfWater_Rigidbody_Entity] internal static Action<Rigidbody, Entity> OnCameOutOfWater;
 	[OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCount] internal static Action<Entity, Int2, int, int> OnItemCollected;

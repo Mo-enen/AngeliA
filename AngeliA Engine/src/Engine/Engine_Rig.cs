@@ -5,7 +5,7 @@ using AngeliaRigged;
 
 namespace AngeliaEngine;
 
-public partial class Engine {
+internal partial class Engine {
 
 
 

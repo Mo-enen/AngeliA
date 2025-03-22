@@ -11,7 +11,7 @@ using Task = System.Threading.Tasks.Task;
 namespace AngeliaEngine;
 
 
-public static class EngineUtil {
+internal static class EngineUtil {
 
 
 
