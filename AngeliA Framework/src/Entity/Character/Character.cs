@@ -285,7 +285,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 		// Equipping
 		ResetInventoryUpdate(invCapacity);
-		for (int i = 0; i < Const.EquipmentTypeCount; i++) {
+		for (int i = 0; i < Const.EQUIPMENT_TYPE_COUNT; i++) {
 			var type = (EquipmentType)i;
 			int id = Inventory.GetEquipment(InventoryID, type, out int equipmentCount);
 			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
@@ -535,7 +535,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 			// Equipping
 			bool attacking = false;
 			Bullet attackingBullet = null;
-			for (int i = 0; i < Const.EquipmentTypeCount; i++) {
+			for (int i = 0; i < Const.EQUIPMENT_TYPE_COUNT; i++) {
 				int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
 				var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 				if (item == null || !item.ItemConditionCheck(this)) continue;
@@ -717,7 +717,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 		// Equipment
 		ResetInventoryUpdate(invCapacity);
-		for (int i = 0; i < Const.EquipmentTypeCount && damage.Amount > 0; i++) {
+		for (int i = 0; i < Const.EQUIPMENT_TYPE_COUNT && damage.Amount > 0; i++) {
 			int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
 			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 			if (item == null || !item.ItemConditionCheck(this)) continue;
@@ -771,7 +771,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 	public int TryRepairAllEquipments (bool requireMultiple = false) {
 		int repairedCount = 0;
-		for (int i = 0; i < Const.EquipmentTypeCount; i++) {
+		for (int i = 0; i < Const.EQUIPMENT_TYPE_COUNT; i++) {
 			int id = Inventory.GetEquipment(InventoryID, (EquipmentType)i, out int equipmentCount);
 			var item = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
 			if (item == null) continue;

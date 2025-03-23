@@ -1397,17 +1397,17 @@
         </member>
         <member name="F:AngeliA.CharacterMovement.JumpReleaseSpeedRate">
             <summary>
-            When character stop trying to jump (player release the jump button), and the character is still moving up, then the current speed will be mutiply to this rate (0 means 0%, 1000 means 100%)
+            When character stop trying to jump (player release the jump button), and the character is still moving up, then the current speed will be multiply to this rate (0 means 0%, 1000 means 100%)
             </summary>
         </member>
         <member name="F:AngeliA.CharacterMovement.JumpRiseGravityRate">
             <summary>
-            Gravity applys on the character will mutiply this rate when character moving up in air (0 means 0%, 1000 means 100%)
+            Gravity applys on the character will multiply this rate when character moving up in air (0 means 0%, 1000 means 100%)
             </summary>
         </member>
         <member name="F:AngeliA.CharacterMovement.JumpBoostFromMoveRate">
             <summary>
-            When character start jump, if it's moving, the running speed will mutiply this rate and add into the initial jump speed. (0 means 0%, 1000 means 100%)
+            When character start jump, if it's moving, the running speed will multiply this rate and add into the initial jump speed. (0 means 0%, 1000 means 100%)
             </summary>
         </member>
         <member name="F:AngeliA.CharacterMovement.FirstJumpWithRoll">
@@ -1439,6 +1439,786 @@
             <summary>
             Allow character jump down and go through oneway gate (player holding down button and press jump button once)
             </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SquatAvailable">
+            <summary>
+            Allow character to squat
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SquatHeightAmount">
+            <summary>
+            Character hitbox height multiply this rate when squatting (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SquatMoveSpeed">
+            <summary>
+            Move speed when character squatting, set to 0 when not allow squat move
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SquatAcceleration">
+            <summary>
+            Movement acceleration when squat moving
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SquatDeceleration">
+            <summary>
+            Movement deceleration when squat moving
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashAvailable">
+            <summary>
+            Allow character to dash (player hold down button and press jump button for once)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashHeightAmount">
+            <summary>
+             Character hitbox height multiply this rate when dashing (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashWithRoll">
+            <summary>
+            Character roll when dashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashPutoutFire">
+            <summary>
+            Allow character dash through fire to put it out
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashSpeed">
+            <summary>
+            Movement speed for dashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashDuration">
+            <summary>
+            How many frames does dash last
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashCooldown">
+            <summary>
+            Frames length between prev dash end and next dash start
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashAcceleration">
+            <summary>
+            Speed acceleration when dashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashCancelLoseRate">
+            <summary>
+            Speed multiply this rate when dash being cancel (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushAvailable">
+            <summary>
+            Allow character to rush
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushHeightAmount">
+            <summary>
+             Character hitbox height multiply this rate when rushing (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushInAir">
+            <summary>
+            Allow character rush when not grounded
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushInWater">
+            <summary>
+            Allow character rush when inside water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushWhenClimb">
+            <summary>
+            character rush when climb
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushWhenSquat">
+            <summary>
+            character rush when squat
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushPutoutFire">
+            <summary>
+            Allow character rush through fire to put it out
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushSpeed">
+            <summary>
+            Movement speed when rushing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushStopSpeed">
+            <summary>
+            Movement speed when rush end
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushDuration">
+            <summary>
+            How many frames does rush last
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushStiff">
+            <summary>
+            How many frames does character not allow to move after rush end
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushCooldown">
+            <summary>
+            How many frames does character has to wair after prev rush end to rush again
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushAcceleration">
+            <summary>
+            Speed acceleration when rushing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushDeceleration">
+            <summary>
+            Speed deceleration when rushing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlipAvailable">
+            <summary>
+            Allow character slip when run on slippery ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlipAcceleration">
+            <summary>
+            Speed acceleration when moving on slippery ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlipDeceleration">
+            <summary>
+            Speed deceleration when moving on slippery ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.PoundAvailable">
+            <summary>
+            Allow character ground pound in air (player press down button in air)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.PoundPutoutFire">
+            <summary>
+            Allow character pound on fire to put it out
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.PoundSpeed">
+            <summary>
+            Movement speed when pounding
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimAvailable">
+            <summary>
+            Allow character swim in water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.InWaterSpeedRate">
+            <summary>
+            When character inside water, the movement speed will multiply this rate (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimWidthAmount">
+            <summary>
+             Character hitbox width multiply this rate when swimming (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimHeightAmount">
+            <summary>
+             Character hitbox height multiply this rate when swimming (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimSpeed">
+            <summary>
+            Movement speed when character swimming
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimJumpSpeed">
+            <summary>
+            Movement speed when character jump inside water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimAcceleration">
+            <summary>
+            Speed acceleration when chracter inside water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimDeceleration">
+            <summary>
+            Speed deceleration when chracter inside water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.ClimbAvailable">
+            <summary>
+            Allow character to climb
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.AllowJumpWhenClimbing">
+            <summary>
+            Allow character jump when climbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.ClimbSpeedX">
+            <summary>
+            Horizontal speed when climbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.ClimbSpeedY">
+            <summary>
+            Vertical speed when climbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyAvailable">
+            <summary>
+            Allow character to fly (player press jump button when no jump count left)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyHeightAmount">
+            <summary>
+            Character hitbox height multiply this rate when flying (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GlideOnFlying">
+            <summary>
+            When glide flying, character always move to the direction it facing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyCooldown">
+            <summary>
+            Character has to wait this many frames to fly again
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyRiseSpeed">
+            <summary>
+            Initial speed when fly start
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyGravityRiseRate">
+            <summary>
+            Gravity multiply this rate when flying and moving up (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyGravityFallRate">
+            <summary>
+            Gravity multiply this rate when flying and moving down (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyFallSpeed">
+            <summary>
+            Fall down speed shen flying
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyMoveSpeed">
+            <summary>
+            Horizontal move speed when flying
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyAcceleration">
+            <summary>
+            Speed acceleration when flying
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyDeceleration">
+            <summary>
+            Speed deceleration when flying
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlideAvailable">
+            <summary>
+            Allow character to slide on wall
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlideOnAnyBlock">
+            <summary>
+            Allow character to slide on all type of blocks
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.ResetJumpCountWhenSlide">
+            <summary>
+            Set jump count to 0 when slide
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlideJumpKickSpeed">
+            <summary>
+            Horizontal initial speed when character jump when slide
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlideDropSpeed">
+            <summary>
+            Drop down speed when sliding
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabTopAvailable">
+            <summary>
+            Allow character grab on the bottom of blocks with Tag.GrabTop
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabSideAvailable">
+            <summary>
+            Allow character grab on the side of blocks with Tag.GrabSide
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabTopHeightAmount">
+            <summary>
+            Character hitbox height multiply this rate when top-grabbing (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabSideHeightAmount">
+            <summary>
+            Character hitbox height multiply this rate when side-grabbing (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.ResetJumpCountWhenGrab">
+            <summary>
+            Set jump count to 0 when character grabbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabFlipThroughDownAvailable">
+            <summary>
+            Allow character to flip through block downward (player press down when standing on top-grabable blocks)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabFlipThroughUpAvailable">
+            <summary>
+            Allow character to flip through block upward (player press up when top-grabbing)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabFlipThroughDuration">
+            <summary>
+            How long does flip through takes in frames
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabMoveSpeedX">
+            <summary>
+            Horizontal move speed when top-grabbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabMoveSpeedY">
+            <summary>
+             Vertical move speed when side-grabbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabSideJumpKickSpeed">
+            <summary>
+            Horizontal initial speed when character jump when side-grabbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.CrashAvailable">
+            <summary>
+            Allow character crash
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.CrashWhenSlippy">
+            <summary>
+            Make character crash when running too long on slippery ground or rush on slippery ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.CrashDuration">
+            <summary>
+            How many frames does it takes for one crash
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.CrashRunDurationRequire">
+            <summary>
+            How many frames does it takes to make character crash
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.CrashDeceleration">
+            <summary>
+            Speed deceleration when character crashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.PushAvailable">
+            <summary>
+            Allow character push other rigidbody
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.PushSpeed">
+            <summary>
+            Movement speed when character pushing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.Target">
+            <summary></summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.TargetCharacter">
+            <summary></summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastMoveDirection">
+            <summary>
+            Direction for last movement
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IntendedX">
+            <summary>
+            1 if character want to move right, -1 for left
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IntendedY">
+            <summary>
+            1 if character want to move up, -1 for down
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.CurrentJumpCount">
+            <summary>
+            How many times does character jumps after touching ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.FacingRight">
+            <summary>
+            True if character currently facing right
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.FacingFront">
+            <summary>
+            True if character currently facing front
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.ShouldRun">
+            <summary>
+            True if character want to run instead of walk when move
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.SyncFromConfigFile">
+            <summary>
+            Does movement config sync with json file in game universe folder
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGroundFrame">
+            <summary>
+            Last frame when character start touching ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGroundingFrame">
+            <summary>
+            Last frame when character is touching ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastStartMoveFrame">
+            <summary>
+            Last frame when character start to move
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastEndMoveFrame">
+            <summary>
+            Last frame when character moving ends
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastJumpFrame">
+            <summary>
+            Last frame when character start to jump
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastClimbFrame">
+            <summary>
+            Last frame when character climb
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastDashFrame">
+            <summary>
+            Last frame when character start to dash
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastRushStartFrame">
+            <summary>
+            Last frame when character start to rush
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastCrashFrame">
+            <summary>
+            Last frame when character crash
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastSlippyMoveStartFrame">
+            <summary>
+            Last frame when character start to move on slippery ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastSquatStartFrame">
+            <summary>
+            Last frame when character start to squat
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastSquattingFrame">
+            <summary>
+            Last frame when character is squatting
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastPoundingFrame">
+            <summary>
+            Last frame when character is pounding
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastSlidingFrame">
+            <summary>
+            Last frame when character is sliding on wall
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGrabbingFrame">
+            <summary>
+            Last frame when character is grabbing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastFlyFrame">
+            <summary>
+            Last frame when character start to fly
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGrabFlipUpFrame">
+            <summary>
+            Last frame when character start to grab flip upward
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGrabFlipDownFrame">
+            <summary>
+            Last frame when character start to grab flip downward
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGrabCancelFrame">
+            <summary>
+            Last frame when character stop grabbing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastStartRunFrame">
+            <summary>
+            Last frame when character start to run
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastFacingChangeFrame">
+            <summary>
+            Last frame when character change horizontal facing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.MovementState">
+            <summary>
+            Current movement type
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsGrabFlipping">
+            <summary>
+            True if character flipping through blocks
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsGrabFlippingUp">
+            <summary>
+            True if character flipping through blocks upward
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsGrabFlippingDown">
+            <summary>
+            True if character flipping through blocks downward
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsMoving">
+            <summary>
+            True if character is moving
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsWalking">
+            <summary>
+            True if character is walking
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsRunning">
+            <summary>
+            True if character is running
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsRolling">
+            <summary>
+            True if character is rolling
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsDashing">
+            <summary>
+            True if character is dashing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsRushing">
+            <summary>
+            True if character is rushing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsCrashing">
+            <summary>
+            True if character is crashing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsSquatting">
+            <summary>
+            True if character is squatting
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsPounding">
+            <summary>
+            True if character is pounding
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsClimbing">
+            <summary>
+            True if character is climbing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsFlying">
+            <summary>
+            True if character is flying
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsSliding">
+            <summary>
+            True if character is sliding on wall
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsGrabbingTop">
+            <summary>
+            True if character is top-grabbing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsGrabbingSide">
+            <summary>
+            True if character is side-grabbing
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.ReloadMovementConfigFromFile">
+            <summary>
+            Load movement data from json file inside game universe folder
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Move(AngeliA.Direction3,AngeliA.Direction3,System.Boolean)">
+            <summary>
+            Move the character
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="walk">True if character want to walk instead of run</param>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Stop">
+            <summary>
+            Stop current movement
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.HoldJump(System.Boolean)">
+            <summary>
+            Is character holding jump (call this every frame no matter character is jumpping or not)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Jump(System.Boolean)">
+            <summary>
+            Perform jump (call this once when jump start)
+            </summary>
+            <param name="isSquatJump">Is this jump a squat jump or not</param>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Dash">
+            <summary>
+            Perform dash (call this once when dash start)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.StopDash">
+            <summary>
+            Stop current dashing 
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Pound">
+            <summary>
+            Perform pound (call this once when pound start)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Rush">
+            <summary>
+            Perform rush (call this once when rush start)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.StopRush">
+            <summary>
+            Stop current rush
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Crash">
+            <summary>
+            Perform crash (call this once when crash start)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.StopCrash">
+            <summary>
+            Stop current crash
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.LockFacingRight(System.Boolean,System.Int32)">
+            <summary>
+            Force character facing right or left for given frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.LockSquat(System.Int32)">
+            <summary>
+            Force character to squat for given frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.SetSpeedRate(System.Int32,System.Int32)">
+            <summary>
+            Force movement speed rate for given frames
+            </summary>
+            <param name="newRate">0 means 0%, 1000 means 100%</param>
+            <param name="duration"></param>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.CalculateMovementState(AngeliA.CharacterMovement)">
+            <summary>
+            Get current movement type base on current cached data
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.GetMovementState">
+            <summary>
+            Get current movement type base on current cached data
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.MoveLogic(System.Int32,System.Int32,System.Boolean)">
+            <summary></summary>
+        </member>
+        <member name="T:AngeliA.CharacterRenderer">
+            <summary>
+            Behaviour class handles rendering of character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterRenderer.#ctor(AngeliA.Character)">
+            <summary>
+            Behaviour class handles rendering of character
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterRenderer.TargetCharacter">
+            <summary></summary>
+        </member>
+        <member name="P:AngeliA.CharacterRenderer.CurrentAnimationFrame">
+            <summary></summary>
+        </member>
+        <member name="P:AngeliA.CharacterRenderer.CurrentRenderingBounce">
+            <summary></summary>
+        </member>
+        <member name="P:AngeliA.CharacterRenderer.SpinOnGroundPound">
+            <summary>
+            Does character spin when ground pound
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterRenderer.Tint">
+            <summary>
+            Final color tint
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterRenderer.Scale">
+            <summary>
+             Final size scaling (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterRenderer.OnActivated">
+            <summary>
+            Callback function for character entity get activated
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterRenderer.BeforeUpdate">
+            <summary></summary>
+        </member>
+        <member name="M:AngeliA.CharacterRenderer.LateUpdate">
+            <summary></summary>
         </member>
         <member name="F:AngeliA.PhysicsMask.ENTITY">
             <summary>

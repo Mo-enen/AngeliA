@@ -16,14 +16,23 @@ public static class Extension {
 
 
 	// AngeliA Hash Code
+	/// <summary>
+	/// Name of this type that used inside AngeliA
+	/// </summary>
 	public static string AngeName (this System.Type type) {
 		string name = type.Name;
 		if (char.IsLower(name[0])) name = name[1..];
 		return name;
 	}
 
+	/// <summary>
+	/// Hash code that used inside AngeliA
+	/// </summary>
 	public static int AngeHash (this System.Type type) => type.AngeName().AngeHash();
 
+	/// <summary>
+	/// Hash code that used inside AngeliA
+	/// </summary>
 	public static int AngeHash (this string str) {
 		const int p = 31;
 		const int m = 1837465129;
@@ -37,6 +46,9 @@ public static class Extension {
 		return hash_value == 0 ? 1 : hash_value;
 	}
 
+	/// <summary>
+	/// Hash code that used inside AngeliA
+	/// </summary>
 	public static int AngeHash (this string str, int start, int length) {
 		const int p = 31;
 		const int m = 1837465129;
@@ -52,6 +64,9 @@ public static class Extension {
 		return hash_value == 0 ? 1 : hash_value;
 	}
 
+	/// <summary>
+	/// Hash code that used inside AngeliA but generate with the reversed string data
+	/// </summary>
 	public static int AngeReverseHash (this char[] arr, int start, int length) {
 		const int p = 31;
 		const int m = 1837465129;
@@ -69,6 +84,9 @@ public static class Extension {
 
 
 	// Misc
+	/// <summary>
+	/// True if the character should be rendered lying down
+	/// </summary>
 	public static bool IsLyingDown (this CharacterAnimationType aniType) => aniType == CharacterAnimationType.Crash || aniType == CharacterAnimationType.PassOut || aniType == CharacterAnimationType.Sleep;
 
 	public static System.Span<T> GetSpan<T> (this List<T> list) => CollectionsMarshal.AsSpan(list);

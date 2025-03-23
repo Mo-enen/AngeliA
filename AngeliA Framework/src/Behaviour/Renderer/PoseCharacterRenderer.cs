@@ -12,7 +12,13 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 
 	// Const
+	/// <summary>
+	/// How many body part does a pose character have
+	/// </summary>
 	public const int BODY_PART_COUNT = 17;
+	/// <summary>
+	/// How many cm does one artwork pixel represents
+	/// </summary>
 	public const int CM_PER_PX = 5;
 	private const int A2G = Const.CEL / Const.ART_CEL;
 	public static readonly int[] DEFAULT_BODY_PART_ID = ["DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(),];
@@ -30,57 +36,189 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	private const int POSE_Z_FOOT = 2;
 
 	// Api
+	/// <summary>
+	/// Mid-Bottom local position of character hip y position
+	/// </summary>
 	public int BasicRootY { get; set; } = 0;
+	/// <summary>
+	/// Total offset X for pose rendering
+	/// </summary>
 	public int PoseRootX { get; set; } = 0;
+	/// <summary>
+	/// Total offset Y for pose rendering
+	/// </summary>
 	public int PoseRootY { get; set; } = 0;
+	/// <summary>
+	/// Make head rotate like shaking head 
+	/// </summary>
 	public int HeadTwist { get; set; } = 0;
+	/// <summary>
+	/// Make body rotate left or right
+	/// </summary>
 	public int BodyTwist { get; set; } = 0;
+	/// <summary>
+	/// Character body height in cm
+	/// </summary>
 	public int CharacterHeight { get; set; } = 160; // in CM
+	/// <summary>
+	/// Basic rendering Z value for last time character get rendered
+	/// </summary>
 	public int RenderedCellZ { get; private set; } = 0;
+	/// <summary>
+	/// How many frames does it takes the character to transition from one pose to another
+	/// </summary>
 	public int BlendDuration { get; set; } = 6;
 
 	// BodyPart
+	/// <summary>
+	/// All body parts of the pose character
+	/// </summary>
 	public readonly BodyPart[] BodyParts = new BodyPart[BODY_PART_COUNT];
+	/// <summary>
+	/// Head of the pose character
+	/// </summary>
 	public BodyPart Head { get; init; } = null;
+	/// <summary>
+	/// Body of the pose character
+	/// </summary>
 	public BodyPart Body { get; init; } = null;
+	/// <summary>
+	/// Hip of the pose character
+	/// </summary>
 	public BodyPart Hip { get; init; } = null;
+	/// <summary>
+	/// Left shoulder of the pose character
+	/// </summary>
 	public BodyPart ShoulderL { get; init; } = null;
+	/// <summary>
+	/// Right shoulder of the pose character
+	/// </summary>
 	public BodyPart ShoulderR { get; init; } = null;
+	/// <summary>
+	/// Left upper arm of the pose character
+	/// </summary>
 	public BodyPart UpperArmL { get; init; } = null;
+	/// <summary>
+	/// Right upper arm of the pose character
+	/// </summary>
 	public BodyPart UpperArmR { get; init; } = null;
+	/// <summary>
+	/// Left lower arm of the pose character
+	/// </summary>
 	public BodyPart LowerArmL { get; init; } = null;
+	/// <summary>
+	/// Right lower arm of the pose character
+	/// </summary>
 	public BodyPart LowerArmR { get; init; } = null;
+	/// <summary>
+	/// Left hand of the pose character
+	/// </summary>
 	public BodyPart HandL { get; init; } = null;
+	/// <summary>
+	/// Right hand of the pose character
+	/// </summary>
 	public BodyPart HandR { get; init; } = null;
+	/// <summary>
+	/// Left upper leg of the pose character
+	/// </summary>
 	public BodyPart UpperLegL { get; init; } = null;
+	/// <summary>
+	/// Right upper leg of the pose character
+	/// </summary>
 	public BodyPart UpperLegR { get; init; } = null;
+	/// <summary>
+	/// Left lower leg of the pose character
+	/// </summary>
 	public BodyPart LowerLegL { get; init; } = null;
+	/// <summary>
+	/// Right lower leg of the pose character
+	/// </summary>
 	public BodyPart LowerLegR { get; init; } = null;
+	/// <summary>
+	/// Left foot of the pose character
+	/// </summary>
 	public BodyPart FootL { get; init; } = null;
+	/// <summary>
+	/// Right foot of the pose character
+	/// </summary>
 	public BodyPart FootR { get; init; } = null;
 
 	// Hand
+	/// <summary>
+	/// Rotation of the object grabbing by the left hand
+	/// </summary>
 	public readonly FrameBasedInt HandGrabRotationL = new(0);
+	/// <summary>
+	/// Rotation of the object grabbing by the right hand
+	/// </summary>
 	public readonly FrameBasedInt HandGrabRotationR = new(0);
+	/// <summary>
+	/// Size scaling of the object grabbing by the left hand (0 means 0%, 1000 means 100%)
+	/// </summary>
 	public readonly FrameBasedInt HandGrabScaleL = new(1000);
+	/// <summary>
+	/// Size scaling of the object grabbing by the right hand (0 means 0%, 1000 means 100%)
+	/// </summary>
 	public readonly FrameBasedInt HandGrabScaleR = new(1000);
+	/// <summary>
+	/// Angle twist of the object grabbing by the left hand (0 means disappear, 1000 means normal)
+	/// </summary>
 	public readonly FrameBasedInt HandGrabAttackTwistL = new(1000);
+	/// <summary>
+	/// Angle twist of the object grabbing by the right hand (0 means disappear, 1000 means normal)
+	/// </summary>
 	public readonly FrameBasedInt HandGrabAttackTwistR = new(1000);
 
 	// Gadget
+	/// <summary>
+	/// ID of current face gadget instance
+	/// </summary>
 	public readonly FrameBasedInt FaceID = new(0);
+	/// <summary>
+	/// ID of current hair gadget instance
+	/// </summary>
 	public readonly FrameBasedInt HairID = new(0);
+	/// <summary>
+	/// ID of current animal-ear gadget instance (like cat-girl's ears, not human ears)
+	/// </summary>
 	public readonly FrameBasedInt EarID = new(0);
+	/// <summary>
+	/// ID of current tail gadget instance
+	/// </summary>
 	public readonly FrameBasedInt TailID = new(0);
+	/// <summary>
+	/// ID of current wing gadget instance
+	/// </summary>
 	public readonly FrameBasedInt WingID = new(0);
+	/// <summary>
+	/// ID of current horn gadget instance
+	/// </summary>
 	public readonly FrameBasedInt HornID = new(0);
+	/// <summary>
+	/// Which face expression does the face need to render
+	/// </summary>
 	public readonly FrameBasedInt ForceFaceExpressionIndex = new(-1);
 
 	// Suit
+	/// <summary>
+	/// Current hat suit id
+	/// </summary>
 	public readonly FrameBasedInt SuitHead = new(0);
+	/// <summary>
+	/// Current body suit id (cloth with sleeves)
+	/// </summary>
 	public readonly FrameBasedInt SuitBody = new(0);
+	/// <summary>
+	/// Current hip suit id (pants or skirt)
+	/// </summary>
 	public readonly FrameBasedInt SuitHip = new(0);
+	/// <summary>
+	/// Current gloves suit id
+	/// </summary>
 	public readonly FrameBasedInt SuitHand = new(0);
+	/// <summary>
+	/// Current shoes suit id
+	/// </summary>
 	public readonly FrameBasedInt SuitFoot = new(0);
 
 	// Data
@@ -669,6 +807,9 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Get current body gadget ID the character is using
+	/// </summary>
 	public int GetGadgetID (BodyGadgetType type) => type switch {
 		BodyGadgetType.Face => FaceID,
 		BodyGadgetType.Hair => HairID,
@@ -680,6 +821,9 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	};
 
 
+	/// <summary>
+	/// Get current suit ID the character is using
+	/// </summary>
 	public int GetSuitID (ClothType type) => type switch {
 		ClothType.Head => SuitHead,
 		ClothType.Body => SuitBody,
@@ -780,9 +924,14 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 
 	// Animation ID
+	/// <summary>
+	/// Override animation for given animation type for specified frames long
+	/// </summary>
 	public void OverridePoseAnimation (CharacterAnimationType type, int id, int duration = 1) => PoseAnimationIDs[(int)type].Override(id, duration, 4096);
 
-
+	/// <summary>
+	/// Make the renderer draw the character based on the given animation for specified frames long
+	/// </summary>
 	public void ManualPoseAnimate (int id, int duration = 1) => ManualPoseAnimationID.Override(id, duration);
 
 

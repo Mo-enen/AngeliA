@@ -25,8 +25,8 @@
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>C:\Data\AngeliA\AngeliA Engine\API\$(AssemblyName).xml</DocumentationFile>
-		
+		<DocumentationFile></DocumentationFile>
+
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

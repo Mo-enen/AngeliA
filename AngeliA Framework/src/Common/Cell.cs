@@ -1,7 +1,7 @@
 ﻿namespace AngeliA;
 
 
-public struct RawCell () {
+internal struct RawCell () {
 	public int SpriteID = 0;
 	public char TextChar = '\0';
 	public int Order;
@@ -47,30 +47,63 @@ public struct RawCell () {
 }
 
 
+/// <summary>
+/// Rendering cell
+/// </summary>
 public class Cell {
 
 	public static readonly Cell EMPTY = new() { Sprite = null, TextSprite = null, SheetIndex = -1, };
 
 	public AngeSprite Sprite;
+	/// <summary>
+	/// Sprite for rendering text character
+	/// </summary>
 	public CharSprite TextSprite { get; set; }
+	/// <summary>
+	/// Which sprite sheet does this cell use. -1 means main sheet.
+	/// </summary>
 	public int SheetIndex;
-	public int Order;
+	internal int Order;
 	public int X;
 	public int Y;
+	/// <summary>
+	/// Z position for sorting
+	/// </summary>
 	public int Z;
 	public int Width;
 	public int Height;
+	/// <summary>
+	/// Rotation of the cell, 0 means up, 90 means right
+	/// </summary>
 	public int Rotation {
 		get => Rotation1000 / 1000;
 		set => Rotation1000 = value * 1000;
 	}
+	/// <summary>
+	/// Actual rotation data of the cell, 0 means up, 90000 means right
+	/// </summary>
 	public int Rotation1000;
+	/// <summary>
+	/// Which place of the cell should be align with the X position. 0 means left edge, 1 means right edge.
+	/// </summary>
 	public float PivotX;
+	/// <summary>
+	/// Which place of the cell should be align with the Y position. 0 means bottom edge, 1 means top edge.
+	/// </summary>
 	public float PivotY;
 	public Color32 Color;
+	/// <summary>
+	/// How many edge should be clip off. 0 means no clip off, set left into "width" means clip off all of them
+	/// </summary>
 	public Int4 Shift;
+	/// <summary>
+	/// Which side does this cell belongs to when it's rendered in 9-slice mode
+	/// </summary>
 	public Alignment BorderSide;
 
+	/// <summary>
+	/// Set X,Y,Width,Height with a rect
+	/// </summary>
 	public void SetRect (IRect rect) {
 		X = rect.x;
 		Y = rect.y;
@@ -125,6 +158,9 @@ public class Cell {
 		result.y += (int)v.y;
 		return result;
 	}
+	/// <summary>
+	/// Set pivot of the cell into (0,0) and let position adapt, so the final position of the cell remain the same
+	/// </summary>
 	public void ReturnPivots () {
 		if (Rotation1000 == 0) {
 			X -= (Width * PivotX).RoundToInt();
@@ -137,6 +173,9 @@ public class Cell {
 		PivotX = 0;
 		PivotY = 0;
 	}
+	/// <summary>
+	/// Set pivot of the cell and let position adapt, so the final position of the cell remain the same
+	/// </summary>
 	public void ReturnPivots (float newPivotX, float newPivotY) {
 		if (Rotation1000 == 0) {
 			X -= (Width * (PivotX - newPivotX)).RoundToInt();
@@ -149,6 +188,9 @@ public class Cell {
 		PivotX = newPivotX;
 		PivotY = newPivotY;
 	}
+	/// <summary>
+	/// Set position of the cell and let pivot adapt, so the final position of the cell remain the same
+	/// </summary>
 	public void ReturnPosition (int globalX, int globalY) {
 		var localPoint = GlobalToLocal(globalX, globalY);
 		PivotX = (float)localPoint.x / Width;
@@ -156,6 +198,9 @@ public class Cell {
 		X = globalX;
 		Y = globalY;
 	}
+	/// <summary>
+	/// Rotate the cell around the given position
+	/// </summary>
 	public void RotateAround (int rotation, int pointX, int pointY) {
 		if (rotation == 0 || Width == 0 || Height == 0) return;
 		var localPoint = GlobalToLocal(pointX, pointY);
@@ -165,6 +210,9 @@ public class Cell {
 		Y = pointY;
 		Rotation += rotation;
 	}
+	/// <summary>
+	/// Scale the cell based on the given position
+	/// </summary>
 	public void ScaleFrom (int scale, int pointX, int pointY) {
 		var localPoint = GlobalToLocal(pointX, pointY);
 		PivotX = (float)localPoint.x / Width;
@@ -174,6 +222,9 @@ public class Cell {
 		Width = Width * scale / 1000;
 		Height = Height * scale / 1000;
 	}
+	/// <summary>
+	/// Scale the cell based on the given position
+	/// </summary>
 	public void ScaleFrom (float scale, int pointX, int pointY) {
 		var localPoint = GlobalToLocal(pointX, pointY);
 		PivotX = (float)localPoint.x / Width;
@@ -183,6 +234,9 @@ public class Cell {
 		Width = (Width * scale).RoundToInt();
 		Height = (Height * scale).RoundToInt();
 	}
+	/// <summary>
+	/// Get the boundary occupied by the cell
+	/// </summary>
 	public IRect GetGlobalBounds () {
 		if (Rotation1000.UMod(360_000) == 0) {
 			int pOffsetX = (int)(PivotX * Width);
@@ -202,7 +256,7 @@ public class Cell {
 		}
 	}
 
-	public RawCell GetRawData () {
+	internal RawCell GetRawData () {
 		return new() {
 			SpriteID = Sprite != null ? Sprite.ID : 0,
 			TextChar = TextSprite != null ? TextSprite.Char : '\0',
@@ -220,7 +274,7 @@ public class Cell {
 		};
 	}
 
-	public void LoadFromRawData (RawCell data, int sheetIndex = int.MinValue) {
+	internal void LoadFromRawData (RawCell data, int sheetIndex = int.MinValue) {
 		if (sheetIndex == int.MinValue) {
 			sheetIndex = Renderer.CurrentSheetIndex;
 		}
@@ -244,6 +298,9 @@ public class Cell {
 		BorderSide = data.BorderSide;
 	}
 
+	/// <summary>
+	/// Clamp the content inside the given rect range
+	/// </summary>
 	public void Clamp (IRect rect) {
 		var cellRect = new IRect(
 			X - (int)(Width * PivotX),

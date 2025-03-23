@@ -230,7 +230,7 @@ public class OnWorldSavedByMapEditor_WorldAttribute : EventAttribute { }
 /// </summary>
 /// <example>internal static void ExampleFunction (OnMapEditorModeChange_ModeAttribute.Mode mode) { }</example>
 public class OnMapEditorModeChange_ModeAttribute : EventAttribute {
-	/// <summary></summary>
+	
 	public enum Mode {
 		/// <summary>
 		/// Edit mode to play mode. After map editor internal logic is done

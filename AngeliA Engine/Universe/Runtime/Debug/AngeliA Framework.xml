@@ -302,12 +302,6 @@
         <member name="M:AngeliA.GlobalItemCombinationAttribute`4.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String)">
             <inheritdoc cref="T:AngeliA.BasicItemCombinationAttribute" />
         </member>
-        <member name="T:AngeliA.BasicGlobalItemCombinationAttribute">
-            <summary></summary>
-        </member>
-        <member name="M:AngeliA.BasicGlobalItemCombinationAttribute.#ctor(AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,System.String,System.Int32,System.String,System.String,System.String,System.String)">
-            <summary></summary>
-        </member>
         <member name="T:AngeliA.BasicItemCombinationAttribute">
             <summary>
             Define a item combination to craft the item.
@@ -343,9 +337,6 @@
             <param name="itemB">An item required to craft the result item</param>
             <param name="itemC">An item required to craft the result item</param>
             <param name="itemD">An item required to craft the result item</param>
-        </member>
-        <member name="T:AngeliA.ItemCombinationParam">
-            <summary></summary>
         </member>
         <member name="T:AngeliA.NoItemCombinationAttribute">
             <summary>
@@ -641,9 +632,6 @@
             The function will be called when user change map editor editing mode
             </summary>
             <example>internal static void ExampleFunction (OnMapEditorModeChange_ModeAttribute.Mode mode) { }</example>
-        </member>
-        <member name="T:AngeliA.OnMapEditorModeChange_ModeAttribute.Mode">
-            <summary></summary>
         </member>
         <member name="F:AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.EnterPlayMode">
             <summary>
@@ -1139,21 +1127,6 @@
             How many frames should this buff apply by default
             </summary>
         </member>
-        <member name="M:AngeliA.Buff.#ctor">
-            <summary></summary>
-        </member>
-        <member name="M:AngeliA.Buff.BeforeUpdate(AngeliA.Character)">
-            <summary></summary>
-        </member>
-        <member name="M:AngeliA.Buff.LateUpdate(AngeliA.Character)">
-            <summary></summary>
-        </member>
-        <member name="M:AngeliA.Buff.OnCharacterAttack(AngeliA.Character,AngeliA.Bullet)">
-            <summary></summary>
-        </member>
-        <member name="M:AngeliA.Buff.OnCharacterRenderered(AngeliA.CharacterRenderer)">
-            <summary></summary>
-        </member>
         <member name="T:AngeliA.CharacterBuff">
             <summary>
             Behavour class that handles buff logic for characters
@@ -1397,17 +1370,17 @@
         </member>
         <member name="F:AngeliA.CharacterMovement.JumpReleaseSpeedRate">
             <summary>
-            When character stop trying to jump (player release the jump button), and the character is still moving up, then the current speed will be mutiply to this rate (0 means 0%, 1000 means 100%)
+            When character stop trying to jump (player release the jump button), and the character is still moving up, then the current speed will be multiply to this rate (0 means 0%, 1000 means 100%)
             </summary>
         </member>
         <member name="F:AngeliA.CharacterMovement.JumpRiseGravityRate">
             <summary>
-            Gravity applys on the character will mutiply this rate when character moving up in air (0 means 0%, 1000 means 100%)
+            Gravity applys on the character will multiply this rate when character moving up in air (0 means 0%, 1000 means 100%)
             </summary>
         </member>
         <member name="F:AngeliA.CharacterMovement.JumpBoostFromMoveRate">
             <summary>
-            When character start jump, if it's moving, the running speed will mutiply this rate and add into the initial jump speed. (0 means 0%, 1000 means 100%)
+            When character start jump, if it's moving, the running speed will multiply this rate and add into the initial jump speed. (0 means 0%, 1000 means 100%)
             </summary>
         </member>
         <member name="F:AngeliA.CharacterMovement.FirstJumpWithRoll">
@@ -1438,6 +1411,1509 @@
         <member name="F:AngeliA.CharacterMovement.JumpDownThroughOneway">
             <summary>
             Allow character jump down and go through oneway gate (player holding down button and press jump button once)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SquatAvailable">
+            <summary>
+            Allow character to squat
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SquatHeightAmount">
+            <summary>
+            Character hitbox height multiply this rate when squatting (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SquatMoveSpeed">
+            <summary>
+            Move speed when character squatting, set to 0 when not allow squat move
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SquatAcceleration">
+            <summary>
+            Movement acceleration when squat moving
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SquatDeceleration">
+            <summary>
+            Movement deceleration when squat moving
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashAvailable">
+            <summary>
+            Allow character to dash (player hold down button and press jump button for once)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashHeightAmount">
+            <summary>
+             Character hitbox height multiply this rate when dashing (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashWithRoll">
+            <summary>
+            Character roll when dashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashPutoutFire">
+            <summary>
+            Allow character dash through fire to put it out
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashSpeed">
+            <summary>
+            Movement speed for dashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashDuration">
+            <summary>
+            How many frames does dash last
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashCooldown">
+            <summary>
+            Frames length between prev dash end and next dash start
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashAcceleration">
+            <summary>
+            Speed acceleration when dashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.DashCancelLoseRate">
+            <summary>
+            Speed multiply this rate when dash being cancel (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushAvailable">
+            <summary>
+            Allow character to rush
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushHeightAmount">
+            <summary>
+             Character hitbox height multiply this rate when rushing (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushInAir">
+            <summary>
+            Allow character rush when not grounded
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushInWater">
+            <summary>
+            Allow character rush when inside water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushWhenClimb">
+            <summary>
+            character rush when climb
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushWhenSquat">
+            <summary>
+            character rush when squat
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushPutoutFire">
+            <summary>
+            Allow character rush through fire to put it out
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushSpeed">
+            <summary>
+            Movement speed when rushing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushStopSpeed">
+            <summary>
+            Movement speed when rush end
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushDuration">
+            <summary>
+            How many frames does rush last
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushStiff">
+            <summary>
+            How many frames does character not allow to move after rush end
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushCooldown">
+            <summary>
+            How many frames does character has to wair after prev rush end to rush again
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushAcceleration">
+            <summary>
+            Speed acceleration when rushing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RushDeceleration">
+            <summary>
+            Speed deceleration when rushing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlipAvailable">
+            <summary>
+            Allow character slip when run on slippery ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlipAcceleration">
+            <summary>
+            Speed acceleration when moving on slippery ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlipDeceleration">
+            <summary>
+            Speed deceleration when moving on slippery ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.PoundAvailable">
+            <summary>
+            Allow character ground pound in air (player press down button in air)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.PoundPutoutFire">
+            <summary>
+            Allow character pound on fire to put it out
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.PoundSpeed">
+            <summary>
+            Movement speed when pounding
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimAvailable">
+            <summary>
+            Allow character swim in water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.InWaterSpeedRate">
+            <summary>
+            When character inside water, the movement speed will multiply this rate (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimWidthAmount">
+            <summary>
+             Character hitbox width multiply this rate when swimming (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimHeightAmount">
+            <summary>
+             Character hitbox height multiply this rate when swimming (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimSpeed">
+            <summary>
+            Movement speed when character swimming
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimJumpSpeed">
+            <summary>
+            Movement speed when character jump inside water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimAcceleration">
+            <summary>
+            Speed acceleration when chracter inside water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SwimDeceleration">
+            <summary>
+            Speed deceleration when chracter inside water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.ClimbAvailable">
+            <summary>
+            Allow character to climb
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.AllowJumpWhenClimbing">
+            <summary>
+            Allow character jump when climbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.ClimbSpeedX">
+            <summary>
+            Horizontal speed when climbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.ClimbSpeedY">
+            <summary>
+            Vertical speed when climbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyAvailable">
+            <summary>
+            Allow character to fly (player press jump button when no jump count left)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyHeightAmount">
+            <summary>
+            Character hitbox height multiply this rate when flying (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GlideOnFlying">
+            <summary>
+            When glide flying, character always move to the direction it facing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyCooldown">
+            <summary>
+            Character has to wait this many frames to fly again
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyRiseSpeed">
+            <summary>
+            Initial speed when fly start
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyGravityRiseRate">
+            <summary>
+            Gravity multiply this rate when flying and moving up (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyGravityFallRate">
+            <summary>
+            Gravity multiply this rate when flying and moving down (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyFallSpeed">
+            <summary>
+            Fall down speed shen flying
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyMoveSpeed">
+            <summary>
+            Horizontal move speed when flying
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyAcceleration">
+            <summary>
+            Speed acceleration when flying
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FlyDeceleration">
+            <summary>
+            Speed deceleration when flying
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlideAvailable">
+            <summary>
+            Allow character to slide on wall
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlideOnAnyBlock">
+            <summary>
+            Allow character to slide on all type of blocks
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.ResetJumpCountWhenSlide">
+            <summary>
+            Set jump count to 0 when slide
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlideJumpKickSpeed">
+            <summary>
+            Horizontal initial speed when character jump when slide
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SlideDropSpeed">
+            <summary>
+            Drop down speed when sliding
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabTopAvailable">
+            <summary>
+            Allow character grab on the bottom of blocks with Tag.GrabTop
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabSideAvailable">
+            <summary>
+            Allow character grab on the side of blocks with Tag.GrabSide
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabTopHeightAmount">
+            <summary>
+            Character hitbox height multiply this rate when top-grabbing (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabSideHeightAmount">
+            <summary>
+            Character hitbox height multiply this rate when side-grabbing (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.ResetJumpCountWhenGrab">
+            <summary>
+            Set jump count to 0 when character grabbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabFlipThroughDownAvailable">
+            <summary>
+            Allow character to flip through block downward (player press down when standing on top-grabable blocks)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabFlipThroughUpAvailable">
+            <summary>
+            Allow character to flip through block upward (player press up when top-grabbing)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabFlipThroughDuration">
+            <summary>
+            How long does flip through takes in frames
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabMoveSpeedX">
+            <summary>
+            Horizontal move speed when top-grabbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabMoveSpeedY">
+            <summary>
+             Vertical move speed when side-grabbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.GrabSideJumpKickSpeed">
+            <summary>
+            Horizontal initial speed when character jump when side-grabbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.CrashAvailable">
+            <summary>
+            Allow character crash
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.CrashWhenSlippy">
+            <summary>
+            Make character crash when running too long on slippery ground or rush on slippery ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.CrashDuration">
+            <summary>
+            How many frames does it takes for one crash
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.CrashRunDurationRequire">
+            <summary>
+            How many frames does it takes to make character crash
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.CrashDeceleration">
+            <summary>
+            Speed deceleration when character crashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.PushAvailable">
+            <summary>
+            Allow character push other rigidbody
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.PushSpeed">
+            <summary>
+            Movement speed when character pushing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastMoveDirection">
+            <summary>
+            Direction for last movement
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IntendedX">
+            <summary>
+            1 if character want to move right, -1 for left
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IntendedY">
+            <summary>
+            1 if character want to move up, -1 for down
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.CurrentJumpCount">
+            <summary>
+            How many times does character jumps after touching ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.FacingRight">
+            <summary>
+            True if character currently facing right
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.FacingFront">
+            <summary>
+            True if character currently facing front
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.ShouldRun">
+            <summary>
+            True if character want to run instead of walk when move
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.SyncFromConfigFile">
+            <summary>
+            Does movement config sync with json file in game universe folder
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGroundFrame">
+            <summary>
+            Last frame when character start touching ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGroundingFrame">
+            <summary>
+            Last frame when character is touching ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastStartMoveFrame">
+            <summary>
+            Last frame when character start to move
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastEndMoveFrame">
+            <summary>
+            Last frame when character moving ends
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastJumpFrame">
+            <summary>
+            Last frame when character start to jump
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastClimbFrame">
+            <summary>
+            Last frame when character climb
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastDashFrame">
+            <summary>
+            Last frame when character start to dash
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastRushStartFrame">
+            <summary>
+            Last frame when character start to rush
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastCrashFrame">
+            <summary>
+            Last frame when character crash
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastSlippyMoveStartFrame">
+            <summary>
+            Last frame when character start to move on slippery ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastSquatStartFrame">
+            <summary>
+            Last frame when character start to squat
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastSquattingFrame">
+            <summary>
+            Last frame when character is squatting
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastPoundingFrame">
+            <summary>
+            Last frame when character is pounding
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastSlidingFrame">
+            <summary>
+            Last frame when character is sliding on wall
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGrabbingFrame">
+            <summary>
+            Last frame when character is grabbing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastFlyFrame">
+            <summary>
+            Last frame when character start to fly
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGrabFlipUpFrame">
+            <summary>
+            Last frame when character start to grab flip upward
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGrabFlipDownFrame">
+            <summary>
+            Last frame when character start to grab flip downward
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastGrabCancelFrame">
+            <summary>
+            Last frame when character stop grabbing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastStartRunFrame">
+            <summary>
+            Last frame when character start to run
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.LastFacingChangeFrame">
+            <summary>
+            Last frame when character change horizontal facing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.MovementState">
+            <summary>
+            Current movement type
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsGrabFlipping">
+            <summary>
+            True if character flipping through blocks
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsGrabFlippingUp">
+            <summary>
+            True if character flipping through blocks upward
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsGrabFlippingDown">
+            <summary>
+            True if character flipping through blocks downward
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsMoving">
+            <summary>
+            True if character is moving
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsWalking">
+            <summary>
+            True if character is walking
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsRunning">
+            <summary>
+            True if character is running
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsRolling">
+            <summary>
+            True if character is rolling
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsDashing">
+            <summary>
+            True if character is dashing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsRushing">
+            <summary>
+            True if character is rushing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsCrashing">
+            <summary>
+            True if character is crashing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsSquatting">
+            <summary>
+            True if character is squatting
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsPounding">
+            <summary>
+            True if character is pounding
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsClimbing">
+            <summary>
+            True if character is climbing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsFlying">
+            <summary>
+            True if character is flying
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsSliding">
+            <summary>
+            True if character is sliding on wall
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsGrabbingTop">
+            <summary>
+            True if character is top-grabbing
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterMovement.IsGrabbingSide">
+            <summary>
+            True if character is side-grabbing
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.ReloadMovementConfigFromFile">
+            <summary>
+            Load movement data from json file inside game universe folder
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Move(AngeliA.Direction3,AngeliA.Direction3,System.Boolean)">
+            <summary>
+            Move the character
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="walk">True if character want to walk instead of run</param>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Stop">
+            <summary>
+            Stop current movement
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.HoldJump(System.Boolean)">
+            <summary>
+            Is character holding jump (call this every frame no matter character is jumpping or not)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Jump(System.Boolean)">
+            <summary>
+            Perform jump (call this once when jump start)
+            </summary>
+            <param name="isSquatJump">Is this jump a squat jump or not</param>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Dash">
+            <summary>
+            Perform dash (call this once when dash start)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.StopDash">
+            <summary>
+            Stop current dashing 
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Pound">
+            <summary>
+            Perform pound (call this once when pound start)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Rush">
+            <summary>
+            Perform rush (call this once when rush start)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.StopRush">
+            <summary>
+            Stop current rush
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.Crash">
+            <summary>
+            Perform crash (call this once when crash start)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.StopCrash">
+            <summary>
+            Stop current crash
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.LockFacingRight(System.Boolean,System.Int32)">
+            <summary>
+            Force character facing right or left for given frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.LockSquat(System.Int32)">
+            <summary>
+            Force character to squat for given frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.SetSpeedRate(System.Int32,System.Int32)">
+            <summary>
+            Force movement speed rate for given frames
+            </summary>
+            <param name="newRate">0 means 0%, 1000 means 100%</param>
+            <param name="duration"></param>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.CalculateMovementState(AngeliA.CharacterMovement)">
+            <summary>
+            Get current movement type base on current cached data
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.GetMovementState">
+            <summary>
+            Get current movement type base on current cached data
+            </summary>
+        </member>
+        <member name="T:AngeliA.CharacterRenderer">
+            <summary>
+            Behaviour class handles rendering of character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterRenderer.#ctor(AngeliA.Character)">
+            <summary>
+            Behaviour class handles rendering of character
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterRenderer.SpinOnGroundPound">
+            <summary>
+            Does character spin when ground pound
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterRenderer.Tint">
+            <summary>
+            Final color tint
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterRenderer.Scale">
+            <summary>
+             Final size scaling (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterRenderer.OnActivated">
+            <summary>
+            Callback function for character entity get activated
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.BODY_PART_COUNT">
+            <summary>
+            How many body part does a pose character have
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.CM_PER_PX">
+            <summary>
+            How many cm does one artwork pixel represents
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.BasicRootY">
+            <summary>
+            Mid-Bottom local position of character hip y position
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.PoseRootX">
+            <summary>
+            Total offset X for pose rendering
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.PoseRootY">
+            <summary>
+            Total offset Y for pose rendering
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.HeadTwist">
+            <summary>
+            Make head rotate like shaking head 
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.BodyTwist">
+            <summary>
+            Make body rotate left or right
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.CharacterHeight">
+            <summary>
+            Character body height in cm
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.RenderedCellZ">
+            <summary>
+            Basic rendering Z value for last time character get rendered
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.BlendDuration">
+            <summary>
+            How many frames does it takes the character to transition from one pose to another
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.BodyParts">
+            <summary>
+            All body parts of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.Head">
+            <summary>
+            Head of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.Body">
+            <summary>
+            Body of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.Hip">
+            <summary>
+            Hip of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.ShoulderL">
+            <summary>
+            Left shoulder of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.ShoulderR">
+            <summary>
+            Right shoulder of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.UpperArmL">
+            <summary>
+            Left upper arm of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.UpperArmR">
+            <summary>
+            Right upper arm of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.LowerArmL">
+            <summary>
+            Left lower arm of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.LowerArmR">
+            <summary>
+            Right lower arm of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.HandL">
+            <summary>
+            Left hand of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.HandR">
+            <summary>
+            Right hand of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.UpperLegL">
+            <summary>
+            Left upper leg of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.UpperLegR">
+            <summary>
+            Right upper leg of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.LowerLegL">
+            <summary>
+            Left lower leg of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.LowerLegR">
+            <summary>
+            Right lower leg of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.FootL">
+            <summary>
+            Left foot of the pose character
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseCharacterRenderer.FootR">
+            <summary>
+            Right foot of the pose character
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.HandGrabRotationL">
+            <summary>
+            Rotation of the object grabbing by the left hand
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.HandGrabRotationR">
+            <summary>
+            Rotation of the object grabbing by the right hand
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.HandGrabScaleL">
+            <summary>
+            Size scaling of the object grabbing by the left hand (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.HandGrabScaleR">
+            <summary>
+            Size scaling of the object grabbing by the right hand (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.HandGrabAttackTwistL">
+            <summary>
+            Angle twist of the object grabbing by the left hand (0 means disappear, 1000 means normal)
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.HandGrabAttackTwistR">
+            <summary>
+            Angle twist of the object grabbing by the right hand (0 means disappear, 1000 means normal)
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.FaceID">
+            <summary>
+            ID of current face gadget instance
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.HairID">
+            <summary>
+            ID of current hair gadget instance
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.EarID">
+            <summary>
+            ID of current animal-ear gadget instance (like cat-girl's ears, not human ears)
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.TailID">
+            <summary>
+            ID of current tail gadget instance
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.WingID">
+            <summary>
+            ID of current wing gadget instance
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.HornID">
+            <summary>
+            ID of current horn gadget instance
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.ForceFaceExpressionIndex">
+            <summary>
+            Which face expression does the face need to render
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.SuitHead">
+            <summary>
+            Current hat suit id
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.SuitBody">
+            <summary>
+            Current body suit id (cloth with sleeves)
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.SuitHip">
+            <summary>
+            Current hip suit id (pants or skirt)
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.SuitHand">
+            <summary>
+            Current gloves suit id
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseCharacterRenderer.SuitFoot">
+            <summary>
+            Current shoes suit id
+            </summary>
+        </member>
+        <member name="M:AngeliA.PoseCharacterRenderer.GetGadgetID(AngeliA.BodyGadgetType)">
+            <summary>
+            Get current body gadget ID the character is using
+            </summary>
+        </member>
+        <member name="M:AngeliA.PoseCharacterRenderer.GetSuitID(AngeliA.ClothType)">
+            <summary>
+            Get current suit ID the character is using
+            </summary>
+        </member>
+        <member name="M:AngeliA.PoseCharacterRenderer.OverridePoseAnimation(AngeliA.CharacterAnimationType,System.Int32,System.Int32)">
+            <summary>
+            Override animation for given animation type for specified frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.PoseCharacterRenderer.ManualPoseAnimate(System.Int32,System.Int32)">
+            <summary>
+            Make the renderer draw the character based on the given animation for specified frames long
+            </summary>
+        </member>
+        <member name="T:AngeliA.AngePath">
+            <summary>
+            Utility class for path related logic for an AngeliA project
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngePath.EQ_INVENTORY_FILE_EXT">
+            <summary>
+            Inventory file extension with equipment data
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngePath.EQ_INVENTORY_SEARCH_PATTERN">
+            <summary>
+            Inventory file search pattern with equipment data
+            </summary>
+        </member>
+        <member name="P:AngeliA.AngePath.BuiltInUniverseRoot">
+            <summary>
+            Game universe folder path. This folder contents project data for an AngeliA project
+            </summary>
+        </member>
+        <member name="T:AngeliA.AutoValidList`1">
+            <summary>
+            A list that auto remove element inside based on the given function
+            </summary>
+        </member>
+        <member name="M:AngeliA.AutoValidList`1.#ctor(System.Int32,System.Func{`0,System.Boolean})">
+            <summary>
+            A list that auto remove element inside based on the given function
+            </summary>
+        </member>
+        <member name="M:AngeliA.AutoValidList`1.Update">
+            <summary>
+            Valid all elements in the list based on the given funtion.
+            </summary>
+        </member>
+        <member name="T:AngeliA.BuiltInSprite">
+            <summary>
+            Utility class to get built-in sprites 
+            </summary>
+        </member>
+        <member name="T:AngeliA.BuiltInText">
+            <summary>
+            Utility class to get built-in text though language system
+            </summary>
+        </member>
+        <member name="T:AngeliA.Cell">
+            <summary>
+            Rendering cell
+            </summary>
+        </member>
+        <member name="P:AngeliA.Cell.TextSprite">
+            <summary>
+            Sprite for rendering text character
+            </summary>
+        </member>
+        <member name="F:AngeliA.Cell.SheetIndex">
+            <summary>
+            Which sprite sheet does this cell use. -1 means main sheet.
+            </summary>
+        </member>
+        <member name="F:AngeliA.Cell.Z">
+            <summary>
+            Z position for sorting
+            </summary>
+        </member>
+        <member name="P:AngeliA.Cell.Rotation">
+            <summary>
+            Rotation of the cell, 0 means up, 90 means right
+            </summary>
+        </member>
+        <member name="F:AngeliA.Cell.Rotation1000">
+            <summary>
+            Actual rotation data of the cell, 0 means up, 90000 means right
+            </summary>
+        </member>
+        <member name="F:AngeliA.Cell.PivotX">
+            <summary>
+            Which place of the cell should be align with the X position. 0 means left edge, 1 means right edge.
+            </summary>
+        </member>
+        <member name="F:AngeliA.Cell.PivotY">
+            <summary>
+            Which place of the cell should be align with the Y position. 0 means bottom edge, 1 means top edge.
+            </summary>
+        </member>
+        <member name="F:AngeliA.Cell.Shift">
+            <summary>
+            How many edge should be clip off. 0 means no clip off, set left into "width" means clip off all of them
+            </summary>
+        </member>
+        <member name="F:AngeliA.Cell.BorderSide">
+            <summary>
+            Which side does this cell belongs to when it's rendered in 9-slice mode
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cell.SetRect(AngeliA.IRect)">
+            <summary>
+            Set X,Y,Width,Height with a rect
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cell.ReturnPivots">
+            <summary>
+            Set pivot of the cell into (0,0) and let position adapt, so the final position of the cell remain the same
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cell.ReturnPivots(System.Single,System.Single)">
+            <summary>
+            Set pivot of the cell and let position adapt, so the final position of the cell remain the same
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cell.ReturnPosition(System.Int32,System.Int32)">
+            <summary>
+            Set position of the cell and let pivot adapt, so the final position of the cell remain the same
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cell.RotateAround(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Rotate the cell around the given position
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cell.ScaleFrom(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Scale the cell based on the given position
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cell.ScaleFrom(System.Single,System.Int32,System.Int32)">
+            <summary>
+            Scale the cell based on the given position
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cell.GetGlobalBounds">
+            <summary>
+            Get the boundary occupied by the cell
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cell.Clamp(AngeliA.IRect)">
+            <summary>
+            Clamp the content inside the given rect range
+            </summary>
+        </member>
+        <member name="T:AngeliA.Const">
+            <summary>
+            Utility class for constant values
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CEL">
+            <summary>
+            Global size of a block unit
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.HALF">
+            <summary>
+            Global size of a half block unit
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.QUARTER">
+            <summary>
+            Global size of a quarter block unit
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CEL2">
+            <summary>
+            Global size of a block unit
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.HALF2">
+            <summary>
+            Global size of a half block unit
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.QUARTER2">
+            <summary>
+            Global size of a quarter block unit
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.MAP">
+            <summary>
+            Unit size of a map file
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.ART_CEL">
+            <summary>
+            Global size of a artwork pixel
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.ART_SCALE">
+            <summary>
+            Size ratio between global size and artwork pixel
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.LEVEL_SPAWN_PADDING_UNIT">
+            <summary>
+            Level block expand distance from view-rect in unit (1 unit = 256 global size)
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.SPAWN_PADDING_UNIT">
+            <summary>
+            Entity spawning expand distance from view-rect in unit (1 unit = 256 global size)
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.ANTI_SPAWN_PADDING_UNIT">
+            <summary>
+            Entity anti-spawning rect expand distance from view-rect in unit (1 unit = 256 global size)
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.LEVEL_SPAWN_PADDING">
+            <summary>
+            Level block expand distance from view-rect in global size
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.SPAWN_PADDING">
+            <summary>
+            Entity spawning expand distance from view-rect in global size
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.ANTI_SPAWN_PADDING">
+            <summary>
+            Entity anti-spawning rect expand distance from view-rect in global size
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.TEAM_ENVIRONMENT">
+            <summary>
+            Attack target team for environment
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.TEAM_NEUTRAL">
+            <summary>
+            Attack target team for neutral
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.TEAM_PLAYER">
+            <summary>
+            Attack target team for player
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.TEAM_ENEMY">
+            <summary>
+            Attack target team for enemy
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.TEAM_ALL">
+            <summary>
+            Attack target team for all
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.TEAM_COUNT">
+            <summary>
+            Attack target team total count
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.ORIGINAL_SIZE">
+            <summary>
+            Use the original size of the sprite from artwork sheet
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.ORIGINAL_PIVOT">
+            <summary>
+            Use the original pivot of the sprite from artwork sheet
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.ORIGINAL_SIZE_NEGATAVE">
+            <summary>
+            Use the original size * -1 of the sprite from artwork sheet
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.PIXEL">
+            <summary>
+            Sprite ID of the 1x1 white pixel
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.SCREEN_EFFECT_TINT">
+            <summary>
+            Screen effect index for the tint effect
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.SCREEN_EFFECT_RETRO_DARKEN">
+            <summary>
+            Screen effect index for the retro-darken effect
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.SCREEN_EFFECT_RETRO_LIGHTEN">
+            <summary>
+            Screen effect index for the retro-lighten effect
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.SCREEN_EFFECT_VIGNETTE">
+            <summary>
+            Screen effect index for the vignette effect
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.SCREEN_EFFECT_GREYSCALE">
+            <summary>
+            Screen effect index for the grey-scale effect
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.SCREEN_EFFECT_INVERT">
+            <summary>
+            Screen effect index for the invert effect
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.SCREEN_EFFECT_COUNT">
+            <summary>
+            Screen effect total count
+            </summary>
+        </member>
+        <member name="T:AngeliA.Damage">
+            <summary>
+            Data structure for a single damage performed
+            </summary>
+            <param name="amount">How many damage it deals</param>
+            <param name="targetTeam">What team does it attacks</param>
+            <param name="bullet">Which bullet does it came from</param>
+            <param name="type">What special type does it holds</param>
+        </member>
+        <member name="M:AngeliA.Damage.#ctor(System.Int32,System.Int32,AngeliA.Entity,AngeliA.Tag)">
+            <summary>
+            Data structure for a single damage performed
+            </summary>
+            <param name="amount">How many damage it deals</param>
+            <param name="targetTeam">What team does it attacks</param>
+            <param name="bullet">Which bullet does it came from</param>
+            <param name="type">What special type does it holds</param>
+        </member>
+        <member name="F:AngeliA.Damage.IgnoreInvincible">
+            <summary>
+            Do not make target become invincible after take this damage
+            </summary>
+        </member>
+        <member name="F:AngeliA.Damage.IgnoreStun">
+            <summary>
+            Do not make target stun after take this damage
+            </summary>
+        </member>
+        <member name="T:AngeliA.Debug">
+            <summary>
+            Log debug messages to the console or screen
+            </summary>
+        </member>
+        <member name="M:AngeliA.Debug.LogLabel(System.Object[])">
+            <inheritdoc cref="M:AngeliA.Debug.LogLabel(System.String)"/>
+        </member>
+        <member name="M:AngeliA.Debug.LogLabel(System.Object)">
+            <inheritdoc cref="M:AngeliA.Debug.LogLabel(System.String)"/>
+        </member>
+        <member name="M:AngeliA.Debug.LogLabel(System.String)">
+            <summary>
+            Draw a label on top-right of the screen for the current frame
+            </summary>
+        </member>
+        <member name="T:AngeliA.Ease">
+            <summary>
+            Ease utility for tween animation
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InLiner(System.Single)">
+            <summary>
+            ▁▁▂▂▃▃▄▄▅▅▆▆▇▇██
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.OutLiner(System.Single)">
+            <summary>
+            ███▇▇▆▆▅▅▄▄▃▃▂▂▁
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InOutLiner(System.Single)">
+            <summary>
+            ▁▂▃▄▅▆▇███▇▆▅▄▃▂
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InQuad(System.Single)">
+            <summary>
+            ▁▁▁▁▁▂▂▂▃▃▄▅▅▆▇█
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.OutQuad(System.Single)">
+            <summary>
+            ▁▂▃▃▄▅▆▆▇▇██████
+            Fast first
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InOutQuad(System.Single)">
+            <summary>
+            ▁▁▁▁▂▂▃▄▅▆▇▇████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InCubic(System.Single)">
+            <summary>
+            ▁▁▁▁▁▁▁▁▂▂▃▃▄▅▆▇
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.OutCubic(System.Single)">
+            <summary>
+            ▁▂▃▄▅▆▇▇████████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InOutCubic(System.Single)">
+            <summary>
+            ▁▁▁▁▁▂▂▃▅▆▇█████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InQuart(System.Single)">
+            <summary>
+            ▁▁▁▁▁▁▁▁▁▂▂▃▃▄▅▇
+            Slow first
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.OutQuart(System.Single)">
+            <summary>
+            ▁▃▄▅▆▇██████████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InOutQuart(System.Single)">
+            <summary>
+            ▁▁▁▁▁▁▂▃▅▆▇█████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InQuint(System.Single)">
+             <summary>
+            ▁▁▁▁▁▁▁▁▁▁▂▂▃▄▅▇
+             Slow first
+             </summary>
+        </member>
+        <member name="M:AngeliA.Ease.OutQuint(System.Single)">
+            <summary>
+            ▁▃▅▆▇███████████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InOutQuint(System.Single)">
+            <summary>
+            ▁▁▁▁▁▁▂▃▅▇██████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InSine(System.Single)">
+            <summary>
+            ▁▁▁▁▁▂▂▃▃▄▄▅▆▆▇█
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.OutSine(System.Single)">
+             <summary>
+            ▁▂▂▃▄▅▅▆▆▇▇█████
+             </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InOutSine(System.Single)">
+            <summary>
+            ▁▁▁▁▂▃▃▄▅▆▆▇████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InCirc(System.Single)">
+            <summary>
+            ▁▁▁▁▁▁▁▂▂▂▃▃▃▄▅▆
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.OutCirc(System.Single)">
+            <summary>
+            ▁▄▅▅▆▇▇▇████████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InOutCirc(System.Single)">
+            <summary>
+            ▁▁▁▁▁▂▂▃▅▇▇█████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InElastic(System.Single)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InExpo(System.Single)">
+            <summary>
+            ▁▁▁▁▁▁▁▁▁▁▁▂▂▃▄▆
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.OutExpo(System.Single)">
+            <summary>
+            ▁▄▅▇▇███████████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InOutExpo(System.Single)">
+            <summary>
+            ▁▁▁▁▁▁▁▂▅▇██████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InBounce(System.Single)">
+            <summary>
+            ▁▁▁▁▁▂▂▃▃▂▁▃▅▇██
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.OutBounce(System.Single)">
+            <summary>
+            ▁▁▂▃▅▇█▇▇▇▇█████
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ease.InOutBounce(System.Single)">
+            <summary>
+            ▁▁▁▂▂▁▃▄▅▅▇█████
             </summary>
         </member>
         <member name="F:AngeliA.PhysicsMask.ENTITY">

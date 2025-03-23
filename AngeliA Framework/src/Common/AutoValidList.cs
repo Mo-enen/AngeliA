@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// A list that auto remove element inside based on the given function
+/// </summary>
 public class AutoValidList<T> (int capacity, System.Func<T, bool> updateFunc) {
 
 	public int Count { get; private set; } = 0;
@@ -10,6 +13,9 @@ public class AutoValidList<T> (int capacity, System.Func<T, bool> updateFunc) {
 	private readonly T[] Data = new T[capacity];
 	private readonly System.Func<T, bool> UpdateFunc = updateFunc;
 
+	/// <summary>
+	/// Valid all elements in the list based on the given funtion.
+	/// </summary>
 	public void Update () {
 		int delta = 0;
 		int oldCount = Count;

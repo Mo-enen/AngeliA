@@ -3,6 +3,9 @@ using System.Text;
 
 namespace AngeliA;
 
+/// <summary>
+/// Log debug messages to the console or screen
+/// </summary>
 public static class Debug {
 
 	// VAR
@@ -55,6 +58,8 @@ public static class Debug {
 
 	public static void LogException (Exception ex) => OnLogException?.Invoke(ex);
 
+
+	/// <inheritdoc cref="LogLabel(string)"/>
 	public static void LogLabel (params object[] objs) {
 		ParamsCacheBuilder.Clear();
 		foreach (var obj in objs) {
@@ -63,7 +68,11 @@ public static class Debug {
 		}
 		LogLabel(ParamsCacheBuilder.ToString());
 	}
+	/// <inheritdoc cref="LogLabel(string)"/>
 	public static void LogLabel (object obj) => LogLabel(obj.ToString());
+	/// <summary>
+	/// Draw a label on top-right of the screen for the current frame
+	/// </summary>
 	public static void LogLabel (string content) {
 		if (Game.PauselessFrame != LastLogLabelFrame) {
 			LastLogLabelFrame = Game.PauselessFrame;

@@ -56,7 +56,7 @@ public abstract class Buff : IMapItem {
 	}
 
 
-	/// <summary></summary>
+	
 	public Buff () {
 		string name = GetType().AngeName();
 		TypeID = name.AngeHash();
@@ -66,13 +66,13 @@ public abstract class Buff : IMapItem {
 	}
 
 
-	/// <summary></summary>
+	
 	public virtual void BeforeUpdate (Character target) { }
-	/// <summary></summary>
+	
 	public virtual void LateUpdate (Character target) { }
-	/// <summary></summary>
+	
 	public virtual void OnCharacterAttack (Character target, Bullet bullet) { }
-	/// <summary></summary>
+	
 	public virtual void OnCharacterRenderered (CharacterRenderer renderer) { }
 
 

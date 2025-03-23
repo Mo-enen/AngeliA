@@ -3,24 +3,43 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Behaviour class handles rendering of character
+/// </summary>
 public abstract class CharacterRenderer (Character target) {
 
 	// VAR
 	private static readonly int[] BOUNCE_AMOUNTS = [500, 200, 100, 50, 25, 50, 100, 200, 500,];
 	private static readonly int[] BOUNCE_AMOUNTS_BIG = [0, -600, -900, -1200, -1400, -1200, -900, -600, 0,];
+	
 	public readonly Character TargetCharacter = target;
+	
 	public int CurrentAnimationFrame { get; set; } = 0;
+	
 	public int CurrentRenderingBounce { get; private set; } = 1000;
+	/// <summary>
+	/// Does character spin when ground pound
+	/// </summary>
 	public bool SpinOnGroundPound { get; set; } = false;
+	/// <summary>
+	/// Final color tint
+	/// </summary>
 	public FrameBasedColor Tint { get; set; } = new();
+	/// <summary>
+	///  Final size scaling (0 means 0%, 1000 means 100%)
+	/// </summary>
 	public FrameBasedInt Scale { get; set; } = new(1000);
 
 	// MSG
+	/// <summary>
+	/// Callback function for character entity get activated
+	/// </summary>
 	public virtual void OnActivated () { }
 
+	
 	public virtual void BeforeUpdate () { }
 
-	public void UpdateForBounce () {
+	internal void UpdateForBounce () {
 
 		var Movement = TargetCharacter.Movement;
 		var Attackness = TargetCharacter.Attackness;
@@ -62,9 +81,10 @@ public abstract class CharacterRenderer (Character target) {
 		CurrentRenderingBounce = reverse ? -bounce : bounce;
 	}
 
+	
 	public virtual void LateUpdate () { }
 
-	public void GrowAnimationFrame () {
+	internal void GrowAnimationFrame () {
 
 		int frame = CurrentAnimationFrame;
 		var Movement = TargetCharacter.Movement;

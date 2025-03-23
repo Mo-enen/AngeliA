@@ -1,5 +1,8 @@
 ﻿namespace AngeliA;
 
+/// <summary>
+/// Layer for entity spawning
+/// </summary>
 public static class EntityLayer {
 	public static readonly string[] LAYER_NAMES = [
 		"UI","Game", "Character", "Environment", "Water","Bullet", "Item", "Decorate",

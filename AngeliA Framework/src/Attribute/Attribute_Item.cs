@@ -146,7 +146,7 @@ public class GlobalItemCombinationAttribute<I0, I1, I2, I3> (
 ) { }
 
 
-/// <summary></summary>
+
 public abstract class BasicGlobalItemCombinationAttribute (
 	ItemCombinationParam itemA, ItemCombinationParam itemB, ItemCombinationParam itemC, ItemCombinationParam itemD,
 	string result, int count = 1,
@@ -195,7 +195,7 @@ public abstract class BasicItemCombinationAttribute (
 }
 
 
-/// <summary></summary>
+
 public sealed class ItemCombinationParam {
 	internal string Name = "";
 	internal ItemCombinationParam (Type type) => Name = type.AngeName();

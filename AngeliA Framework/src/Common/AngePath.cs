@@ -4,6 +4,9 @@ using System;
 
 namespace AngeliA;
 
+/// <summary>
+/// Utility class for path related logic for an AngeliA project
+/// </summary>
 public static class AngePath {
 
 	// Ext  
@@ -21,19 +24,28 @@ public static class AngePath {
 	public const string MOVEMENT_CONFIG_FILE_EXT = "txt";
 	public const string MOVEMENT_CONFIG_SEARCH_PATTERN = $"*.{MOVEMENT_CONFIG_FILE_EXT}";
 	public const string INVENTORY_FILE_EXT = "inv";
+	/// <summary>
+	/// Inventory file extension with equipment data
+	/// </summary>
 	public const string EQ_INVENTORY_FILE_EXT = "invq";
 	public const string INVENTORY_SEARCH_PATTERN = $"*.{INVENTORY_FILE_EXT}";
+	/// <summary>
+	/// Inventory file search pattern with equipment data
+	/// </summary>
 	public const string EQ_INVENTORY_SEARCH_PATTERN = $"*.{EQ_INVENTORY_FILE_EXT}";
 
 	// System 
 	public static string PersistentDataPath { get; private set; }
 	public static string TempDataPath { get; private set; }
+	/// <summary>
+	/// Game universe folder path. This folder contents project data for an AngeliA project
+	/// </summary>
 	public static string BuiltInUniverseRoot { get; internal set; }
 	public static string DesktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
 
 	// Sys
-	public static void SetCurrentUserPath (string devName, string productName) {
+	internal static void SetCurrentUserPath (string devName, string productName) {
 		PersistentDataPath = GetPersistentDataPath(devName, productName);
 		TempDataPath = GetTempDataPath(devName, productName);
 	}

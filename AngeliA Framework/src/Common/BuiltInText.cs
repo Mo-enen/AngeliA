@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Utility class to get built-in text though language system
+/// </summary>
 public static class BuiltInText {
 
 	// Hint

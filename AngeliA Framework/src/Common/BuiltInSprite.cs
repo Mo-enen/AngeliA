@@ -4,6 +4,9 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Utility class to get built-in sprites 
+/// </summary>
 public static class BuiltInSprite {
 
 	public static readonly SpriteCode PIXEL = "Pixel";

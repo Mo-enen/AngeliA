@@ -1,6 +1,9 @@
 ﻿namespace AngeliA;
 
 
+/// <summary>
+/// How text wrap when reach edge
+/// </summary>
 public enum WrapMode : byte {
 	NoWrap = 0,
 	Wrap = 1,

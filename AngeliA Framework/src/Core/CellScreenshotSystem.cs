@@ -38,8 +38,8 @@ public static class CellScreenshotSystem {
 		public IRect Range;
 		public Color32 SkyTop;
 		public Color32 SkyBottom;
-		public RawCell[] CellsShadow;
-		public RawCell[] CellsDefault;
+		internal RawCell[] CellsShadow;
+		internal RawCell[] CellsDefault;
 
 		// API
 		public void Read (BinaryReader reader) {

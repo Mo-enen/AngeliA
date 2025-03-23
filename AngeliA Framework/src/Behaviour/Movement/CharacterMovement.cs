@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace AngeliA;
 
 
-#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
 public enum CharacterMovementState {
 	Idle = 0,
 	Walk, Run, JumpUp, JumpDown,
@@ -92,15 +92,15 @@ public class CharacterMovement (Rigidbody rig) {
 	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpSpeed = new(73);
 	/// <summary>
-	/// When character stop trying to jump (player release the jump button), and the character is still moving up, then the current speed will be mutiply to this rate (0 means 0%, 1000 means 100%)
+	/// When character stop trying to jump (player release the jump button), and the character is still moving up, then the current speed will be multiply to this rate (0 means 0%, 1000 means 100%)
 	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpReleaseSpeedRate = new(700);
 	/// <summary>
-	/// Gravity applys on the character will mutiply this rate when character moving up in air (0 means 0%, 1000 means 100%)
+	/// Gravity applys on the character will multiply this rate when character moving up in air (0 means 0%, 1000 means 100%)
 	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpRiseGravityRate = new(600);
 	/// <summary>
-	/// When character start jump, if it's moving, the running speed will mutiply this rate and add into the initial jump speed. (0 means 0%, 1000 means 100%)
+	/// When character start jump, if it's moving, the running speed will multiply this rate and add into the initial jump speed. (0 means 0%, 1000 means 100%)
 	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpBoostFromMoveRate = new(500);
 	/// <summary>
@@ -134,7 +134,7 @@ public class CharacterMovement (Rigidbody rig) {
 	[PropGroup("Squat")]
 	public readonly FrameBasedBool SquatAvailable = new(true);
 	/// <summary>
-	/// Character hitbox height when squatting
+	/// Character hitbox height multiply this rate when squatting (0 means 0%, 1000 means 100%)
 	/// </summary>
 	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatHeightAmount = new(521);
 	/// <summary>
@@ -156,7 +156,7 @@ public class CharacterMovement (Rigidbody rig) {
 	[PropGroup("Dash")]
 	public readonly FrameBasedBool DashAvailable = new(true);
 	/// <summary>
-	/// Hitbox height when character dashing
+	///  Character hitbox height multiply this rate when dashing (0 means 0%, 1000 means 100%)
 	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashHeightAmount = new(521);
 	/// <summary>
@@ -164,7 +164,7 @@ public class CharacterMovement (Rigidbody rig) {
 	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedBool DashWithRoll = new(false);
 	/// <summary>
-	/// Allow character dash through fire and put it out
+	/// Allow character dash through fire to put it out
 	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedBool DashPutoutFire = new(true);
 	/// <summary>
@@ -184,7 +184,7 @@ public class CharacterMovement (Rigidbody rig) {
 	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashAcceleration = new(24);
 	/// <summary>
-	/// Speed mutiply this rate when dash being cancel (0 means 0%, 1000 means 100%)
+	/// Speed multiply this rate when dash being cancel (0 means 0%, 1000 means 100%)
 	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashCancelLoseRate = new(300);
 
@@ -193,89 +193,283 @@ public class CharacterMovement (Rigidbody rig) {
 	/// </summary>
 	[PropGroup("Rush")]
 	public readonly FrameBasedBool RushAvailable = new(false);
-
+	/// <summary>
+	///  Character hitbox height multiply this rate when rushing (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushHeightAmount = new(1000);
+	/// <summary>
+	/// Allow character rush when not grounded
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushInAir = new(false);
+	/// <summary>
+	/// Allow character rush when inside water
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushInWater = new(true);
+	/// <summary>
+	/// character rush when climb
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushWhenClimb = new(false);
+	/// <summary>
+	/// character rush when squat
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushWhenSquat = new(false);
+	/// <summary>
+	/// Allow character rush through fire to put it out
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushPutoutFire = new(true);
+	/// <summary>
+	/// Movement speed when rushing
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushSpeed = new(72);
+	/// <summary>
+	/// Movement speed when rush end
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushStopSpeed = new(8);
+	/// <summary>
+	/// How many frames does rush last
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushDuration = new(8);
+	/// <summary>
+	/// How many frames does character not allow to move after rush end
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushStiff = new(10);
+	/// <summary>
+	/// How many frames does character has to wair after prev rush end to rush again
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushCooldown = new(2);
+	/// <summary>
+	/// Speed acceleration when rushing
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushAcceleration = new(12);
+	/// <summary>
+	/// Speed deceleration when rushing
+	/// </summary>
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushDeceleration = new(4);
 
+	/// <summary>
+	/// Allow character slip when run on slippery ground
+	/// </summary>
 	[PropGroup("Slip")]
 	public readonly FrameBasedBool SlipAvailable = new(true);
+	/// <summary>
+	/// Speed acceleration when moving on slippery ground
+	/// </summary>
 	[PropVisibility(nameof(SlipAvailable))] public readonly FrameBasedInt SlipAcceleration = new(2);
+	/// <summary>
+	/// Speed deceleration when moving on slippery ground
+	/// </summary>
 	[PropVisibility(nameof(SlipAvailable))] public readonly FrameBasedInt SlipDeceleration = new(1);
 
+	/// <summary>
+	/// Allow character ground pound in air (player press down button in air)
+	/// </summary>
 	[PropGroup("Pound")]
 	public readonly FrameBasedBool PoundAvailable = new(false);
+	/// <summary>
+	/// Allow character pound on fire to put it out
+	/// </summary>
 	[PropVisibility(nameof(PoundAvailable))] public readonly FrameBasedBool PoundPutoutFire = new(true);
+	/// <summary>
+	/// Movement speed when pounding
+	/// </summary>
 	[PropVisibility(nameof(PoundAvailable))] public readonly FrameBasedInt PoundSpeed = new(96);
 
+	/// <summary>
+	/// Allow character swim in water
+	/// </summary>
 	[PropGroup("Swim")]
 	public readonly FrameBasedBool SwimAvailable = new(true);
+	/// <summary>
+	/// When character inside water, the movement speed will multiply this rate (0 means 0%, 1000 means 100%)
+	/// </summary>
 	public readonly FrameBasedInt InWaterSpeedRate = new(500);
+	/// <summary>
+	///  Character hitbox width multiply this rate when swimming (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimWidthAmount = new(1333);
+	/// <summary>
+	///  Character hitbox height multiply this rate when swimming (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimHeightAmount = new(1000);
+	/// <summary>
+	/// Movement speed when character swimming
+	/// </summary>
 	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimSpeed = new(42);
+	/// <summary>
+	/// Movement speed when character jump inside water
+	/// </summary>
 	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimJumpSpeed = new(128);
+	/// <summary>
+	/// Speed acceleration when chracter inside water
+	/// </summary>
 	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimAcceleration = new(4);
+	/// <summary>
+	/// Speed deceleration when chracter inside water
+	/// </summary>
 	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimDeceleration = new(4);
 
+	/// <summary>
+	/// Allow character to climb
+	/// </summary>
 	[PropGroup("Climb")]
 	public readonly FrameBasedBool ClimbAvailable = new(true);
+	/// <summary>
+	/// Allow character jump when climbing
+	/// </summary>
 	[PropVisibility(nameof(ClimbAvailable))] public readonly FrameBasedBool AllowJumpWhenClimbing = new(true);
+	/// <summary>
+	/// Horizontal speed when climbing
+	/// </summary>
 	[PropVisibility(nameof(ClimbAvailable))] public readonly FrameBasedInt ClimbSpeedX = new(12);
+	/// <summary>
+	/// Vertical speed when climbing
+	/// </summary>
 	[PropVisibility(nameof(ClimbAvailable))] public readonly FrameBasedInt ClimbSpeedY = new(18);
 
+	/// <summary>
+	/// Allow character to fly (player press jump button when no jump count left)
+	/// </summary>
 	[PropGroup("Fly")]
 	public readonly FrameBasedBool FlyAvailable = new(false);
+	/// <summary>
+	/// Character hitbox height multiply this rate when flying (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyHeightAmount = new(521);
+	/// <summary>
+	/// When glide flying, character always move to the direction it facing
+	/// </summary>
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedBool GlideOnFlying = new(false);
+	/// <summary>
+	/// Character has to wait this many frames to fly again
+	/// </summary>
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyCooldown = new(24);
+	/// <summary>
+	/// Initial speed when fly start
+	/// </summary>
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyRiseSpeed = new(96);
+	/// <summary>
+	/// Gravity multiply this rate when flying and moving up (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyGravityRiseRate = new(800);
+	/// <summary>
+	/// Gravity multiply this rate when flying and moving down (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyGravityFallRate = new(200);
+	/// <summary>
+	/// Fall down speed shen flying
+	/// </summary>
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyFallSpeed = new(16);
+	/// <summary>
+	/// Horizontal move speed when flying
+	/// </summary>
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyMoveSpeed = new(32);
+	/// <summary>
+	/// Speed acceleration when flying
+	/// </summary>
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyAcceleration = new(2);
+	/// <summary>
+	/// Speed deceleration when flying
+	/// </summary>
 	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyDeceleration = new(1);
 
+	/// <summary>
+	/// Allow character to slide on wall
+	/// </summary>
 	[PropGroup("Slide")]
 	public readonly FrameBasedBool SlideAvailable = new(false);
+	/// <summary>
+	/// Allow character to slide on all type of blocks
+	/// </summary>
 	[PropVisibility(nameof(SlideAvailable))] public readonly FrameBasedBool SlideOnAnyBlock = new(false);
+	/// <summary>
+	/// Set jump count to 0 when slide
+	/// </summary>
 	[PropVisibility(nameof(SlideAvailable))] public readonly FrameBasedBool ResetJumpCountWhenSlide = new(true);
+	/// <summary>
+	/// Horizontal initial speed when character jump when slide
+	/// </summary>
 	[PropVisibility(nameof(SlideAvailable))] public readonly FrameBasedInt SlideJumpKickSpeed = new(56);
+	/// <summary>
+	/// Drop down speed when sliding
+	/// </summary>
 	[PropVisibility(nameof(SlideAvailable))] public readonly FrameBasedInt SlideDropSpeed = new(4);
 
+	/// <summary>
+	/// Allow character grab on the bottom of blocks with Tag.GrabTop
+	/// </summary>
 	[PropGroup("Grab")]
 	public readonly FrameBasedBool GrabTopAvailable = new(true);
+	/// <summary>
+	/// Allow character grab on the side of blocks with Tag.GrabSide
+	/// </summary>
 	public readonly FrameBasedBool GrabSideAvailable = new(true);
+	/// <summary>
+	/// Character hitbox height multiply this rate when top-grabbing (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(GrabTopAvailable))] public readonly FrameBasedInt GrabTopHeightAmount = new(947);
+	/// <summary>
+	/// Character hitbox height multiply this rate when side-grabbing (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(GrabSideAvailable))] public readonly FrameBasedInt GrabSideHeightAmount = new(947);
+	/// <summary>
+	/// Set jump count to 0 when character grabbing
+	/// </summary>
 	[PropVisibility(nameof(GrabTopAvailable), CompareMode.Or, nameof(GrabSideAvailable))] public readonly FrameBasedBool ResetJumpCountWhenGrab = new(true);
+	/// <summary>
+	/// Allow character to flip through block downward (player press down when standing on top-grabable blocks)
+	/// </summary>
 	[PropVisibility(nameof(GrabTopAvailable))] public readonly FrameBasedBool GrabFlipThroughDownAvailable = new(true);
+	/// <summary>
+	/// Allow character to flip through block upward (player press up when top-grabbing)
+	/// </summary>
 	[PropVisibility(nameof(GrabTopAvailable))] public readonly FrameBasedBool GrabFlipThroughUpAvailable = new(true);
+	/// <summary>
+	/// How long does flip through takes in frames
+	/// </summary>
 	[PropVisibility(nameof(GrabTopAvailable))] public readonly FrameBasedInt GrabFlipThroughDuration = new(18);
+	/// <summary>
+	/// Horizontal move speed when top-grabbing
+	/// </summary>
 	[PropVisibility(nameof(GrabTopAvailable))] public readonly FrameBasedInt GrabMoveSpeedX = new(24);
+	/// <summary>
+	///  Vertical move speed when side-grabbing
+	/// </summary>
 	[PropVisibility(nameof(GrabSideAvailable))] public readonly FrameBasedInt GrabMoveSpeedY = new(24);
+	/// <summary>
+	/// Horizontal initial speed when character jump when side-grabbing
+	/// </summary>
 	[PropVisibility(nameof(GrabSideAvailable))] public readonly FrameBasedInt GrabSideJumpKickSpeed = new(56);
 
+	/// <summary>
+	/// Allow character crash
+	/// </summary>
 	[PropGroup("Crash")]
 	public readonly FrameBasedBool CrashAvailable = new(true);
+	/// <summary>
+	/// Make character crash when running too long on slippery ground or rush on slippery ground
+	/// </summary>
 	[PropVisibility(nameof(CrashAvailable))] public readonly FrameBasedBool CrashWhenSlippy = new(true);
+	/// <summary>
+	/// How many frames does it takes for one crash
+	/// </summary>
 	[PropVisibility(nameof(CrashAvailable))] public readonly FrameBasedInt CrashDuration = new(30);
-	[PropVisibility(nameof(CrashAvailable))] public readonly FrameBasedInt CrashRunDurationRequire = new(42);
+	/// <summary>
+	/// How many frames does it takes to make character crash
+	/// </summary>
+	[PropVisibility(nameof(CrashAvailable), CompareMode.And, nameof(CrashWhenSlippy))] public readonly FrameBasedInt CrashRunDurationRequire = new(42);
+	/// <summary>
+	/// Speed deceleration when character crashing
+	/// </summary>
 	[PropVisibility(nameof(CrashAvailable))] public readonly FrameBasedInt CrashDeceleration = new(1);
 
+	/// <summary>
+	/// Allow character push other rigidbody
+	/// </summary>
 	[PropGroup("Push")]
 	public readonly FrameBasedBool PushAvailable = new(true);
+	/// <summary>
+	/// Movement speed when character pushing
+	/// </summary>
 	[PropVisibility(nameof(PushAvailable))] public readonly FrameBasedInt PushSpeed = new(10);
 
 
@@ -302,62 +496,205 @@ public class CharacterMovement (Rigidbody rig) {
 	private const int JUMP_BOOST_TOLERANCE = 12;
 
 	// Api
+	
 	public readonly Rigidbody Target = rig;
+	
 	public readonly Character TargetCharacter = rig as Character;
+	/// <summary>
+	/// Direction for last movement
+	/// </summary>
 	public Int2 LastMoveDirection { get; private set; } = default;
+	/// <summary>
+	/// 1 if character want to move right, -1 for left
+	/// </summary>
 	public int IntendedX { get; private set; } = 0;
+	/// <summary>
+	/// 1 if character want to move up, -1 for down
+	/// </summary>
 	public int IntendedY { get; private set; } = 0;
+	/// <summary>
+	/// How many times does character jumps after touching ground
+	/// </summary>
 	public int CurrentJumpCount { get; set; } = 0;
-	public int SpeedRateX { get; private set; } = 1000;
+	/// <summary>
+	/// True if character currently facing right
+	/// </summary>
 	public bool FacingRight { get; set; } = true;
+	/// <summary>
+	/// True if character currently facing front
+	/// </summary>
 	public bool FacingFront { get; set; } = true;
+	/// <summary>
+	/// True if character want to run instead of walk when move
+	/// </summary>
 	public bool ShouldRun { get; private set; } = true;
+	/// <summary>
+	/// Does movement config sync with json file in game universe folder
+	/// </summary>
 	public virtual bool SyncFromConfigFile => true;
 
 	// Frame Cache
+	/// <summary>
+	/// Last frame when character start touching ground
+	/// </summary>
 	public int LastGroundFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character is touching ground
+	/// </summary>
 	public int LastGroundingFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character start to move
+	/// </summary>
 	public int LastStartMoveFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character moving ends
+	/// </summary>
 	public int LastEndMoveFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character start to jump
+	/// </summary>
 	public int LastJumpFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character climb
+	/// </summary>
 	public int LastClimbFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character start to dash
+	/// </summary>
 	public int LastDashFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character start to rush
+	/// </summary>
 	public int LastRushStartFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character crash
+	/// </summary>
 	public int LastCrashFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character start to move on slippery ground
+	/// </summary>
 	public int LastSlippyMoveStartFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character start to squat
+	/// </summary>
 	public int LastSquatStartFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character is squatting
+	/// </summary>
 	public int LastSquattingFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character is pounding
+	/// </summary>
 	public int LastPoundingFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character is sliding on wall
+	/// </summary>
 	public int LastSlidingFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character is grabbing
+	/// </summary>
 	public int LastGrabbingFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character start to fly
+	/// </summary>
 	public int LastFlyFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character start to grab flip upward
+	/// </summary>
 	public int LastGrabFlipUpFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character start to grab flip downward
+	/// </summary>
 	public int LastGrabFlipDownFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character stop grabbing
+	/// </summary>
 	public int LastGrabCancelFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character start to run
+	/// </summary>
 	public int LastStartRunFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Last frame when character change horizontal facing
+	/// </summary>
 	public int LastFacingChangeFrame { get; private set; } = 0;
 
 	// Movement State
+	/// <summary>
+	/// Current movement type
+	/// </summary>
 	public CharacterMovementState MovementState { get; set; } = CharacterMovementState.Idle;
+	/// <summary>
+	/// True if character flipping through blocks
+	/// </summary>
 	public bool IsGrabFlipping => IsGrabFlippingUp || IsGrabFlippingDown;
+	/// <summary>
+	/// True if character flipping through blocks upward
+	/// </summary>
 	public bool IsGrabFlippingUp => Game.GlobalFrame < LastGrabFlipUpFrame + Util.Max(GrabFlipThroughDuration, 1);
+	/// <summary>
+	/// True if character flipping through blocks downward
+	/// </summary>
 	public bool IsGrabFlippingDown => Game.GlobalFrame < LastGrabFlipDownFrame + Util.Max(GrabFlipThroughDuration, 1);
+	/// <summary>
+	/// True if character is moving
+	/// </summary>
 	public bool IsMoving => IntendedX != 0;
+	/// <summary>
+	/// True if character is walking
+	/// </summary>
 	public bool IsWalking => WalkAvailable && IntendedX != 0 && !ShouldRun;
+	/// <summary>
+	/// True if character is running
+	/// </summary>
 	public bool IsRunning => RunAvailable && IntendedX != 0 && ShouldRun;
+	/// <summary>
+	/// True if character is rolling
+	/// </summary>
 	public bool IsRolling { get; private set; } = false;
+	/// <summary>
+	/// True if character is dashing
+	/// </summary>
 	public bool IsDashing { get; private set; } = false;
+	/// <summary>
+	/// True if character is rushing
+	/// </summary>
 	public bool IsRushing { get; private set; } = false;
+	/// <summary>
+	/// True if character is crashing
+	/// </summary>
 	public bool IsCrashing { get; private set; } = false;
+	/// <summary>
+	/// True if character is squatting
+	/// </summary>
 	public bool IsSquatting { get; private set; } = false;
+	/// <summary>
+	/// True if character is pounding
+	/// </summary>
 	public bool IsPounding { get; private set; } = false;
+	/// <summary>
+	/// True if character is climbing
+	/// </summary>
 	public bool IsClimbing { get; private set; } = false;
+	/// <summary>
+	/// True if character is flying
+	/// </summary>
 	public bool IsFlying { get; private set; } = false;
+	/// <summary>
+	/// True if character is sliding on wall
+	/// </summary>
 	public bool IsSliding { get; private set; } = false;
+	/// <summary>
+	/// True if character is top-grabbing
+	/// </summary>
 	public bool IsGrabbingTop { get; private set; } = false;
+	/// <summary>
+	/// True if character is side-grabbing
+	/// </summary>
 	public bool IsGrabbingSide { get; private set; } = false;
 
 	// Short
+
 	protected IRect Rect => Target.Rect;
 	protected int X { get => Target.X; set => Target.X = value; }
 	protected int Y { get => Target.Y; set => Target.Y = value; }
@@ -371,6 +708,7 @@ public class CharacterMovement (Rigidbody rig) {
 	protected bool InWater => Target.InWater;
 	protected bool IsGrounded => Target.IsGrounded;
 	protected int CollisionMask => Target.CollisionMask;
+#pragma warning restore CS1591
 
 	// Data
 	private static readonly Dictionary<int, List<(string name, int value)>> ConfigPool = [];
@@ -396,6 +734,7 @@ public class CharacterMovement (Rigidbody rig) {
 	private int LockedSquatFrame = int.MinValue;
 	private int RequireJumpFrame = int.MinValue;
 	private int SpeedRateFrame = int.MinValue;
+	private int SpeedRateX = 1000;
 
 
 	#endregion
@@ -436,6 +775,7 @@ public class CharacterMovement (Rigidbody rig) {
 		}
 
 	}
+
 
 
 	public virtual void OnActivated () {
@@ -506,6 +846,7 @@ public class CharacterMovement (Rigidbody rig) {
 			LastStartRunFrame = int.MinValue;
 		}
 	}
+#pragma warning restore CS1591
 
 
 	private void Update_Cache () {
@@ -1194,6 +1535,9 @@ public class CharacterMovement (Rigidbody rig) {
 
 
 	// Config
+	/// <summary>
+	/// Load movement data from json file inside game universe folder
+	/// </summary>
 	public void ReloadMovementConfigFromFile () {
 		string cName = Target.GetType().AngeName();
 		int id = cName.AngeHash();
@@ -1210,18 +1554,34 @@ public class CharacterMovement (Rigidbody rig) {
 
 
 	// Movement Logic
+	/// <summary>
+	/// Move the character
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="walk">True if character want to walk instead of run</param>
 	public virtual void Move (Direction3 x, Direction3 y, bool walk = false) => MoveLogic((int)x, (int)y, walk);
 
 
+	/// <summary>
+	/// Stop current movement
+	/// </summary>
 	public virtual void Stop () {
 		MoveLogic(0, 0);
 		VelocityX = 0;
 	}
 
 
+	/// <summary>
+	/// Is character holding jump (call this every frame no matter character is jumpping or not)
+	/// </summary>
 	public virtual void HoldJump (bool holding) => HoldingJump = holding;
 
 
+	/// <summary>
+	/// Perform jump (call this once when jump start)
+	/// </summary>
+	/// <param name="isSquatJump">Is this jump a squat jump or not</param>
 	public virtual void Jump (bool isSquatJump = false) {
 		IntendedJump = true;
 		SquatJumpping = isSquatJump;
@@ -1230,30 +1590,69 @@ public class CharacterMovement (Rigidbody rig) {
 	}
 
 
+	/// <summary>
+	/// Perform dash (call this once when dash start)
+	/// </summary>
 	public virtual void Dash () => IntendedDash = true;
+
+
+	/// <summary>
+	/// Stop current dashing 
+	/// </summary>
 	public void StopDash () => LastDashFrame = int.MinValue;
 
 
+	/// <summary>
+	/// Perform pound (call this once when pound start)
+	/// </summary>
 	public virtual void Pound () => IntendedPound = true;
 
 
+	/// <summary>
+	/// Perform rush (call this once when rush start)
+	/// </summary>
 	public virtual void Rush () => IntendedRush = true;
+
+
+	/// <summary>
+	/// Stop current rush
+	/// </summary>
 	public void StopRush () => LastRushStartFrame = int.MinValue;
 
 
+	/// <summary>
+	/// Perform crash (call this once when crash start)
+	/// </summary>
 	public virtual void Crash () => LastCrashFrame = Game.GlobalFrame;
+
+
+
+	/// <summary>
+	/// Stop current crash
+	/// </summary>
 	public void StopCrash () => LastCrashFrame = int.MinValue;
 
 
+	/// <summary>
+	/// Force character facing right or left for given frames
+	/// </summary>
 	public void LockFacingRight (bool facingRight, int duration = 1) {
 		LockedFacingFrame = Game.GlobalFrame + duration;
 		LockedFacingRight = facingRight;
 	}
 
 
+	/// <summary>
+	/// Force character to squat for given frames
+	/// </summary>
 	public void LockSquat (int duration = 1) => LockedSquatFrame = Game.GlobalFrame + duration;
 
 
+	/// <summary>
+	/// Force movement speed rate for given frames
+	/// </summary>
+	/// <param name="newRate">0 means 0%, 1000 means 100%</param>
+	/// <param name="duration"></param>
 	public void SetSpeedRate (int newRate, int duration = 1) {
 		SpeedRateFrame = Game.GlobalFrame + duration;
 		SpeedRateX = newRate;
@@ -1261,6 +1660,9 @@ public class CharacterMovement (Rigidbody rig) {
 
 
 	// Movement State
+	/// <summary>
+	/// Get current movement type base on current cached data
+	/// </summary>
 	public static CharacterMovementState CalculateMovementState (CharacterMovement movement) {
 		return movement.IsCrashing ? CharacterMovementState.Crash :
 		movement.IsFlying ? CharacterMovementState.Fly :
@@ -1280,6 +1682,9 @@ public class CharacterMovement (Rigidbody rig) {
 	}
 
 
+	/// <summary>
+	/// Get current movement type base on current cached data
+	/// </summary>
 	protected virtual CharacterMovementState GetMovementState () => CalculateMovementState(this);
 
 
@@ -1292,6 +1697,7 @@ public class CharacterMovement (Rigidbody rig) {
 
 
 	// Move
+	
 	protected void MoveLogic (int x, int y, bool walk = false) {
 		if (IntendedX != 0 && x == 0) LastEndMoveFrame = Game.GlobalFrame;
 		if (IntendedX == 0 && x != 0) {

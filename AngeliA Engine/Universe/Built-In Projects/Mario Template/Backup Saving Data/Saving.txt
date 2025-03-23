@@ -1,4 +1,4 @@
-﻿Game.LastUsedWindowWidth:3478
+﻿Game.LastUsedWindowWidth:3840
 Game.LastUsedWindowHeight:2001
 MapEditor.LastEdittingViewX:-2815
 MapEditor.LastEdittingViewY:-2080

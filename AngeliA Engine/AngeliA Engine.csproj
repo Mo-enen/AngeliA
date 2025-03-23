@@ -40,6 +40,7 @@
 		<None Remove=".editorconfig" />
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
+		<None Remove="Generate API.bat" />
 		<None Remove="Icon.ico" />
 		<None Remove="publish pause.bat" />
 		<None Remove="publish.bat" />
