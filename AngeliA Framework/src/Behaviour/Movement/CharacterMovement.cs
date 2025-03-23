@@ -6,14 +6,19 @@ using System.Runtime.InteropServices;
 namespace AngeliA;
 
 
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
 public enum CharacterMovementState {
 	Idle = 0,
 	Walk, Run, JumpUp, JumpDown,
 	SwimIdle, SwimMove, SquatIdle, SquatMove,
 	Dash, Rush, Crash, Pound, Climb, Fly, Slide, GrabTop, GrabSide, GrabFlip,
 }
+#pragma warning restore CS1591
 
 
+/// <summary>
+/// Behavour class that handle movement logic for character
+/// </summary>
 [StructLayout(LayoutKind.Sequential)]
 public class CharacterMovement (Rigidbody rig) {
 
@@ -23,57 +28,172 @@ public class CharacterMovement (Rigidbody rig) {
 	#region --- MET ---
 
 
+	/// <summary>
+	/// Default with of the character
+	/// </summary>
 	[PropGroup("Size")]
 	public readonly FrameBasedInt MovementWidth = new(150);
+	/// <summary>
+	/// Default height of the character
+	/// </summary>
 	public readonly FrameBasedInt MovementHeight = new(384); // Height when Character is 160cm
 
+	/// <summary>
+	/// Allow character to walk
+	/// </summary>
 	[PropGroup("Walk")]
 	public readonly FrameBasedBool WalkAvailable = new(true);
+	/// <summary>
+	/// How fast should the character walk
+	/// </summary>
 	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkSpeed = new(20);
+	/// <summary>
+	/// Speed acceleration when character is walking
+	/// </summary>
 	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkAcceleration = new(3);
+	/// <summary>
+	/// Speed acceleration when character is trying to walk to the opposite direction
+	/// </summary>
 	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkBrakeAcceleration = new(30);
+	/// <summary>
+	/// Speed deceleration when character is walking
+	/// </summary>
 	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkDeceleration = new(4);
 
+	/// <summary>
+	/// Allow character to run
+	/// </summary>
 	[PropGroup("Run")]
 	public readonly FrameBasedBool RunAvailable = new(true);
+	/// <summary>
+	/// How fast should the character run
+	/// </summary>
 	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunSpeed = new(32);
+	/// <summary>
+	/// Speed acceleration when character is running
+	/// </summary>
 	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunAcceleration = new(3);
+	/// <summary>
+	/// Speed acceleration when character is trying to run to the opposite direction
+	/// </summary>
 	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunBrakeAcceleration = new(30);
+	/// <summary>
+	/// Speed deceleration when character is running
+	/// </summary>
 	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunDeceleration = new(4);
 
+	/// <summary>
+	/// How many times can the character jump without touching ground
+	/// </summary>
 	[PropGroup("Jump")]
 	public readonly FrameBasedInt JumpCount = new(2);
+	/// <summary>
+	/// Initial speed when character start to jump
+	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpSpeed = new(73);
+	/// <summary>
+	/// When character stop trying to jump (player release the jump button), and the character is still moving up, then the current speed will be mutiply to this rate (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpReleaseSpeedRate = new(700);
+	/// <summary>
+	/// Gravity applys on the character will mutiply this rate when character moving up in air (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpRiseGravityRate = new(600);
+	/// <summary>
+	/// When character start jump, if it's moving, the running speed will mutiply this rate and add into the initial jump speed. (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedInt JumpBoostFromMoveRate = new(500);
+	/// <summary>
+	/// When character jump from ground, does it jump with rolling in air
+	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool FirstJumpWithRoll = new(false);
+	/// <summary>
+	/// When character jump from air, does it jump with rolling in air
+	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 1)] public readonly FrameBasedBool SubsequentJumpWithRoll = new(true);
+	/// <summary>
+	/// Allow character jump when rushing and stop the rush
+	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool JumpBreakRush = new(false);
+	/// <summary>
+	/// Allow character jump when dashing and stop the dash
+	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool JumpBreakDash = new(true);
+	/// <summary>
+	/// Allow character jump when squatting, and keep squatting when jump in air
+	/// </summary>
 	[PropVisibility(nameof(JumpCount), CompareMode.GreaterThan, 0)] public readonly FrameBasedBool AllowSquatJump = new(false);
-	public readonly FrameBasedBool JumpDownThoughOneway = new(false);
+	/// <summary>
+	/// Allow character jump down and go through oneway gate (player holding down button and press jump button once)
+	/// </summary>
+	public readonly FrameBasedBool JumpDownThroughOneway = new(false);
 
+	/// <summary>
+	/// Allow character to squat
+	/// </summary>
 	[PropGroup("Squat")]
 	public readonly FrameBasedBool SquatAvailable = new(true);
+	/// <summary>
+	/// Character hitbox height when squatting
+	/// </summary>
 	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatHeightAmount = new(521);
+	/// <summary>
+	/// Move speed when character squatting, set to 0 when not allow squat move
+	/// </summary>
 	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatMoveSpeed = new(14);
+	/// <summary>
+	/// Movement acceleration when squat moving
+	/// </summary>
 	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatAcceleration = new(48);
+	/// <summary>
+	/// Movement deceleration when squat moving
+	/// </summary>
 	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatDeceleration = new(48);
 
+	/// <summary>
+	/// Allow character to dash (player hold down button and press jump button for once)
+	/// </summary>
 	[PropGroup("Dash")]
 	public readonly FrameBasedBool DashAvailable = new(true);
+	/// <summary>
+	/// Hitbox height when character dashing
+	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashHeightAmount = new(521);
+	/// <summary>
+	/// Character roll when dashing
+	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedBool DashWithRoll = new(false);
+	/// <summary>
+	/// Allow character dash through fire and put it out
+	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedBool DashPutoutFire = new(true);
+	/// <summary>
+	/// Movement speed for dashing
+	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashSpeed = new(42);
+	/// <summary>
+	/// How many frames does dash last
+	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashDuration = new(20);
+	/// <summary>
+	/// Frames length between prev dash end and next dash start
+	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashCooldown = new(4);
+	/// <summary>
+	/// Speed acceleration when dashing
+	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashAcceleration = new(24);
+	/// <summary>
+	/// Speed mutiply this rate when dash being cancel (0 means 0%, 1000 means 100%)
+	/// </summary>
 	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashCancelLoseRate = new(300);
 
+	/// <summary>
+	/// Allow character to rush
+	/// </summary>
 	[PropGroup("Rush")]
 	public readonly FrameBasedBool RushAvailable = new(false);
+
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushHeightAmount = new(1000);
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushInAir = new(false);
 	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedBool RushInWater = new(true);
@@ -799,7 +919,7 @@ public class CharacterMovement (Rigidbody rig) {
 		if (!IntendedDash || !IsGrounded || IsGrabFlipping) return;
 
 		// Jump Though Oneway
-		if (JumpDownThoughOneway && JumpThoughOnewayCheck()) {
+		if (JumpDownThroughOneway && JumpThoughOnewayCheck()) {
 			Target.IgnoreOneway.True(2);
 			Target.PerformMove(0, -Const.HALF);
 			//Target.CancelIgnoreOneway();

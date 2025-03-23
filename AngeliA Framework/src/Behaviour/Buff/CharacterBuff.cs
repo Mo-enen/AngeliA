@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Behavour class that handles buff logic for characters
+/// </summary>
 public sealed class CharacterBuff {
 
 
@@ -28,6 +31,9 @@ public sealed class CharacterBuff {
 
 
 	// Api
+	/// <summary>
+	/// Total count for all buff the character is having
+	/// </summary>
 	public int BuffCount => BuffStates.Count;
 
 	// Data
@@ -110,9 +116,15 @@ public sealed class CharacterBuff {
 	#region --- API ---
 
 
+	/// <summary>
+	/// True if the character is having the given buff
+	/// </summary>
 	public bool HasBuff (int id) => BuffStates.ContainsKey(id);
 
 
+	/// <summary>
+	/// Give the character given buff for specified frames long
+	/// </summary>
 	public void GiveBuff (int id, int duration = -1) {
 		if (!Pool.TryGetValue(id, out var buff)) return;
 		if (BuffPrevents.ContainsKey(id)) return;
@@ -128,27 +140,45 @@ public sealed class CharacterBuff {
 	}
 
 
+	/// <summary>
+	/// Remove the given buff from character
+	/// </summary>
 	public void ClearBuff (int id) => BuffStates.Remove(id);
 
 
+	/// <summary>
+	/// Remove all buff from character
+	/// </summary>
 	public void ClearAllBuffs () {
 		BuffStates.Clear();
 		BuffPrevents.Clear();
 	}
 
 
+	/// <summary>
+	/// Do not allow the character have given buff for specified frames
+	/// </summary>
 	public void PreventBuff (int id, int duration = 1) {
 		BuffStates.Remove(id);
 		BuffPrevents[id] = duration == int.MaxValue ? int.MaxValue : Game.GlobalFrame + duration;
 	}
 
 
+	/// <summary>
+	/// True if the given buff is being prevented
+	/// </summary>
 	public bool IsBuffPrevented (int id) => BuffPrevents.ContainsKey(id);
 
 
+	/// <summary>
+	/// Get the user data of the given buff from the character
+	/// </summary>
 	public object GetBuffData (int id) => BuffStates.TryGetValue(id, out var state) ? state.Data : null;
 
 
+	/// <summary>
+	/// Set user data of the given buff to the character
+	/// </summary>
 	public void SetBuffData (int id, object data) {
 		if (!BuffStates.TryGetValue(id, out var state)) return;
 		state.Data = data;
@@ -156,9 +186,15 @@ public sealed class CharacterBuff {
 	}
 
 
+	/// <summary>
+	/// Get which frame does the given buff ends
+	/// </summary>
 	public int GetBuffEndFrame (int id) => BuffStates.TryGetValue(id, out var state) ? state.EndFrame : -1;
 
 
+	/// <summary>
+	/// Iterate thought all buffs this character currently have
+	/// </summary>
 	public IEnumerable<Buff> ForAllBuffs () {
 		foreach (var (_, state) in BuffStates) {
 			yield return state.Buff;
@@ -166,12 +202,18 @@ public sealed class CharacterBuff {
 	}
 
 
+	/// <summary>
+	/// Get display name of the given buff from the language system
+	/// </summary>
 	public static string GetBuffDisplayName (int id) {
 		if (!Pool.TryGetValue(id, out var buff)) return "";
 		return Language.Get(buff.NameID, buff.TypeName);
 	}
 
 
+	/// <summary>
+	/// Get description of the given buff from the language system
+	/// </summary>
 	public static string GetBuffDescription (int id) {
 		if (!Pool.TryGetValue(id, out var buff)) return "";
 		return Language.Get(buff.DescriptionID);

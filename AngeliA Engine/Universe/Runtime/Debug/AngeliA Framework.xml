@@ -352,6 +352,1094 @@
             Indicates to the system that this item does not require crafting combination
             </summary>
         </member>
+        <member name="T:AngeliA.OnGameInitializeAttribute">
+            <summary>
+            The function will be called when game initialize.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="M:AngeliA.OnGameInitializeAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called when game initialize.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="T:AngeliA.OnGameInitializeLaterAttribute">
+            <summary>
+            The function will be called when game initialize but after all [OnGameInitialize] functions already called
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="M:AngeliA.OnGameInitializeLaterAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called when game initialize but after all [OnGameInitialize] functions already called
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="T:AngeliA.BeforeSavingSlotChanged">
+            <summary>
+            The function will be called before user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is still the old value when this function is called.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="M:AngeliA.BeforeSavingSlotChanged.#ctor(System.Int32)">
+            <summary>
+            The function will be called before user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is still the old value when this function is called.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="T:AngeliA.OnSavingSlotChanged">
+            <summary>
+            The function will be called after user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is the new value when this function is called.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="M:AngeliA.OnSavingSlotChanged.#ctor(System.Int32)">
+            <summary>
+            The function will be called after user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is the new value when this function is called.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="T:AngeliA.OnGameUpdateAttribute">
+            <summary>
+            The function will be called every time game update (60 times per second)
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="M:AngeliA.OnGameUpdateAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called every time game update (60 times per second)
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="T:AngeliA.OnGameUpdateLaterAttribute">
+            <summary>
+            The function will be called every time game update (60 times per second), but after all [OnGameUpdate] functions already called.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="M:AngeliA.OnGameUpdateLaterAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called every time game update (60 times per second), but after all [OnGameUpdate] functions already called.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="T:AngeliA.OnGameUpdatePauselessAttribute">
+            <summary>
+            The function will be called every time game update (60 times per second), even when the game is paused.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="M:AngeliA.OnGameUpdatePauselessAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called every time game update (60 times per second), even when the game is paused.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="T:AngeliA.OnGameRestartAttribute">
+            <summary>
+            The function will be called when game restart.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="M:AngeliA.OnGameRestartAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called when game restart.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="T:AngeliA.OnGameTryingToQuitAttribute">
+            <summary>
+            The function will be called when player try to quit the game. Return false will stop the application from quiting.
+            </summary>
+            <example>internal static bool ExampleFunction () => true; </example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="M:AngeliA.OnGameTryingToQuitAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called when player try to quit the game. Return false will stop the application from quiting.
+            </summary>
+            <example>internal static bool ExampleFunction () => true; </example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="T:AngeliA.OnGameQuittingAttribute">
+            <summary>
+            The function will be called before the application actually quit.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="M:AngeliA.OnGameQuittingAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called before the application actually quit.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+            <param name="order">Function with smaller order will be called earlier</param>
+        </member>
+        <member name="T:AngeliA.OnGameFocusedAttribute">
+            <summary>
+            The function will be called when the application window regain focus.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.OnGameLostFocusAttribute">
+            <summary>
+            The function will be called when the application window lost focus.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.OnWindowSizeChangedAttribute">
+            <summary>
+            The function will be called when user change the size of the application window
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute">
+            <summary>
+            The function will be called when engine send remote message to rigged game
+            </summary>
+            <example>internal static void ExampleFunction (int id, int data) { }</example>
+        </member>
+        <member name="M:AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called when engine send remote message to rigged game
+            </summary>
+            <example>internal static void ExampleFunction (int id, int data) { }</example>
+        </member>
+        <member name="T:AngeliA.OnFileDropped_StringPathAttribute">
+            <summary>
+            The function will be called when user drag and drop a file into the application window
+            </summary>
+            <example>internal static void ExampleFunction (string filePath) { }</example>
+        </member>
+        <member name="T:AngeliA.OnMainSheetReloadAttribute">
+            <summary>
+            The function will be called when artwork sheet for rendering loaded from file
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.OnViewZChangedAttribute">
+            <summary>
+            The function will be called when player change the map layer
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.BeforeLayerFrameUpdate_IntLayerAttribute">
+            <summary>
+            The function will be called before rendering layer update
+            </summary>
+            <example>internal static void ExampleFunction (int layerIndex) { }</example>
+        </member>
+        <member name="T:AngeliA.AfterLayerFrameUpdate_IntLayerAttribute">
+            <summary>
+            The function will be called after rendering layer update 
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.BeforeFirstUpdateAttribute">
+            <summary>
+            The function will be called before any entity.FirstUpdate is called
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.BeforeBeforeUpdateAttribute">
+            <summary>
+            The function will be called before any entity.BeforeUpdate is called 
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.BeforeUpdateUpdateAttribute">
+            <summary>
+            The function will be called before any entity.Update is called 
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.BeforeLateUpdateAttribute">
+            <summary>
+            The function will be called before any entity.LateUpdate is called 
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.AfterLateUpdateAttribute">
+            <summary>
+            The function will be called after all entity.LateUpdate is called 
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.BeforeLevelRenderedAttribute">
+            <summary>
+            The function will be called before world squad rendering any level blocks for the current frame
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="M:AngeliA.BeforeLevelRenderedAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called before world squad rendering any level blocks for the current frame
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.AfterLevelRenderedAttribute">
+            <summary>
+            The function will be called after world squad render all level blocks for the current frame 
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="M:AngeliA.AfterLevelRenderedAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called after world squad render all level blocks for the current frame 
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.OnWorldCreatedBySquad_WorldAttribute">
+            <summary>
+            The function will be called when a world instance is created by world squad
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="M:AngeliA.OnWorldCreatedBySquad_WorldAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called when a world instance is created by world squad
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.OnWorldLoadedBySquad_WorldAttribute">
+            <summary>
+            The function will be called when a world instance is loaded by world squad 
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="M:AngeliA.OnWorldLoadedBySquad_WorldAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called when a world instance is loaded by world squad 
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.OnWorldSavedByMapEditor_WorldAttribute">
+            <summary>
+            The function will be called when a world instance is saved to file by the world squad
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.OnMapEditorModeChange_ModeAttribute">
+            <summary>
+            The function will be called when user change map editor editing mode
+            </summary>
+            <example>internal static void ExampleFunction (OnMapEditorModeChange_ModeAttribute.Mode mode) { }</example>
+        </member>
+        <member name="T:AngeliA.OnMapEditorModeChange_ModeAttribute.Mode">
+            <summary></summary>
+        </member>
+        <member name="F:AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.EnterPlayMode">
+            <summary>
+            Edit mode to play mode. After map editor internal logic is done
+            </summary>
+        </member>
+        <member name="F:AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.ExitPlayMode">
+            <summary>
+            Play mode to edit mode. Before map editor internal logic is done
+            </summary>
+        </member>
+        <member name="F:AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.EnterEditMode">
+            <summary>
+            Play mode to edit mode. After map editor internal logic is done
+            </summary>
+        </member>
+        <member name="F:AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.ExitEditMode">
+            <summary>
+            Edit mode to play mode. Before map editor internal logic is done
+            </summary>
+        </member>
+        <member name="T:AngeliA.OnLanguageChangedAttribute">
+            <summary>
+            The function will be called when user change game display language. Language.CurrentLanguage is already set to new value when this function is called.
+            </summary>
+            <example>internal static void ExampleFunction () { }</example>
+        </member>
+        <member name="T:AngeliA.CheatCodeAttribute">
+            <summary>
+            The function will be called when user perform the given cheat code. Cheat code can be perform like those in NES games.
+            </summary>
+            <example>internal static void ExampleFunction (string code) { }</example>
+        </member>
+        <member name="M:AngeliA.CheatCodeAttribute.#ctor(System.String)">
+            <summary>
+            The function will be called when user perform the given cheat code. Cheat code can be perform like those in NES games.
+            </summary>
+            <example>internal static void ExampleFunction (string code) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCheatPerformed_StringCodeAttribute">
+            <summary>
+            The function will be called when user performed any cheat code. Cheat code can be perform like those in NES games.
+            </summary>
+            <example>internal static void ExampleFunction (string code) { }</example>
+        </member>
+        <member name="T:AngeliA.OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute">
+            <summary>
+            The function will be called when a character collect an item
+            </summary>
+            <example>internal static void ExampleFunction (Entity holder, Int2 pos, int itemID, int itemCount) { }</example>
+        </member>
+        <member name="T:AngeliA.OnItemLost_Character_IntItemIDAttribute">
+            <summary>
+            The function will be called when a character lost an item
+            </summary>
+            <example>internal static void ExampleFunction (Character holder, int itemID) { }</example>
+        </member>
+        <member name="T:AngeliA.OnItemError_Entity_Int2Pos_IntIconID">
+            <summary>
+            The function will be called when something wrong about an item (like when guns out of ammo)
+            </summary>
+            <example>internal static void ExampleFunction (Entity holder, Int2 pos, int iconID) { }</example>
+        </member>
+        <member name="T:AngeliA.OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute">
+            <summary>
+            The function will be called when an item is damaged into another item
+            </summary>
+            <example>internal static void ExampleFunction (Character holder, int itemIdBefore, int itemIdAfter) { }</example>
+        </member>
+        <member name="T:AngeliA.OnItemUnlocked_IntItemIDAttribute">
+            <summary>
+            The function will be called when an item is unlocked by player
+            </summary>
+            <example>internal static void ExampleFunction (int itemID) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCharacterFootStepped_Entity">
+            <summary>
+            The function will be called when a character makes a foot step on running
+            </summary>
+            <example>internal static void ExampleFunction (Entity character) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCharacterSleeping_Entity">
+            <summary>
+            The function will be called when a character is sleeping
+            </summary>
+            <example>internal static void ExampleFunction (Entity character) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCharacterJump_Entity">
+            <summary>
+            The function will be called when a character jumps
+            </summary>
+            <example>internal static void ExampleFunction (Entity character) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCharacterPound_Entity">
+            <summary>
+            The function will be called when a character ground pound
+            </summary>
+            <example>internal static void ExampleFunction (Entity character) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCharacterFly_Entity">
+            <summary>
+            The function will be called when a character fly
+            </summary>
+            <example>internal static void ExampleFunction (Entity character) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCharacterSlideStepped_Entity">
+            <summary>
+            The function will be called when a character makes a step when sliding
+            </summary>
+            <example>internal static void ExampleFunction (Entity character) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCharacterPassOut_Entity">
+            <summary>
+            The function will be called when a character pass out
+            </summary>
+            <example>internal static void ExampleFunction (Entity character) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCharacterTeleport_Entity">
+            <summary>
+            The function will be called when a character teleport
+            </summary>
+            <example>internal static void ExampleFunction (Entity character) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCharacterCrash_Entity">
+            <summary>
+            The function will be called when a character crash
+            </summary>
+            <example>internal static void ExampleFunction (Entity character) { }</example>
+        </member>
+        <member name="T:AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute">
+            <summary>
+            The function will be called when an object break
+            </summary>
+            <example>internal static void ExampleFunction (int spriteID, IRect rectPosition) { }</example>
+        </member>
+        <member name="T:AngeliA.OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute">
+            <summary>
+            The function will be called when an object start to free fall
+            </summary>
+            <example>internal static void ExampleFunction (int spriteID, Int2 pos, int startRotation, bool flip, Int2 velocity, int rotationSpeed, int gravity) { }</example>
+        </member>
+        <member name="T:AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute">
+            <summary>
+            The function will be called when a map block has been picked
+            </summary>
+            <example>internal static void ExampleFunction (int spriteID, IRect rectPosition) { }</example>
+        </member>
+        <member name="T:AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute">
+            <summary>
+            The function will be called when a rigidbody fall into water
+            </summary>
+            <example>internal static void ExampleFunction (Rigidbody rig, Entity water) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute">
+            <summary>
+            The function will be called when a rigidbody came out of water
+            </summary>
+            <example>internal static void ExampleFunction (Rigidbody rig, Entity water) { }</example>
+        </member>
+        <member name="T:AngeliA.OnDealDamage_Damage_IDamageReceiver">
+            <summary>
+            The function will be called when something deal damage to a damage-receiver
+            </summary>
+            <example>internal static void ExampleFunction (Damage damage, IDamageReceiver receiver) { }</example>
+        </member>
+        <member name="T:AngeliA.OnBulletHitEnvironment_Bullet">
+            <summary>
+            The function will be called when a bullet hit environment (something not an IDamageReceiver)
+            </summary>
+            <example>internal static void ExampleFunction (Bullet bullet) { }</example>
+        </member>
+        <member name="T:AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData">
+            <summary>
+            The function will be called when message from TransferSystem.StartTransfer() arrived
+            </summary>
+            <example>internal static void ExampleFunction (int receiverID, Int3 unitPosition, object userData) { }</example>
+        </member>
+        <member name="T:AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData">
+            <summary>
+            The function will be called when message from TransferSystem.StartTransfer() pass through
+            </summary>
+            <example>internal static void ExampleFunction (Int3 unitPos, object userData) { }</example>
+        </member>
+        <member name="T:AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From">
+            <summary>
+            The function will be called when CircuitSystem triggers the entity that holds this function
+            </summary>
+            <example>internal static void ExampleFunction (Int3 unitPos, int stamp, Direction5 from) { }</example>
+        </member>
+        <member name="T:AngeliA.OnCircuitWireActived_Int3UnitPosAttribute">
+            <summary>
+            The function will be called when CircuitSystem's electric current pass through
+            </summary>
+            <example>internal static void ExampleFunction (Int3 unitPos) { }</example>
+        </member>
+        <member name="T:AngeliA.EventAttribute">
+            <summary>
+            Attribute for link all static methods with a System.Action. When the action is invoked, all methods get called.
+            </summary>
+        </member>
+        <member name="M:AngeliA.EventAttribute.#ctor(System.Int32)">
+            <summary>
+            Attribute for link all static methods with a System.Action. When the action is invoked, all methods get called.
+            </summary>
+        </member>
+        <member name="T:AngeliA.OrderedAttribute">
+            <summary>
+            Attribute apply to method and call all of them in given order
+            </summary>
+            <param name="order"></param>
+        </member>
+        <member name="M:AngeliA.OrderedAttribute.#ctor(System.Int32)">
+            <summary>
+            Attribute apply to method and call all of them in given order
+            </summary>
+            <param name="order"></param>
+        </member>
+        <member name="M:AngeliA.OrderedAttribute.InvokeAsAutoOrderingTask``1">
+            <summary>
+            Call all static methods in order with given type of attribute
+            </summary>
+        </member>
+        <member name="T:AngeliA.CharacterAttackness">
+            <summary>
+            Behavour class that handle attack logic for character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.#ctor(AngeliA.Character)">
+            <summary>
+            Behavour class that handle attack logic for character
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.TargetCharacter">
+            <summary>
+            Character hosting this attackness
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AimingDirection">
+            <summary>
+            Which direction does the character attacks
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.IsAttacking">
+            <summary>
+            True if the character is attacking at the current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.IsAttackIgnored">
+            <summary>
+            True if the character is not allow to attack at the current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.IsChargingAttack">
+            <summary>
+            True if the character is charging attack at the current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.LastAttackFrame">
+            <summary>
+            The start frame of the last attack
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AttackChargeStartFrame">
+            <summary>
+            The start frame of the last attack charging
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.LastAttackCharged">
+            <summary>
+            True if the last performed attack is charged
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AttackStyleIndex">
+            <summary>
+            Attack style index of the current attack, indicate what kind of rendering style should be apply to the current attack
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AttackStartFacingRight">
+            <summary>
+            True if character facing right when the current attack start
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AttackDuration">
+            <summary>
+            How many frames should be the current attack last
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AttackCooldown">
+            <summary>
+            How many frames should be wait from the prev attack end to the next attack start
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.MinimalChargeAttackDuration">
+            <summary>
+            Charge attack longer than this frame should be count as attack charged
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.RepeatAttackWhenHolding">
+            <summary>
+            True if the character can hold attack button to keep attacking multiple times
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.HoldingAttack">
+            <summary>
+            True if the character is holding attack button
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.LockFacingOnAttack">
+            <summary>
+            True if the character can not change it's facing direction when attacking
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackComboGap">
+            <summary>
+            Attack happens between this many frames should be combo attacks
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.HoldAttackPunishFrame">
+            <summary>
+            If hold attack button to perform multiple attacks, the cooldown will be add this frames longer
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.CancelAttackOnJump">
+            <summary>
+            When character jumps, unfinished attack will be cancel
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.DefaultSpeedRateOnAttack">
+            <summary>
+            Moving speed will be mutiply be this rate when character is attacking (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AirSpeedRateOnAttack">
+            <summary>
+            Moving speed will be mutiply be this rate when character is attacking while not grounded (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.WalkingSpeedRateOnAttack">
+            <summary>
+            Moving speed will be mutiply be this rate when character is attacking while walking (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.RunningSpeedRateOnAttack">
+            <summary>
+            Moving speed will be mutiply be this rate when character is attacking while running (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackInAir">
+            <summary>
+            Allow character attack when not grounded
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackInWater">
+            <summary>
+            Allow character attack when inside water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenWalking">
+            <summary>
+            Allow character attack when walking
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenRunning">
+            <summary>
+            Allow character attack when running
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenClimbing">
+            <summary>
+            Allow character attack when climbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenFlying">
+            <summary>
+            Allow character attack when flying
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenRolling">
+            <summary>
+            Allow character attack when rolling
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenSquatting">
+            <summary>
+            Allow character attack when squatting
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenDashing">
+            <summary>
+            Allow character attack when dashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenSliding">
+            <summary>
+            Allow character attack when sliding
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenGrabbing">
+            <summary>
+            Allow character attack when grabbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenRush">
+            <summary>
+            Allow character attack when rushing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenPounding">
+            <summary>
+            Allow character attack when pounding
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.OnActivated">
+            <summary>
+            Callback for character entity get activated
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.PhysicsUpdate_Attack">
+            <summary>
+            Callback for update the attackness
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.Attack(System.Boolean,System.Boolean)">
+            <summary>
+            Perform an attack
+            </summary>
+            <param name="facingRight">True if the attack is performed when character facing right</param>
+            <param name="charged">True if the attack is charged</param>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.CancelAttack">
+            <summary>
+            Cancel current performing attack
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.IgnoreAimingDirection(AngeliA.Direction8,System.Int32)">
+            <summary>
+            Do not allow aiming at given direction for specified frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.IsAimingDirectionIgnored(AngeliA.Direction8)">
+            <summary>
+            True if the given aiming direction is currently ignored
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.IgnoreAttack(System.Int32)">
+            <summary>
+            Do not allow attack for specified frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.CancelIgnoreAttack">
+            <summary>
+            Allowing attack which ignored by IgnoreAttack function
+            </summary>
+        </member>
+        <member name="T:AngeliA.SummonAttackness">
+            <summary>
+            Behavour class that handle attack logic for summon type character
+            </summary>
+        </member>
+        <member name="M:AngeliA.SummonAttackness.#ctor(AngeliA.Character)">
+            <summary>
+            Behavour class that handle attack logic for summon type character
+            </summary>
+        </member>
+        <member name="T:AngeliA.Buff">
+            <summary>
+            Represent a type of buff
+            </summary>
+        </member>
+        <member name="P:AngeliA.Buff.TypeID">
+            <summary>
+            Unique angehash of this buff class
+            </summary>
+        </member>
+        <member name="P:AngeliA.Buff.NameID">
+            <summary>
+            Unique angehash for language system to get the display name of this buff
+            </summary>
+        </member>
+        <member name="P:AngeliA.Buff.DescriptionID">
+            <summary>
+            Unique angehash for language system to get the description of this buff
+            </summary>
+        </member>
+        <member name="P:AngeliA.Buff.TypeName">
+            <summary>
+            AngeName of this type of buff
+            </summary>
+        </member>
+        <member name="P:AngeliA.Buff.DefaultDuration">
+            <summary>
+            How many frames should this buff apply by default
+            </summary>
+        </member>
+        <member name="M:AngeliA.Buff.#ctor">
+            <summary></summary>
+        </member>
+        <member name="M:AngeliA.Buff.BeforeUpdate(AngeliA.Character)">
+            <summary></summary>
+        </member>
+        <member name="M:AngeliA.Buff.LateUpdate(AngeliA.Character)">
+            <summary></summary>
+        </member>
+        <member name="M:AngeliA.Buff.OnCharacterAttack(AngeliA.Character,AngeliA.Bullet)">
+            <summary></summary>
+        </member>
+        <member name="M:AngeliA.Buff.OnCharacterRenderered(AngeliA.CharacterRenderer)">
+            <summary></summary>
+        </member>
+        <member name="T:AngeliA.CharacterBuff">
+            <summary>
+            Behavour class that handles buff logic for characters
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterBuff.BuffCount">
+            <summary>
+            Total count for all buff the character is having
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.HasBuff(System.Int32)">
+            <summary>
+            True if the character is having the given buff
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.GiveBuff(System.Int32,System.Int32)">
+            <summary>
+            Give the character given buff for specified frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.ClearBuff(System.Int32)">
+            <summary>
+            Remove the given buff from character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.ClearAllBuffs">
+            <summary>
+            Remove all buff from character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.PreventBuff(System.Int32,System.Int32)">
+            <summary>
+            Do not allow the character have given buff for specified frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.IsBuffPrevented(System.Int32)">
+            <summary>
+            True if the given buff is being prevented
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.GetBuffData(System.Int32)">
+            <summary>
+            Get the user data of the given buff from the character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.SetBuffData(System.Int32,System.Object)">
+            <summary>
+            Set user data of the given buff to the character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.GetBuffEndFrame(System.Int32)">
+            <summary>
+            Get which frame does the given buff ends
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.ForAllBuffs">
+            <summary>
+            Iterate thought all buffs this character currently have
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.GetBuffDisplayName(System.Int32)">
+            <summary>
+            Get display name of the given buff from the language system
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.GetBuffDescription(System.Int32)">
+            <summary>
+            Get description of the given buff from the language system
+            </summary>
+        </member>
+        <member name="T:AngeliA.CharacterHealth">
+            <summary>
+            Behavour class that handle health logic for character
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.HP">
+            <summary>
+            Current health point of the character
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.LastDamageFrame">
+            <summary>
+            The frame when character took damage last time
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.InvincibleEndFrame">
+            <summary>
+            The frame when character's invincibility ends
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.IsFullHealth">
+            <summary>
+            True if the character is full of health
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.IsEmptyHealth">
+            <summary>
+            True if the character have no health point
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.IsInvincible">
+            <summary>
+            True if the character is currently invincible
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.TakingDamage">
+            <summary>
+            True if the character is currently taking damage
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.MaxHP">
+            <summary>
+            Upper limit of the HP
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.InvincibleDuration">
+            <summary>
+            How many frames does the character's Invincibility last
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.DamageStunDuration">
+            <summary>
+            How many frames does the character stun when they take damage
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.KnockbackSpeed">
+            <summary>
+            How fast should the character get knock back when they take damage
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.KnockbackDeceleration">
+            <summary>
+            Movement deceleration when the character is knocking back after take damage
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.InvincibleOnDash">
+            <summary>
+            Should character be invincible when dashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.InvincibleOnRush">
+            <summary>
+            Should character be invincible when rushing
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterHealth.OnActivated">
+            <summary>
+            Callback when character entity get activated
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterHealth.Heal(System.Int32)">
+            <summary>
+            Add given amount of HP for the character
+            </summary>
+            <returns>True when character get healed</returns>
+        </member>
+        <member name="M:AngeliA.CharacterHealth.MakeInvincible(System.Int32)">
+            <summary>
+            Let the character become invincible for given frames
+            </summary>
+        </member>
+        <member name="T:AngeliA.CharacterMovement">
+            <summary>
+            Behavour class that handle movement logic for character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.#ctor(AngeliA.Rigidbody)">
+            <summary>
+            Behavour class that handle movement logic for character
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.MovementWidth">
+            <summary>
+            Default with of the character
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.MovementHeight">
+            <summary>
+            Default height of the character
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.WalkAvailable">
+            <summary>
+            Allow character to walk
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.WalkSpeed">
+            <summary>
+            How fast should the character walk
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.WalkAcceleration">
+            <summary>
+            Speed acceleration when character is walking
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.WalkBrakeAcceleration">
+            <summary>
+            Speed acceleration when character is trying to walk to the opposite direction
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.WalkDeceleration">
+            <summary>
+            Speed deceleration when character is walking
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RunAvailable">
+            <summary>
+            Allow character to run
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RunSpeed">
+            <summary>
+            How fast should the character run
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RunAcceleration">
+            <summary>
+            Speed acceleration when character is running
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RunBrakeAcceleration">
+            <summary>
+            Speed acceleration when character is trying to run to the opposite direction
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RunDeceleration">
+            <summary>
+            Speed deceleration when character is running
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpCount">
+            <summary>
+            How many times can the character jump without touching ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpSpeed">
+            <summary>
+            Initial speed when character start to jump
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpReleaseSpeedRate">
+            <summary>
+            When character stop trying to jump (player release the jump button), and the character is still moving up, then the current speed will be mutiply to this rate (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpRiseGravityRate">
+            <summary>
+            Gravity applys on the character will mutiply this rate when character moving up in air (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpBoostFromMoveRate">
+            <summary>
+            When character start jump, if it's moving, the running speed will mutiply this rate and add into the initial jump speed. (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FirstJumpWithRoll">
+            <summary>
+            When character jump from ground, does it jump with rolling in air
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SubsequentJumpWithRoll">
+            <summary>
+            When character jump from air, does it jump with rolling in air
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpBreakRush">
+            <summary>
+            Allow character jump when rushing and stop the rush
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpBreakDash">
+            <summary>
+            Allow character jump when dashing and stop the dash
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.AllowSquatJump">
+            <summary>
+            Allow character jump when squatting, and keep squatting when jump in air
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpDownThroughOneway">
+            <summary>
+            Allow character jump down and go through oneway gate (player holding down button and press jump button once)
+            </summary>
+        </member>
         <member name="F:AngeliA.PhysicsMask.ENTITY">
             <summary>
             ENVIRONMENT | CHARACTER

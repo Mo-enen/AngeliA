@@ -849,6 +849,597 @@
             Attribute for link all static methods with a System.Action. When the action is invoked, all methods get called.
             </summary>
         </member>
+        <member name="T:AngeliA.OrderedAttribute">
+            <summary>
+            Attribute apply to method and call all of them in given order
+            </summary>
+            <param name="order"></param>
+        </member>
+        <member name="M:AngeliA.OrderedAttribute.#ctor(System.Int32)">
+            <summary>
+            Attribute apply to method and call all of them in given order
+            </summary>
+            <param name="order"></param>
+        </member>
+        <member name="M:AngeliA.OrderedAttribute.InvokeAsAutoOrderingTask``1">
+            <summary>
+            Call all static methods in order with given type of attribute
+            </summary>
+        </member>
+        <member name="T:AngeliA.CharacterAttackness">
+            <summary>
+            Behavour class that handle attack logic for character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.#ctor(AngeliA.Character)">
+            <summary>
+            Behavour class that handle attack logic for character
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.TargetCharacter">
+            <summary>
+            Character hosting this attackness
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AimingDirection">
+            <summary>
+            Which direction does the character attacks
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.IsAttacking">
+            <summary>
+            True if the character is attacking at the current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.IsAttackIgnored">
+            <summary>
+            True if the character is not allow to attack at the current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.IsChargingAttack">
+            <summary>
+            True if the character is charging attack at the current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.LastAttackFrame">
+            <summary>
+            The start frame of the last attack
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AttackChargeStartFrame">
+            <summary>
+            The start frame of the last attack charging
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.LastAttackCharged">
+            <summary>
+            True if the last performed attack is charged
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AttackStyleIndex">
+            <summary>
+            Attack style index of the current attack, indicate what kind of rendering style should be apply to the current attack
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AttackStartFacingRight">
+            <summary>
+            True if character facing right when the current attack start
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AttackDuration">
+            <summary>
+            How many frames should be the current attack last
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.AttackCooldown">
+            <summary>
+            How many frames should be wait from the prev attack end to the next attack start
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.MinimalChargeAttackDuration">
+            <summary>
+            Charge attack longer than this frame should be count as attack charged
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.RepeatAttackWhenHolding">
+            <summary>
+            True if the character can hold attack button to keep attacking multiple times
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.HoldingAttack">
+            <summary>
+            True if the character is holding attack button
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterAttackness.LockFacingOnAttack">
+            <summary>
+            True if the character can not change it's facing direction when attacking
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackComboGap">
+            <summary>
+            Attack happens between this many frames should be combo attacks
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.HoldAttackPunishFrame">
+            <summary>
+            If hold attack button to perform multiple attacks, the cooldown will be add this frames longer
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.CancelAttackOnJump">
+            <summary>
+            When character jumps, unfinished attack will be cancel
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.DefaultSpeedRateOnAttack">
+            <summary>
+            Moving speed will be mutiply be this rate when character is attacking (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AirSpeedRateOnAttack">
+            <summary>
+            Moving speed will be mutiply be this rate when character is attacking while not grounded (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.WalkingSpeedRateOnAttack">
+            <summary>
+            Moving speed will be mutiply be this rate when character is attacking while walking (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.RunningSpeedRateOnAttack">
+            <summary>
+            Moving speed will be mutiply be this rate when character is attacking while running (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackInAir">
+            <summary>
+            Allow character attack when not grounded
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackInWater">
+            <summary>
+            Allow character attack when inside water
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenWalking">
+            <summary>
+            Allow character attack when walking
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenRunning">
+            <summary>
+            Allow character attack when running
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenClimbing">
+            <summary>
+            Allow character attack when climbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenFlying">
+            <summary>
+            Allow character attack when flying
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenRolling">
+            <summary>
+            Allow character attack when rolling
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenSquatting">
+            <summary>
+            Allow character attack when squatting
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenDashing">
+            <summary>
+            Allow character attack when dashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenSliding">
+            <summary>
+            Allow character attack when sliding
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenGrabbing">
+            <summary>
+            Allow character attack when grabbing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenRush">
+            <summary>
+            Allow character attack when rushing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterAttackness.AttackWhenPounding">
+            <summary>
+            Allow character attack when pounding
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.OnActivated">
+            <summary>
+            Callback for character entity get activated
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.PhysicsUpdate_Attack">
+            <summary>
+            Callback for update the attackness
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.Attack(System.Boolean,System.Boolean)">
+            <summary>
+            Perform an attack
+            </summary>
+            <param name="facingRight">True if the attack is performed when character facing right</param>
+            <param name="charged">True if the attack is charged</param>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.CancelAttack">
+            <summary>
+            Cancel current performing attack
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.IgnoreAimingDirection(AngeliA.Direction8,System.Int32)">
+            <summary>
+            Do not allow aiming at given direction for specified frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.IsAimingDirectionIgnored(AngeliA.Direction8)">
+            <summary>
+            True if the given aiming direction is currently ignored
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.IgnoreAttack(System.Int32)">
+            <summary>
+            Do not allow attack for specified frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterAttackness.CancelIgnoreAttack">
+            <summary>
+            Allowing attack which ignored by IgnoreAttack function
+            </summary>
+        </member>
+        <member name="T:AngeliA.SummonAttackness">
+            <summary>
+            Behavour class that handle attack logic for summon type character
+            </summary>
+        </member>
+        <member name="M:AngeliA.SummonAttackness.#ctor(AngeliA.Character)">
+            <summary>
+            Behavour class that handle attack logic for summon type character
+            </summary>
+        </member>
+        <member name="T:AngeliA.Buff">
+            <summary>
+            Represent a type of buff
+            </summary>
+        </member>
+        <member name="P:AngeliA.Buff.TypeID">
+            <summary>
+            Unique angehash of this buff class
+            </summary>
+        </member>
+        <member name="P:AngeliA.Buff.NameID">
+            <summary>
+            Unique angehash for language system to get the display name of this buff
+            </summary>
+        </member>
+        <member name="P:AngeliA.Buff.DescriptionID">
+            <summary>
+            Unique angehash for language system to get the description of this buff
+            </summary>
+        </member>
+        <member name="P:AngeliA.Buff.TypeName">
+            <summary>
+            AngeName of this type of buff
+            </summary>
+        </member>
+        <member name="P:AngeliA.Buff.DefaultDuration">
+            <summary>
+            How many frames should this buff apply by default
+            </summary>
+        </member>
+        <member name="M:AngeliA.Buff.#ctor">
+            <summary></summary>
+        </member>
+        <member name="M:AngeliA.Buff.BeforeUpdate(AngeliA.Character)">
+            <summary></summary>
+        </member>
+        <member name="M:AngeliA.Buff.LateUpdate(AngeliA.Character)">
+            <summary></summary>
+        </member>
+        <member name="M:AngeliA.Buff.OnCharacterAttack(AngeliA.Character,AngeliA.Bullet)">
+            <summary></summary>
+        </member>
+        <member name="M:AngeliA.Buff.OnCharacterRenderered(AngeliA.CharacterRenderer)">
+            <summary></summary>
+        </member>
+        <member name="T:AngeliA.CharacterBuff">
+            <summary>
+            Behavour class that handles buff logic for characters
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterBuff.BuffCount">
+            <summary>
+            Total count for all buff the character is having
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.HasBuff(System.Int32)">
+            <summary>
+            True if the character is having the given buff
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.GiveBuff(System.Int32,System.Int32)">
+            <summary>
+            Give the character given buff for specified frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.ClearBuff(System.Int32)">
+            <summary>
+            Remove the given buff from character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.ClearAllBuffs">
+            <summary>
+            Remove all buff from character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.PreventBuff(System.Int32,System.Int32)">
+            <summary>
+            Do not allow the character have given buff for specified frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.IsBuffPrevented(System.Int32)">
+            <summary>
+            True if the given buff is being prevented
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.GetBuffData(System.Int32)">
+            <summary>
+            Get the user data of the given buff from the character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.SetBuffData(System.Int32,System.Object)">
+            <summary>
+            Set user data of the given buff to the character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.GetBuffEndFrame(System.Int32)">
+            <summary>
+            Get which frame does the given buff ends
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.ForAllBuffs">
+            <summary>
+            Iterate thought all buffs this character currently have
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.GetBuffDisplayName(System.Int32)">
+            <summary>
+            Get display name of the given buff from the language system
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterBuff.GetBuffDescription(System.Int32)">
+            <summary>
+            Get description of the given buff from the language system
+            </summary>
+        </member>
+        <member name="T:AngeliA.CharacterHealth">
+            <summary>
+            Behavour class that handle health logic for character
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.HP">
+            <summary>
+            Current health point of the character
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.LastDamageFrame">
+            <summary>
+            The frame when character took damage last time
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.InvincibleEndFrame">
+            <summary>
+            The frame when character's invincibility ends
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.IsFullHealth">
+            <summary>
+            True if the character is full of health
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.IsEmptyHealth">
+            <summary>
+            True if the character have no health point
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.IsInvincible">
+            <summary>
+            True if the character is currently invincible
+            </summary>
+        </member>
+        <member name="P:AngeliA.CharacterHealth.TakingDamage">
+            <summary>
+            True if the character is currently taking damage
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.MaxHP">
+            <summary>
+            Upper limit of the HP
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.InvincibleDuration">
+            <summary>
+            How many frames does the character's Invincibility last
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.DamageStunDuration">
+            <summary>
+            How many frames does the character stun when they take damage
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.KnockbackSpeed">
+            <summary>
+            How fast should the character get knock back when they take damage
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.KnockbackDeceleration">
+            <summary>
+            Movement deceleration when the character is knocking back after take damage
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.InvincibleOnDash">
+            <summary>
+            Should character be invincible when dashing
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterHealth.InvincibleOnRush">
+            <summary>
+            Should character be invincible when rushing
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterHealth.OnActivated">
+            <summary>
+            Callback when character entity get activated
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterHealth.Heal(System.Int32)">
+            <summary>
+            Add given amount of HP for the character
+            </summary>
+            <returns>True when character get healed</returns>
+        </member>
+        <member name="M:AngeliA.CharacterHealth.MakeInvincible(System.Int32)">
+            <summary>
+            Let the character become invincible for given frames
+            </summary>
+        </member>
+        <member name="T:AngeliA.CharacterMovement">
+            <summary>
+            Behavour class that handle movement logic for character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterMovement.#ctor(AngeliA.Rigidbody)">
+            <summary>
+            Behavour class that handle movement logic for character
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.MovementWidth">
+            <summary>
+            Default with of the character
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.MovementHeight">
+            <summary>
+            Default height of the character
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.WalkAvailable">
+            <summary>
+            Allow character to walk
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.WalkSpeed">
+            <summary>
+            How fast should the character walk
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.WalkAcceleration">
+            <summary>
+            Speed acceleration when character is walking
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.WalkBrakeAcceleration">
+            <summary>
+            Speed acceleration when character is trying to walk to the opposite direction
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.WalkDeceleration">
+            <summary>
+            Speed deceleration when character is walking
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RunAvailable">
+            <summary>
+            Allow character to run
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RunSpeed">
+            <summary>
+            How fast should the character run
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RunAcceleration">
+            <summary>
+            Speed acceleration when character is running
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RunBrakeAcceleration">
+            <summary>
+            Speed acceleration when character is trying to run to the opposite direction
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.RunDeceleration">
+            <summary>
+            Speed deceleration when character is running
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpCount">
+            <summary>
+            How many times can the character jump without touching ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpSpeed">
+            <summary>
+            Initial speed when character start to jump
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpReleaseSpeedRate">
+            <summary>
+            When character stop trying to jump (player release the jump button), and the character is still moving up, then the current speed will be mutiply to this rate (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpRiseGravityRate">
+            <summary>
+            Gravity applys on the character will mutiply this rate when character moving up in air (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpBoostFromMoveRate">
+            <summary>
+            When character start jump, if it's moving, the running speed will mutiply this rate and add into the initial jump speed. (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.FirstJumpWithRoll">
+            <summary>
+            When character jump from ground, does it jump with rolling in air
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.SubsequentJumpWithRoll">
+            <summary>
+            When character jump from air, does it jump with rolling in air
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpBreakRush">
+            <summary>
+            Allow character jump when rushing and stop the rush
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpBreakDash">
+            <summary>
+            Allow character jump when dashing and stop the dash
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.AllowSquatJump">
+            <summary>
+            Allow character jump when squatting, and keep squatting when jump in air
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterMovement.JumpDownThroughOneway">
+            <summary>
+            Allow character jump down and go through oneway gate (player holding down button and press jump button once)
+            </summary>
+        </member>
         <member name="F:AngeliA.PhysicsMask.ENTITY">
             <summary>
             ENVIRONMENT | CHARACTER
