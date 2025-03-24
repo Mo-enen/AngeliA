@@ -1,5 +1,15 @@
 on:
   workflow_dispatch:
+inputs:
+      publish:
+        description: 'Choose where you want to publish the build'
+        required: true
+        default: AppTester
+        type: choice
+        options:
+          - GooglePlay
+          - AppTester
+          - Both
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
