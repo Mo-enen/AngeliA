@@ -1,5 +1,9 @@
 ﻿namespace AngeliA;
 
+
+/// <summary>
+/// A single physics layer
+/// </summary>
 public static class PhysicsLayer {
 	public const int LEVEL = 0;
 	public const int ENVIRONMENT = 1;
@@ -9,6 +13,10 @@ public static class PhysicsLayer {
 	public const int COUNT = 5;
 }
 
+
+/// <summary>
+/// A group of physics layera
+/// </summary>
 public static class PhysicsMask {
 
 	public const int NONE = 0;
@@ -18,6 +26,9 @@ public static class PhysicsMask {
 	public const int ENVIRONMENT = 0b10;
 	public const int ITEM = 0b100;
 	public const int CHARACTER = 0b1000;
+	/// <summary>
+	/// Colliders inside damage layer will deal damage when overlape with IDamageReceiver
+	/// </summary>
 	public const int DAMAGE = 0b10000;
 
 	/// <summary>

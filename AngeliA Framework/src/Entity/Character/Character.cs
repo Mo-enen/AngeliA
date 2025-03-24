@@ -169,7 +169,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 			}
 		}
 
-		// Behavour
+		// Behavior
 		Movement = NativeMovement;
 		Attackness = NativeAttackness;
 		Health = NativeHealth;

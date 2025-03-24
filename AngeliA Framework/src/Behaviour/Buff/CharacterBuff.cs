@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 /// <summary>
-/// Behavour class that handles buff logic for characters
+/// Behavior class that handles buff logic for characters
 /// </summary>
 public sealed class CharacterBuff {
 

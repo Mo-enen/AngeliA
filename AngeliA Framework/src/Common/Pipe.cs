@@ -2,6 +2,9 @@
 
 namespace AngeliA;
 
+/// <summary>
+/// A linked list that can add/remove from head/tail. No heap pressure.
+/// </summary>
 public class Pipe<T> (int capacity = 1024) {
 
 
@@ -11,14 +14,33 @@ public class Pipe<T> (int capacity = 1024) {
 
 
 	// Api
+	/// <summary>
+	/// Get filled data at index
+	/// </summary>
+	/// <param name="index">Local index from "Start"</param>
 	public T this[int index] {
 		get => Data[(Start + index) % Capacity];
 		set => Data[(Start + index) % Capacity] = value;
 	}
+	/// <summary>
+	/// Raw data of this pipe
+	/// </summary>
 	public T[] Data { get; init; } = new T[capacity];
+	/// <summary>
+	/// Total length of the data
+	/// </summary>
 	public int Capacity { get; init; } = capacity;
+	/// <summary>
+	/// Head index of the filled data
+	/// </summary>
 	public int Start { get; private set; } = 0;
+	/// <summary>
+	/// Length of the filled data
+	/// </summary>
 	public int Length { get; private set; } = 0;
+	/// <summary>
+	/// True if the pipe reached max capacity
+	/// </summary>
 	public bool IsFull => Length >= Capacity;
 
 
@@ -31,6 +53,10 @@ public class Pipe<T> (int capacity = 1024) {
 
 
 	// Peek
+	/// <summary>
+	/// Get data at head without remove the data from pipe
+	/// </summary>
+	/// <returns>True if length of pipe is not 0</returns>
 	public bool TryPeekHead (out T data) {
 		data = default;
 		if (Length <= 0) return false;
@@ -39,6 +65,10 @@ public class Pipe<T> (int capacity = 1024) {
 	}
 
 
+	/// <summary>
+	/// Get data at tail without remove the data from pipe
+	/// </summary>
+	/// <returns>True if length of pipe is not 0</returns>
 	public bool TryPeekTail (out T data) {
 		data = default;
 		if (Length <= 0) return false;
@@ -48,6 +78,10 @@ public class Pipe<T> (int capacity = 1024) {
 
 
 	// Link
+	/// <summary>
+	/// Add data before head
+	/// </summary>
+	/// <returns>True if the data is added</returns>
 	public bool LinkToHead (T data) {
 		if (Length >= Capacity) return false;
 		Start = Start <= 0 ? Capacity - 1 : Start - 1;
@@ -57,6 +91,10 @@ public class Pipe<T> (int capacity = 1024) {
 	}
 
 
+	/// <summary>
+	/// Add data after tail
+	/// </summary>
+	/// <returns>True if the data is added</returns>
 	public bool LinkToTail (T data) {
 		if (Length >= Capacity) return false;
 		int index = (Start + Length) % Capacity;
@@ -67,6 +105,10 @@ public class Pipe<T> (int capacity = 1024) {
 
 
 	// Pop
+	/// <summary>
+	/// Get and remove data at head
+	/// </summary>
+	/// <returns>True if pipe is not empty</returns>
 	public bool TryPopHead (out T data) {
 		data = default;
 		if (Length <= 0) return false;
@@ -78,6 +120,10 @@ public class Pipe<T> (int capacity = 1024) {
 	}
 
 
+	/// <summary>
+	/// Get and remove data at tail
+	/// </summary>
+	/// <returns>True if pipe is not empty</returns>
 	public bool TryPopTail (out T data) {
 		data = default;
 		if (Length <= 0) return false;
@@ -89,20 +135,6 @@ public class Pipe<T> (int capacity = 1024) {
 	}
 
 
-	// Detch
-	public void DetchHead (int newLength) {
-		if (newLength >= Length) return;
-		Start += Length - newLength;
-		Length = newLength;
-	}
-
-
-	public void DetchTail (int newLength) {
-		if (newLength >= Length) return;
-		Length = newLength;
-	}
-
-
 	// Misc
 	public void Reset () {
 		Start = 0;
@@ -110,6 +142,9 @@ public class Pipe<T> (int capacity = 1024) {
 	}
 
 
+	/// <summary>
+	/// Move data at head to the first of the internal array
+	/// </summary>
 	public void Reorganize () {
 		if (Start == 0 || Length == 0) return;
 		if (Length < Capacity) {

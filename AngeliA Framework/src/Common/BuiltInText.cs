@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 /// <summary>
-/// Utility class to get built-in text though language system
+/// Utility class to get built-in text through language system
 /// </summary>
 public static class BuiltInText {
 

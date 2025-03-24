@@ -4,6 +4,9 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// A data that can be override for specified frames
+/// </summary>
 public abstract class FrameBasedValue {
 	public bool Overrided => Game.GlobalFrame <= OverrideFrame;
 	public int OverrideFrame = -1;
@@ -12,6 +15,7 @@ public abstract class FrameBasedValue {
 }
 
 
+/// <inheritdoc cref="FrameBasedValue"/>
 public abstract class FrameBasedValue<T> : FrameBasedValue {
 	public T FinalValue => Game.GlobalFrame <= OverrideFrame ? OverrideValue : BaseValue;
 	public T BaseValue;
@@ -34,6 +38,7 @@ public abstract class FrameBasedValue<T> : FrameBasedValue {
 }
 
 
+/// <inheritdoc cref="FrameBasedValue"/>
 public class FrameBasedInt (int value) : FrameBasedValue<int>(value) {
 	public void Add (int delta, int duration = 0, int priority = 0) {
 		if (Overrided) {
@@ -86,6 +91,7 @@ public class FrameBasedInt (int value) : FrameBasedValue<int>(value) {
 }
 
 
+/// <inheritdoc cref="FrameBasedValue"/>
 public class FrameBasedBool (bool value) : FrameBasedValue<bool>(value) {
 	public void Or (bool value, int duration = 0, int priority = 0) {
 		if (Overrided) {
@@ -116,6 +122,7 @@ public class FrameBasedBool (bool value) : FrameBasedValue<bool>(value) {
 }
 
 
+/// <inheritdoc cref="FrameBasedValue"/>
 public class FrameBasedColor (Color32 value) : FrameBasedValue<Color32>(value) {
 	public void Tint (Color32 tint, int duration = 0, int priority = 0) {
 		if (Overrided) {
