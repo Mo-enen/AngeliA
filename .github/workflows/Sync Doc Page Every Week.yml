@@ -1,5 +1,3 @@
-# Your GitHub workflow file under .github/workflows/
-# Trigger the action on push to main
 on:
   schedule:
     - cron: '0 0 * * 0'
