@@ -1,5 +1,4 @@
-﻿UI.EngineSetting.ShowOutBoundsMark:Show Marks for Sprites Outside Canvas
-AtlasType.Background:Background
+﻿AtlasType.Background:Background
 AtlasType.General:General
 AtlasType.Level:Level
 ConsoleWindow:Console
@@ -272,7 +271,7 @@ Tip.Rule.Mode:Rule setting mode. (Same/Not Same) or (Any/Empty)
 Tip.Rule.NotSame:Not same tile
 Tip.Rule.Same:Same tile
 Tip.Rule.Whatever:Whatever
-Tip.Run:Run the current built project in a new window in debug mode
+Tip.Run:Run the current built project in a new window in release mode
 Tip.ShowAxis:Show Axis
 Tip.ShowCheckerBoard:Show Checker Board
 Tip.SizeX:Width
@@ -355,6 +354,7 @@ UI.EngineSetting.MapEditor_ShowGizmos:Show Gizmos
 UI.EngineSetting.MapEditor_ShowState:Show State
 UI.EngineSetting.OpenLastProjectOnStart:Open Last Project on Start
 UI.EngineSetting.ShowLogTime:Show Log Time
+UI.EngineSetting.ShowOutBoundsMark:Show Marks for Sprites Outside Canvas
 UI.EngineSetting.ShowTagPreview:Show Tag Preview
 UI.EngineSetting.SolidPaintingPreview:Solid Paiting Preview
 UI.EngineSetting.Theme:Theme

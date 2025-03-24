@@ -34,6 +34,12 @@
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 
+
+
+		
+		
+		
+		
 	</PropertyGroup>
 
 	<!--Debug Only-->
@@ -48,6 +54,8 @@
 		<DebugType>none</DebugType>
 		<OutputType>WinExe</OutputType>
 
+
+
 		<PublishSingleFile>true</PublishSingleFile>
 		<SelfContained>true</SelfContained>
 		<PublishTrimmed>false</PublishTrimmed>
@@ -55,8 +63,8 @@
 		<IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
 		<PublishReadyToRun>False</PublishReadyToRun>
 		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-
 		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+
 
 	</PropertyGroup>
 
@@ -82,7 +90,7 @@
 		<None Remove="publish.bat" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\AngeliA Rigged\AngeliA Rigged.csproj" />
+	  <ProjectReference Include="..\..\AngeliA Raylib\AngeliA Raylib.csproj" />
 	</ItemGroup>
 
 </Project>

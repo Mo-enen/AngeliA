@@ -2768,152 +2768,44 @@
             Draw a label on top-right of the screen for the current frame
             </summary>
         </member>
-        <member name="T:AngeliA.Ease">
+        <member name="T:AngeliA.EntityLayer">
             <summary>
-            Ease utility for tween animation
+            Layer for entity spawning
             </summary>
         </member>
-        <member name="M:AngeliA.Ease.InLiner(System.Single)">
+        <member name="T:AngeliA.WrapMode">
             <summary>
-            ▁▁▂▂▃▃▄▄▅▅▆▆▇▇██
+            How text wrap when reach edge
             </summary>
         </member>
-        <member name="M:AngeliA.Ease.OutLiner(System.Single)">
+        <member name="M:AngeliA.Extension.AngeName(System.Type)">
             <summary>
-            ███▇▇▆▆▅▅▄▄▃▃▂▂▁
+            Name of this type that used inside AngeliA
             </summary>
         </member>
-        <member name="M:AngeliA.Ease.InOutLiner(System.Single)">
+        <member name="M:AngeliA.Extension.AngeHash(System.Type)">
             <summary>
-            ▁▂▃▄▅▆▇███▇▆▅▄▃▂
+            Hash code that used inside AngeliA
             </summary>
         </member>
-        <member name="M:AngeliA.Ease.InQuad(System.Single)">
+        <member name="M:AngeliA.Extension.AngeHash(System.String)">
             <summary>
-            ▁▁▁▁▁▂▂▂▃▃▄▅▅▆▇█
+            Hash code that used inside AngeliA
             </summary>
         </member>
-        <member name="M:AngeliA.Ease.OutQuad(System.Single)">
+        <member name="M:AngeliA.Extension.AngeHash(System.String,System.Int32,System.Int32)">
             <summary>
-            ▁▂▃▃▄▅▆▆▇▇██████
-            Fast first
+            Hash code that used inside AngeliA
             </summary>
         </member>
-        <member name="M:AngeliA.Ease.InOutQuad(System.Single)">
+        <member name="M:AngeliA.Extension.AngeReverseHash(System.Char[],System.Int32,System.Int32)">
             <summary>
-            ▁▁▁▁▂▂▃▄▅▆▇▇████
+            Hash code that used inside AngeliA but generate with the reversed string data
             </summary>
         </member>
-        <member name="M:AngeliA.Ease.InCubic(System.Single)">
+        <member name="M:AngeliA.Extension.IsLyingDown(AngeliA.CharacterAnimationType)">
             <summary>
-            ▁▁▁▁▁▁▁▁▂▂▃▃▄▅▆▇
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.OutCubic(System.Single)">
-            <summary>
-            ▁▂▃▄▅▆▇▇████████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InOutCubic(System.Single)">
-            <summary>
-            ▁▁▁▁▁▂▂▃▅▆▇█████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InQuart(System.Single)">
-            <summary>
-            ▁▁▁▁▁▁▁▁▁▂▂▃▃▄▅▇
-            Slow first
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.OutQuart(System.Single)">
-            <summary>
-            ▁▃▄▅▆▇██████████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InOutQuart(System.Single)">
-            <summary>
-            ▁▁▁▁▁▁▂▃▅▆▇█████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InQuint(System.Single)">
-             <summary>
-            ▁▁▁▁▁▁▁▁▁▁▂▂▃▄▅▇
-             Slow first
-             </summary>
-        </member>
-        <member name="M:AngeliA.Ease.OutQuint(System.Single)">
-            <summary>
-            ▁▃▅▆▇███████████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InOutQuint(System.Single)">
-            <summary>
-            ▁▁▁▁▁▁▂▃▅▇██████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InSine(System.Single)">
-            <summary>
-            ▁▁▁▁▁▂▂▃▃▄▄▅▆▆▇█
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.OutSine(System.Single)">
-             <summary>
-            ▁▂▂▃▄▅▅▆▆▇▇█████
-             </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InOutSine(System.Single)">
-            <summary>
-            ▁▁▁▁▂▃▃▄▅▆▆▇████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InCirc(System.Single)">
-            <summary>
-            ▁▁▁▁▁▁▁▂▂▂▃▃▃▄▅▆
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.OutCirc(System.Single)">
-            <summary>
-            ▁▄▅▅▆▇▇▇████████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InOutCirc(System.Single)">
-            <summary>
-            ▁▁▁▁▁▂▂▃▅▇▇█████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InElastic(System.Single)">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InExpo(System.Single)">
-            <summary>
-            ▁▁▁▁▁▁▁▁▁▁▁▂▂▃▄▆
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.OutExpo(System.Single)">
-            <summary>
-            ▁▄▅▇▇███████████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InOutExpo(System.Single)">
-            <summary>
-            ▁▁▁▁▁▁▁▂▅▇██████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InBounce(System.Single)">
-            <summary>
-            ▁▁▁▁▁▂▂▃▃▂▁▃▅▇██
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.OutBounce(System.Single)">
-            <summary>
-            ▁▁▂▃▅▇█▇▇▇▇█████
-            </summary>
-        </member>
-        <member name="M:AngeliA.Ease.InOutBounce(System.Single)">
-            <summary>
-            ▁▁▁▂▂▁▃▄▅▅▇█████
+            True if the character should be rendered lying down
             </summary>
         </member>
         <member name="F:AngeliA.PhysicsMask.ENTITY">
