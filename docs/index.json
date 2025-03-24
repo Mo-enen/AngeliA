@@ -2953,5 +2953,20 @@
     "href": "api/JordanPeck.html",
     "title": "Namespace JordanPeck | AngeliA",
     "summary": "Namespace JordanPeck Classes FastNoiseLite Enums CellularDistanceFunction CellularReturnType DomainWarpType FractalType NoiseType RotationType3D"
+  },
+  "docs/getting-started.html": {
+    "href": "docs/getting-started.html",
+    "title": "Getting Started | AngeliA",
+    "summary": "Getting Started"
+  },
+  "docs/introduction.html": {
+    "href": "docs/introduction.html",
+    "title": "Introduction | AngeliA",
+    "summary": "Introduction"
+  },
+  "index.html": {
+    "href": "index.html",
+    "title": "This is the HOMEPAGE. | AngeliA",
+    "summary": "This is the HOMEPAGE. Refer to Markdown for how to write markdown files. Quick Start Notes: Add images to the images folder if the file is referencing an image."
   }
 }
