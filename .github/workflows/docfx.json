@@ -1,0 +1,10 @@
+{
+  "build": {
+    "content": [
+      { "files": "**/*.cs", "exclude": "**/include/**" }
+    ],
+    "resource": [
+      { "files": "**/images/**" }
+    ]
+  }
+}
