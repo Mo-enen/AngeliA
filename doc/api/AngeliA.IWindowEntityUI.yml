@@ -1,0 +1,290 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.IWindowEntityUI
+  commentId: T:AngeliA.IWindowEntityUI
+  id: IWindowEntityUI
+  parent: AngeliA
+  children:
+  - AngeliA.IWindowEntityUI.BackgroundRect
+  langs:
+  - csharp
+  - vb
+  name: IWindowEntityUI
+  nameWithType: IWindowEntityUI
+  fullName: AngeliA.IWindowEntityUI
+  type: Interface
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/EntityUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IWindowEntityUI
+    path: ../AngeliA Framework/src/Entity/UI/EntityUI.cs
+    startLine: 7
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public interface IWindowEntityUI
+    content.vb: Public Interface IWindowEntityUI
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.IWindowEntityUI.BackgroundRect
+  commentId: P:AngeliA.IWindowEntityUI.BackgroundRect
+  id: BackgroundRect
+  parent: AngeliA.IWindowEntityUI
+  langs:
+  - csharp
+  - vb
+  name: BackgroundRect
+  nameWithType: IWindowEntityUI.BackgroundRect
+  fullName: AngeliA.IWindowEntityUI.BackgroundRect
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/EntityUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BackgroundRect
+    path: ../AngeliA Framework/src/Entity/UI/EntityUI.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: IRect BackgroundRect { get; }
+    parameters: []
+    return:
+      type: AngeliA.IRect
+    content.vb: ReadOnly Property BackgroundRect As IRect
+  overload: AngeliA.IWindowEntityUI.BackgroundRect*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.IWindowEntityUI.BackgroundRect*
+  commentId: Overload:AngeliA.IWindowEntityUI.BackgroundRect
+  href: AngeliA.IWindowEntityUI.html#AngeliA_IWindowEntityUI_BackgroundRect
+  name: BackgroundRect
+  nameWithType: IWindowEntityUI.BackgroundRect
+  fullName: AngeliA.IWindowEntityUI.BackgroundRect
+- uid: AngeliA.IRect
+  commentId: T:AngeliA.IRect
+  parent: AngeliA
+  href: AngeliA.IRect.html
+  name: IRect
+  nameWithType: IRect
+  fullName: AngeliA.IRect

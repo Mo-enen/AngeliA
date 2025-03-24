@@ -1,0 +1,623 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Platformer.Navigation
+  commentId: T:AngeliA.Platformer.Navigation
+  id: Navigation
+  parent: AngeliA.Platformer
+  children:
+  - AngeliA.Platformer.Navigation.ExpandTo(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@,System.Int32@,System.Boolean,AngeliA.Platformer.Navigation.IExpandRangeValidator)
+  - AngeliA.Platformer.Navigation.Initialize
+  - AngeliA.Platformer.Navigation.IsGround(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32@)
+  - AngeliA.Platformer.Navigation.IsReady
+  - AngeliA.Platformer.Navigation.NavigateTo(AngeliA.Platformer.Navigation.Operation[]@,System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: Navigation
+  nameWithType: Navigation
+  fullName: AngeliA.Platformer.Navigation
+  type: Class
+  source:
+    remote:
+      path: AngeliA Platformer/src/Core/Navigation.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Navigation
+    path: ../AngeliA Platformer/src/Core/Navigation.cs
+    startLine: 14
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public static class Navigation
+    content.vb: Public Module Navigation
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.Platformer.Navigation.IsReady
+  commentId: P:AngeliA.Platformer.Navigation.IsReady
+  id: IsReady
+  parent: AngeliA.Platformer.Navigation
+  langs:
+  - csharp
+  - vb
+  name: IsReady
+  nameWithType: Navigation.IsReady
+  fullName: AngeliA.Platformer.Navigation.IsReady
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Core/Navigation.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsReady
+    path: ../AngeliA Platformer/src/Core/Navigation.cs
+    startLine: 103
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public static bool IsReady { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property IsReady As Boolean
+  overload: AngeliA.Platformer.Navigation.IsReady*
+- uid: AngeliA.Platformer.Navigation.Initialize
+  commentId: M:AngeliA.Platformer.Navigation.Initialize
+  id: Initialize
+  parent: AngeliA.Platformer.Navigation
+  langs:
+  - csharp
+  - vb
+  name: Initialize()
+  nameWithType: Navigation.Initialize()
+  fullName: AngeliA.Platformer.Navigation.Initialize()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Core/Navigation.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Initialize
+    path: ../AngeliA Platformer/src/Core/Navigation.cs
+    startLine: 128
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: >-
+      [OnGameInitialize(0)]
+
+      public static void Initialize()
+    content.vb: >-
+      <OnGameInitialize(0)>
+
+      Public Shared Sub Initialize()
+  overload: AngeliA.Platformer.Navigation.Initialize*
+  attributes:
+  - type: AngeliA.OnGameInitializeAttribute
+    ctor: AngeliA.OnGameInitializeAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 0
+- uid: AngeliA.Platformer.Navigation.NavigateTo(AngeliA.Platformer.Navigation.Operation[]@,System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.Platformer.Navigation.NavigateTo(AngeliA.Platformer.Navigation.Operation[]@,System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  id: NavigateTo(AngeliA.Platformer.Navigation.Operation[]@,System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.Platformer.Navigation
+  langs:
+  - csharp
+  - vb
+  name: NavigateTo(in Operation[], int, IRect, int, int, int, int, int)
+  nameWithType: Navigation.NavigateTo(in Navigation.Operation[], int, IRect, int, int, int, int, int)
+  fullName: AngeliA.Platformer.Navigation.NavigateTo(in AngeliA.Platformer.Navigation.Operation[], int, AngeliA.IRect, int, int, int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Core/Navigation.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: NavigateTo
+    path: ../AngeliA Platformer/src/Core/Navigation.cs
+    startLine: 155
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public static int NavigateTo(in Navigation.Operation[] Operations, int globalFrame, IRect viewRect, int fromX, int fromY, int toX, int toY, int jumpIteration = 16)
+    parameters:
+    - id: Operations
+      type: AngeliA.Platformer.Navigation.Operation[]
+    - id: globalFrame
+      type: System.Int32
+    - id: viewRect
+      type: AngeliA.IRect
+    - id: fromX
+      type: System.Int32
+    - id: fromY
+      type: System.Int32
+    - id: toX
+      type: System.Int32
+    - id: toY
+      type: System.Int32
+    - id: jumpIteration
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function NavigateTo(Operations As Navigation.Operation(), globalFrame As Integer, viewRect As IRect, fromX As Integer, fromY As Integer, toX As Integer, toY As Integer, jumpIteration As Integer = 16) As Integer
+  overload: AngeliA.Platformer.Navigation.NavigateTo*
+  nameWithType.vb: Navigation.NavigateTo(Navigation.Operation(), Integer, IRect, Integer, Integer, Integer, Integer, Integer)
+  fullName.vb: AngeliA.Platformer.Navigation.NavigateTo(AngeliA.Platformer.Navigation.Operation(), Integer, AngeliA.IRect, Integer, Integer, Integer, Integer, Integer)
+  name.vb: NavigateTo(Operation(), Integer, IRect, Integer, Integer, Integer, Integer, Integer)
+- uid: AngeliA.Platformer.Navigation.ExpandTo(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@,System.Int32@,System.Boolean,AngeliA.Platformer.Navigation.IExpandRangeValidator)
+  commentId: M:AngeliA.Platformer.Navigation.ExpandTo(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@,System.Int32@,System.Boolean,AngeliA.Platformer.Navigation.IExpandRangeValidator)
+  id: ExpandTo(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@,System.Int32@,System.Boolean,AngeliA.Platformer.Navigation.IExpandRangeValidator)
+  parent: AngeliA.Platformer.Navigation
+  langs:
+  - csharp
+  - vb
+  name: ExpandTo(int, IRect, int, int, int, int, int, out int, out int, bool, IExpandRangeValidator)
+  nameWithType: Navigation.ExpandTo(int, IRect, int, int, int, int, int, out int, out int, bool, Navigation.IExpandRangeValidator)
+  fullName: AngeliA.Platformer.Navigation.ExpandTo(int, AngeliA.IRect, int, int, int, int, int, out int, out int, bool, AngeliA.Platformer.Navigation.IExpandRangeValidator)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Core/Navigation.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ExpandTo
+    path: ../AngeliA Platformer/src/Core/Navigation.cs
+    startLine: 325
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public static bool ExpandTo(int globalFrame, IRect viewRect, int fromX, int fromY, int toX, int toY, int maxIteration, out int resultX, out int resultY, bool endInAir = false, Navigation.IExpandRangeValidator rangeValidator = null)
+    parameters:
+    - id: globalFrame
+      type: System.Int32
+    - id: viewRect
+      type: AngeliA.IRect
+    - id: fromX
+      type: System.Int32
+    - id: fromY
+      type: System.Int32
+    - id: toX
+      type: System.Int32
+    - id: toY
+      type: System.Int32
+    - id: maxIteration
+      type: System.Int32
+    - id: resultX
+      type: System.Int32
+    - id: resultY
+      type: System.Int32
+    - id: endInAir
+      type: System.Boolean
+    - id: rangeValidator
+      type: AngeliA.Platformer.Navigation.IExpandRangeValidator
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function ExpandTo(globalFrame As Integer, viewRect As IRect, fromX As Integer, fromY As Integer, toX As Integer, toY As Integer, maxIteration As Integer, resultX As Integer, resultY As Integer, endInAir As Boolean = False, rangeValidator As Navigation.IExpandRangeValidator = Nothing) As Boolean
+  overload: AngeliA.Platformer.Navigation.ExpandTo*
+  nameWithType.vb: Navigation.ExpandTo(Integer, IRect, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Boolean, Navigation.IExpandRangeValidator)
+  fullName.vb: AngeliA.Platformer.Navigation.ExpandTo(Integer, AngeliA.IRect, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Boolean, AngeliA.Platformer.Navigation.IExpandRangeValidator)
+  name.vb: ExpandTo(Integer, IRect, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Boolean, IExpandRangeValidator)
+- uid: AngeliA.Platformer.Navigation.IsGround(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32@)
+  commentId: M:AngeliA.Platformer.Navigation.IsGround(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32@)
+  id: IsGround(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32@)
+  parent: AngeliA.Platformer.Navigation
+  langs:
+  - csharp
+  - vb
+  name: IsGround(int, IRect, int, int, out int)
+  nameWithType: Navigation.IsGround(int, IRect, int, int, out int)
+  fullName: AngeliA.Platformer.Navigation.IsGround(int, AngeliA.IRect, int, int, out int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Core/Navigation.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsGround
+    path: ../AngeliA Platformer/src/Core/Navigation.cs
+    startLine: 441
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public static bool IsGround(int globalFrame, IRect viewRect, int globalX, int globalY, out int groundY)
+    parameters:
+    - id: globalFrame
+      type: System.Int32
+    - id: viewRect
+      type: AngeliA.IRect
+    - id: globalX
+      type: System.Int32
+    - id: globalY
+      type: System.Int32
+    - id: groundY
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsGround(globalFrame As Integer, viewRect As IRect, globalX As Integer, globalY As Integer, groundY As Integer) As Boolean
+  overload: AngeliA.Platformer.Navigation.IsGround*
+  nameWithType.vb: Navigation.IsGround(Integer, IRect, Integer, Integer, Integer)
+  fullName.vb: AngeliA.Platformer.Navigation.IsGround(Integer, AngeliA.IRect, Integer, Integer, Integer)
+  name.vb: IsGround(Integer, IRect, Integer, Integer, Integer)
+references:
+- uid: AngeliA.Platformer
+  commentId: N:AngeliA.Platformer
+  href: AngeliA.html
+  name: AngeliA.Platformer
+  nameWithType: AngeliA.Platformer
+  fullName: AngeliA.Platformer
+  spec.csharp:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+  spec.vb:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Platformer.Navigation.IsReady*
+  commentId: Overload:AngeliA.Platformer.Navigation.IsReady
+  href: AngeliA.Platformer.Navigation.html#AngeliA_Platformer_Navigation_IsReady
+  name: IsReady
+  nameWithType: Navigation.IsReady
+  fullName: AngeliA.Platformer.Navigation.IsReady
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Platformer.Navigation.Initialize*
+  commentId: Overload:AngeliA.Platformer.Navigation.Initialize
+  href: AngeliA.Platformer.Navigation.html#AngeliA_Platformer_Navigation_Initialize
+  name: Initialize
+  nameWithType: Navigation.Initialize
+  fullName: AngeliA.Platformer.Navigation.Initialize
+- uid: AngeliA.Platformer.Navigation.NavigateTo*
+  commentId: Overload:AngeliA.Platformer.Navigation.NavigateTo
+  href: AngeliA.Platformer.Navigation.html#AngeliA_Platformer_Navigation_NavigateTo_AngeliA_Platformer_Navigation_Operation____System_Int32_AngeliA_IRect_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_
+  name: NavigateTo
+  nameWithType: Navigation.NavigateTo
+  fullName: AngeliA.Platformer.Navigation.NavigateTo
+- uid: AngeliA.Platformer.Navigation.Operation[]
+  isExternal: true
+  href: AngeliA.Platformer.Navigation.Operation.html
+  name: Operation[]
+  nameWithType: Navigation.Operation[]
+  fullName: AngeliA.Platformer.Navigation.Operation[]
+  nameWithType.vb: Navigation.Operation()
+  fullName.vb: AngeliA.Platformer.Navigation.Operation()
+  name.vb: Operation()
+  spec.csharp:
+  - uid: AngeliA.Platformer.Navigation.Operation
+    name: Operation
+    href: AngeliA.Platformer.Navigation.Operation.html
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: AngeliA.Platformer.Navigation.Operation
+    name: Operation
+    href: AngeliA.Platformer.Navigation.Operation.html
+  - name: (
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.IRect
+  commentId: T:AngeliA.IRect
+  parent: AngeliA
+  href: AngeliA.IRect.html
+  name: IRect
+  nameWithType: IRect
+  fullName: AngeliA.IRect
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.Platformer.Navigation.ExpandTo*
+  commentId: Overload:AngeliA.Platformer.Navigation.ExpandTo
+  href: AngeliA.Platformer.Navigation.html#AngeliA_Platformer_Navigation_ExpandTo_System_Int32_AngeliA_IRect_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32__System_Int32__System_Boolean_AngeliA_Platformer_Navigation_IExpandRangeValidator_
+  name: ExpandTo
+  nameWithType: Navigation.ExpandTo
+  fullName: AngeliA.Platformer.Navigation.ExpandTo
+- uid: AngeliA.Platformer.Navigation.IExpandRangeValidator
+  commentId: T:AngeliA.Platformer.Navigation.IExpandRangeValidator
+  parent: AngeliA.Platformer
+  href: AngeliA.Platformer.Navigation.html
+  name: Navigation.IExpandRangeValidator
+  nameWithType: Navigation.IExpandRangeValidator
+  fullName: AngeliA.Platformer.Navigation.IExpandRangeValidator
+  spec.csharp:
+  - uid: AngeliA.Platformer.Navigation
+    name: Navigation
+    href: AngeliA.Platformer.Navigation.html
+  - name: .
+  - uid: AngeliA.Platformer.Navigation.IExpandRangeValidator
+    name: IExpandRangeValidator
+    href: AngeliA.Platformer.Navigation.IExpandRangeValidator.html
+  spec.vb:
+  - uid: AngeliA.Platformer.Navigation
+    name: Navigation
+    href: AngeliA.Platformer.Navigation.html
+  - name: .
+  - uid: AngeliA.Platformer.Navigation.IExpandRangeValidator
+    name: IExpandRangeValidator
+    href: AngeliA.Platformer.Navigation.IExpandRangeValidator.html
+- uid: AngeliA.Platformer.Navigation.IsGround*
+  commentId: Overload:AngeliA.Platformer.Navigation.IsGround
+  href: AngeliA.Platformer.Navigation.html#AngeliA_Platformer_Navigation_IsGround_System_Int32_AngeliA_IRect_System_Int32_System_Int32_System_Int32__
+  name: IsGround
+  nameWithType: Navigation.IsGround
+  fullName: AngeliA.Platformer.Navigation.IsGround

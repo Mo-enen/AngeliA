@@ -1,0 +1,1288 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Tag
+  commentId: T:AngeliA.Tag
+  id: Tag
+  parent: AngeliA
+  children:
+  - AngeliA.Tag.Climb
+  - AngeliA.Tag.ClimbStable
+  - AngeliA.Tag.ExplosiveDamage
+  - AngeliA.Tag.FireDamage
+  - AngeliA.Tag.GrabSide
+  - AngeliA.Tag.GrabTop
+  - AngeliA.Tag.HideLimb
+  - AngeliA.Tag.IceDamage
+  - AngeliA.Tag.LightenDamage
+  - AngeliA.Tag.LoopStart
+  - AngeliA.Tag.MagicalDamage
+  - AngeliA.Tag.Mark
+  - AngeliA.Tag.NoSlide
+  - AngeliA.Tag.None
+  - AngeliA.Tag.OnewayDown
+  - AngeliA.Tag.OnewayLeft
+  - AngeliA.Tag.OnewayRight
+  - AngeliA.Tag.OnewayUp
+  - AngeliA.Tag.Palette
+  - AngeliA.Tag.PhysicalDamage
+  - AngeliA.Tag.PoisonDamage
+  - AngeliA.Tag.Random
+  - AngeliA.Tag.ShowLimb
+  - AngeliA.Tag.Slide
+  - AngeliA.Tag.Slip
+  - AngeliA.Tag.Unbreackable
+  - AngeliA.Tag.Water
+  langs:
+  - csharp
+  - vb
+  name: Tag
+  nameWithType: Tag
+  fullName: AngeliA.Tag
+  type: Enum
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Tag
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 3
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: >-
+      [Flags]
+
+      public enum Tag
+    content.vb: >-
+      <Flags>
+
+      Public Enum Tag
+  extensionMethods:
+  - AngeliA.Tag.AngeliA.Extension.Next``1
+  - AngeliA.Tag.AngeliA.Extension.Prev``1
+  - AngeliA.Tag.AngeliA.TagUtil.HasAll(AngeliA.Tag)
+  - AngeliA.Tag.AngeliA.TagUtil.HasAny(AngeliA.Tag)
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+  attributes:
+  - type: System.FlagsAttribute
+    ctor: System.FlagsAttribute.#ctor
+    arguments: []
+- uid: AngeliA.Tag.None
+  commentId: F:AngeliA.Tag.None
+  id: None
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: Tag.None
+  fullName: AngeliA.Tag.None
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: None
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: None = 0
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.OnewayUp
+  commentId: F:AngeliA.Tag.OnewayUp
+  id: OnewayUp
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: OnewayUp
+  nameWithType: Tag.OnewayUp
+  fullName: AngeliA.Tag.OnewayUp
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnewayUp
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: OnewayUp = 1
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.OnewayDown
+  commentId: F:AngeliA.Tag.OnewayDown
+  id: OnewayDown
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: OnewayDown
+  nameWithType: Tag.OnewayDown
+  fullName: AngeliA.Tag.OnewayDown
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnewayDown
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: OnewayDown = 2
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.OnewayLeft
+  commentId: F:AngeliA.Tag.OnewayLeft
+  id: OnewayLeft
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: OnewayLeft
+  nameWithType: Tag.OnewayLeft
+  fullName: AngeliA.Tag.OnewayLeft
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnewayLeft
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: OnewayLeft = 4
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.OnewayRight
+  commentId: F:AngeliA.Tag.OnewayRight
+  id: OnewayRight
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: OnewayRight
+  nameWithType: Tag.OnewayRight
+  fullName: AngeliA.Tag.OnewayRight
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnewayRight
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: OnewayRight = 8
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.Climb
+  commentId: F:AngeliA.Tag.Climb
+  id: Climb
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: Climb
+  nameWithType: Tag.Climb
+  fullName: AngeliA.Tag.Climb
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Climb
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Climb = 16
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.ClimbStable
+  commentId: F:AngeliA.Tag.ClimbStable
+  id: ClimbStable
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: ClimbStable
+  nameWithType: Tag.ClimbStable
+  fullName: AngeliA.Tag.ClimbStable
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ClimbStable
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: ClimbStable = 32
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.Mark
+  commentId: F:AngeliA.Tag.Mark
+  id: Mark
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: Mark
+  nameWithType: Tag.Mark
+  fullName: AngeliA.Tag.Mark
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Mark
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Mark = 64
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.Water
+  commentId: F:AngeliA.Tag.Water
+  id: Water
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: Water
+  nameWithType: Tag.Water
+  fullName: AngeliA.Tag.Water
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Water
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Water = 128
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.Slip
+  commentId: F:AngeliA.Tag.Slip
+  id: Slip
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: Slip
+  nameWithType: Tag.Slip
+  fullName: AngeliA.Tag.Slip
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Slip
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Slip = 256
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.Slide
+  commentId: F:AngeliA.Tag.Slide
+  id: Slide
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: Slide
+  nameWithType: Tag.Slide
+  fullName: AngeliA.Tag.Slide
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Slide
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Slide = 512
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.NoSlide
+  commentId: F:AngeliA.Tag.NoSlide
+  id: NoSlide
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: NoSlide
+  nameWithType: Tag.NoSlide
+  fullName: AngeliA.Tag.NoSlide
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: NoSlide
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: NoSlide = 1024
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.GrabTop
+  commentId: F:AngeliA.Tag.GrabTop
+  id: GrabTop
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: GrabTop
+  nameWithType: Tag.GrabTop
+  fullName: AngeliA.Tag.GrabTop
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GrabTop
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: GrabTop = 2048
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.GrabSide
+  commentId: F:AngeliA.Tag.GrabSide
+  id: GrabSide
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: GrabSide
+  nameWithType: Tag.GrabSide
+  fullName: AngeliA.Tag.GrabSide
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GrabSide
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: GrabSide = 4096
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.Unbreackable
+  commentId: F:AngeliA.Tag.Unbreackable
+  id: Unbreackable
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: Unbreackable
+  nameWithType: Tag.Unbreackable
+  fullName: AngeliA.Tag.Unbreackable
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Unbreackable
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Unbreackable = 8192
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.ShowLimb
+  commentId: F:AngeliA.Tag.ShowLimb
+  id: ShowLimb
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: ShowLimb
+  nameWithType: Tag.ShowLimb
+  fullName: AngeliA.Tag.ShowLimb
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ShowLimb
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: ShowLimb = 16384
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.HideLimb
+  commentId: F:AngeliA.Tag.HideLimb
+  id: HideLimb
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: HideLimb
+  nameWithType: Tag.HideLimb
+  fullName: AngeliA.Tag.HideLimb
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HideLimb
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 27
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: HideLimb = 32768
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.LoopStart
+  commentId: F:AngeliA.Tag.LoopStart
+  id: LoopStart
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: LoopStart
+  nameWithType: Tag.LoopStart
+  fullName: AngeliA.Tag.LoopStart
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LoopStart
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 29
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: LoopStart = 65536
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.Random
+  commentId: F:AngeliA.Tag.Random
+  id: Random
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: Random
+  nameWithType: Tag.Random
+  fullName: AngeliA.Tag.Random
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Random
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Random = 131072
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.Palette
+  commentId: F:AngeliA.Tag.Palette
+  id: Palette
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: Palette
+  nameWithType: Tag.Palette
+  fullName: AngeliA.Tag.Palette
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Palette
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 31
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Palette = 262144
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.PhysicalDamage
+  commentId: F:AngeliA.Tag.PhysicalDamage
+  id: PhysicalDamage
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: PhysicalDamage
+  nameWithType: Tag.PhysicalDamage
+  fullName: AngeliA.Tag.PhysicalDamage
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PhysicalDamage
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: PhysicalDamage = 524288
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.ExplosiveDamage
+  commentId: F:AngeliA.Tag.ExplosiveDamage
+  id: ExplosiveDamage
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: ExplosiveDamage
+  nameWithType: Tag.ExplosiveDamage
+  fullName: AngeliA.Tag.ExplosiveDamage
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ExplosiveDamage
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 34
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: ExplosiveDamage = 1048576
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.MagicalDamage
+  commentId: F:AngeliA.Tag.MagicalDamage
+  id: MagicalDamage
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: MagicalDamage
+  nameWithType: Tag.MagicalDamage
+  fullName: AngeliA.Tag.MagicalDamage
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MagicalDamage
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 35
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: MagicalDamage = 2097152
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.PoisonDamage
+  commentId: F:AngeliA.Tag.PoisonDamage
+  id: PoisonDamage
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: PoisonDamage
+  nameWithType: Tag.PoisonDamage
+  fullName: AngeliA.Tag.PoisonDamage
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PoisonDamage
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: PoisonDamage = 4194304
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.FireDamage
+  commentId: F:AngeliA.Tag.FireDamage
+  id: FireDamage
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: FireDamage
+  nameWithType: Tag.FireDamage
+  fullName: AngeliA.Tag.FireDamage
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FireDamage
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 37
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: FireDamage = 8388608
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.IceDamage
+  commentId: F:AngeliA.Tag.IceDamage
+  id: IceDamage
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: IceDamage
+  nameWithType: Tag.IceDamage
+  fullName: AngeliA.Tag.IceDamage
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IceDamage
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 38
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: IceDamage = 16777216
+    return:
+      type: AngeliA.Tag
+- uid: AngeliA.Tag.LightenDamage
+  commentId: F:AngeliA.Tag.LightenDamage
+  id: LightenDamage
+  parent: AngeliA.Tag
+  langs:
+  - csharp
+  - vb
+  name: LightenDamage
+  nameWithType: Tag.LightenDamage
+  fullName: AngeliA.Tag.LightenDamage
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LightenDamage
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 39
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: LightenDamage = 33554432
+    return:
+      type: AngeliA.Tag
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.Tag.AngeliA.Extension.Next``1
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<Tag>(Tag)
+  nameWithType: Extension.Next<Tag>(Tag)
+  fullName: AngeliA.Extension.Next<AngeliA.Tag>(AngeliA.Tag)
+  nameWithType.vb: Extension.Next(Of Tag)(Tag)
+  fullName.vb: AngeliA.Extension.Next(Of AngeliA.Tag)(AngeliA.Tag)
+  name.vb: Next(Of Tag)(Tag)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(AngeliA.Tag)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(AngeliA.Tag)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+- uid: AngeliA.Tag.AngeliA.Extension.Prev``1
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<Tag>(Tag)
+  nameWithType: Extension.Prev<Tag>(Tag)
+  fullName: AngeliA.Extension.Prev<AngeliA.Tag>(AngeliA.Tag)
+  nameWithType.vb: Extension.Prev(Of Tag)(Tag)
+  fullName.vb: AngeliA.Extension.Prev(Of AngeliA.Tag)(AngeliA.Tag)
+  name.vb: Prev(Of Tag)(Tag)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.Tag)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.Tag)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+- uid: AngeliA.Tag.AngeliA.TagUtil.HasAll(AngeliA.Tag)
+  commentId: M:AngeliA.TagUtil.HasAll(AngeliA.Tag,AngeliA.Tag)
+  parent: AngeliA.TagUtil
+  definition: AngeliA.TagUtil.HasAll(AngeliA.Tag,AngeliA.Tag)
+  href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAll_AngeliA_Tag_AngeliA_Tag_
+  name: HasAll(Tag, Tag)
+  nameWithType: TagUtil.HasAll(Tag, Tag)
+  fullName: AngeliA.TagUtil.HasAll(AngeliA.Tag, AngeliA.Tag)
+  spec.csharp:
+  - uid: AngeliA.TagUtil.HasAll(AngeliA.Tag,AngeliA.Tag)
+    name: HasAll
+    href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAll_AngeliA_Tag_AngeliA_Tag_
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.TagUtil.HasAll(AngeliA.Tag,AngeliA.Tag)
+    name: HasAll
+    href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAll_AngeliA_Tag_AngeliA_Tag_
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+- uid: AngeliA.Tag.AngeliA.TagUtil.HasAny(AngeliA.Tag)
+  commentId: M:AngeliA.TagUtil.HasAny(AngeliA.Tag,AngeliA.Tag)
+  parent: AngeliA.TagUtil
+  definition: AngeliA.TagUtil.HasAny(AngeliA.Tag,AngeliA.Tag)
+  href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAny_AngeliA_Tag_AngeliA_Tag_
+  name: HasAny(Tag, Tag)
+  nameWithType: TagUtil.HasAny(Tag, Tag)
+  fullName: AngeliA.TagUtil.HasAny(AngeliA.Tag, AngeliA.Tag)
+  spec.csharp:
+  - uid: AngeliA.TagUtil.HasAny(AngeliA.Tag,AngeliA.Tag)
+    name: HasAny
+    href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAny_AngeliA_Tag_AngeliA_Tag_
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.TagUtil.HasAny(AngeliA.Tag,AngeliA.Tag)
+    name: HasAny
+    href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAny_AngeliA_Tag_AngeliA_Tag_
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.Next``1(``0)
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<E>(E)
+  nameWithType: Extension.Next<E>(E)
+  fullName: AngeliA.Extension.Next<E>(E)
+  nameWithType.vb: Extension.Next(Of E)(E)
+  fullName.vb: AngeliA.Extension.Next(Of E)(E)
+  name.vb: Next(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.Prev``1(``0)
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<E>(E)
+  nameWithType: Extension.Prev<E>(E)
+  fullName: AngeliA.Extension.Prev<E>(E)
+  nameWithType.vb: Extension.Prev(Of E)(E)
+  fullName.vb: AngeliA.Extension.Prev(Of E)(E)
+  name.vb: Prev(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.TagUtil.HasAll(AngeliA.Tag,AngeliA.Tag)
+  commentId: M:AngeliA.TagUtil.HasAll(AngeliA.Tag,AngeliA.Tag)
+  href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAll_AngeliA_Tag_AngeliA_Tag_
+  name: HasAll(Tag, Tag)
+  nameWithType: TagUtil.HasAll(Tag, Tag)
+  fullName: AngeliA.TagUtil.HasAll(AngeliA.Tag, AngeliA.Tag)
+  spec.csharp:
+  - uid: AngeliA.TagUtil.HasAll(AngeliA.Tag,AngeliA.Tag)
+    name: HasAll
+    href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAll_AngeliA_Tag_AngeliA_Tag_
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.TagUtil.HasAll(AngeliA.Tag,AngeliA.Tag)
+    name: HasAll
+    href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAll_AngeliA_Tag_AngeliA_Tag_
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+- uid: AngeliA.TagUtil
+  commentId: T:AngeliA.TagUtil
+  parent: AngeliA
+  href: AngeliA.TagUtil.html
+  name: TagUtil
+  nameWithType: TagUtil
+  fullName: AngeliA.TagUtil
+- uid: AngeliA.TagUtil.HasAny(AngeliA.Tag,AngeliA.Tag)
+  commentId: M:AngeliA.TagUtil.HasAny(AngeliA.Tag,AngeliA.Tag)
+  href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAny_AngeliA_Tag_AngeliA_Tag_
+  name: HasAny(Tag, Tag)
+  nameWithType: TagUtil.HasAny(Tag, Tag)
+  fullName: AngeliA.TagUtil.HasAny(AngeliA.Tag, AngeliA.Tag)
+  spec.csharp:
+  - uid: AngeliA.TagUtil.HasAny(AngeliA.Tag,AngeliA.Tag)
+    name: HasAny
+    href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAny_AngeliA_Tag_AngeliA_Tag_
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.TagUtil.HasAny(AngeliA.Tag,AngeliA.Tag)
+    name: HasAny
+    href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAny_AngeliA_Tag_AngeliA_Tag_
+  - name: (
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Tag
+    name: Tag
+    href: AngeliA.Tag.html
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Tag
+  commentId: T:AngeliA.Tag
+  parent: AngeliA
+  href: AngeliA.Tag.html
+  name: Tag
+  nameWithType: Tag
+  fullName: AngeliA.Tag

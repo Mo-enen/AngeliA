@@ -1,0 +1,497 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.HipCloth.HipClothType
+  commentId: T:AngeliA.HipCloth.HipClothType
+  id: HipCloth.HipClothType
+  parent: AngeliA
+  children:
+  - AngeliA.HipCloth.HipClothType.None
+  - AngeliA.HipCloth.HipClothType.Pants
+  - AngeliA.HipCloth.HipClothType.Skirt
+  langs:
+  - csharp
+  - vb
+  name: HipCloth.HipClothType
+  nameWithType: HipCloth.HipClothType
+  fullName: AngeliA.HipCloth.HipClothType
+  type: Enum
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/ClothHip.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HipClothType
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/ClothHip.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public enum HipCloth.HipClothType
+    content.vb: Public Enum HipCloth.HipClothType
+  extensionMethods:
+  - AngeliA.HipCloth.HipClothType.AngeliA.Extension.Next``1
+  - AngeliA.HipCloth.HipClothType.AngeliA.Extension.Prev``1
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.HipCloth.HipClothType.None
+  commentId: F:AngeliA.HipCloth.HipClothType.None
+  id: None
+  parent: AngeliA.HipCloth.HipClothType
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: HipCloth.HipClothType.None
+  fullName: AngeliA.HipCloth.HipClothType.None
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/ClothHip.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: None
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/ClothHip.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: None = 0
+    return:
+      type: AngeliA.HipCloth.HipClothType
+- uid: AngeliA.HipCloth.HipClothType.Pants
+  commentId: F:AngeliA.HipCloth.HipClothType.Pants
+  id: Pants
+  parent: AngeliA.HipCloth.HipClothType
+  langs:
+  - csharp
+  - vb
+  name: Pants
+  nameWithType: HipCloth.HipClothType.Pants
+  fullName: AngeliA.HipCloth.HipClothType.Pants
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/ClothHip.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Pants
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/ClothHip.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Pants = 1
+    return:
+      type: AngeliA.HipCloth.HipClothType
+- uid: AngeliA.HipCloth.HipClothType.Skirt
+  commentId: F:AngeliA.HipCloth.HipClothType.Skirt
+  id: Skirt
+  parent: AngeliA.HipCloth.HipClothType
+  langs:
+  - csharp
+  - vb
+  name: Skirt
+  nameWithType: HipCloth.HipClothType.Skirt
+  fullName: AngeliA.HipCloth.HipClothType.Skirt
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/ClothHip.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Skirt
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/ClothHip.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Skirt = 2
+    return:
+      type: AngeliA.HipCloth.HipClothType
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.HipCloth.HipClothType.AngeliA.Extension.Next``1
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<HipClothType>(HipClothType)
+  nameWithType: Extension.Next<HipCloth.HipClothType>(HipCloth.HipClothType)
+  fullName: AngeliA.Extension.Next<AngeliA.HipCloth.HipClothType>(AngeliA.HipCloth.HipClothType)
+  nameWithType.vb: Extension.Next(Of HipCloth.HipClothType)(HipCloth.HipClothType)
+  fullName.vb: AngeliA.Extension.Next(Of AngeliA.HipCloth.HipClothType)(AngeliA.HipCloth.HipClothType)
+  name.vb: Next(Of HipClothType)(HipClothType)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(AngeliA.HipCloth.HipClothType)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(AngeliA.HipCloth.HipClothType)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html
+  - name: )
+  - name: (
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html
+  - name: )
+- uid: AngeliA.HipCloth.HipClothType.AngeliA.Extension.Prev``1
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<HipClothType>(HipClothType)
+  nameWithType: Extension.Prev<HipCloth.HipClothType>(HipCloth.HipClothType)
+  fullName: AngeliA.Extension.Prev<AngeliA.HipCloth.HipClothType>(AngeliA.HipCloth.HipClothType)
+  nameWithType.vb: Extension.Prev(Of HipCloth.HipClothType)(HipCloth.HipClothType)
+  fullName.vb: AngeliA.Extension.Prev(Of AngeliA.HipCloth.HipClothType)(AngeliA.HipCloth.HipClothType)
+  name.vb: Prev(Of HipClothType)(HipClothType)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.HipCloth.HipClothType)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.HipCloth.HipClothType)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html
+  - name: )
+  - name: (
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.Next``1(``0)
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<E>(E)
+  nameWithType: Extension.Next<E>(E)
+  fullName: AngeliA.Extension.Next<E>(E)
+  nameWithType.vb: Extension.Next(Of E)(E)
+  fullName.vb: AngeliA.Extension.Next(Of E)(E)
+  name.vb: Next(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.Prev``1(``0)
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<E>(E)
+  nameWithType: Extension.Prev<E>(E)
+  fullName: AngeliA.Extension.Prev<E>(E)
+  nameWithType.vb: Extension.Prev(Of E)(E)
+  fullName.vb: AngeliA.Extension.Prev(Of E)(E)
+  name.vb: Prev(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.HipCloth.HipClothType
+  commentId: T:AngeliA.HipCloth.HipClothType
+  parent: AngeliA
+  href: AngeliA.HipCloth.html
+  name: HipCloth.HipClothType
+  nameWithType: HipCloth.HipClothType
+  fullName: AngeliA.HipCloth.HipClothType
+  spec.csharp:
+  - uid: AngeliA.HipCloth
+    name: HipCloth
+    href: AngeliA.HipCloth.html
+  - name: .
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html
+  spec.vb:
+  - uid: AngeliA.HipCloth
+    name: HipCloth
+    href: AngeliA.HipCloth.html
+  - name: .
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html

@@ -1,0 +1,802 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.LightingSystem
+  commentId: T:AngeliA.LightingSystem
+  id: LightingSystem
+  parent: AngeliA
+  children:
+  - AngeliA.LightingSystem.CancelIgnoreLighting
+  - AngeliA.LightingSystem.Enable
+  - AngeliA.LightingSystem.ForceAirLerp(System.Single,System.Int32)
+  - AngeliA.LightingSystem.ForceCameraScale(System.Single,System.Int32)
+  - AngeliA.LightingSystem.IgnoreLighting(System.Int32)
+  - AngeliA.LightingSystem.Illuminate(System.Int32,System.Int32,System.Int32,System.Int32)
+  - AngeliA.LightingSystem.SETTING_AIR_ILLUMINANCE_DAY
+  - AngeliA.LightingSystem.SETTING_AIR_ILLUMINANCE_NIGHT
+  - AngeliA.LightingSystem.SETTING_BACKGROUND_TINT
+  - AngeliA.LightingSystem.SETTING_FREE_IN_GAME_DAYTIME
+  - AngeliA.LightingSystem.SETTING_IN_GAME_DAYTIME
+  - AngeliA.LightingSystem.SETTING_LEVEL_ILLUMINATE_REMAIN
+  - AngeliA.LightingSystem.SETTING_PIXEL_STYLE
+  - AngeliA.LightingSystem.SETTING_SELF_LERP
+  - AngeliA.LightingSystem.SETTING_SOLID_ILLUMINANCE
+  langs:
+  - csharp
+  - vb
+  name: LightingSystem
+  nameWithType: LightingSystem
+  fullName: AngeliA.LightingSystem
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LightingSystem
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static class LightingSystem
+    content.vb: Public Module LightingSystem
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.LightingSystem.SETTING_PIXEL_STYLE
+  commentId: F:AngeliA.LightingSystem.SETTING_PIXEL_STYLE
+  id: SETTING_PIXEL_STYLE
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: SETTING_PIXEL_STYLE
+  nameWithType: LightingSystem.SETTING_PIXEL_STYLE
+  fullName: AngeliA.LightingSystem.SETTING_PIXEL_STYLE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_PIXEL_STYLE
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_PIXEL_STYLE = 948520
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_PIXEL_STYLE As Integer = 948520
+- uid: AngeliA.LightingSystem.SETTING_SELF_LERP
+  commentId: F:AngeliA.LightingSystem.SETTING_SELF_LERP
+  id: SETTING_SELF_LERP
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: SETTING_SELF_LERP
+  nameWithType: LightingSystem.SETTING_SELF_LERP
+  fullName: AngeliA.LightingSystem.SETTING_SELF_LERP
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_SELF_LERP
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_SELF_LERP = 948521
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_SELF_LERP As Integer = 948521
+- uid: AngeliA.LightingSystem.SETTING_SOLID_ILLUMINANCE
+  commentId: F:AngeliA.LightingSystem.SETTING_SOLID_ILLUMINANCE
+  id: SETTING_SOLID_ILLUMINANCE
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: SETTING_SOLID_ILLUMINANCE
+  nameWithType: LightingSystem.SETTING_SOLID_ILLUMINANCE
+  fullName: AngeliA.LightingSystem.SETTING_SOLID_ILLUMINANCE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_SOLID_ILLUMINANCE
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_SOLID_ILLUMINANCE = 948522
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_SOLID_ILLUMINANCE As Integer = 948522
+- uid: AngeliA.LightingSystem.SETTING_AIR_ILLUMINANCE_DAY
+  commentId: F:AngeliA.LightingSystem.SETTING_AIR_ILLUMINANCE_DAY
+  id: SETTING_AIR_ILLUMINANCE_DAY
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: SETTING_AIR_ILLUMINANCE_DAY
+  nameWithType: LightingSystem.SETTING_AIR_ILLUMINANCE_DAY
+  fullName: AngeliA.LightingSystem.SETTING_AIR_ILLUMINANCE_DAY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_AIR_ILLUMINANCE_DAY
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_AIR_ILLUMINANCE_DAY = 948523
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_AIR_ILLUMINANCE_DAY As Integer = 948523
+- uid: AngeliA.LightingSystem.SETTING_AIR_ILLUMINANCE_NIGHT
+  commentId: F:AngeliA.LightingSystem.SETTING_AIR_ILLUMINANCE_NIGHT
+  id: SETTING_AIR_ILLUMINANCE_NIGHT
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: SETTING_AIR_ILLUMINANCE_NIGHT
+  nameWithType: LightingSystem.SETTING_AIR_ILLUMINANCE_NIGHT
+  fullName: AngeliA.LightingSystem.SETTING_AIR_ILLUMINANCE_NIGHT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_AIR_ILLUMINANCE_NIGHT
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_AIR_ILLUMINANCE_NIGHT = 948524
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_AIR_ILLUMINANCE_NIGHT As Integer = 948524
+- uid: AngeliA.LightingSystem.SETTING_BACKGROUND_TINT
+  commentId: F:AngeliA.LightingSystem.SETTING_BACKGROUND_TINT
+  id: SETTING_BACKGROUND_TINT
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: SETTING_BACKGROUND_TINT
+  nameWithType: LightingSystem.SETTING_BACKGROUND_TINT
+  fullName: AngeliA.LightingSystem.SETTING_BACKGROUND_TINT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_BACKGROUND_TINT
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_BACKGROUND_TINT = 948525
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_BACKGROUND_TINT As Integer = 948525
+- uid: AngeliA.LightingSystem.SETTING_LEVEL_ILLUMINATE_REMAIN
+  commentId: F:AngeliA.LightingSystem.SETTING_LEVEL_ILLUMINATE_REMAIN
+  id: SETTING_LEVEL_ILLUMINATE_REMAIN
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: SETTING_LEVEL_ILLUMINATE_REMAIN
+  nameWithType: LightingSystem.SETTING_LEVEL_ILLUMINATE_REMAIN
+  fullName: AngeliA.LightingSystem.SETTING_LEVEL_ILLUMINATE_REMAIN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_LEVEL_ILLUMINATE_REMAIN
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_LEVEL_ILLUMINATE_REMAIN = 948526
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_LEVEL_ILLUMINATE_REMAIN As Integer = 948526
+- uid: AngeliA.LightingSystem.SETTING_IN_GAME_DAYTIME
+  commentId: F:AngeliA.LightingSystem.SETTING_IN_GAME_DAYTIME
+  id: SETTING_IN_GAME_DAYTIME
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: SETTING_IN_GAME_DAYTIME
+  nameWithType: LightingSystem.SETTING_IN_GAME_DAYTIME
+  fullName: AngeliA.LightingSystem.SETTING_IN_GAME_DAYTIME
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_IN_GAME_DAYTIME
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_IN_GAME_DAYTIME = 948527
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_IN_GAME_DAYTIME As Integer = 948527
+- uid: AngeliA.LightingSystem.SETTING_FREE_IN_GAME_DAYTIME
+  commentId: F:AngeliA.LightingSystem.SETTING_FREE_IN_GAME_DAYTIME
+  id: SETTING_FREE_IN_GAME_DAYTIME
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: SETTING_FREE_IN_GAME_DAYTIME
+  nameWithType: LightingSystem.SETTING_FREE_IN_GAME_DAYTIME
+  fullName: AngeliA.LightingSystem.SETTING_FREE_IN_GAME_DAYTIME
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_FREE_IN_GAME_DAYTIME
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_FREE_IN_GAME_DAYTIME = 948528
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_FREE_IN_GAME_DAYTIME As Integer = 948528
+- uid: AngeliA.LightingSystem.Enable
+  commentId: P:AngeliA.LightingSystem.Enable
+  id: Enable
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: Enable
+  nameWithType: LightingSystem.Enable
+  fullName: AngeliA.LightingSystem.Enable
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Enable
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool Enable { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property Enable As Boolean
+  overload: AngeliA.LightingSystem.Enable*
+- uid: AngeliA.LightingSystem.Illuminate(System.Int32,System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.LightingSystem.Illuminate(System.Int32,System.Int32,System.Int32,System.Int32)
+  id: Illuminate(System.Int32,System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: Illuminate(int, int, int, int)
+  nameWithType: LightingSystem.Illuminate(int, int, int, int)
+  fullName: AngeliA.LightingSystem.Illuminate(int, int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Illuminate
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 285
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void Illuminate(int x, int y, int radius, int amount = 1000)
+    parameters:
+    - id: x
+      type: System.Int32
+    - id: y
+      type: System.Int32
+    - id: radius
+      type: System.Int32
+    - id: amount
+      type: System.Int32
+    content.vb: Public Shared Sub Illuminate(x As Integer, y As Integer, radius As Integer, amount As Integer = 1000)
+  overload: AngeliA.LightingSystem.Illuminate*
+  nameWithType.vb: LightingSystem.Illuminate(Integer, Integer, Integer, Integer)
+  fullName.vb: AngeliA.LightingSystem.Illuminate(Integer, Integer, Integer, Integer)
+  name.vb: Illuminate(Integer, Integer, Integer, Integer)
+- uid: AngeliA.LightingSystem.ForceCameraScale(System.Single,System.Int32)
+  commentId: M:AngeliA.LightingSystem.ForceCameraScale(System.Single,System.Int32)
+  id: ForceCameraScale(System.Single,System.Int32)
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: ForceCameraScale(float, int)
+  nameWithType: LightingSystem.ForceCameraScale(float, int)
+  fullName: AngeliA.LightingSystem.ForceCameraScale(float, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForceCameraScale
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 323
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void ForceCameraScale(float scale, int duration = 1)
+    parameters:
+    - id: scale
+      type: System.Single
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub ForceCameraScale(scale As Single, duration As Integer = 1)
+  overload: AngeliA.LightingSystem.ForceCameraScale*
+  nameWithType.vb: LightingSystem.ForceCameraScale(Single, Integer)
+  fullName.vb: AngeliA.LightingSystem.ForceCameraScale(Single, Integer)
+  name.vb: ForceCameraScale(Single, Integer)
+- uid: AngeliA.LightingSystem.ForceAirLerp(System.Single,System.Int32)
+  commentId: M:AngeliA.LightingSystem.ForceAirLerp(System.Single,System.Int32)
+  id: ForceAirLerp(System.Single,System.Int32)
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: ForceAirLerp(float, int)
+  nameWithType: LightingSystem.ForceAirLerp(float, int)
+  fullName: AngeliA.LightingSystem.ForceAirLerp(float, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForceAirLerp
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 329
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void ForceAirLerp(float lerp, int duration = 1)
+    parameters:
+    - id: lerp
+      type: System.Single
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub ForceAirLerp(lerp As Single, duration As Integer = 1)
+  overload: AngeliA.LightingSystem.ForceAirLerp*
+  nameWithType.vb: LightingSystem.ForceAirLerp(Single, Integer)
+  fullName.vb: AngeliA.LightingSystem.ForceAirLerp(Single, Integer)
+  name.vb: ForceAirLerp(Single, Integer)
+- uid: AngeliA.LightingSystem.IgnoreLighting(System.Int32)
+  commentId: M:AngeliA.LightingSystem.IgnoreLighting(System.Int32)
+  id: IgnoreLighting(System.Int32)
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: IgnoreLighting(int)
+  nameWithType: LightingSystem.IgnoreLighting(int)
+  fullName: AngeliA.LightingSystem.IgnoreLighting(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreLighting
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 335
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void IgnoreLighting(int duration = 1)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub IgnoreLighting(duration As Integer = 1)
+  overload: AngeliA.LightingSystem.IgnoreLighting*
+  nameWithType.vb: LightingSystem.IgnoreLighting(Integer)
+  fullName.vb: AngeliA.LightingSystem.IgnoreLighting(Integer)
+  name.vb: IgnoreLighting(Integer)
+- uid: AngeliA.LightingSystem.CancelIgnoreLighting
+  commentId: M:AngeliA.LightingSystem.CancelIgnoreLighting
+  id: CancelIgnoreLighting
+  parent: AngeliA.LightingSystem
+  langs:
+  - csharp
+  - vb
+  name: CancelIgnoreLighting()
+  nameWithType: LightingSystem.CancelIgnoreLighting()
+  fullName: AngeliA.LightingSystem.CancelIgnoreLighting()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/LightingSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CancelIgnoreLighting
+    path: ../AngeliA Framework/src/Core/LightingSystem.cs
+    startLine: 338
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void CancelIgnoreLighting()
+    content.vb: Public Shared Sub CancelIgnoreLighting()
+  overload: AngeliA.LightingSystem.CancelIgnoreLighting*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.LightingSystem.Enable*
+  commentId: Overload:AngeliA.LightingSystem.Enable
+  href: AngeliA.LightingSystem.html#AngeliA_LightingSystem_Enable
+  name: Enable
+  nameWithType: LightingSystem.Enable
+  fullName: AngeliA.LightingSystem.Enable
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.LightingSystem.Illuminate*
+  commentId: Overload:AngeliA.LightingSystem.Illuminate
+  href: AngeliA.LightingSystem.html#AngeliA_LightingSystem_Illuminate_System_Int32_System_Int32_System_Int32_System_Int32_
+  name: Illuminate
+  nameWithType: LightingSystem.Illuminate
+  fullName: AngeliA.LightingSystem.Illuminate
+- uid: AngeliA.LightingSystem.ForceCameraScale*
+  commentId: Overload:AngeliA.LightingSystem.ForceCameraScale
+  href: AngeliA.LightingSystem.html#AngeliA_LightingSystem_ForceCameraScale_System_Single_System_Int32_
+  name: ForceCameraScale
+  nameWithType: LightingSystem.ForceCameraScale
+  fullName: AngeliA.LightingSystem.ForceCameraScale
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: AngeliA.LightingSystem.ForceAirLerp*
+  commentId: Overload:AngeliA.LightingSystem.ForceAirLerp
+  href: AngeliA.LightingSystem.html#AngeliA_LightingSystem_ForceAirLerp_System_Single_System_Int32_
+  name: ForceAirLerp
+  nameWithType: LightingSystem.ForceAirLerp
+  fullName: AngeliA.LightingSystem.ForceAirLerp
+- uid: AngeliA.LightingSystem.IgnoreLighting*
+  commentId: Overload:AngeliA.LightingSystem.IgnoreLighting
+  href: AngeliA.LightingSystem.html#AngeliA_LightingSystem_IgnoreLighting_System_Int32_
+  name: IgnoreLighting
+  nameWithType: LightingSystem.IgnoreLighting
+  fullName: AngeliA.LightingSystem.IgnoreLighting
+- uid: AngeliA.LightingSystem.CancelIgnoreLighting*
+  commentId: Overload:AngeliA.LightingSystem.CancelIgnoreLighting
+  href: AngeliA.LightingSystem.html#AngeliA_LightingSystem_CancelIgnoreLighting
+  name: CancelIgnoreLighting
+  nameWithType: LightingSystem.CancelIgnoreLighting
+  fullName: AngeliA.LightingSystem.CancelIgnoreLighting

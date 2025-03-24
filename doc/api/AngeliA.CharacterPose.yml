@@ -1,0 +1,1574 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.CharacterPose
+  commentId: T:AngeliA.CharacterPose
+  id: CharacterPose
+  parent: AngeliA
+  children:
+  - AngeliA.CharacterPose.#ctor
+  - AngeliA.CharacterPose.ApplyToCharacter(AngeliA.PoseCharacterRenderer)
+  - AngeliA.CharacterPose.BlendToCharacter(AngeliA.PoseCharacterRenderer,System.Single)
+  - AngeliA.CharacterPose.Body
+  - AngeliA.CharacterPose.BodyTwist
+  - AngeliA.CharacterPose.FootL
+  - AngeliA.CharacterPose.FootR
+  - AngeliA.CharacterPose.HandGrabAttackTwistL
+  - AngeliA.CharacterPose.HandGrabAttackTwistR
+  - AngeliA.CharacterPose.HandGrabRotationL
+  - AngeliA.CharacterPose.HandGrabRotationR
+  - AngeliA.CharacterPose.HandGrabScaleL
+  - AngeliA.CharacterPose.HandGrabScaleR
+  - AngeliA.CharacterPose.HandL
+  - AngeliA.CharacterPose.HandR
+  - AngeliA.CharacterPose.Head
+  - AngeliA.CharacterPose.HeadTwist
+  - AngeliA.CharacterPose.Hip
+  - AngeliA.CharacterPose.LowerArmL
+  - AngeliA.CharacterPose.LowerArmR
+  - AngeliA.CharacterPose.LowerLegL
+  - AngeliA.CharacterPose.LowerLegR
+  - AngeliA.CharacterPose.PoseRootX
+  - AngeliA.CharacterPose.PoseRootY
+  - AngeliA.CharacterPose.RecordFromCharacter(AngeliA.PoseCharacterRenderer)
+  - AngeliA.CharacterPose.ShoulderL
+  - AngeliA.CharacterPose.ShoulderR
+  - AngeliA.CharacterPose.UpperArmL
+  - AngeliA.CharacterPose.UpperArmR
+  - AngeliA.CharacterPose.UpperLegL
+  - AngeliA.CharacterPose.UpperLegR
+  langs:
+  - csharp
+  - vb
+  name: CharacterPose
+  nameWithType: CharacterPose
+  fullName: AngeliA.CharacterPose
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CharacterPose
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public class CharacterPose
+    content.vb: Public Class CharacterPose
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.CharacterPose.Head
+  commentId: P:AngeliA.CharacterPose.Head
+  id: Head
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: Head
+  nameWithType: CharacterPose.Head
+  fullName: AngeliA.CharacterPose.Head
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Head
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart Head { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property Head As BodyPart
+  overload: AngeliA.CharacterPose.Head*
+- uid: AngeliA.CharacterPose.Body
+  commentId: P:AngeliA.CharacterPose.Body
+  id: Body
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: Body
+  nameWithType: CharacterPose.Body
+  fullName: AngeliA.CharacterPose.Body
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Body
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart Body { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property Body As BodyPart
+  overload: AngeliA.CharacterPose.Body*
+- uid: AngeliA.CharacterPose.Hip
+  commentId: P:AngeliA.CharacterPose.Hip
+  id: Hip
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: Hip
+  nameWithType: CharacterPose.Hip
+  fullName: AngeliA.CharacterPose.Hip
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Hip
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart Hip { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property Hip As BodyPart
+  overload: AngeliA.CharacterPose.Hip*
+- uid: AngeliA.CharacterPose.ShoulderL
+  commentId: P:AngeliA.CharacterPose.ShoulderL
+  id: ShoulderL
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: ShoulderL
+  nameWithType: CharacterPose.ShoulderL
+  fullName: AngeliA.CharacterPose.ShoulderL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ShoulderL
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart ShoulderL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property ShoulderL As BodyPart
+  overload: AngeliA.CharacterPose.ShoulderL*
+- uid: AngeliA.CharacterPose.ShoulderR
+  commentId: P:AngeliA.CharacterPose.ShoulderR
+  id: ShoulderR
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: ShoulderR
+  nameWithType: CharacterPose.ShoulderR
+  fullName: AngeliA.CharacterPose.ShoulderR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ShoulderR
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart ShoulderR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property ShoulderR As BodyPart
+  overload: AngeliA.CharacterPose.ShoulderR*
+- uid: AngeliA.CharacterPose.UpperArmL
+  commentId: P:AngeliA.CharacterPose.UpperArmL
+  id: UpperArmL
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: UpperArmL
+  nameWithType: CharacterPose.UpperArmL
+  fullName: AngeliA.CharacterPose.UpperArmL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UpperArmL
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart UpperArmL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property UpperArmL As BodyPart
+  overload: AngeliA.CharacterPose.UpperArmL*
+- uid: AngeliA.CharacterPose.UpperArmR
+  commentId: P:AngeliA.CharacterPose.UpperArmR
+  id: UpperArmR
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: UpperArmR
+  nameWithType: CharacterPose.UpperArmR
+  fullName: AngeliA.CharacterPose.UpperArmR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UpperArmR
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart UpperArmR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property UpperArmR As BodyPart
+  overload: AngeliA.CharacterPose.UpperArmR*
+- uid: AngeliA.CharacterPose.LowerArmL
+  commentId: P:AngeliA.CharacterPose.LowerArmL
+  id: LowerArmL
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: LowerArmL
+  nameWithType: CharacterPose.LowerArmL
+  fullName: AngeliA.CharacterPose.LowerArmL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LowerArmL
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart LowerArmL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property LowerArmL As BodyPart
+  overload: AngeliA.CharacterPose.LowerArmL*
+- uid: AngeliA.CharacterPose.LowerArmR
+  commentId: P:AngeliA.CharacterPose.LowerArmR
+  id: LowerArmR
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: LowerArmR
+  nameWithType: CharacterPose.LowerArmR
+  fullName: AngeliA.CharacterPose.LowerArmR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LowerArmR
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart LowerArmR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property LowerArmR As BodyPart
+  overload: AngeliA.CharacterPose.LowerArmR*
+- uid: AngeliA.CharacterPose.HandL
+  commentId: P:AngeliA.CharacterPose.HandL
+  id: HandL
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: HandL
+  nameWithType: CharacterPose.HandL
+  fullName: AngeliA.CharacterPose.HandL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandL
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart HandL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property HandL As BodyPart
+  overload: AngeliA.CharacterPose.HandL*
+- uid: AngeliA.CharacterPose.HandR
+  commentId: P:AngeliA.CharacterPose.HandR
+  id: HandR
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: HandR
+  nameWithType: CharacterPose.HandR
+  fullName: AngeliA.CharacterPose.HandR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandR
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart HandR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property HandR As BodyPart
+  overload: AngeliA.CharacterPose.HandR*
+- uid: AngeliA.CharacterPose.UpperLegL
+  commentId: P:AngeliA.CharacterPose.UpperLegL
+  id: UpperLegL
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: UpperLegL
+  nameWithType: CharacterPose.UpperLegL
+  fullName: AngeliA.CharacterPose.UpperLegL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UpperLegL
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart UpperLegL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property UpperLegL As BodyPart
+  overload: AngeliA.CharacterPose.UpperLegL*
+- uid: AngeliA.CharacterPose.UpperLegR
+  commentId: P:AngeliA.CharacterPose.UpperLegR
+  id: UpperLegR
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: UpperLegR
+  nameWithType: CharacterPose.UpperLegR
+  fullName: AngeliA.CharacterPose.UpperLegR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UpperLegR
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart UpperLegR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property UpperLegR As BodyPart
+  overload: AngeliA.CharacterPose.UpperLegR*
+- uid: AngeliA.CharacterPose.LowerLegL
+  commentId: P:AngeliA.CharacterPose.LowerLegL
+  id: LowerLegL
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: LowerLegL
+  nameWithType: CharacterPose.LowerLegL
+  fullName: AngeliA.CharacterPose.LowerLegL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LowerLegL
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart LowerLegL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property LowerLegL As BodyPart
+  overload: AngeliA.CharacterPose.LowerLegL*
+- uid: AngeliA.CharacterPose.LowerLegR
+  commentId: P:AngeliA.CharacterPose.LowerLegR
+  id: LowerLegR
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: LowerLegR
+  nameWithType: CharacterPose.LowerLegR
+  fullName: AngeliA.CharacterPose.LowerLegR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LowerLegR
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart LowerLegR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property LowerLegR As BodyPart
+  overload: AngeliA.CharacterPose.LowerLegR*
+- uid: AngeliA.CharacterPose.FootL
+  commentId: P:AngeliA.CharacterPose.FootL
+  id: FootL
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: FootL
+  nameWithType: CharacterPose.FootL
+  fullName: AngeliA.CharacterPose.FootL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FootL
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 25
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart FootL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property FootL As BodyPart
+  overload: AngeliA.CharacterPose.FootL*
+- uid: AngeliA.CharacterPose.FootR
+  commentId: P:AngeliA.CharacterPose.FootR
+  id: FootR
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: FootR
+  nameWithType: CharacterPose.FootR
+  fullName: AngeliA.CharacterPose.FootR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FootR
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BodyPart FootR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property FootR As BodyPart
+  overload: AngeliA.CharacterPose.FootR*
+- uid: AngeliA.CharacterPose.PoseRootX
+  commentId: F:AngeliA.CharacterPose.PoseRootX
+  id: PoseRootX
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: PoseRootX
+  nameWithType: CharacterPose.PoseRootX
+  fullName: AngeliA.CharacterPose.PoseRootX
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PoseRootX
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int PoseRootX
+    return:
+      type: System.Int32
+    content.vb: Public PoseRootX As Integer
+- uid: AngeliA.CharacterPose.PoseRootY
+  commentId: F:AngeliA.CharacterPose.PoseRootY
+  id: PoseRootY
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: PoseRootY
+  nameWithType: CharacterPose.PoseRootY
+  fullName: AngeliA.CharacterPose.PoseRootY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PoseRootY
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 29
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int PoseRootY
+    return:
+      type: System.Int32
+    content.vb: Public PoseRootY As Integer
+- uid: AngeliA.CharacterPose.BodyTwist
+  commentId: F:AngeliA.CharacterPose.BodyTwist
+  id: BodyTwist
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: BodyTwist
+  nameWithType: CharacterPose.BodyTwist
+  fullName: AngeliA.CharacterPose.BodyTwist
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BodyTwist
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int BodyTwist
+    return:
+      type: System.Int32
+    content.vb: Public BodyTwist As Integer
+- uid: AngeliA.CharacterPose.HeadTwist
+  commentId: F:AngeliA.CharacterPose.HeadTwist
+  id: HeadTwist
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: HeadTwist
+  nameWithType: CharacterPose.HeadTwist
+  fullName: AngeliA.CharacterPose.HeadTwist
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HeadTwist
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 31
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int HeadTwist
+    return:
+      type: System.Int32
+    content.vb: Public HeadTwist As Integer
+- uid: AngeliA.CharacterPose.HandGrabRotationL
+  commentId: F:AngeliA.CharacterPose.HandGrabRotationL
+  id: HandGrabRotationL
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: HandGrabRotationL
+  nameWithType: CharacterPose.HandGrabRotationL
+  fullName: AngeliA.CharacterPose.HandGrabRotationL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabRotationL
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 32
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int HandGrabRotationL
+    return:
+      type: System.Int32
+    content.vb: Public HandGrabRotationL As Integer
+- uid: AngeliA.CharacterPose.HandGrabRotationR
+  commentId: F:AngeliA.CharacterPose.HandGrabRotationR
+  id: HandGrabRotationR
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: HandGrabRotationR
+  nameWithType: CharacterPose.HandGrabRotationR
+  fullName: AngeliA.CharacterPose.HandGrabRotationR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabRotationR
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int HandGrabRotationR
+    return:
+      type: System.Int32
+    content.vb: Public HandGrabRotationR As Integer
+- uid: AngeliA.CharacterPose.HandGrabScaleL
+  commentId: F:AngeliA.CharacterPose.HandGrabScaleL
+  id: HandGrabScaleL
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: HandGrabScaleL
+  nameWithType: CharacterPose.HandGrabScaleL
+  fullName: AngeliA.CharacterPose.HandGrabScaleL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabScaleL
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 34
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int HandGrabScaleL
+    return:
+      type: System.Int32
+    content.vb: Public HandGrabScaleL As Integer
+- uid: AngeliA.CharacterPose.HandGrabScaleR
+  commentId: F:AngeliA.CharacterPose.HandGrabScaleR
+  id: HandGrabScaleR
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: HandGrabScaleR
+  nameWithType: CharacterPose.HandGrabScaleR
+  fullName: AngeliA.CharacterPose.HandGrabScaleR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabScaleR
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 35
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int HandGrabScaleR
+    return:
+      type: System.Int32
+    content.vb: Public HandGrabScaleR As Integer
+- uid: AngeliA.CharacterPose.HandGrabAttackTwistL
+  commentId: F:AngeliA.CharacterPose.HandGrabAttackTwistL
+  id: HandGrabAttackTwistL
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: HandGrabAttackTwistL
+  nameWithType: CharacterPose.HandGrabAttackTwistL
+  fullName: AngeliA.CharacterPose.HandGrabAttackTwistL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabAttackTwistL
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int HandGrabAttackTwistL
+    return:
+      type: System.Int32
+    content.vb: Public HandGrabAttackTwistL As Integer
+- uid: AngeliA.CharacterPose.HandGrabAttackTwistR
+  commentId: F:AngeliA.CharacterPose.HandGrabAttackTwistR
+  id: HandGrabAttackTwistR
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: HandGrabAttackTwistR
+  nameWithType: CharacterPose.HandGrabAttackTwistR
+  fullName: AngeliA.CharacterPose.HandGrabAttackTwistR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabAttackTwistR
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 37
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int HandGrabAttackTwistR
+    return:
+      type: System.Int32
+    content.vb: Public HandGrabAttackTwistR As Integer
+- uid: AngeliA.CharacterPose.#ctor
+  commentId: M:AngeliA.CharacterPose.#ctor
+  id: '#ctor'
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: CharacterPose()
+  nameWithType: CharacterPose.CharacterPose()
+  fullName: AngeliA.CharacterPose.CharacterPose()
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 40
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public CharacterPose()
+    content.vb: Public Sub New()
+  overload: AngeliA.CharacterPose.#ctor*
+  nameWithType.vb: CharacterPose.New()
+  fullName.vb: AngeliA.CharacterPose.New()
+  name.vb: New()
+- uid: AngeliA.CharacterPose.ApplyToCharacter(AngeliA.PoseCharacterRenderer)
+  commentId: M:AngeliA.CharacterPose.ApplyToCharacter(AngeliA.PoseCharacterRenderer)
+  id: ApplyToCharacter(AngeliA.PoseCharacterRenderer)
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: ApplyToCharacter(PoseCharacterRenderer)
+  nameWithType: CharacterPose.ApplyToCharacter(PoseCharacterRenderer)
+  fullName: AngeliA.CharacterPose.ApplyToCharacter(AngeliA.PoseCharacterRenderer)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ApplyToCharacter
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 63
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void ApplyToCharacter(PoseCharacterRenderer rendering)
+    parameters:
+    - id: rendering
+      type: AngeliA.PoseCharacterRenderer
+    content.vb: Public Sub ApplyToCharacter(rendering As PoseCharacterRenderer)
+  overload: AngeliA.CharacterPose.ApplyToCharacter*
+- uid: AngeliA.CharacterPose.RecordFromCharacter(AngeliA.PoseCharacterRenderer)
+  commentId: M:AngeliA.CharacterPose.RecordFromCharacter(AngeliA.PoseCharacterRenderer)
+  id: RecordFromCharacter(AngeliA.PoseCharacterRenderer)
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: RecordFromCharacter(PoseCharacterRenderer)
+  nameWithType: CharacterPose.RecordFromCharacter(PoseCharacterRenderer)
+  fullName: AngeliA.CharacterPose.RecordFromCharacter(AngeliA.PoseCharacterRenderer)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RecordFromCharacter
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 91
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void RecordFromCharacter(PoseCharacterRenderer rendering)
+    parameters:
+    - id: rendering
+      type: AngeliA.PoseCharacterRenderer
+    content.vb: Public Sub RecordFromCharacter(rendering As PoseCharacterRenderer)
+  overload: AngeliA.CharacterPose.RecordFromCharacter*
+- uid: AngeliA.CharacterPose.BlendToCharacter(AngeliA.PoseCharacterRenderer,System.Single)
+  commentId: M:AngeliA.CharacterPose.BlendToCharacter(AngeliA.PoseCharacterRenderer,System.Single)
+  id: BlendToCharacter(AngeliA.PoseCharacterRenderer,System.Single)
+  parent: AngeliA.CharacterPose
+  langs:
+  - csharp
+  - vb
+  name: BlendToCharacter(PoseCharacterRenderer, float)
+  nameWithType: CharacterPose.BlendToCharacter(PoseCharacterRenderer, float)
+  fullName: AngeliA.CharacterPose.BlendToCharacter(AngeliA.PoseCharacterRenderer, float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BlendToCharacter
+    path: ../AngeliA Framework/src/PoseAnimation/CharacterPose.cs
+    startLine: 119
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void BlendToCharacter(PoseCharacterRenderer rendering, float blend01)
+    parameters:
+    - id: rendering
+      type: AngeliA.PoseCharacterRenderer
+    - id: blend01
+      type: System.Single
+    content.vb: Public Sub BlendToCharacter(rendering As PoseCharacterRenderer, blend01 As Single)
+  overload: AngeliA.CharacterPose.BlendToCharacter*
+  nameWithType.vb: CharacterPose.BlendToCharacter(PoseCharacterRenderer, Single)
+  fullName.vb: AngeliA.CharacterPose.BlendToCharacter(AngeliA.PoseCharacterRenderer, Single)
+  name.vb: BlendToCharacter(PoseCharacterRenderer, Single)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.CharacterPose.Head*
+  commentId: Overload:AngeliA.CharacterPose.Head
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_Head
+  name: Head
+  nameWithType: CharacterPose.Head
+  fullName: AngeliA.CharacterPose.Head
+- uid: AngeliA.BodyPart
+  commentId: T:AngeliA.BodyPart
+  parent: AngeliA
+  href: AngeliA.BodyPart.html
+  name: BodyPart
+  nameWithType: BodyPart
+  fullName: AngeliA.BodyPart
+- uid: AngeliA.CharacterPose.Body*
+  commentId: Overload:AngeliA.CharacterPose.Body
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_Body
+  name: Body
+  nameWithType: CharacterPose.Body
+  fullName: AngeliA.CharacterPose.Body
+- uid: AngeliA.CharacterPose.Hip*
+  commentId: Overload:AngeliA.CharacterPose.Hip
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_Hip
+  name: Hip
+  nameWithType: CharacterPose.Hip
+  fullName: AngeliA.CharacterPose.Hip
+- uid: AngeliA.CharacterPose.ShoulderL*
+  commentId: Overload:AngeliA.CharacterPose.ShoulderL
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_ShoulderL
+  name: ShoulderL
+  nameWithType: CharacterPose.ShoulderL
+  fullName: AngeliA.CharacterPose.ShoulderL
+- uid: AngeliA.CharacterPose.ShoulderR*
+  commentId: Overload:AngeliA.CharacterPose.ShoulderR
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_ShoulderR
+  name: ShoulderR
+  nameWithType: CharacterPose.ShoulderR
+  fullName: AngeliA.CharacterPose.ShoulderR
+- uid: AngeliA.CharacterPose.UpperArmL*
+  commentId: Overload:AngeliA.CharacterPose.UpperArmL
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_UpperArmL
+  name: UpperArmL
+  nameWithType: CharacterPose.UpperArmL
+  fullName: AngeliA.CharacterPose.UpperArmL
+- uid: AngeliA.CharacterPose.UpperArmR*
+  commentId: Overload:AngeliA.CharacterPose.UpperArmR
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_UpperArmR
+  name: UpperArmR
+  nameWithType: CharacterPose.UpperArmR
+  fullName: AngeliA.CharacterPose.UpperArmR
+- uid: AngeliA.CharacterPose.LowerArmL*
+  commentId: Overload:AngeliA.CharacterPose.LowerArmL
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_LowerArmL
+  name: LowerArmL
+  nameWithType: CharacterPose.LowerArmL
+  fullName: AngeliA.CharacterPose.LowerArmL
+- uid: AngeliA.CharacterPose.LowerArmR*
+  commentId: Overload:AngeliA.CharacterPose.LowerArmR
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_LowerArmR
+  name: LowerArmR
+  nameWithType: CharacterPose.LowerArmR
+  fullName: AngeliA.CharacterPose.LowerArmR
+- uid: AngeliA.CharacterPose.HandL*
+  commentId: Overload:AngeliA.CharacterPose.HandL
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_HandL
+  name: HandL
+  nameWithType: CharacterPose.HandL
+  fullName: AngeliA.CharacterPose.HandL
+- uid: AngeliA.CharacterPose.HandR*
+  commentId: Overload:AngeliA.CharacterPose.HandR
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_HandR
+  name: HandR
+  nameWithType: CharacterPose.HandR
+  fullName: AngeliA.CharacterPose.HandR
+- uid: AngeliA.CharacterPose.UpperLegL*
+  commentId: Overload:AngeliA.CharacterPose.UpperLegL
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_UpperLegL
+  name: UpperLegL
+  nameWithType: CharacterPose.UpperLegL
+  fullName: AngeliA.CharacterPose.UpperLegL
+- uid: AngeliA.CharacterPose.UpperLegR*
+  commentId: Overload:AngeliA.CharacterPose.UpperLegR
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_UpperLegR
+  name: UpperLegR
+  nameWithType: CharacterPose.UpperLegR
+  fullName: AngeliA.CharacterPose.UpperLegR
+- uid: AngeliA.CharacterPose.LowerLegL*
+  commentId: Overload:AngeliA.CharacterPose.LowerLegL
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_LowerLegL
+  name: LowerLegL
+  nameWithType: CharacterPose.LowerLegL
+  fullName: AngeliA.CharacterPose.LowerLegL
+- uid: AngeliA.CharacterPose.LowerLegR*
+  commentId: Overload:AngeliA.CharacterPose.LowerLegR
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_LowerLegR
+  name: LowerLegR
+  nameWithType: CharacterPose.LowerLegR
+  fullName: AngeliA.CharacterPose.LowerLegR
+- uid: AngeliA.CharacterPose.FootL*
+  commentId: Overload:AngeliA.CharacterPose.FootL
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_FootL
+  name: FootL
+  nameWithType: CharacterPose.FootL
+  fullName: AngeliA.CharacterPose.FootL
+- uid: AngeliA.CharacterPose.FootR*
+  commentId: Overload:AngeliA.CharacterPose.FootR
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_FootR
+  name: FootR
+  nameWithType: CharacterPose.FootR
+  fullName: AngeliA.CharacterPose.FootR
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.CharacterPose.#ctor*
+  commentId: Overload:AngeliA.CharacterPose.#ctor
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose__ctor
+  name: CharacterPose
+  nameWithType: CharacterPose.CharacterPose
+  fullName: AngeliA.CharacterPose.CharacterPose
+  nameWithType.vb: CharacterPose.New
+  fullName.vb: AngeliA.CharacterPose.New
+  name.vb: New
+- uid: AngeliA.CharacterPose.ApplyToCharacter*
+  commentId: Overload:AngeliA.CharacterPose.ApplyToCharacter
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_ApplyToCharacter_AngeliA_PoseCharacterRenderer_
+  name: ApplyToCharacter
+  nameWithType: CharacterPose.ApplyToCharacter
+  fullName: AngeliA.CharacterPose.ApplyToCharacter
+- uid: AngeliA.PoseCharacterRenderer
+  commentId: T:AngeliA.PoseCharacterRenderer
+  parent: AngeliA
+  href: AngeliA.PoseCharacterRenderer.html
+  name: PoseCharacterRenderer
+  nameWithType: PoseCharacterRenderer
+  fullName: AngeliA.PoseCharacterRenderer
+- uid: AngeliA.CharacterPose.RecordFromCharacter*
+  commentId: Overload:AngeliA.CharacterPose.RecordFromCharacter
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_RecordFromCharacter_AngeliA_PoseCharacterRenderer_
+  name: RecordFromCharacter
+  nameWithType: CharacterPose.RecordFromCharacter
+  fullName: AngeliA.CharacterPose.RecordFromCharacter
+- uid: AngeliA.CharacterPose.BlendToCharacter*
+  commentId: Overload:AngeliA.CharacterPose.BlendToCharacter
+  href: AngeliA.CharacterPose.html#AngeliA_CharacterPose_BlendToCharacter_AngeliA_PoseCharacterRenderer_System_Single_
+  name: BlendToCharacter
+  nameWithType: CharacterPose.BlendToCharacter
+  fullName: AngeliA.CharacterPose.BlendToCharacter
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single

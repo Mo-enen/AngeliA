@@ -1,0 +1,101 @@
+### YamlMime:ManagedReference
+items:
+- uid: GeorgeMamaladze
+  commentId: N:GeorgeMamaladze
+  id: GeorgeMamaladze
+  children:
+  - GeorgeMamaladze.TrieNodeBase`1
+  - GeorgeMamaladze.TrieNode`1
+  - GeorgeMamaladze.Trie`1
+  langs:
+  - csharp
+  - vb
+  name: GeorgeMamaladze
+  nameWithType: GeorgeMamaladze
+  fullName: GeorgeMamaladze
+  type: Namespace
+  assemblies:
+  - AngeliA Framework
+references:
+- uid: GeorgeMamaladze.Trie`1
+  commentId: T:GeorgeMamaladze.Trie`1
+  href: GeorgeMamaladze.Trie-1.html
+  name: Trie<TValue>
+  nameWithType: Trie<TValue>
+  fullName: GeorgeMamaladze.Trie<TValue>
+  nameWithType.vb: Trie(Of TValue)
+  fullName.vb: GeorgeMamaladze.Trie(Of TValue)
+  name.vb: Trie(Of TValue)
+  spec.csharp:
+  - uid: GeorgeMamaladze.Trie`1
+    name: Trie
+    href: GeorgeMamaladze.Trie-1.html
+  - name: <
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: GeorgeMamaladze.Trie`1
+    name: Trie
+    href: GeorgeMamaladze.Trie-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: GeorgeMamaladze.TrieNode`1
+  commentId: T:GeorgeMamaladze.TrieNode`1
+  href: GeorgeMamaladze.TrieNode-1.html
+  name: TrieNode<TValue>
+  nameWithType: TrieNode<TValue>
+  fullName: GeorgeMamaladze.TrieNode<TValue>
+  nameWithType.vb: TrieNode(Of TValue)
+  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue)
+  name.vb: TrieNode(Of TValue)
+  spec.csharp:
+  - uid: GeorgeMamaladze.TrieNode`1
+    name: TrieNode
+    href: GeorgeMamaladze.TrieNode-1.html
+  - name: <
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: GeorgeMamaladze.TrieNode`1
+    name: TrieNode
+    href: GeorgeMamaladze.TrieNode-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: GeorgeMamaladze.TrieNodeBase`1
+  commentId: T:GeorgeMamaladze.TrieNodeBase`1
+  parent: GeorgeMamaladze
+  href: GeorgeMamaladze.TrieNodeBase-1.html
+  name: TrieNodeBase<TValue>
+  nameWithType: TrieNodeBase<TValue>
+  fullName: GeorgeMamaladze.TrieNodeBase<TValue>
+  nameWithType.vb: TrieNodeBase(Of TValue)
+  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue)
+  name.vb: TrieNodeBase(Of TValue)
+  spec.csharp:
+  - uid: GeorgeMamaladze.TrieNodeBase`1
+    name: TrieNodeBase
+    href: GeorgeMamaladze.TrieNodeBase-1.html
+  - name: <
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: GeorgeMamaladze.TrieNodeBase`1
+    name: TrieNodeBase
+    href: GeorgeMamaladze.TrieNodeBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: GeorgeMamaladze
+  commentId: N:GeorgeMamaladze
+  href: GeorgeMamaladze.html
+  name: GeorgeMamaladze
+  nameWithType: GeorgeMamaladze
+  fullName: GeorgeMamaladze

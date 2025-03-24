@@ -1,0 +1,1641 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.AngeSprite
+  commentId: T:AngeliA.AngeSprite
+  id: AngeSprite
+  parent: AngeliA
+  children:
+  - AngeliA.AngeSprite.Atlas
+  - AngeliA.AngeSprite.AtlasID
+  - AngeliA.AngeSprite.AttachedSprite
+  - AngeliA.AngeSprite.CopyTo(AngeliA.AngeSprite)
+  - AngeliA.AngeSprite.CreateCopy
+  - AngeliA.AngeSprite.Duration
+  - AngeliA.AngeSprite.EMPTY
+  - AngeliA.AngeSprite.GetAlignmentFromPivot
+  - AngeliA.AngeSprite.GlobalBorder
+  - AngeliA.AngeSprite.GlobalHeight
+  - AngeliA.AngeSprite.GlobalWidth
+  - AngeliA.AngeSprite.Group
+  - AngeliA.AngeSprite.ID
+  - AngeliA.AngeSprite.IsTrigger
+  - AngeliA.AngeSprite.LoadFromBinary_v0(System.IO.BinaryReader,System.Boolean)
+  - AngeliA.AngeSprite.LocalZ
+  - AngeliA.AngeSprite.MakeDedicatedForTexture(System.Object,AngeliA.Sheet)
+  - AngeliA.AngeSprite.PivotX
+  - AngeliA.AngeSprite.PivotY
+  - AngeliA.AngeSprite.PixelRect
+  - AngeliA.AngeSprite.Pixels
+  - AngeliA.AngeSprite.RealName
+  - AngeliA.AngeSprite.RemoveFromDedicatedTexture(AngeliA.Sheet)
+  - AngeliA.AngeSprite.ResizePixelRect(AngeliA.IRect,System.Boolean,System.Boolean@)
+  - AngeliA.AngeSprite.Rule
+  - AngeliA.AngeSprite.SaveToBinary_v0(System.IO.BinaryWriter)
+  - AngeliA.AngeSprite.SetPixelDirty
+  - AngeliA.AngeSprite.SummaryTint
+  - AngeliA.AngeSprite.Tag
+  - AngeliA.AngeSprite.ValidBorders(System.Nullable{AngeliA.Direction8})
+  langs:
+  - csharp
+  - vb
+  name: AngeSprite
+  nameWithType: AngeSprite
+  fullName: AngeliA.AngeSprite
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AngeSprite
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 7
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public class AngeSprite
+    content.vb: Public Class AngeSprite
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.AngeSprite.EMPTY
+  commentId: F:AngeliA.AngeSprite.EMPTY
+  id: EMPTY
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: EMPTY
+  nameWithType: AngeSprite.EMPTY
+  fullName: AngeliA.AngeSprite.EMPTY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EMPTY
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly AngeSprite EMPTY
+    return:
+      type: AngeliA.AngeSprite
+    content.vb: Public Shared ReadOnly EMPTY As AngeSprite
+- uid: AngeliA.AngeSprite.ID
+  commentId: F:AngeliA.AngeSprite.ID
+  id: ID
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: ID
+  nameWithType: AngeSprite.ID
+  fullName: AngeliA.AngeSprite.ID
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ID
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int ID
+    return:
+      type: System.Int32
+    content.vb: Public ID As Integer
+- uid: AngeliA.AngeSprite.RealName
+  commentId: F:AngeliA.AngeSprite.RealName
+  id: RealName
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: RealName
+  nameWithType: AngeSprite.RealName
+  fullName: AngeliA.AngeSprite.RealName
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RealName
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string RealName
+    return:
+      type: System.String
+    content.vb: Public RealName As String
+- uid: AngeliA.AngeSprite.GlobalWidth
+  commentId: F:AngeliA.AngeSprite.GlobalWidth
+  id: GlobalWidth
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: GlobalWidth
+  nameWithType: AngeSprite.GlobalWidth
+  fullName: AngeliA.AngeSprite.GlobalWidth
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GlobalWidth
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int GlobalWidth
+    return:
+      type: System.Int32
+    content.vb: Public GlobalWidth As Integer
+- uid: AngeliA.AngeSprite.GlobalHeight
+  commentId: F:AngeliA.AngeSprite.GlobalHeight
+  id: GlobalHeight
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: GlobalHeight
+  nameWithType: AngeSprite.GlobalHeight
+  fullName: AngeliA.AngeSprite.GlobalHeight
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GlobalHeight
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int GlobalHeight
+    return:
+      type: System.Int32
+    content.vb: Public GlobalHeight As Integer
+- uid: AngeliA.AngeSprite.PixelRect
+  commentId: F:AngeliA.AngeSprite.PixelRect
+  id: PixelRect
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: PixelRect
+  nameWithType: AngeSprite.PixelRect
+  fullName: AngeliA.AngeSprite.PixelRect
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PixelRect
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public IRect PixelRect
+    return:
+      type: AngeliA.IRect
+    content.vb: Public PixelRect As IRect
+- uid: AngeliA.AngeSprite.PivotX
+  commentId: F:AngeliA.AngeSprite.PivotX
+  id: PivotX
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: PivotX
+  nameWithType: AngeSprite.PivotX
+  fullName: AngeliA.AngeSprite.PivotX
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PivotX
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int PivotX
+    return:
+      type: System.Int32
+    content.vb: Public PivotX As Integer
+- uid: AngeliA.AngeSprite.PivotY
+  commentId: F:AngeliA.AngeSprite.PivotY
+  id: PivotY
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: PivotY
+  nameWithType: AngeSprite.PivotY
+  fullName: AngeliA.AngeSprite.PivotY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PivotY
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int PivotY
+    return:
+      type: System.Int32
+    content.vb: Public PivotY As Integer
+- uid: AngeliA.AngeSprite.LocalZ
+  commentId: F:AngeliA.AngeSprite.LocalZ
+  id: LocalZ
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: LocalZ
+  nameWithType: AngeSprite.LocalZ
+  fullName: AngeliA.AngeSprite.LocalZ
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LocalZ
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int LocalZ
+    return:
+      type: System.Int32
+    content.vb: Public LocalZ As Integer
+- uid: AngeliA.AngeSprite.GlobalBorder
+  commentId: F:AngeliA.AngeSprite.GlobalBorder
+  id: GlobalBorder
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: GlobalBorder
+  nameWithType: AngeSprite.GlobalBorder
+  fullName: AngeliA.AngeSprite.GlobalBorder
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GlobalBorder
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Int4 GlobalBorder
+    return:
+      type: AngeliA.Int4
+    content.vb: Public GlobalBorder As Int4
+- uid: AngeliA.AngeSprite.AtlasID
+  commentId: F:AngeliA.AngeSprite.AtlasID
+  id: AtlasID
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: AtlasID
+  nameWithType: AngeSprite.AtlasID
+  fullName: AngeliA.AngeSprite.AtlasID
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AtlasID
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int AtlasID
+    return:
+      type: System.Int32
+    content.vb: Public AtlasID As Integer
+- uid: AngeliA.AngeSprite.AttachedSprite
+  commentId: F:AngeliA.AngeSprite.AttachedSprite
+  id: AttachedSprite
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: AttachedSprite
+  nameWithType: AngeSprite.AttachedSprite
+  fullName: AngeliA.AngeSprite.AttachedSprite
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AttachedSprite
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public AngeSprite AttachedSprite
+    return:
+      type: AngeliA.AngeSprite
+    content.vb: Public AttachedSprite As AngeSprite
+- uid: AngeliA.AngeSprite.Atlas
+  commentId: F:AngeliA.AngeSprite.Atlas
+  id: Atlas
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: Atlas
+  nameWithType: AngeSprite.Atlas
+  fullName: AngeliA.AngeSprite.Atlas
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Atlas
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Atlas Atlas
+    return:
+      type: AngeliA.Atlas
+    content.vb: Public Atlas As Atlas
+- uid: AngeliA.AngeSprite.Group
+  commentId: F:AngeliA.AngeSprite.Group
+  id: Group
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: Group
+  nameWithType: AngeSprite.Group
+  fullName: AngeliA.AngeSprite.Group
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Group
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 25
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public SpriteGroup Group
+    return:
+      type: AngeliA.SpriteGroup
+    content.vb: Public Group As SpriteGroup
+- uid: AngeliA.AngeSprite.IsTrigger
+  commentId: F:AngeliA.AngeSprite.IsTrigger
+  id: IsTrigger
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: IsTrigger
+  nameWithType: AngeSprite.IsTrigger
+  fullName: AngeliA.AngeSprite.IsTrigger
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsTrigger
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public bool IsTrigger
+    return:
+      type: System.Boolean
+    content.vb: Public IsTrigger As Boolean
+- uid: AngeliA.AngeSprite.Rule
+  commentId: F:AngeliA.AngeSprite.Rule
+  id: Rule
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: Rule
+  nameWithType: AngeSprite.Rule
+  fullName: AngeliA.AngeSprite.Rule
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Rule
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 27
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public BlockRule Rule
+    return:
+      type: AngeliA.BlockRule
+    content.vb: Public Rule As BlockRule
+- uid: AngeliA.AngeSprite.Tag
+  commentId: F:AngeliA.AngeSprite.Tag
+  id: Tag
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: Tag
+  nameWithType: AngeSprite.Tag
+  fullName: AngeliA.AngeSprite.Tag
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Tag
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Tag Tag
+    return:
+      type: AngeliA.Tag
+    content.vb: Public Tag As Tag
+- uid: AngeliA.AngeSprite.Duration
+  commentId: F:AngeliA.AngeSprite.Duration
+  id: Duration
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: Duration
+  nameWithType: AngeSprite.Duration
+  fullName: AngeliA.AngeSprite.Duration
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Duration
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 29
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Duration
+    return:
+      type: System.Int32
+    content.vb: Public Duration As Integer
+- uid: AngeliA.AngeSprite.SummaryTint
+  commentId: F:AngeliA.AngeSprite.SummaryTint
+  id: SummaryTint
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: SummaryTint
+  nameWithType: AngeSprite.SummaryTint
+  fullName: AngeliA.AngeSprite.SummaryTint
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SummaryTint
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Color32 SummaryTint
+    return:
+      type: AngeliA.Color32
+    content.vb: Public SummaryTint As Color32
+- uid: AngeliA.AngeSprite.Pixels
+  commentId: F:AngeliA.AngeSprite.Pixels
+  id: Pixels
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: Pixels
+  nameWithType: AngeSprite.Pixels
+  fullName: AngeliA.AngeSprite.Pixels
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Pixels
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 31
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Color32[] Pixels
+    return:
+      type: AngeliA.Color32[]
+    content.vb: Public Pixels As Color32()
+- uid: AngeliA.AngeSprite.LoadFromBinary_v0(System.IO.BinaryReader,System.Boolean)
+  commentId: M:AngeliA.AngeSprite.LoadFromBinary_v0(System.IO.BinaryReader,System.Boolean)
+  id: LoadFromBinary_v0(System.IO.BinaryReader,System.Boolean)
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: LoadFromBinary_v0(BinaryReader, bool)
+  nameWithType: AngeSprite.LoadFromBinary_v0(BinaryReader, bool)
+  fullName: AngeliA.AngeSprite.LoadFromBinary_v0(System.IO.BinaryReader, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LoadFromBinary_v0
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void LoadFromBinary_v0(BinaryReader reader, bool ignorePixels)
+    parameters:
+    - id: reader
+      type: System.IO.BinaryReader
+    - id: ignorePixels
+      type: System.Boolean
+    content.vb: Public Sub LoadFromBinary_v0(reader As BinaryReader, ignorePixels As Boolean)
+  overload: AngeliA.AngeSprite.LoadFromBinary_v0*
+  nameWithType.vb: AngeSprite.LoadFromBinary_v0(BinaryReader, Boolean)
+  fullName.vb: AngeliA.AngeSprite.LoadFromBinary_v0(System.IO.BinaryReader, Boolean)
+  name.vb: LoadFromBinary_v0(BinaryReader, Boolean)
+- uid: AngeliA.AngeSprite.SaveToBinary_v0(System.IO.BinaryWriter)
+  commentId: M:AngeliA.AngeSprite.SaveToBinary_v0(System.IO.BinaryWriter)
+  id: SaveToBinary_v0(System.IO.BinaryWriter)
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: SaveToBinary_v0(BinaryWriter)
+  nameWithType: AngeSprite.SaveToBinary_v0(BinaryWriter)
+  fullName: AngeliA.AngeSprite.SaveToBinary_v0(System.IO.BinaryWriter)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SaveToBinary_v0
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 109
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void SaveToBinary_v0(BinaryWriter writer)
+    parameters:
+    - id: writer
+      type: System.IO.BinaryWriter
+    content.vb: Public Sub SaveToBinary_v0(writer As BinaryWriter)
+  overload: AngeliA.AngeSprite.SaveToBinary_v0*
+- uid: AngeliA.AngeSprite.ResizePixelRect(AngeliA.IRect,System.Boolean,System.Boolean@)
+  commentId: M:AngeliA.AngeSprite.ResizePixelRect(AngeliA.IRect,System.Boolean,System.Boolean@)
+  id: ResizePixelRect(AngeliA.IRect,System.Boolean,System.Boolean@)
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: ResizePixelRect(IRect, bool, out bool)
+  nameWithType: AngeSprite.ResizePixelRect(IRect, bool, out bool)
+  fullName: AngeliA.AngeSprite.ResizePixelRect(AngeliA.IRect, bool, out bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ResizePixelRect
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 175
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void ResizePixelRect(IRect newRect, bool resizeBorder, out bool contentChanged)
+    parameters:
+    - id: newRect
+      type: AngeliA.IRect
+    - id: resizeBorder
+      type: System.Boolean
+    - id: contentChanged
+      type: System.Boolean
+    content.vb: Public Sub ResizePixelRect(newRect As IRect, resizeBorder As Boolean, contentChanged As Boolean)
+  overload: AngeliA.AngeSprite.ResizePixelRect*
+  nameWithType.vb: AngeSprite.ResizePixelRect(IRect, Boolean, Boolean)
+  fullName.vb: AngeliA.AngeSprite.ResizePixelRect(AngeliA.IRect, Boolean, Boolean)
+  name.vb: ResizePixelRect(IRect, Boolean, Boolean)
+- uid: AngeliA.AngeSprite.CreateCopy
+  commentId: M:AngeliA.AngeSprite.CreateCopy
+  id: CreateCopy
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: CreateCopy()
+  nameWithType: AngeSprite.CreateCopy()
+  fullName: AngeliA.AngeSprite.CreateCopy()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CreateCopy
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 236
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public AngeSprite CreateCopy()
+    return:
+      type: AngeliA.AngeSprite
+    content.vb: Public Function CreateCopy() As AngeSprite
+  overload: AngeliA.AngeSprite.CreateCopy*
+- uid: AngeliA.AngeSprite.CopyTo(AngeliA.AngeSprite)
+  commentId: M:AngeliA.AngeSprite.CopyTo(AngeliA.AngeSprite)
+  id: CopyTo(AngeliA.AngeSprite)
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: CopyTo(AngeSprite)
+  nameWithType: AngeSprite.CopyTo(AngeSprite)
+  fullName: AngeliA.AngeSprite.CopyTo(AngeliA.AngeSprite)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CopyTo
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 238
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public AngeSprite CopyTo(AngeSprite target)
+    parameters:
+    - id: target
+      type: AngeliA.AngeSprite
+    return:
+      type: AngeliA.AngeSprite
+    content.vb: Public Function CopyTo(target As AngeSprite) As AngeSprite
+  overload: AngeliA.AngeSprite.CopyTo*
+- uid: AngeliA.AngeSprite.ValidBorders(System.Nullable{AngeliA.Direction8})
+  commentId: M:AngeliA.AngeSprite.ValidBorders(System.Nullable{AngeliA.Direction8})
+  id: ValidBorders(System.Nullable{AngeliA.Direction8})
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: ValidBorders(Direction8?)
+  nameWithType: AngeSprite.ValidBorders(Direction8?)
+  fullName: AngeliA.AngeSprite.ValidBorders(AngeliA.Direction8?)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ValidBorders
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 263
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void ValidBorders(Direction8? priority = null)
+    parameters:
+    - id: priority
+      type: System.Nullable{AngeliA.Direction8}
+    content.vb: Public Sub ValidBorders(priority As Direction8? = Nothing)
+  overload: AngeliA.AngeSprite.ValidBorders*
+- uid: AngeliA.AngeSprite.SetPixelDirty
+  commentId: M:AngeliA.AngeSprite.SetPixelDirty
+  id: SetPixelDirty
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: SetPixelDirty()
+  nameWithType: AngeSprite.SetPixelDirty()
+  fullName: AngeliA.AngeSprite.SetPixelDirty()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetPixelDirty
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 285
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void SetPixelDirty()
+    content.vb: Public Sub SetPixelDirty()
+  overload: AngeliA.AngeSprite.SetPixelDirty*
+- uid: AngeliA.AngeSprite.GetAlignmentFromPivot
+  commentId: M:AngeliA.AngeSprite.GetAlignmentFromPivot
+  id: GetAlignmentFromPivot
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: GetAlignmentFromPivot()
+  nameWithType: AngeSprite.GetAlignmentFromPivot()
+  fullName: AngeliA.AngeSprite.GetAlignmentFromPivot()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetAlignmentFromPivot
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 287
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Alignment GetAlignmentFromPivot()
+    return:
+      type: AngeliA.Alignment
+    content.vb: Public Function GetAlignmentFromPivot() As Alignment
+  overload: AngeliA.AngeSprite.GetAlignmentFromPivot*
+- uid: AngeliA.AngeSprite.MakeDedicatedForTexture(System.Object,AngeliA.Sheet)
+  commentId: M:AngeliA.AngeSprite.MakeDedicatedForTexture(System.Object,AngeliA.Sheet)
+  id: MakeDedicatedForTexture(System.Object,AngeliA.Sheet)
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: MakeDedicatedForTexture(object, Sheet)
+  nameWithType: AngeSprite.MakeDedicatedForTexture(object, Sheet)
+  fullName: AngeliA.AngeSprite.MakeDedicatedForTexture(object, AngeliA.Sheet)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MakeDedicatedForTexture
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 294
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void MakeDedicatedForTexture(object texture, Sheet sheet)
+    parameters:
+    - id: texture
+      type: System.Object
+    - id: sheet
+      type: AngeliA.Sheet
+    content.vb: Public Sub MakeDedicatedForTexture(texture As Object, sheet As Sheet)
+  overload: AngeliA.AngeSprite.MakeDedicatedForTexture*
+  nameWithType.vb: AngeSprite.MakeDedicatedForTexture(Object, Sheet)
+  fullName.vb: AngeliA.AngeSprite.MakeDedicatedForTexture(Object, AngeliA.Sheet)
+  name.vb: MakeDedicatedForTexture(Object, Sheet)
+- uid: AngeliA.AngeSprite.RemoveFromDedicatedTexture(AngeliA.Sheet)
+  commentId: M:AngeliA.AngeSprite.RemoveFromDedicatedTexture(AngeliA.Sheet)
+  id: RemoveFromDedicatedTexture(AngeliA.Sheet)
+  parent: AngeliA.AngeSprite
+  langs:
+  - csharp
+  - vb
+  name: RemoveFromDedicatedTexture(Sheet)
+  nameWithType: AngeSprite.RemoveFromDedicatedTexture(Sheet)
+  fullName: AngeliA.AngeSprite.RemoveFromDedicatedTexture(AngeliA.Sheet)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Sheet/Sprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RemoveFromDedicatedTexture
+    path: ../AngeliA Framework/src/Sheet/Sprite.cs
+    startLine: 304
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void RemoveFromDedicatedTexture(Sheet sheet)
+    parameters:
+    - id: sheet
+      type: AngeliA.Sheet
+    content.vb: Public Sub RemoveFromDedicatedTexture(sheet As Sheet)
+  overload: AngeliA.AngeSprite.RemoveFromDedicatedTexture*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.AngeSprite
+  commentId: T:AngeliA.AngeSprite
+  parent: AngeliA
+  href: AngeliA.AngeSprite.html
+  name: AngeSprite
+  nameWithType: AngeSprite
+  fullName: AngeliA.AngeSprite
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.IRect
+  commentId: T:AngeliA.IRect
+  parent: AngeliA
+  href: AngeliA.IRect.html
+  name: IRect
+  nameWithType: IRect
+  fullName: AngeliA.IRect
+- uid: AngeliA.Int4
+  commentId: T:AngeliA.Int4
+  parent: AngeliA
+  href: AngeliA.Int4.html
+  name: Int4
+  nameWithType: Int4
+  fullName: AngeliA.Int4
+- uid: AngeliA.Atlas
+  commentId: T:AngeliA.Atlas
+  parent: AngeliA
+  href: AngeliA.Atlas.html
+  name: Atlas
+  nameWithType: Atlas
+  fullName: AngeliA.Atlas
+- uid: AngeliA.SpriteGroup
+  commentId: T:AngeliA.SpriteGroup
+  parent: AngeliA
+  href: AngeliA.SpriteGroup.html
+  name: SpriteGroup
+  nameWithType: SpriteGroup
+  fullName: AngeliA.SpriteGroup
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.BlockRule
+  commentId: T:AngeliA.BlockRule
+  parent: AngeliA
+  href: AngeliA.BlockRule.html
+  name: BlockRule
+  nameWithType: BlockRule
+  fullName: AngeliA.BlockRule
+- uid: AngeliA.Tag
+  commentId: T:AngeliA.Tag
+  parent: AngeliA
+  href: AngeliA.Tag.html
+  name: Tag
+  nameWithType: Tag
+  fullName: AngeliA.Tag
+- uid: AngeliA.Color32
+  commentId: T:AngeliA.Color32
+  parent: AngeliA
+  href: AngeliA.Color32.html
+  name: Color32
+  nameWithType: Color32
+  fullName: AngeliA.Color32
+- uid: AngeliA.Color32[]
+  isExternal: true
+  href: AngeliA.Color32.html
+  name: Color32[]
+  nameWithType: Color32[]
+  fullName: AngeliA.Color32[]
+  nameWithType.vb: Color32()
+  fullName.vb: AngeliA.Color32()
+  name.vb: Color32()
+  spec.csharp:
+  - uid: AngeliA.Color32
+    name: Color32
+    href: AngeliA.Color32.html
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: AngeliA.Color32
+    name: Color32
+    href: AngeliA.Color32.html
+  - name: (
+  - name: )
+- uid: AngeliA.AngeSprite.LoadFromBinary_v0*
+  commentId: Overload:AngeliA.AngeSprite.LoadFromBinary_v0
+  href: AngeliA.AngeSprite.html#AngeliA_AngeSprite_LoadFromBinary_v0_System_IO_BinaryReader_System_Boolean_
+  name: LoadFromBinary_v0
+  nameWithType: AngeSprite.LoadFromBinary_v0
+  fullName: AngeliA.AngeSprite.LoadFromBinary_v0
+- uid: System.IO.BinaryReader
+  commentId: T:System.IO.BinaryReader
+  parent: System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.io.binaryreader
+  name: BinaryReader
+  nameWithType: BinaryReader
+  fullName: System.IO.BinaryReader
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.IO
+    name: IO
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io
+- uid: AngeliA.AngeSprite.SaveToBinary_v0*
+  commentId: Overload:AngeliA.AngeSprite.SaveToBinary_v0
+  href: AngeliA.AngeSprite.html#AngeliA_AngeSprite_SaveToBinary_v0_System_IO_BinaryWriter_
+  name: SaveToBinary_v0
+  nameWithType: AngeSprite.SaveToBinary_v0
+  fullName: AngeliA.AngeSprite.SaveToBinary_v0
+- uid: System.IO.BinaryWriter
+  commentId: T:System.IO.BinaryWriter
+  parent: System.IO
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.io.binarywriter
+  name: BinaryWriter
+  nameWithType: BinaryWriter
+  fullName: System.IO.BinaryWriter
+- uid: AngeliA.AngeSprite.ResizePixelRect*
+  commentId: Overload:AngeliA.AngeSprite.ResizePixelRect
+  href: AngeliA.AngeSprite.html#AngeliA_AngeSprite_ResizePixelRect_AngeliA_IRect_System_Boolean_System_Boolean__
+  name: ResizePixelRect
+  nameWithType: AngeSprite.ResizePixelRect
+  fullName: AngeliA.AngeSprite.ResizePixelRect
+- uid: AngeliA.AngeSprite.CreateCopy*
+  commentId: Overload:AngeliA.AngeSprite.CreateCopy
+  href: AngeliA.AngeSprite.html#AngeliA_AngeSprite_CreateCopy
+  name: CreateCopy
+  nameWithType: AngeSprite.CreateCopy
+  fullName: AngeliA.AngeSprite.CreateCopy
+- uid: AngeliA.AngeSprite.CopyTo*
+  commentId: Overload:AngeliA.AngeSprite.CopyTo
+  href: AngeliA.AngeSprite.html#AngeliA_AngeSprite_CopyTo_AngeliA_AngeSprite_
+  name: CopyTo
+  nameWithType: AngeSprite.CopyTo
+  fullName: AngeliA.AngeSprite.CopyTo
+- uid: AngeliA.AngeSprite.ValidBorders*
+  commentId: Overload:AngeliA.AngeSprite.ValidBorders
+  href: AngeliA.AngeSprite.html#AngeliA_AngeSprite_ValidBorders_System_Nullable_AngeliA_Direction8__
+  name: ValidBorders
+  nameWithType: AngeSprite.ValidBorders
+  fullName: AngeliA.AngeSprite.ValidBorders
+- uid: System.Nullable{AngeliA.Direction8}
+  commentId: T:System.Nullable{AngeliA.Direction8}
+  parent: System
+  definition: System.Nullable`1
+  href: AngeliA.Direction8.html
+  name: Direction8?
+  nameWithType: Direction8?
+  fullName: AngeliA.Direction8?
+  spec.csharp:
+  - uid: AngeliA.Direction8
+    name: Direction8
+    href: AngeliA.Direction8.html
+  - name: '?'
+  spec.vb:
+  - uid: AngeliA.Direction8
+    name: Direction8
+    href: AngeliA.Direction8.html
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.AngeSprite.SetPixelDirty*
+  commentId: Overload:AngeliA.AngeSprite.SetPixelDirty
+  href: AngeliA.AngeSprite.html#AngeliA_AngeSprite_SetPixelDirty
+  name: SetPixelDirty
+  nameWithType: AngeSprite.SetPixelDirty
+  fullName: AngeliA.AngeSprite.SetPixelDirty
+- uid: AngeliA.AngeSprite.GetAlignmentFromPivot*
+  commentId: Overload:AngeliA.AngeSprite.GetAlignmentFromPivot
+  href: AngeliA.AngeSprite.html#AngeliA_AngeSprite_GetAlignmentFromPivot
+  name: GetAlignmentFromPivot
+  nameWithType: AngeSprite.GetAlignmentFromPivot
+  fullName: AngeliA.AngeSprite.GetAlignmentFromPivot
+- uid: AngeliA.Alignment
+  commentId: T:AngeliA.Alignment
+  parent: AngeliA
+  href: AngeliA.Alignment.html
+  name: Alignment
+  nameWithType: Alignment
+  fullName: AngeliA.Alignment
+- uid: AngeliA.AngeSprite.MakeDedicatedForTexture*
+  commentId: Overload:AngeliA.AngeSprite.MakeDedicatedForTexture
+  href: AngeliA.AngeSprite.html#AngeliA_AngeSprite_MakeDedicatedForTexture_System_Object_AngeliA_Sheet_
+  name: MakeDedicatedForTexture
+  nameWithType: AngeSprite.MakeDedicatedForTexture
+  fullName: AngeliA.AngeSprite.MakeDedicatedForTexture
+- uid: AngeliA.Sheet
+  commentId: T:AngeliA.Sheet
+  parent: AngeliA
+  href: AngeliA.Sheet.html
+  name: Sheet
+  nameWithType: Sheet
+  fullName: AngeliA.Sheet
+- uid: AngeliA.AngeSprite.RemoveFromDedicatedTexture*
+  commentId: Overload:AngeliA.AngeSprite.RemoveFromDedicatedTexture
+  href: AngeliA.AngeSprite.html#AngeliA_AngeSprite_RemoveFromDedicatedTexture_AngeliA_Sheet_
+  name: RemoveFromDedicatedTexture
+  nameWithType: AngeSprite.RemoveFromDedicatedTexture
+  fullName: AngeliA.AngeSprite.RemoveFromDedicatedTexture

@@ -1,0 +1,1067 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.SummonAttackness
+  commentId: T:AngeliA.SummonAttackness
+  id: SummonAttackness
+  parent: AngeliA
+  children:
+  - AngeliA.SummonAttackness.#ctor(AngeliA.Character)
+  langs:
+  - csharp
+  - vb
+  name: SummonAttackness
+  nameWithType: SummonAttackness
+  fullName: AngeliA.SummonAttackness
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Attackness/SummonAttackness.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SummonAttackness
+    path: ../AngeliA Framework/src/Behaviour/Attackness/SummonAttackness.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Behavour class that handle attack logic for summon type character
+  example: []
+  syntax:
+    content: 'public class SummonAttackness : CharacterAttackness'
+    content.vb: Public Class SummonAttackness Inherits CharacterAttackness
+  inheritance:
+  - System.Object
+  - AngeliA.CharacterAttackness
+  inheritedMembers:
+  - AngeliA.CharacterAttackness.TargetCharacter
+  - AngeliA.CharacterAttackness.AimingDirection
+  - AngeliA.CharacterAttackness.IsAttacking
+  - AngeliA.CharacterAttackness.IsAttackIgnored
+  - AngeliA.CharacterAttackness.IsChargingAttack
+  - AngeliA.CharacterAttackness.LastAttackFrame
+  - AngeliA.CharacterAttackness.AttackChargeStartFrame
+  - AngeliA.CharacterAttackness.LastAttackCharged
+  - AngeliA.CharacterAttackness.AttackStyleIndex
+  - AngeliA.CharacterAttackness.AttackStartFacingRight
+  - AngeliA.CharacterAttackness.AttackDuration
+  - AngeliA.CharacterAttackness.AttackCooldown
+  - AngeliA.CharacterAttackness.MinimalChargeAttackDuration
+  - AngeliA.CharacterAttackness.RepeatAttackWhenHolding
+  - AngeliA.CharacterAttackness.HoldingAttack
+  - AngeliA.CharacterAttackness.LockFacingOnAttack
+  - AngeliA.CharacterAttackness.AttackComboGap
+  - AngeliA.CharacterAttackness.HoldAttackPunishFrame
+  - AngeliA.CharacterAttackness.CancelAttackOnJump
+  - AngeliA.CharacterAttackness.DefaultSpeedRateOnAttack
+  - AngeliA.CharacterAttackness.AirSpeedRateOnAttack
+  - AngeliA.CharacterAttackness.WalkingSpeedRateOnAttack
+  - AngeliA.CharacterAttackness.RunningSpeedRateOnAttack
+  - AngeliA.CharacterAttackness.AttackInAir
+  - AngeliA.CharacterAttackness.AttackInWater
+  - AngeliA.CharacterAttackness.AttackWhenWalking
+  - AngeliA.CharacterAttackness.AttackWhenRunning
+  - AngeliA.CharacterAttackness.AttackWhenClimbing
+  - AngeliA.CharacterAttackness.AttackWhenFlying
+  - AngeliA.CharacterAttackness.AttackWhenRolling
+  - AngeliA.CharacterAttackness.AttackWhenSquatting
+  - AngeliA.CharacterAttackness.AttackWhenDashing
+  - AngeliA.CharacterAttackness.AttackWhenSliding
+  - AngeliA.CharacterAttackness.AttackWhenGrabbing
+  - AngeliA.CharacterAttackness.AttackWhenRush
+  - AngeliA.CharacterAttackness.AttackWhenPounding
+  - AngeliA.CharacterAttackness.OnActivated
+  - AngeliA.CharacterAttackness.PhysicsUpdate_Attack
+  - AngeliA.CharacterAttackness.Attack(System.Boolean,System.Boolean)
+  - AngeliA.CharacterAttackness.CancelAttack
+  - AngeliA.CharacterAttackness.IgnoreAimingDirection(AngeliA.Direction8,System.Int32)
+  - AngeliA.CharacterAttackness.IsAimingDirectionIgnored(AngeliA.Direction8)
+  - AngeliA.CharacterAttackness.IgnoreAttack(System.Int32)
+  - AngeliA.CharacterAttackness.CancelIgnoreAttack
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.SummonAttackness.#ctor(AngeliA.Character)
+  commentId: M:AngeliA.SummonAttackness.#ctor(AngeliA.Character)
+  id: '#ctor(AngeliA.Character)'
+  parent: AngeliA.SummonAttackness
+  langs:
+  - csharp
+  - vb
+  name: SummonAttackness(Character)
+  nameWithType: SummonAttackness.SummonAttackness(Character)
+  fullName: AngeliA.SummonAttackness.SummonAttackness(AngeliA.Character)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Attackness/SummonAttackness.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Behaviour/Attackness/SummonAttackness.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Behavour class that handle attack logic for summon type character
+  example: []
+  syntax:
+    content: public SummonAttackness(Character character)
+    parameters:
+    - id: character
+      type: AngeliA.Character
+    content.vb: Public Sub New(character As Character)
+  overload: AngeliA.SummonAttackness.#ctor*
+  nameWithType.vb: SummonAttackness.New(Character)
+  fullName.vb: AngeliA.SummonAttackness.New(AngeliA.Character)
+  name.vb: New(Character)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.CharacterAttackness
+  commentId: T:AngeliA.CharacterAttackness
+  parent: AngeliA
+  href: AngeliA.CharacterAttackness.html
+  name: CharacterAttackness
+  nameWithType: CharacterAttackness
+  fullName: AngeliA.CharacterAttackness
+- uid: AngeliA.CharacterAttackness.TargetCharacter
+  commentId: F:AngeliA.CharacterAttackness.TargetCharacter
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_TargetCharacter
+  name: TargetCharacter
+  nameWithType: CharacterAttackness.TargetCharacter
+  fullName: AngeliA.CharacterAttackness.TargetCharacter
+- uid: AngeliA.CharacterAttackness.AimingDirection
+  commentId: P:AngeliA.CharacterAttackness.AimingDirection
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AimingDirection
+  name: AimingDirection
+  nameWithType: CharacterAttackness.AimingDirection
+  fullName: AngeliA.CharacterAttackness.AimingDirection
+- uid: AngeliA.CharacterAttackness.IsAttacking
+  commentId: P:AngeliA.CharacterAttackness.IsAttacking
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IsAttacking
+  name: IsAttacking
+  nameWithType: CharacterAttackness.IsAttacking
+  fullName: AngeliA.CharacterAttackness.IsAttacking
+- uid: AngeliA.CharacterAttackness.IsAttackIgnored
+  commentId: P:AngeliA.CharacterAttackness.IsAttackIgnored
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IsAttackIgnored
+  name: IsAttackIgnored
+  nameWithType: CharacterAttackness.IsAttackIgnored
+  fullName: AngeliA.CharacterAttackness.IsAttackIgnored
+- uid: AngeliA.CharacterAttackness.IsChargingAttack
+  commentId: P:AngeliA.CharacterAttackness.IsChargingAttack
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IsChargingAttack
+  name: IsChargingAttack
+  nameWithType: CharacterAttackness.IsChargingAttack
+  fullName: AngeliA.CharacterAttackness.IsChargingAttack
+- uid: AngeliA.CharacterAttackness.LastAttackFrame
+  commentId: P:AngeliA.CharacterAttackness.LastAttackFrame
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_LastAttackFrame
+  name: LastAttackFrame
+  nameWithType: CharacterAttackness.LastAttackFrame
+  fullName: AngeliA.CharacterAttackness.LastAttackFrame
+- uid: AngeliA.CharacterAttackness.AttackChargeStartFrame
+  commentId: P:AngeliA.CharacterAttackness.AttackChargeStartFrame
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackChargeStartFrame
+  name: AttackChargeStartFrame
+  nameWithType: CharacterAttackness.AttackChargeStartFrame
+  fullName: AngeliA.CharacterAttackness.AttackChargeStartFrame
+- uid: AngeliA.CharacterAttackness.LastAttackCharged
+  commentId: P:AngeliA.CharacterAttackness.LastAttackCharged
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_LastAttackCharged
+  name: LastAttackCharged
+  nameWithType: CharacterAttackness.LastAttackCharged
+  fullName: AngeliA.CharacterAttackness.LastAttackCharged
+- uid: AngeliA.CharacterAttackness.AttackStyleIndex
+  commentId: P:AngeliA.CharacterAttackness.AttackStyleIndex
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackStyleIndex
+  name: AttackStyleIndex
+  nameWithType: CharacterAttackness.AttackStyleIndex
+  fullName: AngeliA.CharacterAttackness.AttackStyleIndex
+- uid: AngeliA.CharacterAttackness.AttackStartFacingRight
+  commentId: P:AngeliA.CharacterAttackness.AttackStartFacingRight
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackStartFacingRight
+  name: AttackStartFacingRight
+  nameWithType: CharacterAttackness.AttackStartFacingRight
+  fullName: AngeliA.CharacterAttackness.AttackStartFacingRight
+- uid: AngeliA.CharacterAttackness.AttackDuration
+  commentId: P:AngeliA.CharacterAttackness.AttackDuration
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackDuration
+  name: AttackDuration
+  nameWithType: CharacterAttackness.AttackDuration
+  fullName: AngeliA.CharacterAttackness.AttackDuration
+- uid: AngeliA.CharacterAttackness.AttackCooldown
+  commentId: P:AngeliA.CharacterAttackness.AttackCooldown
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackCooldown
+  name: AttackCooldown
+  nameWithType: CharacterAttackness.AttackCooldown
+  fullName: AngeliA.CharacterAttackness.AttackCooldown
+- uid: AngeliA.CharacterAttackness.MinimalChargeAttackDuration
+  commentId: P:AngeliA.CharacterAttackness.MinimalChargeAttackDuration
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_MinimalChargeAttackDuration
+  name: MinimalChargeAttackDuration
+  nameWithType: CharacterAttackness.MinimalChargeAttackDuration
+  fullName: AngeliA.CharacterAttackness.MinimalChargeAttackDuration
+- uid: AngeliA.CharacterAttackness.RepeatAttackWhenHolding
+  commentId: P:AngeliA.CharacterAttackness.RepeatAttackWhenHolding
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_RepeatAttackWhenHolding
+  name: RepeatAttackWhenHolding
+  nameWithType: CharacterAttackness.RepeatAttackWhenHolding
+  fullName: AngeliA.CharacterAttackness.RepeatAttackWhenHolding
+- uid: AngeliA.CharacterAttackness.HoldingAttack
+  commentId: P:AngeliA.CharacterAttackness.HoldingAttack
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_HoldingAttack
+  name: HoldingAttack
+  nameWithType: CharacterAttackness.HoldingAttack
+  fullName: AngeliA.CharacterAttackness.HoldingAttack
+- uid: AngeliA.CharacterAttackness.LockFacingOnAttack
+  commentId: P:AngeliA.CharacterAttackness.LockFacingOnAttack
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_LockFacingOnAttack
+  name: LockFacingOnAttack
+  nameWithType: CharacterAttackness.LockFacingOnAttack
+  fullName: AngeliA.CharacterAttackness.LockFacingOnAttack
+- uid: AngeliA.CharacterAttackness.AttackComboGap
+  commentId: F:AngeliA.CharacterAttackness.AttackComboGap
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackComboGap
+  name: AttackComboGap
+  nameWithType: CharacterAttackness.AttackComboGap
+  fullName: AngeliA.CharacterAttackness.AttackComboGap
+- uid: AngeliA.CharacterAttackness.HoldAttackPunishFrame
+  commentId: F:AngeliA.CharacterAttackness.HoldAttackPunishFrame
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_HoldAttackPunishFrame
+  name: HoldAttackPunishFrame
+  nameWithType: CharacterAttackness.HoldAttackPunishFrame
+  fullName: AngeliA.CharacterAttackness.HoldAttackPunishFrame
+- uid: AngeliA.CharacterAttackness.CancelAttackOnJump
+  commentId: F:AngeliA.CharacterAttackness.CancelAttackOnJump
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_CancelAttackOnJump
+  name: CancelAttackOnJump
+  nameWithType: CharacterAttackness.CancelAttackOnJump
+  fullName: AngeliA.CharacterAttackness.CancelAttackOnJump
+- uid: AngeliA.CharacterAttackness.DefaultSpeedRateOnAttack
+  commentId: F:AngeliA.CharacterAttackness.DefaultSpeedRateOnAttack
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_DefaultSpeedRateOnAttack
+  name: DefaultSpeedRateOnAttack
+  nameWithType: CharacterAttackness.DefaultSpeedRateOnAttack
+  fullName: AngeliA.CharacterAttackness.DefaultSpeedRateOnAttack
+- uid: AngeliA.CharacterAttackness.AirSpeedRateOnAttack
+  commentId: F:AngeliA.CharacterAttackness.AirSpeedRateOnAttack
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AirSpeedRateOnAttack
+  name: AirSpeedRateOnAttack
+  nameWithType: CharacterAttackness.AirSpeedRateOnAttack
+  fullName: AngeliA.CharacterAttackness.AirSpeedRateOnAttack
+- uid: AngeliA.CharacterAttackness.WalkingSpeedRateOnAttack
+  commentId: F:AngeliA.CharacterAttackness.WalkingSpeedRateOnAttack
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_WalkingSpeedRateOnAttack
+  name: WalkingSpeedRateOnAttack
+  nameWithType: CharacterAttackness.WalkingSpeedRateOnAttack
+  fullName: AngeliA.CharacterAttackness.WalkingSpeedRateOnAttack
+- uid: AngeliA.CharacterAttackness.RunningSpeedRateOnAttack
+  commentId: F:AngeliA.CharacterAttackness.RunningSpeedRateOnAttack
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_RunningSpeedRateOnAttack
+  name: RunningSpeedRateOnAttack
+  nameWithType: CharacterAttackness.RunningSpeedRateOnAttack
+  fullName: AngeliA.CharacterAttackness.RunningSpeedRateOnAttack
+- uid: AngeliA.CharacterAttackness.AttackInAir
+  commentId: F:AngeliA.CharacterAttackness.AttackInAir
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackInAir
+  name: AttackInAir
+  nameWithType: CharacterAttackness.AttackInAir
+  fullName: AngeliA.CharacterAttackness.AttackInAir
+- uid: AngeliA.CharacterAttackness.AttackInWater
+  commentId: F:AngeliA.CharacterAttackness.AttackInWater
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackInWater
+  name: AttackInWater
+  nameWithType: CharacterAttackness.AttackInWater
+  fullName: AngeliA.CharacterAttackness.AttackInWater
+- uid: AngeliA.CharacterAttackness.AttackWhenWalking
+  commentId: F:AngeliA.CharacterAttackness.AttackWhenWalking
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackWhenWalking
+  name: AttackWhenWalking
+  nameWithType: CharacterAttackness.AttackWhenWalking
+  fullName: AngeliA.CharacterAttackness.AttackWhenWalking
+- uid: AngeliA.CharacterAttackness.AttackWhenRunning
+  commentId: F:AngeliA.CharacterAttackness.AttackWhenRunning
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackWhenRunning
+  name: AttackWhenRunning
+  nameWithType: CharacterAttackness.AttackWhenRunning
+  fullName: AngeliA.CharacterAttackness.AttackWhenRunning
+- uid: AngeliA.CharacterAttackness.AttackWhenClimbing
+  commentId: F:AngeliA.CharacterAttackness.AttackWhenClimbing
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackWhenClimbing
+  name: AttackWhenClimbing
+  nameWithType: CharacterAttackness.AttackWhenClimbing
+  fullName: AngeliA.CharacterAttackness.AttackWhenClimbing
+- uid: AngeliA.CharacterAttackness.AttackWhenFlying
+  commentId: F:AngeliA.CharacterAttackness.AttackWhenFlying
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackWhenFlying
+  name: AttackWhenFlying
+  nameWithType: CharacterAttackness.AttackWhenFlying
+  fullName: AngeliA.CharacterAttackness.AttackWhenFlying
+- uid: AngeliA.CharacterAttackness.AttackWhenRolling
+  commentId: F:AngeliA.CharacterAttackness.AttackWhenRolling
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackWhenRolling
+  name: AttackWhenRolling
+  nameWithType: CharacterAttackness.AttackWhenRolling
+  fullName: AngeliA.CharacterAttackness.AttackWhenRolling
+- uid: AngeliA.CharacterAttackness.AttackWhenSquatting
+  commentId: F:AngeliA.CharacterAttackness.AttackWhenSquatting
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackWhenSquatting
+  name: AttackWhenSquatting
+  nameWithType: CharacterAttackness.AttackWhenSquatting
+  fullName: AngeliA.CharacterAttackness.AttackWhenSquatting
+- uid: AngeliA.CharacterAttackness.AttackWhenDashing
+  commentId: F:AngeliA.CharacterAttackness.AttackWhenDashing
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackWhenDashing
+  name: AttackWhenDashing
+  nameWithType: CharacterAttackness.AttackWhenDashing
+  fullName: AngeliA.CharacterAttackness.AttackWhenDashing
+- uid: AngeliA.CharacterAttackness.AttackWhenSliding
+  commentId: F:AngeliA.CharacterAttackness.AttackWhenSliding
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackWhenSliding
+  name: AttackWhenSliding
+  nameWithType: CharacterAttackness.AttackWhenSliding
+  fullName: AngeliA.CharacterAttackness.AttackWhenSliding
+- uid: AngeliA.CharacterAttackness.AttackWhenGrabbing
+  commentId: F:AngeliA.CharacterAttackness.AttackWhenGrabbing
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackWhenGrabbing
+  name: AttackWhenGrabbing
+  nameWithType: CharacterAttackness.AttackWhenGrabbing
+  fullName: AngeliA.CharacterAttackness.AttackWhenGrabbing
+- uid: AngeliA.CharacterAttackness.AttackWhenRush
+  commentId: F:AngeliA.CharacterAttackness.AttackWhenRush
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackWhenRush
+  name: AttackWhenRush
+  nameWithType: CharacterAttackness.AttackWhenRush
+  fullName: AngeliA.CharacterAttackness.AttackWhenRush
+- uid: AngeliA.CharacterAttackness.AttackWhenPounding
+  commentId: F:AngeliA.CharacterAttackness.AttackWhenPounding
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_AttackWhenPounding
+  name: AttackWhenPounding
+  nameWithType: CharacterAttackness.AttackWhenPounding
+  fullName: AngeliA.CharacterAttackness.AttackWhenPounding
+- uid: AngeliA.CharacterAttackness.OnActivated
+  commentId: M:AngeliA.CharacterAttackness.OnActivated
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_OnActivated
+  name: OnActivated()
+  nameWithType: CharacterAttackness.OnActivated()
+  fullName: AngeliA.CharacterAttackness.OnActivated()
+  spec.csharp:
+  - uid: AngeliA.CharacterAttackness.OnActivated
+    name: OnActivated
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_OnActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.CharacterAttackness.OnActivated
+    name: OnActivated
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_OnActivated
+  - name: (
+  - name: )
+- uid: AngeliA.CharacterAttackness.PhysicsUpdate_Attack
+  commentId: M:AngeliA.CharacterAttackness.PhysicsUpdate_Attack
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_PhysicsUpdate_Attack
+  name: PhysicsUpdate_Attack()
+  nameWithType: CharacterAttackness.PhysicsUpdate_Attack()
+  fullName: AngeliA.CharacterAttackness.PhysicsUpdate_Attack()
+  spec.csharp:
+  - uid: AngeliA.CharacterAttackness.PhysicsUpdate_Attack
+    name: PhysicsUpdate_Attack
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_PhysicsUpdate_Attack
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.CharacterAttackness.PhysicsUpdate_Attack
+    name: PhysicsUpdate_Attack
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_PhysicsUpdate_Attack
+  - name: (
+  - name: )
+- uid: AngeliA.CharacterAttackness.Attack(System.Boolean,System.Boolean)
+  commentId: M:AngeliA.CharacterAttackness.Attack(System.Boolean,System.Boolean)
+  parent: AngeliA.CharacterAttackness
+  isExternal: true
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_Attack_System_Boolean_System_Boolean_
+  name: Attack(bool, bool)
+  nameWithType: CharacterAttackness.Attack(bool, bool)
+  fullName: AngeliA.CharacterAttackness.Attack(bool, bool)
+  nameWithType.vb: CharacterAttackness.Attack(Boolean, Boolean)
+  fullName.vb: AngeliA.CharacterAttackness.Attack(Boolean, Boolean)
+  name.vb: Attack(Boolean, Boolean)
+  spec.csharp:
+  - uid: AngeliA.CharacterAttackness.Attack(System.Boolean,System.Boolean)
+    name: Attack
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_Attack_System_Boolean_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.CharacterAttackness.Attack(System.Boolean,System.Boolean)
+    name: Attack
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_Attack_System_Boolean_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.CharacterAttackness.CancelAttack
+  commentId: M:AngeliA.CharacterAttackness.CancelAttack
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_CancelAttack
+  name: CancelAttack()
+  nameWithType: CharacterAttackness.CancelAttack()
+  fullName: AngeliA.CharacterAttackness.CancelAttack()
+  spec.csharp:
+  - uid: AngeliA.CharacterAttackness.CancelAttack
+    name: CancelAttack
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_CancelAttack
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.CharacterAttackness.CancelAttack
+    name: CancelAttack
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_CancelAttack
+  - name: (
+  - name: )
+- uid: AngeliA.CharacterAttackness.IgnoreAimingDirection(AngeliA.Direction8,System.Int32)
+  commentId: M:AngeliA.CharacterAttackness.IgnoreAimingDirection(AngeliA.Direction8,System.Int32)
+  parent: AngeliA.CharacterAttackness
+  isExternal: true
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IgnoreAimingDirection_AngeliA_Direction8_System_Int32_
+  name: IgnoreAimingDirection(Direction8, int)
+  nameWithType: CharacterAttackness.IgnoreAimingDirection(Direction8, int)
+  fullName: AngeliA.CharacterAttackness.IgnoreAimingDirection(AngeliA.Direction8, int)
+  nameWithType.vb: CharacterAttackness.IgnoreAimingDirection(Direction8, Integer)
+  fullName.vb: AngeliA.CharacterAttackness.IgnoreAimingDirection(AngeliA.Direction8, Integer)
+  name.vb: IgnoreAimingDirection(Direction8, Integer)
+  spec.csharp:
+  - uid: AngeliA.CharacterAttackness.IgnoreAimingDirection(AngeliA.Direction8,System.Int32)
+    name: IgnoreAimingDirection
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IgnoreAimingDirection_AngeliA_Direction8_System_Int32_
+  - name: (
+  - uid: AngeliA.Direction8
+    name: Direction8
+    href: AngeliA.Direction8.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.CharacterAttackness.IgnoreAimingDirection(AngeliA.Direction8,System.Int32)
+    name: IgnoreAimingDirection
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IgnoreAimingDirection_AngeliA_Direction8_System_Int32_
+  - name: (
+  - uid: AngeliA.Direction8
+    name: Direction8
+    href: AngeliA.Direction8.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.CharacterAttackness.IsAimingDirectionIgnored(AngeliA.Direction8)
+  commentId: M:AngeliA.CharacterAttackness.IsAimingDirectionIgnored(AngeliA.Direction8)
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IsAimingDirectionIgnored_AngeliA_Direction8_
+  name: IsAimingDirectionIgnored(Direction8)
+  nameWithType: CharacterAttackness.IsAimingDirectionIgnored(Direction8)
+  fullName: AngeliA.CharacterAttackness.IsAimingDirectionIgnored(AngeliA.Direction8)
+  spec.csharp:
+  - uid: AngeliA.CharacterAttackness.IsAimingDirectionIgnored(AngeliA.Direction8)
+    name: IsAimingDirectionIgnored
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IsAimingDirectionIgnored_AngeliA_Direction8_
+  - name: (
+  - uid: AngeliA.Direction8
+    name: Direction8
+    href: AngeliA.Direction8.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.CharacterAttackness.IsAimingDirectionIgnored(AngeliA.Direction8)
+    name: IsAimingDirectionIgnored
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IsAimingDirectionIgnored_AngeliA_Direction8_
+  - name: (
+  - uid: AngeliA.Direction8
+    name: Direction8
+    href: AngeliA.Direction8.html
+  - name: )
+- uid: AngeliA.CharacterAttackness.IgnoreAttack(System.Int32)
+  commentId: M:AngeliA.CharacterAttackness.IgnoreAttack(System.Int32)
+  parent: AngeliA.CharacterAttackness
+  isExternal: true
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IgnoreAttack_System_Int32_
+  name: IgnoreAttack(int)
+  nameWithType: CharacterAttackness.IgnoreAttack(int)
+  fullName: AngeliA.CharacterAttackness.IgnoreAttack(int)
+  nameWithType.vb: CharacterAttackness.IgnoreAttack(Integer)
+  fullName.vb: AngeliA.CharacterAttackness.IgnoreAttack(Integer)
+  name.vb: IgnoreAttack(Integer)
+  spec.csharp:
+  - uid: AngeliA.CharacterAttackness.IgnoreAttack(System.Int32)
+    name: IgnoreAttack
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IgnoreAttack_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.CharacterAttackness.IgnoreAttack(System.Int32)
+    name: IgnoreAttack
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_IgnoreAttack_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.CharacterAttackness.CancelIgnoreAttack
+  commentId: M:AngeliA.CharacterAttackness.CancelIgnoreAttack
+  parent: AngeliA.CharacterAttackness
+  href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_CancelIgnoreAttack
+  name: CancelIgnoreAttack()
+  nameWithType: CharacterAttackness.CancelIgnoreAttack()
+  fullName: AngeliA.CharacterAttackness.CancelIgnoreAttack()
+  spec.csharp:
+  - uid: AngeliA.CharacterAttackness.CancelIgnoreAttack
+    name: CancelIgnoreAttack
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_CancelIgnoreAttack
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.CharacterAttackness.CancelIgnoreAttack
+    name: CancelIgnoreAttack
+    href: AngeliA.CharacterAttackness.html#AngeliA_CharacterAttackness_CancelIgnoreAttack
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.SummonAttackness.#ctor*
+  commentId: Overload:AngeliA.SummonAttackness.#ctor
+  href: AngeliA.SummonAttackness.html#AngeliA_SummonAttackness__ctor_AngeliA_Character_
+  name: SummonAttackness
+  nameWithType: SummonAttackness.SummonAttackness
+  fullName: AngeliA.SummonAttackness.SummonAttackness
+  nameWithType.vb: SummonAttackness.New
+  fullName.vb: AngeliA.SummonAttackness.New
+  name.vb: New
+- uid: AngeliA.Character
+  commentId: T:AngeliA.Character
+  parent: AngeliA
+  href: AngeliA.Character.html
+  name: Character
+  nameWithType: Character
+  fullName: AngeliA.Character

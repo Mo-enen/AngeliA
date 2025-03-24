@@ -1,0 +1,2222 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.MapEditor
+  commentId: T:AngeliA.MapEditor
+  id: MapEditor
+  parent: AngeliA
+  children:
+  - AngeliA.MapEditor.#ctor
+  - AngeliA.MapEditor.BackgroundRect
+  - AngeliA.MapEditor.CurrentZ
+  - AngeliA.MapEditor.GotoEditMode
+  - AngeliA.MapEditor.GotoPlayMode
+  - AngeliA.MapEditor.Instance
+  - AngeliA.MapEditor.IsActived
+  - AngeliA.MapEditor.IsEditing
+  - AngeliA.MapEditor.IsEditorNavigating
+  - AngeliA.MapEditor.IsPlaying
+  - AngeliA.MapEditor.LastEdittingViewH
+  - AngeliA.MapEditor.LastEdittingViewX
+  - AngeliA.MapEditor.LastEdittingViewY
+  - AngeliA.MapEditor.LastEdittingViewZ
+  - AngeliA.MapEditor.MapRoot
+  - AngeliA.MapEditor.OnActivated
+  - AngeliA.MapEditor.QuickPlayerDrop
+  - AngeliA.MapEditor.SETTING_QUICK_PLAYER_DROP
+  - AngeliA.MapEditor.SETTING_SHOW_BEHIND
+  - AngeliA.MapEditor.SETTING_SHOW_GRID_GIZMOS
+  - AngeliA.MapEditor.SETTING_SHOW_STATE
+  - AngeliA.MapEditor.Save(System.Boolean)
+  - AngeliA.MapEditor.SetView(AngeliA.IRect,System.Int32,System.Boolean)
+  - AngeliA.MapEditor.SetViewZ(System.Int32)
+  - AngeliA.MapEditor.ShowBehind
+  - AngeliA.MapEditor.ShowGridGizmos
+  - AngeliA.MapEditor.ShowState
+  - AngeliA.MapEditor.TYPE_ID
+  - AngeliA.MapEditor.UpdateWindowUI
+  langs:
+  - csharp
+  - vb
+  name: MapEditor
+  nameWithType: MapEditor
+  fullName: AngeliA.MapEditor
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor_Panel.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MapEditor
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor_Panel.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: >-
+      [Entity.StageOrder(-4096)]
+
+      public sealed class MapEditor : WindowUI, IMapItem, IWindowEntityUI
+    content.vb: >-
+      <Entity.StageOrder(-4096)>
+
+      Public NotInheritable Class MapEditor Inherits WindowUI Implements IMapItem, IWindowEntityUI
+  inheritance:
+  - System.Object
+  - AngeliA.Entity
+  - AngeliA.EntityUI
+  - AngeliA.WindowUI
+  implements:
+  - AngeliA.IMapItem
+  - AngeliA.IWindowEntityUI
+  inheritedMembers:
+  - AngeliA.WindowUI.DefaultWindowName
+  - AngeliA.WindowUI.WindowRect
+  - AngeliA.WindowUI.IsDirty
+  - AngeliA.WindowUI.RequiringTooltipRect
+  - AngeliA.WindowUI.RequiringTooltipContent
+  - AngeliA.WindowUI.NotificationContent
+  - AngeliA.WindowUI.NotificationSubContent
+  - AngeliA.WindowUI.OnGameQuitting
+  - AngeliA.WindowUI.UpdateUI
+  - AngeliA.WindowUI.OpenWindow(System.Int32)
+  - AngeliA.WindowUI.CloseWindow(System.Int32)
+  - AngeliA.WindowUI.ForceWindowRect(AngeliA.IRect)
+  - AngeliA.WindowUI.SetDirty
+  - AngeliA.WindowUI.CleanDirty
+  - AngeliA.EntityUI.FirstUpdate
+  - AngeliA.EntityUI.Update
+  - AngeliA.EntityUI.LateUpdate
+  - AngeliA.Entity.Active
+  - AngeliA.Entity.X
+  - AngeliA.Entity.Y
+  - AngeliA.Entity.Width
+  - AngeliA.Entity.Height
+  - AngeliA.Entity.TypeID
+  - AngeliA.Entity.SpawnFrame
+  - AngeliA.Entity.FromWorld
+  - AngeliA.Entity.Rect
+  - AngeliA.Entity.InstanceOrder
+  - AngeliA.Entity.MapUnitPos
+  - AngeliA.Entity.InstanceID
+  - AngeliA.Entity.IgnoreReposition
+  - AngeliA.Entity.XY
+  - AngeliA.Entity.Size
+  - AngeliA.Entity.Center
+  - AngeliA.Entity.CenterX
+  - AngeliA.Entity.CenterY
+  - AngeliA.Entity.PivotUnitPosition
+  - AngeliA.Entity.OnInactivated
+  - AngeliA.Entity.BeforeUpdate
+  - AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  - AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  - AngeliA.Entity.CancelIgnoreDespawnFromMap
+  - AngeliA.Entity.Draw
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+  attributes:
+  - type: AngeliA.EntityAttribute.StageOrderAttribute
+    ctor: AngeliA.EntityAttribute.StageOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: -4096
+- uid: AngeliA.MapEditor.TYPE_ID
+  commentId: F:AngeliA.MapEditor.TYPE_ID
+  id: TYPE_ID
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: TYPE_ID
+  nameWithType: MapEditor.TYPE_ID
+  fullName: AngeliA.MapEditor.TYPE_ID
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TYPE_ID
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 68
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly int TYPE_ID
+    return:
+      type: System.Int32
+    content.vb: Public Shared ReadOnly TYPE_ID As Integer
+- uid: AngeliA.MapEditor.SETTING_QUICK_PLAYER_DROP
+  commentId: F:AngeliA.MapEditor.SETTING_QUICK_PLAYER_DROP
+  id: SETTING_QUICK_PLAYER_DROP
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: SETTING_QUICK_PLAYER_DROP
+  nameWithType: MapEditor.SETTING_QUICK_PLAYER_DROP
+  fullName: AngeliA.MapEditor.SETTING_QUICK_PLAYER_DROP
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_QUICK_PLAYER_DROP
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 69
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_QUICK_PLAYER_DROP = 921761
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_QUICK_PLAYER_DROP As Integer = 921761
+- uid: AngeliA.MapEditor.SETTING_SHOW_BEHIND
+  commentId: F:AngeliA.MapEditor.SETTING_SHOW_BEHIND
+  id: SETTING_SHOW_BEHIND
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: SETTING_SHOW_BEHIND
+  nameWithType: MapEditor.SETTING_SHOW_BEHIND
+  fullName: AngeliA.MapEditor.SETTING_SHOW_BEHIND
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_SHOW_BEHIND
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 70
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_SHOW_BEHIND = 921762
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_SHOW_BEHIND As Integer = 921762
+- uid: AngeliA.MapEditor.SETTING_SHOW_STATE
+  commentId: F:AngeliA.MapEditor.SETTING_SHOW_STATE
+  id: SETTING_SHOW_STATE
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: SETTING_SHOW_STATE
+  nameWithType: MapEditor.SETTING_SHOW_STATE
+  fullName: AngeliA.MapEditor.SETTING_SHOW_STATE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_SHOW_STATE
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 71
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_SHOW_STATE = 921763
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_SHOW_STATE As Integer = 921763
+- uid: AngeliA.MapEditor.SETTING_SHOW_GRID_GIZMOS
+  commentId: F:AngeliA.MapEditor.SETTING_SHOW_GRID_GIZMOS
+  id: SETTING_SHOW_GRID_GIZMOS
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: SETTING_SHOW_GRID_GIZMOS
+  nameWithType: MapEditor.SETTING_SHOW_GRID_GIZMOS
+  fullName: AngeliA.MapEditor.SETTING_SHOW_GRID_GIZMOS
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SETTING_SHOW_GRID_GIZMOS
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 72
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int SETTING_SHOW_GRID_GIZMOS = 921764
+    return:
+      type: System.Int32
+    content.vb: Public Const SETTING_SHOW_GRID_GIZMOS As Integer = 921764
+- uid: AngeliA.MapEditor.Instance
+  commentId: P:AngeliA.MapEditor.Instance
+  id: Instance
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: Instance
+  nameWithType: MapEditor.Instance
+  fullName: AngeliA.MapEditor.Instance
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Instance
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 93
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static MapEditor Instance { get; }
+    parameters: []
+    return:
+      type: AngeliA.MapEditor
+    content.vb: Public Shared Property Instance As MapEditor
+  overload: AngeliA.MapEditor.Instance*
+- uid: AngeliA.MapEditor.IsActived
+  commentId: P:AngeliA.MapEditor.IsActived
+  id: IsActived
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: IsActived
+  nameWithType: MapEditor.IsActived
+  fullName: AngeliA.MapEditor.IsActived
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsActived
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 94
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool IsActived { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property IsActived As Boolean
+  overload: AngeliA.MapEditor.IsActived*
+- uid: AngeliA.MapEditor.IsEditing
+  commentId: P:AngeliA.MapEditor.IsEditing
+  id: IsEditing
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: IsEditing
+  nameWithType: MapEditor.IsEditing
+  fullName: AngeliA.MapEditor.IsEditing
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsEditing
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 95
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool IsEditing { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property IsEditing As Boolean
+  overload: AngeliA.MapEditor.IsEditing*
+- uid: AngeliA.MapEditor.IsPlaying
+  commentId: P:AngeliA.MapEditor.IsPlaying
+  id: IsPlaying
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: IsPlaying
+  nameWithType: MapEditor.IsPlaying
+  fullName: AngeliA.MapEditor.IsPlaying
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsPlaying
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 96
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool IsPlaying { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property IsPlaying As Boolean
+  overload: AngeliA.MapEditor.IsPlaying*
+- uid: AngeliA.MapEditor.IsEditorNavigating
+  commentId: P:AngeliA.MapEditor.IsEditorNavigating
+  id: IsEditorNavigating
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: IsEditorNavigating
+  nameWithType: MapEditor.IsEditorNavigating
+  fullName: AngeliA.MapEditor.IsEditorNavigating
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsEditorNavigating
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 97
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool IsEditorNavigating { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property IsEditorNavigating As Boolean
+  overload: AngeliA.MapEditor.IsEditorNavigating*
+- uid: AngeliA.MapEditor.QuickPlayerDrop
+  commentId: P:AngeliA.MapEditor.QuickPlayerDrop
+  id: QuickPlayerDrop
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: QuickPlayerDrop
+  nameWithType: MapEditor.QuickPlayerDrop
+  fullName: AngeliA.MapEditor.QuickPlayerDrop
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: QuickPlayerDrop
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 98
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool QuickPlayerDrop { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property QuickPlayerDrop As Boolean
+  overload: AngeliA.MapEditor.QuickPlayerDrop*
+- uid: AngeliA.MapEditor.ShowState
+  commentId: P:AngeliA.MapEditor.ShowState
+  id: ShowState
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: ShowState
+  nameWithType: MapEditor.ShowState
+  fullName: AngeliA.MapEditor.ShowState
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ShowState
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 99
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool ShowState { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property ShowState As Boolean
+  overload: AngeliA.MapEditor.ShowState*
+- uid: AngeliA.MapEditor.ShowBehind
+  commentId: P:AngeliA.MapEditor.ShowBehind
+  id: ShowBehind
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: ShowBehind
+  nameWithType: MapEditor.ShowBehind
+  fullName: AngeliA.MapEditor.ShowBehind
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ShowBehind
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 100
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool ShowBehind { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property ShowBehind As Boolean
+  overload: AngeliA.MapEditor.ShowBehind*
+- uid: AngeliA.MapEditor.ShowGridGizmos
+  commentId: P:AngeliA.MapEditor.ShowGridGizmos
+  id: ShowGridGizmos
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: ShowGridGizmos
+  nameWithType: MapEditor.ShowGridGizmos
+  fullName: AngeliA.MapEditor.ShowGridGizmos
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ShowGridGizmos
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 101
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool ShowGridGizmos { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property ShowGridGizmos As Boolean
+  overload: AngeliA.MapEditor.ShowGridGizmos*
+- uid: AngeliA.MapEditor.MapRoot
+  commentId: P:AngeliA.MapEditor.MapRoot
+  id: MapRoot
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: MapRoot
+  nameWithType: MapEditor.MapRoot
+  fullName: AngeliA.MapEditor.MapRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MapRoot
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 102
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string MapRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Shared ReadOnly Property MapRoot As String
+  overload: AngeliA.MapEditor.MapRoot*
+- uid: AngeliA.MapEditor.CurrentZ
+  commentId: P:AngeliA.MapEditor.CurrentZ
+  id: CurrentZ
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: CurrentZ
+  nameWithType: MapEditor.CurrentZ
+  fullName: AngeliA.MapEditor.CurrentZ
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CurrentZ
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 103
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int CurrentZ { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CurrentZ As Integer
+  overload: AngeliA.MapEditor.CurrentZ*
+- uid: AngeliA.MapEditor.BackgroundRect
+  commentId: P:AngeliA.MapEditor.BackgroundRect
+  id: BackgroundRect
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: BackgroundRect
+  nameWithType: MapEditor.BackgroundRect
+  fullName: AngeliA.MapEditor.BackgroundRect
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BackgroundRect
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 104
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override IRect BackgroundRect { get; }
+    parameters: []
+    return:
+      type: AngeliA.IRect
+    content.vb: Public Overrides ReadOnly Property BackgroundRect As IRect
+  overridden: AngeliA.WindowUI.BackgroundRect
+  overload: AngeliA.MapEditor.BackgroundRect*
+- uid: AngeliA.MapEditor.LastEdittingViewX
+  commentId: F:AngeliA.MapEditor.LastEdittingViewX
+  id: LastEdittingViewX
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: LastEdittingViewX
+  nameWithType: MapEditor.LastEdittingViewX
+  fullName: AngeliA.MapEditor.LastEdittingViewX
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LastEdittingViewX
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 164
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SavingInt LastEdittingViewX
+    return:
+      type: AngeliA.SavingInt
+    content.vb: Public Shared ReadOnly LastEdittingViewX As SavingInt
+- uid: AngeliA.MapEditor.LastEdittingViewY
+  commentId: F:AngeliA.MapEditor.LastEdittingViewY
+  id: LastEdittingViewY
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: LastEdittingViewY
+  nameWithType: MapEditor.LastEdittingViewY
+  fullName: AngeliA.MapEditor.LastEdittingViewY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LastEdittingViewY
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 165
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SavingInt LastEdittingViewY
+    return:
+      type: AngeliA.SavingInt
+    content.vb: Public Shared ReadOnly LastEdittingViewY As SavingInt
+- uid: AngeliA.MapEditor.LastEdittingViewZ
+  commentId: F:AngeliA.MapEditor.LastEdittingViewZ
+  id: LastEdittingViewZ
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: LastEdittingViewZ
+  nameWithType: MapEditor.LastEdittingViewZ
+  fullName: AngeliA.MapEditor.LastEdittingViewZ
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LastEdittingViewZ
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 166
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SavingInt LastEdittingViewZ
+    return:
+      type: AngeliA.SavingInt
+    content.vb: Public Shared ReadOnly LastEdittingViewZ As SavingInt
+- uid: AngeliA.MapEditor.LastEdittingViewH
+  commentId: F:AngeliA.MapEditor.LastEdittingViewH
+  id: LastEdittingViewH
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: LastEdittingViewH
+  nameWithType: MapEditor.LastEdittingViewH
+  fullName: AngeliA.MapEditor.LastEdittingViewH
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LastEdittingViewH
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 167
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SavingInt LastEdittingViewH
+    return:
+      type: AngeliA.SavingInt
+    content.vb: Public Shared ReadOnly LastEdittingViewH As SavingInt
+- uid: AngeliA.MapEditor.#ctor
+  commentId: M:AngeliA.MapEditor.#ctor
+  id: '#ctor'
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: MapEditor()
+  nameWithType: MapEditor.MapEditor()
+  fullName: AngeliA.MapEditor.MapEditor()
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 258
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public MapEditor()
+    content.vb: Public Sub New()
+  overload: AngeliA.MapEditor.#ctor*
+  nameWithType.vb: MapEditor.New()
+  fullName.vb: AngeliA.MapEditor.New()
+  name.vb: New()
+- uid: AngeliA.MapEditor.OnActivated
+  commentId: M:AngeliA.MapEditor.OnActivated
+  id: OnActivated
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: OnActivated()
+  nameWithType: MapEditor.OnActivated()
+  fullName: AngeliA.MapEditor.OnActivated()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnActivated
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 261
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override void OnActivated()
+    content.vb: Public Overrides Sub OnActivated()
+  overridden: AngeliA.Entity.OnActivated
+  overload: AngeliA.MapEditor.OnActivated*
+- uid: AngeliA.MapEditor.UpdateWindowUI
+  commentId: M:AngeliA.MapEditor.UpdateWindowUI
+  id: UpdateWindowUI
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: UpdateWindowUI()
+  nameWithType: MapEditor.UpdateWindowUI()
+  fullName: AngeliA.MapEditor.UpdateWindowUI()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UpdateWindowUI
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 385
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override void UpdateWindowUI()
+    content.vb: Public Overrides Sub UpdateWindowUI()
+  overridden: AngeliA.WindowUI.UpdateWindowUI
+  overload: AngeliA.MapEditor.UpdateWindowUI*
+- uid: AngeliA.MapEditor.SetView(AngeliA.IRect,System.Int32,System.Boolean)
+  commentId: M:AngeliA.MapEditor.SetView(AngeliA.IRect,System.Int32,System.Boolean)
+  id: SetView(AngeliA.IRect,System.Int32,System.Boolean)
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: SetView(IRect, int, bool)
+  nameWithType: MapEditor.SetView(IRect, int, bool)
+  fullName: AngeliA.MapEditor.SetView(AngeliA.IRect, int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetView
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 1117
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void SetView(IRect view, int z, bool remapAllRenderingCells = false)
+    parameters:
+    - id: view
+      type: AngeliA.IRect
+    - id: z
+      type: System.Int32
+    - id: remapAllRenderingCells
+      type: System.Boolean
+    content.vb: Public Sub SetView(view As IRect, z As Integer, remapAllRenderingCells As Boolean = False)
+  overload: AngeliA.MapEditor.SetView*
+  nameWithType.vb: MapEditor.SetView(IRect, Integer, Boolean)
+  fullName.vb: AngeliA.MapEditor.SetView(AngeliA.IRect, Integer, Boolean)
+  name.vb: SetView(IRect, Integer, Boolean)
+- uid: AngeliA.MapEditor.SetViewZ(System.Int32)
+  commentId: M:AngeliA.MapEditor.SetViewZ(System.Int32)
+  id: SetViewZ(System.Int32)
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: SetViewZ(int)
+  nameWithType: MapEditor.SetViewZ(int)
+  fullName: AngeliA.MapEditor.SetViewZ(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetViewZ
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 1125
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void SetViewZ(int newZ)
+    parameters:
+    - id: newZ
+      type: System.Int32
+    content.vb: Public Sub SetViewZ(newZ As Integer)
+  overload: AngeliA.MapEditor.SetViewZ*
+  nameWithType.vb: MapEditor.SetViewZ(Integer)
+  fullName.vb: AngeliA.MapEditor.SetViewZ(Integer)
+  name.vb: SetViewZ(Integer)
+- uid: AngeliA.MapEditor.GotoPlayMode
+  commentId: M:AngeliA.MapEditor.GotoPlayMode
+  id: GotoPlayMode
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: GotoPlayMode()
+  nameWithType: MapEditor.GotoPlayMode()
+  fullName: AngeliA.MapEditor.GotoPlayMode()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GotoPlayMode
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 1133
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void GotoPlayMode()
+    content.vb: Public Sub GotoPlayMode()
+  overload: AngeliA.MapEditor.GotoPlayMode*
+- uid: AngeliA.MapEditor.GotoEditMode
+  commentId: M:AngeliA.MapEditor.GotoEditMode
+  id: GotoEditMode
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: GotoEditMode()
+  nameWithType: MapEditor.GotoEditMode()
+  fullName: AngeliA.MapEditor.GotoEditMode()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GotoEditMode
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 1139
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void GotoEditMode()
+    content.vb: Public Sub GotoEditMode()
+  overload: AngeliA.MapEditor.GotoEditMode*
+- uid: AngeliA.MapEditor.Save(System.Boolean)
+  commentId: M:AngeliA.MapEditor.Save(System.Boolean)
+  id: Save(System.Boolean)
+  parent: AngeliA.MapEditor
+  langs:
+  - csharp
+  - vb
+  name: Save(bool)
+  nameWithType: MapEditor.Save(bool)
+  fullName: AngeliA.MapEditor.Save(bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Save
+    path: ../AngeliA Framework/src/Entity/MapEditor/MapEditor.cs
+    startLine: 1153
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override void Save(bool forceSave = false)
+    parameters:
+    - id: forceSave
+      type: System.Boolean
+    content.vb: Public Overrides Sub Save(forceSave As Boolean = False)
+  overridden: AngeliA.WindowUI.Save(System.Boolean)
+  overload: AngeliA.MapEditor.Save*
+  nameWithType.vb: MapEditor.Save(Boolean)
+  fullName.vb: AngeliA.MapEditor.Save(Boolean)
+  name.vb: Save(Boolean)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Entity
+  commentId: T:AngeliA.Entity
+  parent: AngeliA
+  href: AngeliA.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: AngeliA.Entity
+- uid: AngeliA.EntityUI
+  commentId: T:AngeliA.EntityUI
+  parent: AngeliA
+  href: AngeliA.EntityUI.html
+  name: EntityUI
+  nameWithType: EntityUI
+  fullName: AngeliA.EntityUI
+- uid: AngeliA.WindowUI
+  commentId: T:AngeliA.WindowUI
+  parent: AngeliA
+  href: AngeliA.WindowUI.html
+  name: WindowUI
+  nameWithType: WindowUI
+  fullName: AngeliA.WindowUI
+- uid: AngeliA.IMapItem
+  commentId: T:AngeliA.IMapItem
+  parent: AngeliA
+  href: AngeliA.IMapItem.html
+  name: IMapItem
+  nameWithType: IMapItem
+  fullName: AngeliA.IMapItem
+- uid: AngeliA.IWindowEntityUI
+  commentId: T:AngeliA.IWindowEntityUI
+  parent: AngeliA
+  href: AngeliA.IWindowEntityUI.html
+  name: IWindowEntityUI
+  nameWithType: IWindowEntityUI
+  fullName: AngeliA.IWindowEntityUI
+- uid: AngeliA.WindowUI.DefaultWindowName
+  commentId: P:AngeliA.WindowUI.DefaultWindowName
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_DefaultWindowName
+  name: DefaultWindowName
+  nameWithType: WindowUI.DefaultWindowName
+  fullName: AngeliA.WindowUI.DefaultWindowName
+- uid: AngeliA.WindowUI.WindowRect
+  commentId: P:AngeliA.WindowUI.WindowRect
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_WindowRect
+  name: WindowRect
+  nameWithType: WindowUI.WindowRect
+  fullName: AngeliA.WindowUI.WindowRect
+- uid: AngeliA.WindowUI.IsDirty
+  commentId: P:AngeliA.WindowUI.IsDirty
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_IsDirty
+  name: IsDirty
+  nameWithType: WindowUI.IsDirty
+  fullName: AngeliA.WindowUI.IsDirty
+- uid: AngeliA.WindowUI.RequiringTooltipRect
+  commentId: P:AngeliA.WindowUI.RequiringTooltipRect
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_RequiringTooltipRect
+  name: RequiringTooltipRect
+  nameWithType: WindowUI.RequiringTooltipRect
+  fullName: AngeliA.WindowUI.RequiringTooltipRect
+- uid: AngeliA.WindowUI.RequiringTooltipContent
+  commentId: P:AngeliA.WindowUI.RequiringTooltipContent
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_RequiringTooltipContent
+  name: RequiringTooltipContent
+  nameWithType: WindowUI.RequiringTooltipContent
+  fullName: AngeliA.WindowUI.RequiringTooltipContent
+- uid: AngeliA.WindowUI.NotificationContent
+  commentId: P:AngeliA.WindowUI.NotificationContent
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_NotificationContent
+  name: NotificationContent
+  nameWithType: WindowUI.NotificationContent
+  fullName: AngeliA.WindowUI.NotificationContent
+- uid: AngeliA.WindowUI.NotificationSubContent
+  commentId: P:AngeliA.WindowUI.NotificationSubContent
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_NotificationSubContent
+  name: NotificationSubContent
+  nameWithType: WindowUI.NotificationSubContent
+  fullName: AngeliA.WindowUI.NotificationSubContent
+- uid: AngeliA.WindowUI.OnGameQuitting
+  commentId: M:AngeliA.WindowUI.OnGameQuitting
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_OnGameQuitting
+  name: OnGameQuitting()
+  nameWithType: WindowUI.OnGameQuitting()
+  fullName: AngeliA.WindowUI.OnGameQuitting()
+  spec.csharp:
+  - uid: AngeliA.WindowUI.OnGameQuitting
+    name: OnGameQuitting
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_OnGameQuitting
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.WindowUI.OnGameQuitting
+    name: OnGameQuitting
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_OnGameQuitting
+  - name: (
+  - name: )
+- uid: AngeliA.WindowUI.UpdateUI
+  commentId: M:AngeliA.WindowUI.UpdateUI
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_UpdateUI
+  name: UpdateUI()
+  nameWithType: WindowUI.UpdateUI()
+  fullName: AngeliA.WindowUI.UpdateUI()
+  spec.csharp:
+  - uid: AngeliA.WindowUI.UpdateUI
+    name: UpdateUI
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_UpdateUI
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.WindowUI.UpdateUI
+    name: UpdateUI
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_UpdateUI
+  - name: (
+  - name: )
+- uid: AngeliA.WindowUI.OpenWindow(System.Int32)
+  commentId: M:AngeliA.WindowUI.OpenWindow(System.Int32)
+  parent: AngeliA.WindowUI
+  isExternal: true
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_OpenWindow_System_Int32_
+  name: OpenWindow(int)
+  nameWithType: WindowUI.OpenWindow(int)
+  fullName: AngeliA.WindowUI.OpenWindow(int)
+  nameWithType.vb: WindowUI.OpenWindow(Integer)
+  fullName.vb: AngeliA.WindowUI.OpenWindow(Integer)
+  name.vb: OpenWindow(Integer)
+  spec.csharp:
+  - uid: AngeliA.WindowUI.OpenWindow(System.Int32)
+    name: OpenWindow
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_OpenWindow_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.WindowUI.OpenWindow(System.Int32)
+    name: OpenWindow
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_OpenWindow_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.WindowUI.CloseWindow(System.Int32)
+  commentId: M:AngeliA.WindowUI.CloseWindow(System.Int32)
+  parent: AngeliA.WindowUI
+  isExternal: true
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_CloseWindow_System_Int32_
+  name: CloseWindow(int)
+  nameWithType: WindowUI.CloseWindow(int)
+  fullName: AngeliA.WindowUI.CloseWindow(int)
+  nameWithType.vb: WindowUI.CloseWindow(Integer)
+  fullName.vb: AngeliA.WindowUI.CloseWindow(Integer)
+  name.vb: CloseWindow(Integer)
+  spec.csharp:
+  - uid: AngeliA.WindowUI.CloseWindow(System.Int32)
+    name: CloseWindow
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_CloseWindow_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.WindowUI.CloseWindow(System.Int32)
+    name: CloseWindow
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_CloseWindow_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.WindowUI.ForceWindowRect(AngeliA.IRect)
+  commentId: M:AngeliA.WindowUI.ForceWindowRect(AngeliA.IRect)
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_ForceWindowRect_AngeliA_IRect_
+  name: ForceWindowRect(IRect)
+  nameWithType: WindowUI.ForceWindowRect(IRect)
+  fullName: AngeliA.WindowUI.ForceWindowRect(AngeliA.IRect)
+  spec.csharp:
+  - uid: AngeliA.WindowUI.ForceWindowRect(AngeliA.IRect)
+    name: ForceWindowRect
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_ForceWindowRect_AngeliA_IRect_
+  - name: (
+  - uid: AngeliA.IRect
+    name: IRect
+    href: AngeliA.IRect.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.WindowUI.ForceWindowRect(AngeliA.IRect)
+    name: ForceWindowRect
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_ForceWindowRect_AngeliA_IRect_
+  - name: (
+  - uid: AngeliA.IRect
+    name: IRect
+    href: AngeliA.IRect.html
+  - name: )
+- uid: AngeliA.WindowUI.SetDirty
+  commentId: M:AngeliA.WindowUI.SetDirty
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_SetDirty
+  name: SetDirty()
+  nameWithType: WindowUI.SetDirty()
+  fullName: AngeliA.WindowUI.SetDirty()
+  spec.csharp:
+  - uid: AngeliA.WindowUI.SetDirty
+    name: SetDirty
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_SetDirty
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.WindowUI.SetDirty
+    name: SetDirty
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_SetDirty
+  - name: (
+  - name: )
+- uid: AngeliA.WindowUI.CleanDirty
+  commentId: M:AngeliA.WindowUI.CleanDirty
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_CleanDirty
+  name: CleanDirty()
+  nameWithType: WindowUI.CleanDirty()
+  fullName: AngeliA.WindowUI.CleanDirty()
+  spec.csharp:
+  - uid: AngeliA.WindowUI.CleanDirty
+    name: CleanDirty
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_CleanDirty
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.WindowUI.CleanDirty
+    name: CleanDirty
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_CleanDirty
+  - name: (
+  - name: )
+- uid: AngeliA.EntityUI.FirstUpdate
+  commentId: M:AngeliA.EntityUI.FirstUpdate
+  parent: AngeliA.EntityUI
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_FirstUpdate
+  name: FirstUpdate()
+  nameWithType: EntityUI.FirstUpdate()
+  fullName: AngeliA.EntityUI.FirstUpdate()
+  spec.csharp:
+  - uid: AngeliA.EntityUI.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_FirstUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_FirstUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.EntityUI.Update
+  commentId: M:AngeliA.EntityUI.Update
+  parent: AngeliA.EntityUI
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_Update
+  name: Update()
+  nameWithType: EntityUI.Update()
+  fullName: AngeliA.EntityUI.Update()
+  spec.csharp:
+  - uid: AngeliA.EntityUI.Update
+    name: Update
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_Update
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.Update
+    name: Update
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_Update
+  - name: (
+  - name: )
+- uid: AngeliA.EntityUI.LateUpdate
+  commentId: M:AngeliA.EntityUI.LateUpdate
+  parent: AngeliA.EntityUI
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate
+  name: LateUpdate()
+  nameWithType: EntityUI.LateUpdate()
+  fullName: AngeliA.EntityUI.LateUpdate()
+  spec.csharp:
+  - uid: AngeliA.EntityUI.LateUpdate
+    name: LateUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.LateUpdate
+    name: LateUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.Active
+  commentId: P:AngeliA.Entity.Active
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Active
+  name: Active
+  nameWithType: Entity.Active
+  fullName: AngeliA.Entity.Active
+- uid: AngeliA.Entity.X
+  commentId: P:AngeliA.Entity.X
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_X
+  name: X
+  nameWithType: Entity.X
+  fullName: AngeliA.Entity.X
+- uid: AngeliA.Entity.Y
+  commentId: P:AngeliA.Entity.Y
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Y
+  name: Y
+  nameWithType: Entity.Y
+  fullName: AngeliA.Entity.Y
+- uid: AngeliA.Entity.Width
+  commentId: P:AngeliA.Entity.Width
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Width
+  name: Width
+  nameWithType: Entity.Width
+  fullName: AngeliA.Entity.Width
+- uid: AngeliA.Entity.Height
+  commentId: P:AngeliA.Entity.Height
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Height
+  name: Height
+  nameWithType: Entity.Height
+  fullName: AngeliA.Entity.Height
+- uid: AngeliA.Entity.TypeID
+  commentId: P:AngeliA.Entity.TypeID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_TypeID
+  name: TypeID
+  nameWithType: Entity.TypeID
+  fullName: AngeliA.Entity.TypeID
+- uid: AngeliA.Entity.SpawnFrame
+  commentId: P:AngeliA.Entity.SpawnFrame
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_SpawnFrame
+  name: SpawnFrame
+  nameWithType: Entity.SpawnFrame
+  fullName: AngeliA.Entity.SpawnFrame
+- uid: AngeliA.Entity.FromWorld
+  commentId: P:AngeliA.Entity.FromWorld
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_FromWorld
+  name: FromWorld
+  nameWithType: Entity.FromWorld
+  fullName: AngeliA.Entity.FromWorld
+- uid: AngeliA.Entity.Rect
+  commentId: P:AngeliA.Entity.Rect
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Rect
+  name: Rect
+  nameWithType: Entity.Rect
+  fullName: AngeliA.Entity.Rect
+- uid: AngeliA.Entity.InstanceOrder
+  commentId: P:AngeliA.Entity.InstanceOrder
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceOrder
+  name: InstanceOrder
+  nameWithType: Entity.InstanceOrder
+  fullName: AngeliA.Entity.InstanceOrder
+- uid: AngeliA.Entity.MapUnitPos
+  commentId: P:AngeliA.Entity.MapUnitPos
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_MapUnitPos
+  name: MapUnitPos
+  nameWithType: Entity.MapUnitPos
+  fullName: AngeliA.Entity.MapUnitPos
+- uid: AngeliA.Entity.InstanceID
+  commentId: P:AngeliA.Entity.InstanceID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceID
+  name: InstanceID
+  nameWithType: Entity.InstanceID
+  fullName: AngeliA.Entity.InstanceID
+- uid: AngeliA.Entity.IgnoreReposition
+  commentId: P:AngeliA.Entity.IgnoreReposition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreReposition
+  name: IgnoreReposition
+  nameWithType: Entity.IgnoreReposition
+  fullName: AngeliA.Entity.IgnoreReposition
+- uid: AngeliA.Entity.XY
+  commentId: P:AngeliA.Entity.XY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_XY
+  name: XY
+  nameWithType: Entity.XY
+  fullName: AngeliA.Entity.XY
+- uid: AngeliA.Entity.Size
+  commentId: P:AngeliA.Entity.Size
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Size
+  name: Size
+  nameWithType: Entity.Size
+  fullName: AngeliA.Entity.Size
+- uid: AngeliA.Entity.Center
+  commentId: P:AngeliA.Entity.Center
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Center
+  name: Center
+  nameWithType: Entity.Center
+  fullName: AngeliA.Entity.Center
+- uid: AngeliA.Entity.CenterX
+  commentId: P:AngeliA.Entity.CenterX
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterX
+  name: CenterX
+  nameWithType: Entity.CenterX
+  fullName: AngeliA.Entity.CenterX
+- uid: AngeliA.Entity.CenterY
+  commentId: P:AngeliA.Entity.CenterY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterY
+  name: CenterY
+  nameWithType: Entity.CenterY
+  fullName: AngeliA.Entity.CenterY
+- uid: AngeliA.Entity.PivotUnitPosition
+  commentId: P:AngeliA.Entity.PivotUnitPosition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_PivotUnitPosition
+  name: PivotUnitPosition
+  nameWithType: Entity.PivotUnitPosition
+  fullName: AngeliA.Entity.PivotUnitPosition
+- uid: AngeliA.Entity.OnInactivated
+  commentId: M:AngeliA.Entity.OnInactivated
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  name: OnInactivated()
+  nameWithType: Entity.OnInactivated()
+  fullName: AngeliA.Entity.OnInactivated()
+  spec.csharp:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.BeforeUpdate
+  commentId: M:AngeliA.Entity.BeforeUpdate
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate
+  name: BeforeUpdate()
+  nameWithType: Entity.BeforeUpdate()
+  fullName: AngeliA.Entity.BeforeUpdate()
+  spec.csharp:
+  - uid: AngeliA.Entity.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  commentId: M:AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  name: AfterReposition(Int3, Int3)
+  nameWithType: Entity.AfterReposition(Int3, Int3)
+  fullName: AngeliA.Entity.AfterReposition(AngeliA.Int3, AngeliA.Int3)
+  spec.csharp:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+- uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  commentId: M:AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  parent: AngeliA.Entity
+  isExternal: true
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  name: IgnoreDespawnFromMap(int)
+  nameWithType: Entity.IgnoreDespawnFromMap(int)
+  fullName: AngeliA.Entity.IgnoreDespawnFromMap(int)
+  nameWithType.vb: Entity.IgnoreDespawnFromMap(Integer)
+  fullName.vb: AngeliA.Entity.IgnoreDespawnFromMap(Integer)
+  name.vb: IgnoreDespawnFromMap(Integer)
+  spec.csharp:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+  commentId: M:AngeliA.Entity.CancelIgnoreDespawnFromMap
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  name: CancelIgnoreDespawnFromMap()
+  nameWithType: Entity.CancelIgnoreDespawnFromMap()
+  fullName: AngeliA.Entity.CancelIgnoreDespawnFromMap()
+  spec.csharp:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.Draw
+  commentId: M:AngeliA.Entity.Draw
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  name: Draw()
+  nameWithType: Entity.Draw()
+  fullName: AngeliA.Entity.Draw()
+  spec.csharp:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.MapEditor.Instance*
+  commentId: Overload:AngeliA.MapEditor.Instance
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_Instance
+  name: Instance
+  nameWithType: MapEditor.Instance
+  fullName: AngeliA.MapEditor.Instance
+- uid: AngeliA.MapEditor
+  commentId: T:AngeliA.MapEditor
+  parent: AngeliA
+  href: AngeliA.MapEditor.html
+  name: MapEditor
+  nameWithType: MapEditor
+  fullName: AngeliA.MapEditor
+- uid: AngeliA.MapEditor.IsActived*
+  commentId: Overload:AngeliA.MapEditor.IsActived
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_IsActived
+  name: IsActived
+  nameWithType: MapEditor.IsActived
+  fullName: AngeliA.MapEditor.IsActived
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.MapEditor.IsEditing*
+  commentId: Overload:AngeliA.MapEditor.IsEditing
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_IsEditing
+  name: IsEditing
+  nameWithType: MapEditor.IsEditing
+  fullName: AngeliA.MapEditor.IsEditing
+- uid: AngeliA.MapEditor.IsPlaying*
+  commentId: Overload:AngeliA.MapEditor.IsPlaying
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_IsPlaying
+  name: IsPlaying
+  nameWithType: MapEditor.IsPlaying
+  fullName: AngeliA.MapEditor.IsPlaying
+- uid: AngeliA.MapEditor.IsEditorNavigating*
+  commentId: Overload:AngeliA.MapEditor.IsEditorNavigating
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_IsEditorNavigating
+  name: IsEditorNavigating
+  nameWithType: MapEditor.IsEditorNavigating
+  fullName: AngeliA.MapEditor.IsEditorNavigating
+- uid: AngeliA.MapEditor.QuickPlayerDrop*
+  commentId: Overload:AngeliA.MapEditor.QuickPlayerDrop
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_QuickPlayerDrop
+  name: QuickPlayerDrop
+  nameWithType: MapEditor.QuickPlayerDrop
+  fullName: AngeliA.MapEditor.QuickPlayerDrop
+- uid: AngeliA.MapEditor.ShowState*
+  commentId: Overload:AngeliA.MapEditor.ShowState
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_ShowState
+  name: ShowState
+  nameWithType: MapEditor.ShowState
+  fullName: AngeliA.MapEditor.ShowState
+- uid: AngeliA.MapEditor.ShowBehind*
+  commentId: Overload:AngeliA.MapEditor.ShowBehind
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_ShowBehind
+  name: ShowBehind
+  nameWithType: MapEditor.ShowBehind
+  fullName: AngeliA.MapEditor.ShowBehind
+- uid: AngeliA.MapEditor.ShowGridGizmos*
+  commentId: Overload:AngeliA.MapEditor.ShowGridGizmos
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_ShowGridGizmos
+  name: ShowGridGizmos
+  nameWithType: MapEditor.ShowGridGizmos
+  fullName: AngeliA.MapEditor.ShowGridGizmos
+- uid: AngeliA.MapEditor.MapRoot*
+  commentId: Overload:AngeliA.MapEditor.MapRoot
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_MapRoot
+  name: MapRoot
+  nameWithType: MapEditor.MapRoot
+  fullName: AngeliA.MapEditor.MapRoot
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.MapEditor.CurrentZ*
+  commentId: Overload:AngeliA.MapEditor.CurrentZ
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_CurrentZ
+  name: CurrentZ
+  nameWithType: MapEditor.CurrentZ
+  fullName: AngeliA.MapEditor.CurrentZ
+- uid: AngeliA.WindowUI.BackgroundRect
+  commentId: P:AngeliA.WindowUI.BackgroundRect
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_BackgroundRect
+  name: BackgroundRect
+  nameWithType: WindowUI.BackgroundRect
+  fullName: AngeliA.WindowUI.BackgroundRect
+- uid: AngeliA.MapEditor.BackgroundRect*
+  commentId: Overload:AngeliA.MapEditor.BackgroundRect
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_BackgroundRect
+  name: BackgroundRect
+  nameWithType: MapEditor.BackgroundRect
+  fullName: AngeliA.MapEditor.BackgroundRect
+- uid: AngeliA.IRect
+  commentId: T:AngeliA.IRect
+  parent: AngeliA
+  href: AngeliA.IRect.html
+  name: IRect
+  nameWithType: IRect
+  fullName: AngeliA.IRect
+- uid: AngeliA.SavingInt
+  commentId: T:AngeliA.SavingInt
+  parent: AngeliA
+  href: AngeliA.SavingInt.html
+  name: SavingInt
+  nameWithType: SavingInt
+  fullName: AngeliA.SavingInt
+- uid: AngeliA.MapEditor.#ctor*
+  commentId: Overload:AngeliA.MapEditor.#ctor
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor__ctor
+  name: MapEditor
+  nameWithType: MapEditor.MapEditor
+  fullName: AngeliA.MapEditor.MapEditor
+  nameWithType.vb: MapEditor.New
+  fullName.vb: AngeliA.MapEditor.New
+  name.vb: New
+- uid: AngeliA.Entity.OnActivated
+  commentId: M:AngeliA.Entity.OnActivated
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_OnActivated
+  name: OnActivated()
+  nameWithType: Entity.OnActivated()
+  fullName: AngeliA.Entity.OnActivated()
+  spec.csharp:
+  - uid: AngeliA.Entity.OnActivated
+    name: OnActivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.OnActivated
+    name: OnActivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnActivated
+  - name: (
+  - name: )
+- uid: AngeliA.MapEditor.OnActivated*
+  commentId: Overload:AngeliA.MapEditor.OnActivated
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_OnActivated
+  name: OnActivated
+  nameWithType: MapEditor.OnActivated
+  fullName: AngeliA.MapEditor.OnActivated
+- uid: AngeliA.WindowUI.UpdateWindowUI
+  commentId: M:AngeliA.WindowUI.UpdateWindowUI
+  parent: AngeliA.WindowUI
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_UpdateWindowUI
+  name: UpdateWindowUI()
+  nameWithType: WindowUI.UpdateWindowUI()
+  fullName: AngeliA.WindowUI.UpdateWindowUI()
+  spec.csharp:
+  - uid: AngeliA.WindowUI.UpdateWindowUI
+    name: UpdateWindowUI
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_UpdateWindowUI
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.WindowUI.UpdateWindowUI
+    name: UpdateWindowUI
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_UpdateWindowUI
+  - name: (
+  - name: )
+- uid: AngeliA.MapEditor.UpdateWindowUI*
+  commentId: Overload:AngeliA.MapEditor.UpdateWindowUI
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_UpdateWindowUI
+  name: UpdateWindowUI
+  nameWithType: MapEditor.UpdateWindowUI
+  fullName: AngeliA.MapEditor.UpdateWindowUI
+- uid: AngeliA.MapEditor.SetView*
+  commentId: Overload:AngeliA.MapEditor.SetView
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_SetView_AngeliA_IRect_System_Int32_System_Boolean_
+  name: SetView
+  nameWithType: MapEditor.SetView
+  fullName: AngeliA.MapEditor.SetView
+- uid: AngeliA.MapEditor.SetViewZ*
+  commentId: Overload:AngeliA.MapEditor.SetViewZ
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_SetViewZ_System_Int32_
+  name: SetViewZ
+  nameWithType: MapEditor.SetViewZ
+  fullName: AngeliA.MapEditor.SetViewZ
+- uid: AngeliA.MapEditor.GotoPlayMode*
+  commentId: Overload:AngeliA.MapEditor.GotoPlayMode
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_GotoPlayMode
+  name: GotoPlayMode
+  nameWithType: MapEditor.GotoPlayMode
+  fullName: AngeliA.MapEditor.GotoPlayMode
+- uid: AngeliA.MapEditor.GotoEditMode*
+  commentId: Overload:AngeliA.MapEditor.GotoEditMode
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_GotoEditMode
+  name: GotoEditMode
+  nameWithType: MapEditor.GotoEditMode
+  fullName: AngeliA.MapEditor.GotoEditMode
+- uid: AngeliA.WindowUI.Save(System.Boolean)
+  commentId: M:AngeliA.WindowUI.Save(System.Boolean)
+  parent: AngeliA.WindowUI
+  isExternal: true
+  href: AngeliA.WindowUI.html#AngeliA_WindowUI_Save_System_Boolean_
+  name: Save(bool)
+  nameWithType: WindowUI.Save(bool)
+  fullName: AngeliA.WindowUI.Save(bool)
+  nameWithType.vb: WindowUI.Save(Boolean)
+  fullName.vb: AngeliA.WindowUI.Save(Boolean)
+  name.vb: Save(Boolean)
+  spec.csharp:
+  - uid: AngeliA.WindowUI.Save(System.Boolean)
+    name: Save
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_Save_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.WindowUI.Save(System.Boolean)
+    name: Save
+    href: AngeliA.WindowUI.html#AngeliA_WindowUI_Save_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.MapEditor.Save*
+  commentId: Overload:AngeliA.MapEditor.Save
+  href: AngeliA.MapEditor.html#AngeliA_MapEditor_Save_System_Boolean_
+  name: Save
+  nameWithType: MapEditor.Save
+  fullName: AngeliA.MapEditor.Save

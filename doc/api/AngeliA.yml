@@ -1,0 +1,4053 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA
+  commentId: N:AngeliA
+  id: AngeliA
+  children:
+  - AngeliA.AfterLateUpdateAttribute
+  - AngeliA.AfterLayerFrameUpdate_IntLayerAttribute
+  - AngeliA.AfterLevelRenderedAttribute
+  - AngeliA.AfterimageScope
+  - AngeliA.Alignment
+  - AngeliA.AngePath
+  - AngeliA.AngeSprite
+  - AngeliA.AntiBuffItem`1
+  - AngeliA.AntiBuffItem`1.TriggerMode
+  - AngeliA.Atlas
+  - AngeliA.AtlasState
+  - AngeliA.AtlasType
+  - AngeliA.AudioCode
+  - AngeliA.AudioData
+  - AngeliA.AutoValidList`1
+  - AngeliA.BasicGlobalItemCombinationAttribute
+  - AngeliA.BasicItemCombinationAttribute
+  - AngeliA.BeforeBeforeUpdateAttribute
+  - AngeliA.BeforeFirstUpdateAttribute
+  - AngeliA.BeforeLateUpdateAttribute
+  - AngeliA.BeforeLayerFrameUpdate_IntLayerAttribute
+  - AngeliA.BeforeLevelRenderedAttribute
+  - AngeliA.BeforeSavingSlotChanged
+  - AngeliA.BeforeUpdateUpdateAttribute
+  - AngeliA.BlockBuilder
+  - AngeliA.BlockColor
+  - AngeliA.BlockColorBlack
+  - AngeliA.BlockColorBlue
+  - AngeliA.BlockColorCyan
+  - AngeliA.BlockColorGreen
+  - AngeliA.BlockColorGrey
+  - AngeliA.BlockColorOrange
+  - AngeliA.BlockColorPink
+  - AngeliA.BlockColorPurple
+  - AngeliA.BlockColorRed
+  - AngeliA.BlockColorYellow
+  - AngeliA.BlockColoringSystem
+  - AngeliA.BlockRule
+  - AngeliA.BlockType
+  - AngeliA.BodyCloth
+  - AngeliA.BodyGadget
+  - AngeliA.BodyGadgetItem
+  - AngeliA.BodyGadgetType
+  - AngeliA.BodyPart
+  - AngeliA.BodyPart.CoverMode
+  - AngeliA.BodySetAttribute
+  - AngeliA.BodySetItem
+  - AngeliA.Buff
+  - AngeliA.BuffItem
+  - AngeliA.BuffItem`1
+  - AngeliA.BuiltInSprite
+  - AngeliA.BuiltInText
+  - AngeliA.Bullet
+  - AngeliA.Cell
+  - AngeliA.CellScreenshotSystem
+  - AngeliA.CellScreenshotSystem.Screenshot
+  - AngeliA.CellZScope
+  - AngeliA.ChangeSavingSlotTask
+  - AngeliA.CharSprite
+  - AngeliA.Character
+  - AngeliA.CharacterAnimationType
+  - AngeliA.CharacterAttackness
+  - AngeliA.CharacterAttribute
+  - AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute
+  - AngeliA.CharacterBuff
+  - AngeliA.CharacterFaceExpression
+  - AngeliA.CharacterHealth
+  - AngeliA.CharacterInventoryType
+  - AngeliA.CharacterMovement
+  - AngeliA.CharacterMovementState
+  - AngeliA.CharacterPose
+  - AngeliA.CharacterRenderer
+  - AngeliA.CharacterRenderingConfig
+  - AngeliA.CharacterState
+  - AngeliA.CheatCodeAttribute
+  - AngeliA.CheatSystem
+  - AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
+  - AngeliA.CircuitSystem
+  - AngeliA.ClampCellsScope
+  - AngeliA.Cloth
+  - AngeliA.ClothItem
+  - AngeliA.ClothType
+  - AngeliA.Color32
+  - AngeliA.ColorF
+  - AngeliA.ColorGradient
+  - AngeliA.ColorGradient.Data
+  - AngeliA.CompareMode
+  - AngeliA.Const
+  - AngeliA.ControlHintUI
+  - AngeliA.Cursor
+  - AngeliA.Damage
+  - AngeliA.Debug
+  - AngeliA.DefaultDialogueUI
+  - AngeliA.DefaultGamepadGamekeyAttribute
+  - AngeliA.DefaultKeyboardGamekeyAttribute
+  - AngeliA.DefaultLayerScope
+  - AngeliA.DefaultPropellerWing
+  - AngeliA.DefaultWing
+  - AngeliA.DelayTask
+  - AngeliA.DespawnEntityTask
+  - AngeliA.DialogueTask
+  - AngeliA.DialogueUI
+  - AngeliA.Direction2
+  - AngeliA.Direction3
+  - AngeliA.Direction4
+  - AngeliA.Direction5
+  - AngeliA.Direction8
+  - AngeliA.DynamicClampCellScope
+  - AngeliA.Ear
+  - AngeliA.Ease
+  - AngeliA.EchoDictionary`2
+  - AngeliA.EmptyScope
+  - AngeliA.EnablePlayerSystemAttribute
+  - AngeliA.Entity
+  - AngeliA.EntityAttribute
+  - AngeliA.EntityAttribute.CapacityAttribute
+  - AngeliA.EntityAttribute.DontDespawnOutOfRangeAttribute
+  - AngeliA.EntityAttribute.DontDestroyOnZChangedAttribute
+  - AngeliA.EntityAttribute.DontDrawBehindAttribute
+  - AngeliA.EntityAttribute.DontSpawnFromWorld
+  - AngeliA.EntityAttribute.ExcludeInMapEditorAttribute
+  - AngeliA.EntityAttribute.LayerAttribute
+  - AngeliA.EntityAttribute.MapEditorGroupAttribute
+  - AngeliA.EntityAttribute.RepositionWhenInactiveAttribute
+  - AngeliA.EntityAttribute.SpawnWithCheatCodeAttribute
+  - AngeliA.EntityAttribute.StageOrderAttribute
+  - AngeliA.EntityAttribute.UpdateOutOfRangeAttribute
+  - AngeliA.EntityHookTask
+  - AngeliA.EntityLayer
+  - AngeliA.EntityLayerCapacityAttribute
+  - AngeliA.EntityUI
+  - AngeliA.EnvironmentShadowScope
+  - AngeliA.Equipment
+  - AngeliA.EquipmentType
+  - AngeliA.EventAttribute
+  - AngeliA.Extension
+  - AngeliA.FRect
+  - AngeliA.Face
+  - AngeliA.FadeInTask
+  - AngeliA.FadeOutTask
+  - AngeliA.FastNoiseGroup
+  - AngeliA.FileBrowserUI
+  - AngeliA.FittingPose
+  - AngeliA.Float2
+  - AngeliA.Float3
+  - AngeliA.Float4
+  - AngeliA.FontData
+  - AngeliA.FontScope
+  - AngeliA.Food
+  - AngeliA.FootCloth
+  - AngeliA.FrameBasedBool
+  - AngeliA.FrameBasedColor
+  - AngeliA.FrameBasedInt
+  - AngeliA.FrameBasedValue
+  - AngeliA.FrameBasedValue`1
+  - AngeliA.FrameworkUtil
+  - AngeliA.GUI
+  - AngeliA.GUIBodyColorScope
+  - AngeliA.GUIColorScope
+  - AngeliA.GUIContentColorScope
+  - AngeliA.GUIEnableScope
+  - AngeliA.GUIHorizontalScrollScope
+  - AngeliA.GUIInteractableScope
+  - AngeliA.GUILabelWidthScope
+  - AngeliA.GUIScrollScope
+  - AngeliA.GUISkin
+  - AngeliA.GUISkin.LabelPattern
+  - AngeliA.GUISkinScope
+  - AngeliA.GUIState
+  - AngeliA.GUIStyle
+  - AngeliA.GUIVerticalScrollScope
+  - AngeliA.Game
+  - AngeliA.Gamekey
+  - AngeliA.GamepadKey
+  - AngeliA.GenericDialogUI
+  - AngeliA.GenericDialogUI.Option
+  - AngeliA.GenericPopupUI
+  - AngeliA.GlobalGravityAttribute
+  - AngeliA.GlobalItemCombinationAttribute
+  - AngeliA.GlobalItemCombinationAttribute`1
+  - AngeliA.GlobalItemCombinationAttribute`2
+  - AngeliA.GlobalItemCombinationAttribute`3
+  - AngeliA.GlobalItemCombinationAttribute`4
+  - AngeliA.GroupAnimationHolder
+  - AngeliA.Hair
+  - AngeliA.HandCloth
+  - AngeliA.HandTool
+  - AngeliA.HandheldPoseAnimation
+  - AngeliA.HeadCloth
+  - AngeliA.HipCloth
+  - AngeliA.HipCloth.HipClothType
+  - AngeliA.Horn
+  - AngeliA.Hotkey
+  - AngeliA.IActionTarget
+  - AngeliA.IBlockEntity
+  - AngeliA.IBlockSquad
+  - AngeliA.IBumpable
+  - AngeliA.ICarrier
+  - AngeliA.ICircuitOperator
+  - AngeliA.ICombustible
+  - AngeliA.IDamageReceiver
+  - AngeliA.IFire
+  - AngeliA.IItemTransfer
+  - AngeliA.IJsonSerializationCallback
+  - AngeliA.IMapItem
+  - AngeliA.IPlayable
+  - AngeliA.IProgressiveItem
+  - AngeliA.IRect
+  - AngeliA.IRouteWalker
+  - AngeliA.IUndoItem
+  - AngeliA.IWindowEntityUI
+  - AngeliA.IWithCharacterAttackness
+  - AngeliA.IWithCharacterBuff
+  - AngeliA.IWithCharacterHealth
+  - AngeliA.IWithCharacterMovement
+  - AngeliA.IWithCharacterRenderer
+  - AngeliA.IgnoreArtworkPixelsAttribute
+  - AngeliA.IgnoreInputScope
+  - AngeliA.Input
+  - AngeliA.Int2
+  - AngeliA.Int3
+  - AngeliA.Int4
+  - AngeliA.IntToChars
+  - AngeliA.Inventory
+  - AngeliA.InventoryPartnerUI
+  - AngeliA.Item
+  - AngeliA.ItemCombinationAttribute
+  - AngeliA.ItemCombinationAttribute`1
+  - AngeliA.ItemCombinationAttribute`2
+  - AngeliA.ItemCombinationAttribute`3
+  - AngeliA.ItemCombinationAttribute`4
+  - AngeliA.ItemCombinationParam
+  - AngeliA.ItemDropAttribute
+  - AngeliA.ItemDropAttribute`1
+  - AngeliA.ItemHolder
+  - AngeliA.ItemSystem
+  - AngeliA.ItemSystem.ItemData
+  - AngeliA.Jewelry
+  - AngeliA.JsonUtil
+  - AngeliA.KeyboardKey
+  - AngeliA.Language
+  - AngeliA.LanguageCode
+  - AngeliA.LanguageUtil
+  - AngeliA.LayerScope
+  - AngeliA.LightingSystem
+  - AngeliA.Long4
+  - AngeliA.MapEditor
+  - AngeliA.MapEditorBlinkParticle
+  - AngeliA.MapEditorToolbarButton
+  - AngeliA.MenuUI
+  - AngeliA.MethodTask
+  - AngeliA.ModularBodySuit
+  - AngeliA.ModularEar
+  - AngeliA.ModularFace
+  - AngeliA.ModularFootSuit
+  - AngeliA.ModularHair
+  - AngeliA.ModularHandSuit
+  - AngeliA.ModularHeadSuit
+  - AngeliA.ModularHipSuit
+  - AngeliA.ModularHorn
+  - AngeliA.ModularTail
+  - AngeliA.ModularWing
+  - AngeliA.MovementEditor
+  - AngeliA.MusicData
+  - AngeliA.NoItemCombinationAttribute
+  - AngeliA.NoiseMatching
+  - AngeliA.NonStackableItem
+  - AngeliA.NotificationUI
+  - AngeliA.NumberEight
+  - AngeliA.NumberFive
+  - AngeliA.NumberFour
+  - AngeliA.NumberNine
+  - AngeliA.NumberOne
+  - AngeliA.NumberSeven
+  - AngeliA.NumberSix
+  - AngeliA.NumberThree
+  - AngeliA.NumberTwo
+  - AngeliA.NumberZero
+  - AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute
+  - AngeliA.OnBulletHitEnvironment_Bullet
+  - AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute
+  - AngeliA.OnCharacterCrash_Entity
+  - AngeliA.OnCharacterFly_Entity
+  - AngeliA.OnCharacterFootStepped_Entity
+  - AngeliA.OnCharacterJump_Entity
+  - AngeliA.OnCharacterPassOut_Entity
+  - AngeliA.OnCharacterPound_Entity
+  - AngeliA.OnCharacterSleeping_Entity
+  - AngeliA.OnCharacterSlideStepped_Entity
+  - AngeliA.OnCharacterTeleport_Entity
+  - AngeliA.OnCheatPerformed_StringCodeAttribute
+  - AngeliA.OnCircuitWireActived_Int3UnitPosAttribute
+  - AngeliA.OnDealDamage_Damage_IDamageReceiver
+  - AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute
+  - AngeliA.OnFileDropped_StringPathAttribute
+  - AngeliA.OnGameFocusedAttribute
+  - AngeliA.OnGameInitializeAttribute
+  - AngeliA.OnGameInitializeLaterAttribute
+  - AngeliA.OnGameLostFocusAttribute
+  - AngeliA.OnGameQuittingAttribute
+  - AngeliA.OnGameRestartAttribute
+  - AngeliA.OnGameTryingToQuitAttribute
+  - AngeliA.OnGameUpdateAttribute
+  - AngeliA.OnGameUpdateLaterAttribute
+  - AngeliA.OnGameUpdatePauselessAttribute
+  - AngeliA.OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute
+  - AngeliA.OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute
+  - AngeliA.OnItemError_Entity_Int2Pos_IntIconID
+  - AngeliA.OnItemLost_Character_IntItemIDAttribute
+  - AngeliA.OnItemUnlocked_IntItemIDAttribute
+  - AngeliA.OnLanguageChangedAttribute
+  - AngeliA.OnMainSheetReloadAttribute
+  - AngeliA.OnMapEditorModeChange_ModeAttribute
+  - AngeliA.OnMapEditorModeChange_ModeAttribute.Mode
+  - AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute
+  - AngeliA.OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute
+  - AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute
+  - AngeliA.OnSavingSlotChanged
+  - AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
+  - AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
+  - AngeliA.OnViewZChangedAttribute
+  - AngeliA.OnWindowSizeChangedAttribute
+  - AngeliA.OnWorldCreatedBySquad_WorldAttribute
+  - AngeliA.OnWorldLoadedBySquad_WorldAttribute
+  - AngeliA.OnWorldSavedByMapEditor_WorldAttribute
+  - AngeliA.OperationMode
+  - AngeliA.OrderedAttribute
+  - AngeliA.OrientedSprite
+  - AngeliA.Particle
+  - AngeliA.PauseMenuUI
+  - AngeliA.Physics
+  - AngeliA.PhysicsCell
+  - AngeliA.PhysicsLayer
+  - AngeliA.PhysicsMask
+  - AngeliA.Pipe`1
+  - AngeliA.PlayerMenuItem`1
+  - AngeliA.PlayerMenuPartnerUI
+  - AngeliA.PlayerMenuUI
+  - AngeliA.PlayerQuickMenuUI
+  - AngeliA.PlayerSystem
+  - AngeliA.PoseAnimation
+  - AngeliA.PoseAnimation_Animation_TakingDamage
+  - AngeliA.PoseAnimation_Brake
+  - AngeliA.PoseAnimation_Climb
+  - AngeliA.PoseAnimation_Crash
+  - AngeliA.PoseAnimation_Dash
+  - AngeliA.PoseAnimation_Fly
+  - AngeliA.PoseAnimation_GrabSide
+  - AngeliA.PoseAnimation_GrabTop
+  - AngeliA.PoseAnimation_Idle
+  - AngeliA.PoseAnimation_JumpDown
+  - AngeliA.PoseAnimation_JumpUp
+  - AngeliA.PoseAnimation_PassOut
+  - AngeliA.PoseAnimation_Pound
+  - AngeliA.PoseAnimation_Rolling
+  - AngeliA.PoseAnimation_Run
+  - AngeliA.PoseAnimation_Rush
+  - AngeliA.PoseAnimation_Sleep
+  - AngeliA.PoseAnimation_Slide
+  - AngeliA.PoseAnimation_Spin
+  - AngeliA.PoseAnimation_SquatIdle
+  - AngeliA.PoseAnimation_SquatMove
+  - AngeliA.PoseAnimation_SwimIdle
+  - AngeliA.PoseAnimation_SwimMove
+  - AngeliA.PoseAnimation_Walk
+  - AngeliA.PoseCharacter
+  - AngeliA.PoseCharacterRenderer
+  - AngeliA.PoseHandheld_Block
+  - AngeliA.PoseHandheld_Tool
+  - AngeliA.PosePerform_Block
+  - AngeliA.PosePerform_Tool
+  - AngeliA.ProjectType
+  - AngeliA.PropGroupAttribute
+  - AngeliA.PropSeparatorAttribute
+  - AngeliA.PropVisibilityAttribute
+  - AngeliA.RenderLayer
+  - AngeliA.Renderer
+  - AngeliA.Renderer.CellComparer
+  - AngeliA.RendererLayerCapacityAttribute
+  - AngeliA.RestartGameTask
+  - AngeliA.ReverseCellsScope
+  - AngeliA.Rigidbody
+  - AngeliA.RotateCellScope
+  - AngeliA.Rule
+  - AngeliA.Saving
+  - AngeliA.SavingBool
+  - AngeliA.SavingColor32
+  - AngeliA.SavingColor32NoAlpha
+  - AngeliA.SavingHotkey
+  - AngeliA.SavingInt
+  - AngeliA.SavingLocation
+  - AngeliA.SavingString
+  - AngeliA.SavingSystem
+  - AngeliA.Saving`1
+  - AngeliA.SelectPlayerTask
+  - AngeliA.Sheet
+  - AngeliA.SheetCharacterRenderer
+  - AngeliA.SheetIndexScope
+  - AngeliA.ShiftCellsScope
+  - AngeliA.Sky
+  - AngeliA.SoundData
+  - AngeliA.SpawnEntityTask
+  - AngeliA.SpriteCode
+  - AngeliA.SpriteGroup
+  - AngeliA.Stage
+  - AngeliA.SummonAttackness
+  - AngeliA.SwitchItem`1
+  - AngeliA.Tag
+  - AngeliA.TagUtil
+  - AngeliA.Tail
+  - AngeliA.Task
+  - AngeliA.TaskResult
+  - AngeliA.TaskSystem
+  - AngeliA.ToolApplicationAttribute
+  - AngeliA.TransferSystem
+  - AngeliA.UILayerScope
+  - AngeliA.UndoRedo
+  - AngeliA.Universe
+  - AngeliA.UniverseInfo
+  - AngeliA.Util
+  - AngeliA.Util.MathfInternal
+  - AngeliA.Weapon
+  - AngeliA.WeaponValidDirection
+  - AngeliA.Weapon`1
+  - AngeliA.WindowUI
+  - AngeliA.Wing
+  - AngeliA.World
+  - AngeliA.WorldPathPool
+  - AngeliA.WorldSquad
+  - AngeliA.WorldStream
+  - AngeliA.WrapMode
+  langs:
+  - csharp
+  - vb
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+  type: Namespace
+  assemblies:
+  - AngeliA Framework
+references:
+- uid: AngeliA.ToolApplicationAttribute
+  commentId: T:AngeliA.ToolApplicationAttribute
+  href: AngeliA.ToolApplicationAttribute.html
+  name: ToolApplicationAttribute
+  nameWithType: ToolApplicationAttribute
+  fullName: AngeliA.ToolApplicationAttribute
+- uid: AngeliA.IgnoreArtworkPixelsAttribute
+  commentId: T:AngeliA.IgnoreArtworkPixelsAttribute
+  href: AngeliA.IgnoreArtworkPixelsAttribute.html
+  name: IgnoreArtworkPixelsAttribute
+  nameWithType: IgnoreArtworkPixelsAttribute
+  fullName: AngeliA.IgnoreArtworkPixelsAttribute
+- uid: AngeliA.DefaultKeyboardGamekeyAttribute
+  commentId: T:AngeliA.DefaultKeyboardGamekeyAttribute
+  href: AngeliA.DefaultKeyboardGamekeyAttribute.html
+  name: DefaultKeyboardGamekeyAttribute
+  nameWithType: DefaultKeyboardGamekeyAttribute
+  fullName: AngeliA.DefaultKeyboardGamekeyAttribute
+- uid: AngeliA.DefaultGamepadGamekeyAttribute
+  commentId: T:AngeliA.DefaultGamepadGamekeyAttribute
+  href: AngeliA.DefaultGamepadGamekeyAttribute.html
+  name: DefaultGamepadGamekeyAttribute
+  nameWithType: DefaultGamepadGamekeyAttribute
+  fullName: AngeliA.DefaultGamepadGamekeyAttribute
+- uid: AngeliA.EntityLayerCapacityAttribute
+  commentId: T:AngeliA.EntityLayerCapacityAttribute
+  href: AngeliA.EntityLayerCapacityAttribute.html
+  name: EntityLayerCapacityAttribute
+  nameWithType: EntityLayerCapacityAttribute
+  fullName: AngeliA.EntityLayerCapacityAttribute
+- uid: AngeliA.RendererLayerCapacityAttribute
+  commentId: T:AngeliA.RendererLayerCapacityAttribute
+  href: AngeliA.RendererLayerCapacityAttribute.html
+  name: RendererLayerCapacityAttribute
+  nameWithType: RendererLayerCapacityAttribute
+  fullName: AngeliA.RendererLayerCapacityAttribute
+- uid: AngeliA.GlobalGravityAttribute
+  commentId: T:AngeliA.GlobalGravityAttribute
+  href: AngeliA.GlobalGravityAttribute.html
+  name: GlobalGravityAttribute
+  nameWithType: GlobalGravityAttribute
+  fullName: AngeliA.GlobalGravityAttribute
+- uid: AngeliA.EnablePlayerSystemAttribute
+  commentId: T:AngeliA.EnablePlayerSystemAttribute
+  href: AngeliA.EnablePlayerSystemAttribute.html
+  name: EnablePlayerSystemAttribute
+  nameWithType: EnablePlayerSystemAttribute
+  fullName: AngeliA.EnablePlayerSystemAttribute
+- uid: AngeliA.BodySetAttribute
+  commentId: T:AngeliA.BodySetAttribute
+  href: AngeliA.BodySetAttribute.html
+  name: BodySetAttribute
+  nameWithType: BodySetAttribute
+  fullName: AngeliA.BodySetAttribute
+- uid: AngeliA.CharacterAttribute
+  commentId: T:AngeliA.CharacterAttribute
+  href: AngeliA.CharacterAttribute.html
+  name: CharacterAttribute
+  nameWithType: CharacterAttribute
+  fullName: AngeliA.CharacterAttribute
+- uid: AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute
+  commentId: T:AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute
+  href: AngeliA.CharacterAttribute.html
+  name: CharacterAttribute.DefaultSelectedPlayerAttribute
+  nameWithType: CharacterAttribute.DefaultSelectedPlayerAttribute
+  fullName: AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute
+  spec.csharp:
+  - uid: AngeliA.CharacterAttribute
+    name: CharacterAttribute
+    href: AngeliA.CharacterAttribute.html
+  - name: .
+  - uid: AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute
+    name: DefaultSelectedPlayerAttribute
+    href: AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute.html
+  spec.vb:
+  - uid: AngeliA.CharacterAttribute
+    name: CharacterAttribute
+    href: AngeliA.CharacterAttribute.html
+  - name: .
+  - uid: AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute
+    name: DefaultSelectedPlayerAttribute
+    href: AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute.html
+- uid: AngeliA.EntityAttribute
+  commentId: T:AngeliA.EntityAttribute
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute
+  nameWithType: EntityAttribute
+  fullName: AngeliA.EntityAttribute
+- uid: AngeliA.EntityAttribute.ExcludeInMapEditorAttribute
+  commentId: T:AngeliA.EntityAttribute.ExcludeInMapEditorAttribute
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.ExcludeInMapEditorAttribute
+  nameWithType: EntityAttribute.ExcludeInMapEditorAttribute
+  fullName: AngeliA.EntityAttribute.ExcludeInMapEditorAttribute
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.ExcludeInMapEditorAttribute
+    name: ExcludeInMapEditorAttribute
+    href: AngeliA.EntityAttribute.ExcludeInMapEditorAttribute.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.ExcludeInMapEditorAttribute
+    name: ExcludeInMapEditorAttribute
+    href: AngeliA.EntityAttribute.ExcludeInMapEditorAttribute.html
+- uid: AngeliA.EntityAttribute.MapEditorGroupAttribute
+  commentId: T:AngeliA.EntityAttribute.MapEditorGroupAttribute
+  parent: AngeliA
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.MapEditorGroupAttribute
+  nameWithType: EntityAttribute.MapEditorGroupAttribute
+  fullName: AngeliA.EntityAttribute.MapEditorGroupAttribute
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.MapEditorGroupAttribute
+    name: MapEditorGroupAttribute
+    href: AngeliA.EntityAttribute.MapEditorGroupAttribute.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.MapEditorGroupAttribute
+    name: MapEditorGroupAttribute
+    href: AngeliA.EntityAttribute.MapEditorGroupAttribute.html
+- uid: AngeliA.EntityAttribute.LayerAttribute
+  commentId: T:AngeliA.EntityAttribute.LayerAttribute
+  parent: AngeliA
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.LayerAttribute
+  nameWithType: EntityAttribute.LayerAttribute
+  fullName: AngeliA.EntityAttribute.LayerAttribute
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.LayerAttribute
+    name: LayerAttribute
+    href: AngeliA.EntityAttribute.LayerAttribute.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.LayerAttribute
+    name: LayerAttribute
+    href: AngeliA.EntityAttribute.LayerAttribute.html
+- uid: AngeliA.EntityAttribute.CapacityAttribute
+  commentId: T:AngeliA.EntityAttribute.CapacityAttribute
+  parent: AngeliA
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.CapacityAttribute
+  nameWithType: EntityAttribute.CapacityAttribute
+  fullName: AngeliA.EntityAttribute.CapacityAttribute
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.CapacityAttribute
+    name: CapacityAttribute
+    href: AngeliA.EntityAttribute.CapacityAttribute.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.CapacityAttribute
+    name: CapacityAttribute
+    href: AngeliA.EntityAttribute.CapacityAttribute.html
+- uid: AngeliA.EntityAttribute.DontDespawnOutOfRangeAttribute
+  commentId: T:AngeliA.EntityAttribute.DontDespawnOutOfRangeAttribute
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.DontDespawnOutOfRangeAttribute
+  nameWithType: EntityAttribute.DontDespawnOutOfRangeAttribute
+  fullName: AngeliA.EntityAttribute.DontDespawnOutOfRangeAttribute
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.DontDespawnOutOfRangeAttribute
+    name: DontDespawnOutOfRangeAttribute
+    href: AngeliA.EntityAttribute.DontDespawnOutOfRangeAttribute.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.DontDespawnOutOfRangeAttribute
+    name: DontDespawnOutOfRangeAttribute
+    href: AngeliA.EntityAttribute.DontDespawnOutOfRangeAttribute.html
+- uid: AngeliA.EntityAttribute.DontSpawnFromWorld
+  commentId: T:AngeliA.EntityAttribute.DontSpawnFromWorld
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.DontSpawnFromWorld
+  nameWithType: EntityAttribute.DontSpawnFromWorld
+  fullName: AngeliA.EntityAttribute.DontSpawnFromWorld
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.DontSpawnFromWorld
+    name: DontSpawnFromWorld
+    href: AngeliA.EntityAttribute.DontSpawnFromWorld.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.DontSpawnFromWorld
+    name: DontSpawnFromWorld
+    href: AngeliA.EntityAttribute.DontSpawnFromWorld.html
+- uid: AngeliA.EntityAttribute.UpdateOutOfRangeAttribute
+  commentId: T:AngeliA.EntityAttribute.UpdateOutOfRangeAttribute
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.UpdateOutOfRangeAttribute
+  nameWithType: EntityAttribute.UpdateOutOfRangeAttribute
+  fullName: AngeliA.EntityAttribute.UpdateOutOfRangeAttribute
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.UpdateOutOfRangeAttribute
+    name: UpdateOutOfRangeAttribute
+    href: AngeliA.EntityAttribute.UpdateOutOfRangeAttribute.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.UpdateOutOfRangeAttribute
+    name: UpdateOutOfRangeAttribute
+    href: AngeliA.EntityAttribute.UpdateOutOfRangeAttribute.html
+- uid: AngeliA.EntityAttribute.DontDrawBehindAttribute
+  commentId: T:AngeliA.EntityAttribute.DontDrawBehindAttribute
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.DontDrawBehindAttribute
+  nameWithType: EntityAttribute.DontDrawBehindAttribute
+  fullName: AngeliA.EntityAttribute.DontDrawBehindAttribute
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.DontDrawBehindAttribute
+    name: DontDrawBehindAttribute
+    href: AngeliA.EntityAttribute.DontDrawBehindAttribute.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.DontDrawBehindAttribute
+    name: DontDrawBehindAttribute
+    href: AngeliA.EntityAttribute.DontDrawBehindAttribute.html
+- uid: AngeliA.EntityAttribute.DontDestroyOnZChangedAttribute
+  commentId: T:AngeliA.EntityAttribute.DontDestroyOnZChangedAttribute
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.DontDestroyOnZChangedAttribute
+  nameWithType: EntityAttribute.DontDestroyOnZChangedAttribute
+  fullName: AngeliA.EntityAttribute.DontDestroyOnZChangedAttribute
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.DontDestroyOnZChangedAttribute
+    name: DontDestroyOnZChangedAttribute
+    href: AngeliA.EntityAttribute.DontDestroyOnZChangedAttribute.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.DontDestroyOnZChangedAttribute
+    name: DontDestroyOnZChangedAttribute
+    href: AngeliA.EntityAttribute.DontDestroyOnZChangedAttribute.html
+- uid: AngeliA.EntityAttribute.StageOrderAttribute
+  commentId: T:AngeliA.EntityAttribute.StageOrderAttribute
+  parent: AngeliA
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.StageOrderAttribute
+  nameWithType: EntityAttribute.StageOrderAttribute
+  fullName: AngeliA.EntityAttribute.StageOrderAttribute
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.StageOrderAttribute
+    name: StageOrderAttribute
+    href: AngeliA.EntityAttribute.StageOrderAttribute.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.StageOrderAttribute
+    name: StageOrderAttribute
+    href: AngeliA.EntityAttribute.StageOrderAttribute.html
+- uid: AngeliA.EntityAttribute.RepositionWhenInactiveAttribute
+  commentId: T:AngeliA.EntityAttribute.RepositionWhenInactiveAttribute
+  parent: AngeliA
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.RepositionWhenInactiveAttribute
+  nameWithType: EntityAttribute.RepositionWhenInactiveAttribute
+  fullName: AngeliA.EntityAttribute.RepositionWhenInactiveAttribute
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.RepositionWhenInactiveAttribute
+    name: RepositionWhenInactiveAttribute
+    href: AngeliA.EntityAttribute.RepositionWhenInactiveAttribute.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.RepositionWhenInactiveAttribute
+    name: RepositionWhenInactiveAttribute
+    href: AngeliA.EntityAttribute.RepositionWhenInactiveAttribute.html
+- uid: AngeliA.EntityAttribute.SpawnWithCheatCodeAttribute
+  commentId: T:AngeliA.EntityAttribute.SpawnWithCheatCodeAttribute
+  href: AngeliA.EntityAttribute.html
+  name: EntityAttribute.SpawnWithCheatCodeAttribute
+  nameWithType: EntityAttribute.SpawnWithCheatCodeAttribute
+  fullName: AngeliA.EntityAttribute.SpawnWithCheatCodeAttribute
+  spec.csharp:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.SpawnWithCheatCodeAttribute
+    name: SpawnWithCheatCodeAttribute
+    href: AngeliA.EntityAttribute.SpawnWithCheatCodeAttribute.html
+  spec.vb:
+  - uid: AngeliA.EntityAttribute
+    name: EntityAttribute
+    href: AngeliA.EntityAttribute.html
+  - name: .
+  - uid: AngeliA.EntityAttribute.SpawnWithCheatCodeAttribute
+    name: SpawnWithCheatCodeAttribute
+    href: AngeliA.EntityAttribute.SpawnWithCheatCodeAttribute.html
+- uid: AngeliA.ItemDropAttribute`1
+  commentId: T:AngeliA.ItemDropAttribute`1
+  href: AngeliA.ItemDropAttribute-1.html
+  name: ItemDropAttribute<I>
+  nameWithType: ItemDropAttribute<I>
+  fullName: AngeliA.ItemDropAttribute<I>
+  nameWithType.vb: ItemDropAttribute(Of I)
+  fullName.vb: AngeliA.ItemDropAttribute(Of I)
+  name.vb: ItemDropAttribute(Of I)
+  spec.csharp:
+  - uid: AngeliA.ItemDropAttribute`1
+    name: ItemDropAttribute
+    href: AngeliA.ItemDropAttribute-1.html
+  - name: <
+  - name: I
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.ItemDropAttribute`1
+    name: ItemDropAttribute
+    href: AngeliA.ItemDropAttribute-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: I
+  - name: )
+- uid: AngeliA.ItemDropAttribute
+  commentId: T:AngeliA.ItemDropAttribute
+  parent: AngeliA
+  href: AngeliA.ItemDropAttribute.html
+  name: ItemDropAttribute
+  nameWithType: ItemDropAttribute
+  fullName: AngeliA.ItemDropAttribute
+- uid: AngeliA.ItemCombinationAttribute
+  commentId: T:AngeliA.ItemCombinationAttribute
+  href: AngeliA.ItemCombinationAttribute.html
+  name: ItemCombinationAttribute
+  nameWithType: ItemCombinationAttribute
+  fullName: AngeliA.ItemCombinationAttribute
+- uid: AngeliA.ItemCombinationAttribute`1
+  commentId: T:AngeliA.ItemCombinationAttribute`1
+  href: AngeliA.ItemCombinationAttribute-1.html
+  name: ItemCombinationAttribute<I0>
+  nameWithType: ItemCombinationAttribute<I0>
+  fullName: AngeliA.ItemCombinationAttribute<I0>
+  nameWithType.vb: ItemCombinationAttribute(Of I0)
+  fullName.vb: AngeliA.ItemCombinationAttribute(Of I0)
+  name.vb: ItemCombinationAttribute(Of I0)
+  spec.csharp:
+  - uid: AngeliA.ItemCombinationAttribute`1
+    name: ItemCombinationAttribute
+    href: AngeliA.ItemCombinationAttribute-1.html
+  - name: <
+  - name: I0
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.ItemCombinationAttribute`1
+    name: ItemCombinationAttribute
+    href: AngeliA.ItemCombinationAttribute-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: I0
+  - name: )
+- uid: AngeliA.ItemCombinationAttribute`2
+  commentId: T:AngeliA.ItemCombinationAttribute`2
+  href: AngeliA.ItemCombinationAttribute-2.html
+  name: ItemCombinationAttribute<I0, I1>
+  nameWithType: ItemCombinationAttribute<I0, I1>
+  fullName: AngeliA.ItemCombinationAttribute<I0, I1>
+  nameWithType.vb: ItemCombinationAttribute(Of I0, I1)
+  fullName.vb: AngeliA.ItemCombinationAttribute(Of I0, I1)
+  name.vb: ItemCombinationAttribute(Of I0, I1)
+  spec.csharp:
+  - uid: AngeliA.ItemCombinationAttribute`2
+    name: ItemCombinationAttribute
+    href: AngeliA.ItemCombinationAttribute-2.html
+  - name: <
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.ItemCombinationAttribute`2
+    name: ItemCombinationAttribute
+    href: AngeliA.ItemCombinationAttribute-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: )
+- uid: AngeliA.ItemCombinationAttribute`3
+  commentId: T:AngeliA.ItemCombinationAttribute`3
+  href: AngeliA.ItemCombinationAttribute-3.html
+  name: ItemCombinationAttribute<I0, I1, I2>
+  nameWithType: ItemCombinationAttribute<I0, I1, I2>
+  fullName: AngeliA.ItemCombinationAttribute<I0, I1, I2>
+  nameWithType.vb: ItemCombinationAttribute(Of I0, I1, I2)
+  fullName.vb: AngeliA.ItemCombinationAttribute(Of I0, I1, I2)
+  name.vb: ItemCombinationAttribute(Of I0, I1, I2)
+  spec.csharp:
+  - uid: AngeliA.ItemCombinationAttribute`3
+    name: ItemCombinationAttribute
+    href: AngeliA.ItemCombinationAttribute-3.html
+  - name: <
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: ','
+  - name: " "
+  - name: I2
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.ItemCombinationAttribute`3
+    name: ItemCombinationAttribute
+    href: AngeliA.ItemCombinationAttribute-3.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: ','
+  - name: " "
+  - name: I2
+  - name: )
+- uid: AngeliA.ItemCombinationAttribute`4
+  commentId: T:AngeliA.ItemCombinationAttribute`4
+  href: AngeliA.ItemCombinationAttribute-4.html
+  name: ItemCombinationAttribute<I0, I1, I2, I3>
+  nameWithType: ItemCombinationAttribute<I0, I1, I2, I3>
+  fullName: AngeliA.ItemCombinationAttribute<I0, I1, I2, I3>
+  nameWithType.vb: ItemCombinationAttribute(Of I0, I1, I2, I3)
+  fullName.vb: AngeliA.ItemCombinationAttribute(Of I0, I1, I2, I3)
+  name.vb: ItemCombinationAttribute(Of I0, I1, I2, I3)
+  spec.csharp:
+  - uid: AngeliA.ItemCombinationAttribute`4
+    name: ItemCombinationAttribute
+    href: AngeliA.ItemCombinationAttribute-4.html
+  - name: <
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: ','
+  - name: " "
+  - name: I2
+  - name: ','
+  - name: " "
+  - name: I3
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.ItemCombinationAttribute`4
+    name: ItemCombinationAttribute
+    href: AngeliA.ItemCombinationAttribute-4.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: ','
+  - name: " "
+  - name: I2
+  - name: ','
+  - name: " "
+  - name: I3
+  - name: )
+- uid: AngeliA.GlobalItemCombinationAttribute
+  commentId: T:AngeliA.GlobalItemCombinationAttribute
+  href: AngeliA.GlobalItemCombinationAttribute.html
+  name: GlobalItemCombinationAttribute
+  nameWithType: GlobalItemCombinationAttribute
+  fullName: AngeliA.GlobalItemCombinationAttribute
+- uid: AngeliA.GlobalItemCombinationAttribute`1
+  commentId: T:AngeliA.GlobalItemCombinationAttribute`1
+  href: AngeliA.GlobalItemCombinationAttribute-1.html
+  name: GlobalItemCombinationAttribute<I0>
+  nameWithType: GlobalItemCombinationAttribute<I0>
+  fullName: AngeliA.GlobalItemCombinationAttribute<I0>
+  nameWithType.vb: GlobalItemCombinationAttribute(Of I0)
+  fullName.vb: AngeliA.GlobalItemCombinationAttribute(Of I0)
+  name.vb: GlobalItemCombinationAttribute(Of I0)
+  spec.csharp:
+  - uid: AngeliA.GlobalItemCombinationAttribute`1
+    name: GlobalItemCombinationAttribute
+    href: AngeliA.GlobalItemCombinationAttribute-1.html
+  - name: <
+  - name: I0
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.GlobalItemCombinationAttribute`1
+    name: GlobalItemCombinationAttribute
+    href: AngeliA.GlobalItemCombinationAttribute-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: I0
+  - name: )
+- uid: AngeliA.GlobalItemCombinationAttribute`2
+  commentId: T:AngeliA.GlobalItemCombinationAttribute`2
+  href: AngeliA.GlobalItemCombinationAttribute-2.html
+  name: GlobalItemCombinationAttribute<I0, I1>
+  nameWithType: GlobalItemCombinationAttribute<I0, I1>
+  fullName: AngeliA.GlobalItemCombinationAttribute<I0, I1>
+  nameWithType.vb: GlobalItemCombinationAttribute(Of I0, I1)
+  fullName.vb: AngeliA.GlobalItemCombinationAttribute(Of I0, I1)
+  name.vb: GlobalItemCombinationAttribute(Of I0, I1)
+  spec.csharp:
+  - uid: AngeliA.GlobalItemCombinationAttribute`2
+    name: GlobalItemCombinationAttribute
+    href: AngeliA.GlobalItemCombinationAttribute-2.html
+  - name: <
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.GlobalItemCombinationAttribute`2
+    name: GlobalItemCombinationAttribute
+    href: AngeliA.GlobalItemCombinationAttribute-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: )
+- uid: AngeliA.GlobalItemCombinationAttribute`3
+  commentId: T:AngeliA.GlobalItemCombinationAttribute`3
+  href: AngeliA.GlobalItemCombinationAttribute-3.html
+  name: GlobalItemCombinationAttribute<I0, I1, I2>
+  nameWithType: GlobalItemCombinationAttribute<I0, I1, I2>
+  fullName: AngeliA.GlobalItemCombinationAttribute<I0, I1, I2>
+  nameWithType.vb: GlobalItemCombinationAttribute(Of I0, I1, I2)
+  fullName.vb: AngeliA.GlobalItemCombinationAttribute(Of I0, I1, I2)
+  name.vb: GlobalItemCombinationAttribute(Of I0, I1, I2)
+  spec.csharp:
+  - uid: AngeliA.GlobalItemCombinationAttribute`3
+    name: GlobalItemCombinationAttribute
+    href: AngeliA.GlobalItemCombinationAttribute-3.html
+  - name: <
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: ','
+  - name: " "
+  - name: I2
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.GlobalItemCombinationAttribute`3
+    name: GlobalItemCombinationAttribute
+    href: AngeliA.GlobalItemCombinationAttribute-3.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: ','
+  - name: " "
+  - name: I2
+  - name: )
+- uid: AngeliA.GlobalItemCombinationAttribute`4
+  commentId: T:AngeliA.GlobalItemCombinationAttribute`4
+  href: AngeliA.GlobalItemCombinationAttribute-4.html
+  name: GlobalItemCombinationAttribute<I0, I1, I2, I3>
+  nameWithType: GlobalItemCombinationAttribute<I0, I1, I2, I3>
+  fullName: AngeliA.GlobalItemCombinationAttribute<I0, I1, I2, I3>
+  nameWithType.vb: GlobalItemCombinationAttribute(Of I0, I1, I2, I3)
+  fullName.vb: AngeliA.GlobalItemCombinationAttribute(Of I0, I1, I2, I3)
+  name.vb: GlobalItemCombinationAttribute(Of I0, I1, I2, I3)
+  spec.csharp:
+  - uid: AngeliA.GlobalItemCombinationAttribute`4
+    name: GlobalItemCombinationAttribute
+    href: AngeliA.GlobalItemCombinationAttribute-4.html
+  - name: <
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: ','
+  - name: " "
+  - name: I2
+  - name: ','
+  - name: " "
+  - name: I3
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.GlobalItemCombinationAttribute`4
+    name: GlobalItemCombinationAttribute
+    href: AngeliA.GlobalItemCombinationAttribute-4.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: I0
+  - name: ','
+  - name: " "
+  - name: I1
+  - name: ','
+  - name: " "
+  - name: I2
+  - name: ','
+  - name: " "
+  - name: I3
+  - name: )
+- uid: AngeliA.BasicGlobalItemCombinationAttribute
+  commentId: T:AngeliA.BasicGlobalItemCombinationAttribute
+  parent: AngeliA
+  href: AngeliA.BasicGlobalItemCombinationAttribute.html
+  name: BasicGlobalItemCombinationAttribute
+  nameWithType: BasicGlobalItemCombinationAttribute
+  fullName: AngeliA.BasicGlobalItemCombinationAttribute
+- uid: AngeliA.BasicItemCombinationAttribute
+  commentId: T:AngeliA.BasicItemCombinationAttribute
+  parent: AngeliA
+  href: AngeliA.BasicItemCombinationAttribute.html
+  name: BasicItemCombinationAttribute
+  nameWithType: BasicItemCombinationAttribute
+  fullName: AngeliA.BasicItemCombinationAttribute
+- uid: AngeliA.ItemCombinationParam
+  commentId: T:AngeliA.ItemCombinationParam
+  parent: AngeliA
+  href: AngeliA.ItemCombinationParam.html
+  name: ItemCombinationParam
+  nameWithType: ItemCombinationParam
+  fullName: AngeliA.ItemCombinationParam
+- uid: AngeliA.NoItemCombinationAttribute
+  commentId: T:AngeliA.NoItemCombinationAttribute
+  href: AngeliA.NoItemCombinationAttribute.html
+  name: NoItemCombinationAttribute
+  nameWithType: NoItemCombinationAttribute
+  fullName: AngeliA.NoItemCombinationAttribute
+- uid: AngeliA.OnGameInitializeAttribute
+  commentId: T:AngeliA.OnGameInitializeAttribute
+  parent: AngeliA
+  href: AngeliA.OnGameInitializeAttribute.html
+  name: OnGameInitializeAttribute
+  nameWithType: OnGameInitializeAttribute
+  fullName: AngeliA.OnGameInitializeAttribute
+- uid: AngeliA.OnGameInitializeLaterAttribute
+  commentId: T:AngeliA.OnGameInitializeLaterAttribute
+  parent: AngeliA
+  href: AngeliA.OnGameInitializeLaterAttribute.html
+  name: OnGameInitializeLaterAttribute
+  nameWithType: OnGameInitializeLaterAttribute
+  fullName: AngeliA.OnGameInitializeLaterAttribute
+- uid: AngeliA.BeforeSavingSlotChanged
+  commentId: T:AngeliA.BeforeSavingSlotChanged
+  parent: AngeliA
+  href: AngeliA.BeforeSavingSlotChanged.html
+  name: BeforeSavingSlotChanged
+  nameWithType: BeforeSavingSlotChanged
+  fullName: AngeliA.BeforeSavingSlotChanged
+- uid: AngeliA.OnSavingSlotChanged
+  commentId: T:AngeliA.OnSavingSlotChanged
+  href: AngeliA.OnSavingSlotChanged.html
+  name: OnSavingSlotChanged
+  nameWithType: OnSavingSlotChanged
+  fullName: AngeliA.OnSavingSlotChanged
+- uid: AngeliA.OnGameUpdateAttribute
+  commentId: T:AngeliA.OnGameUpdateAttribute
+  parent: AngeliA
+  href: AngeliA.OnGameUpdateAttribute.html
+  name: OnGameUpdateAttribute
+  nameWithType: OnGameUpdateAttribute
+  fullName: AngeliA.OnGameUpdateAttribute
+- uid: AngeliA.OnGameUpdateLaterAttribute
+  commentId: T:AngeliA.OnGameUpdateLaterAttribute
+  parent: AngeliA
+  href: AngeliA.OnGameUpdateLaterAttribute.html
+  name: OnGameUpdateLaterAttribute
+  nameWithType: OnGameUpdateLaterAttribute
+  fullName: AngeliA.OnGameUpdateLaterAttribute
+- uid: AngeliA.OnGameUpdatePauselessAttribute
+  commentId: T:AngeliA.OnGameUpdatePauselessAttribute
+  parent: AngeliA
+  href: AngeliA.OnGameUpdatePauselessAttribute.html
+  name: OnGameUpdatePauselessAttribute
+  nameWithType: OnGameUpdatePauselessAttribute
+  fullName: AngeliA.OnGameUpdatePauselessAttribute
+- uid: AngeliA.OnGameRestartAttribute
+  commentId: T:AngeliA.OnGameRestartAttribute
+  parent: AngeliA
+  href: AngeliA.OnGameRestartAttribute.html
+  name: OnGameRestartAttribute
+  nameWithType: OnGameRestartAttribute
+  fullName: AngeliA.OnGameRestartAttribute
+- uid: AngeliA.OnGameTryingToQuitAttribute
+  commentId: T:AngeliA.OnGameTryingToQuitAttribute
+  parent: AngeliA
+  href: AngeliA.OnGameTryingToQuitAttribute.html
+  name: OnGameTryingToQuitAttribute
+  nameWithType: OnGameTryingToQuitAttribute
+  fullName: AngeliA.OnGameTryingToQuitAttribute
+- uid: AngeliA.OnGameQuittingAttribute
+  commentId: T:AngeliA.OnGameQuittingAttribute
+  parent: AngeliA
+  href: AngeliA.OnGameQuittingAttribute.html
+  name: OnGameQuittingAttribute
+  nameWithType: OnGameQuittingAttribute
+  fullName: AngeliA.OnGameQuittingAttribute
+- uid: AngeliA.OnGameFocusedAttribute
+  commentId: T:AngeliA.OnGameFocusedAttribute
+  href: AngeliA.OnGameFocusedAttribute.html
+  name: OnGameFocusedAttribute
+  nameWithType: OnGameFocusedAttribute
+  fullName: AngeliA.OnGameFocusedAttribute
+- uid: AngeliA.OnGameLostFocusAttribute
+  commentId: T:AngeliA.OnGameLostFocusAttribute
+  href: AngeliA.OnGameLostFocusAttribute.html
+  name: OnGameLostFocusAttribute
+  nameWithType: OnGameLostFocusAttribute
+  fullName: AngeliA.OnGameLostFocusAttribute
+- uid: AngeliA.OnWindowSizeChangedAttribute
+  commentId: T:AngeliA.OnWindowSizeChangedAttribute
+  href: AngeliA.OnWindowSizeChangedAttribute.html
+  name: OnWindowSizeChangedAttribute
+  nameWithType: OnWindowSizeChangedAttribute
+  fullName: AngeliA.OnWindowSizeChangedAttribute
+- uid: AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute
+  commentId: T:AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute
+  href: AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute.html
+  name: OnRemoteSettingChanged_IntID_IntDataAttribute
+  nameWithType: OnRemoteSettingChanged_IntID_IntDataAttribute
+  fullName: AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute
+- uid: AngeliA.OnFileDropped_StringPathAttribute
+  commentId: T:AngeliA.OnFileDropped_StringPathAttribute
+  href: AngeliA.OnFileDropped_StringPathAttribute.html
+  name: OnFileDropped_StringPathAttribute
+  nameWithType: OnFileDropped_StringPathAttribute
+  fullName: AngeliA.OnFileDropped_StringPathAttribute
+- uid: AngeliA.OnMainSheetReloadAttribute
+  commentId: T:AngeliA.OnMainSheetReloadAttribute
+  href: AngeliA.OnMainSheetReloadAttribute.html
+  name: OnMainSheetReloadAttribute
+  nameWithType: OnMainSheetReloadAttribute
+  fullName: AngeliA.OnMainSheetReloadAttribute
+- uid: AngeliA.OnViewZChangedAttribute
+  commentId: T:AngeliA.OnViewZChangedAttribute
+  href: AngeliA.OnViewZChangedAttribute.html
+  name: OnViewZChangedAttribute
+  nameWithType: OnViewZChangedAttribute
+  fullName: AngeliA.OnViewZChangedAttribute
+- uid: AngeliA.BeforeLayerFrameUpdate_IntLayerAttribute
+  commentId: T:AngeliA.BeforeLayerFrameUpdate_IntLayerAttribute
+  href: AngeliA.BeforeLayerFrameUpdate_IntLayerAttribute.html
+  name: BeforeLayerFrameUpdate_IntLayerAttribute
+  nameWithType: BeforeLayerFrameUpdate_IntLayerAttribute
+  fullName: AngeliA.BeforeLayerFrameUpdate_IntLayerAttribute
+- uid: AngeliA.AfterLayerFrameUpdate_IntLayerAttribute
+  commentId: T:AngeliA.AfterLayerFrameUpdate_IntLayerAttribute
+  href: AngeliA.AfterLayerFrameUpdate_IntLayerAttribute.html
+  name: AfterLayerFrameUpdate_IntLayerAttribute
+  nameWithType: AfterLayerFrameUpdate_IntLayerAttribute
+  fullName: AngeliA.AfterLayerFrameUpdate_IntLayerAttribute
+- uid: AngeliA.BeforeFirstUpdateAttribute
+  commentId: T:AngeliA.BeforeFirstUpdateAttribute
+  href: AngeliA.BeforeFirstUpdateAttribute.html
+  name: BeforeFirstUpdateAttribute
+  nameWithType: BeforeFirstUpdateAttribute
+  fullName: AngeliA.BeforeFirstUpdateAttribute
+- uid: AngeliA.BeforeBeforeUpdateAttribute
+  commentId: T:AngeliA.BeforeBeforeUpdateAttribute
+  href: AngeliA.BeforeBeforeUpdateAttribute.html
+  name: BeforeBeforeUpdateAttribute
+  nameWithType: BeforeBeforeUpdateAttribute
+  fullName: AngeliA.BeforeBeforeUpdateAttribute
+- uid: AngeliA.BeforeUpdateUpdateAttribute
+  commentId: T:AngeliA.BeforeUpdateUpdateAttribute
+  href: AngeliA.BeforeUpdateUpdateAttribute.html
+  name: BeforeUpdateUpdateAttribute
+  nameWithType: BeforeUpdateUpdateAttribute
+  fullName: AngeliA.BeforeUpdateUpdateAttribute
+- uid: AngeliA.BeforeLateUpdateAttribute
+  commentId: T:AngeliA.BeforeLateUpdateAttribute
+  href: AngeliA.BeforeLateUpdateAttribute.html
+  name: BeforeLateUpdateAttribute
+  nameWithType: BeforeLateUpdateAttribute
+  fullName: AngeliA.BeforeLateUpdateAttribute
+- uid: AngeliA.AfterLateUpdateAttribute
+  commentId: T:AngeliA.AfterLateUpdateAttribute
+  href: AngeliA.AfterLateUpdateAttribute.html
+  name: AfterLateUpdateAttribute
+  nameWithType: AfterLateUpdateAttribute
+  fullName: AngeliA.AfterLateUpdateAttribute
+- uid: AngeliA.BeforeLevelRenderedAttribute
+  commentId: T:AngeliA.BeforeLevelRenderedAttribute
+  href: AngeliA.BeforeLevelRenderedAttribute.html
+  name: BeforeLevelRenderedAttribute
+  nameWithType: BeforeLevelRenderedAttribute
+  fullName: AngeliA.BeforeLevelRenderedAttribute
+- uid: AngeliA.AfterLevelRenderedAttribute
+  commentId: T:AngeliA.AfterLevelRenderedAttribute
+  href: AngeliA.AfterLevelRenderedAttribute.html
+  name: AfterLevelRenderedAttribute
+  nameWithType: AfterLevelRenderedAttribute
+  fullName: AngeliA.AfterLevelRenderedAttribute
+- uid: AngeliA.OnWorldCreatedBySquad_WorldAttribute
+  commentId: T:AngeliA.OnWorldCreatedBySquad_WorldAttribute
+  href: AngeliA.OnWorldCreatedBySquad_WorldAttribute.html
+  name: OnWorldCreatedBySquad_WorldAttribute
+  nameWithType: OnWorldCreatedBySquad_WorldAttribute
+  fullName: AngeliA.OnWorldCreatedBySquad_WorldAttribute
+- uid: AngeliA.OnWorldLoadedBySquad_WorldAttribute
+  commentId: T:AngeliA.OnWorldLoadedBySquad_WorldAttribute
+  href: AngeliA.OnWorldLoadedBySquad_WorldAttribute.html
+  name: OnWorldLoadedBySquad_WorldAttribute
+  nameWithType: OnWorldLoadedBySquad_WorldAttribute
+  fullName: AngeliA.OnWorldLoadedBySquad_WorldAttribute
+- uid: AngeliA.OnWorldSavedByMapEditor_WorldAttribute
+  commentId: T:AngeliA.OnWorldSavedByMapEditor_WorldAttribute
+  href: AngeliA.OnWorldSavedByMapEditor_WorldAttribute.html
+  name: OnWorldSavedByMapEditor_WorldAttribute
+  nameWithType: OnWorldSavedByMapEditor_WorldAttribute
+  fullName: AngeliA.OnWorldSavedByMapEditor_WorldAttribute
+- uid: AngeliA.OnMapEditorModeChange_ModeAttribute
+  commentId: T:AngeliA.OnMapEditorModeChange_ModeAttribute
+  href: AngeliA.OnMapEditorModeChange_ModeAttribute.html
+  name: OnMapEditorModeChange_ModeAttribute
+  nameWithType: OnMapEditorModeChange_ModeAttribute
+  fullName: AngeliA.OnMapEditorModeChange_ModeAttribute
+- uid: AngeliA.OnMapEditorModeChange_ModeAttribute.Mode
+  commentId: T:AngeliA.OnMapEditorModeChange_ModeAttribute.Mode
+  parent: AngeliA
+  href: AngeliA.OnMapEditorModeChange_ModeAttribute.html
+  name: OnMapEditorModeChange_ModeAttribute.Mode
+  nameWithType: OnMapEditorModeChange_ModeAttribute.Mode
+  fullName: AngeliA.OnMapEditorModeChange_ModeAttribute.Mode
+  spec.csharp:
+  - uid: AngeliA.OnMapEditorModeChange_ModeAttribute
+    name: OnMapEditorModeChange_ModeAttribute
+    href: AngeliA.OnMapEditorModeChange_ModeAttribute.html
+  - name: .
+  - uid: AngeliA.OnMapEditorModeChange_ModeAttribute.Mode
+    name: Mode
+    href: AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.html
+  spec.vb:
+  - uid: AngeliA.OnMapEditorModeChange_ModeAttribute
+    name: OnMapEditorModeChange_ModeAttribute
+    href: AngeliA.OnMapEditorModeChange_ModeAttribute.html
+  - name: .
+  - uid: AngeliA.OnMapEditorModeChange_ModeAttribute.Mode
+    name: Mode
+    href: AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.html
+- uid: AngeliA.OnLanguageChangedAttribute
+  commentId: T:AngeliA.OnLanguageChangedAttribute
+  href: AngeliA.OnLanguageChangedAttribute.html
+  name: OnLanguageChangedAttribute
+  nameWithType: OnLanguageChangedAttribute
+  fullName: AngeliA.OnLanguageChangedAttribute
+- uid: AngeliA.CheatCodeAttribute
+  commentId: T:AngeliA.CheatCodeAttribute
+  href: AngeliA.CheatCodeAttribute.html
+  name: CheatCodeAttribute
+  nameWithType: CheatCodeAttribute
+  fullName: AngeliA.CheatCodeAttribute
+- uid: AngeliA.OnCheatPerformed_StringCodeAttribute
+  commentId: T:AngeliA.OnCheatPerformed_StringCodeAttribute
+  href: AngeliA.OnCheatPerformed_StringCodeAttribute.html
+  name: OnCheatPerformed_StringCodeAttribute
+  nameWithType: OnCheatPerformed_StringCodeAttribute
+  fullName: AngeliA.OnCheatPerformed_StringCodeAttribute
+- uid: AngeliA.OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute
+  commentId: T:AngeliA.OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute
+  href: AngeliA.OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute.html
+  name: OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute
+  nameWithType: OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute
+  fullName: AngeliA.OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute
+- uid: AngeliA.OnItemLost_Character_IntItemIDAttribute
+  commentId: T:AngeliA.OnItemLost_Character_IntItemIDAttribute
+  href: AngeliA.OnItemLost_Character_IntItemIDAttribute.html
+  name: OnItemLost_Character_IntItemIDAttribute
+  nameWithType: OnItemLost_Character_IntItemIDAttribute
+  fullName: AngeliA.OnItemLost_Character_IntItemIDAttribute
+- uid: AngeliA.OnItemError_Entity_Int2Pos_IntIconID
+  commentId: T:AngeliA.OnItemError_Entity_Int2Pos_IntIconID
+  href: AngeliA.OnItemError_Entity_Int2Pos_IntIconID.html
+  name: OnItemError_Entity_Int2Pos_IntIconID
+  nameWithType: OnItemError_Entity_Int2Pos_IntIconID
+  fullName: AngeliA.OnItemError_Entity_Int2Pos_IntIconID
+- uid: AngeliA.OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute
+  commentId: T:AngeliA.OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute
+  href: AngeliA.OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute.html
+  name: OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute
+  nameWithType: OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute
+  fullName: AngeliA.OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute
+- uid: AngeliA.OnItemUnlocked_IntItemIDAttribute
+  commentId: T:AngeliA.OnItemUnlocked_IntItemIDAttribute
+  href: AngeliA.OnItemUnlocked_IntItemIDAttribute.html
+  name: OnItemUnlocked_IntItemIDAttribute
+  nameWithType: OnItemUnlocked_IntItemIDAttribute
+  fullName: AngeliA.OnItemUnlocked_IntItemIDAttribute
+- uid: AngeliA.OnCharacterFootStepped_Entity
+  commentId: T:AngeliA.OnCharacterFootStepped_Entity
+  href: AngeliA.OnCharacterFootStepped_Entity.html
+  name: OnCharacterFootStepped_Entity
+  nameWithType: OnCharacterFootStepped_Entity
+  fullName: AngeliA.OnCharacterFootStepped_Entity
+- uid: AngeliA.OnCharacterSleeping_Entity
+  commentId: T:AngeliA.OnCharacterSleeping_Entity
+  href: AngeliA.OnCharacterSleeping_Entity.html
+  name: OnCharacterSleeping_Entity
+  nameWithType: OnCharacterSleeping_Entity
+  fullName: AngeliA.OnCharacterSleeping_Entity
+- uid: AngeliA.OnCharacterJump_Entity
+  commentId: T:AngeliA.OnCharacterJump_Entity
+  href: AngeliA.OnCharacterJump_Entity.html
+  name: OnCharacterJump_Entity
+  nameWithType: OnCharacterJump_Entity
+  fullName: AngeliA.OnCharacterJump_Entity
+- uid: AngeliA.OnCharacterPound_Entity
+  commentId: T:AngeliA.OnCharacterPound_Entity
+  href: AngeliA.OnCharacterPound_Entity.html
+  name: OnCharacterPound_Entity
+  nameWithType: OnCharacterPound_Entity
+  fullName: AngeliA.OnCharacterPound_Entity
+- uid: AngeliA.OnCharacterFly_Entity
+  commentId: T:AngeliA.OnCharacterFly_Entity
+  href: AngeliA.OnCharacterFly_Entity.html
+  name: OnCharacterFly_Entity
+  nameWithType: OnCharacterFly_Entity
+  fullName: AngeliA.OnCharacterFly_Entity
+- uid: AngeliA.OnCharacterSlideStepped_Entity
+  commentId: T:AngeliA.OnCharacterSlideStepped_Entity
+  href: AngeliA.OnCharacterSlideStepped_Entity.html
+  name: OnCharacterSlideStepped_Entity
+  nameWithType: OnCharacterSlideStepped_Entity
+  fullName: AngeliA.OnCharacterSlideStepped_Entity
+- uid: AngeliA.OnCharacterPassOut_Entity
+  commentId: T:AngeliA.OnCharacterPassOut_Entity
+  href: AngeliA.OnCharacterPassOut_Entity.html
+  name: OnCharacterPassOut_Entity
+  nameWithType: OnCharacterPassOut_Entity
+  fullName: AngeliA.OnCharacterPassOut_Entity
+- uid: AngeliA.OnCharacterTeleport_Entity
+  commentId: T:AngeliA.OnCharacterTeleport_Entity
+  href: AngeliA.OnCharacterTeleport_Entity.html
+  name: OnCharacterTeleport_Entity
+  nameWithType: OnCharacterTeleport_Entity
+  fullName: AngeliA.OnCharacterTeleport_Entity
+- uid: AngeliA.OnCharacterCrash_Entity
+  commentId: T:AngeliA.OnCharacterCrash_Entity
+  href: AngeliA.OnCharacterCrash_Entity.html
+  name: OnCharacterCrash_Entity
+  nameWithType: OnCharacterCrash_Entity
+  fullName: AngeliA.OnCharacterCrash_Entity
+- uid: AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute
+  commentId: T:AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute
+  href: AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute.html
+  name: OnObjectBreak_IntSpriteID_IRectAttribute
+  nameWithType: OnObjectBreak_IntSpriteID_IRectAttribute
+  fullName: AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute
+- uid: AngeliA.OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute
+  commentId: T:AngeliA.OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute
+  href: AngeliA.OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute.html
+  name: OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute
+  nameWithType: OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute
+  fullName: AngeliA.OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute
+- uid: AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute
+  commentId: T:AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute
+  href: AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute.html
+  name: OnBlockPicked_IntSpriteID_IRectAttribute
+  nameWithType: OnBlockPicked_IntSpriteID_IRectAttribute
+  fullName: AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute
+- uid: AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute
+  commentId: T:AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute
+  href: AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute.html
+  name: OnFallIntoWater_Rigidbody_EntityAttribute
+  nameWithType: OnFallIntoWater_Rigidbody_EntityAttribute
+  fullName: AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute
+- uid: AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute
+  commentId: T:AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute
+  href: AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute.html
+  name: OnCameOutOfWater_Rigidbody_EntityAttribute
+  nameWithType: OnCameOutOfWater_Rigidbody_EntityAttribute
+  fullName: AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute
+- uid: AngeliA.OnDealDamage_Damage_IDamageReceiver
+  commentId: T:AngeliA.OnDealDamage_Damage_IDamageReceiver
+  href: AngeliA.OnDealDamage_Damage_IDamageReceiver.html
+  name: OnDealDamage_Damage_IDamageReceiver
+  nameWithType: OnDealDamage_Damage_IDamageReceiver
+  fullName: AngeliA.OnDealDamage_Damage_IDamageReceiver
+- uid: AngeliA.OnBulletHitEnvironment_Bullet
+  commentId: T:AngeliA.OnBulletHitEnvironment_Bullet
+  href: AngeliA.OnBulletHitEnvironment_Bullet.html
+  name: OnBulletHitEnvironment_Bullet
+  nameWithType: OnBulletHitEnvironment_Bullet
+  fullName: AngeliA.OnBulletHitEnvironment_Bullet
+- uid: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
+  commentId: T:AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
+  href: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData.html
+  name: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
+  nameWithType: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
+  fullName: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
+- uid: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
+  commentId: T:AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
+  href: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData.html
+  name: OnTransferPassAttribute_Int3UnitPos_ObjectData
+  nameWithType: OnTransferPassAttribute_Int3UnitPos_ObjectData
+  fullName: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
+- uid: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
+  commentId: T:AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
+  href: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From.html
+  name: CircuitOperate_Int3UnitPos_IntStamp_Direction5From
+  nameWithType: CircuitOperate_Int3UnitPos_IntStamp_Direction5From
+  fullName: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
+- uid: AngeliA.OnCircuitWireActived_Int3UnitPosAttribute
+  commentId: T:AngeliA.OnCircuitWireActived_Int3UnitPosAttribute
+  href: AngeliA.OnCircuitWireActived_Int3UnitPosAttribute.html
+  name: OnCircuitWireActived_Int3UnitPosAttribute
+  nameWithType: OnCircuitWireActived_Int3UnitPosAttribute
+  fullName: AngeliA.OnCircuitWireActived_Int3UnitPosAttribute
+- uid: AngeliA.CompareMode
+  commentId: T:AngeliA.CompareMode
+  parent: AngeliA
+  href: AngeliA.CompareMode.html
+  name: CompareMode
+  nameWithType: CompareMode
+  fullName: AngeliA.CompareMode
+- uid: AngeliA.PropGroupAttribute
+  commentId: T:AngeliA.PropGroupAttribute
+  parent: AngeliA
+  href: AngeliA.PropGroupAttribute.html
+  name: PropGroupAttribute
+  nameWithType: PropGroupAttribute
+  fullName: AngeliA.PropGroupAttribute
+- uid: AngeliA.PropSeparatorAttribute
+  commentId: T:AngeliA.PropSeparatorAttribute
+  href: AngeliA.PropSeparatorAttribute.html
+  name: PropSeparatorAttribute
+  nameWithType: PropSeparatorAttribute
+  fullName: AngeliA.PropSeparatorAttribute
+- uid: AngeliA.PropVisibilityAttribute
+  commentId: T:AngeliA.PropVisibilityAttribute
+  parent: AngeliA
+  href: AngeliA.PropVisibilityAttribute.html
+  name: PropVisibilityAttribute
+  nameWithType: PropVisibilityAttribute
+  fullName: AngeliA.PropVisibilityAttribute
+- uid: AngeliA.EventAttribute
+  commentId: T:AngeliA.EventAttribute
+  parent: AngeliA
+  href: AngeliA.EventAttribute.html
+  name: EventAttribute
+  nameWithType: EventAttribute
+  fullName: AngeliA.EventAttribute
+- uid: AngeliA.OrderedAttribute
+  commentId: T:AngeliA.OrderedAttribute
+  parent: AngeliA
+  href: AngeliA.OrderedAttribute.html
+  name: OrderedAttribute
+  nameWithType: OrderedAttribute
+  fullName: AngeliA.OrderedAttribute
+- uid: AngeliA.CharacterAttackness
+  commentId: T:AngeliA.CharacterAttackness
+  parent: AngeliA
+  href: AngeliA.CharacterAttackness.html
+  name: CharacterAttackness
+  nameWithType: CharacterAttackness
+  fullName: AngeliA.CharacterAttackness
+- uid: AngeliA.SummonAttackness
+  commentId: T:AngeliA.SummonAttackness
+  href: AngeliA.SummonAttackness.html
+  name: SummonAttackness
+  nameWithType: SummonAttackness
+  fullName: AngeliA.SummonAttackness
+- uid: AngeliA.Buff
+  commentId: T:AngeliA.Buff
+  href: AngeliA.Buff.html
+  name: Buff
+  nameWithType: Buff
+  fullName: AngeliA.Buff
+- uid: AngeliA.CharacterBuff
+  commentId: T:AngeliA.CharacterBuff
+  parent: AngeliA
+  href: AngeliA.CharacterBuff.html
+  name: CharacterBuff
+  nameWithType: CharacterBuff
+  fullName: AngeliA.CharacterBuff
+- uid: AngeliA.CharacterHealth
+  commentId: T:AngeliA.CharacterHealth
+  parent: AngeliA
+  href: AngeliA.CharacterHealth.html
+  name: CharacterHealth
+  nameWithType: CharacterHealth
+  fullName: AngeliA.CharacterHealth
+- uid: AngeliA.CharacterMovementState
+  commentId: T:AngeliA.CharacterMovementState
+  parent: AngeliA
+  href: AngeliA.CharacterMovementState.html
+  name: CharacterMovementState
+  nameWithType: CharacterMovementState
+  fullName: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovement
+  commentId: T:AngeliA.CharacterMovement
+  parent: AngeliA
+  href: AngeliA.CharacterMovement.html
+  name: CharacterMovement
+  nameWithType: CharacterMovement
+  fullName: AngeliA.CharacterMovement
+- uid: AngeliA.MovementEditor
+  commentId: T:AngeliA.MovementEditor
+  href: AngeliA.MovementEditor.html
+  name: MovementEditor
+  nameWithType: MovementEditor
+  fullName: AngeliA.MovementEditor
+- uid: AngeliA.CharacterRenderingConfig
+  commentId: T:AngeliA.CharacterRenderingConfig
+  parent: AngeliA
+  href: AngeliA.CharacterRenderingConfig.html
+  name: CharacterRenderingConfig
+  nameWithType: CharacterRenderingConfig
+  fullName: AngeliA.CharacterRenderingConfig
+- uid: AngeliA.CharacterRenderer
+  commentId: T:AngeliA.CharacterRenderer
+  parent: AngeliA
+  href: AngeliA.CharacterRenderer.html
+  name: CharacterRenderer
+  nameWithType: CharacterRenderer
+  fullName: AngeliA.CharacterRenderer
+- uid: AngeliA.PoseCharacterRenderer
+  commentId: T:AngeliA.PoseCharacterRenderer
+  parent: AngeliA
+  href: AngeliA.PoseCharacterRenderer.html
+  name: PoseCharacterRenderer
+  nameWithType: PoseCharacterRenderer
+  fullName: AngeliA.PoseCharacterRenderer
+- uid: AngeliA.SheetCharacterRenderer
+  commentId: T:AngeliA.SheetCharacterRenderer
+  href: AngeliA.SheetCharacterRenderer.html
+  name: SheetCharacterRenderer
+  nameWithType: SheetCharacterRenderer
+  fullName: AngeliA.SheetCharacterRenderer
+- uid: AngeliA.AngePath
+  commentId: T:AngeliA.AngePath
+  href: AngeliA.AngePath.html
+  name: AngePath
+  nameWithType: AngePath
+  fullName: AngeliA.AngePath
+- uid: AngeliA.AutoValidList`1
+  commentId: T:AngeliA.AutoValidList`1
+  href: AngeliA.AutoValidList-1.html
+  name: AutoValidList<T>
+  nameWithType: AutoValidList<T>
+  fullName: AngeliA.AutoValidList<T>
+  nameWithType.vb: AutoValidList(Of T)
+  fullName.vb: AngeliA.AutoValidList(Of T)
+  name.vb: AutoValidList(Of T)
+  spec.csharp:
+  - uid: AngeliA.AutoValidList`1
+    name: AutoValidList
+    href: AngeliA.AutoValidList-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.AutoValidList`1
+    name: AutoValidList
+    href: AngeliA.AutoValidList-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.BuiltInSprite
+  commentId: T:AngeliA.BuiltInSprite
+  href: AngeliA.BuiltInSprite.html
+  name: BuiltInSprite
+  nameWithType: BuiltInSprite
+  fullName: AngeliA.BuiltInSprite
+- uid: AngeliA.BuiltInText
+  commentId: T:AngeliA.BuiltInText
+  href: AngeliA.BuiltInText.html
+  name: BuiltInText
+  nameWithType: BuiltInText
+  fullName: AngeliA.BuiltInText
+- uid: AngeliA.Cell
+  commentId: T:AngeliA.Cell
+  parent: AngeliA
+  href: AngeliA.Cell.html
+  name: Cell
+  nameWithType: Cell
+  fullName: AngeliA.Cell
+- uid: AngeliA.CharSprite
+  commentId: T:AngeliA.CharSprite
+  parent: AngeliA
+  href: AngeliA.CharSprite.html
+  name: CharSprite
+  nameWithType: CharSprite
+  fullName: AngeliA.CharSprite
+- uid: AngeliA.Const
+  commentId: T:AngeliA.Const
+  href: AngeliA.Const.html
+  name: Const
+  nameWithType: Const
+  fullName: AngeliA.Const
+- uid: AngeliA.Damage
+  commentId: T:AngeliA.Damage
+  parent: AngeliA
+  href: AngeliA.Damage.html
+  name: Damage
+  nameWithType: Damage
+  fullName: AngeliA.Damage
+- uid: AngeliA.Debug
+  commentId: T:AngeliA.Debug
+  href: AngeliA.Debug.html
+  name: Debug
+  nameWithType: Debug
+  fullName: AngeliA.Debug
+- uid: AngeliA.Ease
+  commentId: T:AngeliA.Ease
+  href: AngeliA.Ease.html
+  name: Ease
+  nameWithType: Ease
+  fullName: AngeliA.Ease
+- uid: AngeliA.EchoDictionary`2
+  commentId: T:AngeliA.EchoDictionary`2
+  href: AngeliA.EchoDictionary-2.html
+  name: EchoDictionary<TKey, TValue>
+  nameWithType: EchoDictionary<TKey, TValue>
+  fullName: AngeliA.EchoDictionary<TKey, TValue>
+  nameWithType.vb: EchoDictionary(Of TKey, TValue)
+  fullName.vb: AngeliA.EchoDictionary(Of TKey, TValue)
+  name.vb: EchoDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: AngeliA.EchoDictionary`2
+    name: EchoDictionary
+    href: AngeliA.EchoDictionary-2.html
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.EchoDictionary`2
+    name: EchoDictionary
+    href: AngeliA.EchoDictionary-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: AngeliA.EntityLayer
+  commentId: T:AngeliA.EntityLayer
+  href: AngeliA.EntityLayer.html
+  name: EntityLayer
+  nameWithType: EntityLayer
+  fullName: AngeliA.EntityLayer
+- uid: AngeliA.WrapMode
+  commentId: T:AngeliA.WrapMode
+  parent: AngeliA
+  href: AngeliA.WrapMode.html
+  name: WrapMode
+  nameWithType: WrapMode
+  fullName: AngeliA.WrapMode
+- uid: AngeliA.GUIState
+  commentId: T:AngeliA.GUIState
+  parent: AngeliA
+  href: AngeliA.GUIState.html
+  name: GUIState
+  nameWithType: GUIState
+  fullName: AngeliA.GUIState
+- uid: AngeliA.Direction2
+  commentId: T:AngeliA.Direction2
+  parent: AngeliA
+  href: AngeliA.Direction2.html
+  name: Direction2
+  nameWithType: Direction2
+  fullName: AngeliA.Direction2
+- uid: AngeliA.Direction3
+  commentId: T:AngeliA.Direction3
+  parent: AngeliA
+  href: AngeliA.Direction3.html
+  name: Direction3
+  nameWithType: Direction3
+  fullName: AngeliA.Direction3
+- uid: AngeliA.Direction4
+  commentId: T:AngeliA.Direction4
+  parent: AngeliA
+  href: AngeliA.Direction4.html
+  name: Direction4
+  nameWithType: Direction4
+  fullName: AngeliA.Direction4
+- uid: AngeliA.Direction5
+  commentId: T:AngeliA.Direction5
+  parent: AngeliA
+  href: AngeliA.Direction5.html
+  name: Direction5
+  nameWithType: Direction5
+  fullName: AngeliA.Direction5
+- uid: AngeliA.Direction8
+  commentId: T:AngeliA.Direction8
+  parent: AngeliA
+  href: AngeliA.Direction8.html
+  name: Direction8
+  nameWithType: Direction8
+  fullName: AngeliA.Direction8
+- uid: AngeliA.Alignment
+  commentId: T:AngeliA.Alignment
+  parent: AngeliA
+  href: AngeliA.Alignment.html
+  name: Alignment
+  nameWithType: Alignment
+  fullName: AngeliA.Alignment
+- uid: AngeliA.FittingPose
+  commentId: T:AngeliA.FittingPose
+  parent: AngeliA
+  href: AngeliA.FittingPose.html
+  name: FittingPose
+  nameWithType: FittingPose
+  fullName: AngeliA.FittingPose
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.FrameBasedValue
+  commentId: T:AngeliA.FrameBasedValue
+  parent: AngeliA
+  href: AngeliA.FrameBasedValue.html
+  name: FrameBasedValue
+  nameWithType: FrameBasedValue
+  fullName: AngeliA.FrameBasedValue
+- uid: AngeliA.FrameBasedValue`1
+  commentId: T:AngeliA.FrameBasedValue`1
+  href: AngeliA.FrameBasedValue-1.html
+  name: FrameBasedValue<T>
+  nameWithType: FrameBasedValue<T>
+  fullName: AngeliA.FrameBasedValue<T>
+  nameWithType.vb: FrameBasedValue(Of T)
+  fullName.vb: AngeliA.FrameBasedValue(Of T)
+  name.vb: FrameBasedValue(Of T)
+  spec.csharp:
+  - uid: AngeliA.FrameBasedValue`1
+    name: FrameBasedValue
+    href: AngeliA.FrameBasedValue-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.FrameBasedValue`1
+    name: FrameBasedValue
+    href: AngeliA.FrameBasedValue-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.FrameBasedInt
+  commentId: T:AngeliA.FrameBasedInt
+  parent: AngeliA
+  href: AngeliA.FrameBasedInt.html
+  name: FrameBasedInt
+  nameWithType: FrameBasedInt
+  fullName: AngeliA.FrameBasedInt
+- uid: AngeliA.FrameBasedBool
+  commentId: T:AngeliA.FrameBasedBool
+  parent: AngeliA
+  href: AngeliA.FrameBasedBool.html
+  name: FrameBasedBool
+  nameWithType: FrameBasedBool
+  fullName: AngeliA.FrameBasedBool
+- uid: AngeliA.FrameBasedColor
+  commentId: T:AngeliA.FrameBasedColor
+  parent: AngeliA
+  href: AngeliA.FrameBasedColor.html
+  name: FrameBasedColor
+  nameWithType: FrameBasedColor
+  fullName: AngeliA.FrameBasedColor
+- uid: AngeliA.PhysicsLayer
+  commentId: T:AngeliA.PhysicsLayer
+  href: AngeliA.PhysicsLayer.html
+  name: PhysicsLayer
+  nameWithType: PhysicsLayer
+  fullName: AngeliA.PhysicsLayer
+- uid: AngeliA.PhysicsMask
+  commentId: T:AngeliA.PhysicsMask
+  href: AngeliA.PhysicsMask.html
+  name: PhysicsMask
+  nameWithType: PhysicsMask
+  fullName: AngeliA.PhysicsMask
+- uid: AngeliA.Pipe`1
+  commentId: T:AngeliA.Pipe`1
+  href: AngeliA.Pipe-1.html
+  name: Pipe<T>
+  nameWithType: Pipe<T>
+  fullName: AngeliA.Pipe<T>
+  nameWithType.vb: Pipe(Of T)
+  fullName.vb: AngeliA.Pipe(Of T)
+  name.vb: Pipe(Of T)
+  spec.csharp:
+  - uid: AngeliA.Pipe`1
+    name: Pipe
+    href: AngeliA.Pipe-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.Pipe`1
+    name: Pipe
+    href: AngeliA.Pipe-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.RenderLayer
+  commentId: T:AngeliA.RenderLayer
+  href: AngeliA.RenderLayer.html
+  name: RenderLayer
+  nameWithType: RenderLayer
+  fullName: AngeliA.RenderLayer
+- uid: AngeliA.FontData
+  commentId: T:AngeliA.FontData
+  parent: AngeliA
+  href: AngeliA.FontData.html
+  name: FontData
+  nameWithType: FontData
+  fullName: AngeliA.FontData
+- uid: AngeliA.MusicData
+  commentId: T:AngeliA.MusicData
+  href: AngeliA.MusicData.html
+  name: MusicData
+  nameWithType: MusicData
+  fullName: AngeliA.MusicData
+- uid: AngeliA.SoundData
+  commentId: T:AngeliA.SoundData
+  parent: AngeliA
+  href: AngeliA.SoundData.html
+  name: SoundData
+  nameWithType: SoundData
+  fullName: AngeliA.SoundData
+- uid: AngeliA.AudioData
+  commentId: T:AngeliA.AudioData
+  parent: AngeliA
+  href: AngeliA.AudioData.html
+  name: AudioData
+  nameWithType: AudioData
+  fullName: AngeliA.AudioData
+- uid: AngeliA.IUndoItem
+  commentId: T:AngeliA.IUndoItem
+  parent: AngeliA
+  href: AngeliA.IUndoItem.html
+  name: IUndoItem
+  nameWithType: IUndoItem
+  fullName: AngeliA.IUndoItem
+- uid: AngeliA.UndoRedo
+  commentId: T:AngeliA.UndoRedo
+  href: AngeliA.UndoRedo.html
+  name: UndoRedo
+  nameWithType: UndoRedo
+  fullName: AngeliA.UndoRedo
+- uid: AngeliA.Universe
+  commentId: T:AngeliA.Universe
+  parent: AngeliA
+  href: AngeliA.Universe.html
+  name: Universe
+  nameWithType: Universe
+  fullName: AngeliA.Universe
+- uid: AngeliA.ProjectType
+  commentId: T:AngeliA.ProjectType
+  parent: AngeliA
+  href: AngeliA.ProjectType.html
+  name: ProjectType
+  nameWithType: ProjectType
+  fullName: AngeliA.ProjectType
+- uid: AngeliA.UniverseInfo
+  commentId: T:AngeliA.UniverseInfo
+  parent: AngeliA
+  href: AngeliA.UniverseInfo.html
+  name: UniverseInfo
+  nameWithType: UniverseInfo
+  fullName: AngeliA.UniverseInfo
+- uid: AngeliA.CellScreenshotSystem
+  commentId: T:AngeliA.CellScreenshotSystem
+  href: AngeliA.CellScreenshotSystem.html
+  name: CellScreenshotSystem
+  nameWithType: CellScreenshotSystem
+  fullName: AngeliA.CellScreenshotSystem
+- uid: AngeliA.CellScreenshotSystem.Screenshot
+  commentId: T:AngeliA.CellScreenshotSystem.Screenshot
+  parent: AngeliA
+  href: AngeliA.CellScreenshotSystem.html
+  name: CellScreenshotSystem.Screenshot
+  nameWithType: CellScreenshotSystem.Screenshot
+  fullName: AngeliA.CellScreenshotSystem.Screenshot
+  spec.csharp:
+  - uid: AngeliA.CellScreenshotSystem
+    name: CellScreenshotSystem
+    href: AngeliA.CellScreenshotSystem.html
+  - name: .
+  - uid: AngeliA.CellScreenshotSystem.Screenshot
+    name: Screenshot
+    href: AngeliA.CellScreenshotSystem.Screenshot.html
+  spec.vb:
+  - uid: AngeliA.CellScreenshotSystem
+    name: CellScreenshotSystem
+    href: AngeliA.CellScreenshotSystem.html
+  - name: .
+  - uid: AngeliA.CellScreenshotSystem.Screenshot
+    name: Screenshot
+    href: AngeliA.CellScreenshotSystem.Screenshot.html
+- uid: AngeliA.CheatSystem
+  commentId: T:AngeliA.CheatSystem
+  href: AngeliA.CheatSystem.html
+  name: CheatSystem
+  nameWithType: CheatSystem
+  fullName: AngeliA.CheatSystem
+- uid: AngeliA.CircuitSystem
+  commentId: T:AngeliA.CircuitSystem
+  href: AngeliA.CircuitSystem.html
+  name: CircuitSystem
+  nameWithType: CircuitSystem
+  fullName: AngeliA.CircuitSystem
+- uid: AngeliA.Cursor
+  commentId: T:AngeliA.Cursor
+  href: AngeliA.Cursor.html
+  name: Cursor
+  nameWithType: Cursor
+  fullName: AngeliA.Cursor
+- uid: AngeliA.Input
+  commentId: T:AngeliA.Input
+  href: AngeliA.Input.html
+  name: Input
+  nameWithType: Input
+  fullName: AngeliA.Input
+- uid: AngeliA.Inventory
+  commentId: T:AngeliA.Inventory
+  href: AngeliA.Inventory.html
+  name: Inventory
+  nameWithType: Inventory
+  fullName: AngeliA.Inventory
+- uid: AngeliA.Language
+  commentId: T:AngeliA.Language
+  href: AngeliA.Language.html
+  name: Language
+  nameWithType: Language
+  fullName: AngeliA.Language
+- uid: AngeliA.LightingSystem
+  commentId: T:AngeliA.LightingSystem
+  href: AngeliA.LightingSystem.html
+  name: LightingSystem
+  nameWithType: LightingSystem
+  fullName: AngeliA.LightingSystem
+- uid: AngeliA.PhysicsCell
+  commentId: T:AngeliA.PhysicsCell
+  parent: AngeliA
+  href: AngeliA.PhysicsCell.html
+  name: PhysicsCell
+  nameWithType: PhysicsCell
+  fullName: AngeliA.PhysicsCell
+- uid: AngeliA.OperationMode
+  commentId: T:AngeliA.OperationMode
+  parent: AngeliA
+  href: AngeliA.OperationMode.html
+  name: OperationMode
+  nameWithType: OperationMode
+  fullName: AngeliA.OperationMode
+- uid: AngeliA.Physics
+  commentId: T:AngeliA.Physics
+  href: AngeliA.Physics.html
+  name: Physics
+  nameWithType: Physics
+  fullName: AngeliA.Physics
+- uid: AngeliA.PlayerSystem
+  commentId: T:AngeliA.PlayerSystem
+  href: AngeliA.PlayerSystem.html
+  name: PlayerSystem
+  nameWithType: PlayerSystem
+  fullName: AngeliA.PlayerSystem
+- uid: AngeliA.Renderer
+  commentId: T:AngeliA.Renderer
+  href: AngeliA.Renderer.html
+  name: Renderer
+  nameWithType: Renderer
+  fullName: AngeliA.Renderer
+- uid: AngeliA.Renderer.CellComparer
+  commentId: T:AngeliA.Renderer.CellComparer
+  parent: AngeliA
+  href: AngeliA.Renderer.html
+  name: Renderer.CellComparer
+  nameWithType: Renderer.CellComparer
+  fullName: AngeliA.Renderer.CellComparer
+  spec.csharp:
+  - uid: AngeliA.Renderer
+    name: Renderer
+    href: AngeliA.Renderer.html
+  - name: .
+  - uid: AngeliA.Renderer.CellComparer
+    name: CellComparer
+    href: AngeliA.Renderer.CellComparer.html
+  spec.vb:
+  - uid: AngeliA.Renderer
+    name: Renderer
+    href: AngeliA.Renderer.html
+  - name: .
+  - uid: AngeliA.Renderer.CellComparer
+    name: CellComparer
+    href: AngeliA.Renderer.CellComparer.html
+- uid: AngeliA.Sky
+  commentId: T:AngeliA.Sky
+  href: AngeliA.Sky.html
+  name: Sky
+  nameWithType: Sky
+  fullName: AngeliA.Sky
+- uid: AngeliA.Stage
+  commentId: T:AngeliA.Stage
+  href: AngeliA.Stage.html
+  name: Stage
+  nameWithType: Stage
+  fullName: AngeliA.Stage
+- uid: AngeliA.Task
+  commentId: T:AngeliA.Task
+  parent: AngeliA
+  href: AngeliA.Task.html
+  name: Task
+  nameWithType: Task
+  fullName: AngeliA.Task
+- uid: AngeliA.TaskResult
+  commentId: T:AngeliA.TaskResult
+  parent: AngeliA
+  href: AngeliA.TaskResult.html
+  name: TaskResult
+  nameWithType: TaskResult
+  fullName: AngeliA.TaskResult
+- uid: AngeliA.TaskSystem
+  commentId: T:AngeliA.TaskSystem
+  href: AngeliA.TaskSystem.html
+  name: TaskSystem
+  nameWithType: TaskSystem
+  fullName: AngeliA.TaskSystem
+- uid: AngeliA.TransferSystem
+  commentId: T:AngeliA.TransferSystem
+  href: AngeliA.TransferSystem.html
+  name: TransferSystem
+  nameWithType: TransferSystem
+  fullName: AngeliA.TransferSystem
+- uid: AngeliA.Bullet
+  commentId: T:AngeliA.Bullet
+  parent: AngeliA
+  href: AngeliA.Bullet.html
+  name: Bullet
+  nameWithType: Bullet
+  fullName: AngeliA.Bullet
+- uid: AngeliA.BodyGadgetType
+  commentId: T:AngeliA.BodyGadgetType
+  parent: AngeliA
+  href: AngeliA.BodyGadgetType.html
+  name: BodyGadgetType
+  nameWithType: BodyGadgetType
+  fullName: AngeliA.BodyGadgetType
+- uid: AngeliA.BodyGadget
+  commentId: T:AngeliA.BodyGadget
+  parent: AngeliA
+  href: AngeliA.BodyGadget.html
+  name: BodyGadget
+  nameWithType: BodyGadget
+  fullName: AngeliA.BodyGadget
+- uid: AngeliA.DefaultPropellerWing
+  commentId: T:AngeliA.DefaultPropellerWing
+  href: AngeliA.DefaultPropellerWing.html
+  name: DefaultPropellerWing
+  nameWithType: DefaultPropellerWing
+  fullName: AngeliA.DefaultPropellerWing
+- uid: AngeliA.DefaultWing
+  commentId: T:AngeliA.DefaultWing
+  href: AngeliA.DefaultWing.html
+  name: DefaultWing
+  nameWithType: DefaultWing
+  fullName: AngeliA.DefaultWing
+- uid: AngeliA.Ear
+  commentId: T:AngeliA.Ear
+  parent: AngeliA
+  href: AngeliA.Ear.html
+  name: Ear
+  nameWithType: Ear
+  fullName: AngeliA.Ear
+- uid: AngeliA.CharacterFaceExpression
+  commentId: T:AngeliA.CharacterFaceExpression
+  parent: AngeliA
+  href: AngeliA.CharacterFaceExpression.html
+  name: CharacterFaceExpression
+  nameWithType: CharacterFaceExpression
+  fullName: AngeliA.CharacterFaceExpression
+- uid: AngeliA.Face
+  commentId: T:AngeliA.Face
+  parent: AngeliA
+  href: AngeliA.Face.html
+  name: Face
+  nameWithType: Face
+  fullName: AngeliA.Face
+- uid: AngeliA.Hair
+  commentId: T:AngeliA.Hair
+  parent: AngeliA
+  href: AngeliA.Hair.html
+  name: Hair
+  nameWithType: Hair
+  fullName: AngeliA.Hair
+- uid: AngeliA.Horn
+  commentId: T:AngeliA.Horn
+  parent: AngeliA
+  href: AngeliA.Horn.html
+  name: Horn
+  nameWithType: Horn
+  fullName: AngeliA.Horn
+- uid: AngeliA.ModularEar
+  commentId: T:AngeliA.ModularEar
+  href: AngeliA.ModularEar.html
+  name: ModularEar
+  nameWithType: ModularEar
+  fullName: AngeliA.ModularEar
+- uid: AngeliA.ModularFace
+  commentId: T:AngeliA.ModularFace
+  href: AngeliA.ModularFace.html
+  name: ModularFace
+  nameWithType: ModularFace
+  fullName: AngeliA.ModularFace
+- uid: AngeliA.ModularHair
+  commentId: T:AngeliA.ModularHair
+  href: AngeliA.ModularHair.html
+  name: ModularHair
+  nameWithType: ModularHair
+  fullName: AngeliA.ModularHair
+- uid: AngeliA.ModularHorn
+  commentId: T:AngeliA.ModularHorn
+  href: AngeliA.ModularHorn.html
+  name: ModularHorn
+  nameWithType: ModularHorn
+  fullName: AngeliA.ModularHorn
+- uid: AngeliA.ModularTail
+  commentId: T:AngeliA.ModularTail
+  href: AngeliA.ModularTail.html
+  name: ModularTail
+  nameWithType: ModularTail
+  fullName: AngeliA.ModularTail
+- uid: AngeliA.ModularWing
+  commentId: T:AngeliA.ModularWing
+  href: AngeliA.ModularWing.html
+  name: ModularWing
+  nameWithType: ModularWing
+  fullName: AngeliA.ModularWing
+- uid: AngeliA.Tail
+  commentId: T:AngeliA.Tail
+  parent: AngeliA
+  href: AngeliA.Tail.html
+  name: Tail
+  nameWithType: Tail
+  fullName: AngeliA.Tail
+- uid: AngeliA.Wing
+  commentId: T:AngeliA.Wing
+  parent: AngeliA
+  href: AngeliA.Wing.html
+  name: Wing
+  nameWithType: Wing
+  fullName: AngeliA.Wing
+- uid: AngeliA.BodyPart
+  commentId: T:AngeliA.BodyPart
+  parent: AngeliA
+  href: AngeliA.BodyPart.html
+  name: BodyPart
+  nameWithType: BodyPart
+  fullName: AngeliA.BodyPart
+- uid: AngeliA.BodyPart.CoverMode
+  commentId: T:AngeliA.BodyPart.CoverMode
+  parent: AngeliA
+  href: AngeliA.BodyPart.html
+  name: BodyPart.CoverMode
+  nameWithType: BodyPart.CoverMode
+  fullName: AngeliA.BodyPart.CoverMode
+  spec.csharp:
+  - uid: AngeliA.BodyPart
+    name: BodyPart
+    href: AngeliA.BodyPart.html
+  - name: .
+  - uid: AngeliA.BodyPart.CoverMode
+    name: CoverMode
+    href: AngeliA.BodyPart.CoverMode.html
+  spec.vb:
+  - uid: AngeliA.BodyPart
+    name: BodyPart
+    href: AngeliA.BodyPart.html
+  - name: .
+  - uid: AngeliA.BodyPart.CoverMode
+    name: CoverMode
+    href: AngeliA.BodyPart.CoverMode.html
+- uid: AngeliA.CharacterState
+  commentId: T:AngeliA.CharacterState
+  parent: AngeliA
+  href: AngeliA.CharacterState.html
+  name: CharacterState
+  nameWithType: CharacterState
+  fullName: AngeliA.CharacterState
+- uid: AngeliA.CharacterInventoryType
+  commentId: T:AngeliA.CharacterInventoryType
+  parent: AngeliA
+  href: AngeliA.CharacterInventoryType.html
+  name: CharacterInventoryType
+  nameWithType: CharacterInventoryType
+  fullName: AngeliA.CharacterInventoryType
+- uid: AngeliA.CharacterAnimationType
+  commentId: T:AngeliA.CharacterAnimationType
+  parent: AngeliA
+  href: AngeliA.CharacterAnimationType.html
+  name: CharacterAnimationType
+  nameWithType: CharacterAnimationType
+  fullName: AngeliA.CharacterAnimationType
+- uid: AngeliA.Character
+  commentId: T:AngeliA.Character
+  parent: AngeliA
+  href: AngeliA.Character.html
+  name: Character
+  nameWithType: Character
+  fullName: AngeliA.Character
+- uid: AngeliA.ClothType
+  commentId: T:AngeliA.ClothType
+  parent: AngeliA
+  href: AngeliA.ClothType.html
+  name: ClothType
+  nameWithType: ClothType
+  fullName: AngeliA.ClothType
+- uid: AngeliA.Cloth
+  commentId: T:AngeliA.Cloth
+  parent: AngeliA
+  href: AngeliA.Cloth.html
+  name: Cloth
+  nameWithType: Cloth
+  fullName: AngeliA.Cloth
+- uid: AngeliA.BodyCloth
+  commentId: T:AngeliA.BodyCloth
+  parent: AngeliA
+  href: AngeliA.BodyCloth.html
+  name: BodyCloth
+  nameWithType: BodyCloth
+  fullName: AngeliA.BodyCloth
+- uid: AngeliA.FootCloth
+  commentId: T:AngeliA.FootCloth
+  parent: AngeliA
+  href: AngeliA.FootCloth.html
+  name: FootCloth
+  nameWithType: FootCloth
+  fullName: AngeliA.FootCloth
+- uid: AngeliA.HandCloth
+  commentId: T:AngeliA.HandCloth
+  parent: AngeliA
+  href: AngeliA.HandCloth.html
+  name: HandCloth
+  nameWithType: HandCloth
+  fullName: AngeliA.HandCloth
+- uid: AngeliA.HeadCloth
+  commentId: T:AngeliA.HeadCloth
+  parent: AngeliA
+  href: AngeliA.HeadCloth.html
+  name: HeadCloth
+  nameWithType: HeadCloth
+  fullName: AngeliA.HeadCloth
+- uid: AngeliA.HipCloth
+  commentId: T:AngeliA.HipCloth
+  parent: AngeliA
+  href: AngeliA.HipCloth.html
+  name: HipCloth
+  nameWithType: HipCloth
+  fullName: AngeliA.HipCloth
+- uid: AngeliA.HipCloth.HipClothType
+  commentId: T:AngeliA.HipCloth.HipClothType
+  parent: AngeliA
+  href: AngeliA.HipCloth.html
+  name: HipCloth.HipClothType
+  nameWithType: HipCloth.HipClothType
+  fullName: AngeliA.HipCloth.HipClothType
+  spec.csharp:
+  - uid: AngeliA.HipCloth
+    name: HipCloth
+    href: AngeliA.HipCloth.html
+  - name: .
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html
+  spec.vb:
+  - uid: AngeliA.HipCloth
+    name: HipCloth
+    href: AngeliA.HipCloth.html
+  - name: .
+  - uid: AngeliA.HipCloth.HipClothType
+    name: HipClothType
+    href: AngeliA.HipCloth.HipClothType.html
+- uid: AngeliA.ModularBodySuit
+  commentId: T:AngeliA.ModularBodySuit
+  href: AngeliA.ModularBodySuit.html
+  name: ModularBodySuit
+  nameWithType: ModularBodySuit
+  fullName: AngeliA.ModularBodySuit
+- uid: AngeliA.ModularFootSuit
+  commentId: T:AngeliA.ModularFootSuit
+  href: AngeliA.ModularFootSuit.html
+  name: ModularFootSuit
+  nameWithType: ModularFootSuit
+  fullName: AngeliA.ModularFootSuit
+- uid: AngeliA.ModularHandSuit
+  commentId: T:AngeliA.ModularHandSuit
+  href: AngeliA.ModularHandSuit.html
+  name: ModularHandSuit
+  nameWithType: ModularHandSuit
+  fullName: AngeliA.ModularHandSuit
+- uid: AngeliA.ModularHeadSuit
+  commentId: T:AngeliA.ModularHeadSuit
+  href: AngeliA.ModularHeadSuit.html
+  name: ModularHeadSuit
+  nameWithType: ModularHeadSuit
+  fullName: AngeliA.ModularHeadSuit
+- uid: AngeliA.ModularHipSuit
+  commentId: T:AngeliA.ModularHipSuit
+  href: AngeliA.ModularHipSuit.html
+  name: ModularHipSuit
+  nameWithType: ModularHipSuit
+  fullName: AngeliA.ModularHipSuit
+- uid: AngeliA.OrientedSprite
+  commentId: T:AngeliA.OrientedSprite
+  parent: AngeliA
+  href: AngeliA.OrientedSprite.html
+  name: OrientedSprite
+  nameWithType: OrientedSprite
+  fullName: AngeliA.OrientedSprite
+- uid: AngeliA.PoseCharacter
+  commentId: T:AngeliA.PoseCharacter
+  parent: AngeliA
+  href: AngeliA.PoseCharacter.html
+  name: PoseCharacter
+  nameWithType: PoseCharacter
+  fullName: AngeliA.PoseCharacter
+- uid: AngeliA.Entity
+  commentId: T:AngeliA.Entity
+  parent: AngeliA
+  href: AngeliA.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: AngeliA.Entity
+- uid: AngeliA.GroupAnimationHolder
+  commentId: T:AngeliA.GroupAnimationHolder
+  parent: AngeliA
+  href: AngeliA.GroupAnimationHolder.html
+  name: GroupAnimationHolder
+  nameWithType: GroupAnimationHolder
+  fullName: AngeliA.GroupAnimationHolder
+- uid: AngeliA.IActionTarget
+  commentId: T:AngeliA.IActionTarget
+  parent: AngeliA
+  href: AngeliA.IActionTarget.html
+  name: IActionTarget
+  nameWithType: IActionTarget
+  fullName: AngeliA.IActionTarget
+- uid: AngeliA.IBlockEntity
+  commentId: T:AngeliA.IBlockEntity
+  parent: AngeliA
+  href: AngeliA.IBlockEntity.html
+  name: IBlockEntity
+  nameWithType: IBlockEntity
+  fullName: AngeliA.IBlockEntity
+- uid: AngeliA.IBumpable
+  commentId: T:AngeliA.IBumpable
+  parent: AngeliA
+  href: AngeliA.IBumpable.html
+  name: IBumpable
+  nameWithType: IBumpable
+  fullName: AngeliA.IBumpable
+- uid: AngeliA.ICarrier
+  commentId: T:AngeliA.ICarrier
+  parent: AngeliA
+  href: AngeliA.ICarrier.html
+  name: ICarrier
+  nameWithType: ICarrier
+  fullName: AngeliA.ICarrier
+- uid: AngeliA.ICircuitOperator
+  commentId: T:AngeliA.ICircuitOperator
+  parent: AngeliA
+  href: AngeliA.ICircuitOperator.html
+  name: ICircuitOperator
+  nameWithType: ICircuitOperator
+  fullName: AngeliA.ICircuitOperator
+- uid: AngeliA.ICombustible
+  commentId: T:AngeliA.ICombustible
+  parent: AngeliA
+  href: AngeliA.ICombustible.html
+  name: ICombustible
+  nameWithType: ICombustible
+  fullName: AngeliA.ICombustible
+- uid: AngeliA.IDamageReceiver
+  commentId: T:AngeliA.IDamageReceiver
+  parent: AngeliA
+  href: AngeliA.IDamageReceiver.html
+  name: IDamageReceiver
+  nameWithType: IDamageReceiver
+  fullName: AngeliA.IDamageReceiver
+- uid: AngeliA.IFire
+  commentId: T:AngeliA.IFire
+  parent: AngeliA
+  href: AngeliA.IFire.html
+  name: IFire
+  nameWithType: IFire
+  fullName: AngeliA.IFire
+- uid: AngeliA.IItemTransfer
+  commentId: T:AngeliA.IItemTransfer
+  href: AngeliA.IItemTransfer.html
+  name: IItemTransfer
+  nameWithType: IItemTransfer
+  fullName: AngeliA.IItemTransfer
+- uid: AngeliA.IPlayable
+  commentId: T:AngeliA.IPlayable
+  parent: AngeliA
+  href: AngeliA.IPlayable.html
+  name: IPlayable
+  nameWithType: IPlayable
+  fullName: AngeliA.IPlayable
+- uid: AngeliA.IRouteWalker
+  commentId: T:AngeliA.IRouteWalker
+  parent: AngeliA
+  href: AngeliA.IRouteWalker.html
+  name: IRouteWalker
+  nameWithType: IRouteWalker
+  fullName: AngeliA.IRouteWalker
+- uid: AngeliA.IWithCharacterMovement
+  commentId: T:AngeliA.IWithCharacterMovement
+  parent: AngeliA
+  href: AngeliA.IWithCharacterMovement.html
+  name: IWithCharacterMovement
+  nameWithType: IWithCharacterMovement
+  fullName: AngeliA.IWithCharacterMovement
+- uid: AngeliA.IWithCharacterAttackness
+  commentId: T:AngeliA.IWithCharacterAttackness
+  parent: AngeliA
+  href: AngeliA.IWithCharacterAttackness.html
+  name: IWithCharacterAttackness
+  nameWithType: IWithCharacterAttackness
+  fullName: AngeliA.IWithCharacterAttackness
+- uid: AngeliA.IWithCharacterBuff
+  commentId: T:AngeliA.IWithCharacterBuff
+  parent: AngeliA
+  href: AngeliA.IWithCharacterBuff.html
+  name: IWithCharacterBuff
+  nameWithType: IWithCharacterBuff
+  fullName: AngeliA.IWithCharacterBuff
+- uid: AngeliA.IWithCharacterHealth
+  commentId: T:AngeliA.IWithCharacterHealth
+  parent: AngeliA
+  href: AngeliA.IWithCharacterHealth.html
+  name: IWithCharacterHealth
+  nameWithType: IWithCharacterHealth
+  fullName: AngeliA.IWithCharacterHealth
+- uid: AngeliA.IWithCharacterRenderer
+  commentId: T:AngeliA.IWithCharacterRenderer
+  parent: AngeliA
+  href: AngeliA.IWithCharacterRenderer.html
+  name: IWithCharacterRenderer
+  nameWithType: IWithCharacterRenderer
+  fullName: AngeliA.IWithCharacterRenderer
+- uid: AngeliA.ItemHolder
+  commentId: T:AngeliA.ItemHolder
+  parent: AngeliA
+  href: AngeliA.ItemHolder.html
+  name: ItemHolder
+  nameWithType: ItemHolder
+  fullName: AngeliA.ItemHolder
+- uid: AngeliA.IMapItem
+  commentId: T:AngeliA.IMapItem
+  parent: AngeliA
+  href: AngeliA.IMapItem.html
+  name: IMapItem
+  nameWithType: IMapItem
+  fullName: AngeliA.IMapItem
+- uid: AngeliA.MapEditor
+  commentId: T:AngeliA.MapEditor
+  parent: AngeliA
+  href: AngeliA.MapEditor.html
+  name: MapEditor
+  nameWithType: MapEditor
+  fullName: AngeliA.MapEditor
+- uid: AngeliA.MapEditorBlinkParticle
+  commentId: T:AngeliA.MapEditorBlinkParticle
+  href: AngeliA.MapEditorBlinkParticle.html
+  name: MapEditorBlinkParticle
+  nameWithType: MapEditorBlinkParticle
+  fullName: AngeliA.MapEditorBlinkParticle
+- uid: AngeliA.MapEditorToolbarButton
+  commentId: T:AngeliA.MapEditorToolbarButton
+  href: AngeliA.MapEditorToolbarButton.html
+  name: MapEditorToolbarButton
+  nameWithType: MapEditorToolbarButton
+  fullName: AngeliA.MapEditorToolbarButton
+- uid: AngeliA.Particle
+  commentId: T:AngeliA.Particle
+  parent: AngeliA
+  href: AngeliA.Particle.html
+  name: Particle
+  nameWithType: Particle
+  fullName: AngeliA.Particle
+- uid: AngeliA.Rigidbody
+  commentId: T:AngeliA.Rigidbody
+  parent: AngeliA
+  href: AngeliA.Rigidbody.html
+  name: Rigidbody
+  nameWithType: Rigidbody
+  fullName: AngeliA.Rigidbody
+- uid: AngeliA.NumberZero
+  commentId: T:AngeliA.NumberZero
+  href: AngeliA.NumberZero.html
+  name: NumberZero
+  nameWithType: NumberZero
+  fullName: AngeliA.NumberZero
+- uid: AngeliA.NumberOne
+  commentId: T:AngeliA.NumberOne
+  href: AngeliA.NumberOne.html
+  name: NumberOne
+  nameWithType: NumberOne
+  fullName: AngeliA.NumberOne
+- uid: AngeliA.NumberTwo
+  commentId: T:AngeliA.NumberTwo
+  href: AngeliA.NumberTwo.html
+  name: NumberTwo
+  nameWithType: NumberTwo
+  fullName: AngeliA.NumberTwo
+- uid: AngeliA.NumberThree
+  commentId: T:AngeliA.NumberThree
+  href: AngeliA.NumberThree.html
+  name: NumberThree
+  nameWithType: NumberThree
+  fullName: AngeliA.NumberThree
+- uid: AngeliA.NumberFour
+  commentId: T:AngeliA.NumberFour
+  href: AngeliA.NumberFour.html
+  name: NumberFour
+  nameWithType: NumberFour
+  fullName: AngeliA.NumberFour
+- uid: AngeliA.NumberFive
+  commentId: T:AngeliA.NumberFive
+  href: AngeliA.NumberFive.html
+  name: NumberFive
+  nameWithType: NumberFive
+  fullName: AngeliA.NumberFive
+- uid: AngeliA.NumberSix
+  commentId: T:AngeliA.NumberSix
+  href: AngeliA.NumberSix.html
+  name: NumberSix
+  nameWithType: NumberSix
+  fullName: AngeliA.NumberSix
+- uid: AngeliA.NumberSeven
+  commentId: T:AngeliA.NumberSeven
+  href: AngeliA.NumberSeven.html
+  name: NumberSeven
+  nameWithType: NumberSeven
+  fullName: AngeliA.NumberSeven
+- uid: AngeliA.NumberEight
+  commentId: T:AngeliA.NumberEight
+  href: AngeliA.NumberEight.html
+  name: NumberEight
+  nameWithType: NumberEight
+  fullName: AngeliA.NumberEight
+- uid: AngeliA.NumberNine
+  commentId: T:AngeliA.NumberNine
+  href: AngeliA.NumberNine.html
+  name: NumberNine
+  nameWithType: NumberNine
+  fullName: AngeliA.NumberNine
+- uid: AngeliA.ControlHintUI
+  commentId: T:AngeliA.ControlHintUI
+  parent: AngeliA
+  href: AngeliA.ControlHintUI.html
+  name: ControlHintUI
+  nameWithType: ControlHintUI
+  fullName: AngeliA.ControlHintUI
+- uid: AngeliA.DefaultDialogueUI
+  commentId: T:AngeliA.DefaultDialogueUI
+  href: AngeliA.DefaultDialogueUI.html
+  name: DefaultDialogueUI
+  nameWithType: DefaultDialogueUI
+  fullName: AngeliA.DefaultDialogueUI
+- uid: AngeliA.DialogueUI
+  commentId: T:AngeliA.DialogueUI
+  parent: AngeliA
+  href: AngeliA.DialogueUI.html
+  name: DialogueUI
+  nameWithType: DialogueUI
+  fullName: AngeliA.DialogueUI
+- uid: AngeliA.IWindowEntityUI
+  commentId: T:AngeliA.IWindowEntityUI
+  parent: AngeliA
+  href: AngeliA.IWindowEntityUI.html
+  name: IWindowEntityUI
+  nameWithType: IWindowEntityUI
+  fullName: AngeliA.IWindowEntityUI
+- uid: AngeliA.EntityUI
+  commentId: T:AngeliA.EntityUI
+  parent: AngeliA
+  href: AngeliA.EntityUI.html
+  name: EntityUI
+  nameWithType: EntityUI
+  fullName: AngeliA.EntityUI
+- uid: AngeliA.FileBrowserUI
+  commentId: T:AngeliA.FileBrowserUI
+  parent: AngeliA
+  href: AngeliA.FileBrowserUI.html
+  name: FileBrowserUI
+  nameWithType: FileBrowserUI
+  fullName: AngeliA.FileBrowserUI
+- uid: AngeliA.GenericDialogUI
+  commentId: T:AngeliA.GenericDialogUI
+  parent: AngeliA
+  href: AngeliA.GenericDialogUI.html
+  name: GenericDialogUI
+  nameWithType: GenericDialogUI
+  fullName: AngeliA.GenericDialogUI
+- uid: AngeliA.GenericDialogUI.Option
+  commentId: T:AngeliA.GenericDialogUI.Option
+  href: AngeliA.GenericDialogUI.html
+  name: GenericDialogUI.Option
+  nameWithType: GenericDialogUI.Option
+  fullName: AngeliA.GenericDialogUI.Option
+  spec.csharp:
+  - uid: AngeliA.GenericDialogUI
+    name: GenericDialogUI
+    href: AngeliA.GenericDialogUI.html
+  - name: .
+  - uid: AngeliA.GenericDialogUI.Option
+    name: Option
+    href: AngeliA.GenericDialogUI.Option.html
+  spec.vb:
+  - uid: AngeliA.GenericDialogUI
+    name: GenericDialogUI
+    href: AngeliA.GenericDialogUI.html
+  - name: .
+  - uid: AngeliA.GenericDialogUI.Option
+    name: Option
+    href: AngeliA.GenericDialogUI.Option.html
+- uid: AngeliA.GenericPopupUI
+  commentId: T:AngeliA.GenericPopupUI
+  parent: AngeliA
+  href: AngeliA.GenericPopupUI.html
+  name: GenericPopupUI
+  nameWithType: GenericPopupUI
+  fullName: AngeliA.GenericPopupUI
+- uid: AngeliA.InventoryPartnerUI
+  commentId: T:AngeliA.InventoryPartnerUI
+  parent: AngeliA
+  href: AngeliA.InventoryPartnerUI.html
+  name: InventoryPartnerUI
+  nameWithType: InventoryPartnerUI
+  fullName: AngeliA.InventoryPartnerUI
+- uid: AngeliA.MenuUI
+  commentId: T:AngeliA.MenuUI
+  parent: AngeliA
+  href: AngeliA.MenuUI.html
+  name: MenuUI
+  nameWithType: MenuUI
+  fullName: AngeliA.MenuUI
+- uid: AngeliA.NotificationUI
+  commentId: T:AngeliA.NotificationUI
+  href: AngeliA.NotificationUI.html
+  name: NotificationUI
+  nameWithType: NotificationUI
+  fullName: AngeliA.NotificationUI
+- uid: AngeliA.PauseMenuUI
+  commentId: T:AngeliA.PauseMenuUI
+  href: AngeliA.PauseMenuUI.html
+  name: PauseMenuUI
+  nameWithType: PauseMenuUI
+  fullName: AngeliA.PauseMenuUI
+- uid: AngeliA.PlayerMenuPartnerUI
+  commentId: T:AngeliA.PlayerMenuPartnerUI
+  parent: AngeliA
+  href: AngeliA.PlayerMenuPartnerUI.html
+  name: PlayerMenuPartnerUI
+  nameWithType: PlayerMenuPartnerUI
+  fullName: AngeliA.PlayerMenuPartnerUI
+- uid: AngeliA.PlayerMenuUI
+  commentId: T:AngeliA.PlayerMenuUI
+  parent: AngeliA
+  href: AngeliA.PlayerMenuUI.html
+  name: PlayerMenuUI
+  nameWithType: PlayerMenuUI
+  fullName: AngeliA.PlayerMenuUI
+- uid: AngeliA.PlayerQuickMenuUI
+  commentId: T:AngeliA.PlayerQuickMenuUI
+  parent: AngeliA
+  href: AngeliA.PlayerQuickMenuUI.html
+  name: PlayerQuickMenuUI
+  nameWithType: PlayerQuickMenuUI
+  fullName: AngeliA.PlayerQuickMenuUI
+- uid: AngeliA.WindowUI
+  commentId: T:AngeliA.WindowUI
+  parent: AngeliA
+  href: AngeliA.WindowUI.html
+  name: WindowUI
+  nameWithType: WindowUI
+  fullName: AngeliA.WindowUI
+- uid: AngeliA.Game
+  commentId: T:AngeliA.Game
+  href: AngeliA.Game.html
+  name: Game
+  nameWithType: Game
+  fullName: AngeliA.Game
+- uid: AngeliA.GUI
+  commentId: T:AngeliA.GUI
+  href: AngeliA.GUI.html
+  name: GUI
+  nameWithType: GUI
+  fullName: AngeliA.GUI
+- uid: AngeliA.GUISkin
+  commentId: T:AngeliA.GUISkin
+  parent: AngeliA
+  href: AngeliA.GUISkin.html
+  name: GUISkin
+  nameWithType: GUISkin
+  fullName: AngeliA.GUISkin
+- uid: AngeliA.GUISkin.LabelPattern
+  commentId: T:AngeliA.GUISkin.LabelPattern
+  parent: AngeliA
+  href: AngeliA.GUISkin.html
+  name: GUISkin.LabelPattern
+  nameWithType: GUISkin.LabelPattern
+  fullName: AngeliA.GUISkin.LabelPattern
+  spec.csharp:
+  - uid: AngeliA.GUISkin
+    name: GUISkin
+    href: AngeliA.GUISkin.html
+  - name: .
+  - uid: AngeliA.GUISkin.LabelPattern
+    name: LabelPattern
+    href: AngeliA.GUISkin.LabelPattern.html
+  spec.vb:
+  - uid: AngeliA.GUISkin
+    name: GUISkin
+    href: AngeliA.GUISkin.html
+  - name: .
+  - uid: AngeliA.GUISkin.LabelPattern
+    name: LabelPattern
+    href: AngeliA.GUISkin.LabelPattern.html
+- uid: AngeliA.GUIStyle
+  commentId: T:AngeliA.GUIStyle
+  parent: AngeliA
+  href: AngeliA.GUIStyle.html
+  name: GUIStyle
+  nameWithType: GUIStyle
+  fullName: AngeliA.GUIStyle
+- uid: AngeliA.AntiBuffItem`1
+  commentId: T:AngeliA.AntiBuffItem`1
+  href: AngeliA.AntiBuffItem-1.html
+  name: AntiBuffItem<B>
+  nameWithType: AntiBuffItem<B>
+  fullName: AngeliA.AntiBuffItem<B>
+  nameWithType.vb: AntiBuffItem(Of B)
+  fullName.vb: AngeliA.AntiBuffItem(Of B)
+  name.vb: AntiBuffItem(Of B)
+  spec.csharp:
+  - uid: AngeliA.AntiBuffItem`1
+    name: AntiBuffItem
+    href: AngeliA.AntiBuffItem-1.html
+  - name: <
+  - name: B
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.AntiBuffItem`1
+    name: AntiBuffItem
+    href: AngeliA.AntiBuffItem-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: B
+  - name: )
+- uid: AngeliA.AntiBuffItem`1.TriggerMode
+  commentId: T:AngeliA.AntiBuffItem`1.TriggerMode
+  parent: AngeliA
+  href: AngeliA.AntiBuffItem-1.html
+  name: AntiBuffItem<B>.TriggerMode
+  nameWithType: AntiBuffItem<B>.TriggerMode
+  fullName: AngeliA.AntiBuffItem<B>.TriggerMode
+  nameWithType.vb: AntiBuffItem(Of B).TriggerMode
+  fullName.vb: AngeliA.AntiBuffItem(Of B).TriggerMode
+  name.vb: AntiBuffItem(Of B).TriggerMode
+  spec.csharp:
+  - uid: AngeliA.AntiBuffItem`1
+    name: AntiBuffItem
+    href: AngeliA.AntiBuffItem-1.html
+  - name: <
+  - name: B
+  - name: '>'
+  - name: .
+  - uid: AngeliA.AntiBuffItem`1.TriggerMode
+    name: TriggerMode
+    href: AngeliA.AntiBuffItem-1.TriggerMode.html
+  spec.vb:
+  - uid: AngeliA.AntiBuffItem`1
+    name: AntiBuffItem
+    href: AngeliA.AntiBuffItem-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: B
+  - name: )
+  - name: .
+  - uid: AngeliA.AntiBuffItem`1.TriggerMode
+    name: TriggerMode
+    href: AngeliA.AntiBuffItem-1.TriggerMode.html
+- uid: AngeliA.BlockBuilder
+  commentId: T:AngeliA.BlockBuilder
+  href: AngeliA.BlockBuilder.html
+  name: BlockBuilder
+  nameWithType: BlockBuilder
+  fullName: AngeliA.BlockBuilder
+- uid: AngeliA.BodyGadgetItem
+  commentId: T:AngeliA.BodyGadgetItem
+  href: AngeliA.BodyGadgetItem.html
+  name: BodyGadgetItem
+  nameWithType: BodyGadgetItem
+  fullName: AngeliA.BodyGadgetItem
+- uid: AngeliA.BodySetItem
+  commentId: T:AngeliA.BodySetItem
+  href: AngeliA.BodySetItem.html
+  name: BodySetItem
+  nameWithType: BodySetItem
+  fullName: AngeliA.BodySetItem
+- uid: AngeliA.BuffItem`1
+  commentId: T:AngeliA.BuffItem`1
+  href: AngeliA.BuffItem-1.html
+  name: BuffItem<B>
+  nameWithType: BuffItem<B>
+  fullName: AngeliA.BuffItem<B>
+  nameWithType.vb: BuffItem(Of B)
+  fullName.vb: AngeliA.BuffItem(Of B)
+  name.vb: BuffItem(Of B)
+  spec.csharp:
+  - uid: AngeliA.BuffItem`1
+    name: BuffItem
+    href: AngeliA.BuffItem-1.html
+  - name: <
+  - name: B
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.BuffItem`1
+    name: BuffItem
+    href: AngeliA.BuffItem-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: B
+  - name: )
+- uid: AngeliA.BuffItem
+  commentId: T:AngeliA.BuffItem
+  parent: AngeliA
+  href: AngeliA.BuffItem.html
+  name: BuffItem
+  nameWithType: BuffItem
+  fullName: AngeliA.BuffItem
+- uid: AngeliA.ClothItem
+  commentId: T:AngeliA.ClothItem
+  href: AngeliA.ClothItem.html
+  name: ClothItem
+  nameWithType: ClothItem
+  fullName: AngeliA.ClothItem
+- uid: AngeliA.EquipmentType
+  commentId: T:AngeliA.EquipmentType
+  parent: AngeliA
+  href: AngeliA.EquipmentType.html
+  name: EquipmentType
+  nameWithType: EquipmentType
+  fullName: AngeliA.EquipmentType
+- uid: AngeliA.Equipment
+  commentId: T:AngeliA.Equipment
+  parent: AngeliA
+  href: AngeliA.Equipment.html
+  name: Equipment
+  nameWithType: Equipment
+  fullName: AngeliA.Equipment
+- uid: AngeliA.Food
+  commentId: T:AngeliA.Food
+  href: AngeliA.Food.html
+  name: Food
+  nameWithType: Food
+  fullName: AngeliA.Food
+- uid: AngeliA.HandTool
+  commentId: T:AngeliA.HandTool
+  parent: AngeliA
+  href: AngeliA.HandTool.html
+  name: HandTool
+  nameWithType: HandTool
+  fullName: AngeliA.HandTool
+- uid: AngeliA.IProgressiveItem
+  commentId: T:AngeliA.IProgressiveItem
+  parent: AngeliA
+  href: AngeliA.IProgressiveItem.html
+  name: IProgressiveItem
+  nameWithType: IProgressiveItem
+  fullName: AngeliA.IProgressiveItem
+- uid: AngeliA.Item
+  commentId: T:AngeliA.Item
+  parent: AngeliA
+  href: AngeliA.Item.html
+  name: Item
+  nameWithType: Item
+  fullName: AngeliA.Item
+- uid: AngeliA.ItemSystem
+  commentId: T:AngeliA.ItemSystem
+  href: AngeliA.ItemSystem.html
+  name: ItemSystem
+  nameWithType: ItemSystem
+  fullName: AngeliA.ItemSystem
+- uid: AngeliA.ItemSystem.ItemData
+  commentId: T:AngeliA.ItemSystem.ItemData
+  href: AngeliA.ItemSystem.html
+  name: ItemSystem.ItemData
+  nameWithType: ItemSystem.ItemData
+  fullName: AngeliA.ItemSystem.ItemData
+  spec.csharp:
+  - uid: AngeliA.ItemSystem
+    name: ItemSystem
+    href: AngeliA.ItemSystem.html
+  - name: .
+  - uid: AngeliA.ItemSystem.ItemData
+    name: ItemData
+    href: AngeliA.ItemSystem.ItemData.html
+  spec.vb:
+  - uid: AngeliA.ItemSystem
+    name: ItemSystem
+    href: AngeliA.ItemSystem.html
+  - name: .
+  - uid: AngeliA.ItemSystem.ItemData
+    name: ItemData
+    href: AngeliA.ItemSystem.ItemData.html
+- uid: AngeliA.Jewelry
+  commentId: T:AngeliA.Jewelry
+  href: AngeliA.Jewelry.html
+  name: Jewelry
+  nameWithType: Jewelry
+  fullName: AngeliA.Jewelry
+- uid: AngeliA.NonStackableItem
+  commentId: T:AngeliA.NonStackableItem
+  parent: AngeliA
+  href: AngeliA.NonStackableItem.html
+  name: NonStackableItem
+  nameWithType: NonStackableItem
+  fullName: AngeliA.NonStackableItem
+- uid: AngeliA.PlayerMenuItem`1
+  commentId: T:AngeliA.PlayerMenuItem`1
+  href: AngeliA.PlayerMenuItem-1.html
+  name: PlayerMenuItem<UI>
+  nameWithType: PlayerMenuItem<UI>
+  fullName: AngeliA.PlayerMenuItem<UI>
+  nameWithType.vb: PlayerMenuItem(Of UI)
+  fullName.vb: AngeliA.PlayerMenuItem(Of UI)
+  name.vb: PlayerMenuItem(Of UI)
+  spec.csharp:
+  - uid: AngeliA.PlayerMenuItem`1
+    name: PlayerMenuItem
+    href: AngeliA.PlayerMenuItem-1.html
+  - name: <
+  - name: UI
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.PlayerMenuItem`1
+    name: PlayerMenuItem
+    href: AngeliA.PlayerMenuItem-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: UI
+  - name: )
+- uid: AngeliA.SwitchItem`1
+  commentId: T:AngeliA.SwitchItem`1
+  href: AngeliA.SwitchItem-1.html
+  name: SwitchItem<TargetItem>
+  nameWithType: SwitchItem<TargetItem>
+  fullName: AngeliA.SwitchItem<TargetItem>
+  nameWithType.vb: SwitchItem(Of TargetItem)
+  fullName.vb: AngeliA.SwitchItem(Of TargetItem)
+  name.vb: SwitchItem(Of TargetItem)
+  spec.csharp:
+  - uid: AngeliA.SwitchItem`1
+    name: SwitchItem
+    href: AngeliA.SwitchItem-1.html
+  - name: <
+  - name: TargetItem
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.SwitchItem`1
+    name: SwitchItem
+    href: AngeliA.SwitchItem-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TargetItem
+  - name: )
+- uid: AngeliA.WeaponValidDirection
+  commentId: T:AngeliA.WeaponValidDirection
+  parent: AngeliA
+  href: AngeliA.WeaponValidDirection.html
+  name: WeaponValidDirection
+  nameWithType: WeaponValidDirection
+  fullName: AngeliA.WeaponValidDirection
+- uid: AngeliA.Weapon`1
+  commentId: T:AngeliA.Weapon`1
+  href: AngeliA.Weapon-1.html
+  name: Weapon<B>
+  nameWithType: Weapon<B>
+  fullName: AngeliA.Weapon<B>
+  nameWithType.vb: Weapon(Of B)
+  fullName.vb: AngeliA.Weapon(Of B)
+  name.vb: Weapon(Of B)
+  spec.csharp:
+  - uid: AngeliA.Weapon`1
+    name: Weapon
+    href: AngeliA.Weapon-1.html
+  - name: <
+  - name: B
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.Weapon`1
+    name: Weapon
+    href: AngeliA.Weapon-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: B
+  - name: )
+- uid: AngeliA.Weapon
+  commentId: T:AngeliA.Weapon
+  parent: AngeliA
+  href: AngeliA.Weapon.html
+  name: Weapon
+  nameWithType: Weapon
+  fullName: AngeliA.Weapon
+- uid: AngeliA.CharacterPose
+  commentId: T:AngeliA.CharacterPose
+  href: AngeliA.CharacterPose.html
+  name: CharacterPose
+  nameWithType: CharacterPose
+  fullName: AngeliA.CharacterPose
+- uid: AngeliA.HandheldPoseAnimation
+  commentId: T:AngeliA.HandheldPoseAnimation
+  parent: AngeliA
+  href: AngeliA.HandheldPoseAnimation.html
+  name: HandheldPoseAnimation
+  nameWithType: HandheldPoseAnimation
+  fullName: AngeliA.HandheldPoseAnimation
+- uid: AngeliA.PoseHandheld_Block
+  commentId: T:AngeliA.PoseHandheld_Block
+  href: AngeliA.PoseHandheld_Block.html
+  name: PoseHandheld_Block
+  nameWithType: PoseHandheld_Block
+  fullName: AngeliA.PoseHandheld_Block
+- uid: AngeliA.PoseHandheld_Tool
+  commentId: T:AngeliA.PoseHandheld_Tool
+  href: AngeliA.PoseHandheld_Tool.html
+  name: PoseHandheld_Tool
+  nameWithType: PoseHandheld_Tool
+  fullName: AngeliA.PoseHandheld_Tool
+- uid: AngeliA.PosePerform_Tool
+  commentId: T:AngeliA.PosePerform_Tool
+  href: AngeliA.PosePerform_Tool.html
+  name: PosePerform_Tool
+  nameWithType: PosePerform_Tool
+  fullName: AngeliA.PosePerform_Tool
+- uid: AngeliA.PosePerform_Block
+  commentId: T:AngeliA.PosePerform_Block
+  href: AngeliA.PosePerform_Block.html
+  name: PosePerform_Block
+  nameWithType: PosePerform_Block
+  fullName: AngeliA.PosePerform_Block
+- uid: AngeliA.PoseAnimation_Brake
+  commentId: T:AngeliA.PoseAnimation_Brake
+  href: AngeliA.PoseAnimation_Brake.html
+  name: PoseAnimation_Brake
+  nameWithType: PoseAnimation_Brake
+  fullName: AngeliA.PoseAnimation_Brake
+- uid: AngeliA.PoseAnimation_Climb
+  commentId: T:AngeliA.PoseAnimation_Climb
+  href: AngeliA.PoseAnimation_Climb.html
+  name: PoseAnimation_Climb
+  nameWithType: PoseAnimation_Climb
+  fullName: AngeliA.PoseAnimation_Climb
+- uid: AngeliA.PoseAnimation_Crash
+  commentId: T:AngeliA.PoseAnimation_Crash
+  href: AngeliA.PoseAnimation_Crash.html
+  name: PoseAnimation_Crash
+  nameWithType: PoseAnimation_Crash
+  fullName: AngeliA.PoseAnimation_Crash
+- uid: AngeliA.PoseAnimation_Dash
+  commentId: T:AngeliA.PoseAnimation_Dash
+  href: AngeliA.PoseAnimation_Dash.html
+  name: PoseAnimation_Dash
+  nameWithType: PoseAnimation_Dash
+  fullName: AngeliA.PoseAnimation_Dash
+- uid: AngeliA.PoseAnimation_Fly
+  commentId: T:AngeliA.PoseAnimation_Fly
+  href: AngeliA.PoseAnimation_Fly.html
+  name: PoseAnimation_Fly
+  nameWithType: PoseAnimation_Fly
+  fullName: AngeliA.PoseAnimation_Fly
+- uid: AngeliA.PoseAnimation_GrabSide
+  commentId: T:AngeliA.PoseAnimation_GrabSide
+  href: AngeliA.PoseAnimation_GrabSide.html
+  name: PoseAnimation_GrabSide
+  nameWithType: PoseAnimation_GrabSide
+  fullName: AngeliA.PoseAnimation_GrabSide
+- uid: AngeliA.PoseAnimation_GrabTop
+  commentId: T:AngeliA.PoseAnimation_GrabTop
+  href: AngeliA.PoseAnimation_GrabTop.html
+  name: PoseAnimation_GrabTop
+  nameWithType: PoseAnimation_GrabTop
+  fullName: AngeliA.PoseAnimation_GrabTop
+- uid: AngeliA.PoseAnimation_Idle
+  commentId: T:AngeliA.PoseAnimation_Idle
+  href: AngeliA.PoseAnimation_Idle.html
+  name: PoseAnimation_Idle
+  nameWithType: PoseAnimation_Idle
+  fullName: AngeliA.PoseAnimation_Idle
+- uid: AngeliA.PoseAnimation_JumpDown
+  commentId: T:AngeliA.PoseAnimation_JumpDown
+  href: AngeliA.PoseAnimation_JumpDown.html
+  name: PoseAnimation_JumpDown
+  nameWithType: PoseAnimation_JumpDown
+  fullName: AngeliA.PoseAnimation_JumpDown
+- uid: AngeliA.PoseAnimation_JumpUp
+  commentId: T:AngeliA.PoseAnimation_JumpUp
+  href: AngeliA.PoseAnimation_JumpUp.html
+  name: PoseAnimation_JumpUp
+  nameWithType: PoseAnimation_JumpUp
+  fullName: AngeliA.PoseAnimation_JumpUp
+- uid: AngeliA.PoseAnimation_PassOut
+  commentId: T:AngeliA.PoseAnimation_PassOut
+  href: AngeliA.PoseAnimation_PassOut.html
+  name: PoseAnimation_PassOut
+  nameWithType: PoseAnimation_PassOut
+  fullName: AngeliA.PoseAnimation_PassOut
+- uid: AngeliA.PoseAnimation_Pound
+  commentId: T:AngeliA.PoseAnimation_Pound
+  href: AngeliA.PoseAnimation_Pound.html
+  name: PoseAnimation_Pound
+  nameWithType: PoseAnimation_Pound
+  fullName: AngeliA.PoseAnimation_Pound
+- uid: AngeliA.PoseAnimation_Rolling
+  commentId: T:AngeliA.PoseAnimation_Rolling
+  href: AngeliA.PoseAnimation_Rolling.html
+  name: PoseAnimation_Rolling
+  nameWithType: PoseAnimation_Rolling
+  fullName: AngeliA.PoseAnimation_Rolling
+- uid: AngeliA.PoseAnimation_Run
+  commentId: T:AngeliA.PoseAnimation_Run
+  href: AngeliA.PoseAnimation_Run.html
+  name: PoseAnimation_Run
+  nameWithType: PoseAnimation_Run
+  fullName: AngeliA.PoseAnimation_Run
+- uid: AngeliA.PoseAnimation_Rush
+  commentId: T:AngeliA.PoseAnimation_Rush
+  href: AngeliA.PoseAnimation_Rush.html
+  name: PoseAnimation_Rush
+  nameWithType: PoseAnimation_Rush
+  fullName: AngeliA.PoseAnimation_Rush
+- uid: AngeliA.PoseAnimation_Sleep
+  commentId: T:AngeliA.PoseAnimation_Sleep
+  href: AngeliA.PoseAnimation_Sleep.html
+  name: PoseAnimation_Sleep
+  nameWithType: PoseAnimation_Sleep
+  fullName: AngeliA.PoseAnimation_Sleep
+- uid: AngeliA.PoseAnimation_Slide
+  commentId: T:AngeliA.PoseAnimation_Slide
+  href: AngeliA.PoseAnimation_Slide.html
+  name: PoseAnimation_Slide
+  nameWithType: PoseAnimation_Slide
+  fullName: AngeliA.PoseAnimation_Slide
+- uid: AngeliA.PoseAnimation_Spin
+  commentId: T:AngeliA.PoseAnimation_Spin
+  href: AngeliA.PoseAnimation_Spin.html
+  name: PoseAnimation_Spin
+  nameWithType: PoseAnimation_Spin
+  fullName: AngeliA.PoseAnimation_Spin
+- uid: AngeliA.PoseAnimation_SquatIdle
+  commentId: T:AngeliA.PoseAnimation_SquatIdle
+  href: AngeliA.PoseAnimation_SquatIdle.html
+  name: PoseAnimation_SquatIdle
+  nameWithType: PoseAnimation_SquatIdle
+  fullName: AngeliA.PoseAnimation_SquatIdle
+- uid: AngeliA.PoseAnimation_SquatMove
+  commentId: T:AngeliA.PoseAnimation_SquatMove
+  href: AngeliA.PoseAnimation_SquatMove.html
+  name: PoseAnimation_SquatMove
+  nameWithType: PoseAnimation_SquatMove
+  fullName: AngeliA.PoseAnimation_SquatMove
+- uid: AngeliA.PoseAnimation_SwimIdle
+  commentId: T:AngeliA.PoseAnimation_SwimIdle
+  href: AngeliA.PoseAnimation_SwimIdle.html
+  name: PoseAnimation_SwimIdle
+  nameWithType: PoseAnimation_SwimIdle
+  fullName: AngeliA.PoseAnimation_SwimIdle
+- uid: AngeliA.PoseAnimation_SwimMove
+  commentId: T:AngeliA.PoseAnimation_SwimMove
+  href: AngeliA.PoseAnimation_SwimMove.html
+  name: PoseAnimation_SwimMove
+  nameWithType: PoseAnimation_SwimMove
+  fullName: AngeliA.PoseAnimation_SwimMove
+- uid: AngeliA.PoseAnimation_Animation_TakingDamage
+  commentId: T:AngeliA.PoseAnimation_Animation_TakingDamage
+  href: AngeliA.PoseAnimation_Animation_TakingDamage.html
+  name: PoseAnimation_Animation_TakingDamage
+  nameWithType: PoseAnimation_Animation_TakingDamage
+  fullName: AngeliA.PoseAnimation_Animation_TakingDamage
+- uid: AngeliA.PoseAnimation_Walk
+  commentId: T:AngeliA.PoseAnimation_Walk
+  href: AngeliA.PoseAnimation_Walk.html
+  name: PoseAnimation_Walk
+  nameWithType: PoseAnimation_Walk
+  fullName: AngeliA.PoseAnimation_Walk
+- uid: AngeliA.PoseAnimation
+  commentId: T:AngeliA.PoseAnimation
+  parent: AngeliA
+  href: AngeliA.PoseAnimation.html
+  name: PoseAnimation
+  nameWithType: PoseAnimation
+  fullName: AngeliA.PoseAnimation
+- uid: AngeliA.SavingLocation
+  commentId: T:AngeliA.SavingLocation
+  parent: AngeliA
+  href: AngeliA.SavingLocation.html
+  name: SavingLocation
+  nameWithType: SavingLocation
+  fullName: AngeliA.SavingLocation
+- uid: AngeliA.Saving
+  commentId: T:AngeliA.Saving
+  parent: AngeliA
+  href: AngeliA.Saving.html
+  name: Saving
+  nameWithType: Saving
+  fullName: AngeliA.Saving
+- uid: AngeliA.Saving`1
+  commentId: T:AngeliA.Saving`1
+  href: AngeliA.Saving-1.html
+  name: Saving<T>
+  nameWithType: Saving<T>
+  fullName: AngeliA.Saving<T>
+  nameWithType.vb: Saving(Of T)
+  fullName.vb: AngeliA.Saving(Of T)
+  name.vb: Saving(Of T)
+  spec.csharp:
+  - uid: AngeliA.Saving`1
+    name: Saving
+    href: AngeliA.Saving-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.Saving`1
+    name: Saving
+    href: AngeliA.Saving-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.SavingBool
+  commentId: T:AngeliA.SavingBool
+  href: AngeliA.SavingBool.html
+  name: SavingBool
+  nameWithType: SavingBool
+  fullName: AngeliA.SavingBool
+- uid: AngeliA.SavingColor32
+  commentId: T:AngeliA.SavingColor32
+  href: AngeliA.SavingColor32.html
+  name: SavingColor32
+  nameWithType: SavingColor32
+  fullName: AngeliA.SavingColor32
+- uid: AngeliA.SavingColor32NoAlpha
+  commentId: T:AngeliA.SavingColor32NoAlpha
+  href: AngeliA.SavingColor32NoAlpha.html
+  name: SavingColor32NoAlpha
+  nameWithType: SavingColor32NoAlpha
+  fullName: AngeliA.SavingColor32NoAlpha
+- uid: AngeliA.SavingHotkey
+  commentId: T:AngeliA.SavingHotkey
+  href: AngeliA.SavingHotkey.html
+  name: SavingHotkey
+  nameWithType: SavingHotkey
+  fullName: AngeliA.SavingHotkey
+- uid: AngeliA.SavingInt
+  commentId: T:AngeliA.SavingInt
+  parent: AngeliA
+  href: AngeliA.SavingInt.html
+  name: SavingInt
+  nameWithType: SavingInt
+  fullName: AngeliA.SavingInt
+- uid: AngeliA.SavingString
+  commentId: T:AngeliA.SavingString
+  href: AngeliA.SavingString.html
+  name: SavingString
+  nameWithType: SavingString
+  fullName: AngeliA.SavingString
+- uid: AngeliA.SavingSystem
+  commentId: T:AngeliA.SavingSystem
+  href: AngeliA.SavingSystem.html
+  name: SavingSystem
+  nameWithType: SavingSystem
+  fullName: AngeliA.SavingSystem
+- uid: AngeliA.AfterimageScope
+  commentId: T:AngeliA.AfterimageScope
+  href: AngeliA.AfterimageScope.html
+  name: AfterimageScope
+  nameWithType: AfterimageScope
+  fullName: AngeliA.AfterimageScope
+- uid: AngeliA.CellZScope
+  commentId: T:AngeliA.CellZScope
+  href: AngeliA.CellZScope.html
+  name: CellZScope
+  nameWithType: CellZScope
+  fullName: AngeliA.CellZScope
+- uid: AngeliA.ClampCellsScope
+  commentId: T:AngeliA.ClampCellsScope
+  href: AngeliA.ClampCellsScope.html
+  name: ClampCellsScope
+  nameWithType: ClampCellsScope
+  fullName: AngeliA.ClampCellsScope
+- uid: AngeliA.DefaultLayerScope
+  commentId: T:AngeliA.DefaultLayerScope
+  href: AngeliA.DefaultLayerScope.html
+  name: DefaultLayerScope
+  nameWithType: DefaultLayerScope
+  fullName: AngeliA.DefaultLayerScope
+- uid: AngeliA.DynamicClampCellScope
+  commentId: T:AngeliA.DynamicClampCellScope
+  href: AngeliA.DynamicClampCellScope.html
+  name: DynamicClampCellScope
+  nameWithType: DynamicClampCellScope
+  fullName: AngeliA.DynamicClampCellScope
+- uid: AngeliA.EmptyScope
+  commentId: T:AngeliA.EmptyScope
+  href: AngeliA.EmptyScope.html
+  name: EmptyScope
+  nameWithType: EmptyScope
+  fullName: AngeliA.EmptyScope
+- uid: AngeliA.EnvironmentShadowScope
+  commentId: T:AngeliA.EnvironmentShadowScope
+  href: AngeliA.EnvironmentShadowScope.html
+  name: EnvironmentShadowScope
+  nameWithType: EnvironmentShadowScope
+  fullName: AngeliA.EnvironmentShadowScope
+- uid: AngeliA.FontScope
+  commentId: T:AngeliA.FontScope
+  href: AngeliA.FontScope.html
+  name: FontScope
+  nameWithType: FontScope
+  fullName: AngeliA.FontScope
+- uid: AngeliA.GUIBodyColorScope
+  commentId: T:AngeliA.GUIBodyColorScope
+  href: AngeliA.GUIBodyColorScope.html
+  name: GUIBodyColorScope
+  nameWithType: GUIBodyColorScope
+  fullName: AngeliA.GUIBodyColorScope
+- uid: AngeliA.GUIColorScope
+  commentId: T:AngeliA.GUIColorScope
+  href: AngeliA.GUIColorScope.html
+  name: GUIColorScope
+  nameWithType: GUIColorScope
+  fullName: AngeliA.GUIColorScope
+- uid: AngeliA.GUIContentColorScope
+  commentId: T:AngeliA.GUIContentColorScope
+  href: AngeliA.GUIContentColorScope.html
+  name: GUIContentColorScope
+  nameWithType: GUIContentColorScope
+  fullName: AngeliA.GUIContentColorScope
+- uid: AngeliA.GUIEnableScope
+  commentId: T:AngeliA.GUIEnableScope
+  href: AngeliA.GUIEnableScope.html
+  name: GUIEnableScope
+  nameWithType: GUIEnableScope
+  fullName: AngeliA.GUIEnableScope
+- uid: AngeliA.GUIInteractableScope
+  commentId: T:AngeliA.GUIInteractableScope
+  href: AngeliA.GUIInteractableScope.html
+  name: GUIInteractableScope
+  nameWithType: GUIInteractableScope
+  fullName: AngeliA.GUIInteractableScope
+- uid: AngeliA.GUILabelWidthScope
+  commentId: T:AngeliA.GUILabelWidthScope
+  href: AngeliA.GUILabelWidthScope.html
+  name: GUILabelWidthScope
+  nameWithType: GUILabelWidthScope
+  fullName: AngeliA.GUILabelWidthScope
+- uid: AngeliA.GUIVerticalScrollScope
+  commentId: T:AngeliA.GUIVerticalScrollScope
+  href: AngeliA.GUIVerticalScrollScope.html
+  name: GUIVerticalScrollScope
+  nameWithType: GUIVerticalScrollScope
+  fullName: AngeliA.GUIVerticalScrollScope
+- uid: AngeliA.GUIHorizontalScrollScope
+  commentId: T:AngeliA.GUIHorizontalScrollScope
+  href: AngeliA.GUIHorizontalScrollScope.html
+  name: GUIHorizontalScrollScope
+  nameWithType: GUIHorizontalScrollScope
+  fullName: AngeliA.GUIHorizontalScrollScope
+- uid: AngeliA.GUIScrollScope
+  commentId: T:AngeliA.GUIScrollScope
+  parent: AngeliA
+  href: AngeliA.GUIScrollScope.html
+  name: GUIScrollScope
+  nameWithType: GUIScrollScope
+  fullName: AngeliA.GUIScrollScope
+- uid: AngeliA.GUISkinScope
+  commentId: T:AngeliA.GUISkinScope
+  href: AngeliA.GUISkinScope.html
+  name: GUISkinScope
+  nameWithType: GUISkinScope
+  fullName: AngeliA.GUISkinScope
+- uid: AngeliA.IgnoreInputScope
+  commentId: T:AngeliA.IgnoreInputScope
+  href: AngeliA.IgnoreInputScope.html
+  name: IgnoreInputScope
+  nameWithType: IgnoreInputScope
+  fullName: AngeliA.IgnoreInputScope
+- uid: AngeliA.LayerScope
+  commentId: T:AngeliA.LayerScope
+  href: AngeliA.LayerScope.html
+  name: LayerScope
+  nameWithType: LayerScope
+  fullName: AngeliA.LayerScope
+- uid: AngeliA.ReverseCellsScope
+  commentId: T:AngeliA.ReverseCellsScope
+  href: AngeliA.ReverseCellsScope.html
+  name: ReverseCellsScope
+  nameWithType: ReverseCellsScope
+  fullName: AngeliA.ReverseCellsScope
+- uid: AngeliA.RotateCellScope
+  commentId: T:AngeliA.RotateCellScope
+  href: AngeliA.RotateCellScope.html
+  name: RotateCellScope
+  nameWithType: RotateCellScope
+  fullName: AngeliA.RotateCellScope
+- uid: AngeliA.SheetIndexScope
+  commentId: T:AngeliA.SheetIndexScope
+  href: AngeliA.SheetIndexScope.html
+  name: SheetIndexScope
+  nameWithType: SheetIndexScope
+  fullName: AngeliA.SheetIndexScope
+- uid: AngeliA.ShiftCellsScope
+  commentId: T:AngeliA.ShiftCellsScope
+  href: AngeliA.ShiftCellsScope.html
+  name: ShiftCellsScope
+  nameWithType: ShiftCellsScope
+  fullName: AngeliA.ShiftCellsScope
+- uid: AngeliA.UILayerScope
+  commentId: T:AngeliA.UILayerScope
+  href: AngeliA.UILayerScope.html
+  name: UILayerScope
+  nameWithType: UILayerScope
+  fullName: AngeliA.UILayerScope
+- uid: AngeliA.AtlasType
+  commentId: T:AngeliA.AtlasType
+  parent: AngeliA
+  href: AngeliA.AtlasType.html
+  name: AtlasType
+  nameWithType: AtlasType
+  fullName: AngeliA.AtlasType
+- uid: AngeliA.AtlasState
+  commentId: T:AngeliA.AtlasState
+  parent: AngeliA
+  href: AngeliA.AtlasState.html
+  name: AtlasState
+  nameWithType: AtlasState
+  fullName: AngeliA.AtlasState
+- uid: AngeliA.Atlas
+  commentId: T:AngeliA.Atlas
+  parent: AngeliA
+  href: AngeliA.Atlas.html
+  name: Atlas
+  nameWithType: Atlas
+  fullName: AngeliA.Atlas
+- uid: AngeliA.SpriteGroup
+  commentId: T:AngeliA.SpriteGroup
+  parent: AngeliA
+  href: AngeliA.SpriteGroup.html
+  name: SpriteGroup
+  nameWithType: SpriteGroup
+  fullName: AngeliA.SpriteGroup
+- uid: AngeliA.Sheet
+  commentId: T:AngeliA.Sheet
+  parent: AngeliA
+  href: AngeliA.Sheet.html
+  name: Sheet
+  nameWithType: Sheet
+  fullName: AngeliA.Sheet
+- uid: AngeliA.AngeSprite
+  commentId: T:AngeliA.AngeSprite
+  parent: AngeliA
+  href: AngeliA.AngeSprite.html
+  name: AngeSprite
+  nameWithType: AngeSprite
+  fullName: AngeliA.AngeSprite
+- uid: AngeliA.AudioCode
+  commentId: T:AngeliA.AudioCode
+  parent: AngeliA
+  href: AngeliA.AudioCode.html
+  name: AudioCode
+  nameWithType: AudioCode
+  fullName: AngeliA.AudioCode
+- uid: AngeliA.Rule
+  commentId: T:AngeliA.Rule
+  parent: AngeliA
+  href: AngeliA.Rule.html
+  name: Rule
+  nameWithType: Rule
+  fullName: AngeliA.Rule
+- uid: AngeliA.BlockRule
+  commentId: T:AngeliA.BlockRule
+  parent: AngeliA
+  href: AngeliA.BlockRule.html
+  name: BlockRule
+  nameWithType: BlockRule
+  fullName: AngeliA.BlockRule
+- uid: AngeliA.Color32
+  commentId: T:AngeliA.Color32
+  parent: AngeliA
+  href: AngeliA.Color32.html
+  name: Color32
+  nameWithType: Color32
+  fullName: AngeliA.Color32
+- uid: AngeliA.ColorF
+  commentId: T:AngeliA.ColorF
+  parent: AngeliA
+  href: AngeliA.ColorF.html
+  name: ColorF
+  nameWithType: ColorF
+  fullName: AngeliA.ColorF
+- uid: AngeliA.ColorGradient
+  commentId: T:AngeliA.ColorGradient
+  parent: AngeliA
+  href: AngeliA.ColorGradient.html
+  name: ColorGradient
+  nameWithType: ColorGradient
+  fullName: AngeliA.ColorGradient
+- uid: AngeliA.ColorGradient.Data
+  commentId: T:AngeliA.ColorGradient.Data
+  href: AngeliA.ColorGradient.html
+  name: ColorGradient.Data
+  nameWithType: ColorGradient.Data
+  fullName: AngeliA.ColorGradient.Data
+  spec.csharp:
+  - uid: AngeliA.ColorGradient
+    name: ColorGradient
+    href: AngeliA.ColorGradient.html
+  - name: .
+  - uid: AngeliA.ColorGradient.Data
+    name: Data
+    href: AngeliA.ColorGradient.Data.html
+  spec.vb:
+  - uid: AngeliA.ColorGradient
+    name: ColorGradient
+    href: AngeliA.ColorGradient.html
+  - name: .
+  - uid: AngeliA.ColorGradient.Data
+    name: Data
+    href: AngeliA.ColorGradient.Data.html
+- uid: AngeliA.Float2
+  commentId: T:AngeliA.Float2
+  parent: AngeliA
+  href: AngeliA.Float2.html
+  name: Float2
+  nameWithType: Float2
+  fullName: AngeliA.Float2
+- uid: AngeliA.Float3
+  commentId: T:AngeliA.Float3
+  parent: AngeliA
+  href: AngeliA.Float3.html
+  name: Float3
+  nameWithType: Float3
+  fullName: AngeliA.Float3
+- uid: AngeliA.Float4
+  commentId: T:AngeliA.Float4
+  parent: AngeliA
+  href: AngeliA.Float4.html
+  name: Float4
+  nameWithType: Float4
+  fullName: AngeliA.Float4
+- uid: AngeliA.FRect
+  commentId: T:AngeliA.FRect
+  parent: AngeliA
+  href: AngeliA.FRect.html
+  name: FRect
+  nameWithType: FRect
+  fullName: AngeliA.FRect
+- uid: AngeliA.Hotkey
+  commentId: T:AngeliA.Hotkey
+  parent: AngeliA
+  href: AngeliA.Hotkey.html
+  name: Hotkey
+  nameWithType: Hotkey
+  fullName: AngeliA.Hotkey
+- uid: AngeliA.Int2
+  commentId: T:AngeliA.Int2
+  parent: AngeliA
+  href: AngeliA.Int2.html
+  name: Int2
+  nameWithType: Int2
+  fullName: AngeliA.Int2
+- uid: AngeliA.Int3
+  commentId: T:AngeliA.Int3
+  parent: AngeliA
+  href: AngeliA.Int3.html
+  name: Int3
+  nameWithType: Int3
+  fullName: AngeliA.Int3
+- uid: AngeliA.Int4
+  commentId: T:AngeliA.Int4
+  parent: AngeliA
+  href: AngeliA.Int4.html
+  name: Int4
+  nameWithType: Int4
+  fullName: AngeliA.Int4
+- uid: AngeliA.IntToChars
+  commentId: T:AngeliA.IntToChars
+  href: AngeliA.IntToChars.html
+  name: IntToChars
+  nameWithType: IntToChars
+  fullName: AngeliA.IntToChars
+- uid: AngeliA.IRect
+  commentId: T:AngeliA.IRect
+  parent: AngeliA
+  href: AngeliA.IRect.html
+  name: IRect
+  nameWithType: IRect
+  fullName: AngeliA.IRect
+- uid: AngeliA.Gamekey
+  commentId: T:AngeliA.Gamekey
+  parent: AngeliA
+  href: AngeliA.Gamekey.html
+  name: Gamekey
+  nameWithType: Gamekey
+  fullName: AngeliA.Gamekey
+- uid: AngeliA.GamepadKey
+  commentId: T:AngeliA.GamepadKey
+  parent: AngeliA
+  href: AngeliA.GamepadKey.html
+  name: GamepadKey
+  nameWithType: GamepadKey
+  fullName: AngeliA.GamepadKey
+- uid: AngeliA.KeyboardKey
+  commentId: T:AngeliA.KeyboardKey
+  parent: AngeliA
+  href: AngeliA.KeyboardKey.html
+  name: KeyboardKey
+  nameWithType: KeyboardKey
+  fullName: AngeliA.KeyboardKey
+- uid: AngeliA.LanguageCode
+  commentId: T:AngeliA.LanguageCode
+  parent: AngeliA
+  href: AngeliA.LanguageCode.html
+  name: LanguageCode
+  nameWithType: LanguageCode
+  fullName: AngeliA.LanguageCode
+- uid: AngeliA.Long4
+  commentId: T:AngeliA.Long4
+  parent: AngeliA
+  href: AngeliA.Long4.html
+  name: Long4
+  nameWithType: Long4
+  fullName: AngeliA.Long4
+- uid: AngeliA.SpriteCode
+  commentId: T:AngeliA.SpriteCode
+  parent: AngeliA
+  href: AngeliA.SpriteCode.html
+  name: SpriteCode
+  nameWithType: SpriteCode
+  fullName: AngeliA.SpriteCode
+- uid: AngeliA.Tag
+  commentId: T:AngeliA.Tag
+  parent: AngeliA
+  href: AngeliA.Tag.html
+  name: Tag
+  nameWithType: Tag
+  fullName: AngeliA.Tag
+- uid: AngeliA.TagUtil
+  commentId: T:AngeliA.TagUtil
+  parent: AngeliA
+  href: AngeliA.TagUtil.html
+  name: TagUtil
+  nameWithType: TagUtil
+  fullName: AngeliA.TagUtil
+- uid: AngeliA.ChangeSavingSlotTask
+  commentId: T:AngeliA.ChangeSavingSlotTask
+  href: AngeliA.ChangeSavingSlotTask.html
+  name: ChangeSavingSlotTask
+  nameWithType: ChangeSavingSlotTask
+  fullName: AngeliA.ChangeSavingSlotTask
+- uid: AngeliA.DelayTask
+  commentId: T:AngeliA.DelayTask
+  href: AngeliA.DelayTask.html
+  name: DelayTask
+  nameWithType: DelayTask
+  fullName: AngeliA.DelayTask
+- uid: AngeliA.DialogueTask
+  commentId: T:AngeliA.DialogueTask
+  href: AngeliA.DialogueTask.html
+  name: DialogueTask
+  nameWithType: DialogueTask
+  fullName: AngeliA.DialogueTask
+- uid: AngeliA.SpawnEntityTask
+  commentId: T:AngeliA.SpawnEntityTask
+  href: AngeliA.SpawnEntityTask.html
+  name: SpawnEntityTask
+  nameWithType: SpawnEntityTask
+  fullName: AngeliA.SpawnEntityTask
+- uid: AngeliA.DespawnEntityTask
+  commentId: T:AngeliA.DespawnEntityTask
+  href: AngeliA.DespawnEntityTask.html
+  name: DespawnEntityTask
+  nameWithType: DespawnEntityTask
+  fullName: AngeliA.DespawnEntityTask
+- uid: AngeliA.EntityHookTask
+  commentId: T:AngeliA.EntityHookTask
+  href: AngeliA.EntityHookTask.html
+  name: EntityHookTask
+  nameWithType: EntityHookTask
+  fullName: AngeliA.EntityHookTask
+- uid: AngeliA.FadeInTask
+  commentId: T:AngeliA.FadeInTask
+  href: AngeliA.FadeInTask.html
+  name: FadeInTask
+  nameWithType: FadeInTask
+  fullName: AngeliA.FadeInTask
+- uid: AngeliA.FadeOutTask
+  commentId: T:AngeliA.FadeOutTask
+  href: AngeliA.FadeOutTask.html
+  name: FadeOutTask
+  nameWithType: FadeOutTask
+  fullName: AngeliA.FadeOutTask
+- uid: AngeliA.MethodTask
+  commentId: T:AngeliA.MethodTask
+  href: AngeliA.MethodTask.html
+  name: MethodTask
+  nameWithType: MethodTask
+  fullName: AngeliA.MethodTask
+- uid: AngeliA.RestartGameTask
+  commentId: T:AngeliA.RestartGameTask
+  href: AngeliA.RestartGameTask.html
+  name: RestartGameTask
+  nameWithType: RestartGameTask
+  fullName: AngeliA.RestartGameTask
+- uid: AngeliA.SelectPlayerTask
+  commentId: T:AngeliA.SelectPlayerTask
+  href: AngeliA.SelectPlayerTask.html
+  name: SelectPlayerTask
+  nameWithType: SelectPlayerTask
+  fullName: AngeliA.SelectPlayerTask
+- uid: AngeliA.NoiseMatching
+  commentId: T:AngeliA.NoiseMatching
+  parent: AngeliA
+  href: AngeliA.NoiseMatching.html
+  name: NoiseMatching
+  nameWithType: NoiseMatching
+  fullName: AngeliA.NoiseMatching
+- uid: AngeliA.FastNoiseGroup
+  commentId: T:AngeliA.FastNoiseGroup
+  href: AngeliA.FastNoiseGroup.html
+  name: FastNoiseGroup
+  nameWithType: FastNoiseGroup
+  fullName: AngeliA.FastNoiseGroup
+- uid: AngeliA.FrameworkUtil
+  commentId: T:AngeliA.FrameworkUtil
+  parent: AngeliA
+  href: AngeliA.FrameworkUtil.html
+  name: FrameworkUtil
+  nameWithType: FrameworkUtil
+  fullName: AngeliA.FrameworkUtil
+- uid: AngeliA.IJsonSerializationCallback
+  commentId: T:AngeliA.IJsonSerializationCallback
+  parent: AngeliA
+  href: AngeliA.IJsonSerializationCallback.html
+  name: IJsonSerializationCallback
+  nameWithType: IJsonSerializationCallback
+  fullName: AngeliA.IJsonSerializationCallback
+- uid: AngeliA.JsonUtil
+  commentId: T:AngeliA.JsonUtil
+  href: AngeliA.JsonUtil.html
+  name: JsonUtil
+  nameWithType: JsonUtil
+  fullName: AngeliA.JsonUtil
+- uid: AngeliA.LanguageUtil
+  commentId: T:AngeliA.LanguageUtil
+  href: AngeliA.LanguageUtil.html
+  name: LanguageUtil
+  nameWithType: LanguageUtil
+  fullName: AngeliA.LanguageUtil
+- uid: AngeliA.Util
+  commentId: T:AngeliA.Util
+  href: AngeliA.Util.html
+  name: Util
+  nameWithType: Util
+  fullName: AngeliA.Util
+- uid: AngeliA.Util.MathfInternal
+  commentId: T:AngeliA.Util.MathfInternal
+  href: AngeliA.Util.html
+  name: Util.MathfInternal
+  nameWithType: Util.MathfInternal
+  fullName: AngeliA.Util.MathfInternal
+  spec.csharp:
+  - uid: AngeliA.Util
+    name: Util
+    href: AngeliA.Util.html
+  - name: .
+  - uid: AngeliA.Util.MathfInternal
+    name: MathfInternal
+    href: AngeliA.Util.MathfInternal.html
+  spec.vb:
+  - uid: AngeliA.Util
+    name: Util
+    href: AngeliA.Util.html
+  - name: .
+  - uid: AngeliA.Util.MathfInternal
+    name: MathfInternal
+    href: AngeliA.Util.MathfInternal.html
+- uid: AngeliA.BlockColor
+  commentId: T:AngeliA.BlockColor
+  parent: AngeliA
+  href: AngeliA.BlockColor.html
+  name: BlockColor
+  nameWithType: BlockColor
+  fullName: AngeliA.BlockColor
+- uid: AngeliA.BlockColorBlack
+  commentId: T:AngeliA.BlockColorBlack
+  href: AngeliA.BlockColorBlack.html
+  name: BlockColorBlack
+  nameWithType: BlockColorBlack
+  fullName: AngeliA.BlockColorBlack
+- uid: AngeliA.BlockColorGrey
+  commentId: T:AngeliA.BlockColorGrey
+  href: AngeliA.BlockColorGrey.html
+  name: BlockColorGrey
+  nameWithType: BlockColorGrey
+  fullName: AngeliA.BlockColorGrey
+- uid: AngeliA.BlockColorRed
+  commentId: T:AngeliA.BlockColorRed
+  href: AngeliA.BlockColorRed.html
+  name: BlockColorRed
+  nameWithType: BlockColorRed
+  fullName: AngeliA.BlockColorRed
+- uid: AngeliA.BlockColorOrange
+  commentId: T:AngeliA.BlockColorOrange
+  href: AngeliA.BlockColorOrange.html
+  name: BlockColorOrange
+  nameWithType: BlockColorOrange
+  fullName: AngeliA.BlockColorOrange
+- uid: AngeliA.BlockColorYellow
+  commentId: T:AngeliA.BlockColorYellow
+  href: AngeliA.BlockColorYellow.html
+  name: BlockColorYellow
+  nameWithType: BlockColorYellow
+  fullName: AngeliA.BlockColorYellow
+- uid: AngeliA.BlockColorGreen
+  commentId: T:AngeliA.BlockColorGreen
+  href: AngeliA.BlockColorGreen.html
+  name: BlockColorGreen
+  nameWithType: BlockColorGreen
+  fullName: AngeliA.BlockColorGreen
+- uid: AngeliA.BlockColorCyan
+  commentId: T:AngeliA.BlockColorCyan
+  href: AngeliA.BlockColorCyan.html
+  name: BlockColorCyan
+  nameWithType: BlockColorCyan
+  fullName: AngeliA.BlockColorCyan
+- uid: AngeliA.BlockColorBlue
+  commentId: T:AngeliA.BlockColorBlue
+  href: AngeliA.BlockColorBlue.html
+  name: BlockColorBlue
+  nameWithType: BlockColorBlue
+  fullName: AngeliA.BlockColorBlue
+- uid: AngeliA.BlockColorPurple
+  commentId: T:AngeliA.BlockColorPurple
+  href: AngeliA.BlockColorPurple.html
+  name: BlockColorPurple
+  nameWithType: BlockColorPurple
+  fullName: AngeliA.BlockColorPurple
+- uid: AngeliA.BlockColorPink
+  commentId: T:AngeliA.BlockColorPink
+  href: AngeliA.BlockColorPink.html
+  name: BlockColorPink
+  nameWithType: BlockColorPink
+  fullName: AngeliA.BlockColorPink
+- uid: AngeliA.BlockColoringSystem
+  commentId: T:AngeliA.BlockColoringSystem
+  href: AngeliA.BlockColoringSystem.html
+  name: BlockColoringSystem
+  nameWithType: BlockColoringSystem
+  fullName: AngeliA.BlockColoringSystem
+- uid: AngeliA.IBlockSquad
+  commentId: T:AngeliA.IBlockSquad
+  parent: AngeliA
+  href: AngeliA.IBlockSquad.html
+  name: IBlockSquad
+  nameWithType: IBlockSquad
+  fullName: AngeliA.IBlockSquad
+- uid: AngeliA.BlockType
+  commentId: T:AngeliA.BlockType
+  parent: AngeliA
+  href: AngeliA.BlockType.html
+  name: BlockType
+  nameWithType: BlockType
+  fullName: AngeliA.BlockType
+- uid: AngeliA.World
+  commentId: T:AngeliA.World
+  parent: AngeliA
+  href: AngeliA.World.html
+  name: World
+  nameWithType: World
+  fullName: AngeliA.World
+- uid: AngeliA.WorldPathPool
+  commentId: T:AngeliA.WorldPathPool
+  href: AngeliA.WorldPathPool.html
+  name: WorldPathPool
+  nameWithType: WorldPathPool
+  fullName: AngeliA.WorldPathPool
+- uid: AngeliA.WorldSquad
+  commentId: T:AngeliA.WorldSquad
+  parent: AngeliA
+  href: AngeliA.WorldSquad.html
+  name: WorldSquad
+  nameWithType: WorldSquad
+  fullName: AngeliA.WorldSquad
+- uid: AngeliA.WorldStream
+  commentId: T:AngeliA.WorldStream
+  parent: AngeliA
+  href: AngeliA.WorldStream.html
+  name: WorldStream
+  nameWithType: WorldStream
+  fullName: AngeliA.WorldStream
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA

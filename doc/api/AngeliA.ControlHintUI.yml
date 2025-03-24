@@ -1,0 +1,1792 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.ControlHintUI
+  commentId: T:AngeliA.ControlHintUI
+  id: ControlHintUI
+  parent: AngeliA
+  children:
+  - AngeliA.ControlHintUI.#ctor
+  - AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Int32)
+  - AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey,System.String,System.Int32)
+  - AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey,AngeliA.KeyboardKey,System.String)
+  - AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey,System.String)
+  - AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Boolean)
+  - AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,System.String,System.Boolean)
+  - AngeliA.ControlHintUI.ForceHideGamepad(System.Int32)
+  - AngeliA.ControlHintUI.ForceHideGlobalHint(System.Int32)
+  - AngeliA.ControlHintUI.ForceOffset(System.Int32,System.Int32,System.Int32)
+  - AngeliA.ControlHintUI.ForceShowHint(System.Int32)
+  - AngeliA.ControlHintUI.Instance
+  - AngeliA.ControlHintUI.OffsetX
+  - AngeliA.ControlHintUI.OffsetY
+  - AngeliA.ControlHintUI.OnActivated
+  - AngeliA.ControlHintUI.OnGameInitializeLater
+  - AngeliA.ControlHintUI.OnGameUpdateLater
+  - AngeliA.ControlHintUI.UseControlHint
+  - AngeliA.ControlHintUI.UseGamePadHint
+  langs:
+  - csharp
+  - vb
+  name: ControlHintUI
+  nameWithType: ControlHintUI
+  fullName: AngeliA.ControlHintUI
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ControlHintUI
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: >-
+      [Entity.StageOrder(2147483647)]
+
+      [Entity.Capacity(1, 1)]
+
+      public class ControlHintUI : EntityUI, IMapItem
+    content.vb: >-
+      <Entity.StageOrder(2147483647)>
+
+      <Entity.Capacity(1, 1)>
+
+      Public Class ControlHintUI Inherits EntityUI Implements IMapItem
+  inheritance:
+  - System.Object
+  - AngeliA.Entity
+  - AngeliA.EntityUI
+  implements:
+  - AngeliA.IMapItem
+  inheritedMembers:
+  - AngeliA.EntityUI.BlockEvent
+  - AngeliA.EntityUI.FirstUpdate
+  - AngeliA.EntityUI.Update
+  - AngeliA.EntityUI.LateUpdate
+  - AngeliA.EntityUI.UpdateUI
+  - AngeliA.EntityUI.Unify(System.Int32)
+  - AngeliA.Entity.Active
+  - AngeliA.Entity.X
+  - AngeliA.Entity.Y
+  - AngeliA.Entity.Width
+  - AngeliA.Entity.Height
+  - AngeliA.Entity.TypeID
+  - AngeliA.Entity.SpawnFrame
+  - AngeliA.Entity.FromWorld
+  - AngeliA.Entity.Rect
+  - AngeliA.Entity.InstanceOrder
+  - AngeliA.Entity.MapUnitPos
+  - AngeliA.Entity.InstanceID
+  - AngeliA.Entity.IgnoreReposition
+  - AngeliA.Entity.XY
+  - AngeliA.Entity.Size
+  - AngeliA.Entity.Center
+  - AngeliA.Entity.CenterX
+  - AngeliA.Entity.CenterY
+  - AngeliA.Entity.PivotUnitPosition
+  - AngeliA.Entity.OnInactivated
+  - AngeliA.Entity.BeforeUpdate
+  - AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  - AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  - AngeliA.Entity.CancelIgnoreDespawnFromMap
+  - AngeliA.Entity.Draw
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+  attributes:
+  - type: AngeliA.EntityAttribute.StageOrderAttribute
+    ctor: AngeliA.EntityAttribute.StageOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 2147483647
+  - type: AngeliA.EntityAttribute.CapacityAttribute
+    ctor: AngeliA.EntityAttribute.CapacityAttribute.#ctor(System.Int32,System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 1
+    - type: System.Int32
+      value: 1
+- uid: AngeliA.ControlHintUI.Instance
+  commentId: P:AngeliA.ControlHintUI.Instance
+  id: Instance
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: Instance
+  nameWithType: ControlHintUI.Instance
+  fullName: AngeliA.ControlHintUI.Instance
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Instance
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 32
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static ControlHintUI Instance { get; }
+    parameters: []
+    return:
+      type: AngeliA.ControlHintUI
+    content.vb: Public Shared Property Instance As ControlHintUI
+  overload: AngeliA.ControlHintUI.Instance*
+- uid: AngeliA.ControlHintUI.UseGamePadHint
+  commentId: P:AngeliA.ControlHintUI.UseGamePadHint
+  id: UseGamePadHint
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: UseGamePadHint
+  nameWithType: ControlHintUI.UseGamePadHint
+  fullName: AngeliA.ControlHintUI.UseGamePadHint
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseGamePadHint
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool UseGamePadHint { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property UseGamePadHint As Boolean
+  overload: AngeliA.ControlHintUI.UseGamePadHint*
+- uid: AngeliA.ControlHintUI.UseControlHint
+  commentId: P:AngeliA.ControlHintUI.UseControlHint
+  id: UseControlHint
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: UseControlHint
+  nameWithType: ControlHintUI.UseControlHint
+  fullName: AngeliA.ControlHintUI.UseControlHint
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseControlHint
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 37
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool UseControlHint { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property UseControlHint As Boolean
+  overload: AngeliA.ControlHintUI.UseControlHint*
+- uid: AngeliA.ControlHintUI.OffsetX
+  commentId: P:AngeliA.ControlHintUI.OffsetX
+  id: OffsetX
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: OffsetX
+  nameWithType: ControlHintUI.OffsetX
+  fullName: AngeliA.ControlHintUI.OffsetX
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OffsetX
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 41
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int OffsetX { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property OffsetX As Integer
+  overload: AngeliA.ControlHintUI.OffsetX*
+- uid: AngeliA.ControlHintUI.OffsetY
+  commentId: P:AngeliA.ControlHintUI.OffsetY
+  id: OffsetY
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: OffsetY
+  nameWithType: ControlHintUI.OffsetY
+  fullName: AngeliA.ControlHintUI.OffsetY
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OffsetY
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 42
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int OffsetY { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property OffsetY As Integer
+  overload: AngeliA.ControlHintUI.OffsetY*
+- uid: AngeliA.ControlHintUI.OnGameInitializeLater
+  commentId: M:AngeliA.ControlHintUI.OnGameInitializeLater
+  id: OnGameInitializeLater
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: OnGameInitializeLater()
+  nameWithType: ControlHintUI.OnGameInitializeLater()
+  fullName: AngeliA.ControlHintUI.OnGameInitializeLater()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnGameInitializeLater
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 72
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: >-
+      [OnGameInitializeLater(64)]
+
+      public static TaskResult OnGameInitializeLater()
+    return:
+      type: AngeliA.TaskResult
+    content.vb: >-
+      <OnGameInitializeLater(64)>
+
+      Public Shared Function OnGameInitializeLater() As TaskResult
+  overload: AngeliA.ControlHintUI.OnGameInitializeLater*
+  attributes:
+  - type: AngeliA.OnGameInitializeLaterAttribute
+    ctor: AngeliA.OnGameInitializeLaterAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 64
+- uid: AngeliA.ControlHintUI.OnGameUpdateLater
+  commentId: M:AngeliA.ControlHintUI.OnGameUpdateLater
+  id: OnGameUpdateLater
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: OnGameUpdateLater()
+  nameWithType: ControlHintUI.OnGameUpdateLater()
+  fullName: AngeliA.ControlHintUI.OnGameUpdateLater()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnGameUpdateLater
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 80
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: >-
+      [OnGameUpdatePauseless(0)]
+
+      public static void OnGameUpdateLater()
+    content.vb: >-
+      <OnGameUpdatePauseless(0)>
+
+      Public Shared Sub OnGameUpdateLater()
+  overload: AngeliA.ControlHintUI.OnGameUpdateLater*
+  attributes:
+  - type: AngeliA.OnGameUpdatePauselessAttribute
+    ctor: AngeliA.OnGameUpdatePauselessAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 0
+- uid: AngeliA.ControlHintUI.#ctor
+  commentId: M:AngeliA.ControlHintUI.#ctor
+  id: '#ctor'
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: ControlHintUI()
+  nameWithType: ControlHintUI.ControlHintUI()
+  fullName: AngeliA.ControlHintUI.ControlHintUI()
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 122
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public ControlHintUI()
+    content.vb: Public Sub New()
+  overload: AngeliA.ControlHintUI.#ctor*
+  nameWithType.vb: ControlHintUI.New()
+  fullName.vb: AngeliA.ControlHintUI.New()
+  name.vb: New()
+- uid: AngeliA.ControlHintUI.OnActivated
+  commentId: M:AngeliA.ControlHintUI.OnActivated
+  id: OnActivated
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: OnActivated()
+  nameWithType: ControlHintUI.OnActivated()
+  fullName: AngeliA.ControlHintUI.OnActivated()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnActivated
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 125
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override void OnActivated()
+    content.vb: Public Overrides Sub OnActivated()
+  overridden: AngeliA.Entity.OnActivated
+  overload: AngeliA.ControlHintUI.OnActivated*
+- uid: AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey,System.String,System.Int32)
+  commentId: M:AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey,System.String,System.Int32)
+  id: AddHint(AngeliA.Gamekey,System.String,System.Int32)
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: AddHint(Gamekey, string, int)
+  nameWithType: ControlHintUI.AddHint(Gamekey, string, int)
+  fullName: AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey, string, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AddHint
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 237
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void AddHint(Gamekey key, string label, int priority = -2147483648)
+    parameters:
+    - id: key
+      type: AngeliA.Gamekey
+    - id: label
+      type: System.String
+    - id: priority
+      type: System.Int32
+    content.vb: Public Shared Sub AddHint(key As Gamekey, label As String, priority As Integer = -2147483648)
+  overload: AngeliA.ControlHintUI.AddHint*
+  nameWithType.vb: ControlHintUI.AddHint(Gamekey, String, Integer)
+  fullName.vb: AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey, String, Integer)
+  name.vb: AddHint(Gamekey, String, Integer)
+- uid: AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Int32)
+  commentId: M:AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Int32)
+  id: AddHint(AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Int32)
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: AddHint(Gamekey, Gamekey, string, int)
+  nameWithType: ControlHintUI.AddHint(Gamekey, Gamekey, string, int)
+  fullName: AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey, AngeliA.Gamekey, string, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AddHint
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 238
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void AddHint(Gamekey keyA, Gamekey keyB, string label, int priority = -2147483648)
+    parameters:
+    - id: keyA
+      type: AngeliA.Gamekey
+    - id: keyB
+      type: AngeliA.Gamekey
+    - id: label
+      type: System.String
+    - id: priority
+      type: System.Int32
+    content.vb: Public Shared Sub AddHint(keyA As Gamekey, keyB As Gamekey, label As String, priority As Integer = -2147483648)
+  overload: AngeliA.ControlHintUI.AddHint*
+  nameWithType.vb: ControlHintUI.AddHint(Gamekey, Gamekey, String, Integer)
+  fullName.vb: AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey, AngeliA.Gamekey, String, Integer)
+  name.vb: AddHint(Gamekey, Gamekey, String, Integer)
+- uid: AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey,System.String)
+  commentId: M:AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey,System.String)
+  id: AddHint(AngeliA.KeyboardKey,System.String)
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: AddHint(KeyboardKey, string)
+  nameWithType: ControlHintUI.AddHint(KeyboardKey, string)
+  fullName: AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey, string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AddHint
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 239
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void AddHint(KeyboardKey key, string label)
+    parameters:
+    - id: key
+      type: AngeliA.KeyboardKey
+    - id: label
+      type: System.String
+    content.vb: Public Shared Sub AddHint(key As KeyboardKey, label As String)
+  overload: AngeliA.ControlHintUI.AddHint*
+  nameWithType.vb: ControlHintUI.AddHint(KeyboardKey, String)
+  fullName.vb: AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey, String)
+  name.vb: AddHint(KeyboardKey, String)
+- uid: AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey,AngeliA.KeyboardKey,System.String)
+  commentId: M:AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey,AngeliA.KeyboardKey,System.String)
+  id: AddHint(AngeliA.KeyboardKey,AngeliA.KeyboardKey,System.String)
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: AddHint(KeyboardKey, KeyboardKey, string)
+  nameWithType: ControlHintUI.AddHint(KeyboardKey, KeyboardKey, string)
+  fullName: AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey, AngeliA.KeyboardKey, string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AddHint
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 240
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void AddHint(KeyboardKey keyA, KeyboardKey keyB, string label)
+    parameters:
+    - id: keyA
+      type: AngeliA.KeyboardKey
+    - id: keyB
+      type: AngeliA.KeyboardKey
+    - id: label
+      type: System.String
+    content.vb: Public Shared Sub AddHint(keyA As KeyboardKey, keyB As KeyboardKey, label As String)
+  overload: AngeliA.ControlHintUI.AddHint*
+  nameWithType.vb: ControlHintUI.AddHint(KeyboardKey, KeyboardKey, String)
+  fullName.vb: AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey, AngeliA.KeyboardKey, String)
+  name.vb: AddHint(KeyboardKey, KeyboardKey, String)
+- uid: AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,System.String,System.Boolean)
+  commentId: M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,System.String,System.Boolean)
+  id: DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,System.String,System.Boolean)
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: DrawGlobalHint(int, int, Gamekey, string, bool)
+  nameWithType: ControlHintUI.DrawGlobalHint(int, int, Gamekey, string, bool)
+  fullName: AngeliA.ControlHintUI.DrawGlobalHint(int, int, AngeliA.Gamekey, string, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawGlobalHint
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 256
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void DrawGlobalHint(int globalX, int globalY, Gamekey key, string label, bool background = false)
+    parameters:
+    - id: globalX
+      type: System.Int32
+    - id: globalY
+      type: System.Int32
+    - id: key
+      type: AngeliA.Gamekey
+    - id: label
+      type: System.String
+    - id: background
+      type: System.Boolean
+    content.vb: Public Shared Sub DrawGlobalHint(globalX As Integer, globalY As Integer, key As Gamekey, label As String, background As Boolean = False)
+  overload: AngeliA.ControlHintUI.DrawGlobalHint*
+  nameWithType.vb: ControlHintUI.DrawGlobalHint(Integer, Integer, Gamekey, String, Boolean)
+  fullName.vb: AngeliA.ControlHintUI.DrawGlobalHint(Integer, Integer, AngeliA.Gamekey, String, Boolean)
+  name.vb: DrawGlobalHint(Integer, Integer, Gamekey, String, Boolean)
+- uid: AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Boolean)
+  commentId: M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Boolean)
+  id: DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Boolean)
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: DrawGlobalHint(int, int, Gamekey, Gamekey, string, bool)
+  nameWithType: ControlHintUI.DrawGlobalHint(int, int, Gamekey, Gamekey, string, bool)
+  fullName: AngeliA.ControlHintUI.DrawGlobalHint(int, int, AngeliA.Gamekey, AngeliA.Gamekey, string, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawGlobalHint
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 261
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void DrawGlobalHint(int globalX, int globalY, Gamekey keyA, Gamekey keyB, string label, bool background = false)
+    parameters:
+    - id: globalX
+      type: System.Int32
+    - id: globalY
+      type: System.Int32
+    - id: keyA
+      type: AngeliA.Gamekey
+    - id: keyB
+      type: AngeliA.Gamekey
+    - id: label
+      type: System.String
+    - id: background
+      type: System.Boolean
+    content.vb: Public Shared Sub DrawGlobalHint(globalX As Integer, globalY As Integer, keyA As Gamekey, keyB As Gamekey, label As String, background As Boolean = False)
+  overload: AngeliA.ControlHintUI.DrawGlobalHint*
+  nameWithType.vb: ControlHintUI.DrawGlobalHint(Integer, Integer, Gamekey, Gamekey, String, Boolean)
+  fullName.vb: AngeliA.ControlHintUI.DrawGlobalHint(Integer, Integer, AngeliA.Gamekey, AngeliA.Gamekey, String, Boolean)
+  name.vb: DrawGlobalHint(Integer, Integer, Gamekey, Gamekey, String, Boolean)
+- uid: AngeliA.ControlHintUI.ForceShowHint(System.Int32)
+  commentId: M:AngeliA.ControlHintUI.ForceShowHint(System.Int32)
+  id: ForceShowHint(System.Int32)
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: ForceShowHint(int)
+  nameWithType: ControlHintUI.ForceShowHint(int)
+  fullName: AngeliA.ControlHintUI.ForceShowHint(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForceShowHint
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 288
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void ForceShowHint(int duration = 1)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub ForceShowHint(duration As Integer = 1)
+  overload: AngeliA.ControlHintUI.ForceShowHint*
+  nameWithType.vb: ControlHintUI.ForceShowHint(Integer)
+  fullName.vb: AngeliA.ControlHintUI.ForceShowHint(Integer)
+  name.vb: ForceShowHint(Integer)
+- uid: AngeliA.ControlHintUI.ForceHideGamepad(System.Int32)
+  commentId: M:AngeliA.ControlHintUI.ForceHideGamepad(System.Int32)
+  id: ForceHideGamepad(System.Int32)
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: ForceHideGamepad(int)
+  nameWithType: ControlHintUI.ForceHideGamepad(int)
+  fullName: AngeliA.ControlHintUI.ForceHideGamepad(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForceHideGamepad
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 294
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void ForceHideGamepad(int duration = 1)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub ForceHideGamepad(duration As Integer = 1)
+  overload: AngeliA.ControlHintUI.ForceHideGamepad*
+  nameWithType.vb: ControlHintUI.ForceHideGamepad(Integer)
+  fullName.vb: AngeliA.ControlHintUI.ForceHideGamepad(Integer)
+  name.vb: ForceHideGamepad(Integer)
+- uid: AngeliA.ControlHintUI.ForceHideGlobalHint(System.Int32)
+  commentId: M:AngeliA.ControlHintUI.ForceHideGlobalHint(System.Int32)
+  id: ForceHideGlobalHint(System.Int32)
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: ForceHideGlobalHint(int)
+  nameWithType: ControlHintUI.ForceHideGlobalHint(int)
+  fullName: AngeliA.ControlHintUI.ForceHideGlobalHint(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForceHideGlobalHint
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 300
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void ForceHideGlobalHint(int duration = 1)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub ForceHideGlobalHint(duration As Integer = 1)
+  overload: AngeliA.ControlHintUI.ForceHideGlobalHint*
+  nameWithType.vb: ControlHintUI.ForceHideGlobalHint(Integer)
+  fullName.vb: AngeliA.ControlHintUI.ForceHideGlobalHint(Integer)
+  name.vb: ForceHideGlobalHint(Integer)
+- uid: AngeliA.ControlHintUI.ForceOffset(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.ControlHintUI.ForceOffset(System.Int32,System.Int32,System.Int32)
+  id: ForceOffset(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.ControlHintUI
+  langs:
+  - csharp
+  - vb
+  name: ForceOffset(int, int, int)
+  nameWithType: ControlHintUI.ForceOffset(int, int, int)
+  fullName: AngeliA.ControlHintUI.ForceOffset(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForceOffset
+    path: ../AngeliA Framework/src/Entity/UI/ControlHintUI.cs
+    startLine: 306
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void ForceOffset(int x, int y, int duration = 1)
+    parameters:
+    - id: x
+      type: System.Int32
+    - id: y
+      type: System.Int32
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub ForceOffset(x As Integer, y As Integer, duration As Integer = 1)
+  overload: AngeliA.ControlHintUI.ForceOffset*
+  nameWithType.vb: ControlHintUI.ForceOffset(Integer, Integer, Integer)
+  fullName.vb: AngeliA.ControlHintUI.ForceOffset(Integer, Integer, Integer)
+  name.vb: ForceOffset(Integer, Integer, Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Entity
+  commentId: T:AngeliA.Entity
+  parent: AngeliA
+  href: AngeliA.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: AngeliA.Entity
+- uid: AngeliA.EntityUI
+  commentId: T:AngeliA.EntityUI
+  parent: AngeliA
+  href: AngeliA.EntityUI.html
+  name: EntityUI
+  nameWithType: EntityUI
+  fullName: AngeliA.EntityUI
+- uid: AngeliA.IMapItem
+  commentId: T:AngeliA.IMapItem
+  parent: AngeliA
+  href: AngeliA.IMapItem.html
+  name: IMapItem
+  nameWithType: IMapItem
+  fullName: AngeliA.IMapItem
+- uid: AngeliA.EntityUI.BlockEvent
+  commentId: P:AngeliA.EntityUI.BlockEvent
+  parent: AngeliA.EntityUI
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_BlockEvent
+  name: BlockEvent
+  nameWithType: EntityUI.BlockEvent
+  fullName: AngeliA.EntityUI.BlockEvent
+- uid: AngeliA.EntityUI.FirstUpdate
+  commentId: M:AngeliA.EntityUI.FirstUpdate
+  parent: AngeliA.EntityUI
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_FirstUpdate
+  name: FirstUpdate()
+  nameWithType: EntityUI.FirstUpdate()
+  fullName: AngeliA.EntityUI.FirstUpdate()
+  spec.csharp:
+  - uid: AngeliA.EntityUI.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_FirstUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_FirstUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.EntityUI.Update
+  commentId: M:AngeliA.EntityUI.Update
+  parent: AngeliA.EntityUI
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_Update
+  name: Update()
+  nameWithType: EntityUI.Update()
+  fullName: AngeliA.EntityUI.Update()
+  spec.csharp:
+  - uid: AngeliA.EntityUI.Update
+    name: Update
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_Update
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.Update
+    name: Update
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_Update
+  - name: (
+  - name: )
+- uid: AngeliA.EntityUI.LateUpdate
+  commentId: M:AngeliA.EntityUI.LateUpdate
+  parent: AngeliA.EntityUI
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate
+  name: LateUpdate()
+  nameWithType: EntityUI.LateUpdate()
+  fullName: AngeliA.EntityUI.LateUpdate()
+  spec.csharp:
+  - uid: AngeliA.EntityUI.LateUpdate
+    name: LateUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.LateUpdate
+    name: LateUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.EntityUI.UpdateUI
+  commentId: M:AngeliA.EntityUI.UpdateUI
+  parent: AngeliA.EntityUI
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_UpdateUI
+  name: UpdateUI()
+  nameWithType: EntityUI.UpdateUI()
+  fullName: AngeliA.EntityUI.UpdateUI()
+  spec.csharp:
+  - uid: AngeliA.EntityUI.UpdateUI
+    name: UpdateUI
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_UpdateUI
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.UpdateUI
+    name: UpdateUI
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_UpdateUI
+  - name: (
+  - name: )
+- uid: AngeliA.EntityUI.Unify(System.Int32)
+  commentId: M:AngeliA.EntityUI.Unify(System.Int32)
+  parent: AngeliA.EntityUI
+  isExternal: true
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_Unify_System_Int32_
+  name: Unify(int)
+  nameWithType: EntityUI.Unify(int)
+  fullName: AngeliA.EntityUI.Unify(int)
+  nameWithType.vb: EntityUI.Unify(Integer)
+  fullName.vb: AngeliA.EntityUI.Unify(Integer)
+  name.vb: Unify(Integer)
+  spec.csharp:
+  - uid: AngeliA.EntityUI.Unify(System.Int32)
+    name: Unify
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_Unify_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.Unify(System.Int32)
+    name: Unify
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_Unify_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Entity.Active
+  commentId: P:AngeliA.Entity.Active
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Active
+  name: Active
+  nameWithType: Entity.Active
+  fullName: AngeliA.Entity.Active
+- uid: AngeliA.Entity.X
+  commentId: P:AngeliA.Entity.X
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_X
+  name: X
+  nameWithType: Entity.X
+  fullName: AngeliA.Entity.X
+- uid: AngeliA.Entity.Y
+  commentId: P:AngeliA.Entity.Y
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Y
+  name: Y
+  nameWithType: Entity.Y
+  fullName: AngeliA.Entity.Y
+- uid: AngeliA.Entity.Width
+  commentId: P:AngeliA.Entity.Width
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Width
+  name: Width
+  nameWithType: Entity.Width
+  fullName: AngeliA.Entity.Width
+- uid: AngeliA.Entity.Height
+  commentId: P:AngeliA.Entity.Height
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Height
+  name: Height
+  nameWithType: Entity.Height
+  fullName: AngeliA.Entity.Height
+- uid: AngeliA.Entity.TypeID
+  commentId: P:AngeliA.Entity.TypeID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_TypeID
+  name: TypeID
+  nameWithType: Entity.TypeID
+  fullName: AngeliA.Entity.TypeID
+- uid: AngeliA.Entity.SpawnFrame
+  commentId: P:AngeliA.Entity.SpawnFrame
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_SpawnFrame
+  name: SpawnFrame
+  nameWithType: Entity.SpawnFrame
+  fullName: AngeliA.Entity.SpawnFrame
+- uid: AngeliA.Entity.FromWorld
+  commentId: P:AngeliA.Entity.FromWorld
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_FromWorld
+  name: FromWorld
+  nameWithType: Entity.FromWorld
+  fullName: AngeliA.Entity.FromWorld
+- uid: AngeliA.Entity.Rect
+  commentId: P:AngeliA.Entity.Rect
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Rect
+  name: Rect
+  nameWithType: Entity.Rect
+  fullName: AngeliA.Entity.Rect
+- uid: AngeliA.Entity.InstanceOrder
+  commentId: P:AngeliA.Entity.InstanceOrder
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceOrder
+  name: InstanceOrder
+  nameWithType: Entity.InstanceOrder
+  fullName: AngeliA.Entity.InstanceOrder
+- uid: AngeliA.Entity.MapUnitPos
+  commentId: P:AngeliA.Entity.MapUnitPos
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_MapUnitPos
+  name: MapUnitPos
+  nameWithType: Entity.MapUnitPos
+  fullName: AngeliA.Entity.MapUnitPos
+- uid: AngeliA.Entity.InstanceID
+  commentId: P:AngeliA.Entity.InstanceID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceID
+  name: InstanceID
+  nameWithType: Entity.InstanceID
+  fullName: AngeliA.Entity.InstanceID
+- uid: AngeliA.Entity.IgnoreReposition
+  commentId: P:AngeliA.Entity.IgnoreReposition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreReposition
+  name: IgnoreReposition
+  nameWithType: Entity.IgnoreReposition
+  fullName: AngeliA.Entity.IgnoreReposition
+- uid: AngeliA.Entity.XY
+  commentId: P:AngeliA.Entity.XY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_XY
+  name: XY
+  nameWithType: Entity.XY
+  fullName: AngeliA.Entity.XY
+- uid: AngeliA.Entity.Size
+  commentId: P:AngeliA.Entity.Size
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Size
+  name: Size
+  nameWithType: Entity.Size
+  fullName: AngeliA.Entity.Size
+- uid: AngeliA.Entity.Center
+  commentId: P:AngeliA.Entity.Center
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Center
+  name: Center
+  nameWithType: Entity.Center
+  fullName: AngeliA.Entity.Center
+- uid: AngeliA.Entity.CenterX
+  commentId: P:AngeliA.Entity.CenterX
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterX
+  name: CenterX
+  nameWithType: Entity.CenterX
+  fullName: AngeliA.Entity.CenterX
+- uid: AngeliA.Entity.CenterY
+  commentId: P:AngeliA.Entity.CenterY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterY
+  name: CenterY
+  nameWithType: Entity.CenterY
+  fullName: AngeliA.Entity.CenterY
+- uid: AngeliA.Entity.PivotUnitPosition
+  commentId: P:AngeliA.Entity.PivotUnitPosition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_PivotUnitPosition
+  name: PivotUnitPosition
+  nameWithType: Entity.PivotUnitPosition
+  fullName: AngeliA.Entity.PivotUnitPosition
+- uid: AngeliA.Entity.OnInactivated
+  commentId: M:AngeliA.Entity.OnInactivated
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  name: OnInactivated()
+  nameWithType: Entity.OnInactivated()
+  fullName: AngeliA.Entity.OnInactivated()
+  spec.csharp:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.BeforeUpdate
+  commentId: M:AngeliA.Entity.BeforeUpdate
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate
+  name: BeforeUpdate()
+  nameWithType: Entity.BeforeUpdate()
+  fullName: AngeliA.Entity.BeforeUpdate()
+  spec.csharp:
+  - uid: AngeliA.Entity.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  commentId: M:AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  name: AfterReposition(Int3, Int3)
+  nameWithType: Entity.AfterReposition(Int3, Int3)
+  fullName: AngeliA.Entity.AfterReposition(AngeliA.Int3, AngeliA.Int3)
+  spec.csharp:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+- uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  commentId: M:AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  parent: AngeliA.Entity
+  isExternal: true
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  name: IgnoreDespawnFromMap(int)
+  nameWithType: Entity.IgnoreDespawnFromMap(int)
+  fullName: AngeliA.Entity.IgnoreDespawnFromMap(int)
+  nameWithType.vb: Entity.IgnoreDespawnFromMap(Integer)
+  fullName.vb: AngeliA.Entity.IgnoreDespawnFromMap(Integer)
+  name.vb: IgnoreDespawnFromMap(Integer)
+  spec.csharp:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+  commentId: M:AngeliA.Entity.CancelIgnoreDespawnFromMap
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  name: CancelIgnoreDespawnFromMap()
+  nameWithType: Entity.CancelIgnoreDespawnFromMap()
+  fullName: AngeliA.Entity.CancelIgnoreDespawnFromMap()
+  spec.csharp:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.Draw
+  commentId: M:AngeliA.Entity.Draw
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  name: Draw()
+  nameWithType: Entity.Draw()
+  fullName: AngeliA.Entity.Draw()
+  spec.csharp:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.ControlHintUI.Instance*
+  commentId: Overload:AngeliA.ControlHintUI.Instance
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_Instance
+  name: Instance
+  nameWithType: ControlHintUI.Instance
+  fullName: AngeliA.ControlHintUI.Instance
+- uid: AngeliA.ControlHintUI
+  commentId: T:AngeliA.ControlHintUI
+  parent: AngeliA
+  href: AngeliA.ControlHintUI.html
+  name: ControlHintUI
+  nameWithType: ControlHintUI
+  fullName: AngeliA.ControlHintUI
+- uid: AngeliA.ControlHintUI.UseGamePadHint*
+  commentId: Overload:AngeliA.ControlHintUI.UseGamePadHint
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_UseGamePadHint
+  name: UseGamePadHint
+  nameWithType: ControlHintUI.UseGamePadHint
+  fullName: AngeliA.ControlHintUI.UseGamePadHint
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.ControlHintUI.UseControlHint*
+  commentId: Overload:AngeliA.ControlHintUI.UseControlHint
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_UseControlHint
+  name: UseControlHint
+  nameWithType: ControlHintUI.UseControlHint
+  fullName: AngeliA.ControlHintUI.UseControlHint
+- uid: AngeliA.ControlHintUI.OffsetX*
+  commentId: Overload:AngeliA.ControlHintUI.OffsetX
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_OffsetX
+  name: OffsetX
+  nameWithType: ControlHintUI.OffsetX
+  fullName: AngeliA.ControlHintUI.OffsetX
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.ControlHintUI.OffsetY*
+  commentId: Overload:AngeliA.ControlHintUI.OffsetY
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_OffsetY
+  name: OffsetY
+  nameWithType: ControlHintUI.OffsetY
+  fullName: AngeliA.ControlHintUI.OffsetY
+- uid: AngeliA.ControlHintUI.OnGameInitializeLater*
+  commentId: Overload:AngeliA.ControlHintUI.OnGameInitializeLater
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_OnGameInitializeLater
+  name: OnGameInitializeLater
+  nameWithType: ControlHintUI.OnGameInitializeLater
+  fullName: AngeliA.ControlHintUI.OnGameInitializeLater
+- uid: AngeliA.TaskResult
+  commentId: T:AngeliA.TaskResult
+  parent: AngeliA
+  href: AngeliA.TaskResult.html
+  name: TaskResult
+  nameWithType: TaskResult
+  fullName: AngeliA.TaskResult
+- uid: AngeliA.ControlHintUI.OnGameUpdateLater*
+  commentId: Overload:AngeliA.ControlHintUI.OnGameUpdateLater
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_OnGameUpdateLater
+  name: OnGameUpdateLater
+  nameWithType: ControlHintUI.OnGameUpdateLater
+  fullName: AngeliA.ControlHintUI.OnGameUpdateLater
+- uid: AngeliA.ControlHintUI.#ctor*
+  commentId: Overload:AngeliA.ControlHintUI.#ctor
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI__ctor
+  name: ControlHintUI
+  nameWithType: ControlHintUI.ControlHintUI
+  fullName: AngeliA.ControlHintUI.ControlHintUI
+  nameWithType.vb: ControlHintUI.New
+  fullName.vb: AngeliA.ControlHintUI.New
+  name.vb: New
+- uid: AngeliA.Entity.OnActivated
+  commentId: M:AngeliA.Entity.OnActivated
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_OnActivated
+  name: OnActivated()
+  nameWithType: Entity.OnActivated()
+  fullName: AngeliA.Entity.OnActivated()
+  spec.csharp:
+  - uid: AngeliA.Entity.OnActivated
+    name: OnActivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.OnActivated
+    name: OnActivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnActivated
+  - name: (
+  - name: )
+- uid: AngeliA.ControlHintUI.OnActivated*
+  commentId: Overload:AngeliA.ControlHintUI.OnActivated
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_OnActivated
+  name: OnActivated
+  nameWithType: ControlHintUI.OnActivated
+  fullName: AngeliA.ControlHintUI.OnActivated
+- uid: AngeliA.ControlHintUI.AddHint*
+  commentId: Overload:AngeliA.ControlHintUI.AddHint
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_AddHint_AngeliA_Gamekey_System_String_System_Int32_
+  name: AddHint
+  nameWithType: ControlHintUI.AddHint
+  fullName: AngeliA.ControlHintUI.AddHint
+- uid: AngeliA.Gamekey
+  commentId: T:AngeliA.Gamekey
+  parent: AngeliA
+  href: AngeliA.Gamekey.html
+  name: Gamekey
+  nameWithType: Gamekey
+  fullName: AngeliA.Gamekey
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.KeyboardKey
+  commentId: T:AngeliA.KeyboardKey
+  parent: AngeliA
+  href: AngeliA.KeyboardKey.html
+  name: KeyboardKey
+  nameWithType: KeyboardKey
+  fullName: AngeliA.KeyboardKey
+- uid: AngeliA.ControlHintUI.DrawGlobalHint*
+  commentId: Overload:AngeliA.ControlHintUI.DrawGlobalHint
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_DrawGlobalHint_System_Int32_System_Int32_AngeliA_Gamekey_System_String_System_Boolean_
+  name: DrawGlobalHint
+  nameWithType: ControlHintUI.DrawGlobalHint
+  fullName: AngeliA.ControlHintUI.DrawGlobalHint
+- uid: AngeliA.ControlHintUI.ForceShowHint*
+  commentId: Overload:AngeliA.ControlHintUI.ForceShowHint
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_ForceShowHint_System_Int32_
+  name: ForceShowHint
+  nameWithType: ControlHintUI.ForceShowHint
+  fullName: AngeliA.ControlHintUI.ForceShowHint
+- uid: AngeliA.ControlHintUI.ForceHideGamepad*
+  commentId: Overload:AngeliA.ControlHintUI.ForceHideGamepad
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_ForceHideGamepad_System_Int32_
+  name: ForceHideGamepad
+  nameWithType: ControlHintUI.ForceHideGamepad
+  fullName: AngeliA.ControlHintUI.ForceHideGamepad
+- uid: AngeliA.ControlHintUI.ForceHideGlobalHint*
+  commentId: Overload:AngeliA.ControlHintUI.ForceHideGlobalHint
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_ForceHideGlobalHint_System_Int32_
+  name: ForceHideGlobalHint
+  nameWithType: ControlHintUI.ForceHideGlobalHint
+  fullName: AngeliA.ControlHintUI.ForceHideGlobalHint
+- uid: AngeliA.ControlHintUI.ForceOffset*
+  commentId: Overload:AngeliA.ControlHintUI.ForceOffset
+  href: AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_ForceOffset_System_Int32_System_Int32_System_Int32_
+  name: ForceOffset
+  nameWithType: ControlHintUI.ForceOffset
+  fullName: AngeliA.ControlHintUI.ForceOffset

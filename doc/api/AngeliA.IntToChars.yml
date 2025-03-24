@@ -1,0 +1,794 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.IntToChars
+  commentId: T:AngeliA.IntToChars
+  id: IntToChars
+  parent: AngeliA
+  children:
+  - AngeliA.IntToChars.#ctor(System.String,System.String)
+  - AngeliA.IntToChars.CharsValue
+  - AngeliA.IntToChars.Chars_to_Int(System.Char[],System.Int32)
+  - AngeliA.IntToChars.GetChars(System.Int32)
+  - AngeliA.IntToChars.Int_to_Chars(System.Int32,System.Char[],System.Int32@)
+  - AngeliA.IntToChars.Prefix
+  - AngeliA.IntToChars.Suffix
+  langs:
+  - csharp
+  - vb
+  name: IntToChars
+  nameWithType: IntToChars
+  fullName: AngeliA.IntToChars
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/IntToChars.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IntToChars
+    path: ../AngeliA Framework/src/Structure/IntToChars.cs
+    startLine: 2
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public class IntToChars
+    content.vb: Public Class IntToChars
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.IntToChars.CharsValue
+  commentId: F:AngeliA.IntToChars.CharsValue
+  id: CharsValue
+  parent: AngeliA.IntToChars
+  langs:
+  - csharp
+  - vb
+  name: CharsValue
+  nameWithType: IntToChars.CharsValue
+  fullName: AngeliA.IntToChars.CharsValue
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/IntToChars.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CharsValue
+    path: ../AngeliA Framework/src/Structure/IntToChars.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly char[] CharsValue
+    return:
+      type: System.Char[]
+    content.vb: Public ReadOnly CharsValue As Char()
+- uid: AngeliA.IntToChars.Prefix
+  commentId: F:AngeliA.IntToChars.Prefix
+  id: Prefix
+  parent: AngeliA.IntToChars
+  langs:
+  - csharp
+  - vb
+  name: Prefix
+  nameWithType: IntToChars.Prefix
+  fullName: AngeliA.IntToChars.Prefix
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/IntToChars.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Prefix
+    path: ../AngeliA Framework/src/Structure/IntToChars.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly string Prefix
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Prefix As String
+- uid: AngeliA.IntToChars.Suffix
+  commentId: F:AngeliA.IntToChars.Suffix
+  id: Suffix
+  parent: AngeliA.IntToChars
+  langs:
+  - csharp
+  - vb
+  name: Suffix
+  nameWithType: IntToChars.Suffix
+  fullName: AngeliA.IntToChars.Suffix
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/IntToChars.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Suffix
+    path: ../AngeliA Framework/src/Structure/IntToChars.cs
+    startLine: 7
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly string Suffix
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Suffix As String
+- uid: AngeliA.IntToChars.#ctor(System.String,System.String)
+  commentId: M:AngeliA.IntToChars.#ctor(System.String,System.String)
+  id: '#ctor(System.String,System.String)'
+  parent: AngeliA.IntToChars
+  langs:
+  - csharp
+  - vb
+  name: IntToChars(string, string)
+  nameWithType: IntToChars.IntToChars(string, string)
+  fullName: AngeliA.IntToChars.IntToChars(string, string)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/IntToChars.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Structure/IntToChars.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public IntToChars(string prefix = "", string suffix = "")
+    parameters:
+    - id: prefix
+      type: System.String
+    - id: suffix
+      type: System.String
+    content.vb: Public Sub New(prefix As String = "", suffix As String = "")
+  overload: AngeliA.IntToChars.#ctor*
+  nameWithType.vb: IntToChars.New(String, String)
+  fullName.vb: AngeliA.IntToChars.New(String, String)
+  name.vb: New(String, String)
+- uid: AngeliA.IntToChars.GetChars(System.Int32)
+  commentId: M:AngeliA.IntToChars.GetChars(System.Int32)
+  id: GetChars(System.Int32)
+  parent: AngeliA.IntToChars
+  langs:
+  - csharp
+  - vb
+  name: GetChars(int)
+  nameWithType: IntToChars.GetChars(int)
+  fullName: AngeliA.IntToChars.GetChars(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/IntToChars.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetChars
+    path: ../AngeliA Framework/src/Structure/IntToChars.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public char[] GetChars(int value)
+    parameters:
+    - id: value
+      type: System.Int32
+    return:
+      type: System.Char[]
+    content.vb: Public Function GetChars(value As Integer) As Char()
+  overload: AngeliA.IntToChars.GetChars*
+  nameWithType.vb: IntToChars.GetChars(Integer)
+  fullName.vb: AngeliA.IntToChars.GetChars(Integer)
+  name.vb: GetChars(Integer)
+- uid: AngeliA.IntToChars.Int_to_Chars(System.Int32,System.Char[],System.Int32@)
+  commentId: M:AngeliA.IntToChars.Int_to_Chars(System.Int32,System.Char[],System.Int32@)
+  id: Int_to_Chars(System.Int32,System.Char[],System.Int32@)
+  parent: AngeliA.IntToChars
+  langs:
+  - csharp
+  - vb
+  name: Int_to_Chars(int, char[], ref int)
+  nameWithType: IntToChars.Int_to_Chars(int, char[], ref int)
+  fullName: AngeliA.IntToChars.Int_to_Chars(int, char[], ref int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/IntToChars.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Int_to_Chars
+    path: ../AngeliA Framework/src/Structure/IntToChars.cs
+    startLine: 46
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void Int_to_Chars(int intValue, char[] charsValue, ref int startIndex)
+    parameters:
+    - id: intValue
+      type: System.Int32
+    - id: charsValue
+      type: System.Char[]
+    - id: startIndex
+      type: System.Int32
+    content.vb: Public Shared Sub Int_to_Chars(intValue As Integer, charsValue As Char(), startIndex As Integer)
+  overload: AngeliA.IntToChars.Int_to_Chars*
+  nameWithType.vb: IntToChars.Int_to_Chars(Integer, Char(), Integer)
+  fullName.vb: AngeliA.IntToChars.Int_to_Chars(Integer, Char(), Integer)
+  name.vb: Int_to_Chars(Integer, Char(), Integer)
+- uid: AngeliA.IntToChars.Chars_to_Int(System.Char[],System.Int32)
+  commentId: M:AngeliA.IntToChars.Chars_to_Int(System.Char[],System.Int32)
+  id: Chars_to_Int(System.Char[],System.Int32)
+  parent: AngeliA.IntToChars
+  langs:
+  - csharp
+  - vb
+  name: Chars_to_Int(char[], int)
+  nameWithType: IntToChars.Chars_to_Int(char[], int)
+  fullName: AngeliA.IntToChars.Chars_to_Int(char[], int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/IntToChars.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Chars_to_Int
+    path: ../AngeliA Framework/src/Structure/IntToChars.cs
+    startLine: 62
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int Chars_to_Int(char[] charsValue, int startIndex = 0)
+    parameters:
+    - id: charsValue
+      type: System.Char[]
+    - id: startIndex
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function Chars_to_Int(charsValue As Char(), startIndex As Integer = 0) As Integer
+  overload: AngeliA.IntToChars.Chars_to_Int*
+  nameWithType.vb: IntToChars.Chars_to_Int(Char(), Integer)
+  fullName.vb: AngeliA.IntToChars.Chars_to_Int(Char(), Integer)
+  name.vb: Chars_to_Int(Char(), Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Char[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.char
+  name: char[]
+  nameWithType: char[]
+  fullName: char[]
+  nameWithType.vb: Char()
+  fullName.vb: Char()
+  name.vb: Char()
+  spec.csharp:
+  - uid: System.Char
+    name: char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Char
+    name: Char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: (
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.IntToChars.#ctor*
+  commentId: Overload:AngeliA.IntToChars.#ctor
+  href: AngeliA.IntToChars.html#AngeliA_IntToChars__ctor_System_String_System_String_
+  name: IntToChars
+  nameWithType: IntToChars.IntToChars
+  fullName: AngeliA.IntToChars.IntToChars
+  nameWithType.vb: IntToChars.New
+  fullName.vb: AngeliA.IntToChars.New
+  name.vb: New
+- uid: AngeliA.IntToChars.GetChars*
+  commentId: Overload:AngeliA.IntToChars.GetChars
+  href: AngeliA.IntToChars.html#AngeliA_IntToChars_GetChars_System_Int32_
+  name: GetChars
+  nameWithType: IntToChars.GetChars
+  fullName: AngeliA.IntToChars.GetChars
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.IntToChars.Int_to_Chars*
+  commentId: Overload:AngeliA.IntToChars.Int_to_Chars
+  href: AngeliA.IntToChars.html#AngeliA_IntToChars_Int_to_Chars_System_Int32_System_Char___System_Int32__
+  name: Int_to_Chars
+  nameWithType: IntToChars.Int_to_Chars
+  fullName: AngeliA.IntToChars.Int_to_Chars
+- uid: AngeliA.IntToChars.Chars_to_Int*
+  commentId: Overload:AngeliA.IntToChars.Chars_to_Int
+  href: AngeliA.IntToChars.html#AngeliA_IntToChars_Chars_to_Int_System_Char___System_Int32_
+  name: Chars_to_Int
+  nameWithType: IntToChars.Chars_to_Int
+  fullName: AngeliA.IntToChars.Chars_to_Int

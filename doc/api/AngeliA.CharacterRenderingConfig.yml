@@ -1,0 +1,1304 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.CharacterRenderingConfig
+  commentId: T:AngeliA.CharacterRenderingConfig
+  id: CharacterRenderingConfig
+  parent: AngeliA
+  children:
+  - AngeliA.CharacterRenderingConfig.AllBodyPartIsDefault
+  - AngeliA.CharacterRenderingConfig.Body
+  - AngeliA.CharacterRenderingConfig.CharacterHeight
+  - AngeliA.CharacterRenderingConfig.Ear
+  - AngeliA.CharacterRenderingConfig.Face
+  - AngeliA.CharacterRenderingConfig.Foot
+  - AngeliA.CharacterRenderingConfig.GetBodyPartID(System.Int32)
+  - AngeliA.CharacterRenderingConfig.Hair
+  - AngeliA.CharacterRenderingConfig.Hand
+  - AngeliA.CharacterRenderingConfig.Head
+  - AngeliA.CharacterRenderingConfig.Hip
+  - AngeliA.CharacterRenderingConfig.Horn
+  - AngeliA.CharacterRenderingConfig.LoadFromSheet(System.Type,System.Boolean,System.Boolean,System.Boolean)
+  - AngeliA.CharacterRenderingConfig.LoadToCharacter(AngeliA.PoseCharacterRenderer)
+  - AngeliA.CharacterRenderingConfig.LowerArm
+  - AngeliA.CharacterRenderingConfig.LowerLeg
+  - AngeliA.CharacterRenderingConfig.Shoulder
+  - AngeliA.CharacterRenderingConfig.SuitBody
+  - AngeliA.CharacterRenderingConfig.SuitFoot
+  - AngeliA.CharacterRenderingConfig.SuitHand
+  - AngeliA.CharacterRenderingConfig.SuitHead
+  - AngeliA.CharacterRenderingConfig.SuitHip
+  - AngeliA.CharacterRenderingConfig.Tail
+  - AngeliA.CharacterRenderingConfig.UpperArm
+  - AngeliA.CharacterRenderingConfig.UpperLeg
+  - AngeliA.CharacterRenderingConfig.Wing
+  langs:
+  - csharp
+  - vb
+  name: CharacterRenderingConfig
+  nameWithType: CharacterRenderingConfig
+  fullName: AngeliA.CharacterRenderingConfig
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CharacterRenderingConfig
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 7
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public class CharacterRenderingConfig
+    content.vb: Public Class CharacterRenderingConfig
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.CharacterRenderingConfig.CharacterHeight
+  commentId: F:AngeliA.CharacterRenderingConfig.CharacterHeight
+  id: CharacterHeight
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: CharacterHeight
+  nameWithType: CharacterRenderingConfig.CharacterHeight
+  fullName: AngeliA.CharacterRenderingConfig.CharacterHeight
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CharacterHeight
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int CharacterHeight
+    return:
+      type: System.Int32
+    content.vb: Public CharacterHeight As Integer
+- uid: AngeliA.CharacterRenderingConfig.Head
+  commentId: F:AngeliA.CharacterRenderingConfig.Head
+  id: Head
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Head
+  nameWithType: CharacterRenderingConfig.Head
+  fullName: AngeliA.CharacterRenderingConfig.Head
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Head
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Head
+    return:
+      type: System.Int32
+    content.vb: Public Head As Integer
+- uid: AngeliA.CharacterRenderingConfig.Body
+  commentId: F:AngeliA.CharacterRenderingConfig.Body
+  id: Body
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Body
+  nameWithType: CharacterRenderingConfig.Body
+  fullName: AngeliA.CharacterRenderingConfig.Body
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Body
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Body
+    return:
+      type: System.Int32
+    content.vb: Public Body As Integer
+- uid: AngeliA.CharacterRenderingConfig.Hip
+  commentId: F:AngeliA.CharacterRenderingConfig.Hip
+  id: Hip
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Hip
+  nameWithType: CharacterRenderingConfig.Hip
+  fullName: AngeliA.CharacterRenderingConfig.Hip
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Hip
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Hip
+    return:
+      type: System.Int32
+    content.vb: Public Hip As Integer
+- uid: AngeliA.CharacterRenderingConfig.Shoulder
+  commentId: F:AngeliA.CharacterRenderingConfig.Shoulder
+  id: Shoulder
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Shoulder
+  nameWithType: CharacterRenderingConfig.Shoulder
+  fullName: AngeliA.CharacterRenderingConfig.Shoulder
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Shoulder
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Shoulder
+    return:
+      type: System.Int32
+    content.vb: Public Shoulder As Integer
+- uid: AngeliA.CharacterRenderingConfig.UpperArm
+  commentId: F:AngeliA.CharacterRenderingConfig.UpperArm
+  id: UpperArm
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: UpperArm
+  nameWithType: CharacterRenderingConfig.UpperArm
+  fullName: AngeliA.CharacterRenderingConfig.UpperArm
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UpperArm
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int UpperArm
+    return:
+      type: System.Int32
+    content.vb: Public UpperArm As Integer
+- uid: AngeliA.CharacterRenderingConfig.LowerArm
+  commentId: F:AngeliA.CharacterRenderingConfig.LowerArm
+  id: LowerArm
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: LowerArm
+  nameWithType: CharacterRenderingConfig.LowerArm
+  fullName: AngeliA.CharacterRenderingConfig.LowerArm
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LowerArm
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int LowerArm
+    return:
+      type: System.Int32
+    content.vb: Public LowerArm As Integer
+- uid: AngeliA.CharacterRenderingConfig.Hand
+  commentId: F:AngeliA.CharacterRenderingConfig.Hand
+  id: Hand
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Hand
+  nameWithType: CharacterRenderingConfig.Hand
+  fullName: AngeliA.CharacterRenderingConfig.Hand
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Hand
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Hand
+    return:
+      type: System.Int32
+    content.vb: Public Hand As Integer
+- uid: AngeliA.CharacterRenderingConfig.UpperLeg
+  commentId: F:AngeliA.CharacterRenderingConfig.UpperLeg
+  id: UpperLeg
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: UpperLeg
+  nameWithType: CharacterRenderingConfig.UpperLeg
+  fullName: AngeliA.CharacterRenderingConfig.UpperLeg
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UpperLeg
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int UpperLeg
+    return:
+      type: System.Int32
+    content.vb: Public UpperLeg As Integer
+- uid: AngeliA.CharacterRenderingConfig.LowerLeg
+  commentId: F:AngeliA.CharacterRenderingConfig.LowerLeg
+  id: LowerLeg
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: LowerLeg
+  nameWithType: CharacterRenderingConfig.LowerLeg
+  fullName: AngeliA.CharacterRenderingConfig.LowerLeg
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LowerLeg
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int LowerLeg
+    return:
+      type: System.Int32
+    content.vb: Public LowerLeg As Integer
+- uid: AngeliA.CharacterRenderingConfig.Foot
+  commentId: F:AngeliA.CharacterRenderingConfig.Foot
+  id: Foot
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Foot
+  nameWithType: CharacterRenderingConfig.Foot
+  fullName: AngeliA.CharacterRenderingConfig.Foot
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Foot
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Foot
+    return:
+      type: System.Int32
+    content.vb: Public Foot As Integer
+- uid: AngeliA.CharacterRenderingConfig.Face
+  commentId: F:AngeliA.CharacterRenderingConfig.Face
+  id: Face
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Face
+  nameWithType: CharacterRenderingConfig.Face
+  fullName: AngeliA.CharacterRenderingConfig.Face
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Face
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Face
+    return:
+      type: System.Int32
+    content.vb: Public Face As Integer
+- uid: AngeliA.CharacterRenderingConfig.Hair
+  commentId: F:AngeliA.CharacterRenderingConfig.Hair
+  id: Hair
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Hair
+  nameWithType: CharacterRenderingConfig.Hair
+  fullName: AngeliA.CharacterRenderingConfig.Hair
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Hair
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 25
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Hair
+    return:
+      type: System.Int32
+    content.vb: Public Hair As Integer
+- uid: AngeliA.CharacterRenderingConfig.Ear
+  commentId: F:AngeliA.CharacterRenderingConfig.Ear
+  id: Ear
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Ear
+  nameWithType: CharacterRenderingConfig.Ear
+  fullName: AngeliA.CharacterRenderingConfig.Ear
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Ear
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Ear
+    return:
+      type: System.Int32
+    content.vb: Public Ear As Integer
+- uid: AngeliA.CharacterRenderingConfig.Tail
+  commentId: F:AngeliA.CharacterRenderingConfig.Tail
+  id: Tail
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Tail
+  nameWithType: CharacterRenderingConfig.Tail
+  fullName: AngeliA.CharacterRenderingConfig.Tail
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Tail
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 27
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Tail
+    return:
+      type: System.Int32
+    content.vb: Public Tail As Integer
+- uid: AngeliA.CharacterRenderingConfig.Wing
+  commentId: F:AngeliA.CharacterRenderingConfig.Wing
+  id: Wing
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Wing
+  nameWithType: CharacterRenderingConfig.Wing
+  fullName: AngeliA.CharacterRenderingConfig.Wing
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Wing
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Wing
+    return:
+      type: System.Int32
+    content.vb: Public Wing As Integer
+- uid: AngeliA.CharacterRenderingConfig.Horn
+  commentId: F:AngeliA.CharacterRenderingConfig.Horn
+  id: Horn
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: Horn
+  nameWithType: CharacterRenderingConfig.Horn
+  fullName: AngeliA.CharacterRenderingConfig.Horn
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Horn
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 29
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Horn
+    return:
+      type: System.Int32
+    content.vb: Public Horn As Integer
+- uid: AngeliA.CharacterRenderingConfig.SuitHead
+  commentId: F:AngeliA.CharacterRenderingConfig.SuitHead
+  id: SuitHead
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: SuitHead
+  nameWithType: CharacterRenderingConfig.SuitHead
+  fullName: AngeliA.CharacterRenderingConfig.SuitHead
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SuitHead
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 32
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int SuitHead
+    return:
+      type: System.Int32
+    content.vb: Public SuitHead As Integer
+- uid: AngeliA.CharacterRenderingConfig.SuitBody
+  commentId: F:AngeliA.CharacterRenderingConfig.SuitBody
+  id: SuitBody
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: SuitBody
+  nameWithType: CharacterRenderingConfig.SuitBody
+  fullName: AngeliA.CharacterRenderingConfig.SuitBody
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SuitBody
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int SuitBody
+    return:
+      type: System.Int32
+    content.vb: Public SuitBody As Integer
+- uid: AngeliA.CharacterRenderingConfig.SuitHip
+  commentId: F:AngeliA.CharacterRenderingConfig.SuitHip
+  id: SuitHip
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: SuitHip
+  nameWithType: CharacterRenderingConfig.SuitHip
+  fullName: AngeliA.CharacterRenderingConfig.SuitHip
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SuitHip
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 34
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int SuitHip
+    return:
+      type: System.Int32
+    content.vb: Public SuitHip As Integer
+- uid: AngeliA.CharacterRenderingConfig.SuitHand
+  commentId: F:AngeliA.CharacterRenderingConfig.SuitHand
+  id: SuitHand
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: SuitHand
+  nameWithType: CharacterRenderingConfig.SuitHand
+  fullName: AngeliA.CharacterRenderingConfig.SuitHand
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SuitHand
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 35
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int SuitHand
+    return:
+      type: System.Int32
+    content.vb: Public SuitHand As Integer
+- uid: AngeliA.CharacterRenderingConfig.SuitFoot
+  commentId: F:AngeliA.CharacterRenderingConfig.SuitFoot
+  id: SuitFoot
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: SuitFoot
+  nameWithType: CharacterRenderingConfig.SuitFoot
+  fullName: AngeliA.CharacterRenderingConfig.SuitFoot
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SuitFoot
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int SuitFoot
+    return:
+      type: System.Int32
+    content.vb: Public SuitFoot As Integer
+- uid: AngeliA.CharacterRenderingConfig.LoadToCharacter(AngeliA.PoseCharacterRenderer)
+  commentId: M:AngeliA.CharacterRenderingConfig.LoadToCharacter(AngeliA.PoseCharacterRenderer)
+  id: LoadToCharacter(AngeliA.PoseCharacterRenderer)
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: LoadToCharacter(PoseCharacterRenderer)
+  nameWithType: CharacterRenderingConfig.LoadToCharacter(PoseCharacterRenderer)
+  fullName: AngeliA.CharacterRenderingConfig.LoadToCharacter(AngeliA.PoseCharacterRenderer)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LoadToCharacter
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 40
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void LoadToCharacter(PoseCharacterRenderer renderer)
+    parameters:
+    - id: renderer
+      type: AngeliA.PoseCharacterRenderer
+    content.vb: Public Sub LoadToCharacter(renderer As PoseCharacterRenderer)
+  overload: AngeliA.CharacterRenderingConfig.LoadToCharacter*
+- uid: AngeliA.CharacterRenderingConfig.LoadFromSheet(System.Type,System.Boolean,System.Boolean,System.Boolean)
+  commentId: M:AngeliA.CharacterRenderingConfig.LoadFromSheet(System.Type,System.Boolean,System.Boolean,System.Boolean)
+  id: LoadFromSheet(System.Type,System.Boolean,System.Boolean,System.Boolean)
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: LoadFromSheet(Type, bool, bool, bool)
+  nameWithType: CharacterRenderingConfig.LoadFromSheet(Type, bool, bool, bool)
+  fullName: AngeliA.CharacterRenderingConfig.LoadFromSheet(System.Type, bool, bool, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LoadFromSheet
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 80
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void LoadFromSheet(Type characterType, bool ignoreBodyPart = false, bool ignoreBodyGadget = false, bool ignoreCloth = false)
+    parameters:
+    - id: characterType
+      type: System.Type
+    - id: ignoreBodyPart
+      type: System.Boolean
+    - id: ignoreBodyGadget
+      type: System.Boolean
+    - id: ignoreCloth
+      type: System.Boolean
+    content.vb: Public Sub LoadFromSheet(characterType As Type, ignoreBodyPart As Boolean = False, ignoreBodyGadget As Boolean = False, ignoreCloth As Boolean = False)
+  overload: AngeliA.CharacterRenderingConfig.LoadFromSheet*
+  nameWithType.vb: CharacterRenderingConfig.LoadFromSheet(Type, Boolean, Boolean, Boolean)
+  fullName.vb: AngeliA.CharacterRenderingConfig.LoadFromSheet(System.Type, Boolean, Boolean, Boolean)
+  name.vb: LoadFromSheet(Type, Boolean, Boolean, Boolean)
+- uid: AngeliA.CharacterRenderingConfig.GetBodyPartID(System.Int32)
+  commentId: M:AngeliA.CharacterRenderingConfig.GetBodyPartID(System.Int32)
+  id: GetBodyPartID(System.Int32)
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: GetBodyPartID(int)
+  nameWithType: CharacterRenderingConfig.GetBodyPartID(int)
+  fullName: AngeliA.CharacterRenderingConfig.GetBodyPartID(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetBodyPartID
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 126
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int GetBodyPartID(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Function GetBodyPartID(index As Integer) As Integer
+  overload: AngeliA.CharacterRenderingConfig.GetBodyPartID*
+  nameWithType.vb: CharacterRenderingConfig.GetBodyPartID(Integer)
+  fullName.vb: AngeliA.CharacterRenderingConfig.GetBodyPartID(Integer)
+  name.vb: GetBodyPartID(Integer)
+- uid: AngeliA.CharacterRenderingConfig.AllBodyPartIsDefault
+  commentId: M:AngeliA.CharacterRenderingConfig.AllBodyPartIsDefault
+  id: AllBodyPartIsDefault
+  parent: AngeliA.CharacterRenderingConfig
+  langs:
+  - csharp
+  - vb
+  name: AllBodyPartIsDefault()
+  nameWithType: CharacterRenderingConfig.AllBodyPartIsDefault()
+  fullName: AngeliA.CharacterRenderingConfig.AllBodyPartIsDefault()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllBodyPartIsDefault
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterConfig_Rendering.cs
+    startLine: 140
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public bool AllBodyPartIsDefault()
+    return:
+      type: System.Boolean
+    content.vb: Public Function AllBodyPartIsDefault() As Boolean
+  overload: AngeliA.CharacterRenderingConfig.AllBodyPartIsDefault*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.CharacterRenderingConfig.LoadToCharacter*
+  commentId: Overload:AngeliA.CharacterRenderingConfig.LoadToCharacter
+  href: AngeliA.CharacterRenderingConfig.html#AngeliA_CharacterRenderingConfig_LoadToCharacter_AngeliA_PoseCharacterRenderer_
+  name: LoadToCharacter
+  nameWithType: CharacterRenderingConfig.LoadToCharacter
+  fullName: AngeliA.CharacterRenderingConfig.LoadToCharacter
+- uid: AngeliA.PoseCharacterRenderer
+  commentId: T:AngeliA.PoseCharacterRenderer
+  parent: AngeliA
+  href: AngeliA.PoseCharacterRenderer.html
+  name: PoseCharacterRenderer
+  nameWithType: PoseCharacterRenderer
+  fullName: AngeliA.PoseCharacterRenderer
+- uid: AngeliA.CharacterRenderingConfig.LoadFromSheet*
+  commentId: Overload:AngeliA.CharacterRenderingConfig.LoadFromSheet
+  href: AngeliA.CharacterRenderingConfig.html#AngeliA_CharacterRenderingConfig_LoadFromSheet_System_Type_System_Boolean_System_Boolean_System_Boolean_
+  name: LoadFromSheet
+  nameWithType: CharacterRenderingConfig.LoadFromSheet
+  fullName: AngeliA.CharacterRenderingConfig.LoadFromSheet
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.CharacterRenderingConfig.GetBodyPartID*
+  commentId: Overload:AngeliA.CharacterRenderingConfig.GetBodyPartID
+  href: AngeliA.CharacterRenderingConfig.html#AngeliA_CharacterRenderingConfig_GetBodyPartID_System_Int32_
+  name: GetBodyPartID
+  nameWithType: CharacterRenderingConfig.GetBodyPartID
+  fullName: AngeliA.CharacterRenderingConfig.GetBodyPartID
+- uid: AngeliA.CharacterRenderingConfig.AllBodyPartIsDefault*
+  commentId: Overload:AngeliA.CharacterRenderingConfig.AllBodyPartIsDefault
+  href: AngeliA.CharacterRenderingConfig.html#AngeliA_CharacterRenderingConfig_AllBodyPartIsDefault
+  name: AllBodyPartIsDefault
+  nameWithType: CharacterRenderingConfig.AllBodyPartIsDefault
+  fullName: AngeliA.CharacterRenderingConfig.AllBodyPartIsDefault

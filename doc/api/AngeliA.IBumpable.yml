@@ -1,0 +1,954 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.IBumpable
+  commentId: T:AngeliA.IBumpable
+  id: IBumpable
+  parent: AngeliA
+  children:
+  - AngeliA.IBumpable.AllowBump(AngeliA.Entity,AngeliA.Direction4)
+  - AngeliA.IBumpable.AnimateForBump(AngeliA.IBumpable,AngeliA.Cell,System.Int32,System.Int32,System.Int32)
+  - AngeliA.IBumpable.BumpAllOverlap(AngeliA.Entity,AngeliA.Direction4,System.Boolean,AngeliA.Damage,System.Int32)
+  - AngeliA.IBumpable.BumpCooldown
+  - AngeliA.IBumpable.BumpTransferPower
+  - AngeliA.IBumpable.FromAbove
+  - AngeliA.IBumpable.FromBelow
+  - AngeliA.IBumpable.FromLeft
+  - AngeliA.IBumpable.FromRight
+  - AngeliA.IBumpable.GetBumpTransferDamage
+  - AngeliA.IBumpable.IsValidBumpDirection(AngeliA.IBumpable,AngeliA.Direction4)
+  - AngeliA.IBumpable.LastBumpFrom
+  - AngeliA.IBumpable.LastBumpedFrame
+  - AngeliA.IBumpable.OnBumped(AngeliA.Entity,AngeliA.Damage)
+  - AngeliA.IBumpable.TransferBumpFromOther
+  - AngeliA.IBumpable.TransferBumpToOther
+  - AngeliA.IBumpable.TransferWithAttack
+  langs:
+  - csharp
+  - vb
+  name: IBumpable
+  nameWithType: IBumpable
+  fullName: AngeliA.IBumpable
+  type: Interface
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IBumpable
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public interface IBumpable
+    content.vb: Public Interface IBumpable
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.IBumpable.FromBelow
+  commentId: P:AngeliA.IBumpable.FromBelow
+  id: FromBelow
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: FromBelow
+  nameWithType: IBumpable.FromBelow
+  fullName: AngeliA.IBumpable.FromBelow
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FromBelow
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool FromBelow { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property FromBelow As Boolean
+  overload: AngeliA.IBumpable.FromBelow*
+- uid: AngeliA.IBumpable.FromAbove
+  commentId: P:AngeliA.IBumpable.FromAbove
+  id: FromAbove
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: FromAbove
+  nameWithType: IBumpable.FromAbove
+  fullName: AngeliA.IBumpable.FromAbove
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FromAbove
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool FromAbove { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property FromAbove As Boolean
+  overload: AngeliA.IBumpable.FromAbove*
+- uid: AngeliA.IBumpable.FromLeft
+  commentId: P:AngeliA.IBumpable.FromLeft
+  id: FromLeft
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: FromLeft
+  nameWithType: IBumpable.FromLeft
+  fullName: AngeliA.IBumpable.FromLeft
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FromLeft
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool FromLeft { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property FromLeft As Boolean
+  overload: AngeliA.IBumpable.FromLeft*
+- uid: AngeliA.IBumpable.FromRight
+  commentId: P:AngeliA.IBumpable.FromRight
+  id: FromRight
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: FromRight
+  nameWithType: IBumpable.FromRight
+  fullName: AngeliA.IBumpable.FromRight
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FromRight
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool FromRight { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property FromRight As Boolean
+  overload: AngeliA.IBumpable.FromRight*
+- uid: AngeliA.IBumpable.TransferBumpToOther
+  commentId: P:AngeliA.IBumpable.TransferBumpToOther
+  id: TransferBumpToOther
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: TransferBumpToOther
+  nameWithType: IBumpable.TransferBumpToOther
+  fullName: AngeliA.IBumpable.TransferBumpToOther
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TransferBumpToOther
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool TransferBumpToOther { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property TransferBumpToOther As Boolean
+  overload: AngeliA.IBumpable.TransferBumpToOther*
+- uid: AngeliA.IBumpable.TransferBumpFromOther
+  commentId: P:AngeliA.IBumpable.TransferBumpFromOther
+  id: TransferBumpFromOther
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: TransferBumpFromOther
+  nameWithType: IBumpable.TransferBumpFromOther
+  fullName: AngeliA.IBumpable.TransferBumpFromOther
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TransferBumpFromOther
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool TransferBumpFromOther { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property TransferBumpFromOther As Boolean
+  overload: AngeliA.IBumpable.TransferBumpFromOther*
+- uid: AngeliA.IBumpable.TransferWithAttack
+  commentId: P:AngeliA.IBumpable.TransferWithAttack
+  id: TransferWithAttack
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: TransferWithAttack
+  nameWithType: IBumpable.TransferWithAttack
+  fullName: AngeliA.IBumpable.TransferWithAttack
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TransferWithAttack
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool TransferWithAttack { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property TransferWithAttack As Boolean
+  overload: AngeliA.IBumpable.TransferWithAttack*
+- uid: AngeliA.IBumpable.BumpTransferPower
+  commentId: P:AngeliA.IBumpable.BumpTransferPower
+  id: BumpTransferPower
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: BumpTransferPower
+  nameWithType: IBumpable.BumpTransferPower
+  fullName: AngeliA.IBumpable.BumpTransferPower
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BumpTransferPower
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: int BumpTransferPower { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property BumpTransferPower As Integer
+  overload: AngeliA.IBumpable.BumpTransferPower*
+- uid: AngeliA.IBumpable.BumpCooldown
+  commentId: P:AngeliA.IBumpable.BumpCooldown
+  id: BumpCooldown
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: BumpCooldown
+  nameWithType: IBumpable.BumpCooldown
+  fullName: AngeliA.IBumpable.BumpCooldown
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BumpCooldown
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: int BumpCooldown { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property BumpCooldown As Integer
+  overload: AngeliA.IBumpable.BumpCooldown*
+- uid: AngeliA.IBumpable.LastBumpedFrame
+  commentId: P:AngeliA.IBumpable.LastBumpedFrame
+  id: LastBumpedFrame
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: LastBumpedFrame
+  nameWithType: IBumpable.LastBumpedFrame
+  fullName: AngeliA.IBumpable.LastBumpedFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LastBumpedFrame
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: int LastBumpedFrame { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property LastBumpedFrame As Integer
+  overload: AngeliA.IBumpable.LastBumpedFrame*
+- uid: AngeliA.IBumpable.LastBumpFrom
+  commentId: P:AngeliA.IBumpable.LastBumpFrom
+  id: LastBumpFrom
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: LastBumpFrom
+  nameWithType: IBumpable.LastBumpFrom
+  fullName: AngeliA.IBumpable.LastBumpFrom
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LastBumpFrom
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Direction4 LastBumpFrom { get; set; }
+    parameters: []
+    return:
+      type: AngeliA.Direction4
+    content.vb: Property LastBumpFrom As Direction4
+  overload: AngeliA.IBumpable.LastBumpFrom*
+- uid: AngeliA.IBumpable.OnBumped(AngeliA.Entity,AngeliA.Damage)
+  commentId: M:AngeliA.IBumpable.OnBumped(AngeliA.Entity,AngeliA.Damage)
+  id: OnBumped(AngeliA.Entity,AngeliA.Damage)
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: OnBumped(Entity, Damage)
+  nameWithType: IBumpable.OnBumped(Entity, Damage)
+  fullName: AngeliA.IBumpable.OnBumped(AngeliA.Entity, AngeliA.Damage)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnBumped
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: void OnBumped(Entity rig, Damage damage)
+    parameters:
+    - id: rig
+      type: AngeliA.Entity
+    - id: damage
+      type: AngeliA.Damage
+    content.vb: Sub OnBumped(rig As Entity, damage As Damage)
+  overload: AngeliA.IBumpable.OnBumped*
+- uid: AngeliA.IBumpable.AllowBump(AngeliA.Entity,AngeliA.Direction4)
+  commentId: M:AngeliA.IBumpable.AllowBump(AngeliA.Entity,AngeliA.Direction4)
+  id: AllowBump(AngeliA.Entity,AngeliA.Direction4)
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: AllowBump(Entity, Direction4)
+  nameWithType: IBumpable.AllowBump(Entity, Direction4)
+  fullName: AngeliA.IBumpable.AllowBump(AngeliA.Entity, AngeliA.Direction4)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllowBump
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 25
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool AllowBump(Entity rig, Direction4 from)
+    parameters:
+    - id: rig
+      type: AngeliA.Entity
+    - id: from
+      type: AngeliA.Direction4
+    return:
+      type: System.Boolean
+    content.vb: Function AllowBump(rig As Entity, from As Direction4) As Boolean
+  overload: AngeliA.IBumpable.AllowBump*
+- uid: AngeliA.IBumpable.GetBumpTransferDamage
+  commentId: M:AngeliA.IBumpable.GetBumpTransferDamage
+  id: GetBumpTransferDamage
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: GetBumpTransferDamage()
+  nameWithType: IBumpable.GetBumpTransferDamage()
+  fullName: AngeliA.IBumpable.GetBumpTransferDamage()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetBumpTransferDamage
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 27
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Damage GetBumpTransferDamage()
+    return:
+      type: AngeliA.Damage
+    content.vb: Function GetBumpTransferDamage() As Damage
+  overload: AngeliA.IBumpable.GetBumpTransferDamage*
+- uid: AngeliA.IBumpable.AnimateForBump(AngeliA.IBumpable,AngeliA.Cell,System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.IBumpable.AnimateForBump(AngeliA.IBumpable,AngeliA.Cell,System.Int32,System.Int32,System.Int32)
+  id: AnimateForBump(AngeliA.IBumpable,AngeliA.Cell,System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: AnimateForBump(IBumpable, Cell, int, int, int)
+  nameWithType: IBumpable.AnimateForBump(IBumpable, Cell, int, int, int)
+  fullName: AngeliA.IBumpable.AnimateForBump(AngeliA.IBumpable, AngeliA.Cell, int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AnimateForBump
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 75
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void AnimateForBump(IBumpable bumpable, Cell cell, int duration = 12, int distance = 32, int size = 32)
+    parameters:
+    - id: bumpable
+      type: AngeliA.IBumpable
+    - id: cell
+      type: AngeliA.Cell
+    - id: duration
+      type: System.Int32
+    - id: distance
+      type: System.Int32
+    - id: size
+      type: System.Int32
+    content.vb: Public Shared Sub AnimateForBump(bumpable As IBumpable, cell As Cell, duration As Integer = 12, distance As Integer = 32, size As Integer = 32)
+  overload: AngeliA.IBumpable.AnimateForBump*
+  nameWithType.vb: IBumpable.AnimateForBump(IBumpable, Cell, Integer, Integer, Integer)
+  fullName.vb: AngeliA.IBumpable.AnimateForBump(AngeliA.IBumpable, AngeliA.Cell, Integer, Integer, Integer)
+  name.vb: AnimateForBump(IBumpable, Cell, Integer, Integer, Integer)
+- uid: AngeliA.IBumpable.IsValidBumpDirection(AngeliA.IBumpable,AngeliA.Direction4)
+  commentId: M:AngeliA.IBumpable.IsValidBumpDirection(AngeliA.IBumpable,AngeliA.Direction4)
+  id: IsValidBumpDirection(AngeliA.IBumpable,AngeliA.Direction4)
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: IsValidBumpDirection(IBumpable, Direction4)
+  nameWithType: IBumpable.IsValidBumpDirection(IBumpable, Direction4)
+  fullName: AngeliA.IBumpable.IsValidBumpDirection(AngeliA.IBumpable, AngeliA.Direction4)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsValidBumpDirection
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 101
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool IsValidBumpDirection(IBumpable bump, Direction4 from)
+    parameters:
+    - id: bump
+      type: AngeliA.IBumpable
+    - id: from
+      type: AngeliA.Direction4
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsValidBumpDirection(bump As IBumpable, from As Direction4) As Boolean
+  overload: AngeliA.IBumpable.IsValidBumpDirection*
+- uid: AngeliA.IBumpable.BumpAllOverlap(AngeliA.Entity,AngeliA.Direction4,System.Boolean,AngeliA.Damage,System.Int32)
+  commentId: M:AngeliA.IBumpable.BumpAllOverlap(AngeliA.Entity,AngeliA.Direction4,System.Boolean,AngeliA.Damage,System.Int32)
+  id: BumpAllOverlap(AngeliA.Entity,AngeliA.Direction4,System.Boolean,AngeliA.Damage,System.Int32)
+  parent: AngeliA.IBumpable
+  langs:
+  - csharp
+  - vb
+  name: BumpAllOverlap(Entity, Direction4, bool, Damage, int)
+  nameWithType: IBumpable.BumpAllOverlap(Entity, Direction4, bool, Damage, int)
+  fullName: AngeliA.IBumpable.BumpAllOverlap(AngeliA.Entity, AngeliA.Direction4, bool, AngeliA.Damage, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBumpable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BumpAllOverlap
+    path: ../AngeliA Framework/src/Entity/Interface/IBumpable.cs
+    startLine: 109
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void BumpAllOverlap(Entity sender, Direction4 directionTo, bool forceBump = false, Damage damageToBumpedObject = default, int collisionMask = 3)
+    parameters:
+    - id: sender
+      type: AngeliA.Entity
+    - id: directionTo
+      type: AngeliA.Direction4
+    - id: forceBump
+      type: System.Boolean
+    - id: damageToBumpedObject
+      type: AngeliA.Damage
+    - id: collisionMask
+      type: System.Int32
+    content.vb: Public Shared Sub BumpAllOverlap(sender As Entity, directionTo As Direction4, forceBump As Boolean = False, damageToBumpedObject As Damage = Nothing, collisionMask As Integer = 3)
+  overload: AngeliA.IBumpable.BumpAllOverlap*
+  nameWithType.vb: IBumpable.BumpAllOverlap(Entity, Direction4, Boolean, Damage, Integer)
+  fullName.vb: AngeliA.IBumpable.BumpAllOverlap(AngeliA.Entity, AngeliA.Direction4, Boolean, AngeliA.Damage, Integer)
+  name.vb: BumpAllOverlap(Entity, Direction4, Boolean, Damage, Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.IBumpable.FromBelow*
+  commentId: Overload:AngeliA.IBumpable.FromBelow
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_FromBelow
+  name: FromBelow
+  nameWithType: IBumpable.FromBelow
+  fullName: AngeliA.IBumpable.FromBelow
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.IBumpable.FromAbove*
+  commentId: Overload:AngeliA.IBumpable.FromAbove
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_FromAbove
+  name: FromAbove
+  nameWithType: IBumpable.FromAbove
+  fullName: AngeliA.IBumpable.FromAbove
+- uid: AngeliA.IBumpable.FromLeft*
+  commentId: Overload:AngeliA.IBumpable.FromLeft
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_FromLeft
+  name: FromLeft
+  nameWithType: IBumpable.FromLeft
+  fullName: AngeliA.IBumpable.FromLeft
+- uid: AngeliA.IBumpable.FromRight*
+  commentId: Overload:AngeliA.IBumpable.FromRight
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_FromRight
+  name: FromRight
+  nameWithType: IBumpable.FromRight
+  fullName: AngeliA.IBumpable.FromRight
+- uid: AngeliA.IBumpable.TransferBumpToOther*
+  commentId: Overload:AngeliA.IBumpable.TransferBumpToOther
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_TransferBumpToOther
+  name: TransferBumpToOther
+  nameWithType: IBumpable.TransferBumpToOther
+  fullName: AngeliA.IBumpable.TransferBumpToOther
+- uid: AngeliA.IBumpable.TransferBumpFromOther*
+  commentId: Overload:AngeliA.IBumpable.TransferBumpFromOther
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_TransferBumpFromOther
+  name: TransferBumpFromOther
+  nameWithType: IBumpable.TransferBumpFromOther
+  fullName: AngeliA.IBumpable.TransferBumpFromOther
+- uid: AngeliA.IBumpable.TransferWithAttack*
+  commentId: Overload:AngeliA.IBumpable.TransferWithAttack
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_TransferWithAttack
+  name: TransferWithAttack
+  nameWithType: IBumpable.TransferWithAttack
+  fullName: AngeliA.IBumpable.TransferWithAttack
+- uid: AngeliA.IBumpable.BumpTransferPower*
+  commentId: Overload:AngeliA.IBumpable.BumpTransferPower
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_BumpTransferPower
+  name: BumpTransferPower
+  nameWithType: IBumpable.BumpTransferPower
+  fullName: AngeliA.IBumpable.BumpTransferPower
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.IBumpable.BumpCooldown*
+  commentId: Overload:AngeliA.IBumpable.BumpCooldown
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_BumpCooldown
+  name: BumpCooldown
+  nameWithType: IBumpable.BumpCooldown
+  fullName: AngeliA.IBumpable.BumpCooldown
+- uid: AngeliA.IBumpable.LastBumpedFrame*
+  commentId: Overload:AngeliA.IBumpable.LastBumpedFrame
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_LastBumpedFrame
+  name: LastBumpedFrame
+  nameWithType: IBumpable.LastBumpedFrame
+  fullName: AngeliA.IBumpable.LastBumpedFrame
+- uid: AngeliA.IBumpable.LastBumpFrom*
+  commentId: Overload:AngeliA.IBumpable.LastBumpFrom
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_LastBumpFrom
+  name: LastBumpFrom
+  nameWithType: IBumpable.LastBumpFrom
+  fullName: AngeliA.IBumpable.LastBumpFrom
+- uid: AngeliA.Direction4
+  commentId: T:AngeliA.Direction4
+  parent: AngeliA
+  href: AngeliA.Direction4.html
+  name: Direction4
+  nameWithType: Direction4
+  fullName: AngeliA.Direction4
+- uid: AngeliA.IBumpable.OnBumped*
+  commentId: Overload:AngeliA.IBumpable.OnBumped
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_OnBumped_AngeliA_Entity_AngeliA_Damage_
+  name: OnBumped
+  nameWithType: IBumpable.OnBumped
+  fullName: AngeliA.IBumpable.OnBumped
+- uid: AngeliA.Entity
+  commentId: T:AngeliA.Entity
+  parent: AngeliA
+  href: AngeliA.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: AngeliA.Entity
+- uid: AngeliA.Damage
+  commentId: T:AngeliA.Damage
+  parent: AngeliA
+  href: AngeliA.Damage.html
+  name: Damage
+  nameWithType: Damage
+  fullName: AngeliA.Damage
+- uid: AngeliA.IBumpable.AllowBump*
+  commentId: Overload:AngeliA.IBumpable.AllowBump
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_AllowBump_AngeliA_Entity_AngeliA_Direction4_
+  name: AllowBump
+  nameWithType: IBumpable.AllowBump
+  fullName: AngeliA.IBumpable.AllowBump
+- uid: AngeliA.IBumpable.GetBumpTransferDamage*
+  commentId: Overload:AngeliA.IBumpable.GetBumpTransferDamage
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_GetBumpTransferDamage
+  name: GetBumpTransferDamage
+  nameWithType: IBumpable.GetBumpTransferDamage
+  fullName: AngeliA.IBumpable.GetBumpTransferDamage
+- uid: AngeliA.IBumpable.AnimateForBump*
+  commentId: Overload:AngeliA.IBumpable.AnimateForBump
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_AnimateForBump_AngeliA_IBumpable_AngeliA_Cell_System_Int32_System_Int32_System_Int32_
+  name: AnimateForBump
+  nameWithType: IBumpable.AnimateForBump
+  fullName: AngeliA.IBumpable.AnimateForBump
+- uid: AngeliA.IBumpable
+  commentId: T:AngeliA.IBumpable
+  parent: AngeliA
+  href: AngeliA.IBumpable.html
+  name: IBumpable
+  nameWithType: IBumpable
+  fullName: AngeliA.IBumpable
+- uid: AngeliA.Cell
+  commentId: T:AngeliA.Cell
+  parent: AngeliA
+  href: AngeliA.Cell.html
+  name: Cell
+  nameWithType: Cell
+  fullName: AngeliA.Cell
+- uid: AngeliA.IBumpable.IsValidBumpDirection*
+  commentId: Overload:AngeliA.IBumpable.IsValidBumpDirection
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_IsValidBumpDirection_AngeliA_IBumpable_AngeliA_Direction4_
+  name: IsValidBumpDirection
+  nameWithType: IBumpable.IsValidBumpDirection
+  fullName: AngeliA.IBumpable.IsValidBumpDirection
+- uid: AngeliA.IBumpable.BumpAllOverlap*
+  commentId: Overload:AngeliA.IBumpable.BumpAllOverlap
+  href: AngeliA.IBumpable.html#AngeliA_IBumpable_BumpAllOverlap_AngeliA_Entity_AngeliA_Direction4_System_Boolean_AngeliA_Damage_System_Int32_
+  name: BumpAllOverlap
+  nameWithType: IBumpable.BumpAllOverlap
+  fullName: AngeliA.IBumpable.BumpAllOverlap

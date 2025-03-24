@@ -1,0 +1,1036 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Platformer.TeleportTask
+  commentId: T:AngeliA.Platformer.TeleportTask
+  id: TeleportTask
+  parent: AngeliA.Platformer
+  children:
+  - AngeliA.Platformer.TeleportTask.Duration
+  - AngeliA.Platformer.TeleportTask.FrameUpdate
+  - AngeliA.Platformer.TeleportTask.OnStart
+  - AngeliA.Platformer.TeleportTask.TeleportFrom
+  - AngeliA.Platformer.TeleportTask.TeleportFromDoor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  - AngeliA.Platformer.TeleportTask.TeleportFromPortal(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)
+  - AngeliA.Platformer.TeleportTask.TeleportTo
+  - AngeliA.Platformer.TeleportTask.UseParallax
+  - AngeliA.Platformer.TeleportTask.UseVignette
+  - AngeliA.Platformer.TeleportTask.WaitDuration
+  langs:
+  - csharp
+  - vb
+  name: TeleportTask
+  nameWithType: TeleportTask
+  fullName: AngeliA.Platformer.TeleportTask
+  type: Class
+  source:
+    remote:
+      path: AngeliA Platformer/src/Task/TeleportTask.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TeleportTask
+    path: ../AngeliA Platformer/src/Task/TeleportTask.cs
+    startLine: 6
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: 'public class TeleportTask : Task'
+    content.vb: Public Class TeleportTask Inherits Task
+  inheritance:
+  - System.Object
+  - AngeliA.Task
+  inheritedMembers:
+  - AngeliA.Task.LocalFrame
+  - AngeliA.Task.UserData
+  - AngeliA.Task.OnEnd
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Platformer.TeleportTask.TeleportFrom
+  commentId: P:AngeliA.Platformer.TeleportTask.TeleportFrom
+  id: TeleportFrom
+  parent: AngeliA.Platformer.TeleportTask
+  langs:
+  - csharp
+  - vb
+  name: TeleportFrom
+  nameWithType: TeleportTask.TeleportFrom
+  fullName: AngeliA.Platformer.TeleportTask.TeleportFrom
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Task/TeleportTask.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TeleportFrom
+    path: ../AngeliA Platformer/src/Task/TeleportTask.cs
+    startLine: 11
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public Int2 TeleportFrom { get; set; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Property TeleportFrom As Int2
+  overload: AngeliA.Platformer.TeleportTask.TeleportFrom*
+- uid: AngeliA.Platformer.TeleportTask.TeleportTo
+  commentId: P:AngeliA.Platformer.TeleportTask.TeleportTo
+  id: TeleportTo
+  parent: AngeliA.Platformer.TeleportTask
+  langs:
+  - csharp
+  - vb
+  name: TeleportTo
+  nameWithType: TeleportTask.TeleportTo
+  fullName: AngeliA.Platformer.TeleportTask.TeleportTo
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Task/TeleportTask.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TeleportTo
+    path: ../AngeliA Platformer/src/Task/TeleportTask.cs
+    startLine: 12
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public Int3 TeleportTo { get; set; }
+    parameters: []
+    return:
+      type: AngeliA.Int3
+    content.vb: Public Property TeleportTo As Int3
+  overload: AngeliA.Platformer.TeleportTask.TeleportTo*
+- uid: AngeliA.Platformer.TeleportTask.WaitDuration
+  commentId: P:AngeliA.Platformer.TeleportTask.WaitDuration
+  id: WaitDuration
+  parent: AngeliA.Platformer.TeleportTask
+  langs:
+  - csharp
+  - vb
+  name: WaitDuration
+  nameWithType: TeleportTask.WaitDuration
+  fullName: AngeliA.Platformer.TeleportTask.WaitDuration
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Task/TeleportTask.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: WaitDuration
+    path: ../AngeliA Platformer/src/Task/TeleportTask.cs
+    startLine: 13
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public int WaitDuration { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property WaitDuration As Integer
+  overload: AngeliA.Platformer.TeleportTask.WaitDuration*
+- uid: AngeliA.Platformer.TeleportTask.Duration
+  commentId: P:AngeliA.Platformer.TeleportTask.Duration
+  id: Duration
+  parent: AngeliA.Platformer.TeleportTask
+  langs:
+  - csharp
+  - vb
+  name: Duration
+  nameWithType: TeleportTask.Duration
+  fullName: AngeliA.Platformer.TeleportTask.Duration
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Task/TeleportTask.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Duration
+    path: ../AngeliA Platformer/src/Task/TeleportTask.cs
+    startLine: 14
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public int Duration { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Duration As Integer
+  overload: AngeliA.Platformer.TeleportTask.Duration*
+- uid: AngeliA.Platformer.TeleportTask.UseVignette
+  commentId: P:AngeliA.Platformer.TeleportTask.UseVignette
+  id: UseVignette
+  parent: AngeliA.Platformer.TeleportTask
+  langs:
+  - csharp
+  - vb
+  name: UseVignette
+  nameWithType: TeleportTask.UseVignette
+  fullName: AngeliA.Platformer.TeleportTask.UseVignette
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Task/TeleportTask.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseVignette
+    path: ../AngeliA Platformer/src/Task/TeleportTask.cs
+    startLine: 15
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public bool UseVignette { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property UseVignette As Boolean
+  overload: AngeliA.Platformer.TeleportTask.UseVignette*
+- uid: AngeliA.Platformer.TeleportTask.UseParallax
+  commentId: P:AngeliA.Platformer.TeleportTask.UseParallax
+  id: UseParallax
+  parent: AngeliA.Platformer.TeleportTask
+  langs:
+  - csharp
+  - vb
+  name: UseParallax
+  nameWithType: TeleportTask.UseParallax
+  fullName: AngeliA.Platformer.TeleportTask.UseParallax
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Task/TeleportTask.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseParallax
+    path: ../AngeliA Platformer/src/Task/TeleportTask.cs
+    startLine: 16
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public bool UseParallax { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property UseParallax As Boolean
+  overload: AngeliA.Platformer.TeleportTask.UseParallax*
+- uid: AngeliA.Platformer.TeleportTask.OnStart
+  commentId: M:AngeliA.Platformer.TeleportTask.OnStart
+  id: OnStart
+  parent: AngeliA.Platformer.TeleportTask
+  langs:
+  - csharp
+  - vb
+  name: OnStart()
+  nameWithType: TeleportTask.OnStart()
+  fullName: AngeliA.Platformer.TeleportTask.OnStart()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Task/TeleportTask.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnStart
+    path: ../AngeliA Platformer/src/Task/TeleportTask.cs
+    startLine: 23
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void OnStart()
+    content.vb: Public Overrides Sub OnStart()
+  overridden: AngeliA.Task.OnStart
+  overload: AngeliA.Platformer.TeleportTask.OnStart*
+- uid: AngeliA.Platformer.TeleportTask.FrameUpdate
+  commentId: M:AngeliA.Platformer.TeleportTask.FrameUpdate
+  id: FrameUpdate
+  parent: AngeliA.Platformer.TeleportTask
+  langs:
+  - csharp
+  - vb
+  name: FrameUpdate()
+  nameWithType: TeleportTask.FrameUpdate()
+  fullName: AngeliA.Platformer.TeleportTask.FrameUpdate()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Task/TeleportTask.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FrameUpdate
+    path: ../AngeliA Platformer/src/Task/TeleportTask.cs
+    startLine: 30
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override TaskResult FrameUpdate()
+    return:
+      type: AngeliA.TaskResult
+    content.vb: Public Overrides Function FrameUpdate() As TaskResult
+  overridden: AngeliA.Task.FrameUpdate
+  overload: AngeliA.Platformer.TeleportTask.FrameUpdate*
+- uid: AngeliA.Platformer.TeleportTask.TeleportFromDoor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.Platformer.TeleportTask.TeleportFromDoor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  id: TeleportFromDoor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.Platformer.TeleportTask
+  langs:
+  - csharp
+  - vb
+  name: TeleportFromDoor(int, int, int, int, int)
+  nameWithType: TeleportTask.TeleportFromDoor(int, int, int, int, int)
+  fullName: AngeliA.Platformer.TeleportTask.TeleportFromDoor(int, int, int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Task/TeleportTask.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TeleportFromDoor
+    path: ../AngeliA Platformer/src/Task/TeleportTask.cs
+    startLine: 177
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public static TeleportTask TeleportFromDoor(int fromX, int fromY, int toX, int toY, int toZ)
+    parameters:
+    - id: fromX
+      type: System.Int32
+    - id: fromY
+      type: System.Int32
+    - id: toX
+      type: System.Int32
+    - id: toY
+      type: System.Int32
+    - id: toZ
+      type: System.Int32
+    return:
+      type: AngeliA.Platformer.TeleportTask
+    content.vb: Public Shared Function TeleportFromDoor(fromX As Integer, fromY As Integer, toX As Integer, toY As Integer, toZ As Integer) As TeleportTask
+  overload: AngeliA.Platformer.TeleportTask.TeleportFromDoor*
+  nameWithType.vb: TeleportTask.TeleportFromDoor(Integer, Integer, Integer, Integer, Integer)
+  fullName.vb: AngeliA.Platformer.TeleportTask.TeleportFromDoor(Integer, Integer, Integer, Integer, Integer)
+  name.vb: TeleportFromDoor(Integer, Integer, Integer, Integer, Integer)
+- uid: AngeliA.Platformer.TeleportTask.TeleportFromPortal(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)
+  commentId: M:AngeliA.Platformer.TeleportTask.TeleportFromPortal(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)
+  id: TeleportFromPortal(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)
+  parent: AngeliA.Platformer.TeleportTask
+  langs:
+  - csharp
+  - vb
+  name: TeleportFromPortal(int, int, int, int, int, bool)
+  nameWithType: TeleportTask.TeleportFromPortal(int, int, int, int, int, bool)
+  fullName: AngeliA.Platformer.TeleportTask.TeleportFromPortal(int, int, int, int, int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Task/TeleportTask.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TeleportFromPortal
+    path: ../AngeliA Platformer/src/Task/TeleportTask.cs
+    startLine: 178
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public static TeleportTask TeleportFromPortal(int fromX, int fromY, int toX, int toY, int toZ, bool samePosition)
+    parameters:
+    - id: fromX
+      type: System.Int32
+    - id: fromY
+      type: System.Int32
+    - id: toX
+      type: System.Int32
+    - id: toY
+      type: System.Int32
+    - id: toZ
+      type: System.Int32
+    - id: samePosition
+      type: System.Boolean
+    return:
+      type: AngeliA.Platformer.TeleportTask
+    content.vb: Public Shared Function TeleportFromPortal(fromX As Integer, fromY As Integer, toX As Integer, toY As Integer, toZ As Integer, samePosition As Boolean) As TeleportTask
+  overload: AngeliA.Platformer.TeleportTask.TeleportFromPortal*
+  nameWithType.vb: TeleportTask.TeleportFromPortal(Integer, Integer, Integer, Integer, Integer, Boolean)
+  fullName.vb: AngeliA.Platformer.TeleportTask.TeleportFromPortal(Integer, Integer, Integer, Integer, Integer, Boolean)
+  name.vb: TeleportFromPortal(Integer, Integer, Integer, Integer, Integer, Boolean)
+references:
+- uid: AngeliA.Platformer
+  commentId: N:AngeliA.Platformer
+  href: AngeliA.html
+  name: AngeliA.Platformer
+  nameWithType: AngeliA.Platformer
+  fullName: AngeliA.Platformer
+  spec.csharp:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+  spec.vb:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Task
+  commentId: T:AngeliA.Task
+  parent: AngeliA
+  href: AngeliA.Task.html
+  name: Task
+  nameWithType: Task
+  fullName: AngeliA.Task
+- uid: AngeliA.Task.LocalFrame
+  commentId: P:AngeliA.Task.LocalFrame
+  parent: AngeliA.Task
+  href: AngeliA.Task.html#AngeliA_Task_LocalFrame
+  name: LocalFrame
+  nameWithType: Task.LocalFrame
+  fullName: AngeliA.Task.LocalFrame
+- uid: AngeliA.Task.UserData
+  commentId: P:AngeliA.Task.UserData
+  parent: AngeliA.Task
+  href: AngeliA.Task.html#AngeliA_Task_UserData
+  name: UserData
+  nameWithType: Task.UserData
+  fullName: AngeliA.Task.UserData
+- uid: AngeliA.Task.OnEnd
+  commentId: M:AngeliA.Task.OnEnd
+  parent: AngeliA.Task
+  href: AngeliA.Task.html#AngeliA_Task_OnEnd
+  name: OnEnd()
+  nameWithType: Task.OnEnd()
+  fullName: AngeliA.Task.OnEnd()
+  spec.csharp:
+  - uid: AngeliA.Task.OnEnd
+    name: OnEnd
+    href: AngeliA.Task.html#AngeliA_Task_OnEnd
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Task.OnEnd
+    name: OnEnd
+    href: AngeliA.Task.html#AngeliA_Task_OnEnd
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Platformer.TeleportTask.TeleportFrom*
+  commentId: Overload:AngeliA.Platformer.TeleportTask.TeleportFrom
+  href: AngeliA.Platformer.TeleportTask.html#AngeliA_Platformer_TeleportTask_TeleportFrom
+  name: TeleportFrom
+  nameWithType: TeleportTask.TeleportFrom
+  fullName: AngeliA.Platformer.TeleportTask.TeleportFrom
+- uid: AngeliA.Int2
+  commentId: T:AngeliA.Int2
+  parent: AngeliA
+  href: AngeliA.Int2.html
+  name: Int2
+  nameWithType: Int2
+  fullName: AngeliA.Int2
+- uid: AngeliA.Platformer.TeleportTask.TeleportTo*
+  commentId: Overload:AngeliA.Platformer.TeleportTask.TeleportTo
+  href: AngeliA.Platformer.TeleportTask.html#AngeliA_Platformer_TeleportTask_TeleportTo
+  name: TeleportTo
+  nameWithType: TeleportTask.TeleportTo
+  fullName: AngeliA.Platformer.TeleportTask.TeleportTo
+- uid: AngeliA.Int3
+  commentId: T:AngeliA.Int3
+  parent: AngeliA
+  href: AngeliA.Int3.html
+  name: Int3
+  nameWithType: Int3
+  fullName: AngeliA.Int3
+- uid: AngeliA.Platformer.TeleportTask.WaitDuration*
+  commentId: Overload:AngeliA.Platformer.TeleportTask.WaitDuration
+  href: AngeliA.Platformer.TeleportTask.html#AngeliA_Platformer_TeleportTask_WaitDuration
+  name: WaitDuration
+  nameWithType: TeleportTask.WaitDuration
+  fullName: AngeliA.Platformer.TeleportTask.WaitDuration
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Platformer.TeleportTask.Duration*
+  commentId: Overload:AngeliA.Platformer.TeleportTask.Duration
+  href: AngeliA.Platformer.TeleportTask.html#AngeliA_Platformer_TeleportTask_Duration
+  name: Duration
+  nameWithType: TeleportTask.Duration
+  fullName: AngeliA.Platformer.TeleportTask.Duration
+- uid: AngeliA.Platformer.TeleportTask.UseVignette*
+  commentId: Overload:AngeliA.Platformer.TeleportTask.UseVignette
+  href: AngeliA.Platformer.TeleportTask.html#AngeliA_Platformer_TeleportTask_UseVignette
+  name: UseVignette
+  nameWithType: TeleportTask.UseVignette
+  fullName: AngeliA.Platformer.TeleportTask.UseVignette
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Platformer.TeleportTask.UseParallax*
+  commentId: Overload:AngeliA.Platformer.TeleportTask.UseParallax
+  href: AngeliA.Platformer.TeleportTask.html#AngeliA_Platformer_TeleportTask_UseParallax
+  name: UseParallax
+  nameWithType: TeleportTask.UseParallax
+  fullName: AngeliA.Platformer.TeleportTask.UseParallax
+- uid: AngeliA.Task.OnStart
+  commentId: M:AngeliA.Task.OnStart
+  parent: AngeliA.Task
+  href: AngeliA.Task.html#AngeliA_Task_OnStart
+  name: OnStart()
+  nameWithType: Task.OnStart()
+  fullName: AngeliA.Task.OnStart()
+  spec.csharp:
+  - uid: AngeliA.Task.OnStart
+    name: OnStart
+    href: AngeliA.Task.html#AngeliA_Task_OnStart
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Task.OnStart
+    name: OnStart
+    href: AngeliA.Task.html#AngeliA_Task_OnStart
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.TeleportTask.OnStart*
+  commentId: Overload:AngeliA.Platformer.TeleportTask.OnStart
+  href: AngeliA.Platformer.TeleportTask.html#AngeliA_Platformer_TeleportTask_OnStart
+  name: OnStart
+  nameWithType: TeleportTask.OnStart
+  fullName: AngeliA.Platformer.TeleportTask.OnStart
+- uid: AngeliA.Task.FrameUpdate
+  commentId: M:AngeliA.Task.FrameUpdate
+  parent: AngeliA.Task
+  href: AngeliA.Task.html#AngeliA_Task_FrameUpdate
+  name: FrameUpdate()
+  nameWithType: Task.FrameUpdate()
+  fullName: AngeliA.Task.FrameUpdate()
+  spec.csharp:
+  - uid: AngeliA.Task.FrameUpdate
+    name: FrameUpdate
+    href: AngeliA.Task.html#AngeliA_Task_FrameUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Task.FrameUpdate
+    name: FrameUpdate
+    href: AngeliA.Task.html#AngeliA_Task_FrameUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.TeleportTask.FrameUpdate*
+  commentId: Overload:AngeliA.Platformer.TeleportTask.FrameUpdate
+  href: AngeliA.Platformer.TeleportTask.html#AngeliA_Platformer_TeleportTask_FrameUpdate
+  name: FrameUpdate
+  nameWithType: TeleportTask.FrameUpdate
+  fullName: AngeliA.Platformer.TeleportTask.FrameUpdate
+- uid: AngeliA.TaskResult
+  commentId: T:AngeliA.TaskResult
+  parent: AngeliA
+  href: AngeliA.TaskResult.html
+  name: TaskResult
+  nameWithType: TaskResult
+  fullName: AngeliA.TaskResult
+- uid: AngeliA.Platformer.TeleportTask.TeleportFromDoor*
+  commentId: Overload:AngeliA.Platformer.TeleportTask.TeleportFromDoor
+  href: AngeliA.Platformer.TeleportTask.html#AngeliA_Platformer_TeleportTask_TeleportFromDoor_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_
+  name: TeleportFromDoor
+  nameWithType: TeleportTask.TeleportFromDoor
+  fullName: AngeliA.Platformer.TeleportTask.TeleportFromDoor
+- uid: AngeliA.Platformer.TeleportTask
+  commentId: T:AngeliA.Platformer.TeleportTask
+  parent: AngeliA.Platformer
+  href: AngeliA.Platformer.TeleportTask.html
+  name: TeleportTask
+  nameWithType: TeleportTask
+  fullName: AngeliA.Platformer.TeleportTask
+- uid: AngeliA.Platformer.TeleportTask.TeleportFromPortal*
+  commentId: Overload:AngeliA.Platformer.TeleportTask.TeleportFromPortal
+  href: AngeliA.Platformer.TeleportTask.html#AngeliA_Platformer_TeleportTask_TeleportFromPortal_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Boolean_
+  name: TeleportFromPortal
+  nameWithType: TeleportTask.TeleportFromPortal
+  fullName: AngeliA.Platformer.TeleportTask.TeleportFromPortal

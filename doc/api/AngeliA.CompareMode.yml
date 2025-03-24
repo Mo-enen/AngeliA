@@ -1,0 +1,616 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.CompareMode
+  commentId: T:AngeliA.CompareMode
+  id: CompareMode
+  parent: AngeliA
+  children:
+  - AngeliA.CompareMode.And
+  - AngeliA.CompareMode.Equal
+  - AngeliA.CompareMode.GreaterOrEqual
+  - AngeliA.CompareMode.GreaterThan
+  - AngeliA.CompareMode.LessOrEqual
+  - AngeliA.CompareMode.LessThan
+  - AngeliA.CompareMode.NotEqual
+  - AngeliA.CompareMode.Or
+  langs:
+  - csharp
+  - vb
+  name: CompareMode
+  nameWithType: CompareMode
+  fullName: AngeliA.CompareMode
+  type: Enum
+  source:
+    remote:
+      path: AngeliA Framework/src/Attribute/Attribute_Property.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CompareMode
+    path: ../AngeliA Framework/src/Attribute/Attribute_Property.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public enum CompareMode
+    content.vb: Public Enum CompareMode
+  extensionMethods:
+  - AngeliA.CompareMode.AngeliA.Extension.Next``1
+  - AngeliA.CompareMode.AngeliA.Extension.Prev``1
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.CompareMode.GreaterThan
+  commentId: F:AngeliA.CompareMode.GreaterThan
+  id: GreaterThan
+  parent: AngeliA.CompareMode
+  langs:
+  - csharp
+  - vb
+  name: GreaterThan
+  nameWithType: CompareMode.GreaterThan
+  fullName: AngeliA.CompareMode.GreaterThan
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Attribute/Attribute_Property.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GreaterThan
+    path: ../AngeliA Framework/src/Attribute/Attribute_Property.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: GreaterThan = 0
+    return:
+      type: AngeliA.CompareMode
+- uid: AngeliA.CompareMode.GreaterOrEqual
+  commentId: F:AngeliA.CompareMode.GreaterOrEqual
+  id: GreaterOrEqual
+  parent: AngeliA.CompareMode
+  langs:
+  - csharp
+  - vb
+  name: GreaterOrEqual
+  nameWithType: CompareMode.GreaterOrEqual
+  fullName: AngeliA.CompareMode.GreaterOrEqual
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Attribute/Attribute_Property.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GreaterOrEqual
+    path: ../AngeliA Framework/src/Attribute/Attribute_Property.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: GreaterOrEqual = 1
+    return:
+      type: AngeliA.CompareMode
+- uid: AngeliA.CompareMode.LessThan
+  commentId: F:AngeliA.CompareMode.LessThan
+  id: LessThan
+  parent: AngeliA.CompareMode
+  langs:
+  - csharp
+  - vb
+  name: LessThan
+  nameWithType: CompareMode.LessThan
+  fullName: AngeliA.CompareMode.LessThan
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Attribute/Attribute_Property.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LessThan
+    path: ../AngeliA Framework/src/Attribute/Attribute_Property.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: LessThan = 2
+    return:
+      type: AngeliA.CompareMode
+- uid: AngeliA.CompareMode.LessOrEqual
+  commentId: F:AngeliA.CompareMode.LessOrEqual
+  id: LessOrEqual
+  parent: AngeliA.CompareMode
+  langs:
+  - csharp
+  - vb
+  name: LessOrEqual
+  nameWithType: CompareMode.LessOrEqual
+  fullName: AngeliA.CompareMode.LessOrEqual
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Attribute/Attribute_Property.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LessOrEqual
+    path: ../AngeliA Framework/src/Attribute/Attribute_Property.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: LessOrEqual = 3
+    return:
+      type: AngeliA.CompareMode
+- uid: AngeliA.CompareMode.Equal
+  commentId: F:AngeliA.CompareMode.Equal
+  id: Equal
+  parent: AngeliA.CompareMode
+  langs:
+  - csharp
+  - vb
+  name: Equal
+  nameWithType: CompareMode.Equal
+  fullName: AngeliA.CompareMode.Equal
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Attribute/Attribute_Property.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Equal
+    path: ../AngeliA Framework/src/Attribute/Attribute_Property.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Equal = 4
+    return:
+      type: AngeliA.CompareMode
+- uid: AngeliA.CompareMode.NotEqual
+  commentId: F:AngeliA.CompareMode.NotEqual
+  id: NotEqual
+  parent: AngeliA.CompareMode
+  langs:
+  - csharp
+  - vb
+  name: NotEqual
+  nameWithType: CompareMode.NotEqual
+  fullName: AngeliA.CompareMode.NotEqual
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Attribute/Attribute_Property.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: NotEqual
+    path: ../AngeliA Framework/src/Attribute/Attribute_Property.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: NotEqual = 5
+    return:
+      type: AngeliA.CompareMode
+- uid: AngeliA.CompareMode.Or
+  commentId: F:AngeliA.CompareMode.Or
+  id: Or
+  parent: AngeliA.CompareMode
+  langs:
+  - csharp
+  - vb
+  name: Or
+  nameWithType: CompareMode.Or
+  fullName: AngeliA.CompareMode.Or
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Attribute/Attribute_Property.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Or
+    path: ../AngeliA Framework/src/Attribute/Attribute_Property.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Or = 6
+    return:
+      type: AngeliA.CompareMode
+- uid: AngeliA.CompareMode.And
+  commentId: F:AngeliA.CompareMode.And
+  id: And
+  parent: AngeliA.CompareMode
+  langs:
+  - csharp
+  - vb
+  name: And
+  nameWithType: CompareMode.And
+  fullName: AngeliA.CompareMode.And
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Attribute/Attribute_Property.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: And
+    path: ../AngeliA Framework/src/Attribute/Attribute_Property.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: And = 7
+    return:
+      type: AngeliA.CompareMode
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.CompareMode.AngeliA.Extension.Next``1
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<CompareMode>(CompareMode)
+  nameWithType: Extension.Next<CompareMode>(CompareMode)
+  fullName: AngeliA.Extension.Next<AngeliA.CompareMode>(AngeliA.CompareMode)
+  nameWithType.vb: Extension.Next(Of CompareMode)(CompareMode)
+  fullName.vb: AngeliA.Extension.Next(Of AngeliA.CompareMode)(AngeliA.CompareMode)
+  name.vb: Next(Of CompareMode)(CompareMode)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(AngeliA.CompareMode)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - uid: AngeliA.CompareMode
+    name: CompareMode
+    href: AngeliA.CompareMode.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.CompareMode
+    name: CompareMode
+    href: AngeliA.CompareMode.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(AngeliA.CompareMode)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.CompareMode
+    name: CompareMode
+    href: AngeliA.CompareMode.html
+  - name: )
+  - name: (
+  - uid: AngeliA.CompareMode
+    name: CompareMode
+    href: AngeliA.CompareMode.html
+  - name: )
+- uid: AngeliA.CompareMode.AngeliA.Extension.Prev``1
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<CompareMode>(CompareMode)
+  nameWithType: Extension.Prev<CompareMode>(CompareMode)
+  fullName: AngeliA.Extension.Prev<AngeliA.CompareMode>(AngeliA.CompareMode)
+  nameWithType.vb: Extension.Prev(Of CompareMode)(CompareMode)
+  fullName.vb: AngeliA.Extension.Prev(Of AngeliA.CompareMode)(AngeliA.CompareMode)
+  name.vb: Prev(Of CompareMode)(CompareMode)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.CompareMode)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - uid: AngeliA.CompareMode
+    name: CompareMode
+    href: AngeliA.CompareMode.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.CompareMode
+    name: CompareMode
+    href: AngeliA.CompareMode.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.CompareMode)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.CompareMode
+    name: CompareMode
+    href: AngeliA.CompareMode.html
+  - name: )
+  - name: (
+  - uid: AngeliA.CompareMode
+    name: CompareMode
+    href: AngeliA.CompareMode.html
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.Next``1(``0)
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<E>(E)
+  nameWithType: Extension.Next<E>(E)
+  fullName: AngeliA.Extension.Next<E>(E)
+  nameWithType.vb: Extension.Next(Of E)(E)
+  fullName.vb: AngeliA.Extension.Next(Of E)(E)
+  name.vb: Next(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.Prev``1(``0)
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<E>(E)
+  nameWithType: Extension.Prev<E>(E)
+  fullName: AngeliA.Extension.Prev<E>(E)
+  nameWithType.vb: Extension.Prev(Of E)(E)
+  fullName.vb: AngeliA.Extension.Prev(Of E)(E)
+  name.vb: Prev(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.CompareMode
+  commentId: T:AngeliA.CompareMode
+  parent: AngeliA
+  href: AngeliA.CompareMode.html
+  name: CompareMode
+  nameWithType: CompareMode
+  fullName: AngeliA.CompareMode

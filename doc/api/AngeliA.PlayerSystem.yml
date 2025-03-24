@@ -1,0 +1,1651 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.PlayerSystem
+  commentId: T:AngeliA.PlayerSystem
+  id: PlayerSystem
+  parent: AngeliA
+  children:
+  - AngeliA.PlayerSystem.AimViewX
+  - AngeliA.PlayerSystem.AimViewY
+  - AngeliA.PlayerSystem.AllowPlayerMenuUI
+  - AngeliA.PlayerSystem.AllowQuickPlayerMenuUI
+  - AngeliA.PlayerSystem.DragPlayerInMiddleButtonToMove_DebugOnly
+  - AngeliA.PlayerSystem.Enable
+  - AngeliA.PlayerSystem.ForAllPlayables
+  - AngeliA.PlayerSystem.ForAllUnlockedPlayers
+  - AngeliA.PlayerSystem.ForceUpdateGroundedForView(System.Int32)
+  - AngeliA.PlayerSystem.GetCameraShiftOffset(System.Int32)
+  - AngeliA.PlayerSystem.GetDefaultPlayerID(System.Boolean)
+  - AngeliA.PlayerSystem.GetPlayerFinalRespawnUnitPosition
+  - AngeliA.PlayerSystem.HomeUnitPosition
+  - AngeliA.PlayerSystem.IgnoreAction(System.Int32)
+  - AngeliA.PlayerSystem.IgnoreAttack(System.Int32)
+  - AngeliA.PlayerSystem.IgnoreInput(System.Int32)
+  - AngeliA.PlayerSystem.IgnoreInputFrame
+  - AngeliA.PlayerSystem.IgnorePlayerMenu(System.Int32)
+  - AngeliA.PlayerSystem.IgnorePlayerQuickMenu(System.Int32)
+  - AngeliA.PlayerSystem.IgnorePlayerView
+  - AngeliA.PlayerSystem.IgnoringAction
+  - AngeliA.PlayerSystem.IgnoringInput
+  - AngeliA.PlayerSystem.IsPlayerUnlocked(System.Int32)
+  - AngeliA.PlayerSystem.PlayableCharactersCount
+  - AngeliA.PlayerSystem.RespawnCpUnitPosition
+  - AngeliA.PlayerSystem.SelectCharacterAsPlayer(System.Int32,System.Boolean)
+  - AngeliA.PlayerSystem.Selecting
+  - AngeliA.PlayerSystem.SetCharacterAsPlayer(AngeliA.Character)
+  - AngeliA.PlayerSystem.TargetActionEntity
+  - AngeliA.PlayerSystem.TargetViewHeight
+  - AngeliA.PlayerSystem.UnlockPlayer(System.Int32)
+  - AngeliA.PlayerSystem.UnlockedPlayerCount
+  langs:
+  - csharp
+  - vb
+  name: PlayerSystem
+  nameWithType: PlayerSystem
+  fullName: AngeliA.PlayerSystem
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PlayerSystem
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static class PlayerSystem
+    content.vb: Public Module PlayerSystem
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.PlayerSystem.Enable
+  commentId: P:AngeliA.PlayerSystem.Enable
+  id: Enable
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: Enable
+  nameWithType: PlayerSystem.Enable
+  fullName: AngeliA.PlayerSystem.Enable
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Enable
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool Enable { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property Enable As Boolean
+  overload: AngeliA.PlayerSystem.Enable*
+- uid: AngeliA.PlayerSystem.Selecting
+  commentId: P:AngeliA.PlayerSystem.Selecting
+  id: Selecting
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: Selecting
+  nameWithType: PlayerSystem.Selecting
+  fullName: AngeliA.PlayerSystem.Selecting
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Selecting
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Character Selecting { get; }
+    parameters: []
+    return:
+      type: AngeliA.Character
+    content.vb: Public Shared Property Selecting As Character
+  overload: AngeliA.PlayerSystem.Selecting*
+- uid: AngeliA.PlayerSystem.RespawnCpUnitPosition
+  commentId: P:AngeliA.PlayerSystem.RespawnCpUnitPosition
+  id: RespawnCpUnitPosition
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: RespawnCpUnitPosition
+  nameWithType: PlayerSystem.RespawnCpUnitPosition
+  fullName: AngeliA.PlayerSystem.RespawnCpUnitPosition
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RespawnCpUnitPosition
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int3? RespawnCpUnitPosition { get; set; }
+    parameters: []
+    return:
+      type: System.Nullable{AngeliA.Int3}
+    content.vb: Public Shared Property RespawnCpUnitPosition As Int3?
+  overload: AngeliA.PlayerSystem.RespawnCpUnitPosition*
+- uid: AngeliA.PlayerSystem.HomeUnitPosition
+  commentId: P:AngeliA.PlayerSystem.HomeUnitPosition
+  id: HomeUnitPosition
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: HomeUnitPosition
+  nameWithType: PlayerSystem.HomeUnitPosition
+  fullName: AngeliA.PlayerSystem.HomeUnitPosition
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HomeUnitPosition
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int3 HomeUnitPosition { get; set; }
+    parameters: []
+    return:
+      type: AngeliA.Int3
+    content.vb: Public Shared Property HomeUnitPosition As Int3
+  overload: AngeliA.PlayerSystem.HomeUnitPosition*
+- uid: AngeliA.PlayerSystem.AllowPlayerMenuUI
+  commentId: P:AngeliA.PlayerSystem.AllowPlayerMenuUI
+  id: AllowPlayerMenuUI
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: AllowPlayerMenuUI
+  nameWithType: PlayerSystem.AllowPlayerMenuUI
+  fullName: AngeliA.PlayerSystem.AllowPlayerMenuUI
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllowPlayerMenuUI
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 31
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AllowPlayerMenuUI { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property AllowPlayerMenuUI As Boolean
+  overload: AngeliA.PlayerSystem.AllowPlayerMenuUI*
+- uid: AngeliA.PlayerSystem.AllowQuickPlayerMenuUI
+  commentId: P:AngeliA.PlayerSystem.AllowQuickPlayerMenuUI
+  id: AllowQuickPlayerMenuUI
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: AllowQuickPlayerMenuUI
+  nameWithType: PlayerSystem.AllowQuickPlayerMenuUI
+  fullName: AngeliA.PlayerSystem.AllowQuickPlayerMenuUI
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllowQuickPlayerMenuUI
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 32
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AllowQuickPlayerMenuUI { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property AllowQuickPlayerMenuUI As Boolean
+  overload: AngeliA.PlayerSystem.AllowQuickPlayerMenuUI*
+- uid: AngeliA.PlayerSystem.IgnoringInput
+  commentId: P:AngeliA.PlayerSystem.IgnoringInput
+  id: IgnoringInput
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: IgnoringInput
+  nameWithType: PlayerSystem.IgnoringInput
+  fullName: AngeliA.PlayerSystem.IgnoringInput
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoringInput
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool IgnoringInput { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property IgnoringInput As Boolean
+  overload: AngeliA.PlayerSystem.IgnoringInput*
+- uid: AngeliA.PlayerSystem.IgnoringAction
+  commentId: P:AngeliA.PlayerSystem.IgnoringAction
+  id: IgnoringAction
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: IgnoringAction
+  nameWithType: PlayerSystem.IgnoringAction
+  fullName: AngeliA.PlayerSystem.IgnoringAction
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoringAction
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 34
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool IgnoringAction { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property IgnoringAction As Boolean
+  overload: AngeliA.PlayerSystem.IgnoringAction*
+- uid: AngeliA.PlayerSystem.IgnoreInputFrame
+  commentId: P:AngeliA.PlayerSystem.IgnoreInputFrame
+  id: IgnoreInputFrame
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: IgnoreInputFrame
+  nameWithType: PlayerSystem.IgnoreInputFrame
+  fullName: AngeliA.PlayerSystem.IgnoreInputFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreInputFrame
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 35
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int IgnoreInputFrame { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared Property IgnoreInputFrame As Integer
+  overload: AngeliA.PlayerSystem.IgnoreInputFrame*
+- uid: AngeliA.PlayerSystem.AimViewX
+  commentId: P:AngeliA.PlayerSystem.AimViewX
+  id: AimViewX
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: AimViewX
+  nameWithType: PlayerSystem.AimViewX
+  fullName: AngeliA.PlayerSystem.AimViewX
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AimViewX
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int AimViewX { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared Property AimViewX As Integer
+  overload: AngeliA.PlayerSystem.AimViewX*
+- uid: AngeliA.PlayerSystem.AimViewY
+  commentId: P:AngeliA.PlayerSystem.AimViewY
+  id: AimViewY
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: AimViewY
+  nameWithType: PlayerSystem.AimViewY
+  fullName: AngeliA.PlayerSystem.AimViewY
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AimViewY
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 37
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int AimViewY { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared Property AimViewY As Integer
+  overload: AngeliA.PlayerSystem.AimViewY*
+- uid: AngeliA.PlayerSystem.TargetActionEntity
+  commentId: P:AngeliA.PlayerSystem.TargetActionEntity
+  id: TargetActionEntity
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: TargetActionEntity
+  nameWithType: PlayerSystem.TargetActionEntity
+  fullName: AngeliA.PlayerSystem.TargetActionEntity
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TargetActionEntity
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 38
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static IActionTarget TargetActionEntity { get; }
+    parameters: []
+    return:
+      type: AngeliA.IActionTarget
+    content.vb: Public Shared Property TargetActionEntity As IActionTarget
+  overload: AngeliA.PlayerSystem.TargetActionEntity*
+- uid: AngeliA.PlayerSystem.UnlockedPlayerCount
+  commentId: P:AngeliA.PlayerSystem.UnlockedPlayerCount
+  id: UnlockedPlayerCount
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: UnlockedPlayerCount
+  nameWithType: PlayerSystem.UnlockedPlayerCount
+  fullName: AngeliA.PlayerSystem.UnlockedPlayerCount
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UnlockedPlayerCount
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 39
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int UnlockedPlayerCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared ReadOnly Property UnlockedPlayerCount As Integer
+  overload: AngeliA.PlayerSystem.UnlockedPlayerCount*
+- uid: AngeliA.PlayerSystem.PlayableCharactersCount
+  commentId: P:AngeliA.PlayerSystem.PlayableCharactersCount
+  id: PlayableCharactersCount
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: PlayableCharactersCount
+  nameWithType: PlayerSystem.PlayableCharactersCount
+  fullName: AngeliA.PlayerSystem.PlayableCharactersCount
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PlayableCharactersCount
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 40
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int PlayableCharactersCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared ReadOnly Property PlayableCharactersCount As Integer
+  overload: AngeliA.PlayerSystem.PlayableCharactersCount*
+- uid: AngeliA.PlayerSystem.DragPlayerInMiddleButtonToMove_DebugOnly
+  commentId: F:AngeliA.PlayerSystem.DragPlayerInMiddleButtonToMove_DebugOnly
+  id: DragPlayerInMiddleButtonToMove_DebugOnly
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: DragPlayerInMiddleButtonToMove_DebugOnly
+  nameWithType: PlayerSystem.DragPlayerInMiddleButtonToMove_DebugOnly
+  fullName: AngeliA.PlayerSystem.DragPlayerInMiddleButtonToMove_DebugOnly
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DragPlayerInMiddleButtonToMove_DebugOnly
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 41
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly FrameBasedBool DragPlayerInMiddleButtonToMove_DebugOnly
+    return:
+      type: AngeliA.FrameBasedBool
+    content.vb: Public Shared ReadOnly DragPlayerInMiddleButtonToMove_DebugOnly As FrameBasedBool
+- uid: AngeliA.PlayerSystem.TargetViewHeight
+  commentId: F:AngeliA.PlayerSystem.TargetViewHeight
+  id: TargetViewHeight
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: TargetViewHeight
+  nameWithType: PlayerSystem.TargetViewHeight
+  fullName: AngeliA.PlayerSystem.TargetViewHeight
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TargetViewHeight
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 58
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly FrameBasedInt TargetViewHeight
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public Shared ReadOnly TargetViewHeight As FrameBasedInt
+- uid: AngeliA.PlayerSystem.IgnorePlayerView
+  commentId: F:AngeliA.PlayerSystem.IgnorePlayerView
+  id: IgnorePlayerView
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: IgnorePlayerView
+  nameWithType: PlayerSystem.IgnorePlayerView
+  fullName: AngeliA.PlayerSystem.IgnorePlayerView
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnorePlayerView
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 59
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly FrameBasedBool IgnorePlayerView
+    return:
+      type: AngeliA.FrameBasedBool
+    content.vb: Public Shared ReadOnly IgnorePlayerView As FrameBasedBool
+- uid: AngeliA.PlayerSystem.SelectCharacterAsPlayer(System.Int32,System.Boolean)
+  commentId: M:AngeliA.PlayerSystem.SelectCharacterAsPlayer(System.Int32,System.Boolean)
+  id: SelectCharacterAsPlayer(System.Int32,System.Boolean)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: SelectCharacterAsPlayer(int, bool)
+  nameWithType: PlayerSystem.SelectCharacterAsPlayer(int, bool)
+  fullName: AngeliA.PlayerSystem.SelectCharacterAsPlayer(int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SelectCharacterAsPlayer
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 685
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void SelectCharacterAsPlayer(int characterTypeID, bool failbackToDefault = true)
+    parameters:
+    - id: characterTypeID
+      type: System.Int32
+    - id: failbackToDefault
+      type: System.Boolean
+    content.vb: Public Shared Sub SelectCharacterAsPlayer(characterTypeID As Integer, failbackToDefault As Boolean = True)
+  overload: AngeliA.PlayerSystem.SelectCharacterAsPlayer*
+  nameWithType.vb: PlayerSystem.SelectCharacterAsPlayer(Integer, Boolean)
+  fullName.vb: AngeliA.PlayerSystem.SelectCharacterAsPlayer(Integer, Boolean)
+  name.vb: SelectCharacterAsPlayer(Integer, Boolean)
+- uid: AngeliA.PlayerSystem.SetCharacterAsPlayer(AngeliA.Character)
+  commentId: M:AngeliA.PlayerSystem.SetCharacterAsPlayer(AngeliA.Character)
+  id: SetCharacterAsPlayer(AngeliA.Character)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: SetCharacterAsPlayer(Character)
+  nameWithType: PlayerSystem.SetCharacterAsPlayer(Character)
+  fullName: AngeliA.PlayerSystem.SetCharacterAsPlayer(AngeliA.Character)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetCharacterAsPlayer
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 704
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void SetCharacterAsPlayer(Character target)
+    parameters:
+    - id: target
+      type: AngeliA.Character
+    content.vb: Public Shared Sub SetCharacterAsPlayer(target As Character)
+  overload: AngeliA.PlayerSystem.SetCharacterAsPlayer*
+- uid: AngeliA.PlayerSystem.ForAllUnlockedPlayers
+  commentId: M:AngeliA.PlayerSystem.ForAllUnlockedPlayers
+  id: ForAllUnlockedPlayers
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: ForAllUnlockedPlayers()
+  nameWithType: PlayerSystem.ForAllUnlockedPlayers()
+  fullName: AngeliA.PlayerSystem.ForAllUnlockedPlayers()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForAllUnlockedPlayers
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 728
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static IEnumerable<int> ForAllUnlockedPlayers()
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Int32}
+    content.vb: Public Shared Function ForAllUnlockedPlayers() As IEnumerable(Of Integer)
+  overload: AngeliA.PlayerSystem.ForAllUnlockedPlayers*
+- uid: AngeliA.PlayerSystem.ForAllPlayables
+  commentId: M:AngeliA.PlayerSystem.ForAllPlayables
+  id: ForAllPlayables
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: ForAllPlayables()
+  nameWithType: PlayerSystem.ForAllPlayables()
+  fullName: AngeliA.PlayerSystem.ForAllPlayables()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForAllPlayables
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 735
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static IEnumerable<int> ForAllPlayables()
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Int32}
+    content.vb: Public Shared Function ForAllPlayables() As IEnumerable(Of Integer)
+  overload: AngeliA.PlayerSystem.ForAllPlayables*
+- uid: AngeliA.PlayerSystem.IsPlayerUnlocked(System.Int32)
+  commentId: M:AngeliA.PlayerSystem.IsPlayerUnlocked(System.Int32)
+  id: IsPlayerUnlocked(System.Int32)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: IsPlayerUnlocked(int)
+  nameWithType: PlayerSystem.IsPlayerUnlocked(int)
+  fullName: AngeliA.PlayerSystem.IsPlayerUnlocked(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsPlayerUnlocked
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 742
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool IsPlayerUnlocked(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsPlayerUnlocked(id As Integer) As Boolean
+  overload: AngeliA.PlayerSystem.IsPlayerUnlocked*
+  nameWithType.vb: PlayerSystem.IsPlayerUnlocked(Integer)
+  fullName.vb: AngeliA.PlayerSystem.IsPlayerUnlocked(Integer)
+  name.vb: IsPlayerUnlocked(Integer)
+- uid: AngeliA.PlayerSystem.UnlockPlayer(System.Int32)
+  commentId: M:AngeliA.PlayerSystem.UnlockPlayer(System.Int32)
+  id: UnlockPlayer(System.Int32)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: UnlockPlayer(int)
+  nameWithType: PlayerSystem.UnlockPlayer(int)
+  fullName: AngeliA.PlayerSystem.UnlockPlayer(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UnlockPlayer
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 745
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void UnlockPlayer(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    content.vb: Public Shared Sub UnlockPlayer(id As Integer)
+  overload: AngeliA.PlayerSystem.UnlockPlayer*
+  nameWithType.vb: PlayerSystem.UnlockPlayer(Integer)
+  fullName.vb: AngeliA.PlayerSystem.UnlockPlayer(Integer)
+  name.vb: UnlockPlayer(Integer)
+- uid: AngeliA.PlayerSystem.GetDefaultPlayerID(System.Boolean)
+  commentId: M:AngeliA.PlayerSystem.GetDefaultPlayerID(System.Boolean)
+  id: GetDefaultPlayerID(System.Boolean)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: GetDefaultPlayerID(bool)
+  nameWithType: PlayerSystem.GetDefaultPlayerID(bool)
+  fullName: AngeliA.PlayerSystem.GetDefaultPlayerID(bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetDefaultPlayerID
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 752
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int GetDefaultPlayerID(bool forceSelect = false)
+    parameters:
+    - id: forceSelect
+      type: System.Boolean
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function GetDefaultPlayerID(forceSelect As Boolean = False) As Integer
+  overload: AngeliA.PlayerSystem.GetDefaultPlayerID*
+  nameWithType.vb: PlayerSystem.GetDefaultPlayerID(Boolean)
+  fullName.vb: AngeliA.PlayerSystem.GetDefaultPlayerID(Boolean)
+  name.vb: GetDefaultPlayerID(Boolean)
+- uid: AngeliA.PlayerSystem.ForceUpdateGroundedForView(System.Int32)
+  commentId: M:AngeliA.PlayerSystem.ForceUpdateGroundedForView(System.Int32)
+  id: ForceUpdateGroundedForView(System.Int32)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: ForceUpdateGroundedForView(int)
+  nameWithType: PlayerSystem.ForceUpdateGroundedForView(int)
+  fullName: AngeliA.PlayerSystem.ForceUpdateGroundedForView(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForceUpdateGroundedForView
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 774
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void ForceUpdateGroundedForView(int duration = 1)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub ForceUpdateGroundedForView(duration As Integer = 1)
+  overload: AngeliA.PlayerSystem.ForceUpdateGroundedForView*
+  nameWithType.vb: PlayerSystem.ForceUpdateGroundedForView(Integer)
+  fullName.vb: AngeliA.PlayerSystem.ForceUpdateGroundedForView(Integer)
+  name.vb: ForceUpdateGroundedForView(Integer)
+- uid: AngeliA.PlayerSystem.GetPlayerFinalRespawnUnitPosition
+  commentId: M:AngeliA.PlayerSystem.GetPlayerFinalRespawnUnitPosition
+  id: GetPlayerFinalRespawnUnitPosition
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: GetPlayerFinalRespawnUnitPosition()
+  nameWithType: PlayerSystem.GetPlayerFinalRespawnUnitPosition()
+  fullName: AngeliA.PlayerSystem.GetPlayerFinalRespawnUnitPosition()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetPlayerFinalRespawnUnitPosition
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 777
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int3 GetPlayerFinalRespawnUnitPosition()
+    return:
+      type: AngeliA.Int3
+    content.vb: Public Shared Function GetPlayerFinalRespawnUnitPosition() As Int3
+  overload: AngeliA.PlayerSystem.GetPlayerFinalRespawnUnitPosition*
+- uid: AngeliA.PlayerSystem.GetCameraShiftOffset(System.Int32)
+  commentId: M:AngeliA.PlayerSystem.GetCameraShiftOffset(System.Int32)
+  id: GetCameraShiftOffset(System.Int32)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: GetCameraShiftOffset(int)
+  nameWithType: PlayerSystem.GetCameraShiftOffset(int)
+  fullName: AngeliA.PlayerSystem.GetCameraShiftOffset(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetCameraShiftOffset
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 793
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int GetCameraShiftOffset(int cameraHeight)
+    parameters:
+    - id: cameraHeight
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function GetCameraShiftOffset(cameraHeight As Integer) As Integer
+  overload: AngeliA.PlayerSystem.GetCameraShiftOffset*
+  nameWithType.vb: PlayerSystem.GetCameraShiftOffset(Integer)
+  fullName.vb: AngeliA.PlayerSystem.GetCameraShiftOffset(Integer)
+  name.vb: GetCameraShiftOffset(Integer)
+- uid: AngeliA.PlayerSystem.IgnoreInput(System.Int32)
+  commentId: M:AngeliA.PlayerSystem.IgnoreInput(System.Int32)
+  id: IgnoreInput(System.Int32)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: IgnoreInput(int)
+  nameWithType: PlayerSystem.IgnoreInput(int)
+  fullName: AngeliA.PlayerSystem.IgnoreInput(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreInput
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 797
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void IgnoreInput(int duration = 1)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub IgnoreInput(duration As Integer = 1)
+  overload: AngeliA.PlayerSystem.IgnoreInput*
+  nameWithType.vb: PlayerSystem.IgnoreInput(Integer)
+  fullName.vb: AngeliA.PlayerSystem.IgnoreInput(Integer)
+  name.vb: IgnoreInput(Integer)
+- uid: AngeliA.PlayerSystem.IgnoreAction(System.Int32)
+  commentId: M:AngeliA.PlayerSystem.IgnoreAction(System.Int32)
+  id: IgnoreAction(System.Int32)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: IgnoreAction(int)
+  nameWithType: PlayerSystem.IgnoreAction(int)
+  fullName: AngeliA.PlayerSystem.IgnoreAction(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreAction
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 800
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void IgnoreAction(int duration = 1)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub IgnoreAction(duration As Integer = 1)
+  overload: AngeliA.PlayerSystem.IgnoreAction*
+  nameWithType.vb: PlayerSystem.IgnoreAction(Integer)
+  fullName.vb: AngeliA.PlayerSystem.IgnoreAction(Integer)
+  name.vb: IgnoreAction(Integer)
+- uid: AngeliA.PlayerSystem.IgnorePlayerMenu(System.Int32)
+  commentId: M:AngeliA.PlayerSystem.IgnorePlayerMenu(System.Int32)
+  id: IgnorePlayerMenu(System.Int32)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: IgnorePlayerMenu(int)
+  nameWithType: PlayerSystem.IgnorePlayerMenu(int)
+  fullName: AngeliA.PlayerSystem.IgnorePlayerMenu(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnorePlayerMenu
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 803
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void IgnorePlayerMenu(int duration = 1)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub IgnorePlayerMenu(duration As Integer = 1)
+  overload: AngeliA.PlayerSystem.IgnorePlayerMenu*
+  nameWithType.vb: PlayerSystem.IgnorePlayerMenu(Integer)
+  fullName.vb: AngeliA.PlayerSystem.IgnorePlayerMenu(Integer)
+  name.vb: IgnorePlayerMenu(Integer)
+- uid: AngeliA.PlayerSystem.IgnorePlayerQuickMenu(System.Int32)
+  commentId: M:AngeliA.PlayerSystem.IgnorePlayerQuickMenu(System.Int32)
+  id: IgnorePlayerQuickMenu(System.Int32)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: IgnorePlayerQuickMenu(int)
+  nameWithType: PlayerSystem.IgnorePlayerQuickMenu(int)
+  fullName: AngeliA.PlayerSystem.IgnorePlayerQuickMenu(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnorePlayerQuickMenu
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 806
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void IgnorePlayerQuickMenu(int duration = 1)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub IgnorePlayerQuickMenu(duration As Integer = 1)
+  overload: AngeliA.PlayerSystem.IgnorePlayerQuickMenu*
+  nameWithType.vb: PlayerSystem.IgnorePlayerQuickMenu(Integer)
+  fullName.vb: AngeliA.PlayerSystem.IgnorePlayerQuickMenu(Integer)
+  name.vb: IgnorePlayerQuickMenu(Integer)
+- uid: AngeliA.PlayerSystem.IgnoreAttack(System.Int32)
+  commentId: M:AngeliA.PlayerSystem.IgnoreAttack(System.Int32)
+  id: IgnoreAttack(System.Int32)
+  parent: AngeliA.PlayerSystem
+  langs:
+  - csharp
+  - vb
+  name: IgnoreAttack(int)
+  nameWithType: PlayerSystem.IgnoreAttack(int)
+  fullName: AngeliA.PlayerSystem.IgnoreAttack(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/PlayerSystem.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreAttack
+    path: ../AngeliA Framework/src/Core/PlayerSystem.cs
+    startLine: 809
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void IgnoreAttack(int duration = 1)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub IgnoreAttack(duration As Integer = 1)
+  overload: AngeliA.PlayerSystem.IgnoreAttack*
+  nameWithType.vb: PlayerSystem.IgnoreAttack(Integer)
+  fullName.vb: AngeliA.PlayerSystem.IgnoreAttack(Integer)
+  name.vb: IgnoreAttack(Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.PlayerSystem.Enable*
+  commentId: Overload:AngeliA.PlayerSystem.Enable
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_Enable
+  name: Enable
+  nameWithType: PlayerSystem.Enable
+  fullName: AngeliA.PlayerSystem.Enable
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.PlayerSystem.Selecting*
+  commentId: Overload:AngeliA.PlayerSystem.Selecting
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_Selecting
+  name: Selecting
+  nameWithType: PlayerSystem.Selecting
+  fullName: AngeliA.PlayerSystem.Selecting
+- uid: AngeliA.Character
+  commentId: T:AngeliA.Character
+  parent: AngeliA
+  href: AngeliA.Character.html
+  name: Character
+  nameWithType: Character
+  fullName: AngeliA.Character
+- uid: AngeliA.PlayerSystem.RespawnCpUnitPosition*
+  commentId: Overload:AngeliA.PlayerSystem.RespawnCpUnitPosition
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_RespawnCpUnitPosition
+  name: RespawnCpUnitPosition
+  nameWithType: PlayerSystem.RespawnCpUnitPosition
+  fullName: AngeliA.PlayerSystem.RespawnCpUnitPosition
+- uid: System.Nullable{AngeliA.Int3}
+  commentId: T:System.Nullable{AngeliA.Int3}
+  parent: System
+  definition: System.Nullable`1
+  href: AngeliA.Int3.html
+  name: Int3?
+  nameWithType: Int3?
+  fullName: AngeliA.Int3?
+  spec.csharp:
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: '?'
+  spec.vb:
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.PlayerSystem.HomeUnitPosition*
+  commentId: Overload:AngeliA.PlayerSystem.HomeUnitPosition
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_HomeUnitPosition
+  name: HomeUnitPosition
+  nameWithType: PlayerSystem.HomeUnitPosition
+  fullName: AngeliA.PlayerSystem.HomeUnitPosition
+- uid: AngeliA.Int3
+  commentId: T:AngeliA.Int3
+  parent: AngeliA
+  href: AngeliA.Int3.html
+  name: Int3
+  nameWithType: Int3
+  fullName: AngeliA.Int3
+- uid: AngeliA.PlayerSystem.AllowPlayerMenuUI*
+  commentId: Overload:AngeliA.PlayerSystem.AllowPlayerMenuUI
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_AllowPlayerMenuUI
+  name: AllowPlayerMenuUI
+  nameWithType: PlayerSystem.AllowPlayerMenuUI
+  fullName: AngeliA.PlayerSystem.AllowPlayerMenuUI
+- uid: AngeliA.PlayerSystem.AllowQuickPlayerMenuUI*
+  commentId: Overload:AngeliA.PlayerSystem.AllowQuickPlayerMenuUI
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_AllowQuickPlayerMenuUI
+  name: AllowQuickPlayerMenuUI
+  nameWithType: PlayerSystem.AllowQuickPlayerMenuUI
+  fullName: AngeliA.PlayerSystem.AllowQuickPlayerMenuUI
+- uid: AngeliA.PlayerSystem.IgnoringInput*
+  commentId: Overload:AngeliA.PlayerSystem.IgnoringInput
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_IgnoringInput
+  name: IgnoringInput
+  nameWithType: PlayerSystem.IgnoringInput
+  fullName: AngeliA.PlayerSystem.IgnoringInput
+- uid: AngeliA.PlayerSystem.IgnoringAction*
+  commentId: Overload:AngeliA.PlayerSystem.IgnoringAction
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_IgnoringAction
+  name: IgnoringAction
+  nameWithType: PlayerSystem.IgnoringAction
+  fullName: AngeliA.PlayerSystem.IgnoringAction
+- uid: AngeliA.PlayerSystem.IgnoreInputFrame*
+  commentId: Overload:AngeliA.PlayerSystem.IgnoreInputFrame
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_IgnoreInputFrame
+  name: IgnoreInputFrame
+  nameWithType: PlayerSystem.IgnoreInputFrame
+  fullName: AngeliA.PlayerSystem.IgnoreInputFrame
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.PlayerSystem.AimViewX*
+  commentId: Overload:AngeliA.PlayerSystem.AimViewX
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_AimViewX
+  name: AimViewX
+  nameWithType: PlayerSystem.AimViewX
+  fullName: AngeliA.PlayerSystem.AimViewX
+- uid: AngeliA.PlayerSystem.AimViewY*
+  commentId: Overload:AngeliA.PlayerSystem.AimViewY
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_AimViewY
+  name: AimViewY
+  nameWithType: PlayerSystem.AimViewY
+  fullName: AngeliA.PlayerSystem.AimViewY
+- uid: AngeliA.PlayerSystem.TargetActionEntity*
+  commentId: Overload:AngeliA.PlayerSystem.TargetActionEntity
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_TargetActionEntity
+  name: TargetActionEntity
+  nameWithType: PlayerSystem.TargetActionEntity
+  fullName: AngeliA.PlayerSystem.TargetActionEntity
+- uid: AngeliA.IActionTarget
+  commentId: T:AngeliA.IActionTarget
+  parent: AngeliA
+  href: AngeliA.IActionTarget.html
+  name: IActionTarget
+  nameWithType: IActionTarget
+  fullName: AngeliA.IActionTarget
+- uid: AngeliA.PlayerSystem.UnlockedPlayerCount*
+  commentId: Overload:AngeliA.PlayerSystem.UnlockedPlayerCount
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_UnlockedPlayerCount
+  name: UnlockedPlayerCount
+  nameWithType: PlayerSystem.UnlockedPlayerCount
+  fullName: AngeliA.PlayerSystem.UnlockedPlayerCount
+- uid: AngeliA.PlayerSystem.PlayableCharactersCount*
+  commentId: Overload:AngeliA.PlayerSystem.PlayableCharactersCount
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_PlayableCharactersCount
+  name: PlayableCharactersCount
+  nameWithType: PlayerSystem.PlayableCharactersCount
+  fullName: AngeliA.PlayerSystem.PlayableCharactersCount
+- uid: AngeliA.FrameBasedBool
+  commentId: T:AngeliA.FrameBasedBool
+  parent: AngeliA
+  href: AngeliA.FrameBasedBool.html
+  name: FrameBasedBool
+  nameWithType: FrameBasedBool
+  fullName: AngeliA.FrameBasedBool
+- uid: AngeliA.FrameBasedInt
+  commentId: T:AngeliA.FrameBasedInt
+  parent: AngeliA
+  href: AngeliA.FrameBasedInt.html
+  name: FrameBasedInt
+  nameWithType: FrameBasedInt
+  fullName: AngeliA.FrameBasedInt
+- uid: AngeliA.PlayerSystem.SelectCharacterAsPlayer*
+  commentId: Overload:AngeliA.PlayerSystem.SelectCharacterAsPlayer
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_SelectCharacterAsPlayer_System_Int32_System_Boolean_
+  name: SelectCharacterAsPlayer
+  nameWithType: PlayerSystem.SelectCharacterAsPlayer
+  fullName: AngeliA.PlayerSystem.SelectCharacterAsPlayer
+- uid: AngeliA.PlayerSystem.SetCharacterAsPlayer*
+  commentId: Overload:AngeliA.PlayerSystem.SetCharacterAsPlayer
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_SetCharacterAsPlayer_AngeliA_Character_
+  name: SetCharacterAsPlayer
+  nameWithType: PlayerSystem.SetCharacterAsPlayer
+  fullName: AngeliA.PlayerSystem.SetCharacterAsPlayer
+- uid: AngeliA.PlayerSystem.ForAllUnlockedPlayers*
+  commentId: Overload:AngeliA.PlayerSystem.ForAllUnlockedPlayers
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_ForAllUnlockedPlayers
+  name: ForAllUnlockedPlayers
+  nameWithType: PlayerSystem.ForAllUnlockedPlayers
+  fullName: AngeliA.PlayerSystem.ForAllUnlockedPlayers
+- uid: System.Collections.Generic.IEnumerable{System.Int32}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Int32}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<int>
+  nameWithType: IEnumerable<int>
+  fullName: System.Collections.Generic.IEnumerable<int>
+  nameWithType.vb: IEnumerable(Of Integer)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Integer)
+  name.vb: IEnumerable(Of Integer)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AngeliA.PlayerSystem.ForAllPlayables*
+  commentId: Overload:AngeliA.PlayerSystem.ForAllPlayables
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_ForAllPlayables
+  name: ForAllPlayables
+  nameWithType: PlayerSystem.ForAllPlayables
+  fullName: AngeliA.PlayerSystem.ForAllPlayables
+- uid: AngeliA.PlayerSystem.IsPlayerUnlocked*
+  commentId: Overload:AngeliA.PlayerSystem.IsPlayerUnlocked
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_IsPlayerUnlocked_System_Int32_
+  name: IsPlayerUnlocked
+  nameWithType: PlayerSystem.IsPlayerUnlocked
+  fullName: AngeliA.PlayerSystem.IsPlayerUnlocked
+- uid: AngeliA.PlayerSystem.UnlockPlayer*
+  commentId: Overload:AngeliA.PlayerSystem.UnlockPlayer
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_UnlockPlayer_System_Int32_
+  name: UnlockPlayer
+  nameWithType: PlayerSystem.UnlockPlayer
+  fullName: AngeliA.PlayerSystem.UnlockPlayer
+- uid: AngeliA.PlayerSystem.GetDefaultPlayerID*
+  commentId: Overload:AngeliA.PlayerSystem.GetDefaultPlayerID
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_GetDefaultPlayerID_System_Boolean_
+  name: GetDefaultPlayerID
+  nameWithType: PlayerSystem.GetDefaultPlayerID
+  fullName: AngeliA.PlayerSystem.GetDefaultPlayerID
+- uid: AngeliA.PlayerSystem.ForceUpdateGroundedForView*
+  commentId: Overload:AngeliA.PlayerSystem.ForceUpdateGroundedForView
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_ForceUpdateGroundedForView_System_Int32_
+  name: ForceUpdateGroundedForView
+  nameWithType: PlayerSystem.ForceUpdateGroundedForView
+  fullName: AngeliA.PlayerSystem.ForceUpdateGroundedForView
+- uid: AngeliA.PlayerSystem.GetPlayerFinalRespawnUnitPosition*
+  commentId: Overload:AngeliA.PlayerSystem.GetPlayerFinalRespawnUnitPosition
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_GetPlayerFinalRespawnUnitPosition
+  name: GetPlayerFinalRespawnUnitPosition
+  nameWithType: PlayerSystem.GetPlayerFinalRespawnUnitPosition
+  fullName: AngeliA.PlayerSystem.GetPlayerFinalRespawnUnitPosition
+- uid: AngeliA.PlayerSystem.GetCameraShiftOffset*
+  commentId: Overload:AngeliA.PlayerSystem.GetCameraShiftOffset
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_GetCameraShiftOffset_System_Int32_
+  name: GetCameraShiftOffset
+  nameWithType: PlayerSystem.GetCameraShiftOffset
+  fullName: AngeliA.PlayerSystem.GetCameraShiftOffset
+- uid: AngeliA.PlayerSystem.IgnoreInput*
+  commentId: Overload:AngeliA.PlayerSystem.IgnoreInput
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_IgnoreInput_System_Int32_
+  name: IgnoreInput
+  nameWithType: PlayerSystem.IgnoreInput
+  fullName: AngeliA.PlayerSystem.IgnoreInput
+- uid: AngeliA.PlayerSystem.IgnoreAction*
+  commentId: Overload:AngeliA.PlayerSystem.IgnoreAction
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_IgnoreAction_System_Int32_
+  name: IgnoreAction
+  nameWithType: PlayerSystem.IgnoreAction
+  fullName: AngeliA.PlayerSystem.IgnoreAction
+- uid: AngeliA.PlayerSystem.IgnorePlayerMenu*
+  commentId: Overload:AngeliA.PlayerSystem.IgnorePlayerMenu
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_IgnorePlayerMenu_System_Int32_
+  name: IgnorePlayerMenu
+  nameWithType: PlayerSystem.IgnorePlayerMenu
+  fullName: AngeliA.PlayerSystem.IgnorePlayerMenu
+- uid: AngeliA.PlayerSystem.IgnorePlayerQuickMenu*
+  commentId: Overload:AngeliA.PlayerSystem.IgnorePlayerQuickMenu
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_IgnorePlayerQuickMenu_System_Int32_
+  name: IgnorePlayerQuickMenu
+  nameWithType: PlayerSystem.IgnorePlayerQuickMenu
+  fullName: AngeliA.PlayerSystem.IgnorePlayerQuickMenu
+- uid: AngeliA.PlayerSystem.IgnoreAttack*
+  commentId: Overload:AngeliA.PlayerSystem.IgnoreAttack
+  href: AngeliA.PlayerSystem.html#AngeliA_PlayerSystem_IgnoreAttack_System_Int32_
+  name: IgnoreAttack
+  nameWithType: PlayerSystem.IgnoreAttack
+  fullName: AngeliA.PlayerSystem.IgnoreAttack

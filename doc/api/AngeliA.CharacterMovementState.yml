@@ -1,0 +1,913 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.CharacterMovementState
+  commentId: T:AngeliA.CharacterMovementState
+  id: CharacterMovementState
+  parent: AngeliA
+  children:
+  - AngeliA.CharacterMovementState.Climb
+  - AngeliA.CharacterMovementState.Crash
+  - AngeliA.CharacterMovementState.Dash
+  - AngeliA.CharacterMovementState.Fly
+  - AngeliA.CharacterMovementState.GrabFlip
+  - AngeliA.CharacterMovementState.GrabSide
+  - AngeliA.CharacterMovementState.GrabTop
+  - AngeliA.CharacterMovementState.Idle
+  - AngeliA.CharacterMovementState.JumpDown
+  - AngeliA.CharacterMovementState.JumpUp
+  - AngeliA.CharacterMovementState.Pound
+  - AngeliA.CharacterMovementState.Run
+  - AngeliA.CharacterMovementState.Rush
+  - AngeliA.CharacterMovementState.Slide
+  - AngeliA.CharacterMovementState.SquatIdle
+  - AngeliA.CharacterMovementState.SquatMove
+  - AngeliA.CharacterMovementState.SwimIdle
+  - AngeliA.CharacterMovementState.SwimMove
+  - AngeliA.CharacterMovementState.Walk
+  langs:
+  - csharp
+  - vb
+  name: CharacterMovementState
+  nameWithType: CharacterMovementState
+  fullName: AngeliA.CharacterMovementState
+  type: Enum
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CharacterMovementState
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public enum CharacterMovementState
+    content.vb: Public Enum CharacterMovementState
+  extensionMethods:
+  - AngeliA.CharacterMovementState.AngeliA.Extension.Next``1
+  - AngeliA.CharacterMovementState.AngeliA.Extension.Prev``1
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.CharacterMovementState.Idle
+  commentId: F:AngeliA.CharacterMovementState.Idle
+  id: Idle
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: Idle
+  nameWithType: CharacterMovementState.Idle
+  fullName: AngeliA.CharacterMovementState.Idle
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Idle
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Idle = 0
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.Walk
+  commentId: F:AngeliA.CharacterMovementState.Walk
+  id: Walk
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: Walk
+  nameWithType: CharacterMovementState.Walk
+  fullName: AngeliA.CharacterMovementState.Walk
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Walk
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Walk = 1
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.Run
+  commentId: F:AngeliA.CharacterMovementState.Run
+  id: Run
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: Run
+  nameWithType: CharacterMovementState.Run
+  fullName: AngeliA.CharacterMovementState.Run
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Run
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Run = 2
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.JumpUp
+  commentId: F:AngeliA.CharacterMovementState.JumpUp
+  id: JumpUp
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: JumpUp
+  nameWithType: CharacterMovementState.JumpUp
+  fullName: AngeliA.CharacterMovementState.JumpUp
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: JumpUp
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: JumpUp = 3
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.JumpDown
+  commentId: F:AngeliA.CharacterMovementState.JumpDown
+  id: JumpDown
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: JumpDown
+  nameWithType: CharacterMovementState.JumpDown
+  fullName: AngeliA.CharacterMovementState.JumpDown
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: JumpDown
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: JumpDown = 4
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.SwimIdle
+  commentId: F:AngeliA.CharacterMovementState.SwimIdle
+  id: SwimIdle
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: SwimIdle
+  nameWithType: CharacterMovementState.SwimIdle
+  fullName: AngeliA.CharacterMovementState.SwimIdle
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SwimIdle
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: SwimIdle = 5
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.SwimMove
+  commentId: F:AngeliA.CharacterMovementState.SwimMove
+  id: SwimMove
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: SwimMove
+  nameWithType: CharacterMovementState.SwimMove
+  fullName: AngeliA.CharacterMovementState.SwimMove
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SwimMove
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: SwimMove = 6
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.SquatIdle
+  commentId: F:AngeliA.CharacterMovementState.SquatIdle
+  id: SquatIdle
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: SquatIdle
+  nameWithType: CharacterMovementState.SquatIdle
+  fullName: AngeliA.CharacterMovementState.SquatIdle
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SquatIdle
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: SquatIdle = 7
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.SquatMove
+  commentId: F:AngeliA.CharacterMovementState.SquatMove
+  id: SquatMove
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: SquatMove
+  nameWithType: CharacterMovementState.SquatMove
+  fullName: AngeliA.CharacterMovementState.SquatMove
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SquatMove
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: SquatMove = 8
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.Dash
+  commentId: F:AngeliA.CharacterMovementState.Dash
+  id: Dash
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: Dash
+  nameWithType: CharacterMovementState.Dash
+  fullName: AngeliA.CharacterMovementState.Dash
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Dash
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Dash = 9
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.Rush
+  commentId: F:AngeliA.CharacterMovementState.Rush
+  id: Rush
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: Rush
+  nameWithType: CharacterMovementState.Rush
+  fullName: AngeliA.CharacterMovementState.Rush
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Rush
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Rush = 10
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.Crash
+  commentId: F:AngeliA.CharacterMovementState.Crash
+  id: Crash
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: Crash
+  nameWithType: CharacterMovementState.Crash
+  fullName: AngeliA.CharacterMovementState.Crash
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Crash
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Crash = 11
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.Pound
+  commentId: F:AngeliA.CharacterMovementState.Pound
+  id: Pound
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: Pound
+  nameWithType: CharacterMovementState.Pound
+  fullName: AngeliA.CharacterMovementState.Pound
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Pound
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Pound = 12
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.Climb
+  commentId: F:AngeliA.CharacterMovementState.Climb
+  id: Climb
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: Climb
+  nameWithType: CharacterMovementState.Climb
+  fullName: AngeliA.CharacterMovementState.Climb
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Climb
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Climb = 13
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.Fly
+  commentId: F:AngeliA.CharacterMovementState.Fly
+  id: Fly
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: Fly
+  nameWithType: CharacterMovementState.Fly
+  fullName: AngeliA.CharacterMovementState.Fly
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Fly
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Fly = 14
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.Slide
+  commentId: F:AngeliA.CharacterMovementState.Slide
+  id: Slide
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: Slide
+  nameWithType: CharacterMovementState.Slide
+  fullName: AngeliA.CharacterMovementState.Slide
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Slide
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Slide = 15
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.GrabTop
+  commentId: F:AngeliA.CharacterMovementState.GrabTop
+  id: GrabTop
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: GrabTop
+  nameWithType: CharacterMovementState.GrabTop
+  fullName: AngeliA.CharacterMovementState.GrabTop
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GrabTop
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: GrabTop = 16
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.GrabSide
+  commentId: F:AngeliA.CharacterMovementState.GrabSide
+  id: GrabSide
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: GrabSide
+  nameWithType: CharacterMovementState.GrabSide
+  fullName: AngeliA.CharacterMovementState.GrabSide
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GrabSide
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: GrabSide = 17
+    return:
+      type: AngeliA.CharacterMovementState
+- uid: AngeliA.CharacterMovementState.GrabFlip
+  commentId: F:AngeliA.CharacterMovementState.GrabFlip
+  id: GrabFlip
+  parent: AngeliA.CharacterMovementState
+  langs:
+  - csharp
+  - vb
+  name: GrabFlip
+  nameWithType: CharacterMovementState.GrabFlip
+  fullName: AngeliA.CharacterMovementState.GrabFlip
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GrabFlip
+    path: ../AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: GrabFlip = 18
+    return:
+      type: AngeliA.CharacterMovementState
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.CharacterMovementState.AngeliA.Extension.Next``1
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<CharacterMovementState>(CharacterMovementState)
+  nameWithType: Extension.Next<CharacterMovementState>(CharacterMovementState)
+  fullName: AngeliA.Extension.Next<AngeliA.CharacterMovementState>(AngeliA.CharacterMovementState)
+  nameWithType.vb: Extension.Next(Of CharacterMovementState)(CharacterMovementState)
+  fullName.vb: AngeliA.Extension.Next(Of AngeliA.CharacterMovementState)(AngeliA.CharacterMovementState)
+  name.vb: Next(Of CharacterMovementState)(CharacterMovementState)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(AngeliA.CharacterMovementState)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - uid: AngeliA.CharacterMovementState
+    name: CharacterMovementState
+    href: AngeliA.CharacterMovementState.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.CharacterMovementState
+    name: CharacterMovementState
+    href: AngeliA.CharacterMovementState.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(AngeliA.CharacterMovementState)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.CharacterMovementState
+    name: CharacterMovementState
+    href: AngeliA.CharacterMovementState.html
+  - name: )
+  - name: (
+  - uid: AngeliA.CharacterMovementState
+    name: CharacterMovementState
+    href: AngeliA.CharacterMovementState.html
+  - name: )
+- uid: AngeliA.CharacterMovementState.AngeliA.Extension.Prev``1
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<CharacterMovementState>(CharacterMovementState)
+  nameWithType: Extension.Prev<CharacterMovementState>(CharacterMovementState)
+  fullName: AngeliA.Extension.Prev<AngeliA.CharacterMovementState>(AngeliA.CharacterMovementState)
+  nameWithType.vb: Extension.Prev(Of CharacterMovementState)(CharacterMovementState)
+  fullName.vb: AngeliA.Extension.Prev(Of AngeliA.CharacterMovementState)(AngeliA.CharacterMovementState)
+  name.vb: Prev(Of CharacterMovementState)(CharacterMovementState)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.CharacterMovementState)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - uid: AngeliA.CharacterMovementState
+    name: CharacterMovementState
+    href: AngeliA.CharacterMovementState.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.CharacterMovementState
+    name: CharacterMovementState
+    href: AngeliA.CharacterMovementState.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.CharacterMovementState)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.CharacterMovementState
+    name: CharacterMovementState
+    href: AngeliA.CharacterMovementState.html
+  - name: )
+  - name: (
+  - uid: AngeliA.CharacterMovementState
+    name: CharacterMovementState
+    href: AngeliA.CharacterMovementState.html
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.Next``1(``0)
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<E>(E)
+  nameWithType: Extension.Next<E>(E)
+  fullName: AngeliA.Extension.Next<E>(E)
+  nameWithType.vb: Extension.Next(Of E)(E)
+  fullName.vb: AngeliA.Extension.Next(Of E)(E)
+  name.vb: Next(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.Prev``1(``0)
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<E>(E)
+  nameWithType: Extension.Prev<E>(E)
+  fullName: AngeliA.Extension.Prev<E>(E)
+  nameWithType.vb: Extension.Prev(Of E)(E)
+  fullName.vb: AngeliA.Extension.Prev(Of E)(E)
+  name.vb: Prev(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.CharacterMovementState
+  commentId: T:AngeliA.CharacterMovementState
+  parent: AngeliA
+  href: AngeliA.CharacterMovementState.html
+  name: CharacterMovementState
+  nameWithType: CharacterMovementState
+  fullName: AngeliA.CharacterMovementState

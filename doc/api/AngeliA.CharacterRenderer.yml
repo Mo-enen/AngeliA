@@ -1,0 +1,901 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.CharacterRenderer
+  commentId: T:AngeliA.CharacterRenderer
+  id: CharacterRenderer
+  parent: AngeliA
+  children:
+  - AngeliA.CharacterRenderer.#ctor(AngeliA.Character)
+  - AngeliA.CharacterRenderer.BeforeUpdate
+  - AngeliA.CharacterRenderer.CurrentAnimationFrame
+  - AngeliA.CharacterRenderer.CurrentRenderingBounce
+  - AngeliA.CharacterRenderer.LateUpdate
+  - AngeliA.CharacterRenderer.OnActivated
+  - AngeliA.CharacterRenderer.Scale
+  - AngeliA.CharacterRenderer.SpinOnGroundPound
+  - AngeliA.CharacterRenderer.TargetCharacter
+  - AngeliA.CharacterRenderer.Tint
+  langs:
+  - csharp
+  - vb
+  name: CharacterRenderer
+  nameWithType: CharacterRenderer
+  fullName: AngeliA.CharacterRenderer
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CharacterRenderer
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Behaviour class handles rendering of character
+  example: []
+  syntax:
+    content: public abstract class CharacterRenderer
+    content.vb: Public MustInherit Class CharacterRenderer
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - AngeliA.PoseCharacterRenderer
+  - AngeliA.SheetCharacterRenderer
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.CharacterRenderer.#ctor(AngeliA.Character)
+  commentId: M:AngeliA.CharacterRenderer.#ctor(AngeliA.Character)
+  id: '#ctor(AngeliA.Character)'
+  parent: AngeliA.CharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: CharacterRenderer(Character)
+  nameWithType: CharacterRenderer.CharacterRenderer(Character)
+  fullName: AngeliA.CharacterRenderer.CharacterRenderer(AngeliA.Character)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Behaviour class handles rendering of character
+  example: []
+  syntax:
+    content: protected CharacterRenderer(Character target)
+    parameters:
+    - id: target
+      type: AngeliA.Character
+    content.vb: Protected Sub New(target As Character)
+  overload: AngeliA.CharacterRenderer.#ctor*
+  nameWithType.vb: CharacterRenderer.New(Character)
+  fullName.vb: AngeliA.CharacterRenderer.New(AngeliA.Character)
+  name.vb: New(Character)
+- uid: AngeliA.CharacterRenderer.TargetCharacter
+  commentId: F:AngeliA.CharacterRenderer.TargetCharacter
+  id: TargetCharacter
+  parent: AngeliA.CharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: TargetCharacter
+  nameWithType: CharacterRenderer.TargetCharacter
+  fullName: AngeliA.CharacterRenderer.TargetCharacter
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TargetCharacter
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly Character TargetCharacter
+    return:
+      type: AngeliA.Character
+    content.vb: Public ReadOnly TargetCharacter As Character
+- uid: AngeliA.CharacterRenderer.CurrentAnimationFrame
+  commentId: P:AngeliA.CharacterRenderer.CurrentAnimationFrame
+  id: CurrentAnimationFrame
+  parent: AngeliA.CharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: CurrentAnimationFrame
+  nameWithType: CharacterRenderer.CurrentAnimationFrame
+  fullName: AngeliA.CharacterRenderer.CurrentAnimationFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CurrentAnimationFrame
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int CurrentAnimationFrame { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CurrentAnimationFrame As Integer
+  overload: AngeliA.CharacterRenderer.CurrentAnimationFrame*
+- uid: AngeliA.CharacterRenderer.CurrentRenderingBounce
+  commentId: P:AngeliA.CharacterRenderer.CurrentRenderingBounce
+  id: CurrentRenderingBounce
+  parent: AngeliA.CharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: CurrentRenderingBounce
+  nameWithType: CharacterRenderer.CurrentRenderingBounce
+  fullName: AngeliA.CharacterRenderer.CurrentRenderingBounce
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CurrentRenderingBounce
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int CurrentRenderingBounce { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CurrentRenderingBounce As Integer
+  overload: AngeliA.CharacterRenderer.CurrentRenderingBounce*
+- uid: AngeliA.CharacterRenderer.SpinOnGroundPound
+  commentId: P:AngeliA.CharacterRenderer.SpinOnGroundPound
+  id: SpinOnGroundPound
+  parent: AngeliA.CharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: SpinOnGroundPound
+  nameWithType: CharacterRenderer.SpinOnGroundPound
+  fullName: AngeliA.CharacterRenderer.SpinOnGroundPound
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SpinOnGroundPound
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Does character spin when ground pound
+  example: []
+  syntax:
+    content: public bool SpinOnGroundPound { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property SpinOnGroundPound As Boolean
+  overload: AngeliA.CharacterRenderer.SpinOnGroundPound*
+- uid: AngeliA.CharacterRenderer.Tint
+  commentId: P:AngeliA.CharacterRenderer.Tint
+  id: Tint
+  parent: AngeliA.CharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: Tint
+  nameWithType: CharacterRenderer.Tint
+  fullName: AngeliA.CharacterRenderer.Tint
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Tint
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Final color tint
+  example: []
+  syntax:
+    content: public FrameBasedColor Tint { get; set; }
+    parameters: []
+    return:
+      type: AngeliA.FrameBasedColor
+    content.vb: Public Property Tint As FrameBasedColor
+  overload: AngeliA.CharacterRenderer.Tint*
+- uid: AngeliA.CharacterRenderer.Scale
+  commentId: P:AngeliA.CharacterRenderer.Scale
+  id: Scale
+  parent: AngeliA.CharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: Scale
+  nameWithType: CharacterRenderer.Scale
+  fullName: AngeliA.CharacterRenderer.Scale
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Scale
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Final size scaling (0 means 0%, 1000 means 100%)
+  example: []
+  syntax:
+    content: public FrameBasedInt Scale { get; set; }
+    parameters: []
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public Property Scale As FrameBasedInt
+  overload: AngeliA.CharacterRenderer.Scale*
+- uid: AngeliA.CharacterRenderer.OnActivated
+  commentId: M:AngeliA.CharacterRenderer.OnActivated
+  id: OnActivated
+  parent: AngeliA.CharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: OnActivated()
+  nameWithType: CharacterRenderer.OnActivated()
+  fullName: AngeliA.CharacterRenderer.OnActivated()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnActivated
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Callback function for character entity get activated
+  example: []
+  syntax:
+    content: public virtual void OnActivated()
+    content.vb: Public Overridable Sub OnActivated()
+  overload: AngeliA.CharacterRenderer.OnActivated*
+- uid: AngeliA.CharacterRenderer.BeforeUpdate
+  commentId: M:AngeliA.CharacterRenderer.BeforeUpdate
+  id: BeforeUpdate
+  parent: AngeliA.CharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: BeforeUpdate()
+  nameWithType: CharacterRenderer.BeforeUpdate()
+  fullName: AngeliA.CharacterRenderer.BeforeUpdate()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BeforeUpdate
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+    startLine: 39
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual void BeforeUpdate()
+    content.vb: Public Overridable Sub BeforeUpdate()
+  overload: AngeliA.CharacterRenderer.BeforeUpdate*
+- uid: AngeliA.CharacterRenderer.LateUpdate
+  commentId: M:AngeliA.CharacterRenderer.LateUpdate
+  id: LateUpdate
+  parent: AngeliA.CharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: LateUpdate()
+  nameWithType: CharacterRenderer.LateUpdate()
+  fullName: AngeliA.CharacterRenderer.LateUpdate()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LateUpdate
+    path: ../AngeliA Framework/src/Behaviour/Renderer/CharacterRenderer.cs
+    startLine: 84
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual void LateUpdate()
+    content.vb: Public Overridable Sub LateUpdate()
+  overload: AngeliA.CharacterRenderer.LateUpdate*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.CharacterRenderer.#ctor*
+  commentId: Overload:AngeliA.CharacterRenderer.#ctor
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer__ctor_AngeliA_Character_
+  name: CharacterRenderer
+  nameWithType: CharacterRenderer.CharacterRenderer
+  fullName: AngeliA.CharacterRenderer.CharacterRenderer
+  nameWithType.vb: CharacterRenderer.New
+  fullName.vb: AngeliA.CharacterRenderer.New
+  name.vb: New
+- uid: AngeliA.Character
+  commentId: T:AngeliA.Character
+  parent: AngeliA
+  href: AngeliA.Character.html
+  name: Character
+  nameWithType: Character
+  fullName: AngeliA.Character
+- uid: AngeliA.CharacterRenderer.CurrentAnimationFrame*
+  commentId: Overload:AngeliA.CharacterRenderer.CurrentAnimationFrame
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_CurrentAnimationFrame
+  name: CurrentAnimationFrame
+  nameWithType: CharacterRenderer.CurrentAnimationFrame
+  fullName: AngeliA.CharacterRenderer.CurrentAnimationFrame
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.CharacterRenderer.CurrentRenderingBounce*
+  commentId: Overload:AngeliA.CharacterRenderer.CurrentRenderingBounce
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_CurrentRenderingBounce
+  name: CurrentRenderingBounce
+  nameWithType: CharacterRenderer.CurrentRenderingBounce
+  fullName: AngeliA.CharacterRenderer.CurrentRenderingBounce
+- uid: AngeliA.CharacterRenderer.SpinOnGroundPound*
+  commentId: Overload:AngeliA.CharacterRenderer.SpinOnGroundPound
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_SpinOnGroundPound
+  name: SpinOnGroundPound
+  nameWithType: CharacterRenderer.SpinOnGroundPound
+  fullName: AngeliA.CharacterRenderer.SpinOnGroundPound
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.CharacterRenderer.Tint*
+  commentId: Overload:AngeliA.CharacterRenderer.Tint
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_Tint
+  name: Tint
+  nameWithType: CharacterRenderer.Tint
+  fullName: AngeliA.CharacterRenderer.Tint
+- uid: AngeliA.FrameBasedColor
+  commentId: T:AngeliA.FrameBasedColor
+  parent: AngeliA
+  href: AngeliA.FrameBasedColor.html
+  name: FrameBasedColor
+  nameWithType: FrameBasedColor
+  fullName: AngeliA.FrameBasedColor
+- uid: AngeliA.CharacterRenderer.Scale*
+  commentId: Overload:AngeliA.CharacterRenderer.Scale
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_Scale
+  name: Scale
+  nameWithType: CharacterRenderer.Scale
+  fullName: AngeliA.CharacterRenderer.Scale
+- uid: AngeliA.FrameBasedInt
+  commentId: T:AngeliA.FrameBasedInt
+  parent: AngeliA
+  href: AngeliA.FrameBasedInt.html
+  name: FrameBasedInt
+  nameWithType: FrameBasedInt
+  fullName: AngeliA.FrameBasedInt
+- uid: AngeliA.CharacterRenderer.OnActivated*
+  commentId: Overload:AngeliA.CharacterRenderer.OnActivated
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_OnActivated
+  name: OnActivated
+  nameWithType: CharacterRenderer.OnActivated
+  fullName: AngeliA.CharacterRenderer.OnActivated
+- uid: AngeliA.CharacterRenderer.BeforeUpdate*
+  commentId: Overload:AngeliA.CharacterRenderer.BeforeUpdate
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_BeforeUpdate
+  name: BeforeUpdate
+  nameWithType: CharacterRenderer.BeforeUpdate
+  fullName: AngeliA.CharacterRenderer.BeforeUpdate
+- uid: AngeliA.CharacterRenderer.LateUpdate*
+  commentId: Overload:AngeliA.CharacterRenderer.LateUpdate
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_LateUpdate
+  name: LateUpdate
+  nameWithType: CharacterRenderer.LateUpdate
+  fullName: AngeliA.CharacterRenderer.LateUpdate

@@ -1,0 +1,1637 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Tail
+  commentId: T:AngeliA.Tail
+  id: Tail
+  parent: AngeliA
+  children:
+  - AngeliA.Tail.AngleAmountRoot
+  - AngeliA.Tail.AngleAmountSubsequent
+  - AngeliA.Tail.AngleOffset
+  - AngeliA.Tail.DrawGadget(AngeliA.PoseCharacterRenderer)
+  - AngeliA.Tail.DrawGadgetFromPool(AngeliA.PoseCharacterRenderer)
+  - AngeliA.Tail.DrawGadgetGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+  - AngeliA.Tail.DrawSpriteAsSimpleTail(AngeliA.OrientedSprite,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Int32)
+  - AngeliA.Tail.DrawSpriteAsWhipTail(AngeliA.OrientedSprite,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32)
+  - AngeliA.Tail.FillFromSheet(System.String)
+  - AngeliA.Tail.FrameDelta
+  - AngeliA.Tail.FrameLen
+  - AngeliA.Tail.Frequency
+  - AngeliA.Tail.FrequencyAlt
+  - AngeliA.Tail.GadgetType
+  - AngeliA.Tail.LimbGrow
+  - AngeliA.Tail.OffsetX
+  - AngeliA.Tail.OffsetY
+  - AngeliA.Tail.SpriteLoaded
+  - AngeliA.Tail.SpriteTail
+  langs:
+  - csharp
+  - vb
+  name: Tail
+  nameWithType: Tail
+  fullName: AngeliA.Tail
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Tail
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: 'public abstract class Tail : BodyGadget'
+    content.vb: Public MustInherit Class Tail Inherits BodyGadget
+  inheritance:
+  - System.Object
+  - AngeliA.BodyGadget
+  derivedClasses:
+  - AngeliA.ModularTail
+  inheritedMembers:
+  - AngeliA.BodyGadget.BodyGadgetSystemReady
+  - AngeliA.BodyGadget.SheetIndex
+  - AngeliA.BodyGadget.GadgetID
+  - AngeliA.BodyGadget.GadgetName
+  - AngeliA.BodyGadget.ForAllGadget
+  - AngeliA.BodyGadget.GetDefaultGadgetID(System.Int32,AngeliA.BodyGadgetType)
+  - AngeliA.BodyGadget.TryGetGadget(System.Int32,AngeliA.BodyGadget@)
+  - AngeliA.BodyGadget.GetDisplayName(System.String,System.Int32@)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Tail.GadgetType
+  commentId: P:AngeliA.Tail.GadgetType
+  id: GadgetType
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: GadgetType
+  nameWithType: Tail.GadgetType
+  fullName: AngeliA.Tail.GadgetType
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GadgetType
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override sealed BodyGadgetType GadgetType { get; }
+    parameters: []
+    return:
+      type: AngeliA.BodyGadgetType
+    content.vb: Public NotOverridable Overrides ReadOnly Property GadgetType As BodyGadgetType
+  overridden: AngeliA.BodyGadget.GadgetType
+  overload: AngeliA.Tail.GadgetType*
+- uid: AngeliA.Tail.SpriteLoaded
+  commentId: P:AngeliA.Tail.SpriteLoaded
+  id: SpriteLoaded
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: SpriteLoaded
+  nameWithType: Tail.SpriteLoaded
+  fullName: AngeliA.Tail.SpriteLoaded
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SpriteLoaded
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override bool SpriteLoaded { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides ReadOnly Property SpriteLoaded As Boolean
+  overridden: AngeliA.BodyGadget.SpriteLoaded
+  overload: AngeliA.Tail.SpriteLoaded*
+- uid: AngeliA.Tail.SpriteTail
+  commentId: P:AngeliA.Tail.SpriteTail
+  id: SpriteTail
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: SpriteTail
+  nameWithType: Tail.SpriteTail
+  fullName: AngeliA.Tail.SpriteTail
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SpriteTail
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public OrientedSprite SpriteTail { get; }
+    parameters: []
+    return:
+      type: AngeliA.OrientedSprite
+    content.vb: Public Property SpriteTail As OrientedSprite
+  overload: AngeliA.Tail.SpriteTail*
+- uid: AngeliA.Tail.LimbGrow
+  commentId: P:AngeliA.Tail.LimbGrow
+  id: LimbGrow
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: LimbGrow
+  nameWithType: Tail.LimbGrow
+  fullName: AngeliA.Tail.LimbGrow
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LimbGrow
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual int LimbGrow { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overridable ReadOnly Property LimbGrow As Integer
+  overload: AngeliA.Tail.LimbGrow*
+- uid: AngeliA.Tail.AngleAmountRoot
+  commentId: P:AngeliA.Tail.AngleAmountRoot
+  id: AngleAmountRoot
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: AngleAmountRoot
+  nameWithType: Tail.AngleAmountRoot
+  fullName: AngeliA.Tail.AngleAmountRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AngleAmountRoot
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual int AngleAmountRoot { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overridable ReadOnly Property AngleAmountRoot As Integer
+  overload: AngeliA.Tail.AngleAmountRoot*
+- uid: AngeliA.Tail.AngleAmountSubsequent
+  commentId: P:AngeliA.Tail.AngleAmountSubsequent
+  id: AngleAmountSubsequent
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: AngleAmountSubsequent
+  nameWithType: Tail.AngleAmountSubsequent
+  fullName: AngeliA.Tail.AngleAmountSubsequent
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AngleAmountSubsequent
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual int AngleAmountSubsequent { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overridable ReadOnly Property AngleAmountSubsequent As Integer
+  overload: AngeliA.Tail.AngleAmountSubsequent*
+- uid: AngeliA.Tail.AngleOffset
+  commentId: P:AngeliA.Tail.AngleOffset
+  id: AngleOffset
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: AngleOffset
+  nameWithType: Tail.AngleOffset
+  fullName: AngeliA.Tail.AngleOffset
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AngleOffset
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual int AngleOffset { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overridable ReadOnly Property AngleOffset As Integer
+  overload: AngeliA.Tail.AngleOffset*
+- uid: AngeliA.Tail.Frequency
+  commentId: P:AngeliA.Tail.Frequency
+  id: Frequency
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: Frequency
+  nameWithType: Tail.Frequency
+  fullName: AngeliA.Tail.Frequency
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Frequency
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual int Frequency { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overridable ReadOnly Property Frequency As Integer
+  overload: AngeliA.Tail.Frequency*
+- uid: AngeliA.Tail.FrequencyAlt
+  commentId: P:AngeliA.Tail.FrequencyAlt
+  id: FrequencyAlt
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: FrequencyAlt
+  nameWithType: Tail.FrequencyAlt
+  fullName: AngeliA.Tail.FrequencyAlt
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FrequencyAlt
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual int FrequencyAlt { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overridable ReadOnly Property FrequencyAlt As Integer
+  overload: AngeliA.Tail.FrequencyAlt*
+- uid: AngeliA.Tail.FrameLen
+  commentId: P:AngeliA.Tail.FrameLen
+  id: FrameLen
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: FrameLen
+  nameWithType: Tail.FrameLen
+  fullName: AngeliA.Tail.FrameLen
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FrameLen
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 25
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual int FrameLen { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overridable ReadOnly Property FrameLen As Integer
+  overload: AngeliA.Tail.FrameLen*
+- uid: AngeliA.Tail.FrameDelta
+  commentId: P:AngeliA.Tail.FrameDelta
+  id: FrameDelta
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: FrameDelta
+  nameWithType: Tail.FrameDelta
+  fullName: AngeliA.Tail.FrameDelta
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FrameDelta
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual int FrameDelta { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overridable ReadOnly Property FrameDelta As Integer
+  overload: AngeliA.Tail.FrameDelta*
+- uid: AngeliA.Tail.OffsetX
+  commentId: P:AngeliA.Tail.OffsetX
+  id: OffsetX
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: OffsetX
+  nameWithType: Tail.OffsetX
+  fullName: AngeliA.Tail.OffsetX
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OffsetX
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 27
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual int OffsetX { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overridable ReadOnly Property OffsetX As Integer
+  overload: AngeliA.Tail.OffsetX*
+- uid: AngeliA.Tail.OffsetY
+  commentId: P:AngeliA.Tail.OffsetY
+  id: OffsetY
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: OffsetY
+  nameWithType: Tail.OffsetY
+  fullName: AngeliA.Tail.OffsetY
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OffsetY
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual int OffsetY { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overridable ReadOnly Property OffsetY As Integer
+  overload: AngeliA.Tail.OffsetY*
+- uid: AngeliA.Tail.DrawGadget(AngeliA.PoseCharacterRenderer)
+  commentId: M:AngeliA.Tail.DrawGadget(AngeliA.PoseCharacterRenderer)
+  id: DrawGadget(AngeliA.PoseCharacterRenderer)
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: DrawGadget(PoseCharacterRenderer)
+  nameWithType: Tail.DrawGadget(PoseCharacterRenderer)
+  fullName: AngeliA.Tail.DrawGadget(AngeliA.PoseCharacterRenderer)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawGadget
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 39
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override void DrawGadget(PoseCharacterRenderer renderer)
+    parameters:
+    - id: renderer
+      type: AngeliA.PoseCharacterRenderer
+    content.vb: Public Overrides Sub DrawGadget(renderer As PoseCharacterRenderer)
+  overridden: AngeliA.BodyGadget.DrawGadget(AngeliA.PoseCharacterRenderer)
+  overload: AngeliA.Tail.DrawGadget*
+- uid: AngeliA.Tail.DrawGadgetGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+  commentId: M:AngeliA.Tail.DrawGadgetGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+  id: DrawGadgetGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: DrawGadgetGizmos(IRect, Color32, int)
+  nameWithType: Tail.DrawGadgetGizmos(IRect, Color32, int)
+  fullName: AngeliA.Tail.DrawGadgetGizmos(AngeliA.IRect, AngeliA.Color32, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawGadgetGizmos
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 80
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override void DrawGadgetGizmos(IRect rect, Color32 tint, int z)
+    parameters:
+    - id: rect
+      type: AngeliA.IRect
+    - id: tint
+      type: AngeliA.Color32
+    - id: z
+      type: System.Int32
+    content.vb: Public Overrides Sub DrawGadgetGizmos(rect As IRect, tint As Color32, z As Integer)
+  overridden: AngeliA.BodyGadget.DrawGadgetGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+  overload: AngeliA.Tail.DrawGadgetGizmos*
+  nameWithType.vb: Tail.DrawGadgetGizmos(IRect, Color32, Integer)
+  fullName.vb: AngeliA.Tail.DrawGadgetGizmos(AngeliA.IRect, AngeliA.Color32, Integer)
+  name.vb: DrawGadgetGizmos(IRect, Color32, Integer)
+- uid: AngeliA.Tail.FillFromSheet(System.String)
+  commentId: M:AngeliA.Tail.FillFromSheet(System.String)
+  id: FillFromSheet(System.String)
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: FillFromSheet(string)
+  nameWithType: Tail.FillFromSheet(string)
+  fullName: AngeliA.Tail.FillFromSheet(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FillFromSheet
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 94
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override bool FillFromSheet(string name)
+    parameters:
+    - id: name
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function FillFromSheet(name As String) As Boolean
+  overridden: AngeliA.BodyGadget.FillFromSheet(System.String)
+  overload: AngeliA.Tail.FillFromSheet*
+  nameWithType.vb: Tail.FillFromSheet(String)
+  fullName.vb: AngeliA.Tail.FillFromSheet(String)
+  name.vb: FillFromSheet(String)
+- uid: AngeliA.Tail.DrawGadgetFromPool(AngeliA.PoseCharacterRenderer)
+  commentId: M:AngeliA.Tail.DrawGadgetFromPool(AngeliA.PoseCharacterRenderer)
+  id: DrawGadgetFromPool(AngeliA.PoseCharacterRenderer)
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: DrawGadgetFromPool(PoseCharacterRenderer)
+  nameWithType: Tail.DrawGadgetFromPool(PoseCharacterRenderer)
+  fullName: AngeliA.Tail.DrawGadgetFromPool(AngeliA.PoseCharacterRenderer)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawGadgetFromPool
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 101
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void DrawGadgetFromPool(PoseCharacterRenderer renderer)
+    parameters:
+    - id: renderer
+      type: AngeliA.PoseCharacterRenderer
+    content.vb: Public Shared Sub DrawGadgetFromPool(renderer As PoseCharacterRenderer)
+  overload: AngeliA.Tail.DrawGadgetFromPool*
+- uid: AngeliA.Tail.DrawSpriteAsWhipTail(AngeliA.OrientedSprite,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32)
+  commentId: M:AngeliA.Tail.DrawSpriteAsWhipTail(AngeliA.OrientedSprite,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32)
+  id: DrawSpriteAsWhipTail(AngeliA.OrientedSprite,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32)
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: DrawSpriteAsWhipTail(OrientedSprite, int, int, bool, bool, bool, int, int, int, int, int, int, int, int, int, int, bool, int, int)
+  nameWithType: Tail.DrawSpriteAsWhipTail(OrientedSprite, int, int, bool, bool, bool, int, int, int, int, int, int, int, int, int, int, bool, int, int)
+  fullName: AngeliA.Tail.DrawSpriteAsWhipTail(AngeliA.OrientedSprite, int, int, bool, bool, bool, int, int, int, int, int, int, int, int, int, int, bool, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawSpriteAsWhipTail
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 108
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void DrawSpriteAsWhipTail(OrientedSprite oSprite, int x, int y, bool facingFront, bool facingRight, bool facingUp, int frequency = 113, int frequencyAlt = 277, int frameLen = 219, int frameDelta = 37, int angleAmountRoot = 1000, int angleAmountSubsequent = 1000, int angleOffset = 0, int limbGrow = 1000, int offsetX = 0, int offsetY = 0, bool isFlying = false, int frameOffset = 0, int z = -2147483648)
+    parameters:
+    - id: oSprite
+      type: AngeliA.OrientedSprite
+    - id: x
+      type: System.Int32
+    - id: y
+      type: System.Int32
+    - id: facingFront
+      type: System.Boolean
+    - id: facingRight
+      type: System.Boolean
+    - id: facingUp
+      type: System.Boolean
+    - id: frequency
+      type: System.Int32
+    - id: frequencyAlt
+      type: System.Int32
+    - id: frameLen
+      type: System.Int32
+    - id: frameDelta
+      type: System.Int32
+    - id: angleAmountRoot
+      type: System.Int32
+    - id: angleAmountSubsequent
+      type: System.Int32
+    - id: angleOffset
+      type: System.Int32
+    - id: limbGrow
+      type: System.Int32
+    - id: offsetX
+      type: System.Int32
+    - id: offsetY
+      type: System.Int32
+    - id: isFlying
+      type: System.Boolean
+    - id: frameOffset
+      type: System.Int32
+    - id: z
+      type: System.Int32
+    content.vb: Public Shared Sub DrawSpriteAsWhipTail(oSprite As OrientedSprite, x As Integer, y As Integer, facingFront As Boolean, facingRight As Boolean, facingUp As Boolean, frequency As Integer = 113, frequencyAlt As Integer = 277, frameLen As Integer = 219, frameDelta As Integer = 37, angleAmountRoot As Integer = 1000, angleAmountSubsequent As Integer = 1000, angleOffset As Integer = 0, limbGrow As Integer = 1000, offsetX As Integer = 0, offsetY As Integer = 0, isFlying As Boolean = False, frameOffset As Integer = 0, z As Integer = -2147483648)
+  overload: AngeliA.Tail.DrawSpriteAsWhipTail*
+  nameWithType.vb: Tail.DrawSpriteAsWhipTail(OrientedSprite, Integer, Integer, Boolean, Boolean, Boolean, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Boolean, Integer, Integer)
+  fullName.vb: AngeliA.Tail.DrawSpriteAsWhipTail(AngeliA.OrientedSprite, Integer, Integer, Boolean, Boolean, Boolean, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Boolean, Integer, Integer)
+  name.vb: DrawSpriteAsWhipTail(OrientedSprite, Integer, Integer, Boolean, Boolean, Boolean, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Boolean, Integer, Integer)
+- uid: AngeliA.Tail.DrawSpriteAsSimpleTail(AngeliA.OrientedSprite,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Int32)
+  commentId: M:AngeliA.Tail.DrawSpriteAsSimpleTail(AngeliA.OrientedSprite,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Int32)
+  id: DrawSpriteAsSimpleTail(AngeliA.OrientedSprite,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Int32)
+  parent: AngeliA.Tail
+  langs:
+  - csharp
+  - vb
+  name: DrawSpriteAsSimpleTail(OrientedSprite, int, int, bool, bool, bool, int)
+  nameWithType: Tail.DrawSpriteAsSimpleTail(OrientedSprite, int, int, bool, bool, bool, int)
+  fullName: AngeliA.Tail.DrawSpriteAsSimpleTail(AngeliA.OrientedSprite, int, int, bool, bool, bool, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawSpriteAsSimpleTail
+    path: ../AngeliA Framework/src/Entity/Character/BodyGadget/Tail.cs
+    startLine: 223
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void DrawSpriteAsSimpleTail(OrientedSprite oSprite, int x, int y, bool facingFront, bool facingRight, bool facingUp, int z = -2147483648)
+    parameters:
+    - id: oSprite
+      type: AngeliA.OrientedSprite
+    - id: x
+      type: System.Int32
+    - id: y
+      type: System.Int32
+    - id: facingFront
+      type: System.Boolean
+    - id: facingRight
+      type: System.Boolean
+    - id: facingUp
+      type: System.Boolean
+    - id: z
+      type: System.Int32
+    content.vb: Public Shared Sub DrawSpriteAsSimpleTail(oSprite As OrientedSprite, x As Integer, y As Integer, facingFront As Boolean, facingRight As Boolean, facingUp As Boolean, z As Integer = -2147483648)
+  overload: AngeliA.Tail.DrawSpriteAsSimpleTail*
+  nameWithType.vb: Tail.DrawSpriteAsSimpleTail(OrientedSprite, Integer, Integer, Boolean, Boolean, Boolean, Integer)
+  fullName.vb: AngeliA.Tail.DrawSpriteAsSimpleTail(AngeliA.OrientedSprite, Integer, Integer, Boolean, Boolean, Boolean, Integer)
+  name.vb: DrawSpriteAsSimpleTail(OrientedSprite, Integer, Integer, Boolean, Boolean, Boolean, Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.BodyGadget
+  commentId: T:AngeliA.BodyGadget
+  parent: AngeliA
+  href: AngeliA.BodyGadget.html
+  name: BodyGadget
+  nameWithType: BodyGadget
+  fullName: AngeliA.BodyGadget
+- uid: AngeliA.BodyGadget.BodyGadgetSystemReady
+  commentId: P:AngeliA.BodyGadget.BodyGadgetSystemReady
+  parent: AngeliA.BodyGadget
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_BodyGadgetSystemReady
+  name: BodyGadgetSystemReady
+  nameWithType: BodyGadget.BodyGadgetSystemReady
+  fullName: AngeliA.BodyGadget.BodyGadgetSystemReady
+- uid: AngeliA.BodyGadget.SheetIndex
+  commentId: P:AngeliA.BodyGadget.SheetIndex
+  parent: AngeliA.BodyGadget
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_SheetIndex
+  name: SheetIndex
+  nameWithType: BodyGadget.SheetIndex
+  fullName: AngeliA.BodyGadget.SheetIndex
+- uid: AngeliA.BodyGadget.GadgetID
+  commentId: P:AngeliA.BodyGadget.GadgetID
+  parent: AngeliA.BodyGadget
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_GadgetID
+  name: GadgetID
+  nameWithType: BodyGadget.GadgetID
+  fullName: AngeliA.BodyGadget.GadgetID
+- uid: AngeliA.BodyGadget.GadgetName
+  commentId: P:AngeliA.BodyGadget.GadgetName
+  parent: AngeliA.BodyGadget
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_GadgetName
+  name: GadgetName
+  nameWithType: BodyGadget.GadgetName
+  fullName: AngeliA.BodyGadget.GadgetName
+- uid: AngeliA.BodyGadget.ForAllGadget
+  commentId: M:AngeliA.BodyGadget.ForAllGadget
+  parent: AngeliA.BodyGadget
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_ForAllGadget
+  name: ForAllGadget()
+  nameWithType: BodyGadget.ForAllGadget()
+  fullName: AngeliA.BodyGadget.ForAllGadget()
+  spec.csharp:
+  - uid: AngeliA.BodyGadget.ForAllGadget
+    name: ForAllGadget
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_ForAllGadget
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.BodyGadget.ForAllGadget
+    name: ForAllGadget
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_ForAllGadget
+  - name: (
+  - name: )
+- uid: AngeliA.BodyGadget.GetDefaultGadgetID(System.Int32,AngeliA.BodyGadgetType)
+  commentId: M:AngeliA.BodyGadget.GetDefaultGadgetID(System.Int32,AngeliA.BodyGadgetType)
+  parent: AngeliA.BodyGadget
+  isExternal: true
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_GetDefaultGadgetID_System_Int32_AngeliA_BodyGadgetType_
+  name: GetDefaultGadgetID(int, BodyGadgetType)
+  nameWithType: BodyGadget.GetDefaultGadgetID(int, BodyGadgetType)
+  fullName: AngeliA.BodyGadget.GetDefaultGadgetID(int, AngeliA.BodyGadgetType)
+  nameWithType.vb: BodyGadget.GetDefaultGadgetID(Integer, BodyGadgetType)
+  fullName.vb: AngeliA.BodyGadget.GetDefaultGadgetID(Integer, AngeliA.BodyGadgetType)
+  name.vb: GetDefaultGadgetID(Integer, BodyGadgetType)
+  spec.csharp:
+  - uid: AngeliA.BodyGadget.GetDefaultGadgetID(System.Int32,AngeliA.BodyGadgetType)
+    name: GetDefaultGadgetID
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_GetDefaultGadgetID_System_Int32_AngeliA_BodyGadgetType_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.BodyGadgetType
+    name: BodyGadgetType
+    href: AngeliA.BodyGadgetType.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.BodyGadget.GetDefaultGadgetID(System.Int32,AngeliA.BodyGadgetType)
+    name: GetDefaultGadgetID
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_GetDefaultGadgetID_System_Int32_AngeliA_BodyGadgetType_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.BodyGadgetType
+    name: BodyGadgetType
+    href: AngeliA.BodyGadgetType.html
+  - name: )
+- uid: AngeliA.BodyGadget.TryGetGadget(System.Int32,AngeliA.BodyGadget@)
+  commentId: M:AngeliA.BodyGadget.TryGetGadget(System.Int32,AngeliA.BodyGadget@)
+  parent: AngeliA.BodyGadget
+  isExternal: true
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_TryGetGadget_System_Int32_AngeliA_BodyGadget__
+  name: TryGetGadget(int, out BodyGadget)
+  nameWithType: BodyGadget.TryGetGadget(int, out BodyGadget)
+  fullName: AngeliA.BodyGadget.TryGetGadget(int, out AngeliA.BodyGadget)
+  nameWithType.vb: BodyGadget.TryGetGadget(Integer, BodyGadget)
+  fullName.vb: AngeliA.BodyGadget.TryGetGadget(Integer, AngeliA.BodyGadget)
+  name.vb: TryGetGadget(Integer, BodyGadget)
+  spec.csharp:
+  - uid: AngeliA.BodyGadget.TryGetGadget(System.Int32,AngeliA.BodyGadget@)
+    name: TryGetGadget
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_TryGetGadget_System_Int32_AngeliA_BodyGadget__
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: AngeliA.BodyGadget
+    name: BodyGadget
+    href: AngeliA.BodyGadget.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.BodyGadget.TryGetGadget(System.Int32,AngeliA.BodyGadget@)
+    name: TryGetGadget
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_TryGetGadget_System_Int32_AngeliA_BodyGadget__
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.BodyGadget
+    name: BodyGadget
+    href: AngeliA.BodyGadget.html
+  - name: )
+- uid: AngeliA.BodyGadget.GetDisplayName(System.String,System.Int32@)
+  commentId: M:AngeliA.BodyGadget.GetDisplayName(System.String,System.Int32@)
+  parent: AngeliA.BodyGadget
+  isExternal: true
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_GetDisplayName_System_String_System_Int32__
+  name: GetDisplayName(string, out int)
+  nameWithType: BodyGadget.GetDisplayName(string, out int)
+  fullName: AngeliA.BodyGadget.GetDisplayName(string, out int)
+  nameWithType.vb: BodyGadget.GetDisplayName(String, Integer)
+  fullName.vb: AngeliA.BodyGadget.GetDisplayName(String, Integer)
+  name.vb: GetDisplayName(String, Integer)
+  spec.csharp:
+  - uid: AngeliA.BodyGadget.GetDisplayName(System.String,System.Int32@)
+    name: GetDisplayName
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_GetDisplayName_System_String_System_Int32__
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.BodyGadget.GetDisplayName(System.String,System.Int32@)
+    name: GetDisplayName
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_GetDisplayName_System_String_System_Int32__
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.BodyGadget.GadgetType
+  commentId: P:AngeliA.BodyGadget.GadgetType
+  parent: AngeliA.BodyGadget
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_GadgetType
+  name: GadgetType
+  nameWithType: BodyGadget.GadgetType
+  fullName: AngeliA.BodyGadget.GadgetType
+- uid: AngeliA.Tail.GadgetType*
+  commentId: Overload:AngeliA.Tail.GadgetType
+  href: AngeliA.Tail.html#AngeliA_Tail_GadgetType
+  name: GadgetType
+  nameWithType: Tail.GadgetType
+  fullName: AngeliA.Tail.GadgetType
+- uid: AngeliA.BodyGadgetType
+  commentId: T:AngeliA.BodyGadgetType
+  parent: AngeliA
+  href: AngeliA.BodyGadgetType.html
+  name: BodyGadgetType
+  nameWithType: BodyGadgetType
+  fullName: AngeliA.BodyGadgetType
+- uid: AngeliA.BodyGadget.SpriteLoaded
+  commentId: P:AngeliA.BodyGadget.SpriteLoaded
+  parent: AngeliA.BodyGadget
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_SpriteLoaded
+  name: SpriteLoaded
+  nameWithType: BodyGadget.SpriteLoaded
+  fullName: AngeliA.BodyGadget.SpriteLoaded
+- uid: AngeliA.Tail.SpriteLoaded*
+  commentId: Overload:AngeliA.Tail.SpriteLoaded
+  href: AngeliA.Tail.html#AngeliA_Tail_SpriteLoaded
+  name: SpriteLoaded
+  nameWithType: Tail.SpriteLoaded
+  fullName: AngeliA.Tail.SpriteLoaded
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Tail.SpriteTail*
+  commentId: Overload:AngeliA.Tail.SpriteTail
+  href: AngeliA.Tail.html#AngeliA_Tail_SpriteTail
+  name: SpriteTail
+  nameWithType: Tail.SpriteTail
+  fullName: AngeliA.Tail.SpriteTail
+- uid: AngeliA.OrientedSprite
+  commentId: T:AngeliA.OrientedSprite
+  parent: AngeliA
+  href: AngeliA.OrientedSprite.html
+  name: OrientedSprite
+  nameWithType: OrientedSprite
+  fullName: AngeliA.OrientedSprite
+- uid: AngeliA.Tail.LimbGrow*
+  commentId: Overload:AngeliA.Tail.LimbGrow
+  href: AngeliA.Tail.html#AngeliA_Tail_LimbGrow
+  name: LimbGrow
+  nameWithType: Tail.LimbGrow
+  fullName: AngeliA.Tail.LimbGrow
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Tail.AngleAmountRoot*
+  commentId: Overload:AngeliA.Tail.AngleAmountRoot
+  href: AngeliA.Tail.html#AngeliA_Tail_AngleAmountRoot
+  name: AngleAmountRoot
+  nameWithType: Tail.AngleAmountRoot
+  fullName: AngeliA.Tail.AngleAmountRoot
+- uid: AngeliA.Tail.AngleAmountSubsequent*
+  commentId: Overload:AngeliA.Tail.AngleAmountSubsequent
+  href: AngeliA.Tail.html#AngeliA_Tail_AngleAmountSubsequent
+  name: AngleAmountSubsequent
+  nameWithType: Tail.AngleAmountSubsequent
+  fullName: AngeliA.Tail.AngleAmountSubsequent
+- uid: AngeliA.Tail.AngleOffset*
+  commentId: Overload:AngeliA.Tail.AngleOffset
+  href: AngeliA.Tail.html#AngeliA_Tail_AngleOffset
+  name: AngleOffset
+  nameWithType: Tail.AngleOffset
+  fullName: AngeliA.Tail.AngleOffset
+- uid: AngeliA.Tail.Frequency*
+  commentId: Overload:AngeliA.Tail.Frequency
+  href: AngeliA.Tail.html#AngeliA_Tail_Frequency
+  name: Frequency
+  nameWithType: Tail.Frequency
+  fullName: AngeliA.Tail.Frequency
+- uid: AngeliA.Tail.FrequencyAlt*
+  commentId: Overload:AngeliA.Tail.FrequencyAlt
+  href: AngeliA.Tail.html#AngeliA_Tail_FrequencyAlt
+  name: FrequencyAlt
+  nameWithType: Tail.FrequencyAlt
+  fullName: AngeliA.Tail.FrequencyAlt
+- uid: AngeliA.Tail.FrameLen*
+  commentId: Overload:AngeliA.Tail.FrameLen
+  href: AngeliA.Tail.html#AngeliA_Tail_FrameLen
+  name: FrameLen
+  nameWithType: Tail.FrameLen
+  fullName: AngeliA.Tail.FrameLen
+- uid: AngeliA.Tail.FrameDelta*
+  commentId: Overload:AngeliA.Tail.FrameDelta
+  href: AngeliA.Tail.html#AngeliA_Tail_FrameDelta
+  name: FrameDelta
+  nameWithType: Tail.FrameDelta
+  fullName: AngeliA.Tail.FrameDelta
+- uid: AngeliA.Tail.OffsetX*
+  commentId: Overload:AngeliA.Tail.OffsetX
+  href: AngeliA.Tail.html#AngeliA_Tail_OffsetX
+  name: OffsetX
+  nameWithType: Tail.OffsetX
+  fullName: AngeliA.Tail.OffsetX
+- uid: AngeliA.Tail.OffsetY*
+  commentId: Overload:AngeliA.Tail.OffsetY
+  href: AngeliA.Tail.html#AngeliA_Tail_OffsetY
+  name: OffsetY
+  nameWithType: Tail.OffsetY
+  fullName: AngeliA.Tail.OffsetY
+- uid: AngeliA.BodyGadget.DrawGadget(AngeliA.PoseCharacterRenderer)
+  commentId: M:AngeliA.BodyGadget.DrawGadget(AngeliA.PoseCharacterRenderer)
+  parent: AngeliA.BodyGadget
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_DrawGadget_AngeliA_PoseCharacterRenderer_
+  name: DrawGadget(PoseCharacterRenderer)
+  nameWithType: BodyGadget.DrawGadget(PoseCharacterRenderer)
+  fullName: AngeliA.BodyGadget.DrawGadget(AngeliA.PoseCharacterRenderer)
+  spec.csharp:
+  - uid: AngeliA.BodyGadget.DrawGadget(AngeliA.PoseCharacterRenderer)
+    name: DrawGadget
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_DrawGadget_AngeliA_PoseCharacterRenderer_
+  - name: (
+  - uid: AngeliA.PoseCharacterRenderer
+    name: PoseCharacterRenderer
+    href: AngeliA.PoseCharacterRenderer.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.BodyGadget.DrawGadget(AngeliA.PoseCharacterRenderer)
+    name: DrawGadget
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_DrawGadget_AngeliA_PoseCharacterRenderer_
+  - name: (
+  - uid: AngeliA.PoseCharacterRenderer
+    name: PoseCharacterRenderer
+    href: AngeliA.PoseCharacterRenderer.html
+  - name: )
+- uid: AngeliA.Tail.DrawGadget*
+  commentId: Overload:AngeliA.Tail.DrawGadget
+  href: AngeliA.Tail.html#AngeliA_Tail_DrawGadget_AngeliA_PoseCharacterRenderer_
+  name: DrawGadget
+  nameWithType: Tail.DrawGadget
+  fullName: AngeliA.Tail.DrawGadget
+- uid: AngeliA.PoseCharacterRenderer
+  commentId: T:AngeliA.PoseCharacterRenderer
+  parent: AngeliA
+  href: AngeliA.PoseCharacterRenderer.html
+  name: PoseCharacterRenderer
+  nameWithType: PoseCharacterRenderer
+  fullName: AngeliA.PoseCharacterRenderer
+- uid: AngeliA.BodyGadget.DrawGadgetGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+  commentId: M:AngeliA.BodyGadget.DrawGadgetGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+  parent: AngeliA.BodyGadget
+  isExternal: true
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_DrawGadgetGizmos_AngeliA_IRect_AngeliA_Color32_System_Int32_
+  name: DrawGadgetGizmos(IRect, Color32, int)
+  nameWithType: BodyGadget.DrawGadgetGizmos(IRect, Color32, int)
+  fullName: AngeliA.BodyGadget.DrawGadgetGizmos(AngeliA.IRect, AngeliA.Color32, int)
+  nameWithType.vb: BodyGadget.DrawGadgetGizmos(IRect, Color32, Integer)
+  fullName.vb: AngeliA.BodyGadget.DrawGadgetGizmos(AngeliA.IRect, AngeliA.Color32, Integer)
+  name.vb: DrawGadgetGizmos(IRect, Color32, Integer)
+  spec.csharp:
+  - uid: AngeliA.BodyGadget.DrawGadgetGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+    name: DrawGadgetGizmos
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_DrawGadgetGizmos_AngeliA_IRect_AngeliA_Color32_System_Int32_
+  - name: (
+  - uid: AngeliA.IRect
+    name: IRect
+    href: AngeliA.IRect.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Color32
+    name: Color32
+    href: AngeliA.Color32.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.BodyGadget.DrawGadgetGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+    name: DrawGadgetGizmos
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_DrawGadgetGizmos_AngeliA_IRect_AngeliA_Color32_System_Int32_
+  - name: (
+  - uid: AngeliA.IRect
+    name: IRect
+    href: AngeliA.IRect.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Color32
+    name: Color32
+    href: AngeliA.Color32.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Tail.DrawGadgetGizmos*
+  commentId: Overload:AngeliA.Tail.DrawGadgetGizmos
+  href: AngeliA.Tail.html#AngeliA_Tail_DrawGadgetGizmos_AngeliA_IRect_AngeliA_Color32_System_Int32_
+  name: DrawGadgetGizmos
+  nameWithType: Tail.DrawGadgetGizmos
+  fullName: AngeliA.Tail.DrawGadgetGizmos
+- uid: AngeliA.IRect
+  commentId: T:AngeliA.IRect
+  parent: AngeliA
+  href: AngeliA.IRect.html
+  name: IRect
+  nameWithType: IRect
+  fullName: AngeliA.IRect
+- uid: AngeliA.Color32
+  commentId: T:AngeliA.Color32
+  parent: AngeliA
+  href: AngeliA.Color32.html
+  name: Color32
+  nameWithType: Color32
+  fullName: AngeliA.Color32
+- uid: AngeliA.BodyGadget.FillFromSheet(System.String)
+  commentId: M:AngeliA.BodyGadget.FillFromSheet(System.String)
+  parent: AngeliA.BodyGadget
+  isExternal: true
+  href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_FillFromSheet_System_String_
+  name: FillFromSheet(string)
+  nameWithType: BodyGadget.FillFromSheet(string)
+  fullName: AngeliA.BodyGadget.FillFromSheet(string)
+  nameWithType.vb: BodyGadget.FillFromSheet(String)
+  fullName.vb: AngeliA.BodyGadget.FillFromSheet(String)
+  name.vb: FillFromSheet(String)
+  spec.csharp:
+  - uid: AngeliA.BodyGadget.FillFromSheet(System.String)
+    name: FillFromSheet
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_FillFromSheet_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: AngeliA.BodyGadget.FillFromSheet(System.String)
+    name: FillFromSheet
+    href: AngeliA.BodyGadget.html#AngeliA_BodyGadget_FillFromSheet_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: AngeliA.Tail.FillFromSheet*
+  commentId: Overload:AngeliA.Tail.FillFromSheet
+  href: AngeliA.Tail.html#AngeliA_Tail_FillFromSheet_System_String_
+  name: FillFromSheet
+  nameWithType: Tail.FillFromSheet
+  fullName: AngeliA.Tail.FillFromSheet
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.Tail.DrawGadgetFromPool*
+  commentId: Overload:AngeliA.Tail.DrawGadgetFromPool
+  href: AngeliA.Tail.html#AngeliA_Tail_DrawGadgetFromPool_AngeliA_PoseCharacterRenderer_
+  name: DrawGadgetFromPool
+  nameWithType: Tail.DrawGadgetFromPool
+  fullName: AngeliA.Tail.DrawGadgetFromPool
+- uid: AngeliA.Tail.DrawSpriteAsWhipTail*
+  commentId: Overload:AngeliA.Tail.DrawSpriteAsWhipTail
+  href: AngeliA.Tail.html#AngeliA_Tail_DrawSpriteAsWhipTail_AngeliA_OrientedSprite_System_Int32_System_Int32_System_Boolean_System_Boolean_System_Boolean_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Boolean_System_Int32_System_Int32_
+  name: DrawSpriteAsWhipTail
+  nameWithType: Tail.DrawSpriteAsWhipTail
+  fullName: AngeliA.Tail.DrawSpriteAsWhipTail
+- uid: AngeliA.Tail.DrawSpriteAsSimpleTail*
+  commentId: Overload:AngeliA.Tail.DrawSpriteAsSimpleTail
+  href: AngeliA.Tail.html#AngeliA_Tail_DrawSpriteAsSimpleTail_AngeliA_OrientedSprite_System_Int32_System_Int32_System_Boolean_System_Boolean_System_Boolean_System_Int32_
+  name: DrawSpriteAsSimpleTail
+  nameWithType: Tail.DrawSpriteAsSimpleTail
+  fullName: AngeliA.Tail.DrawSpriteAsSimpleTail

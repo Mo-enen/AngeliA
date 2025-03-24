@@ -1,0 +1,860 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Platformer.CraftingUI
+  commentId: T:AngeliA.Platformer.CraftingUI
+  id: CraftingUI
+  parent: AngeliA.Platformer
+  children:
+  - AngeliA.Platformer.CraftingUI.DrawPanel(AngeliA.IRect)
+  - AngeliA.Platformer.CraftingUI.EnablePanel
+  - AngeliA.Platformer.CraftingUI.FrameCode
+  - AngeliA.Platformer.CraftingUI.ItemFieldSize
+  - AngeliA.Platformer.CraftingUI.SetColumnAndRow(System.Int32,System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: CraftingUI
+  nameWithType: CraftingUI
+  fullName: AngeliA.Platformer.CraftingUI
+  type: Class
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CraftingUI
+    path: ../AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+    startLine: 7
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: 'public sealed class CraftingUI : InventoryPartnerUI, IWindowEntityUI'
+    content.vb: Public NotInheritable Class CraftingUI Inherits InventoryPartnerUI Implements IWindowEntityUI
+  inheritance:
+  - System.Object
+  - AngeliA.PlayerMenuPartnerUI
+  - AngeliA.InventoryPartnerUI
+  implements:
+  - AngeliA.IWindowEntityUI
+  inheritedMembers:
+  - AngeliA.InventoryPartnerUI.TYPE_ID
+  - AngeliA.InventoryPartnerUI.Instance
+  - AngeliA.InventoryPartnerUI.Column
+  - AngeliA.InventoryPartnerUI.Row
+  - AngeliA.InventoryPartnerUI.AvatarID
+  - AngeliA.InventoryPartnerUI._Column
+  - AngeliA.InventoryPartnerUI._Row
+  - AngeliA.PlayerMenuPartnerUI.InventoryID
+  - AngeliA.PlayerMenuPartnerUI.MouseInPanel
+  - AngeliA.PlayerMenuPartnerUI.BackgroundRect
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Platformer.CraftingUI.ItemFieldSize
+  commentId: P:AngeliA.Platformer.CraftingUI.ItemFieldSize
+  id: ItemFieldSize
+  parent: AngeliA.Platformer.CraftingUI
+  langs:
+  - csharp
+  - vb
+  name: ItemFieldSize
+  nameWithType: CraftingUI.ItemFieldSize
+  fullName: AngeliA.Platformer.CraftingUI.ItemFieldSize
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ItemFieldSize
+    path: ../AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+    startLine: 26
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override int ItemFieldSize { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overrides ReadOnly Property ItemFieldSize As Integer
+  overridden: AngeliA.PlayerMenuPartnerUI.ItemFieldSize
+  overload: AngeliA.Platformer.CraftingUI.ItemFieldSize*
+- uid: AngeliA.Platformer.CraftingUI.FrameCode
+  commentId: P:AngeliA.Platformer.CraftingUI.FrameCode
+  id: FrameCode
+  parent: AngeliA.Platformer.CraftingUI
+  langs:
+  - csharp
+  - vb
+  name: FrameCode
+  nameWithType: CraftingUI.FrameCode
+  fullName: AngeliA.Platformer.CraftingUI.FrameCode
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FrameCode
+    path: ../AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+    startLine: 27
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public SpriteCode FrameCode { get; set; }
+    parameters: []
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Property FrameCode As SpriteCode
+  overload: AngeliA.Platformer.CraftingUI.FrameCode*
+- uid: AngeliA.Platformer.CraftingUI.EnablePanel
+  commentId: M:AngeliA.Platformer.CraftingUI.EnablePanel
+  id: EnablePanel
+  parent: AngeliA.Platformer.CraftingUI
+  langs:
+  - csharp
+  - vb
+  name: EnablePanel()
+  nameWithType: CraftingUI.EnablePanel()
+  fullName: AngeliA.Platformer.CraftingUI.EnablePanel()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EnablePanel
+    path: ../AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+    startLine: 43
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void EnablePanel()
+    content.vb: Public Overrides Sub EnablePanel()
+  overridden: AngeliA.PlayerMenuPartnerUI.EnablePanel
+  overload: AngeliA.Platformer.CraftingUI.EnablePanel*
+- uid: AngeliA.Platformer.CraftingUI.DrawPanel(AngeliA.IRect)
+  commentId: M:AngeliA.Platformer.CraftingUI.DrawPanel(AngeliA.IRect)
+  id: DrawPanel(AngeliA.IRect)
+  parent: AngeliA.Platformer.CraftingUI
+  langs:
+  - csharp
+  - vb
+  name: DrawPanel(IRect)
+  nameWithType: CraftingUI.DrawPanel(IRect)
+  fullName: AngeliA.Platformer.CraftingUI.DrawPanel(AngeliA.IRect)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawPanel
+    path: ../AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+    startLine: 50
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void DrawPanel(IRect panelRect)
+    parameters:
+    - id: panelRect
+      type: AngeliA.IRect
+    content.vb: Public Overrides Sub DrawPanel(panelRect As IRect)
+  overridden: AngeliA.InventoryPartnerUI.DrawPanel(AngeliA.IRect)
+  overload: AngeliA.Platformer.CraftingUI.DrawPanel*
+- uid: AngeliA.Platformer.CraftingUI.SetColumnAndRow(System.Int32,System.Int32)
+  commentId: M:AngeliA.Platformer.CraftingUI.SetColumnAndRow(System.Int32,System.Int32)
+  id: SetColumnAndRow(System.Int32,System.Int32)
+  parent: AngeliA.Platformer.CraftingUI
+  langs:
+  - csharp
+  - vb
+  name: SetColumnAndRow(int, int)
+  nameWithType: CraftingUI.SetColumnAndRow(int, int)
+  fullName: AngeliA.Platformer.CraftingUI.SetColumnAndRow(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetColumnAndRow
+    path: ../AngeliA Platformer/src/Entity/Furniture/CraftingUI.cs
+    startLine: 514
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public void SetColumnAndRow(int newColumn, int newRow)
+    parameters:
+    - id: newColumn
+      type: System.Int32
+    - id: newRow
+      type: System.Int32
+    content.vb: Public Sub SetColumnAndRow(newColumn As Integer, newRow As Integer)
+  overload: AngeliA.Platformer.CraftingUI.SetColumnAndRow*
+  nameWithType.vb: CraftingUI.SetColumnAndRow(Integer, Integer)
+  fullName.vb: AngeliA.Platformer.CraftingUI.SetColumnAndRow(Integer, Integer)
+  name.vb: SetColumnAndRow(Integer, Integer)
+references:
+- uid: AngeliA.Platformer
+  commentId: N:AngeliA.Platformer
+  href: AngeliA.html
+  name: AngeliA.Platformer
+  nameWithType: AngeliA.Platformer
+  fullName: AngeliA.Platformer
+  spec.csharp:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+  spec.vb:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.PlayerMenuPartnerUI
+  commentId: T:AngeliA.PlayerMenuPartnerUI
+  parent: AngeliA
+  href: AngeliA.PlayerMenuPartnerUI.html
+  name: PlayerMenuPartnerUI
+  nameWithType: PlayerMenuPartnerUI
+  fullName: AngeliA.PlayerMenuPartnerUI
+- uid: AngeliA.InventoryPartnerUI
+  commentId: T:AngeliA.InventoryPartnerUI
+  parent: AngeliA
+  href: AngeliA.InventoryPartnerUI.html
+  name: InventoryPartnerUI
+  nameWithType: InventoryPartnerUI
+  fullName: AngeliA.InventoryPartnerUI
+- uid: AngeliA.IWindowEntityUI
+  commentId: T:AngeliA.IWindowEntityUI
+  parent: AngeliA
+  href: AngeliA.IWindowEntityUI.html
+  name: IWindowEntityUI
+  nameWithType: IWindowEntityUI
+  fullName: AngeliA.IWindowEntityUI
+- uid: AngeliA.InventoryPartnerUI.TYPE_ID
+  commentId: F:AngeliA.InventoryPartnerUI.TYPE_ID
+  parent: AngeliA.InventoryPartnerUI
+  href: AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI_TYPE_ID
+  name: TYPE_ID
+  nameWithType: InventoryPartnerUI.TYPE_ID
+  fullName: AngeliA.InventoryPartnerUI.TYPE_ID
+- uid: AngeliA.InventoryPartnerUI.Instance
+  commentId: F:AngeliA.InventoryPartnerUI.Instance
+  parent: AngeliA.InventoryPartnerUI
+  href: AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI_Instance
+  name: Instance
+  nameWithType: InventoryPartnerUI.Instance
+  fullName: AngeliA.InventoryPartnerUI.Instance
+- uid: AngeliA.InventoryPartnerUI.Column
+  commentId: P:AngeliA.InventoryPartnerUI.Column
+  parent: AngeliA.InventoryPartnerUI
+  href: AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI_Column
+  name: Column
+  nameWithType: InventoryPartnerUI.Column
+  fullName: AngeliA.InventoryPartnerUI.Column
+- uid: AngeliA.InventoryPartnerUI.Row
+  commentId: P:AngeliA.InventoryPartnerUI.Row
+  parent: AngeliA.InventoryPartnerUI
+  href: AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI_Row
+  name: Row
+  nameWithType: InventoryPartnerUI.Row
+  fullName: AngeliA.InventoryPartnerUI.Row
+- uid: AngeliA.InventoryPartnerUI.AvatarID
+  commentId: P:AngeliA.InventoryPartnerUI.AvatarID
+  parent: AngeliA.InventoryPartnerUI
+  href: AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI_AvatarID
+  name: AvatarID
+  nameWithType: InventoryPartnerUI.AvatarID
+  fullName: AngeliA.InventoryPartnerUI.AvatarID
+- uid: AngeliA.InventoryPartnerUI._Column
+  commentId: P:AngeliA.InventoryPartnerUI._Column
+  parent: AngeliA.InventoryPartnerUI
+  href: AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI__Column
+  name: _Column
+  nameWithType: InventoryPartnerUI._Column
+  fullName: AngeliA.InventoryPartnerUI._Column
+- uid: AngeliA.InventoryPartnerUI._Row
+  commentId: P:AngeliA.InventoryPartnerUI._Row
+  parent: AngeliA.InventoryPartnerUI
+  href: AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI__Row
+  name: _Row
+  nameWithType: InventoryPartnerUI._Row
+  fullName: AngeliA.InventoryPartnerUI._Row
+- uid: AngeliA.PlayerMenuPartnerUI.InventoryID
+  commentId: P:AngeliA.PlayerMenuPartnerUI.InventoryID
+  parent: AngeliA.PlayerMenuPartnerUI
+  href: AngeliA.PlayerMenuPartnerUI.html#AngeliA_PlayerMenuPartnerUI_InventoryID
+  name: InventoryID
+  nameWithType: PlayerMenuPartnerUI.InventoryID
+  fullName: AngeliA.PlayerMenuPartnerUI.InventoryID
+- uid: AngeliA.PlayerMenuPartnerUI.MouseInPanel
+  commentId: P:AngeliA.PlayerMenuPartnerUI.MouseInPanel
+  parent: AngeliA.PlayerMenuPartnerUI
+  href: AngeliA.PlayerMenuPartnerUI.html#AngeliA_PlayerMenuPartnerUI_MouseInPanel
+  name: MouseInPanel
+  nameWithType: PlayerMenuPartnerUI.MouseInPanel
+  fullName: AngeliA.PlayerMenuPartnerUI.MouseInPanel
+- uid: AngeliA.PlayerMenuPartnerUI.BackgroundRect
+  commentId: P:AngeliA.PlayerMenuPartnerUI.BackgroundRect
+  parent: AngeliA.PlayerMenuPartnerUI
+  href: AngeliA.PlayerMenuPartnerUI.html#AngeliA_PlayerMenuPartnerUI_BackgroundRect
+  name: BackgroundRect
+  nameWithType: PlayerMenuPartnerUI.BackgroundRect
+  fullName: AngeliA.PlayerMenuPartnerUI.BackgroundRect
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.PlayerMenuPartnerUI.ItemFieldSize
+  commentId: P:AngeliA.PlayerMenuPartnerUI.ItemFieldSize
+  parent: AngeliA.PlayerMenuPartnerUI
+  href: AngeliA.PlayerMenuPartnerUI.html#AngeliA_PlayerMenuPartnerUI_ItemFieldSize
+  name: ItemFieldSize
+  nameWithType: PlayerMenuPartnerUI.ItemFieldSize
+  fullName: AngeliA.PlayerMenuPartnerUI.ItemFieldSize
+- uid: AngeliA.Platformer.CraftingUI.ItemFieldSize*
+  commentId: Overload:AngeliA.Platformer.CraftingUI.ItemFieldSize
+  href: AngeliA.Platformer.CraftingUI.html#AngeliA_Platformer_CraftingUI_ItemFieldSize
+  name: ItemFieldSize
+  nameWithType: CraftingUI.ItemFieldSize
+  fullName: AngeliA.Platformer.CraftingUI.ItemFieldSize
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Platformer.CraftingUI.FrameCode*
+  commentId: Overload:AngeliA.Platformer.CraftingUI.FrameCode
+  href: AngeliA.Platformer.CraftingUI.html#AngeliA_Platformer_CraftingUI_FrameCode
+  name: FrameCode
+  nameWithType: CraftingUI.FrameCode
+  fullName: AngeliA.Platformer.CraftingUI.FrameCode
+- uid: AngeliA.SpriteCode
+  commentId: T:AngeliA.SpriteCode
+  parent: AngeliA
+  href: AngeliA.SpriteCode.html
+  name: SpriteCode
+  nameWithType: SpriteCode
+  fullName: AngeliA.SpriteCode
+- uid: AngeliA.PlayerMenuPartnerUI.EnablePanel
+  commentId: M:AngeliA.PlayerMenuPartnerUI.EnablePanel
+  parent: AngeliA.PlayerMenuPartnerUI
+  href: AngeliA.PlayerMenuPartnerUI.html#AngeliA_PlayerMenuPartnerUI_EnablePanel
+  name: EnablePanel()
+  nameWithType: PlayerMenuPartnerUI.EnablePanel()
+  fullName: AngeliA.PlayerMenuPartnerUI.EnablePanel()
+  spec.csharp:
+  - uid: AngeliA.PlayerMenuPartnerUI.EnablePanel
+    name: EnablePanel
+    href: AngeliA.PlayerMenuPartnerUI.html#AngeliA_PlayerMenuPartnerUI_EnablePanel
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.PlayerMenuPartnerUI.EnablePanel
+    name: EnablePanel
+    href: AngeliA.PlayerMenuPartnerUI.html#AngeliA_PlayerMenuPartnerUI_EnablePanel
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.CraftingUI.EnablePanel*
+  commentId: Overload:AngeliA.Platformer.CraftingUI.EnablePanel
+  href: AngeliA.Platformer.CraftingUI.html#AngeliA_Platformer_CraftingUI_EnablePanel
+  name: EnablePanel
+  nameWithType: CraftingUI.EnablePanel
+  fullName: AngeliA.Platformer.CraftingUI.EnablePanel
+- uid: AngeliA.InventoryPartnerUI.DrawPanel(AngeliA.IRect)
+  commentId: M:AngeliA.InventoryPartnerUI.DrawPanel(AngeliA.IRect)
+  parent: AngeliA.InventoryPartnerUI
+  href: AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI_DrawPanel_AngeliA_IRect_
+  name: DrawPanel(IRect)
+  nameWithType: InventoryPartnerUI.DrawPanel(IRect)
+  fullName: AngeliA.InventoryPartnerUI.DrawPanel(AngeliA.IRect)
+  spec.csharp:
+  - uid: AngeliA.InventoryPartnerUI.DrawPanel(AngeliA.IRect)
+    name: DrawPanel
+    href: AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI_DrawPanel_AngeliA_IRect_
+  - name: (
+  - uid: AngeliA.IRect
+    name: IRect
+    href: AngeliA.IRect.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.InventoryPartnerUI.DrawPanel(AngeliA.IRect)
+    name: DrawPanel
+    href: AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI_DrawPanel_AngeliA_IRect_
+  - name: (
+  - uid: AngeliA.IRect
+    name: IRect
+    href: AngeliA.IRect.html
+  - name: )
+- uid: AngeliA.Platformer.CraftingUI.DrawPanel*
+  commentId: Overload:AngeliA.Platformer.CraftingUI.DrawPanel
+  href: AngeliA.Platformer.CraftingUI.html#AngeliA_Platformer_CraftingUI_DrawPanel_AngeliA_IRect_
+  name: DrawPanel
+  nameWithType: CraftingUI.DrawPanel
+  fullName: AngeliA.Platformer.CraftingUI.DrawPanel
+- uid: AngeliA.IRect
+  commentId: T:AngeliA.IRect
+  parent: AngeliA
+  href: AngeliA.IRect.html
+  name: IRect
+  nameWithType: IRect
+  fullName: AngeliA.IRect
+- uid: AngeliA.Platformer.CraftingUI.SetColumnAndRow*
+  commentId: Overload:AngeliA.Platformer.CraftingUI.SetColumnAndRow
+  href: AngeliA.Platformer.CraftingUI.html#AngeliA_Platformer_CraftingUI_SetColumnAndRow_System_Int32_System_Int32_
+  name: SetColumnAndRow
+  nameWithType: CraftingUI.SetColumnAndRow
+  fullName: AngeliA.Platformer.CraftingUI.SetColumnAndRow

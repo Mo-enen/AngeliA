@@ -1,0 +1,1166 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.OrientedSprite
+  commentId: T:AngeliA.OrientedSprite
+  id: OrientedSprite
+  parent: AngeliA
+  children:
+  - AngeliA.OrientedSprite.#ctor
+  - AngeliA.OrientedSprite.#ctor(System.String,System.String)
+  - AngeliA.OrientedSprite.#ctor(System.String,System.String,System.String)
+  - AngeliA.OrientedSprite.#ctor(System.String,System.String,System.String,System.String)
+  - AngeliA.OrientedSprite.#ctor(System.String,System.String[])
+  - AngeliA.OrientedSprite.AttachmentName
+  - AngeliA.OrientedSprite.GetID(System.Boolean,System.Boolean)
+  - AngeliA.OrientedSprite.IsValid
+  - AngeliA.OrientedSprite.LoadFromSheet(System.String,System.String)
+  - AngeliA.OrientedSprite.SpriteID_BL
+  - AngeliA.OrientedSprite.SpriteID_BR
+  - AngeliA.OrientedSprite.SpriteID_FL
+  - AngeliA.OrientedSprite.SpriteID_FR
+  - AngeliA.OrientedSprite.TryGetSprite(System.Boolean,System.Boolean,System.Int32,AngeliA.AngeSprite@)
+  - AngeliA.OrientedSprite.TryGetSpriteForGizmos(AngeliA.AngeSprite@)
+  - AngeliA.OrientedSprite.TryGetSpriteGroup(System.Boolean,System.Boolean,AngeliA.SpriteGroup@)
+  - AngeliA.OrientedSprite.TryGetSpriteWithoutAnimation(System.Boolean,System.Boolean,AngeliA.AngeSprite@)
+  langs:
+  - csharp
+  - vb
+  name: OrientedSprite
+  nameWithType: OrientedSprite
+  fullName: AngeliA.OrientedSprite
+  type: Struct
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OrientedSprite
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 2
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public struct OrientedSprite
+    content.vb: Public Structure OrientedSprite
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.OrientedSprite.IsValid
+  commentId: P:AngeliA.OrientedSprite.IsValid
+  id: IsValid
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: IsValid
+  nameWithType: OrientedSprite.IsValid
+  fullName: AngeliA.OrientedSprite.IsValid
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsValid
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly bool IsValid { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsValid As Boolean
+  overload: AngeliA.OrientedSprite.IsValid*
+- uid: AngeliA.OrientedSprite.AttachmentName
+  commentId: F:AngeliA.OrientedSprite.AttachmentName
+  id: AttachmentName
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: AttachmentName
+  nameWithType: OrientedSprite.AttachmentName
+  fullName: AngeliA.OrientedSprite.AttachmentName
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AttachmentName
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 7
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string AttachmentName
+    return:
+      type: System.String
+    content.vb: Public AttachmentName As String
+- uid: AngeliA.OrientedSprite.SpriteID_FL
+  commentId: F:AngeliA.OrientedSprite.SpriteID_FL
+  id: SpriteID_FL
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: SpriteID_FL
+  nameWithType: OrientedSprite.SpriteID_FL
+  fullName: AngeliA.OrientedSprite.SpriteID_FL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SpriteID_FL
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int SpriteID_FL
+    return:
+      type: System.Int32
+    content.vb: Public SpriteID_FL As Integer
+- uid: AngeliA.OrientedSprite.SpriteID_FR
+  commentId: F:AngeliA.OrientedSprite.SpriteID_FR
+  id: SpriteID_FR
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: SpriteID_FR
+  nameWithType: OrientedSprite.SpriteID_FR
+  fullName: AngeliA.OrientedSprite.SpriteID_FR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SpriteID_FR
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int SpriteID_FR
+    return:
+      type: System.Int32
+    content.vb: Public SpriteID_FR As Integer
+- uid: AngeliA.OrientedSprite.SpriteID_BL
+  commentId: F:AngeliA.OrientedSprite.SpriteID_BL
+  id: SpriteID_BL
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: SpriteID_BL
+  nameWithType: OrientedSprite.SpriteID_BL
+  fullName: AngeliA.OrientedSprite.SpriteID_BL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SpriteID_BL
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int SpriteID_BL
+    return:
+      type: System.Int32
+    content.vb: Public SpriteID_BL As Integer
+- uid: AngeliA.OrientedSprite.SpriteID_BR
+  commentId: F:AngeliA.OrientedSprite.SpriteID_BR
+  id: SpriteID_BR
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: SpriteID_BR
+  nameWithType: OrientedSprite.SpriteID_BR
+  fullName: AngeliA.OrientedSprite.SpriteID_BR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SpriteID_BR
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int SpriteID_BR
+    return:
+      type: System.Int32
+    content.vb: Public SpriteID_BR As Integer
+- uid: AngeliA.OrientedSprite.#ctor
+  commentId: M:AngeliA.OrientedSprite.#ctor
+  id: '#ctor'
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: OrientedSprite()
+  nameWithType: OrientedSprite.OrientedSprite()
+  fullName: AngeliA.OrientedSprite.OrientedSprite()
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public OrientedSprite()
+    content.vb: Public Sub New()
+  overload: AngeliA.OrientedSprite.#ctor*
+  nameWithType.vb: OrientedSprite.New()
+  fullName.vb: AngeliA.OrientedSprite.New()
+  name.vb: New()
+- uid: AngeliA.OrientedSprite.#ctor(System.String,System.String)
+  commentId: M:AngeliA.OrientedSprite.#ctor(System.String,System.String)
+  id: '#ctor(System.String,System.String)'
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: OrientedSprite(string, string)
+  nameWithType: OrientedSprite.OrientedSprite(string, string)
+  fullName: AngeliA.OrientedSprite.OrientedSprite(string, string)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public OrientedSprite(string hostName, string attachmentName)
+    parameters:
+    - id: hostName
+      type: System.String
+    - id: attachmentName
+      type: System.String
+    content.vb: Public Sub New(hostName As String, attachmentName As String)
+  overload: AngeliA.OrientedSprite.#ctor*
+  nameWithType.vb: OrientedSprite.New(String, String)
+  fullName.vb: AngeliA.OrientedSprite.New(String, String)
+  name.vb: New(String, String)
+- uid: AngeliA.OrientedSprite.#ctor(System.String,System.String,System.String)
+  commentId: M:AngeliA.OrientedSprite.#ctor(System.String,System.String,System.String)
+  id: '#ctor(System.String,System.String,System.String)'
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: OrientedSprite(string, string, string)
+  nameWithType: OrientedSprite.OrientedSprite(string, string, string)
+  fullName: AngeliA.OrientedSprite.OrientedSprite(string, string, string)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public OrientedSprite(string hostName, string attachmentName, string attachmentNameAlt)
+    parameters:
+    - id: hostName
+      type: System.String
+    - id: attachmentName
+      type: System.String
+    - id: attachmentNameAlt
+      type: System.String
+    content.vb: Public Sub New(hostName As String, attachmentName As String, attachmentNameAlt As String)
+  overload: AngeliA.OrientedSprite.#ctor*
+  nameWithType.vb: OrientedSprite.New(String, String, String)
+  fullName.vb: AngeliA.OrientedSprite.New(String, String, String)
+  name.vb: New(String, String, String)
+- uid: AngeliA.OrientedSprite.#ctor(System.String,System.String,System.String,System.String)
+  commentId: M:AngeliA.OrientedSprite.#ctor(System.String,System.String,System.String,System.String)
+  id: '#ctor(System.String,System.String,System.String,System.String)'
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: OrientedSprite(string, string, string, string)
+  nameWithType: OrientedSprite.OrientedSprite(string, string, string, string)
+  fullName: AngeliA.OrientedSprite.OrientedSprite(string, string, string, string)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public OrientedSprite(string hostName, string attachmentName, string attachmentNameAltA, string attachmentNameAltB)
+    parameters:
+    - id: hostName
+      type: System.String
+    - id: attachmentName
+      type: System.String
+    - id: attachmentNameAltA
+      type: System.String
+    - id: attachmentNameAltB
+      type: System.String
+    content.vb: Public Sub New(hostName As String, attachmentName As String, attachmentNameAltA As String, attachmentNameAltB As String)
+  overload: AngeliA.OrientedSprite.#ctor*
+  nameWithType.vb: OrientedSprite.New(String, String, String, String)
+  fullName.vb: AngeliA.OrientedSprite.New(String, String, String, String)
+  name.vb: New(String, String, String, String)
+- uid: AngeliA.OrientedSprite.#ctor(System.String,System.String[])
+  commentId: M:AngeliA.OrientedSprite.#ctor(System.String,System.String[])
+  id: '#ctor(System.String,System.String[])'
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: OrientedSprite(string, params string[])
+  nameWithType: OrientedSprite.OrientedSprite(string, params string[])
+  fullName: AngeliA.OrientedSprite.OrientedSprite(string, params string[])
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public OrientedSprite(string hostName, params string[] attachmentNames)
+    parameters:
+    - id: hostName
+      type: System.String
+    - id: attachmentNames
+      type: System.String[]
+    content.vb: Public Sub New(hostName As String, ParamArray attachmentNames As String())
+  overload: AngeliA.OrientedSprite.#ctor*
+  nameWithType.vb: OrientedSprite.New(String, ParamArray String())
+  fullName.vb: AngeliA.OrientedSprite.New(String, ParamArray String())
+  name.vb: New(String, ParamArray String())
+- uid: AngeliA.OrientedSprite.LoadFromSheet(System.String,System.String)
+  commentId: M:AngeliA.OrientedSprite.LoadFromSheet(System.String,System.String)
+  id: LoadFromSheet(System.String,System.String)
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: LoadFromSheet(string, string)
+  nameWithType: OrientedSprite.LoadFromSheet(string, string)
+  fullName: AngeliA.OrientedSprite.LoadFromSheet(string, string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LoadFromSheet
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public bool LoadFromSheet(string hostName, string attachmentName)
+    parameters:
+    - id: hostName
+      type: System.String
+    - id: attachmentName
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function LoadFromSheet(hostName As String, attachmentName As String) As Boolean
+  overload: AngeliA.OrientedSprite.LoadFromSheet*
+  nameWithType.vb: OrientedSprite.LoadFromSheet(String, String)
+  fullName.vb: AngeliA.OrientedSprite.LoadFromSheet(String, String)
+  name.vb: LoadFromSheet(String, String)
+- uid: AngeliA.OrientedSprite.GetID(System.Boolean,System.Boolean)
+  commentId: M:AngeliA.OrientedSprite.GetID(System.Boolean,System.Boolean)
+  id: GetID(System.Boolean,System.Boolean)
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: GetID(bool, bool)
+  nameWithType: OrientedSprite.GetID(bool, bool)
+  fullName: AngeliA.OrientedSprite.GetID(bool, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetID
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 85
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly int GetID(bool front, bool right)
+    parameters:
+    - id: front
+      type: System.Boolean
+    - id: right
+      type: System.Boolean
+    return:
+      type: System.Int32
+    content.vb: Public Function GetID(front As Boolean, right As Boolean) As Integer
+  overload: AngeliA.OrientedSprite.GetID*
+  nameWithType.vb: OrientedSprite.GetID(Boolean, Boolean)
+  fullName.vb: AngeliA.OrientedSprite.GetID(Boolean, Boolean)
+  name.vb: GetID(Boolean, Boolean)
+- uid: AngeliA.OrientedSprite.TryGetSpriteWithoutAnimation(System.Boolean,System.Boolean,AngeliA.AngeSprite@)
+  commentId: M:AngeliA.OrientedSprite.TryGetSpriteWithoutAnimation(System.Boolean,System.Boolean,AngeliA.AngeSprite@)
+  id: TryGetSpriteWithoutAnimation(System.Boolean,System.Boolean,AngeliA.AngeSprite@)
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: TryGetSpriteWithoutAnimation(bool, bool, out AngeSprite)
+  nameWithType: OrientedSprite.TryGetSpriteWithoutAnimation(bool, bool, out AngeSprite)
+  fullName: AngeliA.OrientedSprite.TryGetSpriteWithoutAnimation(bool, bool, out AngeliA.AngeSprite)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TryGetSpriteWithoutAnimation
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 86
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly bool TryGetSpriteWithoutAnimation(bool front, bool right, out AngeSprite sprite)
+    parameters:
+    - id: front
+      type: System.Boolean
+    - id: right
+      type: System.Boolean
+    - id: sprite
+      type: AngeliA.AngeSprite
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetSpriteWithoutAnimation(front As Boolean, right As Boolean, sprite As AngeSprite) As Boolean
+  overload: AngeliA.OrientedSprite.TryGetSpriteWithoutAnimation*
+  nameWithType.vb: OrientedSprite.TryGetSpriteWithoutAnimation(Boolean, Boolean, AngeSprite)
+  fullName.vb: AngeliA.OrientedSprite.TryGetSpriteWithoutAnimation(Boolean, Boolean, AngeliA.AngeSprite)
+  name.vb: TryGetSpriteWithoutAnimation(Boolean, Boolean, AngeSprite)
+- uid: AngeliA.OrientedSprite.TryGetSpriteGroup(System.Boolean,System.Boolean,AngeliA.SpriteGroup@)
+  commentId: M:AngeliA.OrientedSprite.TryGetSpriteGroup(System.Boolean,System.Boolean,AngeliA.SpriteGroup@)
+  id: TryGetSpriteGroup(System.Boolean,System.Boolean,AngeliA.SpriteGroup@)
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: TryGetSpriteGroup(bool, bool, out SpriteGroup)
+  nameWithType: OrientedSprite.TryGetSpriteGroup(bool, bool, out SpriteGroup)
+  fullName: AngeliA.OrientedSprite.TryGetSpriteGroup(bool, bool, out AngeliA.SpriteGroup)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TryGetSpriteGroup
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 87
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly bool TryGetSpriteGroup(bool front, bool right, out SpriteGroup group)
+    parameters:
+    - id: front
+      type: System.Boolean
+    - id: right
+      type: System.Boolean
+    - id: group
+      type: AngeliA.SpriteGroup
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetSpriteGroup(front As Boolean, right As Boolean, group As SpriteGroup) As Boolean
+  overload: AngeliA.OrientedSprite.TryGetSpriteGroup*
+  nameWithType.vb: OrientedSprite.TryGetSpriteGroup(Boolean, Boolean, SpriteGroup)
+  fullName.vb: AngeliA.OrientedSprite.TryGetSpriteGroup(Boolean, Boolean, AngeliA.SpriteGroup)
+  name.vb: TryGetSpriteGroup(Boolean, Boolean, SpriteGroup)
+- uid: AngeliA.OrientedSprite.TryGetSprite(System.Boolean,System.Boolean,System.Int32,AngeliA.AngeSprite@)
+  commentId: M:AngeliA.OrientedSprite.TryGetSprite(System.Boolean,System.Boolean,System.Int32,AngeliA.AngeSprite@)
+  id: TryGetSprite(System.Boolean,System.Boolean,System.Int32,AngeliA.AngeSprite@)
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: TryGetSprite(bool, bool, int, out AngeSprite)
+  nameWithType: OrientedSprite.TryGetSprite(bool, bool, int, out AngeSprite)
+  fullName: AngeliA.OrientedSprite.TryGetSprite(bool, bool, int, out AngeliA.AngeSprite)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TryGetSprite
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 88
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly bool TryGetSprite(bool front, bool right, int animationFrame, out AngeSprite sprite)
+    parameters:
+    - id: front
+      type: System.Boolean
+    - id: right
+      type: System.Boolean
+    - id: animationFrame
+      type: System.Int32
+    - id: sprite
+      type: AngeliA.AngeSprite
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetSprite(front As Boolean, right As Boolean, animationFrame As Integer, sprite As AngeSprite) As Boolean
+  overload: AngeliA.OrientedSprite.TryGetSprite*
+  nameWithType.vb: OrientedSprite.TryGetSprite(Boolean, Boolean, Integer, AngeSprite)
+  fullName.vb: AngeliA.OrientedSprite.TryGetSprite(Boolean, Boolean, Integer, AngeliA.AngeSprite)
+  name.vb: TryGetSprite(Boolean, Boolean, Integer, AngeSprite)
+- uid: AngeliA.OrientedSprite.TryGetSpriteForGizmos(AngeliA.AngeSprite@)
+  commentId: M:AngeliA.OrientedSprite.TryGetSpriteForGizmos(AngeliA.AngeSprite@)
+  id: TryGetSpriteForGizmos(AngeliA.AngeSprite@)
+  parent: AngeliA.OrientedSprite
+  langs:
+  - csharp
+  - vb
+  name: TryGetSpriteForGizmos(out AngeSprite)
+  nameWithType: OrientedSprite.TryGetSpriteForGizmos(out AngeSprite)
+  fullName: AngeliA.OrientedSprite.TryGetSpriteForGizmos(out AngeliA.AngeSprite)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TryGetSpriteForGizmos
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/OrientedSprite.cs
+    startLine: 99
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly bool TryGetSpriteForGizmos(out AngeSprite sprite)
+    parameters:
+    - id: sprite
+      type: AngeliA.AngeSprite
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetSpriteForGizmos(sprite As AngeSprite) As Boolean
+  overload: AngeliA.OrientedSprite.TryGetSpriteForGizmos*
+  nameWithType.vb: OrientedSprite.TryGetSpriteForGizmos(AngeSprite)
+  fullName.vb: AngeliA.OrientedSprite.TryGetSpriteForGizmos(AngeliA.AngeSprite)
+  name.vb: TryGetSpriteForGizmos(AngeSprite)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.OrientedSprite.IsValid*
+  commentId: Overload:AngeliA.OrientedSprite.IsValid
+  href: AngeliA.OrientedSprite.html#AngeliA_OrientedSprite_IsValid
+  name: IsValid
+  nameWithType: OrientedSprite.IsValid
+  fullName: AngeliA.OrientedSprite.IsValid
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.OrientedSprite.#ctor*
+  commentId: Overload:AngeliA.OrientedSprite.#ctor
+  href: AngeliA.OrientedSprite.html#AngeliA_OrientedSprite__ctor
+  name: OrientedSprite
+  nameWithType: OrientedSprite.OrientedSprite
+  fullName: AngeliA.OrientedSprite.OrientedSprite
+  nameWithType.vb: OrientedSprite.New
+  fullName.vb: AngeliA.OrientedSprite.New
+  name.vb: New
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: AngeliA.OrientedSprite.LoadFromSheet*
+  commentId: Overload:AngeliA.OrientedSprite.LoadFromSheet
+  href: AngeliA.OrientedSprite.html#AngeliA_OrientedSprite_LoadFromSheet_System_String_System_String_
+  name: LoadFromSheet
+  nameWithType: OrientedSprite.LoadFromSheet
+  fullName: AngeliA.OrientedSprite.LoadFromSheet
+- uid: AngeliA.OrientedSprite.GetID*
+  commentId: Overload:AngeliA.OrientedSprite.GetID
+  href: AngeliA.OrientedSprite.html#AngeliA_OrientedSprite_GetID_System_Boolean_System_Boolean_
+  name: GetID
+  nameWithType: OrientedSprite.GetID
+  fullName: AngeliA.OrientedSprite.GetID
+- uid: AngeliA.OrientedSprite.TryGetSpriteWithoutAnimation*
+  commentId: Overload:AngeliA.OrientedSprite.TryGetSpriteWithoutAnimation
+  href: AngeliA.OrientedSprite.html#AngeliA_OrientedSprite_TryGetSpriteWithoutAnimation_System_Boolean_System_Boolean_AngeliA_AngeSprite__
+  name: TryGetSpriteWithoutAnimation
+  nameWithType: OrientedSprite.TryGetSpriteWithoutAnimation
+  fullName: AngeliA.OrientedSprite.TryGetSpriteWithoutAnimation
+- uid: AngeliA.AngeSprite
+  commentId: T:AngeliA.AngeSprite
+  parent: AngeliA
+  href: AngeliA.AngeSprite.html
+  name: AngeSprite
+  nameWithType: AngeSprite
+  fullName: AngeliA.AngeSprite
+- uid: AngeliA.OrientedSprite.TryGetSpriteGroup*
+  commentId: Overload:AngeliA.OrientedSprite.TryGetSpriteGroup
+  href: AngeliA.OrientedSprite.html#AngeliA_OrientedSprite_TryGetSpriteGroup_System_Boolean_System_Boolean_AngeliA_SpriteGroup__
+  name: TryGetSpriteGroup
+  nameWithType: OrientedSprite.TryGetSpriteGroup
+  fullName: AngeliA.OrientedSprite.TryGetSpriteGroup
+- uid: AngeliA.SpriteGroup
+  commentId: T:AngeliA.SpriteGroup
+  parent: AngeliA
+  href: AngeliA.SpriteGroup.html
+  name: SpriteGroup
+  nameWithType: SpriteGroup
+  fullName: AngeliA.SpriteGroup
+- uid: AngeliA.OrientedSprite.TryGetSprite*
+  commentId: Overload:AngeliA.OrientedSprite.TryGetSprite
+  href: AngeliA.OrientedSprite.html#AngeliA_OrientedSprite_TryGetSprite_System_Boolean_System_Boolean_System_Int32_AngeliA_AngeSprite__
+  name: TryGetSprite
+  nameWithType: OrientedSprite.TryGetSprite
+  fullName: AngeliA.OrientedSprite.TryGetSprite
+- uid: AngeliA.OrientedSprite.TryGetSpriteForGizmos*
+  commentId: Overload:AngeliA.OrientedSprite.TryGetSpriteForGizmos
+  href: AngeliA.OrientedSprite.html#AngeliA_OrientedSprite_TryGetSpriteForGizmos_AngeliA_AngeSprite__
+  name: TryGetSpriteForGizmos
+  nameWithType: OrientedSprite.TryGetSpriteForGizmos
+  fullName: AngeliA.OrientedSprite.TryGetSpriteForGizmos

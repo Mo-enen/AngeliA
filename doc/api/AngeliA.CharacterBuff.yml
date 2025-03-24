@@ -1,0 +1,1140 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.CharacterBuff
+  commentId: T:AngeliA.CharacterBuff
+  id: CharacterBuff
+  parent: AngeliA
+  children:
+  - AngeliA.CharacterBuff.BuffCount
+  - AngeliA.CharacterBuff.ClearAllBuffs
+  - AngeliA.CharacterBuff.ClearBuff(System.Int32)
+  - AngeliA.CharacterBuff.ForAllBuffs
+  - AngeliA.CharacterBuff.GetBuffData(System.Int32)
+  - AngeliA.CharacterBuff.GetBuffDescription(System.Int32)
+  - AngeliA.CharacterBuff.GetBuffDisplayName(System.Int32)
+  - AngeliA.CharacterBuff.GetBuffEndFrame(System.Int32)
+  - AngeliA.CharacterBuff.GiveBuff(System.Int32,System.Int32)
+  - AngeliA.CharacterBuff.HasBuff(System.Int32)
+  - AngeliA.CharacterBuff.IsBuffPrevented(System.Int32)
+  - AngeliA.CharacterBuff.PreventBuff(System.Int32,System.Int32)
+  - AngeliA.CharacterBuff.SetBuffData(System.Int32,System.Object)
+  langs:
+  - csharp
+  - vb
+  name: CharacterBuff
+  nameWithType: CharacterBuff
+  fullName: AngeliA.CharacterBuff
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CharacterBuff
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Behavour class that handles buff logic for characters
+  example: []
+  syntax:
+    content: public sealed class CharacterBuff
+    content.vb: Public NotInheritable Class CharacterBuff
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.CharacterBuff.BuffCount
+  commentId: P:AngeliA.CharacterBuff.BuffCount
+  id: BuffCount
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: BuffCount
+  nameWithType: CharacterBuff.BuffCount
+  fullName: AngeliA.CharacterBuff.BuffCount
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BuffCount
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Total count for all buff the character is having
+  example: []
+  syntax:
+    content: public int BuffCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property BuffCount As Integer
+  overload: AngeliA.CharacterBuff.BuffCount*
+- uid: AngeliA.CharacterBuff.HasBuff(System.Int32)
+  commentId: M:AngeliA.CharacterBuff.HasBuff(System.Int32)
+  id: HasBuff(System.Int32)
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: HasBuff(int)
+  nameWithType: CharacterBuff.HasBuff(int)
+  fullName: AngeliA.CharacterBuff.HasBuff(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HasBuff
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 121
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: True if the character is having the given buff
+  example: []
+  syntax:
+    content: public bool HasBuff(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Function HasBuff(id As Integer) As Boolean
+  overload: AngeliA.CharacterBuff.HasBuff*
+  nameWithType.vb: CharacterBuff.HasBuff(Integer)
+  fullName.vb: AngeliA.CharacterBuff.HasBuff(Integer)
+  name.vb: HasBuff(Integer)
+- uid: AngeliA.CharacterBuff.GiveBuff(System.Int32,System.Int32)
+  commentId: M:AngeliA.CharacterBuff.GiveBuff(System.Int32,System.Int32)
+  id: GiveBuff(System.Int32,System.Int32)
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: GiveBuff(int, int)
+  nameWithType: CharacterBuff.GiveBuff(int, int)
+  fullName: AngeliA.CharacterBuff.GiveBuff(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GiveBuff
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 127
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Give the character given buff for specified frames long
+  example: []
+  syntax:
+    content: public void GiveBuff(int id, int duration = -1)
+    parameters:
+    - id: id
+      type: System.Int32
+    - id: duration
+      type: System.Int32
+    content.vb: Public Sub GiveBuff(id As Integer, duration As Integer = -1)
+  overload: AngeliA.CharacterBuff.GiveBuff*
+  nameWithType.vb: CharacterBuff.GiveBuff(Integer, Integer)
+  fullName.vb: AngeliA.CharacterBuff.GiveBuff(Integer, Integer)
+  name.vb: GiveBuff(Integer, Integer)
+- uid: AngeliA.CharacterBuff.ClearBuff(System.Int32)
+  commentId: M:AngeliA.CharacterBuff.ClearBuff(System.Int32)
+  id: ClearBuff(System.Int32)
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: ClearBuff(int)
+  nameWithType: CharacterBuff.ClearBuff(int)
+  fullName: AngeliA.CharacterBuff.ClearBuff(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ClearBuff
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 145
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Remove the given buff from character
+  example: []
+  syntax:
+    content: public void ClearBuff(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    content.vb: Public Sub ClearBuff(id As Integer)
+  overload: AngeliA.CharacterBuff.ClearBuff*
+  nameWithType.vb: CharacterBuff.ClearBuff(Integer)
+  fullName.vb: AngeliA.CharacterBuff.ClearBuff(Integer)
+  name.vb: ClearBuff(Integer)
+- uid: AngeliA.CharacterBuff.ClearAllBuffs
+  commentId: M:AngeliA.CharacterBuff.ClearAllBuffs
+  id: ClearAllBuffs
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: ClearAllBuffs()
+  nameWithType: CharacterBuff.ClearAllBuffs()
+  fullName: AngeliA.CharacterBuff.ClearAllBuffs()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ClearAllBuffs
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 151
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Remove all buff from character
+  example: []
+  syntax:
+    content: public void ClearAllBuffs()
+    content.vb: Public Sub ClearAllBuffs()
+  overload: AngeliA.CharacterBuff.ClearAllBuffs*
+- uid: AngeliA.CharacterBuff.PreventBuff(System.Int32,System.Int32)
+  commentId: M:AngeliA.CharacterBuff.PreventBuff(System.Int32,System.Int32)
+  id: PreventBuff(System.Int32,System.Int32)
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: PreventBuff(int, int)
+  nameWithType: CharacterBuff.PreventBuff(int, int)
+  fullName: AngeliA.CharacterBuff.PreventBuff(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PreventBuff
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 160
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Do not allow the character have given buff for specified frames
+  example: []
+  syntax:
+    content: public void PreventBuff(int id, int duration = 1)
+    parameters:
+    - id: id
+      type: System.Int32
+    - id: duration
+      type: System.Int32
+    content.vb: Public Sub PreventBuff(id As Integer, duration As Integer = 1)
+  overload: AngeliA.CharacterBuff.PreventBuff*
+  nameWithType.vb: CharacterBuff.PreventBuff(Integer, Integer)
+  fullName.vb: AngeliA.CharacterBuff.PreventBuff(Integer, Integer)
+  name.vb: PreventBuff(Integer, Integer)
+- uid: AngeliA.CharacterBuff.IsBuffPrevented(System.Int32)
+  commentId: M:AngeliA.CharacterBuff.IsBuffPrevented(System.Int32)
+  id: IsBuffPrevented(System.Int32)
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: IsBuffPrevented(int)
+  nameWithType: CharacterBuff.IsBuffPrevented(int)
+  fullName: AngeliA.CharacterBuff.IsBuffPrevented(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsBuffPrevented
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 169
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: True if the given buff is being prevented
+  example: []
+  syntax:
+    content: public bool IsBuffPrevented(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsBuffPrevented(id As Integer) As Boolean
+  overload: AngeliA.CharacterBuff.IsBuffPrevented*
+  nameWithType.vb: CharacterBuff.IsBuffPrevented(Integer)
+  fullName.vb: AngeliA.CharacterBuff.IsBuffPrevented(Integer)
+  name.vb: IsBuffPrevented(Integer)
+- uid: AngeliA.CharacterBuff.GetBuffData(System.Int32)
+  commentId: M:AngeliA.CharacterBuff.GetBuffData(System.Int32)
+  id: GetBuffData(System.Int32)
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: GetBuffData(int)
+  nameWithType: CharacterBuff.GetBuffData(int)
+  fullName: AngeliA.CharacterBuff.GetBuffData(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetBuffData
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 175
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Get the user data of the given buff from the character
+  example: []
+  syntax:
+    content: public object GetBuffData(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    return:
+      type: System.Object
+    content.vb: Public Function GetBuffData(id As Integer) As Object
+  overload: AngeliA.CharacterBuff.GetBuffData*
+  nameWithType.vb: CharacterBuff.GetBuffData(Integer)
+  fullName.vb: AngeliA.CharacterBuff.GetBuffData(Integer)
+  name.vb: GetBuffData(Integer)
+- uid: AngeliA.CharacterBuff.SetBuffData(System.Int32,System.Object)
+  commentId: M:AngeliA.CharacterBuff.SetBuffData(System.Int32,System.Object)
+  id: SetBuffData(System.Int32,System.Object)
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: SetBuffData(int, object)
+  nameWithType: CharacterBuff.SetBuffData(int, object)
+  fullName: AngeliA.CharacterBuff.SetBuffData(int, object)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetBuffData
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 181
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Set user data of the given buff to the character
+  example: []
+  syntax:
+    content: public void SetBuffData(int id, object data)
+    parameters:
+    - id: id
+      type: System.Int32
+    - id: data
+      type: System.Object
+    content.vb: Public Sub SetBuffData(id As Integer, data As Object)
+  overload: AngeliA.CharacterBuff.SetBuffData*
+  nameWithType.vb: CharacterBuff.SetBuffData(Integer, Object)
+  fullName.vb: AngeliA.CharacterBuff.SetBuffData(Integer, Object)
+  name.vb: SetBuffData(Integer, Object)
+- uid: AngeliA.CharacterBuff.GetBuffEndFrame(System.Int32)
+  commentId: M:AngeliA.CharacterBuff.GetBuffEndFrame(System.Int32)
+  id: GetBuffEndFrame(System.Int32)
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: GetBuffEndFrame(int)
+  nameWithType: CharacterBuff.GetBuffEndFrame(int)
+  fullName: AngeliA.CharacterBuff.GetBuffEndFrame(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetBuffEndFrame
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 191
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Get which frame does the given buff ends
+  example: []
+  syntax:
+    content: public int GetBuffEndFrame(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Function GetBuffEndFrame(id As Integer) As Integer
+  overload: AngeliA.CharacterBuff.GetBuffEndFrame*
+  nameWithType.vb: CharacterBuff.GetBuffEndFrame(Integer)
+  fullName.vb: AngeliA.CharacterBuff.GetBuffEndFrame(Integer)
+  name.vb: GetBuffEndFrame(Integer)
+- uid: AngeliA.CharacterBuff.ForAllBuffs
+  commentId: M:AngeliA.CharacterBuff.ForAllBuffs
+  id: ForAllBuffs
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: ForAllBuffs()
+  nameWithType: CharacterBuff.ForAllBuffs()
+  fullName: AngeliA.CharacterBuff.ForAllBuffs()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForAllBuffs
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 197
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Iterate thought all buffs this character currently have
+  example: []
+  syntax:
+    content: public IEnumerable<Buff> ForAllBuffs()
+    return:
+      type: System.Collections.Generic.IEnumerable{AngeliA.Buff}
+    content.vb: Public Function ForAllBuffs() As IEnumerable(Of Buff)
+  overload: AngeliA.CharacterBuff.ForAllBuffs*
+- uid: AngeliA.CharacterBuff.GetBuffDisplayName(System.Int32)
+  commentId: M:AngeliA.CharacterBuff.GetBuffDisplayName(System.Int32)
+  id: GetBuffDisplayName(System.Int32)
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: GetBuffDisplayName(int)
+  nameWithType: CharacterBuff.GetBuffDisplayName(int)
+  fullName: AngeliA.CharacterBuff.GetBuffDisplayName(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetBuffDisplayName
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 207
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Get display name of the given buff from the language system
+  example: []
+  syntax:
+    content: public static string GetBuffDisplayName(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetBuffDisplayName(id As Integer) As String
+  overload: AngeliA.CharacterBuff.GetBuffDisplayName*
+  nameWithType.vb: CharacterBuff.GetBuffDisplayName(Integer)
+  fullName.vb: AngeliA.CharacterBuff.GetBuffDisplayName(Integer)
+  name.vb: GetBuffDisplayName(Integer)
+- uid: AngeliA.CharacterBuff.GetBuffDescription(System.Int32)
+  commentId: M:AngeliA.CharacterBuff.GetBuffDescription(System.Int32)
+  id: GetBuffDescription(System.Int32)
+  parent: AngeliA.CharacterBuff
+  langs:
+  - csharp
+  - vb
+  name: GetBuffDescription(int)
+  nameWithType: CharacterBuff.GetBuffDescription(int)
+  fullName: AngeliA.CharacterBuff.GetBuffDescription(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetBuffDescription
+    path: ../AngeliA Framework/src/Behaviour/Buff/CharacterBuff.cs
+    startLine: 216
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Get description of the given buff from the language system
+  example: []
+  syntax:
+    content: public static string GetBuffDescription(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetBuffDescription(id As Integer) As String
+  overload: AngeliA.CharacterBuff.GetBuffDescription*
+  nameWithType.vb: CharacterBuff.GetBuffDescription(Integer)
+  fullName.vb: AngeliA.CharacterBuff.GetBuffDescription(Integer)
+  name.vb: GetBuffDescription(Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.CharacterBuff.BuffCount*
+  commentId: Overload:AngeliA.CharacterBuff.BuffCount
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_BuffCount
+  name: BuffCount
+  nameWithType: CharacterBuff.BuffCount
+  fullName: AngeliA.CharacterBuff.BuffCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.CharacterBuff.HasBuff*
+  commentId: Overload:AngeliA.CharacterBuff.HasBuff
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_HasBuff_System_Int32_
+  name: HasBuff
+  nameWithType: CharacterBuff.HasBuff
+  fullName: AngeliA.CharacterBuff.HasBuff
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.CharacterBuff.GiveBuff*
+  commentId: Overload:AngeliA.CharacterBuff.GiveBuff
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_GiveBuff_System_Int32_System_Int32_
+  name: GiveBuff
+  nameWithType: CharacterBuff.GiveBuff
+  fullName: AngeliA.CharacterBuff.GiveBuff
+- uid: AngeliA.CharacterBuff.ClearBuff*
+  commentId: Overload:AngeliA.CharacterBuff.ClearBuff
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_ClearBuff_System_Int32_
+  name: ClearBuff
+  nameWithType: CharacterBuff.ClearBuff
+  fullName: AngeliA.CharacterBuff.ClearBuff
+- uid: AngeliA.CharacterBuff.ClearAllBuffs*
+  commentId: Overload:AngeliA.CharacterBuff.ClearAllBuffs
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_ClearAllBuffs
+  name: ClearAllBuffs
+  nameWithType: CharacterBuff.ClearAllBuffs
+  fullName: AngeliA.CharacterBuff.ClearAllBuffs
+- uid: AngeliA.CharacterBuff.PreventBuff*
+  commentId: Overload:AngeliA.CharacterBuff.PreventBuff
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_PreventBuff_System_Int32_System_Int32_
+  name: PreventBuff
+  nameWithType: CharacterBuff.PreventBuff
+  fullName: AngeliA.CharacterBuff.PreventBuff
+- uid: AngeliA.CharacterBuff.IsBuffPrevented*
+  commentId: Overload:AngeliA.CharacterBuff.IsBuffPrevented
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_IsBuffPrevented_System_Int32_
+  name: IsBuffPrevented
+  nameWithType: CharacterBuff.IsBuffPrevented
+  fullName: AngeliA.CharacterBuff.IsBuffPrevented
+- uid: AngeliA.CharacterBuff.GetBuffData*
+  commentId: Overload:AngeliA.CharacterBuff.GetBuffData
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_GetBuffData_System_Int32_
+  name: GetBuffData
+  nameWithType: CharacterBuff.GetBuffData
+  fullName: AngeliA.CharacterBuff.GetBuffData
+- uid: AngeliA.CharacterBuff.SetBuffData*
+  commentId: Overload:AngeliA.CharacterBuff.SetBuffData
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_SetBuffData_System_Int32_System_Object_
+  name: SetBuffData
+  nameWithType: CharacterBuff.SetBuffData
+  fullName: AngeliA.CharacterBuff.SetBuffData
+- uid: AngeliA.CharacterBuff.GetBuffEndFrame*
+  commentId: Overload:AngeliA.CharacterBuff.GetBuffEndFrame
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_GetBuffEndFrame_System_Int32_
+  name: GetBuffEndFrame
+  nameWithType: CharacterBuff.GetBuffEndFrame
+  fullName: AngeliA.CharacterBuff.GetBuffEndFrame
+- uid: AngeliA.CharacterBuff.ForAllBuffs*
+  commentId: Overload:AngeliA.CharacterBuff.ForAllBuffs
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_ForAllBuffs
+  name: ForAllBuffs
+  nameWithType: CharacterBuff.ForAllBuffs
+  fullName: AngeliA.CharacterBuff.ForAllBuffs
+- uid: System.Collections.Generic.IEnumerable{AngeliA.Buff}
+  commentId: T:System.Collections.Generic.IEnumerable{AngeliA.Buff}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Buff>
+  nameWithType: IEnumerable<Buff>
+  fullName: System.Collections.Generic.IEnumerable<AngeliA.Buff>
+  nameWithType.vb: IEnumerable(Of Buff)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of AngeliA.Buff)
+  name.vb: IEnumerable(Of Buff)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: AngeliA.Buff
+    name: Buff
+    href: AngeliA.Buff.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.Buff
+    name: Buff
+    href: AngeliA.Buff.html
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AngeliA.CharacterBuff.GetBuffDisplayName*
+  commentId: Overload:AngeliA.CharacterBuff.GetBuffDisplayName
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_GetBuffDisplayName_System_Int32_
+  name: GetBuffDisplayName
+  nameWithType: CharacterBuff.GetBuffDisplayName
+  fullName: AngeliA.CharacterBuff.GetBuffDisplayName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.CharacterBuff.GetBuffDescription*
+  commentId: Overload:AngeliA.CharacterBuff.GetBuffDescription
+  href: AngeliA.CharacterBuff.html#AngeliA_CharacterBuff_GetBuffDescription_System_Int32_
+  name: GetBuffDescription
+  nameWithType: CharacterBuff.GetBuffDescription
+  fullName: AngeliA.CharacterBuff.GetBuffDescription

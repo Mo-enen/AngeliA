@@ -1,0 +1,3574 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Input
+  commentId: T:AngeliA.Input
+  id: Input
+  parent: AngeliA
+  children:
+  - AngeliA.Input.AllowGamepad
+  - AngeliA.Input.AnyGamekeyDown
+  - AngeliA.Input.AnyGamekeyHolding
+  - AngeliA.Input.AnyGamepadButtonDown
+  - AngeliA.Input.AnyGamepadButtonHolding
+  - AngeliA.Input.AnyKeyDown
+  - AngeliA.Input.AnyKeyHolding
+  - AngeliA.Input.AnyKeyboardKeyDown
+  - AngeliA.Input.AnyKeyboardKeyHolding
+  - AngeliA.Input.AnyMouseButtonDown
+  - AngeliA.Input.AnyMouseButtonHolding
+  - AngeliA.Input.CancelIgnoreKeyInput
+  - AngeliA.Input.CancelIgnoreMouseInput
+  - AngeliA.Input.Direction
+  - AngeliA.Input.DirectionX
+  - AngeliA.Input.DirectionY
+  - AngeliA.Input.GameKeyDown(AngeliA.Gamekey)
+  - AngeliA.Input.GameKeyDownGUI(AngeliA.Gamekey)
+  - AngeliA.Input.GameKeyHolding(AngeliA.Gamekey)
+  - AngeliA.Input.GameKeyUp(AngeliA.Gamekey)
+  - AngeliA.Input.GetDefaultGamepadMap(AngeliA.Gamekey)
+  - AngeliA.Input.GetDefaultKeyboardMap(AngeliA.Gamekey)
+  - AngeliA.Input.GetGamepadMap(AngeliA.Gamekey)
+  - AngeliA.Input.GetHoldingMouseButton
+  - AngeliA.Input.GetKeyboardMap(AngeliA.Gamekey)
+  - AngeliA.Input.HoldingAlt
+  - AngeliA.Input.HoldingCtrl
+  - AngeliA.Input.HoldingShift
+  - AngeliA.Input.IgnoreAllInput(System.Int32)
+  - AngeliA.Input.IgnoreKeyInput(System.Int32)
+  - AngeliA.Input.IgnoreMouseInput(System.Int32)
+  - AngeliA.Input.IgnoreMouseToActionFrame
+  - AngeliA.Input.IgnoreMouseToActionJump(System.Boolean,System.Boolean,System.Boolean,System.Int32)
+  - AngeliA.Input.IgnoreMouseToJumpFrame
+  - AngeliA.Input.IgnoreRightStickToMouseWheel(System.Int32)
+  - AngeliA.Input.IgnoreRightStickToMouseWheelFrame
+  - AngeliA.Input.IgnoringKeyInput
+  - AngeliA.Input.IgnoringMouseInput
+  - AngeliA.Input.KeyboardDown(AngeliA.KeyboardKey)
+  - AngeliA.Input.KeyboardDownGUI(AngeliA.KeyboardKey)
+  - AngeliA.Input.KeyboardHolding(AngeliA.KeyboardKey)
+  - AngeliA.Input.KeyboardKeyUsed(AngeliA.KeyboardKey)
+  - AngeliA.Input.KeyboardUp(AngeliA.KeyboardKey)
+  - AngeliA.Input.LastActionFromMouse
+  - AngeliA.Input.LastMouseLeftButtonDownFrame
+  - AngeliA.Input.LastMouseMidButtonDownFrame
+  - AngeliA.Input.LastMouseRightButtonDownFrame
+  - AngeliA.Input.MidMouseToActionFrame
+  - AngeliA.Input.MouseButtonHolding(System.Int32)
+  - AngeliA.Input.MouseGlobalPosition
+  - AngeliA.Input.MouseGlobalPositionDelta
+  - AngeliA.Input.MouseKeyUsed(System.Int32)
+  - AngeliA.Input.MouseLeftButtonDown
+  - AngeliA.Input.MouseLeftButtonHolding
+  - AngeliA.Input.MouseLeftDownGlobalPosition
+  - AngeliA.Input.MouseMidButtonDown
+  - AngeliA.Input.MouseMidButtonHolding
+  - AngeliA.Input.MouseMidDownGlobalPosition
+  - AngeliA.Input.MouseMove
+  - AngeliA.Input.MousePositionShift
+  - AngeliA.Input.MouseRightButtonDown
+  - AngeliA.Input.MouseRightButtonHolding
+  - AngeliA.Input.MouseRightDownGlobalPosition
+  - AngeliA.Input.MouseScreenPosition
+  - AngeliA.Input.MouseScreenPositionDelta
+  - AngeliA.Input.MouseWheelDelta
+  - AngeliA.Input.OnGameInitialize
+  - AngeliA.Input.OnGameInitializeLater
+  - AngeliA.Input.SetGamepadMap(AngeliA.Gamekey,AngeliA.GamepadKey)
+  - AngeliA.Input.SetKeyboardMap(AngeliA.Gamekey,AngeliA.KeyboardKey)
+  - AngeliA.Input.SetMousePositionShift(System.Int32,System.Int32)
+  - AngeliA.Input.TryGetHoldingGamepadButton(AngeliA.GamepadKey@)
+  - AngeliA.Input.TryGetHoldingKeyboardKey(AngeliA.KeyboardKey@)
+  - AngeliA.Input.UnshiftedMouseGlobalPosition
+  - AngeliA.Input.UnuseAllMouseKey
+  - AngeliA.Input.UnuseGameKey(AngeliA.Gamekey)
+  - AngeliA.Input.UnuseKeyboardKey(AngeliA.KeyboardKey)
+  - AngeliA.Input.UnuseMouseKey(System.Int32)
+  - AngeliA.Input.UseAllHoldingKeys(System.Boolean)
+  - AngeliA.Input.UseAllMouseKey
+  - AngeliA.Input.UseGameKey(AngeliA.Gamekey)
+  - AngeliA.Input.UseKeyboardKey(AngeliA.KeyboardKey)
+  - AngeliA.Input.UseMouseKey(System.Int32)
+  - AngeliA.Input.UsingGamepad
+  - AngeliA.Input.UsingLeftStick
+  langs:
+  - csharp
+  - vb
+  name: Input
+  nameWithType: Input
+  fullName: AngeliA.Input
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Input
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static class Input
+    content.vb: Public Module Input
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.Input.UsingGamepad
+  commentId: P:AngeliA.Input.UsingGamepad
+  id: UsingGamepad
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UsingGamepad
+  nameWithType: Input.UsingGamepad
+  fullName: AngeliA.Input.UsingGamepad
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UsingGamepad
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 47
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool UsingGamepad { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property UsingGamepad As Boolean
+  overload: AngeliA.Input.UsingGamepad*
+- uid: AngeliA.Input.UsingLeftStick
+  commentId: P:AngeliA.Input.UsingLeftStick
+  id: UsingLeftStick
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UsingLeftStick
+  nameWithType: Input.UsingLeftStick
+  fullName: AngeliA.Input.UsingLeftStick
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UsingLeftStick
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 48
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool UsingLeftStick { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property UsingLeftStick As Boolean
+  overload: AngeliA.Input.UsingLeftStick*
+- uid: AngeliA.Input.DirectionX
+  commentId: P:AngeliA.Input.DirectionX
+  id: DirectionX
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: DirectionX
+  nameWithType: Input.DirectionX
+  fullName: AngeliA.Input.DirectionX
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DirectionX
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 49
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Direction3 DirectionX { get; }
+    parameters: []
+    return:
+      type: AngeliA.Direction3
+    content.vb: Public Shared ReadOnly Property DirectionX As Direction3
+  overload: AngeliA.Input.DirectionX*
+- uid: AngeliA.Input.DirectionY
+  commentId: P:AngeliA.Input.DirectionY
+  id: DirectionY
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: DirectionY
+  nameWithType: Input.DirectionY
+  fullName: AngeliA.Input.DirectionY
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DirectionY
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 50
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Direction3 DirectionY { get; }
+    parameters: []
+    return:
+      type: AngeliA.Direction3
+    content.vb: Public Shared ReadOnly Property DirectionY As Direction3
+  overload: AngeliA.Input.DirectionY*
+- uid: AngeliA.Input.Direction
+  commentId: P:AngeliA.Input.Direction
+  id: Direction
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: Direction
+  nameWithType: Input.Direction
+  fullName: AngeliA.Input.Direction
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Direction
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 51
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int2 Direction { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Shared ReadOnly Property Direction As Int2
+  overload: AngeliA.Input.Direction*
+- uid: AngeliA.Input.AllowGamepad
+  commentId: P:AngeliA.Input.AllowGamepad
+  id: AllowGamepad
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: AllowGamepad
+  nameWithType: Input.AllowGamepad
+  fullName: AngeliA.Input.AllowGamepad
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllowGamepad
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 52
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AllowGamepad { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property AllowGamepad As Boolean
+  overload: AngeliA.Input.AllowGamepad*
+- uid: AngeliA.Input.HoldingCtrl
+  commentId: P:AngeliA.Input.HoldingCtrl
+  id: HoldingCtrl
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: HoldingCtrl
+  nameWithType: Input.HoldingCtrl
+  fullName: AngeliA.Input.HoldingCtrl
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HoldingCtrl
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 56
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool HoldingCtrl { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property HoldingCtrl As Boolean
+  overload: AngeliA.Input.HoldingCtrl*
+- uid: AngeliA.Input.HoldingShift
+  commentId: P:AngeliA.Input.HoldingShift
+  id: HoldingShift
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: HoldingShift
+  nameWithType: Input.HoldingShift
+  fullName: AngeliA.Input.HoldingShift
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HoldingShift
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 57
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool HoldingShift { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property HoldingShift As Boolean
+  overload: AngeliA.Input.HoldingShift*
+- uid: AngeliA.Input.HoldingAlt
+  commentId: P:AngeliA.Input.HoldingAlt
+  id: HoldingAlt
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: HoldingAlt
+  nameWithType: Input.HoldingAlt
+  fullName: AngeliA.Input.HoldingAlt
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HoldingAlt
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 58
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool HoldingAlt { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property HoldingAlt As Boolean
+  overload: AngeliA.Input.HoldingAlt*
+- uid: AngeliA.Input.AnyKeyDown
+  commentId: P:AngeliA.Input.AnyKeyDown
+  id: AnyKeyDown
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: AnyKeyDown
+  nameWithType: Input.AnyKeyDown
+  fullName: AngeliA.Input.AnyKeyDown
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AnyKeyDown
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 61
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AnyKeyDown { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property AnyKeyDown As Boolean
+  overload: AngeliA.Input.AnyKeyDown*
+- uid: AngeliA.Input.AnyKeyHolding
+  commentId: P:AngeliA.Input.AnyKeyHolding
+  id: AnyKeyHolding
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: AnyKeyHolding
+  nameWithType: Input.AnyKeyHolding
+  fullName: AngeliA.Input.AnyKeyHolding
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AnyKeyHolding
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 62
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AnyKeyHolding { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property AnyKeyHolding As Boolean
+  overload: AngeliA.Input.AnyKeyHolding*
+- uid: AngeliA.Input.AnyGamepadButtonDown
+  commentId: P:AngeliA.Input.AnyGamepadButtonDown
+  id: AnyGamepadButtonDown
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: AnyGamepadButtonDown
+  nameWithType: Input.AnyGamepadButtonDown
+  fullName: AngeliA.Input.AnyGamepadButtonDown
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AnyGamepadButtonDown
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 63
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AnyGamepadButtonDown { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property AnyGamepadButtonDown As Boolean
+  overload: AngeliA.Input.AnyGamepadButtonDown*
+- uid: AngeliA.Input.AnyGamepadButtonHolding
+  commentId: P:AngeliA.Input.AnyGamepadButtonHolding
+  id: AnyGamepadButtonHolding
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: AnyGamepadButtonHolding
+  nameWithType: Input.AnyGamepadButtonHolding
+  fullName: AngeliA.Input.AnyGamepadButtonHolding
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AnyGamepadButtonHolding
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 64
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AnyGamepadButtonHolding { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property AnyGamepadButtonHolding As Boolean
+  overload: AngeliA.Input.AnyGamepadButtonHolding*
+- uid: AngeliA.Input.AnyGamekeyDown
+  commentId: P:AngeliA.Input.AnyGamekeyDown
+  id: AnyGamekeyDown
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: AnyGamekeyDown
+  nameWithType: Input.AnyGamekeyDown
+  fullName: AngeliA.Input.AnyGamekeyDown
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AnyGamekeyDown
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 65
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AnyGamekeyDown { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property AnyGamekeyDown As Boolean
+  overload: AngeliA.Input.AnyGamekeyDown*
+- uid: AngeliA.Input.AnyGamekeyHolding
+  commentId: P:AngeliA.Input.AnyGamekeyHolding
+  id: AnyGamekeyHolding
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: AnyGamekeyHolding
+  nameWithType: Input.AnyGamekeyHolding
+  fullName: AngeliA.Input.AnyGamekeyHolding
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AnyGamekeyHolding
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 66
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AnyGamekeyHolding { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property AnyGamekeyHolding As Boolean
+  overload: AngeliA.Input.AnyGamekeyHolding*
+- uid: AngeliA.Input.AnyKeyboardKeyDown
+  commentId: P:AngeliA.Input.AnyKeyboardKeyDown
+  id: AnyKeyboardKeyDown
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: AnyKeyboardKeyDown
+  nameWithType: Input.AnyKeyboardKeyDown
+  fullName: AngeliA.Input.AnyKeyboardKeyDown
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AnyKeyboardKeyDown
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 67
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AnyKeyboardKeyDown { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property AnyKeyboardKeyDown As Boolean
+  overload: AngeliA.Input.AnyKeyboardKeyDown*
+- uid: AngeliA.Input.AnyKeyboardKeyHolding
+  commentId: P:AngeliA.Input.AnyKeyboardKeyHolding
+  id: AnyKeyboardKeyHolding
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: AnyKeyboardKeyHolding
+  nameWithType: Input.AnyKeyboardKeyHolding
+  fullName: AngeliA.Input.AnyKeyboardKeyHolding
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AnyKeyboardKeyHolding
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 68
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AnyKeyboardKeyHolding { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property AnyKeyboardKeyHolding As Boolean
+  overload: AngeliA.Input.AnyKeyboardKeyHolding*
+- uid: AngeliA.Input.AnyMouseButtonDown
+  commentId: P:AngeliA.Input.AnyMouseButtonDown
+  id: AnyMouseButtonDown
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: AnyMouseButtonDown
+  nameWithType: Input.AnyMouseButtonDown
+  fullName: AngeliA.Input.AnyMouseButtonDown
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AnyMouseButtonDown
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 69
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AnyMouseButtonDown { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property AnyMouseButtonDown As Boolean
+  overload: AngeliA.Input.AnyMouseButtonDown*
+- uid: AngeliA.Input.AnyMouseButtonHolding
+  commentId: P:AngeliA.Input.AnyMouseButtonHolding
+  id: AnyMouseButtonHolding
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: AnyMouseButtonHolding
+  nameWithType: Input.AnyMouseButtonHolding
+  fullName: AngeliA.Input.AnyMouseButtonHolding
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AnyMouseButtonHolding
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 70
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool AnyMouseButtonHolding { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property AnyMouseButtonHolding As Boolean
+  overload: AngeliA.Input.AnyMouseButtonHolding*
+- uid: AngeliA.Input.MouseScreenPosition
+  commentId: P:AngeliA.Input.MouseScreenPosition
+  id: MouseScreenPosition
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseScreenPosition
+  nameWithType: Input.MouseScreenPosition
+  fullName: AngeliA.Input.MouseScreenPosition
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseScreenPosition
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 73
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int2 MouseScreenPosition { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Shared Property MouseScreenPosition As Int2
+  overload: AngeliA.Input.MouseScreenPosition*
+- uid: AngeliA.Input.MouseScreenPositionDelta
+  commentId: P:AngeliA.Input.MouseScreenPositionDelta
+  id: MouseScreenPositionDelta
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseScreenPositionDelta
+  nameWithType: Input.MouseScreenPositionDelta
+  fullName: AngeliA.Input.MouseScreenPositionDelta
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseScreenPositionDelta
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 74
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int2 MouseScreenPositionDelta { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Shared Property MouseScreenPositionDelta As Int2
+  overload: AngeliA.Input.MouseScreenPositionDelta*
+- uid: AngeliA.Input.MouseGlobalPositionDelta
+  commentId: P:AngeliA.Input.MouseGlobalPositionDelta
+  id: MouseGlobalPositionDelta
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseGlobalPositionDelta
+  nameWithType: Input.MouseGlobalPositionDelta
+  fullName: AngeliA.Input.MouseGlobalPositionDelta
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseGlobalPositionDelta
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 75
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int2 MouseGlobalPositionDelta { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Shared Property MouseGlobalPositionDelta As Int2
+  overload: AngeliA.Input.MouseGlobalPositionDelta*
+- uid: AngeliA.Input.UnshiftedMouseGlobalPosition
+  commentId: P:AngeliA.Input.UnshiftedMouseGlobalPosition
+  id: UnshiftedMouseGlobalPosition
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UnshiftedMouseGlobalPosition
+  nameWithType: Input.UnshiftedMouseGlobalPosition
+  fullName: AngeliA.Input.UnshiftedMouseGlobalPosition
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UnshiftedMouseGlobalPosition
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 76
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int2 UnshiftedMouseGlobalPosition { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Shared ReadOnly Property UnshiftedMouseGlobalPosition As Int2
+  overload: AngeliA.Input.UnshiftedMouseGlobalPosition*
+- uid: AngeliA.Input.MouseGlobalPosition
+  commentId: P:AngeliA.Input.MouseGlobalPosition
+  id: MouseGlobalPosition
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseGlobalPosition
+  nameWithType: Input.MouseGlobalPosition
+  fullName: AngeliA.Input.MouseGlobalPosition
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseGlobalPosition
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 77
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int2 MouseGlobalPosition { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Shared ReadOnly Property MouseGlobalPosition As Int2
+  overload: AngeliA.Input.MouseGlobalPosition*
+- uid: AngeliA.Input.MouseLeftDownGlobalPosition
+  commentId: P:AngeliA.Input.MouseLeftDownGlobalPosition
+  id: MouseLeftDownGlobalPosition
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseLeftDownGlobalPosition
+  nameWithType: Input.MouseLeftDownGlobalPosition
+  fullName: AngeliA.Input.MouseLeftDownGlobalPosition
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseLeftDownGlobalPosition
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 78
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int2 MouseLeftDownGlobalPosition { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Shared ReadOnly Property MouseLeftDownGlobalPosition As Int2
+  overload: AngeliA.Input.MouseLeftDownGlobalPosition*
+- uid: AngeliA.Input.MouseRightDownGlobalPosition
+  commentId: P:AngeliA.Input.MouseRightDownGlobalPosition
+  id: MouseRightDownGlobalPosition
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseRightDownGlobalPosition
+  nameWithType: Input.MouseRightDownGlobalPosition
+  fullName: AngeliA.Input.MouseRightDownGlobalPosition
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseRightDownGlobalPosition
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 79
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int2 MouseRightDownGlobalPosition { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Shared ReadOnly Property MouseRightDownGlobalPosition As Int2
+  overload: AngeliA.Input.MouseRightDownGlobalPosition*
+- uid: AngeliA.Input.MouseMidDownGlobalPosition
+  commentId: P:AngeliA.Input.MouseMidDownGlobalPosition
+  id: MouseMidDownGlobalPosition
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseMidDownGlobalPosition
+  nameWithType: Input.MouseMidDownGlobalPosition
+  fullName: AngeliA.Input.MouseMidDownGlobalPosition
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseMidDownGlobalPosition
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 80
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int2 MouseMidDownGlobalPosition { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Shared ReadOnly Property MouseMidDownGlobalPosition As Int2
+  overload: AngeliA.Input.MouseMidDownGlobalPosition*
+- uid: AngeliA.Input.MouseMove
+  commentId: P:AngeliA.Input.MouseMove
+  id: MouseMove
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseMove
+  nameWithType: Input.MouseMove
+  fullName: AngeliA.Input.MouseMove
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseMove
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 81
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool MouseMove { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property MouseMove As Boolean
+  overload: AngeliA.Input.MouseMove*
+- uid: AngeliA.Input.MouseLeftButtonHolding
+  commentId: P:AngeliA.Input.MouseLeftButtonHolding
+  id: MouseLeftButtonHolding
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseLeftButtonHolding
+  nameWithType: Input.MouseLeftButtonHolding
+  fullName: AngeliA.Input.MouseLeftButtonHolding
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseLeftButtonHolding
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 82
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool MouseLeftButtonHolding { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property MouseLeftButtonHolding As Boolean
+  overload: AngeliA.Input.MouseLeftButtonHolding*
+- uid: AngeliA.Input.MouseRightButtonHolding
+  commentId: P:AngeliA.Input.MouseRightButtonHolding
+  id: MouseRightButtonHolding
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseRightButtonHolding
+  nameWithType: Input.MouseRightButtonHolding
+  fullName: AngeliA.Input.MouseRightButtonHolding
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseRightButtonHolding
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 83
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool MouseRightButtonHolding { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property MouseRightButtonHolding As Boolean
+  overload: AngeliA.Input.MouseRightButtonHolding*
+- uid: AngeliA.Input.MouseMidButtonHolding
+  commentId: P:AngeliA.Input.MouseMidButtonHolding
+  id: MouseMidButtonHolding
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseMidButtonHolding
+  nameWithType: Input.MouseMidButtonHolding
+  fullName: AngeliA.Input.MouseMidButtonHolding
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseMidButtonHolding
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 84
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool MouseMidButtonHolding { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property MouseMidButtonHolding As Boolean
+  overload: AngeliA.Input.MouseMidButtonHolding*
+- uid: AngeliA.Input.MouseLeftButtonDown
+  commentId: P:AngeliA.Input.MouseLeftButtonDown
+  id: MouseLeftButtonDown
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseLeftButtonDown
+  nameWithType: Input.MouseLeftButtonDown
+  fullName: AngeliA.Input.MouseLeftButtonDown
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseLeftButtonDown
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 85
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool MouseLeftButtonDown { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property MouseLeftButtonDown As Boolean
+  overload: AngeliA.Input.MouseLeftButtonDown*
+- uid: AngeliA.Input.MouseRightButtonDown
+  commentId: P:AngeliA.Input.MouseRightButtonDown
+  id: MouseRightButtonDown
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseRightButtonDown
+  nameWithType: Input.MouseRightButtonDown
+  fullName: AngeliA.Input.MouseRightButtonDown
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseRightButtonDown
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 86
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool MouseRightButtonDown { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property MouseRightButtonDown As Boolean
+  overload: AngeliA.Input.MouseRightButtonDown*
+- uid: AngeliA.Input.MouseMidButtonDown
+  commentId: P:AngeliA.Input.MouseMidButtonDown
+  id: MouseMidButtonDown
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseMidButtonDown
+  nameWithType: Input.MouseMidButtonDown
+  fullName: AngeliA.Input.MouseMidButtonDown
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseMidButtonDown
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 87
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool MouseMidButtonDown { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property MouseMidButtonDown As Boolean
+  overload: AngeliA.Input.MouseMidButtonDown*
+- uid: AngeliA.Input.IgnoreMouseToActionFrame
+  commentId: P:AngeliA.Input.IgnoreMouseToActionFrame
+  id: IgnoreMouseToActionFrame
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: IgnoreMouseToActionFrame
+  nameWithType: Input.IgnoreMouseToActionFrame
+  fullName: AngeliA.Input.IgnoreMouseToActionFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreMouseToActionFrame
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 88
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int IgnoreMouseToActionFrame { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared Property IgnoreMouseToActionFrame As Integer
+  overload: AngeliA.Input.IgnoreMouseToActionFrame*
+- uid: AngeliA.Input.IgnoreMouseToJumpFrame
+  commentId: P:AngeliA.Input.IgnoreMouseToJumpFrame
+  id: IgnoreMouseToJumpFrame
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: IgnoreMouseToJumpFrame
+  nameWithType: Input.IgnoreMouseToJumpFrame
+  fullName: AngeliA.Input.IgnoreMouseToJumpFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreMouseToJumpFrame
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 89
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int IgnoreMouseToJumpFrame { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared Property IgnoreMouseToJumpFrame As Integer
+  overload: AngeliA.Input.IgnoreMouseToJumpFrame*
+- uid: AngeliA.Input.IgnoreRightStickToMouseWheelFrame
+  commentId: P:AngeliA.Input.IgnoreRightStickToMouseWheelFrame
+  id: IgnoreRightStickToMouseWheelFrame
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: IgnoreRightStickToMouseWheelFrame
+  nameWithType: Input.IgnoreRightStickToMouseWheelFrame
+  fullName: AngeliA.Input.IgnoreRightStickToMouseWheelFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreRightStickToMouseWheelFrame
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 90
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int IgnoreRightStickToMouseWheelFrame { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared Property IgnoreRightStickToMouseWheelFrame As Integer
+  overload: AngeliA.Input.IgnoreRightStickToMouseWheelFrame*
+- uid: AngeliA.Input.MidMouseToActionFrame
+  commentId: P:AngeliA.Input.MidMouseToActionFrame
+  id: MidMouseToActionFrame
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MidMouseToActionFrame
+  nameWithType: Input.MidMouseToActionFrame
+  fullName: AngeliA.Input.MidMouseToActionFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MidMouseToActionFrame
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 91
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int MidMouseToActionFrame { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared Property MidMouseToActionFrame As Integer
+  overload: AngeliA.Input.MidMouseToActionFrame*
+- uid: AngeliA.Input.LastActionFromMouse
+  commentId: P:AngeliA.Input.LastActionFromMouse
+  id: LastActionFromMouse
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: LastActionFromMouse
+  nameWithType: Input.LastActionFromMouse
+  fullName: AngeliA.Input.LastActionFromMouse
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LastActionFromMouse
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 92
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool LastActionFromMouse { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property LastActionFromMouse As Boolean
+  overload: AngeliA.Input.LastActionFromMouse*
+- uid: AngeliA.Input.MouseWheelDelta
+  commentId: P:AngeliA.Input.MouseWheelDelta
+  id: MouseWheelDelta
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseWheelDelta
+  nameWithType: Input.MouseWheelDelta
+  fullName: AngeliA.Input.MouseWheelDelta
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseWheelDelta
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 93
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int MouseWheelDelta { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared ReadOnly Property MouseWheelDelta As Integer
+  overload: AngeliA.Input.MouseWheelDelta*
+- uid: AngeliA.Input.IgnoringMouseInput
+  commentId: P:AngeliA.Input.IgnoringMouseInput
+  id: IgnoringMouseInput
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: IgnoringMouseInput
+  nameWithType: Input.IgnoringMouseInput
+  fullName: AngeliA.Input.IgnoringMouseInput
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoringMouseInput
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 94
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool IgnoringMouseInput { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property IgnoringMouseInput As Boolean
+  overload: AngeliA.Input.IgnoringMouseInput*
+- uid: AngeliA.Input.IgnoringKeyInput
+  commentId: P:AngeliA.Input.IgnoringKeyInput
+  id: IgnoringKeyInput
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: IgnoringKeyInput
+  nameWithType: Input.IgnoringKeyInput
+  fullName: AngeliA.Input.IgnoringKeyInput
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoringKeyInput
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 95
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool IgnoringKeyInput { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property IgnoringKeyInput As Boolean
+  overload: AngeliA.Input.IgnoringKeyInput*
+- uid: AngeliA.Input.MousePositionShift
+  commentId: P:AngeliA.Input.MousePositionShift
+  id: MousePositionShift
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MousePositionShift
+  nameWithType: Input.MousePositionShift
+  fullName: AngeliA.Input.MousePositionShift
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MousePositionShift
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 96
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int2 MousePositionShift { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Shared Property MousePositionShift As Int2
+  overload: AngeliA.Input.MousePositionShift*
+- uid: AngeliA.Input.LastMouseLeftButtonDownFrame
+  commentId: P:AngeliA.Input.LastMouseLeftButtonDownFrame
+  id: LastMouseLeftButtonDownFrame
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: LastMouseLeftButtonDownFrame
+  nameWithType: Input.LastMouseLeftButtonDownFrame
+  fullName: AngeliA.Input.LastMouseLeftButtonDownFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LastMouseLeftButtonDownFrame
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 97
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static (int prev, int current) LastMouseLeftButtonDownFrame { get; }
+    parameters: []
+    return:
+      type: System.ValueTuple{System.Int32,System.Int32}
+    content.vb: Public Shared Property LastMouseLeftButtonDownFrame As (prev As Integer, current As Integer)
+  overload: AngeliA.Input.LastMouseLeftButtonDownFrame*
+- uid: AngeliA.Input.LastMouseRightButtonDownFrame
+  commentId: P:AngeliA.Input.LastMouseRightButtonDownFrame
+  id: LastMouseRightButtonDownFrame
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: LastMouseRightButtonDownFrame
+  nameWithType: Input.LastMouseRightButtonDownFrame
+  fullName: AngeliA.Input.LastMouseRightButtonDownFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LastMouseRightButtonDownFrame
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 98
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static (int prev, int current) LastMouseRightButtonDownFrame { get; }
+    parameters: []
+    return:
+      type: System.ValueTuple{System.Int32,System.Int32}
+    content.vb: Public Shared Property LastMouseRightButtonDownFrame As (prev As Integer, current As Integer)
+  overload: AngeliA.Input.LastMouseRightButtonDownFrame*
+- uid: AngeliA.Input.LastMouseMidButtonDownFrame
+  commentId: P:AngeliA.Input.LastMouseMidButtonDownFrame
+  id: LastMouseMidButtonDownFrame
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: LastMouseMidButtonDownFrame
+  nameWithType: Input.LastMouseMidButtonDownFrame
+  fullName: AngeliA.Input.LastMouseMidButtonDownFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LastMouseMidButtonDownFrame
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 99
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static (int prev, int current) LastMouseMidButtonDownFrame { get; }
+    parameters: []
+    return:
+      type: System.ValueTuple{System.Int32,System.Int32}
+    content.vb: Public Shared Property LastMouseMidButtonDownFrame As (prev As Integer, current As Integer)
+  overload: AngeliA.Input.LastMouseMidButtonDownFrame*
+- uid: AngeliA.Input.OnGameInitialize
+  commentId: M:AngeliA.Input.OnGameInitialize
+  id: OnGameInitialize
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: OnGameInitialize()
+  nameWithType: Input.OnGameInitialize()
+  fullName: AngeliA.Input.OnGameInitialize()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnGameInitialize
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 194
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: >-
+      [OnGameInitialize(-128)]
+
+      public static void OnGameInitialize()
+    content.vb: >-
+      <OnGameInitialize(-128)>
+
+      Public Shared Sub OnGameInitialize()
+  overload: AngeliA.Input.OnGameInitialize*
+  attributes:
+  - type: AngeliA.OnGameInitializeAttribute
+    ctor: AngeliA.OnGameInitializeAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: -128
+- uid: AngeliA.Input.OnGameInitializeLater
+  commentId: M:AngeliA.Input.OnGameInitializeLater
+  id: OnGameInitializeLater
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: OnGameInitializeLater()
+  nameWithType: Input.OnGameInitializeLater()
+  fullName: AngeliA.Input.OnGameInitializeLater()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnGameInitializeLater
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 247
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: >-
+      [OnGameInitializeLater(0)]
+
+      public static TaskResult OnGameInitializeLater()
+    return:
+      type: AngeliA.TaskResult
+    content.vb: >-
+      <OnGameInitializeLater(0)>
+
+      Public Shared Function OnGameInitializeLater() As TaskResult
+  overload: AngeliA.Input.OnGameInitializeLater*
+  attributes:
+  - type: AngeliA.OnGameInitializeLaterAttribute
+    ctor: AngeliA.OnGameInitializeLaterAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 0
+- uid: AngeliA.Input.TryGetHoldingGamepadButton(AngeliA.GamepadKey@)
+  commentId: M:AngeliA.Input.TryGetHoldingGamepadButton(AngeliA.GamepadKey@)
+  id: TryGetHoldingGamepadButton(AngeliA.GamepadKey@)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: TryGetHoldingGamepadButton(out GamepadKey)
+  nameWithType: Input.TryGetHoldingGamepadButton(out GamepadKey)
+  fullName: AngeliA.Input.TryGetHoldingGamepadButton(out AngeliA.GamepadKey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TryGetHoldingGamepadButton
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 660
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool TryGetHoldingGamepadButton(out GamepadKey button)
+    parameters:
+    - id: button
+      type: AngeliA.GamepadKey
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function TryGetHoldingGamepadButton(button As GamepadKey) As Boolean
+  overload: AngeliA.Input.TryGetHoldingGamepadButton*
+  nameWithType.vb: Input.TryGetHoldingGamepadButton(GamepadKey)
+  fullName.vb: AngeliA.Input.TryGetHoldingGamepadButton(AngeliA.GamepadKey)
+  name.vb: TryGetHoldingGamepadButton(GamepadKey)
+- uid: AngeliA.Input.TryGetHoldingKeyboardKey(AngeliA.KeyboardKey@)
+  commentId: M:AngeliA.Input.TryGetHoldingKeyboardKey(AngeliA.KeyboardKey@)
+  id: TryGetHoldingKeyboardKey(AngeliA.KeyboardKey@)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: TryGetHoldingKeyboardKey(out KeyboardKey)
+  nameWithType: Input.TryGetHoldingKeyboardKey(out KeyboardKey)
+  fullName: AngeliA.Input.TryGetHoldingKeyboardKey(out AngeliA.KeyboardKey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TryGetHoldingKeyboardKey
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 665
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool TryGetHoldingKeyboardKey(out KeyboardKey key)
+    parameters:
+    - id: key
+      type: AngeliA.KeyboardKey
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function TryGetHoldingKeyboardKey(key As KeyboardKey) As Boolean
+  overload: AngeliA.Input.TryGetHoldingKeyboardKey*
+  nameWithType.vb: Input.TryGetHoldingKeyboardKey(KeyboardKey)
+  fullName.vb: AngeliA.Input.TryGetHoldingKeyboardKey(AngeliA.KeyboardKey)
+  name.vb: TryGetHoldingKeyboardKey(KeyboardKey)
+- uid: AngeliA.Input.GameKeyDown(AngeliA.Gamekey)
+  commentId: M:AngeliA.Input.GameKeyDown(AngeliA.Gamekey)
+  id: GameKeyDown(AngeliA.Gamekey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: GameKeyDown(Gamekey)
+  nameWithType: Input.GameKeyDown(Gamekey)
+  fullName: AngeliA.Input.GameKeyDown(AngeliA.Gamekey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GameKeyDown
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 673
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool GameKeyDown(Gamekey key)
+    parameters:
+    - id: key
+      type: AngeliA.Gamekey
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function GameKeyDown(key As Gamekey) As Boolean
+  overload: AngeliA.Input.GameKeyDown*
+- uid: AngeliA.Input.GameKeyDownGUI(AngeliA.Gamekey)
+  commentId: M:AngeliA.Input.GameKeyDownGUI(AngeliA.Gamekey)
+  id: GameKeyDownGUI(AngeliA.Gamekey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: GameKeyDownGUI(Gamekey)
+  nameWithType: Input.GameKeyDownGUI(Gamekey)
+  fullName: AngeliA.Input.GameKeyDownGUI(AngeliA.Gamekey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GameKeyDownGUI
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 674
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool GameKeyDownGUI(Gamekey key)
+    parameters:
+    - id: key
+      type: AngeliA.Gamekey
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function GameKeyDownGUI(key As Gamekey) As Boolean
+  overload: AngeliA.Input.GameKeyDownGUI*
+- uid: AngeliA.Input.GameKeyHolding(AngeliA.Gamekey)
+  commentId: M:AngeliA.Input.GameKeyHolding(AngeliA.Gamekey)
+  id: GameKeyHolding(AngeliA.Gamekey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: GameKeyHolding(Gamekey)
+  nameWithType: Input.GameKeyHolding(Gamekey)
+  fullName: AngeliA.Input.GameKeyHolding(AngeliA.Gamekey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GameKeyHolding
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 685
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool GameKeyHolding(Gamekey key)
+    parameters:
+    - id: key
+      type: AngeliA.Gamekey
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function GameKeyHolding(key As Gamekey) As Boolean
+  overload: AngeliA.Input.GameKeyHolding*
+- uid: AngeliA.Input.GameKeyUp(AngeliA.Gamekey)
+  commentId: M:AngeliA.Input.GameKeyUp(AngeliA.Gamekey)
+  id: GameKeyUp(AngeliA.Gamekey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: GameKeyUp(Gamekey)
+  nameWithType: Input.GameKeyUp(Gamekey)
+  fullName: AngeliA.Input.GameKeyUp(AngeliA.Gamekey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GameKeyUp
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 686
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool GameKeyUp(Gamekey key)
+    parameters:
+    - id: key
+      type: AngeliA.Gamekey
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function GameKeyUp(key As Gamekey) As Boolean
+  overload: AngeliA.Input.GameKeyUp*
+- uid: AngeliA.Input.KeyboardDown(AngeliA.KeyboardKey)
+  commentId: M:AngeliA.Input.KeyboardDown(AngeliA.KeyboardKey)
+  id: KeyboardDown(AngeliA.KeyboardKey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: KeyboardDown(KeyboardKey)
+  nameWithType: Input.KeyboardDown(KeyboardKey)
+  fullName: AngeliA.Input.KeyboardDown(AngeliA.KeyboardKey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: KeyboardDown
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 690
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool KeyboardDown(KeyboardKey key)
+    parameters:
+    - id: key
+      type: AngeliA.KeyboardKey
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function KeyboardDown(key As KeyboardKey) As Boolean
+  overload: AngeliA.Input.KeyboardDown*
+- uid: AngeliA.Input.KeyboardDownGUI(AngeliA.KeyboardKey)
+  commentId: M:AngeliA.Input.KeyboardDownGUI(AngeliA.KeyboardKey)
+  id: KeyboardDownGUI(AngeliA.KeyboardKey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: KeyboardDownGUI(KeyboardKey)
+  nameWithType: Input.KeyboardDownGUI(KeyboardKey)
+  fullName: AngeliA.Input.KeyboardDownGUI(AngeliA.KeyboardKey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: KeyboardDownGUI
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 691
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool KeyboardDownGUI(KeyboardKey key)
+    parameters:
+    - id: key
+      type: AngeliA.KeyboardKey
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function KeyboardDownGUI(key As KeyboardKey) As Boolean
+  overload: AngeliA.Input.KeyboardDownGUI*
+- uid: AngeliA.Input.KeyboardHolding(AngeliA.KeyboardKey)
+  commentId: M:AngeliA.Input.KeyboardHolding(AngeliA.KeyboardKey)
+  id: KeyboardHolding(AngeliA.KeyboardKey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: KeyboardHolding(KeyboardKey)
+  nameWithType: Input.KeyboardHolding(KeyboardKey)
+  fullName: AngeliA.Input.KeyboardHolding(AngeliA.KeyboardKey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: KeyboardHolding
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 702
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool KeyboardHolding(KeyboardKey key)
+    parameters:
+    - id: key
+      type: AngeliA.KeyboardKey
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function KeyboardHolding(key As KeyboardKey) As Boolean
+  overload: AngeliA.Input.KeyboardHolding*
+- uid: AngeliA.Input.KeyboardUp(AngeliA.KeyboardKey)
+  commentId: M:AngeliA.Input.KeyboardUp(AngeliA.KeyboardKey)
+  id: KeyboardUp(AngeliA.KeyboardKey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: KeyboardUp(KeyboardKey)
+  nameWithType: Input.KeyboardUp(KeyboardKey)
+  fullName: AngeliA.Input.KeyboardUp(AngeliA.KeyboardKey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: KeyboardUp
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 703
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool KeyboardUp(KeyboardKey key)
+    parameters:
+    - id: key
+      type: AngeliA.KeyboardKey
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function KeyboardUp(key As KeyboardKey) As Boolean
+  overload: AngeliA.Input.KeyboardUp*
+- uid: AngeliA.Input.MouseKeyUsed(System.Int32)
+  commentId: M:AngeliA.Input.MouseKeyUsed(System.Int32)
+  id: MouseKeyUsed(System.Int32)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseKeyUsed(int)
+  nameWithType: Input.MouseKeyUsed(int)
+  fullName: AngeliA.Input.MouseKeyUsed(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseKeyUsed
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 707
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool MouseKeyUsed(int key)
+    parameters:
+    - id: key
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function MouseKeyUsed(key As Integer) As Boolean
+  overload: AngeliA.Input.MouseKeyUsed*
+  nameWithType.vb: Input.MouseKeyUsed(Integer)
+  fullName.vb: AngeliA.Input.MouseKeyUsed(Integer)
+  name.vb: MouseKeyUsed(Integer)
+- uid: AngeliA.Input.KeyboardKeyUsed(AngeliA.KeyboardKey)
+  commentId: M:AngeliA.Input.KeyboardKeyUsed(AngeliA.KeyboardKey)
+  id: KeyboardKeyUsed(AngeliA.KeyboardKey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: KeyboardKeyUsed(KeyboardKey)
+  nameWithType: Input.KeyboardKeyUsed(KeyboardKey)
+  fullName: AngeliA.Input.KeyboardKeyUsed(AngeliA.KeyboardKey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: KeyboardKeyUsed
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 713
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool KeyboardKeyUsed(KeyboardKey key)
+    parameters:
+    - id: key
+      type: AngeliA.KeyboardKey
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function KeyboardKeyUsed(key As KeyboardKey) As Boolean
+  overload: AngeliA.Input.KeyboardKeyUsed*
+- uid: AngeliA.Input.UseGameKey(AngeliA.Gamekey)
+  commentId: M:AngeliA.Input.UseGameKey(AngeliA.Gamekey)
+  id: UseGameKey(AngeliA.Gamekey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UseGameKey(Gamekey)
+  nameWithType: Input.UseGameKey(Gamekey)
+  fullName: AngeliA.Input.UseGameKey(AngeliA.Gamekey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseGameKey
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 716
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void UseGameKey(Gamekey key)
+    parameters:
+    - id: key
+      type: AngeliA.Gamekey
+    content.vb: Public Shared Sub UseGameKey(key As Gamekey)
+  overload: AngeliA.Input.UseGameKey*
+- uid: AngeliA.Input.UseKeyboardKey(AngeliA.KeyboardKey)
+  commentId: M:AngeliA.Input.UseKeyboardKey(AngeliA.KeyboardKey)
+  id: UseKeyboardKey(AngeliA.KeyboardKey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UseKeyboardKey(KeyboardKey)
+  nameWithType: Input.UseKeyboardKey(KeyboardKey)
+  fullName: AngeliA.Input.UseKeyboardKey(AngeliA.KeyboardKey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseKeyboardKey
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 717
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void UseKeyboardKey(KeyboardKey key)
+    parameters:
+    - id: key
+      type: AngeliA.KeyboardKey
+    content.vb: Public Shared Sub UseKeyboardKey(key As KeyboardKey)
+  overload: AngeliA.Input.UseKeyboardKey*
+- uid: AngeliA.Input.UseAllHoldingKeys(System.Boolean)
+  commentId: M:AngeliA.Input.UseAllHoldingKeys(System.Boolean)
+  id: UseAllHoldingKeys(System.Boolean)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UseAllHoldingKeys(bool)
+  nameWithType: Input.UseAllHoldingKeys(bool)
+  fullName: AngeliA.Input.UseAllHoldingKeys(bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseAllHoldingKeys
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 722
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void UseAllHoldingKeys(bool ignoreMouse = false)
+    parameters:
+    - id: ignoreMouse
+      type: System.Boolean
+    content.vb: Public Shared Sub UseAllHoldingKeys(ignoreMouse As Boolean = False)
+  overload: AngeliA.Input.UseAllHoldingKeys*
+  nameWithType.vb: Input.UseAllHoldingKeys(Boolean)
+  fullName.vb: AngeliA.Input.UseAllHoldingKeys(Boolean)
+  name.vb: UseAllHoldingKeys(Boolean)
+- uid: AngeliA.Input.UseAllMouseKey
+  commentId: M:AngeliA.Input.UseAllMouseKey
+  id: UseAllMouseKey
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UseAllMouseKey()
+  nameWithType: Input.UseAllMouseKey()
+  fullName: AngeliA.Input.UseAllMouseKey()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseAllMouseKey
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 735
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void UseAllMouseKey()
+    content.vb: Public Shared Sub UseAllMouseKey()
+  overload: AngeliA.Input.UseAllMouseKey*
+- uid: AngeliA.Input.UseMouseKey(System.Int32)
+  commentId: M:AngeliA.Input.UseMouseKey(System.Int32)
+  id: UseMouseKey(System.Int32)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UseMouseKey(int)
+  nameWithType: Input.UseMouseKey(int)
+  fullName: AngeliA.Input.UseMouseKey(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseMouseKey
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 741
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void UseMouseKey(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    content.vb: Public Shared Sub UseMouseKey(index As Integer)
+  overload: AngeliA.Input.UseMouseKey*
+  nameWithType.vb: Input.UseMouseKey(Integer)
+  fullName.vb: AngeliA.Input.UseMouseKey(Integer)
+  name.vb: UseMouseKey(Integer)
+- uid: AngeliA.Input.UnuseKeyboardKey(AngeliA.KeyboardKey)
+  commentId: M:AngeliA.Input.UnuseKeyboardKey(AngeliA.KeyboardKey)
+  id: UnuseKeyboardKey(AngeliA.KeyboardKey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UnuseKeyboardKey(KeyboardKey)
+  nameWithType: Input.UnuseKeyboardKey(KeyboardKey)
+  fullName: AngeliA.Input.UnuseKeyboardKey(AngeliA.KeyboardKey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UnuseKeyboardKey
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 749
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void UnuseKeyboardKey(KeyboardKey key)
+    parameters:
+    - id: key
+      type: AngeliA.KeyboardKey
+    content.vb: Public Shared Sub UnuseKeyboardKey(key As KeyboardKey)
+  overload: AngeliA.Input.UnuseKeyboardKey*
+- uid: AngeliA.Input.UnuseGameKey(AngeliA.Gamekey)
+  commentId: M:AngeliA.Input.UnuseGameKey(AngeliA.Gamekey)
+  id: UnuseGameKey(AngeliA.Gamekey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UnuseGameKey(Gamekey)
+  nameWithType: Input.UnuseGameKey(Gamekey)
+  fullName: AngeliA.Input.UnuseGameKey(AngeliA.Gamekey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UnuseGameKey
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 754
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void UnuseGameKey(Gamekey key)
+    parameters:
+    - id: key
+      type: AngeliA.Gamekey
+    content.vb: Public Shared Sub UnuseGameKey(key As Gamekey)
+  overload: AngeliA.Input.UnuseGameKey*
+- uid: AngeliA.Input.UnuseMouseKey(System.Int32)
+  commentId: M:AngeliA.Input.UnuseMouseKey(System.Int32)
+  id: UnuseMouseKey(System.Int32)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UnuseMouseKey(int)
+  nameWithType: Input.UnuseMouseKey(int)
+  fullName: AngeliA.Input.UnuseMouseKey(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UnuseMouseKey
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 755
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void UnuseMouseKey(int key)
+    parameters:
+    - id: key
+      type: System.Int32
+    content.vb: Public Shared Sub UnuseMouseKey(key As Integer)
+  overload: AngeliA.Input.UnuseMouseKey*
+  nameWithType.vb: Input.UnuseMouseKey(Integer)
+  fullName.vb: AngeliA.Input.UnuseMouseKey(Integer)
+  name.vb: UnuseMouseKey(Integer)
+- uid: AngeliA.Input.UnuseAllMouseKey
+  commentId: M:AngeliA.Input.UnuseAllMouseKey
+  id: UnuseAllMouseKey
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: UnuseAllMouseKey()
+  nameWithType: Input.UnuseAllMouseKey()
+  fullName: AngeliA.Input.UnuseAllMouseKey()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UnuseAllMouseKey
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 768
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void UnuseAllMouseKey()
+    content.vb: Public Shared Sub UnuseAllMouseKey()
+  overload: AngeliA.Input.UnuseAllMouseKey*
+- uid: AngeliA.Input.IgnoreMouseToActionJump(System.Boolean,System.Boolean,System.Boolean,System.Int32)
+  commentId: M:AngeliA.Input.IgnoreMouseToActionJump(System.Boolean,System.Boolean,System.Boolean,System.Int32)
+  id: IgnoreMouseToActionJump(System.Boolean,System.Boolean,System.Boolean,System.Int32)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: IgnoreMouseToActionJump(bool, bool, bool, int)
+  nameWithType: Input.IgnoreMouseToActionJump(bool, bool, bool, int)
+  fullName: AngeliA.Input.IgnoreMouseToActionJump(bool, bool, bool, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreMouseToActionJump
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 775
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void IgnoreMouseToActionJump(bool ignoreAction = true, bool ignoreJump = true, bool useMidButtonAsAction = false, int duration = 1)
+    parameters:
+    - id: ignoreAction
+      type: System.Boolean
+    - id: ignoreJump
+      type: System.Boolean
+    - id: useMidButtonAsAction
+      type: System.Boolean
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub IgnoreMouseToActionJump(ignoreAction As Boolean = True, ignoreJump As Boolean = True, useMidButtonAsAction As Boolean = False, duration As Integer = 1)
+  overload: AngeliA.Input.IgnoreMouseToActionJump*
+  nameWithType.vb: Input.IgnoreMouseToActionJump(Boolean, Boolean, Boolean, Integer)
+  fullName.vb: AngeliA.Input.IgnoreMouseToActionJump(Boolean, Boolean, Boolean, Integer)
+  name.vb: IgnoreMouseToActionJump(Boolean, Boolean, Boolean, Integer)
+- uid: AngeliA.Input.IgnoreRightStickToMouseWheel(System.Int32)
+  commentId: M:AngeliA.Input.IgnoreRightStickToMouseWheel(System.Int32)
+  id: IgnoreRightStickToMouseWheel(System.Int32)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: IgnoreRightStickToMouseWheel(int)
+  nameWithType: Input.IgnoreRightStickToMouseWheel(int)
+  fullName: AngeliA.Input.IgnoreRightStickToMouseWheel(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreRightStickToMouseWheel
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 782
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void IgnoreRightStickToMouseWheel(int duration = 1)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub IgnoreRightStickToMouseWheel(duration As Integer = 1)
+  overload: AngeliA.Input.IgnoreRightStickToMouseWheel*
+  nameWithType.vb: Input.IgnoreRightStickToMouseWheel(Integer)
+  fullName.vb: AngeliA.Input.IgnoreRightStickToMouseWheel(Integer)
+  name.vb: IgnoreRightStickToMouseWheel(Integer)
+- uid: AngeliA.Input.GetKeyboardMap(AngeliA.Gamekey)
+  commentId: M:AngeliA.Input.GetKeyboardMap(AngeliA.Gamekey)
+  id: GetKeyboardMap(AngeliA.Gamekey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: GetKeyboardMap(Gamekey)
+  nameWithType: Input.GetKeyboardMap(Gamekey)
+  fullName: AngeliA.Input.GetKeyboardMap(AngeliA.Gamekey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetKeyboardMap
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 786
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static KeyboardKey GetKeyboardMap(Gamekey key)
+    parameters:
+    - id: key
+      type: AngeliA.Gamekey
+    return:
+      type: AngeliA.KeyboardKey
+    content.vb: Public Shared Function GetKeyboardMap(key As Gamekey) As KeyboardKey
+  overload: AngeliA.Input.GetKeyboardMap*
+- uid: AngeliA.Input.GetDefaultKeyboardMap(AngeliA.Gamekey)
+  commentId: M:AngeliA.Input.GetDefaultKeyboardMap(AngeliA.Gamekey)
+  id: GetDefaultKeyboardMap(AngeliA.Gamekey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: GetDefaultKeyboardMap(Gamekey)
+  nameWithType: Input.GetDefaultKeyboardMap(Gamekey)
+  fullName: AngeliA.Input.GetDefaultKeyboardMap(AngeliA.Gamekey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetDefaultKeyboardMap
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 787
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static KeyboardKey GetDefaultKeyboardMap(Gamekey key)
+    parameters:
+    - id: key
+      type: AngeliA.Gamekey
+    return:
+      type: AngeliA.KeyboardKey
+    content.vb: Public Shared Function GetDefaultKeyboardMap(key As Gamekey) As KeyboardKey
+  overload: AngeliA.Input.GetDefaultKeyboardMap*
+- uid: AngeliA.Input.GetGamepadMap(AngeliA.Gamekey)
+  commentId: M:AngeliA.Input.GetGamepadMap(AngeliA.Gamekey)
+  id: GetGamepadMap(AngeliA.Gamekey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: GetGamepadMap(Gamekey)
+  nameWithType: Input.GetGamepadMap(Gamekey)
+  fullName: AngeliA.Input.GetGamepadMap(AngeliA.Gamekey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetGamepadMap
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 788
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static GamepadKey GetGamepadMap(Gamekey key)
+    parameters:
+    - id: key
+      type: AngeliA.Gamekey
+    return:
+      type: AngeliA.GamepadKey
+    content.vb: Public Shared Function GetGamepadMap(key As Gamekey) As GamepadKey
+  overload: AngeliA.Input.GetGamepadMap*
+- uid: AngeliA.Input.GetDefaultGamepadMap(AngeliA.Gamekey)
+  commentId: M:AngeliA.Input.GetDefaultGamepadMap(AngeliA.Gamekey)
+  id: GetDefaultGamepadMap(AngeliA.Gamekey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: GetDefaultGamepadMap(Gamekey)
+  nameWithType: Input.GetDefaultGamepadMap(Gamekey)
+  fullName: AngeliA.Input.GetDefaultGamepadMap(AngeliA.Gamekey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetDefaultGamepadMap
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 789
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static GamepadKey GetDefaultGamepadMap(Gamekey key)
+    parameters:
+    - id: key
+      type: AngeliA.Gamekey
+    return:
+      type: AngeliA.GamepadKey
+    content.vb: Public Shared Function GetDefaultGamepadMap(key As Gamekey) As GamepadKey
+  overload: AngeliA.Input.GetDefaultGamepadMap*
+- uid: AngeliA.Input.SetKeyboardMap(AngeliA.Gamekey,AngeliA.KeyboardKey)
+  commentId: M:AngeliA.Input.SetKeyboardMap(AngeliA.Gamekey,AngeliA.KeyboardKey)
+  id: SetKeyboardMap(AngeliA.Gamekey,AngeliA.KeyboardKey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: SetKeyboardMap(Gamekey, KeyboardKey)
+  nameWithType: Input.SetKeyboardMap(Gamekey, KeyboardKey)
+  fullName: AngeliA.Input.SetKeyboardMap(AngeliA.Gamekey, AngeliA.KeyboardKey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetKeyboardMap
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 792
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void SetKeyboardMap(Gamekey gameKey, KeyboardKey keyboardKey)
+    parameters:
+    - id: gameKey
+      type: AngeliA.Gamekey
+    - id: keyboardKey
+      type: AngeliA.KeyboardKey
+    content.vb: Public Shared Sub SetKeyboardMap(gameKey As Gamekey, keyboardKey As KeyboardKey)
+  overload: AngeliA.Input.SetKeyboardMap*
+- uid: AngeliA.Input.SetGamepadMap(AngeliA.Gamekey,AngeliA.GamepadKey)
+  commentId: M:AngeliA.Input.SetGamepadMap(AngeliA.Gamekey,AngeliA.GamepadKey)
+  id: SetGamepadMap(AngeliA.Gamekey,AngeliA.GamepadKey)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: SetGamepadMap(Gamekey, GamepadKey)
+  nameWithType: Input.SetGamepadMap(Gamekey, GamepadKey)
+  fullName: AngeliA.Input.SetGamepadMap(AngeliA.Gamekey, AngeliA.GamepadKey)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetGamepadMap
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 798
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void SetGamepadMap(Gamekey gameKey, GamepadKey gamepadKey)
+    parameters:
+    - id: gameKey
+      type: AngeliA.Gamekey
+    - id: gamepadKey
+      type: AngeliA.GamepadKey
+    content.vb: Public Shared Sub SetGamepadMap(gameKey As Gamekey, gamepadKey As GamepadKey)
+  overload: AngeliA.Input.SetGamepadMap*
+- uid: AngeliA.Input.MouseButtonHolding(System.Int32)
+  commentId: M:AngeliA.Input.MouseButtonHolding(System.Int32)
+  id: MouseButtonHolding(System.Int32)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: MouseButtonHolding(int)
+  nameWithType: Input.MouseButtonHolding(int)
+  fullName: AngeliA.Input.MouseButtonHolding(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseButtonHolding
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 807
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool MouseButtonHolding(int button)
+    parameters:
+    - id: button
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function MouseButtonHolding(button As Integer) As Boolean
+  overload: AngeliA.Input.MouseButtonHolding*
+  nameWithType.vb: Input.MouseButtonHolding(Integer)
+  fullName.vb: AngeliA.Input.MouseButtonHolding(Integer)
+  name.vb: MouseButtonHolding(Integer)
+- uid: AngeliA.Input.GetHoldingMouseButton
+  commentId: M:AngeliA.Input.GetHoldingMouseButton
+  id: GetHoldingMouseButton
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: GetHoldingMouseButton()
+  nameWithType: Input.GetHoldingMouseButton()
+  fullName: AngeliA.Input.GetHoldingMouseButton()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetHoldingMouseButton
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 815
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int GetHoldingMouseButton()
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function GetHoldingMouseButton() As Integer
+  overload: AngeliA.Input.GetHoldingMouseButton*
+- uid: AngeliA.Input.IgnoreAllInput(System.Int32)
+  commentId: M:AngeliA.Input.IgnoreAllInput(System.Int32)
+  id: IgnoreAllInput(System.Int32)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: IgnoreAllInput(int)
+  nameWithType: Input.IgnoreAllInput(int)
+  fullName: AngeliA.Input.IgnoreAllInput(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreAllInput
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 825
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void IgnoreAllInput(int duration = 0)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub IgnoreAllInput(duration As Integer = 0)
+  overload: AngeliA.Input.IgnoreAllInput*
+  nameWithType.vb: Input.IgnoreAllInput(Integer)
+  fullName.vb: AngeliA.Input.IgnoreAllInput(Integer)
+  name.vb: IgnoreAllInput(Integer)
+- uid: AngeliA.Input.IgnoreMouseInput(System.Int32)
+  commentId: M:AngeliA.Input.IgnoreMouseInput(System.Int32)
+  id: IgnoreMouseInput(System.Int32)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: IgnoreMouseInput(int)
+  nameWithType: Input.IgnoreMouseInput(int)
+  fullName: AngeliA.Input.IgnoreMouseInput(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreMouseInput
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 829
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void IgnoreMouseInput(int duration = 0)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub IgnoreMouseInput(duration As Integer = 0)
+  overload: AngeliA.Input.IgnoreMouseInput*
+  nameWithType.vb: Input.IgnoreMouseInput(Integer)
+  fullName.vb: AngeliA.Input.IgnoreMouseInput(Integer)
+  name.vb: IgnoreMouseInput(Integer)
+- uid: AngeliA.Input.IgnoreKeyInput(System.Int32)
+  commentId: M:AngeliA.Input.IgnoreKeyInput(System.Int32)
+  id: IgnoreKeyInput(System.Int32)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: IgnoreKeyInput(int)
+  nameWithType: Input.IgnoreKeyInput(int)
+  fullName: AngeliA.Input.IgnoreKeyInput(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IgnoreKeyInput
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 833
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void IgnoreKeyInput(int duration = 0)
+    parameters:
+    - id: duration
+      type: System.Int32
+    content.vb: Public Shared Sub IgnoreKeyInput(duration As Integer = 0)
+  overload: AngeliA.Input.IgnoreKeyInput*
+  nameWithType.vb: Input.IgnoreKeyInput(Integer)
+  fullName.vb: AngeliA.Input.IgnoreKeyInput(Integer)
+  name.vb: IgnoreKeyInput(Integer)
+- uid: AngeliA.Input.CancelIgnoreMouseInput
+  commentId: M:AngeliA.Input.CancelIgnoreMouseInput
+  id: CancelIgnoreMouseInput
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: CancelIgnoreMouseInput()
+  nameWithType: Input.CancelIgnoreMouseInput()
+  fullName: AngeliA.Input.CancelIgnoreMouseInput()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CancelIgnoreMouseInput
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 836
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void CancelIgnoreMouseInput()
+    content.vb: Public Shared Sub CancelIgnoreMouseInput()
+  overload: AngeliA.Input.CancelIgnoreMouseInput*
+- uid: AngeliA.Input.CancelIgnoreKeyInput
+  commentId: M:AngeliA.Input.CancelIgnoreKeyInput
+  id: CancelIgnoreKeyInput
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: CancelIgnoreKeyInput()
+  nameWithType: Input.CancelIgnoreKeyInput()
+  fullName: AngeliA.Input.CancelIgnoreKeyInput()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CancelIgnoreKeyInput
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 837
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void CancelIgnoreKeyInput()
+    content.vb: Public Shared Sub CancelIgnoreKeyInput()
+  overload: AngeliA.Input.CancelIgnoreKeyInput*
+- uid: AngeliA.Input.SetMousePositionShift(System.Int32,System.Int32)
+  commentId: M:AngeliA.Input.SetMousePositionShift(System.Int32,System.Int32)
+  id: SetMousePositionShift(System.Int32,System.Int32)
+  parent: AngeliA.Input
+  langs:
+  - csharp
+  - vb
+  name: SetMousePositionShift(int, int)
+  nameWithType: Input.SetMousePositionShift(int, int)
+  fullName: AngeliA.Input.SetMousePositionShift(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Input.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetMousePositionShift
+    path: ../AngeliA Framework/src/Core/Input.cs
+    startLine: 840
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void SetMousePositionShift(int x, int y)
+    parameters:
+    - id: x
+      type: System.Int32
+    - id: y
+      type: System.Int32
+    content.vb: Public Shared Sub SetMousePositionShift(x As Integer, y As Integer)
+  overload: AngeliA.Input.SetMousePositionShift*
+  nameWithType.vb: Input.SetMousePositionShift(Integer, Integer)
+  fullName.vb: AngeliA.Input.SetMousePositionShift(Integer, Integer)
+  name.vb: SetMousePositionShift(Integer, Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Input.UsingGamepad*
+  commentId: Overload:AngeliA.Input.UsingGamepad
+  href: AngeliA.Input.html#AngeliA_Input_UsingGamepad
+  name: UsingGamepad
+  nameWithType: Input.UsingGamepad
+  fullName: AngeliA.Input.UsingGamepad
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Input.UsingLeftStick*
+  commentId: Overload:AngeliA.Input.UsingLeftStick
+  href: AngeliA.Input.html#AngeliA_Input_UsingLeftStick
+  name: UsingLeftStick
+  nameWithType: Input.UsingLeftStick
+  fullName: AngeliA.Input.UsingLeftStick
+- uid: AngeliA.Input.DirectionX*
+  commentId: Overload:AngeliA.Input.DirectionX
+  href: AngeliA.Input.html#AngeliA_Input_DirectionX
+  name: DirectionX
+  nameWithType: Input.DirectionX
+  fullName: AngeliA.Input.DirectionX
+- uid: AngeliA.Direction3
+  commentId: T:AngeliA.Direction3
+  parent: AngeliA
+  href: AngeliA.Direction3.html
+  name: Direction3
+  nameWithType: Direction3
+  fullName: AngeliA.Direction3
+- uid: AngeliA.Input.DirectionY*
+  commentId: Overload:AngeliA.Input.DirectionY
+  href: AngeliA.Input.html#AngeliA_Input_DirectionY
+  name: DirectionY
+  nameWithType: Input.DirectionY
+  fullName: AngeliA.Input.DirectionY
+- uid: AngeliA.Input.Direction*
+  commentId: Overload:AngeliA.Input.Direction
+  href: AngeliA.Input.html#AngeliA_Input_Direction
+  name: Direction
+  nameWithType: Input.Direction
+  fullName: AngeliA.Input.Direction
+- uid: AngeliA.Int2
+  commentId: T:AngeliA.Int2
+  parent: AngeliA
+  href: AngeliA.Int2.html
+  name: Int2
+  nameWithType: Int2
+  fullName: AngeliA.Int2
+- uid: AngeliA.Input.AllowGamepad*
+  commentId: Overload:AngeliA.Input.AllowGamepad
+  href: AngeliA.Input.html#AngeliA_Input_AllowGamepad
+  name: AllowGamepad
+  nameWithType: Input.AllowGamepad
+  fullName: AngeliA.Input.AllowGamepad
+- uid: AngeliA.Input.HoldingCtrl*
+  commentId: Overload:AngeliA.Input.HoldingCtrl
+  href: AngeliA.Input.html#AngeliA_Input_HoldingCtrl
+  name: HoldingCtrl
+  nameWithType: Input.HoldingCtrl
+  fullName: AngeliA.Input.HoldingCtrl
+- uid: AngeliA.Input.HoldingShift*
+  commentId: Overload:AngeliA.Input.HoldingShift
+  href: AngeliA.Input.html#AngeliA_Input_HoldingShift
+  name: HoldingShift
+  nameWithType: Input.HoldingShift
+  fullName: AngeliA.Input.HoldingShift
+- uid: AngeliA.Input.HoldingAlt*
+  commentId: Overload:AngeliA.Input.HoldingAlt
+  href: AngeliA.Input.html#AngeliA_Input_HoldingAlt
+  name: HoldingAlt
+  nameWithType: Input.HoldingAlt
+  fullName: AngeliA.Input.HoldingAlt
+- uid: AngeliA.Input.AnyKeyDown*
+  commentId: Overload:AngeliA.Input.AnyKeyDown
+  href: AngeliA.Input.html#AngeliA_Input_AnyKeyDown
+  name: AnyKeyDown
+  nameWithType: Input.AnyKeyDown
+  fullName: AngeliA.Input.AnyKeyDown
+- uid: AngeliA.Input.AnyKeyHolding*
+  commentId: Overload:AngeliA.Input.AnyKeyHolding
+  href: AngeliA.Input.html#AngeliA_Input_AnyKeyHolding
+  name: AnyKeyHolding
+  nameWithType: Input.AnyKeyHolding
+  fullName: AngeliA.Input.AnyKeyHolding
+- uid: AngeliA.Input.AnyGamepadButtonDown*
+  commentId: Overload:AngeliA.Input.AnyGamepadButtonDown
+  href: AngeliA.Input.html#AngeliA_Input_AnyGamepadButtonDown
+  name: AnyGamepadButtonDown
+  nameWithType: Input.AnyGamepadButtonDown
+  fullName: AngeliA.Input.AnyGamepadButtonDown
+- uid: AngeliA.Input.AnyGamepadButtonHolding*
+  commentId: Overload:AngeliA.Input.AnyGamepadButtonHolding
+  href: AngeliA.Input.html#AngeliA_Input_AnyGamepadButtonHolding
+  name: AnyGamepadButtonHolding
+  nameWithType: Input.AnyGamepadButtonHolding
+  fullName: AngeliA.Input.AnyGamepadButtonHolding
+- uid: AngeliA.Input.AnyGamekeyDown*
+  commentId: Overload:AngeliA.Input.AnyGamekeyDown
+  href: AngeliA.Input.html#AngeliA_Input_AnyGamekeyDown
+  name: AnyGamekeyDown
+  nameWithType: Input.AnyGamekeyDown
+  fullName: AngeliA.Input.AnyGamekeyDown
+- uid: AngeliA.Input.AnyGamekeyHolding*
+  commentId: Overload:AngeliA.Input.AnyGamekeyHolding
+  href: AngeliA.Input.html#AngeliA_Input_AnyGamekeyHolding
+  name: AnyGamekeyHolding
+  nameWithType: Input.AnyGamekeyHolding
+  fullName: AngeliA.Input.AnyGamekeyHolding
+- uid: AngeliA.Input.AnyKeyboardKeyDown*
+  commentId: Overload:AngeliA.Input.AnyKeyboardKeyDown
+  href: AngeliA.Input.html#AngeliA_Input_AnyKeyboardKeyDown
+  name: AnyKeyboardKeyDown
+  nameWithType: Input.AnyKeyboardKeyDown
+  fullName: AngeliA.Input.AnyKeyboardKeyDown
+- uid: AngeliA.Input.AnyKeyboardKeyHolding*
+  commentId: Overload:AngeliA.Input.AnyKeyboardKeyHolding
+  href: AngeliA.Input.html#AngeliA_Input_AnyKeyboardKeyHolding
+  name: AnyKeyboardKeyHolding
+  nameWithType: Input.AnyKeyboardKeyHolding
+  fullName: AngeliA.Input.AnyKeyboardKeyHolding
+- uid: AngeliA.Input.AnyMouseButtonDown*
+  commentId: Overload:AngeliA.Input.AnyMouseButtonDown
+  href: AngeliA.Input.html#AngeliA_Input_AnyMouseButtonDown
+  name: AnyMouseButtonDown
+  nameWithType: Input.AnyMouseButtonDown
+  fullName: AngeliA.Input.AnyMouseButtonDown
+- uid: AngeliA.Input.AnyMouseButtonHolding*
+  commentId: Overload:AngeliA.Input.AnyMouseButtonHolding
+  href: AngeliA.Input.html#AngeliA_Input_AnyMouseButtonHolding
+  name: AnyMouseButtonHolding
+  nameWithType: Input.AnyMouseButtonHolding
+  fullName: AngeliA.Input.AnyMouseButtonHolding
+- uid: AngeliA.Input.MouseScreenPosition*
+  commentId: Overload:AngeliA.Input.MouseScreenPosition
+  href: AngeliA.Input.html#AngeliA_Input_MouseScreenPosition
+  name: MouseScreenPosition
+  nameWithType: Input.MouseScreenPosition
+  fullName: AngeliA.Input.MouseScreenPosition
+- uid: AngeliA.Input.MouseScreenPositionDelta*
+  commentId: Overload:AngeliA.Input.MouseScreenPositionDelta
+  href: AngeliA.Input.html#AngeliA_Input_MouseScreenPositionDelta
+  name: MouseScreenPositionDelta
+  nameWithType: Input.MouseScreenPositionDelta
+  fullName: AngeliA.Input.MouseScreenPositionDelta
+- uid: AngeliA.Input.MouseGlobalPositionDelta*
+  commentId: Overload:AngeliA.Input.MouseGlobalPositionDelta
+  href: AngeliA.Input.html#AngeliA_Input_MouseGlobalPositionDelta
+  name: MouseGlobalPositionDelta
+  nameWithType: Input.MouseGlobalPositionDelta
+  fullName: AngeliA.Input.MouseGlobalPositionDelta
+- uid: AngeliA.Input.UnshiftedMouseGlobalPosition*
+  commentId: Overload:AngeliA.Input.UnshiftedMouseGlobalPosition
+  href: AngeliA.Input.html#AngeliA_Input_UnshiftedMouseGlobalPosition
+  name: UnshiftedMouseGlobalPosition
+  nameWithType: Input.UnshiftedMouseGlobalPosition
+  fullName: AngeliA.Input.UnshiftedMouseGlobalPosition
+- uid: AngeliA.Input.MouseGlobalPosition*
+  commentId: Overload:AngeliA.Input.MouseGlobalPosition
+  href: AngeliA.Input.html#AngeliA_Input_MouseGlobalPosition
+  name: MouseGlobalPosition
+  nameWithType: Input.MouseGlobalPosition
+  fullName: AngeliA.Input.MouseGlobalPosition
+- uid: AngeliA.Input.MouseLeftDownGlobalPosition*
+  commentId: Overload:AngeliA.Input.MouseLeftDownGlobalPosition
+  href: AngeliA.Input.html#AngeliA_Input_MouseLeftDownGlobalPosition
+  name: MouseLeftDownGlobalPosition
+  nameWithType: Input.MouseLeftDownGlobalPosition
+  fullName: AngeliA.Input.MouseLeftDownGlobalPosition
+- uid: AngeliA.Input.MouseRightDownGlobalPosition*
+  commentId: Overload:AngeliA.Input.MouseRightDownGlobalPosition
+  href: AngeliA.Input.html#AngeliA_Input_MouseRightDownGlobalPosition
+  name: MouseRightDownGlobalPosition
+  nameWithType: Input.MouseRightDownGlobalPosition
+  fullName: AngeliA.Input.MouseRightDownGlobalPosition
+- uid: AngeliA.Input.MouseMidDownGlobalPosition*
+  commentId: Overload:AngeliA.Input.MouseMidDownGlobalPosition
+  href: AngeliA.Input.html#AngeliA_Input_MouseMidDownGlobalPosition
+  name: MouseMidDownGlobalPosition
+  nameWithType: Input.MouseMidDownGlobalPosition
+  fullName: AngeliA.Input.MouseMidDownGlobalPosition
+- uid: AngeliA.Input.MouseMove*
+  commentId: Overload:AngeliA.Input.MouseMove
+  href: AngeliA.Input.html#AngeliA_Input_MouseMove
+  name: MouseMove
+  nameWithType: Input.MouseMove
+  fullName: AngeliA.Input.MouseMove
+- uid: AngeliA.Input.MouseLeftButtonHolding*
+  commentId: Overload:AngeliA.Input.MouseLeftButtonHolding
+  href: AngeliA.Input.html#AngeliA_Input_MouseLeftButtonHolding
+  name: MouseLeftButtonHolding
+  nameWithType: Input.MouseLeftButtonHolding
+  fullName: AngeliA.Input.MouseLeftButtonHolding
+- uid: AngeliA.Input.MouseRightButtonHolding*
+  commentId: Overload:AngeliA.Input.MouseRightButtonHolding
+  href: AngeliA.Input.html#AngeliA_Input_MouseRightButtonHolding
+  name: MouseRightButtonHolding
+  nameWithType: Input.MouseRightButtonHolding
+  fullName: AngeliA.Input.MouseRightButtonHolding
+- uid: AngeliA.Input.MouseMidButtonHolding*
+  commentId: Overload:AngeliA.Input.MouseMidButtonHolding
+  href: AngeliA.Input.html#AngeliA_Input_MouseMidButtonHolding
+  name: MouseMidButtonHolding
+  nameWithType: Input.MouseMidButtonHolding
+  fullName: AngeliA.Input.MouseMidButtonHolding
+- uid: AngeliA.Input.MouseLeftButtonDown*
+  commentId: Overload:AngeliA.Input.MouseLeftButtonDown
+  href: AngeliA.Input.html#AngeliA_Input_MouseLeftButtonDown
+  name: MouseLeftButtonDown
+  nameWithType: Input.MouseLeftButtonDown
+  fullName: AngeliA.Input.MouseLeftButtonDown
+- uid: AngeliA.Input.MouseRightButtonDown*
+  commentId: Overload:AngeliA.Input.MouseRightButtonDown
+  href: AngeliA.Input.html#AngeliA_Input_MouseRightButtonDown
+  name: MouseRightButtonDown
+  nameWithType: Input.MouseRightButtonDown
+  fullName: AngeliA.Input.MouseRightButtonDown
+- uid: AngeliA.Input.MouseMidButtonDown*
+  commentId: Overload:AngeliA.Input.MouseMidButtonDown
+  href: AngeliA.Input.html#AngeliA_Input_MouseMidButtonDown
+  name: MouseMidButtonDown
+  nameWithType: Input.MouseMidButtonDown
+  fullName: AngeliA.Input.MouseMidButtonDown
+- uid: AngeliA.Input.IgnoreMouseToActionFrame*
+  commentId: Overload:AngeliA.Input.IgnoreMouseToActionFrame
+  href: AngeliA.Input.html#AngeliA_Input_IgnoreMouseToActionFrame
+  name: IgnoreMouseToActionFrame
+  nameWithType: Input.IgnoreMouseToActionFrame
+  fullName: AngeliA.Input.IgnoreMouseToActionFrame
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Input.IgnoreMouseToJumpFrame*
+  commentId: Overload:AngeliA.Input.IgnoreMouseToJumpFrame
+  href: AngeliA.Input.html#AngeliA_Input_IgnoreMouseToJumpFrame
+  name: IgnoreMouseToJumpFrame
+  nameWithType: Input.IgnoreMouseToJumpFrame
+  fullName: AngeliA.Input.IgnoreMouseToJumpFrame
+- uid: AngeliA.Input.IgnoreRightStickToMouseWheelFrame*
+  commentId: Overload:AngeliA.Input.IgnoreRightStickToMouseWheelFrame
+  href: AngeliA.Input.html#AngeliA_Input_IgnoreRightStickToMouseWheelFrame
+  name: IgnoreRightStickToMouseWheelFrame
+  nameWithType: Input.IgnoreRightStickToMouseWheelFrame
+  fullName: AngeliA.Input.IgnoreRightStickToMouseWheelFrame
+- uid: AngeliA.Input.MidMouseToActionFrame*
+  commentId: Overload:AngeliA.Input.MidMouseToActionFrame
+  href: AngeliA.Input.html#AngeliA_Input_MidMouseToActionFrame
+  name: MidMouseToActionFrame
+  nameWithType: Input.MidMouseToActionFrame
+  fullName: AngeliA.Input.MidMouseToActionFrame
+- uid: AngeliA.Input.LastActionFromMouse*
+  commentId: Overload:AngeliA.Input.LastActionFromMouse
+  href: AngeliA.Input.html#AngeliA_Input_LastActionFromMouse
+  name: LastActionFromMouse
+  nameWithType: Input.LastActionFromMouse
+  fullName: AngeliA.Input.LastActionFromMouse
+- uid: AngeliA.Input.MouseWheelDelta*
+  commentId: Overload:AngeliA.Input.MouseWheelDelta
+  href: AngeliA.Input.html#AngeliA_Input_MouseWheelDelta
+  name: MouseWheelDelta
+  nameWithType: Input.MouseWheelDelta
+  fullName: AngeliA.Input.MouseWheelDelta
+- uid: AngeliA.Input.IgnoringMouseInput*
+  commentId: Overload:AngeliA.Input.IgnoringMouseInput
+  href: AngeliA.Input.html#AngeliA_Input_IgnoringMouseInput
+  name: IgnoringMouseInput
+  nameWithType: Input.IgnoringMouseInput
+  fullName: AngeliA.Input.IgnoringMouseInput
+- uid: AngeliA.Input.IgnoringKeyInput*
+  commentId: Overload:AngeliA.Input.IgnoringKeyInput
+  href: AngeliA.Input.html#AngeliA_Input_IgnoringKeyInput
+  name: IgnoringKeyInput
+  nameWithType: Input.IgnoringKeyInput
+  fullName: AngeliA.Input.IgnoringKeyInput
+- uid: AngeliA.Input.MousePositionShift*
+  commentId: Overload:AngeliA.Input.MousePositionShift
+  href: AngeliA.Input.html#AngeliA_Input_MousePositionShift
+  name: MousePositionShift
+  nameWithType: Input.MousePositionShift
+  fullName: AngeliA.Input.MousePositionShift
+- uid: AngeliA.Input.LastMouseLeftButtonDownFrame*
+  commentId: Overload:AngeliA.Input.LastMouseLeftButtonDownFrame
+  href: AngeliA.Input.html#AngeliA_Input_LastMouseLeftButtonDownFrame
+  name: LastMouseLeftButtonDownFrame
+  nameWithType: Input.LastMouseLeftButtonDownFrame
+  fullName: AngeliA.Input.LastMouseLeftButtonDownFrame
+- uid: System.ValueTuple{System.Int32,System.Int32}
+  commentId: T:System.ValueTuple{System.Int32,System.Int32}
+  parent: System
+  definition: System.ValueTuple`2
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: (int prev, int current)
+  nameWithType: (int prev, int current)
+  fullName: (int prev, int current)
+  nameWithType.vb: (prev As Integer, current As Integer)
+  fullName.vb: (prev As Integer, current As Integer)
+  name.vb: (prev As Integer, current As Integer)
+  spec.csharp:
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.prev
+    name: prev
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.prev
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.current
+    name: current
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.current
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Int32,System.Int32}.prev
+    name: prev
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.prev
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32}.current
+    name: current
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32-.current
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: AngeliA.Input.LastMouseRightButtonDownFrame*
+  commentId: Overload:AngeliA.Input.LastMouseRightButtonDownFrame
+  href: AngeliA.Input.html#AngeliA_Input_LastMouseRightButtonDownFrame
+  name: LastMouseRightButtonDownFrame
+  nameWithType: Input.LastMouseRightButtonDownFrame
+  fullName: AngeliA.Input.LastMouseRightButtonDownFrame
+- uid: AngeliA.Input.LastMouseMidButtonDownFrame*
+  commentId: Overload:AngeliA.Input.LastMouseMidButtonDownFrame
+  href: AngeliA.Input.html#AngeliA_Input_LastMouseMidButtonDownFrame
+  name: LastMouseMidButtonDownFrame
+  nameWithType: Input.LastMouseMidButtonDownFrame
+  fullName: AngeliA.Input.LastMouseMidButtonDownFrame
+- uid: AngeliA.Input.OnGameInitialize*
+  commentId: Overload:AngeliA.Input.OnGameInitialize
+  href: AngeliA.Input.html#AngeliA_Input_OnGameInitialize
+  name: OnGameInitialize
+  nameWithType: Input.OnGameInitialize
+  fullName: AngeliA.Input.OnGameInitialize
+- uid: AngeliA.Input.OnGameInitializeLater*
+  commentId: Overload:AngeliA.Input.OnGameInitializeLater
+  href: AngeliA.Input.html#AngeliA_Input_OnGameInitializeLater
+  name: OnGameInitializeLater
+  nameWithType: Input.OnGameInitializeLater
+  fullName: AngeliA.Input.OnGameInitializeLater
+- uid: AngeliA.TaskResult
+  commentId: T:AngeliA.TaskResult
+  parent: AngeliA
+  href: AngeliA.TaskResult.html
+  name: TaskResult
+  nameWithType: TaskResult
+  fullName: AngeliA.TaskResult
+- uid: AngeliA.Input.TryGetHoldingGamepadButton*
+  commentId: Overload:AngeliA.Input.TryGetHoldingGamepadButton
+  href: AngeliA.Input.html#AngeliA_Input_TryGetHoldingGamepadButton_AngeliA_GamepadKey__
+  name: TryGetHoldingGamepadButton
+  nameWithType: Input.TryGetHoldingGamepadButton
+  fullName: AngeliA.Input.TryGetHoldingGamepadButton
+- uid: AngeliA.GamepadKey
+  commentId: T:AngeliA.GamepadKey
+  parent: AngeliA
+  href: AngeliA.GamepadKey.html
+  name: GamepadKey
+  nameWithType: GamepadKey
+  fullName: AngeliA.GamepadKey
+- uid: AngeliA.Input.TryGetHoldingKeyboardKey*
+  commentId: Overload:AngeliA.Input.TryGetHoldingKeyboardKey
+  href: AngeliA.Input.html#AngeliA_Input_TryGetHoldingKeyboardKey_AngeliA_KeyboardKey__
+  name: TryGetHoldingKeyboardKey
+  nameWithType: Input.TryGetHoldingKeyboardKey
+  fullName: AngeliA.Input.TryGetHoldingKeyboardKey
+- uid: AngeliA.KeyboardKey
+  commentId: T:AngeliA.KeyboardKey
+  parent: AngeliA
+  href: AngeliA.KeyboardKey.html
+  name: KeyboardKey
+  nameWithType: KeyboardKey
+  fullName: AngeliA.KeyboardKey
+- uid: AngeliA.Input.GameKeyDown*
+  commentId: Overload:AngeliA.Input.GameKeyDown
+  href: AngeliA.Input.html#AngeliA_Input_GameKeyDown_AngeliA_Gamekey_
+  name: GameKeyDown
+  nameWithType: Input.GameKeyDown
+  fullName: AngeliA.Input.GameKeyDown
+- uid: AngeliA.Gamekey
+  commentId: T:AngeliA.Gamekey
+  parent: AngeliA
+  href: AngeliA.Gamekey.html
+  name: Gamekey
+  nameWithType: Gamekey
+  fullName: AngeliA.Gamekey
+- uid: AngeliA.Input.GameKeyDownGUI*
+  commentId: Overload:AngeliA.Input.GameKeyDownGUI
+  href: AngeliA.Input.html#AngeliA_Input_GameKeyDownGUI_AngeliA_Gamekey_
+  name: GameKeyDownGUI
+  nameWithType: Input.GameKeyDownGUI
+  fullName: AngeliA.Input.GameKeyDownGUI
+- uid: AngeliA.Input.GameKeyHolding*
+  commentId: Overload:AngeliA.Input.GameKeyHolding
+  href: AngeliA.Input.html#AngeliA_Input_GameKeyHolding_AngeliA_Gamekey_
+  name: GameKeyHolding
+  nameWithType: Input.GameKeyHolding
+  fullName: AngeliA.Input.GameKeyHolding
+- uid: AngeliA.Input.GameKeyUp*
+  commentId: Overload:AngeliA.Input.GameKeyUp
+  href: AngeliA.Input.html#AngeliA_Input_GameKeyUp_AngeliA_Gamekey_
+  name: GameKeyUp
+  nameWithType: Input.GameKeyUp
+  fullName: AngeliA.Input.GameKeyUp
+- uid: AngeliA.Input.KeyboardDown*
+  commentId: Overload:AngeliA.Input.KeyboardDown
+  href: AngeliA.Input.html#AngeliA_Input_KeyboardDown_AngeliA_KeyboardKey_
+  name: KeyboardDown
+  nameWithType: Input.KeyboardDown
+  fullName: AngeliA.Input.KeyboardDown
+- uid: AngeliA.Input.KeyboardDownGUI*
+  commentId: Overload:AngeliA.Input.KeyboardDownGUI
+  href: AngeliA.Input.html#AngeliA_Input_KeyboardDownGUI_AngeliA_KeyboardKey_
+  name: KeyboardDownGUI
+  nameWithType: Input.KeyboardDownGUI
+  fullName: AngeliA.Input.KeyboardDownGUI
+- uid: AngeliA.Input.KeyboardHolding*
+  commentId: Overload:AngeliA.Input.KeyboardHolding
+  href: AngeliA.Input.html#AngeliA_Input_KeyboardHolding_AngeliA_KeyboardKey_
+  name: KeyboardHolding
+  nameWithType: Input.KeyboardHolding
+  fullName: AngeliA.Input.KeyboardHolding
+- uid: AngeliA.Input.KeyboardUp*
+  commentId: Overload:AngeliA.Input.KeyboardUp
+  href: AngeliA.Input.html#AngeliA_Input_KeyboardUp_AngeliA_KeyboardKey_
+  name: KeyboardUp
+  nameWithType: Input.KeyboardUp
+  fullName: AngeliA.Input.KeyboardUp
+- uid: AngeliA.Input.MouseKeyUsed*
+  commentId: Overload:AngeliA.Input.MouseKeyUsed
+  href: AngeliA.Input.html#AngeliA_Input_MouseKeyUsed_System_Int32_
+  name: MouseKeyUsed
+  nameWithType: Input.MouseKeyUsed
+  fullName: AngeliA.Input.MouseKeyUsed
+- uid: AngeliA.Input.KeyboardKeyUsed*
+  commentId: Overload:AngeliA.Input.KeyboardKeyUsed
+  href: AngeliA.Input.html#AngeliA_Input_KeyboardKeyUsed_AngeliA_KeyboardKey_
+  name: KeyboardKeyUsed
+  nameWithType: Input.KeyboardKeyUsed
+  fullName: AngeliA.Input.KeyboardKeyUsed
+- uid: AngeliA.Input.UseGameKey*
+  commentId: Overload:AngeliA.Input.UseGameKey
+  href: AngeliA.Input.html#AngeliA_Input_UseGameKey_AngeliA_Gamekey_
+  name: UseGameKey
+  nameWithType: Input.UseGameKey
+  fullName: AngeliA.Input.UseGameKey
+- uid: AngeliA.Input.UseKeyboardKey*
+  commentId: Overload:AngeliA.Input.UseKeyboardKey
+  href: AngeliA.Input.html#AngeliA_Input_UseKeyboardKey_AngeliA_KeyboardKey_
+  name: UseKeyboardKey
+  nameWithType: Input.UseKeyboardKey
+  fullName: AngeliA.Input.UseKeyboardKey
+- uid: AngeliA.Input.UseAllHoldingKeys*
+  commentId: Overload:AngeliA.Input.UseAllHoldingKeys
+  href: AngeliA.Input.html#AngeliA_Input_UseAllHoldingKeys_System_Boolean_
+  name: UseAllHoldingKeys
+  nameWithType: Input.UseAllHoldingKeys
+  fullName: AngeliA.Input.UseAllHoldingKeys
+- uid: AngeliA.Input.UseAllMouseKey*
+  commentId: Overload:AngeliA.Input.UseAllMouseKey
+  href: AngeliA.Input.html#AngeliA_Input_UseAllMouseKey
+  name: UseAllMouseKey
+  nameWithType: Input.UseAllMouseKey
+  fullName: AngeliA.Input.UseAllMouseKey
+- uid: AngeliA.Input.UseMouseKey*
+  commentId: Overload:AngeliA.Input.UseMouseKey
+  href: AngeliA.Input.html#AngeliA_Input_UseMouseKey_System_Int32_
+  name: UseMouseKey
+  nameWithType: Input.UseMouseKey
+  fullName: AngeliA.Input.UseMouseKey
+- uid: AngeliA.Input.UnuseKeyboardKey*
+  commentId: Overload:AngeliA.Input.UnuseKeyboardKey
+  href: AngeliA.Input.html#AngeliA_Input_UnuseKeyboardKey_AngeliA_KeyboardKey_
+  name: UnuseKeyboardKey
+  nameWithType: Input.UnuseKeyboardKey
+  fullName: AngeliA.Input.UnuseKeyboardKey
+- uid: AngeliA.Input.UnuseGameKey*
+  commentId: Overload:AngeliA.Input.UnuseGameKey
+  href: AngeliA.Input.html#AngeliA_Input_UnuseGameKey_AngeliA_Gamekey_
+  name: UnuseGameKey
+  nameWithType: Input.UnuseGameKey
+  fullName: AngeliA.Input.UnuseGameKey
+- uid: AngeliA.Input.UnuseMouseKey*
+  commentId: Overload:AngeliA.Input.UnuseMouseKey
+  href: AngeliA.Input.html#AngeliA_Input_UnuseMouseKey_System_Int32_
+  name: UnuseMouseKey
+  nameWithType: Input.UnuseMouseKey
+  fullName: AngeliA.Input.UnuseMouseKey
+- uid: AngeliA.Input.UnuseAllMouseKey*
+  commentId: Overload:AngeliA.Input.UnuseAllMouseKey
+  href: AngeliA.Input.html#AngeliA_Input_UnuseAllMouseKey
+  name: UnuseAllMouseKey
+  nameWithType: Input.UnuseAllMouseKey
+  fullName: AngeliA.Input.UnuseAllMouseKey
+- uid: AngeliA.Input.IgnoreMouseToActionJump*
+  commentId: Overload:AngeliA.Input.IgnoreMouseToActionJump
+  href: AngeliA.Input.html#AngeliA_Input_IgnoreMouseToActionJump_System_Boolean_System_Boolean_System_Boolean_System_Int32_
+  name: IgnoreMouseToActionJump
+  nameWithType: Input.IgnoreMouseToActionJump
+  fullName: AngeliA.Input.IgnoreMouseToActionJump
+- uid: AngeliA.Input.IgnoreRightStickToMouseWheel*
+  commentId: Overload:AngeliA.Input.IgnoreRightStickToMouseWheel
+  href: AngeliA.Input.html#AngeliA_Input_IgnoreRightStickToMouseWheel_System_Int32_
+  name: IgnoreRightStickToMouseWheel
+  nameWithType: Input.IgnoreRightStickToMouseWheel
+  fullName: AngeliA.Input.IgnoreRightStickToMouseWheel
+- uid: AngeliA.Input.GetKeyboardMap*
+  commentId: Overload:AngeliA.Input.GetKeyboardMap
+  href: AngeliA.Input.html#AngeliA_Input_GetKeyboardMap_AngeliA_Gamekey_
+  name: GetKeyboardMap
+  nameWithType: Input.GetKeyboardMap
+  fullName: AngeliA.Input.GetKeyboardMap
+- uid: AngeliA.Input.GetDefaultKeyboardMap*
+  commentId: Overload:AngeliA.Input.GetDefaultKeyboardMap
+  href: AngeliA.Input.html#AngeliA_Input_GetDefaultKeyboardMap_AngeliA_Gamekey_
+  name: GetDefaultKeyboardMap
+  nameWithType: Input.GetDefaultKeyboardMap
+  fullName: AngeliA.Input.GetDefaultKeyboardMap
+- uid: AngeliA.Input.GetGamepadMap*
+  commentId: Overload:AngeliA.Input.GetGamepadMap
+  href: AngeliA.Input.html#AngeliA_Input_GetGamepadMap_AngeliA_Gamekey_
+  name: GetGamepadMap
+  nameWithType: Input.GetGamepadMap
+  fullName: AngeliA.Input.GetGamepadMap
+- uid: AngeliA.Input.GetDefaultGamepadMap*
+  commentId: Overload:AngeliA.Input.GetDefaultGamepadMap
+  href: AngeliA.Input.html#AngeliA_Input_GetDefaultGamepadMap_AngeliA_Gamekey_
+  name: GetDefaultGamepadMap
+  nameWithType: Input.GetDefaultGamepadMap
+  fullName: AngeliA.Input.GetDefaultGamepadMap
+- uid: AngeliA.Input.SetKeyboardMap*
+  commentId: Overload:AngeliA.Input.SetKeyboardMap
+  href: AngeliA.Input.html#AngeliA_Input_SetKeyboardMap_AngeliA_Gamekey_AngeliA_KeyboardKey_
+  name: SetKeyboardMap
+  nameWithType: Input.SetKeyboardMap
+  fullName: AngeliA.Input.SetKeyboardMap
+- uid: AngeliA.Input.SetGamepadMap*
+  commentId: Overload:AngeliA.Input.SetGamepadMap
+  href: AngeliA.Input.html#AngeliA_Input_SetGamepadMap_AngeliA_Gamekey_AngeliA_GamepadKey_
+  name: SetGamepadMap
+  nameWithType: Input.SetGamepadMap
+  fullName: AngeliA.Input.SetGamepadMap
+- uid: AngeliA.Input.MouseButtonHolding*
+  commentId: Overload:AngeliA.Input.MouseButtonHolding
+  href: AngeliA.Input.html#AngeliA_Input_MouseButtonHolding_System_Int32_
+  name: MouseButtonHolding
+  nameWithType: Input.MouseButtonHolding
+  fullName: AngeliA.Input.MouseButtonHolding
+- uid: AngeliA.Input.GetHoldingMouseButton*
+  commentId: Overload:AngeliA.Input.GetHoldingMouseButton
+  href: AngeliA.Input.html#AngeliA_Input_GetHoldingMouseButton
+  name: GetHoldingMouseButton
+  nameWithType: Input.GetHoldingMouseButton
+  fullName: AngeliA.Input.GetHoldingMouseButton
+- uid: AngeliA.Input.IgnoreAllInput*
+  commentId: Overload:AngeliA.Input.IgnoreAllInput
+  href: AngeliA.Input.html#AngeliA_Input_IgnoreAllInput_System_Int32_
+  name: IgnoreAllInput
+  nameWithType: Input.IgnoreAllInput
+  fullName: AngeliA.Input.IgnoreAllInput
+- uid: AngeliA.Input.IgnoreMouseInput*
+  commentId: Overload:AngeliA.Input.IgnoreMouseInput
+  href: AngeliA.Input.html#AngeliA_Input_IgnoreMouseInput_System_Int32_
+  name: IgnoreMouseInput
+  nameWithType: Input.IgnoreMouseInput
+  fullName: AngeliA.Input.IgnoreMouseInput
+- uid: AngeliA.Input.IgnoreKeyInput*
+  commentId: Overload:AngeliA.Input.IgnoreKeyInput
+  href: AngeliA.Input.html#AngeliA_Input_IgnoreKeyInput_System_Int32_
+  name: IgnoreKeyInput
+  nameWithType: Input.IgnoreKeyInput
+  fullName: AngeliA.Input.IgnoreKeyInput
+- uid: AngeliA.Input.CancelIgnoreMouseInput*
+  commentId: Overload:AngeliA.Input.CancelIgnoreMouseInput
+  href: AngeliA.Input.html#AngeliA_Input_CancelIgnoreMouseInput
+  name: CancelIgnoreMouseInput
+  nameWithType: Input.CancelIgnoreMouseInput
+  fullName: AngeliA.Input.CancelIgnoreMouseInput
+- uid: AngeliA.Input.CancelIgnoreKeyInput*
+  commentId: Overload:AngeliA.Input.CancelIgnoreKeyInput
+  href: AngeliA.Input.html#AngeliA_Input_CancelIgnoreKeyInput
+  name: CancelIgnoreKeyInput
+  nameWithType: Input.CancelIgnoreKeyInput
+  fullName: AngeliA.Input.CancelIgnoreKeyInput
+- uid: AngeliA.Input.SetMousePositionShift*
+  commentId: Overload:AngeliA.Input.SetMousePositionShift
+  href: AngeliA.Input.html#AngeliA_Input_SetMousePositionShift_System_Int32_System_Int32_
+  name: SetMousePositionShift
+  nameWithType: Input.SetMousePositionShift
+  fullName: AngeliA.Input.SetMousePositionShift

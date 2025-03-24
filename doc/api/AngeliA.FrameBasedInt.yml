@@ -1,0 +1,1093 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.FrameBasedInt
+  commentId: T:AngeliA.FrameBasedInt
+  id: FrameBasedInt
+  parent: AngeliA
+  children:
+  - AngeliA.FrameBasedInt.#ctor
+  - AngeliA.FrameBasedInt.#ctor(System.Int32)
+  - AngeliA.FrameBasedInt.Add(System.Int32,System.Int32,System.Int32)
+  - AngeliA.FrameBasedInt.Max(System.Int32,System.Int32,System.Int32)
+  - AngeliA.FrameBasedInt.Min(System.Int32,System.Int32,System.Int32)
+  - AngeliA.FrameBasedInt.Multiply(System.Int32,System.Int32,System.Int32)
+  - AngeliA.FrameBasedInt.op_Implicit(AngeliA.FrameBasedInt)~System.Int32
+  langs:
+  - csharp
+  - vb
+  name: FrameBasedInt
+  nameWithType: FrameBasedInt
+  fullName: AngeliA.FrameBasedInt
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/FrameBasedValue.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FrameBasedInt
+    path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: 'public class FrameBasedInt : FrameBasedValue<int>'
+    content.vb: Public Class FrameBasedInt Inherits FrameBasedValue(Of Integer)
+  inheritance:
+  - System.Object
+  - AngeliA.FrameBasedValue
+  - AngeliA.FrameBasedValue{System.Int32}
+  inheritedMembers:
+  - AngeliA.FrameBasedValue{System.Int32}.FinalValue
+  - AngeliA.FrameBasedValue{System.Int32}.BaseValue
+  - AngeliA.FrameBasedValue{System.Int32}.OverrideValue
+  - AngeliA.FrameBasedValue{System.Int32}.Override(System.Int32,System.Int32,System.Int32)
+  - AngeliA.FrameBasedValue{System.Int32}.ToString
+  - AngeliA.FrameBasedValue.Overrided
+  - AngeliA.FrameBasedValue.OverrideFrame
+  - AngeliA.FrameBasedValue.OverridePriority
+  - AngeliA.FrameBasedValue.ClearOverride
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.FrameBasedInt.#ctor(System.Int32)
+  commentId: M:AngeliA.FrameBasedInt.#ctor(System.Int32)
+  id: '#ctor(System.Int32)'
+  parent: AngeliA.FrameBasedInt
+  langs:
+  - csharp
+  - vb
+  name: FrameBasedInt(int)
+  nameWithType: FrameBasedInt.FrameBasedInt(int)
+  fullName: AngeliA.FrameBasedInt.FrameBasedInt(int)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/FrameBasedValue.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public FrameBasedInt(int value)
+    parameters:
+    - id: value
+      type: System.Int32
+    content.vb: Public Sub New(value As Integer)
+  overload: AngeliA.FrameBasedInt.#ctor*
+  nameWithType.vb: FrameBasedInt.New(Integer)
+  fullName.vb: AngeliA.FrameBasedInt.New(Integer)
+  name.vb: New(Integer)
+- uid: AngeliA.FrameBasedInt.Add(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.FrameBasedInt.Add(System.Int32,System.Int32,System.Int32)
+  id: Add(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.FrameBasedInt
+  langs:
+  - csharp
+  - vb
+  name: Add(int, int, int)
+  nameWithType: FrameBasedInt.Add(int, int, int)
+  fullName: AngeliA.FrameBasedInt.Add(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/FrameBasedValue.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Add
+    path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
+    startLine: 37
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void Add(int delta, int duration = 0, int priority = 0)
+    parameters:
+    - id: delta
+      type: System.Int32
+    - id: duration
+      type: System.Int32
+    - id: priority
+      type: System.Int32
+    content.vb: Public Sub Add(delta As Integer, duration As Integer = 0, priority As Integer = 0)
+  overload: AngeliA.FrameBasedInt.Add*
+  nameWithType.vb: FrameBasedInt.Add(Integer, Integer, Integer)
+  fullName.vb: AngeliA.FrameBasedInt.Add(Integer, Integer, Integer)
+  name.vb: Add(Integer, Integer, Integer)
+- uid: AngeliA.FrameBasedInt.Multiply(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.FrameBasedInt.Multiply(System.Int32,System.Int32,System.Int32)
+  id: Multiply(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.FrameBasedInt
+  langs:
+  - csharp
+  - vb
+  name: Multiply(int, int, int)
+  nameWithType: FrameBasedInt.Multiply(int, int, int)
+  fullName: AngeliA.FrameBasedInt.Multiply(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/FrameBasedValue.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Multiply
+    path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
+    startLine: 48
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void Multiply(int scale, int duration = 0, int priority = 0)
+    parameters:
+    - id: scale
+      type: System.Int32
+    - id: duration
+      type: System.Int32
+    - id: priority
+      type: System.Int32
+    content.vb: Public Sub Multiply(scale As Integer, duration As Integer = 0, priority As Integer = 0)
+  overload: AngeliA.FrameBasedInt.Multiply*
+  nameWithType.vb: FrameBasedInt.Multiply(Integer, Integer, Integer)
+  fullName.vb: AngeliA.FrameBasedInt.Multiply(Integer, Integer, Integer)
+  name.vb: Multiply(Integer, Integer, Integer)
+- uid: AngeliA.FrameBasedInt.Min(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.FrameBasedInt.Min(System.Int32,System.Int32,System.Int32)
+  id: Min(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.FrameBasedInt
+  langs:
+  - csharp
+  - vb
+  name: Min(int, int, int)
+  nameWithType: FrameBasedInt.Min(int, int, int)
+  fullName: AngeliA.FrameBasedInt.Min(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/FrameBasedValue.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Min
+    path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
+    startLine: 59
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void Min(int value, int duration = 0, int priority = 0)
+    parameters:
+    - id: value
+      type: System.Int32
+    - id: duration
+      type: System.Int32
+    - id: priority
+      type: System.Int32
+    content.vb: Public Sub Min(value As Integer, duration As Integer = 0, priority As Integer = 0)
+  overload: AngeliA.FrameBasedInt.Min*
+  nameWithType.vb: FrameBasedInt.Min(Integer, Integer, Integer)
+  fullName.vb: AngeliA.FrameBasedInt.Min(Integer, Integer, Integer)
+  name.vb: Min(Integer, Integer, Integer)
+- uid: AngeliA.FrameBasedInt.Max(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.FrameBasedInt.Max(System.Int32,System.Int32,System.Int32)
+  id: Max(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.FrameBasedInt
+  langs:
+  - csharp
+  - vb
+  name: Max(int, int, int)
+  nameWithType: FrameBasedInt.Max(int, int, int)
+  fullName: AngeliA.FrameBasedInt.Max(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/FrameBasedValue.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Max
+    path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
+    startLine: 71
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void Max(int value, int duration = 0, int priority = 0)
+    parameters:
+    - id: value
+      type: System.Int32
+    - id: duration
+      type: System.Int32
+    - id: priority
+      type: System.Int32
+    content.vb: Public Sub Max(value As Integer, duration As Integer = 0, priority As Integer = 0)
+  overload: AngeliA.FrameBasedInt.Max*
+  nameWithType.vb: FrameBasedInt.Max(Integer, Integer, Integer)
+  fullName.vb: AngeliA.FrameBasedInt.Max(Integer, Integer, Integer)
+  name.vb: Max(Integer, Integer, Integer)
+- uid: AngeliA.FrameBasedInt.#ctor
+  commentId: M:AngeliA.FrameBasedInt.#ctor
+  id: '#ctor'
+  parent: AngeliA.FrameBasedInt
+  langs:
+  - csharp
+  - vb
+  name: FrameBasedInt()
+  nameWithType: FrameBasedInt.FrameBasedInt()
+  fullName: AngeliA.FrameBasedInt.FrameBasedInt()
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/FrameBasedValue.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
+    startLine: 83
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public FrameBasedInt()
+    content.vb: Public Sub New()
+  overload: AngeliA.FrameBasedInt.#ctor*
+  nameWithType.vb: FrameBasedInt.New()
+  fullName.vb: AngeliA.FrameBasedInt.New()
+  name.vb: New()
+- uid: AngeliA.FrameBasedInt.op_Implicit(AngeliA.FrameBasedInt)~System.Int32
+  commentId: M:AngeliA.FrameBasedInt.op_Implicit(AngeliA.FrameBasedInt)~System.Int32
+  id: op_Implicit(AngeliA.FrameBasedInt)~System.Int32
+  parent: AngeliA.FrameBasedInt
+  langs:
+  - csharp
+  - vb
+  name: implicit operator int(FrameBasedInt)
+  nameWithType: FrameBasedInt.implicit operator int(FrameBasedInt)
+  fullName: AngeliA.FrameBasedInt.implicit operator int(AngeliA.FrameBasedInt)
+  type: Operator
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/FrameBasedValue.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: op_Implicit
+    path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
+    startLine: 84
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static implicit operator int(FrameBasedInt bInt)
+    parameters:
+    - id: bInt
+      type: AngeliA.FrameBasedInt
+    return:
+      type: System.Int32
+    content.vb: Public Shared Widening Operator CType(bInt As FrameBasedInt) As Integer
+  overload: AngeliA.FrameBasedInt.op_Implicit*
+  nameWithType.vb: FrameBasedInt.CType(FrameBasedInt)
+  fullName.vb: AngeliA.FrameBasedInt.CType(AngeliA.FrameBasedInt)
+  name.vb: CType(FrameBasedInt)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.FrameBasedValue
+  commentId: T:AngeliA.FrameBasedValue
+  parent: AngeliA
+  href: AngeliA.FrameBasedValue.html
+  name: FrameBasedValue
+  nameWithType: FrameBasedValue
+  fullName: AngeliA.FrameBasedValue
+- uid: AngeliA.FrameBasedValue{System.Int32}
+  commentId: T:AngeliA.FrameBasedValue{System.Int32}
+  parent: AngeliA
+  definition: AngeliA.FrameBasedValue`1
+  href: AngeliA.FrameBasedValue-1.html
+  name: FrameBasedValue<int>
+  nameWithType: FrameBasedValue<int>
+  fullName: AngeliA.FrameBasedValue<int>
+  nameWithType.vb: FrameBasedValue(Of Integer)
+  fullName.vb: AngeliA.FrameBasedValue(Of Integer)
+  name.vb: FrameBasedValue(Of Integer)
+  spec.csharp:
+  - uid: AngeliA.FrameBasedValue`1
+    name: FrameBasedValue
+    href: AngeliA.FrameBasedValue-1.html
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.FrameBasedValue`1
+    name: FrameBasedValue
+    href: AngeliA.FrameBasedValue-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.FrameBasedValue{System.Int32}.FinalValue
+  commentId: P:AngeliA.FrameBasedValue{System.Int32}.FinalValue
+  parent: AngeliA.FrameBasedValue{System.Int32}
+  definition: AngeliA.FrameBasedValue`1.FinalValue
+  href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_FinalValue
+  name: FinalValue
+  nameWithType: FrameBasedValue<int>.FinalValue
+  fullName: AngeliA.FrameBasedValue<int>.FinalValue
+  nameWithType.vb: FrameBasedValue(Of Integer).FinalValue
+  fullName.vb: AngeliA.FrameBasedValue(Of Integer).FinalValue
+- uid: AngeliA.FrameBasedValue{System.Int32}.BaseValue
+  commentId: F:AngeliA.FrameBasedValue{System.Int32}.BaseValue
+  parent: AngeliA.FrameBasedValue{System.Int32}
+  definition: AngeliA.FrameBasedValue`1.BaseValue
+  href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_BaseValue
+  name: BaseValue
+  nameWithType: FrameBasedValue<int>.BaseValue
+  fullName: AngeliA.FrameBasedValue<int>.BaseValue
+  nameWithType.vb: FrameBasedValue(Of Integer).BaseValue
+  fullName.vb: AngeliA.FrameBasedValue(Of Integer).BaseValue
+- uid: AngeliA.FrameBasedValue{System.Int32}.OverrideValue
+  commentId: F:AngeliA.FrameBasedValue{System.Int32}.OverrideValue
+  parent: AngeliA.FrameBasedValue{System.Int32}
+  definition: AngeliA.FrameBasedValue`1.OverrideValue
+  href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_OverrideValue
+  name: OverrideValue
+  nameWithType: FrameBasedValue<int>.OverrideValue
+  fullName: AngeliA.FrameBasedValue<int>.OverrideValue
+  nameWithType.vb: FrameBasedValue(Of Integer).OverrideValue
+  fullName.vb: AngeliA.FrameBasedValue(Of Integer).OverrideValue
+- uid: AngeliA.FrameBasedValue{System.Int32}.Override(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.FrameBasedValue{System.Int32}.Override(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.FrameBasedValue{System.Int32}
+  definition: AngeliA.FrameBasedValue`1.Override(`0,System.Int32,System.Int32)
+  href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_Override__0_System_Int32_System_Int32_
+  name: Override(int, int, int)
+  nameWithType: FrameBasedValue<int>.Override(int, int, int)
+  fullName: AngeliA.FrameBasedValue<int>.Override(int, int, int)
+  nameWithType.vb: FrameBasedValue(Of Integer).Override(Integer, Integer, Integer)
+  fullName.vb: AngeliA.FrameBasedValue(Of Integer).Override(Integer, Integer, Integer)
+  name.vb: Override(Integer, Integer, Integer)
+  spec.csharp:
+  - uid: AngeliA.FrameBasedValue{System.Int32}.Override(System.Int32,System.Int32,System.Int32)
+    name: Override
+    href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_Override__0_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.FrameBasedValue{System.Int32}.Override(System.Int32,System.Int32,System.Int32)
+    name: Override
+    href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_Override__0_System_Int32_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.FrameBasedValue{System.Int32}.ToString
+  commentId: M:AngeliA.FrameBasedValue{System.Int32}.ToString
+  parent: AngeliA.FrameBasedValue{System.Int32}
+  definition: AngeliA.FrameBasedValue`1.ToString
+  href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_ToString
+  name: ToString()
+  nameWithType: FrameBasedValue<int>.ToString()
+  fullName: AngeliA.FrameBasedValue<int>.ToString()
+  nameWithType.vb: FrameBasedValue(Of Integer).ToString()
+  fullName.vb: AngeliA.FrameBasedValue(Of Integer).ToString()
+  spec.csharp:
+  - uid: AngeliA.FrameBasedValue{System.Int32}.ToString
+    name: ToString
+    href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_ToString
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.FrameBasedValue{System.Int32}.ToString
+    name: ToString
+    href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_ToString
+  - name: (
+  - name: )
+- uid: AngeliA.FrameBasedValue.Overrided
+  commentId: P:AngeliA.FrameBasedValue.Overrided
+  parent: AngeliA.FrameBasedValue
+  href: AngeliA.FrameBasedValue.html#AngeliA_FrameBasedValue_Overrided
+  name: Overrided
+  nameWithType: FrameBasedValue.Overrided
+  fullName: AngeliA.FrameBasedValue.Overrided
+- uid: AngeliA.FrameBasedValue.OverrideFrame
+  commentId: F:AngeliA.FrameBasedValue.OverrideFrame
+  parent: AngeliA.FrameBasedValue
+  href: AngeliA.FrameBasedValue.html#AngeliA_FrameBasedValue_OverrideFrame
+  name: OverrideFrame
+  nameWithType: FrameBasedValue.OverrideFrame
+  fullName: AngeliA.FrameBasedValue.OverrideFrame
+- uid: AngeliA.FrameBasedValue.OverridePriority
+  commentId: F:AngeliA.FrameBasedValue.OverridePriority
+  parent: AngeliA.FrameBasedValue
+  href: AngeliA.FrameBasedValue.html#AngeliA_FrameBasedValue_OverridePriority
+  name: OverridePriority
+  nameWithType: FrameBasedValue.OverridePriority
+  fullName: AngeliA.FrameBasedValue.OverridePriority
+- uid: AngeliA.FrameBasedValue.ClearOverride
+  commentId: M:AngeliA.FrameBasedValue.ClearOverride
+  parent: AngeliA.FrameBasedValue
+  href: AngeliA.FrameBasedValue.html#AngeliA_FrameBasedValue_ClearOverride
+  name: ClearOverride()
+  nameWithType: FrameBasedValue.ClearOverride()
+  fullName: AngeliA.FrameBasedValue.ClearOverride()
+  spec.csharp:
+  - uid: AngeliA.FrameBasedValue.ClearOverride
+    name: ClearOverride
+    href: AngeliA.FrameBasedValue.html#AngeliA_FrameBasedValue_ClearOverride
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.FrameBasedValue.ClearOverride
+    name: ClearOverride
+    href: AngeliA.FrameBasedValue.html#AngeliA_FrameBasedValue_ClearOverride
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.FrameBasedValue`1
+  commentId: T:AngeliA.FrameBasedValue`1
+  href: AngeliA.FrameBasedValue-1.html
+  name: FrameBasedValue<T>
+  nameWithType: FrameBasedValue<T>
+  fullName: AngeliA.FrameBasedValue<T>
+  nameWithType.vb: FrameBasedValue(Of T)
+  fullName.vb: AngeliA.FrameBasedValue(Of T)
+  name.vb: FrameBasedValue(Of T)
+  spec.csharp:
+  - uid: AngeliA.FrameBasedValue`1
+    name: FrameBasedValue
+    href: AngeliA.FrameBasedValue-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.FrameBasedValue`1
+    name: FrameBasedValue
+    href: AngeliA.FrameBasedValue-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.FrameBasedValue`1.FinalValue
+  commentId: P:AngeliA.FrameBasedValue`1.FinalValue
+  href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_FinalValue
+  name: FinalValue
+  nameWithType: FrameBasedValue<T>.FinalValue
+  fullName: AngeliA.FrameBasedValue<T>.FinalValue
+  nameWithType.vb: FrameBasedValue(Of T).FinalValue
+  fullName.vb: AngeliA.FrameBasedValue(Of T).FinalValue
+- uid: AngeliA.FrameBasedValue`1.BaseValue
+  commentId: F:AngeliA.FrameBasedValue`1.BaseValue
+  href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_BaseValue
+  name: BaseValue
+  nameWithType: FrameBasedValue<T>.BaseValue
+  fullName: AngeliA.FrameBasedValue<T>.BaseValue
+  nameWithType.vb: FrameBasedValue(Of T).BaseValue
+  fullName.vb: AngeliA.FrameBasedValue(Of T).BaseValue
+- uid: AngeliA.FrameBasedValue`1.OverrideValue
+  commentId: F:AngeliA.FrameBasedValue`1.OverrideValue
+  href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_OverrideValue
+  name: OverrideValue
+  nameWithType: FrameBasedValue<T>.OverrideValue
+  fullName: AngeliA.FrameBasedValue<T>.OverrideValue
+  nameWithType.vb: FrameBasedValue(Of T).OverrideValue
+  fullName.vb: AngeliA.FrameBasedValue(Of T).OverrideValue
+- uid: AngeliA.FrameBasedValue`1.Override(`0,System.Int32,System.Int32)
+  commentId: M:AngeliA.FrameBasedValue`1.Override(`0,System.Int32,System.Int32)
+  isExternal: true
+  href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_Override__0_System_Int32_System_Int32_
+  name: Override(T, int, int)
+  nameWithType: FrameBasedValue<T>.Override(T, int, int)
+  fullName: AngeliA.FrameBasedValue<T>.Override(T, int, int)
+  nameWithType.vb: FrameBasedValue(Of T).Override(T, Integer, Integer)
+  fullName.vb: AngeliA.FrameBasedValue(Of T).Override(T, Integer, Integer)
+  name.vb: Override(T, Integer, Integer)
+  spec.csharp:
+  - uid: AngeliA.FrameBasedValue`1.Override(`0,System.Int32,System.Int32)
+    name: Override
+    href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_Override__0_System_Int32_System_Int32_
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.FrameBasedValue`1.Override(`0,System.Int32,System.Int32)
+    name: Override
+    href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_Override__0_System_Int32_System_Int32_
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.FrameBasedValue`1.ToString
+  commentId: M:AngeliA.FrameBasedValue`1.ToString
+  href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_ToString
+  name: ToString()
+  nameWithType: FrameBasedValue<T>.ToString()
+  fullName: AngeliA.FrameBasedValue<T>.ToString()
+  nameWithType.vb: FrameBasedValue(Of T).ToString()
+  fullName.vb: AngeliA.FrameBasedValue(Of T).ToString()
+  spec.csharp:
+  - uid: AngeliA.FrameBasedValue`1.ToString
+    name: ToString
+    href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_ToString
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.FrameBasedValue`1.ToString
+    name: ToString
+    href: AngeliA.FrameBasedValue-1.html#AngeliA_FrameBasedValue_1_ToString
+  - name: (
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.FrameBasedInt.#ctor*
+  commentId: Overload:AngeliA.FrameBasedInt.#ctor
+  href: AngeliA.FrameBasedInt.html#AngeliA_FrameBasedInt__ctor_System_Int32_
+  name: FrameBasedInt
+  nameWithType: FrameBasedInt.FrameBasedInt
+  fullName: AngeliA.FrameBasedInt.FrameBasedInt
+  nameWithType.vb: FrameBasedInt.New
+  fullName.vb: AngeliA.FrameBasedInt.New
+  name.vb: New
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.FrameBasedInt.Add*
+  commentId: Overload:AngeliA.FrameBasedInt.Add
+  href: AngeliA.FrameBasedInt.html#AngeliA_FrameBasedInt_Add_System_Int32_System_Int32_System_Int32_
+  name: Add
+  nameWithType: FrameBasedInt.Add
+  fullName: AngeliA.FrameBasedInt.Add
+- uid: AngeliA.FrameBasedInt.Multiply*
+  commentId: Overload:AngeliA.FrameBasedInt.Multiply
+  href: AngeliA.FrameBasedInt.html#AngeliA_FrameBasedInt_Multiply_System_Int32_System_Int32_System_Int32_
+  name: Multiply
+  nameWithType: FrameBasedInt.Multiply
+  fullName: AngeliA.FrameBasedInt.Multiply
+- uid: AngeliA.FrameBasedInt.Min*
+  commentId: Overload:AngeliA.FrameBasedInt.Min
+  href: AngeliA.FrameBasedInt.html#AngeliA_FrameBasedInt_Min_System_Int32_System_Int32_System_Int32_
+  name: Min
+  nameWithType: FrameBasedInt.Min
+  fullName: AngeliA.FrameBasedInt.Min
+- uid: AngeliA.FrameBasedInt.Max*
+  commentId: Overload:AngeliA.FrameBasedInt.Max
+  href: AngeliA.FrameBasedInt.html#AngeliA_FrameBasedInt_Max_System_Int32_System_Int32_System_Int32_
+  name: Max
+  nameWithType: FrameBasedInt.Max
+  fullName: AngeliA.FrameBasedInt.Max
+- uid: AngeliA.FrameBasedInt.op_Implicit*
+  commentId: Overload:AngeliA.FrameBasedInt.op_Implicit
+  name: implicit operator
+  nameWithType: FrameBasedInt.implicit operator
+  fullName: AngeliA.FrameBasedInt.implicit operator
+  nameWithType.vb: FrameBasedInt.CType
+  fullName.vb: AngeliA.FrameBasedInt.CType
+  name.vb: CType
+  spec.csharp:
+  - name: implicit
+  - name: " "
+  - name: operator
+- uid: AngeliA.FrameBasedInt
+  commentId: T:AngeliA.FrameBasedInt
+  parent: AngeliA
+  href: AngeliA.FrameBasedInt.html
+  name: FrameBasedInt
+  nameWithType: FrameBasedInt
+  fullName: AngeliA.FrameBasedInt

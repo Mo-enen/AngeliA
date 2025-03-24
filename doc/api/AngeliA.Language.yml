@@ -1,0 +1,548 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Language
+  commentId: T:AngeliA.Language
+  id: Language
+  parent: AngeliA
+  children:
+  - AngeliA.Language.CurrentLanguage
+  - AngeliA.Language.Get(System.Int32,System.String)
+  - AngeliA.Language.GetLanguageAt(System.Int32)
+  - AngeliA.Language.LanguageCount
+  - AngeliA.Language.PoolReady
+  - AngeliA.Language.SetLanguage(System.String)
+  langs:
+  - csharp
+  - vb
+  name: Language
+  nameWithType: Language
+  fullName: AngeliA.Language
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Language.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Language
+    path: ../AngeliA Framework/src/Core/Language.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static class Language
+    content.vb: Public Module Language
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.Language.LanguageCount
+  commentId: P:AngeliA.Language.LanguageCount
+  id: LanguageCount
+  parent: AngeliA.Language
+  langs:
+  - csharp
+  - vb
+  name: LanguageCount
+  nameWithType: Language.LanguageCount
+  fullName: AngeliA.Language.LanguageCount
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Language.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LanguageCount
+    path: ../AngeliA Framework/src/Core/Language.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int LanguageCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared ReadOnly Property LanguageCount As Integer
+  overload: AngeliA.Language.LanguageCount*
+- uid: AngeliA.Language.CurrentLanguage
+  commentId: P:AngeliA.Language.CurrentLanguage
+  id: CurrentLanguage
+  parent: AngeliA.Language
+  langs:
+  - csharp
+  - vb
+  name: CurrentLanguage
+  nameWithType: Language.CurrentLanguage
+  fullName: AngeliA.Language.CurrentLanguage
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Language.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CurrentLanguage
+    path: ../AngeliA Framework/src/Core/Language.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string CurrentLanguage { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Shared ReadOnly Property CurrentLanguage As String
+  overload: AngeliA.Language.CurrentLanguage*
+- uid: AngeliA.Language.PoolReady
+  commentId: P:AngeliA.Language.PoolReady
+  id: PoolReady
+  parent: AngeliA.Language
+  langs:
+  - csharp
+  - vb
+  name: PoolReady
+  nameWithType: Language.PoolReady
+  fullName: AngeliA.Language.PoolReady
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Language.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PoolReady
+    path: ../AngeliA Framework/src/Core/Language.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool PoolReady { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property PoolReady As Boolean
+  overload: AngeliA.Language.PoolReady*
+- uid: AngeliA.Language.Get(System.Int32,System.String)
+  commentId: M:AngeliA.Language.Get(System.Int32,System.String)
+  id: Get(System.Int32,System.String)
+  parent: AngeliA.Language
+  langs:
+  - csharp
+  - vb
+  name: Get(int, string)
+  nameWithType: Language.Get(int, string)
+  fullName: AngeliA.Language.Get(int, string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Language.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Get
+    path: ../AngeliA Framework/src/Core/Language.cs
+    startLine: 75
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string Get(int id, string failback = "")
+    parameters:
+    - id: id
+      type: System.Int32
+    - id: failback
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function [Get](id As Integer, failback As String = "") As String
+  overload: AngeliA.Language.Get*
+  nameWithType.vb: Language.Get(Integer, String)
+  fullName.vb: AngeliA.Language.Get(Integer, String)
+  name.vb: Get(Integer, String)
+- uid: AngeliA.Language.GetLanguageAt(System.Int32)
+  commentId: M:AngeliA.Language.GetLanguageAt(System.Int32)
+  id: GetLanguageAt(System.Int32)
+  parent: AngeliA.Language
+  langs:
+  - csharp
+  - vb
+  name: GetLanguageAt(int)
+  nameWithType: Language.GetLanguageAt(int)
+  fullName: AngeliA.Language.GetLanguageAt(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Language.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetLanguageAt
+    path: ../AngeliA Framework/src/Core/Language.cs
+    startLine: 78
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetLanguageAt(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetLanguageAt(index As Integer) As String
+  overload: AngeliA.Language.GetLanguageAt*
+  nameWithType.vb: Language.GetLanguageAt(Integer)
+  fullName.vb: AngeliA.Language.GetLanguageAt(Integer)
+  name.vb: GetLanguageAt(Integer)
+- uid: AngeliA.Language.SetLanguage(System.String)
+  commentId: M:AngeliA.Language.SetLanguage(System.String)
+  id: SetLanguage(System.String)
+  parent: AngeliA.Language
+  langs:
+  - csharp
+  - vb
+  name: SetLanguage(string)
+  nameWithType: Language.SetLanguage(string)
+  fullName: AngeliA.Language.SetLanguage(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Language.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetLanguage
+    path: ../AngeliA Framework/src/Core/Language.cs
+    startLine: 81
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool SetLanguage(string language)
+    parameters:
+    - id: language
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function SetLanguage(language As String) As Boolean
+  overload: AngeliA.Language.SetLanguage*
+  nameWithType.vb: Language.SetLanguage(String)
+  fullName.vb: AngeliA.Language.SetLanguage(String)
+  name.vb: SetLanguage(String)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Language.LanguageCount*
+  commentId: Overload:AngeliA.Language.LanguageCount
+  href: AngeliA.Language.html#AngeliA_Language_LanguageCount
+  name: LanguageCount
+  nameWithType: Language.LanguageCount
+  fullName: AngeliA.Language.LanguageCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Language.CurrentLanguage*
+  commentId: Overload:AngeliA.Language.CurrentLanguage
+  href: AngeliA.Language.html#AngeliA_Language_CurrentLanguage
+  name: CurrentLanguage
+  nameWithType: Language.CurrentLanguage
+  fullName: AngeliA.Language.CurrentLanguage
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.Language.PoolReady*
+  commentId: Overload:AngeliA.Language.PoolReady
+  href: AngeliA.Language.html#AngeliA_Language_PoolReady
+  name: PoolReady
+  nameWithType: Language.PoolReady
+  fullName: AngeliA.Language.PoolReady
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Language.Get*
+  commentId: Overload:AngeliA.Language.Get
+  href: AngeliA.Language.html#AngeliA_Language_Get_System_Int32_System_String_
+  name: Get
+  nameWithType: Language.Get
+  fullName: AngeliA.Language.Get
+- uid: AngeliA.Language.GetLanguageAt*
+  commentId: Overload:AngeliA.Language.GetLanguageAt
+  href: AngeliA.Language.html#AngeliA_Language_GetLanguageAt_System_Int32_
+  name: GetLanguageAt
+  nameWithType: Language.GetLanguageAt
+  fullName: AngeliA.Language.GetLanguageAt
+- uid: AngeliA.Language.SetLanguage*
+  commentId: Overload:AngeliA.Language.SetLanguage
+  href: AngeliA.Language.html#AngeliA_Language_SetLanguage_System_String_
+  name: SetLanguage
+  nameWithType: Language.SetLanguage
+  fullName: AngeliA.Language.SetLanguage

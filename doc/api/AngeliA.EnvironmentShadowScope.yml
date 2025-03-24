@@ -1,0 +1,752 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.EnvironmentShadowScope
+  commentId: T:AngeliA.EnvironmentShadowScope
+  id: EnvironmentShadowScope
+  parent: AngeliA
+  children:
+  - AngeliA.EnvironmentShadowScope.#ctor
+  - AngeliA.EnvironmentShadowScope.#ctor(System.Int32,System.Int32,System.Byte,System.Int32)
+  - AngeliA.EnvironmentShadowScope.Alpha
+  - AngeliA.EnvironmentShadowScope.Dispose
+  - AngeliA.EnvironmentShadowScope.OffsetX
+  - AngeliA.EnvironmentShadowScope.OffsetY
+  - AngeliA.EnvironmentShadowScope.Z
+  langs:
+  - csharp
+  - vb
+  name: EnvironmentShadowScope
+  nameWithType: EnvironmentShadowScope
+  fullName: AngeliA.EnvironmentShadowScope
+  type: Struct
+  source:
+    remote:
+      path: AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EnvironmentShadowScope
+    path: ../AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+    startLine: 3
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: 'public readonly struct EnvironmentShadowScope : IDisposable'
+    content.vb: Public Structure EnvironmentShadowScope Implements IDisposable
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.EnvironmentShadowScope.#ctor(System.Int32,System.Int32,System.Byte,System.Int32)
+  commentId: M:AngeliA.EnvironmentShadowScope.#ctor(System.Int32,System.Int32,System.Byte,System.Int32)
+  id: '#ctor(System.Int32,System.Int32,System.Byte,System.Int32)'
+  parent: AngeliA.EnvironmentShadowScope
+  langs:
+  - csharp
+  - vb
+  name: EnvironmentShadowScope(int, int, byte, int)
+  nameWithType: EnvironmentShadowScope.EnvironmentShadowScope(int, int, byte, int)
+  fullName: AngeliA.EnvironmentShadowScope.EnvironmentShadowScope(int, int, byte, int)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+    startLine: 3
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public EnvironmentShadowScope(int offsetX = -64, int offsetY = 0, byte alpha = 64, int z = -65520)
+    parameters:
+    - id: offsetX
+      type: System.Int32
+    - id: offsetY
+      type: System.Int32
+    - id: alpha
+      type: System.Byte
+    - id: z
+      type: System.Int32
+    content.vb: Public Sub New(offsetX As Integer = -64, offsetY As Integer = 0, alpha As Byte = 64, z As Integer = -65520)
+  overload: AngeliA.EnvironmentShadowScope.#ctor*
+  nameWithType.vb: EnvironmentShadowScope.New(Integer, Integer, Byte, Integer)
+  fullName.vb: AngeliA.EnvironmentShadowScope.New(Integer, Integer, Byte, Integer)
+  name.vb: New(Integer, Integer, Byte, Integer)
+- uid: AngeliA.EnvironmentShadowScope.OffsetX
+  commentId: F:AngeliA.EnvironmentShadowScope.OffsetX
+  id: OffsetX
+  parent: AngeliA.EnvironmentShadowScope
+  langs:
+  - csharp
+  - vb
+  name: OffsetX
+  nameWithType: EnvironmentShadowScope.OffsetX
+  fullName: AngeliA.EnvironmentShadowScope.OffsetX
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OffsetX
+    path: ../AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly int OffsetX
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly OffsetX As Integer
+- uid: AngeliA.EnvironmentShadowScope.OffsetY
+  commentId: F:AngeliA.EnvironmentShadowScope.OffsetY
+  id: OffsetY
+  parent: AngeliA.EnvironmentShadowScope
+  langs:
+  - csharp
+  - vb
+  name: OffsetY
+  nameWithType: EnvironmentShadowScope.OffsetY
+  fullName: AngeliA.EnvironmentShadowScope.OffsetY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OffsetY
+    path: ../AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+    startLine: 7
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly int OffsetY
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly OffsetY As Integer
+- uid: AngeliA.EnvironmentShadowScope.Alpha
+  commentId: F:AngeliA.EnvironmentShadowScope.Alpha
+  id: Alpha
+  parent: AngeliA.EnvironmentShadowScope
+  langs:
+  - csharp
+  - vb
+  name: Alpha
+  nameWithType: EnvironmentShadowScope.Alpha
+  fullName: AngeliA.EnvironmentShadowScope.Alpha
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Alpha
+    path: ../AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly byte Alpha
+    return:
+      type: System.Byte
+    content.vb: Public ReadOnly Alpha As Byte
+- uid: AngeliA.EnvironmentShadowScope.Z
+  commentId: F:AngeliA.EnvironmentShadowScope.Z
+  id: Z
+  parent: AngeliA.EnvironmentShadowScope
+  langs:
+  - csharp
+  - vb
+  name: Z
+  nameWithType: EnvironmentShadowScope.Z
+  fullName: AngeliA.EnvironmentShadowScope.Z
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Z
+    path: ../AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly int Z
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Z As Integer
+- uid: AngeliA.EnvironmentShadowScope.#ctor
+  commentId: M:AngeliA.EnvironmentShadowScope.#ctor
+  id: '#ctor'
+  parent: AngeliA.EnvironmentShadowScope
+  langs:
+  - csharp
+  - vb
+  name: EnvironmentShadowScope()
+  nameWithType: EnvironmentShadowScope.EnvironmentShadowScope()
+  fullName: AngeliA.EnvironmentShadowScope.EnvironmentShadowScope()
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public EnvironmentShadowScope()
+    content.vb: Public Sub New()
+  overload: AngeliA.EnvironmentShadowScope.#ctor*
+  nameWithType.vb: EnvironmentShadowScope.New()
+  fullName.vb: AngeliA.EnvironmentShadowScope.New()
+  name.vb: New()
+- uid: AngeliA.EnvironmentShadowScope.Dispose
+  commentId: M:AngeliA.EnvironmentShadowScope.Dispose
+  id: Dispose
+  parent: AngeliA.EnvironmentShadowScope
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: EnvironmentShadowScope.Dispose()
+  fullName: AngeliA.EnvironmentShadowScope.Dispose()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Dispose
+    path: ../AngeliA Framework/src/Scope/EnvironmentShadowScope.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: AngeliA.EnvironmentShadowScope.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.EnvironmentShadowScope.#ctor*
+  commentId: Overload:AngeliA.EnvironmentShadowScope.#ctor
+  href: AngeliA.EnvironmentShadowScope.html#AngeliA_EnvironmentShadowScope__ctor_System_Int32_System_Int32_System_Byte_System_Int32_
+  name: EnvironmentShadowScope
+  nameWithType: EnvironmentShadowScope.EnvironmentShadowScope
+  fullName: AngeliA.EnvironmentShadowScope.EnvironmentShadowScope
+  nameWithType.vb: EnvironmentShadowScope.New
+  fullName.vb: AngeliA.EnvironmentShadowScope.New
+  name.vb: New
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Byte
+  commentId: T:System.Byte
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte
+  nameWithType: byte
+  fullName: byte
+  nameWithType.vb: Byte
+  fullName.vb: Byte
+  name.vb: Byte
+- uid: AngeliA.EnvironmentShadowScope.Dispose*
+  commentId: Overload:AngeliA.EnvironmentShadowScope.Dispose
+  href: AngeliA.EnvironmentShadowScope.html#AngeliA_EnvironmentShadowScope_Dispose
+  name: Dispose
+  nameWithType: EnvironmentShadowScope.Dispose
+  fullName: AngeliA.EnvironmentShadowScope.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

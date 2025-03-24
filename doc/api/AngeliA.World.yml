@@ -1,0 +1,1380 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.World
+  commentId: T:AngeliA.World
+  id: World
+  parent: AngeliA
+  children:
+  - AngeliA.World.#ctor
+  - AngeliA.World.#ctor(AngeliA.Int3)
+  - AngeliA.World.Backgrounds
+  - AngeliA.World.CacheMapPixels
+  - AngeliA.World.Clear(System.Nullable{AngeliA.Int3})
+  - AngeliA.World.ContainsBlock(System.Int32,AngeliA.BlockType)
+  - AngeliA.World.CopyFrom(AngeliA.World)
+  - AngeliA.World.Elements
+  - AngeliA.World.EmptyCheck
+  - AngeliA.World.Entities
+  - AngeliA.World.FillMapIntoTexture(System.Object)
+  - AngeliA.World.Levels
+  - AngeliA.World.LoadFromDisk(System.String,System.Int32,System.Int32,System.Int32)
+  - AngeliA.World.LoadMapIntoTexture(System.String,System.Object)
+  - AngeliA.World.SaveToDisk(System.String)
+  - AngeliA.World.TextureMapLinkedPool
+  - AngeliA.World.WorldPosition
+  langs:
+  - csharp
+  - vb
+  name: World
+  nameWithType: World
+  fullName: AngeliA.World
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: World
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public class World
+    content.vb: Public Class World
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.World.#ctor(AngeliA.Int3)
+  commentId: M:AngeliA.World.#ctor(AngeliA.Int3)
+  id: '#ctor(AngeliA.Int3)'
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: World(Int3)
+  nameWithType: World.World(Int3)
+  fullName: AngeliA.World.World(AngeliA.Int3)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public World(Int3 pos)
+    parameters:
+    - id: pos
+      type: AngeliA.Int3
+    content.vb: Public Sub New(pos As Int3)
+  overload: AngeliA.World.#ctor*
+  nameWithType.vb: World.New(Int3)
+  fullName.vb: AngeliA.World.New(AngeliA.Int3)
+  name.vb: New(Int3)
+- uid: AngeliA.World.CacheMapPixels
+  commentId: F:AngeliA.World.CacheMapPixels
+  id: CacheMapPixels
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: CacheMapPixels
+  nameWithType: World.CacheMapPixels
+  fullName: AngeliA.World.CacheMapPixels
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CacheMapPixels
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly Color32[] CacheMapPixels
+    return:
+      type: AngeliA.Color32[]
+    content.vb: Public Shared ReadOnly CacheMapPixels As Color32()
+- uid: AngeliA.World.TextureMapLinkedPool
+  commentId: F:AngeliA.World.TextureMapLinkedPool
+  id: TextureMapLinkedPool
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: TextureMapLinkedPool
+  nameWithType: World.TextureMapLinkedPool
+  fullName: AngeliA.World.TextureMapLinkedPool
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TextureMapLinkedPool
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 25
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly Dictionary<uint, Int3> TextureMapLinkedPool
+    return:
+      type: System.Collections.Generic.Dictionary{System.UInt32,AngeliA.Int3}
+    content.vb: Public Shared ReadOnly TextureMapLinkedPool As Dictionary(Of UInteger, Int3)
+- uid: AngeliA.World.WorldPosition
+  commentId: P:AngeliA.World.WorldPosition
+  id: WorldPosition
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: WorldPosition
+  nameWithType: World.WorldPosition
+  fullName: AngeliA.World.WorldPosition
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: WorldPosition
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Int3 WorldPosition { get; set; }
+    parameters: []
+    return:
+      type: AngeliA.Int3
+    content.vb: Public Property WorldPosition As Int3
+  overload: AngeliA.World.WorldPosition*
+- uid: AngeliA.World.Backgrounds
+  commentId: P:AngeliA.World.Backgrounds
+  id: Backgrounds
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: Backgrounds
+  nameWithType: World.Backgrounds
+  fullName: AngeliA.World.Backgrounds
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Backgrounds
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 27
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int[] Backgrounds { get; set; }
+    parameters: []
+    return:
+      type: System.Int32[]
+    content.vb: Public Property Backgrounds As Integer()
+  overload: AngeliA.World.Backgrounds*
+- uid: AngeliA.World.Levels
+  commentId: P:AngeliA.World.Levels
+  id: Levels
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: Levels
+  nameWithType: World.Levels
+  fullName: AngeliA.World.Levels
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Levels
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int[] Levels { get; set; }
+    parameters: []
+    return:
+      type: System.Int32[]
+    content.vb: Public Property Levels As Integer()
+  overload: AngeliA.World.Levels*
+- uid: AngeliA.World.Entities
+  commentId: P:AngeliA.World.Entities
+  id: Entities
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: Entities
+  nameWithType: World.Entities
+  fullName: AngeliA.World.Entities
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Entities
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 29
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int[] Entities { get; set; }
+    parameters: []
+    return:
+      type: System.Int32[]
+    content.vb: Public Property Entities As Integer()
+  overload: AngeliA.World.Entities*
+- uid: AngeliA.World.Elements
+  commentId: P:AngeliA.World.Elements
+  id: Elements
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: Elements
+  nameWithType: World.Elements
+  fullName: AngeliA.World.Elements
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Elements
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int[] Elements { get; set; }
+    parameters: []
+    return:
+      type: System.Int32[]
+    content.vb: Public Property Elements As Integer()
+  overload: AngeliA.World.Elements*
+- uid: AngeliA.World.#ctor
+  commentId: M:AngeliA.World.#ctor
+  id: '#ctor'
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: World()
+  nameWithType: World.World()
+  fullName: AngeliA.World.World()
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 41
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public World()
+    content.vb: Public Sub New()
+  overload: AngeliA.World.#ctor*
+  nameWithType.vb: World.New()
+  fullName.vb: AngeliA.World.New()
+  name.vb: New()
+- uid: AngeliA.World.EmptyCheck
+  commentId: M:AngeliA.World.EmptyCheck
+  id: EmptyCheck
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: EmptyCheck()
+  nameWithType: World.EmptyCheck()
+  fullName: AngeliA.World.EmptyCheck()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EmptyCheck
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 44
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public bool EmptyCheck()
+    return:
+      type: System.Boolean
+    content.vb: Public Function EmptyCheck() As Boolean
+  overload: AngeliA.World.EmptyCheck*
+- uid: AngeliA.World.ContainsBlock(System.Int32,AngeliA.BlockType)
+  commentId: M:AngeliA.World.ContainsBlock(System.Int32,AngeliA.BlockType)
+  id: ContainsBlock(System.Int32,AngeliA.BlockType)
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: ContainsBlock(int, BlockType)
+  nameWithType: World.ContainsBlock(int, BlockType)
+  fullName: AngeliA.World.ContainsBlock(int, AngeliA.BlockType)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ContainsBlock
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 53
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public bool ContainsBlock(int blockID, BlockType type)
+    parameters:
+    - id: blockID
+      type: System.Int32
+    - id: type
+      type: AngeliA.BlockType
+    return:
+      type: System.Boolean
+    content.vb: Public Function ContainsBlock(blockID As Integer, type As BlockType) As Boolean
+  overload: AngeliA.World.ContainsBlock*
+  nameWithType.vb: World.ContainsBlock(Integer, BlockType)
+  fullName.vb: AngeliA.World.ContainsBlock(Integer, AngeliA.BlockType)
+  name.vb: ContainsBlock(Integer, BlockType)
+- uid: AngeliA.World.CopyFrom(AngeliA.World)
+  commentId: M:AngeliA.World.CopyFrom(AngeliA.World)
+  id: CopyFrom(AngeliA.World)
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: CopyFrom(World)
+  nameWithType: World.CopyFrom(World)
+  fullName: AngeliA.World.CopyFrom(AngeliA.World)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CopyFrom
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 72
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void CopyFrom(World source)
+    parameters:
+    - id: source
+      type: AngeliA.World
+    content.vb: Public Sub CopyFrom(source As World)
+  overload: AngeliA.World.CopyFrom*
+- uid: AngeliA.World.Clear(System.Nullable{AngeliA.Int3})
+  commentId: M:AngeliA.World.Clear(System.Nullable{AngeliA.Int3})
+  id: Clear(System.Nullable{AngeliA.Int3})
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: Clear(Int3?)
+  nameWithType: World.Clear(Int3?)
+  fullName: AngeliA.World.Clear(AngeliA.Int3?)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Clear
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 81
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void Clear(Int3? pos = null)
+    parameters:
+    - id: pos
+      type: System.Nullable{AngeliA.Int3}
+    content.vb: Public Sub Clear(pos As Int3? = Nothing)
+  overload: AngeliA.World.Clear*
+- uid: AngeliA.World.LoadFromDisk(System.String,System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.World.LoadFromDisk(System.String,System.Int32,System.Int32,System.Int32)
+  id: LoadFromDisk(System.String,System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: LoadFromDisk(string, int, int, int)
+  nameWithType: World.LoadFromDisk(string, int, int, int)
+  fullName: AngeliA.World.LoadFromDisk(string, int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LoadFromDisk
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 91
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public bool LoadFromDisk(string filePath, int worldX, int worldY, int worldZ)
+    parameters:
+    - id: filePath
+      type: System.String
+    - id: worldX
+      type: System.Int32
+    - id: worldY
+      type: System.Int32
+    - id: worldZ
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Function LoadFromDisk(filePath As String, worldX As Integer, worldY As Integer, worldZ As Integer) As Boolean
+  overload: AngeliA.World.LoadFromDisk*
+  nameWithType.vb: World.LoadFromDisk(String, Integer, Integer, Integer)
+  fullName.vb: AngeliA.World.LoadFromDisk(String, Integer, Integer, Integer)
+  name.vb: LoadFromDisk(String, Integer, Integer, Integer)
+- uid: AngeliA.World.LoadMapIntoTexture(System.String,System.Object)
+  commentId: M:AngeliA.World.LoadMapIntoTexture(System.String,System.Object)
+  id: LoadMapIntoTexture(System.String,System.Object)
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: LoadMapIntoTexture(string, object)
+  nameWithType: World.LoadMapIntoTexture(string, object)
+  fullName: AngeliA.World.LoadMapIntoTexture(string, object)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LoadMapIntoTexture
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 152
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool LoadMapIntoTexture(string filePath, object texture)
+    parameters:
+    - id: filePath
+      type: System.String
+    - id: texture
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function LoadMapIntoTexture(filePath As String, texture As Object) As Boolean
+  overload: AngeliA.World.LoadMapIntoTexture*
+  nameWithType.vb: World.LoadMapIntoTexture(String, Object)
+  fullName.vb: AngeliA.World.LoadMapIntoTexture(String, Object)
+  name.vb: LoadMapIntoTexture(String, Object)
+- uid: AngeliA.World.FillMapIntoTexture(System.Object)
+  commentId: M:AngeliA.World.FillMapIntoTexture(System.Object)
+  id: FillMapIntoTexture(System.Object)
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: FillMapIntoTexture(object)
+  nameWithType: World.FillMapIntoTexture(object)
+  fullName: AngeliA.World.FillMapIntoTexture(object)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FillMapIntoTexture
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 180
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void FillMapIntoTexture(object texture)
+    parameters:
+    - id: texture
+      type: System.Object
+    content.vb: Public Sub FillMapIntoTexture(texture As Object)
+  overload: AngeliA.World.FillMapIntoTexture*
+  nameWithType.vb: World.FillMapIntoTexture(Object)
+  fullName.vb: AngeliA.World.FillMapIntoTexture(Object)
+  name.vb: FillMapIntoTexture(Object)
+- uid: AngeliA.World.SaveToDisk(System.String)
+  commentId: M:AngeliA.World.SaveToDisk(System.String)
+  id: SaveToDisk(System.String)
+  parent: AngeliA.World
+  langs:
+  - csharp
+  - vb
+  name: SaveToDisk(string)
+  nameWithType: World.SaveToDisk(string)
+  fullName: AngeliA.World.SaveToDisk(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/World/World.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SaveToDisk
+    path: ../AngeliA Framework/src/World/World.cs
+    startLine: 207
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void SaveToDisk(string filePath)
+    parameters:
+    - id: filePath
+      type: System.String
+    content.vb: Public Sub SaveToDisk(filePath As String)
+  overload: AngeliA.World.SaveToDisk*
+  nameWithType.vb: World.SaveToDisk(String)
+  fullName.vb: AngeliA.World.SaveToDisk(String)
+  name.vb: SaveToDisk(String)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.World.#ctor*
+  commentId: Overload:AngeliA.World.#ctor
+  href: AngeliA.World.html#AngeliA_World__ctor_AngeliA_Int3_
+  name: World
+  nameWithType: World.World
+  fullName: AngeliA.World.World
+  nameWithType.vb: World.New
+  fullName.vb: AngeliA.World.New
+  name.vb: New
+- uid: AngeliA.Int3
+  commentId: T:AngeliA.Int3
+  parent: AngeliA
+  href: AngeliA.Int3.html
+  name: Int3
+  nameWithType: Int3
+  fullName: AngeliA.Int3
+- uid: AngeliA.Color32[]
+  isExternal: true
+  href: AngeliA.Color32.html
+  name: Color32[]
+  nameWithType: Color32[]
+  fullName: AngeliA.Color32[]
+  nameWithType.vb: Color32()
+  fullName.vb: AngeliA.Color32()
+  name.vb: Color32()
+  spec.csharp:
+  - uid: AngeliA.Color32
+    name: Color32
+    href: AngeliA.Color32.html
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: AngeliA.Color32
+    name: Color32
+    href: AngeliA.Color32.html
+  - name: (
+  - name: )
+- uid: System.Collections.Generic.Dictionary{System.UInt32,AngeliA.Int3}
+  commentId: T:System.Collections.Generic.Dictionary{System.UInt32,AngeliA.Int3}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<uint, Int3>
+  nameWithType: Dictionary<uint, Int3>
+  fullName: System.Collections.Generic.Dictionary<uint, AngeliA.Int3>
+  nameWithType.vb: Dictionary(Of UInteger, Int3)
+  fullName.vb: System.Collections.Generic.Dictionary(Of UInteger, AngeliA.Int3)
+  name.vb: Dictionary(Of UInteger, Int3)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.UInt32
+    name: uint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.UInt32
+    name: UInteger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.uint32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: AngeliA.World.WorldPosition*
+  commentId: Overload:AngeliA.World.WorldPosition
+  href: AngeliA.World.html#AngeliA_World_WorldPosition
+  name: WorldPosition
+  nameWithType: World.WorldPosition
+  fullName: AngeliA.World.WorldPosition
+- uid: AngeliA.World.Backgrounds*
+  commentId: Overload:AngeliA.World.Backgrounds
+  href: AngeliA.World.html#AngeliA_World_Backgrounds
+  name: Backgrounds
+  nameWithType: World.Backgrounds
+  fullName: AngeliA.World.Backgrounds
+- uid: System.Int32[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int[]
+  nameWithType: int[]
+  fullName: int[]
+  nameWithType.vb: Integer()
+  fullName.vb: Integer()
+  name.vb: Integer()
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: (
+  - name: )
+- uid: AngeliA.World.Levels*
+  commentId: Overload:AngeliA.World.Levels
+  href: AngeliA.World.html#AngeliA_World_Levels
+  name: Levels
+  nameWithType: World.Levels
+  fullName: AngeliA.World.Levels
+- uid: AngeliA.World.Entities*
+  commentId: Overload:AngeliA.World.Entities
+  href: AngeliA.World.html#AngeliA_World_Entities
+  name: Entities
+  nameWithType: World.Entities
+  fullName: AngeliA.World.Entities
+- uid: AngeliA.World.Elements*
+  commentId: Overload:AngeliA.World.Elements
+  href: AngeliA.World.html#AngeliA_World_Elements
+  name: Elements
+  nameWithType: World.Elements
+  fullName: AngeliA.World.Elements
+- uid: AngeliA.World.EmptyCheck*
+  commentId: Overload:AngeliA.World.EmptyCheck
+  href: AngeliA.World.html#AngeliA_World_EmptyCheck
+  name: EmptyCheck
+  nameWithType: World.EmptyCheck
+  fullName: AngeliA.World.EmptyCheck
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.World.ContainsBlock*
+  commentId: Overload:AngeliA.World.ContainsBlock
+  href: AngeliA.World.html#AngeliA_World_ContainsBlock_System_Int32_AngeliA_BlockType_
+  name: ContainsBlock
+  nameWithType: World.ContainsBlock
+  fullName: AngeliA.World.ContainsBlock
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.BlockType
+  commentId: T:AngeliA.BlockType
+  parent: AngeliA
+  href: AngeliA.BlockType.html
+  name: BlockType
+  nameWithType: BlockType
+  fullName: AngeliA.BlockType
+- uid: AngeliA.World.CopyFrom*
+  commentId: Overload:AngeliA.World.CopyFrom
+  href: AngeliA.World.html#AngeliA_World_CopyFrom_AngeliA_World_
+  name: CopyFrom
+  nameWithType: World.CopyFrom
+  fullName: AngeliA.World.CopyFrom
+- uid: AngeliA.World
+  commentId: T:AngeliA.World
+  parent: AngeliA
+  href: AngeliA.World.html
+  name: World
+  nameWithType: World
+  fullName: AngeliA.World
+- uid: AngeliA.World.Clear*
+  commentId: Overload:AngeliA.World.Clear
+  href: AngeliA.World.html#AngeliA_World_Clear_System_Nullable_AngeliA_Int3__
+  name: Clear
+  nameWithType: World.Clear
+  fullName: AngeliA.World.Clear
+- uid: System.Nullable{AngeliA.Int3}
+  commentId: T:System.Nullable{AngeliA.Int3}
+  parent: System
+  definition: System.Nullable`1
+  href: AngeliA.Int3.html
+  name: Int3?
+  nameWithType: Int3?
+  fullName: AngeliA.Int3?
+  spec.csharp:
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: '?'
+  spec.vb:
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.World.LoadFromDisk*
+  commentId: Overload:AngeliA.World.LoadFromDisk
+  href: AngeliA.World.html#AngeliA_World_LoadFromDisk_System_String_System_Int32_System_Int32_System_Int32_
+  name: LoadFromDisk
+  nameWithType: World.LoadFromDisk
+  fullName: AngeliA.World.LoadFromDisk
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.World.LoadMapIntoTexture*
+  commentId: Overload:AngeliA.World.LoadMapIntoTexture
+  href: AngeliA.World.html#AngeliA_World_LoadMapIntoTexture_System_String_System_Object_
+  name: LoadMapIntoTexture
+  nameWithType: World.LoadMapIntoTexture
+  fullName: AngeliA.World.LoadMapIntoTexture
+- uid: AngeliA.World.FillMapIntoTexture*
+  commentId: Overload:AngeliA.World.FillMapIntoTexture
+  href: AngeliA.World.html#AngeliA_World_FillMapIntoTexture_System_Object_
+  name: FillMapIntoTexture
+  nameWithType: World.FillMapIntoTexture
+  fullName: AngeliA.World.FillMapIntoTexture
+- uid: AngeliA.World.SaveToDisk*
+  commentId: Overload:AngeliA.World.SaveToDisk
+  href: AngeliA.World.html#AngeliA_World_SaveToDisk_System_String_
+  name: SaveToDisk
+  nameWithType: World.SaveToDisk
+  fullName: AngeliA.World.SaveToDisk

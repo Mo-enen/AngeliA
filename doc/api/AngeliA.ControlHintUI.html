@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ControlHintUI | AngeliA </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ControlHintUI | AngeliA ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_ControlHintUI.md&amp;value=---%0Auid%3A%20AngeliA.ControlHintUI%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+            AngeliA
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="AngeliA.ControlHintUI">
+
+
+
+  <h1 id="AngeliA_ControlHintUI" data-uid="AngeliA.ControlHintUI" class="text-break">
+Class ControlHintUI  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L6"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>AngeliA Framework.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Entity.StageOrder(2147483647)]
+[Entity.Capacity(1, 1)]
+public class ControlHintUI : EntityUI, IMapItem</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="AngeliA.Entity.html">Entity</a></div>
+      <div><a class="xref" href="AngeliA.EntityUI.html">EntityUI</a></div>
+      <div><span class="xref">ControlHintUI</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_BlockEvent">EntityUI.BlockEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_FirstUpdate">EntityUI.FirstUpdate()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_Update">EntityUI.Update()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate">EntityUI.LateUpdate()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_UpdateUI">EntityUI.UpdateUI()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_Unify_System_Int32_">EntityUI.Unify(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Active">Entity.Active</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_X">Entity.X</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Y">Entity.Y</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Width">Entity.Width</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Height">Entity.Height</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_TypeID">Entity.TypeID</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_SpawnFrame">Entity.SpawnFrame</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_FromWorld">Entity.FromWorld</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Rect">Entity.Rect</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_InstanceOrder">Entity.InstanceOrder</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_MapUnitPos">Entity.MapUnitPos</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_InstanceID">Entity.InstanceID</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_IgnoreReposition">Entity.IgnoreReposition</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_XY">Entity.XY</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Size">Entity.Size</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Center">Entity.Center</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CenterX">Entity.CenterX</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CenterY">Entity.CenterY</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_PivotUnitPosition">Entity.PivotUnitPosition</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_OnInactivated">Entity.OnInactivated()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate">Entity.BeforeUpdate()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_">Entity.AfterReposition(Int3, Int3)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_">Entity.IgnoreDespawnFromMap(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap">Entity.CancelIgnoreDespawnFromMap()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Draw">Entity.Draw()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="AngeliA_ControlHintUI__ctor_" data-uid="AngeliA.ControlHintUI.#ctor*"></a>
+
+  <h3 id="AngeliA_ControlHintUI__ctor" data-uid="AngeliA.ControlHintUI.#ctor">
+  ControlHintUI()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L123"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ControlHintUI()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="AngeliA_ControlHintUI_Instance_" data-uid="AngeliA.ControlHintUI.Instance*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_Instance" data-uid="AngeliA.ControlHintUI.Instance">
+  Instance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ControlHintUI Instance { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.ControlHintUI.html">ControlHintUI</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_OffsetX_" data-uid="AngeliA.ControlHintUI.OffsetX*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_OffsetX" data-uid="AngeliA.ControlHintUI.OffsetX">
+  OffsetX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int OffsetX { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_OffsetY_" data-uid="AngeliA.ControlHintUI.OffsetY*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_OffsetY" data-uid="AngeliA.ControlHintUI.OffsetY">
+  OffsetY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int OffsetY { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_UseControlHint_" data-uid="AngeliA.ControlHintUI.UseControlHint*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_UseControlHint" data-uid="AngeliA.ControlHintUI.UseControlHint">
+  UseControlHint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool UseControlHint { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_UseGamePadHint_" data-uid="AngeliA.ControlHintUI.UseGamePadHint*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_UseGamePadHint" data-uid="AngeliA.ControlHintUI.UseGamePadHint">
+  UseGamePadHint
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool UseGamePadHint { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="AngeliA_ControlHintUI_AddHint_" data-uid="AngeliA.ControlHintUI.AddHint*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_AddHint_AngeliA_Gamekey_AngeliA_Gamekey_System_String_System_Int32_" data-uid="AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Int32)">
+  AddHint(Gamekey, Gamekey, string, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L239"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddHint(Gamekey keyA, Gamekey keyB, string label, int priority = -2147483648)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>keyA</code> <a class="xref" href="AngeliA.Gamekey.html">Gamekey</a></dt>
+    <dd></dd>
+    <dt><code>keyB</code> <a class="xref" href="AngeliA.Gamekey.html">Gamekey</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>priority</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_AddHint_" data-uid="AngeliA.ControlHintUI.AddHint*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_AddHint_AngeliA_Gamekey_System_String_System_Int32_" data-uid="AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey,System.String,System.Int32)">
+  AddHint(Gamekey, string, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L238"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddHint(Gamekey key, string label, int priority = -2147483648)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="AngeliA.Gamekey.html">Gamekey</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>priority</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_AddHint_" data-uid="AngeliA.ControlHintUI.AddHint*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_AddHint_AngeliA_KeyboardKey_AngeliA_KeyboardKey_System_String_" data-uid="AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey,AngeliA.KeyboardKey,System.String)">
+  AddHint(KeyboardKey, KeyboardKey, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L241"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddHint(KeyboardKey keyA, KeyboardKey keyB, string label)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>keyA</code> <a class="xref" href="AngeliA.KeyboardKey.html">KeyboardKey</a></dt>
+    <dd></dd>
+    <dt><code>keyB</code> <a class="xref" href="AngeliA.KeyboardKey.html">KeyboardKey</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_AddHint_" data-uid="AngeliA.ControlHintUI.AddHint*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_AddHint_AngeliA_KeyboardKey_System_String_" data-uid="AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey,System.String)">
+  AddHint(KeyboardKey, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L240"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddHint(KeyboardKey key, string label)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="AngeliA.KeyboardKey.html">KeyboardKey</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_DrawGlobalHint_" data-uid="AngeliA.ControlHintUI.DrawGlobalHint*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_DrawGlobalHint_System_Int32_System_Int32_AngeliA_Gamekey_AngeliA_Gamekey_System_String_System_Boolean_" data-uid="AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Boolean)">
+  DrawGlobalHint(int, int, Gamekey, Gamekey, string, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L262"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DrawGlobalHint(int globalX, int globalY, Gamekey keyA, Gamekey keyB, string label, bool background = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>globalX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>globalY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>keyA</code> <a class="xref" href="AngeliA.Gamekey.html">Gamekey</a></dt>
+    <dd></dd>
+    <dt><code>keyB</code> <a class="xref" href="AngeliA.Gamekey.html">Gamekey</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>background</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_DrawGlobalHint_" data-uid="AngeliA.ControlHintUI.DrawGlobalHint*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_DrawGlobalHint_System_Int32_System_Int32_AngeliA_Gamekey_System_String_System_Boolean_" data-uid="AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,System.String,System.Boolean)">
+  DrawGlobalHint(int, int, Gamekey, string, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L257"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DrawGlobalHint(int globalX, int globalY, Gamekey key, string label, bool background = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>globalX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>globalY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>key</code> <a class="xref" href="AngeliA.Gamekey.html">Gamekey</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>background</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_ForceHideGamepad_" data-uid="AngeliA.ControlHintUI.ForceHideGamepad*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_ForceHideGamepad_System_Int32_" data-uid="AngeliA.ControlHintUI.ForceHideGamepad(System.Int32)">
+  ForceHideGamepad(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L295"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ForceHideGamepad(int duration = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>duration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_ForceHideGlobalHint_" data-uid="AngeliA.ControlHintUI.ForceHideGlobalHint*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_ForceHideGlobalHint_System_Int32_" data-uid="AngeliA.ControlHintUI.ForceHideGlobalHint(System.Int32)">
+  ForceHideGlobalHint(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L301"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ForceHideGlobalHint(int duration = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>duration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_ForceOffset_" data-uid="AngeliA.ControlHintUI.ForceOffset*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_ForceOffset_System_Int32_System_Int32_System_Int32_" data-uid="AngeliA.ControlHintUI.ForceOffset(System.Int32,System.Int32,System.Int32)">
+  ForceOffset(int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L307"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ForceOffset(int x, int y, int duration = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>duration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_ForceShowHint_" data-uid="AngeliA.ControlHintUI.ForceShowHint*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_ForceShowHint_System_Int32_" data-uid="AngeliA.ControlHintUI.ForceShowHint(System.Int32)">
+  ForceShowHint(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L289"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ForceShowHint(int duration = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>duration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_OnActivated_" data-uid="AngeliA.ControlHintUI.OnActivated*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_OnActivated" data-uid="AngeliA.ControlHintUI.OnActivated">
+  OnActivated()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnActivated()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_OnGameInitializeLater_" data-uid="AngeliA.ControlHintUI.OnGameInitializeLater*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_OnGameInitializeLater" data-uid="AngeliA.ControlHintUI.OnGameInitializeLater">
+  OnGameInitializeLater()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[OnGameInitializeLater(64)]
+public static TaskResult OnGameInitializeLater()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.TaskResult.html">TaskResult</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_ControlHintUI_OnGameUpdateLater_" data-uid="AngeliA.ControlHintUI.OnGameUpdateLater*"></a>
+
+  <h3 id="AngeliA_ControlHintUI_OnGameUpdateLater" data-uid="AngeliA.ControlHintUI.OnGameUpdateLater">
+  OnGameUpdateLater()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[OnGameUpdatePauseless(0)]
+public static void OnGameUpdateLater()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/ControlHintUI.cs/#L6" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

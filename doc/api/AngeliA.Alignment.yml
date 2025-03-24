@@ -1,0 +1,1027 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Alignment
+  commentId: T:AngeliA.Alignment
+  id: Alignment
+  parent: AngeliA
+  children:
+  - AngeliA.Alignment.BottomLeft
+  - AngeliA.Alignment.BottomMid
+  - AngeliA.Alignment.BottomRight
+  - AngeliA.Alignment.Full
+  - AngeliA.Alignment.MidLeft
+  - AngeliA.Alignment.MidMid
+  - AngeliA.Alignment.MidRight
+  - AngeliA.Alignment.TopLeft
+  - AngeliA.Alignment.TopMid
+  - AngeliA.Alignment.TopRight
+  langs:
+  - csharp
+  - vb
+  name: Alignment
+  nameWithType: Alignment
+  fullName: AngeliA.Alignment
+  type: Enum
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Enum.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Alignment
+    path: ../AngeliA Framework/src/Common/Enum.cs
+    startLine: 75
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: 'public enum Alignment : byte'
+    content.vb: Public Enum Alignment As Byte
+  extensionMethods:
+  - AngeliA.Alignment.AngeliA.Extension.IsBottom
+  - AngeliA.Alignment.AngeliA.Extension.IsLeft
+  - AngeliA.Alignment.AngeliA.Extension.IsMidX
+  - AngeliA.Alignment.AngeliA.Extension.IsMidY
+  - AngeliA.Alignment.AngeliA.Extension.IsRight
+  - AngeliA.Alignment.AngeliA.Extension.IsTop
+  - AngeliA.Alignment.AngeliA.Extension.Next``1
+  - AngeliA.Alignment.AngeliA.Extension.Normal
+  - AngeliA.Alignment.AngeliA.Extension.Prev``1
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Alignment.TopLeft
+  commentId: F:AngeliA.Alignment.TopLeft
+  id: TopLeft
+  parent: AngeliA.Alignment
+  langs:
+  - csharp
+  - vb
+  name: TopLeft
+  nameWithType: Alignment.TopLeft
+  fullName: AngeliA.Alignment.TopLeft
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Enum.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TopLeft
+    path: ../AngeliA Framework/src/Common/Enum.cs
+    startLine: 76
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: TopLeft = 0
+    return:
+      type: AngeliA.Alignment
+- uid: AngeliA.Alignment.TopMid
+  commentId: F:AngeliA.Alignment.TopMid
+  id: TopMid
+  parent: AngeliA.Alignment
+  langs:
+  - csharp
+  - vb
+  name: TopMid
+  nameWithType: Alignment.TopMid
+  fullName: AngeliA.Alignment.TopMid
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Enum.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TopMid
+    path: ../AngeliA Framework/src/Common/Enum.cs
+    startLine: 77
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: TopMid = 1
+    return:
+      type: AngeliA.Alignment
+- uid: AngeliA.Alignment.TopRight
+  commentId: F:AngeliA.Alignment.TopRight
+  id: TopRight
+  parent: AngeliA.Alignment
+  langs:
+  - csharp
+  - vb
+  name: TopRight
+  nameWithType: Alignment.TopRight
+  fullName: AngeliA.Alignment.TopRight
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Enum.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TopRight
+    path: ../AngeliA Framework/src/Common/Enum.cs
+    startLine: 78
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: TopRight = 2
+    return:
+      type: AngeliA.Alignment
+- uid: AngeliA.Alignment.MidLeft
+  commentId: F:AngeliA.Alignment.MidLeft
+  id: MidLeft
+  parent: AngeliA.Alignment
+  langs:
+  - csharp
+  - vb
+  name: MidLeft
+  nameWithType: Alignment.MidLeft
+  fullName: AngeliA.Alignment.MidLeft
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Enum.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MidLeft
+    path: ../AngeliA Framework/src/Common/Enum.cs
+    startLine: 79
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: MidLeft = 3
+    return:
+      type: AngeliA.Alignment
+- uid: AngeliA.Alignment.MidMid
+  commentId: F:AngeliA.Alignment.MidMid
+  id: MidMid
+  parent: AngeliA.Alignment
+  langs:
+  - csharp
+  - vb
+  name: MidMid
+  nameWithType: Alignment.MidMid
+  fullName: AngeliA.Alignment.MidMid
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Enum.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MidMid
+    path: ../AngeliA Framework/src/Common/Enum.cs
+    startLine: 80
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: MidMid = 4
+    return:
+      type: AngeliA.Alignment
+- uid: AngeliA.Alignment.MidRight
+  commentId: F:AngeliA.Alignment.MidRight
+  id: MidRight
+  parent: AngeliA.Alignment
+  langs:
+  - csharp
+  - vb
+  name: MidRight
+  nameWithType: Alignment.MidRight
+  fullName: AngeliA.Alignment.MidRight
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Enum.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MidRight
+    path: ../AngeliA Framework/src/Common/Enum.cs
+    startLine: 81
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: MidRight = 5
+    return:
+      type: AngeliA.Alignment
+- uid: AngeliA.Alignment.BottomLeft
+  commentId: F:AngeliA.Alignment.BottomLeft
+  id: BottomLeft
+  parent: AngeliA.Alignment
+  langs:
+  - csharp
+  - vb
+  name: BottomLeft
+  nameWithType: Alignment.BottomLeft
+  fullName: AngeliA.Alignment.BottomLeft
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Enum.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BottomLeft
+    path: ../AngeliA Framework/src/Common/Enum.cs
+    startLine: 82
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: BottomLeft = 6
+    return:
+      type: AngeliA.Alignment
+- uid: AngeliA.Alignment.BottomMid
+  commentId: F:AngeliA.Alignment.BottomMid
+  id: BottomMid
+  parent: AngeliA.Alignment
+  langs:
+  - csharp
+  - vb
+  name: BottomMid
+  nameWithType: Alignment.BottomMid
+  fullName: AngeliA.Alignment.BottomMid
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Enum.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BottomMid
+    path: ../AngeliA Framework/src/Common/Enum.cs
+    startLine: 83
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: BottomMid = 7
+    return:
+      type: AngeliA.Alignment
+- uid: AngeliA.Alignment.BottomRight
+  commentId: F:AngeliA.Alignment.BottomRight
+  id: BottomRight
+  parent: AngeliA.Alignment
+  langs:
+  - csharp
+  - vb
+  name: BottomRight
+  nameWithType: Alignment.BottomRight
+  fullName: AngeliA.Alignment.BottomRight
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Enum.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BottomRight
+    path: ../AngeliA Framework/src/Common/Enum.cs
+    startLine: 84
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: BottomRight = 8
+    return:
+      type: AngeliA.Alignment
+- uid: AngeliA.Alignment.Full
+  commentId: F:AngeliA.Alignment.Full
+  id: Full
+  parent: AngeliA.Alignment
+  langs:
+  - csharp
+  - vb
+  name: Full
+  nameWithType: Alignment.Full
+  fullName: AngeliA.Alignment.Full
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Enum.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Full
+    path: ../AngeliA Framework/src/Common/Enum.cs
+    startLine: 85
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: Full = 9
+    return:
+      type: AngeliA.Alignment
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.Alignment.AngeliA.Extension.IsBottom
+  commentId: M:AngeliA.Extension.IsBottom(AngeliA.Alignment)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.IsBottom(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsBottom_AngeliA_Alignment_
+  name: IsBottom(Alignment)
+  nameWithType: Extension.IsBottom(Alignment)
+  fullName: AngeliA.Extension.IsBottom(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsBottom(AngeliA.Alignment)
+    name: IsBottom
+    href: AngeliA.Extension.html#AngeliA_Extension_IsBottom_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsBottom(AngeliA.Alignment)
+    name: IsBottom
+    href: AngeliA.Extension.html#AngeliA_Extension_IsBottom_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Alignment.AngeliA.Extension.IsLeft
+  commentId: M:AngeliA.Extension.IsLeft(AngeliA.Alignment)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.IsLeft(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsLeft_AngeliA_Alignment_
+  name: IsLeft(Alignment)
+  nameWithType: Extension.IsLeft(Alignment)
+  fullName: AngeliA.Extension.IsLeft(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsLeft(AngeliA.Alignment)
+    name: IsLeft
+    href: AngeliA.Extension.html#AngeliA_Extension_IsLeft_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsLeft(AngeliA.Alignment)
+    name: IsLeft
+    href: AngeliA.Extension.html#AngeliA_Extension_IsLeft_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Alignment.AngeliA.Extension.IsMidX
+  commentId: M:AngeliA.Extension.IsMidX(AngeliA.Alignment)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.IsMidX(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsMidX_AngeliA_Alignment_
+  name: IsMidX(Alignment)
+  nameWithType: Extension.IsMidX(Alignment)
+  fullName: AngeliA.Extension.IsMidX(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsMidX(AngeliA.Alignment)
+    name: IsMidX
+    href: AngeliA.Extension.html#AngeliA_Extension_IsMidX_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsMidX(AngeliA.Alignment)
+    name: IsMidX
+    href: AngeliA.Extension.html#AngeliA_Extension_IsMidX_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Alignment.AngeliA.Extension.IsMidY
+  commentId: M:AngeliA.Extension.IsMidY(AngeliA.Alignment)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.IsMidY(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsMidY_AngeliA_Alignment_
+  name: IsMidY(Alignment)
+  nameWithType: Extension.IsMidY(Alignment)
+  fullName: AngeliA.Extension.IsMidY(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsMidY(AngeliA.Alignment)
+    name: IsMidY
+    href: AngeliA.Extension.html#AngeliA_Extension_IsMidY_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsMidY(AngeliA.Alignment)
+    name: IsMidY
+    href: AngeliA.Extension.html#AngeliA_Extension_IsMidY_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Alignment.AngeliA.Extension.IsRight
+  commentId: M:AngeliA.Extension.IsRight(AngeliA.Alignment)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.IsRight(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsRight_AngeliA_Alignment_
+  name: IsRight(Alignment)
+  nameWithType: Extension.IsRight(Alignment)
+  fullName: AngeliA.Extension.IsRight(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsRight(AngeliA.Alignment)
+    name: IsRight
+    href: AngeliA.Extension.html#AngeliA_Extension_IsRight_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsRight(AngeliA.Alignment)
+    name: IsRight
+    href: AngeliA.Extension.html#AngeliA_Extension_IsRight_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Alignment.AngeliA.Extension.IsTop
+  commentId: M:AngeliA.Extension.IsTop(AngeliA.Alignment)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.IsTop(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsTop_AngeliA_Alignment_
+  name: IsTop(Alignment)
+  nameWithType: Extension.IsTop(Alignment)
+  fullName: AngeliA.Extension.IsTop(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsTop(AngeliA.Alignment)
+    name: IsTop
+    href: AngeliA.Extension.html#AngeliA_Extension_IsTop_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsTop(AngeliA.Alignment)
+    name: IsTop
+    href: AngeliA.Extension.html#AngeliA_Extension_IsTop_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Alignment.AngeliA.Extension.Next``1
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<Alignment>(Alignment)
+  nameWithType: Extension.Next<Alignment>(Alignment)
+  fullName: AngeliA.Extension.Next<AngeliA.Alignment>(AngeliA.Alignment)
+  nameWithType.vb: Extension.Next(Of Alignment)(Alignment)
+  fullName.vb: AngeliA.Extension.Next(Of AngeliA.Alignment)(AngeliA.Alignment)
+  name.vb: Next(Of Alignment)(Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(AngeliA.Alignment)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(AngeliA.Alignment)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Alignment.AngeliA.Extension.Normal
+  commentId: M:AngeliA.Extension.Normal(AngeliA.Alignment)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Normal(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_Normal_AngeliA_Alignment_
+  name: Normal(Alignment)
+  nameWithType: Extension.Normal(Alignment)
+  fullName: AngeliA.Extension.Normal(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.Normal(AngeliA.Alignment)
+    name: Normal
+    href: AngeliA.Extension.html#AngeliA_Extension_Normal_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Normal(AngeliA.Alignment)
+    name: Normal
+    href: AngeliA.Extension.html#AngeliA_Extension_Normal_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Alignment.AngeliA.Extension.Prev``1
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<Alignment>(Alignment)
+  nameWithType: Extension.Prev<Alignment>(Alignment)
+  fullName: AngeliA.Extension.Prev<AngeliA.Alignment>(AngeliA.Alignment)
+  nameWithType.vb: Extension.Prev(Of Alignment)(Alignment)
+  fullName.vb: AngeliA.Extension.Prev(Of AngeliA.Alignment)(AngeliA.Alignment)
+  name.vb: Prev(Of Alignment)(Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.Alignment)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.Alignment)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.IsBottom(AngeliA.Alignment)
+  commentId: M:AngeliA.Extension.IsBottom(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsBottom_AngeliA_Alignment_
+  name: IsBottom(Alignment)
+  nameWithType: Extension.IsBottom(Alignment)
+  fullName: AngeliA.Extension.IsBottom(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsBottom(AngeliA.Alignment)
+    name: IsBottom
+    href: AngeliA.Extension.html#AngeliA_Extension_IsBottom_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsBottom(AngeliA.Alignment)
+    name: IsBottom
+    href: AngeliA.Extension.html#AngeliA_Extension_IsBottom_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.IsLeft(AngeliA.Alignment)
+  commentId: M:AngeliA.Extension.IsLeft(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsLeft_AngeliA_Alignment_
+  name: IsLeft(Alignment)
+  nameWithType: Extension.IsLeft(Alignment)
+  fullName: AngeliA.Extension.IsLeft(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsLeft(AngeliA.Alignment)
+    name: IsLeft
+    href: AngeliA.Extension.html#AngeliA_Extension_IsLeft_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsLeft(AngeliA.Alignment)
+    name: IsLeft
+    href: AngeliA.Extension.html#AngeliA_Extension_IsLeft_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Extension.IsMidX(AngeliA.Alignment)
+  commentId: M:AngeliA.Extension.IsMidX(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsMidX_AngeliA_Alignment_
+  name: IsMidX(Alignment)
+  nameWithType: Extension.IsMidX(Alignment)
+  fullName: AngeliA.Extension.IsMidX(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsMidX(AngeliA.Alignment)
+    name: IsMidX
+    href: AngeliA.Extension.html#AngeliA_Extension_IsMidX_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsMidX(AngeliA.Alignment)
+    name: IsMidX
+    href: AngeliA.Extension.html#AngeliA_Extension_IsMidX_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Extension.IsMidY(AngeliA.Alignment)
+  commentId: M:AngeliA.Extension.IsMidY(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsMidY_AngeliA_Alignment_
+  name: IsMidY(Alignment)
+  nameWithType: Extension.IsMidY(Alignment)
+  fullName: AngeliA.Extension.IsMidY(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsMidY(AngeliA.Alignment)
+    name: IsMidY
+    href: AngeliA.Extension.html#AngeliA_Extension_IsMidY_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsMidY(AngeliA.Alignment)
+    name: IsMidY
+    href: AngeliA.Extension.html#AngeliA_Extension_IsMidY_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Extension.IsRight(AngeliA.Alignment)
+  commentId: M:AngeliA.Extension.IsRight(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsRight_AngeliA_Alignment_
+  name: IsRight(Alignment)
+  nameWithType: Extension.IsRight(Alignment)
+  fullName: AngeliA.Extension.IsRight(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsRight(AngeliA.Alignment)
+    name: IsRight
+    href: AngeliA.Extension.html#AngeliA_Extension_IsRight_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsRight(AngeliA.Alignment)
+    name: IsRight
+    href: AngeliA.Extension.html#AngeliA_Extension_IsRight_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Extension.IsTop(AngeliA.Alignment)
+  commentId: M:AngeliA.Extension.IsTop(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_IsTop_AngeliA_Alignment_
+  name: IsTop(Alignment)
+  nameWithType: Extension.IsTop(Alignment)
+  fullName: AngeliA.Extension.IsTop(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.IsTop(AngeliA.Alignment)
+    name: IsTop
+    href: AngeliA.Extension.html#AngeliA_Extension_IsTop_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.IsTop(AngeliA.Alignment)
+    name: IsTop
+    href: AngeliA.Extension.html#AngeliA_Extension_IsTop_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Extension.Next``1(``0)
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<E>(E)
+  nameWithType: Extension.Next<E>(E)
+  fullName: AngeliA.Extension.Next<E>(E)
+  nameWithType.vb: Extension.Next(Of E)(E)
+  fullName.vb: AngeliA.Extension.Next(Of E)(E)
+  name.vb: Next(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.Extension.Normal(AngeliA.Alignment)
+  commentId: M:AngeliA.Extension.Normal(AngeliA.Alignment)
+  href: AngeliA.Extension.html#AngeliA_Extension_Normal_AngeliA_Alignment_
+  name: Normal(Alignment)
+  nameWithType: Extension.Normal(Alignment)
+  fullName: AngeliA.Extension.Normal(AngeliA.Alignment)
+  spec.csharp:
+  - uid: AngeliA.Extension.Normal(AngeliA.Alignment)
+    name: Normal
+    href: AngeliA.Extension.html#AngeliA_Extension_Normal_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Normal(AngeliA.Alignment)
+    name: Normal
+    href: AngeliA.Extension.html#AngeliA_Extension_Normal_AngeliA_Alignment_
+  - name: (
+  - uid: AngeliA.Alignment
+    name: Alignment
+    href: AngeliA.Alignment.html
+  - name: )
+- uid: AngeliA.Extension.Prev``1(``0)
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<E>(E)
+  nameWithType: Extension.Prev<E>(E)
+  fullName: AngeliA.Extension.Prev<E>(E)
+  nameWithType.vb: Extension.Prev(Of E)(E)
+  fullName.vb: AngeliA.Extension.Prev(Of E)(E)
+  name.vb: Prev(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Alignment
+  commentId: T:AngeliA.Alignment
+  parent: AngeliA
+  href: AngeliA.Alignment.html
+  name: Alignment
+  nameWithType: Alignment
+  fullName: AngeliA.Alignment

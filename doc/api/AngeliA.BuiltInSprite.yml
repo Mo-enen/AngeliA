@@ -1,0 +1,4519 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.BuiltInSprite
+  commentId: T:AngeliA.BuiltInSprite
+  id: BuiltInSprite
+  parent: AngeliA
+  children:
+  - AngeliA.BuiltInSprite.CHECKER_BOARD_16
+  - AngeliA.BuiltInSprite.CHECKER_BOARD_8
+  - AngeliA.BuiltInSprite.CHECK_MARK_16
+  - AngeliA.BuiltInSprite.CHECK_MARK_32
+  - AngeliA.BuiltInSprite.CIRCLE_16
+  - AngeliA.BuiltInSprite.CIRCLE_32
+  - AngeliA.BuiltInSprite.CIRCLE_OUTLINE
+  - AngeliA.BuiltInSprite.COLOR_HUE
+  - AngeliA.BuiltInSprite.COLOR_HUE_ALT
+  - AngeliA.BuiltInSprite.COLOR_WHITE_BAR
+  - AngeliA.BuiltInSprite.DOTTED_LINE_16
+  - AngeliA.BuiltInSprite.DOTTED_LINE_16_SMOOTH
+  - AngeliA.BuiltInSprite.DOWN_ARROW
+  - AngeliA.BuiltInSprite.EQUAL_16
+  - AngeliA.BuiltInSprite.FILE_ICON_AUDIO
+  - AngeliA.BuiltInSprite.FILE_ICON_DISK
+  - AngeliA.BuiltInSprite.FILE_ICON_FILE
+  - AngeliA.BuiltInSprite.FILE_ICON_FOLDER
+  - AngeliA.BuiltInSprite.FILE_ICON_FOLDER_EMPTY
+  - AngeliA.BuiltInSprite.FILE_ICON_FONT
+  - AngeliA.BuiltInSprite.FILE_ICON_IMAGE
+  - AngeliA.BuiltInSprite.FILE_ICON_TEXT
+  - AngeliA.BuiltInSprite.FRAME_16
+  - AngeliA.BuiltInSprite.FRAME_HOLLOW_16
+  - AngeliA.BuiltInSprite.GAMEPAD_BODY
+  - AngeliA.BuiltInSprite.GAMEPAD_DOWN
+  - AngeliA.BuiltInSprite.GAMEPAD_EAST
+  - AngeliA.BuiltInSprite.GAMEPAD_HINT_A
+  - AngeliA.BuiltInSprite.GAMEPAD_HINT_B
+  - AngeliA.BuiltInSprite.GAMEPAD_HINT_DOWN
+  - AngeliA.BuiltInSprite.GAMEPAD_HINT_LEFT
+  - AngeliA.BuiltInSprite.GAMEPAD_HINT_RIGHT
+  - AngeliA.BuiltInSprite.GAMEPAD_HINT_SELECT
+  - AngeliA.BuiltInSprite.GAMEPAD_HINT_START
+  - AngeliA.BuiltInSprite.GAMEPAD_HINT_UP
+  - AngeliA.BuiltInSprite.GAMEPAD_LEFT
+  - AngeliA.BuiltInSprite.GAMEPAD_LEFT_SHOULDER
+  - AngeliA.BuiltInSprite.GAMEPAD_LEFT_TRIGGER
+  - AngeliA.BuiltInSprite.GAMEPAD_NORTH
+  - AngeliA.BuiltInSprite.GAMEPAD_RIGHT
+  - AngeliA.BuiltInSprite.GAMEPAD_RIGHT_SHOULDER
+  - AngeliA.BuiltInSprite.GAMEPAD_RIGHT_TRIGGER
+  - AngeliA.BuiltInSprite.GAMEPAD_SELECT
+  - AngeliA.BuiltInSprite.GAMEPAD_SOUTH
+  - AngeliA.BuiltInSprite.GAMEPAD_START
+  - AngeliA.BuiltInSprite.GAMEPAD_UP
+  - AngeliA.BuiltInSprite.GAMEPAD_WEST
+  - AngeliA.BuiltInSprite.HINT_BUTTON
+  - AngeliA.BuiltInSprite.ICON_BACK
+  - AngeliA.BuiltInSprite.ICON_BODYPART_HEIGHT
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_ARM_HAND
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_BODY
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_EAR
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_FACE
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_HAIR
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_HAIR_COLOR
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_HEAD
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_HORN
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_LEG_FOOT
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_SKIN_COLOR
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_TAIL
+  - AngeliA.BuiltInSprite.ICON_BODY_PART_WING
+  - AngeliA.BuiltInSprite.ICON_BRUSH
+  - AngeliA.BuiltInSprite.ICON_BUFF
+  - AngeliA.BuiltInSprite.ICON_CHARACTER_AVATAR
+  - AngeliA.BuiltInSprite.ICON_CLEAR
+  - AngeliA.BuiltInSprite.ICON_CROSS
+  - AngeliA.BuiltInSprite.ICON_DELETE
+  - AngeliA.BuiltInSprite.ICON_ENTITY
+  - AngeliA.BuiltInSprite.ICON_ERROR
+  - AngeliA.BuiltInSprite.ICON_FILE
+  - AngeliA.BuiltInSprite.ICON_GAMEPAD
+  - AngeliA.BuiltInSprite.ICON_HOME
+  - AngeliA.BuiltInSprite.ICON_INFO
+  - AngeliA.BuiltInSprite.ICON_MAP
+  - AngeliA.BuiltInSprite.ICON_MENU
+  - AngeliA.BuiltInSprite.ICON_PALETTE
+  - AngeliA.BuiltInSprite.ICON_PLUS
+  - AngeliA.BuiltInSprite.ICON_QUESTION_MARK
+  - AngeliA.BuiltInSprite.ICON_REFRESH
+  - AngeliA.BuiltInSprite.ICON_SEARCH
+  - AngeliA.BuiltInSprite.ICON_STAR
+  - AngeliA.BuiltInSprite.ICON_SUIT_BODYSUIT
+  - AngeliA.BuiltInSprite.ICON_SUIT_GLOVE
+  - AngeliA.BuiltInSprite.ICON_SUIT_HAT
+  - AngeliA.BuiltInSprite.ICON_SUIT_PANTS
+  - AngeliA.BuiltInSprite.ICON_SUIT_SHOES
+  - AngeliA.BuiltInSprite.ICON_TRIANGLE_DOWN
+  - AngeliA.BuiltInSprite.ICON_TRIANGLE_LEFT
+  - AngeliA.BuiltInSprite.ICON_TRIANGLE_RIGHT
+  - AngeliA.BuiltInSprite.ICON_TRIANGLE_UP
+  - AngeliA.BuiltInSprite.ICON_WARNING
+  - AngeliA.BuiltInSprite.ITEM_ICON_ARMOR
+  - AngeliA.BuiltInSprite.ITEM_ICON_FOOD
+  - AngeliA.BuiltInSprite.ITEM_ICON_GLOVES
+  - AngeliA.BuiltInSprite.ITEM_ICON_HAND_TOOL
+  - AngeliA.BuiltInSprite.ITEM_ICON_HELMET
+  - AngeliA.BuiltInSprite.ITEM_ICON_ITEM
+  - AngeliA.BuiltInSprite.ITEM_ICON_JEWELRY
+  - AngeliA.BuiltInSprite.ITEM_ICON_SHOES
+  - AngeliA.BuiltInSprite.ITEM_ICON_WEAPON
+  - AngeliA.BuiltInSprite.LAMP_LIGHT
+  - AngeliA.BuiltInSprite.LEFT_ARROW
+  - AngeliA.BuiltInSprite.MENU_ARROW_MARK
+  - AngeliA.BuiltInSprite.MENU_DIALOG_BG
+  - AngeliA.BuiltInSprite.MENU_GENERIC_DIALOG_BG
+  - AngeliA.BuiltInSprite.MENU_MORE_MARK
+  - AngeliA.BuiltInSprite.MENU_SELECTION_MARK
+  - AngeliA.BuiltInSprite.MENU_THREE_DOTS
+  - AngeliA.BuiltInSprite.PIXEL
+  - AngeliA.BuiltInSprite.PLUS_16
+  - AngeliA.BuiltInSprite.RADIAL_DOTTED_RING_24
+  - AngeliA.BuiltInSprite.RADIAL_DOTTED_RING_32
+  - AngeliA.BuiltInSprite.RIGHT_ARROW
+  - AngeliA.BuiltInSprite.RING_24
+  - AngeliA.BuiltInSprite.RING_32
+  - AngeliA.BuiltInSprite.SHADOW_LINE_16
+  - AngeliA.BuiltInSprite.SOFT_LINE_H
+  - AngeliA.BuiltInSprite.SOFT_LINE_V
+  - AngeliA.BuiltInSprite.TRIANGLE_13
+  - AngeliA.BuiltInSprite.TRIANGLE_RIGHT_13
+  - AngeliA.BuiltInSprite.UI_BUTTON
+  - AngeliA.BuiltInSprite.UI_BUTTON_DOWN
+  - AngeliA.BuiltInSprite.UI_BUTTON_HOVER
+  - AngeliA.BuiltInSprite.UI_DARK_BUTTON
+  - AngeliA.BuiltInSprite.UI_DARK_BUTTON_DOWN
+  - AngeliA.BuiltInSprite.UI_DARK_BUTTON_HOVER
+  - AngeliA.BuiltInSprite.UI_HOLO_BUTTON
+  - AngeliA.BuiltInSprite.UI_INPUT_FIELD
+  - AngeliA.BuiltInSprite.UI_INPUT_FIELD_LARGE
+  - AngeliA.BuiltInSprite.UI_INPUT_FIELD_SMALL
+  - AngeliA.BuiltInSprite.UI_ITEM_FRAME
+  - AngeliA.BuiltInSprite.UI_LARGE_TOGGLE
+  - AngeliA.BuiltInSprite.UI_LARGE_TOGGLE_DOWN
+  - AngeliA.BuiltInSprite.UI_LARGE_TOGGLE_HOVER
+  - AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK
+  - AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK_DOWN
+  - AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK_HOVER
+  - AngeliA.BuiltInSprite.UI_SCROLL_BAR
+  - AngeliA.BuiltInSprite.UI_SLIDER_BODY
+  - AngeliA.BuiltInSprite.UI_SLIDER_FILL
+  - AngeliA.BuiltInSprite.UI_SLIDER_HANDLE
+  - AngeliA.BuiltInSprite.UI_SMALL_BUTTON
+  - AngeliA.BuiltInSprite.UI_SMALL_BUTTON_DOWN
+  - AngeliA.BuiltInSprite.UI_SMALL_BUTTON_HOVER
+  - AngeliA.BuiltInSprite.UI_TAB
+  - AngeliA.BuiltInSprite.UI_TOGGLE
+  - AngeliA.BuiltInSprite.UI_TOGGLE_DOWN
+  - AngeliA.BuiltInSprite.UI_TOGGLE_HOVER
+  - AngeliA.BuiltInSprite.UI_TOGGLE_MARK
+  - AngeliA.BuiltInSprite.UP_ARROW
+  langs:
+  - csharp
+  - vb
+  name: BuiltInSprite
+  nameWithType: BuiltInSprite
+  fullName: AngeliA.BuiltInSprite
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BuiltInSprite
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Utility class to get built-in sprites
+  example: []
+  syntax:
+    content: public static class BuiltInSprite
+    content.vb: Public Module BuiltInSprite
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.BuiltInSprite.PIXEL
+  commentId: F:AngeliA.BuiltInSprite.PIXEL
+  id: PIXEL
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: PIXEL
+  nameWithType: BuiltInSprite.PIXEL
+  fullName: AngeliA.BuiltInSprite.PIXEL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PIXEL
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode PIXEL
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly PIXEL As SpriteCode
+- uid: AngeliA.BuiltInSprite.PLUS_16
+  commentId: F:AngeliA.BuiltInSprite.PLUS_16
+  id: PLUS_16
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: PLUS_16
+  nameWithType: BuiltInSprite.PLUS_16
+  fullName: AngeliA.BuiltInSprite.PLUS_16
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PLUS_16
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode PLUS_16
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly PLUS_16 As SpriteCode
+- uid: AngeliA.BuiltInSprite.EQUAL_16
+  commentId: F:AngeliA.BuiltInSprite.EQUAL_16
+  id: EQUAL_16
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: EQUAL_16
+  nameWithType: BuiltInSprite.EQUAL_16
+  fullName: AngeliA.BuiltInSprite.EQUAL_16
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EQUAL_16
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode EQUAL_16
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly EQUAL_16 As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_QUESTION_MARK
+  commentId: F:AngeliA.BuiltInSprite.ICON_QUESTION_MARK
+  id: ICON_QUESTION_MARK
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_QUESTION_MARK
+  nameWithType: BuiltInSprite.ICON_QUESTION_MARK
+  fullName: AngeliA.BuiltInSprite.ICON_QUESTION_MARK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_QUESTION_MARK
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_QUESTION_MARK
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_QUESTION_MARK As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_BODY
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_BODY
+  id: GAMEPAD_BODY
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_BODY
+  nameWithType: BuiltInSprite.GAMEPAD_BODY
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_BODY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_BODY
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_BODY
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_BODY As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_EAST
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_EAST
+  id: GAMEPAD_EAST
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_EAST
+  nameWithType: BuiltInSprite.GAMEPAD_EAST
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_EAST
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_EAST
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_EAST
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_EAST As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_UP
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_UP
+  id: GAMEPAD_UP
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_UP
+  nameWithType: BuiltInSprite.GAMEPAD_UP
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_UP
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_UP
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_UP
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_UP As SpriteCode
+- uid: AngeliA.BuiltInSprite.UP_ARROW
+  commentId: F:AngeliA.BuiltInSprite.UP_ARROW
+  id: UP_ARROW
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UP_ARROW
+  nameWithType: BuiltInSprite.UP_ARROW
+  fullName: AngeliA.BuiltInSprite.UP_ARROW
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UP_ARROW
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UP_ARROW
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UP_ARROW As SpriteCode
+- uid: AngeliA.BuiltInSprite.FRAME_16
+  commentId: F:AngeliA.BuiltInSprite.FRAME_16
+  id: FRAME_16
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: FRAME_16
+  nameWithType: BuiltInSprite.FRAME_16
+  fullName: AngeliA.BuiltInSprite.FRAME_16
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FRAME_16
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode FRAME_16
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly FRAME_16 As SpriteCode
+- uid: AngeliA.BuiltInSprite.MENU_SELECTION_MARK
+  commentId: F:AngeliA.BuiltInSprite.MENU_SELECTION_MARK
+  id: MENU_SELECTION_MARK
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: MENU_SELECTION_MARK
+  nameWithType: BuiltInSprite.MENU_SELECTION_MARK
+  fullName: AngeliA.BuiltInSprite.MENU_SELECTION_MARK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MENU_SELECTION_MARK
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode MENU_SELECTION_MARK
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly MENU_SELECTION_MARK As SpriteCode
+- uid: AngeliA.BuiltInSprite.MENU_THREE_DOTS
+  commentId: F:AngeliA.BuiltInSprite.MENU_THREE_DOTS
+  id: MENU_THREE_DOTS
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: MENU_THREE_DOTS
+  nameWithType: BuiltInSprite.MENU_THREE_DOTS
+  fullName: AngeliA.BuiltInSprite.MENU_THREE_DOTS
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MENU_THREE_DOTS
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode MENU_THREE_DOTS
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly MENU_THREE_DOTS As SpriteCode
+- uid: AngeliA.BuiltInSprite.MENU_GENERIC_DIALOG_BG
+  commentId: F:AngeliA.BuiltInSprite.MENU_GENERIC_DIALOG_BG
+  id: MENU_GENERIC_DIALOG_BG
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: MENU_GENERIC_DIALOG_BG
+  nameWithType: BuiltInSprite.MENU_GENERIC_DIALOG_BG
+  fullName: AngeliA.BuiltInSprite.MENU_GENERIC_DIALOG_BG
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MENU_GENERIC_DIALOG_BG
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode MENU_GENERIC_DIALOG_BG
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly MENU_GENERIC_DIALOG_BG As SpriteCode
+- uid: AngeliA.BuiltInSprite.SOFT_LINE_H
+  commentId: F:AngeliA.BuiltInSprite.SOFT_LINE_H
+  id: SOFT_LINE_H
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: SOFT_LINE_H
+  nameWithType: BuiltInSprite.SOFT_LINE_H
+  fullName: AngeliA.BuiltInSprite.SOFT_LINE_H
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SOFT_LINE_H
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode SOFT_LINE_H
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly SOFT_LINE_H As SpriteCode
+- uid: AngeliA.BuiltInSprite.SOFT_LINE_V
+  commentId: F:AngeliA.BuiltInSprite.SOFT_LINE_V
+  id: SOFT_LINE_V
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: SOFT_LINE_V
+  nameWithType: BuiltInSprite.SOFT_LINE_V
+  fullName: AngeliA.BuiltInSprite.SOFT_LINE_V
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SOFT_LINE_V
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode SOFT_LINE_V
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly SOFT_LINE_V As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_START
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_START
+  id: GAMEPAD_START
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_START
+  nameWithType: BuiltInSprite.GAMEPAD_START
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_START
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_START
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 25
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_START
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_START As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_SELECT
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_SELECT
+  id: GAMEPAD_SELECT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_SELECT
+  nameWithType: BuiltInSprite.GAMEPAD_SELECT
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_SELECT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_SELECT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_SELECT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_SELECT As SpriteCode
+- uid: AngeliA.BuiltInSprite.ITEM_ICON_ITEM
+  commentId: F:AngeliA.BuiltInSprite.ITEM_ICON_ITEM
+  id: ITEM_ICON_ITEM
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ITEM_ICON_ITEM
+  nameWithType: BuiltInSprite.ITEM_ICON_ITEM
+  fullName: AngeliA.BuiltInSprite.ITEM_ICON_ITEM
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ITEM_ICON_ITEM
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 27
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ITEM_ICON_ITEM
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ITEM_ICON_ITEM As SpriteCode
+- uid: AngeliA.BuiltInSprite.ITEM_ICON_JEWELRY
+  commentId: F:AngeliA.BuiltInSprite.ITEM_ICON_JEWELRY
+  id: ITEM_ICON_JEWELRY
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ITEM_ICON_JEWELRY
+  nameWithType: BuiltInSprite.ITEM_ICON_JEWELRY
+  fullName: AngeliA.BuiltInSprite.ITEM_ICON_JEWELRY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ITEM_ICON_JEWELRY
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ITEM_ICON_JEWELRY
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ITEM_ICON_JEWELRY As SpriteCode
+- uid: AngeliA.BuiltInSprite.ITEM_ICON_ARMOR
+  commentId: F:AngeliA.BuiltInSprite.ITEM_ICON_ARMOR
+  id: ITEM_ICON_ARMOR
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ITEM_ICON_ARMOR
+  nameWithType: BuiltInSprite.ITEM_ICON_ARMOR
+  fullName: AngeliA.BuiltInSprite.ITEM_ICON_ARMOR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ITEM_ICON_ARMOR
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 29
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ITEM_ICON_ARMOR
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ITEM_ICON_ARMOR As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_HAIR
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_HAIR
+  id: ICON_BODY_PART_HAIR
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_HAIR
+  nameWithType: BuiltInSprite.ICON_BODY_PART_HAIR
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_HAIR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_HAIR
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_HAIR
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_HAIR As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_ARM_HAND
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_ARM_HAND
+  id: ICON_BODY_PART_ARM_HAND
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_ARM_HAND
+  nameWithType: BuiltInSprite.ICON_BODY_PART_ARM_HAND
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_ARM_HAND
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_ARM_HAND
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 31
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_ARM_HAND
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_ARM_HAND As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_SUIT_BODYSUIT
+  commentId: F:AngeliA.BuiltInSprite.ICON_SUIT_BODYSUIT
+  id: ICON_SUIT_BODYSUIT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_SUIT_BODYSUIT
+  nameWithType: BuiltInSprite.ICON_SUIT_BODYSUIT
+  fullName: AngeliA.BuiltInSprite.ICON_SUIT_BODYSUIT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_SUIT_BODYSUIT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 32
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_SUIT_BODYSUIT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_SUIT_BODYSUIT As SpriteCode
+- uid: AngeliA.BuiltInSprite.DOTTED_LINE_16_SMOOTH
+  commentId: F:AngeliA.BuiltInSprite.DOTTED_LINE_16_SMOOTH
+  id: DOTTED_LINE_16_SMOOTH
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: DOTTED_LINE_16_SMOOTH
+  nameWithType: BuiltInSprite.DOTTED_LINE_16_SMOOTH
+  fullName: AngeliA.BuiltInSprite.DOTTED_LINE_16_SMOOTH
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DOTTED_LINE_16_SMOOTH
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode DOTTED_LINE_16_SMOOTH
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly DOTTED_LINE_16_SMOOTH As SpriteCode
+- uid: AngeliA.BuiltInSprite.DOTTED_LINE_16
+  commentId: F:AngeliA.BuiltInSprite.DOTTED_LINE_16
+  id: DOTTED_LINE_16
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: DOTTED_LINE_16
+  nameWithType: BuiltInSprite.DOTTED_LINE_16
+  fullName: AngeliA.BuiltInSprite.DOTTED_LINE_16
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DOTTED_LINE_16
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 34
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode DOTTED_LINE_16
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly DOTTED_LINE_16 As SpriteCode
+- uid: AngeliA.BuiltInSprite.FRAME_HOLLOW_16
+  commentId: F:AngeliA.BuiltInSprite.FRAME_HOLLOW_16
+  id: FRAME_HOLLOW_16
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: FRAME_HOLLOW_16
+  nameWithType: BuiltInSprite.FRAME_HOLLOW_16
+  fullName: AngeliA.BuiltInSprite.FRAME_HOLLOW_16
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FRAME_HOLLOW_16
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 35
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode FRAME_HOLLOW_16
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly FRAME_HOLLOW_16 As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_SOUTH
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_SOUTH
+  id: GAMEPAD_SOUTH
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_SOUTH
+  nameWithType: BuiltInSprite.GAMEPAD_SOUTH
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_SOUTH
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_SOUTH
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_SOUTH
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_SOUTH As SpriteCode
+- uid: AngeliA.BuiltInSprite.DOWN_ARROW
+  commentId: F:AngeliA.BuiltInSprite.DOWN_ARROW
+  id: DOWN_ARROW
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: DOWN_ARROW
+  nameWithType: BuiltInSprite.DOWN_ARROW
+  fullName: AngeliA.BuiltInSprite.DOWN_ARROW
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DOWN_ARROW
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 37
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode DOWN_ARROW
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly DOWN_ARROW As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_DOWN
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_DOWN
+  id: GAMEPAD_DOWN
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_DOWN
+  nameWithType: BuiltInSprite.GAMEPAD_DOWN
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_DOWN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_DOWN
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 38
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_DOWN
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_DOWN As SpriteCode
+- uid: AngeliA.BuiltInSprite.ITEM_ICON_HELMET
+  commentId: F:AngeliA.BuiltInSprite.ITEM_ICON_HELMET
+  id: ITEM_ICON_HELMET
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ITEM_ICON_HELMET
+  nameWithType: BuiltInSprite.ITEM_ICON_HELMET
+  fullName: AngeliA.BuiltInSprite.ITEM_ICON_HELMET
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ITEM_ICON_HELMET
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 39
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ITEM_ICON_HELMET
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ITEM_ICON_HELMET As SpriteCode
+- uid: AngeliA.BuiltInSprite.ITEM_ICON_SHOES
+  commentId: F:AngeliA.BuiltInSprite.ITEM_ICON_SHOES
+  id: ITEM_ICON_SHOES
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ITEM_ICON_SHOES
+  nameWithType: BuiltInSprite.ITEM_ICON_SHOES
+  fullName: AngeliA.BuiltInSprite.ITEM_ICON_SHOES
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ITEM_ICON_SHOES
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 40
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ITEM_ICON_SHOES
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ITEM_ICON_SHOES As SpriteCode
+- uid: AngeliA.BuiltInSprite.ITEM_ICON_FOOD
+  commentId: F:AngeliA.BuiltInSprite.ITEM_ICON_FOOD
+  id: ITEM_ICON_FOOD
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ITEM_ICON_FOOD
+  nameWithType: BuiltInSprite.ITEM_ICON_FOOD
+  fullName: AngeliA.BuiltInSprite.ITEM_ICON_FOOD
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ITEM_ICON_FOOD
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 41
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ITEM_ICON_FOOD
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ITEM_ICON_FOOD As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_LEG_FOOT
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_LEG_FOOT
+  id: ICON_BODY_PART_LEG_FOOT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_LEG_FOOT
+  nameWithType: BuiltInSprite.ICON_BODY_PART_LEG_FOOT
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_LEG_FOOT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_LEG_FOOT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 42
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_LEG_FOOT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_LEG_FOOT As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_BODY
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_BODY
+  id: ICON_BODY_PART_BODY
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_BODY
+  nameWithType: BuiltInSprite.ICON_BODY_PART_BODY
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_BODY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_BODY
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 43
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_BODY
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_BODY As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_SUIT_HAT
+  commentId: F:AngeliA.BuiltInSprite.ICON_SUIT_HAT
+  id: ICON_SUIT_HAT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_SUIT_HAT
+  nameWithType: BuiltInSprite.ICON_SUIT_HAT
+  fullName: AngeliA.BuiltInSprite.ICON_SUIT_HAT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_SUIT_HAT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 44
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_SUIT_HAT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_SUIT_HAT As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_HORN
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_HORN
+  id: ICON_BODY_PART_HORN
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_HORN
+  nameWithType: BuiltInSprite.ICON_BODY_PART_HORN
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_HORN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_HORN
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 45
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_HORN
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_HORN As SpriteCode
+- uid: AngeliA.BuiltInSprite.HINT_BUTTON
+  commentId: F:AngeliA.BuiltInSprite.HINT_BUTTON
+  id: HINT_BUTTON
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: HINT_BUTTON
+  nameWithType: BuiltInSprite.HINT_BUTTON
+  fullName: AngeliA.BuiltInSprite.HINT_BUTTON
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HINT_BUTTON
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 46
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode HINT_BUTTON
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly HINT_BUTTON As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_WEST
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_WEST
+  id: GAMEPAD_WEST
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_WEST
+  nameWithType: BuiltInSprite.GAMEPAD_WEST
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_WEST
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_WEST
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 47
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_WEST
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_WEST As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_LEFT
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_LEFT
+  id: GAMEPAD_LEFT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_LEFT
+  nameWithType: BuiltInSprite.GAMEPAD_LEFT
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_LEFT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_LEFT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 48
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_LEFT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_LEFT As SpriteCode
+- uid: AngeliA.BuiltInSprite.LEFT_ARROW
+  commentId: F:AngeliA.BuiltInSprite.LEFT_ARROW
+  id: LEFT_ARROW
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: LEFT_ARROW
+  nameWithType: BuiltInSprite.LEFT_ARROW
+  fullName: AngeliA.BuiltInSprite.LEFT_ARROW
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LEFT_ARROW
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 49
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode LEFT_ARROW
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly LEFT_ARROW As SpriteCode
+- uid: AngeliA.BuiltInSprite.TRIANGLE_13
+  commentId: F:AngeliA.BuiltInSprite.TRIANGLE_13
+  id: TRIANGLE_13
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: TRIANGLE_13
+  nameWithType: BuiltInSprite.TRIANGLE_13
+  fullName: AngeliA.BuiltInSprite.TRIANGLE_13
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TRIANGLE_13
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 50
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode TRIANGLE_13
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly TRIANGLE_13 As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_NORTH
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_NORTH
+  id: GAMEPAD_NORTH
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_NORTH
+  nameWithType: BuiltInSprite.GAMEPAD_NORTH
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_NORTH
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_NORTH
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 51
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_NORTH
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_NORTH As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_RIGHT
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_RIGHT
+  id: GAMEPAD_RIGHT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_RIGHT
+  nameWithType: BuiltInSprite.GAMEPAD_RIGHT
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_RIGHT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_RIGHT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 52
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_RIGHT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_RIGHT As SpriteCode
+- uid: AngeliA.BuiltInSprite.RIGHT_ARROW
+  commentId: F:AngeliA.BuiltInSprite.RIGHT_ARROW
+  id: RIGHT_ARROW
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: RIGHT_ARROW
+  nameWithType: BuiltInSprite.RIGHT_ARROW
+  fullName: AngeliA.BuiltInSprite.RIGHT_ARROW
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RIGHT_ARROW
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 53
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode RIGHT_ARROW
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly RIGHT_ARROW As SpriteCode
+- uid: AngeliA.BuiltInSprite.TRIANGLE_RIGHT_13
+  commentId: F:AngeliA.BuiltInSprite.TRIANGLE_RIGHT_13
+  id: TRIANGLE_RIGHT_13
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: TRIANGLE_RIGHT_13
+  nameWithType: BuiltInSprite.TRIANGLE_RIGHT_13
+  fullName: AngeliA.BuiltInSprite.TRIANGLE_RIGHT_13
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TRIANGLE_RIGHT_13
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 54
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode TRIANGLE_RIGHT_13
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly TRIANGLE_RIGHT_13 As SpriteCode
+- uid: AngeliA.BuiltInSprite.ITEM_ICON_HAND_TOOL
+  commentId: F:AngeliA.BuiltInSprite.ITEM_ICON_HAND_TOOL
+  id: ITEM_ICON_HAND_TOOL
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ITEM_ICON_HAND_TOOL
+  nameWithType: BuiltInSprite.ITEM_ICON_HAND_TOOL
+  fullName: AngeliA.BuiltInSprite.ITEM_ICON_HAND_TOOL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ITEM_ICON_HAND_TOOL
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 55
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ITEM_ICON_HAND_TOOL
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ITEM_ICON_HAND_TOOL As SpriteCode
+- uid: AngeliA.BuiltInSprite.ITEM_ICON_WEAPON
+  commentId: F:AngeliA.BuiltInSprite.ITEM_ICON_WEAPON
+  id: ITEM_ICON_WEAPON
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ITEM_ICON_WEAPON
+  nameWithType: BuiltInSprite.ITEM_ICON_WEAPON
+  fullName: AngeliA.BuiltInSprite.ITEM_ICON_WEAPON
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ITEM_ICON_WEAPON
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 56
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ITEM_ICON_WEAPON
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ITEM_ICON_WEAPON As SpriteCode
+- uid: AngeliA.BuiltInSprite.ITEM_ICON_GLOVES
+  commentId: F:AngeliA.BuiltInSprite.ITEM_ICON_GLOVES
+  id: ITEM_ICON_GLOVES
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ITEM_ICON_GLOVES
+  nameWithType: BuiltInSprite.ITEM_ICON_GLOVES
+  fullName: AngeliA.BuiltInSprite.ITEM_ICON_GLOVES
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ITEM_ICON_GLOVES
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 57
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ITEM_ICON_GLOVES
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ITEM_ICON_GLOVES As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_HEAD
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_HEAD
+  id: ICON_BODY_PART_HEAD
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_HEAD
+  nameWithType: BuiltInSprite.ICON_BODY_PART_HEAD
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_HEAD
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_HEAD
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 58
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_HEAD
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_HEAD As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_FACE
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_FACE
+  id: ICON_BODY_PART_FACE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_FACE
+  nameWithType: BuiltInSprite.ICON_BODY_PART_FACE
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_FACE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_FACE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 59
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_FACE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_FACE As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_SUIT_SHOES
+  commentId: F:AngeliA.BuiltInSprite.ICON_SUIT_SHOES
+  id: ICON_SUIT_SHOES
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_SUIT_SHOES
+  nameWithType: BuiltInSprite.ICON_SUIT_SHOES
+  fullName: AngeliA.BuiltInSprite.ICON_SUIT_SHOES
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_SUIT_SHOES
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 60
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_SUIT_SHOES
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_SUIT_SHOES As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_TAIL
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_TAIL
+  id: ICON_BODY_PART_TAIL
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_TAIL
+  nameWithType: BuiltInSprite.ICON_BODY_PART_TAIL
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_TAIL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_TAIL
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 61
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_TAIL
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_TAIL As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_WING
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_WING
+  id: ICON_BODY_PART_WING
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_WING
+  nameWithType: BuiltInSprite.ICON_BODY_PART_WING
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_WING
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_WING
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 62
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_WING
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_WING As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_PLUS
+  commentId: F:AngeliA.BuiltInSprite.ICON_PLUS
+  id: ICON_PLUS
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_PLUS
+  nameWithType: BuiltInSprite.ICON_PLUS
+  fullName: AngeliA.BuiltInSprite.ICON_PLUS
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_PLUS
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 63
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_PLUS
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_PLUS As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_HINT_LEFT
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_HINT_LEFT
+  id: GAMEPAD_HINT_LEFT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_HINT_LEFT
+  nameWithType: BuiltInSprite.GAMEPAD_HINT_LEFT
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_HINT_LEFT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_HINT_LEFT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 64
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_HINT_LEFT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_HINT_LEFT As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_HINT_SELECT
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_HINT_SELECT
+  id: GAMEPAD_HINT_SELECT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_HINT_SELECT
+  nameWithType: BuiltInSprite.GAMEPAD_HINT_SELECT
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_HINT_SELECT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_HINT_SELECT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 65
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_HINT_SELECT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_HINT_SELECT As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_HINT_UP
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_HINT_UP
+  id: GAMEPAD_HINT_UP
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_HINT_UP
+  nameWithType: BuiltInSprite.GAMEPAD_HINT_UP
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_HINT_UP
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_HINT_UP
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 66
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_HINT_UP
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_HINT_UP As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_HINT_RIGHT
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_HINT_RIGHT
+  id: GAMEPAD_HINT_RIGHT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_HINT_RIGHT
+  nameWithType: BuiltInSprite.GAMEPAD_HINT_RIGHT
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_HINT_RIGHT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_HINT_RIGHT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 67
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_HINT_RIGHT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_HINT_RIGHT As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_HINT_START
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_HINT_START
+  id: GAMEPAD_HINT_START
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_HINT_START
+  nameWithType: BuiltInSprite.GAMEPAD_HINT_START
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_HINT_START
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_HINT_START
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 68
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_HINT_START
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_HINT_START As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_HINT_A
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_HINT_A
+  id: GAMEPAD_HINT_A
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_HINT_A
+  nameWithType: BuiltInSprite.GAMEPAD_HINT_A
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_HINT_A
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_HINT_A
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 69
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_HINT_A
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_HINT_A As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_HINT_B
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_HINT_B
+  id: GAMEPAD_HINT_B
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_HINT_B
+  nameWithType: BuiltInSprite.GAMEPAD_HINT_B
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_HINT_B
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_HINT_B
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 70
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_HINT_B
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_HINT_B As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_HINT_DOWN
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_HINT_DOWN
+  id: GAMEPAD_HINT_DOWN
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_HINT_DOWN
+  nameWithType: BuiltInSprite.GAMEPAD_HINT_DOWN
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_HINT_DOWN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_HINT_DOWN
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 71
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_HINT_DOWN
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_HINT_DOWN As SpriteCode
+- uid: AngeliA.BuiltInSprite.CIRCLE_16
+  commentId: F:AngeliA.BuiltInSprite.CIRCLE_16
+  id: CIRCLE_16
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: CIRCLE_16
+  nameWithType: BuiltInSprite.CIRCLE_16
+  fullName: AngeliA.BuiltInSprite.CIRCLE_16
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CIRCLE_16
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 72
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode CIRCLE_16
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly CIRCLE_16 As SpriteCode
+- uid: AngeliA.BuiltInSprite.CIRCLE_32
+  commentId: F:AngeliA.BuiltInSprite.CIRCLE_32
+  id: CIRCLE_32
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: CIRCLE_32
+  nameWithType: BuiltInSprite.CIRCLE_32
+  fullName: AngeliA.BuiltInSprite.CIRCLE_32
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CIRCLE_32
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 73
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode CIRCLE_32
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly CIRCLE_32 As SpriteCode
+- uid: AngeliA.BuiltInSprite.CIRCLE_OUTLINE
+  commentId: F:AngeliA.BuiltInSprite.CIRCLE_OUTLINE
+  id: CIRCLE_OUTLINE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: CIRCLE_OUTLINE
+  nameWithType: BuiltInSprite.CIRCLE_OUTLINE
+  fullName: AngeliA.BuiltInSprite.CIRCLE_OUTLINE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CIRCLE_OUTLINE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 74
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode CIRCLE_OUTLINE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly CIRCLE_OUTLINE As SpriteCode
+- uid: AngeliA.BuiltInSprite.RING_24
+  commentId: F:AngeliA.BuiltInSprite.RING_24
+  id: RING_24
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: RING_24
+  nameWithType: BuiltInSprite.RING_24
+  fullName: AngeliA.BuiltInSprite.RING_24
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RING_24
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 75
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode RING_24
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly RING_24 As SpriteCode
+- uid: AngeliA.BuiltInSprite.RING_32
+  commentId: F:AngeliA.BuiltInSprite.RING_32
+  id: RING_32
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: RING_32
+  nameWithType: BuiltInSprite.RING_32
+  fullName: AngeliA.BuiltInSprite.RING_32
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RING_32
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 76
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode RING_32
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly RING_32 As SpriteCode
+- uid: AngeliA.BuiltInSprite.RADIAL_DOTTED_RING_24
+  commentId: F:AngeliA.BuiltInSprite.RADIAL_DOTTED_RING_24
+  id: RADIAL_DOTTED_RING_24
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: RADIAL_DOTTED_RING_24
+  nameWithType: BuiltInSprite.RADIAL_DOTTED_RING_24
+  fullName: AngeliA.BuiltInSprite.RADIAL_DOTTED_RING_24
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RADIAL_DOTTED_RING_24
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 77
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode RADIAL_DOTTED_RING_24
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly RADIAL_DOTTED_RING_24 As SpriteCode
+- uid: AngeliA.BuiltInSprite.RADIAL_DOTTED_RING_32
+  commentId: F:AngeliA.BuiltInSprite.RADIAL_DOTTED_RING_32
+  id: RADIAL_DOTTED_RING_32
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: RADIAL_DOTTED_RING_32
+  nameWithType: BuiltInSprite.RADIAL_DOTTED_RING_32
+  fullName: AngeliA.BuiltInSprite.RADIAL_DOTTED_RING_32
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RADIAL_DOTTED_RING_32
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 78
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode RADIAL_DOTTED_RING_32
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly RADIAL_DOTTED_RING_32 As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_EAR
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_EAR
+  id: ICON_BODY_PART_EAR
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_EAR
+  nameWithType: BuiltInSprite.ICON_BODY_PART_EAR
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_EAR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_EAR
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 79
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_EAR
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_EAR As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_SUIT_GLOVE
+  commentId: F:AngeliA.BuiltInSprite.ICON_SUIT_GLOVE
+  id: ICON_SUIT_GLOVE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_SUIT_GLOVE
+  nameWithType: BuiltInSprite.ICON_SUIT_GLOVE
+  fullName: AngeliA.BuiltInSprite.ICON_SUIT_GLOVE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_SUIT_GLOVE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 80
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_SUIT_GLOVE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_SUIT_GLOVE As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_SUIT_PANTS
+  commentId: F:AngeliA.BuiltInSprite.ICON_SUIT_PANTS
+  id: ICON_SUIT_PANTS
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_SUIT_PANTS
+  nameWithType: BuiltInSprite.ICON_SUIT_PANTS
+  fullName: AngeliA.BuiltInSprite.ICON_SUIT_PANTS
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_SUIT_PANTS
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 81
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_SUIT_PANTS
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_SUIT_PANTS As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_SKIN_COLOR
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_SKIN_COLOR
+  id: ICON_BODY_PART_SKIN_COLOR
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_SKIN_COLOR
+  nameWithType: BuiltInSprite.ICON_BODY_PART_SKIN_COLOR
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_SKIN_COLOR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_SKIN_COLOR
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 82
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_SKIN_COLOR
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_SKIN_COLOR As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODY_PART_HAIR_COLOR
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODY_PART_HAIR_COLOR
+  id: ICON_BODY_PART_HAIR_COLOR
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODY_PART_HAIR_COLOR
+  nameWithType: BuiltInSprite.ICON_BODY_PART_HAIR_COLOR
+  fullName: AngeliA.BuiltInSprite.ICON_BODY_PART_HAIR_COLOR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODY_PART_HAIR_COLOR
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 83
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODY_PART_HAIR_COLOR
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODY_PART_HAIR_COLOR As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BRUSH
+  commentId: F:AngeliA.BuiltInSprite.ICON_BRUSH
+  id: ICON_BRUSH
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BRUSH
+  nameWithType: BuiltInSprite.ICON_BRUSH
+  fullName: AngeliA.BuiltInSprite.ICON_BRUSH
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BRUSH
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 84
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BRUSH
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BRUSH As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_TRIANGLE_UP
+  commentId: F:AngeliA.BuiltInSprite.ICON_TRIANGLE_UP
+  id: ICON_TRIANGLE_UP
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_TRIANGLE_UP
+  nameWithType: BuiltInSprite.ICON_TRIANGLE_UP
+  fullName: AngeliA.BuiltInSprite.ICON_TRIANGLE_UP
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_TRIANGLE_UP
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 85
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_TRIANGLE_UP
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_TRIANGLE_UP As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_TRIANGLE_DOWN
+  commentId: F:AngeliA.BuiltInSprite.ICON_TRIANGLE_DOWN
+  id: ICON_TRIANGLE_DOWN
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_TRIANGLE_DOWN
+  nameWithType: BuiltInSprite.ICON_TRIANGLE_DOWN
+  fullName: AngeliA.BuiltInSprite.ICON_TRIANGLE_DOWN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_TRIANGLE_DOWN
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 86
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_TRIANGLE_DOWN
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_TRIANGLE_DOWN As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_TRIANGLE_LEFT
+  commentId: F:AngeliA.BuiltInSprite.ICON_TRIANGLE_LEFT
+  id: ICON_TRIANGLE_LEFT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_TRIANGLE_LEFT
+  nameWithType: BuiltInSprite.ICON_TRIANGLE_LEFT
+  fullName: AngeliA.BuiltInSprite.ICON_TRIANGLE_LEFT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_TRIANGLE_LEFT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 87
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_TRIANGLE_LEFT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_TRIANGLE_LEFT As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_TRIANGLE_RIGHT
+  commentId: F:AngeliA.BuiltInSprite.ICON_TRIANGLE_RIGHT
+  id: ICON_TRIANGLE_RIGHT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_TRIANGLE_RIGHT
+  nameWithType: BuiltInSprite.ICON_TRIANGLE_RIGHT
+  fullName: AngeliA.BuiltInSprite.ICON_TRIANGLE_RIGHT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_TRIANGLE_RIGHT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 88
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_TRIANGLE_RIGHT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_TRIANGLE_RIGHT As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_MAP
+  commentId: F:AngeliA.BuiltInSprite.ICON_MAP
+  id: ICON_MAP
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_MAP
+  nameWithType: BuiltInSprite.ICON_MAP
+  fullName: AngeliA.BuiltInSprite.ICON_MAP
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_MAP
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 89
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_MAP
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_MAP As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BACK
+  commentId: F:AngeliA.BuiltInSprite.ICON_BACK
+  id: ICON_BACK
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BACK
+  nameWithType: BuiltInSprite.ICON_BACK
+  fullName: AngeliA.BuiltInSprite.ICON_BACK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BACK
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 90
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BACK
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BACK As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_ITEM_FRAME
+  commentId: F:AngeliA.BuiltInSprite.UI_ITEM_FRAME
+  id: UI_ITEM_FRAME
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_ITEM_FRAME
+  nameWithType: BuiltInSprite.UI_ITEM_FRAME
+  fullName: AngeliA.BuiltInSprite.UI_ITEM_FRAME
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_ITEM_FRAME
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 91
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_ITEM_FRAME
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_ITEM_FRAME As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_DARK_BUTTON
+  commentId: F:AngeliA.BuiltInSprite.UI_DARK_BUTTON
+  id: UI_DARK_BUTTON
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_DARK_BUTTON
+  nameWithType: BuiltInSprite.UI_DARK_BUTTON
+  fullName: AngeliA.BuiltInSprite.UI_DARK_BUTTON
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_DARK_BUTTON
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 92
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_DARK_BUTTON
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_DARK_BUTTON As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_DARK_BUTTON_HOVER
+  commentId: F:AngeliA.BuiltInSprite.UI_DARK_BUTTON_HOVER
+  id: UI_DARK_BUTTON_HOVER
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_DARK_BUTTON_HOVER
+  nameWithType: BuiltInSprite.UI_DARK_BUTTON_HOVER
+  fullName: AngeliA.BuiltInSprite.UI_DARK_BUTTON_HOVER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_DARK_BUTTON_HOVER
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 93
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_DARK_BUTTON_HOVER
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_DARK_BUTTON_HOVER As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_DARK_BUTTON_DOWN
+  commentId: F:AngeliA.BuiltInSprite.UI_DARK_BUTTON_DOWN
+  id: UI_DARK_BUTTON_DOWN
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_DARK_BUTTON_DOWN
+  nameWithType: BuiltInSprite.UI_DARK_BUTTON_DOWN
+  fullName: AngeliA.BuiltInSprite.UI_DARK_BUTTON_DOWN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_DARK_BUTTON_DOWN
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 94
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_DARK_BUTTON_DOWN
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_DARK_BUTTON_DOWN As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_HOLO_BUTTON
+  commentId: F:AngeliA.BuiltInSprite.UI_HOLO_BUTTON
+  id: UI_HOLO_BUTTON
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_HOLO_BUTTON
+  nameWithType: BuiltInSprite.UI_HOLO_BUTTON
+  fullName: AngeliA.BuiltInSprite.UI_HOLO_BUTTON
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_HOLO_BUTTON
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 95
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_HOLO_BUTTON
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_HOLO_BUTTON As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_SMALL_BUTTON
+  commentId: F:AngeliA.BuiltInSprite.UI_SMALL_BUTTON
+  id: UI_SMALL_BUTTON
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_SMALL_BUTTON
+  nameWithType: BuiltInSprite.UI_SMALL_BUTTON
+  fullName: AngeliA.BuiltInSprite.UI_SMALL_BUTTON
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_SMALL_BUTTON
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 96
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_SMALL_BUTTON
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_SMALL_BUTTON As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_SMALL_BUTTON_HOVER
+  commentId: F:AngeliA.BuiltInSprite.UI_SMALL_BUTTON_HOVER
+  id: UI_SMALL_BUTTON_HOVER
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_SMALL_BUTTON_HOVER
+  nameWithType: BuiltInSprite.UI_SMALL_BUTTON_HOVER
+  fullName: AngeliA.BuiltInSprite.UI_SMALL_BUTTON_HOVER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_SMALL_BUTTON_HOVER
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 97
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_SMALL_BUTTON_HOVER
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_SMALL_BUTTON_HOVER As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_SMALL_BUTTON_DOWN
+  commentId: F:AngeliA.BuiltInSprite.UI_SMALL_BUTTON_DOWN
+  id: UI_SMALL_BUTTON_DOWN
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_SMALL_BUTTON_DOWN
+  nameWithType: BuiltInSprite.UI_SMALL_BUTTON_DOWN
+  fullName: AngeliA.BuiltInSprite.UI_SMALL_BUTTON_DOWN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_SMALL_BUTTON_DOWN
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 98
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_SMALL_BUTTON_DOWN
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_SMALL_BUTTON_DOWN As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_BUTTON
+  commentId: F:AngeliA.BuiltInSprite.UI_BUTTON
+  id: UI_BUTTON
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_BUTTON
+  nameWithType: BuiltInSprite.UI_BUTTON
+  fullName: AngeliA.BuiltInSprite.UI_BUTTON
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_BUTTON
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 99
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_BUTTON
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_BUTTON As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_BUTTON_HOVER
+  commentId: F:AngeliA.BuiltInSprite.UI_BUTTON_HOVER
+  id: UI_BUTTON_HOVER
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_BUTTON_HOVER
+  nameWithType: BuiltInSprite.UI_BUTTON_HOVER
+  fullName: AngeliA.BuiltInSprite.UI_BUTTON_HOVER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_BUTTON_HOVER
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 100
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_BUTTON_HOVER
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_BUTTON_HOVER As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_BUTTON_DOWN
+  commentId: F:AngeliA.BuiltInSprite.UI_BUTTON_DOWN
+  id: UI_BUTTON_DOWN
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_BUTTON_DOWN
+  nameWithType: BuiltInSprite.UI_BUTTON_DOWN
+  fullName: AngeliA.BuiltInSprite.UI_BUTTON_DOWN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_BUTTON_DOWN
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 101
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_BUTTON_DOWN
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_BUTTON_DOWN As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_SEARCH
+  commentId: F:AngeliA.BuiltInSprite.ICON_SEARCH
+  id: ICON_SEARCH
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_SEARCH
+  nameWithType: BuiltInSprite.ICON_SEARCH
+  fullName: AngeliA.BuiltInSprite.ICON_SEARCH
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_SEARCH
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 102
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_SEARCH
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_SEARCH As SpriteCode
+- uid: AngeliA.BuiltInSprite.MENU_ARROW_MARK
+  commentId: F:AngeliA.BuiltInSprite.MENU_ARROW_MARK
+  id: MENU_ARROW_MARK
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: MENU_ARROW_MARK
+  nameWithType: BuiltInSprite.MENU_ARROW_MARK
+  fullName: AngeliA.BuiltInSprite.MENU_ARROW_MARK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MENU_ARROW_MARK
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 103
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode MENU_ARROW_MARK
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly MENU_ARROW_MARK As SpriteCode
+- uid: AngeliA.BuiltInSprite.MENU_MORE_MARK
+  commentId: F:AngeliA.BuiltInSprite.MENU_MORE_MARK
+  id: MENU_MORE_MARK
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: MENU_MORE_MARK
+  nameWithType: BuiltInSprite.MENU_MORE_MARK
+  fullName: AngeliA.BuiltInSprite.MENU_MORE_MARK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MENU_MORE_MARK
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 104
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode MENU_MORE_MARK
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly MENU_MORE_MARK As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_REFRESH
+  commentId: F:AngeliA.BuiltInSprite.ICON_REFRESH
+  id: ICON_REFRESH
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_REFRESH
+  nameWithType: BuiltInSprite.ICON_REFRESH
+  fullName: AngeliA.BuiltInSprite.ICON_REFRESH
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_REFRESH
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 105
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_REFRESH
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_REFRESH As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_GAMEPAD
+  commentId: F:AngeliA.BuiltInSprite.ICON_GAMEPAD
+  id: ICON_GAMEPAD
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_GAMEPAD
+  nameWithType: BuiltInSprite.ICON_GAMEPAD
+  fullName: AngeliA.BuiltInSprite.ICON_GAMEPAD
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_GAMEPAD
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 106
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_GAMEPAD
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_GAMEPAD As SpriteCode
+- uid: AngeliA.BuiltInSprite.CHECK_MARK_32
+  commentId: F:AngeliA.BuiltInSprite.CHECK_MARK_32
+  id: CHECK_MARK_32
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: CHECK_MARK_32
+  nameWithType: BuiltInSprite.CHECK_MARK_32
+  fullName: AngeliA.BuiltInSprite.CHECK_MARK_32
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CHECK_MARK_32
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 107
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode CHECK_MARK_32
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly CHECK_MARK_32 As SpriteCode
+- uid: AngeliA.BuiltInSprite.CHECK_MARK_16
+  commentId: F:AngeliA.BuiltInSprite.CHECK_MARK_16
+  id: CHECK_MARK_16
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: CHECK_MARK_16
+  nameWithType: BuiltInSprite.CHECK_MARK_16
+  fullName: AngeliA.BuiltInSprite.CHECK_MARK_16
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CHECK_MARK_16
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 108
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode CHECK_MARK_16
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly CHECK_MARK_16 As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BODYPART_HEIGHT
+  commentId: F:AngeliA.BuiltInSprite.ICON_BODYPART_HEIGHT
+  id: ICON_BODYPART_HEIGHT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BODYPART_HEIGHT
+  nameWithType: BuiltInSprite.ICON_BODYPART_HEIGHT
+  fullName: AngeliA.BuiltInSprite.ICON_BODYPART_HEIGHT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BODYPART_HEIGHT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 109
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BODYPART_HEIGHT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BODYPART_HEIGHT As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_LEFT_TRIGGER
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_LEFT_TRIGGER
+  id: GAMEPAD_LEFT_TRIGGER
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_LEFT_TRIGGER
+  nameWithType: BuiltInSprite.GAMEPAD_LEFT_TRIGGER
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_LEFT_TRIGGER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_LEFT_TRIGGER
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 110
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_LEFT_TRIGGER
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_LEFT_TRIGGER As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_RIGHT_TRIGGER
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_RIGHT_TRIGGER
+  id: GAMEPAD_RIGHT_TRIGGER
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_RIGHT_TRIGGER
+  nameWithType: BuiltInSprite.GAMEPAD_RIGHT_TRIGGER
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_RIGHT_TRIGGER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_RIGHT_TRIGGER
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 111
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_RIGHT_TRIGGER
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_RIGHT_TRIGGER As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_LEFT_SHOULDER
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_LEFT_SHOULDER
+  id: GAMEPAD_LEFT_SHOULDER
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_LEFT_SHOULDER
+  nameWithType: BuiltInSprite.GAMEPAD_LEFT_SHOULDER
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_LEFT_SHOULDER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_LEFT_SHOULDER
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 112
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_LEFT_SHOULDER
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_LEFT_SHOULDER As SpriteCode
+- uid: AngeliA.BuiltInSprite.GAMEPAD_RIGHT_SHOULDER
+  commentId: F:AngeliA.BuiltInSprite.GAMEPAD_RIGHT_SHOULDER
+  id: GAMEPAD_RIGHT_SHOULDER
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: GAMEPAD_RIGHT_SHOULDER
+  nameWithType: BuiltInSprite.GAMEPAD_RIGHT_SHOULDER
+  fullName: AngeliA.BuiltInSprite.GAMEPAD_RIGHT_SHOULDER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAMEPAD_RIGHT_SHOULDER
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 113
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode GAMEPAD_RIGHT_SHOULDER
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly GAMEPAD_RIGHT_SHOULDER As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_TAB
+  commentId: F:AngeliA.BuiltInSprite.UI_TAB
+  id: UI_TAB
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_TAB
+  nameWithType: BuiltInSprite.UI_TAB
+  fullName: AngeliA.BuiltInSprite.UI_TAB
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_TAB
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 114
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_TAB
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_TAB As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_STAR
+  commentId: F:AngeliA.BuiltInSprite.ICON_STAR
+  id: ICON_STAR
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_STAR
+  nameWithType: BuiltInSprite.ICON_STAR
+  fullName: AngeliA.BuiltInSprite.ICON_STAR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_STAR
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 115
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_STAR
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_STAR As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_MENU
+  commentId: F:AngeliA.BuiltInSprite.ICON_MENU
+  id: ICON_MENU
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_MENU
+  nameWithType: BuiltInSprite.ICON_MENU
+  fullName: AngeliA.BuiltInSprite.ICON_MENU
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_MENU
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 116
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_MENU
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_MENU As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_PALETTE
+  commentId: F:AngeliA.BuiltInSprite.ICON_PALETTE
+  id: ICON_PALETTE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_PALETTE
+  nameWithType: BuiltInSprite.ICON_PALETTE
+  fullName: AngeliA.BuiltInSprite.ICON_PALETTE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_PALETTE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 117
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_PALETTE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_PALETTE As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_FILE
+  commentId: F:AngeliA.BuiltInSprite.ICON_FILE
+  id: ICON_FILE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_FILE
+  nameWithType: BuiltInSprite.ICON_FILE
+  fullName: AngeliA.BuiltInSprite.ICON_FILE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_FILE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 118
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_FILE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_FILE As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_CROSS
+  commentId: F:AngeliA.BuiltInSprite.ICON_CROSS
+  id: ICON_CROSS
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_CROSS
+  nameWithType: BuiltInSprite.ICON_CROSS
+  fullName: AngeliA.BuiltInSprite.ICON_CROSS
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_CROSS
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 119
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_CROSS
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_CROSS As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_DELETE
+  commentId: F:AngeliA.BuiltInSprite.ICON_DELETE
+  id: ICON_DELETE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_DELETE
+  nameWithType: BuiltInSprite.ICON_DELETE
+  fullName: AngeliA.BuiltInSprite.ICON_DELETE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_DELETE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 120
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_DELETE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_DELETE As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_HOME
+  commentId: F:AngeliA.BuiltInSprite.ICON_HOME
+  id: ICON_HOME
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_HOME
+  nameWithType: BuiltInSprite.ICON_HOME
+  fullName: AngeliA.BuiltInSprite.ICON_HOME
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_HOME
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 121
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_HOME
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_HOME As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_ENTITY
+  commentId: F:AngeliA.BuiltInSprite.ICON_ENTITY
+  id: ICON_ENTITY
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_ENTITY
+  nameWithType: BuiltInSprite.ICON_ENTITY
+  fullName: AngeliA.BuiltInSprite.ICON_ENTITY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_ENTITY
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 122
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_ENTITY
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_ENTITY As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_BUFF
+  commentId: F:AngeliA.BuiltInSprite.ICON_BUFF
+  id: ICON_BUFF
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_BUFF
+  nameWithType: BuiltInSprite.ICON_BUFF
+  fullName: AngeliA.BuiltInSprite.ICON_BUFF
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_BUFF
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 123
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_BUFF
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_BUFF As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_TOGGLE
+  commentId: F:AngeliA.BuiltInSprite.UI_TOGGLE
+  id: UI_TOGGLE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_TOGGLE
+  nameWithType: BuiltInSprite.UI_TOGGLE
+  fullName: AngeliA.BuiltInSprite.UI_TOGGLE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_TOGGLE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 124
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_TOGGLE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_TOGGLE As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_TOGGLE_DOWN
+  commentId: F:AngeliA.BuiltInSprite.UI_TOGGLE_DOWN
+  id: UI_TOGGLE_DOWN
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_TOGGLE_DOWN
+  nameWithType: BuiltInSprite.UI_TOGGLE_DOWN
+  fullName: AngeliA.BuiltInSprite.UI_TOGGLE_DOWN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_TOGGLE_DOWN
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 125
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_TOGGLE_DOWN
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_TOGGLE_DOWN As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_TOGGLE_HOVER
+  commentId: F:AngeliA.BuiltInSprite.UI_TOGGLE_HOVER
+  id: UI_TOGGLE_HOVER
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_TOGGLE_HOVER
+  nameWithType: BuiltInSprite.UI_TOGGLE_HOVER
+  fullName: AngeliA.BuiltInSprite.UI_TOGGLE_HOVER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_TOGGLE_HOVER
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 126
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_TOGGLE_HOVER
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_TOGGLE_HOVER As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_LARGE_TOGGLE
+  commentId: F:AngeliA.BuiltInSprite.UI_LARGE_TOGGLE
+  id: UI_LARGE_TOGGLE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_LARGE_TOGGLE
+  nameWithType: BuiltInSprite.UI_LARGE_TOGGLE
+  fullName: AngeliA.BuiltInSprite.UI_LARGE_TOGGLE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_LARGE_TOGGLE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 127
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_LARGE_TOGGLE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_LARGE_TOGGLE As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_LARGE_TOGGLE_DOWN
+  commentId: F:AngeliA.BuiltInSprite.UI_LARGE_TOGGLE_DOWN
+  id: UI_LARGE_TOGGLE_DOWN
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_LARGE_TOGGLE_DOWN
+  nameWithType: BuiltInSprite.UI_LARGE_TOGGLE_DOWN
+  fullName: AngeliA.BuiltInSprite.UI_LARGE_TOGGLE_DOWN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_LARGE_TOGGLE_DOWN
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 128
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_LARGE_TOGGLE_DOWN
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_LARGE_TOGGLE_DOWN As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_LARGE_TOGGLE_HOVER
+  commentId: F:AngeliA.BuiltInSprite.UI_LARGE_TOGGLE_HOVER
+  id: UI_LARGE_TOGGLE_HOVER
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_LARGE_TOGGLE_HOVER
+  nameWithType: BuiltInSprite.UI_LARGE_TOGGLE_HOVER
+  fullName: AngeliA.BuiltInSprite.UI_LARGE_TOGGLE_HOVER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_LARGE_TOGGLE_HOVER
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 129
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_LARGE_TOGGLE_HOVER
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_LARGE_TOGGLE_HOVER As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_TOGGLE_MARK
+  commentId: F:AngeliA.BuiltInSprite.UI_TOGGLE_MARK
+  id: UI_TOGGLE_MARK
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_TOGGLE_MARK
+  nameWithType: BuiltInSprite.UI_TOGGLE_MARK
+  fullName: AngeliA.BuiltInSprite.UI_TOGGLE_MARK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_TOGGLE_MARK
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 130
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_TOGGLE_MARK
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_TOGGLE_MARK As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_INPUT_FIELD_LARGE
+  commentId: F:AngeliA.BuiltInSprite.UI_INPUT_FIELD_LARGE
+  id: UI_INPUT_FIELD_LARGE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_INPUT_FIELD_LARGE
+  nameWithType: BuiltInSprite.UI_INPUT_FIELD_LARGE
+  fullName: AngeliA.BuiltInSprite.UI_INPUT_FIELD_LARGE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_INPUT_FIELD_LARGE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 131
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_INPUT_FIELD_LARGE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_INPUT_FIELD_LARGE As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_INPUT_FIELD
+  commentId: F:AngeliA.BuiltInSprite.UI_INPUT_FIELD
+  id: UI_INPUT_FIELD
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_INPUT_FIELD
+  nameWithType: BuiltInSprite.UI_INPUT_FIELD
+  fullName: AngeliA.BuiltInSprite.UI_INPUT_FIELD
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_INPUT_FIELD
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 132
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_INPUT_FIELD
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_INPUT_FIELD As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_INPUT_FIELD_SMALL
+  commentId: F:AngeliA.BuiltInSprite.UI_INPUT_FIELD_SMALL
+  id: UI_INPUT_FIELD_SMALL
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_INPUT_FIELD_SMALL
+  nameWithType: BuiltInSprite.UI_INPUT_FIELD_SMALL
+  fullName: AngeliA.BuiltInSprite.UI_INPUT_FIELD_SMALL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_INPUT_FIELD_SMALL
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 133
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_INPUT_FIELD_SMALL
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_INPUT_FIELD_SMALL As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK
+  commentId: F:AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK
+  id: UI_MINI_BUTTON_DARK
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_MINI_BUTTON_DARK
+  nameWithType: BuiltInSprite.UI_MINI_BUTTON_DARK
+  fullName: AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_MINI_BUTTON_DARK
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 134
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_MINI_BUTTON_DARK
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_MINI_BUTTON_DARK As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK_HOVER
+  commentId: F:AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK_HOVER
+  id: UI_MINI_BUTTON_DARK_HOVER
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_MINI_BUTTON_DARK_HOVER
+  nameWithType: BuiltInSprite.UI_MINI_BUTTON_DARK_HOVER
+  fullName: AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK_HOVER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_MINI_BUTTON_DARK_HOVER
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 135
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_MINI_BUTTON_DARK_HOVER
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_MINI_BUTTON_DARK_HOVER As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK_DOWN
+  commentId: F:AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK_DOWN
+  id: UI_MINI_BUTTON_DARK_DOWN
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_MINI_BUTTON_DARK_DOWN
+  nameWithType: BuiltInSprite.UI_MINI_BUTTON_DARK_DOWN
+  fullName: AngeliA.BuiltInSprite.UI_MINI_BUTTON_DARK_DOWN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_MINI_BUTTON_DARK_DOWN
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 136
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_MINI_BUTTON_DARK_DOWN
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_MINI_BUTTON_DARK_DOWN As SpriteCode
+- uid: AngeliA.BuiltInSprite.COLOR_HUE
+  commentId: F:AngeliA.BuiltInSprite.COLOR_HUE
+  id: COLOR_HUE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: COLOR_HUE
+  nameWithType: BuiltInSprite.COLOR_HUE
+  fullName: AngeliA.BuiltInSprite.COLOR_HUE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: COLOR_HUE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 137
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode COLOR_HUE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly COLOR_HUE As SpriteCode
+- uid: AngeliA.BuiltInSprite.COLOR_HUE_ALT
+  commentId: F:AngeliA.BuiltInSprite.COLOR_HUE_ALT
+  id: COLOR_HUE_ALT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: COLOR_HUE_ALT
+  nameWithType: BuiltInSprite.COLOR_HUE_ALT
+  fullName: AngeliA.BuiltInSprite.COLOR_HUE_ALT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: COLOR_HUE_ALT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 138
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode COLOR_HUE_ALT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly COLOR_HUE_ALT As SpriteCode
+- uid: AngeliA.BuiltInSprite.COLOR_WHITE_BAR
+  commentId: F:AngeliA.BuiltInSprite.COLOR_WHITE_BAR
+  id: COLOR_WHITE_BAR
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: COLOR_WHITE_BAR
+  nameWithType: BuiltInSprite.COLOR_WHITE_BAR
+  fullName: AngeliA.BuiltInSprite.COLOR_WHITE_BAR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: COLOR_WHITE_BAR
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 139
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode COLOR_WHITE_BAR
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly COLOR_WHITE_BAR As SpriteCode
+- uid: AngeliA.BuiltInSprite.CHECKER_BOARD_16
+  commentId: F:AngeliA.BuiltInSprite.CHECKER_BOARD_16
+  id: CHECKER_BOARD_16
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: CHECKER_BOARD_16
+  nameWithType: BuiltInSprite.CHECKER_BOARD_16
+  fullName: AngeliA.BuiltInSprite.CHECKER_BOARD_16
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CHECKER_BOARD_16
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 140
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode CHECKER_BOARD_16
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly CHECKER_BOARD_16 As SpriteCode
+- uid: AngeliA.BuiltInSprite.CHECKER_BOARD_8
+  commentId: F:AngeliA.BuiltInSprite.CHECKER_BOARD_8
+  id: CHECKER_BOARD_8
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: CHECKER_BOARD_8
+  nameWithType: BuiltInSprite.CHECKER_BOARD_8
+  fullName: AngeliA.BuiltInSprite.CHECKER_BOARD_8
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CHECKER_BOARD_8
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 141
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode CHECKER_BOARD_8
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly CHECKER_BOARD_8 As SpriteCode
+- uid: AngeliA.BuiltInSprite.SHADOW_LINE_16
+  commentId: F:AngeliA.BuiltInSprite.SHADOW_LINE_16
+  id: SHADOW_LINE_16
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: SHADOW_LINE_16
+  nameWithType: BuiltInSprite.SHADOW_LINE_16
+  fullName: AngeliA.BuiltInSprite.SHADOW_LINE_16
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SHADOW_LINE_16
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 142
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode SHADOW_LINE_16
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly SHADOW_LINE_16 As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_SCROLL_BAR
+  commentId: F:AngeliA.BuiltInSprite.UI_SCROLL_BAR
+  id: UI_SCROLL_BAR
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_SCROLL_BAR
+  nameWithType: BuiltInSprite.UI_SCROLL_BAR
+  fullName: AngeliA.BuiltInSprite.UI_SCROLL_BAR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_SCROLL_BAR
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 143
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_SCROLL_BAR
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_SCROLL_BAR As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_SLIDER_BODY
+  commentId: F:AngeliA.BuiltInSprite.UI_SLIDER_BODY
+  id: UI_SLIDER_BODY
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_SLIDER_BODY
+  nameWithType: BuiltInSprite.UI_SLIDER_BODY
+  fullName: AngeliA.BuiltInSprite.UI_SLIDER_BODY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_SLIDER_BODY
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 144
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_SLIDER_BODY
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_SLIDER_BODY As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_SLIDER_FILL
+  commentId: F:AngeliA.BuiltInSprite.UI_SLIDER_FILL
+  id: UI_SLIDER_FILL
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_SLIDER_FILL
+  nameWithType: BuiltInSprite.UI_SLIDER_FILL
+  fullName: AngeliA.BuiltInSprite.UI_SLIDER_FILL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_SLIDER_FILL
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 145
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_SLIDER_FILL
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_SLIDER_FILL As SpriteCode
+- uid: AngeliA.BuiltInSprite.UI_SLIDER_HANDLE
+  commentId: F:AngeliA.BuiltInSprite.UI_SLIDER_HANDLE
+  id: UI_SLIDER_HANDLE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: UI_SLIDER_HANDLE
+  nameWithType: BuiltInSprite.UI_SLIDER_HANDLE
+  fullName: AngeliA.BuiltInSprite.UI_SLIDER_HANDLE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_SLIDER_HANDLE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 146
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode UI_SLIDER_HANDLE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly UI_SLIDER_HANDLE As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_CLEAR
+  commentId: F:AngeliA.BuiltInSprite.ICON_CLEAR
+  id: ICON_CLEAR
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_CLEAR
+  nameWithType: BuiltInSprite.ICON_CLEAR
+  fullName: AngeliA.BuiltInSprite.ICON_CLEAR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_CLEAR
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 147
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_CLEAR
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_CLEAR As SpriteCode
+- uid: AngeliA.BuiltInSprite.MENU_DIALOG_BG
+  commentId: F:AngeliA.BuiltInSprite.MENU_DIALOG_BG
+  id: MENU_DIALOG_BG
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: MENU_DIALOG_BG
+  nameWithType: BuiltInSprite.MENU_DIALOG_BG
+  fullName: AngeliA.BuiltInSprite.MENU_DIALOG_BG
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MENU_DIALOG_BG
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 148
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode MENU_DIALOG_BG
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly MENU_DIALOG_BG As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_INFO
+  commentId: F:AngeliA.BuiltInSprite.ICON_INFO
+  id: ICON_INFO
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_INFO
+  nameWithType: BuiltInSprite.ICON_INFO
+  fullName: AngeliA.BuiltInSprite.ICON_INFO
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_INFO
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 149
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_INFO
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_INFO As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_WARNING
+  commentId: F:AngeliA.BuiltInSprite.ICON_WARNING
+  id: ICON_WARNING
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_WARNING
+  nameWithType: BuiltInSprite.ICON_WARNING
+  fullName: AngeliA.BuiltInSprite.ICON_WARNING
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_WARNING
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 150
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_WARNING
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_WARNING As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_ERROR
+  commentId: F:AngeliA.BuiltInSprite.ICON_ERROR
+  id: ICON_ERROR
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_ERROR
+  nameWithType: BuiltInSprite.ICON_ERROR
+  fullName: AngeliA.BuiltInSprite.ICON_ERROR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_ERROR
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 151
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_ERROR
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_ERROR As SpriteCode
+- uid: AngeliA.BuiltInSprite.LAMP_LIGHT
+  commentId: F:AngeliA.BuiltInSprite.LAMP_LIGHT
+  id: LAMP_LIGHT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: LAMP_LIGHT
+  nameWithType: BuiltInSprite.LAMP_LIGHT
+  fullName: AngeliA.BuiltInSprite.LAMP_LIGHT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LAMP_LIGHT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 152
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode LAMP_LIGHT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly LAMP_LIGHT As SpriteCode
+- uid: AngeliA.BuiltInSprite.FILE_ICON_FILE
+  commentId: F:AngeliA.BuiltInSprite.FILE_ICON_FILE
+  id: FILE_ICON_FILE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: FILE_ICON_FILE
+  nameWithType: BuiltInSprite.FILE_ICON_FILE
+  fullName: AngeliA.BuiltInSprite.FILE_ICON_FILE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FILE_ICON_FILE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 153
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode FILE_ICON_FILE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly FILE_ICON_FILE As SpriteCode
+- uid: AngeliA.BuiltInSprite.FILE_ICON_FOLDER
+  commentId: F:AngeliA.BuiltInSprite.FILE_ICON_FOLDER
+  id: FILE_ICON_FOLDER
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: FILE_ICON_FOLDER
+  nameWithType: BuiltInSprite.FILE_ICON_FOLDER
+  fullName: AngeliA.BuiltInSprite.FILE_ICON_FOLDER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FILE_ICON_FOLDER
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 154
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode FILE_ICON_FOLDER
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly FILE_ICON_FOLDER As SpriteCode
+- uid: AngeliA.BuiltInSprite.FILE_ICON_FOLDER_EMPTY
+  commentId: F:AngeliA.BuiltInSprite.FILE_ICON_FOLDER_EMPTY
+  id: FILE_ICON_FOLDER_EMPTY
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: FILE_ICON_FOLDER_EMPTY
+  nameWithType: BuiltInSprite.FILE_ICON_FOLDER_EMPTY
+  fullName: AngeliA.BuiltInSprite.FILE_ICON_FOLDER_EMPTY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FILE_ICON_FOLDER_EMPTY
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 155
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode FILE_ICON_FOLDER_EMPTY
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly FILE_ICON_FOLDER_EMPTY As SpriteCode
+- uid: AngeliA.BuiltInSprite.FILE_ICON_AUDIO
+  commentId: F:AngeliA.BuiltInSprite.FILE_ICON_AUDIO
+  id: FILE_ICON_AUDIO
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: FILE_ICON_AUDIO
+  nameWithType: BuiltInSprite.FILE_ICON_AUDIO
+  fullName: AngeliA.BuiltInSprite.FILE_ICON_AUDIO
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FILE_ICON_AUDIO
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 156
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode FILE_ICON_AUDIO
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly FILE_ICON_AUDIO As SpriteCode
+- uid: AngeliA.BuiltInSprite.FILE_ICON_TEXT
+  commentId: F:AngeliA.BuiltInSprite.FILE_ICON_TEXT
+  id: FILE_ICON_TEXT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: FILE_ICON_TEXT
+  nameWithType: BuiltInSprite.FILE_ICON_TEXT
+  fullName: AngeliA.BuiltInSprite.FILE_ICON_TEXT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FILE_ICON_TEXT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 157
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode FILE_ICON_TEXT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly FILE_ICON_TEXT As SpriteCode
+- uid: AngeliA.BuiltInSprite.FILE_ICON_IMAGE
+  commentId: F:AngeliA.BuiltInSprite.FILE_ICON_IMAGE
+  id: FILE_ICON_IMAGE
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: FILE_ICON_IMAGE
+  nameWithType: BuiltInSprite.FILE_ICON_IMAGE
+  fullName: AngeliA.BuiltInSprite.FILE_ICON_IMAGE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FILE_ICON_IMAGE
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 158
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode FILE_ICON_IMAGE
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly FILE_ICON_IMAGE As SpriteCode
+- uid: AngeliA.BuiltInSprite.FILE_ICON_DISK
+  commentId: F:AngeliA.BuiltInSprite.FILE_ICON_DISK
+  id: FILE_ICON_DISK
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: FILE_ICON_DISK
+  nameWithType: BuiltInSprite.FILE_ICON_DISK
+  fullName: AngeliA.BuiltInSprite.FILE_ICON_DISK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FILE_ICON_DISK
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 159
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode FILE_ICON_DISK
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly FILE_ICON_DISK As SpriteCode
+- uid: AngeliA.BuiltInSprite.FILE_ICON_FONT
+  commentId: F:AngeliA.BuiltInSprite.FILE_ICON_FONT
+  id: FILE_ICON_FONT
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: FILE_ICON_FONT
+  nameWithType: BuiltInSprite.FILE_ICON_FONT
+  fullName: AngeliA.BuiltInSprite.FILE_ICON_FONT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FILE_ICON_FONT
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 160
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode FILE_ICON_FONT
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly FILE_ICON_FONT As SpriteCode
+- uid: AngeliA.BuiltInSprite.ICON_CHARACTER_AVATAR
+  commentId: F:AngeliA.BuiltInSprite.ICON_CHARACTER_AVATAR
+  id: ICON_CHARACTER_AVATAR
+  parent: AngeliA.BuiltInSprite
+  langs:
+  - csharp
+  - vb
+  name: ICON_CHARACTER_AVATAR
+  nameWithType: BuiltInSprite.ICON_CHARACTER_AVATAR
+  fullName: AngeliA.BuiltInSprite.ICON_CHARACTER_AVATAR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInSprite.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICON_CHARACTER_AVATAR
+    path: ../AngeliA Framework/src/Common/BuiltInSprite.cs
+    startLine: 161
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly SpriteCode ICON_CHARACTER_AVATAR
+    return:
+      type: AngeliA.SpriteCode
+    content.vb: Public Shared ReadOnly ICON_CHARACTER_AVATAR As SpriteCode
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.SpriteCode
+  commentId: T:AngeliA.SpriteCode
+  parent: AngeliA
+  href: AngeliA.SpriteCode.html
+  name: SpriteCode
+  nameWithType: SpriteCode
+  fullName: AngeliA.SpriteCode

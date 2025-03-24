@@ -1,0 +1,629 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Platformer.IPingPongWalker
+  commentId: T:AngeliA.Platformer.IPingPongWalker
+  id: IPingPongWalker
+  parent: AngeliA.Platformer
+  children:
+  - AngeliA.Platformer.IPingPongWalker.LastTurnFrame
+  - AngeliA.Platformer.IPingPongWalker.OnActive(AngeliA.Platformer.IPingPongWalker)
+  - AngeliA.Platformer.IPingPongWalker.OnlyWalkWhenGrounded
+  - AngeliA.Platformer.IPingPongWalker.PingPongWalk(AngeliA.Platformer.IPingPongWalker)
+  - AngeliA.Platformer.IPingPongWalker.TurningCheckMask
+  - AngeliA.Platformer.IPingPongWalker.TurningCooldown
+  - AngeliA.Platformer.IPingPongWalker.WalkOffEdge
+  - AngeliA.Platformer.IPingPongWalker.WalkSpeed
+  - AngeliA.Platformer.IPingPongWalker.WalkingRight
+  langs:
+  - csharp
+  - vb
+  name: IPingPongWalker
+  nameWithType: IPingPongWalker
+  fullName: AngeliA.Platformer.IPingPongWalker
+  type: Interface
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IPingPongWalker
+    path: ../AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+    startLine: 6
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public interface IPingPongWalker
+    content.vb: Public Interface IPingPongWalker
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Platformer.IPingPongWalker.WalkSpeed
+  commentId: P:AngeliA.Platformer.IPingPongWalker.WalkSpeed
+  id: WalkSpeed
+  parent: AngeliA.Platformer.IPingPongWalker
+  langs:
+  - csharp
+  - vb
+  name: WalkSpeed
+  nameWithType: IPingPongWalker.WalkSpeed
+  fullName: AngeliA.Platformer.IPingPongWalker.WalkSpeed
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: WalkSpeed
+    path: ../AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+    startLine: 9
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: int WalkSpeed { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property WalkSpeed As Integer
+  overload: AngeliA.Platformer.IPingPongWalker.WalkSpeed*
+- uid: AngeliA.Platformer.IPingPongWalker.WalkOffEdge
+  commentId: P:AngeliA.Platformer.IPingPongWalker.WalkOffEdge
+  id: WalkOffEdge
+  parent: AngeliA.Platformer.IPingPongWalker
+  langs:
+  - csharp
+  - vb
+  name: WalkOffEdge
+  nameWithType: IPingPongWalker.WalkOffEdge
+  fullName: AngeliA.Platformer.IPingPongWalker.WalkOffEdge
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: WalkOffEdge
+    path: ../AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+    startLine: 10
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: bool WalkOffEdge { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property WalkOffEdge As Boolean
+  overload: AngeliA.Platformer.IPingPongWalker.WalkOffEdge*
+- uid: AngeliA.Platformer.IPingPongWalker.TurningCooldown
+  commentId: P:AngeliA.Platformer.IPingPongWalker.TurningCooldown
+  id: TurningCooldown
+  parent: AngeliA.Platformer.IPingPongWalker
+  langs:
+  - csharp
+  - vb
+  name: TurningCooldown
+  nameWithType: IPingPongWalker.TurningCooldown
+  fullName: AngeliA.Platformer.IPingPongWalker.TurningCooldown
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TurningCooldown
+    path: ../AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+    startLine: 11
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: int TurningCooldown { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property TurningCooldown As Integer
+  overload: AngeliA.Platformer.IPingPongWalker.TurningCooldown*
+- uid: AngeliA.Platformer.IPingPongWalker.OnlyWalkWhenGrounded
+  commentId: P:AngeliA.Platformer.IPingPongWalker.OnlyWalkWhenGrounded
+  id: OnlyWalkWhenGrounded
+  parent: AngeliA.Platformer.IPingPongWalker
+  langs:
+  - csharp
+  - vb
+  name: OnlyWalkWhenGrounded
+  nameWithType: IPingPongWalker.OnlyWalkWhenGrounded
+  fullName: AngeliA.Platformer.IPingPongWalker.OnlyWalkWhenGrounded
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnlyWalkWhenGrounded
+    path: ../AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+    startLine: 12
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: bool OnlyWalkWhenGrounded { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property OnlyWalkWhenGrounded As Boolean
+  overload: AngeliA.Platformer.IPingPongWalker.OnlyWalkWhenGrounded*
+- uid: AngeliA.Platformer.IPingPongWalker.TurningCheckMask
+  commentId: P:AngeliA.Platformer.IPingPongWalker.TurningCheckMask
+  id: TurningCheckMask
+  parent: AngeliA.Platformer.IPingPongWalker
+  langs:
+  - csharp
+  - vb
+  name: TurningCheckMask
+  nameWithType: IPingPongWalker.TurningCheckMask
+  fullName: AngeliA.Platformer.IPingPongWalker.TurningCheckMask
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TurningCheckMask
+    path: ../AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+    startLine: 13
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: int TurningCheckMask { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property TurningCheckMask As Integer
+  overload: AngeliA.Platformer.IPingPongWalker.TurningCheckMask*
+- uid: AngeliA.Platformer.IPingPongWalker.LastTurnFrame
+  commentId: P:AngeliA.Platformer.IPingPongWalker.LastTurnFrame
+  id: LastTurnFrame
+  parent: AngeliA.Platformer.IPingPongWalker
+  langs:
+  - csharp
+  - vb
+  name: LastTurnFrame
+  nameWithType: IPingPongWalker.LastTurnFrame
+  fullName: AngeliA.Platformer.IPingPongWalker.LastTurnFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LastTurnFrame
+    path: ../AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+    startLine: 14
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: int LastTurnFrame { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property LastTurnFrame As Integer
+  overload: AngeliA.Platformer.IPingPongWalker.LastTurnFrame*
+- uid: AngeliA.Platformer.IPingPongWalker.WalkingRight
+  commentId: P:AngeliA.Platformer.IPingPongWalker.WalkingRight
+  id: WalkingRight
+  parent: AngeliA.Platformer.IPingPongWalker
+  langs:
+  - csharp
+  - vb
+  name: WalkingRight
+  nameWithType: IPingPongWalker.WalkingRight
+  fullName: AngeliA.Platformer.IPingPongWalker.WalkingRight
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: WalkingRight
+    path: ../AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+    startLine: 15
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: bool WalkingRight { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Property WalkingRight As Boolean
+  overload: AngeliA.Platformer.IPingPongWalker.WalkingRight*
+- uid: AngeliA.Platformer.IPingPongWalker.OnActive(AngeliA.Platformer.IPingPongWalker)
+  commentId: M:AngeliA.Platformer.IPingPongWalker.OnActive(AngeliA.Platformer.IPingPongWalker)
+  id: OnActive(AngeliA.Platformer.IPingPongWalker)
+  parent: AngeliA.Platformer.IPingPongWalker
+  langs:
+  - csharp
+  - vb
+  name: OnActive(IPingPongWalker)
+  nameWithType: IPingPongWalker.OnActive(IPingPongWalker)
+  fullName: AngeliA.Platformer.IPingPongWalker.OnActive(AngeliA.Platformer.IPingPongWalker)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnActive
+    path: ../AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+    startLine: 18
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public static void OnActive(IPingPongWalker walker)
+    parameters:
+    - id: walker
+      type: AngeliA.Platformer.IPingPongWalker
+    content.vb: Public Shared Sub OnActive(walker As IPingPongWalker)
+  overload: AngeliA.Platformer.IPingPongWalker.OnActive*
+- uid: AngeliA.Platformer.IPingPongWalker.PingPongWalk(AngeliA.Platformer.IPingPongWalker)
+  commentId: M:AngeliA.Platformer.IPingPongWalker.PingPongWalk(AngeliA.Platformer.IPingPongWalker)
+  id: PingPongWalk(AngeliA.Platformer.IPingPongWalker)
+  parent: AngeliA.Platformer.IPingPongWalker
+  langs:
+  - csharp
+  - vb
+  name: PingPongWalk(IPingPongWalker)
+  nameWithType: IPingPongWalker.PingPongWalk(IPingPongWalker)
+  fullName: AngeliA.Platformer.IPingPongWalker.PingPongWalk(AngeliA.Platformer.IPingPongWalker)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PingPongWalk
+    path: ../AngeliA Platformer/src/Entity/Interface/IPingPongWalker.cs
+    startLine: 23
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public static void PingPongWalk(IPingPongWalker walker)
+    parameters:
+    - id: walker
+      type: AngeliA.Platformer.IPingPongWalker
+    content.vb: Public Shared Sub PingPongWalk(walker As IPingPongWalker)
+  overload: AngeliA.Platformer.IPingPongWalker.PingPongWalk*
+references:
+- uid: AngeliA.Platformer
+  commentId: N:AngeliA.Platformer
+  href: AngeliA.html
+  name: AngeliA.Platformer
+  nameWithType: AngeliA.Platformer
+  fullName: AngeliA.Platformer
+  spec.csharp:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+  spec.vb:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.Platformer.IPingPongWalker.WalkSpeed*
+  commentId: Overload:AngeliA.Platformer.IPingPongWalker.WalkSpeed
+  href: AngeliA.Platformer.IPingPongWalker.html#AngeliA_Platformer_IPingPongWalker_WalkSpeed
+  name: WalkSpeed
+  nameWithType: IPingPongWalker.WalkSpeed
+  fullName: AngeliA.Platformer.IPingPongWalker.WalkSpeed
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Platformer.IPingPongWalker.WalkOffEdge*
+  commentId: Overload:AngeliA.Platformer.IPingPongWalker.WalkOffEdge
+  href: AngeliA.Platformer.IPingPongWalker.html#AngeliA_Platformer_IPingPongWalker_WalkOffEdge
+  name: WalkOffEdge
+  nameWithType: IPingPongWalker.WalkOffEdge
+  fullName: AngeliA.Platformer.IPingPongWalker.WalkOffEdge
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Platformer.IPingPongWalker.TurningCooldown*
+  commentId: Overload:AngeliA.Platformer.IPingPongWalker.TurningCooldown
+  href: AngeliA.Platformer.IPingPongWalker.html#AngeliA_Platformer_IPingPongWalker_TurningCooldown
+  name: TurningCooldown
+  nameWithType: IPingPongWalker.TurningCooldown
+  fullName: AngeliA.Platformer.IPingPongWalker.TurningCooldown
+- uid: AngeliA.Platformer.IPingPongWalker.OnlyWalkWhenGrounded*
+  commentId: Overload:AngeliA.Platformer.IPingPongWalker.OnlyWalkWhenGrounded
+  href: AngeliA.Platformer.IPingPongWalker.html#AngeliA_Platformer_IPingPongWalker_OnlyWalkWhenGrounded
+  name: OnlyWalkWhenGrounded
+  nameWithType: IPingPongWalker.OnlyWalkWhenGrounded
+  fullName: AngeliA.Platformer.IPingPongWalker.OnlyWalkWhenGrounded
+- uid: AngeliA.Platformer.IPingPongWalker.TurningCheckMask*
+  commentId: Overload:AngeliA.Platformer.IPingPongWalker.TurningCheckMask
+  href: AngeliA.Platformer.IPingPongWalker.html#AngeliA_Platformer_IPingPongWalker_TurningCheckMask
+  name: TurningCheckMask
+  nameWithType: IPingPongWalker.TurningCheckMask
+  fullName: AngeliA.Platformer.IPingPongWalker.TurningCheckMask
+- uid: AngeliA.Platformer.IPingPongWalker.LastTurnFrame*
+  commentId: Overload:AngeliA.Platformer.IPingPongWalker.LastTurnFrame
+  href: AngeliA.Platformer.IPingPongWalker.html#AngeliA_Platformer_IPingPongWalker_LastTurnFrame
+  name: LastTurnFrame
+  nameWithType: IPingPongWalker.LastTurnFrame
+  fullName: AngeliA.Platformer.IPingPongWalker.LastTurnFrame
+- uid: AngeliA.Platformer.IPingPongWalker.WalkingRight*
+  commentId: Overload:AngeliA.Platformer.IPingPongWalker.WalkingRight
+  href: AngeliA.Platformer.IPingPongWalker.html#AngeliA_Platformer_IPingPongWalker_WalkingRight
+  name: WalkingRight
+  nameWithType: IPingPongWalker.WalkingRight
+  fullName: AngeliA.Platformer.IPingPongWalker.WalkingRight
+- uid: AngeliA.Platformer.IPingPongWalker.OnActive*
+  commentId: Overload:AngeliA.Platformer.IPingPongWalker.OnActive
+  href: AngeliA.Platformer.IPingPongWalker.html#AngeliA_Platformer_IPingPongWalker_OnActive_AngeliA_Platformer_IPingPongWalker_
+  name: OnActive
+  nameWithType: IPingPongWalker.OnActive
+  fullName: AngeliA.Platformer.IPingPongWalker.OnActive
+- uid: AngeliA.Platformer.IPingPongWalker
+  commentId: T:AngeliA.Platformer.IPingPongWalker
+  parent: AngeliA.Platformer
+  href: AngeliA.Platformer.IPingPongWalker.html
+  name: IPingPongWalker
+  nameWithType: IPingPongWalker
+  fullName: AngeliA.Platformer.IPingPongWalker
+- uid: AngeliA.Platformer.IPingPongWalker.PingPongWalk*
+  commentId: Overload:AngeliA.Platformer.IPingPongWalker.PingPongWalk
+  href: AngeliA.Platformer.IPingPongWalker.html#AngeliA_Platformer_IPingPongWalker_PingPongWalk_AngeliA_Platformer_IPingPongWalker_
+  name: PingPongWalk
+  nameWithType: IPingPongWalker.PingPongWalk
+  fullName: AngeliA.Platformer.IPingPongWalker.PingPongWalk

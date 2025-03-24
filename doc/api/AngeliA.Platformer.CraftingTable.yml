@@ -1,0 +1,1494 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Platformer.CraftingTable
+  commentId: T:AngeliA.Platformer.CraftingTable
+  id: CraftingTable
+  parent: AngeliA.Platformer
+  children:
+  - AngeliA.Platformer.CraftingTable.DrawInventoryThumbnail(AngeliA.IRect,System.Boolean)
+  - AngeliA.Platformer.CraftingTable.Invoke
+  - AngeliA.Platformer.CraftingTable.LateUpdate
+  - AngeliA.Platformer.CraftingTable.UseInventoryThumbnail
+  langs:
+  - csharp
+  - vb
+  name: CraftingTable
+  nameWithType: CraftingTable
+  fullName: AngeliA.Platformer.CraftingTable
+  type: Class
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Furniture/CraftingTable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CraftingTable
+    path: ../AngeliA Platformer/src/Entity/Furniture/CraftingTable.cs
+    startLine: 8
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: 'public abstract class CraftingTable : InventoryFurniture<CraftingUI>, IMapItem, IBlockEntity, IActionTarget'
+    content.vb: Public MustInherit Class CraftingTable Inherits InventoryFurniture(Of CraftingUI) Implements IMapItem, IBlockEntity, IActionTarget
+  inheritance:
+  - System.Object
+  - AngeliA.Entity
+  - AngeliA.Platformer.Furniture
+  - AngeliA.Platformer.ActionFurniture
+  - AngeliA.Platformer.OpenableFurniture
+  - AngeliA.Platformer.InventoryFurniture
+  - AngeliA.Platformer.InventoryFurniture{AngeliA.Platformer.CraftingUI}
+  implements:
+  - AngeliA.IMapItem
+  - AngeliA.IBlockEntity
+  - AngeliA.IActionTarget
+  inheritedMembers:
+  - AngeliA.Platformer.InventoryFurniture.PartnerID
+  - AngeliA.Platformer.InventoryFurniture.InventoryID
+  - AngeliA.Platformer.InventoryFurniture.InventoryColumn
+  - AngeliA.Platformer.InventoryFurniture.InventoryRow
+  - AngeliA.Platformer.InventoryFurniture.UnlockItemInside
+  - AngeliA.Platformer.InventoryFurniture.OnActivated
+  - AngeliA.Platformer.InventoryFurniture.AllowInvoke
+  - AngeliA.Platformer.InventoryFurniture.SetOpen(System.Boolean)
+  - AngeliA.Platformer.InventoryFurniture.TryGetInventoryUI(System.Int32,AngeliA.InventoryPartnerUI@)
+  - AngeliA.Platformer.InventoryFurniture.IsInventoryFurniture(System.Int32,System.Int32@)
+  - AngeliA.Platformer.OpenableFurniture.Open
+  - AngeliA.Platformer.Furniture.ModuleType
+  - AngeliA.Platformer.Furniture.FurnitureLeftOrDown
+  - AngeliA.Platformer.Furniture.FurnitureRightOrUp
+  - AngeliA.Platformer.Furniture.Pose
+  - AngeliA.Platformer.Furniture.ColliderBorder
+  - AngeliA.Platformer.Furniture.FirstUpdate
+  - AngeliA.Platformer.Furniture.BeforeUpdate
+  - AngeliA.Platformer.Furniture.GetIsHighlighted
+  - AngeliA.Platformer.Furniture.GetSpriteFromPose
+  - AngeliA.Entity.Active
+  - AngeliA.Entity.X
+  - AngeliA.Entity.Y
+  - AngeliA.Entity.Width
+  - AngeliA.Entity.Height
+  - AngeliA.Entity.TypeID
+  - AngeliA.Entity.SpawnFrame
+  - AngeliA.Entity.FromWorld
+  - AngeliA.Entity.Rect
+  - AngeliA.Entity.InstanceOrder
+  - AngeliA.Entity.MapUnitPos
+  - AngeliA.Entity.InstanceID
+  - AngeliA.Entity.IgnoreReposition
+  - AngeliA.Entity.XY
+  - AngeliA.Entity.Size
+  - AngeliA.Entity.Center
+  - AngeliA.Entity.CenterX
+  - AngeliA.Entity.CenterY
+  - AngeliA.Entity.PivotUnitPosition
+  - AngeliA.Entity.OnInactivated
+  - AngeliA.Entity.Update
+  - AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  - AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  - AngeliA.Entity.CancelIgnoreDespawnFromMap
+  - AngeliA.Entity.Draw
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Platformer.CraftingTable.UseInventoryThumbnail
+  commentId: P:AngeliA.Platformer.CraftingTable.UseInventoryThumbnail
+  id: UseInventoryThumbnail
+  parent: AngeliA.Platformer.CraftingTable
+  langs:
+  - csharp
+  - vb
+  name: UseInventoryThumbnail
+  nameWithType: CraftingTable.UseInventoryThumbnail
+  fullName: AngeliA.Platformer.CraftingTable.UseInventoryThumbnail
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Furniture/CraftingTable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseInventoryThumbnail
+    path: ../AngeliA Platformer/src/Entity/Furniture/CraftingTable.cs
+    startLine: 12
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: protected virtual bool UseInventoryThumbnail { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected Overridable ReadOnly Property UseInventoryThumbnail As Boolean
+  overload: AngeliA.Platformer.CraftingTable.UseInventoryThumbnail*
+- uid: AngeliA.Platformer.CraftingTable.LateUpdate
+  commentId: M:AngeliA.Platformer.CraftingTable.LateUpdate
+  id: LateUpdate
+  parent: AngeliA.Platformer.CraftingTable
+  langs:
+  - csharp
+  - vb
+  name: LateUpdate()
+  nameWithType: CraftingTable.LateUpdate()
+  fullName: AngeliA.Platformer.CraftingTable.LateUpdate()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Furniture/CraftingTable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LateUpdate
+    path: ../AngeliA Platformer/src/Entity/Furniture/CraftingTable.cs
+    startLine: 15
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void LateUpdate()
+    content.vb: Public Overrides Sub LateUpdate()
+  overridden: AngeliA.Platformer.InventoryFurniture.LateUpdate
+  overload: AngeliA.Platformer.CraftingTable.LateUpdate*
+- uid: AngeliA.Platformer.CraftingTable.Invoke
+  commentId: M:AngeliA.Platformer.CraftingTable.Invoke
+  id: Invoke
+  parent: AngeliA.Platformer.CraftingTable
+  langs:
+  - csharp
+  - vb
+  name: Invoke()
+  nameWithType: CraftingTable.Invoke()
+  fullName: AngeliA.Platformer.CraftingTable.Invoke()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Furniture/CraftingTable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Invoke
+    path: ../AngeliA Platformer/src/Entity/Furniture/CraftingTable.cs
+    startLine: 27
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override bool Invoke()
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function Invoke() As Boolean
+  overridden: AngeliA.Platformer.InventoryFurniture.Invoke
+  overload: AngeliA.Platformer.CraftingTable.Invoke*
+  implements:
+  - AngeliA.IActionTarget.Invoke
+- uid: AngeliA.Platformer.CraftingTable.DrawInventoryThumbnail(AngeliA.IRect,System.Boolean)
+  commentId: M:AngeliA.Platformer.CraftingTable.DrawInventoryThumbnail(AngeliA.IRect,System.Boolean)
+  id: DrawInventoryThumbnail(AngeliA.IRect,System.Boolean)
+  parent: AngeliA.Platformer.CraftingTable
+  langs:
+  - csharp
+  - vb
+  name: DrawInventoryThumbnail(IRect, bool)
+  nameWithType: CraftingTable.DrawInventoryThumbnail(IRect, bool)
+  fullName: AngeliA.Platformer.CraftingTable.DrawInventoryThumbnail(AngeliA.IRect, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Furniture/CraftingTable.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawInventoryThumbnail
+    path: ../AngeliA Platformer/src/Entity/Furniture/CraftingTable.cs
+    startLine: 35
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: protected void DrawInventoryThumbnail(IRect itemRect, bool singleRow = false)
+    parameters:
+    - id: itemRect
+      type: AngeliA.IRect
+    - id: singleRow
+      type: System.Boolean
+    content.vb: Protected Sub DrawInventoryThumbnail(itemRect As IRect, singleRow As Boolean = False)
+  overload: AngeliA.Platformer.CraftingTable.DrawInventoryThumbnail*
+  nameWithType.vb: CraftingTable.DrawInventoryThumbnail(IRect, Boolean)
+  fullName.vb: AngeliA.Platformer.CraftingTable.DrawInventoryThumbnail(AngeliA.IRect, Boolean)
+  name.vb: DrawInventoryThumbnail(IRect, Boolean)
+references:
+- uid: AngeliA.Platformer
+  commentId: N:AngeliA.Platformer
+  href: AngeliA.html
+  name: AngeliA.Platformer
+  nameWithType: AngeliA.Platformer
+  fullName: AngeliA.Platformer
+  spec.csharp:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+  spec.vb:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Entity
+  commentId: T:AngeliA.Entity
+  parent: AngeliA
+  href: AngeliA.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: AngeliA.Entity
+- uid: AngeliA.Platformer.Furniture
+  commentId: T:AngeliA.Platformer.Furniture
+  parent: AngeliA.Platformer
+  href: AngeliA.Platformer.Furniture.html
+  name: Furniture
+  nameWithType: Furniture
+  fullName: AngeliA.Platformer.Furniture
+- uid: AngeliA.Platformer.ActionFurniture
+  commentId: T:AngeliA.Platformer.ActionFurniture
+  parent: AngeliA.Platformer
+  href: AngeliA.Platformer.ActionFurniture.html
+  name: ActionFurniture
+  nameWithType: ActionFurniture
+  fullName: AngeliA.Platformer.ActionFurniture
+- uid: AngeliA.Platformer.OpenableFurniture
+  commentId: T:AngeliA.Platformer.OpenableFurniture
+  parent: AngeliA.Platformer
+  href: AngeliA.Platformer.OpenableFurniture.html
+  name: OpenableFurniture
+  nameWithType: OpenableFurniture
+  fullName: AngeliA.Platformer.OpenableFurniture
+- uid: AngeliA.Platformer.InventoryFurniture
+  commentId: T:AngeliA.Platformer.InventoryFurniture
+  parent: AngeliA.Platformer
+  href: AngeliA.Platformer.InventoryFurniture.html
+  name: InventoryFurniture
+  nameWithType: InventoryFurniture
+  fullName: AngeliA.Platformer.InventoryFurniture
+- uid: AngeliA.Platformer.InventoryFurniture{AngeliA.Platformer.CraftingUI}
+  commentId: T:AngeliA.Platformer.InventoryFurniture{AngeliA.Platformer.CraftingUI}
+  parent: AngeliA.Platformer
+  definition: AngeliA.Platformer.InventoryFurniture`1
+  href: AngeliA.Platformer.InventoryFurniture-1.html
+  name: InventoryFurniture<CraftingUI>
+  nameWithType: InventoryFurniture<CraftingUI>
+  fullName: AngeliA.Platformer.InventoryFurniture<AngeliA.Platformer.CraftingUI>
+  nameWithType.vb: InventoryFurniture(Of CraftingUI)
+  fullName.vb: AngeliA.Platformer.InventoryFurniture(Of AngeliA.Platformer.CraftingUI)
+  name.vb: InventoryFurniture(Of CraftingUI)
+  spec.csharp:
+  - uid: AngeliA.Platformer.InventoryFurniture`1
+    name: InventoryFurniture
+    href: AngeliA.Platformer.InventoryFurniture-1.html
+  - name: <
+  - uid: AngeliA.Platformer.CraftingUI
+    name: CraftingUI
+    href: AngeliA.Platformer.CraftingUI.html
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.Platformer.InventoryFurniture`1
+    name: InventoryFurniture
+    href: AngeliA.Platformer.InventoryFurniture-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.Platformer.CraftingUI
+    name: CraftingUI
+    href: AngeliA.Platformer.CraftingUI.html
+  - name: )
+- uid: AngeliA.IMapItem
+  commentId: T:AngeliA.IMapItem
+  parent: AngeliA
+  href: AngeliA.IMapItem.html
+  name: IMapItem
+  nameWithType: IMapItem
+  fullName: AngeliA.IMapItem
+- uid: AngeliA.IBlockEntity
+  commentId: T:AngeliA.IBlockEntity
+  parent: AngeliA
+  href: AngeliA.IBlockEntity.html
+  name: IBlockEntity
+  nameWithType: IBlockEntity
+  fullName: AngeliA.IBlockEntity
+- uid: AngeliA.IActionTarget
+  commentId: T:AngeliA.IActionTarget
+  parent: AngeliA
+  href: AngeliA.IActionTarget.html
+  name: IActionTarget
+  nameWithType: IActionTarget
+  fullName: AngeliA.IActionTarget
+- uid: AngeliA.Platformer.InventoryFurniture.PartnerID
+  commentId: P:AngeliA.Platformer.InventoryFurniture.PartnerID
+  parent: AngeliA.Platformer.InventoryFurniture
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_PartnerID
+  name: PartnerID
+  nameWithType: InventoryFurniture.PartnerID
+  fullName: AngeliA.Platformer.InventoryFurniture.PartnerID
+- uid: AngeliA.Platformer.InventoryFurniture.InventoryID
+  commentId: P:AngeliA.Platformer.InventoryFurniture.InventoryID
+  parent: AngeliA.Platformer.InventoryFurniture
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_InventoryID
+  name: InventoryID
+  nameWithType: InventoryFurniture.InventoryID
+  fullName: AngeliA.Platformer.InventoryFurniture.InventoryID
+- uid: AngeliA.Platformer.InventoryFurniture.InventoryColumn
+  commentId: P:AngeliA.Platformer.InventoryFurniture.InventoryColumn
+  parent: AngeliA.Platformer.InventoryFurniture
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_InventoryColumn
+  name: InventoryColumn
+  nameWithType: InventoryFurniture.InventoryColumn
+  fullName: AngeliA.Platformer.InventoryFurniture.InventoryColumn
+- uid: AngeliA.Platformer.InventoryFurniture.InventoryRow
+  commentId: P:AngeliA.Platformer.InventoryFurniture.InventoryRow
+  parent: AngeliA.Platformer.InventoryFurniture
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_InventoryRow
+  name: InventoryRow
+  nameWithType: InventoryFurniture.InventoryRow
+  fullName: AngeliA.Platformer.InventoryFurniture.InventoryRow
+- uid: AngeliA.Platformer.InventoryFurniture.UnlockItemInside
+  commentId: P:AngeliA.Platformer.InventoryFurniture.UnlockItemInside
+  parent: AngeliA.Platformer.InventoryFurniture
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_UnlockItemInside
+  name: UnlockItemInside
+  nameWithType: InventoryFurniture.UnlockItemInside
+  fullName: AngeliA.Platformer.InventoryFurniture.UnlockItemInside
+- uid: AngeliA.Platformer.InventoryFurniture.OnActivated
+  commentId: M:AngeliA.Platformer.InventoryFurniture.OnActivated
+  parent: AngeliA.Platformer.InventoryFurniture
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_OnActivated
+  name: OnActivated()
+  nameWithType: InventoryFurniture.OnActivated()
+  fullName: AngeliA.Platformer.InventoryFurniture.OnActivated()
+  spec.csharp:
+  - uid: AngeliA.Platformer.InventoryFurniture.OnActivated
+    name: OnActivated
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_OnActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Platformer.InventoryFurniture.OnActivated
+    name: OnActivated
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_OnActivated
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.InventoryFurniture.AllowInvoke
+  commentId: M:AngeliA.Platformer.InventoryFurniture.AllowInvoke
+  parent: AngeliA.Platformer.InventoryFurniture
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_AllowInvoke
+  name: AllowInvoke()
+  nameWithType: InventoryFurniture.AllowInvoke()
+  fullName: AngeliA.Platformer.InventoryFurniture.AllowInvoke()
+  spec.csharp:
+  - uid: AngeliA.Platformer.InventoryFurniture.AllowInvoke
+    name: AllowInvoke
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_AllowInvoke
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Platformer.InventoryFurniture.AllowInvoke
+    name: AllowInvoke
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_AllowInvoke
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.InventoryFurniture.SetOpen(System.Boolean)
+  commentId: M:AngeliA.Platformer.InventoryFurniture.SetOpen(System.Boolean)
+  parent: AngeliA.Platformer.InventoryFurniture
+  isExternal: true
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_SetOpen_System_Boolean_
+  name: SetOpen(bool)
+  nameWithType: InventoryFurniture.SetOpen(bool)
+  fullName: AngeliA.Platformer.InventoryFurniture.SetOpen(bool)
+  nameWithType.vb: InventoryFurniture.SetOpen(Boolean)
+  fullName.vb: AngeliA.Platformer.InventoryFurniture.SetOpen(Boolean)
+  name.vb: SetOpen(Boolean)
+  spec.csharp:
+  - uid: AngeliA.Platformer.InventoryFurniture.SetOpen(System.Boolean)
+    name: SetOpen
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_SetOpen_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Platformer.InventoryFurniture.SetOpen(System.Boolean)
+    name: SetOpen
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_SetOpen_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Platformer.InventoryFurniture.TryGetInventoryUI(System.Int32,AngeliA.InventoryPartnerUI@)
+  commentId: M:AngeliA.Platformer.InventoryFurniture.TryGetInventoryUI(System.Int32,AngeliA.InventoryPartnerUI@)
+  parent: AngeliA.Platformer.InventoryFurniture
+  isExternal: true
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_TryGetInventoryUI_System_Int32_AngeliA_InventoryPartnerUI__
+  name: TryGetInventoryUI(int, out InventoryPartnerUI)
+  nameWithType: InventoryFurniture.TryGetInventoryUI(int, out InventoryPartnerUI)
+  fullName: AngeliA.Platformer.InventoryFurniture.TryGetInventoryUI(int, out AngeliA.InventoryPartnerUI)
+  nameWithType.vb: InventoryFurniture.TryGetInventoryUI(Integer, InventoryPartnerUI)
+  fullName.vb: AngeliA.Platformer.InventoryFurniture.TryGetInventoryUI(Integer, AngeliA.InventoryPartnerUI)
+  name.vb: TryGetInventoryUI(Integer, InventoryPartnerUI)
+  spec.csharp:
+  - uid: AngeliA.Platformer.InventoryFurniture.TryGetInventoryUI(System.Int32,AngeliA.InventoryPartnerUI@)
+    name: TryGetInventoryUI
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_TryGetInventoryUI_System_Int32_AngeliA_InventoryPartnerUI__
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: AngeliA.InventoryPartnerUI
+    name: InventoryPartnerUI
+    href: AngeliA.InventoryPartnerUI.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Platformer.InventoryFurniture.TryGetInventoryUI(System.Int32,AngeliA.InventoryPartnerUI@)
+    name: TryGetInventoryUI
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_TryGetInventoryUI_System_Int32_AngeliA_InventoryPartnerUI__
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.InventoryPartnerUI
+    name: InventoryPartnerUI
+    href: AngeliA.InventoryPartnerUI.html
+  - name: )
+- uid: AngeliA.Platformer.InventoryFurniture.IsInventoryFurniture(System.Int32,System.Int32@)
+  commentId: M:AngeliA.Platformer.InventoryFurniture.IsInventoryFurniture(System.Int32,System.Int32@)
+  parent: AngeliA.Platformer.InventoryFurniture
+  isExternal: true
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_IsInventoryFurniture_System_Int32_System_Int32__
+  name: IsInventoryFurniture(int, out int)
+  nameWithType: InventoryFurniture.IsInventoryFurniture(int, out int)
+  fullName: AngeliA.Platformer.InventoryFurniture.IsInventoryFurniture(int, out int)
+  nameWithType.vb: InventoryFurniture.IsInventoryFurniture(Integer, Integer)
+  fullName.vb: AngeliA.Platformer.InventoryFurniture.IsInventoryFurniture(Integer, Integer)
+  name.vb: IsInventoryFurniture(Integer, Integer)
+  spec.csharp:
+  - uid: AngeliA.Platformer.InventoryFurniture.IsInventoryFurniture(System.Int32,System.Int32@)
+    name: IsInventoryFurniture
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_IsInventoryFurniture_System_Int32_System_Int32__
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Platformer.InventoryFurniture.IsInventoryFurniture(System.Int32,System.Int32@)
+    name: IsInventoryFurniture
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_IsInventoryFurniture_System_Int32_System_Int32__
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Platformer.OpenableFurniture.Open
+  commentId: P:AngeliA.Platformer.OpenableFurniture.Open
+  parent: AngeliA.Platformer.OpenableFurniture
+  href: AngeliA.Platformer.OpenableFurniture.html#AngeliA_Platformer_OpenableFurniture_Open
+  name: Open
+  nameWithType: OpenableFurniture.Open
+  fullName: AngeliA.Platformer.OpenableFurniture.Open
+- uid: AngeliA.Platformer.Furniture.ModuleType
+  commentId: P:AngeliA.Platformer.Furniture.ModuleType
+  parent: AngeliA.Platformer.Furniture
+  href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_ModuleType
+  name: ModuleType
+  nameWithType: Furniture.ModuleType
+  fullName: AngeliA.Platformer.Furniture.ModuleType
+- uid: AngeliA.Platformer.Furniture.FurnitureLeftOrDown
+  commentId: P:AngeliA.Platformer.Furniture.FurnitureLeftOrDown
+  parent: AngeliA.Platformer.Furniture
+  href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_FurnitureLeftOrDown
+  name: FurnitureLeftOrDown
+  nameWithType: Furniture.FurnitureLeftOrDown
+  fullName: AngeliA.Platformer.Furniture.FurnitureLeftOrDown
+- uid: AngeliA.Platformer.Furniture.FurnitureRightOrUp
+  commentId: P:AngeliA.Platformer.Furniture.FurnitureRightOrUp
+  parent: AngeliA.Platformer.Furniture
+  href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_FurnitureRightOrUp
+  name: FurnitureRightOrUp
+  nameWithType: Furniture.FurnitureRightOrUp
+  fullName: AngeliA.Platformer.Furniture.FurnitureRightOrUp
+- uid: AngeliA.Platformer.Furniture.Pose
+  commentId: P:AngeliA.Platformer.Furniture.Pose
+  parent: AngeliA.Platformer.Furniture
+  href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_Pose
+  name: Pose
+  nameWithType: Furniture.Pose
+  fullName: AngeliA.Platformer.Furniture.Pose
+- uid: AngeliA.Platformer.Furniture.ColliderBorder
+  commentId: F:AngeliA.Platformer.Furniture.ColliderBorder
+  parent: AngeliA.Platformer.Furniture
+  href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_ColliderBorder
+  name: ColliderBorder
+  nameWithType: Furniture.ColliderBorder
+  fullName: AngeliA.Platformer.Furniture.ColliderBorder
+- uid: AngeliA.Platformer.Furniture.FirstUpdate
+  commentId: M:AngeliA.Platformer.Furniture.FirstUpdate
+  parent: AngeliA.Platformer.Furniture
+  href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_FirstUpdate
+  name: FirstUpdate()
+  nameWithType: Furniture.FirstUpdate()
+  fullName: AngeliA.Platformer.Furniture.FirstUpdate()
+  spec.csharp:
+  - uid: AngeliA.Platformer.Furniture.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_FirstUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Platformer.Furniture.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_FirstUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.Furniture.BeforeUpdate
+  commentId: M:AngeliA.Platformer.Furniture.BeforeUpdate
+  parent: AngeliA.Platformer.Furniture
+  href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_BeforeUpdate
+  name: BeforeUpdate()
+  nameWithType: Furniture.BeforeUpdate()
+  fullName: AngeliA.Platformer.Furniture.BeforeUpdate()
+  spec.csharp:
+  - uid: AngeliA.Platformer.Furniture.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_BeforeUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Platformer.Furniture.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_BeforeUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.Furniture.GetIsHighlighted
+  commentId: M:AngeliA.Platformer.Furniture.GetIsHighlighted
+  parent: AngeliA.Platformer.Furniture
+  href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_GetIsHighlighted
+  name: GetIsHighlighted()
+  nameWithType: Furniture.GetIsHighlighted()
+  fullName: AngeliA.Platformer.Furniture.GetIsHighlighted()
+  spec.csharp:
+  - uid: AngeliA.Platformer.Furniture.GetIsHighlighted
+    name: GetIsHighlighted
+    href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_GetIsHighlighted
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Platformer.Furniture.GetIsHighlighted
+    name: GetIsHighlighted
+    href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_GetIsHighlighted
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.Furniture.GetSpriteFromPose
+  commentId: M:AngeliA.Platformer.Furniture.GetSpriteFromPose
+  parent: AngeliA.Platformer.Furniture
+  href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_GetSpriteFromPose
+  name: GetSpriteFromPose()
+  nameWithType: Furniture.GetSpriteFromPose()
+  fullName: AngeliA.Platformer.Furniture.GetSpriteFromPose()
+  spec.csharp:
+  - uid: AngeliA.Platformer.Furniture.GetSpriteFromPose
+    name: GetSpriteFromPose
+    href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_GetSpriteFromPose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Platformer.Furniture.GetSpriteFromPose
+    name: GetSpriteFromPose
+    href: AngeliA.Platformer.Furniture.html#AngeliA_Platformer_Furniture_GetSpriteFromPose
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.Active
+  commentId: P:AngeliA.Entity.Active
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Active
+  name: Active
+  nameWithType: Entity.Active
+  fullName: AngeliA.Entity.Active
+- uid: AngeliA.Entity.X
+  commentId: P:AngeliA.Entity.X
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_X
+  name: X
+  nameWithType: Entity.X
+  fullName: AngeliA.Entity.X
+- uid: AngeliA.Entity.Y
+  commentId: P:AngeliA.Entity.Y
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Y
+  name: Y
+  nameWithType: Entity.Y
+  fullName: AngeliA.Entity.Y
+- uid: AngeliA.Entity.Width
+  commentId: P:AngeliA.Entity.Width
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Width
+  name: Width
+  nameWithType: Entity.Width
+  fullName: AngeliA.Entity.Width
+- uid: AngeliA.Entity.Height
+  commentId: P:AngeliA.Entity.Height
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Height
+  name: Height
+  nameWithType: Entity.Height
+  fullName: AngeliA.Entity.Height
+- uid: AngeliA.Entity.TypeID
+  commentId: P:AngeliA.Entity.TypeID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_TypeID
+  name: TypeID
+  nameWithType: Entity.TypeID
+  fullName: AngeliA.Entity.TypeID
+- uid: AngeliA.Entity.SpawnFrame
+  commentId: P:AngeliA.Entity.SpawnFrame
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_SpawnFrame
+  name: SpawnFrame
+  nameWithType: Entity.SpawnFrame
+  fullName: AngeliA.Entity.SpawnFrame
+- uid: AngeliA.Entity.FromWorld
+  commentId: P:AngeliA.Entity.FromWorld
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_FromWorld
+  name: FromWorld
+  nameWithType: Entity.FromWorld
+  fullName: AngeliA.Entity.FromWorld
+- uid: AngeliA.Entity.Rect
+  commentId: P:AngeliA.Entity.Rect
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Rect
+  name: Rect
+  nameWithType: Entity.Rect
+  fullName: AngeliA.Entity.Rect
+- uid: AngeliA.Entity.InstanceOrder
+  commentId: P:AngeliA.Entity.InstanceOrder
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceOrder
+  name: InstanceOrder
+  nameWithType: Entity.InstanceOrder
+  fullName: AngeliA.Entity.InstanceOrder
+- uid: AngeliA.Entity.MapUnitPos
+  commentId: P:AngeliA.Entity.MapUnitPos
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_MapUnitPos
+  name: MapUnitPos
+  nameWithType: Entity.MapUnitPos
+  fullName: AngeliA.Entity.MapUnitPos
+- uid: AngeliA.Entity.InstanceID
+  commentId: P:AngeliA.Entity.InstanceID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceID
+  name: InstanceID
+  nameWithType: Entity.InstanceID
+  fullName: AngeliA.Entity.InstanceID
+- uid: AngeliA.Entity.IgnoreReposition
+  commentId: P:AngeliA.Entity.IgnoreReposition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreReposition
+  name: IgnoreReposition
+  nameWithType: Entity.IgnoreReposition
+  fullName: AngeliA.Entity.IgnoreReposition
+- uid: AngeliA.Entity.XY
+  commentId: P:AngeliA.Entity.XY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_XY
+  name: XY
+  nameWithType: Entity.XY
+  fullName: AngeliA.Entity.XY
+- uid: AngeliA.Entity.Size
+  commentId: P:AngeliA.Entity.Size
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Size
+  name: Size
+  nameWithType: Entity.Size
+  fullName: AngeliA.Entity.Size
+- uid: AngeliA.Entity.Center
+  commentId: P:AngeliA.Entity.Center
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Center
+  name: Center
+  nameWithType: Entity.Center
+  fullName: AngeliA.Entity.Center
+- uid: AngeliA.Entity.CenterX
+  commentId: P:AngeliA.Entity.CenterX
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterX
+  name: CenterX
+  nameWithType: Entity.CenterX
+  fullName: AngeliA.Entity.CenterX
+- uid: AngeliA.Entity.CenterY
+  commentId: P:AngeliA.Entity.CenterY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterY
+  name: CenterY
+  nameWithType: Entity.CenterY
+  fullName: AngeliA.Entity.CenterY
+- uid: AngeliA.Entity.PivotUnitPosition
+  commentId: P:AngeliA.Entity.PivotUnitPosition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_PivotUnitPosition
+  name: PivotUnitPosition
+  nameWithType: Entity.PivotUnitPosition
+  fullName: AngeliA.Entity.PivotUnitPosition
+- uid: AngeliA.Entity.OnInactivated
+  commentId: M:AngeliA.Entity.OnInactivated
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  name: OnInactivated()
+  nameWithType: Entity.OnInactivated()
+  fullName: AngeliA.Entity.OnInactivated()
+  spec.csharp:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.Update
+  commentId: M:AngeliA.Entity.Update
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Update
+  name: Update()
+  nameWithType: Entity.Update()
+  fullName: AngeliA.Entity.Update()
+  spec.csharp:
+  - uid: AngeliA.Entity.Update
+    name: Update
+    href: AngeliA.Entity.html#AngeliA_Entity_Update
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.Update
+    name: Update
+    href: AngeliA.Entity.html#AngeliA_Entity_Update
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  commentId: M:AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  name: AfterReposition(Int3, Int3)
+  nameWithType: Entity.AfterReposition(Int3, Int3)
+  fullName: AngeliA.Entity.AfterReposition(AngeliA.Int3, AngeliA.Int3)
+  spec.csharp:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+- uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  commentId: M:AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  parent: AngeliA.Entity
+  isExternal: true
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  name: IgnoreDespawnFromMap(int)
+  nameWithType: Entity.IgnoreDespawnFromMap(int)
+  fullName: AngeliA.Entity.IgnoreDespawnFromMap(int)
+  nameWithType.vb: Entity.IgnoreDespawnFromMap(Integer)
+  fullName.vb: AngeliA.Entity.IgnoreDespawnFromMap(Integer)
+  name.vb: IgnoreDespawnFromMap(Integer)
+  spec.csharp:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+  commentId: M:AngeliA.Entity.CancelIgnoreDespawnFromMap
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  name: CancelIgnoreDespawnFromMap()
+  nameWithType: Entity.CancelIgnoreDespawnFromMap()
+  fullName: AngeliA.Entity.CancelIgnoreDespawnFromMap()
+  spec.csharp:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.Draw
+  commentId: M:AngeliA.Entity.Draw
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  name: Draw()
+  nameWithType: Entity.Draw()
+  fullName: AngeliA.Entity.Draw()
+  spec.csharp:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.Platformer.InventoryFurniture`1
+  commentId: T:AngeliA.Platformer.InventoryFurniture`1
+  href: AngeliA.Platformer.InventoryFurniture-1.html
+  name: InventoryFurniture<UI>
+  nameWithType: InventoryFurniture<UI>
+  fullName: AngeliA.Platformer.InventoryFurniture<UI>
+  nameWithType.vb: InventoryFurniture(Of UI)
+  fullName.vb: AngeliA.Platformer.InventoryFurniture(Of UI)
+  name.vb: InventoryFurniture(Of UI)
+  spec.csharp:
+  - uid: AngeliA.Platformer.InventoryFurniture`1
+    name: InventoryFurniture
+    href: AngeliA.Platformer.InventoryFurniture-1.html
+  - name: <
+  - name: UI
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.Platformer.InventoryFurniture`1
+    name: InventoryFurniture
+    href: AngeliA.Platformer.InventoryFurniture-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: UI
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Platformer.CraftingTable.UseInventoryThumbnail*
+  commentId: Overload:AngeliA.Platformer.CraftingTable.UseInventoryThumbnail
+  href: AngeliA.Platformer.CraftingTable.html#AngeliA_Platformer_CraftingTable_UseInventoryThumbnail
+  name: UseInventoryThumbnail
+  nameWithType: CraftingTable.UseInventoryThumbnail
+  fullName: AngeliA.Platformer.CraftingTable.UseInventoryThumbnail
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Platformer.InventoryFurniture.LateUpdate
+  commentId: M:AngeliA.Platformer.InventoryFurniture.LateUpdate
+  parent: AngeliA.Platformer.InventoryFurniture
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_LateUpdate
+  name: LateUpdate()
+  nameWithType: InventoryFurniture.LateUpdate()
+  fullName: AngeliA.Platformer.InventoryFurniture.LateUpdate()
+  spec.csharp:
+  - uid: AngeliA.Platformer.InventoryFurniture.LateUpdate
+    name: LateUpdate
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_LateUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Platformer.InventoryFurniture.LateUpdate
+    name: LateUpdate
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_LateUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.CraftingTable.LateUpdate*
+  commentId: Overload:AngeliA.Platformer.CraftingTable.LateUpdate
+  href: AngeliA.Platformer.CraftingTable.html#AngeliA_Platformer_CraftingTable_LateUpdate
+  name: LateUpdate
+  nameWithType: CraftingTable.LateUpdate
+  fullName: AngeliA.Platformer.CraftingTable.LateUpdate
+- uid: AngeliA.Platformer.InventoryFurniture.Invoke
+  commentId: M:AngeliA.Platformer.InventoryFurniture.Invoke
+  parent: AngeliA.Platformer.InventoryFurniture
+  href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_Invoke
+  name: Invoke()
+  nameWithType: InventoryFurniture.Invoke()
+  fullName: AngeliA.Platformer.InventoryFurniture.Invoke()
+  spec.csharp:
+  - uid: AngeliA.Platformer.InventoryFurniture.Invoke
+    name: Invoke
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_Invoke
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Platformer.InventoryFurniture.Invoke
+    name: Invoke
+    href: AngeliA.Platformer.InventoryFurniture.html#AngeliA_Platformer_InventoryFurniture_Invoke
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.CraftingTable.Invoke*
+  commentId: Overload:AngeliA.Platformer.CraftingTable.Invoke
+  href: AngeliA.Platformer.CraftingTable.html#AngeliA_Platformer_CraftingTable_Invoke
+  name: Invoke
+  nameWithType: CraftingTable.Invoke
+  fullName: AngeliA.Platformer.CraftingTable.Invoke
+- uid: AngeliA.IActionTarget.Invoke
+  commentId: M:AngeliA.IActionTarget.Invoke
+  parent: AngeliA.IActionTarget
+  href: AngeliA.IActionTarget.html#AngeliA_IActionTarget_Invoke
+  name: Invoke()
+  nameWithType: IActionTarget.Invoke()
+  fullName: AngeliA.IActionTarget.Invoke()
+  spec.csharp:
+  - uid: AngeliA.IActionTarget.Invoke
+    name: Invoke
+    href: AngeliA.IActionTarget.html#AngeliA_IActionTarget_Invoke
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.IActionTarget.Invoke
+    name: Invoke
+    href: AngeliA.IActionTarget.html#AngeliA_IActionTarget_Invoke
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.CraftingTable.DrawInventoryThumbnail*
+  commentId: Overload:AngeliA.Platformer.CraftingTable.DrawInventoryThumbnail
+  href: AngeliA.Platformer.CraftingTable.html#AngeliA_Platformer_CraftingTable_DrawInventoryThumbnail_AngeliA_IRect_System_Boolean_
+  name: DrawInventoryThumbnail
+  nameWithType: CraftingTable.DrawInventoryThumbnail
+  fullName: AngeliA.Platformer.CraftingTable.DrawInventoryThumbnail
+- uid: AngeliA.IRect
+  commentId: T:AngeliA.IRect
+  parent: AngeliA
+  href: AngeliA.IRect.html
+  name: IRect
+  nameWithType: IRect
+  fullName: AngeliA.IRect

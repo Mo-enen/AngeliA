@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PlayerMenuItem&lt;UI&gt; | AngeliA </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PlayerMenuItem&lt;UI&gt; | AngeliA ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PlayerMenuItem_1.md&amp;value=---%0Auid%3A%20AngeliA.PlayerMenuItem%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+            AngeliA
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="AngeliA.PlayerMenuItem`1">
+
+
+
+  <h1 id="AngeliA_PlayerMenuItem_1" data-uid="AngeliA.PlayerMenuItem`1" class="text-break">
+Class PlayerMenuItem&lt;UI&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/PlayerMenuItem.cs/#L6"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>AngeliA Framework.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class PlayerMenuItem&lt;UI&gt; : Item, IMapItem where UI : PlayerMenuPartnerUI</code></pre>
+  </div>
+
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>UI</code></dt>
+    <dd></dd>
+  </dl>
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="AngeliA.Item.html">Item</a></div>
+      <div><span class="xref">PlayerMenuItem&lt;UI&gt;</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_AllowDuplicateUpdate">Item.AllowDuplicateUpdate</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_EmbedIntoLevel">Item.EmbedIntoLevel</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_TypeID">Item.TypeID</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_BeforeItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_">Item.BeforeItemUpdate_FromInventory(Character, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_">Item.OnItemUpdate_FromInventory(Character, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnPoseAnimationUpdate_FromInventory_AngeliA_PoseCharacterRenderer_System_Int32_System_Int32_">Item.OnPoseAnimationUpdate_FromInventory(PoseCharacterRenderer, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromInventory_AngeliA_Character_System_Int32_System_Int32_AngeliA_Damage__">Item.OnTakeDamage_FromInventory(Character, int, int, ref Damage)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromInventory_AngeliA_Character_AngeliA_Bullet_System_Int32_System_Int32_">Item.OnCharacterAttack_FromInventory(Character, Bullet, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_BeforeItemUpdate_FromEquipment_AngeliA_Character_">Item.BeforeItemUpdate_FromEquipment(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromEquipment_AngeliA_Character_">Item.OnItemUpdate_FromEquipment(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_BeforePoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_">Item.BeforePoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnPoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_">Item.OnPoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromEquipment_AngeliA_Character_AngeliA_Damage__">Item.OnTakeDamage_FromEquipment(Character, ref Damage)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromEquipment_AngeliA_Character_AngeliA_Bullet_">Item.OnCharacterAttack_FromEquipment(Character, Bullet)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_TryRepairEquipment_AngeliA_Character_">Item.TryRepairEquipment(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromItemHolder_AngeliA_ItemHolder_System_Int32_">Item.OnItemUpdate_FromItemHolder(ItemHolder, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnCollect_AngeliA_Character_">Item.OnCollect(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_ItemConditionCheck_AngeliA_Character_">Item.ItemConditionCheck(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_DrawItem_AngeliA_Entity_AngeliA_IRect_AngeliA_Color32_System_Int32_">Item.DrawItem(Entity, IRect, Color32, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="AngeliA_PlayerMenuItem_1__ctor_" data-uid="AngeliA.PlayerMenuItem`1.#ctor*"></a>
+
+  <h3 id="AngeliA_PlayerMenuItem_1__ctor" data-uid="AngeliA.PlayerMenuItem`1.#ctor">
+  PlayerMenuItem()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/PlayerMenuItem.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PlayerMenuItem()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="AngeliA_PlayerMenuItem_1_Column_" data-uid="AngeliA.PlayerMenuItem`1.Column*"></a>
+
+  <h3 id="AngeliA_PlayerMenuItem_1_Column" data-uid="AngeliA.PlayerMenuItem`1.Column">
+  Column
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/PlayerMenuItem.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract int Column { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PlayerMenuItem_1_MaxStackCount_" data-uid="AngeliA.PlayerMenuItem`1.MaxStackCount*"></a>
+
+  <h3 id="AngeliA_PlayerMenuItem_1_MaxStackCount" data-uid="AngeliA.PlayerMenuItem`1.MaxStackCount">
+  MaxStackCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/PlayerMenuItem.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int MaxStackCount { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PlayerMenuItem_1_Row_" data-uid="AngeliA.PlayerMenuItem`1.Row*"></a>
+
+  <h3 id="AngeliA_PlayerMenuItem_1_Row" data-uid="AngeliA.PlayerMenuItem`1.Row">
+  Row
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/PlayerMenuItem.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract int Row { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="AngeliA_PlayerMenuItem_1_CanUse_" data-uid="AngeliA.PlayerMenuItem`1.CanUse*"></a>
+
+  <h3 id="AngeliA_PlayerMenuItem_1_CanUse_AngeliA_Character_" data-uid="AngeliA.PlayerMenuItem`1.CanUse(AngeliA.Character)">
+  CanUse(Character)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/PlayerMenuItem.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool CanUse(Character character)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>character</code> <a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PlayerMenuItem_1_OnPanelOpened_" data-uid="AngeliA.PlayerMenuItem`1.OnPanelOpened*"></a>
+
+  <h3 id="AngeliA_PlayerMenuItem_1_OnPanelOpened__0_" data-uid="AngeliA.PlayerMenuItem`1.OnPanelOpened(`0)">
+  OnPanelOpened(UI)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/PlayerMenuItem.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnPanelOpened(UI panelUI)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>panelUI</code> <span class="xref">UI</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PlayerMenuItem_1_Use_" data-uid="AngeliA.PlayerMenuItem`1.Use*"></a>
+
+  <h3 id="AngeliA_PlayerMenuItem_1_Use_AngeliA_Character_System_Int32_System_Int32_System_Boolean__" data-uid="AngeliA.PlayerMenuItem`1.Use(AngeliA.Character,System.Int32,System.Int32,System.Boolean@)">
+  Use(Character, int, int, out bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/PlayerMenuItem.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Use(Character character, int inventoryID, int itemIndex, out bool consume)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>character</code> <a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+    <dt><code>inventoryID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>itemIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>consume</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/PlayerMenuItem.cs/#L6" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

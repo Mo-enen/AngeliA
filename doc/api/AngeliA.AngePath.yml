@@ -1,0 +1,1922 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.AngePath
+  commentId: T:AngeliA.AngePath
+  id: AngePath
+  parent: AngeliA
+  children:
+  - AngeliA.AngePath.BuiltInUniverseRoot
+  - AngeliA.AngePath.CONVERSATION_FILE_EXT
+  - AngeliA.AngePath.DesktopPath
+  - AngeliA.AngePath.EDITABLE_CONVERSATION_FILE_EXT
+  - AngeliA.AngePath.EDITABLE_CONVERSATION_SEARCH_PATTERN
+  - AngeliA.AngePath.EQ_INVENTORY_FILE_EXT
+  - AngeliA.AngePath.EQ_INVENTORY_SEARCH_PATTERN
+  - AngeliA.AngePath.GetAsepriteRoot(System.String)
+  - AngeliA.AngePath.GetAtlasRoot(System.String)
+  - AngeliA.AngePath.GetBuiltInSheetPath(System.String)
+  - AngeliA.AngePath.GetCharacterMovementConfigRoot(System.String)
+  - AngeliA.AngePath.GetConversationRoot(System.String)
+  - AngeliA.AngePath.GetEditableConversationRoot(System.String)
+  - AngeliA.AngePath.GetGameSheetPath(System.String)
+  - AngeliA.AngePath.GetLanguageRoot(System.String)
+  - AngeliA.AngePath.GetMapRoot(System.String)
+  - AngeliA.AngePath.GetPersistentDataPath(System.String,System.String)
+  - AngeliA.AngePath.GetSheetRoot(System.String)
+  - AngeliA.AngePath.GetSlotInventoryRoot(System.String,System.Int32)
+  - AngeliA.AngePath.GetSlotMetaCharacterConfigRoot(System.String,System.Int32)
+  - AngeliA.AngePath.GetSlotMetaRoot(System.String,System.Int32)
+  - AngeliA.AngePath.GetSlotRoot(System.String,System.Int32)
+  - AngeliA.AngePath.GetSlotUserMapRoot(System.String,System.Int32)
+  - AngeliA.AngePath.GetTempDataPath(System.String,System.String)
+  - AngeliA.AngePath.GetUniverseCoverPath(System.String)
+  - AngeliA.AngePath.GetUniverseFontRoot(System.String)
+  - AngeliA.AngePath.GetUniverseInfoPath(System.String)
+  - AngeliA.AngePath.GetUniverseMetaRoot(System.String)
+  - AngeliA.AngePath.GetUniverseMusicRoot(System.String)
+  - AngeliA.AngePath.GetUniverseRoot(System.String)
+  - AngeliA.AngePath.GetUniverseSoundRoot(System.String)
+  - AngeliA.AngePath.INVENTORY_FILE_EXT
+  - AngeliA.AngePath.INVENTORY_SEARCH_PATTERN
+  - AngeliA.AngePath.LANGUAGE_FILE_EXT
+  - AngeliA.AngePath.LANGUAGE_SEARCH_PATTERN
+  - AngeliA.AngePath.MAP_FILE_EXT
+  - AngeliA.AngePath.MAP_SEARCH_PATTERN
+  - AngeliA.AngePath.MOVEMENT_CONFIG_FILE_EXT
+  - AngeliA.AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN
+  - AngeliA.AngePath.PACKAGE_FILE_EXT
+  - AngeliA.AngePath.PACKAGE_SEARCH_PATTERN
+  - AngeliA.AngePath.PersistentDataPath
+  - AngeliA.AngePath.SHEET_FILE_EXT
+  - AngeliA.AngePath.SHEET_SEARCH_PATTERN
+  - AngeliA.AngePath.TempDataPath
+  langs:
+  - csharp
+  - vb
+  name: AngePath
+  nameWithType: AngePath
+  fullName: AngeliA.AngePath
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AngePath
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Utility class for path related logic for an AngeliA project
+  example: []
+  syntax:
+    content: public static class AngePath
+    content.vb: Public Module AngePath
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.AngePath.MAP_FILE_EXT
+  commentId: F:AngeliA.AngePath.MAP_FILE_EXT
+  id: MAP_FILE_EXT
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: MAP_FILE_EXT
+  nameWithType: AngePath.MAP_FILE_EXT
+  fullName: AngeliA.AngePath.MAP_FILE_EXT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MAP_FILE_EXT
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string MAP_FILE_EXT = "ibb"
+    return:
+      type: System.String
+    content.vb: Public Const MAP_FILE_EXT As String = "ibb"
+- uid: AngeliA.AngePath.MAP_SEARCH_PATTERN
+  commentId: F:AngeliA.AngePath.MAP_SEARCH_PATTERN
+  id: MAP_SEARCH_PATTERN
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: MAP_SEARCH_PATTERN
+  nameWithType: AngePath.MAP_SEARCH_PATTERN
+  fullName: AngeliA.AngePath.MAP_SEARCH_PATTERN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MAP_SEARCH_PATTERN
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string MAP_SEARCH_PATTERN = "*.ibb"
+    return:
+      type: System.String
+    content.vb: Public Const MAP_SEARCH_PATTERN As String = "*.ibb"
+- uid: AngeliA.AngePath.CONVERSATION_FILE_EXT
+  commentId: F:AngeliA.AngePath.CONVERSATION_FILE_EXT
+  id: CONVERSATION_FILE_EXT
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: CONVERSATION_FILE_EXT
+  nameWithType: AngePath.CONVERSATION_FILE_EXT
+  fullName: AngeliA.AngePath.CONVERSATION_FILE_EXT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CONVERSATION_FILE_EXT
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string CONVERSATION_FILE_EXT = "txt"
+    return:
+      type: System.String
+    content.vb: Public Const CONVERSATION_FILE_EXT As String = "txt"
+- uid: AngeliA.AngePath.EDITABLE_CONVERSATION_FILE_EXT
+  commentId: F:AngeliA.AngePath.EDITABLE_CONVERSATION_FILE_EXT
+  id: EDITABLE_CONVERSATION_FILE_EXT
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: EDITABLE_CONVERSATION_FILE_EXT
+  nameWithType: AngePath.EDITABLE_CONVERSATION_FILE_EXT
+  fullName: AngeliA.AngePath.EDITABLE_CONVERSATION_FILE_EXT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EDITABLE_CONVERSATION_FILE_EXT
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string EDITABLE_CONVERSATION_FILE_EXT = "conversation"
+    return:
+      type: System.String
+    content.vb: Public Const EDITABLE_CONVERSATION_FILE_EXT As String = "conversation"
+- uid: AngeliA.AngePath.EDITABLE_CONVERSATION_SEARCH_PATTERN
+  commentId: F:AngeliA.AngePath.EDITABLE_CONVERSATION_SEARCH_PATTERN
+  id: EDITABLE_CONVERSATION_SEARCH_PATTERN
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: EDITABLE_CONVERSATION_SEARCH_PATTERN
+  nameWithType: AngePath.EDITABLE_CONVERSATION_SEARCH_PATTERN
+  fullName: AngeliA.AngePath.EDITABLE_CONVERSATION_SEARCH_PATTERN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EDITABLE_CONVERSATION_SEARCH_PATTERN
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string EDITABLE_CONVERSATION_SEARCH_PATTERN = "*.conversation"
+    return:
+      type: System.String
+    content.vb: Public Const EDITABLE_CONVERSATION_SEARCH_PATTERN As String = "*.conversation"
+- uid: AngeliA.AngePath.LANGUAGE_FILE_EXT
+  commentId: F:AngeliA.AngePath.LANGUAGE_FILE_EXT
+  id: LANGUAGE_FILE_EXT
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: LANGUAGE_FILE_EXT
+  nameWithType: AngePath.LANGUAGE_FILE_EXT
+  fullName: AngeliA.AngePath.LANGUAGE_FILE_EXT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LANGUAGE_FILE_EXT
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string LANGUAGE_FILE_EXT = "txt"
+    return:
+      type: System.String
+    content.vb: Public Const LANGUAGE_FILE_EXT As String = "txt"
+- uid: AngeliA.AngePath.LANGUAGE_SEARCH_PATTERN
+  commentId: F:AngeliA.AngePath.LANGUAGE_SEARCH_PATTERN
+  id: LANGUAGE_SEARCH_PATTERN
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: LANGUAGE_SEARCH_PATTERN
+  nameWithType: AngePath.LANGUAGE_SEARCH_PATTERN
+  fullName: AngeliA.AngePath.LANGUAGE_SEARCH_PATTERN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LANGUAGE_SEARCH_PATTERN
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string LANGUAGE_SEARCH_PATTERN = "*.txt"
+    return:
+      type: System.String
+    content.vb: Public Const LANGUAGE_SEARCH_PATTERN As String = "*.txt"
+- uid: AngeliA.AngePath.SHEET_FILE_EXT
+  commentId: F:AngeliA.AngePath.SHEET_FILE_EXT
+  id: SHEET_FILE_EXT
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: SHEET_FILE_EXT
+  nameWithType: AngePath.SHEET_FILE_EXT
+  fullName: AngeliA.AngePath.SHEET_FILE_EXT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SHEET_FILE_EXT
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string SHEET_FILE_EXT = "sheet"
+    return:
+      type: System.String
+    content.vb: Public Const SHEET_FILE_EXT As String = "sheet"
+- uid: AngeliA.AngePath.SHEET_SEARCH_PATTERN
+  commentId: F:AngeliA.AngePath.SHEET_SEARCH_PATTERN
+  id: SHEET_SEARCH_PATTERN
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: SHEET_SEARCH_PATTERN
+  nameWithType: AngePath.SHEET_SEARCH_PATTERN
+  fullName: AngeliA.AngePath.SHEET_SEARCH_PATTERN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SHEET_SEARCH_PATTERN
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string SHEET_SEARCH_PATTERN = "*.sheet"
+    return:
+      type: System.String
+    content.vb: Public Const SHEET_SEARCH_PATTERN As String = "*.sheet"
+- uid: AngeliA.AngePath.PACKAGE_FILE_EXT
+  commentId: F:AngeliA.AngePath.PACKAGE_FILE_EXT
+  id: PACKAGE_FILE_EXT
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: PACKAGE_FILE_EXT
+  nameWithType: AngePath.PACKAGE_FILE_EXT
+  fullName: AngeliA.AngePath.PACKAGE_FILE_EXT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PACKAGE_FILE_EXT
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string PACKAGE_FILE_EXT = "angepack"
+    return:
+      type: System.String
+    content.vb: Public Const PACKAGE_FILE_EXT As String = "angepack"
+- uid: AngeliA.AngePath.PACKAGE_SEARCH_PATTERN
+  commentId: F:AngeliA.AngePath.PACKAGE_SEARCH_PATTERN
+  id: PACKAGE_SEARCH_PATTERN
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: PACKAGE_SEARCH_PATTERN
+  nameWithType: AngePath.PACKAGE_SEARCH_PATTERN
+  fullName: AngeliA.AngePath.PACKAGE_SEARCH_PATTERN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PACKAGE_SEARCH_PATTERN
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string PACKAGE_SEARCH_PATTERN = "*.angepack"
+    return:
+      type: System.String
+    content.vb: Public Const PACKAGE_SEARCH_PATTERN As String = "*.angepack"
+- uid: AngeliA.AngePath.MOVEMENT_CONFIG_FILE_EXT
+  commentId: F:AngeliA.AngePath.MOVEMENT_CONFIG_FILE_EXT
+  id: MOVEMENT_CONFIG_FILE_EXT
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: MOVEMENT_CONFIG_FILE_EXT
+  nameWithType: AngePath.MOVEMENT_CONFIG_FILE_EXT
+  fullName: AngeliA.AngePath.MOVEMENT_CONFIG_FILE_EXT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MOVEMENT_CONFIG_FILE_EXT
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string MOVEMENT_CONFIG_FILE_EXT = "txt"
+    return:
+      type: System.String
+    content.vb: Public Const MOVEMENT_CONFIG_FILE_EXT As String = "txt"
+- uid: AngeliA.AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN
+  commentId: F:AngeliA.AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN
+  id: MOVEMENT_CONFIG_SEARCH_PATTERN
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: MOVEMENT_CONFIG_SEARCH_PATTERN
+  nameWithType: AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN
+  fullName: AngeliA.AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MOVEMENT_CONFIG_SEARCH_PATTERN
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string MOVEMENT_CONFIG_SEARCH_PATTERN = "*.txt"
+    return:
+      type: System.String
+    content.vb: Public Const MOVEMENT_CONFIG_SEARCH_PATTERN As String = "*.txt"
+- uid: AngeliA.AngePath.INVENTORY_FILE_EXT
+  commentId: F:AngeliA.AngePath.INVENTORY_FILE_EXT
+  id: INVENTORY_FILE_EXT
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: INVENTORY_FILE_EXT
+  nameWithType: AngePath.INVENTORY_FILE_EXT
+  fullName: AngeliA.AngePath.INVENTORY_FILE_EXT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: INVENTORY_FILE_EXT
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 25
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string INVENTORY_FILE_EXT = "inv"
+    return:
+      type: System.String
+    content.vb: Public Const INVENTORY_FILE_EXT As String = "inv"
+- uid: AngeliA.AngePath.EQ_INVENTORY_FILE_EXT
+  commentId: F:AngeliA.AngePath.EQ_INVENTORY_FILE_EXT
+  id: EQ_INVENTORY_FILE_EXT
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: EQ_INVENTORY_FILE_EXT
+  nameWithType: AngePath.EQ_INVENTORY_FILE_EXT
+  fullName: AngeliA.AngePath.EQ_INVENTORY_FILE_EXT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EQ_INVENTORY_FILE_EXT
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 29
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Inventory file extension with equipment data
+  example: []
+  syntax:
+    content: public const string EQ_INVENTORY_FILE_EXT = "invq"
+    return:
+      type: System.String
+    content.vb: Public Const EQ_INVENTORY_FILE_EXT As String = "invq"
+- uid: AngeliA.AngePath.INVENTORY_SEARCH_PATTERN
+  commentId: F:AngeliA.AngePath.INVENTORY_SEARCH_PATTERN
+  id: INVENTORY_SEARCH_PATTERN
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: INVENTORY_SEARCH_PATTERN
+  nameWithType: AngePath.INVENTORY_SEARCH_PATTERN
+  fullName: AngeliA.AngePath.INVENTORY_SEARCH_PATTERN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: INVENTORY_SEARCH_PATTERN
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const string INVENTORY_SEARCH_PATTERN = "*.inv"
+    return:
+      type: System.String
+    content.vb: Public Const INVENTORY_SEARCH_PATTERN As String = "*.inv"
+- uid: AngeliA.AngePath.EQ_INVENTORY_SEARCH_PATTERN
+  commentId: F:AngeliA.AngePath.EQ_INVENTORY_SEARCH_PATTERN
+  id: EQ_INVENTORY_SEARCH_PATTERN
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: EQ_INVENTORY_SEARCH_PATTERN
+  nameWithType: AngePath.EQ_INVENTORY_SEARCH_PATTERN
+  fullName: AngeliA.AngePath.EQ_INVENTORY_SEARCH_PATTERN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EQ_INVENTORY_SEARCH_PATTERN
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 34
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Inventory file search pattern with equipment data
+  example: []
+  syntax:
+    content: public const string EQ_INVENTORY_SEARCH_PATTERN = "*.invq"
+    return:
+      type: System.String
+    content.vb: Public Const EQ_INVENTORY_SEARCH_PATTERN As String = "*.invq"
+- uid: AngeliA.AngePath.PersistentDataPath
+  commentId: P:AngeliA.AngePath.PersistentDataPath
+  id: PersistentDataPath
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: PersistentDataPath
+  nameWithType: AngePath.PersistentDataPath
+  fullName: AngeliA.AngePath.PersistentDataPath
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PersistentDataPath
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 37
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string PersistentDataPath { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Shared Property PersistentDataPath As String
+  overload: AngeliA.AngePath.PersistentDataPath*
+- uid: AngeliA.AngePath.TempDataPath
+  commentId: P:AngeliA.AngePath.TempDataPath
+  id: TempDataPath
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: TempDataPath
+  nameWithType: AngePath.TempDataPath
+  fullName: AngeliA.AngePath.TempDataPath
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TempDataPath
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 38
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string TempDataPath { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Shared Property TempDataPath As String
+  overload: AngeliA.AngePath.TempDataPath*
+- uid: AngeliA.AngePath.BuiltInUniverseRoot
+  commentId: P:AngeliA.AngePath.BuiltInUniverseRoot
+  id: BuiltInUniverseRoot
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: BuiltInUniverseRoot
+  nameWithType: AngePath.BuiltInUniverseRoot
+  fullName: AngeliA.AngePath.BuiltInUniverseRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BuiltInUniverseRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 42
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Game universe folder path. This folder contents project data for an AngeliA project
+  example: []
+  syntax:
+    content: public static string BuiltInUniverseRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Shared Property BuiltInUniverseRoot As String
+  overload: AngeliA.AngePath.BuiltInUniverseRoot*
+- uid: AngeliA.AngePath.DesktopPath
+  commentId: F:AngeliA.AngePath.DesktopPath
+  id: DesktopPath
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: DesktopPath
+  nameWithType: AngePath.DesktopPath
+  fullName: AngeliA.AngePath.DesktopPath
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DesktopPath
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 43
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string DesktopPath
+    return:
+      type: System.String
+    content.vb: Public Shared DesktopPath As String
+- uid: AngeliA.AngePath.GetPersistentDataPath(System.String,System.String)
+  commentId: M:AngeliA.AngePath.GetPersistentDataPath(System.String,System.String)
+  id: GetPersistentDataPath(System.String,System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetPersistentDataPath(string, string)
+  nameWithType: AngePath.GetPersistentDataPath(string, string)
+  fullName: AngeliA.AngePath.GetPersistentDataPath(string, string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetPersistentDataPath
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 53
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetPersistentDataPath(string devName, string productName)
+    parameters:
+    - id: devName
+      type: System.String
+    - id: productName
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetPersistentDataPath(devName As String, productName As String) As String
+  overload: AngeliA.AngePath.GetPersistentDataPath*
+  nameWithType.vb: AngePath.GetPersistentDataPath(String, String)
+  fullName.vb: AngeliA.AngePath.GetPersistentDataPath(String, String)
+  name.vb: GetPersistentDataPath(String, String)
+- uid: AngeliA.AngePath.GetTempDataPath(System.String,System.String)
+  commentId: M:AngeliA.AngePath.GetTempDataPath(System.String,System.String)
+  id: GetTempDataPath(System.String,System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetTempDataPath(string, string)
+  nameWithType: AngePath.GetTempDataPath(string, string)
+  fullName: AngeliA.AngePath.GetTempDataPath(string, string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetTempDataPath
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 60
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetTempDataPath(string devName, string productName)
+    parameters:
+    - id: devName
+      type: System.String
+    - id: productName
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetTempDataPath(devName As String, productName As String) As String
+  overload: AngeliA.AngePath.GetTempDataPath*
+  nameWithType.vb: AngePath.GetTempDataPath(String, String)
+  fullName.vb: AngeliA.AngePath.GetTempDataPath(String, String)
+  name.vb: GetTempDataPath(String, String)
+- uid: AngeliA.AngePath.GetUniverseRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetUniverseRoot(System.String)
+  id: GetUniverseRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetUniverseRoot(string)
+  nameWithType: AngePath.GetUniverseRoot(string)
+  fullName: AngeliA.AngePath.GetUniverseRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetUniverseRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 69
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetUniverseRoot(string projectFolder)
+    parameters:
+    - id: projectFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetUniverseRoot(projectFolder As String) As String
+  overload: AngeliA.AngePath.GetUniverseRoot*
+  nameWithType.vb: AngePath.GetUniverseRoot(String)
+  fullName.vb: AngeliA.AngePath.GetUniverseRoot(String)
+  name.vb: GetUniverseRoot(String)
+- uid: AngeliA.AngePath.GetSheetRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetSheetRoot(System.String)
+  id: GetSheetRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetSheetRoot(string)
+  nameWithType: AngePath.GetSheetRoot(string)
+  fullName: AngeliA.AngePath.GetSheetRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetSheetRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 70
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetSheetRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetSheetRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetSheetRoot*
+  nameWithType.vb: AngePath.GetSheetRoot(String)
+  fullName.vb: AngeliA.AngePath.GetSheetRoot(String)
+  name.vb: GetSheetRoot(String)
+- uid: AngeliA.AngePath.GetBuiltInSheetPath(System.String)
+  commentId: M:AngeliA.AngePath.GetBuiltInSheetPath(System.String)
+  id: GetBuiltInSheetPath(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetBuiltInSheetPath(string)
+  nameWithType: AngePath.GetBuiltInSheetPath(string)
+  fullName: AngeliA.AngePath.GetBuiltInSheetPath(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetBuiltInSheetPath
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 71
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetBuiltInSheetPath(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetBuiltInSheetPath(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetBuiltInSheetPath*
+  nameWithType.vb: AngePath.GetBuiltInSheetPath(String)
+  fullName.vb: AngeliA.AngePath.GetBuiltInSheetPath(String)
+  name.vb: GetBuiltInSheetPath(String)
+- uid: AngeliA.AngePath.GetGameSheetPath(System.String)
+  commentId: M:AngeliA.AngePath.GetGameSheetPath(System.String)
+  id: GetGameSheetPath(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetGameSheetPath(string)
+  nameWithType: AngePath.GetGameSheetPath(string)
+  fullName: AngeliA.AngePath.GetGameSheetPath(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetGameSheetPath
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 72
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetGameSheetPath(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetGameSheetPath(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetGameSheetPath*
+  nameWithType.vb: AngePath.GetGameSheetPath(String)
+  fullName.vb: AngeliA.AngePath.GetGameSheetPath(String)
+  name.vb: GetGameSheetPath(String)
+- uid: AngeliA.AngePath.GetAtlasRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetAtlasRoot(System.String)
+  id: GetAtlasRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetAtlasRoot(string)
+  nameWithType: AngePath.GetAtlasRoot(string)
+  fullName: AngeliA.AngePath.GetAtlasRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetAtlasRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 73
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetAtlasRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetAtlasRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetAtlasRoot*
+  nameWithType.vb: AngePath.GetAtlasRoot(String)
+  fullName.vb: AngeliA.AngePath.GetAtlasRoot(String)
+  name.vb: GetAtlasRoot(String)
+- uid: AngeliA.AngePath.GetConversationRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetConversationRoot(System.String)
+  id: GetConversationRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetConversationRoot(string)
+  nameWithType: AngePath.GetConversationRoot(string)
+  fullName: AngeliA.AngePath.GetConversationRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetConversationRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 74
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetConversationRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetConversationRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetConversationRoot*
+  nameWithType.vb: AngePath.GetConversationRoot(String)
+  fullName.vb: AngeliA.AngePath.GetConversationRoot(String)
+  name.vb: GetConversationRoot(String)
+- uid: AngeliA.AngePath.GetEditableConversationRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetEditableConversationRoot(System.String)
+  id: GetEditableConversationRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetEditableConversationRoot(string)
+  nameWithType: AngePath.GetEditableConversationRoot(string)
+  fullName: AngeliA.AngePath.GetEditableConversationRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetEditableConversationRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 75
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetEditableConversationRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetEditableConversationRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetEditableConversationRoot*
+  nameWithType.vb: AngePath.GetEditableConversationRoot(String)
+  fullName.vb: AngeliA.AngePath.GetEditableConversationRoot(String)
+  name.vb: GetEditableConversationRoot(String)
+- uid: AngeliA.AngePath.GetUniverseMetaRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetUniverseMetaRoot(System.String)
+  id: GetUniverseMetaRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetUniverseMetaRoot(string)
+  nameWithType: AngePath.GetUniverseMetaRoot(string)
+  fullName: AngeliA.AngePath.GetUniverseMetaRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetUniverseMetaRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 76
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetUniverseMetaRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetUniverseMetaRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetUniverseMetaRoot*
+  nameWithType.vb: AngePath.GetUniverseMetaRoot(String)
+  fullName.vb: AngeliA.AngePath.GetUniverseMetaRoot(String)
+  name.vb: GetUniverseMetaRoot(String)
+- uid: AngeliA.AngePath.GetUniverseMusicRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetUniverseMusicRoot(System.String)
+  id: GetUniverseMusicRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetUniverseMusicRoot(string)
+  nameWithType: AngePath.GetUniverseMusicRoot(string)
+  fullName: AngeliA.AngePath.GetUniverseMusicRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetUniverseMusicRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 77
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetUniverseMusicRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetUniverseMusicRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetUniverseMusicRoot*
+  nameWithType.vb: AngePath.GetUniverseMusicRoot(String)
+  fullName.vb: AngeliA.AngePath.GetUniverseMusicRoot(String)
+  name.vb: GetUniverseMusicRoot(String)
+- uid: AngeliA.AngePath.GetUniverseSoundRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetUniverseSoundRoot(System.String)
+  id: GetUniverseSoundRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetUniverseSoundRoot(string)
+  nameWithType: AngePath.GetUniverseSoundRoot(string)
+  fullName: AngeliA.AngePath.GetUniverseSoundRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetUniverseSoundRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 78
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetUniverseSoundRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetUniverseSoundRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetUniverseSoundRoot*
+  nameWithType.vb: AngePath.GetUniverseSoundRoot(String)
+  fullName.vb: AngeliA.AngePath.GetUniverseSoundRoot(String)
+  name.vb: GetUniverseSoundRoot(String)
+- uid: AngeliA.AngePath.GetUniverseFontRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetUniverseFontRoot(System.String)
+  id: GetUniverseFontRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetUniverseFontRoot(string)
+  nameWithType: AngePath.GetUniverseFontRoot(string)
+  fullName: AngeliA.AngePath.GetUniverseFontRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetUniverseFontRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 79
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetUniverseFontRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetUniverseFontRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetUniverseFontRoot*
+  nameWithType.vb: AngePath.GetUniverseFontRoot(String)
+  fullName.vb: AngeliA.AngePath.GetUniverseFontRoot(String)
+  name.vb: GetUniverseFontRoot(String)
+- uid: AngeliA.AngePath.GetMapRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetMapRoot(System.String)
+  id: GetMapRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetMapRoot(string)
+  nameWithType: AngePath.GetMapRoot(string)
+  fullName: AngeliA.AngePath.GetMapRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetMapRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 80
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetMapRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetMapRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetMapRoot*
+  nameWithType.vb: AngePath.GetMapRoot(String)
+  fullName.vb: AngeliA.AngePath.GetMapRoot(String)
+  name.vb: GetMapRoot(String)
+- uid: AngeliA.AngePath.GetUniverseCoverPath(System.String)
+  commentId: M:AngeliA.AngePath.GetUniverseCoverPath(System.String)
+  id: GetUniverseCoverPath(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetUniverseCoverPath(string)
+  nameWithType: AngePath.GetUniverseCoverPath(string)
+  fullName: AngeliA.AngePath.GetUniverseCoverPath(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetUniverseCoverPath
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 81
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetUniverseCoverPath(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetUniverseCoverPath(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetUniverseCoverPath*
+  nameWithType.vb: AngePath.GetUniverseCoverPath(String)
+  fullName.vb: AngeliA.AngePath.GetUniverseCoverPath(String)
+  name.vb: GetUniverseCoverPath(String)
+- uid: AngeliA.AngePath.GetAsepriteRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetAsepriteRoot(System.String)
+  id: GetAsepriteRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetAsepriteRoot(string)
+  nameWithType: AngePath.GetAsepriteRoot(string)
+  fullName: AngeliA.AngePath.GetAsepriteRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetAsepriteRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 82
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetAsepriteRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetAsepriteRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetAsepriteRoot*
+  nameWithType.vb: AngePath.GetAsepriteRoot(String)
+  fullName.vb: AngeliA.AngePath.GetAsepriteRoot(String)
+  name.vb: GetAsepriteRoot(String)
+- uid: AngeliA.AngePath.GetLanguageRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetLanguageRoot(System.String)
+  id: GetLanguageRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetLanguageRoot(string)
+  nameWithType: AngePath.GetLanguageRoot(string)
+  fullName: AngeliA.AngePath.GetLanguageRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetLanguageRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 83
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetLanguageRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetLanguageRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetLanguageRoot*
+  nameWithType.vb: AngePath.GetLanguageRoot(String)
+  fullName.vb: AngeliA.AngePath.GetLanguageRoot(String)
+  name.vb: GetLanguageRoot(String)
+- uid: AngeliA.AngePath.GetUniverseInfoPath(System.String)
+  commentId: M:AngeliA.AngePath.GetUniverseInfoPath(System.String)
+  id: GetUniverseInfoPath(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetUniverseInfoPath(string)
+  nameWithType: AngePath.GetUniverseInfoPath(string)
+  fullName: AngeliA.AngePath.GetUniverseInfoPath(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetUniverseInfoPath
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 84
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetUniverseInfoPath(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetUniverseInfoPath(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetUniverseInfoPath*
+  nameWithType.vb: AngePath.GetUniverseInfoPath(String)
+  fullName.vb: AngeliA.AngePath.GetUniverseInfoPath(String)
+  name.vb: GetUniverseInfoPath(String)
+- uid: AngeliA.AngePath.GetCharacterMovementConfigRoot(System.String)
+  commentId: M:AngeliA.AngePath.GetCharacterMovementConfigRoot(System.String)
+  id: GetCharacterMovementConfigRoot(System.String)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetCharacterMovementConfigRoot(string)
+  nameWithType: AngePath.GetCharacterMovementConfigRoot(string)
+  fullName: AngeliA.AngePath.GetCharacterMovementConfigRoot(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetCharacterMovementConfigRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 85
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetCharacterMovementConfigRoot(string universeFolder)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetCharacterMovementConfigRoot(universeFolder As String) As String
+  overload: AngeliA.AngePath.GetCharacterMovementConfigRoot*
+  nameWithType.vb: AngePath.GetCharacterMovementConfigRoot(String)
+  fullName.vb: AngeliA.AngePath.GetCharacterMovementConfigRoot(String)
+  name.vb: GetCharacterMovementConfigRoot(String)
+- uid: AngeliA.AngePath.GetSlotRoot(System.String,System.Int32)
+  commentId: M:AngeliA.AngePath.GetSlotRoot(System.String,System.Int32)
+  id: GetSlotRoot(System.String,System.Int32)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetSlotRoot(string, int)
+  nameWithType: AngePath.GetSlotRoot(string, int)
+  fullName: AngeliA.AngePath.GetSlotRoot(string, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetSlotRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 88
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetSlotRoot(string savingFolder, int slot)
+    parameters:
+    - id: savingFolder
+      type: System.String
+    - id: slot
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetSlotRoot(savingFolder As String, slot As Integer) As String
+  overload: AngeliA.AngePath.GetSlotRoot*
+  nameWithType.vb: AngePath.GetSlotRoot(String, Integer)
+  fullName.vb: AngeliA.AngePath.GetSlotRoot(String, Integer)
+  name.vb: GetSlotRoot(String, Integer)
+- uid: AngeliA.AngePath.GetSlotMetaRoot(System.String,System.Int32)
+  commentId: M:AngeliA.AngePath.GetSlotMetaRoot(System.String,System.Int32)
+  id: GetSlotMetaRoot(System.String,System.Int32)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetSlotMetaRoot(string, int)
+  nameWithType: AngePath.GetSlotMetaRoot(string, int)
+  fullName: AngeliA.AngePath.GetSlotMetaRoot(string, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetSlotMetaRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 89
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetSlotMetaRoot(string savingFolder, int slot)
+    parameters:
+    - id: savingFolder
+      type: System.String
+    - id: slot
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetSlotMetaRoot(savingFolder As String, slot As Integer) As String
+  overload: AngeliA.AngePath.GetSlotMetaRoot*
+  nameWithType.vb: AngePath.GetSlotMetaRoot(String, Integer)
+  fullName.vb: AngeliA.AngePath.GetSlotMetaRoot(String, Integer)
+  name.vb: GetSlotMetaRoot(String, Integer)
+- uid: AngeliA.AngePath.GetSlotInventoryRoot(System.String,System.Int32)
+  commentId: M:AngeliA.AngePath.GetSlotInventoryRoot(System.String,System.Int32)
+  id: GetSlotInventoryRoot(System.String,System.Int32)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetSlotInventoryRoot(string, int)
+  nameWithType: AngePath.GetSlotInventoryRoot(string, int)
+  fullName: AngeliA.AngePath.GetSlotInventoryRoot(string, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetSlotInventoryRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 90
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetSlotInventoryRoot(string savingFolder, int slot)
+    parameters:
+    - id: savingFolder
+      type: System.String
+    - id: slot
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetSlotInventoryRoot(savingFolder As String, slot As Integer) As String
+  overload: AngeliA.AngePath.GetSlotInventoryRoot*
+  nameWithType.vb: AngePath.GetSlotInventoryRoot(String, Integer)
+  fullName.vb: AngeliA.AngePath.GetSlotInventoryRoot(String, Integer)
+  name.vb: GetSlotInventoryRoot(String, Integer)
+- uid: AngeliA.AngePath.GetSlotMetaCharacterConfigRoot(System.String,System.Int32)
+  commentId: M:AngeliA.AngePath.GetSlotMetaCharacterConfigRoot(System.String,System.Int32)
+  id: GetSlotMetaCharacterConfigRoot(System.String,System.Int32)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetSlotMetaCharacterConfigRoot(string, int)
+  nameWithType: AngePath.GetSlotMetaCharacterConfigRoot(string, int)
+  fullName: AngeliA.AngePath.GetSlotMetaCharacterConfigRoot(string, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetSlotMetaCharacterConfigRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 91
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetSlotMetaCharacterConfigRoot(string savingFolder, int slot)
+    parameters:
+    - id: savingFolder
+      type: System.String
+    - id: slot
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetSlotMetaCharacterConfigRoot(savingFolder As String, slot As Integer) As String
+  overload: AngeliA.AngePath.GetSlotMetaCharacterConfigRoot*
+  nameWithType.vb: AngePath.GetSlotMetaCharacterConfigRoot(String, Integer)
+  fullName.vb: AngeliA.AngePath.GetSlotMetaCharacterConfigRoot(String, Integer)
+  name.vb: GetSlotMetaCharacterConfigRoot(String, Integer)
+- uid: AngeliA.AngePath.GetSlotUserMapRoot(System.String,System.Int32)
+  commentId: M:AngeliA.AngePath.GetSlotUserMapRoot(System.String,System.Int32)
+  id: GetSlotUserMapRoot(System.String,System.Int32)
+  parent: AngeliA.AngePath
+  langs:
+  - csharp
+  - vb
+  name: GetSlotUserMapRoot(string, int)
+  nameWithType: AngePath.GetSlotUserMapRoot(string, int)
+  fullName: AngeliA.AngePath.GetSlotUserMapRoot(string, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/AngePath.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetSlotUserMapRoot
+    path: ../AngeliA Framework/src/Common/AngePath.cs
+    startLine: 92
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static string GetSlotUserMapRoot(string savingFolder, int slot)
+    parameters:
+    - id: savingFolder
+      type: System.String
+    - id: slot
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetSlotUserMapRoot(savingFolder As String, slot As Integer) As String
+  overload: AngeliA.AngePath.GetSlotUserMapRoot*
+  nameWithType.vb: AngePath.GetSlotUserMapRoot(String, Integer)
+  fullName.vb: AngeliA.AngePath.GetSlotUserMapRoot(String, Integer)
+  name.vb: GetSlotUserMapRoot(String, Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.AngePath.PersistentDataPath*
+  commentId: Overload:AngeliA.AngePath.PersistentDataPath
+  href: AngeliA.AngePath.html#AngeliA_AngePath_PersistentDataPath
+  name: PersistentDataPath
+  nameWithType: AngePath.PersistentDataPath
+  fullName: AngeliA.AngePath.PersistentDataPath
+- uid: AngeliA.AngePath.TempDataPath*
+  commentId: Overload:AngeliA.AngePath.TempDataPath
+  href: AngeliA.AngePath.html#AngeliA_AngePath_TempDataPath
+  name: TempDataPath
+  nameWithType: AngePath.TempDataPath
+  fullName: AngeliA.AngePath.TempDataPath
+- uid: AngeliA.AngePath.BuiltInUniverseRoot*
+  commentId: Overload:AngeliA.AngePath.BuiltInUniverseRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_BuiltInUniverseRoot
+  name: BuiltInUniverseRoot
+  nameWithType: AngePath.BuiltInUniverseRoot
+  fullName: AngeliA.AngePath.BuiltInUniverseRoot
+- uid: AngeliA.AngePath.GetPersistentDataPath*
+  commentId: Overload:AngeliA.AngePath.GetPersistentDataPath
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetPersistentDataPath_System_String_System_String_
+  name: GetPersistentDataPath
+  nameWithType: AngePath.GetPersistentDataPath
+  fullName: AngeliA.AngePath.GetPersistentDataPath
+- uid: AngeliA.AngePath.GetTempDataPath*
+  commentId: Overload:AngeliA.AngePath.GetTempDataPath
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetTempDataPath_System_String_System_String_
+  name: GetTempDataPath
+  nameWithType: AngePath.GetTempDataPath
+  fullName: AngeliA.AngePath.GetTempDataPath
+- uid: AngeliA.AngePath.GetUniverseRoot*
+  commentId: Overload:AngeliA.AngePath.GetUniverseRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetUniverseRoot_System_String_
+  name: GetUniverseRoot
+  nameWithType: AngePath.GetUniverseRoot
+  fullName: AngeliA.AngePath.GetUniverseRoot
+- uid: AngeliA.AngePath.GetSheetRoot*
+  commentId: Overload:AngeliA.AngePath.GetSheetRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetSheetRoot_System_String_
+  name: GetSheetRoot
+  nameWithType: AngePath.GetSheetRoot
+  fullName: AngeliA.AngePath.GetSheetRoot
+- uid: AngeliA.AngePath.GetBuiltInSheetPath*
+  commentId: Overload:AngeliA.AngePath.GetBuiltInSheetPath
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetBuiltInSheetPath_System_String_
+  name: GetBuiltInSheetPath
+  nameWithType: AngePath.GetBuiltInSheetPath
+  fullName: AngeliA.AngePath.GetBuiltInSheetPath
+- uid: AngeliA.AngePath.GetGameSheetPath*
+  commentId: Overload:AngeliA.AngePath.GetGameSheetPath
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetGameSheetPath_System_String_
+  name: GetGameSheetPath
+  nameWithType: AngePath.GetGameSheetPath
+  fullName: AngeliA.AngePath.GetGameSheetPath
+- uid: AngeliA.AngePath.GetAtlasRoot*
+  commentId: Overload:AngeliA.AngePath.GetAtlasRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetAtlasRoot_System_String_
+  name: GetAtlasRoot
+  nameWithType: AngePath.GetAtlasRoot
+  fullName: AngeliA.AngePath.GetAtlasRoot
+- uid: AngeliA.AngePath.GetConversationRoot*
+  commentId: Overload:AngeliA.AngePath.GetConversationRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetConversationRoot_System_String_
+  name: GetConversationRoot
+  nameWithType: AngePath.GetConversationRoot
+  fullName: AngeliA.AngePath.GetConversationRoot
+- uid: AngeliA.AngePath.GetEditableConversationRoot*
+  commentId: Overload:AngeliA.AngePath.GetEditableConversationRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetEditableConversationRoot_System_String_
+  name: GetEditableConversationRoot
+  nameWithType: AngePath.GetEditableConversationRoot
+  fullName: AngeliA.AngePath.GetEditableConversationRoot
+- uid: AngeliA.AngePath.GetUniverseMetaRoot*
+  commentId: Overload:AngeliA.AngePath.GetUniverseMetaRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetUniverseMetaRoot_System_String_
+  name: GetUniverseMetaRoot
+  nameWithType: AngePath.GetUniverseMetaRoot
+  fullName: AngeliA.AngePath.GetUniverseMetaRoot
+- uid: AngeliA.AngePath.GetUniverseMusicRoot*
+  commentId: Overload:AngeliA.AngePath.GetUniverseMusicRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetUniverseMusicRoot_System_String_
+  name: GetUniverseMusicRoot
+  nameWithType: AngePath.GetUniverseMusicRoot
+  fullName: AngeliA.AngePath.GetUniverseMusicRoot
+- uid: AngeliA.AngePath.GetUniverseSoundRoot*
+  commentId: Overload:AngeliA.AngePath.GetUniverseSoundRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetUniverseSoundRoot_System_String_
+  name: GetUniverseSoundRoot
+  nameWithType: AngePath.GetUniverseSoundRoot
+  fullName: AngeliA.AngePath.GetUniverseSoundRoot
+- uid: AngeliA.AngePath.GetUniverseFontRoot*
+  commentId: Overload:AngeliA.AngePath.GetUniverseFontRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetUniverseFontRoot_System_String_
+  name: GetUniverseFontRoot
+  nameWithType: AngePath.GetUniverseFontRoot
+  fullName: AngeliA.AngePath.GetUniverseFontRoot
+- uid: AngeliA.AngePath.GetMapRoot*
+  commentId: Overload:AngeliA.AngePath.GetMapRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetMapRoot_System_String_
+  name: GetMapRoot
+  nameWithType: AngePath.GetMapRoot
+  fullName: AngeliA.AngePath.GetMapRoot
+- uid: AngeliA.AngePath.GetUniverseCoverPath*
+  commentId: Overload:AngeliA.AngePath.GetUniverseCoverPath
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetUniverseCoverPath_System_String_
+  name: GetUniverseCoverPath
+  nameWithType: AngePath.GetUniverseCoverPath
+  fullName: AngeliA.AngePath.GetUniverseCoverPath
+- uid: AngeliA.AngePath.GetAsepriteRoot*
+  commentId: Overload:AngeliA.AngePath.GetAsepriteRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetAsepriteRoot_System_String_
+  name: GetAsepriteRoot
+  nameWithType: AngePath.GetAsepriteRoot
+  fullName: AngeliA.AngePath.GetAsepriteRoot
+- uid: AngeliA.AngePath.GetLanguageRoot*
+  commentId: Overload:AngeliA.AngePath.GetLanguageRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetLanguageRoot_System_String_
+  name: GetLanguageRoot
+  nameWithType: AngePath.GetLanguageRoot
+  fullName: AngeliA.AngePath.GetLanguageRoot
+- uid: AngeliA.AngePath.GetUniverseInfoPath*
+  commentId: Overload:AngeliA.AngePath.GetUniverseInfoPath
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetUniverseInfoPath_System_String_
+  name: GetUniverseInfoPath
+  nameWithType: AngePath.GetUniverseInfoPath
+  fullName: AngeliA.AngePath.GetUniverseInfoPath
+- uid: AngeliA.AngePath.GetCharacterMovementConfigRoot*
+  commentId: Overload:AngeliA.AngePath.GetCharacterMovementConfigRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetCharacterMovementConfigRoot_System_String_
+  name: GetCharacterMovementConfigRoot
+  nameWithType: AngePath.GetCharacterMovementConfigRoot
+  fullName: AngeliA.AngePath.GetCharacterMovementConfigRoot
+- uid: AngeliA.AngePath.GetSlotRoot*
+  commentId: Overload:AngeliA.AngePath.GetSlotRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetSlotRoot_System_String_System_Int32_
+  name: GetSlotRoot
+  nameWithType: AngePath.GetSlotRoot
+  fullName: AngeliA.AngePath.GetSlotRoot
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.AngePath.GetSlotMetaRoot*
+  commentId: Overload:AngeliA.AngePath.GetSlotMetaRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetSlotMetaRoot_System_String_System_Int32_
+  name: GetSlotMetaRoot
+  nameWithType: AngePath.GetSlotMetaRoot
+  fullName: AngeliA.AngePath.GetSlotMetaRoot
+- uid: AngeliA.AngePath.GetSlotInventoryRoot*
+  commentId: Overload:AngeliA.AngePath.GetSlotInventoryRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetSlotInventoryRoot_System_String_System_Int32_
+  name: GetSlotInventoryRoot
+  nameWithType: AngePath.GetSlotInventoryRoot
+  fullName: AngeliA.AngePath.GetSlotInventoryRoot
+- uid: AngeliA.AngePath.GetSlotMetaCharacterConfigRoot*
+  commentId: Overload:AngeliA.AngePath.GetSlotMetaCharacterConfigRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetSlotMetaCharacterConfigRoot_System_String_System_Int32_
+  name: GetSlotMetaCharacterConfigRoot
+  nameWithType: AngePath.GetSlotMetaCharacterConfigRoot
+  fullName: AngeliA.AngePath.GetSlotMetaCharacterConfigRoot
+- uid: AngeliA.AngePath.GetSlotUserMapRoot*
+  commentId: Overload:AngeliA.AngePath.GetSlotUserMapRoot
+  href: AngeliA.AngePath.html#AngeliA_AngePath_GetSlotUserMapRoot_System_String_System_Int32_
+  name: GetSlotUserMapRoot
+  nameWithType: AngePath.GetSlotUserMapRoot
+  fullName: AngeliA.AngePath.GetSlotUserMapRoot

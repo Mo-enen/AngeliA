@@ -1,0 +1,2460 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Platformer.MovableBullet
+  commentId: T:AngeliA.Platformer.MovableBullet
+  id: MovableBullet
+  parent: AngeliA.Platformer
+  children:
+  - AngeliA.Platformer.MovableBullet.AriDrag
+  - AngeliA.Platformer.MovableBullet.ArtworkID
+  - AngeliA.Platformer.MovableBullet.BeforeDespawn(AngeliA.IDamageReceiver)
+  - AngeliA.Platformer.MovableBullet.BeforeUpdate
+  - AngeliA.Platformer.MovableBullet.CurrentRotation
+  - AngeliA.Platformer.MovableBullet.Duration
+  - AngeliA.Platformer.MovableBullet.EndRotation
+  - AngeliA.Platformer.MovableBullet.EndRotationRandomRange
+  - AngeliA.Platformer.MovableBullet.EnvironmentHitCount
+  - AngeliA.Platformer.MovableBullet.GetLastUpdatedTramsform
+  - AngeliA.Platformer.MovableBullet.Gravity
+  - AngeliA.Platformer.MovableBullet.HitReceiver
+  - AngeliA.Platformer.MovableBullet.InWater
+  - AngeliA.Platformer.MovableBullet.LateUpdate
+  - AngeliA.Platformer.MovableBullet.MaxRange
+  - AngeliA.Platformer.MovableBullet.OnActivated
+  - AngeliA.Platformer.MovableBullet.ReceiverHitCount
+  - AngeliA.Platformer.MovableBullet.ResidueID
+  - AngeliA.Platformer.MovableBullet.RotateSpeed
+  - AngeliA.Platformer.MovableBullet.Scale
+  - AngeliA.Platformer.MovableBullet.SpeedForward
+  - AngeliA.Platformer.MovableBullet.SpeedSide
+  - AngeliA.Platformer.MovableBullet.StartMove(AngeliA.Direction8,System.Int32,System.Int32)
+  - AngeliA.Platformer.MovableBullet.StartRotation
+  - AngeliA.Platformer.MovableBullet.Velocity
+  - AngeliA.Platformer.MovableBullet.WaterSpeedRate
+  langs:
+  - csharp
+  - vb
+  name: MovableBullet
+  nameWithType: MovableBullet
+  fullName: AngeliA.Platformer.MovableBullet
+  type: Class
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MovableBullet
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 7
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: 'public abstract class MovableBullet : Bullet, IMapItem'
+    content.vb: Public MustInherit Class MovableBullet Inherits Bullet Implements IMapItem
+  inheritance:
+  - System.Object
+  - AngeliA.Entity
+  - AngeliA.Bullet
+  derivedClasses:
+  - AngeliA.Platformer.ArrowBullet
+  - AngeliA.Platformer.BeamBullet
+  - AngeliA.Platformer.EmptyMovableBullet
+  - AngeliA.Platformer.ExplosiveMovableBullet
+  implements:
+  - AngeliA.IMapItem
+  inheritedMembers:
+  - AngeliA.Bullet.AttackIndex
+  - AngeliA.Bullet.AttackCharged
+  - AngeliA.Bullet.DamageType
+  - AngeliA.Bullet.Sender
+  - AngeliA.Bullet.FailbackTargetTeam
+  - AngeliA.Bullet.TargetTeam
+  - AngeliA.Bullet.BasicDamage
+  - AngeliA.Bullet.EnvironmentMask
+  - AngeliA.Bullet.ReceiverMask
+  - AngeliA.Bullet.RoundHitCheck
+  - AngeliA.Bullet.Damage
+  - AngeliA.Bullet.Update
+  - AngeliA.Bullet.ReceiverHitCheck(System.Boolean@)
+  - AngeliA.Bullet.EnvironmentHitCheck(System.Boolean@)
+  - AngeliA.Bullet.PerformHitEnvironment(System.Boolean@)
+  - AngeliA.Bullet.PerformHitReceiver(AngeliA.IDamageReceiver,System.Boolean@)
+  - AngeliA.Bullet.GroundCheck(AngeliA.Color32@)
+  - AngeliA.Bullet.GetDamage
+  - AngeliA.Entity.Active
+  - AngeliA.Entity.X
+  - AngeliA.Entity.Y
+  - AngeliA.Entity.Width
+  - AngeliA.Entity.Height
+  - AngeliA.Entity.TypeID
+  - AngeliA.Entity.SpawnFrame
+  - AngeliA.Entity.FromWorld
+  - AngeliA.Entity.Rect
+  - AngeliA.Entity.InstanceOrder
+  - AngeliA.Entity.MapUnitPos
+  - AngeliA.Entity.InstanceID
+  - AngeliA.Entity.IgnoreReposition
+  - AngeliA.Entity.XY
+  - AngeliA.Entity.Size
+  - AngeliA.Entity.Center
+  - AngeliA.Entity.CenterX
+  - AngeliA.Entity.CenterY
+  - AngeliA.Entity.PivotUnitPosition
+  - AngeliA.Entity.OnInactivated
+  - AngeliA.Entity.FirstUpdate
+  - AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  - AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  - AngeliA.Entity.CancelIgnoreDespawnFromMap
+  - AngeliA.Entity.Draw
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Platformer.MovableBullet.SpeedForward
+  commentId: P:AngeliA.Platformer.MovableBullet.SpeedForward
+  id: SpeedForward
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: SpeedForward
+  nameWithType: MovableBullet.SpeedForward
+  fullName: AngeliA.Platformer.MovableBullet.SpeedForward
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SpeedForward
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 10
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int SpeedForward { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property SpeedForward As Integer
+  overload: AngeliA.Platformer.MovableBullet.SpeedForward*
+- uid: AngeliA.Platformer.MovableBullet.SpeedSide
+  commentId: P:AngeliA.Platformer.MovableBullet.SpeedSide
+  id: SpeedSide
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: SpeedSide
+  nameWithType: MovableBullet.SpeedSide
+  fullName: AngeliA.Platformer.MovableBullet.SpeedSide
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SpeedSide
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 11
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int SpeedSide { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property SpeedSide As Integer
+  overload: AngeliA.Platformer.MovableBullet.SpeedSide*
+- uid: AngeliA.Platformer.MovableBullet.AriDrag
+  commentId: P:AngeliA.Platformer.MovableBullet.AriDrag
+  id: AriDrag
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: AriDrag
+  nameWithType: MovableBullet.AriDrag
+  fullName: AngeliA.Platformer.MovableBullet.AriDrag
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AriDrag
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 12
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual Int2 AriDrag { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Overridable ReadOnly Property AriDrag As Int2
+  overload: AngeliA.Platformer.MovableBullet.AriDrag*
+- uid: AngeliA.Platformer.MovableBullet.Gravity
+  commentId: P:AngeliA.Platformer.MovableBullet.Gravity
+  id: Gravity
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: Gravity
+  nameWithType: MovableBullet.Gravity
+  fullName: AngeliA.Platformer.MovableBullet.Gravity
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Gravity
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 13
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int Gravity { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property Gravity As Integer
+  overload: AngeliA.Platformer.MovableBullet.Gravity*
+- uid: AngeliA.Platformer.MovableBullet.StartRotation
+  commentId: P:AngeliA.Platformer.MovableBullet.StartRotation
+  id: StartRotation
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: StartRotation
+  nameWithType: MovableBullet.StartRotation
+  fullName: AngeliA.Platformer.MovableBullet.StartRotation
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: StartRotation
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 14
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int StartRotation { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property StartRotation As Integer
+  overload: AngeliA.Platformer.MovableBullet.StartRotation*
+- uid: AngeliA.Platformer.MovableBullet.RotateSpeed
+  commentId: P:AngeliA.Platformer.MovableBullet.RotateSpeed
+  id: RotateSpeed
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: RotateSpeed
+  nameWithType: MovableBullet.RotateSpeed
+  fullName: AngeliA.Platformer.MovableBullet.RotateSpeed
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RotateSpeed
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 15
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int RotateSpeed { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property RotateSpeed As Integer
+  overload: AngeliA.Platformer.MovableBullet.RotateSpeed*
+- uid: AngeliA.Platformer.MovableBullet.EndRotation
+  commentId: P:AngeliA.Platformer.MovableBullet.EndRotation
+  id: EndRotation
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: EndRotation
+  nameWithType: MovableBullet.EndRotation
+  fullName: AngeliA.Platformer.MovableBullet.EndRotation
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EndRotation
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 16
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int EndRotation { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property EndRotation As Integer
+  overload: AngeliA.Platformer.MovableBullet.EndRotation*
+- uid: AngeliA.Platformer.MovableBullet.EndRotationRandomRange
+  commentId: P:AngeliA.Platformer.MovableBullet.EndRotationRandomRange
+  id: EndRotationRandomRange
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: EndRotationRandomRange
+  nameWithType: MovableBullet.EndRotationRandomRange
+  fullName: AngeliA.Platformer.MovableBullet.EndRotationRandomRange
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EndRotationRandomRange
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 17
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int EndRotationRandomRange { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property EndRotationRandomRange As Integer
+  overload: AngeliA.Platformer.MovableBullet.EndRotationRandomRange*
+- uid: AngeliA.Platformer.MovableBullet.ResidueID
+  commentId: P:AngeliA.Platformer.MovableBullet.ResidueID
+  id: ResidueID
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: ResidueID
+  nameWithType: MovableBullet.ResidueID
+  fullName: AngeliA.Platformer.MovableBullet.ResidueID
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ResidueID
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 18
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int ResidueID { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property ResidueID As Integer
+  overload: AngeliA.Platformer.MovableBullet.ResidueID*
+- uid: AngeliA.Platformer.MovableBullet.ArtworkID
+  commentId: P:AngeliA.Platformer.MovableBullet.ArtworkID
+  id: ArtworkID
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: ArtworkID
+  nameWithType: MovableBullet.ArtworkID
+  fullName: AngeliA.Platformer.MovableBullet.ArtworkID
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ArtworkID
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 19
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int ArtworkID { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property ArtworkID As Integer
+  overload: AngeliA.Platformer.MovableBullet.ArtworkID*
+- uid: AngeliA.Platformer.MovableBullet.Scale
+  commentId: P:AngeliA.Platformer.MovableBullet.Scale
+  id: Scale
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: Scale
+  nameWithType: MovableBullet.Scale
+  fullName: AngeliA.Platformer.MovableBullet.Scale
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Scale
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 20
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int Scale { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property Scale As Integer
+  overload: AngeliA.Platformer.MovableBullet.Scale*
+- uid: AngeliA.Platformer.MovableBullet.WaterSpeedRate
+  commentId: P:AngeliA.Platformer.MovableBullet.WaterSpeedRate
+  id: WaterSpeedRate
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: WaterSpeedRate
+  nameWithType: MovableBullet.WaterSpeedRate
+  fullName: AngeliA.Platformer.MovableBullet.WaterSpeedRate
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: WaterSpeedRate
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 21
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int WaterSpeedRate { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property WaterSpeedRate As Integer
+  overload: AngeliA.Platformer.MovableBullet.WaterSpeedRate*
+- uid: AngeliA.Platformer.MovableBullet.MaxRange
+  commentId: P:AngeliA.Platformer.MovableBullet.MaxRange
+  id: MaxRange
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: MaxRange
+  nameWithType: MovableBullet.MaxRange
+  fullName: AngeliA.Platformer.MovableBullet.MaxRange
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MaxRange
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 22
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int MaxRange { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property MaxRange As Integer
+  overload: AngeliA.Platformer.MovableBullet.MaxRange*
+- uid: AngeliA.Platformer.MovableBullet.Duration
+  commentId: P:AngeliA.Platformer.MovableBullet.Duration
+  id: Duration
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: Duration
+  nameWithType: MovableBullet.Duration
+  fullName: AngeliA.Platformer.MovableBullet.Duration
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Duration
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 23
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override int Duration { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overrides ReadOnly Property Duration As Integer
+  overridden: AngeliA.Bullet.Duration
+  overload: AngeliA.Platformer.MovableBullet.Duration*
+- uid: AngeliA.Platformer.MovableBullet.EnvironmentHitCount
+  commentId: P:AngeliA.Platformer.MovableBullet.EnvironmentHitCount
+  id: EnvironmentHitCount
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: EnvironmentHitCount
+  nameWithType: MovableBullet.EnvironmentHitCount
+  fullName: AngeliA.Platformer.MovableBullet.EnvironmentHitCount
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EnvironmentHitCount
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 24
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: protected override int EnvironmentHitCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overrides ReadOnly Property EnvironmentHitCount As Integer
+  overridden: AngeliA.Bullet.EnvironmentHitCount
+  overload: AngeliA.Platformer.MovableBullet.EnvironmentHitCount*
+- uid: AngeliA.Platformer.MovableBullet.ReceiverHitCount
+  commentId: P:AngeliA.Platformer.MovableBullet.ReceiverHitCount
+  id: ReceiverHitCount
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: ReceiverHitCount
+  nameWithType: MovableBullet.ReceiverHitCount
+  fullName: AngeliA.Platformer.MovableBullet.ReceiverHitCount
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ReceiverHitCount
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 25
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: protected override int ReceiverHitCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Overrides ReadOnly Property ReceiverHitCount As Integer
+  overridden: AngeliA.Bullet.ReceiverHitCount
+  overload: AngeliA.Platformer.MovableBullet.ReceiverHitCount*
+- uid: AngeliA.Platformer.MovableBullet.CurrentRotation
+  commentId: P:AngeliA.Platformer.MovableBullet.CurrentRotation
+  id: CurrentRotation
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: CurrentRotation
+  nameWithType: MovableBullet.CurrentRotation
+  fullName: AngeliA.Platformer.MovableBullet.CurrentRotation
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CurrentRotation
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 26
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public int CurrentRotation { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CurrentRotation As Integer
+  overload: AngeliA.Platformer.MovableBullet.CurrentRotation*
+- uid: AngeliA.Platformer.MovableBullet.Velocity
+  commentId: P:AngeliA.Platformer.MovableBullet.Velocity
+  id: Velocity
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: Velocity
+  nameWithType: MovableBullet.Velocity
+  fullName: AngeliA.Platformer.MovableBullet.Velocity
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Velocity
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 27
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public Int2 Velocity { get; set; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Property Velocity As Int2
+  overload: AngeliA.Platformer.MovableBullet.Velocity*
+- uid: AngeliA.Platformer.MovableBullet.InWater
+  commentId: P:AngeliA.Platformer.MovableBullet.InWater
+  id: InWater
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: InWater
+  nameWithType: MovableBullet.InWater
+  fullName: AngeliA.Platformer.MovableBullet.InWater
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InWater
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 28
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public bool InWater { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property InWater As Boolean
+  overload: AngeliA.Platformer.MovableBullet.InWater*
+- uid: AngeliA.Platformer.MovableBullet.HitReceiver
+  commentId: P:AngeliA.Platformer.MovableBullet.HitReceiver
+  id: HitReceiver
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: HitReceiver
+  nameWithType: MovableBullet.HitReceiver
+  fullName: AngeliA.Platformer.MovableBullet.HitReceiver
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HitReceiver
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 29
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: protected bool HitReceiver { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected Property HitReceiver As Boolean
+  overload: AngeliA.Platformer.MovableBullet.HitReceiver*
+- uid: AngeliA.Platformer.MovableBullet.OnActivated
+  commentId: M:AngeliA.Platformer.MovableBullet.OnActivated
+  id: OnActivated
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: OnActivated()
+  nameWithType: MovableBullet.OnActivated()
+  fullName: AngeliA.Platformer.MovableBullet.OnActivated()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnActivated
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 40
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void OnActivated()
+    content.vb: Public Overrides Sub OnActivated()
+  overridden: AngeliA.Bullet.OnActivated
+  overload: AngeliA.Platformer.MovableBullet.OnActivated*
+- uid: AngeliA.Platformer.MovableBullet.BeforeUpdate
+  commentId: M:AngeliA.Platformer.MovableBullet.BeforeUpdate
+  id: BeforeUpdate
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: BeforeUpdate()
+  nameWithType: MovableBullet.BeforeUpdate()
+  fullName: AngeliA.Platformer.MovableBullet.BeforeUpdate()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BeforeUpdate
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 51
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void BeforeUpdate()
+    content.vb: Public Overrides Sub BeforeUpdate()
+  overridden: AngeliA.Bullet.BeforeUpdate
+  overload: AngeliA.Platformer.MovableBullet.BeforeUpdate*
+- uid: AngeliA.Platformer.MovableBullet.LateUpdate
+  commentId: M:AngeliA.Platformer.MovableBullet.LateUpdate
+  id: LateUpdate
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: LateUpdate()
+  nameWithType: MovableBullet.LateUpdate()
+  fullName: AngeliA.Platformer.MovableBullet.LateUpdate()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LateUpdate
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 133
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void LateUpdate()
+    content.vb: Public Overrides Sub LateUpdate()
+  overridden: AngeliA.Entity.LateUpdate
+  overload: AngeliA.Platformer.MovableBullet.LateUpdate*
+- uid: AngeliA.Platformer.MovableBullet.BeforeDespawn(AngeliA.IDamageReceiver)
+  commentId: M:AngeliA.Platformer.MovableBullet.BeforeDespawn(AngeliA.IDamageReceiver)
+  id: BeforeDespawn(AngeliA.IDamageReceiver)
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: BeforeDespawn(IDamageReceiver)
+  nameWithType: MovableBullet.BeforeDespawn(IDamageReceiver)
+  fullName: AngeliA.Platformer.MovableBullet.BeforeDespawn(AngeliA.IDamageReceiver)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BeforeDespawn
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 186
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: protected override void BeforeDespawn(IDamageReceiver receiver)
+    parameters:
+    - id: receiver
+      type: AngeliA.IDamageReceiver
+    content.vb: Protected Overrides Sub BeforeDespawn(receiver As IDamageReceiver)
+  overridden: AngeliA.Bullet.BeforeDespawn(AngeliA.IDamageReceiver)
+  overload: AngeliA.Platformer.MovableBullet.BeforeDespawn*
+- uid: AngeliA.Platformer.MovableBullet.StartMove(AngeliA.Direction8,System.Int32,System.Int32)
+  commentId: M:AngeliA.Platformer.MovableBullet.StartMove(AngeliA.Direction8,System.Int32,System.Int32)
+  id: StartMove(AngeliA.Direction8,System.Int32,System.Int32)
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: StartMove(Direction8, int, int)
+  nameWithType: MovableBullet.StartMove(Direction8, int, int)
+  fullName: AngeliA.Platformer.MovableBullet.StartMove(AngeliA.Direction8, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: StartMove
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 218
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual void StartMove(Direction8 dir, int speedForward, int speedSide)
+    parameters:
+    - id: dir
+      type: AngeliA.Direction8
+    - id: speedForward
+      type: System.Int32
+    - id: speedSide
+      type: System.Int32
+    content.vb: Public Overridable Sub StartMove(dir As Direction8, speedForward As Integer, speedSide As Integer)
+  overload: AngeliA.Platformer.MovableBullet.StartMove*
+  nameWithType.vb: MovableBullet.StartMove(Direction8, Integer, Integer)
+  fullName.vb: AngeliA.Platformer.MovableBullet.StartMove(AngeliA.Direction8, Integer, Integer)
+  name.vb: StartMove(Direction8, Integer, Integer)
+- uid: AngeliA.Platformer.MovableBullet.GetLastUpdatedTramsform
+  commentId: M:AngeliA.Platformer.MovableBullet.GetLastUpdatedTramsform
+  id: GetLastUpdatedTramsform
+  parent: AngeliA.Platformer.MovableBullet
+  langs:
+  - csharp
+  - vb
+  name: GetLastUpdatedTramsform()
+  nameWithType: MovableBullet.GetLastUpdatedTramsform()
+  fullName: AngeliA.Platformer.MovableBullet.GetLastUpdatedTramsform()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetLastUpdatedTramsform
+    path: ../AngeliA Platformer/src/Entity/Bullet/MovableBullet.cs
+    startLine: 281
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: protected (int startX, int startY, int endX, int endY, int length, int rotation1000, bool beamHitReceiver) GetLastUpdatedTramsform()
+    return:
+      type: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}
+    content.vb: Protected Function GetLastUpdatedTramsform() As (startX As Integer, startY As Integer, endX As Integer, endY As Integer, length As Integer, rotation1000 As Integer, beamHitReceiver As Boolean)
+  overload: AngeliA.Platformer.MovableBullet.GetLastUpdatedTramsform*
+references:
+- uid: AngeliA.Platformer
+  commentId: N:AngeliA.Platformer
+  href: AngeliA.html
+  name: AngeliA.Platformer
+  nameWithType: AngeliA.Platformer
+  fullName: AngeliA.Platformer
+  spec.csharp:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+  spec.vb:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Entity
+  commentId: T:AngeliA.Entity
+  parent: AngeliA
+  href: AngeliA.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: AngeliA.Entity
+- uid: AngeliA.Bullet
+  commentId: T:AngeliA.Bullet
+  parent: AngeliA
+  href: AngeliA.Bullet.html
+  name: Bullet
+  nameWithType: Bullet
+  fullName: AngeliA.Bullet
+- uid: AngeliA.IMapItem
+  commentId: T:AngeliA.IMapItem
+  parent: AngeliA
+  href: AngeliA.IMapItem.html
+  name: IMapItem
+  nameWithType: IMapItem
+  fullName: AngeliA.IMapItem
+- uid: AngeliA.Bullet.AttackIndex
+  commentId: P:AngeliA.Bullet.AttackIndex
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_AttackIndex
+  name: AttackIndex
+  nameWithType: Bullet.AttackIndex
+  fullName: AngeliA.Bullet.AttackIndex
+- uid: AngeliA.Bullet.AttackCharged
+  commentId: P:AngeliA.Bullet.AttackCharged
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_AttackCharged
+  name: AttackCharged
+  nameWithType: Bullet.AttackCharged
+  fullName: AngeliA.Bullet.AttackCharged
+- uid: AngeliA.Bullet.DamageType
+  commentId: P:AngeliA.Bullet.DamageType
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_DamageType
+  name: DamageType
+  nameWithType: Bullet.DamageType
+  fullName: AngeliA.Bullet.DamageType
+- uid: AngeliA.Bullet.Sender
+  commentId: P:AngeliA.Bullet.Sender
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_Sender
+  name: Sender
+  nameWithType: Bullet.Sender
+  fullName: AngeliA.Bullet.Sender
+- uid: AngeliA.Bullet.FailbackTargetTeam
+  commentId: P:AngeliA.Bullet.FailbackTargetTeam
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_FailbackTargetTeam
+  name: FailbackTargetTeam
+  nameWithType: Bullet.FailbackTargetTeam
+  fullName: AngeliA.Bullet.FailbackTargetTeam
+- uid: AngeliA.Bullet.TargetTeam
+  commentId: P:AngeliA.Bullet.TargetTeam
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_TargetTeam
+  name: TargetTeam
+  nameWithType: Bullet.TargetTeam
+  fullName: AngeliA.Bullet.TargetTeam
+- uid: AngeliA.Bullet.BasicDamage
+  commentId: P:AngeliA.Bullet.BasicDamage
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_BasicDamage
+  name: BasicDamage
+  nameWithType: Bullet.BasicDamage
+  fullName: AngeliA.Bullet.BasicDamage
+- uid: AngeliA.Bullet.EnvironmentMask
+  commentId: P:AngeliA.Bullet.EnvironmentMask
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_EnvironmentMask
+  name: EnvironmentMask
+  nameWithType: Bullet.EnvironmentMask
+  fullName: AngeliA.Bullet.EnvironmentMask
+- uid: AngeliA.Bullet.ReceiverMask
+  commentId: P:AngeliA.Bullet.ReceiverMask
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_ReceiverMask
+  name: ReceiverMask
+  nameWithType: Bullet.ReceiverMask
+  fullName: AngeliA.Bullet.ReceiverMask
+- uid: AngeliA.Bullet.RoundHitCheck
+  commentId: P:AngeliA.Bullet.RoundHitCheck
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_RoundHitCheck
+  name: RoundHitCheck
+  nameWithType: Bullet.RoundHitCheck
+  fullName: AngeliA.Bullet.RoundHitCheck
+- uid: AngeliA.Bullet.Damage
+  commentId: F:AngeliA.Bullet.Damage
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_Damage
+  name: Damage
+  nameWithType: Bullet.Damage
+  fullName: AngeliA.Bullet.Damage
+- uid: AngeliA.Bullet.Update
+  commentId: M:AngeliA.Bullet.Update
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_Update
+  name: Update()
+  nameWithType: Bullet.Update()
+  fullName: AngeliA.Bullet.Update()
+  spec.csharp:
+  - uid: AngeliA.Bullet.Update
+    name: Update
+    href: AngeliA.Bullet.html#AngeliA_Bullet_Update
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Bullet.Update
+    name: Update
+    href: AngeliA.Bullet.html#AngeliA_Bullet_Update
+  - name: (
+  - name: )
+- uid: AngeliA.Bullet.ReceiverHitCheck(System.Boolean@)
+  commentId: M:AngeliA.Bullet.ReceiverHitCheck(System.Boolean@)
+  parent: AngeliA.Bullet
+  isExternal: true
+  href: AngeliA.Bullet.html#AngeliA_Bullet_ReceiverHitCheck_System_Boolean__
+  name: ReceiverHitCheck(out bool)
+  nameWithType: Bullet.ReceiverHitCheck(out bool)
+  fullName: AngeliA.Bullet.ReceiverHitCheck(out bool)
+  nameWithType.vb: Bullet.ReceiverHitCheck(Boolean)
+  fullName.vb: AngeliA.Bullet.ReceiverHitCheck(Boolean)
+  name.vb: ReceiverHitCheck(Boolean)
+  spec.csharp:
+  - uid: AngeliA.Bullet.ReceiverHitCheck(System.Boolean@)
+    name: ReceiverHitCheck
+    href: AngeliA.Bullet.html#AngeliA_Bullet_ReceiverHitCheck_System_Boolean__
+  - name: (
+  - name: out
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Bullet.ReceiverHitCheck(System.Boolean@)
+    name: ReceiverHitCheck
+    href: AngeliA.Bullet.html#AngeliA_Bullet_ReceiverHitCheck_System_Boolean__
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Bullet.EnvironmentHitCheck(System.Boolean@)
+  commentId: M:AngeliA.Bullet.EnvironmentHitCheck(System.Boolean@)
+  parent: AngeliA.Bullet
+  isExternal: true
+  href: AngeliA.Bullet.html#AngeliA_Bullet_EnvironmentHitCheck_System_Boolean__
+  name: EnvironmentHitCheck(out bool)
+  nameWithType: Bullet.EnvironmentHitCheck(out bool)
+  fullName: AngeliA.Bullet.EnvironmentHitCheck(out bool)
+  nameWithType.vb: Bullet.EnvironmentHitCheck(Boolean)
+  fullName.vb: AngeliA.Bullet.EnvironmentHitCheck(Boolean)
+  name.vb: EnvironmentHitCheck(Boolean)
+  spec.csharp:
+  - uid: AngeliA.Bullet.EnvironmentHitCheck(System.Boolean@)
+    name: EnvironmentHitCheck
+    href: AngeliA.Bullet.html#AngeliA_Bullet_EnvironmentHitCheck_System_Boolean__
+  - name: (
+  - name: out
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Bullet.EnvironmentHitCheck(System.Boolean@)
+    name: EnvironmentHitCheck
+    href: AngeliA.Bullet.html#AngeliA_Bullet_EnvironmentHitCheck_System_Boolean__
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Bullet.PerformHitEnvironment(System.Boolean@)
+  commentId: M:AngeliA.Bullet.PerformHitEnvironment(System.Boolean@)
+  parent: AngeliA.Bullet
+  isExternal: true
+  href: AngeliA.Bullet.html#AngeliA_Bullet_PerformHitEnvironment_System_Boolean__
+  name: PerformHitEnvironment(out bool)
+  nameWithType: Bullet.PerformHitEnvironment(out bool)
+  fullName: AngeliA.Bullet.PerformHitEnvironment(out bool)
+  nameWithType.vb: Bullet.PerformHitEnvironment(Boolean)
+  fullName.vb: AngeliA.Bullet.PerformHitEnvironment(Boolean)
+  name.vb: PerformHitEnvironment(Boolean)
+  spec.csharp:
+  - uid: AngeliA.Bullet.PerformHitEnvironment(System.Boolean@)
+    name: PerformHitEnvironment
+    href: AngeliA.Bullet.html#AngeliA_Bullet_PerformHitEnvironment_System_Boolean__
+  - name: (
+  - name: out
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Bullet.PerformHitEnvironment(System.Boolean@)
+    name: PerformHitEnvironment
+    href: AngeliA.Bullet.html#AngeliA_Bullet_PerformHitEnvironment_System_Boolean__
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Bullet.PerformHitReceiver(AngeliA.IDamageReceiver,System.Boolean@)
+  commentId: M:AngeliA.Bullet.PerformHitReceiver(AngeliA.IDamageReceiver,System.Boolean@)
+  parent: AngeliA.Bullet
+  isExternal: true
+  href: AngeliA.Bullet.html#AngeliA_Bullet_PerformHitReceiver_AngeliA_IDamageReceiver_System_Boolean__
+  name: PerformHitReceiver(IDamageReceiver, out bool)
+  nameWithType: Bullet.PerformHitReceiver(IDamageReceiver, out bool)
+  fullName: AngeliA.Bullet.PerformHitReceiver(AngeliA.IDamageReceiver, out bool)
+  nameWithType.vb: Bullet.PerformHitReceiver(IDamageReceiver, Boolean)
+  fullName.vb: AngeliA.Bullet.PerformHitReceiver(AngeliA.IDamageReceiver, Boolean)
+  name.vb: PerformHitReceiver(IDamageReceiver, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Bullet.PerformHitReceiver(AngeliA.IDamageReceiver,System.Boolean@)
+    name: PerformHitReceiver
+    href: AngeliA.Bullet.html#AngeliA_Bullet_PerformHitReceiver_AngeliA_IDamageReceiver_System_Boolean__
+  - name: (
+  - uid: AngeliA.IDamageReceiver
+    name: IDamageReceiver
+    href: AngeliA.IDamageReceiver.html
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Bullet.PerformHitReceiver(AngeliA.IDamageReceiver,System.Boolean@)
+    name: PerformHitReceiver
+    href: AngeliA.Bullet.html#AngeliA_Bullet_PerformHitReceiver_AngeliA_IDamageReceiver_System_Boolean__
+  - name: (
+  - uid: AngeliA.IDamageReceiver
+    name: IDamageReceiver
+    href: AngeliA.IDamageReceiver.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Bullet.GroundCheck(AngeliA.Color32@)
+  commentId: M:AngeliA.Bullet.GroundCheck(AngeliA.Color32@)
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_GroundCheck_AngeliA_Color32__
+  name: GroundCheck(out Color32)
+  nameWithType: Bullet.GroundCheck(out Color32)
+  fullName: AngeliA.Bullet.GroundCheck(out AngeliA.Color32)
+  nameWithType.vb: Bullet.GroundCheck(Color32)
+  fullName.vb: AngeliA.Bullet.GroundCheck(AngeliA.Color32)
+  name.vb: GroundCheck(Color32)
+  spec.csharp:
+  - uid: AngeliA.Bullet.GroundCheck(AngeliA.Color32@)
+    name: GroundCheck
+    href: AngeliA.Bullet.html#AngeliA_Bullet_GroundCheck_AngeliA_Color32__
+  - name: (
+  - name: out
+  - name: " "
+  - uid: AngeliA.Color32
+    name: Color32
+    href: AngeliA.Color32.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Bullet.GroundCheck(AngeliA.Color32@)
+    name: GroundCheck
+    href: AngeliA.Bullet.html#AngeliA_Bullet_GroundCheck_AngeliA_Color32__
+  - name: (
+  - uid: AngeliA.Color32
+    name: Color32
+    href: AngeliA.Color32.html
+  - name: )
+- uid: AngeliA.Bullet.GetDamage
+  commentId: M:AngeliA.Bullet.GetDamage
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_GetDamage
+  name: GetDamage()
+  nameWithType: Bullet.GetDamage()
+  fullName: AngeliA.Bullet.GetDamage()
+  spec.csharp:
+  - uid: AngeliA.Bullet.GetDamage
+    name: GetDamage
+    href: AngeliA.Bullet.html#AngeliA_Bullet_GetDamage
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Bullet.GetDamage
+    name: GetDamage
+    href: AngeliA.Bullet.html#AngeliA_Bullet_GetDamage
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.Active
+  commentId: P:AngeliA.Entity.Active
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Active
+  name: Active
+  nameWithType: Entity.Active
+  fullName: AngeliA.Entity.Active
+- uid: AngeliA.Entity.X
+  commentId: P:AngeliA.Entity.X
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_X
+  name: X
+  nameWithType: Entity.X
+  fullName: AngeliA.Entity.X
+- uid: AngeliA.Entity.Y
+  commentId: P:AngeliA.Entity.Y
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Y
+  name: Y
+  nameWithType: Entity.Y
+  fullName: AngeliA.Entity.Y
+- uid: AngeliA.Entity.Width
+  commentId: P:AngeliA.Entity.Width
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Width
+  name: Width
+  nameWithType: Entity.Width
+  fullName: AngeliA.Entity.Width
+- uid: AngeliA.Entity.Height
+  commentId: P:AngeliA.Entity.Height
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Height
+  name: Height
+  nameWithType: Entity.Height
+  fullName: AngeliA.Entity.Height
+- uid: AngeliA.Entity.TypeID
+  commentId: P:AngeliA.Entity.TypeID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_TypeID
+  name: TypeID
+  nameWithType: Entity.TypeID
+  fullName: AngeliA.Entity.TypeID
+- uid: AngeliA.Entity.SpawnFrame
+  commentId: P:AngeliA.Entity.SpawnFrame
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_SpawnFrame
+  name: SpawnFrame
+  nameWithType: Entity.SpawnFrame
+  fullName: AngeliA.Entity.SpawnFrame
+- uid: AngeliA.Entity.FromWorld
+  commentId: P:AngeliA.Entity.FromWorld
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_FromWorld
+  name: FromWorld
+  nameWithType: Entity.FromWorld
+  fullName: AngeliA.Entity.FromWorld
+- uid: AngeliA.Entity.Rect
+  commentId: P:AngeliA.Entity.Rect
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Rect
+  name: Rect
+  nameWithType: Entity.Rect
+  fullName: AngeliA.Entity.Rect
+- uid: AngeliA.Entity.InstanceOrder
+  commentId: P:AngeliA.Entity.InstanceOrder
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceOrder
+  name: InstanceOrder
+  nameWithType: Entity.InstanceOrder
+  fullName: AngeliA.Entity.InstanceOrder
+- uid: AngeliA.Entity.MapUnitPos
+  commentId: P:AngeliA.Entity.MapUnitPos
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_MapUnitPos
+  name: MapUnitPos
+  nameWithType: Entity.MapUnitPos
+  fullName: AngeliA.Entity.MapUnitPos
+- uid: AngeliA.Entity.InstanceID
+  commentId: P:AngeliA.Entity.InstanceID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceID
+  name: InstanceID
+  nameWithType: Entity.InstanceID
+  fullName: AngeliA.Entity.InstanceID
+- uid: AngeliA.Entity.IgnoreReposition
+  commentId: P:AngeliA.Entity.IgnoreReposition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreReposition
+  name: IgnoreReposition
+  nameWithType: Entity.IgnoreReposition
+  fullName: AngeliA.Entity.IgnoreReposition
+- uid: AngeliA.Entity.XY
+  commentId: P:AngeliA.Entity.XY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_XY
+  name: XY
+  nameWithType: Entity.XY
+  fullName: AngeliA.Entity.XY
+- uid: AngeliA.Entity.Size
+  commentId: P:AngeliA.Entity.Size
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Size
+  name: Size
+  nameWithType: Entity.Size
+  fullName: AngeliA.Entity.Size
+- uid: AngeliA.Entity.Center
+  commentId: P:AngeliA.Entity.Center
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Center
+  name: Center
+  nameWithType: Entity.Center
+  fullName: AngeliA.Entity.Center
+- uid: AngeliA.Entity.CenterX
+  commentId: P:AngeliA.Entity.CenterX
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterX
+  name: CenterX
+  nameWithType: Entity.CenterX
+  fullName: AngeliA.Entity.CenterX
+- uid: AngeliA.Entity.CenterY
+  commentId: P:AngeliA.Entity.CenterY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterY
+  name: CenterY
+  nameWithType: Entity.CenterY
+  fullName: AngeliA.Entity.CenterY
+- uid: AngeliA.Entity.PivotUnitPosition
+  commentId: P:AngeliA.Entity.PivotUnitPosition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_PivotUnitPosition
+  name: PivotUnitPosition
+  nameWithType: Entity.PivotUnitPosition
+  fullName: AngeliA.Entity.PivotUnitPosition
+- uid: AngeliA.Entity.OnInactivated
+  commentId: M:AngeliA.Entity.OnInactivated
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  name: OnInactivated()
+  nameWithType: Entity.OnInactivated()
+  fullName: AngeliA.Entity.OnInactivated()
+  spec.csharp:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.FirstUpdate
+  commentId: M:AngeliA.Entity.FirstUpdate
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_FirstUpdate
+  name: FirstUpdate()
+  nameWithType: Entity.FirstUpdate()
+  fullName: AngeliA.Entity.FirstUpdate()
+  spec.csharp:
+  - uid: AngeliA.Entity.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_FirstUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_FirstUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  commentId: M:AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  name: AfterReposition(Int3, Int3)
+  nameWithType: Entity.AfterReposition(Int3, Int3)
+  fullName: AngeliA.Entity.AfterReposition(AngeliA.Int3, AngeliA.Int3)
+  spec.csharp:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+- uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  commentId: M:AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  parent: AngeliA.Entity
+  isExternal: true
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  name: IgnoreDespawnFromMap(int)
+  nameWithType: Entity.IgnoreDespawnFromMap(int)
+  fullName: AngeliA.Entity.IgnoreDespawnFromMap(int)
+  nameWithType.vb: Entity.IgnoreDespawnFromMap(Integer)
+  fullName.vb: AngeliA.Entity.IgnoreDespawnFromMap(Integer)
+  name.vb: IgnoreDespawnFromMap(Integer)
+  spec.csharp:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+  commentId: M:AngeliA.Entity.CancelIgnoreDespawnFromMap
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  name: CancelIgnoreDespawnFromMap()
+  nameWithType: Entity.CancelIgnoreDespawnFromMap()
+  fullName: AngeliA.Entity.CancelIgnoreDespawnFromMap()
+  spec.csharp:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.Draw
+  commentId: M:AngeliA.Entity.Draw
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  name: Draw()
+  nameWithType: Entity.Draw()
+  fullName: AngeliA.Entity.Draw()
+  spec.csharp:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Platformer.MovableBullet.SpeedForward*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.SpeedForward
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_SpeedForward
+  name: SpeedForward
+  nameWithType: MovableBullet.SpeedForward
+  fullName: AngeliA.Platformer.MovableBullet.SpeedForward
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Platformer.MovableBullet.SpeedSide*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.SpeedSide
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_SpeedSide
+  name: SpeedSide
+  nameWithType: MovableBullet.SpeedSide
+  fullName: AngeliA.Platformer.MovableBullet.SpeedSide
+- uid: AngeliA.Platformer.MovableBullet.AriDrag*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.AriDrag
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_AriDrag
+  name: AriDrag
+  nameWithType: MovableBullet.AriDrag
+  fullName: AngeliA.Platformer.MovableBullet.AriDrag
+- uid: AngeliA.Int2
+  commentId: T:AngeliA.Int2
+  parent: AngeliA
+  href: AngeliA.Int2.html
+  name: Int2
+  nameWithType: Int2
+  fullName: AngeliA.Int2
+- uid: AngeliA.Platformer.MovableBullet.Gravity*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.Gravity
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_Gravity
+  name: Gravity
+  nameWithType: MovableBullet.Gravity
+  fullName: AngeliA.Platformer.MovableBullet.Gravity
+- uid: AngeliA.Platformer.MovableBullet.StartRotation*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.StartRotation
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_StartRotation
+  name: StartRotation
+  nameWithType: MovableBullet.StartRotation
+  fullName: AngeliA.Platformer.MovableBullet.StartRotation
+- uid: AngeliA.Platformer.MovableBullet.RotateSpeed*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.RotateSpeed
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_RotateSpeed
+  name: RotateSpeed
+  nameWithType: MovableBullet.RotateSpeed
+  fullName: AngeliA.Platformer.MovableBullet.RotateSpeed
+- uid: AngeliA.Platformer.MovableBullet.EndRotation*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.EndRotation
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_EndRotation
+  name: EndRotation
+  nameWithType: MovableBullet.EndRotation
+  fullName: AngeliA.Platformer.MovableBullet.EndRotation
+- uid: AngeliA.Platformer.MovableBullet.EndRotationRandomRange*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.EndRotationRandomRange
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_EndRotationRandomRange
+  name: EndRotationRandomRange
+  nameWithType: MovableBullet.EndRotationRandomRange
+  fullName: AngeliA.Platformer.MovableBullet.EndRotationRandomRange
+- uid: AngeliA.Platformer.MovableBullet.ResidueID*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.ResidueID
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_ResidueID
+  name: ResidueID
+  nameWithType: MovableBullet.ResidueID
+  fullName: AngeliA.Platformer.MovableBullet.ResidueID
+- uid: AngeliA.Platformer.MovableBullet.ArtworkID*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.ArtworkID
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_ArtworkID
+  name: ArtworkID
+  nameWithType: MovableBullet.ArtworkID
+  fullName: AngeliA.Platformer.MovableBullet.ArtworkID
+- uid: AngeliA.Platformer.MovableBullet.Scale*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.Scale
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_Scale
+  name: Scale
+  nameWithType: MovableBullet.Scale
+  fullName: AngeliA.Platformer.MovableBullet.Scale
+- uid: AngeliA.Platformer.MovableBullet.WaterSpeedRate*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.WaterSpeedRate
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_WaterSpeedRate
+  name: WaterSpeedRate
+  nameWithType: MovableBullet.WaterSpeedRate
+  fullName: AngeliA.Platformer.MovableBullet.WaterSpeedRate
+- uid: AngeliA.Platformer.MovableBullet.MaxRange*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.MaxRange
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_MaxRange
+  name: MaxRange
+  nameWithType: MovableBullet.MaxRange
+  fullName: AngeliA.Platformer.MovableBullet.MaxRange
+- uid: AngeliA.Bullet.Duration
+  commentId: P:AngeliA.Bullet.Duration
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_Duration
+  name: Duration
+  nameWithType: Bullet.Duration
+  fullName: AngeliA.Bullet.Duration
+- uid: AngeliA.Platformer.MovableBullet.Duration*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.Duration
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_Duration
+  name: Duration
+  nameWithType: MovableBullet.Duration
+  fullName: AngeliA.Platformer.MovableBullet.Duration
+- uid: AngeliA.Bullet.EnvironmentHitCount
+  commentId: P:AngeliA.Bullet.EnvironmentHitCount
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_EnvironmentHitCount
+  name: EnvironmentHitCount
+  nameWithType: Bullet.EnvironmentHitCount
+  fullName: AngeliA.Bullet.EnvironmentHitCount
+- uid: AngeliA.Platformer.MovableBullet.EnvironmentHitCount*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.EnvironmentHitCount
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_EnvironmentHitCount
+  name: EnvironmentHitCount
+  nameWithType: MovableBullet.EnvironmentHitCount
+  fullName: AngeliA.Platformer.MovableBullet.EnvironmentHitCount
+- uid: AngeliA.Bullet.ReceiverHitCount
+  commentId: P:AngeliA.Bullet.ReceiverHitCount
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_ReceiverHitCount
+  name: ReceiverHitCount
+  nameWithType: Bullet.ReceiverHitCount
+  fullName: AngeliA.Bullet.ReceiverHitCount
+- uid: AngeliA.Platformer.MovableBullet.ReceiverHitCount*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.ReceiverHitCount
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_ReceiverHitCount
+  name: ReceiverHitCount
+  nameWithType: MovableBullet.ReceiverHitCount
+  fullName: AngeliA.Platformer.MovableBullet.ReceiverHitCount
+- uid: AngeliA.Platformer.MovableBullet.CurrentRotation*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.CurrentRotation
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_CurrentRotation
+  name: CurrentRotation
+  nameWithType: MovableBullet.CurrentRotation
+  fullName: AngeliA.Platformer.MovableBullet.CurrentRotation
+- uid: AngeliA.Platformer.MovableBullet.Velocity*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.Velocity
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_Velocity
+  name: Velocity
+  nameWithType: MovableBullet.Velocity
+  fullName: AngeliA.Platformer.MovableBullet.Velocity
+- uid: AngeliA.Platformer.MovableBullet.InWater*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.InWater
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_InWater
+  name: InWater
+  nameWithType: MovableBullet.InWater
+  fullName: AngeliA.Platformer.MovableBullet.InWater
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Platformer.MovableBullet.HitReceiver*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.HitReceiver
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_HitReceiver
+  name: HitReceiver
+  nameWithType: MovableBullet.HitReceiver
+  fullName: AngeliA.Platformer.MovableBullet.HitReceiver
+- uid: AngeliA.Bullet.OnActivated
+  commentId: M:AngeliA.Bullet.OnActivated
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_OnActivated
+  name: OnActivated()
+  nameWithType: Bullet.OnActivated()
+  fullName: AngeliA.Bullet.OnActivated()
+  spec.csharp:
+  - uid: AngeliA.Bullet.OnActivated
+    name: OnActivated
+    href: AngeliA.Bullet.html#AngeliA_Bullet_OnActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Bullet.OnActivated
+    name: OnActivated
+    href: AngeliA.Bullet.html#AngeliA_Bullet_OnActivated
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.MovableBullet.OnActivated*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.OnActivated
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_OnActivated
+  name: OnActivated
+  nameWithType: MovableBullet.OnActivated
+  fullName: AngeliA.Platformer.MovableBullet.OnActivated
+- uid: AngeliA.Bullet.BeforeUpdate
+  commentId: M:AngeliA.Bullet.BeforeUpdate
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_BeforeUpdate
+  name: BeforeUpdate()
+  nameWithType: Bullet.BeforeUpdate()
+  fullName: AngeliA.Bullet.BeforeUpdate()
+  spec.csharp:
+  - uid: AngeliA.Bullet.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.Bullet.html#AngeliA_Bullet_BeforeUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Bullet.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.Bullet.html#AngeliA_Bullet_BeforeUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.MovableBullet.BeforeUpdate*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.BeforeUpdate
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_BeforeUpdate
+  name: BeforeUpdate
+  nameWithType: MovableBullet.BeforeUpdate
+  fullName: AngeliA.Platformer.MovableBullet.BeforeUpdate
+- uid: AngeliA.Entity.LateUpdate
+  commentId: M:AngeliA.Entity.LateUpdate
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_LateUpdate
+  name: LateUpdate()
+  nameWithType: Entity.LateUpdate()
+  fullName: AngeliA.Entity.LateUpdate()
+  spec.csharp:
+  - uid: AngeliA.Entity.LateUpdate
+    name: LateUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_LateUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.LateUpdate
+    name: LateUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_LateUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.MovableBullet.LateUpdate*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.LateUpdate
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_LateUpdate
+  name: LateUpdate
+  nameWithType: MovableBullet.LateUpdate
+  fullName: AngeliA.Platformer.MovableBullet.LateUpdate
+- uid: AngeliA.Bullet.BeforeDespawn(AngeliA.IDamageReceiver)
+  commentId: M:AngeliA.Bullet.BeforeDespawn(AngeliA.IDamageReceiver)
+  parent: AngeliA.Bullet
+  href: AngeliA.Bullet.html#AngeliA_Bullet_BeforeDespawn_AngeliA_IDamageReceiver_
+  name: BeforeDespawn(IDamageReceiver)
+  nameWithType: Bullet.BeforeDespawn(IDamageReceiver)
+  fullName: AngeliA.Bullet.BeforeDespawn(AngeliA.IDamageReceiver)
+  spec.csharp:
+  - uid: AngeliA.Bullet.BeforeDespawn(AngeliA.IDamageReceiver)
+    name: BeforeDespawn
+    href: AngeliA.Bullet.html#AngeliA_Bullet_BeforeDespawn_AngeliA_IDamageReceiver_
+  - name: (
+  - uid: AngeliA.IDamageReceiver
+    name: IDamageReceiver
+    href: AngeliA.IDamageReceiver.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Bullet.BeforeDespawn(AngeliA.IDamageReceiver)
+    name: BeforeDespawn
+    href: AngeliA.Bullet.html#AngeliA_Bullet_BeforeDespawn_AngeliA_IDamageReceiver_
+  - name: (
+  - uid: AngeliA.IDamageReceiver
+    name: IDamageReceiver
+    href: AngeliA.IDamageReceiver.html
+  - name: )
+- uid: AngeliA.Platformer.MovableBullet.BeforeDespawn*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.BeforeDespawn
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_BeforeDespawn_AngeliA_IDamageReceiver_
+  name: BeforeDespawn
+  nameWithType: MovableBullet.BeforeDespawn
+  fullName: AngeliA.Platformer.MovableBullet.BeforeDespawn
+- uid: AngeliA.IDamageReceiver
+  commentId: T:AngeliA.IDamageReceiver
+  parent: AngeliA
+  href: AngeliA.IDamageReceiver.html
+  name: IDamageReceiver
+  nameWithType: IDamageReceiver
+  fullName: AngeliA.IDamageReceiver
+- uid: AngeliA.Platformer.MovableBullet.StartMove*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.StartMove
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_StartMove_AngeliA_Direction8_System_Int32_System_Int32_
+  name: StartMove
+  nameWithType: MovableBullet.StartMove
+  fullName: AngeliA.Platformer.MovableBullet.StartMove
+- uid: AngeliA.Direction8
+  commentId: T:AngeliA.Direction8
+  parent: AngeliA
+  href: AngeliA.Direction8.html
+  name: Direction8
+  nameWithType: Direction8
+  fullName: AngeliA.Direction8
+- uid: AngeliA.Platformer.MovableBullet.GetLastUpdatedTramsform*
+  commentId: Overload:AngeliA.Platformer.MovableBullet.GetLastUpdatedTramsform
+  href: AngeliA.Platformer.MovableBullet.html#AngeliA_Platformer_MovableBullet_GetLastUpdatedTramsform
+  name: GetLastUpdatedTramsform
+  nameWithType: MovableBullet.GetLastUpdatedTramsform
+  fullName: AngeliA.Platformer.MovableBullet.GetLastUpdatedTramsform
+- uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}
+  commentId: T:System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}
+  parent: System
+  definition: System.ValueTuple`7
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: (int startX, int startY, int endX, int endY, int length, int rotation1000, bool beamHitReceiver)
+  nameWithType: (int startX, int startY, int endX, int endY, int length, int rotation1000, bool beamHitReceiver)
+  fullName: (int startX, int startY, int endX, int endY, int length, int rotation1000, bool beamHitReceiver)
+  nameWithType.vb: (startX As Integer, startY As Integer, endX As Integer, endY As Integer, length As Integer, rotation1000 As Integer, beamHitReceiver As Boolean)
+  fullName.vb: (startX As Integer, startY As Integer, endX As Integer, endY As Integer, length As Integer, rotation1000 As Integer, beamHitReceiver As Boolean)
+  name.vb: (startX As Integer, startY As Integer, endX As Integer, endY As Integer, length As Integer, rotation1000 As Integer, beamHitReceiver As Boolean)
+  spec.csharp:
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.startX
+    name: startX
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.startx
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.startY
+    name: startY
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.starty
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.endX
+    name: endX
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.endx
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.endY
+    name: endY
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.endy
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.length
+    name: length
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.length
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.rotation1000
+    name: rotation1000
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.rotation1000
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.beamHitReceiver
+    name: beamHitReceiver
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.beamhitreceiver
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.startX
+    name: startX
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.startx
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.startY
+    name: startY
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.starty
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.endX
+    name: endX
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.endx
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.endY
+    name: endY
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.endy
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.length
+    name: length
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.length
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.rotation1000
+    name: rotation1000
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.rotation1000
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean}.beamHitReceiver
+    name: beamHitReceiver
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.int32,system.int32,system.int32,system.int32,system.int32,system.int32,system.boolean-.beamhitreceiver
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.ValueTuple`7
+  commentId: T:System.ValueTuple`7
+  name: (T1, T2, T3, T4, T5, T6, T7)
+  nameWithType: (T1, T2, T3, T4, T5, T6, T7)
+  fullName: (T1, T2, T3, T4, T5, T6, T7)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: T4
+  - name: ','
+  - name: " "
+  - name: T5
+  - name: ','
+  - name: " "
+  - name: T6
+  - name: ','
+  - name: " "
+  - name: T7
+  - name: )

@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class GenericPopupUI | AngeliA </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class GenericPopupUI | AngeliA ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_GenericPopupUI.md&amp;value=---%0Auid%3A%20AngeliA.GenericPopupUI%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+            AngeliA
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="AngeliA.GenericPopupUI">
+
+
+
+  <h1 id="AngeliA_GenericPopupUI" data-uid="AngeliA.GenericPopupUI" class="text-break">
+Class GenericPopupUI  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L6"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>AngeliA Framework.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Entity.StageOrder(4096)]
+[Entity.Capacity(1, 1)]
+public class GenericPopupUI : EntityUI, IMapItem, IWindowEntityUI</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="AngeliA.Entity.html">Entity</a></div>
+      <div><a class="xref" href="AngeliA.EntityUI.html">EntityUI</a></div>
+      <div><span class="xref">GenericPopupUI</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></div>
+      <div><a class="xref" href="AngeliA.IWindowEntityUI.html">IWindowEntityUI</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_Update">EntityUI.Update()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate">EntityUI.LateUpdate()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_Unify_System_Int32_">EntityUI.Unify(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Active">Entity.Active</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_X">Entity.X</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Y">Entity.Y</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Width">Entity.Width</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Height">Entity.Height</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_TypeID">Entity.TypeID</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_SpawnFrame">Entity.SpawnFrame</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_FromWorld">Entity.FromWorld</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Rect">Entity.Rect</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_InstanceOrder">Entity.InstanceOrder</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_MapUnitPos">Entity.MapUnitPos</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_InstanceID">Entity.InstanceID</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_IgnoreReposition">Entity.IgnoreReposition</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_XY">Entity.XY</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Size">Entity.Size</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Center">Entity.Center</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CenterX">Entity.CenterX</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CenterY">Entity.CenterY</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_PivotUnitPosition">Entity.PivotUnitPosition</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate">Entity.BeforeUpdate()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_">Entity.AfterReposition(Int3, Int3)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_">Entity.IgnoreDespawnFromMap(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap">Entity.CancelIgnoreDespawnFromMap()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Draw">Entity.Draw()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="AngeliA_GenericPopupUI__ctor_" data-uid="AngeliA.GenericPopupUI.#ctor*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI__ctor" data-uid="AngeliA.GenericPopupUI.#ctor">
+  GenericPopupUI()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GenericPopupUI()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="AngeliA_GenericPopupUI_BackgroundRect_" data-uid="AngeliA.GenericPopupUI.BackgroundRect*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_BackgroundRect" data-uid="AngeliA.GenericPopupUI.BackgroundRect">
+  BackgroundRect
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRect BackgroundRect { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_BlockEvent_" data-uid="AngeliA.GenericPopupUI.BlockEvent*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_BlockEvent" data-uid="AngeliA.GenericPopupUI.BlockEvent">
+  BlockEvent
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool BlockEvent { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_CurrentItemCount_" data-uid="AngeliA.GenericPopupUI.CurrentItemCount*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_CurrentItemCount" data-uid="AngeliA.GenericPopupUI.CurrentItemCount">
+  CurrentItemCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int CurrentItemCount { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_CurrentSubLevel_" data-uid="AngeliA.GenericPopupUI.CurrentSubLevel*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_CurrentSubLevel" data-uid="AngeliA.GenericPopupUI.CurrentSubLevel">
+  CurrentSubLevel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CurrentSubLevel { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_Instance_" data-uid="AngeliA.GenericPopupUI.Instance*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_Instance" data-uid="AngeliA.GenericPopupUI.Instance">
+  Instance
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static GenericPopupUI Instance { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.GenericPopupUI.html">GenericPopupUI</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_InvokingItemData_" data-uid="AngeliA.GenericPopupUI.InvokingItemData*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_InvokingItemData" data-uid="AngeliA.GenericPopupUI.InvokingItemData">
+  InvokingItemData
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object InvokingItemData { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_InvokingItemlabel_" data-uid="AngeliA.GenericPopupUI.InvokingItemlabel*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_InvokingItemlabel" data-uid="AngeliA.GenericPopupUI.InvokingItemlabel">
+  InvokingItemlabel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string InvokingItemlabel { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_MenuID_" data-uid="AngeliA.GenericPopupUI.MenuID*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_MenuID" data-uid="AngeliA.GenericPopupUI.MenuID">
+  MenuID
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int MenuID { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_OffsetX_" data-uid="AngeliA.GenericPopupUI.OffsetX*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_OffsetX" data-uid="AngeliA.GenericPopupUI.OffsetX">
+  OffsetX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int OffsetX { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_OffsetY_" data-uid="AngeliA.GenericPopupUI.OffsetY*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_OffsetY" data-uid="AngeliA.GenericPopupUI.OffsetY">
+  OffsetY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int OffsetY { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_ShowingPopup_" data-uid="AngeliA.GenericPopupUI.ShowingPopup*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_ShowingPopup" data-uid="AngeliA.GenericPopupUI.ShowingPopup">
+  ShowingPopup
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool ShowingPopup { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="AngeliA_GenericPopupUI_AddItem_" data-uid="AngeliA.GenericPopupUI.AddItem*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_AddItem_System_String_System_Action_System_Boolean_System_Boolean_System_Object_System_Boolean_" data-uid="AngeliA.GenericPopupUI.AddItem(System.String,System.Action,System.Boolean,System.Boolean,System.Object,System.Boolean)">
+  AddItem(string, Action, bool, bool, object, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L430"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddItem(string label, Action action, bool enabled = true, bool @checked = false, object data = null, bool editable = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action">Action</a></dt>
+    <dd></dd>
+    <dt><code>enabled</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>checked</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>data</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+    <dt><code>editable</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_AddItem_" data-uid="AngeliA.GenericPopupUI.AddItem*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_AddItem_System_String_System_Int32_AngeliA_Direction2_System_Int32_System_Action_System_Boolean_System_Boolean_System_Object_System_Boolean_" data-uid="AngeliA.GenericPopupUI.AddItem(System.String,System.Int32,AngeliA.Direction2,System.Int32,System.Action,System.Boolean,System.Boolean,System.Object,System.Boolean)">
+  AddItem(string, int, Direction2, int, Action, bool, bool, object, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L433"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddItem(string label, int icon, Direction2 iconPosition, int checkMarkSprite, Action action, bool enabled = true, bool @checked = false, object data = null, bool editable = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>iconPosition</code> <a class="xref" href="AngeliA.Direction2.html">Direction2</a></dt>
+    <dd></dd>
+    <dt><code>checkMarkSprite</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action">Action</a></dt>
+    <dd></dd>
+    <dt><code>enabled</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>checked</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>data</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+    <dt><code>editable</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_AddSeparator_" data-uid="AngeliA.GenericPopupUI.AddSeparator*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_AddSeparator" data-uid="AngeliA.GenericPopupUI.AddSeparator">
+  AddSeparator()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L422"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddSeparator()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_BeginPopup_" data-uid="AngeliA.GenericPopupUI.BeginPopup*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_BeginPopup_AngeliA_Int2_System_Int32_" data-uid="AngeliA.GenericPopupUI.BeginPopup(AngeliA.Int2,System.Int32)">
+  BeginPopup(Int2, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L399"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BeginPopup(Int2 globalOffset, int menuID = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>globalOffset</code> <a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
+    <dd></dd>
+    <dt><code>menuID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_BeginPopup_" data-uid="AngeliA.GenericPopupUI.BeginPopup*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_BeginPopup_System_Int32_" data-uid="AngeliA.GenericPopupUI.BeginPopup(System.Int32)">
+  BeginPopup(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L398"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BeginPopup(int menuID = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>menuID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_BeginSubItem_" data-uid="AngeliA.GenericPopupUI.BeginSubItem*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_BeginSubItem" data-uid="AngeliA.GenericPopupUI.BeginSubItem">
+  BeginSubItem()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L439"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BeginSubItem()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_ClearItems_" data-uid="AngeliA.GenericPopupUI.ClearItems*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_ClearItems" data-uid="AngeliA.GenericPopupUI.ClearItems">
+  ClearItems()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L456"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ClearItems()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_ClosePopup_" data-uid="AngeliA.GenericPopupUI.ClosePopup*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_ClosePopup" data-uid="AngeliA.GenericPopupUI.ClosePopup">
+  ClosePopup()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L451"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ClosePopup()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_EndSubItem_" data-uid="AngeliA.GenericPopupUI.EndSubItem*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_EndSubItem" data-uid="AngeliA.GenericPopupUI.EndSubItem">
+  EndSubItem()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L448"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void EndSubItem()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_FirstUpdate_" data-uid="AngeliA.GenericPopupUI.FirstUpdate*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_FirstUpdate" data-uid="AngeliA.GenericPopupUI.FirstUpdate">
+  FirstUpdate()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void FirstUpdate()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_OnActivated_" data-uid="AngeliA.GenericPopupUI.OnActivated*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_OnActivated" data-uid="AngeliA.GenericPopupUI.OnActivated">
+  OnActivated()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnActivated()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_OnInactivated_" data-uid="AngeliA.GenericPopupUI.OnInactivated*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_OnInactivated" data-uid="AngeliA.GenericPopupUI.OnInactivated">
+  OnInactivated()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnInactivated()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_SetTint_" data-uid="AngeliA.GenericPopupUI.SetTint*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_SetTint_AngeliA_Color32_AngeliA_Color32_" data-uid="AngeliA.GenericPopupUI.SetTint(AngeliA.Color32,AngeliA.Color32)">
+  SetTint(Color32, Color32)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L466"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetTint(Color32 labelTint, Color32 iconTint)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>labelTint</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+    <dt><code>iconTint</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GenericPopupUI_UpdateUI_" data-uid="AngeliA.GenericPopupUI.UpdateUI*"></a>
+
+  <h3 id="AngeliA_GenericPopupUI_UpdateUI" data-uid="AngeliA.GenericPopupUI.UpdateUI">
+  UpdateUI()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void UpdateUI()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/GenericPopupUI.cs/#L6" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

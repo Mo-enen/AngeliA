@@ -1,0 +1,3929 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class GUI | AngeliA </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class GUI | AngeliA ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_GUI.md&amp;value=---%0Auid%3A%20AngeliA.GUI%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+            AngeliA
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="AngeliA.GUI">
+
+
+
+  <h1 id="AngeliA_GUI" data-uid="AngeliA.GUI" class="text-break">
+Class GUI  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI_InputField.cs/#L6"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>AngeliA Framework.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class GUI</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">GUI</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="AngeliA_GUI_BodyColor_" data-uid="AngeliA.GUI.BodyColor*"></a>
+
+  <h3 id="AngeliA_GUI_BodyColor" data-uid="AngeliA.GUI.BodyColor">
+  BodyColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color32 BodyColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Color_" data-uid="AngeliA.GUI.Color*"></a>
+
+  <h3 id="AngeliA_GUI_Color" data-uid="AngeliA.GUI.Color">
+  Color
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color32 Color { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ContentColor_" data-uid="AngeliA.GUI.ContentColor*"></a>
+
+  <h3 id="AngeliA_GUI_ContentColor" data-uid="AngeliA.GUI.ContentColor">
+  ContentColor
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Color32 ContentColor { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ContentVersion_" data-uid="AngeliA.GUI.ContentVersion*"></a>
+
+  <h3 id="AngeliA_GUI_ContentVersion" data-uid="AngeliA.GUI.ContentVersion">
+  ContentVersion
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int ContentVersion { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Enable_" data-uid="AngeliA.GUI.Enable*"></a>
+
+  <h3 id="AngeliA_GUI_Enable" data-uid="AngeliA.GUI.Enable">
+  Enable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Enable { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_FieldHeight_" data-uid="AngeliA.GUI.FieldHeight*"></a>
+
+  <h3 id="AngeliA_GUI_FieldHeight" data-uid="AngeliA.GUI.FieldHeight">
+  FieldHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int FieldHeight { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_FieldPadding_" data-uid="AngeliA.GUI.FieldPadding*"></a>
+
+  <h3 id="AngeliA_GUI_FieldPadding" data-uid="AngeliA.GUI.FieldPadding">
+  FieldPadding
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int FieldPadding { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Interactable_" data-uid="AngeliA.GUI.Interactable*"></a>
+
+  <h3 id="AngeliA_GUI_Interactable" data-uid="AngeliA.GUI.Interactable">
+  Interactable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Interactable { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_IsTyping_" data-uid="AngeliA.GUI.IsTyping*"></a>
+
+  <h3 id="AngeliA_GUI_IsTyping" data-uid="AngeliA.GUI.IsTyping">
+  IsTyping
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsTyping { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_LabelWidth_" data-uid="AngeliA.GUI.LabelWidth*"></a>
+
+  <h3 id="AngeliA_GUI_LabelWidth" data-uid="AngeliA.GUI.LabelWidth">
+  LabelWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int LabelWidth { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ScrollbarSize_" data-uid="AngeliA.GUI.ScrollbarSize*"></a>
+
+  <h3 id="AngeliA_GUI_ScrollbarSize" data-uid="AngeliA.GUI.ScrollbarSize">
+  ScrollbarSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int ScrollbarSize { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Skin_" data-uid="AngeliA.GUI.Skin*"></a>
+
+  <h3 id="AngeliA_GUI_Skin" data-uid="AngeliA.GUI.Skin">
+  Skin
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static GUISkin Skin { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.GUISkin.html">GUISkin</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ToolbarSize_" data-uid="AngeliA.GUI.ToolbarSize*"></a>
+
+  <h3 id="AngeliA_GUI_ToolbarSize" data-uid="AngeliA.GUI.ToolbarSize">
+  ToolbarSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int ToolbarSize { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_TypingTextFieldID_" data-uid="AngeliA.GUI.TypingTextFieldID*"></a>
+
+  <h3 id="AngeliA_GUI_TypingTextFieldID" data-uid="AngeliA.GUI.TypingTextFieldID">
+  TypingTextFieldID
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int TypingTextFieldID { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="AngeliA_GUI_BackgroundLabel_" data-uid="AngeliA.GUI.BackgroundLabel*"></a>
+
+  <h3 id="AngeliA_GUI_BackgroundLabel_AngeliA_IRect_System_Char___AngeliA_Color32_AngeliA_IRect__System_Int32_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.BackgroundLabel(AngeliA.IRect,System.Char[],AngeliA.Color32,AngeliA.IRect@,System.Int32,AngeliA.GUIStyle)">
+  BackgroundLabel(IRect, char[], Color32, out IRect, int, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L466"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BackgroundLabel(IRect rect, char[] chars, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>chars</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>[]</dt>
+    <dd></dd>
+    <dt><code>backgroundColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>backgroundPadding</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_BackgroundLabel_" data-uid="AngeliA.GUI.BackgroundLabel*"></a>
+
+  <h3 id="AngeliA_GUI_BackgroundLabel_AngeliA_IRect_System_Char___AngeliA_Color32_System_Int32_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.BackgroundLabel(AngeliA.IRect,System.Char[],AngeliA.Color32,System.Int32,AngeliA.GUIStyle)">
+  BackgroundLabel(IRect, char[], Color32, int, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L465"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BackgroundLabel(IRect rect, char[] chars, Color32 backgroundColor, int backgroundPadding = 0, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>chars</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>[]</dt>
+    <dd></dd>
+    <dt><code>backgroundColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+    <dt><code>backgroundPadding</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_BackgroundLabel_" data-uid="AngeliA.GUI.BackgroundLabel*"></a>
+
+  <h3 id="AngeliA_GUI_BackgroundLabel_AngeliA_IRect_System_String_AngeliA_Color32_AngeliA_IRect__System_Int32_System_Boolean_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.BackgroundLabel(AngeliA.IRect,System.String,AngeliA.Color32,AngeliA.IRect@,System.Int32,System.Boolean,AngeliA.GUIStyle)">
+  BackgroundLabel(IRect, string, Color32, out IRect, int, bool, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L454"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BackgroundLabel(IRect rect, string text, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, bool forceInside = false, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>backgroundColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>backgroundPadding</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>forceInside</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_BackgroundLabel_" data-uid="AngeliA.GUI.BackgroundLabel*"></a>
+
+  <h3 id="AngeliA_GUI_BackgroundLabel_AngeliA_IRect_System_String_AngeliA_Color32_System_Int32_System_Boolean_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.BackgroundLabel(AngeliA.IRect,System.String,AngeliA.Color32,System.Int32,System.Boolean,AngeliA.GUIStyle)">
+  BackgroundLabel(IRect, string, Color32, int, bool, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L453"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BackgroundLabel(IRect rect, string text, Color32 backgroundColor, int backgroundPadding = 0, bool forceInside = false, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>backgroundColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+    <dt><code>backgroundPadding</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>forceInside</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_BeginChangeCheck_" data-uid="AngeliA.GUI.BeginChangeCheck*"></a>
+
+  <h3 id="AngeliA_GUI_BeginChangeCheck" data-uid="AngeliA.GUI.BeginChangeCheck">
+  BeginChangeCheck()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L1084"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void BeginChangeCheck()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_BlankButton_" data-uid="AngeliA.GUI.BlankButton*"></a>
+
+  <h3 id="AngeliA_GUI_BlankButton_AngeliA_IRect_AngeliA_GUIState__" data-uid="AngeliA.GUI.BlankButton(AngeliA.IRect,AngeliA.GUIState@)">
+  BlankButton(IRect, out GUIState)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L564"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool BlankButton(IRect rect, out GUIState state)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>state</code> <a class="xref" href="AngeliA.GUIState.html">GUIState</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_BlankSlider_" data-uid="AngeliA.GUI.BlankSlider*"></a>
+
+  <h3 id="AngeliA_GUI_BlankSlider_System_Int32_AngeliA_IRect_System_Int32_System_Int32_System_Int32_AngeliA_GUIState__System_Boolean_System_Int32_" data-uid="AngeliA.GUI.BlankSlider(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,AngeliA.GUIState@,System.Boolean,System.Int32)">
+  BlankSlider(int, IRect, int, int, int, out GUIState, bool, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L852"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int BlankSlider(int controlID, IRect rect, int value, int min, int max, out GUIState state, bool vertical = false, int step = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>controlID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>min</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>max</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>state</code> <a class="xref" href="AngeliA.GUIState.html">GUIState</a></dt>
+    <dd></dd>
+    <dt><code>vertical</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>step</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_BlankToggle_" data-uid="AngeliA.GUI.BlankToggle*"></a>
+
+  <h3 id="AngeliA_GUI_BlankToggle_AngeliA_IRect_System_Boolean_AngeliA_GUIState__" data-uid="AngeliA.GUI.BlankToggle(AngeliA.IRect,System.Boolean,AngeliA.GUIState@)">
+  BlankToggle(IRect, bool, out GUIState)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L670"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool BlankToggle(IRect rect, bool isOn, out GUIState state)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>isOn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>state</code> <a class="xref" href="AngeliA.GUIState.html">GUIState</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Button_" data-uid="AngeliA.GUI.Button*"></a>
+
+  <h3 id="AngeliA_GUI_Button_AngeliA_IRect_System_Int32_AngeliA_GUIState__AngeliA_GUIStyle_" data-uid="AngeliA.GUI.Button(AngeliA.IRect,System.Int32,AngeliA.GUIState@,AngeliA.GUIStyle)">
+  Button(IRect, int, out GUIState, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L556"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Button(IRect rect, int icon, out GUIState state, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>state</code> <a class="xref" href="AngeliA.GUIState.html">GUIState</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Button_" data-uid="AngeliA.GUI.Button*"></a>
+
+  <h3 id="AngeliA_GUI_Button_AngeliA_IRect_System_Int32_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.Button(AngeliA.IRect,System.Int32,AngeliA.GUIStyle)">
+  Button(IRect, int, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L555"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Button(IRect rect, int icon, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Button_" data-uid="AngeliA.GUI.Button*"></a>
+
+  <h3 id="AngeliA_GUI_Button_AngeliA_IRect_System_String_AngeliA_GUIState__AngeliA_GUIStyle_System_Int32_" data-uid="AngeliA.GUI.Button(AngeliA.IRect,System.String,AngeliA.GUIState@,AngeliA.GUIStyle,System.Int32)">
+  Button(IRect, string, out GUIState, GUIStyle, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L545"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Button(IRect rect, string label, out GUIState state, GUIStyle style = null, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>state</code> <a class="xref" href="AngeliA.GUIState.html">GUIState</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Button_" data-uid="AngeliA.GUI.Button*"></a>
+
+  <h3 id="AngeliA_GUI_Button_AngeliA_IRect_System_String_AngeliA_GUIStyle_System_Int32_" data-uid="AngeliA.GUI.Button(AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Int32)">
+  Button(IRect, string, GUIStyle, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L544"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Button(IRect rect, string label, GUIStyle style = null, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_CancelTyping_" data-uid="AngeliA.GUI.CancelTyping*"></a>
+
+  <h3 id="AngeliA_GUI_CancelTyping" data-uid="AngeliA.GUI.CancelTyping">
+  CancelTyping()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L225"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void CancelTyping()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_DarkButton_" data-uid="AngeliA.GUI.DarkButton*"></a>
+
+  <h3 id="AngeliA_GUI_DarkButton_AngeliA_IRect_System_Int32_" data-uid="AngeliA.GUI.DarkButton(AngeliA.IRect,System.Int32)">
+  DarkButton(IRect, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L543"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool DarkButton(IRect rect, int icon)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_DarkButton_" data-uid="AngeliA.GUI.DarkButton*"></a>
+
+  <h3 id="AngeliA_GUI_DarkButton_AngeliA_IRect_System_String_System_Int32_" data-uid="AngeliA.GUI.DarkButton(AngeliA.IRect,System.String,System.Int32)">
+  DarkButton(IRect, string, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L542"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool DarkButton(IRect rect, string label, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_DrawAxis_" data-uid="AngeliA.GUI.DrawAxis*"></a>
+
+  <h3 id="AngeliA_GUI_DrawAxis_AngeliA_Int2_AngeliA_Int2_AngeliA_Int2_System_Int32_System_Int32_System_Int32_System_Int32_AngeliA_Color32_AngeliA_Color32_System_Int32_AngeliA_GUIStyle_AngeliA_IRect_" data-uid="AngeliA.GUI.DrawAxis(AngeliA.Int2,AngeliA.Int2,AngeliA.Int2,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.Color32,AngeliA.Color32,System.Int32,AngeliA.GUIStyle,AngeliA.IRect)">
+  DrawAxis(Int2, Int2, Int2, int, int, int, int, Color32, Color32, int, GUIStyle, IRect)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L1090"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DrawAxis(Int2 position, Int2 length, Int2 stepCount, int stepNumberGap, int thickness, int stepThickness, int z, Color32 colorX, Color32 colorY, int labelHeight = 0, GUIStyle labelStyle = null, IRect clampRect = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>position</code> <a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
+    <dd></dd>
+    <dt><code>length</code> <a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
+    <dd></dd>
+    <dt><code>stepCount</code> <a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
+    <dd></dd>
+    <dt><code>stepNumberGap</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>thickness</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>stepThickness</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>z</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>colorX</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+    <dt><code>colorY</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+    <dt><code>labelHeight</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>clampRect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_DrawSlice_" data-uid="AngeliA.GUI.DrawSlice*"></a>
+
+  <h3 id="AngeliA_GUI_DrawSlice_AngeliA_AngeSprite_AngeliA_IRect_" data-uid="AngeliA.GUI.DrawSlice(AngeliA.AngeSprite,AngeliA.IRect)">
+  DrawSlice(AngeSprite, IRect)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L204"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Cell[] DrawSlice(AngeSprite sprite, IRect rect)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sprite</code> <a class="xref" href="AngeliA.AngeSprite.html">AngeSprite</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Cell.html">Cell</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_DrawSlice_" data-uid="AngeliA.GUI.DrawSlice*"></a>
+
+  <h3 id="AngeliA_GUI_DrawSlice_System_Int32_AngeliA_IRect_" data-uid="AngeliA.GUI.DrawSlice(System.Int32,AngeliA.IRect)">
+  DrawSlice(int, IRect)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Cell[] DrawSlice(int spriteID, IRect rect)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>spriteID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Cell.html">Cell</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_DrawStyleBody_" data-uid="AngeliA.GUI.DrawStyleBody*"></a>
+
+  <h3 id="AngeliA_GUI_DrawStyleBody_AngeliA_IRect_AngeliA_GUIStyle_AngeliA_GUIState_" data-uid="AngeliA.GUI.DrawStyleBody(AngeliA.IRect,AngeliA.GUIStyle,AngeliA.GUIState)">
+  DrawStyleBody(IRect, GUIStyle, GUIState)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DrawStyleBody(IRect rect, GUIStyle style, GUIState state)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>state</code> <a class="xref" href="AngeliA.GUIState.html">GUIState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_DrawStyleBody_" data-uid="AngeliA.GUI.DrawStyleBody*"></a>
+
+  <h3 id="AngeliA_GUI_DrawStyleBody_AngeliA_IRect_AngeliA_GUIStyle_AngeliA_GUIState_AngeliA_Color32_" data-uid="AngeliA.GUI.DrawStyleBody(AngeliA.IRect,AngeliA.GUIStyle,AngeliA.GUIState,AngeliA.Color32)">
+  DrawStyleBody(IRect, GUIStyle, GUIState, Color32)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DrawStyleBody(IRect rect, GUIStyle style, GUIState state, Color32 tint)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>state</code> <a class="xref" href="AngeliA.GUIState.html">GUIState</a></dt>
+    <dd></dd>
+    <dt><code>tint</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_DrawStyleContent_" data-uid="AngeliA.GUI.DrawStyleContent*"></a>
+
+  <h3 id="AngeliA_GUI_DrawStyleContent_AngeliA_IRect_System_Int32_AngeliA_GUIStyle_AngeliA_GUIState_System_Boolean_System_Boolean_" data-uid="AngeliA.GUI.DrawStyleContent(AngeliA.IRect,System.Int32,AngeliA.GUIStyle,AngeliA.GUIState,System.Boolean,System.Boolean)">
+  DrawStyleContent(IRect, int, GUIStyle, GUIState, bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DrawStyleContent(IRect rect, int sprite, GUIStyle style, GUIState state, bool ignoreSlice = false, bool fit = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>sprite</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>state</code> <a class="xref" href="AngeliA.GUIState.html">GUIState</a></dt>
+    <dd></dd>
+    <dt><code>ignoreSlice</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>fit</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_EndChangeCheck_" data-uid="AngeliA.GUI.EndChangeCheck*"></a>
+
+  <h3 id="AngeliA_GUI_EndChangeCheck" data-uid="AngeliA.GUI.EndChangeCheck">
+  EndChangeCheck()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L1087"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool EndChangeCheck()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_FilledSlider_" data-uid="AngeliA.GUI.FilledSlider*"></a>
+
+  <h3 id="AngeliA_GUI_FilledSlider_System_Int32_AngeliA_IRect_System_Int32_System_Int32_System_Int32_System_Boolean_System_Int32_" data-uid="AngeliA.GUI.FilledSlider(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32)">
+  FilledSlider(int, IRect, int, int, int, bool, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L821"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int FilledSlider(int controlID, IRect rect, int value, int min, int max, bool vertical = false, int step = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>controlID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>min</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>max</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>vertical</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>step</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_FrameBasedIntLabel_" data-uid="AngeliA.GUI.FrameBasedIntLabel*"></a>
+
+  <h3 id="AngeliA_GUI_FrameBasedIntLabel_AngeliA_IRect_AngeliA_FrameBasedInt_AngeliA_Color32_AngeliA_Color32_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.FrameBasedIntLabel(AngeliA.IRect,AngeliA.FrameBasedInt,AngeliA.Color32,AngeliA.Color32,AngeliA.GUIStyle)">
+  FrameBasedIntLabel(IRect, FrameBasedInt, Color32, Color32, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L490"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void FrameBasedIntLabel(IRect rect, FrameBasedInt number, Color32 greaterColor, Color32 lessColor, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>number</code> <a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+    <dt><code>greaterColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+    <dt><code>lessColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_FrameBasedIntLabel_" data-uid="AngeliA.GUI.FrameBasedIntLabel*"></a>
+
+  <h3 id="AngeliA_GUI_FrameBasedIntLabel_AngeliA_IRect_AngeliA_FrameBasedInt_AngeliA_Color32_AngeliA_Color32_AngeliA_IRect__AngeliA_GUIStyle_" data-uid="AngeliA.GUI.FrameBasedIntLabel(AngeliA.IRect,AngeliA.FrameBasedInt,AngeliA.Color32,AngeliA.Color32,AngeliA.IRect@,AngeliA.GUIStyle)">
+  FrameBasedIntLabel(IRect, FrameBasedInt, Color32, Color32, out IRect, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L491"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void FrameBasedIntLabel(IRect rect, FrameBasedInt number, Color32 greaterColor, Color32 lessColor, out IRect bounds, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>number</code> <a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+    <dt><code>greaterColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+    <dt><code>lessColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_GetContentRect_" data-uid="AngeliA.GUI.GetContentRect*"></a>
+
+  <h3 id="AngeliA_GUI_GetContentRect_AngeliA_IRect_AngeliA_GUIStyle_AngeliA_GUIState_" data-uid="AngeliA.GUI.GetContentRect(AngeliA.IRect,AngeliA.GUIStyle,AngeliA.GUIState)">
+  GetContentRect(IRect, GUIStyle, GUIState)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L137"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IRect GetContentRect(IRect rect, GUIStyle style, GUIState state)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>state</code> <a class="xref" href="AngeliA.GUIState.html">GUIState</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_HandleSlider_" data-uid="AngeliA.GUI.HandleSlider*"></a>
+
+  <h3 id="AngeliA_GUI_HandleSlider_System_Int32_AngeliA_IRect_System_Int32_System_Int32_System_Int32_System_Boolean_System_Int32_" data-uid="AngeliA.GUI.HandleSlider(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32)">
+  HandleSlider(int, IRect, int, int, int, bool, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L822"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int HandleSlider(int controlID, IRect rect, int value, int min, int max, bool vertical = false, int step = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>controlID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>min</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>max</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>vertical</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>step</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_HighlightCursor_" data-uid="AngeliA.GUI.HighlightCursor*"></a>
+
+  <h3 id="AngeliA_GUI_HighlightCursor_System_Int32_AngeliA_IRect_" data-uid="AngeliA.GUI.HighlightCursor(System.Int32,AngeliA.IRect)">
+  HighlightCursor(int, IRect)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L896"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void HighlightCursor(int spriteID, IRect rect)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>spriteID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_HighlightCursor_" data-uid="AngeliA.GUI.HighlightCursor*"></a>
+
+  <h3 id="AngeliA_GUI_HighlightCursor_System_Int32_AngeliA_IRect_AngeliA_Color32_" data-uid="AngeliA.GUI.HighlightCursor(System.Int32,AngeliA.IRect,AngeliA.Color32)">
+  HighlightCursor(int, IRect, Color32)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L897"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void HighlightCursor(int spriteID, IRect rect, Color32 color)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>spriteID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>color</code> <a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_HorizontalColorField_" data-uid="AngeliA.GUI.HorizontalColorField*"></a>
+
+  <h3 id="AngeliA_GUI_HorizontalColorField_AngeliA_ColorF_AngeliA_IRect_System_Boolean_System_Boolean_System_Boolean_System_Boolean_System_Nullable_AngeliA_ColorF__" data-uid="AngeliA.GUI.HorizontalColorField(AngeliA.ColorF,AngeliA.IRect,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Nullable{AngeliA.ColorF})">
+  HorizontalColorField(ColorF, IRect, bool, bool, bool, bool, ColorF?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L912"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorF HorizontalColorField(ColorF color, IRect rect, bool hsv = true, bool alpha = false, bool stepped = true, bool folded = false, ColorF? defaultColor = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>color</code> <a class="xref" href="AngeliA.ColorF.html">ColorF</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>hsv</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>alpha</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>stepped</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>folded</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>defaultColor</code> <a class="xref" href="AngeliA.ColorF.html">ColorF</a>?</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.ColorF.html">ColorF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_HorizontalColorField_" data-uid="AngeliA.GUI.HorizontalColorField*"></a>
+
+  <h3 id="AngeliA_GUI_HorizontalColorField_AngeliA_ColorF_AngeliA_IRect_System_String_AngeliA_GUIStyle_System_Boolean_System_Boolean_System_Boolean_System_Boolean_System_Nullable_AngeliA_ColorF__" data-uid="AngeliA.GUI.HorizontalColorField(AngeliA.ColorF,AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Nullable{AngeliA.ColorF})">
+  HorizontalColorField(ColorF, IRect, string, GUIStyle, bool, bool, bool, bool, ColorF?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L910"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorF HorizontalColorField(ColorF color, IRect rect, string label, GUIStyle labelStyle = null, bool hsv = true, bool alpha = false, bool stepped = true, bool folded = false, ColorF? defaultColor = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>color</code> <a class="xref" href="AngeliA.ColorF.html">ColorF</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>hsv</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>alpha</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>stepped</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>folded</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>defaultColor</code> <a class="xref" href="AngeliA.ColorF.html">ColorF</a>?</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.ColorF.html">ColorF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Icon_" data-uid="AngeliA.GUI.Icon*"></a>
+
+  <h3 id="AngeliA_GUI_Icon_AngeliA_IRect_System_Int32_" data-uid="AngeliA.GUI.Icon(AngeliA.IRect,System.Int32)">
+  Icon(IRect, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L685"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Icon(IRect rect, int sprite)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>sprite</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Icon_" data-uid="AngeliA.GUI.Icon*"></a>
+
+  <h3 id="AngeliA_GUI_Icon_AngeliA_IRect_System_Int32_AngeliA_GUIStyle_AngeliA_GUIState_" data-uid="AngeliA.GUI.Icon(AngeliA.IRect,System.Int32,AngeliA.GUIStyle,AngeliA.GUIState)">
+  Icon(IRect, int, GUIStyle, GUIState)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L686"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Icon(IRect rect, int sprite, GUIStyle style, GUIState state)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>sprite</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>state</code> <a class="xref" href="AngeliA.GUIState.html">GUIState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_IconToggle_" data-uid="AngeliA.GUI.IconToggle*"></a>
+
+  <h3 id="AngeliA_GUI_IconToggle_AngeliA_IRect_System_Boolean_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.IconToggle(AngeliA.IRect,System.Boolean,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle)">
+  IconToggle(IRect, bool, int, GUIStyle, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L585"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IconToggle(IRect rect, bool isOn, int icon, GUIStyle markStyle = null, GUIStyle iconStyle = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>isOn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>markStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>iconStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_InputField_" data-uid="AngeliA.GUI.InputField*"></a>
+
+  <h3 id="AngeliA_GUI_InputField_System_Int32_AngeliA_IRect_System_String_AngeliA_GUIStyle_System_Nullable_AngeliA_Color32__" data-uid="AngeliA.GUI.InputField(System.Int32,AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Nullable{AngeliA.Color32})">
+  InputField(int, IRect, string, GUIStyle, Color32?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI_InputField.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string InputField(int controlID, IRect rect, string text, GUIStyle bodyStyle = null, Color32? selectionColor = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>controlID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>bodyStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>selectionColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a>?</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_InputField_" data-uid="AngeliA.GUI.InputField*"></a>
+
+  <h3 id="AngeliA_GUI_InputField_System_Int32_AngeliA_IRect_System_String_System_Boolean__System_Boolean__AngeliA_GUIStyle_System_Nullable_AngeliA_Color32__" data-uid="AngeliA.GUI.InputField(System.Int32,AngeliA.IRect,System.String,System.Boolean@,System.Boolean@,AngeliA.GUIStyle,System.Nullable{AngeliA.Color32})">
+  InputField(int, IRect, string, out bool, out bool, GUIStyle, Color32?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI_InputField.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string InputField(int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, Color32? selectionColor = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>controlID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>changed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>confirm</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>bodyStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>selectionColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a>?</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_IntDial_" data-uid="AngeliA.GUI.IntDial*"></a>
+
+  <h3 id="AngeliA_GUI_IntDial_AngeliA_IRect_System_Int32_System_Boolean__System_String_AngeliA_GUIStyle_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Int32_System_Int32_System_Int32_" data-uid="AngeliA.GUI.IntDial(AngeliA.IRect,System.Int32,System.Boolean@,System.String,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Int32,System.Int32,System.Int32)">
+  IntDial(IRect, int, out bool, string, GUIStyle, GUIStyle, GUIStyle, int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L704"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int IntDial(IRect rect, int value, out bool changed, string label = null, GUIStyle labelStyle = null, GUIStyle bodyStyle = null, GUIStyle dialButtonStyle = null, int delta = 1, int min = -2147483648, int max = 2147483647)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>changed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>bodyStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>dialButtonStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>min</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>max</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_IntDial_" data-uid="AngeliA.GUI.IntDial*"></a>
+
+  <h3 id="AngeliA_GUI_IntDial_AngeliA_IRect_System_Int32_System_String_AngeliA_GUIStyle_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Int32_System_Int32_System_Int32_" data-uid="AngeliA.GUI.IntDial(AngeliA.IRect,System.Int32,System.String,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Int32,System.Int32,System.Int32)">
+  IntDial(IRect, int, string, GUIStyle, GUIStyle, GUIStyle, int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L703"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int IntDial(IRect rect, int value, string label = null, GUIStyle labelStyle = null, GUIStyle bodyStyle = null, GUIStyle dialButtonStyle = null, int delta = 1, int min = -2147483648, int max = 2147483647)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>bodyStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>dialButtonStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>min</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>max</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_IntLabel_" data-uid="AngeliA.GUI.IntLabel*"></a>
+
+  <h3 id="AngeliA_GUI_IntLabel_AngeliA_IRect_System_Int32_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.IntLabel(AngeliA.IRect,System.Int32,AngeliA.GUIStyle)">
+  IntLabel(IRect, int, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L487"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void IntLabel(IRect rect, int number, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>number</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_IntLabel_" data-uid="AngeliA.GUI.IntLabel*"></a>
+
+  <h3 id="AngeliA_GUI_IntLabel_AngeliA_IRect_System_Int32_AngeliA_IRect__AngeliA_GUIStyle_" data-uid="AngeliA.GUI.IntLabel(AngeliA.IRect,System.Int32,AngeliA.IRect@,AngeliA.GUIStyle)">
+  IntLabel(IRect, int, out IRect, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L488"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void IntLabel(IRect rect, int number, out IRect bounds, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>number</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Label_" data-uid="AngeliA.GUI.Label*"></a>
+
+  <h3 id="AngeliA_GUI_Label_AngeliA_IRect_System_Char___AngeliA_GUIStyle_System_Int32_" data-uid="AngeliA.GUI.Label(AngeliA.IRect,System.Char[],AngeliA.GUIStyle,System.Int32)">
+  Label(IRect, char[], GUIStyle, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L243"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Label(IRect rect, char[] text, GUIStyle style = null, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>[]</dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Label_" data-uid="AngeliA.GUI.Label*"></a>
+
+  <h3 id="AngeliA_GUI_Label_AngeliA_IRect_System_Char___AngeliA_IRect__AngeliA_GUIStyle_System_Int32_" data-uid="AngeliA.GUI.Label(AngeliA.IRect,System.Char[],AngeliA.IRect@,AngeliA.GUIStyle,System.Int32)">
+  Label(IRect, char[], out IRect, GUIStyle, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L245"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Label(IRect rect, char[] text, out IRect bounds, GUIStyle style = null, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>[]</dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Label_" data-uid="AngeliA.GUI.Label*"></a>
+
+  <h3 id="AngeliA_GUI_Label_AngeliA_IRect_System_String_AngeliA_GUIStyle_System_Int32_" data-uid="AngeliA.GUI.Label(AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Int32)">
+  Label(IRect, string, GUIStyle, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Label(IRect rect, string text, GUIStyle style = null, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Label_" data-uid="AngeliA.GUI.Label*"></a>
+
+  <h3 id="AngeliA_GUI_Label_AngeliA_IRect_System_String_AngeliA_IRect__AngeliA_GUIStyle_System_Int32_" data-uid="AngeliA.GUI.Label(AngeliA.IRect,System.String,AngeliA.IRect@,AngeliA.GUIStyle,System.Int32)">
+  Label(IRect, string, out IRect, GUIStyle, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L244"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Label(IRect rect, string text, out IRect bounds, GUIStyle style = null, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Label_" data-uid="AngeliA.GUI.Label*"></a>
+
+  <h3 id="AngeliA_GUI_Label_AngeliA_IRect_System_String_System_Int32_System_Boolean_AngeliA_IRect__System_Int32__AngeliA_GUIStyle_System_Int32_" data-uid="AngeliA.GUI.Label(AngeliA.IRect,System.String,System.Int32,System.Boolean,AngeliA.IRect@,System.Int32@,AngeliA.GUIStyle,System.Int32)">
+  Label(IRect, string, int, bool, out IRect, out int, GUIStyle, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L246"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Label(IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex, GUIStyle style = null, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>startIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>drawInvisibleChar</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>endIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Label_" data-uid="AngeliA.GUI.Label*"></a>
+
+  <h3 id="AngeliA_GUI_Label_AngeliA_IRect_System_String_System_Int32_System_Int32_System_Boolean_AngeliA_IRect__AngeliA_IRect__System_Int32__AngeliA_GUIStyle_System_Int32_" data-uid="AngeliA.GUI.Label(AngeliA.IRect,System.String,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,AngeliA.GUIStyle,System.Int32)">
+  Label(IRect, string, int, int, bool, out IRect, out IRect, out int, GUIStyle, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L247"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Label(IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex, GUIStyle style = null, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>beamIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>startIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>drawInvisibleChar</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>beamRect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>endIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_LinkButton_" data-uid="AngeliA.GUI.LinkButton*"></a>
+
+  <h3 id="AngeliA_GUI_LinkButton_AngeliA_IRect_System_String_AngeliA_GUIStyle_System_Boolean_System_Int32_" data-uid="AngeliA.GUI.LinkButton(AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Boolean,System.Int32)">
+  LinkButton(IRect, string, GUIStyle, bool, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L511"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool LinkButton(IRect rect, string label, GUIStyle labelStyle = null, bool useUnderLine = true, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>useUnderLine</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_LinkButton_" data-uid="AngeliA.GUI.LinkButton*"></a>
+
+  <h3 id="AngeliA_GUI_LinkButton_AngeliA_IRect_System_String_AngeliA_IRect__AngeliA_GUIStyle_System_Boolean_System_Int32_" data-uid="AngeliA.GUI.LinkButton(AngeliA.IRect,System.String,AngeliA.IRect@,AngeliA.GUIStyle,System.Boolean,System.Int32)">
+  LinkButton(IRect, string, out IRect, GUIStyle, bool, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L512"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool LinkButton(IRect rect, string label, out IRect bounds, GUIStyle labelStyle = null, bool useUnderLine = true, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>useUnderLine</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_PopupTriangleIcon_" data-uid="AngeliA.GUI.PopupTriangleIcon*"></a>
+
+  <h3 id="AngeliA_GUI_PopupTriangleIcon_AngeliA_IRect_System_Int32_" data-uid="AngeliA.GUI.PopupTriangleIcon(AngeliA.IRect,System.Int32)">
+  PopupTriangleIcon(IRect, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L694"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PopupTriangleIcon(IRect rect, int iconSprite = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>iconSprite</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ReverseUnify_" data-uid="AngeliA.GUI.ReverseUnify*"></a>
+
+  <h3 id="AngeliA_GUI_ReverseUnify_System_Int32_" data-uid="AngeliA.GUI.ReverseUnify(System.Int32)">
+  ReverseUnify(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int ReverseUnify(int value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ReverseUnifyMonitor_" data-uid="AngeliA.GUI.ReverseUnifyMonitor*"></a>
+
+  <h3 id="AngeliA_GUI_ReverseUnifyMonitor_System_Int32_" data-uid="AngeliA.GUI.ReverseUnifyMonitor(System.Int32)">
+  ReverseUnifyMonitor(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L134"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int ReverseUnifyMonitor(int value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ScrollBar_" data-uid="AngeliA.GUI.ScrollBar*"></a>
+
+  <h3 id="AngeliA_GUI_ScrollBar_System_Int32_AngeliA_IRect_System_Int32_System_Int32_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_" data-uid="AngeliA.GUI.ScrollBar(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
+  ScrollBar(int, IRect, int, int, int, GUIStyle, GUIStyle, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L739"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int ScrollBar(int controlID, IRect contentRect, int position, int totalSize, int pageSize, GUIStyle handleStyle = null, GUIStyle bgStyle = null, bool vertical = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>controlID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>contentRect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>position</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>totalSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>pageSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>handleStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>bgStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>vertical</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ScrollLabel_" data-uid="AngeliA.GUI.ScrollLabel*"></a>
+
+  <h3 id="AngeliA_GUI_ScrollLabel_System_String_AngeliA_IRect_System_Int32_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.ScrollLabel(System.String,AngeliA.IRect,System.Int32,AngeliA.GUIStyle)">
+  ScrollLabel(string, IRect, int, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L431"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int ScrollLabel(string text, IRect rect, int scrollPosition, GUIStyle style)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>scrollPosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SetChange_" data-uid="AngeliA.GUI.SetChange*"></a>
+
+  <h3 id="AngeliA_GUI_SetChange" data-uid="AngeliA.GUI.SetChange">
+  SetChange()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L1161"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetChange()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ShadowLabel_" data-uid="AngeliA.GUI.ShadowLabel*"></a>
+
+  <h3 id="AngeliA_GUI_ShadowLabel_AngeliA_IRect_System_Char___System_Int32_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.ShadowLabel(AngeliA.IRect,System.Char[],System.Int32,AngeliA.GUIStyle)">
+  ShadowLabel(IRect, char[], int, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L479"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ShadowLabel(IRect rect, char[] chars, int shadowDistance = 3, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>chars</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>[]</dt>
+    <dd></dd>
+    <dt><code>shadowDistance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ShadowLabel_" data-uid="AngeliA.GUI.ShadowLabel*"></a>
+
+  <h3 id="AngeliA_GUI_ShadowLabel_AngeliA_IRect_System_String_System_Int32_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.ShadowLabel(AngeliA.IRect,System.String,System.Int32,AngeliA.GUIStyle)">
+  ShadowLabel(IRect, string, int, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L472"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ShadowLabel(IRect rect, string text, int shadowDistance = 3, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>shadowDistance</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Slider_" data-uid="AngeliA.GUI.Slider*"></a>
+
+  <h3 id="AngeliA_GUI_Slider_System_Int32_AngeliA_IRect_System_Int32_System_Int32_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_System_Int32_" data-uid="AngeliA.GUI.Slider(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean,System.Int32)">
+  Slider(int, IRect, int, int, int, GUIStyle, GUIStyle, GUIStyle, bool, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L823"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int Slider(int controlID, IRect rect, int value, int min, int max, GUIStyle bodyStyle, GUIStyle handleStyle, GUIStyle fillStyle, bool vertical = false, int step = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>controlID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>min</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>max</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>bodyStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>handleStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>fillStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>vertical</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>step</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallInputField_" data-uid="AngeliA.GUI.SmallInputField*"></a>
+
+  <h3 id="AngeliA_GUI_SmallInputField_System_Int32_AngeliA_IRect_System_String_System_Boolean__System_Boolean__System_Nullable_AngeliA_Color32__" data-uid="AngeliA.GUI.SmallInputField(System.Int32,AngeliA.IRect,System.String,System.Boolean@,System.Boolean@,System.Nullable{AngeliA.Color32})">
+  SmallInputField(int, IRect, string, out bool, out bool, Color32?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI_InputField.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string SmallInputField(int controlID, IRect rect, string text, out bool changed, out bool confirm, Color32? selectionColor = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>controlID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>changed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>confirm</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>selectionColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a>?</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallInputField_" data-uid="AngeliA.GUI.SmallInputField*"></a>
+
+  <h3 id="AngeliA_GUI_SmallInputField_System_Int32_AngeliA_IRect_System_String_System_Nullable_AngeliA_Color32__" data-uid="AngeliA.GUI.SmallInputField(System.Int32,AngeliA.IRect,System.String,System.Nullable{AngeliA.Color32})">
+  SmallInputField(int, IRect, string, Color32?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI_InputField.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string SmallInputField(int controlID, IRect rect, string text, Color32? selectionColor = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>controlID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>selectionColor</code> <a class="xref" href="AngeliA.Color32.html">Color32</a>?</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallIntDial_" data-uid="AngeliA.GUI.SmallIntDial*"></a>
+
+  <h3 id="AngeliA_GUI_SmallIntDial_AngeliA_IRect_System_Int32_System_Boolean__System_String_System_Int32_System_Int32_System_Int32_" data-uid="AngeliA.GUI.SmallIntDial(AngeliA.IRect,System.Int32,System.Boolean@,System.String,System.Int32,System.Int32,System.Int32)">
+  SmallIntDial(IRect, int, out bool, string, int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L702"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int SmallIntDial(IRect rect, int value, out bool changed, string label = null, int delta = 1, int min = -2147483648, int max = 2147483647)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>changed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>min</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>max</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallIntDial_" data-uid="AngeliA.GUI.SmallIntDial*"></a>
+
+  <h3 id="AngeliA_GUI_SmallIntDial_AngeliA_IRect_System_Int32_System_String_System_Int32_System_Int32_System_Int32_" data-uid="AngeliA.GUI.SmallIntDial(AngeliA.IRect,System.Int32,System.String,System.Int32,System.Int32,System.Int32)">
+  SmallIntDial(IRect, int, string, int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L701"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int SmallIntDial(IRect rect, int value, string label = null, int delta = 1, int min = -2147483648, int max = 2147483647)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>min</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>max</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallLabel_" data-uid="AngeliA.GUI.SmallLabel*"></a>
+
+  <h3 id="AngeliA_GUI_SmallLabel_AngeliA_IRect_System_Char___" data-uid="AngeliA.GUI.SmallLabel(AngeliA.IRect,System.Char[])">
+  SmallLabel(IRect, char[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L236"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SmallLabel(IRect rect, char[] text)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallLabel_" data-uid="AngeliA.GUI.SmallLabel*"></a>
+
+  <h3 id="AngeliA_GUI_SmallLabel_AngeliA_IRect_System_Char___AngeliA_IRect__" data-uid="AngeliA.GUI.SmallLabel(AngeliA.IRect,System.Char[],AngeliA.IRect@)">
+  SmallLabel(IRect, char[], out IRect)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L238"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SmallLabel(IRect rect, char[] text, out IRect bounds)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>[]</dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallLabel_" data-uid="AngeliA.GUI.SmallLabel*"></a>
+
+  <h3 id="AngeliA_GUI_SmallLabel_AngeliA_IRect_System_String_" data-uid="AngeliA.GUI.SmallLabel(AngeliA.IRect,System.String)">
+  SmallLabel(IRect, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L235"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SmallLabel(IRect rect, string text)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallLabel_" data-uid="AngeliA.GUI.SmallLabel*"></a>
+
+  <h3 id="AngeliA_GUI_SmallLabel_AngeliA_IRect_System_String_AngeliA_IRect__" data-uid="AngeliA.GUI.SmallLabel(AngeliA.IRect,System.String,AngeliA.IRect@)">
+  SmallLabel(IRect, string, out IRect)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L237"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SmallLabel(IRect rect, string text, out IRect bounds)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallLabel_" data-uid="AngeliA.GUI.SmallLabel*"></a>
+
+  <h3 id="AngeliA_GUI_SmallLabel_AngeliA_IRect_System_String_System_Int32_System_Boolean_AngeliA_IRect__System_Int32__" data-uid="AngeliA.GUI.SmallLabel(AngeliA.IRect,System.String,System.Int32,System.Boolean,AngeliA.IRect@,System.Int32@)">
+  SmallLabel(IRect, string, int, bool, out IRect, out int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L239"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SmallLabel(IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>startIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>drawInvisibleChar</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>endIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallLabel_" data-uid="AngeliA.GUI.SmallLabel*"></a>
+
+  <h3 id="AngeliA_GUI_SmallLabel_AngeliA_IRect_System_String_System_Int32_System_Int32_System_Boolean_AngeliA_IRect__AngeliA_IRect__System_Int32__" data-uid="AngeliA.GUI.SmallLabel(AngeliA.IRect,System.String,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@)">
+  SmallLabel(IRect, string, int, int, bool, out IRect, out IRect, out int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L240"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SmallLabel(IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>text</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>beamIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>startIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>drawInvisibleChar</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>beamRect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>endIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallLinkButton_" data-uid="AngeliA.GUI.SmallLinkButton*"></a>
+
+  <h3 id="AngeliA_GUI_SmallLinkButton_AngeliA_IRect_System_String_AngeliA_IRect__System_Boolean_System_Int32_" data-uid="AngeliA.GUI.SmallLinkButton(AngeliA.IRect,System.String,AngeliA.IRect@,System.Boolean,System.Int32)">
+  SmallLinkButton(IRect, string, out IRect, bool, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L510"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool SmallLinkButton(IRect rect, string label, out IRect bounds, bool useUnderLine = true, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>bounds</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>useUnderLine</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_SmallLinkButton_" data-uid="AngeliA.GUI.SmallLinkButton*"></a>
+
+  <h3 id="AngeliA_GUI_SmallLinkButton_AngeliA_IRect_System_String_System_Boolean_System_Int32_" data-uid="AngeliA.GUI.SmallLinkButton(AngeliA.IRect,System.String,System.Boolean,System.Int32)">
+  SmallLinkButton(IRect, string, bool, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L509"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool SmallLinkButton(IRect rect, string label, bool useUnderLine = true, int charSize = -2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>useUnderLine</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>charSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_StartTyping_" data-uid="AngeliA.GUI.StartTyping*"></a>
+
+  <h3 id="AngeliA_GUI_StartTyping_System_Int32_" data-uid="AngeliA.GUI.StartTyping(System.Int32)">
+  StartTyping(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void StartTyping(int controlID)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>controlID</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Toggle_" data-uid="AngeliA.GUI.Toggle*"></a>
+
+  <h3 id="AngeliA_GUI_Toggle_AngeliA_IRect_System_Boolean_AngeliA_GUIStyle_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.Toggle(AngeliA.IRect,System.Boolean,AngeliA.GUIStyle,AngeliA.GUIStyle)">
+  Toggle(IRect, bool, GUIStyle, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L652"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Toggle(IRect rect, bool isOn, GUIStyle bodyStyle = null, GUIStyle markStyle = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>isOn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>bodyStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>markStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Toggle_" data-uid="AngeliA.GUI.Toggle*"></a>
+
+  <h3 id="AngeliA_GUI_Toggle_AngeliA_IRect_System_Boolean_System_String_AngeliA_GUIStyle_AngeliA_GUIStyle_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.Toggle(AngeliA.IRect,System.Boolean,System.String,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle)">
+  Toggle(IRect, bool, string, GUIStyle, GUIStyle, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L654"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Toggle(IRect rect, bool isOn, string label, GUIStyle bodyStyle = null, GUIStyle markStyle = null, GUIStyle labelStyle = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>isOn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>bodyStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>markStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ToggleButton_" data-uid="AngeliA.GUI.ToggleButton*"></a>
+
+  <h3 id="AngeliA_GUI_ToggleButton_AngeliA_IRect_System_Boolean_System_Int32_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.ToggleButton(AngeliA.IRect,System.Boolean,System.Int32,AngeliA.GUIStyle)">
+  ToggleButton(IRect, bool, int, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L620"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool ToggleButton(IRect rect, bool isOn, int icon, GUIStyle style = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>isOn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>style</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ToggleButton_" data-uid="AngeliA.GUI.ToggleButton*"></a>
+
+  <h3 id="AngeliA_GUI_ToggleButton_AngeliA_IRect_System_Boolean_System_String_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.ToggleButton(AngeliA.IRect,System.Boolean,System.String,AngeliA.GUIStyle)">
+  ToggleButton(IRect, bool, string, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L613"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool ToggleButton(IRect rect, bool isOn, string label, GUIStyle bodyStyle = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>isOn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>bodyStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ToggleFold_" data-uid="AngeliA.GUI.ToggleFold*"></a>
+
+  <h3 id="AngeliA_GUI_ToggleFold_AngeliA_IRect_System_Boolean__System_Int32_System_String_System_Int32_System_Int32_" data-uid="AngeliA.GUI.ToggleFold(AngeliA.IRect,System.Boolean@,System.Int32,System.String,System.Int32,System.Int32)">
+  ToggleFold(IRect, ref bool, int, string, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L631"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool ToggleFold(IRect rect, ref bool folding, int icon, string label, int paddingLeft = 0, int paddingRight = 0)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>folding</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>paddingLeft</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>paddingRight</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_ToggleLeft_" data-uid="AngeliA.GUI.ToggleLeft*"></a>
+
+  <h3 id="AngeliA_GUI_ToggleLeft_AngeliA_IRect_System_Boolean_System_String_AngeliA_GUIStyle_AngeliA_GUIStyle_AngeliA_GUIStyle_" data-uid="AngeliA.GUI.ToggleLeft(AngeliA.IRect,System.Boolean,System.String,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle)">
+  ToggleLeft(IRect, bool, string, GUIStyle, GUIStyle, GUIStyle)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L600"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool ToggleLeft(IRect rect, bool isOn, string label, GUIStyle bodyStyle = null, GUIStyle labelStyle = null, GUIStyle markStyle = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>isOn</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>bodyStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>markStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_Unify_" data-uid="AngeliA.GUI.Unify*"></a>
+
+  <h3 id="AngeliA_GUI_Unify_System_Int32_" data-uid="AngeliA.GUI.Unify(System.Int32)">
+  Unify(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int Unify(int value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_UnifyBorder_" data-uid="AngeliA.GUI.UnifyBorder*"></a>
+
+  <h3 id="AngeliA_GUI_UnifyBorder_AngeliA_Int4_" data-uid="AngeliA.GUI.UnifyBorder(AngeliA.Int4)">
+  UnifyBorder(Int4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L125"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Int4 UnifyBorder(Int4 border)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>border</code> <a class="xref" href="AngeliA.Int4.html">Int4</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Int4.html">Int4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_UnifyMonitor_" data-uid="AngeliA.GUI.UnifyMonitor*"></a>
+
+  <h3 id="AngeliA_GUI_UnifyMonitor_System_Int32_" data-uid="AngeliA.GUI.UnifyMonitor(System.Int32)">
+  UnifyMonitor(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int UnifyMonitor(int value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_VerticalColorField_" data-uid="AngeliA.GUI.VerticalColorField*"></a>
+
+  <h3 id="AngeliA_GUI_VerticalColorField_AngeliA_ColorF_AngeliA_IRect_System_Boolean_System_Boolean_System_Boolean_System_Boolean_System_Nullable_AngeliA_ColorF__" data-uid="AngeliA.GUI.VerticalColorField(AngeliA.ColorF,AngeliA.IRect,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Nullable{AngeliA.ColorF})">
+  VerticalColorField(ColorF, IRect, bool, bool, bool, bool, ColorF?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L911"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorF VerticalColorField(ColorF color, IRect rect, bool hsv = true, bool alpha = false, bool stepped = true, bool folded = false, ColorF? defaultColor = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>color</code> <a class="xref" href="AngeliA.ColorF.html">ColorF</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>hsv</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>alpha</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>stepped</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>folded</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>defaultColor</code> <a class="xref" href="AngeliA.ColorF.html">ColorF</a>?</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.ColorF.html">ColorF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_GUI_VerticalColorField_" data-uid="AngeliA.GUI.VerticalColorField*"></a>
+
+  <h3 id="AngeliA_GUI_VerticalColorField_AngeliA_ColorF_AngeliA_IRect_System_String_AngeliA_GUIStyle_System_Boolean_System_Boolean_System_Boolean_System_Boolean_System_Nullable_AngeliA_ColorF__" data-uid="AngeliA.GUI.VerticalColorField(AngeliA.ColorF,AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Nullable{AngeliA.ColorF})">
+  VerticalColorField(ColorF, IRect, string, GUIStyle, bool, bool, bool, bool, ColorF?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI.cs/#L909"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ColorF VerticalColorField(ColorF color, IRect rect, string label, GUIStyle labelStyle = null, bool hsv = true, bool alpha = false, bool stepped = true, bool folded = false, ColorF? defaultColor = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>color</code> <a class="xref" href="AngeliA.ColorF.html">ColorF</a></dt>
+    <dd></dd>
+    <dt><code>rect</code> <a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
+    <dd></dd>
+    <dt><code>hsv</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>alpha</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>stepped</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>folded</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>defaultColor</code> <a class="xref" href="AngeliA.ColorF.html">ColorF</a>?</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.ColorF.html">ColorF</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/GUI/GUI_InputField.cs/#L6" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

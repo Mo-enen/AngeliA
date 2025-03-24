@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Entity | AngeliA </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Entity | AngeliA ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Entity.md&amp;value=---%0Auid%3A%20AngeliA.Entity%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+            AngeliA
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="AngeliA.Entity">
+
+
+
+  <h1 id="AngeliA_Entity" data-uid="AngeliA.Entity" class="text-break">
+Class Entity  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>AngeliA Framework.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Entity.Capacity(4096, 0)]
+[Entity.MapEditorGroup(&quot;Entity&quot;, 0)]
+[Entity.Layer(1)]
+public abstract class Entity : IMapItem</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Entity</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="AngeliA.Bullet.html">Bullet</a></div>
+      <div><a class="xref" href="AngeliA.EntityUI.html">EntityUI</a></div>
+      <div><a class="xref" href="AngeliA.GroupAnimationHolder.html">GroupAnimationHolder</a></div>
+      <div><a class="xref" href="AngeliA.Particle.html">Particle</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.BulletShooter.html">BulletShooter</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Burner-1.html">Burner&lt;F&gt;</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.CameraAutoScroll.html">CameraAutoScroll</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.CameraGate.html">CameraGate</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.CarryingPipe.html">CarryingPipe</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.ChainCrusher.html">ChainCrusher</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.CheckAltar.html">CheckAltar</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.CheckPoint.html">CheckPoint</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Collectable.html">Collectable</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Conveyor.html">Conveyor</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.DonutBlock.html">DonutBlock</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Door.html">Door</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Explosion.html">Explosion</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Fire.html">Fire</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.FloatingCombatText.html">FloatingCombatText</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.FrozenZone.html">FrozenZone</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Furniture.html">Furniture</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Launcher.html">Launcher</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Leaf.html">Leaf</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Liquid.html">Liquid</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.MiniGame.html">MiniGame</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.MomentumBooster.html">MomentumBooster</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Oneway.html">Oneway</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Plant.html">Plant</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Platform.html">Platform</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Portal.html">Portal</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Slope.html">Slope</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Tornado.html">Tornado</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Track.html">Track</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.TrapDoor.html">TrapDoor</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.Wallpaper.html">Wallpaper</a></div>
+      <div><a class="xref" href="AngeliA.Rigidbody.html">Rigidbody</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="AngeliA_Entity__ctor_" data-uid="AngeliA.Entity.#ctor*"></a>
+
+  <h3 id="AngeliA_Entity__ctor" data-uid="AngeliA.Entity.#ctor">
+  Entity()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Entity()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="AngeliA_Entity_Active_" data-uid="AngeliA.Entity.Active*"></a>
+
+  <h3 id="AngeliA_Entity_Active" data-uid="AngeliA.Entity.Active">
+  Active
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Active { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_Center_" data-uid="AngeliA.Entity.Center*"></a>
+
+  <h3 id="AngeliA_Entity_Center" data-uid="AngeliA.Entity.Center">
+  Center
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Int2 Center { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_CenterX_" data-uid="AngeliA.Entity.CenterX*"></a>
+
+  <h3 id="AngeliA_Entity_CenterX" data-uid="AngeliA.Entity.CenterX">
+  CenterX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CenterX { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_CenterY_" data-uid="AngeliA.Entity.CenterY*"></a>
+
+  <h3 id="AngeliA_Entity_CenterY" data-uid="AngeliA.Entity.CenterY">
+  CenterY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CenterY { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_FromWorld_" data-uid="AngeliA.Entity.FromWorld*"></a>
+
+  <h3 id="AngeliA_Entity_FromWorld" data-uid="AngeliA.Entity.FromWorld">
+  FromWorld
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool FromWorld { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_Height_" data-uid="AngeliA.Entity.Height*"></a>
+
+  <h3 id="AngeliA_Entity_Height" data-uid="AngeliA.Entity.Height">
+  Height
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Height { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_IgnoreReposition_" data-uid="AngeliA.Entity.IgnoreReposition*"></a>
+
+  <h3 id="AngeliA_Entity_IgnoreReposition" data-uid="AngeliA.Entity.IgnoreReposition">
+  IgnoreReposition
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IgnoreReposition { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_InstanceID_" data-uid="AngeliA.Entity.InstanceID*"></a>
+
+  <h3 id="AngeliA_Entity_InstanceID" data-uid="AngeliA.Entity.InstanceID">
+  InstanceID
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Int3 InstanceID { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Int3.html">Int3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_InstanceOrder_" data-uid="AngeliA.Entity.InstanceOrder*"></a>
+
+  <h3 id="AngeliA_Entity_InstanceOrder" data-uid="AngeliA.Entity.InstanceOrder">
+  InstanceOrder
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int InstanceOrder { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_MapUnitPos_" data-uid="AngeliA.Entity.MapUnitPos*"></a>
+
+  <h3 id="AngeliA_Entity_MapUnitPos" data-uid="AngeliA.Entity.MapUnitPos">
+  MapUnitPos
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Int3? MapUnitPos { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Int3.html">Int3</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_PivotUnitPosition_" data-uid="AngeliA.Entity.PivotUnitPosition*"></a>
+
+  <h3 id="AngeliA_Entity_PivotUnitPosition" data-uid="AngeliA.Entity.PivotUnitPosition">
+  PivotUnitPosition
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Int3 PivotUnitPosition { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Int3.html">Int3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_Rect_" data-uid="AngeliA.Entity.Rect*"></a>
+
+  <h3 id="AngeliA_Entity_Rect" data-uid="AngeliA.Entity.Rect">
+  Rect
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IRect Rect { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_Size_" data-uid="AngeliA.Entity.Size*"></a>
+
+  <h3 id="AngeliA_Entity_Size" data-uid="AngeliA.Entity.Size">
+  Size
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Int2 Size { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_SpawnFrame_" data-uid="AngeliA.Entity.SpawnFrame*"></a>
+
+  <h3 id="AngeliA_Entity_SpawnFrame" data-uid="AngeliA.Entity.SpawnFrame">
+  SpawnFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SpawnFrame { get; protected set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_TypeID_" data-uid="AngeliA.Entity.TypeID*"></a>
+
+  <h3 id="AngeliA_Entity_TypeID" data-uid="AngeliA.Entity.TypeID">
+  TypeID
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TypeID { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_Width_" data-uid="AngeliA.Entity.Width*"></a>
+
+  <h3 id="AngeliA_Entity_Width" data-uid="AngeliA.Entity.Width">
+  Width
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Width { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_X_" data-uid="AngeliA.Entity.X*"></a>
+
+  <h3 id="AngeliA_Entity_X" data-uid="AngeliA.Entity.X">
+  X
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int X { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_XY_" data-uid="AngeliA.Entity.XY*"></a>
+
+  <h3 id="AngeliA_Entity_XY" data-uid="AngeliA.Entity.XY">
+  XY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Int2 XY { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_Y_" data-uid="AngeliA.Entity.Y*"></a>
+
+  <h3 id="AngeliA_Entity_Y" data-uid="AngeliA.Entity.Y">
+  Y
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Y { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="AngeliA_Entity_AfterReposition_" data-uid="AngeliA.Entity.AfterReposition*"></a>
+
+  <h3 id="AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_" data-uid="AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)">
+  AfterReposition(Int3, Int3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void AfterReposition(Int3 fromUnitPos, Int3 toUnitPos)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>fromUnitPos</code> <a class="xref" href="AngeliA.Int3.html">Int3</a></dt>
+    <dd></dd>
+    <dt><code>toUnitPos</code> <a class="xref" href="AngeliA.Int3.html">Int3</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_BeforeUpdate_" data-uid="AngeliA.Entity.BeforeUpdate*"></a>
+
+  <h3 id="AngeliA_Entity_BeforeUpdate" data-uid="AngeliA.Entity.BeforeUpdate">
+  BeforeUpdate()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void BeforeUpdate()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_CancelIgnoreDespawnFromMap_" data-uid="AngeliA.Entity.CancelIgnoreDespawnFromMap*"></a>
+
+  <h3 id="AngeliA_Entity_CancelIgnoreDespawnFromMap" data-uid="AngeliA.Entity.CancelIgnoreDespawnFromMap">
+  CancelIgnoreDespawnFromMap()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CancelIgnoreDespawnFromMap()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_Draw_" data-uid="AngeliA.Entity.Draw*"></a>
+
+  <h3 id="AngeliA_Entity_Draw" data-uid="AngeliA.Entity.Draw">
+  Draw()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Cell Draw()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Cell.html">Cell</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_FirstUpdate_" data-uid="AngeliA.Entity.FirstUpdate*"></a>
+
+  <h3 id="AngeliA_Entity_FirstUpdate" data-uid="AngeliA.Entity.FirstUpdate">
+  FirstUpdate()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void FirstUpdate()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_IgnoreDespawnFromMap_" data-uid="AngeliA.Entity.IgnoreDespawnFromMap*"></a>
+
+  <h3 id="AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_" data-uid="AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)">
+  IgnoreDespawnFromMap(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void IgnoreDespawnFromMap(int duration = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>duration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_LateUpdate_" data-uid="AngeliA.Entity.LateUpdate*"></a>
+
+  <h3 id="AngeliA_Entity_LateUpdate" data-uid="AngeliA.Entity.LateUpdate">
+  LateUpdate()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void LateUpdate()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_OnActivated_" data-uid="AngeliA.Entity.OnActivated*"></a>
+
+  <h3 id="AngeliA_Entity_OnActivated" data-uid="AngeliA.Entity.OnActivated">
+  OnActivated()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnActivated()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_OnInactivated_" data-uid="AngeliA.Entity.OnInactivated*"></a>
+
+  <h3 id="AngeliA_Entity_OnInactivated" data-uid="AngeliA.Entity.OnInactivated">
+  OnInactivated()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnInactivated()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Entity_Update_" data-uid="AngeliA.Entity.Update*"></a>
+
+  <h3 id="AngeliA_Entity_Update" data-uid="AngeliA.Entity.Update">
+  Update()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Update()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/Entity.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

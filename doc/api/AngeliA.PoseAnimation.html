@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class PoseAnimation | AngeliA </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class PoseAnimation | AngeliA ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseAnimation.md&amp;value=---%0Auid%3A%20AngeliA.PoseAnimation%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+            AngeliA
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="AngeliA.PoseAnimation">
+
+
+
+  <h1 id="AngeliA_PoseAnimation" data-uid="AngeliA.PoseAnimation" class="text-break">
+Class PoseAnimation  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L6"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>AngeliA Framework.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class PoseAnimation</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">PoseAnimation</span></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="AngeliA.HandheldPoseAnimation.html">HandheldPoseAnimation</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAnimation_PhotoPose.html">PoseAnimation_PhotoPose</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAnimation_Ride.html">PoseAnimation_Ride</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAnimation_Sit.html">PoseAnimation_Sit</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAnimation_SlidingSit.html">PoseAnimation_SlidingSit</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_Bow.html">PoseAttack_Bow</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_Float.html">PoseAttack_Float</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_Hand.html">PoseAttack_Hand</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_MagicPole.html">PoseAttack_MagicPole</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_MagicSingleHanded.html">PoseAttack_MagicSingleHanded</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_Polearm.html">PoseAttack_Polearm</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_Scratch.html">PoseAttack_Scratch</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_Shooting.html">PoseAttack_Shooting</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_WaveDoubleHanded.html">PoseAttack_WaveDoubleHanded</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_WaveEachHand.html">PoseAttack_WaveEachHand</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_WavePolearm.html">PoseAttack_WavePolearm</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PoseAttack_WaveSingleHanded.html">PoseAttack_WaveSingleHanded</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Animation_TakingDamage.html">PoseAnimation_Animation_TakingDamage</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Brake.html">PoseAnimation_Brake</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Climb.html">PoseAnimation_Climb</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Crash.html">PoseAnimation_Crash</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Dash.html">PoseAnimation_Dash</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Fly.html">PoseAnimation_Fly</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_GrabSide.html">PoseAnimation_GrabSide</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_GrabTop.html">PoseAnimation_GrabTop</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Idle.html">PoseAnimation_Idle</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_JumpDown.html">PoseAnimation_JumpDown</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_JumpUp.html">PoseAnimation_JumpUp</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_PassOut.html">PoseAnimation_PassOut</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Pound.html">PoseAnimation_Pound</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Rolling.html">PoseAnimation_Rolling</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Run.html">PoseAnimation_Run</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Rush.html">PoseAnimation_Rush</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Sleep.html">PoseAnimation_Sleep</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Slide.html">PoseAnimation_Slide</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Spin.html">PoseAnimation_Spin</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_SquatIdle.html">PoseAnimation_SquatIdle</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_SquatMove.html">PoseAnimation_SquatMove</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_SwimIdle.html">PoseAnimation_SwimIdle</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_SwimMove.html">PoseAnimation_SwimMove</a></div>
+      <div><a class="xref" href="AngeliA.PoseAnimation_Walk.html">PoseAnimation_Walk</a></div>
+      <div><a class="xref" href="AngeliA.PosePerform_Block.html">PosePerform_Block</a></div>
+      <div><a class="xref" href="AngeliA.PosePerform_Tool.html">PosePerform_Tool</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="AngeliA_PoseAnimation_A2G" data-uid="AngeliA.PoseAnimation.A2G">
+  A2G
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected const int A2G = 16</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_AnimationType" data-uid="AngeliA.PoseAnimation.AnimationType">
+  AnimationType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static CharacterAnimationType AnimationType</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.CharacterAnimationType.html">CharacterAnimationType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_AttackEase" data-uid="AngeliA.PoseAnimation.AttackEase">
+  AttackEase
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static float AttackEase</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_AttackLerp" data-uid="AngeliA.PoseAnimation.AttackLerp">
+  AttackLerp
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static float AttackLerp</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_Attackness" data-uid="AngeliA.PoseAnimation.Attackness">
+  Attackness
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static CharacterAttackness Attackness</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.CharacterAttackness.html">CharacterAttackness</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_Body" data-uid="AngeliA.PoseAnimation.Body">
+  Body
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart Body</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_CurrentAnimationFrame" data-uid="AngeliA.PoseAnimation.CurrentAnimationFrame">
+  CurrentAnimationFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static int CurrentAnimationFrame</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_FacingFront" data-uid="AngeliA.PoseAnimation.FacingFront">
+  FacingFront
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static bool FacingFront</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_FacingRight" data-uid="AngeliA.PoseAnimation.FacingRight">
+  FacingRight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static bool FacingRight</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_FacingSign" data-uid="AngeliA.PoseAnimation.FacingSign">
+  FacingSign
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static int FacingSign</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_FootL" data-uid="AngeliA.PoseAnimation.FootL">
+  FootL
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart FootL</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_FootR" data-uid="AngeliA.PoseAnimation.FootR">
+  FootR
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart FootR</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_FrontSign" data-uid="AngeliA.PoseAnimation.FrontSign">
+  FrontSign
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static int FrontSign</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_HandL" data-uid="AngeliA.PoseAnimation.HandL">
+  HandL
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart HandL</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_HandR" data-uid="AngeliA.PoseAnimation.HandR">
+  HandR
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart HandR</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_Head" data-uid="AngeliA.PoseAnimation.Head">
+  Head
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart Head</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_Hip" data-uid="AngeliA.PoseAnimation.Hip">
+  Hip
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart Hip</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_IsChargingAttack" data-uid="AngeliA.PoseAnimation.IsChargingAttack">
+  IsChargingAttack
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static bool IsChargingAttack</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_LowerArmL" data-uid="AngeliA.PoseAnimation.LowerArmL">
+  LowerArmL
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart LowerArmL</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_LowerArmR" data-uid="AngeliA.PoseAnimation.LowerArmR">
+  LowerArmR
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart LowerArmR</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_LowerLegL" data-uid="AngeliA.PoseAnimation.LowerLegL">
+  LowerLegL
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart LowerLegL</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_LowerLegR" data-uid="AngeliA.PoseAnimation.LowerLegR">
+  LowerLegR
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart LowerLegR</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_Movement" data-uid="AngeliA.PoseAnimation.Movement">
+  Movement
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static CharacterMovement Movement</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.CharacterMovement.html">CharacterMovement</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_POSE_Z_HAND" data-uid="AngeliA.PoseAnimation.POSE_Z_HAND">
+  POSE_Z_HAND
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected const int POSE_Z_HAND = 36</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_Rendering" data-uid="AngeliA.PoseAnimation.Rendering">
+  Rendering
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static PoseCharacterRenderer Rendering</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.PoseCharacterRenderer.html">PoseCharacterRenderer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_ShoulderL" data-uid="AngeliA.PoseAnimation.ShoulderL">
+  ShoulderL
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart ShoulderL</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_ShoulderR" data-uid="AngeliA.PoseAnimation.ShoulderR">
+  ShoulderR
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart ShoulderR</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_Target" data-uid="AngeliA.PoseAnimation.Target">
+  Target
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static Character Target</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_UpperArmL" data-uid="AngeliA.PoseAnimation.UpperArmL">
+  UpperArmL
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart UpperArmL</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_UpperArmR" data-uid="AngeliA.PoseAnimation.UpperArmR">
+  UpperArmR
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart UpperArmR</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_UpperLegL" data-uid="AngeliA.PoseAnimation.UpperLegL">
+  UpperLegL
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart UpperLegL</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_PoseAnimation_UpperLegR" data-uid="AngeliA.PoseAnimation.UpperLegR">
+  UpperLegR
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static BodyPart UpperLegR</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="AngeliA_PoseAnimation_DontBlendToNext_" data-uid="AngeliA.PoseAnimation.DontBlendToNext*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_DontBlendToNext" data-uid="AngeliA.PoseAnimation.DontBlendToNext">
+  DontBlendToNext
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool DontBlendToNext { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_DontBlendToPrev_" data-uid="AngeliA.PoseAnimation.DontBlendToPrev*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_DontBlendToPrev" data-uid="AngeliA.PoseAnimation.DontBlendToPrev">
+  DontBlendToPrev
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool DontBlendToPrev { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_ValidHeadPosition_" data-uid="AngeliA.PoseAnimation.ValidHeadPosition*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_ValidHeadPosition" data-uid="AngeliA.PoseAnimation.ValidHeadPosition">
+  ValidHeadPosition
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool ValidHeadPosition { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="AngeliA_PoseAnimation_Animate_" data-uid="AngeliA.PoseAnimation.Animate*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_Animate_AngeliA_PoseCharacterRenderer_" data-uid="AngeliA.PoseAnimation.Animate(AngeliA.PoseCharacterRenderer)">
+  Animate(PoseCharacterRenderer)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L161"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Animate(PoseCharacterRenderer renderer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>renderer</code> <a class="xref" href="AngeliA.PoseCharacterRenderer.html">PoseCharacterRenderer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_AttackHeadDown_" data-uid="AngeliA.PoseAnimation.AttackHeadDown*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_AttackHeadDown_System_Single_System_Int32_System_Int32_System_Int32_" data-uid="AngeliA.PoseAnimation.AttackHeadDown(System.Single,System.Int32,System.Int32,System.Int32)">
+  AttackHeadDown(float, int, int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L214"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static void AttackHeadDown(float ease01, int headOffsetXAmount = 1000, int headOffsetYAmount = 1000, int headRotateAmount = 1000)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ease01</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>headOffsetXAmount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>headOffsetYAmount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>headRotateAmount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_AttackLegShake_" data-uid="AngeliA.PoseAnimation.AttackLegShake*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_AttackLegShake_System_Single_" data-uid="AngeliA.PoseAnimation.AttackLegShake(System.Single)">
+  AttackLegShake(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L249"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static void AttackLegShake(float ease01)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ease01</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_OnGameInitialize_" data-uid="AngeliA.PoseAnimation.OnGameInitialize*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_OnGameInitialize" data-uid="AngeliA.PoseAnimation.OnGameInitialize">
+  OnGameInitialize()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[OnGameInitialize(-129)]
+public static void OnGameInitialize()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_PerformAnimation_" data-uid="AngeliA.PoseAnimation.PerformAnimation*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_PerformAnimation_AngeliA_PoseAnimation_AngeliA_PoseCharacterRenderer_" data-uid="AngeliA.PoseAnimation.PerformAnimation(AngeliA.PoseAnimation,AngeliA.PoseCharacterRenderer)">
+  PerformAnimation(PoseAnimation, PoseCharacterRenderer)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PerformAnimation(PoseAnimation animation, PoseCharacterRenderer renderer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>animation</code> <a class="xref" href="AngeliA.PoseAnimation.html">PoseAnimation</a></dt>
+    <dd></dd>
+    <dt><code>renderer</code> <a class="xref" href="AngeliA.PoseCharacterRenderer.html">PoseCharacterRenderer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_PerformAnimationBlend_" data-uid="AngeliA.PoseAnimation.PerformAnimationBlend*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_PerformAnimationBlend_AngeliA_PoseAnimation_AngeliA_PoseAnimation_System_Single_AngeliA_PoseCharacterRenderer_" data-uid="AngeliA.PoseAnimation.PerformAnimationBlend(AngeliA.PoseAnimation,AngeliA.PoseAnimation,System.Single,AngeliA.PoseCharacterRenderer)">
+  PerformAnimationBlend(PoseAnimation, PoseAnimation, float, PoseCharacterRenderer)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L125"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PerformAnimationBlend(PoseAnimation animationA, PoseAnimation animationB, float blend01, PoseCharacterRenderer renderer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>animationA</code> <a class="xref" href="AngeliA.PoseAnimation.html">PoseAnimation</a></dt>
+    <dd></dd>
+    <dt><code>animationB</code> <a class="xref" href="AngeliA.PoseAnimation.html">PoseAnimation</a></dt>
+    <dd></dd>
+    <dt><code>blend01</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>renderer</code> <a class="xref" href="AngeliA.PoseCharacterRenderer.html">PoseCharacterRenderer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_PerformAnimationBlendFromPool_" data-uid="AngeliA.PoseAnimation.PerformAnimationBlendFromPool*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_PerformAnimationBlendFromPool_System_Int32_System_Int32_System_Single_AngeliA_PoseCharacterRenderer_" data-uid="AngeliA.PoseAnimation.PerformAnimationBlendFromPool(System.Int32,System.Int32,System.Single,AngeliA.PoseCharacterRenderer)">
+  PerformAnimationBlendFromPool(int, int, float, PoseCharacterRenderer)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PerformAnimationBlendFromPool(int idA, int idB, float blend01, PoseCharacterRenderer renderer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>idA</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>idB</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>blend01</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+    <dt><code>renderer</code> <a class="xref" href="AngeliA.PoseCharacterRenderer.html">PoseCharacterRenderer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_PerformAnimationFromPool_" data-uid="AngeliA.PoseAnimation.PerformAnimationFromPool*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_PerformAnimationFromPool_System_Int32_AngeliA_PoseCharacterRenderer_" data-uid="AngeliA.PoseAnimation.PerformAnimationFromPool(System.Int32,AngeliA.PoseCharacterRenderer)">
+  PerformAnimationFromPool(int, PoseCharacterRenderer)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PerformAnimationFromPool(int id, PoseCharacterRenderer renderer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>renderer</code> <a class="xref" href="AngeliA.PoseCharacterRenderer.html">PoseCharacterRenderer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_ResetShoulderAndUpperArmPos_" data-uid="AngeliA.PoseAnimation.ResetShoulderAndUpperArmPos*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_ResetShoulderAndUpperArmPos_System_Boolean_System_Boolean_" data-uid="AngeliA.PoseAnimation.ResetShoulderAndUpperArmPos(System.Boolean,System.Boolean)">
+  ResetShoulderAndUpperArmPos(bool, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static void ResetShoulderAndUpperArmPos(bool resetLeft = true, bool resetRight = true)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>resetLeft</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>resetRight</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_SetAsAnimating_" data-uid="AngeliA.PoseAnimation.SetAsAnimating*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_SetAsAnimating_AngeliA_PoseCharacterRenderer_" data-uid="AngeliA.PoseAnimation.SetAsAnimating(AngeliA.PoseCharacterRenderer)">
+  SetAsAnimating(PoseCharacterRenderer)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L172"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static void SetAsAnimating(PoseCharacterRenderer renderer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>renderer</code> <a class="xref" href="AngeliA.PoseCharacterRenderer.html">PoseCharacterRenderer</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_PoseAnimation_TryGetAnimationFromPool_" data-uid="AngeliA.PoseAnimation.TryGetAnimationFromPool*"></a>
+
+  <h3 id="AngeliA_PoseAnimation_TryGetAnimationFromPool_System_Int32_AngeliA_PoseAnimation__" data-uid="AngeliA.PoseAnimation.TryGetAnimationFromPool(System.Int32,AngeliA.PoseAnimation@)">
+  TryGetAnimationFromPool(int, out PoseAnimation)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGetAnimationFromPool(int id, out PoseAnimation result)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>result</code> <a class="xref" href="AngeliA.PoseAnimation.html">PoseAnimation</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/PoseAnimation/PoseAnimation.cs/#L6" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

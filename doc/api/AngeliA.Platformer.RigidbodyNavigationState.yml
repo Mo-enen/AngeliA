@@ -1,0 +1,503 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Platformer.RigidbodyNavigationState
+  commentId: T:AngeliA.Platformer.RigidbodyNavigationState
+  id: RigidbodyNavigationState
+  parent: AngeliA.Platformer
+  children:
+  - AngeliA.Platformer.RigidbodyNavigationState.Fly
+  - AngeliA.Platformer.RigidbodyNavigationState.Idle
+  - AngeliA.Platformer.RigidbodyNavigationState.Operation
+  langs:
+  - csharp
+  - vb
+  name: RigidbodyNavigationState
+  nameWithType: RigidbodyNavigationState
+  fullName: AngeliA.Platformer.RigidbodyNavigationState
+  type: Enum
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Character/Navigation/RigidbodyNavigation.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RigidbodyNavigationState
+    path: ../AngeliA Platformer/src/Entity/Character/Navigation/RigidbodyNavigation.cs
+    startLine: 7
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public enum RigidbodyNavigationState
+    content.vb: Public Enum RigidbodyNavigationState
+  extensionMethods:
+  - AngeliA.Platformer.RigidbodyNavigationState.AngeliA.Extension.Next``1
+  - AngeliA.Platformer.RigidbodyNavigationState.AngeliA.Extension.Prev``1
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Platformer.RigidbodyNavigationState.Idle
+  commentId: F:AngeliA.Platformer.RigidbodyNavigationState.Idle
+  id: Idle
+  parent: AngeliA.Platformer.RigidbodyNavigationState
+  langs:
+  - csharp
+  - vb
+  name: Idle
+  nameWithType: RigidbodyNavigationState.Idle
+  fullName: AngeliA.Platformer.RigidbodyNavigationState.Idle
+  type: Field
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Character/Navigation/RigidbodyNavigation.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Idle
+    path: ../AngeliA Platformer/src/Entity/Character/Navigation/RigidbodyNavigation.cs
+    startLine: 7
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: Idle = 0
+    return:
+      type: AngeliA.Platformer.RigidbodyNavigationState
+- uid: AngeliA.Platformer.RigidbodyNavigationState.Operation
+  commentId: F:AngeliA.Platformer.RigidbodyNavigationState.Operation
+  id: Operation
+  parent: AngeliA.Platformer.RigidbodyNavigationState
+  langs:
+  - csharp
+  - vb
+  name: Operation
+  nameWithType: RigidbodyNavigationState.Operation
+  fullName: AngeliA.Platformer.RigidbodyNavigationState.Operation
+  type: Field
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Character/Navigation/RigidbodyNavigation.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Operation
+    path: ../AngeliA Platformer/src/Entity/Character/Navigation/RigidbodyNavigation.cs
+    startLine: 7
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: Operation = 1
+    return:
+      type: AngeliA.Platformer.RigidbodyNavigationState
+- uid: AngeliA.Platformer.RigidbodyNavigationState.Fly
+  commentId: F:AngeliA.Platformer.RigidbodyNavigationState.Fly
+  id: Fly
+  parent: AngeliA.Platformer.RigidbodyNavigationState
+  langs:
+  - csharp
+  - vb
+  name: Fly
+  nameWithType: RigidbodyNavigationState.Fly
+  fullName: AngeliA.Platformer.RigidbodyNavigationState.Fly
+  type: Field
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Character/Navigation/RigidbodyNavigation.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Fly
+    path: ../AngeliA Platformer/src/Entity/Character/Navigation/RigidbodyNavigation.cs
+    startLine: 7
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: Fly = 2
+    return:
+      type: AngeliA.Platformer.RigidbodyNavigationState
+references:
+- uid: AngeliA.Platformer
+  commentId: N:AngeliA.Platformer
+  href: AngeliA.html
+  name: AngeliA.Platformer
+  nameWithType: AngeliA.Platformer
+  fullName: AngeliA.Platformer
+  spec.csharp:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+  spec.vb:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+- uid: AngeliA.Platformer.RigidbodyNavigationState.AngeliA.Extension.Next``1
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<RigidbodyNavigationState>(RigidbodyNavigationState)
+  nameWithType: Extension.Next<RigidbodyNavigationState>(RigidbodyNavigationState)
+  fullName: AngeliA.Extension.Next<AngeliA.Platformer.RigidbodyNavigationState>(AngeliA.Platformer.RigidbodyNavigationState)
+  nameWithType.vb: Extension.Next(Of RigidbodyNavigationState)(RigidbodyNavigationState)
+  fullName.vb: AngeliA.Extension.Next(Of AngeliA.Platformer.RigidbodyNavigationState)(AngeliA.Platformer.RigidbodyNavigationState)
+  name.vb: Next(Of RigidbodyNavigationState)(RigidbodyNavigationState)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(AngeliA.Platformer.RigidbodyNavigationState)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - uid: AngeliA.Platformer.RigidbodyNavigationState
+    name: RigidbodyNavigationState
+    href: AngeliA.Platformer.RigidbodyNavigationState.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.Platformer.RigidbodyNavigationState
+    name: RigidbodyNavigationState
+    href: AngeliA.Platformer.RigidbodyNavigationState.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(AngeliA.Platformer.RigidbodyNavigationState)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.Platformer.RigidbodyNavigationState
+    name: RigidbodyNavigationState
+    href: AngeliA.Platformer.RigidbodyNavigationState.html
+  - name: )
+  - name: (
+  - uid: AngeliA.Platformer.RigidbodyNavigationState
+    name: RigidbodyNavigationState
+    href: AngeliA.Platformer.RigidbodyNavigationState.html
+  - name: )
+- uid: AngeliA.Platformer.RigidbodyNavigationState.AngeliA.Extension.Prev``1
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<RigidbodyNavigationState>(RigidbodyNavigationState)
+  nameWithType: Extension.Prev<RigidbodyNavigationState>(RigidbodyNavigationState)
+  fullName: AngeliA.Extension.Prev<AngeliA.Platformer.RigidbodyNavigationState>(AngeliA.Platformer.RigidbodyNavigationState)
+  nameWithType.vb: Extension.Prev(Of RigidbodyNavigationState)(RigidbodyNavigationState)
+  fullName.vb: AngeliA.Extension.Prev(Of AngeliA.Platformer.RigidbodyNavigationState)(AngeliA.Platformer.RigidbodyNavigationState)
+  name.vb: Prev(Of RigidbodyNavigationState)(RigidbodyNavigationState)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.Platformer.RigidbodyNavigationState)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - uid: AngeliA.Platformer.RigidbodyNavigationState
+    name: RigidbodyNavigationState
+    href: AngeliA.Platformer.RigidbodyNavigationState.html
+  - name: '>'
+  - name: (
+  - uid: AngeliA.Platformer.RigidbodyNavigationState
+    name: RigidbodyNavigationState
+    href: AngeliA.Platformer.RigidbodyNavigationState.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(AngeliA.Platformer.RigidbodyNavigationState)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.Platformer.RigidbodyNavigationState
+    name: RigidbodyNavigationState
+    href: AngeliA.Platformer.RigidbodyNavigationState.html
+  - name: )
+  - name: (
+  - uid: AngeliA.Platformer.RigidbodyNavigationState
+    name: RigidbodyNavigationState
+    href: AngeliA.Platformer.RigidbodyNavigationState.html
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.Next``1(``0)
+  commentId: M:AngeliA.Extension.Next``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  name: Next<E>(E)
+  nameWithType: Extension.Next<E>(E)
+  fullName: AngeliA.Extension.Next<E>(E)
+  nameWithType.vb: Extension.Next(Of E)(E)
+  fullName.vb: AngeliA.Extension.Next(Of E)(E)
+  name.vb: Next(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Next``1(``0)
+    name: Next
+    href: AngeliA.Extension.html#AngeliA_Extension_Next__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.Prev``1(``0)
+  commentId: M:AngeliA.Extension.Prev``1(``0)
+  href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  name: Prev<E>(E)
+  nameWithType: Extension.Prev<E>(E)
+  fullName: AngeliA.Extension.Prev<E>(E)
+  nameWithType.vb: Extension.Prev(Of E)(E)
+  fullName.vb: AngeliA.Extension.Prev(Of E)(E)
+  name.vb: Prev(Of E)(E)
+  spec.csharp:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: <
+  - name: E
+  - name: '>'
+  - name: (
+  - name: E
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.Prev``1(``0)
+    name: Prev
+    href: AngeliA.Extension.html#AngeliA_Extension_Prev__1___0_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: E
+  - name: )
+  - name: (
+  - name: E
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.Platformer.RigidbodyNavigationState
+  commentId: T:AngeliA.Platformer.RigidbodyNavigationState
+  parent: AngeliA.Platformer
+  href: AngeliA.Platformer.RigidbodyNavigationState.html
+  name: RigidbodyNavigationState
+  nameWithType: RigidbodyNavigationState
+  fullName: AngeliA.Platformer.RigidbodyNavigationState

@@ -1,0 +1,6128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class CharacterMovement | AngeliA </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class CharacterMovement | AngeliA ">
+      
+      <meta name="description" content="Behavour class that handle movement logic for character">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_CharacterMovement.md&amp;value=---%0Auid%3A%20AngeliA.CharacterMovement%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+            AngeliA
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="AngeliA.CharacterMovement">
+
+
+
+  <h1 id="AngeliA_CharacterMovement" data-uid="AngeliA.CharacterMovement" class="text-break">
+Class CharacterMovement  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>AngeliA Framework.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Behavour class that handle movement logic for character</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class CharacterMovement</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">CharacterMovement</span></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="AngeliA.Platformer.VehicleMovement.html">VehicleMovement</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="AngeliA_CharacterMovement__ctor_" data-uid="AngeliA.CharacterMovement.#ctor*"></a>
+
+  <h3 id="AngeliA_CharacterMovement__ctor_AngeliA_Rigidbody_" data-uid="AngeliA.CharacterMovement.#ctor(AngeliA.Rigidbody)">
+  CharacterMovement(Rigidbody)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Behavour class that handle movement logic for character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CharacterMovement(Rigidbody rig)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rig</code> <a class="xref" href="AngeliA.Rigidbody.html">Rigidbody</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="AngeliA_CharacterMovement_AllowJumpWhenClimbing" data-uid="AngeliA.CharacterMovement.AllowJumpWhenClimbing">
+  AllowJumpWhenClimbing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L319"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character jump when climbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;ClimbAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool AllowJumpWhenClimbing</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_AllowSquatJump" data-uid="AngeliA.CharacterMovement.AllowSquatJump">
+  AllowSquatJump
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L125"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character jump when squatting, and keep squatting when jump in air</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;JumpCount&quot;, CompareMode.GreaterThan, 0)]
+public readonly FrameBasedBool AllowSquatJump</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_ClimbAvailable" data-uid="AngeliA.CharacterMovement.ClimbAvailable">
+  ClimbAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L315"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character to climb</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Climb&quot;)]
+public readonly FrameBasedBool ClimbAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_ClimbSpeedX" data-uid="AngeliA.CharacterMovement.ClimbSpeedX">
+  ClimbSpeedX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L323"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Horizontal speed when climbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;ClimbAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt ClimbSpeedX</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_ClimbSpeedY" data-uid="AngeliA.CharacterMovement.ClimbSpeedY">
+  ClimbSpeedY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L327"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Vertical speed when climbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;ClimbAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt ClimbSpeedY</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_CrashAvailable" data-uid="AngeliA.CharacterMovement.CrashAvailable">
+  CrashAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L447"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character crash</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Crash&quot;)]
+public readonly FrameBasedBool CrashAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_CrashDeceleration" data-uid="AngeliA.CharacterMovement.CrashDeceleration">
+  CrashDeceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L463"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed deceleration when character crashing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;CrashAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt CrashDeceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_CrashDuration" data-uid="AngeliA.CharacterMovement.CrashDuration">
+  CrashDuration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L455"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>How many frames does it takes for one crash</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;CrashAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt CrashDuration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_CrashRunDurationRequire" data-uid="AngeliA.CharacterMovement.CrashRunDurationRequire">
+  CrashRunDurationRequire
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L459"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>How many frames does it takes to make character crash</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;CrashAvailable&quot;, CompareMode.And, &quot;CrashWhenSlippy&quot;)]
+public readonly FrameBasedInt CrashRunDurationRequire</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_CrashWhenSlippy" data-uid="AngeliA.CharacterMovement.CrashWhenSlippy">
+  CrashWhenSlippy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L451"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Make character crash when running too long on slippery ground or rush on slippery ground</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;CrashAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool CrashWhenSlippy</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_DashAcceleration" data-uid="AngeliA.CharacterMovement.DashAcceleration">
+  DashAcceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L185"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed acceleration when dashing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;DashAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt DashAcceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_DashAvailable" data-uid="AngeliA.CharacterMovement.DashAvailable">
+  DashAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character to dash (player hold down button and press jump button for once)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Dash&quot;)]
+public readonly FrameBasedBool DashAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_DashCancelLoseRate" data-uid="AngeliA.CharacterMovement.DashCancelLoseRate">
+  DashCancelLoseRate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed multiply this rate when dash being cancel (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;DashAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt DashCancelLoseRate</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_DashCooldown" data-uid="AngeliA.CharacterMovement.DashCooldown">
+  DashCooldown
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L181"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Frames length between prev dash end and next dash start</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;DashAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt DashCooldown</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_DashDuration" data-uid="AngeliA.CharacterMovement.DashDuration">
+  DashDuration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>How many frames does dash last</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;DashAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt DashDuration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_DashHeightAmount" data-uid="AngeliA.CharacterMovement.DashHeightAmount">
+  DashHeightAmount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L161"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Character hitbox height multiply this rate when dashing (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;DashAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt DashHeightAmount</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_DashPutoutFire" data-uid="AngeliA.CharacterMovement.DashPutoutFire">
+  DashPutoutFire
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L169"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character dash through fire to put it out</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;DashAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool DashPutoutFire</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_DashSpeed" data-uid="AngeliA.CharacterMovement.DashSpeed">
+  DashSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L173"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Movement speed for dashing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;DashAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt DashSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_DashWithRoll" data-uid="AngeliA.CharacterMovement.DashWithRoll">
+  DashWithRoll
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Character roll when dashing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;DashAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool DashWithRoll</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_FirstJumpWithRoll" data-uid="AngeliA.CharacterMovement.FirstJumpWithRoll">
+  FirstJumpWithRoll
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When character jump from ground, does it jump with rolling in air</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;JumpCount&quot;, CompareMode.GreaterThan, 0)]
+public readonly FrameBasedBool FirstJumpWithRoll</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_FlyAcceleration" data-uid="AngeliA.CharacterMovement.FlyAcceleration">
+  FlyAcceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L369"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed acceleration when flying</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;FlyAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt FlyAcceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_FlyAvailable" data-uid="AngeliA.CharacterMovement.FlyAvailable">
+  FlyAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L333"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character to fly (player press jump button when no jump count left)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Fly&quot;)]
+public readonly FrameBasedBool FlyAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_FlyCooldown" data-uid="AngeliA.CharacterMovement.FlyCooldown">
+  FlyCooldown
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L345"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Character has to wait this many frames to fly again</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;FlyAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt FlyCooldown</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_FlyDeceleration" data-uid="AngeliA.CharacterMovement.FlyDeceleration">
+  FlyDeceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L373"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed deceleration when flying</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;FlyAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt FlyDeceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_FlyFallSpeed" data-uid="AngeliA.CharacterMovement.FlyFallSpeed">
+  FlyFallSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L361"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Fall down speed shen flying</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;FlyAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt FlyFallSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_FlyGravityFallRate" data-uid="AngeliA.CharacterMovement.FlyGravityFallRate">
+  FlyGravityFallRate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L357"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gravity multiply this rate when flying and moving down (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;FlyAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt FlyGravityFallRate</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_FlyGravityRiseRate" data-uid="AngeliA.CharacterMovement.FlyGravityRiseRate">
+  FlyGravityRiseRate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L353"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gravity multiply this rate when flying and moving up (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;FlyAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt FlyGravityRiseRate</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_FlyHeightAmount" data-uid="AngeliA.CharacterMovement.FlyHeightAmount">
+  FlyHeightAmount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L337"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Character hitbox height multiply this rate when flying (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;FlyAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt FlyHeightAmount</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_FlyMoveSpeed" data-uid="AngeliA.CharacterMovement.FlyMoveSpeed">
+  FlyMoveSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L365"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Horizontal move speed when flying</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;FlyAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt FlyMoveSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_FlyRiseSpeed" data-uid="AngeliA.CharacterMovement.FlyRiseSpeed">
+  FlyRiseSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L349"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initial speed when fly start</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;FlyAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt FlyRiseSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_GlideOnFlying" data-uid="AngeliA.CharacterMovement.GlideOnFlying">
+  GlideOnFlying
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L341"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When glide flying, character always move to the direction it facing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;FlyAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool GlideOnFlying</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_GrabFlipThroughDownAvailable" data-uid="AngeliA.CharacterMovement.GrabFlipThroughDownAvailable">
+  GrabFlipThroughDownAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L421"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character to flip through block downward (player press down when standing on top-grabable blocks)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;GrabTopAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool GrabFlipThroughDownAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_GrabFlipThroughDuration" data-uid="AngeliA.CharacterMovement.GrabFlipThroughDuration">
+  GrabFlipThroughDuration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L429"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>How long does flip through takes in frames</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;GrabTopAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt GrabFlipThroughDuration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_GrabFlipThroughUpAvailable" data-uid="AngeliA.CharacterMovement.GrabFlipThroughUpAvailable">
+  GrabFlipThroughUpAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L425"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character to flip through block upward (player press up when top-grabbing)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;GrabTopAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool GrabFlipThroughUpAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_GrabMoveSpeedX" data-uid="AngeliA.CharacterMovement.GrabMoveSpeedX">
+  GrabMoveSpeedX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L433"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Horizontal move speed when top-grabbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;GrabTopAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt GrabMoveSpeedX</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_GrabMoveSpeedY" data-uid="AngeliA.CharacterMovement.GrabMoveSpeedY">
+  GrabMoveSpeedY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L437"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Vertical move speed when side-grabbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;GrabSideAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt GrabMoveSpeedY</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_GrabSideAvailable" data-uid="AngeliA.CharacterMovement.GrabSideAvailable">
+  GrabSideAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L405"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character grab on the side of blocks with Tag.GrabSide</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedBool GrabSideAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_GrabSideHeightAmount" data-uid="AngeliA.CharacterMovement.GrabSideHeightAmount">
+  GrabSideHeightAmount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L413"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Character hitbox height multiply this rate when side-grabbing (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;GrabSideAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt GrabSideHeightAmount</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_GrabSideJumpKickSpeed" data-uid="AngeliA.CharacterMovement.GrabSideJumpKickSpeed">
+  GrabSideJumpKickSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L441"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Horizontal initial speed when character jump when side-grabbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;GrabSideAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt GrabSideJumpKickSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_GrabTopAvailable" data-uid="AngeliA.CharacterMovement.GrabTopAvailable">
+  GrabTopAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L401"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character grab on the bottom of blocks with Tag.GrabTop</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Grab&quot;)]
+public readonly FrameBasedBool GrabTopAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_GrabTopHeightAmount" data-uid="AngeliA.CharacterMovement.GrabTopHeightAmount">
+  GrabTopHeightAmount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L409"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Character hitbox height multiply this rate when top-grabbing (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;GrabTopAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt GrabTopHeightAmount</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_InWaterSpeedRate" data-uid="AngeliA.CharacterMovement.InWaterSpeedRate">
+  InWaterSpeedRate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L285"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When character inside water, the movement speed will multiply this rate (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt InWaterSpeedRate</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_JumpBoostFromMoveRate" data-uid="AngeliA.CharacterMovement.JumpBoostFromMoveRate">
+  JumpBoostFromMoveRate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When character start jump, if it's moving, the running speed will multiply this rate and add into the initial jump speed. (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;JumpCount&quot;, CompareMode.GreaterThan, 0)]
+public readonly FrameBasedInt JumpBoostFromMoveRate</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_JumpBreakDash" data-uid="AngeliA.CharacterMovement.JumpBreakDash">
+  JumpBreakDash
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character jump when dashing and stop the dash</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;JumpCount&quot;, CompareMode.GreaterThan, 0)]
+public readonly FrameBasedBool JumpBreakDash</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_JumpBreakRush" data-uid="AngeliA.CharacterMovement.JumpBreakRush">
+  JumpBreakRush
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L117"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character jump when rushing and stop the rush</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;JumpCount&quot;, CompareMode.GreaterThan, 0)]
+public readonly FrameBasedBool JumpBreakRush</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_JumpCount" data-uid="AngeliA.CharacterMovement.JumpCount">
+  JumpCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>How many times can the character jump without touching ground</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Jump&quot;)]
+public readonly FrameBasedInt JumpCount</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_JumpDownThroughOneway" data-uid="AngeliA.CharacterMovement.JumpDownThroughOneway">
+  JumpDownThroughOneway
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L129"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character jump down and go through oneway gate (player holding down button and press jump button once)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedBool JumpDownThroughOneway</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_JumpReleaseSpeedRate" data-uid="AngeliA.CharacterMovement.JumpReleaseSpeedRate">
+  JumpReleaseSpeedRate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When character stop trying to jump (player release the jump button), and the character is still moving up, then the current speed will be multiply to this rate (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;JumpCount&quot;, CompareMode.GreaterThan, 0)]
+public readonly FrameBasedInt JumpReleaseSpeedRate</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_JumpRiseGravityRate" data-uid="AngeliA.CharacterMovement.JumpRiseGravityRate">
+  JumpRiseGravityRate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gravity applys on the character will multiply this rate when character moving up in air (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;JumpCount&quot;, CompareMode.GreaterThan, 0)]
+public readonly FrameBasedInt JumpRiseGravityRate</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_JumpSpeed" data-uid="AngeliA.CharacterMovement.JumpSpeed">
+  JumpSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initial speed when character start to jump</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;JumpCount&quot;, CompareMode.GreaterThan, 0)]
+public readonly FrameBasedInt JumpSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_MovementHeight" data-uid="AngeliA.CharacterMovement.MovementHeight">
+  MovementHeight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Default height of the character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt MovementHeight</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_MovementWidth" data-uid="AngeliA.CharacterMovement.MovementWidth">
+  MovementWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Default with of the character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Size&quot;)]
+public readonly FrameBasedInt MovementWidth</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_PoundAvailable" data-uid="AngeliA.CharacterMovement.PoundAvailable">
+  PoundAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character ground pound in air (player press down button in air)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Pound&quot;)]
+public readonly FrameBasedBool PoundAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_PoundPutoutFire" data-uid="AngeliA.CharacterMovement.PoundPutoutFire">
+  PoundPutoutFire
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L271"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character pound on fire to put it out</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;PoundAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool PoundPutoutFire</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_PoundSpeed" data-uid="AngeliA.CharacterMovement.PoundSpeed">
+  PoundSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Movement speed when pounding</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;PoundAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt PoundSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_PushAvailable" data-uid="AngeliA.CharacterMovement.PushAvailable">
+  PushAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L469"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character push other rigidbody</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Push&quot;)]
+public readonly FrameBasedBool PushAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_PushSpeed" data-uid="AngeliA.CharacterMovement.PushSpeed">
+  PushSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L473"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Movement speed when character pushing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;PushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt PushSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_ResetJumpCountWhenGrab" data-uid="AngeliA.CharacterMovement.ResetJumpCountWhenGrab">
+  ResetJumpCountWhenGrab
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L417"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Set jump count to 0 when character grabbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;GrabTopAvailable&quot;, CompareMode.Or, &quot;GrabSideAvailable&quot;)]
+public readonly FrameBasedBool ResetJumpCountWhenGrab</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_ResetJumpCountWhenSlide" data-uid="AngeliA.CharacterMovement.ResetJumpCountWhenSlide">
+  ResetJumpCountWhenSlide
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L387"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Set jump count to 0 when slide</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SlideAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool ResetJumpCountWhenSlide</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RunAcceleration" data-uid="AngeliA.CharacterMovement.RunAcceleration">
+  RunAcceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed acceleration when character is running</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RunAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RunAcceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RunAvailable" data-uid="AngeliA.CharacterMovement.RunAvailable">
+  RunAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character to run</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Run&quot;)]
+public readonly FrameBasedBool RunAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RunBrakeAcceleration" data-uid="AngeliA.CharacterMovement.RunBrakeAcceleration">
+  RunBrakeAcceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed acceleration when character is trying to run to the opposite direction</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RunAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RunBrakeAcceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RunDeceleration" data-uid="AngeliA.CharacterMovement.RunDeceleration">
+  RunDeceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed deceleration when character is running</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RunAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RunDeceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RunSpeed" data-uid="AngeliA.CharacterMovement.RunSpeed">
+  RunSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>How fast should the character run</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RunAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RunSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushAcceleration" data-uid="AngeliA.CharacterMovement.RushAcceleration">
+  RushAcceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L243"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed acceleration when rushing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RushAcceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushAvailable" data-uid="AngeliA.CharacterMovement.RushAvailable">
+  RushAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L195"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character to rush</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Rush&quot;)]
+public readonly FrameBasedBool RushAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushCooldown" data-uid="AngeliA.CharacterMovement.RushCooldown">
+  RushCooldown
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L239"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>How many frames does character has to wair after prev rush end to rush again</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RushCooldown</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushDeceleration" data-uid="AngeliA.CharacterMovement.RushDeceleration">
+  RushDeceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L247"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed deceleration when rushing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RushDeceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushDuration" data-uid="AngeliA.CharacterMovement.RushDuration">
+  RushDuration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L231"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>How many frames does rush last</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RushDuration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushHeightAmount" data-uid="AngeliA.CharacterMovement.RushHeightAmount">
+  RushHeightAmount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L199"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Character hitbox height multiply this rate when rushing (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RushHeightAmount</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushInAir" data-uid="AngeliA.CharacterMovement.RushInAir">
+  RushInAir
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L203"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character rush when not grounded</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool RushInAir</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushInWater" data-uid="AngeliA.CharacterMovement.RushInWater">
+  RushInWater
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L207"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character rush when inside water</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool RushInWater</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushPutoutFire" data-uid="AngeliA.CharacterMovement.RushPutoutFire">
+  RushPutoutFire
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L219"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character rush through fire to put it out</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool RushPutoutFire</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushSpeed" data-uid="AngeliA.CharacterMovement.RushSpeed">
+  RushSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L223"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Movement speed when rushing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RushSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushStiff" data-uid="AngeliA.CharacterMovement.RushStiff">
+  RushStiff
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L235"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>How many frames does character not allow to move after rush end</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RushStiff</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushStopSpeed" data-uid="AngeliA.CharacterMovement.RushStopSpeed">
+  RushStopSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L227"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Movement speed when rush end</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt RushStopSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushWhenClimb" data-uid="AngeliA.CharacterMovement.RushWhenClimb">
+  RushWhenClimb
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>character rush when climb</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool RushWhenClimb</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_RushWhenSquat" data-uid="AngeliA.CharacterMovement.RushWhenSquat">
+  RushWhenSquat
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L215"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>character rush when squat</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;RushAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool RushWhenSquat</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SlideAvailable" data-uid="AngeliA.CharacterMovement.SlideAvailable">
+  SlideAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L379"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character to slide on wall</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Slide&quot;)]
+public readonly FrameBasedBool SlideAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SlideDropSpeed" data-uid="AngeliA.CharacterMovement.SlideDropSpeed">
+  SlideDropSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L395"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Drop down speed when sliding</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SlideAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SlideDropSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SlideJumpKickSpeed" data-uid="AngeliA.CharacterMovement.SlideJumpKickSpeed">
+  SlideJumpKickSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L391"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Horizontal initial speed when character jump when slide</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SlideAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SlideJumpKickSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SlideOnAnyBlock" data-uid="AngeliA.CharacterMovement.SlideOnAnyBlock">
+  SlideOnAnyBlock
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L383"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character to slide on all type of blocks</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SlideAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedBool SlideOnAnyBlock</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SlipAcceleration" data-uid="AngeliA.CharacterMovement.SlipAcceleration">
+  SlipAcceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L257"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed acceleration when moving on slippery ground</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SlipAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SlipAcceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SlipAvailable" data-uid="AngeliA.CharacterMovement.SlipAvailable">
+  SlipAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L253"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character slip when run on slippery ground</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Slip&quot;)]
+public readonly FrameBasedBool SlipAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SlipDeceleration" data-uid="AngeliA.CharacterMovement.SlipDeceleration">
+  SlipDeceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L261"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed deceleration when moving on slippery ground</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SlipAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SlipDeceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SquatAcceleration" data-uid="AngeliA.CharacterMovement.SquatAcceleration">
+  SquatAcceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L147"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Movement acceleration when squat moving</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SquatAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SquatAcceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SquatAvailable" data-uid="AngeliA.CharacterMovement.SquatAvailable">
+  SquatAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character to squat</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Squat&quot;)]
+public readonly FrameBasedBool SquatAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SquatDeceleration" data-uid="AngeliA.CharacterMovement.SquatDeceleration">
+  SquatDeceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Movement deceleration when squat moving</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SquatAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SquatDeceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SquatHeightAmount" data-uid="AngeliA.CharacterMovement.SquatHeightAmount">
+  SquatHeightAmount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Character hitbox height multiply this rate when squatting (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SquatAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SquatHeightAmount</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SquatMoveSpeed" data-uid="AngeliA.CharacterMovement.SquatMoveSpeed">
+  SquatMoveSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L143"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Move speed when character squatting, set to 0 when not allow squat move</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SquatAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SquatMoveSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SubsequentJumpWithRoll" data-uid="AngeliA.CharacterMovement.SubsequentJumpWithRoll">
+  SubsequentJumpWithRoll
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When character jump from air, does it jump with rolling in air</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;JumpCount&quot;, CompareMode.GreaterThan, 1)]
+public readonly FrameBasedBool SubsequentJumpWithRoll</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SwimAcceleration" data-uid="AngeliA.CharacterMovement.SwimAcceleration">
+  SwimAcceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L305"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed acceleration when chracter inside water</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SwimAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SwimAcceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SwimAvailable" data-uid="AngeliA.CharacterMovement.SwimAvailable">
+  SwimAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L281"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character swim in water</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Swim&quot;)]
+public readonly FrameBasedBool SwimAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SwimDeceleration" data-uid="AngeliA.CharacterMovement.SwimDeceleration">
+  SwimDeceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L309"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed deceleration when chracter inside water</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SwimAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SwimDeceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SwimHeightAmount" data-uid="AngeliA.CharacterMovement.SwimHeightAmount">
+  SwimHeightAmount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L293"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Character hitbox height multiply this rate when swimming (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SwimAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SwimHeightAmount</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SwimJumpSpeed" data-uid="AngeliA.CharacterMovement.SwimJumpSpeed">
+  SwimJumpSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L301"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Movement speed when character jump inside water</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SwimAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SwimJumpSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SwimSpeed" data-uid="AngeliA.CharacterMovement.SwimSpeed">
+  SwimSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L297"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Movement speed when character swimming</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SwimAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SwimSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_SwimWidthAmount" data-uid="AngeliA.CharacterMovement.SwimWidthAmount">
+  SwimWidthAmount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L289"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Character hitbox width multiply this rate when swimming (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;SwimAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt SwimWidthAmount</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_Target" data-uid="AngeliA.CharacterMovement.Target">
+  Target
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L500"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Rigidbody Target</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Rigidbody.html">Rigidbody</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_TargetCharacter" data-uid="AngeliA.CharacterMovement.TargetCharacter">
+  TargetCharacter
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L502"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Character TargetCharacter</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_WalkAcceleration" data-uid="AngeliA.CharacterMovement.WalkAcceleration">
+  WalkAcceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed acceleration when character is walking</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;WalkAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt WalkAcceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_WalkAvailable" data-uid="AngeliA.CharacterMovement.WalkAvailable">
+  WalkAvailable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Allow character to walk</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropGroup(&quot;Walk&quot;)]
+public readonly FrameBasedBool WalkAvailable</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_WalkBrakeAcceleration" data-uid="AngeliA.CharacterMovement.WalkBrakeAcceleration">
+  WalkBrakeAcceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed acceleration when character is trying to walk to the opposite direction</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;WalkAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt WalkBrakeAcceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_WalkDeceleration" data-uid="AngeliA.CharacterMovement.WalkDeceleration">
+  WalkDeceleration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Speed deceleration when character is walking</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;WalkAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt WalkDeceleration</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="AngeliA_CharacterMovement_WalkSpeed" data-uid="AngeliA.CharacterMovement.WalkSpeed">
+  WalkSpeed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>How fast should the character walk</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[PropVisibility(&quot;WalkAvailable&quot;, CompareMode.Equal)]
+public readonly FrameBasedInt WalkSpeed</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="AngeliA_CharacterMovement_CollisionMask_" data-uid="AngeliA.CharacterMovement.CollisionMask*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_CollisionMask" data-uid="AngeliA.CharacterMovement.CollisionMask">
+  CollisionMask
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L710"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int CollisionMask { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_CurrentJumpCount_" data-uid="AngeliA.CharacterMovement.CurrentJumpCount*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_CurrentJumpCount" data-uid="AngeliA.CharacterMovement.CurrentJumpCount">
+  CurrentJumpCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L518"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>How many times does character jumps after touching ground</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CurrentJumpCount { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_FacingFront_" data-uid="AngeliA.CharacterMovement.FacingFront*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_FacingFront" data-uid="AngeliA.CharacterMovement.FacingFront">
+  FacingFront
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L526"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character currently facing front</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool FacingFront { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_FacingRight_" data-uid="AngeliA.CharacterMovement.FacingRight*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_FacingRight" data-uid="AngeliA.CharacterMovement.FacingRight">
+  FacingRight
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L522"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character currently facing right</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool FacingRight { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_Height_" data-uid="AngeliA.CharacterMovement.Height*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_Height" data-uid="AngeliA.CharacterMovement.Height">
+  Height
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L702"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int Height { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_InWater_" data-uid="AngeliA.CharacterMovement.InWater*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_InWater" data-uid="AngeliA.CharacterMovement.InWater">
+  InWater
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L708"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool InWater { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IntendedX_" data-uid="AngeliA.CharacterMovement.IntendedX*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IntendedX" data-uid="AngeliA.CharacterMovement.IntendedX">
+  IntendedX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L510"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>1 if character want to move right, -1 for left</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int IntendedX { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IntendedY_" data-uid="AngeliA.CharacterMovement.IntendedY*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IntendedY" data-uid="AngeliA.CharacterMovement.IntendedY">
+  IntendedY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L514"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>1 if character want to move up, -1 for down</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int IntendedY { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsClimbing_" data-uid="AngeliA.CharacterMovement.IsClimbing*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsClimbing" data-uid="AngeliA.CharacterMovement.IsClimbing">
+  IsClimbing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L678"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is climbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsClimbing { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsCrashing_" data-uid="AngeliA.CharacterMovement.IsCrashing*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsCrashing" data-uid="AngeliA.CharacterMovement.IsCrashing">
+  IsCrashing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L666"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is crashing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsCrashing { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsDashing_" data-uid="AngeliA.CharacterMovement.IsDashing*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsDashing" data-uid="AngeliA.CharacterMovement.IsDashing">
+  IsDashing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L658"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is dashing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDashing { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsFlying_" data-uid="AngeliA.CharacterMovement.IsFlying*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsFlying" data-uid="AngeliA.CharacterMovement.IsFlying">
+  IsFlying
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L682"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is flying</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsFlying { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsGrabFlipping_" data-uid="AngeliA.CharacterMovement.IsGrabFlipping*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsGrabFlipping" data-uid="AngeliA.CharacterMovement.IsGrabFlipping">
+  IsGrabFlipping
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L630"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character flipping through blocks</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsGrabFlipping { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsGrabFlippingDown_" data-uid="AngeliA.CharacterMovement.IsGrabFlippingDown*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsGrabFlippingDown" data-uid="AngeliA.CharacterMovement.IsGrabFlippingDown">
+  IsGrabFlippingDown
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L638"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character flipping through blocks downward</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsGrabFlippingDown { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsGrabFlippingUp_" data-uid="AngeliA.CharacterMovement.IsGrabFlippingUp*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsGrabFlippingUp" data-uid="AngeliA.CharacterMovement.IsGrabFlippingUp">
+  IsGrabFlippingUp
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L634"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character flipping through blocks upward</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsGrabFlippingUp { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsGrabbingSide_" data-uid="AngeliA.CharacterMovement.IsGrabbingSide*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsGrabbingSide" data-uid="AngeliA.CharacterMovement.IsGrabbingSide">
+  IsGrabbingSide
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L694"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is side-grabbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsGrabbingSide { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsGrabbingTop_" data-uid="AngeliA.CharacterMovement.IsGrabbingTop*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsGrabbingTop" data-uid="AngeliA.CharacterMovement.IsGrabbingTop">
+  IsGrabbingTop
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L690"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is top-grabbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsGrabbingTop { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsGrounded_" data-uid="AngeliA.CharacterMovement.IsGrounded*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsGrounded" data-uid="AngeliA.CharacterMovement.IsGrounded">
+  IsGrounded
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L709"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool IsGrounded { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsInsideGround_" data-uid="AngeliA.CharacterMovement.IsInsideGround*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsInsideGround" data-uid="AngeliA.CharacterMovement.IsInsideGround">
+  IsInsideGround
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L707"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool IsInsideGround { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsMoving_" data-uid="AngeliA.CharacterMovement.IsMoving*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsMoving" data-uid="AngeliA.CharacterMovement.IsMoving">
+  IsMoving
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L642"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is moving</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsMoving { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsPounding_" data-uid="AngeliA.CharacterMovement.IsPounding*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsPounding" data-uid="AngeliA.CharacterMovement.IsPounding">
+  IsPounding
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L674"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is pounding</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsPounding { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsRolling_" data-uid="AngeliA.CharacterMovement.IsRolling*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsRolling" data-uid="AngeliA.CharacterMovement.IsRolling">
+  IsRolling
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L654"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is rolling</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRolling { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsRunning_" data-uid="AngeliA.CharacterMovement.IsRunning*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsRunning" data-uid="AngeliA.CharacterMovement.IsRunning">
+  IsRunning
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L650"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is running</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRunning { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsRushing_" data-uid="AngeliA.CharacterMovement.IsRushing*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsRushing" data-uid="AngeliA.CharacterMovement.IsRushing">
+  IsRushing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L662"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is rushing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRushing { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsSliding_" data-uid="AngeliA.CharacterMovement.IsSliding*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsSliding" data-uid="AngeliA.CharacterMovement.IsSliding">
+  IsSliding
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L686"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is sliding on wall</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSliding { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsSquatting_" data-uid="AngeliA.CharacterMovement.IsSquatting*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsSquatting" data-uid="AngeliA.CharacterMovement.IsSquatting">
+  IsSquatting
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L670"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is squatting</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSquatting { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_IsWalking_" data-uid="AngeliA.CharacterMovement.IsWalking*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_IsWalking" data-uid="AngeliA.CharacterMovement.IsWalking">
+  IsWalking
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L646"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character is walking</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsWalking { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastClimbFrame_" data-uid="AngeliA.CharacterMovement.LastClimbFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastClimbFrame" data-uid="AngeliA.CharacterMovement.LastClimbFrame">
+  LastClimbFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L560"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character climb</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastClimbFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastCrashFrame_" data-uid="AngeliA.CharacterMovement.LastCrashFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastCrashFrame" data-uid="AngeliA.CharacterMovement.LastCrashFrame">
+  LastCrashFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L572"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character crash</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastCrashFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastDashFrame_" data-uid="AngeliA.CharacterMovement.LastDashFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastDashFrame" data-uid="AngeliA.CharacterMovement.LastDashFrame">
+  LastDashFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L564"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character start to dash</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastDashFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastEndMoveFrame_" data-uid="AngeliA.CharacterMovement.LastEndMoveFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastEndMoveFrame" data-uid="AngeliA.CharacterMovement.LastEndMoveFrame">
+  LastEndMoveFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L552"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character moving ends</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastEndMoveFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastFacingChangeFrame_" data-uid="AngeliA.CharacterMovement.LastFacingChangeFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastFacingChangeFrame" data-uid="AngeliA.CharacterMovement.LastFacingChangeFrame">
+  LastFacingChangeFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L620"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character change horizontal facing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastFacingChangeFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastFlyFrame_" data-uid="AngeliA.CharacterMovement.LastFlyFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastFlyFrame" data-uid="AngeliA.CharacterMovement.LastFlyFrame">
+  LastFlyFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L600"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character start to fly</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastFlyFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastGrabCancelFrame_" data-uid="AngeliA.CharacterMovement.LastGrabCancelFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastGrabCancelFrame" data-uid="AngeliA.CharacterMovement.LastGrabCancelFrame">
+  LastGrabCancelFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L612"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character stop grabbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastGrabCancelFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastGrabFlipDownFrame_" data-uid="AngeliA.CharacterMovement.LastGrabFlipDownFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastGrabFlipDownFrame" data-uid="AngeliA.CharacterMovement.LastGrabFlipDownFrame">
+  LastGrabFlipDownFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L608"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character start to grab flip downward</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastGrabFlipDownFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastGrabFlipUpFrame_" data-uid="AngeliA.CharacterMovement.LastGrabFlipUpFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastGrabFlipUpFrame" data-uid="AngeliA.CharacterMovement.LastGrabFlipUpFrame">
+  LastGrabFlipUpFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L604"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character start to grab flip upward</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastGrabFlipUpFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastGrabbingFrame_" data-uid="AngeliA.CharacterMovement.LastGrabbingFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastGrabbingFrame" data-uid="AngeliA.CharacterMovement.LastGrabbingFrame">
+  LastGrabbingFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L596"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character is grabbing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastGrabbingFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastGroundFrame_" data-uid="AngeliA.CharacterMovement.LastGroundFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastGroundFrame" data-uid="AngeliA.CharacterMovement.LastGroundFrame">
+  LastGroundFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L540"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character start touching ground</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastGroundFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastGroundingFrame_" data-uid="AngeliA.CharacterMovement.LastGroundingFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastGroundingFrame" data-uid="AngeliA.CharacterMovement.LastGroundingFrame">
+  LastGroundingFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L544"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character is touching ground</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastGroundingFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastJumpFrame_" data-uid="AngeliA.CharacterMovement.LastJumpFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastJumpFrame" data-uid="AngeliA.CharacterMovement.LastJumpFrame">
+  LastJumpFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L556"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character start to jump</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastJumpFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastMoveDirection_" data-uid="AngeliA.CharacterMovement.LastMoveDirection*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastMoveDirection" data-uid="AngeliA.CharacterMovement.LastMoveDirection">
+  LastMoveDirection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L506"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Direction for last movement</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Int2 LastMoveDirection { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastPoundingFrame_" data-uid="AngeliA.CharacterMovement.LastPoundingFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastPoundingFrame" data-uid="AngeliA.CharacterMovement.LastPoundingFrame">
+  LastPoundingFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L588"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character is pounding</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastPoundingFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastRushStartFrame_" data-uid="AngeliA.CharacterMovement.LastRushStartFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastRushStartFrame" data-uid="AngeliA.CharacterMovement.LastRushStartFrame">
+  LastRushStartFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L568"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character start to rush</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastRushStartFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastSlidingFrame_" data-uid="AngeliA.CharacterMovement.LastSlidingFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastSlidingFrame" data-uid="AngeliA.CharacterMovement.LastSlidingFrame">
+  LastSlidingFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L592"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character is sliding on wall</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastSlidingFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastSlippyMoveStartFrame_" data-uid="AngeliA.CharacterMovement.LastSlippyMoveStartFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastSlippyMoveStartFrame" data-uid="AngeliA.CharacterMovement.LastSlippyMoveStartFrame">
+  LastSlippyMoveStartFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L576"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character start to move on slippery ground</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastSlippyMoveStartFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastSquatStartFrame_" data-uid="AngeliA.CharacterMovement.LastSquatStartFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastSquatStartFrame" data-uid="AngeliA.CharacterMovement.LastSquatStartFrame">
+  LastSquatStartFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L580"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character start to squat</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastSquatStartFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastSquattingFrame_" data-uid="AngeliA.CharacterMovement.LastSquattingFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastSquattingFrame" data-uid="AngeliA.CharacterMovement.LastSquattingFrame">
+  LastSquattingFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L584"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character is squatting</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastSquattingFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastStartMoveFrame_" data-uid="AngeliA.CharacterMovement.LastStartMoveFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastStartMoveFrame" data-uid="AngeliA.CharacterMovement.LastStartMoveFrame">
+  LastStartMoveFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L548"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character start to move</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastStartMoveFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LastStartRunFrame_" data-uid="AngeliA.CharacterMovement.LastStartRunFrame*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LastStartRunFrame" data-uid="AngeliA.CharacterMovement.LastStartRunFrame">
+  LastStartRunFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L616"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Last frame when character start to run</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastStartRunFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_MovementState_" data-uid="AngeliA.CharacterMovement.MovementState*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_MovementState" data-uid="AngeliA.CharacterMovement.MovementState">
+  MovementState
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L626"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Current movement type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CharacterMovementState MovementState { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.CharacterMovementState.html">CharacterMovementState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_OffsetX_" data-uid="AngeliA.CharacterMovement.OffsetX*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_OffsetX" data-uid="AngeliA.CharacterMovement.OffsetX">
+  OffsetX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L703"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int OffsetX { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_OffsetY_" data-uid="AngeliA.CharacterMovement.OffsetY*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_OffsetY" data-uid="AngeliA.CharacterMovement.OffsetY">
+  OffsetY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L704"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int OffsetY { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_Rect_" data-uid="AngeliA.CharacterMovement.Rect*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_Rect" data-uid="AngeliA.CharacterMovement.Rect">
+  Rect
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L698"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IRect Rect { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_ShouldRun_" data-uid="AngeliA.CharacterMovement.ShouldRun*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_ShouldRun" data-uid="AngeliA.CharacterMovement.ShouldRun">
+  ShouldRun
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L530"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>True if character want to run instead of walk when move</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShouldRun { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_SyncFromConfigFile_" data-uid="AngeliA.CharacterMovement.SyncFromConfigFile*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_SyncFromConfigFile" data-uid="AngeliA.CharacterMovement.SyncFromConfigFile">
+  SyncFromConfigFile
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L534"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Does movement config sync with json file in game universe folder</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool SyncFromConfigFile { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_VelocityX_" data-uid="AngeliA.CharacterMovement.VelocityX*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_VelocityX" data-uid="AngeliA.CharacterMovement.VelocityX">
+  VelocityX
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L705"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int VelocityX { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_VelocityY_" data-uid="AngeliA.CharacterMovement.VelocityY*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_VelocityY" data-uid="AngeliA.CharacterMovement.VelocityY">
+  VelocityY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L706"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int VelocityY { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_Width_" data-uid="AngeliA.CharacterMovement.Width*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_Width" data-uid="AngeliA.CharacterMovement.Width">
+  Width
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L701"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int Width { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_X_" data-uid="AngeliA.CharacterMovement.X*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_X" data-uid="AngeliA.CharacterMovement.X">
+  X
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L699"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int X { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_Y_" data-uid="AngeliA.CharacterMovement.Y*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_Y" data-uid="AngeliA.CharacterMovement.Y">
+  Y
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L700"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int Y { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="AngeliA_CharacterMovement_CalculateMovementState_" data-uid="AngeliA.CharacterMovement.CalculateMovementState*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_CalculateMovementState_AngeliA_CharacterMovement_" data-uid="AngeliA.CharacterMovement.CalculateMovementState(AngeliA.CharacterMovement)">
+  CalculateMovementState(CharacterMovement)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1666"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get current movement type base on current cached data</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static CharacterMovementState CalculateMovementState(CharacterMovement movement)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>movement</code> <a class="xref" href="AngeliA.CharacterMovement.html">CharacterMovement</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.CharacterMovementState.html">CharacterMovementState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_Crash_" data-uid="AngeliA.CharacterMovement.Crash*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_Crash" data-uid="AngeliA.CharacterMovement.Crash">
+  Crash()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1626"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Perform crash (call this once when crash start)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Crash()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_Dash_" data-uid="AngeliA.CharacterMovement.Dash*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_Dash" data-uid="AngeliA.CharacterMovement.Dash">
+  Dash()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1596"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Perform dash (call this once when dash start)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Dash()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_GetMovementState_" data-uid="AngeliA.CharacterMovement.GetMovementState*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_GetMovementState" data-uid="AngeliA.CharacterMovement.GetMovementState">
+  GetMovementState()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1688"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Get current movement type base on current cached data</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual CharacterMovementState GetMovementState()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.CharacterMovementState.html">CharacterMovementState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_HoldJump_" data-uid="AngeliA.CharacterMovement.HoldJump*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_HoldJump_System_Boolean_" data-uid="AngeliA.CharacterMovement.HoldJump(System.Boolean)">
+  HoldJump(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1578"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Is character holding jump (call this every frame no matter character is jumpping or not)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void HoldJump(bool holding)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>holding</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_Jump_" data-uid="AngeliA.CharacterMovement.Jump*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_Jump_System_Boolean_" data-uid="AngeliA.CharacterMovement.Jump(System.Boolean)">
+  Jump(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1585"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Perform jump (call this once when jump start)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Jump(bool isSquatJump = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>isSquatJump</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>Is this jump a squat jump or not</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LockFacingRight_" data-uid="AngeliA.CharacterMovement.LockFacingRight*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LockFacingRight_System_Boolean_System_Int32_" data-uid="AngeliA.CharacterMovement.LockFacingRight(System.Boolean,System.Int32)">
+  LockFacingRight(bool, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1639"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Force character facing right or left for given frames</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void LockFacingRight(bool facingRight, int duration = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>facingRight</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>duration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_LockSquat_" data-uid="AngeliA.CharacterMovement.LockSquat*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_LockSquat_System_Int32_" data-uid="AngeliA.CharacterMovement.LockSquat(System.Int32)">
+  LockSquat(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1648"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Force character to squat for given frames</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void LockSquat(int duration = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>duration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_Move_" data-uid="AngeliA.CharacterMovement.Move*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_Move_AngeliA_Direction3_AngeliA_Direction3_System_Boolean_" data-uid="AngeliA.CharacterMovement.Move(AngeliA.Direction3,AngeliA.Direction3,System.Boolean)">
+  Move(Direction3, Direction3, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1563"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Move the character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Move(Direction3 x, Direction3 y, bool walk = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="AngeliA.Direction3.html">Direction3</a></dt>
+    <dd></dd>
+    <dt><code>y</code> <a class="xref" href="AngeliA.Direction3.html">Direction3</a></dt>
+    <dd></dd>
+    <dt><code>walk</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if character want to walk instead of run</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_MoveLogic_" data-uid="AngeliA.CharacterMovement.MoveLogic*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_MoveLogic_System_Int32_System_Int32_System_Boolean_" data-uid="AngeliA.CharacterMovement.MoveLogic(System.Int32,System.Int32,System.Boolean)">
+  MoveLogic(int, int, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1701"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void MoveLogic(int x, int y, bool walk = false)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>walk</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_OnActivated_" data-uid="AngeliA.CharacterMovement.OnActivated*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_OnActivated" data-uid="AngeliA.CharacterMovement.OnActivated">
+  OnActivated()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L781"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnActivated()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_PhysicsUpdateGamePlay_" data-uid="AngeliA.CharacterMovement.PhysicsUpdateGamePlay*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_PhysicsUpdateGamePlay" data-uid="AngeliA.CharacterMovement.PhysicsUpdateGamePlay">
+  PhysicsUpdateGamePlay()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L812"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void PhysicsUpdateGamePlay()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_Pound_" data-uid="AngeliA.CharacterMovement.Pound*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_Pound" data-uid="AngeliA.CharacterMovement.Pound">
+  Pound()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1608"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Perform pound (call this once when pound start)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Pound()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_ReloadMovementConfigFromFile_" data-uid="AngeliA.CharacterMovement.ReloadMovementConfigFromFile*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_ReloadMovementConfigFromFile" data-uid="AngeliA.CharacterMovement.ReloadMovementConfigFromFile">
+  ReloadMovementConfigFromFile()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1541"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Load movement data from json file inside game universe folder</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ReloadMovementConfigFromFile()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_Rush_" data-uid="AngeliA.CharacterMovement.Rush*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_Rush" data-uid="AngeliA.CharacterMovement.Rush">
+  Rush()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1614"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Perform rush (call this once when rush start)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Rush()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_SetSpeedRate_" data-uid="AngeliA.CharacterMovement.SetSpeedRate*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_SetSpeedRate_System_Int32_System_Int32_" data-uid="AngeliA.CharacterMovement.SetSpeedRate(System.Int32,System.Int32)">
+  SetSpeedRate(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1656"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Force movement speed rate for given frames</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetSpeedRate(int newRate, int duration = 1)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>newRate</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>0 means 0%, 1000 means 100%</p>
+</dd>
+    <dt><code>duration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_Stop_" data-uid="AngeliA.CharacterMovement.Stop*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_Stop" data-uid="AngeliA.CharacterMovement.Stop">
+  Stop()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1569"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stop current movement</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Stop()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_StopCrash_" data-uid="AngeliA.CharacterMovement.StopCrash*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_StopCrash" data-uid="AngeliA.CharacterMovement.StopCrash">
+  StopCrash()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1633"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stop current crash</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopCrash()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_StopDash_" data-uid="AngeliA.CharacterMovement.StopDash*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_StopDash" data-uid="AngeliA.CharacterMovement.StopDash">
+  StopDash()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1602"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stop current dashing</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopDash()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_StopRush_" data-uid="AngeliA.CharacterMovement.StopRush*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_StopRush" data-uid="AngeliA.CharacterMovement.StopRush">
+  StopRush()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L1620"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Stop current rush</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopRush()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_CharacterMovement_UpdateLater_" data-uid="AngeliA.CharacterMovement.UpdateLater*"></a>
+
+  <h3 id="AngeliA_CharacterMovement_UpdateLater" data-uid="AngeliA.CharacterMovement.UpdateLater">
+  UpdateLater()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L837"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void UpdateLater()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Movement/CharacterMovement.cs/#L22" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

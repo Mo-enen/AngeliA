@@ -1,0 +1,2148 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.PauseMenuUI
+  commentId: T:AngeliA.PauseMenuUI
+  id: PauseMenuUI
+  parent: AngeliA
+  children:
+  - AngeliA.PauseMenuUI.#ctor
+  - AngeliA.PauseMenuUI.DrawMenu
+  - AngeliA.PauseMenuUI.LateUpdate
+  - AngeliA.PauseMenuUI.OnActivated
+  - AngeliA.PauseMenuUI.OnGameTryingToQuit
+  - AngeliA.PauseMenuUI.OnGameUpdatePauseless
+  - AngeliA.PauseMenuUI.OnInactivated
+  langs:
+  - csharp
+  - vb
+  name: PauseMenuUI
+  nameWithType: PauseMenuUI
+  fullName: AngeliA.PauseMenuUI
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PauseMenuUI
+    path: ../AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: >-
+      [Entity.Capacity(1, 1)]
+
+      [Entity.StageOrder(4096)]
+
+      public class PauseMenuUI : MenuUI, IMapItem, IWindowEntityUI
+    content.vb: >-
+      <Entity.Capacity(1, 1)>
+
+      <Entity.StageOrder(4096)>
+
+      Public Class PauseMenuUI Inherits MenuUI Implements IMapItem, IWindowEntityUI
+  inheritance:
+  - System.Object
+  - AngeliA.Entity
+  - AngeliA.EntityUI
+  - AngeliA.MenuUI
+  implements:
+  - AngeliA.IMapItem
+  - AngeliA.IWindowEntityUI
+  inheritedMembers:
+  - AngeliA.MenuUI.SelectionAdjustable
+  - AngeliA.MenuUI.SelectionIndex
+  - AngeliA.MenuUI.Message
+  - AngeliA.MenuUI.BackgroundRect
+  - AngeliA.MenuUI.OverrideWindowWidth
+  - AngeliA.MenuUI.AnimationDuration
+  - AngeliA.MenuUI.BackgroundStyle
+  - AngeliA.MenuUI.MessageStyle
+  - AngeliA.MenuUI.DefaultLabelStyle
+  - AngeliA.MenuUI.DefaultContentStyle
+  - AngeliA.MenuUI.BlockEvent
+  - AngeliA.MenuUI.BackgroundCode
+  - AngeliA.MenuUI.SelectionMarkCode
+  - AngeliA.MenuUI.MoreItemMarkCode
+  - AngeliA.MenuUI.ArrowMarkCode
+  - AngeliA.MenuUI.WindowWidth
+  - AngeliA.MenuUI.ItemHeight
+  - AngeliA.MenuUI.ItemGap
+  - AngeliA.MenuUI.MaxItemCount
+  - AngeliA.MenuUI.ContentPadding
+  - AngeliA.MenuUI.SelectionMarkSize
+  - AngeliA.MenuUI.SelectionArrowMarkSize
+  - AngeliA.MenuUI.MoreMarkSize
+  - AngeliA.MenuUI.ScreenTint
+  - AngeliA.MenuUI.BackgroundTint
+  - AngeliA.MenuUI.SelectionMarkTint
+  - AngeliA.MenuUI.MoreMarkTint
+  - AngeliA.MenuUI.MouseHighlightTint
+  - AngeliA.MenuUI.Interactable
+  - AngeliA.MenuUI.AllowMouseClick
+  - AngeliA.MenuUI.QuitOnPressStartOrEscKey
+  - AngeliA.MenuUI.AnimationAmount
+  - AngeliA.MenuUI.BeforeUpdate
+  - AngeliA.MenuUI.UpdateUI
+  - AngeliA.MenuUI.OnSelectionChanged
+  - AngeliA.MenuUI.GetWindowRect
+  - AngeliA.MenuUI.DrawItem(System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  - AngeliA.MenuUI.DrawItem(System.String,System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  - AngeliA.MenuUI.DrawArrowItem(System.String,System.String,System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  - AngeliA.MenuUI.DrawItem(System.String,System.Char[],System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  - AngeliA.MenuUI.DrawArrowItem(System.String,System.Char[],System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  - AngeliA.MenuUI.SetSelection(System.Int32)
+  - AngeliA.MenuUI.RefreshAnimation
+  - AngeliA.EntityUI.FirstUpdate
+  - AngeliA.EntityUI.Update
+  - AngeliA.EntityUI.Unify(System.Int32)
+  - AngeliA.Entity.Active
+  - AngeliA.Entity.X
+  - AngeliA.Entity.Y
+  - AngeliA.Entity.Width
+  - AngeliA.Entity.Height
+  - AngeliA.Entity.TypeID
+  - AngeliA.Entity.SpawnFrame
+  - AngeliA.Entity.FromWorld
+  - AngeliA.Entity.Rect
+  - AngeliA.Entity.InstanceOrder
+  - AngeliA.Entity.MapUnitPos
+  - AngeliA.Entity.InstanceID
+  - AngeliA.Entity.IgnoreReposition
+  - AngeliA.Entity.XY
+  - AngeliA.Entity.Size
+  - AngeliA.Entity.Center
+  - AngeliA.Entity.CenterX
+  - AngeliA.Entity.CenterY
+  - AngeliA.Entity.PivotUnitPosition
+  - AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  - AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  - AngeliA.Entity.CancelIgnoreDespawnFromMap
+  - AngeliA.Entity.Draw
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+  attributes:
+  - type: AngeliA.EntityAttribute.CapacityAttribute
+    ctor: AngeliA.EntityAttribute.CapacityAttribute.#ctor(System.Int32,System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 1
+    - type: System.Int32
+      value: 1
+  - type: AngeliA.EntityAttribute.StageOrderAttribute
+    ctor: AngeliA.EntityAttribute.StageOrderAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 4096
+- uid: AngeliA.PauseMenuUI.#ctor
+  commentId: M:AngeliA.PauseMenuUI.#ctor
+  id: '#ctor'
+  parent: AngeliA.PauseMenuUI
+  langs:
+  - csharp
+  - vb
+  name: PauseMenuUI()
+  nameWithType: PauseMenuUI.PauseMenuUI()
+  fullName: AngeliA.PauseMenuUI.PauseMenuUI()
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+    startLine: 84
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public PauseMenuUI()
+    content.vb: Public Sub New()
+  overload: AngeliA.PauseMenuUI.#ctor*
+  nameWithType.vb: PauseMenuUI.New()
+  fullName.vb: AngeliA.PauseMenuUI.New()
+  name.vb: New()
+- uid: AngeliA.PauseMenuUI.OnGameTryingToQuit
+  commentId: M:AngeliA.PauseMenuUI.OnGameTryingToQuit
+  id: OnGameTryingToQuit
+  parent: AngeliA.PauseMenuUI
+  langs:
+  - csharp
+  - vb
+  name: OnGameTryingToQuit()
+  nameWithType: PauseMenuUI.OnGameTryingToQuit()
+  fullName: AngeliA.PauseMenuUI.OnGameTryingToQuit()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnGameTryingToQuit
+    path: ../AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+    startLine: 91
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: >-
+      [OnGameTryingToQuit(0)]
+
+      public static bool OnGameTryingToQuit()
+    return:
+      type: System.Boolean
+    content.vb: >-
+      <OnGameTryingToQuit(0)>
+
+      Public Shared Function OnGameTryingToQuit() As Boolean
+  overload: AngeliA.PauseMenuUI.OnGameTryingToQuit*
+  attributes:
+  - type: AngeliA.OnGameTryingToQuitAttribute
+    ctor: AngeliA.OnGameTryingToQuitAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 0
+- uid: AngeliA.PauseMenuUI.OnGameUpdatePauseless
+  commentId: M:AngeliA.PauseMenuUI.OnGameUpdatePauseless
+  id: OnGameUpdatePauseless
+  parent: AngeliA.PauseMenuUI
+  langs:
+  - csharp
+  - vb
+  name: OnGameUpdatePauseless()
+  nameWithType: PauseMenuUI.OnGameUpdatePauseless()
+  fullName: AngeliA.PauseMenuUI.OnGameUpdatePauseless()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnGameUpdatePauseless
+    path: ../AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+    startLine: 100
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: >-
+      [OnGameUpdatePauseless(0)]
+
+      public static void OnGameUpdatePauseless()
+    content.vb: >-
+      <OnGameUpdatePauseless(0)>
+
+      Public Shared Sub OnGameUpdatePauseless()
+  overload: AngeliA.PauseMenuUI.OnGameUpdatePauseless*
+  attributes:
+  - type: AngeliA.OnGameUpdatePauselessAttribute
+    ctor: AngeliA.OnGameUpdatePauselessAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 0
+- uid: AngeliA.PauseMenuUI.OnActivated
+  commentId: M:AngeliA.PauseMenuUI.OnActivated
+  id: OnActivated
+  parent: AngeliA.PauseMenuUI
+  langs:
+  - csharp
+  - vb
+  name: OnActivated()
+  nameWithType: PauseMenuUI.OnActivated()
+  fullName: AngeliA.PauseMenuUI.OnActivated()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnActivated
+    path: ../AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+    startLine: 107
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override void OnActivated()
+    content.vb: Public Overrides Sub OnActivated()
+  overridden: AngeliA.MenuUI.OnActivated
+  overload: AngeliA.PauseMenuUI.OnActivated*
+- uid: AngeliA.PauseMenuUI.OnInactivated
+  commentId: M:AngeliA.PauseMenuUI.OnInactivated
+  id: OnInactivated
+  parent: AngeliA.PauseMenuUI
+  langs:
+  - csharp
+  - vb
+  name: OnInactivated()
+  nameWithType: PauseMenuUI.OnInactivated()
+  fullName: AngeliA.PauseMenuUI.OnInactivated()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnInactivated
+    path: ../AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+    startLine: 120
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override void OnInactivated()
+    content.vb: Public Overrides Sub OnInactivated()
+  overridden: AngeliA.Entity.OnInactivated
+  overload: AngeliA.PauseMenuUI.OnInactivated*
+- uid: AngeliA.PauseMenuUI.LateUpdate
+  commentId: M:AngeliA.PauseMenuUI.LateUpdate
+  id: LateUpdate
+  parent: AngeliA.PauseMenuUI
+  langs:
+  - csharp
+  - vb
+  name: LateUpdate()
+  nameWithType: PauseMenuUI.LateUpdate()
+  fullName: AngeliA.PauseMenuUI.LateUpdate()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LateUpdate
+    path: ../AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+    startLine: 129
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override void LateUpdate()
+    content.vb: Public Overrides Sub LateUpdate()
+  overridden: AngeliA.EntityUI.LateUpdate
+  overload: AngeliA.PauseMenuUI.LateUpdate*
+- uid: AngeliA.PauseMenuUI.DrawMenu
+  commentId: M:AngeliA.PauseMenuUI.DrawMenu
+  id: DrawMenu
+  parent: AngeliA.PauseMenuUI
+  langs:
+  - csharp
+  - vb
+  name: DrawMenu()
+  nameWithType: PauseMenuUI.DrawMenu()
+  fullName: AngeliA.PauseMenuUI.DrawMenu()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawMenu
+    path: ../AngeliA Framework/src/Entity/UI/PauseMenuUI.cs
+    startLine: 148
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: protected override void DrawMenu()
+    content.vb: Protected Overrides Sub DrawMenu()
+  overridden: AngeliA.MenuUI.DrawMenu
+  overload: AngeliA.PauseMenuUI.DrawMenu*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Entity
+  commentId: T:AngeliA.Entity
+  parent: AngeliA
+  href: AngeliA.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: AngeliA.Entity
+- uid: AngeliA.EntityUI
+  commentId: T:AngeliA.EntityUI
+  parent: AngeliA
+  href: AngeliA.EntityUI.html
+  name: EntityUI
+  nameWithType: EntityUI
+  fullName: AngeliA.EntityUI
+- uid: AngeliA.MenuUI
+  commentId: T:AngeliA.MenuUI
+  parent: AngeliA
+  href: AngeliA.MenuUI.html
+  name: MenuUI
+  nameWithType: MenuUI
+  fullName: AngeliA.MenuUI
+- uid: AngeliA.IMapItem
+  commentId: T:AngeliA.IMapItem
+  parent: AngeliA
+  href: AngeliA.IMapItem.html
+  name: IMapItem
+  nameWithType: IMapItem
+  fullName: AngeliA.IMapItem
+- uid: AngeliA.IWindowEntityUI
+  commentId: T:AngeliA.IWindowEntityUI
+  parent: AngeliA
+  href: AngeliA.IWindowEntityUI.html
+  name: IWindowEntityUI
+  nameWithType: IWindowEntityUI
+  fullName: AngeliA.IWindowEntityUI
+- uid: AngeliA.MenuUI.SelectionAdjustable
+  commentId: P:AngeliA.MenuUI.SelectionAdjustable
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_SelectionAdjustable
+  name: SelectionAdjustable
+  nameWithType: MenuUI.SelectionAdjustable
+  fullName: AngeliA.MenuUI.SelectionAdjustable
+- uid: AngeliA.MenuUI.SelectionIndex
+  commentId: P:AngeliA.MenuUI.SelectionIndex
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_SelectionIndex
+  name: SelectionIndex
+  nameWithType: MenuUI.SelectionIndex
+  fullName: AngeliA.MenuUI.SelectionIndex
+- uid: AngeliA.MenuUI.Message
+  commentId: P:AngeliA.MenuUI.Message
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_Message
+  name: Message
+  nameWithType: MenuUI.Message
+  fullName: AngeliA.MenuUI.Message
+- uid: AngeliA.MenuUI.BackgroundRect
+  commentId: P:AngeliA.MenuUI.BackgroundRect
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_BackgroundRect
+  name: BackgroundRect
+  nameWithType: MenuUI.BackgroundRect
+  fullName: AngeliA.MenuUI.BackgroundRect
+- uid: AngeliA.MenuUI.OverrideWindowWidth
+  commentId: P:AngeliA.MenuUI.OverrideWindowWidth
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_OverrideWindowWidth
+  name: OverrideWindowWidth
+  nameWithType: MenuUI.OverrideWindowWidth
+  fullName: AngeliA.MenuUI.OverrideWindowWidth
+- uid: AngeliA.MenuUI.AnimationDuration
+  commentId: P:AngeliA.MenuUI.AnimationDuration
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_AnimationDuration
+  name: AnimationDuration
+  nameWithType: MenuUI.AnimationDuration
+  fullName: AngeliA.MenuUI.AnimationDuration
+- uid: AngeliA.MenuUI.BackgroundStyle
+  commentId: P:AngeliA.MenuUI.BackgroundStyle
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_BackgroundStyle
+  name: BackgroundStyle
+  nameWithType: MenuUI.BackgroundStyle
+  fullName: AngeliA.MenuUI.BackgroundStyle
+- uid: AngeliA.MenuUI.MessageStyle
+  commentId: P:AngeliA.MenuUI.MessageStyle
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_MessageStyle
+  name: MessageStyle
+  nameWithType: MenuUI.MessageStyle
+  fullName: AngeliA.MenuUI.MessageStyle
+- uid: AngeliA.MenuUI.DefaultLabelStyle
+  commentId: P:AngeliA.MenuUI.DefaultLabelStyle
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_DefaultLabelStyle
+  name: DefaultLabelStyle
+  nameWithType: MenuUI.DefaultLabelStyle
+  fullName: AngeliA.MenuUI.DefaultLabelStyle
+- uid: AngeliA.MenuUI.DefaultContentStyle
+  commentId: P:AngeliA.MenuUI.DefaultContentStyle
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_DefaultContentStyle
+  name: DefaultContentStyle
+  nameWithType: MenuUI.DefaultContentStyle
+  fullName: AngeliA.MenuUI.DefaultContentStyle
+- uid: AngeliA.MenuUI.BlockEvent
+  commentId: P:AngeliA.MenuUI.BlockEvent
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_BlockEvent
+  name: BlockEvent
+  nameWithType: MenuUI.BlockEvent
+  fullName: AngeliA.MenuUI.BlockEvent
+- uid: AngeliA.MenuUI.BackgroundCode
+  commentId: F:AngeliA.MenuUI.BackgroundCode
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_BackgroundCode
+  name: BackgroundCode
+  nameWithType: MenuUI.BackgroundCode
+  fullName: AngeliA.MenuUI.BackgroundCode
+- uid: AngeliA.MenuUI.SelectionMarkCode
+  commentId: F:AngeliA.MenuUI.SelectionMarkCode
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_SelectionMarkCode
+  name: SelectionMarkCode
+  nameWithType: MenuUI.SelectionMarkCode
+  fullName: AngeliA.MenuUI.SelectionMarkCode
+- uid: AngeliA.MenuUI.MoreItemMarkCode
+  commentId: F:AngeliA.MenuUI.MoreItemMarkCode
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_MoreItemMarkCode
+  name: MoreItemMarkCode
+  nameWithType: MenuUI.MoreItemMarkCode
+  fullName: AngeliA.MenuUI.MoreItemMarkCode
+- uid: AngeliA.MenuUI.ArrowMarkCode
+  commentId: F:AngeliA.MenuUI.ArrowMarkCode
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_ArrowMarkCode
+  name: ArrowMarkCode
+  nameWithType: MenuUI.ArrowMarkCode
+  fullName: AngeliA.MenuUI.ArrowMarkCode
+- uid: AngeliA.MenuUI.WindowWidth
+  commentId: F:AngeliA.MenuUI.WindowWidth
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_WindowWidth
+  name: WindowWidth
+  nameWithType: MenuUI.WindowWidth
+  fullName: AngeliA.MenuUI.WindowWidth
+- uid: AngeliA.MenuUI.ItemHeight
+  commentId: F:AngeliA.MenuUI.ItemHeight
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_ItemHeight
+  name: ItemHeight
+  nameWithType: MenuUI.ItemHeight
+  fullName: AngeliA.MenuUI.ItemHeight
+- uid: AngeliA.MenuUI.ItemGap
+  commentId: F:AngeliA.MenuUI.ItemGap
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_ItemGap
+  name: ItemGap
+  nameWithType: MenuUI.ItemGap
+  fullName: AngeliA.MenuUI.ItemGap
+- uid: AngeliA.MenuUI.MaxItemCount
+  commentId: F:AngeliA.MenuUI.MaxItemCount
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_MaxItemCount
+  name: MaxItemCount
+  nameWithType: MenuUI.MaxItemCount
+  fullName: AngeliA.MenuUI.MaxItemCount
+- uid: AngeliA.MenuUI.ContentPadding
+  commentId: F:AngeliA.MenuUI.ContentPadding
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_ContentPadding
+  name: ContentPadding
+  nameWithType: MenuUI.ContentPadding
+  fullName: AngeliA.MenuUI.ContentPadding
+- uid: AngeliA.MenuUI.SelectionMarkSize
+  commentId: F:AngeliA.MenuUI.SelectionMarkSize
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_SelectionMarkSize
+  name: SelectionMarkSize
+  nameWithType: MenuUI.SelectionMarkSize
+  fullName: AngeliA.MenuUI.SelectionMarkSize
+- uid: AngeliA.MenuUI.SelectionArrowMarkSize
+  commentId: F:AngeliA.MenuUI.SelectionArrowMarkSize
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_SelectionArrowMarkSize
+  name: SelectionArrowMarkSize
+  nameWithType: MenuUI.SelectionArrowMarkSize
+  fullName: AngeliA.MenuUI.SelectionArrowMarkSize
+- uid: AngeliA.MenuUI.MoreMarkSize
+  commentId: F:AngeliA.MenuUI.MoreMarkSize
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_MoreMarkSize
+  name: MoreMarkSize
+  nameWithType: MenuUI.MoreMarkSize
+  fullName: AngeliA.MenuUI.MoreMarkSize
+- uid: AngeliA.MenuUI.ScreenTint
+  commentId: F:AngeliA.MenuUI.ScreenTint
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_ScreenTint
+  name: ScreenTint
+  nameWithType: MenuUI.ScreenTint
+  fullName: AngeliA.MenuUI.ScreenTint
+- uid: AngeliA.MenuUI.BackgroundTint
+  commentId: F:AngeliA.MenuUI.BackgroundTint
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_BackgroundTint
+  name: BackgroundTint
+  nameWithType: MenuUI.BackgroundTint
+  fullName: AngeliA.MenuUI.BackgroundTint
+- uid: AngeliA.MenuUI.SelectionMarkTint
+  commentId: F:AngeliA.MenuUI.SelectionMarkTint
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_SelectionMarkTint
+  name: SelectionMarkTint
+  nameWithType: MenuUI.SelectionMarkTint
+  fullName: AngeliA.MenuUI.SelectionMarkTint
+- uid: AngeliA.MenuUI.MoreMarkTint
+  commentId: F:AngeliA.MenuUI.MoreMarkTint
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_MoreMarkTint
+  name: MoreMarkTint
+  nameWithType: MenuUI.MoreMarkTint
+  fullName: AngeliA.MenuUI.MoreMarkTint
+- uid: AngeliA.MenuUI.MouseHighlightTint
+  commentId: F:AngeliA.MenuUI.MouseHighlightTint
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_MouseHighlightTint
+  name: MouseHighlightTint
+  nameWithType: MenuUI.MouseHighlightTint
+  fullName: AngeliA.MenuUI.MouseHighlightTint
+- uid: AngeliA.MenuUI.Interactable
+  commentId: F:AngeliA.MenuUI.Interactable
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_Interactable
+  name: Interactable
+  nameWithType: MenuUI.Interactable
+  fullName: AngeliA.MenuUI.Interactable
+- uid: AngeliA.MenuUI.AllowMouseClick
+  commentId: F:AngeliA.MenuUI.AllowMouseClick
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_AllowMouseClick
+  name: AllowMouseClick
+  nameWithType: MenuUI.AllowMouseClick
+  fullName: AngeliA.MenuUI.AllowMouseClick
+- uid: AngeliA.MenuUI.QuitOnPressStartOrEscKey
+  commentId: F:AngeliA.MenuUI.QuitOnPressStartOrEscKey
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_QuitOnPressStartOrEscKey
+  name: QuitOnPressStartOrEscKey
+  nameWithType: MenuUI.QuitOnPressStartOrEscKey
+  fullName: AngeliA.MenuUI.QuitOnPressStartOrEscKey
+- uid: AngeliA.MenuUI.AnimationAmount
+  commentId: F:AngeliA.MenuUI.AnimationAmount
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_AnimationAmount
+  name: AnimationAmount
+  nameWithType: MenuUI.AnimationAmount
+  fullName: AngeliA.MenuUI.AnimationAmount
+- uid: AngeliA.MenuUI.BeforeUpdate
+  commentId: M:AngeliA.MenuUI.BeforeUpdate
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_BeforeUpdate
+  name: BeforeUpdate()
+  nameWithType: MenuUI.BeforeUpdate()
+  fullName: AngeliA.MenuUI.BeforeUpdate()
+  spec.csharp:
+  - uid: AngeliA.MenuUI.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_BeforeUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_BeforeUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.MenuUI.UpdateUI
+  commentId: M:AngeliA.MenuUI.UpdateUI
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_UpdateUI
+  name: UpdateUI()
+  nameWithType: MenuUI.UpdateUI()
+  fullName: AngeliA.MenuUI.UpdateUI()
+  spec.csharp:
+  - uid: AngeliA.MenuUI.UpdateUI
+    name: UpdateUI
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_UpdateUI
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.UpdateUI
+    name: UpdateUI
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_UpdateUI
+  - name: (
+  - name: )
+- uid: AngeliA.MenuUI.OnSelectionChanged
+  commentId: M:AngeliA.MenuUI.OnSelectionChanged
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_OnSelectionChanged
+  name: OnSelectionChanged()
+  nameWithType: MenuUI.OnSelectionChanged()
+  fullName: AngeliA.MenuUI.OnSelectionChanged()
+  spec.csharp:
+  - uid: AngeliA.MenuUI.OnSelectionChanged
+    name: OnSelectionChanged
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_OnSelectionChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.OnSelectionChanged
+    name: OnSelectionChanged
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_OnSelectionChanged
+  - name: (
+  - name: )
+- uid: AngeliA.MenuUI.GetWindowRect
+  commentId: M:AngeliA.MenuUI.GetWindowRect
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_GetWindowRect
+  name: GetWindowRect()
+  nameWithType: MenuUI.GetWindowRect()
+  fullName: AngeliA.MenuUI.GetWindowRect()
+  spec.csharp:
+  - uid: AngeliA.MenuUI.GetWindowRect
+    name: GetWindowRect
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_GetWindowRect
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.GetWindowRect
+    name: GetWindowRect
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_GetWindowRect
+  - name: (
+  - name: )
+- uid: AngeliA.MenuUI.DrawItem(System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  commentId: M:AngeliA.MenuUI.DrawItem(System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  parent: AngeliA.MenuUI
+  isExternal: true
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawItem_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  name: DrawItem(string, int, GUIStyle, GUIStyle, bool)
+  nameWithType: MenuUI.DrawItem(string, int, GUIStyle, GUIStyle, bool)
+  fullName: AngeliA.MenuUI.DrawItem(string, int, AngeliA.GUIStyle, AngeliA.GUIStyle, bool)
+  nameWithType.vb: MenuUI.DrawItem(String, Integer, GUIStyle, GUIStyle, Boolean)
+  fullName.vb: AngeliA.MenuUI.DrawItem(String, Integer, AngeliA.GUIStyle, AngeliA.GUIStyle, Boolean)
+  name.vb: DrawItem(String, Integer, GUIStyle, GUIStyle, Boolean)
+  spec.csharp:
+  - uid: AngeliA.MenuUI.DrawItem(System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+    name: DrawItem
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawItem_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.DrawItem(System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+    name: DrawItem
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawItem_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.MenuUI.DrawItem(System.String,System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  commentId: M:AngeliA.MenuUI.DrawItem(System.String,System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  parent: AngeliA.MenuUI
+  isExternal: true
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawItem_System_String_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  name: DrawItem(string, string, int, GUIStyle, GUIStyle, bool)
+  nameWithType: MenuUI.DrawItem(string, string, int, GUIStyle, GUIStyle, bool)
+  fullName: AngeliA.MenuUI.DrawItem(string, string, int, AngeliA.GUIStyle, AngeliA.GUIStyle, bool)
+  nameWithType.vb: MenuUI.DrawItem(String, String, Integer, GUIStyle, GUIStyle, Boolean)
+  fullName.vb: AngeliA.MenuUI.DrawItem(String, String, Integer, AngeliA.GUIStyle, AngeliA.GUIStyle, Boolean)
+  name.vb: DrawItem(String, String, Integer, GUIStyle, GUIStyle, Boolean)
+  spec.csharp:
+  - uid: AngeliA.MenuUI.DrawItem(System.String,System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+    name: DrawItem
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawItem_System_String_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.DrawItem(System.String,System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+    name: DrawItem
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawItem_System_String_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.MenuUI.DrawArrowItem(System.String,System.String,System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  commentId: M:AngeliA.MenuUI.DrawArrowItem(System.String,System.String,System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  parent: AngeliA.MenuUI
+  isExternal: true
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawArrowItem_System_String_System_String_System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  name: DrawArrowItem(string, string, bool, bool, out int, int, GUIStyle, GUIStyle, bool)
+  nameWithType: MenuUI.DrawArrowItem(string, string, bool, bool, out int, int, GUIStyle, GUIStyle, bool)
+  fullName: AngeliA.MenuUI.DrawArrowItem(string, string, bool, bool, out int, int, AngeliA.GUIStyle, AngeliA.GUIStyle, bool)
+  nameWithType.vb: MenuUI.DrawArrowItem(String, String, Boolean, Boolean, Integer, Integer, GUIStyle, GUIStyle, Boolean)
+  fullName.vb: AngeliA.MenuUI.DrawArrowItem(String, String, Boolean, Boolean, Integer, Integer, AngeliA.GUIStyle, AngeliA.GUIStyle, Boolean)
+  name.vb: DrawArrowItem(String, String, Boolean, Boolean, Integer, Integer, GUIStyle, GUIStyle, Boolean)
+  spec.csharp:
+  - uid: AngeliA.MenuUI.DrawArrowItem(System.String,System.String,System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+    name: DrawArrowItem
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawArrowItem_System_String_System_String_System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.DrawArrowItem(System.String,System.String,System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+    name: DrawArrowItem
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawArrowItem_System_String_System_String_System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.MenuUI.DrawItem(System.String,System.Char[],System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  commentId: M:AngeliA.MenuUI.DrawItem(System.String,System.Char[],System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  parent: AngeliA.MenuUI
+  isExternal: true
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawItem_System_String_System_Char___System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  name: DrawItem(string, char[], int, GUIStyle, GUIStyle, bool)
+  nameWithType: MenuUI.DrawItem(string, char[], int, GUIStyle, GUIStyle, bool)
+  fullName: AngeliA.MenuUI.DrawItem(string, char[], int, AngeliA.GUIStyle, AngeliA.GUIStyle, bool)
+  nameWithType.vb: MenuUI.DrawItem(String, Char(), Integer, GUIStyle, GUIStyle, Boolean)
+  fullName.vb: AngeliA.MenuUI.DrawItem(String, Char(), Integer, AngeliA.GUIStyle, AngeliA.GUIStyle, Boolean)
+  name.vb: DrawItem(String, Char(), Integer, GUIStyle, GUIStyle, Boolean)
+  spec.csharp:
+  - uid: AngeliA.MenuUI.DrawItem(System.String,System.Char[],System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+    name: DrawItem
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawItem_System_String_System_Char___System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Char
+    name: char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.DrawItem(System.String,System.Char[],System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+    name: DrawItem
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawItem_System_String_System_Char___System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Char
+    name: Char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.MenuUI.DrawArrowItem(System.String,System.Char[],System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  commentId: M:AngeliA.MenuUI.DrawArrowItem(System.String,System.Char[],System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+  parent: AngeliA.MenuUI
+  isExternal: true
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawArrowItem_System_String_System_Char___System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  name: DrawArrowItem(string, char[], bool, bool, out int, int, GUIStyle, GUIStyle, bool)
+  nameWithType: MenuUI.DrawArrowItem(string, char[], bool, bool, out int, int, GUIStyle, GUIStyle, bool)
+  fullName: AngeliA.MenuUI.DrawArrowItem(string, char[], bool, bool, out int, int, AngeliA.GUIStyle, AngeliA.GUIStyle, bool)
+  nameWithType.vb: MenuUI.DrawArrowItem(String, Char(), Boolean, Boolean, Integer, Integer, GUIStyle, GUIStyle, Boolean)
+  fullName.vb: AngeliA.MenuUI.DrawArrowItem(String, Char(), Boolean, Boolean, Integer, Integer, AngeliA.GUIStyle, AngeliA.GUIStyle, Boolean)
+  name.vb: DrawArrowItem(String, Char(), Boolean, Boolean, Integer, Integer, GUIStyle, GUIStyle, Boolean)
+  spec.csharp:
+  - uid: AngeliA.MenuUI.DrawArrowItem(System.String,System.Char[],System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+    name: DrawArrowItem
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawArrowItem_System_String_System_Char___System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Char
+    name: char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: '['
+  - name: ']'
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.DrawArrowItem(System.String,System.Char[],System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)
+    name: DrawArrowItem
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawArrowItem_System_String_System_Char___System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Char
+    name: Char
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.char
+  - name: (
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.GUIStyle
+    name: GUIStyle
+    href: AngeliA.GUIStyle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.MenuUI.SetSelection(System.Int32)
+  commentId: M:AngeliA.MenuUI.SetSelection(System.Int32)
+  parent: AngeliA.MenuUI
+  isExternal: true
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_SetSelection_System_Int32_
+  name: SetSelection(int)
+  nameWithType: MenuUI.SetSelection(int)
+  fullName: AngeliA.MenuUI.SetSelection(int)
+  nameWithType.vb: MenuUI.SetSelection(Integer)
+  fullName.vb: AngeliA.MenuUI.SetSelection(Integer)
+  name.vb: SetSelection(Integer)
+  spec.csharp:
+  - uid: AngeliA.MenuUI.SetSelection(System.Int32)
+    name: SetSelection
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_SetSelection_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.SetSelection(System.Int32)
+    name: SetSelection
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_SetSelection_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.MenuUI.RefreshAnimation
+  commentId: M:AngeliA.MenuUI.RefreshAnimation
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_RefreshAnimation
+  name: RefreshAnimation()
+  nameWithType: MenuUI.RefreshAnimation()
+  fullName: AngeliA.MenuUI.RefreshAnimation()
+  spec.csharp:
+  - uid: AngeliA.MenuUI.RefreshAnimation
+    name: RefreshAnimation
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_RefreshAnimation
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.RefreshAnimation
+    name: RefreshAnimation
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_RefreshAnimation
+  - name: (
+  - name: )
+- uid: AngeliA.EntityUI.FirstUpdate
+  commentId: M:AngeliA.EntityUI.FirstUpdate
+  parent: AngeliA.EntityUI
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_FirstUpdate
+  name: FirstUpdate()
+  nameWithType: EntityUI.FirstUpdate()
+  fullName: AngeliA.EntityUI.FirstUpdate()
+  spec.csharp:
+  - uid: AngeliA.EntityUI.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_FirstUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_FirstUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.EntityUI.Update
+  commentId: M:AngeliA.EntityUI.Update
+  parent: AngeliA.EntityUI
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_Update
+  name: Update()
+  nameWithType: EntityUI.Update()
+  fullName: AngeliA.EntityUI.Update()
+  spec.csharp:
+  - uid: AngeliA.EntityUI.Update
+    name: Update
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_Update
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.Update
+    name: Update
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_Update
+  - name: (
+  - name: )
+- uid: AngeliA.EntityUI.Unify(System.Int32)
+  commentId: M:AngeliA.EntityUI.Unify(System.Int32)
+  parent: AngeliA.EntityUI
+  isExternal: true
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_Unify_System_Int32_
+  name: Unify(int)
+  nameWithType: EntityUI.Unify(int)
+  fullName: AngeliA.EntityUI.Unify(int)
+  nameWithType.vb: EntityUI.Unify(Integer)
+  fullName.vb: AngeliA.EntityUI.Unify(Integer)
+  name.vb: Unify(Integer)
+  spec.csharp:
+  - uid: AngeliA.EntityUI.Unify(System.Int32)
+    name: Unify
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_Unify_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.Unify(System.Int32)
+    name: Unify
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_Unify_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Entity.Active
+  commentId: P:AngeliA.Entity.Active
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Active
+  name: Active
+  nameWithType: Entity.Active
+  fullName: AngeliA.Entity.Active
+- uid: AngeliA.Entity.X
+  commentId: P:AngeliA.Entity.X
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_X
+  name: X
+  nameWithType: Entity.X
+  fullName: AngeliA.Entity.X
+- uid: AngeliA.Entity.Y
+  commentId: P:AngeliA.Entity.Y
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Y
+  name: Y
+  nameWithType: Entity.Y
+  fullName: AngeliA.Entity.Y
+- uid: AngeliA.Entity.Width
+  commentId: P:AngeliA.Entity.Width
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Width
+  name: Width
+  nameWithType: Entity.Width
+  fullName: AngeliA.Entity.Width
+- uid: AngeliA.Entity.Height
+  commentId: P:AngeliA.Entity.Height
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Height
+  name: Height
+  nameWithType: Entity.Height
+  fullName: AngeliA.Entity.Height
+- uid: AngeliA.Entity.TypeID
+  commentId: P:AngeliA.Entity.TypeID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_TypeID
+  name: TypeID
+  nameWithType: Entity.TypeID
+  fullName: AngeliA.Entity.TypeID
+- uid: AngeliA.Entity.SpawnFrame
+  commentId: P:AngeliA.Entity.SpawnFrame
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_SpawnFrame
+  name: SpawnFrame
+  nameWithType: Entity.SpawnFrame
+  fullName: AngeliA.Entity.SpawnFrame
+- uid: AngeliA.Entity.FromWorld
+  commentId: P:AngeliA.Entity.FromWorld
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_FromWorld
+  name: FromWorld
+  nameWithType: Entity.FromWorld
+  fullName: AngeliA.Entity.FromWorld
+- uid: AngeliA.Entity.Rect
+  commentId: P:AngeliA.Entity.Rect
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Rect
+  name: Rect
+  nameWithType: Entity.Rect
+  fullName: AngeliA.Entity.Rect
+- uid: AngeliA.Entity.InstanceOrder
+  commentId: P:AngeliA.Entity.InstanceOrder
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceOrder
+  name: InstanceOrder
+  nameWithType: Entity.InstanceOrder
+  fullName: AngeliA.Entity.InstanceOrder
+- uid: AngeliA.Entity.MapUnitPos
+  commentId: P:AngeliA.Entity.MapUnitPos
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_MapUnitPos
+  name: MapUnitPos
+  nameWithType: Entity.MapUnitPos
+  fullName: AngeliA.Entity.MapUnitPos
+- uid: AngeliA.Entity.InstanceID
+  commentId: P:AngeliA.Entity.InstanceID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceID
+  name: InstanceID
+  nameWithType: Entity.InstanceID
+  fullName: AngeliA.Entity.InstanceID
+- uid: AngeliA.Entity.IgnoreReposition
+  commentId: P:AngeliA.Entity.IgnoreReposition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreReposition
+  name: IgnoreReposition
+  nameWithType: Entity.IgnoreReposition
+  fullName: AngeliA.Entity.IgnoreReposition
+- uid: AngeliA.Entity.XY
+  commentId: P:AngeliA.Entity.XY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_XY
+  name: XY
+  nameWithType: Entity.XY
+  fullName: AngeliA.Entity.XY
+- uid: AngeliA.Entity.Size
+  commentId: P:AngeliA.Entity.Size
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Size
+  name: Size
+  nameWithType: Entity.Size
+  fullName: AngeliA.Entity.Size
+- uid: AngeliA.Entity.Center
+  commentId: P:AngeliA.Entity.Center
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Center
+  name: Center
+  nameWithType: Entity.Center
+  fullName: AngeliA.Entity.Center
+- uid: AngeliA.Entity.CenterX
+  commentId: P:AngeliA.Entity.CenterX
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterX
+  name: CenterX
+  nameWithType: Entity.CenterX
+  fullName: AngeliA.Entity.CenterX
+- uid: AngeliA.Entity.CenterY
+  commentId: P:AngeliA.Entity.CenterY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterY
+  name: CenterY
+  nameWithType: Entity.CenterY
+  fullName: AngeliA.Entity.CenterY
+- uid: AngeliA.Entity.PivotUnitPosition
+  commentId: P:AngeliA.Entity.PivotUnitPosition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_PivotUnitPosition
+  name: PivotUnitPosition
+  nameWithType: Entity.PivotUnitPosition
+  fullName: AngeliA.Entity.PivotUnitPosition
+- uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  commentId: M:AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  name: AfterReposition(Int3, Int3)
+  nameWithType: Entity.AfterReposition(Int3, Int3)
+  fullName: AngeliA.Entity.AfterReposition(AngeliA.Int3, AngeliA.Int3)
+  spec.csharp:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+- uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  commentId: M:AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  parent: AngeliA.Entity
+  isExternal: true
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  name: IgnoreDespawnFromMap(int)
+  nameWithType: Entity.IgnoreDespawnFromMap(int)
+  fullName: AngeliA.Entity.IgnoreDespawnFromMap(int)
+  nameWithType.vb: Entity.IgnoreDespawnFromMap(Integer)
+  fullName.vb: AngeliA.Entity.IgnoreDespawnFromMap(Integer)
+  name.vb: IgnoreDespawnFromMap(Integer)
+  spec.csharp:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+  commentId: M:AngeliA.Entity.CancelIgnoreDespawnFromMap
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  name: CancelIgnoreDespawnFromMap()
+  nameWithType: Entity.CancelIgnoreDespawnFromMap()
+  fullName: AngeliA.Entity.CancelIgnoreDespawnFromMap()
+  spec.csharp:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.Draw
+  commentId: M:AngeliA.Entity.Draw
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  name: Draw()
+  nameWithType: Entity.Draw()
+  fullName: AngeliA.Entity.Draw()
+  spec.csharp:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.PauseMenuUI.#ctor*
+  commentId: Overload:AngeliA.PauseMenuUI.#ctor
+  href: AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI__ctor
+  name: PauseMenuUI
+  nameWithType: PauseMenuUI.PauseMenuUI
+  fullName: AngeliA.PauseMenuUI.PauseMenuUI
+  nameWithType.vb: PauseMenuUI.New
+  fullName.vb: AngeliA.PauseMenuUI.New
+  name.vb: New
+- uid: AngeliA.PauseMenuUI.OnGameTryingToQuit*
+  commentId: Overload:AngeliA.PauseMenuUI.OnGameTryingToQuit
+  href: AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnGameTryingToQuit
+  name: OnGameTryingToQuit
+  nameWithType: PauseMenuUI.OnGameTryingToQuit
+  fullName: AngeliA.PauseMenuUI.OnGameTryingToQuit
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.PauseMenuUI.OnGameUpdatePauseless*
+  commentId: Overload:AngeliA.PauseMenuUI.OnGameUpdatePauseless
+  href: AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnGameUpdatePauseless
+  name: OnGameUpdatePauseless
+  nameWithType: PauseMenuUI.OnGameUpdatePauseless
+  fullName: AngeliA.PauseMenuUI.OnGameUpdatePauseless
+- uid: AngeliA.MenuUI.OnActivated
+  commentId: M:AngeliA.MenuUI.OnActivated
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_OnActivated
+  name: OnActivated()
+  nameWithType: MenuUI.OnActivated()
+  fullName: AngeliA.MenuUI.OnActivated()
+  spec.csharp:
+  - uid: AngeliA.MenuUI.OnActivated
+    name: OnActivated
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_OnActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.OnActivated
+    name: OnActivated
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_OnActivated
+  - name: (
+  - name: )
+- uid: AngeliA.PauseMenuUI.OnActivated*
+  commentId: Overload:AngeliA.PauseMenuUI.OnActivated
+  href: AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnActivated
+  name: OnActivated
+  nameWithType: PauseMenuUI.OnActivated
+  fullName: AngeliA.PauseMenuUI.OnActivated
+- uid: AngeliA.Entity.OnInactivated
+  commentId: M:AngeliA.Entity.OnInactivated
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  name: OnInactivated()
+  nameWithType: Entity.OnInactivated()
+  fullName: AngeliA.Entity.OnInactivated()
+  spec.csharp:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+- uid: AngeliA.PauseMenuUI.OnInactivated*
+  commentId: Overload:AngeliA.PauseMenuUI.OnInactivated
+  href: AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnInactivated
+  name: OnInactivated
+  nameWithType: PauseMenuUI.OnInactivated
+  fullName: AngeliA.PauseMenuUI.OnInactivated
+- uid: AngeliA.EntityUI.LateUpdate
+  commentId: M:AngeliA.EntityUI.LateUpdate
+  parent: AngeliA.EntityUI
+  href: AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate
+  name: LateUpdate()
+  nameWithType: EntityUI.LateUpdate()
+  fullName: AngeliA.EntityUI.LateUpdate()
+  spec.csharp:
+  - uid: AngeliA.EntityUI.LateUpdate
+    name: LateUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.EntityUI.LateUpdate
+    name: LateUpdate
+    href: AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.PauseMenuUI.LateUpdate*
+  commentId: Overload:AngeliA.PauseMenuUI.LateUpdate
+  href: AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_LateUpdate
+  name: LateUpdate
+  nameWithType: PauseMenuUI.LateUpdate
+  fullName: AngeliA.PauseMenuUI.LateUpdate
+- uid: AngeliA.MenuUI.DrawMenu
+  commentId: M:AngeliA.MenuUI.DrawMenu
+  parent: AngeliA.MenuUI
+  href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawMenu
+  name: DrawMenu()
+  nameWithType: MenuUI.DrawMenu()
+  fullName: AngeliA.MenuUI.DrawMenu()
+  spec.csharp:
+  - uid: AngeliA.MenuUI.DrawMenu
+    name: DrawMenu
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawMenu
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.MenuUI.DrawMenu
+    name: DrawMenu
+    href: AngeliA.MenuUI.html#AngeliA_MenuUI_DrawMenu
+  - name: (
+  - name: )
+- uid: AngeliA.PauseMenuUI.DrawMenu*
+  commentId: Overload:AngeliA.PauseMenuUI.DrawMenu
+  href: AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_DrawMenu
+  name: DrawMenu
+  nameWithType: PauseMenuUI.DrawMenu
+  fullName: AngeliA.PauseMenuUI.DrawMenu

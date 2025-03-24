@@ -1,0 +1,1719 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Platformer.ChainCrusher
+  commentId: T:AngeliA.Platformer.ChainCrusher
+  id: ChainCrusher
+  parent: AngeliA.Platformer
+  children:
+  - AngeliA.Platformer.ChainCrusher.AllowReleaseBall
+  - AngeliA.Platformer.ChainCrusher.AttackTargetTeam
+  - AngeliA.Platformer.ChainCrusher.BallReleaseFrame
+  - AngeliA.Platformer.ChainCrusher.BeforeUpdate
+  - AngeliA.Platformer.ChainCrusher.CalculateCurrentSpikeBallTransform
+  - AngeliA.Platformer.ChainCrusher.ChainLength
+  - AngeliA.Platformer.ChainCrusher.Clockwise
+  - AngeliA.Platformer.ChainCrusher.CurrentSpikeBallPos
+  - AngeliA.Platformer.ChainCrusher.CurrentSpikeBallRotation
+  - AngeliA.Platformer.ChainCrusher.DamageAmount
+  - AngeliA.Platformer.ChainCrusher.DamageType
+  - AngeliA.Platformer.ChainCrusher.FirstUpdate
+  - AngeliA.Platformer.ChainCrusher.OnActivated
+  - AngeliA.Platformer.ChainCrusher.OnReleaseBall
+  - AngeliA.Platformer.ChainCrusher.ReleaseBallOnCircuitTrigger
+  - AngeliA.Platformer.ChainCrusher.ReleaseBallOnDamaged
+  - AngeliA.Platformer.ChainCrusher.RotateFrequency
+  - AngeliA.Platformer.ChainCrusher.SpikeBallSize
+  langs:
+  - csharp
+  - vb
+  name: ChainCrusher
+  nameWithType: ChainCrusher
+  fullName: AngeliA.Platformer.ChainCrusher
+  type: Class
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ChainCrusher
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 6
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: >-
+      [Entity.Layer(3)]
+
+      [Entity.MapEditorGroup("Contraption", 0)]
+
+      public abstract class ChainCrusher : Entity, IMapItem, IBlockEntity, ICircuitOperator, IDamageReceiver
+    content.vb: >-
+      <Entity.Layer(3)>
+
+      <Entity.MapEditorGroup("Contraption", 0)>
+
+      Public MustInherit Class ChainCrusher Inherits Entity Implements IMapItem, IBlockEntity, ICircuitOperator, IDamageReceiver
+  inheritance:
+  - System.Object
+  - AngeliA.Entity
+  implements:
+  - AngeliA.IMapItem
+  - AngeliA.IBlockEntity
+  - AngeliA.ICircuitOperator
+  - AngeliA.IDamageReceiver
+  inheritedMembers:
+  - AngeliA.Entity.Active
+  - AngeliA.Entity.X
+  - AngeliA.Entity.Y
+  - AngeliA.Entity.Width
+  - AngeliA.Entity.Height
+  - AngeliA.Entity.TypeID
+  - AngeliA.Entity.SpawnFrame
+  - AngeliA.Entity.FromWorld
+  - AngeliA.Entity.Rect
+  - AngeliA.Entity.InstanceOrder
+  - AngeliA.Entity.MapUnitPos
+  - AngeliA.Entity.InstanceID
+  - AngeliA.Entity.IgnoreReposition
+  - AngeliA.Entity.XY
+  - AngeliA.Entity.Size
+  - AngeliA.Entity.Center
+  - AngeliA.Entity.CenterX
+  - AngeliA.Entity.CenterY
+  - AngeliA.Entity.PivotUnitPosition
+  - AngeliA.Entity.OnInactivated
+  - AngeliA.Entity.Update
+  - AngeliA.Entity.LateUpdate
+  - AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  - AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  - AngeliA.Entity.CancelIgnoreDespawnFromMap
+  - AngeliA.Entity.Draw
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+  attributes:
+  - type: AngeliA.EntityAttribute.LayerAttribute
+    ctor: AngeliA.EntityAttribute.LayerAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 3
+  - type: AngeliA.EntityAttribute.MapEditorGroupAttribute
+    ctor: AngeliA.EntityAttribute.MapEditorGroupAttribute.#ctor(System.String,System.Int32)
+    arguments:
+    - type: System.String
+      value: Contraption
+    - type: System.Int32
+      value: 0
+- uid: AngeliA.Platformer.ChainCrusher.Clockwise
+  commentId: P:AngeliA.Platformer.ChainCrusher.Clockwise
+  id: Clockwise
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: Clockwise
+  nameWithType: ChainCrusher.Clockwise
+  fullName: AngeliA.Platformer.ChainCrusher.Clockwise
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Clockwise
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 11
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual bool Clockwise { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable ReadOnly Property Clockwise As Boolean
+  overload: AngeliA.Platformer.ChainCrusher.Clockwise*
+- uid: AngeliA.Platformer.ChainCrusher.ChainLength
+  commentId: P:AngeliA.Platformer.ChainCrusher.ChainLength
+  id: ChainLength
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: ChainLength
+  nameWithType: ChainCrusher.ChainLength
+  fullName: AngeliA.Platformer.ChainCrusher.ChainLength
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ChainLength
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 12
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int ChainLength { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property ChainLength As Integer
+  overload: AngeliA.Platformer.ChainCrusher.ChainLength*
+- uid: AngeliA.Platformer.ChainCrusher.RotateFrequency
+  commentId: P:AngeliA.Platformer.ChainCrusher.RotateFrequency
+  id: RotateFrequency
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: RotateFrequency
+  nameWithType: ChainCrusher.RotateFrequency
+  fullName: AngeliA.Platformer.ChainCrusher.RotateFrequency
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RotateFrequency
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 13
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int RotateFrequency { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property RotateFrequency As Integer
+  overload: AngeliA.Platformer.ChainCrusher.RotateFrequency*
+- uid: AngeliA.Platformer.ChainCrusher.DamageAmount
+  commentId: P:AngeliA.Platformer.ChainCrusher.DamageAmount
+  id: DamageAmount
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: DamageAmount
+  nameWithType: ChainCrusher.DamageAmount
+  fullName: AngeliA.Platformer.ChainCrusher.DamageAmount
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DamageAmount
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 14
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int DamageAmount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property DamageAmount As Integer
+  overload: AngeliA.Platformer.ChainCrusher.DamageAmount*
+- uid: AngeliA.Platformer.ChainCrusher.AttackTargetTeam
+  commentId: P:AngeliA.Platformer.ChainCrusher.AttackTargetTeam
+  id: AttackTargetTeam
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: AttackTargetTeam
+  nameWithType: ChainCrusher.AttackTargetTeam
+  fullName: AngeliA.Platformer.ChainCrusher.AttackTargetTeam
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AttackTargetTeam
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 15
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int AttackTargetTeam { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property AttackTargetTeam As Integer
+  overload: AngeliA.Platformer.ChainCrusher.AttackTargetTeam*
+- uid: AngeliA.Platformer.ChainCrusher.SpikeBallSize
+  commentId: P:AngeliA.Platformer.ChainCrusher.SpikeBallSize
+  id: SpikeBallSize
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: SpikeBallSize
+  nameWithType: ChainCrusher.SpikeBallSize
+  fullName: AngeliA.Platformer.ChainCrusher.SpikeBallSize
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SpikeBallSize
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 16
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int SpikeBallSize { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property SpikeBallSize As Integer
+  overload: AngeliA.Platformer.ChainCrusher.SpikeBallSize*
+- uid: AngeliA.Platformer.ChainCrusher.DamageType
+  commentId: P:AngeliA.Platformer.ChainCrusher.DamageType
+  id: DamageType
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: DamageType
+  nameWithType: ChainCrusher.DamageType
+  fullName: AngeliA.Platformer.ChainCrusher.DamageType
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DamageType
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 17
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual Tag DamageType { get; }
+    parameters: []
+    return:
+      type: AngeliA.Tag
+    content.vb: Public Overridable ReadOnly Property DamageType As Tag
+  overload: AngeliA.Platformer.ChainCrusher.DamageType*
+- uid: AngeliA.Platformer.ChainCrusher.AllowReleaseBall
+  commentId: P:AngeliA.Platformer.ChainCrusher.AllowReleaseBall
+  id: AllowReleaseBall
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: AllowReleaseBall
+  nameWithType: ChainCrusher.AllowReleaseBall
+  fullName: AngeliA.Platformer.ChainCrusher.AllowReleaseBall
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllowReleaseBall
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 18
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual bool AllowReleaseBall { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable ReadOnly Property AllowReleaseBall As Boolean
+  overload: AngeliA.Platformer.ChainCrusher.AllowReleaseBall*
+- uid: AngeliA.Platformer.ChainCrusher.ReleaseBallOnCircuitTrigger
+  commentId: P:AngeliA.Platformer.ChainCrusher.ReleaseBallOnCircuitTrigger
+  id: ReleaseBallOnCircuitTrigger
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: ReleaseBallOnCircuitTrigger
+  nameWithType: ChainCrusher.ReleaseBallOnCircuitTrigger
+  fullName: AngeliA.Platformer.ChainCrusher.ReleaseBallOnCircuitTrigger
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ReleaseBallOnCircuitTrigger
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 19
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual bool ReleaseBallOnCircuitTrigger { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable ReadOnly Property ReleaseBallOnCircuitTrigger As Boolean
+  overload: AngeliA.Platformer.ChainCrusher.ReleaseBallOnCircuitTrigger*
+- uid: AngeliA.Platformer.ChainCrusher.ReleaseBallOnDamaged
+  commentId: P:AngeliA.Platformer.ChainCrusher.ReleaseBallOnDamaged
+  id: ReleaseBallOnDamaged
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: ReleaseBallOnDamaged
+  nameWithType: ChainCrusher.ReleaseBallOnDamaged
+  fullName: AngeliA.Platformer.ChainCrusher.ReleaseBallOnDamaged
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ReleaseBallOnDamaged
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 20
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual bool ReleaseBallOnDamaged { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable ReadOnly Property ReleaseBallOnDamaged As Boolean
+  overload: AngeliA.Platformer.ChainCrusher.ReleaseBallOnDamaged*
+- uid: AngeliA.Platformer.ChainCrusher.CurrentSpikeBallPos
+  commentId: P:AngeliA.Platformer.ChainCrusher.CurrentSpikeBallPos
+  id: CurrentSpikeBallPos
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: CurrentSpikeBallPos
+  nameWithType: ChainCrusher.CurrentSpikeBallPos
+  fullName: AngeliA.Platformer.ChainCrusher.CurrentSpikeBallPos
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CurrentSpikeBallPos
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 23
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: protected Int2 CurrentSpikeBallPos { get; }
+    parameters: []
+    return:
+      type: AngeliA.Int2
+    content.vb: Protected Property CurrentSpikeBallPos As Int2
+  overload: AngeliA.Platformer.ChainCrusher.CurrentSpikeBallPos*
+- uid: AngeliA.Platformer.ChainCrusher.CurrentSpikeBallRotation
+  commentId: P:AngeliA.Platformer.ChainCrusher.CurrentSpikeBallRotation
+  id: CurrentSpikeBallRotation
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: CurrentSpikeBallRotation
+  nameWithType: ChainCrusher.CurrentSpikeBallRotation
+  fullName: AngeliA.Platformer.ChainCrusher.CurrentSpikeBallRotation
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CurrentSpikeBallRotation
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 24
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: protected float CurrentSpikeBallRotation { get; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Protected Property CurrentSpikeBallRotation As Single
+  overload: AngeliA.Platformer.ChainCrusher.CurrentSpikeBallRotation*
+- uid: AngeliA.Platformer.ChainCrusher.BallReleaseFrame
+  commentId: P:AngeliA.Platformer.ChainCrusher.BallReleaseFrame
+  id: BallReleaseFrame
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: BallReleaseFrame
+  nameWithType: ChainCrusher.BallReleaseFrame
+  fullName: AngeliA.Platformer.ChainCrusher.BallReleaseFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BallReleaseFrame
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 25
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: protected int BallReleaseFrame { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Protected Property BallReleaseFrame As Integer
+  overload: AngeliA.Platformer.ChainCrusher.BallReleaseFrame*
+- uid: AngeliA.Platformer.ChainCrusher.OnActivated
+  commentId: M:AngeliA.Platformer.ChainCrusher.OnActivated
+  id: OnActivated
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: OnActivated()
+  nameWithType: ChainCrusher.OnActivated()
+  fullName: AngeliA.Platformer.ChainCrusher.OnActivated()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnActivated
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 28
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void OnActivated()
+    content.vb: Public Overrides Sub OnActivated()
+  overridden: AngeliA.Entity.OnActivated
+  overload: AngeliA.Platformer.ChainCrusher.OnActivated*
+- uid: AngeliA.Platformer.ChainCrusher.FirstUpdate
+  commentId: M:AngeliA.Platformer.ChainCrusher.FirstUpdate
+  id: FirstUpdate
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: FirstUpdate()
+  nameWithType: ChainCrusher.FirstUpdate()
+  fullName: AngeliA.Platformer.ChainCrusher.FirstUpdate()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FirstUpdate
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 34
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void FirstUpdate()
+    content.vb: Public Overrides Sub FirstUpdate()
+  overridden: AngeliA.Entity.FirstUpdate
+  overload: AngeliA.Platformer.ChainCrusher.FirstUpdate*
+- uid: AngeliA.Platformer.ChainCrusher.BeforeUpdate
+  commentId: M:AngeliA.Platformer.ChainCrusher.BeforeUpdate
+  id: BeforeUpdate
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: BeforeUpdate()
+  nameWithType: ChainCrusher.BeforeUpdate()
+  fullName: AngeliA.Platformer.ChainCrusher.BeforeUpdate()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BeforeUpdate
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 39
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void BeforeUpdate()
+    content.vb: Public Overrides Sub BeforeUpdate()
+  overridden: AngeliA.Entity.BeforeUpdate
+  overload: AngeliA.Platformer.ChainCrusher.BeforeUpdate*
+- uid: AngeliA.Platformer.ChainCrusher.CalculateCurrentSpikeBallTransform
+  commentId: M:AngeliA.Platformer.ChainCrusher.CalculateCurrentSpikeBallTransform
+  id: CalculateCurrentSpikeBallTransform
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: CalculateCurrentSpikeBallTransform()
+  nameWithType: ChainCrusher.CalculateCurrentSpikeBallTransform()
+  fullName: AngeliA.Platformer.ChainCrusher.CalculateCurrentSpikeBallTransform()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CalculateCurrentSpikeBallTransform
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 60
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: protected virtual (Int2 pos, float rot) CalculateCurrentSpikeBallTransform()
+    return:
+      type: System.ValueTuple{AngeliA.Int2,System.Single}
+    content.vb: Protected Overridable Function CalculateCurrentSpikeBallTransform() As (pos As Int2, rot As Single)
+  overload: AngeliA.Platformer.ChainCrusher.CalculateCurrentSpikeBallTransform*
+- uid: AngeliA.Platformer.ChainCrusher.OnReleaseBall
+  commentId: M:AngeliA.Platformer.ChainCrusher.OnReleaseBall
+  id: OnReleaseBall
+  parent: AngeliA.Platformer.ChainCrusher
+  langs:
+  - csharp
+  - vb
+  name: OnReleaseBall()
+  nameWithType: ChainCrusher.OnReleaseBall()
+  fullName: AngeliA.Platformer.ChainCrusher.OnReleaseBall()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnReleaseBall
+    path: ../AngeliA Platformer/src/Entity/Contraption/ChainCrusher.cs
+    startLine: 72
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: protected virtual void OnReleaseBall()
+    content.vb: Protected Overridable Sub OnReleaseBall()
+  overload: AngeliA.Platformer.ChainCrusher.OnReleaseBall*
+references:
+- uid: AngeliA.Platformer
+  commentId: N:AngeliA.Platformer
+  href: AngeliA.html
+  name: AngeliA.Platformer
+  nameWithType: AngeliA.Platformer
+  fullName: AngeliA.Platformer
+  spec.csharp:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+  spec.vb:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Entity
+  commentId: T:AngeliA.Entity
+  parent: AngeliA
+  href: AngeliA.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: AngeliA.Entity
+- uid: AngeliA.IMapItem
+  commentId: T:AngeliA.IMapItem
+  parent: AngeliA
+  href: AngeliA.IMapItem.html
+  name: IMapItem
+  nameWithType: IMapItem
+  fullName: AngeliA.IMapItem
+- uid: AngeliA.IBlockEntity
+  commentId: T:AngeliA.IBlockEntity
+  parent: AngeliA
+  href: AngeliA.IBlockEntity.html
+  name: IBlockEntity
+  nameWithType: IBlockEntity
+  fullName: AngeliA.IBlockEntity
+- uid: AngeliA.ICircuitOperator
+  commentId: T:AngeliA.ICircuitOperator
+  parent: AngeliA
+  href: AngeliA.ICircuitOperator.html
+  name: ICircuitOperator
+  nameWithType: ICircuitOperator
+  fullName: AngeliA.ICircuitOperator
+- uid: AngeliA.IDamageReceiver
+  commentId: T:AngeliA.IDamageReceiver
+  parent: AngeliA
+  href: AngeliA.IDamageReceiver.html
+  name: IDamageReceiver
+  nameWithType: IDamageReceiver
+  fullName: AngeliA.IDamageReceiver
+- uid: AngeliA.Entity.Active
+  commentId: P:AngeliA.Entity.Active
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Active
+  name: Active
+  nameWithType: Entity.Active
+  fullName: AngeliA.Entity.Active
+- uid: AngeliA.Entity.X
+  commentId: P:AngeliA.Entity.X
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_X
+  name: X
+  nameWithType: Entity.X
+  fullName: AngeliA.Entity.X
+- uid: AngeliA.Entity.Y
+  commentId: P:AngeliA.Entity.Y
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Y
+  name: Y
+  nameWithType: Entity.Y
+  fullName: AngeliA.Entity.Y
+- uid: AngeliA.Entity.Width
+  commentId: P:AngeliA.Entity.Width
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Width
+  name: Width
+  nameWithType: Entity.Width
+  fullName: AngeliA.Entity.Width
+- uid: AngeliA.Entity.Height
+  commentId: P:AngeliA.Entity.Height
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Height
+  name: Height
+  nameWithType: Entity.Height
+  fullName: AngeliA.Entity.Height
+- uid: AngeliA.Entity.TypeID
+  commentId: P:AngeliA.Entity.TypeID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_TypeID
+  name: TypeID
+  nameWithType: Entity.TypeID
+  fullName: AngeliA.Entity.TypeID
+- uid: AngeliA.Entity.SpawnFrame
+  commentId: P:AngeliA.Entity.SpawnFrame
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_SpawnFrame
+  name: SpawnFrame
+  nameWithType: Entity.SpawnFrame
+  fullName: AngeliA.Entity.SpawnFrame
+- uid: AngeliA.Entity.FromWorld
+  commentId: P:AngeliA.Entity.FromWorld
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_FromWorld
+  name: FromWorld
+  nameWithType: Entity.FromWorld
+  fullName: AngeliA.Entity.FromWorld
+- uid: AngeliA.Entity.Rect
+  commentId: P:AngeliA.Entity.Rect
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Rect
+  name: Rect
+  nameWithType: Entity.Rect
+  fullName: AngeliA.Entity.Rect
+- uid: AngeliA.Entity.InstanceOrder
+  commentId: P:AngeliA.Entity.InstanceOrder
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceOrder
+  name: InstanceOrder
+  nameWithType: Entity.InstanceOrder
+  fullName: AngeliA.Entity.InstanceOrder
+- uid: AngeliA.Entity.MapUnitPos
+  commentId: P:AngeliA.Entity.MapUnitPos
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_MapUnitPos
+  name: MapUnitPos
+  nameWithType: Entity.MapUnitPos
+  fullName: AngeliA.Entity.MapUnitPos
+- uid: AngeliA.Entity.InstanceID
+  commentId: P:AngeliA.Entity.InstanceID
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_InstanceID
+  name: InstanceID
+  nameWithType: Entity.InstanceID
+  fullName: AngeliA.Entity.InstanceID
+- uid: AngeliA.Entity.IgnoreReposition
+  commentId: P:AngeliA.Entity.IgnoreReposition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreReposition
+  name: IgnoreReposition
+  nameWithType: Entity.IgnoreReposition
+  fullName: AngeliA.Entity.IgnoreReposition
+- uid: AngeliA.Entity.XY
+  commentId: P:AngeliA.Entity.XY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_XY
+  name: XY
+  nameWithType: Entity.XY
+  fullName: AngeliA.Entity.XY
+- uid: AngeliA.Entity.Size
+  commentId: P:AngeliA.Entity.Size
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Size
+  name: Size
+  nameWithType: Entity.Size
+  fullName: AngeliA.Entity.Size
+- uid: AngeliA.Entity.Center
+  commentId: P:AngeliA.Entity.Center
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Center
+  name: Center
+  nameWithType: Entity.Center
+  fullName: AngeliA.Entity.Center
+- uid: AngeliA.Entity.CenterX
+  commentId: P:AngeliA.Entity.CenterX
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterX
+  name: CenterX
+  nameWithType: Entity.CenterX
+  fullName: AngeliA.Entity.CenterX
+- uid: AngeliA.Entity.CenterY
+  commentId: P:AngeliA.Entity.CenterY
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CenterY
+  name: CenterY
+  nameWithType: Entity.CenterY
+  fullName: AngeliA.Entity.CenterY
+- uid: AngeliA.Entity.PivotUnitPosition
+  commentId: P:AngeliA.Entity.PivotUnitPosition
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_PivotUnitPosition
+  name: PivotUnitPosition
+  nameWithType: Entity.PivotUnitPosition
+  fullName: AngeliA.Entity.PivotUnitPosition
+- uid: AngeliA.Entity.OnInactivated
+  commentId: M:AngeliA.Entity.OnInactivated
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  name: OnInactivated()
+  nameWithType: Entity.OnInactivated()
+  fullName: AngeliA.Entity.OnInactivated()
+  spec.csharp:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.OnInactivated
+    name: OnInactivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnInactivated
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.Update
+  commentId: M:AngeliA.Entity.Update
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Update
+  name: Update()
+  nameWithType: Entity.Update()
+  fullName: AngeliA.Entity.Update()
+  spec.csharp:
+  - uid: AngeliA.Entity.Update
+    name: Update
+    href: AngeliA.Entity.html#AngeliA_Entity_Update
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.Update
+    name: Update
+    href: AngeliA.Entity.html#AngeliA_Entity_Update
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.LateUpdate
+  commentId: M:AngeliA.Entity.LateUpdate
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_LateUpdate
+  name: LateUpdate()
+  nameWithType: Entity.LateUpdate()
+  fullName: AngeliA.Entity.LateUpdate()
+  spec.csharp:
+  - uid: AngeliA.Entity.LateUpdate
+    name: LateUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_LateUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.LateUpdate
+    name: LateUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_LateUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  commentId: M:AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  name: AfterReposition(Int3, Int3)
+  nameWithType: Entity.AfterReposition(Int3, Int3)
+  fullName: AngeliA.Entity.AfterReposition(AngeliA.Int3, AngeliA.Int3)
+  spec.csharp:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)
+    name: AfterReposition
+    href: AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_
+  - name: (
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Int3
+    name: Int3
+    href: AngeliA.Int3.html
+  - name: )
+- uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  commentId: M:AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+  parent: AngeliA.Entity
+  isExternal: true
+  href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  name: IgnoreDespawnFromMap(int)
+  nameWithType: Entity.IgnoreDespawnFromMap(int)
+  fullName: AngeliA.Entity.IgnoreDespawnFromMap(int)
+  nameWithType.vb: Entity.IgnoreDespawnFromMap(Integer)
+  fullName.vb: AngeliA.Entity.IgnoreDespawnFromMap(Integer)
+  name.vb: IgnoreDespawnFromMap(Integer)
+  spec.csharp:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)
+    name: IgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+  commentId: M:AngeliA.Entity.CancelIgnoreDespawnFromMap
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  name: CancelIgnoreDespawnFromMap()
+  nameWithType: Entity.CancelIgnoreDespawnFromMap()
+  fullName: AngeliA.Entity.CancelIgnoreDespawnFromMap()
+  spec.csharp:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.CancelIgnoreDespawnFromMap
+    name: CancelIgnoreDespawnFromMap
+    href: AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap
+  - name: (
+  - name: )
+- uid: AngeliA.Entity.Draw
+  commentId: M:AngeliA.Entity.Draw
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  name: Draw()
+  nameWithType: Entity.Draw()
+  fullName: AngeliA.Entity.Draw()
+  spec.csharp:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.Draw
+    name: Draw
+    href: AngeliA.Entity.html#AngeliA_Entity_Draw
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Platformer.ChainCrusher.Clockwise*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.Clockwise
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_Clockwise
+  name: Clockwise
+  nameWithType: ChainCrusher.Clockwise
+  fullName: AngeliA.Platformer.ChainCrusher.Clockwise
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Platformer.ChainCrusher.ChainLength*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.ChainLength
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_ChainLength
+  name: ChainLength
+  nameWithType: ChainCrusher.ChainLength
+  fullName: AngeliA.Platformer.ChainCrusher.ChainLength
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Platformer.ChainCrusher.RotateFrequency*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.RotateFrequency
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_RotateFrequency
+  name: RotateFrequency
+  nameWithType: ChainCrusher.RotateFrequency
+  fullName: AngeliA.Platformer.ChainCrusher.RotateFrequency
+- uid: AngeliA.Platformer.ChainCrusher.DamageAmount*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.DamageAmount
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_DamageAmount
+  name: DamageAmount
+  nameWithType: ChainCrusher.DamageAmount
+  fullName: AngeliA.Platformer.ChainCrusher.DamageAmount
+- uid: AngeliA.Platformer.ChainCrusher.AttackTargetTeam*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.AttackTargetTeam
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_AttackTargetTeam
+  name: AttackTargetTeam
+  nameWithType: ChainCrusher.AttackTargetTeam
+  fullName: AngeliA.Platformer.ChainCrusher.AttackTargetTeam
+- uid: AngeliA.Platformer.ChainCrusher.SpikeBallSize*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.SpikeBallSize
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_SpikeBallSize
+  name: SpikeBallSize
+  nameWithType: ChainCrusher.SpikeBallSize
+  fullName: AngeliA.Platformer.ChainCrusher.SpikeBallSize
+- uid: AngeliA.Platformer.ChainCrusher.DamageType*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.DamageType
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_DamageType
+  name: DamageType
+  nameWithType: ChainCrusher.DamageType
+  fullName: AngeliA.Platformer.ChainCrusher.DamageType
+- uid: AngeliA.Tag
+  commentId: T:AngeliA.Tag
+  parent: AngeliA
+  href: AngeliA.Tag.html
+  name: Tag
+  nameWithType: Tag
+  fullName: AngeliA.Tag
+- uid: AngeliA.Platformer.ChainCrusher.AllowReleaseBall*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.AllowReleaseBall
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_AllowReleaseBall
+  name: AllowReleaseBall
+  nameWithType: ChainCrusher.AllowReleaseBall
+  fullName: AngeliA.Platformer.ChainCrusher.AllowReleaseBall
+- uid: AngeliA.Platformer.ChainCrusher.ReleaseBallOnCircuitTrigger*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.ReleaseBallOnCircuitTrigger
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_ReleaseBallOnCircuitTrigger
+  name: ReleaseBallOnCircuitTrigger
+  nameWithType: ChainCrusher.ReleaseBallOnCircuitTrigger
+  fullName: AngeliA.Platformer.ChainCrusher.ReleaseBallOnCircuitTrigger
+- uid: AngeliA.Platformer.ChainCrusher.ReleaseBallOnDamaged*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.ReleaseBallOnDamaged
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_ReleaseBallOnDamaged
+  name: ReleaseBallOnDamaged
+  nameWithType: ChainCrusher.ReleaseBallOnDamaged
+  fullName: AngeliA.Platformer.ChainCrusher.ReleaseBallOnDamaged
+- uid: AngeliA.Platformer.ChainCrusher.CurrentSpikeBallPos*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.CurrentSpikeBallPos
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_CurrentSpikeBallPos
+  name: CurrentSpikeBallPos
+  nameWithType: ChainCrusher.CurrentSpikeBallPos
+  fullName: AngeliA.Platformer.ChainCrusher.CurrentSpikeBallPos
+- uid: AngeliA.Int2
+  commentId: T:AngeliA.Int2
+  parent: AngeliA
+  href: AngeliA.Int2.html
+  name: Int2
+  nameWithType: Int2
+  fullName: AngeliA.Int2
+- uid: AngeliA.Platformer.ChainCrusher.CurrentSpikeBallRotation*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.CurrentSpikeBallRotation
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_CurrentSpikeBallRotation
+  name: CurrentSpikeBallRotation
+  nameWithType: ChainCrusher.CurrentSpikeBallRotation
+  fullName: AngeliA.Platformer.ChainCrusher.CurrentSpikeBallRotation
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: AngeliA.Platformer.ChainCrusher.BallReleaseFrame*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.BallReleaseFrame
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_BallReleaseFrame
+  name: BallReleaseFrame
+  nameWithType: ChainCrusher.BallReleaseFrame
+  fullName: AngeliA.Platformer.ChainCrusher.BallReleaseFrame
+- uid: AngeliA.Entity.OnActivated
+  commentId: M:AngeliA.Entity.OnActivated
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_OnActivated
+  name: OnActivated()
+  nameWithType: Entity.OnActivated()
+  fullName: AngeliA.Entity.OnActivated()
+  spec.csharp:
+  - uid: AngeliA.Entity.OnActivated
+    name: OnActivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.OnActivated
+    name: OnActivated
+    href: AngeliA.Entity.html#AngeliA_Entity_OnActivated
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.ChainCrusher.OnActivated*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.OnActivated
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_OnActivated
+  name: OnActivated
+  nameWithType: ChainCrusher.OnActivated
+  fullName: AngeliA.Platformer.ChainCrusher.OnActivated
+- uid: AngeliA.Entity.FirstUpdate
+  commentId: M:AngeliA.Entity.FirstUpdate
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_FirstUpdate
+  name: FirstUpdate()
+  nameWithType: Entity.FirstUpdate()
+  fullName: AngeliA.Entity.FirstUpdate()
+  spec.csharp:
+  - uid: AngeliA.Entity.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_FirstUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.FirstUpdate
+    name: FirstUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_FirstUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.ChainCrusher.FirstUpdate*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.FirstUpdate
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_FirstUpdate
+  name: FirstUpdate
+  nameWithType: ChainCrusher.FirstUpdate
+  fullName: AngeliA.Platformer.ChainCrusher.FirstUpdate
+- uid: AngeliA.Entity.BeforeUpdate
+  commentId: M:AngeliA.Entity.BeforeUpdate
+  parent: AngeliA.Entity
+  href: AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate
+  name: BeforeUpdate()
+  nameWithType: Entity.BeforeUpdate()
+  fullName: AngeliA.Entity.BeforeUpdate()
+  spec.csharp:
+  - uid: AngeliA.Entity.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Entity.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.Platformer.ChainCrusher.BeforeUpdate*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.BeforeUpdate
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_BeforeUpdate
+  name: BeforeUpdate
+  nameWithType: ChainCrusher.BeforeUpdate
+  fullName: AngeliA.Platformer.ChainCrusher.BeforeUpdate
+- uid: AngeliA.Platformer.ChainCrusher.CalculateCurrentSpikeBallTransform*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.CalculateCurrentSpikeBallTransform
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_CalculateCurrentSpikeBallTransform
+  name: CalculateCurrentSpikeBallTransform
+  nameWithType: ChainCrusher.CalculateCurrentSpikeBallTransform
+  fullName: AngeliA.Platformer.ChainCrusher.CalculateCurrentSpikeBallTransform
+- uid: System.ValueTuple{AngeliA.Int2,System.Single}
+  commentId: T:System.ValueTuple{AngeliA.Int2,System.Single}
+  parent: System
+  definition: System.ValueTuple`2
+  href: AngeliA.Int2.html
+  name: (Int2 pos, float rot)
+  nameWithType: (Int2 pos, float rot)
+  fullName: (AngeliA.Int2 pos, float rot)
+  nameWithType.vb: (pos As Int2, rot As Single)
+  fullName.vb: (pos As AngeliA.Int2, rot As Single)
+  name.vb: (pos As Int2, rot As Single)
+  spec.csharp:
+  - name: (
+  - uid: AngeliA.Int2
+    name: Int2
+    href: AngeliA.Int2.html
+  - name: " "
+  - uid: System.ValueTuple{AngeliA.Int2,System.Single}.pos
+    name: pos
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-angelia.int2,system.single-.pos
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: " "
+  - uid: System.ValueTuple{AngeliA.Int2,System.Single}.rot
+    name: rot
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-angelia.int2,system.single-.rot
+  - name: )
+  spec.vb:
+  - name: (
+  - uid: System.ValueTuple{AngeliA.Int2,System.Single}.pos
+    name: pos
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-angelia.int2,system.single-.pos
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: AngeliA.Int2
+    name: Int2
+    href: AngeliA.Int2.html
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{AngeliA.Int2,System.Single}.rot
+    name: rot
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-angelia.int2,system.single-.rot
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: System.ValueTuple`2
+  commentId: T:System.ValueTuple`2
+  name: (T1, T2)
+  nameWithType: (T1, T2)
+  fullName: (T1, T2)
+  spec.csharp:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+  spec.vb:
+  - name: (
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: AngeliA.Platformer.ChainCrusher.OnReleaseBall*
+  commentId: Overload:AngeliA.Platformer.ChainCrusher.OnReleaseBall
+  href: AngeliA.Platformer.ChainCrusher.html#AngeliA_Platformer_ChainCrusher_OnReleaseBall
+  name: OnReleaseBall
+  nameWithType: ChainCrusher.OnReleaseBall
+  fullName: AngeliA.Platformer.ChainCrusher.OnReleaseBall

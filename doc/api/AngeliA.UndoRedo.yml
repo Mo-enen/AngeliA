@@ -1,0 +1,1073 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.UndoRedo
+  commentId: T:AngeliA.UndoRedo
+  id: UndoRedo
+  parent: AngeliA
+  children:
+  - AngeliA.UndoRedo.#ctor(System.Int32,System.Action{AngeliA.IUndoItem},System.Action{AngeliA.IUndoItem})
+  - AngeliA.UndoRedo.AbortUnstable
+  - AngeliA.UndoRedo.CurrentStep
+  - AngeliA.UndoRedo.GrowStep
+  - AngeliA.UndoRedo.InvokeRedoPerform(AngeliA.IUndoItem)
+  - AngeliA.UndoRedo.InvokeUndoPerform(AngeliA.IUndoItem)
+  - AngeliA.UndoRedo.MarkAsStable
+  - AngeliA.UndoRedo.Redo
+  - AngeliA.UndoRedo.RedoList
+  - AngeliA.UndoRedo.Register(AngeliA.IUndoItem)
+  - AngeliA.UndoRedo.Reset
+  - AngeliA.UndoRedo.Undo
+  - AngeliA.UndoRedo.UndoList
+  langs:
+  - csharp
+  - vb
+  name: UndoRedo
+  nameWithType: UndoRedo
+  fullName: AngeliA.UndoRedo
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UndoRedo
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public class UndoRedo
+    content.vb: Public Class UndoRedo
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.UndoRedo.#ctor(System.Int32,System.Action{AngeliA.IUndoItem},System.Action{AngeliA.IUndoItem})
+  commentId: M:AngeliA.UndoRedo.#ctor(System.Int32,System.Action{AngeliA.IUndoItem},System.Action{AngeliA.IUndoItem})
+  id: '#ctor(System.Int32,System.Action{AngeliA.IUndoItem},System.Action{AngeliA.IUndoItem})'
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: UndoRedo(int, Action<IUndoItem>, Action<IUndoItem>)
+  nameWithType: UndoRedo.UndoRedo(int, Action<IUndoItem>, Action<IUndoItem>)
+  fullName: AngeliA.UndoRedo.UndoRedo(int, System.Action<AngeliA.IUndoItem>, System.Action<AngeliA.IUndoItem>)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public UndoRedo(int undoLimit = 4096, Action<IUndoItem> onUndoPerformed = null, Action<IUndoItem> onRedoPerformed = null)
+    parameters:
+    - id: undoLimit
+      type: System.Int32
+    - id: onUndoPerformed
+      type: System.Action{AngeliA.IUndoItem}
+    - id: onRedoPerformed
+      type: System.Action{AngeliA.IUndoItem}
+    content.vb: Public Sub New(undoLimit As Integer = 4096, onUndoPerformed As Action(Of IUndoItem) = Nothing, onRedoPerformed As Action(Of IUndoItem) = Nothing)
+  overload: AngeliA.UndoRedo.#ctor*
+  nameWithType.vb: UndoRedo.New(Integer, Action(Of IUndoItem), Action(Of IUndoItem))
+  fullName.vb: AngeliA.UndoRedo.New(Integer, System.Action(Of AngeliA.IUndoItem), System.Action(Of AngeliA.IUndoItem))
+  name.vb: New(Integer, Action(Of IUndoItem), Action(Of IUndoItem))
+- uid: AngeliA.UndoRedo.CurrentStep
+  commentId: P:AngeliA.UndoRedo.CurrentStep
+  id: CurrentStep
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: CurrentStep
+  nameWithType: UndoRedo.CurrentStep
+  fullName: AngeliA.UndoRedo.CurrentStep
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CurrentStep
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int CurrentStep { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CurrentStep As Integer
+  overload: AngeliA.UndoRedo.CurrentStep*
+- uid: AngeliA.UndoRedo.UndoList
+  commentId: F:AngeliA.UndoRedo.UndoList
+  id: UndoList
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: UndoList
+  nameWithType: UndoRedo.UndoList
+  fullName: AngeliA.UndoRedo.UndoList
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UndoList
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected readonly Pipe<IUndoItem> UndoList
+    return:
+      type: AngeliA.Pipe{AngeliA.IUndoItem}
+    content.vb: Protected ReadOnly UndoList As Pipe(Of IUndoItem)
+- uid: AngeliA.UndoRedo.RedoList
+  commentId: F:AngeliA.UndoRedo.RedoList
+  id: RedoList
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: RedoList
+  nameWithType: UndoRedo.RedoList
+  fullName: AngeliA.UndoRedo.RedoList
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RedoList
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected readonly Pipe<IUndoItem> RedoList
+    return:
+      type: AngeliA.Pipe{AngeliA.IUndoItem}
+    content.vb: Protected ReadOnly RedoList As Pipe(Of IUndoItem)
+- uid: AngeliA.UndoRedo.Register(AngeliA.IUndoItem)
+  commentId: M:AngeliA.UndoRedo.Register(AngeliA.IUndoItem)
+  id: Register(AngeliA.IUndoItem)
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: Register(IUndoItem)
+  nameWithType: UndoRedo.Register(IUndoItem)
+  fullName: AngeliA.UndoRedo.Register(AngeliA.IUndoItem)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Register
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual void Register(IUndoItem data)
+    parameters:
+    - id: data
+      type: AngeliA.IUndoItem
+    content.vb: Public Overridable Sub Register(data As IUndoItem)
+  overload: AngeliA.UndoRedo.Register*
+- uid: AngeliA.UndoRedo.Undo
+  commentId: M:AngeliA.UndoRedo.Undo
+  id: Undo
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: Undo()
+  nameWithType: UndoRedo.Undo()
+  fullName: AngeliA.UndoRedo.Undo()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Undo
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 44
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void Undo()
+    content.vb: Public Sub Undo()
+  overload: AngeliA.UndoRedo.Undo*
+- uid: AngeliA.UndoRedo.Redo
+  commentId: M:AngeliA.UndoRedo.Redo
+  id: Redo
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: Redo()
+  nameWithType: UndoRedo.Redo()
+  fullName: AngeliA.UndoRedo.Redo()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Redo
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 56
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void Redo()
+    content.vb: Public Sub Redo()
+  overload: AngeliA.UndoRedo.Redo*
+- uid: AngeliA.UndoRedo.Reset
+  commentId: M:AngeliA.UndoRedo.Reset
+  id: Reset
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: Reset()
+  nameWithType: UndoRedo.Reset()
+  fullName: AngeliA.UndoRedo.Reset()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Reset
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 68
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual void Reset()
+    content.vb: Public Overridable Sub Reset()
+  overload: AngeliA.UndoRedo.Reset*
+- uid: AngeliA.UndoRedo.GrowStep
+  commentId: M:AngeliA.UndoRedo.GrowStep
+  id: GrowStep
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: GrowStep()
+  nameWithType: UndoRedo.GrowStep()
+  fullName: AngeliA.UndoRedo.GrowStep()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GrowStep
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 75
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual void GrowStep()
+    content.vb: Public Overridable Sub GrowStep()
+  overload: AngeliA.UndoRedo.GrowStep*
+- uid: AngeliA.UndoRedo.MarkAsStable
+  commentId: M:AngeliA.UndoRedo.MarkAsStable
+  id: MarkAsStable
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: MarkAsStable()
+  nameWithType: UndoRedo.MarkAsStable()
+  fullName: AngeliA.UndoRedo.MarkAsStable()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MarkAsStable
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 81
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void MarkAsStable()
+    content.vb: Public Sub MarkAsStable()
+  overload: AngeliA.UndoRedo.MarkAsStable*
+- uid: AngeliA.UndoRedo.AbortUnstable
+  commentId: M:AngeliA.UndoRedo.AbortUnstable
+  id: AbortUnstable
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: AbortUnstable()
+  nameWithType: UndoRedo.AbortUnstable()
+  fullName: AngeliA.UndoRedo.AbortUnstable()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AbortUnstable
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 84
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void AbortUnstable()
+    content.vb: Public Sub AbortUnstable()
+  overload: AngeliA.UndoRedo.AbortUnstable*
+- uid: AngeliA.UndoRedo.InvokeUndoPerform(AngeliA.IUndoItem)
+  commentId: M:AngeliA.UndoRedo.InvokeUndoPerform(AngeliA.IUndoItem)
+  id: InvokeUndoPerform(AngeliA.IUndoItem)
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: InvokeUndoPerform(IUndoItem)
+  nameWithType: UndoRedo.InvokeUndoPerform(IUndoItem)
+  fullName: AngeliA.UndoRedo.InvokeUndoPerform(AngeliA.IUndoItem)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InvokeUndoPerform
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 93
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual void InvokeUndoPerform(IUndoItem data)
+    parameters:
+    - id: data
+      type: AngeliA.IUndoItem
+    content.vb: Protected Overridable Sub InvokeUndoPerform(data As IUndoItem)
+  overload: AngeliA.UndoRedo.InvokeUndoPerform*
+- uid: AngeliA.UndoRedo.InvokeRedoPerform(AngeliA.IUndoItem)
+  commentId: M:AngeliA.UndoRedo.InvokeRedoPerform(AngeliA.IUndoItem)
+  id: InvokeRedoPerform(AngeliA.IUndoItem)
+  parent: AngeliA.UndoRedo
+  langs:
+  - csharp
+  - vb
+  name: InvokeRedoPerform(IUndoItem)
+  nameWithType: UndoRedo.InvokeRedoPerform(IUndoItem)
+  fullName: AngeliA.UndoRedo.InvokeRedoPerform(AngeliA.IUndoItem)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/UndoRedo.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InvokeRedoPerform
+    path: ../AngeliA Framework/src/Common/UndoRedo.cs
+    startLine: 94
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual void InvokeRedoPerform(IUndoItem data)
+    parameters:
+    - id: data
+      type: AngeliA.IUndoItem
+    content.vb: Protected Overridable Sub InvokeRedoPerform(data As IUndoItem)
+  overload: AngeliA.UndoRedo.InvokeRedoPerform*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.UndoRedo.#ctor*
+  commentId: Overload:AngeliA.UndoRedo.#ctor
+  href: AngeliA.UndoRedo.html#AngeliA_UndoRedo__ctor_System_Int32_System_Action_AngeliA_IUndoItem__System_Action_AngeliA_IUndoItem__
+  name: UndoRedo
+  nameWithType: UndoRedo.UndoRedo
+  fullName: AngeliA.UndoRedo.UndoRedo
+  nameWithType.vb: UndoRedo.New
+  fullName.vb: AngeliA.UndoRedo.New
+  name.vb: New
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Action{AngeliA.IUndoItem}
+  commentId: T:System.Action{AngeliA.IUndoItem}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<IUndoItem>
+  nameWithType: Action<IUndoItem>
+  fullName: System.Action<AngeliA.IUndoItem>
+  nameWithType.vb: Action(Of IUndoItem)
+  fullName.vb: System.Action(Of AngeliA.IUndoItem)
+  name.vb: Action(Of IUndoItem)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: AngeliA.IUndoItem
+    name: IUndoItem
+    href: AngeliA.IUndoItem.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.IUndoItem
+    name: IUndoItem
+    href: AngeliA.IUndoItem.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.UndoRedo.CurrentStep*
+  commentId: Overload:AngeliA.UndoRedo.CurrentStep
+  href: AngeliA.UndoRedo.html#AngeliA_UndoRedo_CurrentStep
+  name: CurrentStep
+  nameWithType: UndoRedo.CurrentStep
+  fullName: AngeliA.UndoRedo.CurrentStep
+- uid: AngeliA.Pipe{AngeliA.IUndoItem}
+  commentId: T:AngeliA.Pipe{AngeliA.IUndoItem}
+  parent: AngeliA
+  definition: AngeliA.Pipe`1
+  href: AngeliA.Pipe-1.html
+  name: Pipe<IUndoItem>
+  nameWithType: Pipe<IUndoItem>
+  fullName: AngeliA.Pipe<AngeliA.IUndoItem>
+  nameWithType.vb: Pipe(Of IUndoItem)
+  fullName.vb: AngeliA.Pipe(Of AngeliA.IUndoItem)
+  name.vb: Pipe(Of IUndoItem)
+  spec.csharp:
+  - uid: AngeliA.Pipe`1
+    name: Pipe
+    href: AngeliA.Pipe-1.html
+  - name: <
+  - uid: AngeliA.IUndoItem
+    name: IUndoItem
+    href: AngeliA.IUndoItem.html
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.Pipe`1
+    name: Pipe
+    href: AngeliA.Pipe-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.IUndoItem
+    name: IUndoItem
+    href: AngeliA.IUndoItem.html
+  - name: )
+- uid: AngeliA.Pipe`1
+  commentId: T:AngeliA.Pipe`1
+  href: AngeliA.Pipe-1.html
+  name: Pipe<T>
+  nameWithType: Pipe<T>
+  fullName: AngeliA.Pipe<T>
+  nameWithType.vb: Pipe(Of T)
+  fullName.vb: AngeliA.Pipe(Of T)
+  name.vb: Pipe(Of T)
+  spec.csharp:
+  - uid: AngeliA.Pipe`1
+    name: Pipe
+    href: AngeliA.Pipe-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: AngeliA.Pipe`1
+    name: Pipe
+    href: AngeliA.Pipe-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.UndoRedo.Register*
+  commentId: Overload:AngeliA.UndoRedo.Register
+  href: AngeliA.UndoRedo.html#AngeliA_UndoRedo_Register_AngeliA_IUndoItem_
+  name: Register
+  nameWithType: UndoRedo.Register
+  fullName: AngeliA.UndoRedo.Register
+- uid: AngeliA.IUndoItem
+  commentId: T:AngeliA.IUndoItem
+  parent: AngeliA
+  href: AngeliA.IUndoItem.html
+  name: IUndoItem
+  nameWithType: IUndoItem
+  fullName: AngeliA.IUndoItem
+- uid: AngeliA.UndoRedo.Undo*
+  commentId: Overload:AngeliA.UndoRedo.Undo
+  href: AngeliA.UndoRedo.html#AngeliA_UndoRedo_Undo
+  name: Undo
+  nameWithType: UndoRedo.Undo
+  fullName: AngeliA.UndoRedo.Undo
+- uid: AngeliA.UndoRedo.Redo*
+  commentId: Overload:AngeliA.UndoRedo.Redo
+  href: AngeliA.UndoRedo.html#AngeliA_UndoRedo_Redo
+  name: Redo
+  nameWithType: UndoRedo.Redo
+  fullName: AngeliA.UndoRedo.Redo
+- uid: AngeliA.UndoRedo.Reset*
+  commentId: Overload:AngeliA.UndoRedo.Reset
+  href: AngeliA.UndoRedo.html#AngeliA_UndoRedo_Reset
+  name: Reset
+  nameWithType: UndoRedo.Reset
+  fullName: AngeliA.UndoRedo.Reset
+- uid: AngeliA.UndoRedo.GrowStep*
+  commentId: Overload:AngeliA.UndoRedo.GrowStep
+  href: AngeliA.UndoRedo.html#AngeliA_UndoRedo_GrowStep
+  name: GrowStep
+  nameWithType: UndoRedo.GrowStep
+  fullName: AngeliA.UndoRedo.GrowStep
+- uid: AngeliA.UndoRedo.MarkAsStable*
+  commentId: Overload:AngeliA.UndoRedo.MarkAsStable
+  href: AngeliA.UndoRedo.html#AngeliA_UndoRedo_MarkAsStable
+  name: MarkAsStable
+  nameWithType: UndoRedo.MarkAsStable
+  fullName: AngeliA.UndoRedo.MarkAsStable
+- uid: AngeliA.UndoRedo.AbortUnstable*
+  commentId: Overload:AngeliA.UndoRedo.AbortUnstable
+  href: AngeliA.UndoRedo.html#AngeliA_UndoRedo_AbortUnstable
+  name: AbortUnstable
+  nameWithType: UndoRedo.AbortUnstable
+  fullName: AngeliA.UndoRedo.AbortUnstable
+- uid: AngeliA.UndoRedo.InvokeUndoPerform*
+  commentId: Overload:AngeliA.UndoRedo.InvokeUndoPerform
+  href: AngeliA.UndoRedo.html#AngeliA_UndoRedo_InvokeUndoPerform_AngeliA_IUndoItem_
+  name: InvokeUndoPerform
+  nameWithType: UndoRedo.InvokeUndoPerform
+  fullName: AngeliA.UndoRedo.InvokeUndoPerform
+- uid: AngeliA.UndoRedo.InvokeRedoPerform*
+  commentId: Overload:AngeliA.UndoRedo.InvokeRedoPerform
+  href: AngeliA.UndoRedo.html#AngeliA_UndoRedo_InvokeRedoPerform_AngeliA_IUndoItem_
+  name: InvokeRedoPerform
+  nameWithType: UndoRedo.InvokeRedoPerform
+  fullName: AngeliA.UndoRedo.InvokeRedoPerform

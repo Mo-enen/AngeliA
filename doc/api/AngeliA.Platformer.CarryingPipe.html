@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class CarryingPipe | AngeliA </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class CarryingPipe | AngeliA ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_CarryingPipe.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.CarryingPipe%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+            AngeliA
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="AngeliA.Platformer.CarryingPipe">
+
+
+
+  <h1 id="AngeliA_Platformer_CarryingPipe" data-uid="AngeliA.Platformer.CarryingPipe" class="text-break">
+Class CarryingPipe  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L7"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a>.<a class="xref" href="AngeliA.Platformer.html">Platformer</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>com.angelia.platformer.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Entity.MapEditorGroup(&quot;Entity&quot;, 0)]
+[Entity.Layer(3)]
+public abstract class CarryingPipe : Entity, IMapItem, IBlockEntity</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="AngeliA.Entity.html">Entity</a></div>
+      <div><span class="xref">CarryingPipe</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></div>
+      <div><a class="xref" href="AngeliA.IBlockEntity.html">IBlockEntity</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Active">Entity.Active</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_X">Entity.X</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Y">Entity.Y</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Width">Entity.Width</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Height">Entity.Height</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_TypeID">Entity.TypeID</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_SpawnFrame">Entity.SpawnFrame</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_FromWorld">Entity.FromWorld</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Rect">Entity.Rect</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_InstanceOrder">Entity.InstanceOrder</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_MapUnitPos">Entity.MapUnitPos</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_InstanceID">Entity.InstanceID</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_IgnoreReposition">Entity.IgnoreReposition</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_XY">Entity.XY</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Size">Entity.Size</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Center">Entity.Center</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CenterX">Entity.CenterX</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CenterY">Entity.CenterY</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_PivotUnitPosition">Entity.PivotUnitPosition</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_OnInactivated">Entity.OnInactivated()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate">Entity.BeforeUpdate()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_">Entity.AfterReposition(Int3, Int3)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_">Entity.IgnoreDespawnFromMap(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap">Entity.CancelIgnoreDespawnFromMap()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Draw">Entity.Draw()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_BottomSprite_" data-uid="AngeliA.Platformer.CarryingPipe.BottomSprite*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_BottomSprite" data-uid="AngeliA.Platformer.CarryingPipe.BottomSprite">
+  BottomSprite
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract SpriteCode BottomSprite { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_CarryingPoseAnimationID_" data-uid="AngeliA.Platformer.CarryingPipe.CarryingPoseAnimationID*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_CarryingPoseAnimationID" data-uid="AngeliA.Platformer.CarryingPipe.CarryingPoseAnimationID">
+  CarryingPoseAnimationID
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual int CarryingPoseAnimationID { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_Direction_" data-uid="AngeliA.Platformer.CarryingPipe.Direction*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_Direction" data-uid="AngeliA.Platformer.CarryingPipe.Direction">
+  Direction
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Direction4 Direction { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Direction4.html">Direction4</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_EdgeSprite_" data-uid="AngeliA.Platformer.CarryingPipe.EdgeSprite*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_EdgeSprite" data-uid="AngeliA.Platformer.CarryingPipe.EdgeSprite">
+  EdgeSprite
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract SpriteCode EdgeSprite { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_InsertSprite_" data-uid="AngeliA.Platformer.CarryingPipe.InsertSprite*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_InsertSprite" data-uid="AngeliA.Platformer.CarryingPipe.InsertSprite">
+  InsertSprite
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract SpriteCode InsertSprite { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_MidSprite_" data-uid="AngeliA.Platformer.CarryingPipe.MidSprite*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_MidSprite" data-uid="AngeliA.Platformer.CarryingPipe.MidSprite">
+  MidSprite
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract SpriteCode MidSprite { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_FirstUpdate_" data-uid="AngeliA.Platformer.CarryingPipe.FirstUpdate*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_FirstUpdate" data-uid="AngeliA.Platformer.CarryingPipe.FirstUpdate">
+  FirstUpdate()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void FirstUpdate()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_IsEdge_" data-uid="AngeliA.Platformer.CarryingPipe.IsEdge*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_IsEdge_System_Boolean_" data-uid="AngeliA.Platformer.CarryingPipe.IsEdge(System.Boolean)">
+  IsEdge(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L325"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEdge(bool requireOpenSpace)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>requireOpenSpace</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_LateUpdate_" data-uid="AngeliA.Platformer.CarryingPipe.LateUpdate*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_LateUpdate" data-uid="AngeliA.Platformer.CarryingPipe.LateUpdate">
+  LateUpdate()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void LateUpdate()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_OnActivated_" data-uid="AngeliA.Platformer.CarryingPipe.OnActivated*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_OnActivated" data-uid="AngeliA.Platformer.CarryingPipe.OnActivated">
+  OnActivated()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnActivated()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_OnPlayerEnter_" data-uid="AngeliA.Platformer.CarryingPipe.OnPlayerEnter*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_OnPlayerEnter_AngeliA_Character_" data-uid="AngeliA.Platformer.CarryingPipe.OnPlayerEnter(AngeliA.Character)">
+  OnPlayerEnter(Character)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L333"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnPlayerEnter(Character player)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>player</code> <a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_OnPlayerExit_" data-uid="AngeliA.Platformer.CarryingPipe.OnPlayerExit*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_OnPlayerExit_AngeliA_Character_" data-uid="AngeliA.Platformer.CarryingPipe.OnPlayerExit(AngeliA.Character)">
+  OnPlayerExit(Character)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L334"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnPlayerExit(Character player)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>player</code> <a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_CarryingPipe_Update_" data-uid="AngeliA.Platformer.CarryingPipe.Update*"></a>
+
+  <h3 id="AngeliA_Platformer_CarryingPipe_Update" data-uid="AngeliA.Platformer.CarryingPipe.Update">
+  Update()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Update()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Environment/CarryingPipe.cs/#L7" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class HealWeapon&lt;B&gt; | AngeliA </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class HealWeapon&lt;B&gt; | AngeliA ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_HealWeapon_1.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.HealWeapon%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+            AngeliA
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="AngeliA.Platformer.HealWeapon`1">
+
+
+
+  <h1 id="AngeliA_Platformer_HealWeapon_1" data-uid="AngeliA.Platformer.HealWeapon`1" class="text-break">
+Class HealWeapon&lt;B&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Item/Weapon/HealWeapon.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a>.<a class="xref" href="AngeliA.Platformer.html">Platformer</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>com.angelia.platformer.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class HealWeapon&lt;B&gt; : Weapon&lt;B&gt;, IMapItem where B : HealBullet</code></pre>
+  </div>
+
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>B</code></dt>
+    <dd></dd>
+  </dl>
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="AngeliA.Item.html">Item</a></div>
+      <div><a class="xref" href="AngeliA.Equipment.html">Equipment</a></div>
+      <div><a class="xref" href="AngeliA.HandTool.html">HandTool</a></div>
+      <div><a class="xref" href="AngeliA.Weapon.html">Weapon</a></div>
+      <div><a class="xref" href="AngeliA.Weapon-1.html">Weapon</a>&lt;B&gt;</div>
+      <div><span class="xref">HealWeapon&lt;B&gt;</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="AngeliA.Weapon.html#AngeliA_Weapon_BulletID">Weapon.BulletID</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Weapon.html#AngeliA_Weapon_ValidDirection">Weapon.ValidDirection</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Weapon.html#AngeliA_Weapon_OnPoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_">Weapon.OnPoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_SpriteID">HandTool.SpriteID</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_EquipmentType">HandTool.EquipmentType</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_PerformDelayFrame">HandTool.PerformDelayFrame</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_PerformDelayRate">HandTool.PerformDelayRate</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_TypeName">HandTool.TypeName</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_Duration">HandTool.Duration</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_Cooldown">HandTool.Cooldown</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_HoldPunish">HandTool.HoldPunish</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_ChargeDuration">HandTool.ChargeDuration</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_DefaultMovementSpeedRateOnUse">HandTool.DefaultMovementSpeedRateOnUse</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_WalkingMovementSpeedRateOnUse">HandTool.WalkingMovementSpeedRateOnUse</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_RunningMovementSpeedRateOnUse">HandTool.RunningMovementSpeedRateOnUse</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_UseStackAsUsage">HandTool.UseStackAsUsage</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_RepeatWhenHolding">HandTool.RepeatWhenHolding</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_CancelUseWhenRelease">HandTool.CancelUseWhenRelease</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_LockFacingOnUse">HandTool.LockFacingOnUse</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_IgnoreGrabTwist">HandTool.IgnoreGrabTwist</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableInAir">HandTool.AvailableInAir</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableInWater">HandTool.AvailableInWater</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenWalking">HandTool.AvailableWhenWalking</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenRunning">HandTool.AvailableWhenRunning</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenClimbing">HandTool.AvailableWhenClimbing</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenFlying">HandTool.AvailableWhenFlying</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenRolling">HandTool.AvailableWhenRolling</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenSquatting">HandTool.AvailableWhenSquatting</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenDashing">HandTool.AvailableWhenDashing</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenSliding">HandTool.AvailableWhenSliding</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenGrabbing">HandTool.AvailableWhenGrabbing</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenRushing">HandTool.AvailableWhenRushing</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenPounding">HandTool.AvailableWhenPounding</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_LoadFromSheet">HandTool.LoadFromSheet()</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_OnToolSpriteRendered_AngeliA_PoseCharacterRenderer_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_AngeliA_AngeSprite_System_Int32_">HandTool.OnToolSpriteRendered(PoseCharacterRenderer, int, int, int, int, int, int, AngeSprite, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_AllowingUse_AngeliA_Character_">HandTool.AllowingUse(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_OnToolPerform_AngeliA_Character_">HandTool.OnToolPerform(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_GetHandheldPoseAnimationID_AngeliA_Character_">HandTool.GetHandheldPoseAnimationID(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.HandTool.html#AngeliA_HandTool_GetPerformPoseAnimationID_AngeliA_Character_">HandTool.GetPerformPoseAnimationID(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Equipment.html#AngeliA_Equipment_MaxStackCount">Equipment.MaxStackCount</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_AllowDuplicateUpdate">Item.AllowDuplicateUpdate</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_EmbedIntoLevel">Item.EmbedIntoLevel</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_TypeID">Item.TypeID</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_BeforeItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_">Item.BeforeItemUpdate_FromInventory(Character, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_">Item.OnItemUpdate_FromInventory(Character, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnPoseAnimationUpdate_FromInventory_AngeliA_PoseCharacterRenderer_System_Int32_System_Int32_">Item.OnPoseAnimationUpdate_FromInventory(PoseCharacterRenderer, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromInventory_AngeliA_Character_System_Int32_System_Int32_AngeliA_Damage__">Item.OnTakeDamage_FromInventory(Character, int, int, ref Damage)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromInventory_AngeliA_Character_AngeliA_Bullet_System_Int32_System_Int32_">Item.OnCharacterAttack_FromInventory(Character, Bullet, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromEquipment_AngeliA_Character_">Item.OnItemUpdate_FromEquipment(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_BeforePoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_">Item.BeforePoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromEquipment_AngeliA_Character_AngeliA_Damage__">Item.OnTakeDamage_FromEquipment(Character, ref Damage)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromEquipment_AngeliA_Character_AngeliA_Bullet_">Item.OnCharacterAttack_FromEquipment(Character, Bullet)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_TryRepairEquipment_AngeliA_Character_">Item.TryRepairEquipment(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromItemHolder_AngeliA_ItemHolder_System_Int32_">Item.OnItemUpdate_FromItemHolder(ItemHolder, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnCollect_AngeliA_Character_">Item.OnCollect(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_CanUse_AngeliA_Character_">Item.CanUse(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_Use_AngeliA_Character_System_Int32_System_Int32_System_Boolean__">Item.Use(Character, int, int, out bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_ItemConditionCheck_AngeliA_Character_">Item.ItemConditionCheck(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_DrawItem_AngeliA_Entity_AngeliA_IRect_AngeliA_Color32_System_Int32_">Item.DrawItem(Entity, IRect, Color32, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="AngeliA_Platformer_HealWeapon_1_AllowManuallyAttack_" data-uid="AngeliA.Platformer.HealWeapon`1.AllowManuallyAttack*"></a>
+
+  <h3 id="AngeliA_Platformer_HealWeapon_1_AllowManuallyAttack" data-uid="AngeliA.Platformer.HealWeapon`1.AllowManuallyAttack">
+  AllowManuallyAttack
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Item/Weapon/HealWeapon.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool AllowManuallyAttack { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_HealWeapon_1_AutoAttackFrequency_" data-uid="AngeliA.Platformer.HealWeapon`1.AutoAttackFrequency*"></a>
+
+  <h3 id="AngeliA_Platformer_HealWeapon_1_AutoAttackFrequency" data-uid="AngeliA.Platformer.HealWeapon`1.AutoAttackFrequency">
+  AutoAttackFrequency
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Item/Weapon/HealWeapon.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual int AutoAttackFrequency { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="AngeliA_Platformer_HealWeapon_1_BeforeItemUpdate_FromEquipment_" data-uid="AngeliA.Platformer.HealWeapon`1.BeforeItemUpdate_FromEquipment*"></a>
+
+  <h3 id="AngeliA_Platformer_HealWeapon_1_BeforeItemUpdate_FromEquipment_AngeliA_Character_" data-uid="AngeliA.Platformer.HealWeapon`1.BeforeItemUpdate_FromEquipment(AngeliA.Character)">
+  BeforeItemUpdate_FromEquipment(Character)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Item/Weapon/HealWeapon.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void BeforeItemUpdate_FromEquipment(Character holder)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>holder</code> <a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_Platformer_HealWeapon_1_SpawnBullet_" data-uid="AngeliA.Platformer.HealWeapon`1.SpawnBullet*"></a>
+
+  <h3 id="AngeliA_Platformer_HealWeapon_1_SpawnBullet_AngeliA_Character_" data-uid="AngeliA.Platformer.HealWeapon`1.SpawnBullet(AngeliA.Character)">
+  SpawnBullet(Character)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Item/Weapon/HealWeapon.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Bullet SpawnBullet(Character sender)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sender</code> <a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Bullet.html">Bullet</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Item/Weapon/HealWeapon.cs/#L8" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

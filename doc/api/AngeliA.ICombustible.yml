@@ -1,0 +1,417 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.ICombustible
+  commentId: T:AngeliA.ICombustible
+  id: ICombustible
+  parent: AngeliA
+  children:
+  - AngeliA.ICombustible.BurnStartFrame
+  - AngeliA.ICombustible.BurnedDuration
+  - AngeliA.ICombustible.IsBurning
+  - AngeliA.ICombustible.OnBurned
+  langs:
+  - csharp
+  - vb
+  name: ICombustible
+  nameWithType: ICombustible
+  fullName: AngeliA.ICombustible
+  type: Interface
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICombustible.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICombustible
+    path: ../AngeliA Framework/src/Entity/Interface/ICombustible.cs
+    startLine: 2
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public interface ICombustible
+    content.vb: Public Interface ICombustible
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.ICombustible.IsBurning
+  commentId: P:AngeliA.ICombustible.IsBurning
+  id: IsBurning
+  parent: AngeliA.ICombustible
+  langs:
+  - csharp
+  - vb
+  name: IsBurning
+  nameWithType: ICombustible.IsBurning
+  fullName: AngeliA.ICombustible.IsBurning
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICombustible.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsBurning
+    path: ../AngeliA Framework/src/Entity/Interface/ICombustible.cs
+    startLine: 3
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool IsBurning { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsBurning As Boolean
+  overload: AngeliA.ICombustible.IsBurning*
+- uid: AngeliA.ICombustible.BurnedDuration
+  commentId: P:AngeliA.ICombustible.BurnedDuration
+  id: BurnedDuration
+  parent: AngeliA.ICombustible
+  langs:
+  - csharp
+  - vb
+  name: BurnedDuration
+  nameWithType: ICombustible.BurnedDuration
+  fullName: AngeliA.ICombustible.BurnedDuration
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICombustible.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BurnedDuration
+    path: ../AngeliA Framework/src/Entity/Interface/ICombustible.cs
+    startLine: 4
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: int BurnedDuration { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property BurnedDuration As Integer
+  overload: AngeliA.ICombustible.BurnedDuration*
+- uid: AngeliA.ICombustible.BurnStartFrame
+  commentId: P:AngeliA.ICombustible.BurnStartFrame
+  id: BurnStartFrame
+  parent: AngeliA.ICombustible
+  langs:
+  - csharp
+  - vb
+  name: BurnStartFrame
+  nameWithType: ICombustible.BurnStartFrame
+  fullName: AngeliA.ICombustible.BurnStartFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICombustible.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BurnStartFrame
+    path: ../AngeliA Framework/src/Entity/Interface/ICombustible.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: int BurnStartFrame { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property BurnStartFrame As Integer
+  overload: AngeliA.ICombustible.BurnStartFrame*
+- uid: AngeliA.ICombustible.OnBurned
+  commentId: M:AngeliA.ICombustible.OnBurned
+  id: OnBurned
+  parent: AngeliA.ICombustible
+  langs:
+  - csharp
+  - vb
+  name: OnBurned()
+  nameWithType: ICombustible.OnBurned()
+  fullName: AngeliA.ICombustible.OnBurned()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICombustible.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnBurned
+    path: ../AngeliA Framework/src/Entity/Interface/ICombustible.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: void OnBurned()
+    content.vb: Sub OnBurned()
+  overload: AngeliA.ICombustible.OnBurned*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.ICombustible.IsBurning*
+  commentId: Overload:AngeliA.ICombustible.IsBurning
+  href: AngeliA.ICombustible.html#AngeliA_ICombustible_IsBurning
+  name: IsBurning
+  nameWithType: ICombustible.IsBurning
+  fullName: AngeliA.ICombustible.IsBurning
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.ICombustible.BurnedDuration*
+  commentId: Overload:AngeliA.ICombustible.BurnedDuration
+  href: AngeliA.ICombustible.html#AngeliA_ICombustible_BurnedDuration
+  name: BurnedDuration
+  nameWithType: ICombustible.BurnedDuration
+  fullName: AngeliA.ICombustible.BurnedDuration
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.ICombustible.BurnStartFrame*
+  commentId: Overload:AngeliA.ICombustible.BurnStartFrame
+  href: AngeliA.ICombustible.html#AngeliA_ICombustible_BurnStartFrame
+  name: BurnStartFrame
+  nameWithType: ICombustible.BurnStartFrame
+  fullName: AngeliA.ICombustible.BurnStartFrame
+- uid: AngeliA.ICombustible.OnBurned*
+  commentId: Overload:AngeliA.ICombustible.OnBurned
+  href: AngeliA.ICombustible.html#AngeliA_ICombustible_OnBurned
+  name: OnBurned
+  nameWithType: ICombustible.OnBurned
+  fullName: AngeliA.ICombustible.OnBurned

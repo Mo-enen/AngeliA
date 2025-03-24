@@ -1,0 +1,965 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Hotkey
+  commentId: T:AngeliA.Hotkey
+  id: Hotkey
+  parent: AngeliA
+  children:
+  - AngeliA.Hotkey.#ctor(AngeliA.KeyboardKey,System.Boolean,System.Boolean,System.Boolean)
+  - AngeliA.Hotkey.#ctor(System.String)
+  - AngeliA.Hotkey.Alt
+  - AngeliA.Hotkey.Ctrl
+  - AngeliA.Hotkey.Down
+  - AngeliA.Hotkey.DownGUI
+  - AngeliA.Hotkey.Equals(System.Object)
+  - AngeliA.Hotkey.GetHashCode
+  - AngeliA.Hotkey.GetStringData
+  - AngeliA.Hotkey.Holding
+  - AngeliA.Hotkey.Key
+  - AngeliA.Hotkey.Shift
+  - AngeliA.Hotkey.ToString
+  langs:
+  - csharp
+  - vb
+  name: Hotkey
+  nameWithType: Hotkey
+  fullName: AngeliA.Hotkey
+  type: Struct
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Hotkey
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 2
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly struct Hotkey
+    content.vb: Public Structure Hotkey
+  inheritedMembers:
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Hotkey.Key
+  commentId: F:AngeliA.Hotkey.Key
+  id: Key
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: Key
+  nameWithType: Hotkey.Key
+  fullName: AngeliA.Hotkey.Key
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Key
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly KeyboardKey Key
+    return:
+      type: AngeliA.KeyboardKey
+    content.vb: Public ReadOnly Key As KeyboardKey
+- uid: AngeliA.Hotkey.Ctrl
+  commentId: F:AngeliA.Hotkey.Ctrl
+  id: Ctrl
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: Ctrl
+  nameWithType: Hotkey.Ctrl
+  fullName: AngeliA.Hotkey.Ctrl
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Ctrl
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 7
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly bool Ctrl
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Ctrl As Boolean
+- uid: AngeliA.Hotkey.Shift
+  commentId: F:AngeliA.Hotkey.Shift
+  id: Shift
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: Shift
+  nameWithType: Hotkey.Shift
+  fullName: AngeliA.Hotkey.Shift
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Shift
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly bool Shift
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Shift As Boolean
+- uid: AngeliA.Hotkey.Alt
+  commentId: F:AngeliA.Hotkey.Alt
+  id: Alt
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: Alt
+  nameWithType: Hotkey.Alt
+  fullName: AngeliA.Hotkey.Alt
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Alt
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly bool Alt
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Alt As Boolean
+- uid: AngeliA.Hotkey.#ctor(AngeliA.KeyboardKey,System.Boolean,System.Boolean,System.Boolean)
+  commentId: M:AngeliA.Hotkey.#ctor(AngeliA.KeyboardKey,System.Boolean,System.Boolean,System.Boolean)
+  id: '#ctor(AngeliA.KeyboardKey,System.Boolean,System.Boolean,System.Boolean)'
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: Hotkey(KeyboardKey, bool, bool, bool)
+  nameWithType: Hotkey.Hotkey(KeyboardKey, bool, bool, bool)
+  fullName: AngeliA.Hotkey.Hotkey(AngeliA.KeyboardKey, bool, bool, bool)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Hotkey(KeyboardKey key, bool ctrl = false, bool shift = false, bool alt = false)
+    parameters:
+    - id: key
+      type: AngeliA.KeyboardKey
+    - id: ctrl
+      type: System.Boolean
+    - id: shift
+      type: System.Boolean
+    - id: alt
+      type: System.Boolean
+    content.vb: Public Sub New(key As KeyboardKey, ctrl As Boolean = False, shift As Boolean = False, alt As Boolean = False)
+  overload: AngeliA.Hotkey.#ctor*
+  nameWithType.vb: Hotkey.New(KeyboardKey, Boolean, Boolean, Boolean)
+  fullName.vb: AngeliA.Hotkey.New(AngeliA.KeyboardKey, Boolean, Boolean, Boolean)
+  name.vb: New(KeyboardKey, Boolean, Boolean, Boolean)
+- uid: AngeliA.Hotkey.#ctor(System.String)
+  commentId: M:AngeliA.Hotkey.#ctor(System.String)
+  id: '#ctor(System.String)'
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: Hotkey(string)
+  nameWithType: Hotkey.Hotkey(string)
+  fullName: AngeliA.Hotkey.Hotkey(string)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Hotkey(string data)
+    parameters:
+    - id: data
+      type: System.String
+    content.vb: Public Sub New(data As String)
+  overload: AngeliA.Hotkey.#ctor*
+  nameWithType.vb: Hotkey.New(String)
+  fullName.vb: AngeliA.Hotkey.New(String)
+  name.vb: New(String)
+- uid: AngeliA.Hotkey.Holding
+  commentId: M:AngeliA.Hotkey.Holding
+  id: Holding
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: Holding()
+  nameWithType: Hotkey.Holding()
+  fullName: AngeliA.Hotkey.Holding()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Holding
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public bool Holding()
+    return:
+      type: System.Boolean
+    content.vb: Public Function Holding() As Boolean
+  overload: AngeliA.Hotkey.Holding*
+- uid: AngeliA.Hotkey.Down
+  commentId: M:AngeliA.Hotkey.Down
+  id: Down
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: Down()
+  nameWithType: Hotkey.Down()
+  fullName: AngeliA.Hotkey.Down()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Down
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public bool Down()
+    return:
+      type: System.Boolean
+    content.vb: Public Function Down() As Boolean
+  overload: AngeliA.Hotkey.Down*
+- uid: AngeliA.Hotkey.DownGUI
+  commentId: M:AngeliA.Hotkey.DownGUI
+  id: DownGUI
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: DownGUI()
+  nameWithType: Hotkey.DownGUI()
+  fullName: AngeliA.Hotkey.DownGUI()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DownGUI
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 42
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public bool DownGUI()
+    return:
+      type: System.Boolean
+    content.vb: Public Function DownGUI() As Boolean
+  overload: AngeliA.Hotkey.DownGUI*
+- uid: AngeliA.Hotkey.GetStringData
+  commentId: M:AngeliA.Hotkey.GetStringData
+  id: GetStringData
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: GetStringData()
+  nameWithType: Hotkey.GetStringData()
+  fullName: AngeliA.Hotkey.GetStringData()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetStringData
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 48
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string GetStringData()
+    return:
+      type: System.String
+    content.vb: Public Function GetStringData() As String
+  overload: AngeliA.Hotkey.GetStringData*
+- uid: AngeliA.Hotkey.Equals(System.Object)
+  commentId: M:AngeliA.Hotkey.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: Equals(object)
+  nameWithType: Hotkey.Equals(object)
+  fullName: AngeliA.Hotkey.Equals(object)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Equals
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 49
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Indicates whether this instance and a specified object are equal.
+  example: []
+  syntax:
+    content: public override bool Equals(object obj)
+    parameters:
+    - id: obj
+      type: System.Object
+      description: The object to compare with the current instance.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">obj</code> and this instance are the same type and represent the same value; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Overrides Function Equals(obj As Object) As Boolean
+  overridden: System.ValueType.Equals(System.Object)
+  overload: AngeliA.Hotkey.Equals*
+  nameWithType.vb: Hotkey.Equals(Object)
+  fullName.vb: AngeliA.Hotkey.Equals(Object)
+  name.vb: Equals(Object)
+- uid: AngeliA.Hotkey.GetHashCode
+  commentId: M:AngeliA.Hotkey.GetHashCode
+  id: GetHashCode
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: Hotkey.GetHashCode()
+  fullName: AngeliA.Hotkey.GetHashCode()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetHashCode
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 50
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Returns the hash code for this instance.
+  example: []
+  syntax:
+    content: public override int GetHashCode()
+    return:
+      type: System.Int32
+      description: A 32-bit signed integer that is the hash code for this instance.
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.ValueType.GetHashCode
+  overload: AngeliA.Hotkey.GetHashCode*
+- uid: AngeliA.Hotkey.ToString
+  commentId: M:AngeliA.Hotkey.ToString
+  id: ToString
+  parent: AngeliA.Hotkey
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: Hotkey.ToString()
+  fullName: AngeliA.Hotkey.ToString()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Hotkey.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ToString
+    path: ../AngeliA Framework/src/Structure/Hotkey.cs
+    startLine: 51
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Returns the fully qualified type name of this instance.
+  example: []
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: The fully qualified type name.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: AngeliA.Hotkey.ToString*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.KeyboardKey
+  commentId: T:AngeliA.KeyboardKey
+  parent: AngeliA
+  href: AngeliA.KeyboardKey.html
+  name: KeyboardKey
+  nameWithType: KeyboardKey
+  fullName: AngeliA.KeyboardKey
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Hotkey.#ctor*
+  commentId: Overload:AngeliA.Hotkey.#ctor
+  href: AngeliA.Hotkey.html#AngeliA_Hotkey__ctor_AngeliA_KeyboardKey_System_Boolean_System_Boolean_System_Boolean_
+  name: Hotkey
+  nameWithType: Hotkey.Hotkey
+  fullName: AngeliA.Hotkey.Hotkey
+  nameWithType.vb: Hotkey.New
+  fullName.vb: AngeliA.Hotkey.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.Hotkey.Holding*
+  commentId: Overload:AngeliA.Hotkey.Holding
+  href: AngeliA.Hotkey.html#AngeliA_Hotkey_Holding
+  name: Holding
+  nameWithType: Hotkey.Holding
+  fullName: AngeliA.Hotkey.Holding
+- uid: AngeliA.Hotkey.Down*
+  commentId: Overload:AngeliA.Hotkey.Down
+  href: AngeliA.Hotkey.html#AngeliA_Hotkey_Down
+  name: Down
+  nameWithType: Hotkey.Down
+  fullName: AngeliA.Hotkey.Down
+- uid: AngeliA.Hotkey.DownGUI*
+  commentId: Overload:AngeliA.Hotkey.DownGUI
+  href: AngeliA.Hotkey.html#AngeliA_Hotkey_DownGUI
+  name: DownGUI
+  nameWithType: Hotkey.DownGUI
+  fullName: AngeliA.Hotkey.DownGUI
+- uid: AngeliA.Hotkey.GetStringData*
+  commentId: Overload:AngeliA.Hotkey.GetStringData
+  href: AngeliA.Hotkey.html#AngeliA_Hotkey_GetStringData
+  name: GetStringData
+  nameWithType: Hotkey.GetStringData
+  fullName: AngeliA.Hotkey.GetStringData
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Hotkey.Equals*
+  commentId: Overload:AngeliA.Hotkey.Equals
+  href: AngeliA.Hotkey.html#AngeliA_Hotkey_Equals_System_Object_
+  name: Equals
+  nameWithType: Hotkey.Equals
+  fullName: AngeliA.Hotkey.Equals
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: AngeliA.Hotkey.GetHashCode*
+  commentId: Overload:AngeliA.Hotkey.GetHashCode
+  href: AngeliA.Hotkey.html#AngeliA_Hotkey_GetHashCode
+  name: GetHashCode
+  nameWithType: Hotkey.GetHashCode
+  fullName: AngeliA.Hotkey.GetHashCode
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: AngeliA.Hotkey.ToString*
+  commentId: Overload:AngeliA.Hotkey.ToString
+  href: AngeliA.Hotkey.html#AngeliA_Hotkey_ToString
+  name: ToString
+  nameWithType: Hotkey.ToString
+  fullName: AngeliA.Hotkey.ToString

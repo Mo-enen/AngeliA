@@ -1,0 +1,1903 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Long4
+  commentId: T:AngeliA.Long4
+  id: Long4
+  parent: AngeliA
+  children:
+  - AngeliA.Long4.#ctor(System.Int64,System.Int64,System.Int64,System.Int64)
+  - AngeliA.Long4.Contains(System.Int64)
+  - AngeliA.Long4.Direction(System.Int64,System.Int64,System.Int64,System.Int64)
+  - AngeliA.Long4.Equals(AngeliA.Long4)
+  - AngeliA.Long4.Equals(System.Object)
+  - AngeliA.Long4.GetHashCode
+  - AngeliA.Long4.IsZero
+  - AngeliA.Long4.Item(System.Int32)
+  - AngeliA.Long4.Swap(System.Int64,System.Int64)
+  - AngeliA.Long4.ToString
+  - AngeliA.Long4.ToString(System.String)
+  - AngeliA.Long4.ToString(System.String,System.IFormatProvider)
+  - AngeliA.Long4.down
+  - AngeliA.Long4.horizontal
+  - AngeliA.Long4.left
+  - AngeliA.Long4.one
+  - AngeliA.Long4.op_Addition(AngeliA.Long4,AngeliA.Long4)
+  - AngeliA.Long4.op_Equality(AngeliA.Long4,AngeliA.Long4)
+  - AngeliA.Long4.op_Inequality(AngeliA.Long4,AngeliA.Long4)
+  - AngeliA.Long4.op_Multiply(AngeliA.Long4,System.Int64)
+  - AngeliA.Long4.op_Multiply(System.Int64,AngeliA.Long4)
+  - AngeliA.Long4.right
+  - AngeliA.Long4.three
+  - AngeliA.Long4.two
+  - AngeliA.Long4.up
+  - AngeliA.Long4.vertical
+  - AngeliA.Long4.w
+  - AngeliA.Long4.x
+  - AngeliA.Long4.y
+  - AngeliA.Long4.z
+  - AngeliA.Long4.zero
+  langs:
+  - csharp
+  - vb
+  name: Long4
+  nameWithType: Long4
+  fullName: AngeliA.Long4
+  type: Struct
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Long4
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 7
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: >-
+      [Serializable]
+
+      public struct Long4 : IEquatable<Long4>, IFormattable
+    content.vb: >-
+      <Serializable>
+
+      Public Structure Long4 Implements IEquatable(Of Long4), IFormattable
+  implements:
+  - System.IEquatable{AngeliA.Long4}
+  - System.IFormattable
+  inheritedMembers:
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+- uid: AngeliA.Long4.zero
+  commentId: F:AngeliA.Long4.zero
+  id: zero
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: zero
+  nameWithType: Long4.zero
+  fullName: AngeliA.Long4.zero
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: zero
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly Long4 zero
+    return:
+      type: AngeliA.Long4
+    content.vb: Public Shared ReadOnly zero As Long4
+- uid: AngeliA.Long4.one
+  commentId: F:AngeliA.Long4.one
+  id: one
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: one
+  nameWithType: Long4.one
+  fullName: AngeliA.Long4.one
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: one
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly Long4 one
+    return:
+      type: AngeliA.Long4
+    content.vb: Public Shared ReadOnly one As Long4
+- uid: AngeliA.Long4.two
+  commentId: F:AngeliA.Long4.two
+  id: two
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: two
+  nameWithType: Long4.two
+  fullName: AngeliA.Long4.two
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: two
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly Long4 two
+    return:
+      type: AngeliA.Long4
+    content.vb: Public Shared ReadOnly two As Long4
+- uid: AngeliA.Long4.three
+  commentId: F:AngeliA.Long4.three
+  id: three
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: three
+  nameWithType: Long4.three
+  fullName: AngeliA.Long4.three
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: three
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly Long4 three
+    return:
+      type: AngeliA.Long4
+    content.vb: Public Shared ReadOnly three As Long4
+- uid: AngeliA.Long4.Item(System.Int32)
+  commentId: P:AngeliA.Long4.Item(System.Int32)
+  id: Item(System.Int32)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: this[int]
+  nameWithType: Long4.this[int]
+  fullName: AngeliA.Long4.this[int]
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: this[]
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public long this[int index] { readonly get; set; }
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: System.Int64
+    content.vb: Public Default Property this[](index As Integer) As Long
+  overload: AngeliA.Long4.Item*
+  nameWithType.vb: Long4.this[](Integer)
+  fullName.vb: AngeliA.Long4.this[](Integer)
+  name.vb: this[](Integer)
+- uid: AngeliA.Long4.IsZero
+  commentId: P:AngeliA.Long4.IsZero
+  id: IsZero
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: IsZero
+  nameWithType: Long4.IsZero
+  fullName: AngeliA.Long4.IsZero
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsZero
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 32
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly bool IsZero { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsZero As Boolean
+  overload: AngeliA.Long4.IsZero*
+- uid: AngeliA.Long4.left
+  commentId: P:AngeliA.Long4.left
+  id: left
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: left
+  nameWithType: Long4.left
+  fullName: AngeliA.Long4.left
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: left
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public long left { readonly get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property left As Long
+  overload: AngeliA.Long4.left*
+- uid: AngeliA.Long4.right
+  commentId: P:AngeliA.Long4.right
+  id: right
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: right
+  nameWithType: Long4.right
+  fullName: AngeliA.Long4.right
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: right
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 34
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public long right { readonly get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property right As Long
+  overload: AngeliA.Long4.right*
+- uid: AngeliA.Long4.down
+  commentId: P:AngeliA.Long4.down
+  id: down
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: down
+  nameWithType: Long4.down
+  fullName: AngeliA.Long4.down
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: down
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 35
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public long down { readonly get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property down As Long
+  overload: AngeliA.Long4.down*
+- uid: AngeliA.Long4.up
+  commentId: P:AngeliA.Long4.up
+  id: up
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: up
+  nameWithType: Long4.up
+  fullName: AngeliA.Long4.up
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: up
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public long up { readonly get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property up As Long
+  overload: AngeliA.Long4.up*
+- uid: AngeliA.Long4.horizontal
+  commentId: P:AngeliA.Long4.horizontal
+  id: horizontal
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: horizontal
+  nameWithType: Long4.horizontal
+  fullName: AngeliA.Long4.horizontal
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: horizontal
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 37
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly long horizontal { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property horizontal As Long
+  overload: AngeliA.Long4.horizontal*
+- uid: AngeliA.Long4.vertical
+  commentId: P:AngeliA.Long4.vertical
+  id: vertical
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: vertical
+  nameWithType: Long4.vertical
+  fullName: AngeliA.Long4.vertical
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: vertical
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 38
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly long vertical { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property vertical As Long
+  overload: AngeliA.Long4.vertical*
+- uid: AngeliA.Long4.x
+  commentId: F:AngeliA.Long4.x
+  id: x
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: x
+  nameWithType: Long4.x
+  fullName: AngeliA.Long4.x
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: x
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 40
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public long x
+    return:
+      type: System.Int64
+    content.vb: Public x As Long
+- uid: AngeliA.Long4.y
+  commentId: F:AngeliA.Long4.y
+  id: y
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: y
+  nameWithType: Long4.y
+  fullName: AngeliA.Long4.y
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: y
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 41
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public long y
+    return:
+      type: System.Int64
+    content.vb: Public y As Long
+- uid: AngeliA.Long4.z
+  commentId: F:AngeliA.Long4.z
+  id: z
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: z
+  nameWithType: Long4.z
+  fullName: AngeliA.Long4.z
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: z
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 42
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public long z
+    return:
+      type: System.Int64
+    content.vb: Public z As Long
+- uid: AngeliA.Long4.w
+  commentId: F:AngeliA.Long4.w
+  id: w
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: w
+  nameWithType: Long4.w
+  fullName: AngeliA.Long4.w
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: w
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 43
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public long w
+    return:
+      type: System.Int64
+    content.vb: Public w As Long
+- uid: AngeliA.Long4.#ctor(System.Int64,System.Int64,System.Int64,System.Int64)
+  commentId: M:AngeliA.Long4.#ctor(System.Int64,System.Int64,System.Int64,System.Int64)
+  id: '#ctor(System.Int64,System.Int64,System.Int64,System.Int64)'
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: Long4(long, long, long, long)
+  nameWithType: Long4.Long4(long, long, long, long)
+  fullName: AngeliA.Long4.Long4(long, long, long, long)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 45
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Long4(long x, long y, long z, long w)
+    parameters:
+    - id: x
+      type: System.Int64
+    - id: y
+      type: System.Int64
+    - id: z
+      type: System.Int64
+    - id: w
+      type: System.Int64
+    content.vb: Public Sub New(x As Long, y As Long, z As Long, w As Long)
+  overload: AngeliA.Long4.#ctor*
+  nameWithType.vb: Long4.New(Long, Long, Long, Long)
+  fullName.vb: AngeliA.Long4.New(Long, Long, Long, Long)
+  name.vb: New(Long, Long, Long, Long)
+- uid: AngeliA.Long4.Direction(System.Int64,System.Int64,System.Int64,System.Int64)
+  commentId: M:AngeliA.Long4.Direction(System.Int64,System.Int64,System.Int64,System.Int64)
+  id: Direction(System.Int64,System.Int64,System.Int64,System.Int64)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: Direction(long, long, long, long)
+  nameWithType: Long4.Direction(long, long, long, long)
+  fullName: AngeliA.Long4.Direction(long, long, long, long)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Direction
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 51
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Long4 Direction(long left, long right, long down, long up)
+    parameters:
+    - id: left
+      type: System.Int64
+    - id: right
+      type: System.Int64
+    - id: down
+      type: System.Int64
+    - id: up
+      type: System.Int64
+    return:
+      type: AngeliA.Long4
+    content.vb: Public Shared Function Direction(left As Long, right As Long, down As Long, up As Long) As Long4
+  overload: AngeliA.Long4.Direction*
+  nameWithType.vb: Long4.Direction(Long, Long, Long, Long)
+  fullName.vb: AngeliA.Long4.Direction(Long, Long, Long, Long)
+  name.vb: Direction(Long, Long, Long, Long)
+- uid: AngeliA.Long4.op_Multiply(System.Int64,AngeliA.Long4)
+  commentId: M:AngeliA.Long4.op_Multiply(System.Int64,AngeliA.Long4)
+  id: op_Multiply(System.Int64,AngeliA.Long4)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: operator *(long, Long4)
+  nameWithType: Long4.operator *(long, Long4)
+  fullName: AngeliA.Long4.operator *(long, AngeliA.Long4)
+  type: Operator
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: op_Multiply
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 53
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Long4 operator *(long b, Long4 a)
+    parameters:
+    - id: b
+      type: System.Int64
+    - id: a
+      type: AngeliA.Long4
+    return:
+      type: AngeliA.Long4
+    content.vb: Public Shared Operator *(b As Long, a As Long4) As Long4
+  overload: AngeliA.Long4.op_Multiply*
+  nameWithType.vb: Long4.*(Long, Long4)
+  fullName.vb: AngeliA.Long4.*(Long, AngeliA.Long4)
+  name.vb: '*(Long, Long4)'
+- uid: AngeliA.Long4.op_Equality(AngeliA.Long4,AngeliA.Long4)
+  commentId: M:AngeliA.Long4.op_Equality(AngeliA.Long4,AngeliA.Long4)
+  id: op_Equality(AngeliA.Long4,AngeliA.Long4)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: operator ==(Long4, Long4)
+  nameWithType: Long4.operator ==(Long4, Long4)
+  fullName: AngeliA.Long4.operator ==(AngeliA.Long4, AngeliA.Long4)
+  type: Operator
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: op_Equality
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 54
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool operator ==(Long4 a, Long4 b)
+    parameters:
+    - id: a
+      type: AngeliA.Long4
+    - id: b
+      type: AngeliA.Long4
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator =(a As Long4, b As Long4) As Boolean
+  overload: AngeliA.Long4.op_Equality*
+  nameWithType.vb: Long4.=(Long4, Long4)
+  fullName.vb: AngeliA.Long4.=(AngeliA.Long4, AngeliA.Long4)
+  name.vb: =(Long4, Long4)
+- uid: AngeliA.Long4.op_Inequality(AngeliA.Long4,AngeliA.Long4)
+  commentId: M:AngeliA.Long4.op_Inequality(AngeliA.Long4,AngeliA.Long4)
+  id: op_Inequality(AngeliA.Long4,AngeliA.Long4)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: operator !=(Long4, Long4)
+  nameWithType: Long4.operator !=(Long4, Long4)
+  fullName: AngeliA.Long4.operator !=(AngeliA.Long4, AngeliA.Long4)
+  type: Operator
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: op_Inequality
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 55
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool operator !=(Long4 a, Long4 b)
+    parameters:
+    - id: a
+      type: AngeliA.Long4
+    - id: b
+      type: AngeliA.Long4
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Operator <>(a As Long4, b As Long4) As Boolean
+  overload: AngeliA.Long4.op_Inequality*
+  nameWithType.vb: Long4.<>(Long4, Long4)
+  fullName.vb: AngeliA.Long4.<>(AngeliA.Long4, AngeliA.Long4)
+  name.vb: <>(Long4, Long4)
+- uid: AngeliA.Long4.op_Multiply(AngeliA.Long4,System.Int64)
+  commentId: M:AngeliA.Long4.op_Multiply(AngeliA.Long4,System.Int64)
+  id: op_Multiply(AngeliA.Long4,System.Int64)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: operator *(Long4, long)
+  nameWithType: Long4.operator *(Long4, long)
+  fullName: AngeliA.Long4.operator *(AngeliA.Long4, long)
+  type: Operator
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: op_Multiply
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 56
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Long4 operator *(Long4 a, long b)
+    parameters:
+    - id: a
+      type: AngeliA.Long4
+    - id: b
+      type: System.Int64
+    return:
+      type: AngeliA.Long4
+    content.vb: Public Shared Operator *(a As Long4, b As Long) As Long4
+  overload: AngeliA.Long4.op_Multiply*
+  nameWithType.vb: Long4.*(Long4, Long)
+  fullName.vb: AngeliA.Long4.*(AngeliA.Long4, Long)
+  name.vb: '*(Long4, Long)'
+- uid: AngeliA.Long4.op_Addition(AngeliA.Long4,AngeliA.Long4)
+  commentId: M:AngeliA.Long4.op_Addition(AngeliA.Long4,AngeliA.Long4)
+  id: op_Addition(AngeliA.Long4,AngeliA.Long4)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: operator +(Long4, Long4)
+  nameWithType: Long4.operator +(Long4, Long4)
+  fullName: AngeliA.Long4.operator +(AngeliA.Long4, AngeliA.Long4)
+  type: Operator
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: op_Addition
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 63
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Long4 operator +(Long4 a, Long4 b)
+    parameters:
+    - id: a
+      type: AngeliA.Long4
+    - id: b
+      type: AngeliA.Long4
+    return:
+      type: AngeliA.Long4
+    content.vb: Public Shared Operator +(a As Long4, b As Long4) As Long4
+  overload: AngeliA.Long4.op_Addition*
+  nameWithType.vb: Long4.+(Long4, Long4)
+  fullName.vb: AngeliA.Long4.+(AngeliA.Long4, AngeliA.Long4)
+  name.vb: +(Long4, Long4)
+- uid: AngeliA.Long4.Equals(System.Object)
+  commentId: M:AngeliA.Long4.Equals(System.Object)
+  id: Equals(System.Object)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: Equals(object)
+  nameWithType: Long4.Equals(object)
+  fullName: AngeliA.Long4.Equals(object)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Equals
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 71
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Indicates whether this instance and a specified object are equal.
+  example: []
+  syntax:
+    content: public override readonly bool Equals(object other)
+    parameters:
+    - id: other
+      type: System.Object
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">obj</code> and this instance are the same type and represent the same value; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Overrides Function Equals(other As Object) As Boolean
+  overridden: System.ValueType.Equals(System.Object)
+  overload: AngeliA.Long4.Equals*
+  nameWithType.vb: Long4.Equals(Object)
+  fullName.vb: AngeliA.Long4.Equals(Object)
+  name.vb: Equals(Object)
+- uid: AngeliA.Long4.Equals(AngeliA.Long4)
+  commentId: M:AngeliA.Long4.Equals(AngeliA.Long4)
+  id: Equals(AngeliA.Long4)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: Equals(Long4)
+  nameWithType: Long4.Equals(Long4)
+  fullName: AngeliA.Long4.Equals(AngeliA.Long4)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Equals
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 75
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Indicates whether the current object is equal to another object of the same type.
+  example: []
+  syntax:
+    content: public readonly bool Equals(Long4 other)
+    parameters:
+    - id: other
+      type: AngeliA.Long4
+      description: An object to compare with this object.
+    return:
+      type: System.Boolean
+      description: <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.
+    content.vb: Public Function Equals(other As Long4) As Boolean
+  overload: AngeliA.Long4.Equals*
+  implements:
+  - System.IEquatable{AngeliA.Long4}.Equals(AngeliA.Long4)
+- uid: AngeliA.Long4.GetHashCode
+  commentId: M:AngeliA.Long4.GetHashCode
+  id: GetHashCode
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: GetHashCode()
+  nameWithType: Long4.GetHashCode()
+  fullName: AngeliA.Long4.GetHashCode()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetHashCode
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 76
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Returns the hash code for this instance.
+  example: []
+  syntax:
+    content: public override readonly int GetHashCode()
+    return:
+      type: System.Int32
+      description: A 32-bit signed integer that is the hash code for this instance.
+    content.vb: Public Overrides Function GetHashCode() As Integer
+  overridden: System.ValueType.GetHashCode
+  overload: AngeliA.Long4.GetHashCode*
+- uid: AngeliA.Long4.Contains(System.Int64)
+  commentId: M:AngeliA.Long4.Contains(System.Int64)
+  id: Contains(System.Int64)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: Contains(long)
+  nameWithType: Long4.Contains(long)
+  fullName: AngeliA.Long4.Contains(long)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Contains
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 78
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly bool Contains(long value)
+    parameters:
+    - id: value
+      type: System.Int64
+    return:
+      type: System.Boolean
+    content.vb: Public Function Contains(value As Long) As Boolean
+  overload: AngeliA.Long4.Contains*
+  nameWithType.vb: Long4.Contains(Long)
+  fullName.vb: AngeliA.Long4.Contains(Long)
+  name.vb: Contains(Long)
+- uid: AngeliA.Long4.Swap(System.Int64,System.Int64)
+  commentId: M:AngeliA.Long4.Swap(System.Int64,System.Int64)
+  id: Swap(System.Int64,System.Int64)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: Swap(long, long)
+  nameWithType: Long4.Swap(long, long)
+  fullName: AngeliA.Long4.Swap(long, long)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Swap
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 79
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public bool Swap(long value, long newValue)
+    parameters:
+    - id: value
+      type: System.Int64
+    - id: newValue
+      type: System.Int64
+    return:
+      type: System.Boolean
+    content.vb: Public Function Swap(value As Long, newValue As Long) As Boolean
+  overload: AngeliA.Long4.Swap*
+  nameWithType.vb: Long4.Swap(Long, Long)
+  fullName.vb: AngeliA.Long4.Swap(Long, Long)
+  name.vb: Swap(Long, Long)
+- uid: AngeliA.Long4.ToString
+  commentId: M:AngeliA.Long4.ToString
+  id: ToString
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: Long4.ToString()
+  fullName: AngeliA.Long4.ToString()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ToString
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 99
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Returns the fully qualified type name of this instance.
+  example: []
+  syntax:
+    content: public override readonly string ToString()
+    return:
+      type: System.String
+      description: The fully qualified type name.
+    content.vb: Public Overrides Function ToString() As String
+  overridden: System.ValueType.ToString
+  overload: AngeliA.Long4.ToString*
+- uid: AngeliA.Long4.ToString(System.String)
+  commentId: M:AngeliA.Long4.ToString(System.String)
+  id: ToString(System.String)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: ToString(string)
+  nameWithType: Long4.ToString(string)
+  fullName: AngeliA.Long4.ToString(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ToString
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 102
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public readonly string ToString(string format)
+    parameters:
+    - id: format
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Function ToString(format As String) As String
+  overload: AngeliA.Long4.ToString*
+  nameWithType.vb: Long4.ToString(String)
+  fullName.vb: AngeliA.Long4.ToString(String)
+  name.vb: ToString(String)
+- uid: AngeliA.Long4.ToString(System.String,System.IFormatProvider)
+  commentId: M:AngeliA.Long4.ToString(System.String,System.IFormatProvider)
+  id: ToString(System.String,System.IFormatProvider)
+  parent: AngeliA.Long4
+  langs:
+  - csharp
+  - vb
+  name: ToString(string, IFormatProvider)
+  nameWithType: Long4.ToString(string, IFormatProvider)
+  fullName: AngeliA.Long4.ToString(string, System.IFormatProvider)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Long4.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ToString
+    path: ../AngeliA Framework/src/Structure/Long4.cs
+    startLine: 105
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Formats the value of the current instance using the specified format.
+  example: []
+  syntax:
+    content: public readonly string ToString(string format, IFormatProvider formatProvider)
+    parameters:
+    - id: format
+      type: System.String
+      description: >-
+        The format to use.  
+
+         -or-  
+
+         A null reference (<code>Nothing</code> in Visual Basic) to use the default format defined for the type of the <xref href="System.IFormattable" data-throw-if-not-resolved="false"></xref> implementation.
+    - id: formatProvider
+      type: System.IFormatProvider
+      description: >-
+        The provider to use to format the value.  
+
+         -or-  
+
+         A null reference (<code>Nothing</code> in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.
+    return:
+      type: System.String
+      description: The value of the current instance in the specified format.
+    content.vb: Public Function ToString(format As String, formatProvider As IFormatProvider) As String
+  overload: AngeliA.Long4.ToString*
+  implements:
+  - System.IFormattable.ToString(System.String,System.IFormatProvider)
+  nameWithType.vb: Long4.ToString(String, IFormatProvider)
+  fullName.vb: AngeliA.Long4.ToString(String, System.IFormatProvider)
+  name.vb: ToString(String, IFormatProvider)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.IEquatable{AngeliA.Long4}
+  commentId: T:System.IEquatable{AngeliA.Long4}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<Long4>
+  nameWithType: IEquatable<Long4>
+  fullName: System.IEquatable<AngeliA.Long4>
+  nameWithType.vb: IEquatable(Of Long4)
+  fullName.vb: System.IEquatable(Of AngeliA.Long4)
+  name.vb: IEquatable(Of Long4)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: AngeliA.Long4
+    name: Long4
+    href: AngeliA.Long4.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: AngeliA.Long4
+    name: Long4
+    href: AngeliA.Long4.html
+  - name: )
+- uid: System.IFormattable
+  commentId: T:System.IFormattable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iformattable
+  name: IFormattable
+  nameWithType: IFormattable
+  fullName: System.IFormattable
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Long4
+  commentId: T:AngeliA.Long4
+  parent: AngeliA
+  href: AngeliA.Long4.html
+  name: Long4
+  nameWithType: Long4
+  fullName: AngeliA.Long4
+- uid: AngeliA.Long4.Item*
+  commentId: Overload:AngeliA.Long4.Item
+  href: AngeliA.Long4.html#AngeliA_Long4_Item_System_Int32_
+  name: this
+  nameWithType: Long4.this
+  fullName: AngeliA.Long4.this
+  nameWithType.vb: Long4.this[]
+  fullName.vb: AngeliA.Long4.this[]
+  name.vb: this[]
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: AngeliA.Long4.IsZero*
+  commentId: Overload:AngeliA.Long4.IsZero
+  href: AngeliA.Long4.html#AngeliA_Long4_IsZero
+  name: IsZero
+  nameWithType: Long4.IsZero
+  fullName: AngeliA.Long4.IsZero
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Long4.left*
+  commentId: Overload:AngeliA.Long4.left
+  href: AngeliA.Long4.html#AngeliA_Long4_left
+  name: left
+  nameWithType: Long4.left
+  fullName: AngeliA.Long4.left
+- uid: AngeliA.Long4.right*
+  commentId: Overload:AngeliA.Long4.right
+  href: AngeliA.Long4.html#AngeliA_Long4_right
+  name: right
+  nameWithType: Long4.right
+  fullName: AngeliA.Long4.right
+- uid: AngeliA.Long4.down*
+  commentId: Overload:AngeliA.Long4.down
+  href: AngeliA.Long4.html#AngeliA_Long4_down
+  name: down
+  nameWithType: Long4.down
+  fullName: AngeliA.Long4.down
+- uid: AngeliA.Long4.up*
+  commentId: Overload:AngeliA.Long4.up
+  href: AngeliA.Long4.html#AngeliA_Long4_up
+  name: up
+  nameWithType: Long4.up
+  fullName: AngeliA.Long4.up
+- uid: AngeliA.Long4.horizontal*
+  commentId: Overload:AngeliA.Long4.horizontal
+  href: AngeliA.Long4.html#AngeliA_Long4_horizontal
+  name: horizontal
+  nameWithType: Long4.horizontal
+  fullName: AngeliA.Long4.horizontal
+- uid: AngeliA.Long4.vertical*
+  commentId: Overload:AngeliA.Long4.vertical
+  href: AngeliA.Long4.html#AngeliA_Long4_vertical
+  name: vertical
+  nameWithType: Long4.vertical
+  fullName: AngeliA.Long4.vertical
+- uid: AngeliA.Long4.#ctor*
+  commentId: Overload:AngeliA.Long4.#ctor
+  href: AngeliA.Long4.html#AngeliA_Long4__ctor_System_Int64_System_Int64_System_Int64_System_Int64_
+  name: Long4
+  nameWithType: Long4.Long4
+  fullName: AngeliA.Long4.Long4
+  nameWithType.vb: Long4.New
+  fullName.vb: AngeliA.Long4.New
+  name.vb: New
+- uid: AngeliA.Long4.Direction*
+  commentId: Overload:AngeliA.Long4.Direction
+  href: AngeliA.Long4.html#AngeliA_Long4_Direction_System_Int64_System_Int64_System_Int64_System_Int64_
+  name: Direction
+  nameWithType: Long4.Direction
+  fullName: AngeliA.Long4.Direction
+- uid: AngeliA.Long4.op_Multiply*
+  commentId: Overload:AngeliA.Long4.op_Multiply
+  href: AngeliA.Long4.html#AngeliA_Long4_op_Multiply_System_Int64_AngeliA_Long4_
+  name: operator *
+  nameWithType: Long4.operator *
+  fullName: AngeliA.Long4.operator *
+  nameWithType.vb: Long4.*
+  fullName.vb: AngeliA.Long4.*
+  name.vb: '*'
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: AngeliA.Long4.op_Multiply*
+    name: '*'
+    href: AngeliA.Long4.html#AngeliA_Long4_op_Multiply_System_Int64_AngeliA_Long4_
+- uid: AngeliA.Long4.op_Equality*
+  commentId: Overload:AngeliA.Long4.op_Equality
+  href: AngeliA.Long4.html#AngeliA_Long4_op_Equality_AngeliA_Long4_AngeliA_Long4_
+  name: operator ==
+  nameWithType: Long4.operator ==
+  fullName: AngeliA.Long4.operator ==
+  nameWithType.vb: Long4.=
+  fullName.vb: AngeliA.Long4.=
+  name.vb: =
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: AngeliA.Long4.op_Equality*
+    name: ==
+    href: AngeliA.Long4.html#AngeliA_Long4_op_Equality_AngeliA_Long4_AngeliA_Long4_
+- uid: AngeliA.Long4.op_Inequality*
+  commentId: Overload:AngeliA.Long4.op_Inequality
+  href: AngeliA.Long4.html#AngeliA_Long4_op_Inequality_AngeliA_Long4_AngeliA_Long4_
+  name: operator !=
+  nameWithType: Long4.operator !=
+  fullName: AngeliA.Long4.operator !=
+  nameWithType.vb: Long4.<>
+  fullName.vb: AngeliA.Long4.<>
+  name.vb: <>
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: AngeliA.Long4.op_Inequality*
+    name: '!='
+    href: AngeliA.Long4.html#AngeliA_Long4_op_Inequality_AngeliA_Long4_AngeliA_Long4_
+- uid: AngeliA.Long4.op_Addition*
+  commentId: Overload:AngeliA.Long4.op_Addition
+  href: AngeliA.Long4.html#AngeliA_Long4_op_Addition_AngeliA_Long4_AngeliA_Long4_
+  name: operator +
+  nameWithType: Long4.operator +
+  fullName: AngeliA.Long4.operator +
+  nameWithType.vb: Long4.+
+  fullName.vb: AngeliA.Long4.+
+  name.vb: +
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: AngeliA.Long4.op_Addition*
+    name: +
+    href: AngeliA.Long4.html#AngeliA_Long4_op_Addition_AngeliA_Long4_AngeliA_Long4_
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Long4.Equals*
+  commentId: Overload:AngeliA.Long4.Equals
+  href: AngeliA.Long4.html#AngeliA_Long4_Equals_System_Object_
+  name: Equals
+  nameWithType: Long4.Equals
+  fullName: AngeliA.Long4.Equals
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.IEquatable{AngeliA.Long4}.Equals(AngeliA.Long4)
+  commentId: M:System.IEquatable{AngeliA.Long4}.Equals(AngeliA.Long4)
+  parent: System.IEquatable{AngeliA.Long4}
+  definition: System.IEquatable`1.Equals(`0)
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(Long4)
+  nameWithType: IEquatable<Long4>.Equals(Long4)
+  fullName: System.IEquatable<AngeliA.Long4>.Equals(AngeliA.Long4)
+  nameWithType.vb: IEquatable(Of Long4).Equals(Long4)
+  fullName.vb: System.IEquatable(Of AngeliA.Long4).Equals(AngeliA.Long4)
+  spec.csharp:
+  - uid: System.IEquatable{AngeliA.Long4}.Equals(AngeliA.Long4)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: AngeliA.Long4
+    name: Long4
+    href: AngeliA.Long4.html
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable{AngeliA.Long4}.Equals(AngeliA.Long4)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - uid: AngeliA.Long4
+    name: Long4
+    href: AngeliA.Long4.html
+  - name: )
+- uid: System.IEquatable`1.Equals(`0)
+  commentId: M:System.IEquatable`1.Equals(`0)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  name: Equals(T)
+  nameWithType: IEquatable<T>.Equals(T)
+  fullName: System.IEquatable<T>.Equals(T)
+  nameWithType.vb: IEquatable(Of T).Equals(T)
+  fullName.vb: System.IEquatable(Of T).Equals(T)
+  spec.csharp:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: System.IEquatable`1.Equals(`0)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1.equals
+  - name: (
+  - name: T
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: AngeliA.Long4.GetHashCode*
+  commentId: Overload:AngeliA.Long4.GetHashCode
+  href: AngeliA.Long4.html#AngeliA_Long4_GetHashCode
+  name: GetHashCode
+  nameWithType: Long4.GetHashCode
+  fullName: AngeliA.Long4.GetHashCode
+- uid: AngeliA.Long4.Contains*
+  commentId: Overload:AngeliA.Long4.Contains
+  href: AngeliA.Long4.html#AngeliA_Long4_Contains_System_Int64_
+  name: Contains
+  nameWithType: Long4.Contains
+  fullName: AngeliA.Long4.Contains
+- uid: AngeliA.Long4.Swap*
+  commentId: Overload:AngeliA.Long4.Swap
+  href: AngeliA.Long4.html#AngeliA_Long4_Swap_System_Int64_System_Int64_
+  name: Swap
+  nameWithType: Long4.Swap
+  fullName: AngeliA.Long4.Swap
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: AngeliA.Long4.ToString*
+  commentId: Overload:AngeliA.Long4.ToString
+  href: AngeliA.Long4.html#AngeliA_Long4_ToString
+  name: ToString
+  nameWithType: Long4.ToString
+  fullName: AngeliA.Long4.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.IFormattable.ToString(System.String,System.IFormatProvider)
+  commentId: M:System.IFormattable.ToString(System.String,System.IFormatProvider)
+  parent: System.IFormattable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iformattable.tostring
+  name: ToString(string, IFormatProvider)
+  nameWithType: IFormattable.ToString(string, IFormatProvider)
+  fullName: System.IFormattable.ToString(string, System.IFormatProvider)
+  nameWithType.vb: IFormattable.ToString(String, IFormatProvider)
+  fullName.vb: System.IFormattable.ToString(String, System.IFormatProvider)
+  name.vb: ToString(String, IFormatProvider)
+  spec.csharp:
+  - uid: System.IFormattable.ToString(System.String,System.IFormatProvider)
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iformattable.tostring
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.IFormatProvider
+    name: IFormatProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iformatprovider
+  - name: )
+  spec.vb:
+  - uid: System.IFormattable.ToString(System.String,System.IFormatProvider)
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iformattable.tostring
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.IFormatProvider
+    name: IFormatProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iformatprovider
+  - name: )
+- uid: System.IFormatProvider
+  commentId: T:System.IFormatProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iformatprovider
+  name: IFormatProvider
+  nameWithType: IFormatProvider
+  fullName: System.IFormatProvider

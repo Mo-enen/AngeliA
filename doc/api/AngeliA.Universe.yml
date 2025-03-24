@@ -1,0 +1,1494 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Universe
+  commentId: T:AngeliA.Universe
+  id: Universe
+  parent: AngeliA
+  children:
+  - AngeliA.Universe.BuiltIn
+  - AngeliA.Universe.BuiltInInfo
+  - AngeliA.Universe.BuiltInMapRoot
+  - AngeliA.Universe.BuiltInSheetPath
+  - AngeliA.Universe.CharacterMovementConfigRoot
+  - AngeliA.Universe.ConversationRoot
+  - AngeliA.Universe.CurrentSavingSlot
+  - AngeliA.Universe.FontRoot
+  - AngeliA.Universe.GameSheetPath
+  - AngeliA.Universe.Info
+  - AngeliA.Universe.InfoPath
+  - AngeliA.Universe.LanguageRoot
+  - AngeliA.Universe.LoadFromFile(System.String,System.Boolean)
+  - AngeliA.Universe.MusicRoot
+  - AngeliA.Universe.ReloadSavingSlot(System.Int32,System.Boolean)
+  - AngeliA.Universe.SavingRoot
+  - AngeliA.Universe.SetSavingRoot(System.String,System.Int32)
+  - AngeliA.Universe.SheetRoot
+  - AngeliA.Universe.SlotCharacterRenderingConfigRoot
+  - AngeliA.Universe.SlotInventoryRoot
+  - AngeliA.Universe.SlotMetaRoot
+  - AngeliA.Universe.SlotRoot
+  - AngeliA.Universe.SlotUserMapRoot
+  - AngeliA.Universe.SoundRoot
+  - AngeliA.Universe.UniverseMetaRoot
+  - AngeliA.Universe.UniverseRoot
+  langs:
+  - csharp
+  - vb
+  name: Universe
+  nameWithType: Universe
+  fullName: AngeliA.Universe
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Universe
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public class Universe
+    content.vb: Public Class Universe
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Universe.BuiltIn
+  commentId: P:AngeliA.Universe.BuiltIn
+  id: BuiltIn
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: BuiltIn
+  nameWithType: Universe.BuiltIn
+  fullName: AngeliA.Universe.BuiltIn
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BuiltIn
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Universe BuiltIn { get; }
+    parameters: []
+    return:
+      type: AngeliA.Universe
+    content.vb: Public Shared Property BuiltIn As Universe
+  overload: AngeliA.Universe.BuiltIn*
+- uid: AngeliA.Universe.BuiltInInfo
+  commentId: P:AngeliA.Universe.BuiltInInfo
+  id: BuiltInInfo
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: BuiltInInfo
+  nameWithType: Universe.BuiltInInfo
+  fullName: AngeliA.Universe.BuiltInInfo
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BuiltInInfo
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static UniverseInfo BuiltInInfo { get; }
+    parameters: []
+    return:
+      type: AngeliA.UniverseInfo
+    content.vb: Public Shared Property BuiltInInfo As UniverseInfo
+  overload: AngeliA.Universe.BuiltInInfo*
+- uid: AngeliA.Universe.UniverseRoot
+  commentId: P:AngeliA.Universe.UniverseRoot
+  id: UniverseRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: UniverseRoot
+  nameWithType: Universe.UniverseRoot
+  fullName: AngeliA.Universe.UniverseRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UniverseRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string UniverseRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property UniverseRoot As String
+  overload: AngeliA.Universe.UniverseRoot*
+- uid: AngeliA.Universe.SheetRoot
+  commentId: P:AngeliA.Universe.SheetRoot
+  id: SheetRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: SheetRoot
+  nameWithType: Universe.SheetRoot
+  fullName: AngeliA.Universe.SheetRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SheetRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string SheetRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SheetRoot As String
+  overload: AngeliA.Universe.SheetRoot*
+- uid: AngeliA.Universe.BuiltInSheetPath
+  commentId: P:AngeliA.Universe.BuiltInSheetPath
+  id: BuiltInSheetPath
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: BuiltInSheetPath
+  nameWithType: Universe.BuiltInSheetPath
+  fullName: AngeliA.Universe.BuiltInSheetPath
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BuiltInSheetPath
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string BuiltInSheetPath { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property BuiltInSheetPath As String
+  overload: AngeliA.Universe.BuiltInSheetPath*
+- uid: AngeliA.Universe.GameSheetPath
+  commentId: P:AngeliA.Universe.GameSheetPath
+  id: GameSheetPath
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: GameSheetPath
+  nameWithType: Universe.GameSheetPath
+  fullName: AngeliA.Universe.GameSheetPath
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GameSheetPath
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string GameSheetPath { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property GameSheetPath As String
+  overload: AngeliA.Universe.GameSheetPath*
+- uid: AngeliA.Universe.InfoPath
+  commentId: P:AngeliA.Universe.InfoPath
+  id: InfoPath
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: InfoPath
+  nameWithType: Universe.InfoPath
+  fullName: AngeliA.Universe.InfoPath
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InfoPath
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string InfoPath { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property InfoPath As String
+  overload: AngeliA.Universe.InfoPath*
+- uid: AngeliA.Universe.ConversationRoot
+  commentId: P:AngeliA.Universe.ConversationRoot
+  id: ConversationRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: ConversationRoot
+  nameWithType: Universe.ConversationRoot
+  fullName: AngeliA.Universe.ConversationRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ConversationRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string ConversationRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ConversationRoot As String
+  overload: AngeliA.Universe.ConversationRoot*
+- uid: AngeliA.Universe.UniverseMetaRoot
+  commentId: P:AngeliA.Universe.UniverseMetaRoot
+  id: UniverseMetaRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: UniverseMetaRoot
+  nameWithType: Universe.UniverseMetaRoot
+  fullName: AngeliA.Universe.UniverseMetaRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UniverseMetaRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string UniverseMetaRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property UniverseMetaRoot As String
+  overload: AngeliA.Universe.UniverseMetaRoot*
+- uid: AngeliA.Universe.BuiltInMapRoot
+  commentId: P:AngeliA.Universe.BuiltInMapRoot
+  id: BuiltInMapRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: BuiltInMapRoot
+  nameWithType: Universe.BuiltInMapRoot
+  fullName: AngeliA.Universe.BuiltInMapRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BuiltInMapRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string BuiltInMapRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property BuiltInMapRoot As String
+  overload: AngeliA.Universe.BuiltInMapRoot*
+- uid: AngeliA.Universe.LanguageRoot
+  commentId: P:AngeliA.Universe.LanguageRoot
+  id: LanguageRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: LanguageRoot
+  nameWithType: Universe.LanguageRoot
+  fullName: AngeliA.Universe.LanguageRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LanguageRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string LanguageRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LanguageRoot As String
+  overload: AngeliA.Universe.LanguageRoot*
+- uid: AngeliA.Universe.MusicRoot
+  commentId: P:AngeliA.Universe.MusicRoot
+  id: MusicRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: MusicRoot
+  nameWithType: Universe.MusicRoot
+  fullName: AngeliA.Universe.MusicRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MusicRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string MusicRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property MusicRoot As String
+  overload: AngeliA.Universe.MusicRoot*
+- uid: AngeliA.Universe.SoundRoot
+  commentId: P:AngeliA.Universe.SoundRoot
+  id: SoundRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: SoundRoot
+  nameWithType: Universe.SoundRoot
+  fullName: AngeliA.Universe.SoundRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SoundRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string SoundRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SoundRoot As String
+  overload: AngeliA.Universe.SoundRoot*
+- uid: AngeliA.Universe.FontRoot
+  commentId: P:AngeliA.Universe.FontRoot
+  id: FontRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: FontRoot
+  nameWithType: Universe.FontRoot
+  fullName: AngeliA.Universe.FontRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FontRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string FontRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property FontRoot As String
+  overload: AngeliA.Universe.FontRoot*
+- uid: AngeliA.Universe.CharacterMovementConfigRoot
+  commentId: P:AngeliA.Universe.CharacterMovementConfigRoot
+  id: CharacterMovementConfigRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: CharacterMovementConfigRoot
+  nameWithType: Universe.CharacterMovementConfigRoot
+  fullName: AngeliA.Universe.CharacterMovementConfigRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CharacterMovementConfigRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string CharacterMovementConfigRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property CharacterMovementConfigRoot As String
+  overload: AngeliA.Universe.CharacterMovementConfigRoot*
+- uid: AngeliA.Universe.Info
+  commentId: P:AngeliA.Universe.Info
+  id: Info
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: Info
+  nameWithType: Universe.Info
+  fullName: AngeliA.Universe.Info
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Info
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 25
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public UniverseInfo Info { get; }
+    parameters: []
+    return:
+      type: AngeliA.UniverseInfo
+    content.vb: Public Property Info As UniverseInfo
+  overload: AngeliA.Universe.Info*
+- uid: AngeliA.Universe.CurrentSavingSlot
+  commentId: P:AngeliA.Universe.CurrentSavingSlot
+  id: CurrentSavingSlot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: CurrentSavingSlot
+  nameWithType: Universe.CurrentSavingSlot
+  fullName: AngeliA.Universe.CurrentSavingSlot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CurrentSavingSlot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int CurrentSavingSlot { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CurrentSavingSlot As Integer
+  overload: AngeliA.Universe.CurrentSavingSlot*
+- uid: AngeliA.Universe.SavingRoot
+  commentId: P:AngeliA.Universe.SavingRoot
+  id: SavingRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: SavingRoot
+  nameWithType: Universe.SavingRoot
+  fullName: AngeliA.Universe.SavingRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SavingRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 29
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string SavingRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SavingRoot As String
+  overload: AngeliA.Universe.SavingRoot*
+- uid: AngeliA.Universe.SlotRoot
+  commentId: P:AngeliA.Universe.SlotRoot
+  id: SlotRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: SlotRoot
+  nameWithType: Universe.SlotRoot
+  fullName: AngeliA.Universe.SlotRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SlotRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string SlotRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SlotRoot As String
+  overload: AngeliA.Universe.SlotRoot*
+- uid: AngeliA.Universe.SlotMetaRoot
+  commentId: P:AngeliA.Universe.SlotMetaRoot
+  id: SlotMetaRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: SlotMetaRoot
+  nameWithType: Universe.SlotMetaRoot
+  fullName: AngeliA.Universe.SlotMetaRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SlotMetaRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 31
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string SlotMetaRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SlotMetaRoot As String
+  overload: AngeliA.Universe.SlotMetaRoot*
+- uid: AngeliA.Universe.SlotUserMapRoot
+  commentId: P:AngeliA.Universe.SlotUserMapRoot
+  id: SlotUserMapRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: SlotUserMapRoot
+  nameWithType: Universe.SlotUserMapRoot
+  fullName: AngeliA.Universe.SlotUserMapRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SlotUserMapRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 32
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string SlotUserMapRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SlotUserMapRoot As String
+  overload: AngeliA.Universe.SlotUserMapRoot*
+- uid: AngeliA.Universe.SlotCharacterRenderingConfigRoot
+  commentId: P:AngeliA.Universe.SlotCharacterRenderingConfigRoot
+  id: SlotCharacterRenderingConfigRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: SlotCharacterRenderingConfigRoot
+  nameWithType: Universe.SlotCharacterRenderingConfigRoot
+  fullName: AngeliA.Universe.SlotCharacterRenderingConfigRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SlotCharacterRenderingConfigRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string SlotCharacterRenderingConfigRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SlotCharacterRenderingConfigRoot As String
+  overload: AngeliA.Universe.SlotCharacterRenderingConfigRoot*
+- uid: AngeliA.Universe.SlotInventoryRoot
+  commentId: P:AngeliA.Universe.SlotInventoryRoot
+  id: SlotInventoryRoot
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: SlotInventoryRoot
+  nameWithType: Universe.SlotInventoryRoot
+  fullName: AngeliA.Universe.SlotInventoryRoot
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SlotInventoryRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 34
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string SlotInventoryRoot { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SlotInventoryRoot As String
+  overload: AngeliA.Universe.SlotInventoryRoot*
+- uid: AngeliA.Universe.LoadFromFile(System.String,System.Boolean)
+  commentId: M:AngeliA.Universe.LoadFromFile(System.String,System.Boolean)
+  id: LoadFromFile(System.String,System.Boolean)
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: LoadFromFile(string, bool)
+  nameWithType: Universe.LoadFromFile(string, bool)
+  fullName: AngeliA.Universe.LoadFromFile(string, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LoadFromFile
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 47
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Universe LoadFromFile(string universeFolder, bool useBuiltInSavingRoot = true)
+    parameters:
+    - id: universeFolder
+      type: System.String
+    - id: useBuiltInSavingRoot
+      type: System.Boolean
+    return:
+      type: AngeliA.Universe
+    content.vb: Public Shared Function LoadFromFile(universeFolder As String, useBuiltInSavingRoot As Boolean = True) As Universe
+  overload: AngeliA.Universe.LoadFromFile*
+  nameWithType.vb: Universe.LoadFromFile(String, Boolean)
+  fullName.vb: AngeliA.Universe.LoadFromFile(String, Boolean)
+  name.vb: LoadFromFile(String, Boolean)
+- uid: AngeliA.Universe.ReloadSavingSlot(System.Int32,System.Boolean)
+  commentId: M:AngeliA.Universe.ReloadSavingSlot(System.Int32,System.Boolean)
+  id: ReloadSavingSlot(System.Int32,System.Boolean)
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: ReloadSavingSlot(int, bool)
+  nameWithType: Universe.ReloadSavingSlot(int, bool)
+  fullName: AngeliA.Universe.ReloadSavingSlot(int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ReloadSavingSlot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 97
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void ReloadSavingSlot(int newSlot, bool forceReload = false)
+    parameters:
+    - id: newSlot
+      type: System.Int32
+    - id: forceReload
+      type: System.Boolean
+    content.vb: Public Sub ReloadSavingSlot(newSlot As Integer, forceReload As Boolean = False)
+  overload: AngeliA.Universe.ReloadSavingSlot*
+  nameWithType.vb: Universe.ReloadSavingSlot(Integer, Boolean)
+  fullName.vb: AngeliA.Universe.ReloadSavingSlot(Integer, Boolean)
+  name.vb: ReloadSavingSlot(Integer, Boolean)
+- uid: AngeliA.Universe.SetSavingRoot(System.String,System.Int32)
+  commentId: M:AngeliA.Universe.SetSavingRoot(System.String,System.Int32)
+  id: SetSavingRoot(System.String,System.Int32)
+  parent: AngeliA.Universe
+  langs:
+  - csharp
+  - vb
+  name: SetSavingRoot(string, int)
+  nameWithType: Universe.SetSavingRoot(string, int)
+  fullName: AngeliA.Universe.SetSavingRoot(string, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Universe.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetSavingRoot
+    path: ../AngeliA Framework/src/Common/Universe.cs
+    startLine: 106
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void SetSavingRoot(string newSavingRoot, int slot)
+    parameters:
+    - id: newSavingRoot
+      type: System.String
+    - id: slot
+      type: System.Int32
+    content.vb: Public Sub SetSavingRoot(newSavingRoot As String, slot As Integer)
+  overload: AngeliA.Universe.SetSavingRoot*
+  nameWithType.vb: Universe.SetSavingRoot(String, Integer)
+  fullName.vb: AngeliA.Universe.SetSavingRoot(String, Integer)
+  name.vb: SetSavingRoot(String, Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Universe.BuiltIn*
+  commentId: Overload:AngeliA.Universe.BuiltIn
+  href: AngeliA.Universe.html#AngeliA_Universe_BuiltIn
+  name: BuiltIn
+  nameWithType: Universe.BuiltIn
+  fullName: AngeliA.Universe.BuiltIn
+- uid: AngeliA.Universe
+  commentId: T:AngeliA.Universe
+  parent: AngeliA
+  href: AngeliA.Universe.html
+  name: Universe
+  nameWithType: Universe
+  fullName: AngeliA.Universe
+- uid: AngeliA.Universe.BuiltInInfo*
+  commentId: Overload:AngeliA.Universe.BuiltInInfo
+  href: AngeliA.Universe.html#AngeliA_Universe_BuiltInInfo
+  name: BuiltInInfo
+  nameWithType: Universe.BuiltInInfo
+  fullName: AngeliA.Universe.BuiltInInfo
+- uid: AngeliA.UniverseInfo
+  commentId: T:AngeliA.UniverseInfo
+  parent: AngeliA
+  href: AngeliA.UniverseInfo.html
+  name: UniverseInfo
+  nameWithType: UniverseInfo
+  fullName: AngeliA.UniverseInfo
+- uid: AngeliA.Universe.UniverseRoot*
+  commentId: Overload:AngeliA.Universe.UniverseRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_UniverseRoot
+  name: UniverseRoot
+  nameWithType: Universe.UniverseRoot
+  fullName: AngeliA.Universe.UniverseRoot
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.Universe.SheetRoot*
+  commentId: Overload:AngeliA.Universe.SheetRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_SheetRoot
+  name: SheetRoot
+  nameWithType: Universe.SheetRoot
+  fullName: AngeliA.Universe.SheetRoot
+- uid: AngeliA.Universe.BuiltInSheetPath*
+  commentId: Overload:AngeliA.Universe.BuiltInSheetPath
+  href: AngeliA.Universe.html#AngeliA_Universe_BuiltInSheetPath
+  name: BuiltInSheetPath
+  nameWithType: Universe.BuiltInSheetPath
+  fullName: AngeliA.Universe.BuiltInSheetPath
+- uid: AngeliA.Universe.GameSheetPath*
+  commentId: Overload:AngeliA.Universe.GameSheetPath
+  href: AngeliA.Universe.html#AngeliA_Universe_GameSheetPath
+  name: GameSheetPath
+  nameWithType: Universe.GameSheetPath
+  fullName: AngeliA.Universe.GameSheetPath
+- uid: AngeliA.Universe.InfoPath*
+  commentId: Overload:AngeliA.Universe.InfoPath
+  href: AngeliA.Universe.html#AngeliA_Universe_InfoPath
+  name: InfoPath
+  nameWithType: Universe.InfoPath
+  fullName: AngeliA.Universe.InfoPath
+- uid: AngeliA.Universe.ConversationRoot*
+  commentId: Overload:AngeliA.Universe.ConversationRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_ConversationRoot
+  name: ConversationRoot
+  nameWithType: Universe.ConversationRoot
+  fullName: AngeliA.Universe.ConversationRoot
+- uid: AngeliA.Universe.UniverseMetaRoot*
+  commentId: Overload:AngeliA.Universe.UniverseMetaRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_UniverseMetaRoot
+  name: UniverseMetaRoot
+  nameWithType: Universe.UniverseMetaRoot
+  fullName: AngeliA.Universe.UniverseMetaRoot
+- uid: AngeliA.Universe.BuiltInMapRoot*
+  commentId: Overload:AngeliA.Universe.BuiltInMapRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_BuiltInMapRoot
+  name: BuiltInMapRoot
+  nameWithType: Universe.BuiltInMapRoot
+  fullName: AngeliA.Universe.BuiltInMapRoot
+- uid: AngeliA.Universe.LanguageRoot*
+  commentId: Overload:AngeliA.Universe.LanguageRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_LanguageRoot
+  name: LanguageRoot
+  nameWithType: Universe.LanguageRoot
+  fullName: AngeliA.Universe.LanguageRoot
+- uid: AngeliA.Universe.MusicRoot*
+  commentId: Overload:AngeliA.Universe.MusicRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_MusicRoot
+  name: MusicRoot
+  nameWithType: Universe.MusicRoot
+  fullName: AngeliA.Universe.MusicRoot
+- uid: AngeliA.Universe.SoundRoot*
+  commentId: Overload:AngeliA.Universe.SoundRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_SoundRoot
+  name: SoundRoot
+  nameWithType: Universe.SoundRoot
+  fullName: AngeliA.Universe.SoundRoot
+- uid: AngeliA.Universe.FontRoot*
+  commentId: Overload:AngeliA.Universe.FontRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_FontRoot
+  name: FontRoot
+  nameWithType: Universe.FontRoot
+  fullName: AngeliA.Universe.FontRoot
+- uid: AngeliA.Universe.CharacterMovementConfigRoot*
+  commentId: Overload:AngeliA.Universe.CharacterMovementConfigRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_CharacterMovementConfigRoot
+  name: CharacterMovementConfigRoot
+  nameWithType: Universe.CharacterMovementConfigRoot
+  fullName: AngeliA.Universe.CharacterMovementConfigRoot
+- uid: AngeliA.Universe.Info*
+  commentId: Overload:AngeliA.Universe.Info
+  href: AngeliA.Universe.html#AngeliA_Universe_Info
+  name: Info
+  nameWithType: Universe.Info
+  fullName: AngeliA.Universe.Info
+- uid: AngeliA.Universe.CurrentSavingSlot*
+  commentId: Overload:AngeliA.Universe.CurrentSavingSlot
+  href: AngeliA.Universe.html#AngeliA_Universe_CurrentSavingSlot
+  name: CurrentSavingSlot
+  nameWithType: Universe.CurrentSavingSlot
+  fullName: AngeliA.Universe.CurrentSavingSlot
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Universe.SavingRoot*
+  commentId: Overload:AngeliA.Universe.SavingRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_SavingRoot
+  name: SavingRoot
+  nameWithType: Universe.SavingRoot
+  fullName: AngeliA.Universe.SavingRoot
+- uid: AngeliA.Universe.SlotRoot*
+  commentId: Overload:AngeliA.Universe.SlotRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_SlotRoot
+  name: SlotRoot
+  nameWithType: Universe.SlotRoot
+  fullName: AngeliA.Universe.SlotRoot
+- uid: AngeliA.Universe.SlotMetaRoot*
+  commentId: Overload:AngeliA.Universe.SlotMetaRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_SlotMetaRoot
+  name: SlotMetaRoot
+  nameWithType: Universe.SlotMetaRoot
+  fullName: AngeliA.Universe.SlotMetaRoot
+- uid: AngeliA.Universe.SlotUserMapRoot*
+  commentId: Overload:AngeliA.Universe.SlotUserMapRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_SlotUserMapRoot
+  name: SlotUserMapRoot
+  nameWithType: Universe.SlotUserMapRoot
+  fullName: AngeliA.Universe.SlotUserMapRoot
+- uid: AngeliA.Universe.SlotCharacterRenderingConfigRoot*
+  commentId: Overload:AngeliA.Universe.SlotCharacterRenderingConfigRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_SlotCharacterRenderingConfigRoot
+  name: SlotCharacterRenderingConfigRoot
+  nameWithType: Universe.SlotCharacterRenderingConfigRoot
+  fullName: AngeliA.Universe.SlotCharacterRenderingConfigRoot
+- uid: AngeliA.Universe.SlotInventoryRoot*
+  commentId: Overload:AngeliA.Universe.SlotInventoryRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_SlotInventoryRoot
+  name: SlotInventoryRoot
+  nameWithType: Universe.SlotInventoryRoot
+  fullName: AngeliA.Universe.SlotInventoryRoot
+- uid: AngeliA.Universe.LoadFromFile*
+  commentId: Overload:AngeliA.Universe.LoadFromFile
+  href: AngeliA.Universe.html#AngeliA_Universe_LoadFromFile_System_String_System_Boolean_
+  name: LoadFromFile
+  nameWithType: Universe.LoadFromFile
+  fullName: AngeliA.Universe.LoadFromFile
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Universe.ReloadSavingSlot*
+  commentId: Overload:AngeliA.Universe.ReloadSavingSlot
+  href: AngeliA.Universe.html#AngeliA_Universe_ReloadSavingSlot_System_Int32_System_Boolean_
+  name: ReloadSavingSlot
+  nameWithType: Universe.ReloadSavingSlot
+  fullName: AngeliA.Universe.ReloadSavingSlot
+- uid: AngeliA.Universe.SetSavingRoot*
+  commentId: Overload:AngeliA.Universe.SetSavingRoot
+  href: AngeliA.Universe.html#AngeliA_Universe_SetSavingRoot_System_String_System_Int32_
+  name: SetSavingRoot
+  nameWithType: Universe.SetSavingRoot
+  fullName: AngeliA.Universe.SetSavingRoot

@@ -1,0 +1,2608 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Platformer.PickTool
+  commentId: T:AngeliA.Platformer.PickTool
+  id: PickTool
+  parent: AngeliA.Platformer
+  children:
+  - AngeliA.Platformer.PickTool.AllowPickBackgroundBlock
+  - AngeliA.Platformer.PickTool.AllowPickBlockEntity
+  - AngeliA.Platformer.PickTool.AllowPickLevelBlock
+  - AngeliA.Platformer.PickTool.AvailableWhenSliding
+  - AngeliA.Platformer.PickTool.AvailableWhenSquatting
+  - AngeliA.Platformer.PickTool.AvailableWhenWalking
+  - AngeliA.Platformer.PickTool.DefaultMovementSpeedRateOnUse
+  - AngeliA.Platformer.PickTool.DrawPickTargetHighlight(System.Int32,System.Int32,System.Boolean)
+  - AngeliA.Platformer.PickTool.DropItemAfterPicked
+  - AngeliA.Platformer.PickTool.Duration
+  - AngeliA.Platformer.PickTool.MaxStackCount
+  - AngeliA.Platformer.PickTool.MouseUnitRange
+  - AngeliA.Platformer.PickTool.OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  - AngeliA.Platformer.PickTool.OnToolPerform(AngeliA.Character)
+  - AngeliA.Platformer.PickTool.PerformDelayRate
+  - AngeliA.Platformer.PickTool.RunningMovementSpeedRateOnUse
+  - AngeliA.Platformer.PickTool.UseMouseToPick
+  - AngeliA.Platformer.PickTool.UseStackAsUsage
+  - AngeliA.Platformer.PickTool.WalkingMovementSpeedRateOnUse
+  langs:
+  - csharp
+  - vb
+  name: PickTool
+  nameWithType: PickTool
+  fullName: AngeliA.Platformer.PickTool
+  type: Class
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PickTool
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 6
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: 'public abstract class PickTool : HandTool, IMapItem'
+    content.vb: Public MustInherit Class PickTool Inherits HandTool Implements IMapItem
+  inheritance:
+  - System.Object
+  - AngeliA.Item
+  - AngeliA.Equipment
+  - AngeliA.HandTool
+  implements:
+  - AngeliA.IMapItem
+  inheritedMembers:
+  - AngeliA.HandTool.SpriteID
+  - AngeliA.HandTool.EquipmentType
+  - AngeliA.HandTool.PerformDelayFrame
+  - AngeliA.HandTool.TypeName
+  - AngeliA.HandTool.Cooldown
+  - AngeliA.HandTool.HoldPunish
+  - AngeliA.HandTool.ChargeDuration
+  - AngeliA.HandTool.RepeatWhenHolding
+  - AngeliA.HandTool.CancelUseWhenRelease
+  - AngeliA.HandTool.LockFacingOnUse
+  - AngeliA.HandTool.IgnoreGrabTwist
+  - AngeliA.HandTool.AvailableInAir
+  - AngeliA.HandTool.AvailableInWater
+  - AngeliA.HandTool.AvailableWhenRunning
+  - AngeliA.HandTool.AvailableWhenClimbing
+  - AngeliA.HandTool.AvailableWhenFlying
+  - AngeliA.HandTool.AvailableWhenRolling
+  - AngeliA.HandTool.AvailableWhenDashing
+  - AngeliA.HandTool.AvailableWhenGrabbing
+  - AngeliA.HandTool.AvailableWhenRushing
+  - AngeliA.HandTool.AvailableWhenPounding
+  - AngeliA.HandTool.LoadFromSheet
+  - AngeliA.HandTool.OnToolSpriteRendered(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.AngeSprite,System.Int32)
+  - AngeliA.HandTool.AllowingUse(AngeliA.Character)
+  - AngeliA.HandTool.GetHandheldPoseAnimationID(AngeliA.Character)
+  - AngeliA.HandTool.GetPerformPoseAnimationID(AngeliA.Character)
+  - AngeliA.Item.AllowDuplicateUpdate
+  - AngeliA.Item.EmbedIntoLevel
+  - AngeliA.Item.TypeID
+  - AngeliA.Item.BeforeItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)
+  - AngeliA.Item.OnItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)
+  - AngeliA.Item.OnPoseAnimationUpdate_FromInventory(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32)
+  - AngeliA.Item.OnTakeDamage_FromInventory(AngeliA.Character,System.Int32,System.Int32,AngeliA.Damage@)
+  - AngeliA.Item.OnCharacterAttack_FromInventory(AngeliA.Character,AngeliA.Bullet,System.Int32,System.Int32)
+  - AngeliA.Item.BeforeItemUpdate_FromEquipment(AngeliA.Character)
+  - AngeliA.Item.OnItemUpdate_FromEquipment(AngeliA.Character)
+  - AngeliA.Item.BeforePoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  - AngeliA.Item.OnTakeDamage_FromEquipment(AngeliA.Character,AngeliA.Damage@)
+  - AngeliA.Item.OnCharacterAttack_FromEquipment(AngeliA.Character,AngeliA.Bullet)
+  - AngeliA.Item.TryRepairEquipment(AngeliA.Character)
+  - AngeliA.Item.OnItemUpdate_FromItemHolder(AngeliA.ItemHolder,System.Int32)
+  - AngeliA.Item.OnCollect(AngeliA.Character)
+  - AngeliA.Item.CanUse(AngeliA.Character)
+  - AngeliA.Item.Use(AngeliA.Character,System.Int32,System.Int32,System.Boolean@)
+  - AngeliA.Item.ItemConditionCheck(AngeliA.Character)
+  - AngeliA.Item.DrawItem(AngeliA.Entity,AngeliA.IRect,AngeliA.Color32,System.Int32)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Platformer.PickTool.AvailableWhenSquatting
+  commentId: P:AngeliA.Platformer.PickTool.AvailableWhenSquatting
+  id: AvailableWhenSquatting
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: AvailableWhenSquatting
+  nameWithType: PickTool.AvailableWhenSquatting
+  fullName: AngeliA.Platformer.PickTool.AvailableWhenSquatting
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AvailableWhenSquatting
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 10
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override bool AvailableWhenSquatting { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides ReadOnly Property AvailableWhenSquatting As Boolean
+  overridden: AngeliA.HandTool.AvailableWhenSquatting
+  overload: AngeliA.Platformer.PickTool.AvailableWhenSquatting*
+- uid: AngeliA.Platformer.PickTool.AvailableWhenWalking
+  commentId: P:AngeliA.Platformer.PickTool.AvailableWhenWalking
+  id: AvailableWhenWalking
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: AvailableWhenWalking
+  nameWithType: PickTool.AvailableWhenWalking
+  fullName: AngeliA.Platformer.PickTool.AvailableWhenWalking
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AvailableWhenWalking
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 11
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override bool AvailableWhenWalking { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides ReadOnly Property AvailableWhenWalking As Boolean
+  overridden: AngeliA.HandTool.AvailableWhenWalking
+  overload: AngeliA.Platformer.PickTool.AvailableWhenWalking*
+- uid: AngeliA.Platformer.PickTool.AvailableWhenSliding
+  commentId: P:AngeliA.Platformer.PickTool.AvailableWhenSliding
+  id: AvailableWhenSliding
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: AvailableWhenSliding
+  nameWithType: PickTool.AvailableWhenSliding
+  fullName: AngeliA.Platformer.PickTool.AvailableWhenSliding
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AvailableWhenSliding
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 12
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override bool AvailableWhenSliding { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides ReadOnly Property AvailableWhenSliding As Boolean
+  overridden: AngeliA.HandTool.AvailableWhenSliding
+  overload: AngeliA.Platformer.PickTool.AvailableWhenSliding*
+- uid: AngeliA.Platformer.PickTool.DefaultMovementSpeedRateOnUse
+  commentId: P:AngeliA.Platformer.PickTool.DefaultMovementSpeedRateOnUse
+  id: DefaultMovementSpeedRateOnUse
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: DefaultMovementSpeedRateOnUse
+  nameWithType: PickTool.DefaultMovementSpeedRateOnUse
+  fullName: AngeliA.Platformer.PickTool.DefaultMovementSpeedRateOnUse
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DefaultMovementSpeedRateOnUse
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 13
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override int? DefaultMovementSpeedRateOnUse { get; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: Public Overrides ReadOnly Property DefaultMovementSpeedRateOnUse As Integer?
+  overridden: AngeliA.HandTool.DefaultMovementSpeedRateOnUse
+  overload: AngeliA.Platformer.PickTool.DefaultMovementSpeedRateOnUse*
+- uid: AngeliA.Platformer.PickTool.RunningMovementSpeedRateOnUse
+  commentId: P:AngeliA.Platformer.PickTool.RunningMovementSpeedRateOnUse
+  id: RunningMovementSpeedRateOnUse
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: RunningMovementSpeedRateOnUse
+  nameWithType: PickTool.RunningMovementSpeedRateOnUse
+  fullName: AngeliA.Platformer.PickTool.RunningMovementSpeedRateOnUse
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RunningMovementSpeedRateOnUse
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 14
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override int? RunningMovementSpeedRateOnUse { get; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: Public Overrides ReadOnly Property RunningMovementSpeedRateOnUse As Integer?
+  overridden: AngeliA.HandTool.RunningMovementSpeedRateOnUse
+  overload: AngeliA.Platformer.PickTool.RunningMovementSpeedRateOnUse*
+- uid: AngeliA.Platformer.PickTool.WalkingMovementSpeedRateOnUse
+  commentId: P:AngeliA.Platformer.PickTool.WalkingMovementSpeedRateOnUse
+  id: WalkingMovementSpeedRateOnUse
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: WalkingMovementSpeedRateOnUse
+  nameWithType: PickTool.WalkingMovementSpeedRateOnUse
+  fullName: AngeliA.Platformer.PickTool.WalkingMovementSpeedRateOnUse
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: WalkingMovementSpeedRateOnUse
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 15
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override int? WalkingMovementSpeedRateOnUse { get; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Int32}
+    content.vb: Public Overrides ReadOnly Property WalkingMovementSpeedRateOnUse As Integer?
+  overridden: AngeliA.HandTool.WalkingMovementSpeedRateOnUse
+  overload: AngeliA.Platformer.PickTool.WalkingMovementSpeedRateOnUse*
+- uid: AngeliA.Platformer.PickTool.AllowPickLevelBlock
+  commentId: P:AngeliA.Platformer.PickTool.AllowPickLevelBlock
+  id: AllowPickLevelBlock
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: AllowPickLevelBlock
+  nameWithType: PickTool.AllowPickLevelBlock
+  fullName: AngeliA.Platformer.PickTool.AllowPickLevelBlock
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllowPickLevelBlock
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 16
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual bool AllowPickLevelBlock { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable ReadOnly Property AllowPickLevelBlock As Boolean
+  overload: AngeliA.Platformer.PickTool.AllowPickLevelBlock*
+- uid: AngeliA.Platformer.PickTool.AllowPickBackgroundBlock
+  commentId: P:AngeliA.Platformer.PickTool.AllowPickBackgroundBlock
+  id: AllowPickBackgroundBlock
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: AllowPickBackgroundBlock
+  nameWithType: PickTool.AllowPickBackgroundBlock
+  fullName: AngeliA.Platformer.PickTool.AllowPickBackgroundBlock
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllowPickBackgroundBlock
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 17
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual bool AllowPickBackgroundBlock { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable ReadOnly Property AllowPickBackgroundBlock As Boolean
+  overload: AngeliA.Platformer.PickTool.AllowPickBackgroundBlock*
+- uid: AngeliA.Platformer.PickTool.AllowPickBlockEntity
+  commentId: P:AngeliA.Platformer.PickTool.AllowPickBlockEntity
+  id: AllowPickBlockEntity
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: AllowPickBlockEntity
+  nameWithType: PickTool.AllowPickBlockEntity
+  fullName: AngeliA.Platformer.PickTool.AllowPickBlockEntity
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllowPickBlockEntity
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 18
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual bool AllowPickBlockEntity { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable ReadOnly Property AllowPickBlockEntity As Boolean
+  overload: AngeliA.Platformer.PickTool.AllowPickBlockEntity*
+- uid: AngeliA.Platformer.PickTool.DropItemAfterPicked
+  commentId: P:AngeliA.Platformer.PickTool.DropItemAfterPicked
+  id: DropItemAfterPicked
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: DropItemAfterPicked
+  nameWithType: PickTool.DropItemAfterPicked
+  fullName: AngeliA.Platformer.PickTool.DropItemAfterPicked
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DropItemAfterPicked
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 19
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual bool DropItemAfterPicked { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable ReadOnly Property DropItemAfterPicked As Boolean
+  overload: AngeliA.Platformer.PickTool.DropItemAfterPicked*
+- uid: AngeliA.Platformer.PickTool.UseMouseToPick
+  commentId: P:AngeliA.Platformer.PickTool.UseMouseToPick
+  id: UseMouseToPick
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: UseMouseToPick
+  nameWithType: PickTool.UseMouseToPick
+  fullName: AngeliA.Platformer.PickTool.UseMouseToPick
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseMouseToPick
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 20
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual bool UseMouseToPick { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable ReadOnly Property UseMouseToPick As Boolean
+  overload: AngeliA.Platformer.PickTool.UseMouseToPick*
+- uid: AngeliA.Platformer.PickTool.MouseUnitRange
+  commentId: P:AngeliA.Platformer.PickTool.MouseUnitRange
+  id: MouseUnitRange
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: MouseUnitRange
+  nameWithType: PickTool.MouseUnitRange
+  fullName: AngeliA.Platformer.PickTool.MouseUnitRange
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MouseUnitRange
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 21
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: public virtual int MouseUnitRange { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overridable ReadOnly Property MouseUnitRange As Integer
+  overload: AngeliA.Platformer.PickTool.MouseUnitRange*
+- uid: AngeliA.Platformer.PickTool.UseStackAsUsage
+  commentId: P:AngeliA.Platformer.PickTool.UseStackAsUsage
+  id: UseStackAsUsage
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: UseStackAsUsage
+  nameWithType: PickTool.UseStackAsUsage
+  fullName: AngeliA.Platformer.PickTool.UseStackAsUsage
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UseStackAsUsage
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 22
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override bool UseStackAsUsage { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides ReadOnly Property UseStackAsUsage As Boolean
+  overridden: AngeliA.HandTool.UseStackAsUsage
+  overload: AngeliA.Platformer.PickTool.UseStackAsUsage*
+- uid: AngeliA.Platformer.PickTool.MaxStackCount
+  commentId: P:AngeliA.Platformer.PickTool.MaxStackCount
+  id: MaxStackCount
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: MaxStackCount
+  nameWithType: PickTool.MaxStackCount
+  fullName: AngeliA.Platformer.PickTool.MaxStackCount
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MaxStackCount
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 23
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override int MaxStackCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overrides ReadOnly Property MaxStackCount As Integer
+  overridden: AngeliA.Equipment.MaxStackCount
+  overload: AngeliA.Platformer.PickTool.MaxStackCount*
+- uid: AngeliA.Platformer.PickTool.PerformDelayRate
+  commentId: P:AngeliA.Platformer.PickTool.PerformDelayRate
+  id: PerformDelayRate
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: PerformDelayRate
+  nameWithType: PickTool.PerformDelayRate
+  fullName: AngeliA.Platformer.PickTool.PerformDelayRate
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PerformDelayRate
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 24
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override int PerformDelayRate { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overrides ReadOnly Property PerformDelayRate As Integer
+  overridden: AngeliA.HandTool.PerformDelayRate
+  overload: AngeliA.Platformer.PickTool.PerformDelayRate*
+- uid: AngeliA.Platformer.PickTool.Duration
+  commentId: P:AngeliA.Platformer.PickTool.Duration
+  id: Duration
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: Duration
+  nameWithType: PickTool.Duration
+  fullName: AngeliA.Platformer.PickTool.Duration
+  type: Property
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Duration
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 25
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override int Duration { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overrides ReadOnly Property Duration As Integer
+  overridden: AngeliA.HandTool.Duration
+  overload: AngeliA.Platformer.PickTool.Duration*
+- uid: AngeliA.Platformer.PickTool.OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  commentId: M:AngeliA.Platformer.PickTool.OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  id: OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: OnPoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)
+  nameWithType: PickTool.OnPoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)
+  fullName: AngeliA.Platformer.PickTool.OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnPoseAnimationUpdate_FromEquipment
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 28
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void OnPoseAnimationUpdate_FromEquipment(PoseCharacterRenderer rendering)
+    parameters:
+    - id: rendering
+      type: AngeliA.PoseCharacterRenderer
+    content.vb: Public Overrides Sub OnPoseAnimationUpdate_FromEquipment(rendering As PoseCharacterRenderer)
+  overridden: AngeliA.Item.OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  overload: AngeliA.Platformer.PickTool.OnPoseAnimationUpdate_FromEquipment*
+- uid: AngeliA.Platformer.PickTool.DrawPickTargetHighlight(System.Int32,System.Int32,System.Boolean)
+  commentId: M:AngeliA.Platformer.PickTool.DrawPickTargetHighlight(System.Int32,System.Int32,System.Boolean)
+  id: DrawPickTargetHighlight(System.Int32,System.Int32,System.Boolean)
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: DrawPickTargetHighlight(int, int, bool)
+  nameWithType: PickTool.DrawPickTargetHighlight(int, int, bool)
+  fullName: AngeliA.Platformer.PickTool.DrawPickTargetHighlight(int, int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawPickTargetHighlight
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 82
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  syntax:
+    content: protected virtual void DrawPickTargetHighlight(int unitX, int unitY, bool hasTarget)
+    parameters:
+    - id: unitX
+      type: System.Int32
+    - id: unitY
+      type: System.Int32
+    - id: hasTarget
+      type: System.Boolean
+    content.vb: Protected Overridable Sub DrawPickTargetHighlight(unitX As Integer, unitY As Integer, hasTarget As Boolean)
+  overload: AngeliA.Platformer.PickTool.DrawPickTargetHighlight*
+  nameWithType.vb: PickTool.DrawPickTargetHighlight(Integer, Integer, Boolean)
+  fullName.vb: AngeliA.Platformer.PickTool.DrawPickTargetHighlight(Integer, Integer, Boolean)
+  name.vb: DrawPickTargetHighlight(Integer, Integer, Boolean)
+- uid: AngeliA.Platformer.PickTool.OnToolPerform(AngeliA.Character)
+  commentId: M:AngeliA.Platformer.PickTool.OnToolPerform(AngeliA.Character)
+  id: OnToolPerform(AngeliA.Character)
+  parent: AngeliA.Platformer.PickTool
+  langs:
+  - csharp
+  - vb
+  name: OnToolPerform(Character)
+  nameWithType: PickTool.OnToolPerform(Character)
+  fullName: AngeliA.Platformer.PickTool.OnToolPerform(AngeliA.Character)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Platformer/src/Item/PickTool.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnToolPerform
+    path: ../AngeliA Platformer/src/Item/PickTool.cs
+    startLine: 93
+  assemblies:
+  - com.angelia.platformer
+  namespace: AngeliA.Platformer
+  example: []
+  syntax:
+    content: public override void OnToolPerform(Character sender)
+    parameters:
+    - id: sender
+      type: AngeliA.Character
+    content.vb: Public Overrides Sub OnToolPerform(sender As Character)
+  overridden: AngeliA.HandTool.OnToolPerform(AngeliA.Character)
+  overload: AngeliA.Platformer.PickTool.OnToolPerform*
+references:
+- uid: AngeliA.Platformer
+  commentId: N:AngeliA.Platformer
+  href: AngeliA.html
+  name: AngeliA.Platformer
+  nameWithType: AngeliA.Platformer
+  fullName: AngeliA.Platformer
+  spec.csharp:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+  spec.vb:
+  - uid: AngeliA
+    name: AngeliA
+    href: AngeliA.html
+  - name: .
+  - uid: AngeliA.Platformer
+    name: Platformer
+    href: AngeliA.Platformer.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.Item
+  commentId: T:AngeliA.Item
+  parent: AngeliA
+  href: AngeliA.Item.html
+  name: Item
+  nameWithType: Item
+  fullName: AngeliA.Item
+- uid: AngeliA.Equipment
+  commentId: T:AngeliA.Equipment
+  parent: AngeliA
+  href: AngeliA.Equipment.html
+  name: Equipment
+  nameWithType: Equipment
+  fullName: AngeliA.Equipment
+- uid: AngeliA.HandTool
+  commentId: T:AngeliA.HandTool
+  parent: AngeliA
+  href: AngeliA.HandTool.html
+  name: HandTool
+  nameWithType: HandTool
+  fullName: AngeliA.HandTool
+- uid: AngeliA.IMapItem
+  commentId: T:AngeliA.IMapItem
+  parent: AngeliA
+  href: AngeliA.IMapItem.html
+  name: IMapItem
+  nameWithType: IMapItem
+  fullName: AngeliA.IMapItem
+- uid: AngeliA.HandTool.SpriteID
+  commentId: P:AngeliA.HandTool.SpriteID
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_SpriteID
+  name: SpriteID
+  nameWithType: HandTool.SpriteID
+  fullName: AngeliA.HandTool.SpriteID
+- uid: AngeliA.HandTool.EquipmentType
+  commentId: P:AngeliA.HandTool.EquipmentType
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_EquipmentType
+  name: EquipmentType
+  nameWithType: HandTool.EquipmentType
+  fullName: AngeliA.HandTool.EquipmentType
+- uid: AngeliA.HandTool.PerformDelayFrame
+  commentId: P:AngeliA.HandTool.PerformDelayFrame
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_PerformDelayFrame
+  name: PerformDelayFrame
+  nameWithType: HandTool.PerformDelayFrame
+  fullName: AngeliA.HandTool.PerformDelayFrame
+- uid: AngeliA.HandTool.TypeName
+  commentId: P:AngeliA.HandTool.TypeName
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_TypeName
+  name: TypeName
+  nameWithType: HandTool.TypeName
+  fullName: AngeliA.HandTool.TypeName
+- uid: AngeliA.HandTool.Cooldown
+  commentId: P:AngeliA.HandTool.Cooldown
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_Cooldown
+  name: Cooldown
+  nameWithType: HandTool.Cooldown
+  fullName: AngeliA.HandTool.Cooldown
+- uid: AngeliA.HandTool.HoldPunish
+  commentId: P:AngeliA.HandTool.HoldPunish
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_HoldPunish
+  name: HoldPunish
+  nameWithType: HandTool.HoldPunish
+  fullName: AngeliA.HandTool.HoldPunish
+- uid: AngeliA.HandTool.ChargeDuration
+  commentId: P:AngeliA.HandTool.ChargeDuration
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_ChargeDuration
+  name: ChargeDuration
+  nameWithType: HandTool.ChargeDuration
+  fullName: AngeliA.HandTool.ChargeDuration
+- uid: AngeliA.HandTool.RepeatWhenHolding
+  commentId: P:AngeliA.HandTool.RepeatWhenHolding
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_RepeatWhenHolding
+  name: RepeatWhenHolding
+  nameWithType: HandTool.RepeatWhenHolding
+  fullName: AngeliA.HandTool.RepeatWhenHolding
+- uid: AngeliA.HandTool.CancelUseWhenRelease
+  commentId: P:AngeliA.HandTool.CancelUseWhenRelease
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_CancelUseWhenRelease
+  name: CancelUseWhenRelease
+  nameWithType: HandTool.CancelUseWhenRelease
+  fullName: AngeliA.HandTool.CancelUseWhenRelease
+- uid: AngeliA.HandTool.LockFacingOnUse
+  commentId: P:AngeliA.HandTool.LockFacingOnUse
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_LockFacingOnUse
+  name: LockFacingOnUse
+  nameWithType: HandTool.LockFacingOnUse
+  fullName: AngeliA.HandTool.LockFacingOnUse
+- uid: AngeliA.HandTool.IgnoreGrabTwist
+  commentId: P:AngeliA.HandTool.IgnoreGrabTwist
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_IgnoreGrabTwist
+  name: IgnoreGrabTwist
+  nameWithType: HandTool.IgnoreGrabTwist
+  fullName: AngeliA.HandTool.IgnoreGrabTwist
+- uid: AngeliA.HandTool.AvailableInAir
+  commentId: P:AngeliA.HandTool.AvailableInAir
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableInAir
+  name: AvailableInAir
+  nameWithType: HandTool.AvailableInAir
+  fullName: AngeliA.HandTool.AvailableInAir
+- uid: AngeliA.HandTool.AvailableInWater
+  commentId: P:AngeliA.HandTool.AvailableInWater
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableInWater
+  name: AvailableInWater
+  nameWithType: HandTool.AvailableInWater
+  fullName: AngeliA.HandTool.AvailableInWater
+- uid: AngeliA.HandTool.AvailableWhenRunning
+  commentId: P:AngeliA.HandTool.AvailableWhenRunning
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenRunning
+  name: AvailableWhenRunning
+  nameWithType: HandTool.AvailableWhenRunning
+  fullName: AngeliA.HandTool.AvailableWhenRunning
+- uid: AngeliA.HandTool.AvailableWhenClimbing
+  commentId: P:AngeliA.HandTool.AvailableWhenClimbing
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenClimbing
+  name: AvailableWhenClimbing
+  nameWithType: HandTool.AvailableWhenClimbing
+  fullName: AngeliA.HandTool.AvailableWhenClimbing
+- uid: AngeliA.HandTool.AvailableWhenFlying
+  commentId: P:AngeliA.HandTool.AvailableWhenFlying
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenFlying
+  name: AvailableWhenFlying
+  nameWithType: HandTool.AvailableWhenFlying
+  fullName: AngeliA.HandTool.AvailableWhenFlying
+- uid: AngeliA.HandTool.AvailableWhenRolling
+  commentId: P:AngeliA.HandTool.AvailableWhenRolling
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenRolling
+  name: AvailableWhenRolling
+  nameWithType: HandTool.AvailableWhenRolling
+  fullName: AngeliA.HandTool.AvailableWhenRolling
+- uid: AngeliA.HandTool.AvailableWhenDashing
+  commentId: P:AngeliA.HandTool.AvailableWhenDashing
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenDashing
+  name: AvailableWhenDashing
+  nameWithType: HandTool.AvailableWhenDashing
+  fullName: AngeliA.HandTool.AvailableWhenDashing
+- uid: AngeliA.HandTool.AvailableWhenGrabbing
+  commentId: P:AngeliA.HandTool.AvailableWhenGrabbing
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenGrabbing
+  name: AvailableWhenGrabbing
+  nameWithType: HandTool.AvailableWhenGrabbing
+  fullName: AngeliA.HandTool.AvailableWhenGrabbing
+- uid: AngeliA.HandTool.AvailableWhenRushing
+  commentId: P:AngeliA.HandTool.AvailableWhenRushing
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenRushing
+  name: AvailableWhenRushing
+  nameWithType: HandTool.AvailableWhenRushing
+  fullName: AngeliA.HandTool.AvailableWhenRushing
+- uid: AngeliA.HandTool.AvailableWhenPounding
+  commentId: P:AngeliA.HandTool.AvailableWhenPounding
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenPounding
+  name: AvailableWhenPounding
+  nameWithType: HandTool.AvailableWhenPounding
+  fullName: AngeliA.HandTool.AvailableWhenPounding
+- uid: AngeliA.HandTool.LoadFromSheet
+  commentId: M:AngeliA.HandTool.LoadFromSheet
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_LoadFromSheet
+  name: LoadFromSheet()
+  nameWithType: HandTool.LoadFromSheet()
+  fullName: AngeliA.HandTool.LoadFromSheet()
+  spec.csharp:
+  - uid: AngeliA.HandTool.LoadFromSheet
+    name: LoadFromSheet
+    href: AngeliA.HandTool.html#AngeliA_HandTool_LoadFromSheet
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.HandTool.LoadFromSheet
+    name: LoadFromSheet
+    href: AngeliA.HandTool.html#AngeliA_HandTool_LoadFromSheet
+  - name: (
+  - name: )
+- uid: AngeliA.HandTool.OnToolSpriteRendered(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.AngeSprite,System.Int32)
+  commentId: M:AngeliA.HandTool.OnToolSpriteRendered(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.AngeSprite,System.Int32)
+  parent: AngeliA.HandTool
+  isExternal: true
+  href: AngeliA.HandTool.html#AngeliA_HandTool_OnToolSpriteRendered_AngeliA_PoseCharacterRenderer_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_AngeliA_AngeSprite_System_Int32_
+  name: OnToolSpriteRendered(PoseCharacterRenderer, int, int, int, int, int, int, AngeSprite, int)
+  nameWithType: HandTool.OnToolSpriteRendered(PoseCharacterRenderer, int, int, int, int, int, int, AngeSprite, int)
+  fullName: AngeliA.HandTool.OnToolSpriteRendered(AngeliA.PoseCharacterRenderer, int, int, int, int, int, int, AngeliA.AngeSprite, int)
+  nameWithType.vb: HandTool.OnToolSpriteRendered(PoseCharacterRenderer, Integer, Integer, Integer, Integer, Integer, Integer, AngeSprite, Integer)
+  fullName.vb: AngeliA.HandTool.OnToolSpriteRendered(AngeliA.PoseCharacterRenderer, Integer, Integer, Integer, Integer, Integer, Integer, AngeliA.AngeSprite, Integer)
+  name.vb: OnToolSpriteRendered(PoseCharacterRenderer, Integer, Integer, Integer, Integer, Integer, Integer, AngeSprite, Integer)
+  spec.csharp:
+  - uid: AngeliA.HandTool.OnToolSpriteRendered(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.AngeSprite,System.Int32)
+    name: OnToolSpriteRendered
+    href: AngeliA.HandTool.html#AngeliA_HandTool_OnToolSpriteRendered_AngeliA_PoseCharacterRenderer_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_AngeliA_AngeSprite_System_Int32_
+  - name: (
+  - uid: AngeliA.PoseCharacterRenderer
+    name: PoseCharacterRenderer
+    href: AngeliA.PoseCharacterRenderer.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.AngeSprite
+    name: AngeSprite
+    href: AngeliA.AngeSprite.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.HandTool.OnToolSpriteRendered(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.AngeSprite,System.Int32)
+    name: OnToolSpriteRendered
+    href: AngeliA.HandTool.html#AngeliA_HandTool_OnToolSpriteRendered_AngeliA_PoseCharacterRenderer_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_AngeliA_AngeSprite_System_Int32_
+  - name: (
+  - uid: AngeliA.PoseCharacterRenderer
+    name: PoseCharacterRenderer
+    href: AngeliA.PoseCharacterRenderer.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.AngeSprite
+    name: AngeSprite
+    href: AngeliA.AngeSprite.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.HandTool.AllowingUse(AngeliA.Character)
+  commentId: M:AngeliA.HandTool.AllowingUse(AngeliA.Character)
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AllowingUse_AngeliA_Character_
+  name: AllowingUse(Character)
+  nameWithType: HandTool.AllowingUse(Character)
+  fullName: AngeliA.HandTool.AllowingUse(AngeliA.Character)
+  spec.csharp:
+  - uid: AngeliA.HandTool.AllowingUse(AngeliA.Character)
+    name: AllowingUse
+    href: AngeliA.HandTool.html#AngeliA_HandTool_AllowingUse_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.HandTool.AllowingUse(AngeliA.Character)
+    name: AllowingUse
+    href: AngeliA.HandTool.html#AngeliA_HandTool_AllowingUse_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+- uid: AngeliA.HandTool.GetHandheldPoseAnimationID(AngeliA.Character)
+  commentId: M:AngeliA.HandTool.GetHandheldPoseAnimationID(AngeliA.Character)
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_GetHandheldPoseAnimationID_AngeliA_Character_
+  name: GetHandheldPoseAnimationID(Character)
+  nameWithType: HandTool.GetHandheldPoseAnimationID(Character)
+  fullName: AngeliA.HandTool.GetHandheldPoseAnimationID(AngeliA.Character)
+  spec.csharp:
+  - uid: AngeliA.HandTool.GetHandheldPoseAnimationID(AngeliA.Character)
+    name: GetHandheldPoseAnimationID
+    href: AngeliA.HandTool.html#AngeliA_HandTool_GetHandheldPoseAnimationID_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.HandTool.GetHandheldPoseAnimationID(AngeliA.Character)
+    name: GetHandheldPoseAnimationID
+    href: AngeliA.HandTool.html#AngeliA_HandTool_GetHandheldPoseAnimationID_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+- uid: AngeliA.HandTool.GetPerformPoseAnimationID(AngeliA.Character)
+  commentId: M:AngeliA.HandTool.GetPerformPoseAnimationID(AngeliA.Character)
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_GetPerformPoseAnimationID_AngeliA_Character_
+  name: GetPerformPoseAnimationID(Character)
+  nameWithType: HandTool.GetPerformPoseAnimationID(Character)
+  fullName: AngeliA.HandTool.GetPerformPoseAnimationID(AngeliA.Character)
+  spec.csharp:
+  - uid: AngeliA.HandTool.GetPerformPoseAnimationID(AngeliA.Character)
+    name: GetPerformPoseAnimationID
+    href: AngeliA.HandTool.html#AngeliA_HandTool_GetPerformPoseAnimationID_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.HandTool.GetPerformPoseAnimationID(AngeliA.Character)
+    name: GetPerformPoseAnimationID
+    href: AngeliA.HandTool.html#AngeliA_HandTool_GetPerformPoseAnimationID_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+- uid: AngeliA.Item.AllowDuplicateUpdate
+  commentId: P:AngeliA.Item.AllowDuplicateUpdate
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_AllowDuplicateUpdate
+  name: AllowDuplicateUpdate
+  nameWithType: Item.AllowDuplicateUpdate
+  fullName: AngeliA.Item.AllowDuplicateUpdate
+- uid: AngeliA.Item.EmbedIntoLevel
+  commentId: P:AngeliA.Item.EmbedIntoLevel
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_EmbedIntoLevel
+  name: EmbedIntoLevel
+  nameWithType: Item.EmbedIntoLevel
+  fullName: AngeliA.Item.EmbedIntoLevel
+- uid: AngeliA.Item.TypeID
+  commentId: P:AngeliA.Item.TypeID
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_TypeID
+  name: TypeID
+  nameWithType: Item.TypeID
+  fullName: AngeliA.Item.TypeID
+- uid: AngeliA.Item.BeforeItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)
+  commentId: M:AngeliA.Item.BeforeItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)
+  parent: AngeliA.Item
+  isExternal: true
+  href: AngeliA.Item.html#AngeliA_Item_BeforeItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_
+  name: BeforeItemUpdate_FromInventory(Character, int, int)
+  nameWithType: Item.BeforeItemUpdate_FromInventory(Character, int, int)
+  fullName: AngeliA.Item.BeforeItemUpdate_FromInventory(AngeliA.Character, int, int)
+  nameWithType.vb: Item.BeforeItemUpdate_FromInventory(Character, Integer, Integer)
+  fullName.vb: AngeliA.Item.BeforeItemUpdate_FromInventory(AngeliA.Character, Integer, Integer)
+  name.vb: BeforeItemUpdate_FromInventory(Character, Integer, Integer)
+  spec.csharp:
+  - uid: AngeliA.Item.BeforeItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)
+    name: BeforeItemUpdate_FromInventory
+    href: AngeliA.Item.html#AngeliA_Item_BeforeItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.BeforeItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)
+    name: BeforeItemUpdate_FromInventory
+    href: AngeliA.Item.html#AngeliA_Item_BeforeItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Item.OnItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)
+  commentId: M:AngeliA.Item.OnItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)
+  parent: AngeliA.Item
+  isExternal: true
+  href: AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_
+  name: OnItemUpdate_FromInventory(Character, int, int)
+  nameWithType: Item.OnItemUpdate_FromInventory(Character, int, int)
+  fullName: AngeliA.Item.OnItemUpdate_FromInventory(AngeliA.Character, int, int)
+  nameWithType.vb: Item.OnItemUpdate_FromInventory(Character, Integer, Integer)
+  fullName.vb: AngeliA.Item.OnItemUpdate_FromInventory(AngeliA.Character, Integer, Integer)
+  name.vb: OnItemUpdate_FromInventory(Character, Integer, Integer)
+  spec.csharp:
+  - uid: AngeliA.Item.OnItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)
+    name: OnItemUpdate_FromInventory
+    href: AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.OnItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)
+    name: OnItemUpdate_FromInventory
+    href: AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Item.OnPoseAnimationUpdate_FromInventory(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32)
+  commentId: M:AngeliA.Item.OnPoseAnimationUpdate_FromInventory(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32)
+  parent: AngeliA.Item
+  isExternal: true
+  href: AngeliA.Item.html#AngeliA_Item_OnPoseAnimationUpdate_FromInventory_AngeliA_PoseCharacterRenderer_System_Int32_System_Int32_
+  name: OnPoseAnimationUpdate_FromInventory(PoseCharacterRenderer, int, int)
+  nameWithType: Item.OnPoseAnimationUpdate_FromInventory(PoseCharacterRenderer, int, int)
+  fullName: AngeliA.Item.OnPoseAnimationUpdate_FromInventory(AngeliA.PoseCharacterRenderer, int, int)
+  nameWithType.vb: Item.OnPoseAnimationUpdate_FromInventory(PoseCharacterRenderer, Integer, Integer)
+  fullName.vb: AngeliA.Item.OnPoseAnimationUpdate_FromInventory(AngeliA.PoseCharacterRenderer, Integer, Integer)
+  name.vb: OnPoseAnimationUpdate_FromInventory(PoseCharacterRenderer, Integer, Integer)
+  spec.csharp:
+  - uid: AngeliA.Item.OnPoseAnimationUpdate_FromInventory(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32)
+    name: OnPoseAnimationUpdate_FromInventory
+    href: AngeliA.Item.html#AngeliA_Item_OnPoseAnimationUpdate_FromInventory_AngeliA_PoseCharacterRenderer_System_Int32_System_Int32_
+  - name: (
+  - uid: AngeliA.PoseCharacterRenderer
+    name: PoseCharacterRenderer
+    href: AngeliA.PoseCharacterRenderer.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.OnPoseAnimationUpdate_FromInventory(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32)
+    name: OnPoseAnimationUpdate_FromInventory
+    href: AngeliA.Item.html#AngeliA_Item_OnPoseAnimationUpdate_FromInventory_AngeliA_PoseCharacterRenderer_System_Int32_System_Int32_
+  - name: (
+  - uid: AngeliA.PoseCharacterRenderer
+    name: PoseCharacterRenderer
+    href: AngeliA.PoseCharacterRenderer.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Item.OnTakeDamage_FromInventory(AngeliA.Character,System.Int32,System.Int32,AngeliA.Damage@)
+  commentId: M:AngeliA.Item.OnTakeDamage_FromInventory(AngeliA.Character,System.Int32,System.Int32,AngeliA.Damage@)
+  parent: AngeliA.Item
+  isExternal: true
+  href: AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromInventory_AngeliA_Character_System_Int32_System_Int32_AngeliA_Damage__
+  name: OnTakeDamage_FromInventory(Character, int, int, ref Damage)
+  nameWithType: Item.OnTakeDamage_FromInventory(Character, int, int, ref Damage)
+  fullName: AngeliA.Item.OnTakeDamage_FromInventory(AngeliA.Character, int, int, ref AngeliA.Damage)
+  nameWithType.vb: Item.OnTakeDamage_FromInventory(Character, Integer, Integer, Damage)
+  fullName.vb: AngeliA.Item.OnTakeDamage_FromInventory(AngeliA.Character, Integer, Integer, AngeliA.Damage)
+  name.vb: OnTakeDamage_FromInventory(Character, Integer, Integer, Damage)
+  spec.csharp:
+  - uid: AngeliA.Item.OnTakeDamage_FromInventory(AngeliA.Character,System.Int32,System.Int32,AngeliA.Damage@)
+    name: OnTakeDamage_FromInventory
+    href: AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromInventory_AngeliA_Character_System_Int32_System_Int32_AngeliA_Damage__
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: AngeliA.Damage
+    name: Damage
+    href: AngeliA.Damage.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.OnTakeDamage_FromInventory(AngeliA.Character,System.Int32,System.Int32,AngeliA.Damage@)
+    name: OnTakeDamage_FromInventory
+    href: AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromInventory_AngeliA_Character_System_Int32_System_Int32_AngeliA_Damage__
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Damage
+    name: Damage
+    href: AngeliA.Damage.html
+  - name: )
+- uid: AngeliA.Item.OnCharacterAttack_FromInventory(AngeliA.Character,AngeliA.Bullet,System.Int32,System.Int32)
+  commentId: M:AngeliA.Item.OnCharacterAttack_FromInventory(AngeliA.Character,AngeliA.Bullet,System.Int32,System.Int32)
+  parent: AngeliA.Item
+  isExternal: true
+  href: AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromInventory_AngeliA_Character_AngeliA_Bullet_System_Int32_System_Int32_
+  name: OnCharacterAttack_FromInventory(Character, Bullet, int, int)
+  nameWithType: Item.OnCharacterAttack_FromInventory(Character, Bullet, int, int)
+  fullName: AngeliA.Item.OnCharacterAttack_FromInventory(AngeliA.Character, AngeliA.Bullet, int, int)
+  nameWithType.vb: Item.OnCharacterAttack_FromInventory(Character, Bullet, Integer, Integer)
+  fullName.vb: AngeliA.Item.OnCharacterAttack_FromInventory(AngeliA.Character, AngeliA.Bullet, Integer, Integer)
+  name.vb: OnCharacterAttack_FromInventory(Character, Bullet, Integer, Integer)
+  spec.csharp:
+  - uid: AngeliA.Item.OnCharacterAttack_FromInventory(AngeliA.Character,AngeliA.Bullet,System.Int32,System.Int32)
+    name: OnCharacterAttack_FromInventory
+    href: AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromInventory_AngeliA_Character_AngeliA_Bullet_System_Int32_System_Int32_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Bullet
+    name: Bullet
+    href: AngeliA.Bullet.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.OnCharacterAttack_FromInventory(AngeliA.Character,AngeliA.Bullet,System.Int32,System.Int32)
+    name: OnCharacterAttack_FromInventory
+    href: AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromInventory_AngeliA_Character_AngeliA_Bullet_System_Int32_System_Int32_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Bullet
+    name: Bullet
+    href: AngeliA.Bullet.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Item.BeforeItemUpdate_FromEquipment(AngeliA.Character)
+  commentId: M:AngeliA.Item.BeforeItemUpdate_FromEquipment(AngeliA.Character)
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_BeforeItemUpdate_FromEquipment_AngeliA_Character_
+  name: BeforeItemUpdate_FromEquipment(Character)
+  nameWithType: Item.BeforeItemUpdate_FromEquipment(Character)
+  fullName: AngeliA.Item.BeforeItemUpdate_FromEquipment(AngeliA.Character)
+  spec.csharp:
+  - uid: AngeliA.Item.BeforeItemUpdate_FromEquipment(AngeliA.Character)
+    name: BeforeItemUpdate_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_BeforeItemUpdate_FromEquipment_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.BeforeItemUpdate_FromEquipment(AngeliA.Character)
+    name: BeforeItemUpdate_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_BeforeItemUpdate_FromEquipment_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+- uid: AngeliA.Item.OnItemUpdate_FromEquipment(AngeliA.Character)
+  commentId: M:AngeliA.Item.OnItemUpdate_FromEquipment(AngeliA.Character)
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromEquipment_AngeliA_Character_
+  name: OnItemUpdate_FromEquipment(Character)
+  nameWithType: Item.OnItemUpdate_FromEquipment(Character)
+  fullName: AngeliA.Item.OnItemUpdate_FromEquipment(AngeliA.Character)
+  spec.csharp:
+  - uid: AngeliA.Item.OnItemUpdate_FromEquipment(AngeliA.Character)
+    name: OnItemUpdate_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromEquipment_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.OnItemUpdate_FromEquipment(AngeliA.Character)
+    name: OnItemUpdate_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromEquipment_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+- uid: AngeliA.Item.BeforePoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  commentId: M:AngeliA.Item.BeforePoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_BeforePoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_
+  name: BeforePoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)
+  nameWithType: Item.BeforePoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)
+  fullName: AngeliA.Item.BeforePoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  spec.csharp:
+  - uid: AngeliA.Item.BeforePoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+    name: BeforePoseAnimationUpdate_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_BeforePoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_
+  - name: (
+  - uid: AngeliA.PoseCharacterRenderer
+    name: PoseCharacterRenderer
+    href: AngeliA.PoseCharacterRenderer.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.BeforePoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+    name: BeforePoseAnimationUpdate_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_BeforePoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_
+  - name: (
+  - uid: AngeliA.PoseCharacterRenderer
+    name: PoseCharacterRenderer
+    href: AngeliA.PoseCharacterRenderer.html
+  - name: )
+- uid: AngeliA.Item.OnTakeDamage_FromEquipment(AngeliA.Character,AngeliA.Damage@)
+  commentId: M:AngeliA.Item.OnTakeDamage_FromEquipment(AngeliA.Character,AngeliA.Damage@)
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromEquipment_AngeliA_Character_AngeliA_Damage__
+  name: OnTakeDamage_FromEquipment(Character, ref Damage)
+  nameWithType: Item.OnTakeDamage_FromEquipment(Character, ref Damage)
+  fullName: AngeliA.Item.OnTakeDamage_FromEquipment(AngeliA.Character, ref AngeliA.Damage)
+  nameWithType.vb: Item.OnTakeDamage_FromEquipment(Character, Damage)
+  fullName.vb: AngeliA.Item.OnTakeDamage_FromEquipment(AngeliA.Character, AngeliA.Damage)
+  name.vb: OnTakeDamage_FromEquipment(Character, Damage)
+  spec.csharp:
+  - uid: AngeliA.Item.OnTakeDamage_FromEquipment(AngeliA.Character,AngeliA.Damage@)
+    name: OnTakeDamage_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromEquipment_AngeliA_Character_AngeliA_Damage__
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - name: ref
+  - name: " "
+  - uid: AngeliA.Damage
+    name: Damage
+    href: AngeliA.Damage.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.OnTakeDamage_FromEquipment(AngeliA.Character,AngeliA.Damage@)
+    name: OnTakeDamage_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromEquipment_AngeliA_Character_AngeliA_Damage__
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Damage
+    name: Damage
+    href: AngeliA.Damage.html
+  - name: )
+- uid: AngeliA.Item.OnCharacterAttack_FromEquipment(AngeliA.Character,AngeliA.Bullet)
+  commentId: M:AngeliA.Item.OnCharacterAttack_FromEquipment(AngeliA.Character,AngeliA.Bullet)
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromEquipment_AngeliA_Character_AngeliA_Bullet_
+  name: OnCharacterAttack_FromEquipment(Character, Bullet)
+  nameWithType: Item.OnCharacterAttack_FromEquipment(Character, Bullet)
+  fullName: AngeliA.Item.OnCharacterAttack_FromEquipment(AngeliA.Character, AngeliA.Bullet)
+  spec.csharp:
+  - uid: AngeliA.Item.OnCharacterAttack_FromEquipment(AngeliA.Character,AngeliA.Bullet)
+    name: OnCharacterAttack_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromEquipment_AngeliA_Character_AngeliA_Bullet_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Bullet
+    name: Bullet
+    href: AngeliA.Bullet.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.OnCharacterAttack_FromEquipment(AngeliA.Character,AngeliA.Bullet)
+    name: OnCharacterAttack_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromEquipment_AngeliA_Character_AngeliA_Bullet_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Bullet
+    name: Bullet
+    href: AngeliA.Bullet.html
+  - name: )
+- uid: AngeliA.Item.TryRepairEquipment(AngeliA.Character)
+  commentId: M:AngeliA.Item.TryRepairEquipment(AngeliA.Character)
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_TryRepairEquipment_AngeliA_Character_
+  name: TryRepairEquipment(Character)
+  nameWithType: Item.TryRepairEquipment(Character)
+  fullName: AngeliA.Item.TryRepairEquipment(AngeliA.Character)
+  spec.csharp:
+  - uid: AngeliA.Item.TryRepairEquipment(AngeliA.Character)
+    name: TryRepairEquipment
+    href: AngeliA.Item.html#AngeliA_Item_TryRepairEquipment_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.TryRepairEquipment(AngeliA.Character)
+    name: TryRepairEquipment
+    href: AngeliA.Item.html#AngeliA_Item_TryRepairEquipment_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+- uid: AngeliA.Item.OnItemUpdate_FromItemHolder(AngeliA.ItemHolder,System.Int32)
+  commentId: M:AngeliA.Item.OnItemUpdate_FromItemHolder(AngeliA.ItemHolder,System.Int32)
+  parent: AngeliA.Item
+  isExternal: true
+  href: AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromItemHolder_AngeliA_ItemHolder_System_Int32_
+  name: OnItemUpdate_FromItemHolder(ItemHolder, int)
+  nameWithType: Item.OnItemUpdate_FromItemHolder(ItemHolder, int)
+  fullName: AngeliA.Item.OnItemUpdate_FromItemHolder(AngeliA.ItemHolder, int)
+  nameWithType.vb: Item.OnItemUpdate_FromItemHolder(ItemHolder, Integer)
+  fullName.vb: AngeliA.Item.OnItemUpdate_FromItemHolder(AngeliA.ItemHolder, Integer)
+  name.vb: OnItemUpdate_FromItemHolder(ItemHolder, Integer)
+  spec.csharp:
+  - uid: AngeliA.Item.OnItemUpdate_FromItemHolder(AngeliA.ItemHolder,System.Int32)
+    name: OnItemUpdate_FromItemHolder
+    href: AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromItemHolder_AngeliA_ItemHolder_System_Int32_
+  - name: (
+  - uid: AngeliA.ItemHolder
+    name: ItemHolder
+    href: AngeliA.ItemHolder.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.OnItemUpdate_FromItemHolder(AngeliA.ItemHolder,System.Int32)
+    name: OnItemUpdate_FromItemHolder
+    href: AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromItemHolder_AngeliA_ItemHolder_System_Int32_
+  - name: (
+  - uid: AngeliA.ItemHolder
+    name: ItemHolder
+    href: AngeliA.ItemHolder.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: AngeliA.Item.OnCollect(AngeliA.Character)
+  commentId: M:AngeliA.Item.OnCollect(AngeliA.Character)
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_OnCollect_AngeliA_Character_
+  name: OnCollect(Character)
+  nameWithType: Item.OnCollect(Character)
+  fullName: AngeliA.Item.OnCollect(AngeliA.Character)
+  spec.csharp:
+  - uid: AngeliA.Item.OnCollect(AngeliA.Character)
+    name: OnCollect
+    href: AngeliA.Item.html#AngeliA_Item_OnCollect_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.OnCollect(AngeliA.Character)
+    name: OnCollect
+    href: AngeliA.Item.html#AngeliA_Item_OnCollect_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+- uid: AngeliA.Item.CanUse(AngeliA.Character)
+  commentId: M:AngeliA.Item.CanUse(AngeliA.Character)
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_CanUse_AngeliA_Character_
+  name: CanUse(Character)
+  nameWithType: Item.CanUse(Character)
+  fullName: AngeliA.Item.CanUse(AngeliA.Character)
+  spec.csharp:
+  - uid: AngeliA.Item.CanUse(AngeliA.Character)
+    name: CanUse
+    href: AngeliA.Item.html#AngeliA_Item_CanUse_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.CanUse(AngeliA.Character)
+    name: CanUse
+    href: AngeliA.Item.html#AngeliA_Item_CanUse_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+- uid: AngeliA.Item.Use(AngeliA.Character,System.Int32,System.Int32,System.Boolean@)
+  commentId: M:AngeliA.Item.Use(AngeliA.Character,System.Int32,System.Int32,System.Boolean@)
+  parent: AngeliA.Item
+  isExternal: true
+  href: AngeliA.Item.html#AngeliA_Item_Use_AngeliA_Character_System_Int32_System_Int32_System_Boolean__
+  name: Use(Character, int, int, out bool)
+  nameWithType: Item.Use(Character, int, int, out bool)
+  fullName: AngeliA.Item.Use(AngeliA.Character, int, int, out bool)
+  nameWithType.vb: Item.Use(Character, Integer, Integer, Boolean)
+  fullName.vb: AngeliA.Item.Use(AngeliA.Character, Integer, Integer, Boolean)
+  name.vb: Use(Character, Integer, Integer, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Item.Use(AngeliA.Character,System.Int32,System.Int32,System.Boolean@)
+    name: Use
+    href: AngeliA.Item.html#AngeliA_Item_Use_AngeliA_Character_System_Int32_System_Int32_System_Boolean__
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.Use(AngeliA.Character,System.Int32,System.Int32,System.Boolean@)
+    name: Use
+    href: AngeliA.Item.html#AngeliA_Item_Use_AngeliA_Character_System_Int32_System_Int32_System_Boolean__
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Item.ItemConditionCheck(AngeliA.Character)
+  commentId: M:AngeliA.Item.ItemConditionCheck(AngeliA.Character)
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_ItemConditionCheck_AngeliA_Character_
+  name: ItemConditionCheck(Character)
+  nameWithType: Item.ItemConditionCheck(Character)
+  fullName: AngeliA.Item.ItemConditionCheck(AngeliA.Character)
+  spec.csharp:
+  - uid: AngeliA.Item.ItemConditionCheck(AngeliA.Character)
+    name: ItemConditionCheck
+    href: AngeliA.Item.html#AngeliA_Item_ItemConditionCheck_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.ItemConditionCheck(AngeliA.Character)
+    name: ItemConditionCheck
+    href: AngeliA.Item.html#AngeliA_Item_ItemConditionCheck_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+- uid: AngeliA.Item.DrawItem(AngeliA.Entity,AngeliA.IRect,AngeliA.Color32,System.Int32)
+  commentId: M:AngeliA.Item.DrawItem(AngeliA.Entity,AngeliA.IRect,AngeliA.Color32,System.Int32)
+  parent: AngeliA.Item
+  isExternal: true
+  href: AngeliA.Item.html#AngeliA_Item_DrawItem_AngeliA_Entity_AngeliA_IRect_AngeliA_Color32_System_Int32_
+  name: DrawItem(Entity, IRect, Color32, int)
+  nameWithType: Item.DrawItem(Entity, IRect, Color32, int)
+  fullName: AngeliA.Item.DrawItem(AngeliA.Entity, AngeliA.IRect, AngeliA.Color32, int)
+  nameWithType.vb: Item.DrawItem(Entity, IRect, Color32, Integer)
+  fullName.vb: AngeliA.Item.DrawItem(AngeliA.Entity, AngeliA.IRect, AngeliA.Color32, Integer)
+  name.vb: DrawItem(Entity, IRect, Color32, Integer)
+  spec.csharp:
+  - uid: AngeliA.Item.DrawItem(AngeliA.Entity,AngeliA.IRect,AngeliA.Color32,System.Int32)
+    name: DrawItem
+    href: AngeliA.Item.html#AngeliA_Item_DrawItem_AngeliA_Entity_AngeliA_IRect_AngeliA_Color32_System_Int32_
+  - name: (
+  - uid: AngeliA.Entity
+    name: Entity
+    href: AngeliA.Entity.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.IRect
+    name: IRect
+    href: AngeliA.IRect.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Color32
+    name: Color32
+    href: AngeliA.Color32.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.DrawItem(AngeliA.Entity,AngeliA.IRect,AngeliA.Color32,System.Int32)
+    name: DrawItem
+    href: AngeliA.Item.html#AngeliA_Item_DrawItem_AngeliA_Entity_AngeliA_IRect_AngeliA_Color32_System_Int32_
+  - name: (
+  - uid: AngeliA.Entity
+    name: Entity
+    href: AngeliA.Entity.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.IRect
+    name: IRect
+    href: AngeliA.IRect.html
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Color32
+    name: Color32
+    href: AngeliA.Color32.html
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.HandTool.AvailableWhenSquatting
+  commentId: P:AngeliA.HandTool.AvailableWhenSquatting
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenSquatting
+  name: AvailableWhenSquatting
+  nameWithType: HandTool.AvailableWhenSquatting
+  fullName: AngeliA.HandTool.AvailableWhenSquatting
+- uid: AngeliA.Platformer.PickTool.AvailableWhenSquatting*
+  commentId: Overload:AngeliA.Platformer.PickTool.AvailableWhenSquatting
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_AvailableWhenSquatting
+  name: AvailableWhenSquatting
+  nameWithType: PickTool.AvailableWhenSquatting
+  fullName: AngeliA.Platformer.PickTool.AvailableWhenSquatting
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.HandTool.AvailableWhenWalking
+  commentId: P:AngeliA.HandTool.AvailableWhenWalking
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenWalking
+  name: AvailableWhenWalking
+  nameWithType: HandTool.AvailableWhenWalking
+  fullName: AngeliA.HandTool.AvailableWhenWalking
+- uid: AngeliA.Platformer.PickTool.AvailableWhenWalking*
+  commentId: Overload:AngeliA.Platformer.PickTool.AvailableWhenWalking
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_AvailableWhenWalking
+  name: AvailableWhenWalking
+  nameWithType: PickTool.AvailableWhenWalking
+  fullName: AngeliA.Platformer.PickTool.AvailableWhenWalking
+- uid: AngeliA.HandTool.AvailableWhenSliding
+  commentId: P:AngeliA.HandTool.AvailableWhenSliding
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_AvailableWhenSliding
+  name: AvailableWhenSliding
+  nameWithType: HandTool.AvailableWhenSliding
+  fullName: AngeliA.HandTool.AvailableWhenSliding
+- uid: AngeliA.Platformer.PickTool.AvailableWhenSliding*
+  commentId: Overload:AngeliA.Platformer.PickTool.AvailableWhenSliding
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_AvailableWhenSliding
+  name: AvailableWhenSliding
+  nameWithType: PickTool.AvailableWhenSliding
+  fullName: AngeliA.Platformer.PickTool.AvailableWhenSliding
+- uid: AngeliA.HandTool.DefaultMovementSpeedRateOnUse
+  commentId: P:AngeliA.HandTool.DefaultMovementSpeedRateOnUse
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_DefaultMovementSpeedRateOnUse
+  name: DefaultMovementSpeedRateOnUse
+  nameWithType: HandTool.DefaultMovementSpeedRateOnUse
+  fullName: AngeliA.HandTool.DefaultMovementSpeedRateOnUse
+- uid: AngeliA.Platformer.PickTool.DefaultMovementSpeedRateOnUse*
+  commentId: Overload:AngeliA.Platformer.PickTool.DefaultMovementSpeedRateOnUse
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_DefaultMovementSpeedRateOnUse
+  name: DefaultMovementSpeedRateOnUse
+  nameWithType: PickTool.DefaultMovementSpeedRateOnUse
+  fullName: AngeliA.Platformer.PickTool.DefaultMovementSpeedRateOnUse
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int?
+  nameWithType: int?
+  fullName: int?
+  nameWithType.vb: Integer?
+  fullName.vb: Integer?
+  name.vb: Integer?
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.HandTool.RunningMovementSpeedRateOnUse
+  commentId: P:AngeliA.HandTool.RunningMovementSpeedRateOnUse
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_RunningMovementSpeedRateOnUse
+  name: RunningMovementSpeedRateOnUse
+  nameWithType: HandTool.RunningMovementSpeedRateOnUse
+  fullName: AngeliA.HandTool.RunningMovementSpeedRateOnUse
+- uid: AngeliA.Platformer.PickTool.RunningMovementSpeedRateOnUse*
+  commentId: Overload:AngeliA.Platformer.PickTool.RunningMovementSpeedRateOnUse
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_RunningMovementSpeedRateOnUse
+  name: RunningMovementSpeedRateOnUse
+  nameWithType: PickTool.RunningMovementSpeedRateOnUse
+  fullName: AngeliA.Platformer.PickTool.RunningMovementSpeedRateOnUse
+- uid: AngeliA.HandTool.WalkingMovementSpeedRateOnUse
+  commentId: P:AngeliA.HandTool.WalkingMovementSpeedRateOnUse
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_WalkingMovementSpeedRateOnUse
+  name: WalkingMovementSpeedRateOnUse
+  nameWithType: HandTool.WalkingMovementSpeedRateOnUse
+  fullName: AngeliA.HandTool.WalkingMovementSpeedRateOnUse
+- uid: AngeliA.Platformer.PickTool.WalkingMovementSpeedRateOnUse*
+  commentId: Overload:AngeliA.Platformer.PickTool.WalkingMovementSpeedRateOnUse
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_WalkingMovementSpeedRateOnUse
+  name: WalkingMovementSpeedRateOnUse
+  nameWithType: PickTool.WalkingMovementSpeedRateOnUse
+  fullName: AngeliA.Platformer.PickTool.WalkingMovementSpeedRateOnUse
+- uid: AngeliA.Platformer.PickTool.AllowPickLevelBlock*
+  commentId: Overload:AngeliA.Platformer.PickTool.AllowPickLevelBlock
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_AllowPickLevelBlock
+  name: AllowPickLevelBlock
+  nameWithType: PickTool.AllowPickLevelBlock
+  fullName: AngeliA.Platformer.PickTool.AllowPickLevelBlock
+- uid: AngeliA.Platformer.PickTool.AllowPickBackgroundBlock*
+  commentId: Overload:AngeliA.Platformer.PickTool.AllowPickBackgroundBlock
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_AllowPickBackgroundBlock
+  name: AllowPickBackgroundBlock
+  nameWithType: PickTool.AllowPickBackgroundBlock
+  fullName: AngeliA.Platformer.PickTool.AllowPickBackgroundBlock
+- uid: AngeliA.Platformer.PickTool.AllowPickBlockEntity*
+  commentId: Overload:AngeliA.Platformer.PickTool.AllowPickBlockEntity
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_AllowPickBlockEntity
+  name: AllowPickBlockEntity
+  nameWithType: PickTool.AllowPickBlockEntity
+  fullName: AngeliA.Platformer.PickTool.AllowPickBlockEntity
+- uid: AngeliA.Platformer.PickTool.DropItemAfterPicked*
+  commentId: Overload:AngeliA.Platformer.PickTool.DropItemAfterPicked
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_DropItemAfterPicked
+  name: DropItemAfterPicked
+  nameWithType: PickTool.DropItemAfterPicked
+  fullName: AngeliA.Platformer.PickTool.DropItemAfterPicked
+- uid: AngeliA.Platformer.PickTool.UseMouseToPick*
+  commentId: Overload:AngeliA.Platformer.PickTool.UseMouseToPick
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_UseMouseToPick
+  name: UseMouseToPick
+  nameWithType: PickTool.UseMouseToPick
+  fullName: AngeliA.Platformer.PickTool.UseMouseToPick
+- uid: AngeliA.Platformer.PickTool.MouseUnitRange*
+  commentId: Overload:AngeliA.Platformer.PickTool.MouseUnitRange
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_MouseUnitRange
+  name: MouseUnitRange
+  nameWithType: PickTool.MouseUnitRange
+  fullName: AngeliA.Platformer.PickTool.MouseUnitRange
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.HandTool.UseStackAsUsage
+  commentId: P:AngeliA.HandTool.UseStackAsUsage
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_UseStackAsUsage
+  name: UseStackAsUsage
+  nameWithType: HandTool.UseStackAsUsage
+  fullName: AngeliA.HandTool.UseStackAsUsage
+- uid: AngeliA.Platformer.PickTool.UseStackAsUsage*
+  commentId: Overload:AngeliA.Platformer.PickTool.UseStackAsUsage
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_UseStackAsUsage
+  name: UseStackAsUsage
+  nameWithType: PickTool.UseStackAsUsage
+  fullName: AngeliA.Platformer.PickTool.UseStackAsUsage
+- uid: AngeliA.Equipment.MaxStackCount
+  commentId: P:AngeliA.Equipment.MaxStackCount
+  parent: AngeliA.Equipment
+  href: AngeliA.Equipment.html#AngeliA_Equipment_MaxStackCount
+  name: MaxStackCount
+  nameWithType: Equipment.MaxStackCount
+  fullName: AngeliA.Equipment.MaxStackCount
+- uid: AngeliA.Platformer.PickTool.MaxStackCount*
+  commentId: Overload:AngeliA.Platformer.PickTool.MaxStackCount
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_MaxStackCount
+  name: MaxStackCount
+  nameWithType: PickTool.MaxStackCount
+  fullName: AngeliA.Platformer.PickTool.MaxStackCount
+- uid: AngeliA.HandTool.PerformDelayRate
+  commentId: P:AngeliA.HandTool.PerformDelayRate
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_PerformDelayRate
+  name: PerformDelayRate
+  nameWithType: HandTool.PerformDelayRate
+  fullName: AngeliA.HandTool.PerformDelayRate
+- uid: AngeliA.Platformer.PickTool.PerformDelayRate*
+  commentId: Overload:AngeliA.Platformer.PickTool.PerformDelayRate
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_PerformDelayRate
+  name: PerformDelayRate
+  nameWithType: PickTool.PerformDelayRate
+  fullName: AngeliA.Platformer.PickTool.PerformDelayRate
+- uid: AngeliA.HandTool.Duration
+  commentId: P:AngeliA.HandTool.Duration
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_Duration
+  name: Duration
+  nameWithType: HandTool.Duration
+  fullName: AngeliA.HandTool.Duration
+- uid: AngeliA.Platformer.PickTool.Duration*
+  commentId: Overload:AngeliA.Platformer.PickTool.Duration
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_Duration
+  name: Duration
+  nameWithType: PickTool.Duration
+  fullName: AngeliA.Platformer.PickTool.Duration
+- uid: AngeliA.Item.OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  commentId: M:AngeliA.Item.OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  parent: AngeliA.Item
+  href: AngeliA.Item.html#AngeliA_Item_OnPoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_
+  name: OnPoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)
+  nameWithType: Item.OnPoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)
+  fullName: AngeliA.Item.OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+  spec.csharp:
+  - uid: AngeliA.Item.OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+    name: OnPoseAnimationUpdate_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_OnPoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_
+  - name: (
+  - uid: AngeliA.PoseCharacterRenderer
+    name: PoseCharacterRenderer
+    href: AngeliA.PoseCharacterRenderer.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Item.OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)
+    name: OnPoseAnimationUpdate_FromEquipment
+    href: AngeliA.Item.html#AngeliA_Item_OnPoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_
+  - name: (
+  - uid: AngeliA.PoseCharacterRenderer
+    name: PoseCharacterRenderer
+    href: AngeliA.PoseCharacterRenderer.html
+  - name: )
+- uid: AngeliA.Platformer.PickTool.OnPoseAnimationUpdate_FromEquipment*
+  commentId: Overload:AngeliA.Platformer.PickTool.OnPoseAnimationUpdate_FromEquipment
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_OnPoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_
+  name: OnPoseAnimationUpdate_FromEquipment
+  nameWithType: PickTool.OnPoseAnimationUpdate_FromEquipment
+  fullName: AngeliA.Platformer.PickTool.OnPoseAnimationUpdate_FromEquipment
+- uid: AngeliA.PoseCharacterRenderer
+  commentId: T:AngeliA.PoseCharacterRenderer
+  parent: AngeliA
+  href: AngeliA.PoseCharacterRenderer.html
+  name: PoseCharacterRenderer
+  nameWithType: PoseCharacterRenderer
+  fullName: AngeliA.PoseCharacterRenderer
+- uid: AngeliA.Platformer.PickTool.DrawPickTargetHighlight*
+  commentId: Overload:AngeliA.Platformer.PickTool.DrawPickTargetHighlight
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_DrawPickTargetHighlight_System_Int32_System_Int32_System_Boolean_
+  name: DrawPickTargetHighlight
+  nameWithType: PickTool.DrawPickTargetHighlight
+  fullName: AngeliA.Platformer.PickTool.DrawPickTargetHighlight
+- uid: AngeliA.HandTool.OnToolPerform(AngeliA.Character)
+  commentId: M:AngeliA.HandTool.OnToolPerform(AngeliA.Character)
+  parent: AngeliA.HandTool
+  href: AngeliA.HandTool.html#AngeliA_HandTool_OnToolPerform_AngeliA_Character_
+  name: OnToolPerform(Character)
+  nameWithType: HandTool.OnToolPerform(Character)
+  fullName: AngeliA.HandTool.OnToolPerform(AngeliA.Character)
+  spec.csharp:
+  - uid: AngeliA.HandTool.OnToolPerform(AngeliA.Character)
+    name: OnToolPerform
+    href: AngeliA.HandTool.html#AngeliA_HandTool_OnToolPerform_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+  spec.vb:
+  - uid: AngeliA.HandTool.OnToolPerform(AngeliA.Character)
+    name: OnToolPerform
+    href: AngeliA.HandTool.html#AngeliA_HandTool_OnToolPerform_AngeliA_Character_
+  - name: (
+  - uid: AngeliA.Character
+    name: Character
+    href: AngeliA.Character.html
+  - name: )
+- uid: AngeliA.Platformer.PickTool.OnToolPerform*
+  commentId: Overload:AngeliA.Platformer.PickTool.OnToolPerform
+  href: AngeliA.Platformer.PickTool.html#AngeliA_Platformer_PickTool_OnToolPerform_AngeliA_Character_
+  name: OnToolPerform
+  nameWithType: PickTool.OnToolPerform
+  fullName: AngeliA.Platformer.PickTool.OnToolPerform
+- uid: AngeliA.Character
+  commentId: T:AngeliA.Character
+  parent: AngeliA
+  href: AngeliA.Character.html
+  name: Character
+  nameWithType: Character
+  fullName: AngeliA.Character

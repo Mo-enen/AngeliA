@@ -1,0 +1,1819 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Inventory
+  commentId: T:AngeliA.Inventory
+  id: Inventory
+  parent: AngeliA
+  children:
+  - AngeliA.Inventory.AddItemAt(System.Int32,System.Int32,System.Int32)
+  - AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean)
+  - AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32@,System.Int32,System.Boolean,System.Boolean,System.Boolean)
+  - AngeliA.Inventory.FillEquipmentFromInventory(System.Int32,AngeliA.EquipmentType)
+  - AngeliA.Inventory.FindAndAddItem(System.Int32,System.Int32,System.Int32,System.Boolean)
+  - AngeliA.Inventory.FindAndTakeItem(System.Int32,System.Int32,System.Int32)
+  - AngeliA.Inventory.GetEquipment(System.Int32,AngeliA.EquipmentType,System.Int32@)
+  - AngeliA.Inventory.GetInventoryCapacity(System.Int32)
+  - AngeliA.Inventory.GetInventoryIdFromBasicIdAndPos(System.Int32,System.String,AngeliA.Int3)
+  - AngeliA.Inventory.GetInventoryMapPosFromName(System.String,System.String@)
+  - AngeliA.Inventory.GetItemAt(System.Int32,System.Int32)
+  - AngeliA.Inventory.GetItemAt(System.Int32,System.Int32,System.Int32@)
+  - AngeliA.Inventory.GetItemCount(System.Int32,System.Int32)
+  - AngeliA.Inventory.GiveItemToTarget(AngeliA.Entity,System.Int32,System.Int32,System.Boolean)
+  - AngeliA.Inventory.HasEnoughRoomToCollect(System.Int32,System.Int32,System.Int32)
+  - AngeliA.Inventory.HasInventory(System.Int32)
+  - AngeliA.Inventory.HasItem(System.Int32,System.Int32,System.Boolean)
+  - AngeliA.Inventory.IndexOfItem(System.Int32,System.Int32)
+  - AngeliA.Inventory.InitializeInventoryData(System.Int32,System.String,System.Int32,AngeliA.Int3,System.Boolean)
+  - AngeliA.Inventory.InitializeInventoryData(System.Int32,System.String,System.Int32,System.Boolean)
+  - AngeliA.Inventory.InitializeInventoryData(System.String,System.Int32,AngeliA.Int3,System.Boolean)
+  - AngeliA.Inventory.InitializeInventoryData(System.String,System.Int32,System.Boolean)
+  - AngeliA.Inventory.ItemTotalCount(System.Int32,System.Int32,System.Boolean)
+  - AngeliA.Inventory.ItemTotalCount(System.Int32,System.Int32,System.Int32,System.Int32@,System.Boolean)
+  - AngeliA.Inventory.ItemTotalCount``1(System.Int32,System.Boolean)
+  - AngeliA.Inventory.ItemTotalCount``1(System.Int32,System.Int32,System.Int32@,System.Boolean)
+  - AngeliA.Inventory.PoolReady
+  - AngeliA.Inventory.ReduceEquipmentCount(System.Int32,System.Int32,AngeliA.EquipmentType)
+  - AngeliA.Inventory.RepositionInventory(System.Int32,AngeliA.Int3)
+  - AngeliA.Inventory.ResizeInventory(System.Int32,System.Int32)
+  - AngeliA.Inventory.SetEquipment(System.Int32,AngeliA.EquipmentType,System.Int32,System.Int32)
+  - AngeliA.Inventory.SetItemAt(System.Int32,System.Int32,System.Int32,System.Int32)
+  - AngeliA.Inventory.TakeItemAt(System.Int32,System.Int32,System.Int32)
+  - AngeliA.Inventory.UnlockAllItemsInside(System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: Inventory
+  nameWithType: Inventory
+  fullName: AngeliA.Inventory
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Inventory
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static class Inventory
+    content.vb: Public Module Inventory
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.Inventory.PoolReady
+  commentId: P:AngeliA.Inventory.PoolReady
+  id: PoolReady
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: PoolReady
+  nameWithType: Inventory.PoolReady
+  fullName: AngeliA.Inventory.PoolReady
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PoolReady
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 68
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool PoolReady { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property PoolReady As Boolean
+  overload: AngeliA.Inventory.PoolReady*
+- uid: AngeliA.Inventory.InitializeInventoryData(System.String,System.Int32,System.Boolean)
+  commentId: M:AngeliA.Inventory.InitializeInventoryData(System.String,System.Int32,System.Boolean)
+  id: InitializeInventoryData(System.String,System.Int32,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: InitializeInventoryData(string, int, bool)
+  nameWithType: Inventory.InitializeInventoryData(string, int, bool)
+  fullName: AngeliA.Inventory.InitializeInventoryData(string, int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InitializeInventoryData
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 193
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int InitializeInventoryData(string basicName, int capacity, bool hasEquipment = false)
+    parameters:
+    - id: basicName
+      type: System.String
+    - id: capacity
+      type: System.Int32
+    - id: hasEquipment
+      type: System.Boolean
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function InitializeInventoryData(basicName As String, capacity As Integer, hasEquipment As Boolean = False) As Integer
+  overload: AngeliA.Inventory.InitializeInventoryData*
+  nameWithType.vb: Inventory.InitializeInventoryData(String, Integer, Boolean)
+  fullName.vb: AngeliA.Inventory.InitializeInventoryData(String, Integer, Boolean)
+  name.vb: InitializeInventoryData(String, Integer, Boolean)
+- uid: AngeliA.Inventory.InitializeInventoryData(System.String,System.Int32,AngeliA.Int3,System.Boolean)
+  commentId: M:AngeliA.Inventory.InitializeInventoryData(System.String,System.Int32,AngeliA.Int3,System.Boolean)
+  id: InitializeInventoryData(System.String,System.Int32,AngeliA.Int3,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: InitializeInventoryData(string, int, Int3, bool)
+  nameWithType: Inventory.InitializeInventoryData(string, int, Int3, bool)
+  fullName: AngeliA.Inventory.InitializeInventoryData(string, int, AngeliA.Int3, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InitializeInventoryData
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 194
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int InitializeInventoryData(string basicName, int capacity, Int3 mapUnitPos, bool hasEquipment = false)
+    parameters:
+    - id: basicName
+      type: System.String
+    - id: capacity
+      type: System.Int32
+    - id: mapUnitPos
+      type: AngeliA.Int3
+    - id: hasEquipment
+      type: System.Boolean
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function InitializeInventoryData(basicName As String, capacity As Integer, mapUnitPos As Int3, hasEquipment As Boolean = False) As Integer
+  overload: AngeliA.Inventory.InitializeInventoryData*
+  nameWithType.vb: Inventory.InitializeInventoryData(String, Integer, Int3, Boolean)
+  fullName.vb: AngeliA.Inventory.InitializeInventoryData(String, Integer, AngeliA.Int3, Boolean)
+  name.vb: InitializeInventoryData(String, Integer, Int3, Boolean)
+- uid: AngeliA.Inventory.InitializeInventoryData(System.Int32,System.String,System.Int32,System.Boolean)
+  commentId: M:AngeliA.Inventory.InitializeInventoryData(System.Int32,System.String,System.Int32,System.Boolean)
+  id: InitializeInventoryData(System.Int32,System.String,System.Int32,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: InitializeInventoryData(int, string, int, bool)
+  nameWithType: Inventory.InitializeInventoryData(int, string, int, bool)
+  fullName: AngeliA.Inventory.InitializeInventoryData(int, string, int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InitializeInventoryData
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 195
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int InitializeInventoryData(int basicID, string basicName, int capacity, bool hasEquipment = false)
+    parameters:
+    - id: basicID
+      type: System.Int32
+    - id: basicName
+      type: System.String
+    - id: capacity
+      type: System.Int32
+    - id: hasEquipment
+      type: System.Boolean
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function InitializeInventoryData(basicID As Integer, basicName As String, capacity As Integer, hasEquipment As Boolean = False) As Integer
+  overload: AngeliA.Inventory.InitializeInventoryData*
+  nameWithType.vb: Inventory.InitializeInventoryData(Integer, String, Integer, Boolean)
+  fullName.vb: AngeliA.Inventory.InitializeInventoryData(Integer, String, Integer, Boolean)
+  name.vb: InitializeInventoryData(Integer, String, Integer, Boolean)
+- uid: AngeliA.Inventory.InitializeInventoryData(System.Int32,System.String,System.Int32,AngeliA.Int3,System.Boolean)
+  commentId: M:AngeliA.Inventory.InitializeInventoryData(System.Int32,System.String,System.Int32,AngeliA.Int3,System.Boolean)
+  id: InitializeInventoryData(System.Int32,System.String,System.Int32,AngeliA.Int3,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: InitializeInventoryData(int, string, int, Int3, bool)
+  nameWithType: Inventory.InitializeInventoryData(int, string, int, Int3, bool)
+  fullName: AngeliA.Inventory.InitializeInventoryData(int, string, int, AngeliA.Int3, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InitializeInventoryData
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 196
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int InitializeInventoryData(int basicID, string basicName, int capacity, Int3 mapUnitPos, bool hasEquipment = false)
+    parameters:
+    - id: basicID
+      type: System.Int32
+    - id: basicName
+      type: System.String
+    - id: capacity
+      type: System.Int32
+    - id: mapUnitPos
+      type: AngeliA.Int3
+    - id: hasEquipment
+      type: System.Boolean
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function InitializeInventoryData(basicID As Integer, basicName As String, capacity As Integer, mapUnitPos As Int3, hasEquipment As Boolean = False) As Integer
+  overload: AngeliA.Inventory.InitializeInventoryData*
+  nameWithType.vb: Inventory.InitializeInventoryData(Integer, String, Integer, Int3, Boolean)
+  fullName.vb: AngeliA.Inventory.InitializeInventoryData(Integer, String, Integer, AngeliA.Int3, Boolean)
+  name.vb: InitializeInventoryData(Integer, String, Integer, Int3, Boolean)
+- uid: AngeliA.Inventory.GetInventoryIdFromBasicIdAndPos(System.Int32,System.String,AngeliA.Int3)
+  commentId: M:AngeliA.Inventory.GetInventoryIdFromBasicIdAndPos(System.Int32,System.String,AngeliA.Int3)
+  id: GetInventoryIdFromBasicIdAndPos(System.Int32,System.String,AngeliA.Int3)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: GetInventoryIdFromBasicIdAndPos(int, string, Int3)
+  nameWithType: Inventory.GetInventoryIdFromBasicIdAndPos(int, string, Int3)
+  fullName: AngeliA.Inventory.GetInventoryIdFromBasicIdAndPos(int, string, AngeliA.Int3)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetInventoryIdFromBasicIdAndPos
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 213
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int GetInventoryIdFromBasicIdAndPos(int basicID, string baseName, Int3 mapPos)
+    parameters:
+    - id: basicID
+      type: System.Int32
+    - id: baseName
+      type: System.String
+    - id: mapPos
+      type: AngeliA.Int3
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function GetInventoryIdFromBasicIdAndPos(basicID As Integer, baseName As String, mapPos As Int3) As Integer
+  overload: AngeliA.Inventory.GetInventoryIdFromBasicIdAndPos*
+  nameWithType.vb: Inventory.GetInventoryIdFromBasicIdAndPos(Integer, String, Int3)
+  fullName.vb: AngeliA.Inventory.GetInventoryIdFromBasicIdAndPos(Integer, String, AngeliA.Int3)
+  name.vb: GetInventoryIdFromBasicIdAndPos(Integer, String, Int3)
+- uid: AngeliA.Inventory.GetInventoryMapPosFromName(System.String,System.String@)
+  commentId: M:AngeliA.Inventory.GetInventoryMapPosFromName(System.String,System.String@)
+  id: GetInventoryMapPosFromName(System.String,System.String@)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: GetInventoryMapPosFromName(string, out string)
+  nameWithType: Inventory.GetInventoryMapPosFromName(string, out string)
+  fullName: AngeliA.Inventory.GetInventoryMapPosFromName(string, out string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetInventoryMapPosFromName
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 224
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Int3 GetInventoryMapPosFromName(string invNameWithoutExt, out string basicName)
+    parameters:
+    - id: invNameWithoutExt
+      type: System.String
+    - id: basicName
+      type: System.String
+    return:
+      type: AngeliA.Int3
+    content.vb: Public Shared Function GetInventoryMapPosFromName(invNameWithoutExt As String, basicName As String) As Int3
+  overload: AngeliA.Inventory.GetInventoryMapPosFromName*
+  nameWithType.vb: Inventory.GetInventoryMapPosFromName(String, String)
+  fullName.vb: AngeliA.Inventory.GetInventoryMapPosFromName(String, String)
+  name.vb: GetInventoryMapPosFromName(String, String)
+- uid: AngeliA.Inventory.ResizeInventory(System.Int32,System.Int32)
+  commentId: M:AngeliA.Inventory.ResizeInventory(System.Int32,System.Int32)
+  id: ResizeInventory(System.Int32,System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: ResizeInventory(int, int)
+  nameWithType: Inventory.ResizeInventory(int, int)
+  fullName: AngeliA.Inventory.ResizeInventory(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ResizeInventory
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 245
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void ResizeInventory(int inventoryID, int newSize)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: newSize
+      type: System.Int32
+    content.vb: Public Shared Sub ResizeInventory(inventoryID As Integer, newSize As Integer)
+  overload: AngeliA.Inventory.ResizeInventory*
+  nameWithType.vb: Inventory.ResizeInventory(Integer, Integer)
+  fullName.vb: AngeliA.Inventory.ResizeInventory(Integer, Integer)
+  name.vb: ResizeInventory(Integer, Integer)
+- uid: AngeliA.Inventory.HasInventory(System.Int32)
+  commentId: M:AngeliA.Inventory.HasInventory(System.Int32)
+  id: HasInventory(System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: HasInventory(int)
+  nameWithType: Inventory.HasInventory(int)
+  fullName: AngeliA.Inventory.HasInventory(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HasInventory
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 259
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool HasInventory(int inventoryID)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function HasInventory(inventoryID As Integer) As Boolean
+  overload: AngeliA.Inventory.HasInventory*
+  nameWithType.vb: Inventory.HasInventory(Integer)
+  fullName.vb: AngeliA.Inventory.HasInventory(Integer)
+  name.vb: HasInventory(Integer)
+- uid: AngeliA.Inventory.GetInventoryCapacity(System.Int32)
+  commentId: M:AngeliA.Inventory.GetInventoryCapacity(System.Int32)
+  id: GetInventoryCapacity(System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: GetInventoryCapacity(int)
+  nameWithType: Inventory.GetInventoryCapacity(int)
+  fullName: AngeliA.Inventory.GetInventoryCapacity(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetInventoryCapacity
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 262
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int GetInventoryCapacity(int inventoryID)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function GetInventoryCapacity(inventoryID As Integer) As Integer
+  overload: AngeliA.Inventory.GetInventoryCapacity*
+  nameWithType.vb: Inventory.GetInventoryCapacity(Integer)
+  fullName.vb: AngeliA.Inventory.GetInventoryCapacity(Integer)
+  name.vb: GetInventoryCapacity(Integer)
+- uid: AngeliA.Inventory.RepositionInventory(System.Int32,AngeliA.Int3)
+  commentId: M:AngeliA.Inventory.RepositionInventory(System.Int32,AngeliA.Int3)
+  id: RepositionInventory(System.Int32,AngeliA.Int3)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: RepositionInventory(int, Int3)
+  nameWithType: Inventory.RepositionInventory(int, Int3)
+  fullName: AngeliA.Inventory.RepositionInventory(int, AngeliA.Int3)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RepositionInventory
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 265
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void RepositionInventory(int inventoryID, Int3 newMapUnitPosition)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: newMapUnitPosition
+      type: AngeliA.Int3
+    content.vb: Public Shared Sub RepositionInventory(inventoryID As Integer, newMapUnitPosition As Int3)
+  overload: AngeliA.Inventory.RepositionInventory*
+  nameWithType.vb: Inventory.RepositionInventory(Integer, Int3)
+  fullName.vb: AngeliA.Inventory.RepositionInventory(Integer, AngeliA.Int3)
+  name.vb: RepositionInventory(Integer, Int3)
+- uid: AngeliA.Inventory.UnlockAllItemsInside(System.Int32)
+  commentId: M:AngeliA.Inventory.UnlockAllItemsInside(System.Int32)
+  id: UnlockAllItemsInside(System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: UnlockAllItemsInside(int)
+  nameWithType: Inventory.UnlockAllItemsInside(int)
+  fullName: AngeliA.Inventory.UnlockAllItemsInside(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UnlockAllItemsInside
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 293
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void UnlockAllItemsInside(int inventoryID)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    content.vb: Public Shared Sub UnlockAllItemsInside(inventoryID As Integer)
+  overload: AngeliA.Inventory.UnlockAllItemsInside*
+  nameWithType.vb: Inventory.UnlockAllItemsInside(Integer)
+  fullName.vb: AngeliA.Inventory.UnlockAllItemsInside(Integer)
+  name.vb: UnlockAllItemsInside(Integer)
+- uid: AngeliA.Inventory.GetItemAt(System.Int32,System.Int32)
+  commentId: M:AngeliA.Inventory.GetItemAt(System.Int32,System.Int32)
+  id: GetItemAt(System.Int32,System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: GetItemAt(int, int)
+  nameWithType: Inventory.GetItemAt(int, int)
+  fullName: AngeliA.Inventory.GetItemAt(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetItemAt
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 324
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int GetItemAt(int inventoryID, int itemIndex)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: itemIndex
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function GetItemAt(inventoryID As Integer, itemIndex As Integer) As Integer
+  overload: AngeliA.Inventory.GetItemAt*
+  nameWithType.vb: Inventory.GetItemAt(Integer, Integer)
+  fullName.vb: AngeliA.Inventory.GetItemAt(Integer, Integer)
+  name.vb: GetItemAt(Integer, Integer)
+- uid: AngeliA.Inventory.GetItemAt(System.Int32,System.Int32,System.Int32@)
+  commentId: M:AngeliA.Inventory.GetItemAt(System.Int32,System.Int32,System.Int32@)
+  id: GetItemAt(System.Int32,System.Int32,System.Int32@)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: GetItemAt(int, int, out int)
+  nameWithType: Inventory.GetItemAt(int, int, out int)
+  fullName: AngeliA.Inventory.GetItemAt(int, int, out int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetItemAt
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 325
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int GetItemAt(int inventoryID, int itemIndex, out int count)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: itemIndex
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function GetItemAt(inventoryID As Integer, itemIndex As Integer, count As Integer) As Integer
+  overload: AngeliA.Inventory.GetItemAt*
+  nameWithType.vb: Inventory.GetItemAt(Integer, Integer, Integer)
+  fullName.vb: AngeliA.Inventory.GetItemAt(Integer, Integer, Integer)
+  name.vb: GetItemAt(Integer, Integer, Integer)
+- uid: AngeliA.Inventory.GetItemCount(System.Int32,System.Int32)
+  commentId: M:AngeliA.Inventory.GetItemCount(System.Int32,System.Int32)
+  id: GetItemCount(System.Int32,System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: GetItemCount(int, int)
+  nameWithType: Inventory.GetItemCount(int, int)
+  fullName: AngeliA.Inventory.GetItemCount(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetItemCount
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 336
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int GetItemCount(int inventoryID, int itemIndex)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: itemIndex
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function GetItemCount(inventoryID As Integer, itemIndex As Integer) As Integer
+  overload: AngeliA.Inventory.GetItemCount*
+  nameWithType.vb: Inventory.GetItemCount(Integer, Integer)
+  fullName.vb: AngeliA.Inventory.GetItemCount(Integer, Integer)
+  name.vb: GetItemCount(Integer, Integer)
+- uid: AngeliA.Inventory.SetItemAt(System.Int32,System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.Inventory.SetItemAt(System.Int32,System.Int32,System.Int32,System.Int32)
+  id: SetItemAt(System.Int32,System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: SetItemAt(int, int, int, int)
+  nameWithType: Inventory.SetItemAt(int, int, int, int)
+  fullName: AngeliA.Inventory.SetItemAt(int, int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetItemAt
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 339
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void SetItemAt(int inventoryID, int itemIndex, int newItem, int newCount)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: itemIndex
+      type: System.Int32
+    - id: newItem
+      type: System.Int32
+    - id: newCount
+      type: System.Int32
+    content.vb: Public Shared Sub SetItemAt(inventoryID As Integer, itemIndex As Integer, newItem As Integer, newCount As Integer)
+  overload: AngeliA.Inventory.SetItemAt*
+  nameWithType.vb: Inventory.SetItemAt(Integer, Integer, Integer, Integer)
+  fullName.vb: AngeliA.Inventory.SetItemAt(Integer, Integer, Integer, Integer)
+  name.vb: SetItemAt(Integer, Integer, Integer, Integer)
+- uid: AngeliA.Inventory.IndexOfItem(System.Int32,System.Int32)
+  commentId: M:AngeliA.Inventory.IndexOfItem(System.Int32,System.Int32)
+  id: IndexOfItem(System.Int32,System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: IndexOfItem(int, int)
+  nameWithType: Inventory.IndexOfItem(int, int)
+  fullName: AngeliA.Inventory.IndexOfItem(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IndexOfItem
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 350
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int IndexOfItem(int inventoryID, int itemID)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: itemID
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function IndexOfItem(inventoryID As Integer, itemID As Integer) As Integer
+  overload: AngeliA.Inventory.IndexOfItem*
+  nameWithType.vb: Inventory.IndexOfItem(Integer, Integer)
+  fullName.vb: AngeliA.Inventory.IndexOfItem(Integer, Integer)
+  name.vb: IndexOfItem(Integer, Integer)
+- uid: AngeliA.Inventory.HasItem(System.Int32,System.Int32,System.Boolean)
+  commentId: M:AngeliA.Inventory.HasItem(System.Int32,System.Int32,System.Boolean)
+  id: HasItem(System.Int32,System.Int32,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: HasItem(int, int, bool)
+  nameWithType: Inventory.HasItem(int, int, bool)
+  fullName: AngeliA.Inventory.HasItem(int, int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HasItem
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 359
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool HasItem(int inventoryID, int itemID, bool includeEquipment = true)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: itemID
+      type: System.Int32
+    - id: includeEquipment
+      type: System.Boolean
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function HasItem(inventoryID As Integer, itemID As Integer, includeEquipment As Boolean = True) As Boolean
+  overload: AngeliA.Inventory.HasItem*
+  nameWithType.vb: Inventory.HasItem(Integer, Integer, Boolean)
+  fullName.vb: AngeliA.Inventory.HasItem(Integer, Integer, Boolean)
+  name.vb: HasItem(Integer, Integer, Boolean)
+- uid: AngeliA.Inventory.AddItemAt(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.Inventory.AddItemAt(System.Int32,System.Int32,System.Int32)
+  id: AddItemAt(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: AddItemAt(int, int, int)
+  nameWithType: Inventory.AddItemAt(int, int, int)
+  fullName: AngeliA.Inventory.AddItemAt(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AddItemAt
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 378
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public static int AddItemAt(int inventoryID, int itemIndex, int count = 1)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: itemIndex
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    return:
+      type: System.Int32
+      description: How many items has been added. Return 0 means no item added. Return "count" means all items added.
+    content.vb: Public Shared Function AddItemAt(inventoryID As Integer, itemIndex As Integer, count As Integer = 1) As Integer
+  overload: AngeliA.Inventory.AddItemAt*
+  nameWithType.vb: Inventory.AddItemAt(Integer, Integer, Integer)
+  fullName.vb: AngeliA.Inventory.AddItemAt(Integer, Integer, Integer)
+  name.vb: AddItemAt(Integer, Integer, Integer)
+- uid: AngeliA.Inventory.FindAndAddItem(System.Int32,System.Int32,System.Int32,System.Boolean)
+  commentId: M:AngeliA.Inventory.FindAndAddItem(System.Int32,System.Int32,System.Int32,System.Boolean)
+  id: FindAndAddItem(System.Int32,System.Int32,System.Int32,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: FindAndAddItem(int, int, int, bool)
+  nameWithType: Inventory.FindAndAddItem(int, int, int, bool)
+  fullName: AngeliA.Inventory.FindAndAddItem(int, int, int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FindAndAddItem
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 401
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public static int FindAndAddItem(int inventoryID, int targetItemID, int count = 1, bool ignoreEquipment = true)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: targetItemID
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    - id: ignoreEquipment
+      type: System.Boolean
+    return:
+      type: System.Int32
+      description: How many items has been added. Return 0 means no item added. Return "count" means all items added.
+    content.vb: Public Shared Function FindAndAddItem(inventoryID As Integer, targetItemID As Integer, count As Integer = 1, ignoreEquipment As Boolean = True) As Integer
+  overload: AngeliA.Inventory.FindAndAddItem*
+  nameWithType.vb: Inventory.FindAndAddItem(Integer, Integer, Integer, Boolean)
+  fullName.vb: AngeliA.Inventory.FindAndAddItem(Integer, Integer, Integer, Boolean)
+  name.vb: FindAndAddItem(Integer, Integer, Integer, Boolean)
+- uid: AngeliA.Inventory.TakeItemAt(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.Inventory.TakeItemAt(System.Int32,System.Int32,System.Int32)
+  id: TakeItemAt(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: TakeItemAt(int, int, int)
+  nameWithType: Inventory.TakeItemAt(int, int, int)
+  fullName: AngeliA.Inventory.TakeItemAt(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TakeItemAt
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 434
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public static int TakeItemAt(int inventoryID, int itemIndex, int count = 1)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: itemIndex
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    return:
+      type: System.Int32
+      description: How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.
+    content.vb: Public Shared Function TakeItemAt(inventoryID As Integer, itemIndex As Integer, count As Integer = 1) As Integer
+  overload: AngeliA.Inventory.TakeItemAt*
+  nameWithType.vb: Inventory.TakeItemAt(Integer, Integer, Integer)
+  fullName.vb: AngeliA.Inventory.TakeItemAt(Integer, Integer, Integer)
+  name.vb: TakeItemAt(Integer, Integer, Integer)
+- uid: AngeliA.Inventory.FindAndTakeItem(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.Inventory.FindAndTakeItem(System.Int32,System.Int32,System.Int32)
+  id: FindAndTakeItem(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: FindAndTakeItem(int, int, int)
+  nameWithType: Inventory.FindAndTakeItem(int, int, int)
+  fullName: AngeliA.Inventory.FindAndTakeItem(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FindAndTakeItem
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 461
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public static int FindAndTakeItem(int inventoryID, int targetItemID, int count = 1)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: targetItemID
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    return:
+      type: System.Int32
+      description: How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.
+    content.vb: Public Shared Function FindAndTakeItem(inventoryID As Integer, targetItemID As Integer, count As Integer = 1) As Integer
+  overload: AngeliA.Inventory.FindAndTakeItem*
+  nameWithType.vb: Inventory.FindAndTakeItem(Integer, Integer, Integer)
+  fullName.vb: AngeliA.Inventory.FindAndTakeItem(Integer, Integer, Integer)
+  name.vb: FindAndTakeItem(Integer, Integer, Integer)
+- uid: AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean)
+  commentId: M:AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean)
+  id: CollectItem(System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: CollectItem(int, int, int, bool, bool, bool)
+  nameWithType: Inventory.CollectItem(int, int, int, bool, bool, bool)
+  fullName: AngeliA.Inventory.CollectItem(int, int, int, bool, bool, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CollectItem
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 486
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public static int CollectItem(int inventoryID, int item, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false, bool dontCollectIntoEmptyEquipmentSlot = false)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: item
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    - id: ignoreEquipment
+      type: System.Boolean
+    - id: ignoreInventory
+      type: System.Boolean
+    - id: dontCollectIntoEmptyEquipmentSlot
+      type: System.Boolean
+    return:
+      type: System.Int32
+      description: How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.
+    content.vb: Public Shared Function CollectItem(inventoryID As Integer, item As Integer, count As Integer = 1, ignoreEquipment As Boolean = True, ignoreInventory As Boolean = False, dontCollectIntoEmptyEquipmentSlot As Boolean = False) As Integer
+  overload: AngeliA.Inventory.CollectItem*
+  nameWithType.vb: Inventory.CollectItem(Integer, Integer, Integer, Boolean, Boolean, Boolean)
+  fullName.vb: AngeliA.Inventory.CollectItem(Integer, Integer, Integer, Boolean, Boolean, Boolean)
+  name.vb: CollectItem(Integer, Integer, Integer, Boolean, Boolean, Boolean)
+- uid: AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32@,System.Int32,System.Boolean,System.Boolean,System.Boolean)
+  commentId: M:AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32@,System.Int32,System.Boolean,System.Boolean,System.Boolean)
+  id: CollectItem(System.Int32,System.Int32,System.Int32@,System.Int32,System.Boolean,System.Boolean,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: CollectItem(int, int, out int, int, bool, bool, bool)
+  nameWithType: Inventory.CollectItem(int, int, out int, int, bool, bool, bool)
+  fullName: AngeliA.Inventory.CollectItem(int, int, out int, int, bool, bool, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CollectItem
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 487
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int CollectItem(int inventoryID, int item, out int collectIndex, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false, bool dontCollectIntoEmptyEquipmentSlot = false)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: item
+      type: System.Int32
+    - id: collectIndex
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    - id: ignoreEquipment
+      type: System.Boolean
+    - id: ignoreInventory
+      type: System.Boolean
+    - id: dontCollectIntoEmptyEquipmentSlot
+      type: System.Boolean
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function CollectItem(inventoryID As Integer, item As Integer, collectIndex As Integer, count As Integer = 1, ignoreEquipment As Boolean = True, ignoreInventory As Boolean = False, dontCollectIntoEmptyEquipmentSlot As Boolean = False) As Integer
+  overload: AngeliA.Inventory.CollectItem*
+  nameWithType.vb: Inventory.CollectItem(Integer, Integer, Integer, Integer, Boolean, Boolean, Boolean)
+  fullName.vb: AngeliA.Inventory.CollectItem(Integer, Integer, Integer, Integer, Boolean, Boolean, Boolean)
+  name.vb: CollectItem(Integer, Integer, Integer, Integer, Boolean, Boolean, Boolean)
+- uid: AngeliA.Inventory.HasEnoughRoomToCollect(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.Inventory.HasEnoughRoomToCollect(System.Int32,System.Int32,System.Int32)
+  id: HasEnoughRoomToCollect(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: HasEnoughRoomToCollect(int, int, int)
+  nameWithType: Inventory.HasEnoughRoomToCollect(int, int, int)
+  fullName: AngeliA.Inventory.HasEnoughRoomToCollect(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HasEnoughRoomToCollect
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 640
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool HasEnoughRoomToCollect(int inventoryID, int item, int count)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: item
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function HasEnoughRoomToCollect(inventoryID As Integer, item As Integer, count As Integer) As Boolean
+  overload: AngeliA.Inventory.HasEnoughRoomToCollect*
+  nameWithType.vb: Inventory.HasEnoughRoomToCollect(Integer, Integer, Integer)
+  fullName.vb: AngeliA.Inventory.HasEnoughRoomToCollect(Integer, Integer, Integer)
+  name.vb: HasEnoughRoomToCollect(Integer, Integer, Integer)
+- uid: AngeliA.Inventory.ItemTotalCount(System.Int32,System.Int32,System.Boolean)
+  commentId: M:AngeliA.Inventory.ItemTotalCount(System.Int32,System.Int32,System.Boolean)
+  id: ItemTotalCount(System.Int32,System.Int32,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: ItemTotalCount(int, int, bool)
+  nameWithType: Inventory.ItemTotalCount(int, int, bool)
+  fullName: AngeliA.Inventory.ItemTotalCount(int, int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ItemTotalCount
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 676
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int ItemTotalCount(int inventoryID, int itemID, bool ignoreStack = false)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: itemID
+      type: System.Int32
+    - id: ignoreStack
+      type: System.Boolean
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function ItemTotalCount(inventoryID As Integer, itemID As Integer, ignoreStack As Boolean = False) As Integer
+  overload: AngeliA.Inventory.ItemTotalCount*
+  nameWithType.vb: Inventory.ItemTotalCount(Integer, Integer, Boolean)
+  fullName.vb: AngeliA.Inventory.ItemTotalCount(Integer, Integer, Boolean)
+  name.vb: ItemTotalCount(Integer, Integer, Boolean)
+- uid: AngeliA.Inventory.ItemTotalCount(System.Int32,System.Int32,System.Int32,System.Int32@,System.Boolean)
+  commentId: M:AngeliA.Inventory.ItemTotalCount(System.Int32,System.Int32,System.Int32,System.Int32@,System.Boolean)
+  id: ItemTotalCount(System.Int32,System.Int32,System.Int32,System.Int32@,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: ItemTotalCount(int, int, int, out int, bool)
+  nameWithType: Inventory.ItemTotalCount(int, int, int, out int, bool)
+  fullName: AngeliA.Inventory.ItemTotalCount(int, int, int, out int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ItemTotalCount
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 677
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int ItemTotalCount(int inventoryID, int itemID, int targetIndex, out int targetOrder, bool ignoreStack = false)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: itemID
+      type: System.Int32
+    - id: targetIndex
+      type: System.Int32
+    - id: targetOrder
+      type: System.Int32
+    - id: ignoreStack
+      type: System.Boolean
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function ItemTotalCount(inventoryID As Integer, itemID As Integer, targetIndex As Integer, targetOrder As Integer, ignoreStack As Boolean = False) As Integer
+  overload: AngeliA.Inventory.ItemTotalCount*
+  nameWithType.vb: Inventory.ItemTotalCount(Integer, Integer, Integer, Integer, Boolean)
+  fullName.vb: AngeliA.Inventory.ItemTotalCount(Integer, Integer, Integer, Integer, Boolean)
+  name.vb: ItemTotalCount(Integer, Integer, Integer, Integer, Boolean)
+- uid: AngeliA.Inventory.ItemTotalCount``1(System.Int32,System.Boolean)
+  commentId: M:AngeliA.Inventory.ItemTotalCount``1(System.Int32,System.Boolean)
+  id: ItemTotalCount``1(System.Int32,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: ItemTotalCount<I>(int, bool)
+  nameWithType: Inventory.ItemTotalCount<I>(int, bool)
+  fullName: AngeliA.Inventory.ItemTotalCount<I>(int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ItemTotalCount
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 696
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: 'public static int ItemTotalCount<I>(int inventoryID, bool ignoreStack = false) where I : Item'
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: ignoreStack
+      type: System.Boolean
+    typeParameters:
+    - id: I
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function ItemTotalCount(Of I As Item)(inventoryID As Integer, ignoreStack As Boolean = False) As Integer
+  overload: AngeliA.Inventory.ItemTotalCount*
+  nameWithType.vb: Inventory.ItemTotalCount(Of I)(Integer, Boolean)
+  fullName.vb: AngeliA.Inventory.ItemTotalCount(Of I)(Integer, Boolean)
+  name.vb: ItemTotalCount(Of I)(Integer, Boolean)
+- uid: AngeliA.Inventory.ItemTotalCount``1(System.Int32,System.Int32,System.Int32@,System.Boolean)
+  commentId: M:AngeliA.Inventory.ItemTotalCount``1(System.Int32,System.Int32,System.Int32@,System.Boolean)
+  id: ItemTotalCount``1(System.Int32,System.Int32,System.Int32@,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: ItemTotalCount<I>(int, int, out int, bool)
+  nameWithType: Inventory.ItemTotalCount<I>(int, int, out int, bool)
+  fullName: AngeliA.Inventory.ItemTotalCount<I>(int, int, out int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ItemTotalCount
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 697
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: 'public static int ItemTotalCount<I>(int inventoryID, int targetIndex, out int targetOrder, bool ignoreStack = false) where I : Item'
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: targetIndex
+      type: System.Int32
+    - id: targetOrder
+      type: System.Int32
+    - id: ignoreStack
+      type: System.Boolean
+    typeParameters:
+    - id: I
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function ItemTotalCount(Of I As Item)(inventoryID As Integer, targetIndex As Integer, targetOrder As Integer, ignoreStack As Boolean = False) As Integer
+  overload: AngeliA.Inventory.ItemTotalCount*
+  nameWithType.vb: Inventory.ItemTotalCount(Of I)(Integer, Integer, Integer, Boolean)
+  fullName.vb: AngeliA.Inventory.ItemTotalCount(Of I)(Integer, Integer, Integer, Boolean)
+  name.vb: ItemTotalCount(Of I)(Integer, Integer, Integer, Boolean)
+- uid: AngeliA.Inventory.GiveItemToTarget(AngeliA.Entity,System.Int32,System.Int32,System.Boolean)
+  commentId: M:AngeliA.Inventory.GiveItemToTarget(AngeliA.Entity,System.Int32,System.Int32,System.Boolean)
+  id: GiveItemToTarget(AngeliA.Entity,System.Int32,System.Int32,System.Boolean)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: GiveItemToTarget(Entity, int, int, bool)
+  nameWithType: Inventory.GiveItemToTarget(Entity, int, int, bool)
+  fullName: AngeliA.Inventory.GiveItemToTarget(AngeliA.Entity, int, int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GiveItemToTarget
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 719
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool GiveItemToTarget(Entity target, int itemID, int count = 1, bool spawnWhenInventoryFull = true)
+    parameters:
+    - id: target
+      type: AngeliA.Entity
+    - id: itemID
+      type: System.Int32
+    - id: count
+      type: System.Int32
+    - id: spawnWhenInventoryFull
+      type: System.Boolean
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function GiveItemToTarget(target As Entity, itemID As Integer, count As Integer = 1, spawnWhenInventoryFull As Boolean = True) As Boolean
+  overload: AngeliA.Inventory.GiveItemToTarget*
+  nameWithType.vb: Inventory.GiveItemToTarget(Entity, Integer, Integer, Boolean)
+  fullName.vb: AngeliA.Inventory.GiveItemToTarget(AngeliA.Entity, Integer, Integer, Boolean)
+  name.vb: GiveItemToTarget(Entity, Integer, Integer, Boolean)
+- uid: AngeliA.Inventory.GetEquipment(System.Int32,AngeliA.EquipmentType,System.Int32@)
+  commentId: M:AngeliA.Inventory.GetEquipment(System.Int32,AngeliA.EquipmentType,System.Int32@)
+  id: GetEquipment(System.Int32,AngeliA.EquipmentType,System.Int32@)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: GetEquipment(int, EquipmentType, out int)
+  nameWithType: Inventory.GetEquipment(int, EquipmentType, out int)
+  fullName: AngeliA.Inventory.GetEquipment(int, AngeliA.EquipmentType, out int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetEquipment
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 746
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int GetEquipment(int inventoryID, EquipmentType type, out int equipmentCount)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: type
+      type: AngeliA.EquipmentType
+    - id: equipmentCount
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function GetEquipment(inventoryID As Integer, type As EquipmentType, equipmentCount As Integer) As Integer
+  overload: AngeliA.Inventory.GetEquipment*
+  nameWithType.vb: Inventory.GetEquipment(Integer, EquipmentType, Integer)
+  fullName.vb: AngeliA.Inventory.GetEquipment(Integer, AngeliA.EquipmentType, Integer)
+  name.vb: GetEquipment(Integer, EquipmentType, Integer)
+- uid: AngeliA.Inventory.SetEquipment(System.Int32,AngeliA.EquipmentType,System.Int32,System.Int32)
+  commentId: M:AngeliA.Inventory.SetEquipment(System.Int32,AngeliA.EquipmentType,System.Int32,System.Int32)
+  id: SetEquipment(System.Int32,AngeliA.EquipmentType,System.Int32,System.Int32)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: SetEquipment(int, EquipmentType, int, int)
+  nameWithType: Inventory.SetEquipment(int, EquipmentType, int, int)
+  fullName: AngeliA.Inventory.SetEquipment(int, AngeliA.EquipmentType, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetEquipment
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 766
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool SetEquipment(int inventoryID, EquipmentType type, int equipmentID, int equipmentCount)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: type
+      type: AngeliA.EquipmentType
+    - id: equipmentID
+      type: System.Int32
+    - id: equipmentCount
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function SetEquipment(inventoryID As Integer, type As EquipmentType, equipmentID As Integer, equipmentCount As Integer) As Boolean
+  overload: AngeliA.Inventory.SetEquipment*
+  nameWithType.vb: Inventory.SetEquipment(Integer, EquipmentType, Integer, Integer)
+  fullName.vb: AngeliA.Inventory.SetEquipment(Integer, AngeliA.EquipmentType, Integer, Integer)
+  name.vb: SetEquipment(Integer, EquipmentType, Integer, Integer)
+- uid: AngeliA.Inventory.ReduceEquipmentCount(System.Int32,System.Int32,AngeliA.EquipmentType)
+  commentId: M:AngeliA.Inventory.ReduceEquipmentCount(System.Int32,System.Int32,AngeliA.EquipmentType)
+  id: ReduceEquipmentCount(System.Int32,System.Int32,AngeliA.EquipmentType)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: ReduceEquipmentCount(int, int, EquipmentType)
+  nameWithType: Inventory.ReduceEquipmentCount(int, int, EquipmentType)
+  fullName: AngeliA.Inventory.ReduceEquipmentCount(int, int, AngeliA.EquipmentType)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ReduceEquipmentCount
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 814
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void ReduceEquipmentCount(int inventoryID, int delta, EquipmentType type)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: delta
+      type: System.Int32
+    - id: type
+      type: AngeliA.EquipmentType
+    content.vb: Public Shared Sub ReduceEquipmentCount(inventoryID As Integer, delta As Integer, type As EquipmentType)
+  overload: AngeliA.Inventory.ReduceEquipmentCount*
+  nameWithType.vb: Inventory.ReduceEquipmentCount(Integer, Integer, EquipmentType)
+  fullName.vb: AngeliA.Inventory.ReduceEquipmentCount(Integer, Integer, AngeliA.EquipmentType)
+  name.vb: ReduceEquipmentCount(Integer, Integer, EquipmentType)
+- uid: AngeliA.Inventory.FillEquipmentFromInventory(System.Int32,AngeliA.EquipmentType)
+  commentId: M:AngeliA.Inventory.FillEquipmentFromInventory(System.Int32,AngeliA.EquipmentType)
+  id: FillEquipmentFromInventory(System.Int32,AngeliA.EquipmentType)
+  parent: AngeliA.Inventory
+  langs:
+  - csharp
+  - vb
+  name: FillEquipmentFromInventory(int, EquipmentType)
+  nameWithType: Inventory.FillEquipmentFromInventory(int, EquipmentType)
+  fullName: AngeliA.Inventory.FillEquipmentFromInventory(int, AngeliA.EquipmentType)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Core/Inventory.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FillEquipmentFromInventory
+    path: ../AngeliA Framework/src/Core/Inventory.cs
+    startLine: 825
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void FillEquipmentFromInventory(int inventoryID, EquipmentType type)
+    parameters:
+    - id: inventoryID
+      type: System.Int32
+    - id: type
+      type: AngeliA.EquipmentType
+    content.vb: Public Shared Sub FillEquipmentFromInventory(inventoryID As Integer, type As EquipmentType)
+  overload: AngeliA.Inventory.FillEquipmentFromInventory*
+  nameWithType.vb: Inventory.FillEquipmentFromInventory(Integer, EquipmentType)
+  fullName.vb: AngeliA.Inventory.FillEquipmentFromInventory(Integer, AngeliA.EquipmentType)
+  name.vb: FillEquipmentFromInventory(Integer, EquipmentType)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Inventory.PoolReady*
+  commentId: Overload:AngeliA.Inventory.PoolReady
+  href: AngeliA.Inventory.html#AngeliA_Inventory_PoolReady
+  name: PoolReady
+  nameWithType: Inventory.PoolReady
+  fullName: AngeliA.Inventory.PoolReady
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Inventory.InitializeInventoryData*
+  commentId: Overload:AngeliA.Inventory.InitializeInventoryData
+  href: AngeliA.Inventory.html#AngeliA_Inventory_InitializeInventoryData_System_String_System_Int32_System_Boolean_
+  name: InitializeInventoryData
+  nameWithType: Inventory.InitializeInventoryData
+  fullName: AngeliA.Inventory.InitializeInventoryData
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Int3
+  commentId: T:AngeliA.Int3
+  parent: AngeliA
+  href: AngeliA.Int3.html
+  name: Int3
+  nameWithType: Int3
+  fullName: AngeliA.Int3
+- uid: AngeliA.Inventory.GetInventoryIdFromBasicIdAndPos*
+  commentId: Overload:AngeliA.Inventory.GetInventoryIdFromBasicIdAndPos
+  href: AngeliA.Inventory.html#AngeliA_Inventory_GetInventoryIdFromBasicIdAndPos_System_Int32_System_String_AngeliA_Int3_
+  name: GetInventoryIdFromBasicIdAndPos
+  nameWithType: Inventory.GetInventoryIdFromBasicIdAndPos
+  fullName: AngeliA.Inventory.GetInventoryIdFromBasicIdAndPos
+- uid: AngeliA.Inventory.GetInventoryMapPosFromName*
+  commentId: Overload:AngeliA.Inventory.GetInventoryMapPosFromName
+  href: AngeliA.Inventory.html#AngeliA_Inventory_GetInventoryMapPosFromName_System_String_System_String__
+  name: GetInventoryMapPosFromName
+  nameWithType: Inventory.GetInventoryMapPosFromName
+  fullName: AngeliA.Inventory.GetInventoryMapPosFromName
+- uid: AngeliA.Inventory.ResizeInventory*
+  commentId: Overload:AngeliA.Inventory.ResizeInventory
+  href: AngeliA.Inventory.html#AngeliA_Inventory_ResizeInventory_System_Int32_System_Int32_
+  name: ResizeInventory
+  nameWithType: Inventory.ResizeInventory
+  fullName: AngeliA.Inventory.ResizeInventory
+- uid: AngeliA.Inventory.HasInventory*
+  commentId: Overload:AngeliA.Inventory.HasInventory
+  href: AngeliA.Inventory.html#AngeliA_Inventory_HasInventory_System_Int32_
+  name: HasInventory
+  nameWithType: Inventory.HasInventory
+  fullName: AngeliA.Inventory.HasInventory
+- uid: AngeliA.Inventory.GetInventoryCapacity*
+  commentId: Overload:AngeliA.Inventory.GetInventoryCapacity
+  href: AngeliA.Inventory.html#AngeliA_Inventory_GetInventoryCapacity_System_Int32_
+  name: GetInventoryCapacity
+  nameWithType: Inventory.GetInventoryCapacity
+  fullName: AngeliA.Inventory.GetInventoryCapacity
+- uid: AngeliA.Inventory.RepositionInventory*
+  commentId: Overload:AngeliA.Inventory.RepositionInventory
+  href: AngeliA.Inventory.html#AngeliA_Inventory_RepositionInventory_System_Int32_AngeliA_Int3_
+  name: RepositionInventory
+  nameWithType: Inventory.RepositionInventory
+  fullName: AngeliA.Inventory.RepositionInventory
+- uid: AngeliA.Inventory.UnlockAllItemsInside*
+  commentId: Overload:AngeliA.Inventory.UnlockAllItemsInside
+  href: AngeliA.Inventory.html#AngeliA_Inventory_UnlockAllItemsInside_System_Int32_
+  name: UnlockAllItemsInside
+  nameWithType: Inventory.UnlockAllItemsInside
+  fullName: AngeliA.Inventory.UnlockAllItemsInside
+- uid: AngeliA.Inventory.GetItemAt*
+  commentId: Overload:AngeliA.Inventory.GetItemAt
+  href: AngeliA.Inventory.html#AngeliA_Inventory_GetItemAt_System_Int32_System_Int32_
+  name: GetItemAt
+  nameWithType: Inventory.GetItemAt
+  fullName: AngeliA.Inventory.GetItemAt
+- uid: AngeliA.Inventory.GetItemCount*
+  commentId: Overload:AngeliA.Inventory.GetItemCount
+  href: AngeliA.Inventory.html#AngeliA_Inventory_GetItemCount_System_Int32_System_Int32_
+  name: GetItemCount
+  nameWithType: Inventory.GetItemCount
+  fullName: AngeliA.Inventory.GetItemCount
+- uid: AngeliA.Inventory.SetItemAt*
+  commentId: Overload:AngeliA.Inventory.SetItemAt
+  href: AngeliA.Inventory.html#AngeliA_Inventory_SetItemAt_System_Int32_System_Int32_System_Int32_System_Int32_
+  name: SetItemAt
+  nameWithType: Inventory.SetItemAt
+  fullName: AngeliA.Inventory.SetItemAt
+- uid: AngeliA.Inventory.IndexOfItem*
+  commentId: Overload:AngeliA.Inventory.IndexOfItem
+  href: AngeliA.Inventory.html#AngeliA_Inventory_IndexOfItem_System_Int32_System_Int32_
+  name: IndexOfItem
+  nameWithType: Inventory.IndexOfItem
+  fullName: AngeliA.Inventory.IndexOfItem
+- uid: AngeliA.Inventory.HasItem*
+  commentId: Overload:AngeliA.Inventory.HasItem
+  href: AngeliA.Inventory.html#AngeliA_Inventory_HasItem_System_Int32_System_Int32_System_Boolean_
+  name: HasItem
+  nameWithType: Inventory.HasItem
+  fullName: AngeliA.Inventory.HasItem
+- uid: AngeliA.Inventory.AddItemAt*
+  commentId: Overload:AngeliA.Inventory.AddItemAt
+  href: AngeliA.Inventory.html#AngeliA_Inventory_AddItemAt_System_Int32_System_Int32_System_Int32_
+  name: AddItemAt
+  nameWithType: Inventory.AddItemAt
+  fullName: AngeliA.Inventory.AddItemAt
+- uid: AngeliA.Inventory.FindAndAddItem*
+  commentId: Overload:AngeliA.Inventory.FindAndAddItem
+  href: AngeliA.Inventory.html#AngeliA_Inventory_FindAndAddItem_System_Int32_System_Int32_System_Int32_System_Boolean_
+  name: FindAndAddItem
+  nameWithType: Inventory.FindAndAddItem
+  fullName: AngeliA.Inventory.FindAndAddItem
+- uid: AngeliA.Inventory.TakeItemAt*
+  commentId: Overload:AngeliA.Inventory.TakeItemAt
+  href: AngeliA.Inventory.html#AngeliA_Inventory_TakeItemAt_System_Int32_System_Int32_System_Int32_
+  name: TakeItemAt
+  nameWithType: Inventory.TakeItemAt
+  fullName: AngeliA.Inventory.TakeItemAt
+- uid: AngeliA.Inventory.FindAndTakeItem*
+  commentId: Overload:AngeliA.Inventory.FindAndTakeItem
+  href: AngeliA.Inventory.html#AngeliA_Inventory_FindAndTakeItem_System_Int32_System_Int32_System_Int32_
+  name: FindAndTakeItem
+  nameWithType: Inventory.FindAndTakeItem
+  fullName: AngeliA.Inventory.FindAndTakeItem
+- uid: AngeliA.Inventory.CollectItem*
+  commentId: Overload:AngeliA.Inventory.CollectItem
+  href: AngeliA.Inventory.html#AngeliA_Inventory_CollectItem_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_System_Boolean_
+  name: CollectItem
+  nameWithType: Inventory.CollectItem
+  fullName: AngeliA.Inventory.CollectItem
+- uid: AngeliA.Inventory.HasEnoughRoomToCollect*
+  commentId: Overload:AngeliA.Inventory.HasEnoughRoomToCollect
+  href: AngeliA.Inventory.html#AngeliA_Inventory_HasEnoughRoomToCollect_System_Int32_System_Int32_System_Int32_
+  name: HasEnoughRoomToCollect
+  nameWithType: Inventory.HasEnoughRoomToCollect
+  fullName: AngeliA.Inventory.HasEnoughRoomToCollect
+- uid: AngeliA.Inventory.ItemTotalCount*
+  commentId: Overload:AngeliA.Inventory.ItemTotalCount
+  href: AngeliA.Inventory.html#AngeliA_Inventory_ItemTotalCount_System_Int32_System_Int32_System_Boolean_
+  name: ItemTotalCount
+  nameWithType: Inventory.ItemTotalCount
+  fullName: AngeliA.Inventory.ItemTotalCount
+- uid: AngeliA.Inventory.GiveItemToTarget*
+  commentId: Overload:AngeliA.Inventory.GiveItemToTarget
+  href: AngeliA.Inventory.html#AngeliA_Inventory_GiveItemToTarget_AngeliA_Entity_System_Int32_System_Int32_System_Boolean_
+  name: GiveItemToTarget
+  nameWithType: Inventory.GiveItemToTarget
+  fullName: AngeliA.Inventory.GiveItemToTarget
+- uid: AngeliA.Entity
+  commentId: T:AngeliA.Entity
+  parent: AngeliA
+  href: AngeliA.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: AngeliA.Entity
+- uid: AngeliA.Inventory.GetEquipment*
+  commentId: Overload:AngeliA.Inventory.GetEquipment
+  href: AngeliA.Inventory.html#AngeliA_Inventory_GetEquipment_System_Int32_AngeliA_EquipmentType_System_Int32__
+  name: GetEquipment
+  nameWithType: Inventory.GetEquipment
+  fullName: AngeliA.Inventory.GetEquipment
+- uid: AngeliA.EquipmentType
+  commentId: T:AngeliA.EquipmentType
+  parent: AngeliA
+  href: AngeliA.EquipmentType.html
+  name: EquipmentType
+  nameWithType: EquipmentType
+  fullName: AngeliA.EquipmentType
+- uid: AngeliA.Inventory.SetEquipment*
+  commentId: Overload:AngeliA.Inventory.SetEquipment
+  href: AngeliA.Inventory.html#AngeliA_Inventory_SetEquipment_System_Int32_AngeliA_EquipmentType_System_Int32_System_Int32_
+  name: SetEquipment
+  nameWithType: Inventory.SetEquipment
+  fullName: AngeliA.Inventory.SetEquipment
+- uid: AngeliA.Inventory.ReduceEquipmentCount*
+  commentId: Overload:AngeliA.Inventory.ReduceEquipmentCount
+  href: AngeliA.Inventory.html#AngeliA_Inventory_ReduceEquipmentCount_System_Int32_System_Int32_AngeliA_EquipmentType_
+  name: ReduceEquipmentCount
+  nameWithType: Inventory.ReduceEquipmentCount
+  fullName: AngeliA.Inventory.ReduceEquipmentCount
+- uid: AngeliA.Inventory.FillEquipmentFromInventory*
+  commentId: Overload:AngeliA.Inventory.FillEquipmentFromInventory
+  href: AngeliA.Inventory.html#AngeliA_Inventory_FillEquipmentFromInventory_System_Int32_AngeliA_EquipmentType_
+  name: FillEquipmentFromInventory
+  nameWithType: Inventory.FillEquipmentFromInventory
+  fullName: AngeliA.Inventory.FillEquipmentFromInventory

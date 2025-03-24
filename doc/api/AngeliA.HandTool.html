@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class HandTool | AngeliA </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class HandTool | AngeliA ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_HandTool.md&amp;value=---%0Auid%3A%20AngeliA.HandTool%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+            AngeliA
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="AngeliA.HandTool">
+
+
+
+  <h1 id="AngeliA_HandTool" data-uid="AngeliA.HandTool" class="text-break">
+Class HandTool  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L6"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>AngeliA Framework.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Entity.MapEditorGroup(&quot;ItemHandTool&quot;, 0)]
+public abstract class HandTool : Equipment, IMapItem</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="AngeliA.Item.html">Item</a></div>
+      <div><a class="xref" href="AngeliA.Equipment.html">Equipment</a></div>
+      <div><span class="xref">HandTool</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="AngeliA.BlockBuilder.html">BlockBuilder</a></div>
+      <div><a class="xref" href="AngeliA.Platformer.PickTool.html">PickTool</a></div>
+      <div><a class="xref" href="AngeliA.Weapon.html">Weapon</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="AngeliA.Equipment.html#AngeliA_Equipment_MaxStackCount">Equipment.MaxStackCount</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_AllowDuplicateUpdate">Item.AllowDuplicateUpdate</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_EmbedIntoLevel">Item.EmbedIntoLevel</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_TypeID">Item.TypeID</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_BeforeItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_">Item.BeforeItemUpdate_FromInventory(Character, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromInventory_AngeliA_Character_System_Int32_System_Int32_">Item.OnItemUpdate_FromInventory(Character, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnPoseAnimationUpdate_FromInventory_AngeliA_PoseCharacterRenderer_System_Int32_System_Int32_">Item.OnPoseAnimationUpdate_FromInventory(PoseCharacterRenderer, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromInventory_AngeliA_Character_System_Int32_System_Int32_AngeliA_Damage__">Item.OnTakeDamage_FromInventory(Character, int, int, ref Damage)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromInventory_AngeliA_Character_AngeliA_Bullet_System_Int32_System_Int32_">Item.OnCharacterAttack_FromInventory(Character, Bullet, int, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_BeforeItemUpdate_FromEquipment_AngeliA_Character_">Item.BeforeItemUpdate_FromEquipment(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromEquipment_AngeliA_Character_">Item.OnItemUpdate_FromEquipment(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_BeforePoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_">Item.BeforePoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnPoseAnimationUpdate_FromEquipment_AngeliA_PoseCharacterRenderer_">Item.OnPoseAnimationUpdate_FromEquipment(PoseCharacterRenderer)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnTakeDamage_FromEquipment_AngeliA_Character_AngeliA_Damage__">Item.OnTakeDamage_FromEquipment(Character, ref Damage)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnCharacterAttack_FromEquipment_AngeliA_Character_AngeliA_Bullet_">Item.OnCharacterAttack_FromEquipment(Character, Bullet)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_TryRepairEquipment_AngeliA_Character_">Item.TryRepairEquipment(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnItemUpdate_FromItemHolder_AngeliA_ItemHolder_System_Int32_">Item.OnItemUpdate_FromItemHolder(ItemHolder, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_OnCollect_AngeliA_Character_">Item.OnCollect(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_CanUse_AngeliA_Character_">Item.CanUse(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_Use_AngeliA_Character_System_Int32_System_Int32_System_Boolean__">Item.Use(Character, int, int, out bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_ItemConditionCheck_AngeliA_Character_">Item.ItemConditionCheck(Character)</a>
+    </div>
+    <div>
+      <a class="xref" href="AngeliA.Item.html#AngeliA_Item_DrawItem_AngeliA_Entity_AngeliA_IRect_AngeliA_Color32_System_Int32_">Item.DrawItem(Entity, IRect, Color32, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="AngeliA_HandTool__ctor_" data-uid="AngeliA.HandTool.#ctor*"></a>
+
+  <h3 id="AngeliA_HandTool__ctor" data-uid="AngeliA.HandTool.#ctor">
+  HandTool()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HandTool()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool__ctor_" data-uid="AngeliA.HandTool.#ctor*"></a>
+
+  <h3 id="AngeliA_HandTool__ctor_System_Boolean_" data-uid="AngeliA.HandTool.#ctor(System.Boolean)">
+  HandTool(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HandTool(bool loadArtwork)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>loadArtwork</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="AngeliA_HandTool_AvailableInAir_" data-uid="AngeliA.HandTool.AvailableInAir*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableInAir" data-uid="AngeliA.HandTool.AvailableInAir">
+  AvailableInAir
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableInAir { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableInWater_" data-uid="AngeliA.HandTool.AvailableInWater*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableInWater" data-uid="AngeliA.HandTool.AvailableInWater">
+  AvailableInWater
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableInWater { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableWhenClimbing_" data-uid="AngeliA.HandTool.AvailableWhenClimbing*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableWhenClimbing" data-uid="AngeliA.HandTool.AvailableWhenClimbing">
+  AvailableWhenClimbing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableWhenClimbing { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableWhenDashing_" data-uid="AngeliA.HandTool.AvailableWhenDashing*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableWhenDashing" data-uid="AngeliA.HandTool.AvailableWhenDashing">
+  AvailableWhenDashing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableWhenDashing { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableWhenFlying_" data-uid="AngeliA.HandTool.AvailableWhenFlying*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableWhenFlying" data-uid="AngeliA.HandTool.AvailableWhenFlying">
+  AvailableWhenFlying
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableWhenFlying { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableWhenGrabbing_" data-uid="AngeliA.HandTool.AvailableWhenGrabbing*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableWhenGrabbing" data-uid="AngeliA.HandTool.AvailableWhenGrabbing">
+  AvailableWhenGrabbing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableWhenGrabbing { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableWhenPounding_" data-uid="AngeliA.HandTool.AvailableWhenPounding*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableWhenPounding" data-uid="AngeliA.HandTool.AvailableWhenPounding">
+  AvailableWhenPounding
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableWhenPounding { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableWhenRolling_" data-uid="AngeliA.HandTool.AvailableWhenRolling*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableWhenRolling" data-uid="AngeliA.HandTool.AvailableWhenRolling">
+  AvailableWhenRolling
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableWhenRolling { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableWhenRunning_" data-uid="AngeliA.HandTool.AvailableWhenRunning*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableWhenRunning" data-uid="AngeliA.HandTool.AvailableWhenRunning">
+  AvailableWhenRunning
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableWhenRunning { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableWhenRushing_" data-uid="AngeliA.HandTool.AvailableWhenRushing*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableWhenRushing" data-uid="AngeliA.HandTool.AvailableWhenRushing">
+  AvailableWhenRushing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableWhenRushing { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableWhenSliding_" data-uid="AngeliA.HandTool.AvailableWhenSliding*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableWhenSliding" data-uid="AngeliA.HandTool.AvailableWhenSliding">
+  AvailableWhenSliding
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableWhenSliding { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableWhenSquatting_" data-uid="AngeliA.HandTool.AvailableWhenSquatting*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableWhenSquatting" data-uid="AngeliA.HandTool.AvailableWhenSquatting">
+  AvailableWhenSquatting
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableWhenSquatting { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_AvailableWhenWalking_" data-uid="AngeliA.HandTool.AvailableWhenWalking*"></a>
+
+  <h3 id="AngeliA_HandTool_AvailableWhenWalking" data-uid="AngeliA.HandTool.AvailableWhenWalking">
+  AvailableWhenWalking
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AvailableWhenWalking { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_CancelUseWhenRelease_" data-uid="AngeliA.HandTool.CancelUseWhenRelease*"></a>
+
+  <h3 id="AngeliA_HandTool_CancelUseWhenRelease" data-uid="AngeliA.HandTool.CancelUseWhenRelease">
+  CancelUseWhenRelease
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool CancelUseWhenRelease { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_ChargeDuration_" data-uid="AngeliA.HandTool.ChargeDuration*"></a>
+
+  <h3 id="AngeliA_HandTool_ChargeDuration" data-uid="AngeliA.HandTool.ChargeDuration">
+  ChargeDuration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int ChargeDuration { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_Cooldown_" data-uid="AngeliA.HandTool.Cooldown*"></a>
+
+  <h3 id="AngeliA_HandTool_Cooldown" data-uid="AngeliA.HandTool.Cooldown">
+  Cooldown
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int Cooldown { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_DefaultMovementSpeedRateOnUse_" data-uid="AngeliA.HandTool.DefaultMovementSpeedRateOnUse*"></a>
+
+  <h3 id="AngeliA_HandTool_DefaultMovementSpeedRateOnUse" data-uid="AngeliA.HandTool.DefaultMovementSpeedRateOnUse">
+  DefaultMovementSpeedRateOnUse
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int? DefaultMovementSpeedRateOnUse { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_Duration_" data-uid="AngeliA.HandTool.Duration*"></a>
+
+  <h3 id="AngeliA_HandTool_Duration" data-uid="AngeliA.HandTool.Duration">
+  Duration
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int Duration { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_EquipmentType_" data-uid="AngeliA.HandTool.EquipmentType*"></a>
+
+  <h3 id="AngeliA_HandTool_EquipmentType" data-uid="AngeliA.HandTool.EquipmentType">
+  EquipmentType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override sealed EquipmentType EquipmentType { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.EquipmentType.html">EquipmentType</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_HoldPunish_" data-uid="AngeliA.HandTool.HoldPunish*"></a>
+
+  <h3 id="AngeliA_HandTool_HoldPunish" data-uid="AngeliA.HandTool.HoldPunish">
+  HoldPunish
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int HoldPunish { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_IgnoreGrabTwist_" data-uid="AngeliA.HandTool.IgnoreGrabTwist*"></a>
+
+  <h3 id="AngeliA_HandTool_IgnoreGrabTwist" data-uid="AngeliA.HandTool.IgnoreGrabTwist">
+  IgnoreGrabTwist
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool IgnoreGrabTwist { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_LockFacingOnUse_" data-uid="AngeliA.HandTool.LockFacingOnUse*"></a>
+
+  <h3 id="AngeliA_HandTool_LockFacingOnUse" data-uid="AngeliA.HandTool.LockFacingOnUse">
+  LockFacingOnUse
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool LockFacingOnUse { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_PerformDelayFrame_" data-uid="AngeliA.HandTool.PerformDelayFrame*"></a>
+
+  <h3 id="AngeliA_HandTool_PerformDelayFrame" data-uid="AngeliA.HandTool.PerformDelayFrame">
+  PerformDelayFrame
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int PerformDelayFrame { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_PerformDelayRate_" data-uid="AngeliA.HandTool.PerformDelayRate*"></a>
+
+  <h3 id="AngeliA_HandTool_PerformDelayRate" data-uid="AngeliA.HandTool.PerformDelayRate">
+  PerformDelayRate
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int PerformDelayRate { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_RepeatWhenHolding_" data-uid="AngeliA.HandTool.RepeatWhenHolding*"></a>
+
+  <h3 id="AngeliA_HandTool_RepeatWhenHolding" data-uid="AngeliA.HandTool.RepeatWhenHolding">
+  RepeatWhenHolding
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool RepeatWhenHolding { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_RunningMovementSpeedRateOnUse_" data-uid="AngeliA.HandTool.RunningMovementSpeedRateOnUse*"></a>
+
+  <h3 id="AngeliA_HandTool_RunningMovementSpeedRateOnUse" data-uid="AngeliA.HandTool.RunningMovementSpeedRateOnUse">
+  RunningMovementSpeedRateOnUse
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int? RunningMovementSpeedRateOnUse { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_SpriteID_" data-uid="AngeliA.HandTool.SpriteID*"></a>
+
+  <h3 id="AngeliA_HandTool_SpriteID" data-uid="AngeliA.HandTool.SpriteID">
+  SpriteID
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SpriteID { get; protected set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_TypeName_" data-uid="AngeliA.HandTool.TypeName*"></a>
+
+  <h3 id="AngeliA_HandTool_TypeName" data-uid="AngeliA.HandTool.TypeName">
+  TypeName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string TypeName { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_UseStackAsUsage_" data-uid="AngeliA.HandTool.UseStackAsUsage*"></a>
+
+  <h3 id="AngeliA_HandTool_UseStackAsUsage" data-uid="AngeliA.HandTool.UseStackAsUsage">
+  UseStackAsUsage
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool UseStackAsUsage { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_WalkingMovementSpeedRateOnUse_" data-uid="AngeliA.HandTool.WalkingMovementSpeedRateOnUse*"></a>
+
+  <h3 id="AngeliA_HandTool_WalkingMovementSpeedRateOnUse" data-uid="AngeliA.HandTool.WalkingMovementSpeedRateOnUse">
+  WalkingMovementSpeedRateOnUse
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int? WalkingMovementSpeedRateOnUse { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="AngeliA_HandTool_AllowingUse_" data-uid="AngeliA.HandTool.AllowingUse*"></a>
+
+  <h3 id="AngeliA_HandTool_AllowingUse_AngeliA_Character_" data-uid="AngeliA.HandTool.AllowingUse(AngeliA.Character)">
+  AllowingUse(Character)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool AllowingUse(Character character)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>character</code> <a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_GetHandheldPoseAnimationID_" data-uid="AngeliA.HandTool.GetHandheldPoseAnimationID*"></a>
+
+  <h3 id="AngeliA_HandTool_GetHandheldPoseAnimationID_AngeliA_Character_" data-uid="AngeliA.HandTool.GetHandheldPoseAnimationID(AngeliA.Character)">
+  GetHandheldPoseAnimationID(Character)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int GetHandheldPoseAnimationID(Character character)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>character</code> <a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_GetPerformPoseAnimationID_" data-uid="AngeliA.HandTool.GetPerformPoseAnimationID*"></a>
+
+  <h3 id="AngeliA_HandTool_GetPerformPoseAnimationID_AngeliA_Character_" data-uid="AngeliA.HandTool.GetPerformPoseAnimationID(AngeliA.Character)">
+  GetPerformPoseAnimationID(Character)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int GetPerformPoseAnimationID(Character character)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>character</code> <a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_LoadFromSheet_" data-uid="AngeliA.HandTool.LoadFromSheet*"></a>
+
+  <h3 id="AngeliA_HandTool_LoadFromSheet" data-uid="AngeliA.HandTool.LoadFromSheet">
+  LoadFromSheet()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void LoadFromSheet()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_OnToolPerform_" data-uid="AngeliA.HandTool.OnToolPerform*"></a>
+
+  <h3 id="AngeliA_HandTool_OnToolPerform_AngeliA_Character_" data-uid="AngeliA.HandTool.OnToolPerform(AngeliA.Character)">
+  OnToolPerform(Character)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnToolPerform(Character user)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>user</code> <a class="xref" href="AngeliA.Character.html">Character</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="AngeliA_HandTool_OnToolSpriteRendered_" data-uid="AngeliA.HandTool.OnToolSpriteRendered*"></a>
+
+  <h3 id="AngeliA_HandTool_OnToolSpriteRendered_AngeliA_PoseCharacterRenderer_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_AngeliA_AngeSprite_System_Int32_" data-uid="AngeliA.HandTool.OnToolSpriteRendered(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.AngeSprite,System.Int32)">
+  OnToolSpriteRendered(PoseCharacterRenderer, int, int, int, int, int, int, AngeSprite, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Cell OnToolSpriteRendered(PoseCharacterRenderer renderer, int x, int y, int width, int height, int grabRotation, int grabScale, AngeSprite sprite, int z)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>renderer</code> <a class="xref" href="AngeliA.PoseCharacterRenderer.html">PoseCharacterRenderer</a></dt>
+    <dd></dd>
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>grabRotation</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>grabScale</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>sprite</code> <a class="xref" href="AngeliA.AngeSprite.html">AngeSprite</a></dt>
+    <dd></dd>
+    <dt><code>z</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="AngeliA.Cell.html">Cell</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Item/HandTool.cs/#L6" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

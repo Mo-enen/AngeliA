@@ -1,0 +1,52 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "C:\\Data\\AngeliA\\AngeliA Framework",
+          "files": [
+            "**/*.csproj"
+          ]
+        }, {
+          "src": "C:\\Data\\AngeliA\\AngeliA Platformer",
+          "files": [
+            "**/*.csproj"
+          ]
+        }
+
+      ],
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": ".",
+    "template": [
+      "default",
+      "modern"
+    ],
+    "globalMetadata": {
+      "_appName": "AngeliA",
+      "_appTitle": "AngeliA",
+      "_enableSearch": true,
+      "pdf": false
+    }
+  }
+}

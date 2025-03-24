@@ -1,0 +1,1691 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.BuiltInText
+  commentId: T:AngeliA.BuiltInText
+  id: BuiltInText
+  parent: AngeliA
+  children:
+  - AngeliA.BuiltInText.HINT_ADJUST
+  - AngeliA.BuiltInText.HINT_ATTACK
+  - AngeliA.BuiltInText.HINT_DRIVE
+  - AngeliA.BuiltInText.HINT_JUMP
+  - AngeliA.BuiltInText.HINT_MOVE
+  - AngeliA.BuiltInText.HINT_SHOW_MENU
+  - AngeliA.BuiltInText.HINT_STOP_DRIVE
+  - AngeliA.BuiltInText.HINT_SWITCH_PLAYER
+  - AngeliA.BuiltInText.HINT_USE
+  - AngeliA.BuiltInText.LABEL_B
+  - AngeliA.BuiltInText.LABEL_BOTTOM
+  - AngeliA.BuiltInText.LABEL_D
+  - AngeliA.BuiltInText.LABEL_DOWN
+  - AngeliA.BuiltInText.LABEL_L
+  - AngeliA.BuiltInText.LABEL_LEFT
+  - AngeliA.BuiltInText.LABEL_R
+  - AngeliA.BuiltInText.LABEL_RIGHT
+  - AngeliA.BuiltInText.LABEL_T
+  - AngeliA.BuiltInText.LABEL_TOP
+  - AngeliA.BuiltInText.LABEL_U
+  - AngeliA.BuiltInText.LABEL_UP
+  - AngeliA.BuiltInText.UI_ADD
+  - AngeliA.BuiltInText.UI_APPLY
+  - AngeliA.BuiltInText.UI_BACK
+  - AngeliA.BuiltInText.UI_CANCEL
+  - AngeliA.BuiltInText.UI_CONTINUE
+  - AngeliA.BuiltInText.UI_DEBUG
+  - AngeliA.BuiltInText.UI_DELETE
+  - AngeliA.BuiltInText.UI_DONT_SAVE
+  - AngeliA.BuiltInText.UI_EMPTY
+  - AngeliA.BuiltInText.UI_EXPLORE
+  - AngeliA.BuiltInText.UI_GAMEOVER
+  - AngeliA.BuiltInText.UI_IGNORE
+  - AngeliA.BuiltInText.UI_LOCK
+  - AngeliA.BuiltInText.UI_MENU
+  - AngeliA.BuiltInText.UI_NO
+  - AngeliA.BuiltInText.UI_NONE
+  - AngeliA.BuiltInText.UI_OFF
+  - AngeliA.BuiltInText.UI_OK
+  - AngeliA.BuiltInText.UI_ON
+  - AngeliA.BuiltInText.UI_OPEN
+  - AngeliA.BuiltInText.UI_QUIT
+  - AngeliA.BuiltInText.UI_QUIT_GAME
+  - AngeliA.BuiltInText.UI_RENAME
+  - AngeliA.BuiltInText.UI_RESET
+  - AngeliA.BuiltInText.UI_RESTART
+  - AngeliA.BuiltInText.UI_SAVE
+  - AngeliA.BuiltInText.UI_SETTING
+  - AngeliA.BuiltInText.UI_UNLOCK
+  - AngeliA.BuiltInText.UI_YES
+  langs:
+  - csharp
+  - vb
+  name: BuiltInText
+  nameWithType: BuiltInText
+  fullName: AngeliA.BuiltInText
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BuiltInText
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Utility class to get built-in text though language system
+  example: []
+  syntax:
+    content: public static class BuiltInText
+    content.vb: Public Module BuiltInText
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.BuiltInText.HINT_MOVE
+  commentId: F:AngeliA.BuiltInText.HINT_MOVE
+  id: HINT_MOVE
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: HINT_MOVE
+  nameWithType: BuiltInText.HINT_MOVE
+  fullName: AngeliA.BuiltInText.HINT_MOVE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HINT_MOVE
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode HINT_MOVE
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly HINT_MOVE As LanguageCode
+- uid: AngeliA.BuiltInText.HINT_JUMP
+  commentId: F:AngeliA.BuiltInText.HINT_JUMP
+  id: HINT_JUMP
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: HINT_JUMP
+  nameWithType: BuiltInText.HINT_JUMP
+  fullName: AngeliA.BuiltInText.HINT_JUMP
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HINT_JUMP
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode HINT_JUMP
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly HINT_JUMP As LanguageCode
+- uid: AngeliA.BuiltInText.HINT_SHOW_MENU
+  commentId: F:AngeliA.BuiltInText.HINT_SHOW_MENU
+  id: HINT_SHOW_MENU
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: HINT_SHOW_MENU
+  nameWithType: BuiltInText.HINT_SHOW_MENU
+  fullName: AngeliA.BuiltInText.HINT_SHOW_MENU
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HINT_SHOW_MENU
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode HINT_SHOW_MENU
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly HINT_SHOW_MENU As LanguageCode
+- uid: AngeliA.BuiltInText.HINT_ATTACK
+  commentId: F:AngeliA.BuiltInText.HINT_ATTACK
+  id: HINT_ATTACK
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: HINT_ATTACK
+  nameWithType: BuiltInText.HINT_ATTACK
+  fullName: AngeliA.BuiltInText.HINT_ATTACK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HINT_ATTACK
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode HINT_ATTACK
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly HINT_ATTACK As LanguageCode
+- uid: AngeliA.BuiltInText.HINT_USE
+  commentId: F:AngeliA.BuiltInText.HINT_USE
+  id: HINT_USE
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: HINT_USE
+  nameWithType: BuiltInText.HINT_USE
+  fullName: AngeliA.BuiltInText.HINT_USE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HINT_USE
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode HINT_USE
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly HINT_USE As LanguageCode
+- uid: AngeliA.BuiltInText.HINT_ADJUST
+  commentId: F:AngeliA.BuiltInText.HINT_ADJUST
+  id: HINT_ADJUST
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: HINT_ADJUST
+  nameWithType: BuiltInText.HINT_ADJUST
+  fullName: AngeliA.BuiltInText.HINT_ADJUST
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HINT_ADJUST
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode HINT_ADJUST
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly HINT_ADJUST As LanguageCode
+- uid: AngeliA.BuiltInText.HINT_DRIVE
+  commentId: F:AngeliA.BuiltInText.HINT_DRIVE
+  id: HINT_DRIVE
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: HINT_DRIVE
+  nameWithType: BuiltInText.HINT_DRIVE
+  fullName: AngeliA.BuiltInText.HINT_DRIVE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HINT_DRIVE
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode HINT_DRIVE
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly HINT_DRIVE As LanguageCode
+- uid: AngeliA.BuiltInText.HINT_STOP_DRIVE
+  commentId: F:AngeliA.BuiltInText.HINT_STOP_DRIVE
+  id: HINT_STOP_DRIVE
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: HINT_STOP_DRIVE
+  nameWithType: BuiltInText.HINT_STOP_DRIVE
+  fullName: AngeliA.BuiltInText.HINT_STOP_DRIVE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HINT_STOP_DRIVE
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode HINT_STOP_DRIVE
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly HINT_STOP_DRIVE As LanguageCode
+- uid: AngeliA.BuiltInText.HINT_SWITCH_PLAYER
+  commentId: F:AngeliA.BuiltInText.HINT_SWITCH_PLAYER
+  id: HINT_SWITCH_PLAYER
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: HINT_SWITCH_PLAYER
+  nameWithType: BuiltInText.HINT_SWITCH_PLAYER
+  fullName: AngeliA.BuiltInText.HINT_SWITCH_PLAYER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HINT_SWITCH_PLAYER
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode HINT_SWITCH_PLAYER
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly HINT_SWITCH_PLAYER As LanguageCode
+- uid: AngeliA.BuiltInText.UI_RESET
+  commentId: F:AngeliA.BuiltInText.UI_RESET
+  id: UI_RESET
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_RESET
+  nameWithType: BuiltInText.UI_RESET
+  fullName: AngeliA.BuiltInText.UI_RESET
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_RESET
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_RESET
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_RESET As LanguageCode
+- uid: AngeliA.BuiltInText.UI_CANCEL
+  commentId: F:AngeliA.BuiltInText.UI_CANCEL
+  id: UI_CANCEL
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_CANCEL
+  nameWithType: BuiltInText.UI_CANCEL
+  fullName: AngeliA.BuiltInText.UI_CANCEL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_CANCEL
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_CANCEL
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_CANCEL As LanguageCode
+- uid: AngeliA.BuiltInText.UI_CONTINUE
+  commentId: F:AngeliA.BuiltInText.UI_CONTINUE
+  id: UI_CONTINUE
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_CONTINUE
+  nameWithType: BuiltInText.UI_CONTINUE
+  fullName: AngeliA.BuiltInText.UI_CONTINUE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_CONTINUE
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 25
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_CONTINUE
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_CONTINUE As LanguageCode
+- uid: AngeliA.BuiltInText.UI_NONE
+  commentId: F:AngeliA.BuiltInText.UI_NONE
+  id: UI_NONE
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_NONE
+  nameWithType: BuiltInText.UI_NONE
+  fullName: AngeliA.BuiltInText.UI_NONE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_NONE
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_NONE
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_NONE As LanguageCode
+- uid: AngeliA.BuiltInText.UI_EMPTY
+  commentId: F:AngeliA.BuiltInText.UI_EMPTY
+  id: UI_EMPTY
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_EMPTY
+  nameWithType: BuiltInText.UI_EMPTY
+  fullName: AngeliA.BuiltInText.UI_EMPTY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_EMPTY
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 27
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_EMPTY
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_EMPTY As LanguageCode
+- uid: AngeliA.BuiltInText.UI_DEBUG
+  commentId: F:AngeliA.BuiltInText.UI_DEBUG
+  id: UI_DEBUG
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_DEBUG
+  nameWithType: BuiltInText.UI_DEBUG
+  fullName: AngeliA.BuiltInText.UI_DEBUG
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_DEBUG
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_DEBUG
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_DEBUG As LanguageCode
+- uid: AngeliA.BuiltInText.UI_QUIT
+  commentId: F:AngeliA.BuiltInText.UI_QUIT
+  id: UI_QUIT
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_QUIT
+  nameWithType: BuiltInText.UI_QUIT
+  fullName: AngeliA.BuiltInText.UI_QUIT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_QUIT
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 29
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_QUIT
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_QUIT As LanguageCode
+- uid: AngeliA.BuiltInText.UI_BACK
+  commentId: F:AngeliA.BuiltInText.UI_BACK
+  id: UI_BACK
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_BACK
+  nameWithType: BuiltInText.UI_BACK
+  fullName: AngeliA.BuiltInText.UI_BACK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_BACK
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_BACK
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_BACK As LanguageCode
+- uid: AngeliA.BuiltInText.UI_RESTART
+  commentId: F:AngeliA.BuiltInText.UI_RESTART
+  id: UI_RESTART
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_RESTART
+  nameWithType: BuiltInText.UI_RESTART
+  fullName: AngeliA.BuiltInText.UI_RESTART
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_RESTART
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 31
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_RESTART
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_RESTART As LanguageCode
+- uid: AngeliA.BuiltInText.UI_OK
+  commentId: F:AngeliA.BuiltInText.UI_OK
+  id: UI_OK
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_OK
+  nameWithType: BuiltInText.UI_OK
+  fullName: AngeliA.BuiltInText.UI_OK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_OK
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 32
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_OK
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_OK As LanguageCode
+- uid: AngeliA.BuiltInText.UI_GAMEOVER
+  commentId: F:AngeliA.BuiltInText.UI_GAMEOVER
+  id: UI_GAMEOVER
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_GAMEOVER
+  nameWithType: BuiltInText.UI_GAMEOVER
+  fullName: AngeliA.BuiltInText.UI_GAMEOVER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_GAMEOVER
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_GAMEOVER
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_GAMEOVER As LanguageCode
+- uid: AngeliA.BuiltInText.UI_SETTING
+  commentId: F:AngeliA.BuiltInText.UI_SETTING
+  id: UI_SETTING
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_SETTING
+  nameWithType: BuiltInText.UI_SETTING
+  fullName: AngeliA.BuiltInText.UI_SETTING
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_SETTING
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 34
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_SETTING
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_SETTING As LanguageCode
+- uid: AngeliA.BuiltInText.UI_QUIT_GAME
+  commentId: F:AngeliA.BuiltInText.UI_QUIT_GAME
+  id: UI_QUIT_GAME
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_QUIT_GAME
+  nameWithType: BuiltInText.UI_QUIT_GAME
+  fullName: AngeliA.BuiltInText.UI_QUIT_GAME
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_QUIT_GAME
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 35
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_QUIT_GAME
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_QUIT_GAME As LanguageCode
+- uid: AngeliA.BuiltInText.UI_ON
+  commentId: F:AngeliA.BuiltInText.UI_ON
+  id: UI_ON
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_ON
+  nameWithType: BuiltInText.UI_ON
+  fullName: AngeliA.BuiltInText.UI_ON
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_ON
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 36
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_ON
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_ON As LanguageCode
+- uid: AngeliA.BuiltInText.UI_OFF
+  commentId: F:AngeliA.BuiltInText.UI_OFF
+  id: UI_OFF
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_OFF
+  nameWithType: BuiltInText.UI_OFF
+  fullName: AngeliA.BuiltInText.UI_OFF
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_OFF
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 37
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_OFF
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_OFF As LanguageCode
+- uid: AngeliA.BuiltInText.UI_YES
+  commentId: F:AngeliA.BuiltInText.UI_YES
+  id: UI_YES
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_YES
+  nameWithType: BuiltInText.UI_YES
+  fullName: AngeliA.BuiltInText.UI_YES
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_YES
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 38
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_YES
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_YES As LanguageCode
+- uid: AngeliA.BuiltInText.UI_SAVE
+  commentId: F:AngeliA.BuiltInText.UI_SAVE
+  id: UI_SAVE
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_SAVE
+  nameWithType: BuiltInText.UI_SAVE
+  fullName: AngeliA.BuiltInText.UI_SAVE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_SAVE
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 39
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_SAVE
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_SAVE As LanguageCode
+- uid: AngeliA.BuiltInText.UI_DONT_SAVE
+  commentId: F:AngeliA.BuiltInText.UI_DONT_SAVE
+  id: UI_DONT_SAVE
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_DONT_SAVE
+  nameWithType: BuiltInText.UI_DONT_SAVE
+  fullName: AngeliA.BuiltInText.UI_DONT_SAVE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_DONT_SAVE
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 40
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_DONT_SAVE
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_DONT_SAVE As LanguageCode
+- uid: AngeliA.BuiltInText.UI_NO
+  commentId: F:AngeliA.BuiltInText.UI_NO
+  id: UI_NO
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_NO
+  nameWithType: BuiltInText.UI_NO
+  fullName: AngeliA.BuiltInText.UI_NO
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_NO
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 41
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_NO
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_NO As LanguageCode
+- uid: AngeliA.BuiltInText.UI_DELETE
+  commentId: F:AngeliA.BuiltInText.UI_DELETE
+  id: UI_DELETE
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_DELETE
+  nameWithType: BuiltInText.UI_DELETE
+  fullName: AngeliA.BuiltInText.UI_DELETE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_DELETE
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 42
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_DELETE
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_DELETE As LanguageCode
+- uid: AngeliA.BuiltInText.UI_OPEN
+  commentId: F:AngeliA.BuiltInText.UI_OPEN
+  id: UI_OPEN
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_OPEN
+  nameWithType: BuiltInText.UI_OPEN
+  fullName: AngeliA.BuiltInText.UI_OPEN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_OPEN
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 43
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_OPEN
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_OPEN As LanguageCode
+- uid: AngeliA.BuiltInText.UI_ADD
+  commentId: F:AngeliA.BuiltInText.UI_ADD
+  id: UI_ADD
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_ADD
+  nameWithType: BuiltInText.UI_ADD
+  fullName: AngeliA.BuiltInText.UI_ADD
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_ADD
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 44
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_ADD
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_ADD As LanguageCode
+- uid: AngeliA.BuiltInText.UI_MENU
+  commentId: F:AngeliA.BuiltInText.UI_MENU
+  id: UI_MENU
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_MENU
+  nameWithType: BuiltInText.UI_MENU
+  fullName: AngeliA.BuiltInText.UI_MENU
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_MENU
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 45
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_MENU
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_MENU As LanguageCode
+- uid: AngeliA.BuiltInText.UI_EXPLORE
+  commentId: F:AngeliA.BuiltInText.UI_EXPLORE
+  id: UI_EXPLORE
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_EXPLORE
+  nameWithType: BuiltInText.UI_EXPLORE
+  fullName: AngeliA.BuiltInText.UI_EXPLORE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_EXPLORE
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 46
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_EXPLORE
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_EXPLORE As LanguageCode
+- uid: AngeliA.BuiltInText.UI_IGNORE
+  commentId: F:AngeliA.BuiltInText.UI_IGNORE
+  id: UI_IGNORE
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_IGNORE
+  nameWithType: BuiltInText.UI_IGNORE
+  fullName: AngeliA.BuiltInText.UI_IGNORE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_IGNORE
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 47
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_IGNORE
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_IGNORE As LanguageCode
+- uid: AngeliA.BuiltInText.UI_APPLY
+  commentId: F:AngeliA.BuiltInText.UI_APPLY
+  id: UI_APPLY
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_APPLY
+  nameWithType: BuiltInText.UI_APPLY
+  fullName: AngeliA.BuiltInText.UI_APPLY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_APPLY
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 48
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_APPLY
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_APPLY As LanguageCode
+- uid: AngeliA.BuiltInText.UI_LOCK
+  commentId: F:AngeliA.BuiltInText.UI_LOCK
+  id: UI_LOCK
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_LOCK
+  nameWithType: BuiltInText.UI_LOCK
+  fullName: AngeliA.BuiltInText.UI_LOCK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_LOCK
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 49
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_LOCK
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_LOCK As LanguageCode
+- uid: AngeliA.BuiltInText.UI_UNLOCK
+  commentId: F:AngeliA.BuiltInText.UI_UNLOCK
+  id: UI_UNLOCK
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_UNLOCK
+  nameWithType: BuiltInText.UI_UNLOCK
+  fullName: AngeliA.BuiltInText.UI_UNLOCK
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_UNLOCK
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 50
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_UNLOCK
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_UNLOCK As LanguageCode
+- uid: AngeliA.BuiltInText.UI_RENAME
+  commentId: F:AngeliA.BuiltInText.UI_RENAME
+  id: UI_RENAME
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: UI_RENAME
+  nameWithType: BuiltInText.UI_RENAME
+  fullName: AngeliA.BuiltInText.UI_RENAME
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI_RENAME
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 51
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode UI_RENAME
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly UI_RENAME As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_L
+  commentId: F:AngeliA.BuiltInText.LABEL_L
+  id: LABEL_L
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_L
+  nameWithType: BuiltInText.LABEL_L
+  fullName: AngeliA.BuiltInText.LABEL_L
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_L
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 54
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_L
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_L As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_R
+  commentId: F:AngeliA.BuiltInText.LABEL_R
+  id: LABEL_R
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_R
+  nameWithType: BuiltInText.LABEL_R
+  fullName: AngeliA.BuiltInText.LABEL_R
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_R
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 55
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_R
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_R As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_D
+  commentId: F:AngeliA.BuiltInText.LABEL_D
+  id: LABEL_D
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_D
+  nameWithType: BuiltInText.LABEL_D
+  fullName: AngeliA.BuiltInText.LABEL_D
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_D
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 56
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_D
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_D As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_U
+  commentId: F:AngeliA.BuiltInText.LABEL_U
+  id: LABEL_U
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_U
+  nameWithType: BuiltInText.LABEL_U
+  fullName: AngeliA.BuiltInText.LABEL_U
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_U
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 57
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_U
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_U As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_B
+  commentId: F:AngeliA.BuiltInText.LABEL_B
+  id: LABEL_B
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_B
+  nameWithType: BuiltInText.LABEL_B
+  fullName: AngeliA.BuiltInText.LABEL_B
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_B
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 58
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_B
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_B As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_T
+  commentId: F:AngeliA.BuiltInText.LABEL_T
+  id: LABEL_T
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_T
+  nameWithType: BuiltInText.LABEL_T
+  fullName: AngeliA.BuiltInText.LABEL_T
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_T
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 59
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_T
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_T As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_LEFT
+  commentId: F:AngeliA.BuiltInText.LABEL_LEFT
+  id: LABEL_LEFT
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_LEFT
+  nameWithType: BuiltInText.LABEL_LEFT
+  fullName: AngeliA.BuiltInText.LABEL_LEFT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_LEFT
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 60
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_LEFT
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_LEFT As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_RIGHT
+  commentId: F:AngeliA.BuiltInText.LABEL_RIGHT
+  id: LABEL_RIGHT
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_RIGHT
+  nameWithType: BuiltInText.LABEL_RIGHT
+  fullName: AngeliA.BuiltInText.LABEL_RIGHT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_RIGHT
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 61
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_RIGHT
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_RIGHT As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_DOWN
+  commentId: F:AngeliA.BuiltInText.LABEL_DOWN
+  id: LABEL_DOWN
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_DOWN
+  nameWithType: BuiltInText.LABEL_DOWN
+  fullName: AngeliA.BuiltInText.LABEL_DOWN
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_DOWN
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 62
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_DOWN
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_DOWN As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_UP
+  commentId: F:AngeliA.BuiltInText.LABEL_UP
+  id: LABEL_UP
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_UP
+  nameWithType: BuiltInText.LABEL_UP
+  fullName: AngeliA.BuiltInText.LABEL_UP
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_UP
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 63
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_UP
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_UP As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_BOTTOM
+  commentId: F:AngeliA.BuiltInText.LABEL_BOTTOM
+  id: LABEL_BOTTOM
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_BOTTOM
+  nameWithType: BuiltInText.LABEL_BOTTOM
+  fullName: AngeliA.BuiltInText.LABEL_BOTTOM
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_BOTTOM
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 64
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_BOTTOM
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_BOTTOM As LanguageCode
+- uid: AngeliA.BuiltInText.LABEL_TOP
+  commentId: F:AngeliA.BuiltInText.LABEL_TOP
+  id: LABEL_TOP
+  parent: AngeliA.BuiltInText
+  langs:
+  - csharp
+  - vb
+  name: LABEL_TOP
+  nameWithType: BuiltInText.LABEL_TOP
+  fullName: AngeliA.BuiltInText.LABEL_TOP
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/BuiltInText.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LABEL_TOP
+    path: ../AngeliA Framework/src/Common/BuiltInText.cs
+    startLine: 65
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly LanguageCode LABEL_TOP
+    return:
+      type: AngeliA.LanguageCode
+    content.vb: Public Shared ReadOnly LABEL_TOP As LanguageCode
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.LanguageCode
+  commentId: T:AngeliA.LanguageCode
+  parent: AngeliA
+  href: AngeliA.LanguageCode.html
+  name: LanguageCode
+  nameWithType: LanguageCode
+  fullName: AngeliA.LanguageCode

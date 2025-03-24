@@ -1,0 +1,598 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.EntityLayer
+  commentId: T:AngeliA.EntityLayer
+  id: EntityLayer
+  parent: AngeliA
+  children:
+  - AngeliA.EntityLayer.BULLET
+  - AngeliA.EntityLayer.CHARACTER
+  - AngeliA.EntityLayer.COUNT
+  - AngeliA.EntityLayer.DECORATE
+  - AngeliA.EntityLayer.ENVIRONMENT
+  - AngeliA.EntityLayer.GAME
+  - AngeliA.EntityLayer.ITEM
+  - AngeliA.EntityLayer.LAYER_NAMES
+  - AngeliA.EntityLayer.UI
+  - AngeliA.EntityLayer.WATER
+  langs:
+  - csharp
+  - vb
+  name: EntityLayer
+  nameWithType: EntityLayer
+  fullName: AngeliA.EntityLayer
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/EntityLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EntityLayer
+    path: ../AngeliA Framework/src/Common/EntityLayer.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Layer for entity spawning
+  example: []
+  syntax:
+    content: public static class EntityLayer
+    content.vb: Public Module EntityLayer
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.EntityLayer.LAYER_NAMES
+  commentId: F:AngeliA.EntityLayer.LAYER_NAMES
+  id: LAYER_NAMES
+  parent: AngeliA.EntityLayer
+  langs:
+  - csharp
+  - vb
+  name: LAYER_NAMES
+  nameWithType: EntityLayer.LAYER_NAMES
+  fullName: AngeliA.EntityLayer.LAYER_NAMES
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/EntityLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LAYER_NAMES
+    path: ../AngeliA Framework/src/Common/EntityLayer.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly string[] LAYER_NAMES
+    return:
+      type: System.String[]
+    content.vb: Public Shared ReadOnly LAYER_NAMES As String()
+- uid: AngeliA.EntityLayer.UI
+  commentId: F:AngeliA.EntityLayer.UI
+  id: UI
+  parent: AngeliA.EntityLayer
+  langs:
+  - csharp
+  - vb
+  name: UI
+  nameWithType: EntityLayer.UI
+  fullName: AngeliA.EntityLayer.UI
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/EntityLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UI
+    path: ../AngeliA Framework/src/Common/EntityLayer.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int UI = 0
+    return:
+      type: System.Int32
+    content.vb: Public Const UI As Integer = 0
+- uid: AngeliA.EntityLayer.GAME
+  commentId: F:AngeliA.EntityLayer.GAME
+  id: GAME
+  parent: AngeliA.EntityLayer
+  langs:
+  - csharp
+  - vb
+  name: GAME
+  nameWithType: EntityLayer.GAME
+  fullName: AngeliA.EntityLayer.GAME
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/EntityLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GAME
+    path: ../AngeliA Framework/src/Common/EntityLayer.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int GAME = 1
+    return:
+      type: System.Int32
+    content.vb: Public Const GAME As Integer = 1
+- uid: AngeliA.EntityLayer.CHARACTER
+  commentId: F:AngeliA.EntityLayer.CHARACTER
+  id: CHARACTER
+  parent: AngeliA.EntityLayer
+  langs:
+  - csharp
+  - vb
+  name: CHARACTER
+  nameWithType: EntityLayer.CHARACTER
+  fullName: AngeliA.EntityLayer.CHARACTER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/EntityLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CHARACTER
+    path: ../AngeliA Framework/src/Common/EntityLayer.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int CHARACTER = 2
+    return:
+      type: System.Int32
+    content.vb: Public Const CHARACTER As Integer = 2
+- uid: AngeliA.EntityLayer.ENVIRONMENT
+  commentId: F:AngeliA.EntityLayer.ENVIRONMENT
+  id: ENVIRONMENT
+  parent: AngeliA.EntityLayer
+  langs:
+  - csharp
+  - vb
+  name: ENVIRONMENT
+  nameWithType: EntityLayer.ENVIRONMENT
+  fullName: AngeliA.EntityLayer.ENVIRONMENT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/EntityLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ENVIRONMENT
+    path: ../AngeliA Framework/src/Common/EntityLayer.cs
+    startLine: 12
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int ENVIRONMENT = 3
+    return:
+      type: System.Int32
+    content.vb: Public Const ENVIRONMENT As Integer = 3
+- uid: AngeliA.EntityLayer.WATER
+  commentId: F:AngeliA.EntityLayer.WATER
+  id: WATER
+  parent: AngeliA.EntityLayer
+  langs:
+  - csharp
+  - vb
+  name: WATER
+  nameWithType: EntityLayer.WATER
+  fullName: AngeliA.EntityLayer.WATER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/EntityLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: WATER
+    path: ../AngeliA Framework/src/Common/EntityLayer.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int WATER = 4
+    return:
+      type: System.Int32
+    content.vb: Public Const WATER As Integer = 4
+- uid: AngeliA.EntityLayer.BULLET
+  commentId: F:AngeliA.EntityLayer.BULLET
+  id: BULLET
+  parent: AngeliA.EntityLayer
+  langs:
+  - csharp
+  - vb
+  name: BULLET
+  nameWithType: EntityLayer.BULLET
+  fullName: AngeliA.EntityLayer.BULLET
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/EntityLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BULLET
+    path: ../AngeliA Framework/src/Common/EntityLayer.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int BULLET = 5
+    return:
+      type: System.Int32
+    content.vb: Public Const BULLET As Integer = 5
+- uid: AngeliA.EntityLayer.ITEM
+  commentId: F:AngeliA.EntityLayer.ITEM
+  id: ITEM
+  parent: AngeliA.EntityLayer
+  langs:
+  - csharp
+  - vb
+  name: ITEM
+  nameWithType: EntityLayer.ITEM
+  fullName: AngeliA.EntityLayer.ITEM
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/EntityLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ITEM
+    path: ../AngeliA Framework/src/Common/EntityLayer.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int ITEM = 6
+    return:
+      type: System.Int32
+    content.vb: Public Const ITEM As Integer = 6
+- uid: AngeliA.EntityLayer.DECORATE
+  commentId: F:AngeliA.EntityLayer.DECORATE
+  id: DECORATE
+  parent: AngeliA.EntityLayer
+  langs:
+  - csharp
+  - vb
+  name: DECORATE
+  nameWithType: EntityLayer.DECORATE
+  fullName: AngeliA.EntityLayer.DECORATE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/EntityLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DECORATE
+    path: ../AngeliA Framework/src/Common/EntityLayer.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int DECORATE = 7
+    return:
+      type: System.Int32
+    content.vb: Public Const DECORATE As Integer = 7
+- uid: AngeliA.EntityLayer.COUNT
+  commentId: F:AngeliA.EntityLayer.COUNT
+  id: COUNT
+  parent: AngeliA.EntityLayer
+  langs:
+  - csharp
+  - vb
+  name: COUNT
+  nameWithType: EntityLayer.COUNT
+  fullName: AngeliA.EntityLayer.COUNT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/EntityLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: COUNT
+    path: ../AngeliA Framework/src/Common/EntityLayer.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int COUNT = 8
+    return:
+      type: System.Int32
+    content.vb: Public Const COUNT As Integer = 8
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

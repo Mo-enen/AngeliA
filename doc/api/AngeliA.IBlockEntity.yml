@@ -1,0 +1,576 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.IBlockEntity
+  commentId: T:AngeliA.IBlockEntity
+  id: IBlockEntity
+  parent: AngeliA
+  children:
+  - AngeliA.IBlockEntity.AllowBeingEmbedAsElement
+  - AngeliA.IBlockEntity.EmbedEntityAsElement
+  - AngeliA.IBlockEntity.IsIgnoreEmbedAsElement(System.Int32)
+  - AngeliA.IBlockEntity.MaxStackCount
+  - AngeliA.IBlockEntity.OnEntityPicked
+  - AngeliA.IBlockEntity.OnEntityPut
+  - AngeliA.IBlockEntity.OnEntityRefresh
+  - AngeliA.IBlockEntity.RefreshBlockEntitiesNearby(AngeliA.Int2,AngeliA.Entity)
+  langs:
+  - csharp
+  - vb
+  name: IBlockEntity
+  nameWithType: IBlockEntity
+  fullName: AngeliA.IBlockEntity
+  type: Interface
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IBlockEntity
+    path: ../AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public interface IBlockEntity
+    content.vb: Public Interface IBlockEntity
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.IBlockEntity.MaxStackCount
+  commentId: P:AngeliA.IBlockEntity.MaxStackCount
+  id: MaxStackCount
+  parent: AngeliA.IBlockEntity
+  langs:
+  - csharp
+  - vb
+  name: MaxStackCount
+  nameWithType: IBlockEntity.MaxStackCount
+  fullName: AngeliA.IBlockEntity.MaxStackCount
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MaxStackCount
+    path: ../AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: int MaxStackCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property MaxStackCount As Integer
+  overload: AngeliA.IBlockEntity.MaxStackCount*
+- uid: AngeliA.IBlockEntity.EmbedEntityAsElement
+  commentId: P:AngeliA.IBlockEntity.EmbedEntityAsElement
+  id: EmbedEntityAsElement
+  parent: AngeliA.IBlockEntity
+  langs:
+  - csharp
+  - vb
+  name: EmbedEntityAsElement
+  nameWithType: IBlockEntity.EmbedEntityAsElement
+  fullName: AngeliA.IBlockEntity.EmbedEntityAsElement
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EmbedEntityAsElement
+    path: ../AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool EmbedEntityAsElement { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property EmbedEntityAsElement As Boolean
+  overload: AngeliA.IBlockEntity.EmbedEntityAsElement*
+- uid: AngeliA.IBlockEntity.AllowBeingEmbedAsElement
+  commentId: P:AngeliA.IBlockEntity.AllowBeingEmbedAsElement
+  id: AllowBeingEmbedAsElement
+  parent: AngeliA.IBlockEntity
+  langs:
+  - csharp
+  - vb
+  name: AllowBeingEmbedAsElement
+  nameWithType: IBlockEntity.AllowBeingEmbedAsElement
+  fullName: AngeliA.IBlockEntity.AllowBeingEmbedAsElement
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllowBeingEmbedAsElement
+    path: ../AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool AllowBeingEmbedAsElement { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property AllowBeingEmbedAsElement As Boolean
+  overload: AngeliA.IBlockEntity.AllowBeingEmbedAsElement*
+- uid: AngeliA.IBlockEntity.OnEntityPicked
+  commentId: M:AngeliA.IBlockEntity.OnEntityPicked
+  id: OnEntityPicked
+  parent: AngeliA.IBlockEntity
+  langs:
+  - csharp
+  - vb
+  name: OnEntityPicked()
+  nameWithType: IBlockEntity.OnEntityPicked()
+  fullName: AngeliA.IBlockEntity.OnEntityPicked()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnEntityPicked
+    path: ../AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: void OnEntityPicked()
+    content.vb: Sub OnEntityPicked()
+  overload: AngeliA.IBlockEntity.OnEntityPicked*
+- uid: AngeliA.IBlockEntity.OnEntityPut
+  commentId: M:AngeliA.IBlockEntity.OnEntityPut
+  id: OnEntityPut
+  parent: AngeliA.IBlockEntity
+  langs:
+  - csharp
+  - vb
+  name: OnEntityPut()
+  nameWithType: IBlockEntity.OnEntityPut()
+  fullName: AngeliA.IBlockEntity.OnEntityPut()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnEntityPut
+    path: ../AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+    startLine: 27
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: void OnEntityPut()
+    content.vb: Sub OnEntityPut()
+  overload: AngeliA.IBlockEntity.OnEntityPut*
+- uid: AngeliA.IBlockEntity.OnEntityRefresh
+  commentId: M:AngeliA.IBlockEntity.OnEntityRefresh
+  id: OnEntityRefresh
+  parent: AngeliA.IBlockEntity
+  langs:
+  - csharp
+  - vb
+  name: OnEntityRefresh()
+  nameWithType: IBlockEntity.OnEntityRefresh()
+  fullName: AngeliA.IBlockEntity.OnEntityRefresh()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnEntityRefresh
+    path: ../AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: void OnEntityRefresh()
+    content.vb: Sub OnEntityRefresh()
+  overload: AngeliA.IBlockEntity.OnEntityRefresh*
+- uid: AngeliA.IBlockEntity.RefreshBlockEntitiesNearby(AngeliA.Int2,AngeliA.Entity)
+  commentId: M:AngeliA.IBlockEntity.RefreshBlockEntitiesNearby(AngeliA.Int2,AngeliA.Entity)
+  id: RefreshBlockEntitiesNearby(AngeliA.Int2,AngeliA.Entity)
+  parent: AngeliA.IBlockEntity
+  langs:
+  - csharp
+  - vb
+  name: RefreshBlockEntitiesNearby(Int2, Entity)
+  nameWithType: IBlockEntity.RefreshBlockEntitiesNearby(Int2, Entity)
+  fullName: AngeliA.IBlockEntity.RefreshBlockEntitiesNearby(AngeliA.Int2, AngeliA.Entity)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RefreshBlockEntitiesNearby
+    path: ../AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void RefreshBlockEntitiesNearby(Int2 centerUnitPos, Entity ignore = null)
+    parameters:
+    - id: centerUnitPos
+      type: AngeliA.Int2
+    - id: ignore
+      type: AngeliA.Entity
+    content.vb: Public Shared Sub RefreshBlockEntitiesNearby(centerUnitPos As Int2, ignore As Entity = Nothing)
+  overload: AngeliA.IBlockEntity.RefreshBlockEntitiesNearby*
+- uid: AngeliA.IBlockEntity.IsIgnoreEmbedAsElement(System.Int32)
+  commentId: M:AngeliA.IBlockEntity.IsIgnoreEmbedAsElement(System.Int32)
+  id: IsIgnoreEmbedAsElement(System.Int32)
+  parent: AngeliA.IBlockEntity
+  langs:
+  - csharp
+  - vb
+  name: IsIgnoreEmbedAsElement(int)
+  nameWithType: IBlockEntity.IsIgnoreEmbedAsElement(int)
+  fullName: AngeliA.IBlockEntity.IsIgnoreEmbedAsElement(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: IsIgnoreEmbedAsElement
+    path: ../AngeliA Framework/src/Entity/Interface/IBlockEntity.cs
+    startLine: 42
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool IsIgnoreEmbedAsElement(int blockEntityID)
+    parameters:
+    - id: blockEntityID
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsIgnoreEmbedAsElement(blockEntityID As Integer) As Boolean
+  overload: AngeliA.IBlockEntity.IsIgnoreEmbedAsElement*
+  nameWithType.vb: IBlockEntity.IsIgnoreEmbedAsElement(Integer)
+  fullName.vb: AngeliA.IBlockEntity.IsIgnoreEmbedAsElement(Integer)
+  name.vb: IsIgnoreEmbedAsElement(Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.IBlockEntity.MaxStackCount*
+  commentId: Overload:AngeliA.IBlockEntity.MaxStackCount
+  href: AngeliA.IBlockEntity.html#AngeliA_IBlockEntity_MaxStackCount
+  name: MaxStackCount
+  nameWithType: IBlockEntity.MaxStackCount
+  fullName: AngeliA.IBlockEntity.MaxStackCount
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.IBlockEntity.EmbedEntityAsElement*
+  commentId: Overload:AngeliA.IBlockEntity.EmbedEntityAsElement
+  href: AngeliA.IBlockEntity.html#AngeliA_IBlockEntity_EmbedEntityAsElement
+  name: EmbedEntityAsElement
+  nameWithType: IBlockEntity.EmbedEntityAsElement
+  fullName: AngeliA.IBlockEntity.EmbedEntityAsElement
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.IBlockEntity.AllowBeingEmbedAsElement*
+  commentId: Overload:AngeliA.IBlockEntity.AllowBeingEmbedAsElement
+  href: AngeliA.IBlockEntity.html#AngeliA_IBlockEntity_AllowBeingEmbedAsElement
+  name: AllowBeingEmbedAsElement
+  nameWithType: IBlockEntity.AllowBeingEmbedAsElement
+  fullName: AngeliA.IBlockEntity.AllowBeingEmbedAsElement
+- uid: AngeliA.IBlockEntity.OnEntityPicked*
+  commentId: Overload:AngeliA.IBlockEntity.OnEntityPicked
+  href: AngeliA.IBlockEntity.html#AngeliA_IBlockEntity_OnEntityPicked
+  name: OnEntityPicked
+  nameWithType: IBlockEntity.OnEntityPicked
+  fullName: AngeliA.IBlockEntity.OnEntityPicked
+- uid: AngeliA.IBlockEntity.OnEntityPut*
+  commentId: Overload:AngeliA.IBlockEntity.OnEntityPut
+  href: AngeliA.IBlockEntity.html#AngeliA_IBlockEntity_OnEntityPut
+  name: OnEntityPut
+  nameWithType: IBlockEntity.OnEntityPut
+  fullName: AngeliA.IBlockEntity.OnEntityPut
+- uid: AngeliA.IBlockEntity.OnEntityRefresh*
+  commentId: Overload:AngeliA.IBlockEntity.OnEntityRefresh
+  href: AngeliA.IBlockEntity.html#AngeliA_IBlockEntity_OnEntityRefresh
+  name: OnEntityRefresh
+  nameWithType: IBlockEntity.OnEntityRefresh
+  fullName: AngeliA.IBlockEntity.OnEntityRefresh
+- uid: AngeliA.IBlockEntity.RefreshBlockEntitiesNearby*
+  commentId: Overload:AngeliA.IBlockEntity.RefreshBlockEntitiesNearby
+  href: AngeliA.IBlockEntity.html#AngeliA_IBlockEntity_RefreshBlockEntitiesNearby_AngeliA_Int2_AngeliA_Entity_
+  name: RefreshBlockEntitiesNearby
+  nameWithType: IBlockEntity.RefreshBlockEntitiesNearby
+  fullName: AngeliA.IBlockEntity.RefreshBlockEntitiesNearby
+- uid: AngeliA.Int2
+  commentId: T:AngeliA.Int2
+  parent: AngeliA
+  href: AngeliA.Int2.html
+  name: Int2
+  nameWithType: Int2
+  fullName: AngeliA.Int2
+- uid: AngeliA.Entity
+  commentId: T:AngeliA.Entity
+  parent: AngeliA
+  href: AngeliA.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: AngeliA.Entity
+- uid: AngeliA.IBlockEntity.IsIgnoreEmbedAsElement*
+  commentId: Overload:AngeliA.IBlockEntity.IsIgnoreEmbedAsElement
+  href: AngeliA.IBlockEntity.html#AngeliA_IBlockEntity_IsIgnoreEmbedAsElement_System_Int32_
+  name: IsIgnoreEmbedAsElement
+  nameWithType: IBlockEntity.IsIgnoreEmbedAsElement
+  fullName: AngeliA.IBlockEntity.IsIgnoreEmbedAsElement

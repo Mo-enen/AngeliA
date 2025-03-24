@@ -1,0 +1,1633 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Cloth
+  commentId: T:AngeliA.Cloth
+  id: Cloth
+  parent: AngeliA
+  children:
+  - AngeliA.Cloth.AttachClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)
+  - AngeliA.Cloth.ClothID
+  - AngeliA.Cloth.ClothName
+  - AngeliA.Cloth.ClothSystemReady
+  - AngeliA.Cloth.ClothType
+  - AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite)
+  - AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32)
+  - AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,AngeliA.Color32,System.Boolean)
+  - AngeliA.Cloth.DefaultPool
+  - AngeliA.Cloth.DrawCloth(AngeliA.PoseCharacterRenderer)
+  - AngeliA.Cloth.DrawClothGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+  - AngeliA.Cloth.FillFromSheet(System.String)
+  - AngeliA.Cloth.ForAllCloth
+  - AngeliA.Cloth.GetDefaultClothID(System.Int32,AngeliA.ClothType)
+  - AngeliA.Cloth.GetDisplayName(System.Int32@)
+  - AngeliA.Cloth.HasCloth(System.Int32)
+  - AngeliA.Cloth.Pool
+  - AngeliA.Cloth.SheetIndex
+  - AngeliA.Cloth.SpriteLoaded
+  - AngeliA.Cloth.TryGetCloth(System.Int32,AngeliA.Cloth@)
+  langs:
+  - csharp
+  - vb
+  name: Cloth
+  nameWithType: Cloth
+  fullName: AngeliA.Cloth
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Cloth
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 7
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public abstract class Cloth
+    content.vb: Public MustInherit Class Cloth
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - AngeliA.BodyCloth
+  - AngeliA.FootCloth
+  - AngeliA.HandCloth
+  - AngeliA.HeadCloth
+  - AngeliA.HipCloth
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Cloth.ClothSystemReady
+  commentId: P:AngeliA.Cloth.ClothSystemReady
+  id: ClothSystemReady
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: ClothSystemReady
+  nameWithType: Cloth.ClothSystemReady
+  fullName: AngeliA.Cloth.ClothSystemReady
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ClothSystemReady
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool ClothSystemReady { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property ClothSystemReady As Boolean
+  overload: AngeliA.Cloth.ClothSystemReady*
+- uid: AngeliA.Cloth.ClothID
+  commentId: P:AngeliA.Cloth.ClothID
+  id: ClothID
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: ClothID
+  nameWithType: Cloth.ClothID
+  fullName: AngeliA.Cloth.ClothID
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ClothID
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int ClothID { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property ClothID As Integer
+  overload: AngeliA.Cloth.ClothID*
+- uid: AngeliA.Cloth.ClothName
+  commentId: P:AngeliA.Cloth.ClothName
+  id: ClothName
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: ClothName
+  nameWithType: Cloth.ClothName
+  fullName: AngeliA.Cloth.ClothName
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ClothName
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string ClothName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ClothName As String
+  overload: AngeliA.Cloth.ClothName*
+- uid: AngeliA.Cloth.ClothType
+  commentId: P:AngeliA.Cloth.ClothType
+  id: ClothType
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: ClothType
+  nameWithType: Cloth.ClothType
+  fullName: AngeliA.Cloth.ClothType
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ClothType
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public abstract ClothType ClothType { get; }
+    parameters: []
+    return:
+      type: AngeliA.ClothType
+    content.vb: Public MustOverride ReadOnly Property ClothType As ClothType
+  overload: AngeliA.Cloth.ClothType*
+- uid: AngeliA.Cloth.SpriteLoaded
+  commentId: P:AngeliA.Cloth.SpriteLoaded
+  id: SpriteLoaded
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: SpriteLoaded
+  nameWithType: Cloth.SpriteLoaded
+  fullName: AngeliA.Cloth.SpriteLoaded
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SpriteLoaded
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual bool SpriteLoaded { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable ReadOnly Property SpriteLoaded As Boolean
+  overload: AngeliA.Cloth.SpriteLoaded*
+- uid: AngeliA.Cloth.SheetIndex
+  commentId: P:AngeliA.Cloth.SheetIndex
+  id: SheetIndex
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: SheetIndex
+  nameWithType: Cloth.SheetIndex
+  fullName: AngeliA.Cloth.SheetIndex
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SheetIndex
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int SheetIndex { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property SheetIndex As Integer
+  overload: AngeliA.Cloth.SheetIndex*
+- uid: AngeliA.Cloth.Pool
+  commentId: F:AngeliA.Cloth.Pool
+  id: Pool
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: Pool
+  nameWithType: Cloth.Pool
+  fullName: AngeliA.Cloth.Pool
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Pool
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 27
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected static readonly Dictionary<int, Cloth> Pool
+    return:
+      type: System.Collections.Generic.Dictionary{System.Int32,AngeliA.Cloth}
+    content.vb: Protected Shared ReadOnly Pool As Dictionary(Of Integer, Cloth)
+- uid: AngeliA.Cloth.DefaultPool
+  commentId: F:AngeliA.Cloth.DefaultPool
+  id: DefaultPool
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: DefaultPool
+  nameWithType: Cloth.DefaultPool
+  fullName: AngeliA.Cloth.DefaultPool
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DefaultPool
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected static Dictionary<int, int>[] DefaultPool
+    return:
+      type: System.Collections.Generic.Dictionary{System.Int32,System.Int32}[]
+    content.vb: Protected Shared DefaultPool As Dictionary(Of Integer, Integer)()
+- uid: AngeliA.Cloth.DrawCloth(AngeliA.PoseCharacterRenderer)
+  commentId: M:AngeliA.Cloth.DrawCloth(AngeliA.PoseCharacterRenderer)
+  id: DrawCloth(AngeliA.PoseCharacterRenderer)
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: DrawCloth(PoseCharacterRenderer)
+  nameWithType: Cloth.DrawCloth(PoseCharacterRenderer)
+  fullName: AngeliA.Cloth.DrawCloth(AngeliA.PoseCharacterRenderer)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawCloth
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 103
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public abstract void DrawCloth(PoseCharacterRenderer renderer)
+    parameters:
+    - id: renderer
+      type: AngeliA.PoseCharacterRenderer
+    content.vb: Public MustOverride Sub DrawCloth(renderer As PoseCharacterRenderer)
+  overload: AngeliA.Cloth.DrawCloth*
+- uid: AngeliA.Cloth.DrawClothGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+  commentId: M:AngeliA.Cloth.DrawClothGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+  id: DrawClothGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: DrawClothGizmos(IRect, Color32, int)
+  nameWithType: Cloth.DrawClothGizmos(IRect, Color32, int)
+  fullName: AngeliA.Cloth.DrawClothGizmos(AngeliA.IRect, AngeliA.Color32, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DrawClothGizmos
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 106
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual void DrawClothGizmos(IRect rect, Color32 tint, int z)
+    parameters:
+    - id: rect
+      type: AngeliA.IRect
+    - id: tint
+      type: AngeliA.Color32
+    - id: z
+      type: System.Int32
+    content.vb: Public Overridable Sub DrawClothGizmos(rect As IRect, tint As Color32, z As Integer)
+  overload: AngeliA.Cloth.DrawClothGizmos*
+  nameWithType.vb: Cloth.DrawClothGizmos(IRect, Color32, Integer)
+  fullName.vb: AngeliA.Cloth.DrawClothGizmos(AngeliA.IRect, AngeliA.Color32, Integer)
+  name.vb: DrawClothGizmos(IRect, Color32, Integer)
+- uid: AngeliA.Cloth.FillFromSheet(System.String)
+  commentId: M:AngeliA.Cloth.FillFromSheet(System.String)
+  id: FillFromSheet(System.String)
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: FillFromSheet(string)
+  nameWithType: Cloth.FillFromSheet(string)
+  fullName: AngeliA.Cloth.FillFromSheet(string)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FillFromSheet
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 121
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual bool FillFromSheet(string name)
+    parameters:
+    - id: name
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable Function FillFromSheet(name As String) As Boolean
+  overload: AngeliA.Cloth.FillFromSheet*
+  nameWithType.vb: Cloth.FillFromSheet(String)
+  fullName.vb: AngeliA.Cloth.FillFromSheet(String)
+  name.vb: FillFromSheet(String)
+- uid: AngeliA.Cloth.HasCloth(System.Int32)
+  commentId: M:AngeliA.Cloth.HasCloth(System.Int32)
+  id: HasCloth(System.Int32)
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: HasCloth(int)
+  nameWithType: Cloth.HasCloth(int)
+  fullName: AngeliA.Cloth.HasCloth(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HasCloth
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 128
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool HasCloth(int clothID)
+    parameters:
+    - id: clothID
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function HasCloth(clothID As Integer) As Boolean
+  overload: AngeliA.Cloth.HasCloth*
+  nameWithType.vb: Cloth.HasCloth(Integer)
+  fullName.vb: AngeliA.Cloth.HasCloth(Integer)
+  name.vb: HasCloth(Integer)
+- uid: AngeliA.Cloth.TryGetCloth(System.Int32,AngeliA.Cloth@)
+  commentId: M:AngeliA.Cloth.TryGetCloth(System.Int32,AngeliA.Cloth@)
+  id: TryGetCloth(System.Int32,AngeliA.Cloth@)
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: TryGetCloth(int, out Cloth)
+  nameWithType: Cloth.TryGetCloth(int, out Cloth)
+  fullName: AngeliA.Cloth.TryGetCloth(int, out AngeliA.Cloth)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TryGetCloth
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 129
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool TryGetCloth(int clothID, out Cloth cloth)
+    parameters:
+    - id: clothID
+      type: System.Int32
+    - id: cloth
+      type: AngeliA.Cloth
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function TryGetCloth(clothID As Integer, cloth As Cloth) As Boolean
+  overload: AngeliA.Cloth.TryGetCloth*
+  nameWithType.vb: Cloth.TryGetCloth(Integer, Cloth)
+  fullName.vb: AngeliA.Cloth.TryGetCloth(Integer, AngeliA.Cloth)
+  name.vb: TryGetCloth(Integer, Cloth)
+- uid: AngeliA.Cloth.GetDefaultClothID(System.Int32,AngeliA.ClothType)
+  commentId: M:AngeliA.Cloth.GetDefaultClothID(System.Int32,AngeliA.ClothType)
+  id: GetDefaultClothID(System.Int32,AngeliA.ClothType)
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: GetDefaultClothID(int, ClothType)
+  nameWithType: Cloth.GetDefaultClothID(int, ClothType)
+  fullName: AngeliA.Cloth.GetDefaultClothID(int, AngeliA.ClothType)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetDefaultClothID
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 132
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static int GetDefaultClothID(int characterID, ClothType suitType)
+    parameters:
+    - id: characterID
+      type: System.Int32
+    - id: suitType
+      type: AngeliA.ClothType
+    return:
+      type: System.Int32
+    content.vb: Public Shared Function GetDefaultClothID(characterID As Integer, suitType As ClothType) As Integer
+  overload: AngeliA.Cloth.GetDefaultClothID*
+  nameWithType.vb: Cloth.GetDefaultClothID(Integer, ClothType)
+  fullName.vb: AngeliA.Cloth.GetDefaultClothID(Integer, AngeliA.ClothType)
+  name.vb: GetDefaultClothID(Integer, ClothType)
+- uid: AngeliA.Cloth.ForAllCloth
+  commentId: M:AngeliA.Cloth.ForAllCloth
+  id: ForAllCloth
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: ForAllCloth()
+  nameWithType: Cloth.ForAllCloth()
+  fullName: AngeliA.Cloth.ForAllCloth()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForAllCloth
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 141
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static IEnumerable<KeyValuePair<int, Cloth>> ForAllCloth()
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Int32,AngeliA.Cloth}}
+    content.vb: Public Shared Function ForAllCloth() As IEnumerable(Of KeyValuePair(Of Integer, Cloth))
+  overload: AngeliA.Cloth.ForAllCloth*
+- uid: AngeliA.Cloth.AttachClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)
+  commentId: M:AngeliA.Cloth.AttachClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)
+  id: AttachClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: AttachClothOn(BodyPart, AngeSprite, int, int, int, int, int, int, int, int, bool)
+  nameWithType: Cloth.AttachClothOn(BodyPart, AngeSprite, int, int, int, int, int, int, int, int, bool)
+  fullName: AngeliA.Cloth.AttachClothOn(AngeliA.BodyPart, AngeliA.AngeSprite, int, int, int, int, int, int, int, int, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AttachClothOn
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 147
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Cell[] AttachClothOn(BodyPart bodyPart, AngeSprite sprite, int locationX, int locationY, int localZ, int widthAmount = 1000, int heightAmount = 1000, int localRotation = 0, int shiftPixelX = 0, int shiftPixelY = 0, bool defaultHideLimb = true)
+    parameters:
+    - id: bodyPart
+      type: AngeliA.BodyPart
+    - id: sprite
+      type: AngeliA.AngeSprite
+    - id: locationX
+      type: System.Int32
+    - id: locationY
+      type: System.Int32
+    - id: localZ
+      type: System.Int32
+    - id: widthAmount
+      type: System.Int32
+    - id: heightAmount
+      type: System.Int32
+    - id: localRotation
+      type: System.Int32
+    - id: shiftPixelX
+      type: System.Int32
+    - id: shiftPixelY
+      type: System.Int32
+    - id: defaultHideLimb
+      type: System.Boolean
+    return:
+      type: AngeliA.Cell[]
+    content.vb: Public Shared Function AttachClothOn(bodyPart As BodyPart, sprite As AngeSprite, locationX As Integer, locationY As Integer, localZ As Integer, widthAmount As Integer = 1000, heightAmount As Integer = 1000, localRotation As Integer = 0, shiftPixelX As Integer = 0, shiftPixelY As Integer = 0, defaultHideLimb As Boolean = True) As Cell()
+  overload: AngeliA.Cloth.AttachClothOn*
+  nameWithType.vb: Cloth.AttachClothOn(BodyPart, AngeSprite, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Boolean)
+  fullName.vb: AngeliA.Cloth.AttachClothOn(AngeliA.BodyPart, AngeliA.AngeSprite, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Boolean)
+  name.vb: AttachClothOn(BodyPart, AngeSprite, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Boolean)
+- uid: AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite)
+  commentId: M:AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite)
+  id: CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite)
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: CoverClothOn(BodyPart, AngeSprite)
+  nameWithType: Cloth.CoverClothOn(BodyPart, AngeSprite)
+  fullName: AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart, AngeliA.AngeSprite)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CoverClothOn
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 188
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Cell[] CoverClothOn(BodyPart bodyPart, AngeSprite sprite)
+    parameters:
+    - id: bodyPart
+      type: AngeliA.BodyPart
+    - id: sprite
+      type: AngeliA.AngeSprite
+    return:
+      type: AngeliA.Cell[]
+    content.vb: Public Shared Function CoverClothOn(bodyPart As BodyPart, sprite As AngeSprite) As Cell()
+  overload: AngeliA.Cloth.CoverClothOn*
+- uid: AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32)
+  commentId: M:AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32)
+  id: CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32)
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: CoverClothOn(BodyPart, AngeSprite, int)
+  nameWithType: Cloth.CoverClothOn(BodyPart, AngeSprite, int)
+  fullName: AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart, AngeliA.AngeSprite, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CoverClothOn
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 189
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Cell[] CoverClothOn(BodyPart bodyPart, AngeSprite sprite, int localZ)
+    parameters:
+    - id: bodyPart
+      type: AngeliA.BodyPart
+    - id: sprite
+      type: AngeliA.AngeSprite
+    - id: localZ
+      type: System.Int32
+    return:
+      type: AngeliA.Cell[]
+    content.vb: Public Shared Function CoverClothOn(bodyPart As BodyPart, sprite As AngeSprite, localZ As Integer) As Cell()
+  overload: AngeliA.Cloth.CoverClothOn*
+  nameWithType.vb: Cloth.CoverClothOn(BodyPart, AngeSprite, Integer)
+  fullName.vb: AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart, AngeliA.AngeSprite, Integer)
+  name.vb: CoverClothOn(BodyPart, AngeSprite, Integer)
+- uid: AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,AngeliA.Color32,System.Boolean)
+  commentId: M:AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,AngeliA.Color32,System.Boolean)
+  id: CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,AngeliA.Color32,System.Boolean)
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: CoverClothOn(BodyPart, AngeSprite, int, Color32, bool)
+  nameWithType: Cloth.CoverClothOn(BodyPart, AngeSprite, int, Color32, bool)
+  fullName: AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart, AngeliA.AngeSprite, int, AngeliA.Color32, bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CoverClothOn
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 190
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Cell[] CoverClothOn(BodyPart bodyPart, AngeSprite sprite, int localZ, Color32 tint, bool defaultHideLimb = true)
+    parameters:
+    - id: bodyPart
+      type: AngeliA.BodyPart
+    - id: sprite
+      type: AngeliA.AngeSprite
+    - id: localZ
+      type: System.Int32
+    - id: tint
+      type: AngeliA.Color32
+    - id: defaultHideLimb
+      type: System.Boolean
+    return:
+      type: AngeliA.Cell[]
+    content.vb: Public Shared Function CoverClothOn(bodyPart As BodyPart, sprite As AngeSprite, localZ As Integer, tint As Color32, defaultHideLimb As Boolean = True) As Cell()
+  overload: AngeliA.Cloth.CoverClothOn*
+  nameWithType.vb: Cloth.CoverClothOn(BodyPart, AngeSprite, Integer, Color32, Boolean)
+  fullName.vb: AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart, AngeliA.AngeSprite, Integer, AngeliA.Color32, Boolean)
+  name.vb: CoverClothOn(BodyPart, AngeSprite, Integer, Color32, Boolean)
+- uid: AngeliA.Cloth.GetDisplayName(System.Int32@)
+  commentId: M:AngeliA.Cloth.GetDisplayName(System.Int32@)
+  id: GetDisplayName(System.Int32@)
+  parent: AngeliA.Cloth
+  langs:
+  - csharp
+  - vb
+  name: GetDisplayName(out int)
+  nameWithType: Cloth.GetDisplayName(out int)
+  fullName: AngeliA.Cloth.GetDisplayName(out int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetDisplayName
+    path: ../AngeliA Framework/src/Entity/Character/Cloth/Cloth.cs
+    startLine: 219
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public string GetDisplayName(out int languageID)
+    parameters:
+    - id: languageID
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Function GetDisplayName(languageID As Integer) As String
+  overload: AngeliA.Cloth.GetDisplayName*
+  nameWithType.vb: Cloth.GetDisplayName(Integer)
+  fullName.vb: AngeliA.Cloth.GetDisplayName(Integer)
+  name.vb: GetDisplayName(Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Cloth.ClothSystemReady*
+  commentId: Overload:AngeliA.Cloth.ClothSystemReady
+  href: AngeliA.Cloth.html#AngeliA_Cloth_ClothSystemReady
+  name: ClothSystemReady
+  nameWithType: Cloth.ClothSystemReady
+  fullName: AngeliA.Cloth.ClothSystemReady
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.Cloth.ClothID*
+  commentId: Overload:AngeliA.Cloth.ClothID
+  href: AngeliA.Cloth.html#AngeliA_Cloth_ClothID
+  name: ClothID
+  nameWithType: Cloth.ClothID
+  fullName: AngeliA.Cloth.ClothID
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Cloth.ClothName*
+  commentId: Overload:AngeliA.Cloth.ClothName
+  href: AngeliA.Cloth.html#AngeliA_Cloth_ClothName
+  name: ClothName
+  nameWithType: Cloth.ClothName
+  fullName: AngeliA.Cloth.ClothName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.Cloth.ClothType*
+  commentId: Overload:AngeliA.Cloth.ClothType
+  href: AngeliA.Cloth.html#AngeliA_Cloth_ClothType
+  name: ClothType
+  nameWithType: Cloth.ClothType
+  fullName: AngeliA.Cloth.ClothType
+- uid: AngeliA.ClothType
+  commentId: T:AngeliA.ClothType
+  parent: AngeliA
+  href: AngeliA.ClothType.html
+  name: ClothType
+  nameWithType: ClothType
+  fullName: AngeliA.ClothType
+- uid: AngeliA.Cloth.SpriteLoaded*
+  commentId: Overload:AngeliA.Cloth.SpriteLoaded
+  href: AngeliA.Cloth.html#AngeliA_Cloth_SpriteLoaded
+  name: SpriteLoaded
+  nameWithType: Cloth.SpriteLoaded
+  fullName: AngeliA.Cloth.SpriteLoaded
+- uid: AngeliA.Cloth.SheetIndex*
+  commentId: Overload:AngeliA.Cloth.SheetIndex
+  href: AngeliA.Cloth.html#AngeliA_Cloth_SheetIndex
+  name: SheetIndex
+  nameWithType: Cloth.SheetIndex
+  fullName: AngeliA.Cloth.SheetIndex
+- uid: System.Collections.Generic.Dictionary{System.Int32,AngeliA.Cloth}
+  commentId: T:System.Collections.Generic.Dictionary{System.Int32,AngeliA.Cloth}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<int, Cloth>
+  nameWithType: Dictionary<int, Cloth>
+  fullName: System.Collections.Generic.Dictionary<int, AngeliA.Cloth>
+  nameWithType.vb: Dictionary(Of Integer, Cloth)
+  fullName.vb: System.Collections.Generic.Dictionary(Of Integer, AngeliA.Cloth)
+  name.vb: Dictionary(Of Integer, Cloth)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Cloth
+    name: Cloth
+    href: AngeliA.Cloth.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Cloth
+    name: Cloth
+    href: AngeliA.Cloth.html
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Collections.Generic.Dictionary{System.Int32,System.Int32}[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<int, int>[]
+  nameWithType: Dictionary<int, int>[]
+  fullName: System.Collections.Generic.Dictionary<int, int>[]
+  nameWithType.vb: Dictionary(Of Integer, Integer)()
+  fullName.vb: System.Collections.Generic.Dictionary(Of Integer, Integer)()
+  name.vb: Dictionary(Of Integer, Integer)()
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  - name: (
+  - name: )
+- uid: AngeliA.Cloth.DrawCloth*
+  commentId: Overload:AngeliA.Cloth.DrawCloth
+  href: AngeliA.Cloth.html#AngeliA_Cloth_DrawCloth_AngeliA_PoseCharacterRenderer_
+  name: DrawCloth
+  nameWithType: Cloth.DrawCloth
+  fullName: AngeliA.Cloth.DrawCloth
+- uid: AngeliA.PoseCharacterRenderer
+  commentId: T:AngeliA.PoseCharacterRenderer
+  parent: AngeliA
+  href: AngeliA.PoseCharacterRenderer.html
+  name: PoseCharacterRenderer
+  nameWithType: PoseCharacterRenderer
+  fullName: AngeliA.PoseCharacterRenderer
+- uid: AngeliA.Cloth.DrawClothGizmos*
+  commentId: Overload:AngeliA.Cloth.DrawClothGizmos
+  href: AngeliA.Cloth.html#AngeliA_Cloth_DrawClothGizmos_AngeliA_IRect_AngeliA_Color32_System_Int32_
+  name: DrawClothGizmos
+  nameWithType: Cloth.DrawClothGizmos
+  fullName: AngeliA.Cloth.DrawClothGizmos
+- uid: AngeliA.IRect
+  commentId: T:AngeliA.IRect
+  parent: AngeliA
+  href: AngeliA.IRect.html
+  name: IRect
+  nameWithType: IRect
+  fullName: AngeliA.IRect
+- uid: AngeliA.Color32
+  commentId: T:AngeliA.Color32
+  parent: AngeliA
+  href: AngeliA.Color32.html
+  name: Color32
+  nameWithType: Color32
+  fullName: AngeliA.Color32
+- uid: AngeliA.Cloth.FillFromSheet*
+  commentId: Overload:AngeliA.Cloth.FillFromSheet
+  href: AngeliA.Cloth.html#AngeliA_Cloth_FillFromSheet_System_String_
+  name: FillFromSheet
+  nameWithType: Cloth.FillFromSheet
+  fullName: AngeliA.Cloth.FillFromSheet
+- uid: AngeliA.Cloth.HasCloth*
+  commentId: Overload:AngeliA.Cloth.HasCloth
+  href: AngeliA.Cloth.html#AngeliA_Cloth_HasCloth_System_Int32_
+  name: HasCloth
+  nameWithType: Cloth.HasCloth
+  fullName: AngeliA.Cloth.HasCloth
+- uid: AngeliA.Cloth.TryGetCloth*
+  commentId: Overload:AngeliA.Cloth.TryGetCloth
+  href: AngeliA.Cloth.html#AngeliA_Cloth_TryGetCloth_System_Int32_AngeliA_Cloth__
+  name: TryGetCloth
+  nameWithType: Cloth.TryGetCloth
+  fullName: AngeliA.Cloth.TryGetCloth
+- uid: AngeliA.Cloth
+  commentId: T:AngeliA.Cloth
+  parent: AngeliA
+  href: AngeliA.Cloth.html
+  name: Cloth
+  nameWithType: Cloth
+  fullName: AngeliA.Cloth
+- uid: AngeliA.Cloth.GetDefaultClothID*
+  commentId: Overload:AngeliA.Cloth.GetDefaultClothID
+  href: AngeliA.Cloth.html#AngeliA_Cloth_GetDefaultClothID_System_Int32_AngeliA_ClothType_
+  name: GetDefaultClothID
+  nameWithType: Cloth.GetDefaultClothID
+  fullName: AngeliA.Cloth.GetDefaultClothID
+- uid: AngeliA.Cloth.ForAllCloth*
+  commentId: Overload:AngeliA.Cloth.ForAllCloth
+  href: AngeliA.Cloth.html#AngeliA_Cloth_ForAllCloth
+  name: ForAllCloth
+  nameWithType: Cloth.ForAllCloth
+  fullName: AngeliA.Cloth.ForAllCloth
+- uid: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Int32,AngeliA.Cloth}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Int32,AngeliA.Cloth}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<KeyValuePair<int, Cloth>>
+  nameWithType: IEnumerable<KeyValuePair<int, Cloth>>
+  fullName: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<int, AngeliA.Cloth>>
+  nameWithType.vb: IEnumerable(Of KeyValuePair(Of Integer, Cloth))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of Integer, AngeliA.Cloth))
+  name.vb: IEnumerable(Of KeyValuePair(Of Integer, Cloth))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Cloth
+    name: Cloth
+    href: AngeliA.Cloth.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: AngeliA.Cloth
+    name: Cloth
+    href: AngeliA.Cloth.html
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: AngeliA.Cloth.AttachClothOn*
+  commentId: Overload:AngeliA.Cloth.AttachClothOn
+  href: AngeliA.Cloth.html#AngeliA_Cloth_AttachClothOn_AngeliA_BodyPart_AngeliA_AngeSprite_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Boolean_
+  name: AttachClothOn
+  nameWithType: Cloth.AttachClothOn
+  fullName: AngeliA.Cloth.AttachClothOn
+- uid: AngeliA.BodyPart
+  commentId: T:AngeliA.BodyPart
+  parent: AngeliA
+  href: AngeliA.BodyPart.html
+  name: BodyPart
+  nameWithType: BodyPart
+  fullName: AngeliA.BodyPart
+- uid: AngeliA.AngeSprite
+  commentId: T:AngeliA.AngeSprite
+  parent: AngeliA
+  href: AngeliA.AngeSprite.html
+  name: AngeSprite
+  nameWithType: AngeSprite
+  fullName: AngeliA.AngeSprite
+- uid: AngeliA.Cell[]
+  isExternal: true
+  href: AngeliA.Cell.html
+  name: Cell[]
+  nameWithType: Cell[]
+  fullName: AngeliA.Cell[]
+  nameWithType.vb: Cell()
+  fullName.vb: AngeliA.Cell()
+  name.vb: Cell()
+  spec.csharp:
+  - uid: AngeliA.Cell
+    name: Cell
+    href: AngeliA.Cell.html
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: AngeliA.Cell
+    name: Cell
+    href: AngeliA.Cell.html
+  - name: (
+  - name: )
+- uid: AngeliA.Cloth.CoverClothOn*
+  commentId: Overload:AngeliA.Cloth.CoverClothOn
+  href: AngeliA.Cloth.html#AngeliA_Cloth_CoverClothOn_AngeliA_BodyPart_AngeliA_AngeSprite_
+  name: CoverClothOn
+  nameWithType: Cloth.CoverClothOn
+  fullName: AngeliA.Cloth.CoverClothOn
+- uid: AngeliA.Cloth.GetDisplayName*
+  commentId: Overload:AngeliA.Cloth.GetDisplayName
+  href: AngeliA.Cloth.html#AngeliA_Cloth_GetDisplayName_System_Int32__
+  name: GetDisplayName
+  nameWithType: Cloth.GetDisplayName
+  fullName: AngeliA.Cloth.GetDisplayName

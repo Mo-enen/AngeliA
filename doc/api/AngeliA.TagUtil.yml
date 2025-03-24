@@ -1,0 +1,569 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.TagUtil
+  commentId: T:AngeliA.TagUtil
+  id: TagUtil
+  parent: AngeliA
+  children:
+  - AngeliA.TagUtil.ALL_TAG_NAMES
+  - AngeliA.TagUtil.AllDamages
+  - AngeliA.TagUtil.GetTagAt(System.Int32)
+  - AngeliA.TagUtil.HasAll(AngeliA.Tag,AngeliA.Tag)
+  - AngeliA.TagUtil.HasAny(AngeliA.Tag,AngeliA.Tag)
+  - AngeliA.TagUtil.NonExplosiveDamage
+  - AngeliA.TagUtil.TAG_COUNT
+  langs:
+  - csharp
+  - vb
+  name: TagUtil
+  nameWithType: TagUtil
+  fullName: AngeliA.TagUtil
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TagUtil
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 44
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static class TagUtil
+    content.vb: Public Module TagUtil
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.TagUtil.NonExplosiveDamage
+  commentId: F:AngeliA.TagUtil.NonExplosiveDamage
+  id: NonExplosiveDamage
+  parent: AngeliA.TagUtil
+  langs:
+  - csharp
+  - vb
+  name: NonExplosiveDamage
+  nameWithType: TagUtil.NonExplosiveDamage
+  fullName: AngeliA.TagUtil.NonExplosiveDamage
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: NonExplosiveDamage
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 47
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const Tag NonExplosiveDamage = PhysicalDamage | MagicalDamage | PoisonDamage | FireDamage | IceDamage | LightenDamage
+    return:
+      type: AngeliA.Tag
+    content.vb: Public Const NonExplosiveDamage As Tag = PhysicalDamage Or MagicalDamage Or PoisonDamage Or FireDamage Or IceDamage Or LightenDamage
+- uid: AngeliA.TagUtil.AllDamages
+  commentId: F:AngeliA.TagUtil.AllDamages
+  id: AllDamages
+  parent: AngeliA.TagUtil
+  langs:
+  - csharp
+  - vb
+  name: AllDamages
+  nameWithType: TagUtil.AllDamages
+  fullName: AngeliA.TagUtil.AllDamages
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllDamages
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 48
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const Tag AllDamages = PhysicalDamage | ExplosiveDamage | MagicalDamage | PoisonDamage | FireDamage | IceDamage | LightenDamage
+    return:
+      type: AngeliA.Tag
+    content.vb: Public Const AllDamages As Tag = PhysicalDamage Or ExplosiveDamage Or MagicalDamage Or PoisonDamage Or FireDamage Or IceDamage Or LightenDamage
+- uid: AngeliA.TagUtil.TAG_COUNT
+  commentId: F:AngeliA.TagUtil.TAG_COUNT
+  id: TAG_COUNT
+  parent: AngeliA.TagUtil
+  langs:
+  - csharp
+  - vb
+  name: TAG_COUNT
+  nameWithType: TagUtil.TAG_COUNT
+  fullName: AngeliA.TagUtil.TAG_COUNT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TAG_COUNT
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 49
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int TAG_COUNT = 26
+    return:
+      type: System.Int32
+    content.vb: Public Const TAG_COUNT As Integer = 26
+- uid: AngeliA.TagUtil.ALL_TAG_NAMES
+  commentId: F:AngeliA.TagUtil.ALL_TAG_NAMES
+  id: ALL_TAG_NAMES
+  parent: AngeliA.TagUtil
+  langs:
+  - csharp
+  - vb
+  name: ALL_TAG_NAMES
+  nameWithType: TagUtil.ALL_TAG_NAMES
+  fullName: AngeliA.TagUtil.ALL_TAG_NAMES
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ALL_TAG_NAMES
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 50
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly string[] ALL_TAG_NAMES
+    return:
+      type: System.String[]
+    content.vb: Public Shared ReadOnly ALL_TAG_NAMES As String()
+- uid: AngeliA.TagUtil.GetTagAt(System.Int32)
+  commentId: M:AngeliA.TagUtil.GetTagAt(System.Int32)
+  id: GetTagAt(System.Int32)
+  parent: AngeliA.TagUtil
+  langs:
+  - csharp
+  - vb
+  name: GetTagAt(int)
+  nameWithType: TagUtil.GetTagAt(int)
+  fullName: AngeliA.TagUtil.GetTagAt(int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetTagAt
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 87
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static Tag GetTagAt(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: AngeliA.Tag
+    content.vb: Public Shared Function GetTagAt(index As Integer) As Tag
+  overload: AngeliA.TagUtil.GetTagAt*
+  nameWithType.vb: TagUtil.GetTagAt(Integer)
+  fullName.vb: AngeliA.TagUtil.GetTagAt(Integer)
+  name.vb: GetTagAt(Integer)
+- uid: AngeliA.TagUtil.HasAll(AngeliA.Tag,AngeliA.Tag)
+  commentId: M:AngeliA.TagUtil.HasAll(AngeliA.Tag,AngeliA.Tag)
+  id: HasAll(AngeliA.Tag,AngeliA.Tag)
+  isExtensionMethod: true
+  parent: AngeliA.TagUtil
+  langs:
+  - csharp
+  - vb
+  name: HasAll(Tag, Tag)
+  nameWithType: TagUtil.HasAll(Tag, Tag)
+  fullName: AngeliA.TagUtil.HasAll(AngeliA.Tag, AngeliA.Tag)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HasAll
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 89
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool HasAll(this Tag self, Tag musk)
+    parameters:
+    - id: self
+      type: AngeliA.Tag
+    - id: musk
+      type: AngeliA.Tag
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function HasAll(self As Tag, musk As Tag) As Boolean
+  overload: AngeliA.TagUtil.HasAll*
+- uid: AngeliA.TagUtil.HasAny(AngeliA.Tag,AngeliA.Tag)
+  commentId: M:AngeliA.TagUtil.HasAny(AngeliA.Tag,AngeliA.Tag)
+  id: HasAny(AngeliA.Tag,AngeliA.Tag)
+  isExtensionMethod: true
+  parent: AngeliA.TagUtil
+  langs:
+  - csharp
+  - vb
+  name: HasAny(Tag, Tag)
+  nameWithType: TagUtil.HasAny(Tag, Tag)
+  fullName: AngeliA.TagUtil.HasAny(AngeliA.Tag, AngeliA.Tag)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Structure/Tag.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HasAny
+    path: ../AngeliA Framework/src/Structure/Tag.cs
+    startLine: 91
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool HasAny(this Tag self, Tag musk)
+    parameters:
+    - id: self
+      type: AngeliA.Tag
+    - id: musk
+      type: AngeliA.Tag
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function HasAny(self As Tag, musk As Tag) As Boolean
+  overload: AngeliA.TagUtil.HasAny*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Tag
+  commentId: T:AngeliA.Tag
+  parent: AngeliA
+  href: AngeliA.Tag.html
+  name: Tag
+  nameWithType: Tag
+  fullName: AngeliA.Tag
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: AngeliA.TagUtil.GetTagAt*
+  commentId: Overload:AngeliA.TagUtil.GetTagAt
+  href: AngeliA.TagUtil.html#AngeliA_TagUtil_GetTagAt_System_Int32_
+  name: GetTagAt
+  nameWithType: TagUtil.GetTagAt
+  fullName: AngeliA.TagUtil.GetTagAt
+- uid: AngeliA.TagUtil.HasAll*
+  commentId: Overload:AngeliA.TagUtil.HasAll
+  href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAll_AngeliA_Tag_AngeliA_Tag_
+  name: HasAll
+  nameWithType: TagUtil.HasAll
+  fullName: AngeliA.TagUtil.HasAll
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.TagUtil.HasAny*
+  commentId: Overload:AngeliA.TagUtil.HasAny
+  href: AngeliA.TagUtil.html#AngeliA_TagUtil_HasAny_AngeliA_Tag_AngeliA_Tag_
+  name: HasAny
+  nameWithType: TagUtil.HasAny
+  fullName: AngeliA.TagUtil.HasAny

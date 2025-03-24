@@ -1,0 +1,609 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.PhysicsMask
+  commentId: T:AngeliA.PhysicsMask
+  id: PhysicsMask
+  parent: AngeliA
+  children:
+  - AngeliA.PhysicsMask.ALL
+  - AngeliA.PhysicsMask.CHARACTER
+  - AngeliA.PhysicsMask.DAMAGE
+  - AngeliA.PhysicsMask.DYNAMIC
+  - AngeliA.PhysicsMask.ENTITY
+  - AngeliA.PhysicsMask.ENVIRONMENT
+  - AngeliA.PhysicsMask.ITEM
+  - AngeliA.PhysicsMask.LEVEL
+  - AngeliA.PhysicsMask.MAP
+  - AngeliA.PhysicsMask.NONE
+  - AngeliA.PhysicsMask.SOLID
+  langs:
+  - csharp
+  - vb
+  name: PhysicsMask
+  nameWithType: PhysicsMask
+  fullName: AngeliA.PhysicsMask
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PhysicsMask
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static class PhysicsMask
+    content.vb: Public Module PhysicsMask
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.PhysicsMask.NONE
+  commentId: F:AngeliA.PhysicsMask.NONE
+  id: NONE
+  parent: AngeliA.PhysicsMask
+  langs:
+  - csharp
+  - vb
+  name: NONE
+  nameWithType: PhysicsMask.NONE
+  fullName: AngeliA.PhysicsMask.NONE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: NONE
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int NONE = 0
+    return:
+      type: System.Int32
+    content.vb: Public Const NONE As Integer = 0
+- uid: AngeliA.PhysicsMask.ALL
+  commentId: F:AngeliA.PhysicsMask.ALL
+  id: ALL
+  parent: AngeliA.PhysicsMask
+  langs:
+  - csharp
+  - vb
+  name: ALL
+  nameWithType: PhysicsMask.ALL
+  fullName: AngeliA.PhysicsMask.ALL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ALL
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int ALL = 31
+    return:
+      type: System.Int32
+    content.vb: Public Const ALL As Integer = 31
+- uid: AngeliA.PhysicsMask.LEVEL
+  commentId: F:AngeliA.PhysicsMask.LEVEL
+  id: LEVEL
+  parent: AngeliA.PhysicsMask
+  langs:
+  - csharp
+  - vb
+  name: LEVEL
+  nameWithType: PhysicsMask.LEVEL
+  fullName: AngeliA.PhysicsMask.LEVEL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LEVEL
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 16
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int LEVEL = 1
+    return:
+      type: System.Int32
+    content.vb: Public Const LEVEL As Integer = 1
+- uid: AngeliA.PhysicsMask.ENVIRONMENT
+  commentId: F:AngeliA.PhysicsMask.ENVIRONMENT
+  id: ENVIRONMENT
+  parent: AngeliA.PhysicsMask
+  langs:
+  - csharp
+  - vb
+  name: ENVIRONMENT
+  nameWithType: PhysicsMask.ENVIRONMENT
+  fullName: AngeliA.PhysicsMask.ENVIRONMENT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ENVIRONMENT
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int ENVIRONMENT = 2
+    return:
+      type: System.Int32
+    content.vb: Public Const ENVIRONMENT As Integer = 2
+- uid: AngeliA.PhysicsMask.ITEM
+  commentId: F:AngeliA.PhysicsMask.ITEM
+  id: ITEM
+  parent: AngeliA.PhysicsMask
+  langs:
+  - csharp
+  - vb
+  name: ITEM
+  nameWithType: PhysicsMask.ITEM
+  fullName: AngeliA.PhysicsMask.ITEM
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ITEM
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int ITEM = 4
+    return:
+      type: System.Int32
+    content.vb: Public Const ITEM As Integer = 4
+- uid: AngeliA.PhysicsMask.CHARACTER
+  commentId: F:AngeliA.PhysicsMask.CHARACTER
+  id: CHARACTER
+  parent: AngeliA.PhysicsMask
+  langs:
+  - csharp
+  - vb
+  name: CHARACTER
+  nameWithType: PhysicsMask.CHARACTER
+  fullName: AngeliA.PhysicsMask.CHARACTER
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CHARACTER
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int CHARACTER = 8
+    return:
+      type: System.Int32
+    content.vb: Public Const CHARACTER As Integer = 8
+- uid: AngeliA.PhysicsMask.DAMAGE
+  commentId: F:AngeliA.PhysicsMask.DAMAGE
+  id: DAMAGE
+  parent: AngeliA.PhysicsMask
+  langs:
+  - csharp
+  - vb
+  name: DAMAGE
+  nameWithType: PhysicsMask.DAMAGE
+  fullName: AngeliA.PhysicsMask.DAMAGE
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DAMAGE
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 20
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public const int DAMAGE = 16
+    return:
+      type: System.Int32
+    content.vb: Public Const DAMAGE As Integer = 16
+- uid: AngeliA.PhysicsMask.ENTITY
+  commentId: F:AngeliA.PhysicsMask.ENTITY
+  id: ENTITY
+  parent: AngeliA.PhysicsMask
+  langs:
+  - csharp
+  - vb
+  name: ENTITY
+  nameWithType: PhysicsMask.ENTITY
+  fullName: AngeliA.PhysicsMask.ENTITY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ENTITY
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 25
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: ENVIRONMENT | CHARACTER
+  example: []
+  syntax:
+    content: public const int ENTITY = 10
+    return:
+      type: System.Int32
+    content.vb: Public Const ENTITY As Integer = 10
+- uid: AngeliA.PhysicsMask.DYNAMIC
+  commentId: F:AngeliA.PhysicsMask.DYNAMIC
+  id: DYNAMIC
+  parent: AngeliA.PhysicsMask
+  langs:
+  - csharp
+  - vb
+  name: DYNAMIC
+  nameWithType: PhysicsMask.DYNAMIC
+  fullName: AngeliA.PhysicsMask.DYNAMIC
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DYNAMIC
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 29
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: ENVIRONMENT | ITEM | CHARACTER
+  example: []
+  syntax:
+    content: public const int DYNAMIC = 14
+    return:
+      type: System.Int32
+    content.vb: Public Const DYNAMIC As Integer = 14
+- uid: AngeliA.PhysicsMask.SOLID
+  commentId: F:AngeliA.PhysicsMask.SOLID
+  id: SOLID
+  parent: AngeliA.PhysicsMask
+  langs:
+  - csharp
+  - vb
+  name: SOLID
+  nameWithType: PhysicsMask.SOLID
+  fullName: AngeliA.PhysicsMask.SOLID
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SOLID
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: LEVEL | ENVIRONMENT | CHARACTER
+  example: []
+  syntax:
+    content: public const int SOLID = 11
+    return:
+      type: System.Int32
+    content.vb: Public Const SOLID As Integer = 11
+- uid: AngeliA.PhysicsMask.MAP
+  commentId: F:AngeliA.PhysicsMask.MAP
+  id: MAP
+  parent: AngeliA.PhysicsMask
+  langs:
+  - csharp
+  - vb
+  name: MAP
+  nameWithType: PhysicsMask.MAP
+  fullName: AngeliA.PhysicsMask.MAP
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/PhysicsLayer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: MAP
+    path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
+    startLine: 37
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: LEVEL | ENVIRONMENT
+  example: []
+  syntax:
+    content: public const int MAP = 3
+    return:
+      type: System.Int32
+    content.vb: Public Const MAP As Integer = 3
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer

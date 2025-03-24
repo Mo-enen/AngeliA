@@ -1,0 +1,937 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Buff
+  commentId: T:AngeliA.Buff
+  id: Buff
+  parent: AngeliA
+  children:
+  - AngeliA.Buff.#ctor
+  - AngeliA.Buff.BeforeUpdate(AngeliA.Character)
+  - AngeliA.Buff.DefaultDuration
+  - AngeliA.Buff.DescriptionID
+  - AngeliA.Buff.LateUpdate(AngeliA.Character)
+  - AngeliA.Buff.NameID
+  - AngeliA.Buff.OnCharacterAttack(AngeliA.Character,AngeliA.Bullet)
+  - AngeliA.Buff.OnCharacterRenderered(AngeliA.CharacterRenderer)
+  - AngeliA.Buff.TypeID
+  - AngeliA.Buff.TypeName
+  langs:
+  - csharp
+  - vb
+  name: Buff
+  nameWithType: Buff
+  fullName: AngeliA.Buff
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/Buff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Buff
+    path: ../AngeliA Framework/src/Behaviour/Buff/Buff.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Represent a type of buff
+  example: []
+  syntax:
+    content: >-
+      [Entity.MapEditorGroup("Buff", 0)]
+
+      public abstract class Buff : IMapItem
+    content.vb: >-
+      <Entity.MapEditorGroup("Buff", 0)>
+
+      Public MustInherit Class Buff Implements IMapItem
+  inheritance:
+  - System.Object
+  implements:
+  - AngeliA.IMapItem
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+  attributes:
+  - type: AngeliA.EntityAttribute.MapEditorGroupAttribute
+    ctor: AngeliA.EntityAttribute.MapEditorGroupAttribute.#ctor(System.String,System.Int32)
+    arguments:
+    - type: System.String
+      value: Buff
+    - type: System.Int32
+      value: 0
+- uid: AngeliA.Buff.TypeID
+  commentId: P:AngeliA.Buff.TypeID
+  id: TypeID
+  parent: AngeliA.Buff
+  langs:
+  - csharp
+  - vb
+  name: TypeID
+  nameWithType: Buff.TypeID
+  fullName: AngeliA.Buff.TypeID
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/Buff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TypeID
+    path: ../AngeliA Framework/src/Behaviour/Buff/Buff.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Unique angehash of this buff class
+  example: []
+  syntax:
+    content: public int TypeID { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property TypeID As Integer
+  overload: AngeliA.Buff.TypeID*
+- uid: AngeliA.Buff.NameID
+  commentId: P:AngeliA.Buff.NameID
+  id: NameID
+  parent: AngeliA.Buff
+  langs:
+  - csharp
+  - vb
+  name: NameID
+  nameWithType: Buff.NameID
+  fullName: AngeliA.Buff.NameID
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/Buff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: NameID
+    path: ../AngeliA Framework/src/Behaviour/Buff/Buff.cs
+    startLine: 26
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Unique angehash for language system to get the display name of this buff
+  example: []
+  syntax:
+    content: public int NameID { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property NameID As Integer
+  overload: AngeliA.Buff.NameID*
+- uid: AngeliA.Buff.DescriptionID
+  commentId: P:AngeliA.Buff.DescriptionID
+  id: DescriptionID
+  parent: AngeliA.Buff
+  langs:
+  - csharp
+  - vb
+  name: DescriptionID
+  nameWithType: Buff.DescriptionID
+  fullName: AngeliA.Buff.DescriptionID
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/Buff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DescriptionID
+    path: ../AngeliA Framework/src/Behaviour/Buff/Buff.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Unique angehash for language system to get the description of this buff
+  example: []
+  syntax:
+    content: public int DescriptionID { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property DescriptionID As Integer
+  overload: AngeliA.Buff.DescriptionID*
+- uid: AngeliA.Buff.TypeName
+  commentId: P:AngeliA.Buff.TypeName
+  id: TypeName
+  parent: AngeliA.Buff
+  langs:
+  - csharp
+  - vb
+  name: TypeName
+  nameWithType: Buff.TypeName
+  fullName: AngeliA.Buff.TypeName
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/Buff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TypeName
+    path: ../AngeliA Framework/src/Behaviour/Buff/Buff.cs
+    startLine: 34
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: AngeName of this type of buff
+  example: []
+  syntax:
+    content: public string TypeName { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property TypeName As String
+  overload: AngeliA.Buff.TypeName*
+- uid: AngeliA.Buff.DefaultDuration
+  commentId: P:AngeliA.Buff.DefaultDuration
+  id: DefaultDuration
+  parent: AngeliA.Buff
+  langs:
+  - csharp
+  - vb
+  name: DefaultDuration
+  nameWithType: Buff.DefaultDuration
+  fullName: AngeliA.Buff.DefaultDuration
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/Buff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DefaultDuration
+    path: ../AngeliA Framework/src/Behaviour/Buff/Buff.cs
+    startLine: 38
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: How many frames should this buff apply by default
+  example: []
+  syntax:
+    content: public abstract int DefaultDuration { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public MustOverride ReadOnly Property DefaultDuration As Integer
+  overload: AngeliA.Buff.DefaultDuration*
+- uid: AngeliA.Buff.#ctor
+  commentId: M:AngeliA.Buff.#ctor
+  id: '#ctor'
+  parent: AngeliA.Buff
+  langs:
+  - csharp
+  - vb
+  name: Buff()
+  nameWithType: Buff.Buff()
+  fullName: AngeliA.Buff.Buff()
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/Buff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Behaviour/Buff/Buff.cs
+    startLine: 59
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Buff()
+    content.vb: Public Sub New()
+  overload: AngeliA.Buff.#ctor*
+  nameWithType.vb: Buff.New()
+  fullName.vb: AngeliA.Buff.New()
+  name.vb: New()
+- uid: AngeliA.Buff.BeforeUpdate(AngeliA.Character)
+  commentId: M:AngeliA.Buff.BeforeUpdate(AngeliA.Character)
+  id: BeforeUpdate(AngeliA.Character)
+  parent: AngeliA.Buff
+  langs:
+  - csharp
+  - vb
+  name: BeforeUpdate(Character)
+  nameWithType: Buff.BeforeUpdate(Character)
+  fullName: AngeliA.Buff.BeforeUpdate(AngeliA.Character)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/Buff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BeforeUpdate
+    path: ../AngeliA Framework/src/Behaviour/Buff/Buff.cs
+    startLine: 69
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual void BeforeUpdate(Character target)
+    parameters:
+    - id: target
+      type: AngeliA.Character
+    content.vb: Public Overridable Sub BeforeUpdate(target As Character)
+  overload: AngeliA.Buff.BeforeUpdate*
+- uid: AngeliA.Buff.LateUpdate(AngeliA.Character)
+  commentId: M:AngeliA.Buff.LateUpdate(AngeliA.Character)
+  id: LateUpdate(AngeliA.Character)
+  parent: AngeliA.Buff
+  langs:
+  - csharp
+  - vb
+  name: LateUpdate(Character)
+  nameWithType: Buff.LateUpdate(Character)
+  fullName: AngeliA.Buff.LateUpdate(AngeliA.Character)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/Buff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LateUpdate
+    path: ../AngeliA Framework/src/Behaviour/Buff/Buff.cs
+    startLine: 71
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual void LateUpdate(Character target)
+    parameters:
+    - id: target
+      type: AngeliA.Character
+    content.vb: Public Overridable Sub LateUpdate(target As Character)
+  overload: AngeliA.Buff.LateUpdate*
+- uid: AngeliA.Buff.OnCharacterAttack(AngeliA.Character,AngeliA.Bullet)
+  commentId: M:AngeliA.Buff.OnCharacterAttack(AngeliA.Character,AngeliA.Bullet)
+  id: OnCharacterAttack(AngeliA.Character,AngeliA.Bullet)
+  parent: AngeliA.Buff
+  langs:
+  - csharp
+  - vb
+  name: OnCharacterAttack(Character, Bullet)
+  nameWithType: Buff.OnCharacterAttack(Character, Bullet)
+  fullName: AngeliA.Buff.OnCharacterAttack(AngeliA.Character, AngeliA.Bullet)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/Buff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnCharacterAttack
+    path: ../AngeliA Framework/src/Behaviour/Buff/Buff.cs
+    startLine: 73
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual void OnCharacterAttack(Character target, Bullet bullet)
+    parameters:
+    - id: target
+      type: AngeliA.Character
+    - id: bullet
+      type: AngeliA.Bullet
+    content.vb: Public Overridable Sub OnCharacterAttack(target As Character, bullet As Bullet)
+  overload: AngeliA.Buff.OnCharacterAttack*
+- uid: AngeliA.Buff.OnCharacterRenderered(AngeliA.CharacterRenderer)
+  commentId: M:AngeliA.Buff.OnCharacterRenderered(AngeliA.CharacterRenderer)
+  id: OnCharacterRenderered(AngeliA.CharacterRenderer)
+  parent: AngeliA.Buff
+  langs:
+  - csharp
+  - vb
+  name: OnCharacterRenderered(CharacterRenderer)
+  nameWithType: Buff.OnCharacterRenderered(CharacterRenderer)
+  fullName: AngeliA.Buff.OnCharacterRenderered(AngeliA.CharacterRenderer)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Buff/Buff.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnCharacterRenderered
+    path: ../AngeliA Framework/src/Behaviour/Buff/Buff.cs
+    startLine: 75
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public virtual void OnCharacterRenderered(CharacterRenderer renderer)
+    parameters:
+    - id: renderer
+      type: AngeliA.CharacterRenderer
+    content.vb: Public Overridable Sub OnCharacterRenderered(renderer As CharacterRenderer)
+  overload: AngeliA.Buff.OnCharacterRenderered*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.IMapItem
+  commentId: T:AngeliA.IMapItem
+  parent: AngeliA
+  href: AngeliA.IMapItem.html
+  name: IMapItem
+  nameWithType: IMapItem
+  fullName: AngeliA.IMapItem
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Buff.TypeID*
+  commentId: Overload:AngeliA.Buff.TypeID
+  href: AngeliA.Buff.html#AngeliA_Buff_TypeID
+  name: TypeID
+  nameWithType: Buff.TypeID
+  fullName: AngeliA.Buff.TypeID
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Buff.NameID*
+  commentId: Overload:AngeliA.Buff.NameID
+  href: AngeliA.Buff.html#AngeliA_Buff_NameID
+  name: NameID
+  nameWithType: Buff.NameID
+  fullName: AngeliA.Buff.NameID
+- uid: AngeliA.Buff.DescriptionID*
+  commentId: Overload:AngeliA.Buff.DescriptionID
+  href: AngeliA.Buff.html#AngeliA_Buff_DescriptionID
+  name: DescriptionID
+  nameWithType: Buff.DescriptionID
+  fullName: AngeliA.Buff.DescriptionID
+- uid: AngeliA.Buff.TypeName*
+  commentId: Overload:AngeliA.Buff.TypeName
+  href: AngeliA.Buff.html#AngeliA_Buff_TypeName
+  name: TypeName
+  nameWithType: Buff.TypeName
+  fullName: AngeliA.Buff.TypeName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: AngeliA.Buff.DefaultDuration*
+  commentId: Overload:AngeliA.Buff.DefaultDuration
+  href: AngeliA.Buff.html#AngeliA_Buff_DefaultDuration
+  name: DefaultDuration
+  nameWithType: Buff.DefaultDuration
+  fullName: AngeliA.Buff.DefaultDuration
+- uid: AngeliA.Buff.#ctor*
+  commentId: Overload:AngeliA.Buff.#ctor
+  href: AngeliA.Buff.html#AngeliA_Buff__ctor
+  name: Buff
+  nameWithType: Buff.Buff
+  fullName: AngeliA.Buff.Buff
+  nameWithType.vb: Buff.New
+  fullName.vb: AngeliA.Buff.New
+  name.vb: New
+- uid: AngeliA.Buff.BeforeUpdate*
+  commentId: Overload:AngeliA.Buff.BeforeUpdate
+  href: AngeliA.Buff.html#AngeliA_Buff_BeforeUpdate_AngeliA_Character_
+  name: BeforeUpdate
+  nameWithType: Buff.BeforeUpdate
+  fullName: AngeliA.Buff.BeforeUpdate
+- uid: AngeliA.Character
+  commentId: T:AngeliA.Character
+  parent: AngeliA
+  href: AngeliA.Character.html
+  name: Character
+  nameWithType: Character
+  fullName: AngeliA.Character
+- uid: AngeliA.Buff.LateUpdate*
+  commentId: Overload:AngeliA.Buff.LateUpdate
+  href: AngeliA.Buff.html#AngeliA_Buff_LateUpdate_AngeliA_Character_
+  name: LateUpdate
+  nameWithType: Buff.LateUpdate
+  fullName: AngeliA.Buff.LateUpdate
+- uid: AngeliA.Buff.OnCharacterAttack*
+  commentId: Overload:AngeliA.Buff.OnCharacterAttack
+  href: AngeliA.Buff.html#AngeliA_Buff_OnCharacterAttack_AngeliA_Character_AngeliA_Bullet_
+  name: OnCharacterAttack
+  nameWithType: Buff.OnCharacterAttack
+  fullName: AngeliA.Buff.OnCharacterAttack
+- uid: AngeliA.Bullet
+  commentId: T:AngeliA.Bullet
+  parent: AngeliA
+  href: AngeliA.Bullet.html
+  name: Bullet
+  nameWithType: Bullet
+  fullName: AngeliA.Bullet
+- uid: AngeliA.Buff.OnCharacterRenderered*
+  commentId: Overload:AngeliA.Buff.OnCharacterRenderered
+  href: AngeliA.Buff.html#AngeliA_Buff_OnCharacterRenderered_AngeliA_CharacterRenderer_
+  name: OnCharacterRenderered
+  nameWithType: Buff.OnCharacterRenderered
+  fullName: AngeliA.Buff.OnCharacterRenderered
+- uid: AngeliA.CharacterRenderer
+  commentId: T:AngeliA.CharacterRenderer
+  parent: AngeliA
+  href: AngeliA.CharacterRenderer.html
+  name: CharacterRenderer
+  nameWithType: CharacterRenderer
+  fullName: AngeliA.CharacterRenderer

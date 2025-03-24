@@ -1,0 +1,1646 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Ease
+  commentId: T:AngeliA.Ease
+  id: Ease
+  parent: AngeliA
+  children:
+  - AngeliA.Ease.InBack(System.Single)
+  - AngeliA.Ease.InBounce(System.Single)
+  - AngeliA.Ease.InCirc(System.Single)
+  - AngeliA.Ease.InCubic(System.Single)
+  - AngeliA.Ease.InElastic(System.Single)
+  - AngeliA.Ease.InExpo(System.Single)
+  - AngeliA.Ease.InLiner(System.Single)
+  - AngeliA.Ease.InOutBack(System.Single)
+  - AngeliA.Ease.InOutBounce(System.Single)
+  - AngeliA.Ease.InOutCirc(System.Single)
+  - AngeliA.Ease.InOutCubic(System.Single)
+  - AngeliA.Ease.InOutElastic(System.Single)
+  - AngeliA.Ease.InOutExpo(System.Single)
+  - AngeliA.Ease.InOutLiner(System.Single)
+  - AngeliA.Ease.InOutQuad(System.Single)
+  - AngeliA.Ease.InOutQuart(System.Single)
+  - AngeliA.Ease.InOutQuint(System.Single)
+  - AngeliA.Ease.InOutSine(System.Single)
+  - AngeliA.Ease.InQuad(System.Single)
+  - AngeliA.Ease.InQuart(System.Single)
+  - AngeliA.Ease.InQuint(System.Single)
+  - AngeliA.Ease.InSine(System.Single)
+  - AngeliA.Ease.OutBack(System.Single)
+  - AngeliA.Ease.OutBounce(System.Single)
+  - AngeliA.Ease.OutCirc(System.Single)
+  - AngeliA.Ease.OutCubic(System.Single)
+  - AngeliA.Ease.OutElastic(System.Single)
+  - AngeliA.Ease.OutExpo(System.Single)
+  - AngeliA.Ease.OutLiner(System.Single)
+  - AngeliA.Ease.OutQuad(System.Single)
+  - AngeliA.Ease.OutQuart(System.Single)
+  - AngeliA.Ease.OutQuint(System.Single)
+  - AngeliA.Ease.OutSine(System.Single)
+  langs:
+  - csharp
+  - vb
+  name: Ease
+  nameWithType: Ease
+  fullName: AngeliA.Ease
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Ease
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 2
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static class Ease
+    content.vb: Public Module Ease
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: AngeliA.Ease.InLiner(System.Single)
+  commentId: M:AngeliA.Ease.InLiner(System.Single)
+  id: InLiner(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InLiner(float)
+  nameWithType: Ease.InLiner(float)
+  fullName: AngeliA.Ease.InLiner(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InLiner
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InLiner(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InLiner(x As Single) As Single
+  overload: AngeliA.Ease.InLiner*
+  nameWithType.vb: Ease.InLiner(Single)
+  fullName.vb: AngeliA.Ease.InLiner(Single)
+  name.vb: InLiner(Single)
+- uid: AngeliA.Ease.OutLiner(System.Single)
+  commentId: M:AngeliA.Ease.OutLiner(System.Single)
+  id: OutLiner(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: OutLiner(float)
+  nameWithType: Ease.OutLiner(float)
+  fullName: AngeliA.Ease.OutLiner(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OutLiner
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 6
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float OutLiner(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function OutLiner(x As Single) As Single
+  overload: AngeliA.Ease.OutLiner*
+  nameWithType.vb: Ease.OutLiner(Single)
+  fullName.vb: AngeliA.Ease.OutLiner(Single)
+  name.vb: OutLiner(Single)
+- uid: AngeliA.Ease.InOutLiner(System.Single)
+  commentId: M:AngeliA.Ease.InOutLiner(System.Single)
+  id: InOutLiner(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InOutLiner(float)
+  nameWithType: Ease.InOutLiner(float)
+  fullName: AngeliA.Ease.InOutLiner(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InOutLiner
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 7
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InOutLiner(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InOutLiner(x As Single) As Single
+  overload: AngeliA.Ease.InOutLiner*
+  nameWithType.vb: Ease.InOutLiner(Single)
+  fullName.vb: AngeliA.Ease.InOutLiner(Single)
+  name.vb: InOutLiner(Single)
+- uid: AngeliA.Ease.InQuad(System.Single)
+  commentId: M:AngeliA.Ease.InQuad(System.Single)
+  id: InQuad(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InQuad(float)
+  nameWithType: Ease.InQuad(float)
+  fullName: AngeliA.Ease.InQuad(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InQuad
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InQuad(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InQuad(x As Single) As Single
+  overload: AngeliA.Ease.InQuad*
+  nameWithType.vb: Ease.InQuad(Single)
+  fullName.vb: AngeliA.Ease.InQuad(Single)
+  name.vb: InQuad(Single)
+- uid: AngeliA.Ease.OutQuad(System.Single)
+  commentId: M:AngeliA.Ease.OutQuad(System.Single)
+  id: OutQuad(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: OutQuad(float)
+  nameWithType: Ease.OutQuad(float)
+  fullName: AngeliA.Ease.OutQuad(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OutQuad
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float OutQuad(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function OutQuad(x As Single) As Single
+  overload: AngeliA.Ease.OutQuad*
+  nameWithType.vb: Ease.OutQuad(Single)
+  fullName.vb: AngeliA.Ease.OutQuad(Single)
+  name.vb: OutQuad(Single)
+- uid: AngeliA.Ease.InOutQuad(System.Single)
+  commentId: M:AngeliA.Ease.InOutQuad(System.Single)
+  id: InOutQuad(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InOutQuad(float)
+  nameWithType: Ease.InOutQuad(float)
+  fullName: AngeliA.Ease.InOutQuad(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InOutQuad
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InOutQuad(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InOutQuad(x As Single) As Single
+  overload: AngeliA.Ease.InOutQuad*
+  nameWithType.vb: Ease.InOutQuad(Single)
+  fullName.vb: AngeliA.Ease.InOutQuad(Single)
+  name.vb: InOutQuad(Single)
+- uid: AngeliA.Ease.InCubic(System.Single)
+  commentId: M:AngeliA.Ease.InCubic(System.Single)
+  id: InCubic(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InCubic(float)
+  nameWithType: Ease.InCubic(float)
+  fullName: AngeliA.Ease.InCubic(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InCubic
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 13
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InCubic(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InCubic(x As Single) As Single
+  overload: AngeliA.Ease.InCubic*
+  nameWithType.vb: Ease.InCubic(Single)
+  fullName.vb: AngeliA.Ease.InCubic(Single)
+  name.vb: InCubic(Single)
+- uid: AngeliA.Ease.OutCubic(System.Single)
+  commentId: M:AngeliA.Ease.OutCubic(System.Single)
+  id: OutCubic(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: OutCubic(float)
+  nameWithType: Ease.OutCubic(float)
+  fullName: AngeliA.Ease.OutCubic(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OutCubic
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 14
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float OutCubic(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function OutCubic(x As Single) As Single
+  overload: AngeliA.Ease.OutCubic*
+  nameWithType.vb: Ease.OutCubic(Single)
+  fullName.vb: AngeliA.Ease.OutCubic(Single)
+  name.vb: OutCubic(Single)
+- uid: AngeliA.Ease.InOutCubic(System.Single)
+  commentId: M:AngeliA.Ease.InOutCubic(System.Single)
+  id: InOutCubic(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InOutCubic(float)
+  nameWithType: Ease.InOutCubic(float)
+  fullName: AngeliA.Ease.InOutCubic(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InOutCubic
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 15
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InOutCubic(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InOutCubic(x As Single) As Single
+  overload: AngeliA.Ease.InOutCubic*
+  nameWithType.vb: Ease.InOutCubic(Single)
+  fullName.vb: AngeliA.Ease.InOutCubic(Single)
+  name.vb: InOutCubic(Single)
+- uid: AngeliA.Ease.InQuart(System.Single)
+  commentId: M:AngeliA.Ease.InQuart(System.Single)
+  id: InQuart(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InQuart(float)
+  nameWithType: Ease.InQuart(float)
+  fullName: AngeliA.Ease.InQuart(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InQuart
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InQuart(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InQuart(x As Single) As Single
+  overload: AngeliA.Ease.InQuart*
+  nameWithType.vb: Ease.InQuart(Single)
+  fullName.vb: AngeliA.Ease.InQuart(Single)
+  name.vb: InQuart(Single)
+- uid: AngeliA.Ease.OutQuart(System.Single)
+  commentId: M:AngeliA.Ease.OutQuart(System.Single)
+  id: OutQuart(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: OutQuart(float)
+  nameWithType: Ease.OutQuart(float)
+  fullName: AngeliA.Ease.OutQuart(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OutQuart
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 18
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float OutQuart(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function OutQuart(x As Single) As Single
+  overload: AngeliA.Ease.OutQuart*
+  nameWithType.vb: Ease.OutQuart(Single)
+  fullName.vb: AngeliA.Ease.OutQuart(Single)
+  name.vb: OutQuart(Single)
+- uid: AngeliA.Ease.InOutQuart(System.Single)
+  commentId: M:AngeliA.Ease.InOutQuart(System.Single)
+  id: InOutQuart(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InOutQuart(float)
+  nameWithType: Ease.InOutQuart(float)
+  fullName: AngeliA.Ease.InOutQuart(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InOutQuart
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InOutQuart(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InOutQuart(x As Single) As Single
+  overload: AngeliA.Ease.InOutQuart*
+  nameWithType.vb: Ease.InOutQuart(Single)
+  fullName.vb: AngeliA.Ease.InOutQuart(Single)
+  name.vb: InOutQuart(Single)
+- uid: AngeliA.Ease.InQuint(System.Single)
+  commentId: M:AngeliA.Ease.InQuint(System.Single)
+  id: InQuint(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InQuint(float)
+  nameWithType: Ease.InQuint(float)
+  fullName: AngeliA.Ease.InQuint(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InQuint
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InQuint(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InQuint(x As Single) As Single
+  overload: AngeliA.Ease.InQuint*
+  nameWithType.vb: Ease.InQuint(Single)
+  fullName.vb: AngeliA.Ease.InQuint(Single)
+  name.vb: InQuint(Single)
+- uid: AngeliA.Ease.OutQuint(System.Single)
+  commentId: M:AngeliA.Ease.OutQuint(System.Single)
+  id: OutQuint(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: OutQuint(float)
+  nameWithType: Ease.OutQuint(float)
+  fullName: AngeliA.Ease.OutQuint(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OutQuint
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float OutQuint(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function OutQuint(x As Single) As Single
+  overload: AngeliA.Ease.OutQuint*
+  nameWithType.vb: Ease.OutQuint(Single)
+  fullName.vb: AngeliA.Ease.OutQuint(Single)
+  name.vb: OutQuint(Single)
+- uid: AngeliA.Ease.InOutQuint(System.Single)
+  commentId: M:AngeliA.Ease.InOutQuint(System.Single)
+  id: InOutQuint(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InOutQuint(float)
+  nameWithType: Ease.InOutQuint(float)
+  fullName: AngeliA.Ease.InOutQuint(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InOutQuint
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InOutQuint(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InOutQuint(x As Single) As Single
+  overload: AngeliA.Ease.InOutQuint*
+  nameWithType.vb: Ease.InOutQuint(Single)
+  fullName.vb: AngeliA.Ease.InOutQuint(Single)
+  name.vb: InOutQuint(Single)
+- uid: AngeliA.Ease.InSine(System.Single)
+  commentId: M:AngeliA.Ease.InSine(System.Single)
+  id: InSine(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InSine(float)
+  nameWithType: Ease.InSine(float)
+  fullName: AngeliA.Ease.InSine(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InSine
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 28
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InSine(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InSine(x As Single) As Single
+  overload: AngeliA.Ease.InSine*
+  nameWithType.vb: Ease.InSine(Single)
+  fullName.vb: AngeliA.Ease.InSine(Single)
+  name.vb: InSine(Single)
+- uid: AngeliA.Ease.OutSine(System.Single)
+  commentId: M:AngeliA.Ease.OutSine(System.Single)
+  id: OutSine(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: OutSine(float)
+  nameWithType: Ease.OutSine(float)
+  fullName: AngeliA.Ease.OutSine(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OutSine
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 29
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float OutSine(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function OutSine(x As Single) As Single
+  overload: AngeliA.Ease.OutSine*
+  nameWithType.vb: Ease.OutSine(Single)
+  fullName.vb: AngeliA.Ease.OutSine(Single)
+  name.vb: OutSine(Single)
+- uid: AngeliA.Ease.InOutSine(System.Single)
+  commentId: M:AngeliA.Ease.InOutSine(System.Single)
+  id: InOutSine(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InOutSine(float)
+  nameWithType: Ease.InOutSine(float)
+  fullName: AngeliA.Ease.InOutSine(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InOutSine
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 30
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InOutSine(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InOutSine(x As Single) As Single
+  overload: AngeliA.Ease.InOutSine*
+  nameWithType.vb: Ease.InOutSine(Single)
+  fullName.vb: AngeliA.Ease.InOutSine(Single)
+  name.vb: InOutSine(Single)
+- uid: AngeliA.Ease.InCirc(System.Single)
+  commentId: M:AngeliA.Ease.InCirc(System.Single)
+  id: InCirc(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InCirc(float)
+  nameWithType: Ease.InCirc(float)
+  fullName: AngeliA.Ease.InCirc(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InCirc
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 32
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InCirc(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InCirc(x As Single) As Single
+  overload: AngeliA.Ease.InCirc*
+  nameWithType.vb: Ease.InCirc(Single)
+  fullName.vb: AngeliA.Ease.InCirc(Single)
+  name.vb: InCirc(Single)
+- uid: AngeliA.Ease.OutCirc(System.Single)
+  commentId: M:AngeliA.Ease.OutCirc(System.Single)
+  id: OutCirc(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: OutCirc(float)
+  nameWithType: Ease.OutCirc(float)
+  fullName: AngeliA.Ease.OutCirc(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OutCirc
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 33
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float OutCirc(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function OutCirc(x As Single) As Single
+  overload: AngeliA.Ease.OutCirc*
+  nameWithType.vb: Ease.OutCirc(Single)
+  fullName.vb: AngeliA.Ease.OutCirc(Single)
+  name.vb: OutCirc(Single)
+- uid: AngeliA.Ease.InOutCirc(System.Single)
+  commentId: M:AngeliA.Ease.InOutCirc(System.Single)
+  id: InOutCirc(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InOutCirc(float)
+  nameWithType: Ease.InOutCirc(float)
+  fullName: AngeliA.Ease.InOutCirc(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InOutCirc
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 34
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InOutCirc(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InOutCirc(x As Single) As Single
+  overload: AngeliA.Ease.InOutCirc*
+  nameWithType.vb: Ease.InOutCirc(Single)
+  fullName.vb: AngeliA.Ease.InOutCirc(Single)
+  name.vb: InOutCirc(Single)
+- uid: AngeliA.Ease.InElastic(System.Single)
+  commentId: M:AngeliA.Ease.InElastic(System.Single)
+  id: InElastic(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InElastic(float)
+  nameWithType: Ease.InElastic(float)
+  fullName: AngeliA.Ease.InElastic(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InElastic
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 38
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InElastic(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InElastic(x As Single) As Single
+  overload: AngeliA.Ease.InElastic*
+  nameWithType.vb: Ease.InElastic(Single)
+  fullName.vb: AngeliA.Ease.InElastic(Single)
+  name.vb: InElastic(Single)
+- uid: AngeliA.Ease.OutElastic(System.Single)
+  commentId: M:AngeliA.Ease.OutElastic(System.Single)
+  id: OutElastic(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: OutElastic(float)
+  nameWithType: Ease.OutElastic(float)
+  fullName: AngeliA.Ease.OutElastic(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OutElastic
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 43
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float OutElastic(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function OutElastic(x As Single) As Single
+  overload: AngeliA.Ease.OutElastic*
+  nameWithType.vb: Ease.OutElastic(Single)
+  fullName.vb: AngeliA.Ease.OutElastic(Single)
+  name.vb: OutElastic(Single)
+- uid: AngeliA.Ease.InOutElastic(System.Single)
+  commentId: M:AngeliA.Ease.InOutElastic(System.Single)
+  id: InOutElastic(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InOutElastic(float)
+  nameWithType: Ease.InOutElastic(float)
+  fullName: AngeliA.Ease.InOutElastic(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InOutElastic
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 48
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InOutElastic(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InOutElastic(x As Single) As Single
+  overload: AngeliA.Ease.InOutElastic*
+  nameWithType.vb: Ease.InOutElastic(Single)
+  fullName.vb: AngeliA.Ease.InOutElastic(Single)
+  name.vb: InOutElastic(Single)
+- uid: AngeliA.Ease.InExpo(System.Single)
+  commentId: M:AngeliA.Ease.InExpo(System.Single)
+  id: InExpo(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InExpo(float)
+  nameWithType: Ease.InExpo(float)
+  fullName: AngeliA.Ease.InExpo(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InExpo
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 56
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InExpo(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InExpo(x As Single) As Single
+  overload: AngeliA.Ease.InExpo*
+  nameWithType.vb: Ease.InExpo(Single)
+  fullName.vb: AngeliA.Ease.InExpo(Single)
+  name.vb: InExpo(Single)
+- uid: AngeliA.Ease.OutExpo(System.Single)
+  commentId: M:AngeliA.Ease.OutExpo(System.Single)
+  id: OutExpo(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: OutExpo(float)
+  nameWithType: Ease.OutExpo(float)
+  fullName: AngeliA.Ease.OutExpo(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OutExpo
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 57
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float OutExpo(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function OutExpo(x As Single) As Single
+  overload: AngeliA.Ease.OutExpo*
+  nameWithType.vb: Ease.OutExpo(Single)
+  fullName.vb: AngeliA.Ease.OutExpo(Single)
+  name.vb: OutExpo(Single)
+- uid: AngeliA.Ease.InOutExpo(System.Single)
+  commentId: M:AngeliA.Ease.InOutExpo(System.Single)
+  id: InOutExpo(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InOutExpo(float)
+  nameWithType: Ease.InOutExpo(float)
+  fullName: AngeliA.Ease.InOutExpo(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InOutExpo
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 58
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InOutExpo(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InOutExpo(x As Single) As Single
+  overload: AngeliA.Ease.InOutExpo*
+  nameWithType.vb: Ease.InOutExpo(Single)
+  fullName.vb: AngeliA.Ease.InOutExpo(Single)
+  name.vb: InOutExpo(Single)
+- uid: AngeliA.Ease.InBack(System.Single)
+  commentId: M:AngeliA.Ease.InBack(System.Single)
+  id: InBack(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InBack(float)
+  nameWithType: Ease.InBack(float)
+  fullName: AngeliA.Ease.InBack(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InBack
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 62
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InBack(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InBack(x As Single) As Single
+  overload: AngeliA.Ease.InBack*
+  nameWithType.vb: Ease.InBack(Single)
+  fullName.vb: AngeliA.Ease.InBack(Single)
+  name.vb: InBack(Single)
+- uid: AngeliA.Ease.OutBack(System.Single)
+  commentId: M:AngeliA.Ease.OutBack(System.Single)
+  id: OutBack(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: OutBack(float)
+  nameWithType: Ease.OutBack(float)
+  fullName: AngeliA.Ease.OutBack(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OutBack
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 67
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float OutBack(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function OutBack(x As Single) As Single
+  overload: AngeliA.Ease.OutBack*
+  nameWithType.vb: Ease.OutBack(Single)
+  fullName.vb: AngeliA.Ease.OutBack(Single)
+  name.vb: OutBack(Single)
+- uid: AngeliA.Ease.InOutBack(System.Single)
+  commentId: M:AngeliA.Ease.InOutBack(System.Single)
+  id: InOutBack(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InOutBack(float)
+  nameWithType: Ease.InOutBack(float)
+  fullName: AngeliA.Ease.InOutBack(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InOutBack
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 72
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InOutBack(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InOutBack(x As Single) As Single
+  overload: AngeliA.Ease.InOutBack*
+  nameWithType.vb: Ease.InOutBack(Single)
+  fullName.vb: AngeliA.Ease.InOutBack(Single)
+  name.vb: InOutBack(Single)
+- uid: AngeliA.Ease.InBounce(System.Single)
+  commentId: M:AngeliA.Ease.InBounce(System.Single)
+  id: InBounce(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InBounce(float)
+  nameWithType: Ease.InBounce(float)
+  fullName: AngeliA.Ease.InBounce(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InBounce
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 80
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InBounce(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InBounce(x As Single) As Single
+  overload: AngeliA.Ease.InBounce*
+  nameWithType.vb: Ease.InBounce(Single)
+  fullName.vb: AngeliA.Ease.InBounce(Single)
+  name.vb: InBounce(Single)
+- uid: AngeliA.Ease.OutBounce(System.Single)
+  commentId: M:AngeliA.Ease.OutBounce(System.Single)
+  id: OutBounce(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: OutBounce(float)
+  nameWithType: Ease.OutBounce(float)
+  fullName: AngeliA.Ease.OutBounce(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OutBounce
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 81
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float OutBounce(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function OutBounce(x As Single) As Single
+  overload: AngeliA.Ease.OutBounce*
+  nameWithType.vb: Ease.OutBounce(Single)
+  fullName.vb: AngeliA.Ease.OutBounce(Single)
+  name.vb: OutBounce(Single)
+- uid: AngeliA.Ease.InOutBounce(System.Single)
+  commentId: M:AngeliA.Ease.InOutBounce(System.Single)
+  id: InOutBounce(System.Single)
+  parent: AngeliA.Ease
+  langs:
+  - csharp
+  - vb
+  name: InOutBounce(float)
+  nameWithType: Ease.InOutBounce(float)
+  fullName: AngeliA.Ease.InOutBounce(float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Ease.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: InOutBounce
+    path: ../AngeliA Framework/src/Common/Ease.cs
+    startLine: 94
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static float InOutBounce(float x)
+    parameters:
+    - id: x
+      type: System.Single
+    return:
+      type: System.Single
+    content.vb: Public Shared Function InOutBounce(x As Single) As Single
+  overload: AngeliA.Ease.InOutBounce*
+  nameWithType.vb: Ease.InOutBounce(Single)
+  fullName.vb: AngeliA.Ease.InOutBounce(Single)
+  name.vb: InOutBounce(Single)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Ease.InLiner*
+  commentId: Overload:AngeliA.Ease.InLiner
+  href: AngeliA.Ease.html#AngeliA_Ease_InLiner_System_Single_
+  name: InLiner
+  nameWithType: Ease.InLiner
+  fullName: AngeliA.Ease.InLiner
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: AngeliA.Ease.OutLiner*
+  commentId: Overload:AngeliA.Ease.OutLiner
+  href: AngeliA.Ease.html#AngeliA_Ease_OutLiner_System_Single_
+  name: OutLiner
+  nameWithType: Ease.OutLiner
+  fullName: AngeliA.Ease.OutLiner
+- uid: AngeliA.Ease.InOutLiner*
+  commentId: Overload:AngeliA.Ease.InOutLiner
+  href: AngeliA.Ease.html#AngeliA_Ease_InOutLiner_System_Single_
+  name: InOutLiner
+  nameWithType: Ease.InOutLiner
+  fullName: AngeliA.Ease.InOutLiner
+- uid: AngeliA.Ease.InQuad*
+  commentId: Overload:AngeliA.Ease.InQuad
+  href: AngeliA.Ease.html#AngeliA_Ease_InQuad_System_Single_
+  name: InQuad
+  nameWithType: Ease.InQuad
+  fullName: AngeliA.Ease.InQuad
+- uid: AngeliA.Ease.OutQuad*
+  commentId: Overload:AngeliA.Ease.OutQuad
+  href: AngeliA.Ease.html#AngeliA_Ease_OutQuad_System_Single_
+  name: OutQuad
+  nameWithType: Ease.OutQuad
+  fullName: AngeliA.Ease.OutQuad
+- uid: AngeliA.Ease.InOutQuad*
+  commentId: Overload:AngeliA.Ease.InOutQuad
+  href: AngeliA.Ease.html#AngeliA_Ease_InOutQuad_System_Single_
+  name: InOutQuad
+  nameWithType: Ease.InOutQuad
+  fullName: AngeliA.Ease.InOutQuad
+- uid: AngeliA.Ease.InCubic*
+  commentId: Overload:AngeliA.Ease.InCubic
+  href: AngeliA.Ease.html#AngeliA_Ease_InCubic_System_Single_
+  name: InCubic
+  nameWithType: Ease.InCubic
+  fullName: AngeliA.Ease.InCubic
+- uid: AngeliA.Ease.OutCubic*
+  commentId: Overload:AngeliA.Ease.OutCubic
+  href: AngeliA.Ease.html#AngeliA_Ease_OutCubic_System_Single_
+  name: OutCubic
+  nameWithType: Ease.OutCubic
+  fullName: AngeliA.Ease.OutCubic
+- uid: AngeliA.Ease.InOutCubic*
+  commentId: Overload:AngeliA.Ease.InOutCubic
+  href: AngeliA.Ease.html#AngeliA_Ease_InOutCubic_System_Single_
+  name: InOutCubic
+  nameWithType: Ease.InOutCubic
+  fullName: AngeliA.Ease.InOutCubic
+- uid: AngeliA.Ease.InQuart*
+  commentId: Overload:AngeliA.Ease.InQuart
+  href: AngeliA.Ease.html#AngeliA_Ease_InQuart_System_Single_
+  name: InQuart
+  nameWithType: Ease.InQuart
+  fullName: AngeliA.Ease.InQuart
+- uid: AngeliA.Ease.OutQuart*
+  commentId: Overload:AngeliA.Ease.OutQuart
+  href: AngeliA.Ease.html#AngeliA_Ease_OutQuart_System_Single_
+  name: OutQuart
+  nameWithType: Ease.OutQuart
+  fullName: AngeliA.Ease.OutQuart
+- uid: AngeliA.Ease.InOutQuart*
+  commentId: Overload:AngeliA.Ease.InOutQuart
+  href: AngeliA.Ease.html#AngeliA_Ease_InOutQuart_System_Single_
+  name: InOutQuart
+  nameWithType: Ease.InOutQuart
+  fullName: AngeliA.Ease.InOutQuart
+- uid: AngeliA.Ease.InQuint*
+  commentId: Overload:AngeliA.Ease.InQuint
+  href: AngeliA.Ease.html#AngeliA_Ease_InQuint_System_Single_
+  name: InQuint
+  nameWithType: Ease.InQuint
+  fullName: AngeliA.Ease.InQuint
+- uid: AngeliA.Ease.OutQuint*
+  commentId: Overload:AngeliA.Ease.OutQuint
+  href: AngeliA.Ease.html#AngeliA_Ease_OutQuint_System_Single_
+  name: OutQuint
+  nameWithType: Ease.OutQuint
+  fullName: AngeliA.Ease.OutQuint
+- uid: AngeliA.Ease.InOutQuint*
+  commentId: Overload:AngeliA.Ease.InOutQuint
+  href: AngeliA.Ease.html#AngeliA_Ease_InOutQuint_System_Single_
+  name: InOutQuint
+  nameWithType: Ease.InOutQuint
+  fullName: AngeliA.Ease.InOutQuint
+- uid: AngeliA.Ease.InSine*
+  commentId: Overload:AngeliA.Ease.InSine
+  href: AngeliA.Ease.html#AngeliA_Ease_InSine_System_Single_
+  name: InSine
+  nameWithType: Ease.InSine
+  fullName: AngeliA.Ease.InSine
+- uid: AngeliA.Ease.OutSine*
+  commentId: Overload:AngeliA.Ease.OutSine
+  href: AngeliA.Ease.html#AngeliA_Ease_OutSine_System_Single_
+  name: OutSine
+  nameWithType: Ease.OutSine
+  fullName: AngeliA.Ease.OutSine
+- uid: AngeliA.Ease.InOutSine*
+  commentId: Overload:AngeliA.Ease.InOutSine
+  href: AngeliA.Ease.html#AngeliA_Ease_InOutSine_System_Single_
+  name: InOutSine
+  nameWithType: Ease.InOutSine
+  fullName: AngeliA.Ease.InOutSine
+- uid: AngeliA.Ease.InCirc*
+  commentId: Overload:AngeliA.Ease.InCirc
+  href: AngeliA.Ease.html#AngeliA_Ease_InCirc_System_Single_
+  name: InCirc
+  nameWithType: Ease.InCirc
+  fullName: AngeliA.Ease.InCirc
+- uid: AngeliA.Ease.OutCirc*
+  commentId: Overload:AngeliA.Ease.OutCirc
+  href: AngeliA.Ease.html#AngeliA_Ease_OutCirc_System_Single_
+  name: OutCirc
+  nameWithType: Ease.OutCirc
+  fullName: AngeliA.Ease.OutCirc
+- uid: AngeliA.Ease.InOutCirc*
+  commentId: Overload:AngeliA.Ease.InOutCirc
+  href: AngeliA.Ease.html#AngeliA_Ease_InOutCirc_System_Single_
+  name: InOutCirc
+  nameWithType: Ease.InOutCirc
+  fullName: AngeliA.Ease.InOutCirc
+- uid: AngeliA.Ease.InElastic*
+  commentId: Overload:AngeliA.Ease.InElastic
+  href: AngeliA.Ease.html#AngeliA_Ease_InElastic_System_Single_
+  name: InElastic
+  nameWithType: Ease.InElastic
+  fullName: AngeliA.Ease.InElastic
+- uid: AngeliA.Ease.OutElastic*
+  commentId: Overload:AngeliA.Ease.OutElastic
+  href: AngeliA.Ease.html#AngeliA_Ease_OutElastic_System_Single_
+  name: OutElastic
+  nameWithType: Ease.OutElastic
+  fullName: AngeliA.Ease.OutElastic
+- uid: AngeliA.Ease.InOutElastic*
+  commentId: Overload:AngeliA.Ease.InOutElastic
+  href: AngeliA.Ease.html#AngeliA_Ease_InOutElastic_System_Single_
+  name: InOutElastic
+  nameWithType: Ease.InOutElastic
+  fullName: AngeliA.Ease.InOutElastic
+- uid: AngeliA.Ease.InExpo*
+  commentId: Overload:AngeliA.Ease.InExpo
+  href: AngeliA.Ease.html#AngeliA_Ease_InExpo_System_Single_
+  name: InExpo
+  nameWithType: Ease.InExpo
+  fullName: AngeliA.Ease.InExpo
+- uid: AngeliA.Ease.OutExpo*
+  commentId: Overload:AngeliA.Ease.OutExpo
+  href: AngeliA.Ease.html#AngeliA_Ease_OutExpo_System_Single_
+  name: OutExpo
+  nameWithType: Ease.OutExpo
+  fullName: AngeliA.Ease.OutExpo
+- uid: AngeliA.Ease.InOutExpo*
+  commentId: Overload:AngeliA.Ease.InOutExpo
+  href: AngeliA.Ease.html#AngeliA_Ease_InOutExpo_System_Single_
+  name: InOutExpo
+  nameWithType: Ease.InOutExpo
+  fullName: AngeliA.Ease.InOutExpo
+- uid: AngeliA.Ease.InBack*
+  commentId: Overload:AngeliA.Ease.InBack
+  href: AngeliA.Ease.html#AngeliA_Ease_InBack_System_Single_
+  name: InBack
+  nameWithType: Ease.InBack
+  fullName: AngeliA.Ease.InBack
+- uid: AngeliA.Ease.OutBack*
+  commentId: Overload:AngeliA.Ease.OutBack
+  href: AngeliA.Ease.html#AngeliA_Ease_OutBack_System_Single_
+  name: OutBack
+  nameWithType: Ease.OutBack
+  fullName: AngeliA.Ease.OutBack
+- uid: AngeliA.Ease.InOutBack*
+  commentId: Overload:AngeliA.Ease.InOutBack
+  href: AngeliA.Ease.html#AngeliA_Ease_InOutBack_System_Single_
+  name: InOutBack
+  nameWithType: Ease.InOutBack
+  fullName: AngeliA.Ease.InOutBack
+- uid: AngeliA.Ease.InBounce*
+  commentId: Overload:AngeliA.Ease.InBounce
+  href: AngeliA.Ease.html#AngeliA_Ease_InBounce_System_Single_
+  name: InBounce
+  nameWithType: Ease.InBounce
+  fullName: AngeliA.Ease.InBounce
+- uid: AngeliA.Ease.OutBounce*
+  commentId: Overload:AngeliA.Ease.OutBounce
+  href: AngeliA.Ease.html#AngeliA_Ease_OutBounce_System_Single_
+  name: OutBounce
+  nameWithType: Ease.OutBounce
+  fullName: AngeliA.Ease.OutBounce
+- uid: AngeliA.Ease.InOutBounce*
+  commentId: Overload:AngeliA.Ease.InOutBounce
+  href: AngeliA.Ease.html#AngeliA_Ease_InOutBounce_System_Single_
+  name: InOutBounce
+  nameWithType: Ease.InOutBounce
+  fullName: AngeliA.Ease.InOutBounce

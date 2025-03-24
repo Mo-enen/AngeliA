@@ -1,0 +1,3022 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.PoseCharacterRenderer
+  commentId: T:AngeliA.PoseCharacterRenderer
+  id: PoseCharacterRenderer
+  parent: AngeliA
+  children:
+  - AngeliA.PoseCharacterRenderer.#ctor(AngeliA.Character)
+  - AngeliA.PoseCharacterRenderer.BODY_PART_COUNT
+  - AngeliA.PoseCharacterRenderer.BODY_PART_NAME
+  - AngeliA.PoseCharacterRenderer.BasicRootY
+  - AngeliA.PoseCharacterRenderer.BeforeUpdate
+  - AngeliA.PoseCharacterRenderer.BlendDuration
+  - AngeliA.PoseCharacterRenderer.Body
+  - AngeliA.PoseCharacterRenderer.BodyParts
+  - AngeliA.PoseCharacterRenderer.BodyTwist
+  - AngeliA.PoseCharacterRenderer.CM_PER_PX
+  - AngeliA.PoseCharacterRenderer.CharacterHeight
+  - AngeliA.PoseCharacterRenderer.DEFAULT_BODY_PART_ID
+  - AngeliA.PoseCharacterRenderer.EarID
+  - AngeliA.PoseCharacterRenderer.FaceID
+  - AngeliA.PoseCharacterRenderer.FootL
+  - AngeliA.PoseCharacterRenderer.FootR
+  - AngeliA.PoseCharacterRenderer.ForceFaceExpressionIndex
+  - AngeliA.PoseCharacterRenderer.GetGadgetID(AngeliA.BodyGadgetType)
+  - AngeliA.PoseCharacterRenderer.GetSuitID(AngeliA.ClothType)
+  - AngeliA.PoseCharacterRenderer.HairID
+  - AngeliA.PoseCharacterRenderer.HandGrabAttackTwistL
+  - AngeliA.PoseCharacterRenderer.HandGrabAttackTwistR
+  - AngeliA.PoseCharacterRenderer.HandGrabRotationL
+  - AngeliA.PoseCharacterRenderer.HandGrabRotationR
+  - AngeliA.PoseCharacterRenderer.HandGrabScaleL
+  - AngeliA.PoseCharacterRenderer.HandGrabScaleR
+  - AngeliA.PoseCharacterRenderer.HandL
+  - AngeliA.PoseCharacterRenderer.HandR
+  - AngeliA.PoseCharacterRenderer.Head
+  - AngeliA.PoseCharacterRenderer.HeadTwist
+  - AngeliA.PoseCharacterRenderer.Hip
+  - AngeliA.PoseCharacterRenderer.HornID
+  - AngeliA.PoseCharacterRenderer.LateUpdate
+  - AngeliA.PoseCharacterRenderer.LowerArmL
+  - AngeliA.PoseCharacterRenderer.LowerArmR
+  - AngeliA.PoseCharacterRenderer.LowerLegL
+  - AngeliA.PoseCharacterRenderer.LowerLegR
+  - AngeliA.PoseCharacterRenderer.ManualPoseAnimate(System.Int32,System.Int32)
+  - AngeliA.PoseCharacterRenderer.OnActivated
+  - AngeliA.PoseCharacterRenderer.OverridePoseAnimation(AngeliA.CharacterAnimationType,System.Int32,System.Int32)
+  - AngeliA.PoseCharacterRenderer.PerformPoseAnimation
+  - AngeliA.PoseCharacterRenderer.PoseRootX
+  - AngeliA.PoseCharacterRenderer.PoseRootY
+  - AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet(System.Boolean)
+  - AngeliA.PoseCharacterRenderer.RenderBodyGadgets
+  - AngeliA.PoseCharacterRenderer.RenderCloths
+  - AngeliA.PoseCharacterRenderer.RenderEquipment
+  - AngeliA.PoseCharacterRenderer.RenderInventory
+  - AngeliA.PoseCharacterRenderer.RenderedCellZ
+  - AngeliA.PoseCharacterRenderer.SaveCharacterToConfig(System.Boolean)
+  - AngeliA.PoseCharacterRenderer.ShoulderL
+  - AngeliA.PoseCharacterRenderer.ShoulderR
+  - AngeliA.PoseCharacterRenderer.SuitBody
+  - AngeliA.PoseCharacterRenderer.SuitFoot
+  - AngeliA.PoseCharacterRenderer.SuitHand
+  - AngeliA.PoseCharacterRenderer.SuitHead
+  - AngeliA.PoseCharacterRenderer.SuitHip
+  - AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool(System.Boolean)
+  - AngeliA.PoseCharacterRenderer.TailID
+  - AngeliA.PoseCharacterRenderer.TryGetConfigFromPool(System.Int32,AngeliA.CharacterRenderingConfig@)
+  - AngeliA.PoseCharacterRenderer.UpperArmL
+  - AngeliA.PoseCharacterRenderer.UpperArmR
+  - AngeliA.PoseCharacterRenderer.UpperLegL
+  - AngeliA.PoseCharacterRenderer.UpperLegR
+  - AngeliA.PoseCharacterRenderer.WingID
+  langs:
+  - csharp
+  - vb
+  name: PoseCharacterRenderer
+  nameWithType: PoseCharacterRenderer
+  fullName: AngeliA.PoseCharacterRenderer
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PoseCharacterRenderer
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: 'public class PoseCharacterRenderer : CharacterRenderer'
+    content.vb: Public Class PoseCharacterRenderer Inherits CharacterRenderer
+  inheritance:
+  - System.Object
+  - AngeliA.CharacterRenderer
+  inheritedMembers:
+  - AngeliA.CharacterRenderer.TargetCharacter
+  - AngeliA.CharacterRenderer.CurrentAnimationFrame
+  - AngeliA.CharacterRenderer.CurrentRenderingBounce
+  - AngeliA.CharacterRenderer.SpinOnGroundPound
+  - AngeliA.CharacterRenderer.Tint
+  - AngeliA.CharacterRenderer.Scale
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.PoseCharacterRenderer.BODY_PART_COUNT
+  commentId: F:AngeliA.PoseCharacterRenderer.BODY_PART_COUNT
+  id: BODY_PART_COUNT
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: BODY_PART_COUNT
+  nameWithType: PoseCharacterRenderer.BODY_PART_COUNT
+  fullName: AngeliA.PoseCharacterRenderer.BODY_PART_COUNT
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BODY_PART_COUNT
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: How many body part does a pose character have
+  example: []
+  syntax:
+    content: public const int BODY_PART_COUNT = 17
+    return:
+      type: System.Int32
+    content.vb: Public Const BODY_PART_COUNT As Integer = 17
+- uid: AngeliA.PoseCharacterRenderer.CM_PER_PX
+  commentId: F:AngeliA.PoseCharacterRenderer.CM_PER_PX
+  id: CM_PER_PX
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: CM_PER_PX
+  nameWithType: PoseCharacterRenderer.CM_PER_PX
+  fullName: AngeliA.PoseCharacterRenderer.CM_PER_PX
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CM_PER_PX
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 21
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: How many cm does one artwork pixel represents
+  example: []
+  syntax:
+    content: public const int CM_PER_PX = 5
+    return:
+      type: System.Int32
+    content.vb: Public Const CM_PER_PX As Integer = 5
+- uid: AngeliA.PoseCharacterRenderer.DEFAULT_BODY_PART_ID
+  commentId: F:AngeliA.PoseCharacterRenderer.DEFAULT_BODY_PART_ID
+  id: DEFAULT_BODY_PART_ID
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: DEFAULT_BODY_PART_ID
+  nameWithType: PoseCharacterRenderer.DEFAULT_BODY_PART_ID
+  fullName: AngeliA.PoseCharacterRenderer.DEFAULT_BODY_PART_ID
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: DEFAULT_BODY_PART_ID
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 23
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly int[] DEFAULT_BODY_PART_ID
+    return:
+      type: System.Int32[]
+    content.vb: Public Shared ReadOnly DEFAULT_BODY_PART_ID As Integer()
+- uid: AngeliA.PoseCharacterRenderer.BODY_PART_NAME
+  commentId: F:AngeliA.PoseCharacterRenderer.BODY_PART_NAME
+  id: BODY_PART_NAME
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: BODY_PART_NAME
+  nameWithType: PoseCharacterRenderer.BODY_PART_NAME
+  fullName: AngeliA.PoseCharacterRenderer.BODY_PART_NAME
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BODY_PART_NAME
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 24
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly string[] BODY_PART_NAME
+    return:
+      type: System.String[]
+    content.vb: Public Shared ReadOnly BODY_PART_NAME As String()
+- uid: AngeliA.PoseCharacterRenderer.BasicRootY
+  commentId: P:AngeliA.PoseCharacterRenderer.BasicRootY
+  id: BasicRootY
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: BasicRootY
+  nameWithType: PoseCharacterRenderer.BasicRootY
+  fullName: AngeliA.PoseCharacterRenderer.BasicRootY
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BasicRootY
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 41
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Mid-Bottom local position of character hip y position
+  example: []
+  syntax:
+    content: public int BasicRootY { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property BasicRootY As Integer
+  overload: AngeliA.PoseCharacterRenderer.BasicRootY*
+- uid: AngeliA.PoseCharacterRenderer.PoseRootX
+  commentId: P:AngeliA.PoseCharacterRenderer.PoseRootX
+  id: PoseRootX
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: PoseRootX
+  nameWithType: PoseCharacterRenderer.PoseRootX
+  fullName: AngeliA.PoseCharacterRenderer.PoseRootX
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PoseRootX
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 45
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Total offset X for pose rendering
+  example: []
+  syntax:
+    content: public int PoseRootX { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property PoseRootX As Integer
+  overload: AngeliA.PoseCharacterRenderer.PoseRootX*
+- uid: AngeliA.PoseCharacterRenderer.PoseRootY
+  commentId: P:AngeliA.PoseCharacterRenderer.PoseRootY
+  id: PoseRootY
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: PoseRootY
+  nameWithType: PoseCharacterRenderer.PoseRootY
+  fullName: AngeliA.PoseCharacterRenderer.PoseRootY
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PoseRootY
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 49
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Total offset Y for pose rendering
+  example: []
+  syntax:
+    content: public int PoseRootY { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property PoseRootY As Integer
+  overload: AngeliA.PoseCharacterRenderer.PoseRootY*
+- uid: AngeliA.PoseCharacterRenderer.HeadTwist
+  commentId: P:AngeliA.PoseCharacterRenderer.HeadTwist
+  id: HeadTwist
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: HeadTwist
+  nameWithType: PoseCharacterRenderer.HeadTwist
+  fullName: AngeliA.PoseCharacterRenderer.HeadTwist
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HeadTwist
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 53
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Make head rotate like shaking head
+  example: []
+  syntax:
+    content: public int HeadTwist { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property HeadTwist As Integer
+  overload: AngeliA.PoseCharacterRenderer.HeadTwist*
+- uid: AngeliA.PoseCharacterRenderer.BodyTwist
+  commentId: P:AngeliA.PoseCharacterRenderer.BodyTwist
+  id: BodyTwist
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: BodyTwist
+  nameWithType: PoseCharacterRenderer.BodyTwist
+  fullName: AngeliA.PoseCharacterRenderer.BodyTwist
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BodyTwist
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 57
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Make body rotate left or right
+  example: []
+  syntax:
+    content: public int BodyTwist { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property BodyTwist As Integer
+  overload: AngeliA.PoseCharacterRenderer.BodyTwist*
+- uid: AngeliA.PoseCharacterRenderer.CharacterHeight
+  commentId: P:AngeliA.PoseCharacterRenderer.CharacterHeight
+  id: CharacterHeight
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: CharacterHeight
+  nameWithType: PoseCharacterRenderer.CharacterHeight
+  fullName: AngeliA.PoseCharacterRenderer.CharacterHeight
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CharacterHeight
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 61
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Character body height in cm
+  example: []
+  syntax:
+    content: public int CharacterHeight { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CharacterHeight As Integer
+  overload: AngeliA.PoseCharacterRenderer.CharacterHeight*
+- uid: AngeliA.PoseCharacterRenderer.RenderedCellZ
+  commentId: P:AngeliA.PoseCharacterRenderer.RenderedCellZ
+  id: RenderedCellZ
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: RenderedCellZ
+  nameWithType: PoseCharacterRenderer.RenderedCellZ
+  fullName: AngeliA.PoseCharacterRenderer.RenderedCellZ
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RenderedCellZ
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 65
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Basic rendering Z value for last time character get rendered
+  example: []
+  syntax:
+    content: public int RenderedCellZ { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property RenderedCellZ As Integer
+  overload: AngeliA.PoseCharacterRenderer.RenderedCellZ*
+- uid: AngeliA.PoseCharacterRenderer.BlendDuration
+  commentId: P:AngeliA.PoseCharacterRenderer.BlendDuration
+  id: BlendDuration
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: BlendDuration
+  nameWithType: PoseCharacterRenderer.BlendDuration
+  fullName: AngeliA.PoseCharacterRenderer.BlendDuration
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BlendDuration
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 69
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: How many frames does it takes the character to transition from one pose to another
+  example: []
+  syntax:
+    content: public int BlendDuration { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property BlendDuration As Integer
+  overload: AngeliA.PoseCharacterRenderer.BlendDuration*
+- uid: AngeliA.PoseCharacterRenderer.BodyParts
+  commentId: F:AngeliA.PoseCharacterRenderer.BodyParts
+  id: BodyParts
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: BodyParts
+  nameWithType: PoseCharacterRenderer.BodyParts
+  fullName: AngeliA.PoseCharacterRenderer.BodyParts
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BodyParts
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 75
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: All body parts of the pose character
+  example: []
+  syntax:
+    content: public readonly BodyPart[] BodyParts
+    return:
+      type: AngeliA.BodyPart[]
+    content.vb: Public ReadOnly BodyParts As BodyPart()
+- uid: AngeliA.PoseCharacterRenderer.Head
+  commentId: P:AngeliA.PoseCharacterRenderer.Head
+  id: Head
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: Head
+  nameWithType: PoseCharacterRenderer.Head
+  fullName: AngeliA.PoseCharacterRenderer.Head
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Head
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 79
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Head of the pose character
+  example: []
+  syntax:
+    content: public BodyPart Head { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property Head As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.Head*
+- uid: AngeliA.PoseCharacterRenderer.Body
+  commentId: P:AngeliA.PoseCharacterRenderer.Body
+  id: Body
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: Body
+  nameWithType: PoseCharacterRenderer.Body
+  fullName: AngeliA.PoseCharacterRenderer.Body
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Body
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 83
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Body of the pose character
+  example: []
+  syntax:
+    content: public BodyPart Body { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property Body As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.Body*
+- uid: AngeliA.PoseCharacterRenderer.Hip
+  commentId: P:AngeliA.PoseCharacterRenderer.Hip
+  id: Hip
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: Hip
+  nameWithType: PoseCharacterRenderer.Hip
+  fullName: AngeliA.PoseCharacterRenderer.Hip
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Hip
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 87
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Hip of the pose character
+  example: []
+  syntax:
+    content: public BodyPart Hip { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property Hip As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.Hip*
+- uid: AngeliA.PoseCharacterRenderer.ShoulderL
+  commentId: P:AngeliA.PoseCharacterRenderer.ShoulderL
+  id: ShoulderL
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: ShoulderL
+  nameWithType: PoseCharacterRenderer.ShoulderL
+  fullName: AngeliA.PoseCharacterRenderer.ShoulderL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ShoulderL
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 91
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Left shoulder of the pose character
+  example: []
+  syntax:
+    content: public BodyPart ShoulderL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property ShoulderL As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.ShoulderL*
+- uid: AngeliA.PoseCharacterRenderer.ShoulderR
+  commentId: P:AngeliA.PoseCharacterRenderer.ShoulderR
+  id: ShoulderR
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: ShoulderR
+  nameWithType: PoseCharacterRenderer.ShoulderR
+  fullName: AngeliA.PoseCharacterRenderer.ShoulderR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ShoulderR
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 95
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Right shoulder of the pose character
+  example: []
+  syntax:
+    content: public BodyPart ShoulderR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property ShoulderR As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.ShoulderR*
+- uid: AngeliA.PoseCharacterRenderer.UpperArmL
+  commentId: P:AngeliA.PoseCharacterRenderer.UpperArmL
+  id: UpperArmL
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpperArmL
+  nameWithType: PoseCharacterRenderer.UpperArmL
+  fullName: AngeliA.PoseCharacterRenderer.UpperArmL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UpperArmL
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 99
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Left upper arm of the pose character
+  example: []
+  syntax:
+    content: public BodyPart UpperArmL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property UpperArmL As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.UpperArmL*
+- uid: AngeliA.PoseCharacterRenderer.UpperArmR
+  commentId: P:AngeliA.PoseCharacterRenderer.UpperArmR
+  id: UpperArmR
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpperArmR
+  nameWithType: PoseCharacterRenderer.UpperArmR
+  fullName: AngeliA.PoseCharacterRenderer.UpperArmR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UpperArmR
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 103
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Right upper arm of the pose character
+  example: []
+  syntax:
+    content: public BodyPart UpperArmR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property UpperArmR As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.UpperArmR*
+- uid: AngeliA.PoseCharacterRenderer.LowerArmL
+  commentId: P:AngeliA.PoseCharacterRenderer.LowerArmL
+  id: LowerArmL
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: LowerArmL
+  nameWithType: PoseCharacterRenderer.LowerArmL
+  fullName: AngeliA.PoseCharacterRenderer.LowerArmL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LowerArmL
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 107
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Left lower arm of the pose character
+  example: []
+  syntax:
+    content: public BodyPart LowerArmL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property LowerArmL As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.LowerArmL*
+- uid: AngeliA.PoseCharacterRenderer.LowerArmR
+  commentId: P:AngeliA.PoseCharacterRenderer.LowerArmR
+  id: LowerArmR
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: LowerArmR
+  nameWithType: PoseCharacterRenderer.LowerArmR
+  fullName: AngeliA.PoseCharacterRenderer.LowerArmR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LowerArmR
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 111
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Right lower arm of the pose character
+  example: []
+  syntax:
+    content: public BodyPart LowerArmR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property LowerArmR As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.LowerArmR*
+- uid: AngeliA.PoseCharacterRenderer.HandL
+  commentId: P:AngeliA.PoseCharacterRenderer.HandL
+  id: HandL
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: HandL
+  nameWithType: PoseCharacterRenderer.HandL
+  fullName: AngeliA.PoseCharacterRenderer.HandL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandL
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 115
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Left hand of the pose character
+  example: []
+  syntax:
+    content: public BodyPart HandL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property HandL As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.HandL*
+- uid: AngeliA.PoseCharacterRenderer.HandR
+  commentId: P:AngeliA.PoseCharacterRenderer.HandR
+  id: HandR
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: HandR
+  nameWithType: PoseCharacterRenderer.HandR
+  fullName: AngeliA.PoseCharacterRenderer.HandR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandR
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 119
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Right hand of the pose character
+  example: []
+  syntax:
+    content: public BodyPart HandR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property HandR As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.HandR*
+- uid: AngeliA.PoseCharacterRenderer.UpperLegL
+  commentId: P:AngeliA.PoseCharacterRenderer.UpperLegL
+  id: UpperLegL
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpperLegL
+  nameWithType: PoseCharacterRenderer.UpperLegL
+  fullName: AngeliA.PoseCharacterRenderer.UpperLegL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UpperLegL
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 123
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Left upper leg of the pose character
+  example: []
+  syntax:
+    content: public BodyPart UpperLegL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property UpperLegL As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.UpperLegL*
+- uid: AngeliA.PoseCharacterRenderer.UpperLegR
+  commentId: P:AngeliA.PoseCharacterRenderer.UpperLegR
+  id: UpperLegR
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: UpperLegR
+  nameWithType: PoseCharacterRenderer.UpperLegR
+  fullName: AngeliA.PoseCharacterRenderer.UpperLegR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: UpperLegR
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 127
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Right upper leg of the pose character
+  example: []
+  syntax:
+    content: public BodyPart UpperLegR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property UpperLegR As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.UpperLegR*
+- uid: AngeliA.PoseCharacterRenderer.LowerLegL
+  commentId: P:AngeliA.PoseCharacterRenderer.LowerLegL
+  id: LowerLegL
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: LowerLegL
+  nameWithType: PoseCharacterRenderer.LowerLegL
+  fullName: AngeliA.PoseCharacterRenderer.LowerLegL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LowerLegL
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 131
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Left lower leg of the pose character
+  example: []
+  syntax:
+    content: public BodyPart LowerLegL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property LowerLegL As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.LowerLegL*
+- uid: AngeliA.PoseCharacterRenderer.LowerLegR
+  commentId: P:AngeliA.PoseCharacterRenderer.LowerLegR
+  id: LowerLegR
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: LowerLegR
+  nameWithType: PoseCharacterRenderer.LowerLegR
+  fullName: AngeliA.PoseCharacterRenderer.LowerLegR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LowerLegR
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 135
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Right lower leg of the pose character
+  example: []
+  syntax:
+    content: public BodyPart LowerLegR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property LowerLegR As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.LowerLegR*
+- uid: AngeliA.PoseCharacterRenderer.FootL
+  commentId: P:AngeliA.PoseCharacterRenderer.FootL
+  id: FootL
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: FootL
+  nameWithType: PoseCharacterRenderer.FootL
+  fullName: AngeliA.PoseCharacterRenderer.FootL
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FootL
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 139
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Left foot of the pose character
+  example: []
+  syntax:
+    content: public BodyPart FootL { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property FootL As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.FootL*
+- uid: AngeliA.PoseCharacterRenderer.FootR
+  commentId: P:AngeliA.PoseCharacterRenderer.FootR
+  id: FootR
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: FootR
+  nameWithType: PoseCharacterRenderer.FootR
+  fullName: AngeliA.PoseCharacterRenderer.FootR
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FootR
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 143
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Right foot of the pose character
+  example: []
+  syntax:
+    content: public BodyPart FootR { get; init; }
+    parameters: []
+    return:
+      type: AngeliA.BodyPart
+    content.vb: Public Property FootR As BodyPart
+  overload: AngeliA.PoseCharacterRenderer.FootR*
+- uid: AngeliA.PoseCharacterRenderer.HandGrabRotationL
+  commentId: F:AngeliA.PoseCharacterRenderer.HandGrabRotationL
+  id: HandGrabRotationL
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: HandGrabRotationL
+  nameWithType: PoseCharacterRenderer.HandGrabRotationL
+  fullName: AngeliA.PoseCharacterRenderer.HandGrabRotationL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabRotationL
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 149
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Rotation of the object grabbing by the left hand
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt HandGrabRotationL
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly HandGrabRotationL As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.HandGrabRotationR
+  commentId: F:AngeliA.PoseCharacterRenderer.HandGrabRotationR
+  id: HandGrabRotationR
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: HandGrabRotationR
+  nameWithType: PoseCharacterRenderer.HandGrabRotationR
+  fullName: AngeliA.PoseCharacterRenderer.HandGrabRotationR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabRotationR
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 153
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Rotation of the object grabbing by the right hand
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt HandGrabRotationR
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly HandGrabRotationR As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.HandGrabScaleL
+  commentId: F:AngeliA.PoseCharacterRenderer.HandGrabScaleL
+  id: HandGrabScaleL
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: HandGrabScaleL
+  nameWithType: PoseCharacterRenderer.HandGrabScaleL
+  fullName: AngeliA.PoseCharacterRenderer.HandGrabScaleL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabScaleL
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 157
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Size scaling of the object grabbing by the left hand (0 means 0%, 1000 means 100%)
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt HandGrabScaleL
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly HandGrabScaleL As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.HandGrabScaleR
+  commentId: F:AngeliA.PoseCharacterRenderer.HandGrabScaleR
+  id: HandGrabScaleR
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: HandGrabScaleR
+  nameWithType: PoseCharacterRenderer.HandGrabScaleR
+  fullName: AngeliA.PoseCharacterRenderer.HandGrabScaleR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabScaleR
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 161
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Size scaling of the object grabbing by the right hand (0 means 0%, 1000 means 100%)
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt HandGrabScaleR
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly HandGrabScaleR As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.HandGrabAttackTwistL
+  commentId: F:AngeliA.PoseCharacterRenderer.HandGrabAttackTwistL
+  id: HandGrabAttackTwistL
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: HandGrabAttackTwistL
+  nameWithType: PoseCharacterRenderer.HandGrabAttackTwistL
+  fullName: AngeliA.PoseCharacterRenderer.HandGrabAttackTwistL
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabAttackTwistL
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 165
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Angle twist of the object grabbing by the left hand (0 means disappear, 1000 means normal)
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt HandGrabAttackTwistL
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly HandGrabAttackTwistL As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.HandGrabAttackTwistR
+  commentId: F:AngeliA.PoseCharacterRenderer.HandGrabAttackTwistR
+  id: HandGrabAttackTwistR
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: HandGrabAttackTwistR
+  nameWithType: PoseCharacterRenderer.HandGrabAttackTwistR
+  fullName: AngeliA.PoseCharacterRenderer.HandGrabAttackTwistR
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HandGrabAttackTwistR
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 169
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Angle twist of the object grabbing by the right hand (0 means disappear, 1000 means normal)
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt HandGrabAttackTwistR
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly HandGrabAttackTwistR As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.FaceID
+  commentId: F:AngeliA.PoseCharacterRenderer.FaceID
+  id: FaceID
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: FaceID
+  nameWithType: PoseCharacterRenderer.FaceID
+  fullName: AngeliA.PoseCharacterRenderer.FaceID
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: FaceID
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 175
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: ID of current face gadget instance
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt FaceID
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly FaceID As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.HairID
+  commentId: F:AngeliA.PoseCharacterRenderer.HairID
+  id: HairID
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: HairID
+  nameWithType: PoseCharacterRenderer.HairID
+  fullName: AngeliA.PoseCharacterRenderer.HairID
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HairID
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 179
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: ID of current hair gadget instance
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt HairID
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly HairID As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.EarID
+  commentId: F:AngeliA.PoseCharacterRenderer.EarID
+  id: EarID
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: EarID
+  nameWithType: PoseCharacterRenderer.EarID
+  fullName: AngeliA.PoseCharacterRenderer.EarID
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EarID
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 183
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: ID of current animal-ear gadget instance (like cat-girl's ears, not human ears)
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt EarID
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly EarID As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.TailID
+  commentId: F:AngeliA.PoseCharacterRenderer.TailID
+  id: TailID
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: TailID
+  nameWithType: PoseCharacterRenderer.TailID
+  fullName: AngeliA.PoseCharacterRenderer.TailID
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TailID
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 187
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: ID of current tail gadget instance
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt TailID
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly TailID As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.WingID
+  commentId: F:AngeliA.PoseCharacterRenderer.WingID
+  id: WingID
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: WingID
+  nameWithType: PoseCharacterRenderer.WingID
+  fullName: AngeliA.PoseCharacterRenderer.WingID
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: WingID
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 191
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: ID of current wing gadget instance
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt WingID
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly WingID As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.HornID
+  commentId: F:AngeliA.PoseCharacterRenderer.HornID
+  id: HornID
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: HornID
+  nameWithType: PoseCharacterRenderer.HornID
+  fullName: AngeliA.PoseCharacterRenderer.HornID
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: HornID
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 195
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: ID of current horn gadget instance
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt HornID
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly HornID As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.ForceFaceExpressionIndex
+  commentId: F:AngeliA.PoseCharacterRenderer.ForceFaceExpressionIndex
+  id: ForceFaceExpressionIndex
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: ForceFaceExpressionIndex
+  nameWithType: PoseCharacterRenderer.ForceFaceExpressionIndex
+  fullName: AngeliA.PoseCharacterRenderer.ForceFaceExpressionIndex
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ForceFaceExpressionIndex
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 199
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Which face expression does the face need to render
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt ForceFaceExpressionIndex
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly ForceFaceExpressionIndex As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.SuitHead
+  commentId: F:AngeliA.PoseCharacterRenderer.SuitHead
+  id: SuitHead
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: SuitHead
+  nameWithType: PoseCharacterRenderer.SuitHead
+  fullName: AngeliA.PoseCharacterRenderer.SuitHead
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SuitHead
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 205
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Current hat suit id
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt SuitHead
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly SuitHead As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.SuitBody
+  commentId: F:AngeliA.PoseCharacterRenderer.SuitBody
+  id: SuitBody
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: SuitBody
+  nameWithType: PoseCharacterRenderer.SuitBody
+  fullName: AngeliA.PoseCharacterRenderer.SuitBody
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SuitBody
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 209
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Current body suit id (cloth with sleeves)
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt SuitBody
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly SuitBody As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.SuitHip
+  commentId: F:AngeliA.PoseCharacterRenderer.SuitHip
+  id: SuitHip
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: SuitHip
+  nameWithType: PoseCharacterRenderer.SuitHip
+  fullName: AngeliA.PoseCharacterRenderer.SuitHip
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SuitHip
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 213
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Current hip suit id (pants or skirt)
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt SuitHip
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly SuitHip As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.SuitHand
+  commentId: F:AngeliA.PoseCharacterRenderer.SuitHand
+  id: SuitHand
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: SuitHand
+  nameWithType: PoseCharacterRenderer.SuitHand
+  fullName: AngeliA.PoseCharacterRenderer.SuitHand
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SuitHand
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 217
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Current gloves suit id
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt SuitHand
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly SuitHand As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.SuitFoot
+  commentId: F:AngeliA.PoseCharacterRenderer.SuitFoot
+  id: SuitFoot
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: SuitFoot
+  nameWithType: PoseCharacterRenderer.SuitFoot
+  fullName: AngeliA.PoseCharacterRenderer.SuitFoot
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SuitFoot
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 221
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Current shoes suit id
+  example: []
+  syntax:
+    content: public readonly FrameBasedInt SuitFoot
+    return:
+      type: AngeliA.FrameBasedInt
+    content.vb: Public ReadOnly SuitFoot As FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.#ctor(AngeliA.Character)
+  commentId: M:AngeliA.PoseCharacterRenderer.#ctor(AngeliA.Character)
+  id: '#ctor(AngeliA.Character)'
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: PoseCharacterRenderer(Character)
+  nameWithType: PoseCharacterRenderer.PoseCharacterRenderer(Character)
+  fullName: AngeliA.PoseCharacterRenderer.PoseCharacterRenderer(AngeliA.Character)
+  type: Constructor
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: .ctor
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 278
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public PoseCharacterRenderer(Character target)
+    parameters:
+    - id: target
+      type: AngeliA.Character
+    content.vb: Public Sub New(target As Character)
+  overload: AngeliA.PoseCharacterRenderer.#ctor*
+  nameWithType.vb: PoseCharacterRenderer.New(Character)
+  fullName.vb: AngeliA.PoseCharacterRenderer.New(AngeliA.Character)
+  name.vb: New(Character)
+- uid: AngeliA.PoseCharacterRenderer.OnActivated
+  commentId: M:AngeliA.PoseCharacterRenderer.OnActivated
+  id: OnActivated
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: OnActivated()
+  nameWithType: PoseCharacterRenderer.OnActivated()
+  fullName: AngeliA.PoseCharacterRenderer.OnActivated()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnActivated
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 321
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Callback function for character entity get activated
+  example: []
+  syntax:
+    content: public override void OnActivated()
+    content.vb: Public Overrides Sub OnActivated()
+  overridden: AngeliA.CharacterRenderer.OnActivated
+  overload: AngeliA.PoseCharacterRenderer.OnActivated*
+- uid: AngeliA.PoseCharacterRenderer.BeforeUpdate
+  commentId: M:AngeliA.PoseCharacterRenderer.BeforeUpdate
+  id: BeforeUpdate
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: BeforeUpdate()
+  nameWithType: PoseCharacterRenderer.BeforeUpdate()
+  fullName: AngeliA.PoseCharacterRenderer.BeforeUpdate()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BeforeUpdate
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 329
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override void BeforeUpdate()
+    content.vb: Public Overrides Sub BeforeUpdate()
+  overridden: AngeliA.CharacterRenderer.BeforeUpdate
+  overload: AngeliA.PoseCharacterRenderer.BeforeUpdate*
+- uid: AngeliA.PoseCharacterRenderer.LateUpdate
+  commentId: M:AngeliA.PoseCharacterRenderer.LateUpdate
+  id: LateUpdate
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: LateUpdate()
+  nameWithType: PoseCharacterRenderer.LateUpdate()
+  fullName: AngeliA.PoseCharacterRenderer.LateUpdate()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LateUpdate
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 335
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  example: []
+  syntax:
+    content: public override void LateUpdate()
+    content.vb: Public Overrides Sub LateUpdate()
+  overridden: AngeliA.CharacterRenderer.LateUpdate
+  overload: AngeliA.PoseCharacterRenderer.LateUpdate*
+- uid: AngeliA.PoseCharacterRenderer.RenderBodyGadgets
+  commentId: M:AngeliA.PoseCharacterRenderer.RenderBodyGadgets
+  id: RenderBodyGadgets
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: RenderBodyGadgets()
+  nameWithType: PoseCharacterRenderer.RenderBodyGadgets()
+  fullName: AngeliA.PoseCharacterRenderer.RenderBodyGadgets()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RenderBodyGadgets
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 351
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual void RenderBodyGadgets()
+    content.vb: Protected Overridable Sub RenderBodyGadgets()
+  overload: AngeliA.PoseCharacterRenderer.RenderBodyGadgets*
+- uid: AngeliA.PoseCharacterRenderer.RenderCloths
+  commentId: M:AngeliA.PoseCharacterRenderer.RenderCloths
+  id: RenderCloths
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: RenderCloths()
+  nameWithType: PoseCharacterRenderer.RenderCloths()
+  fullName: AngeliA.PoseCharacterRenderer.RenderCloths()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RenderCloths
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 363
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual void RenderCloths()
+    content.vb: Protected Overridable Sub RenderCloths()
+  overload: AngeliA.PoseCharacterRenderer.RenderCloths*
+- uid: AngeliA.PoseCharacterRenderer.PerformPoseAnimation
+  commentId: M:AngeliA.PoseCharacterRenderer.PerformPoseAnimation
+  id: PerformPoseAnimation
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: PerformPoseAnimation()
+  nameWithType: PoseCharacterRenderer.PerformPoseAnimation()
+  fullName: AngeliA.PoseCharacterRenderer.PerformPoseAnimation()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PerformPoseAnimation
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 372
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual void PerformPoseAnimation()
+    content.vb: Protected Overridable Sub PerformPoseAnimation()
+  overload: AngeliA.PoseCharacterRenderer.PerformPoseAnimation*
+- uid: AngeliA.PoseCharacterRenderer.RenderEquipment
+  commentId: M:AngeliA.PoseCharacterRenderer.RenderEquipment
+  id: RenderEquipment
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: RenderEquipment()
+  nameWithType: PoseCharacterRenderer.RenderEquipment()
+  fullName: AngeliA.PoseCharacterRenderer.RenderEquipment()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RenderEquipment
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 401
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual void RenderEquipment()
+    content.vb: Protected Overridable Sub RenderEquipment()
+  overload: AngeliA.PoseCharacterRenderer.RenderEquipment*
+- uid: AngeliA.PoseCharacterRenderer.RenderInventory
+  commentId: M:AngeliA.PoseCharacterRenderer.RenderInventory
+  id: RenderInventory
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: RenderInventory()
+  nameWithType: PoseCharacterRenderer.RenderInventory()
+  fullName: AngeliA.PoseCharacterRenderer.RenderInventory()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RenderInventory
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 443
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: protected virtual void RenderInventory()
+    content.vb: Protected Overridable Sub RenderInventory()
+  overload: AngeliA.PoseCharacterRenderer.RenderInventory*
+- uid: AngeliA.PoseCharacterRenderer.GetGadgetID(AngeliA.BodyGadgetType)
+  commentId: M:AngeliA.PoseCharacterRenderer.GetGadgetID(AngeliA.BodyGadgetType)
+  id: GetGadgetID(AngeliA.BodyGadgetType)
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetGadgetID(BodyGadgetType)
+  nameWithType: PoseCharacterRenderer.GetGadgetID(BodyGadgetType)
+  fullName: AngeliA.PoseCharacterRenderer.GetGadgetID(AngeliA.BodyGadgetType)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetGadgetID
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 812
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Get current body gadget ID the character is using
+  example: []
+  syntax:
+    content: public int GetGadgetID(BodyGadgetType type)
+    parameters:
+    - id: type
+      type: AngeliA.BodyGadgetType
+    return:
+      type: System.Int32
+    content.vb: Public Function GetGadgetID(type As BodyGadgetType) As Integer
+  overload: AngeliA.PoseCharacterRenderer.GetGadgetID*
+- uid: AngeliA.PoseCharacterRenderer.GetSuitID(AngeliA.ClothType)
+  commentId: M:AngeliA.PoseCharacterRenderer.GetSuitID(AngeliA.ClothType)
+  id: GetSuitID(AngeliA.ClothType)
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetSuitID(ClothType)
+  nameWithType: PoseCharacterRenderer.GetSuitID(ClothType)
+  fullName: AngeliA.PoseCharacterRenderer.GetSuitID(AngeliA.ClothType)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetSuitID
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 826
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Get current suit ID the character is using
+  example: []
+  syntax:
+    content: public int GetSuitID(ClothType type)
+    parameters:
+    - id: type
+      type: AngeliA.ClothType
+    return:
+      type: System.Int32
+    content.vb: Public Function GetSuitID(type As ClothType) As Integer
+  overload: AngeliA.PoseCharacterRenderer.GetSuitID*
+- uid: AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet(System.Boolean)
+  commentId: M:AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet(System.Boolean)
+  id: ReloadRenderingConfigPoolFromFileAndSheet(System.Boolean)
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: ReloadRenderingConfigPoolFromFileAndSheet(bool)
+  nameWithType: PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet(bool)
+  fullName: AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet(bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ReloadRenderingConfigPoolFromFileAndSheet
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 837
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void ReloadRenderingConfigPoolFromFileAndSheet(bool forceReset = false)
+    parameters:
+    - id: forceReset
+      type: System.Boolean
+    content.vb: Public Shared Sub ReloadRenderingConfigPoolFromFileAndSheet(forceReset As Boolean = False)
+  overload: AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet*
+  nameWithType.vb: PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet(Boolean)
+  fullName.vb: AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet(Boolean)
+  name.vb: ReloadRenderingConfigPoolFromFileAndSheet(Boolean)
+- uid: AngeliA.PoseCharacterRenderer.TryGetConfigFromPool(System.Int32,AngeliA.CharacterRenderingConfig@)
+  commentId: M:AngeliA.PoseCharacterRenderer.TryGetConfigFromPool(System.Int32,AngeliA.CharacterRenderingConfig@)
+  id: TryGetConfigFromPool(System.Int32,AngeliA.CharacterRenderingConfig@)
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: TryGetConfigFromPool(int, out CharacterRenderingConfig)
+  nameWithType: PoseCharacterRenderer.TryGetConfigFromPool(int, out CharacterRenderingConfig)
+  fullName: AngeliA.PoseCharacterRenderer.TryGetConfigFromPool(int, out AngeliA.CharacterRenderingConfig)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TryGetConfigFromPool
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 859
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static bool TryGetConfigFromPool(int id, out CharacterRenderingConfig config)
+    parameters:
+    - id: id
+      type: System.Int32
+    - id: config
+      type: AngeliA.CharacterRenderingConfig
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function TryGetConfigFromPool(id As Integer, config As CharacterRenderingConfig) As Boolean
+  overload: AngeliA.PoseCharacterRenderer.TryGetConfigFromPool*
+  nameWithType.vb: PoseCharacterRenderer.TryGetConfigFromPool(Integer, CharacterRenderingConfig)
+  fullName.vb: AngeliA.PoseCharacterRenderer.TryGetConfigFromPool(Integer, AngeliA.CharacterRenderingConfig)
+  name.vb: TryGetConfigFromPool(Integer, CharacterRenderingConfig)
+- uid: AngeliA.PoseCharacterRenderer.SaveCharacterToConfig(System.Boolean)
+  commentId: M:AngeliA.PoseCharacterRenderer.SaveCharacterToConfig(System.Boolean)
+  id: SaveCharacterToConfig(System.Boolean)
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: SaveCharacterToConfig(bool)
+  nameWithType: PoseCharacterRenderer.SaveCharacterToConfig(bool)
+  fullName: AngeliA.PoseCharacterRenderer.SaveCharacterToConfig(bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SaveCharacterToConfig
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 862
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void SaveCharacterToConfig(bool saveToFile = false)
+    parameters:
+    - id: saveToFile
+      type: System.Boolean
+    content.vb: Public Sub SaveCharacterToConfig(saveToFile As Boolean = False)
+  overload: AngeliA.PoseCharacterRenderer.SaveCharacterToConfig*
+  nameWithType.vb: PoseCharacterRenderer.SaveCharacterToConfig(Boolean)
+  fullName.vb: AngeliA.PoseCharacterRenderer.SaveCharacterToConfig(Boolean)
+  name.vb: SaveCharacterToConfig(Boolean)
+- uid: AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool(System.Boolean)
+  commentId: M:AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool(System.Boolean)
+  id: SyncRenderingConfigFromPool(System.Boolean)
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: SyncRenderingConfigFromPool(bool)
+  nameWithType: PoseCharacterRenderer.SyncRenderingConfigFromPool(bool)
+  fullName: AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool(bool)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SyncRenderingConfigFromPool
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 912
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void SyncRenderingConfigFromPool(bool forceSync = false)
+    parameters:
+    - id: forceSync
+      type: System.Boolean
+    content.vb: Public Sub SyncRenderingConfigFromPool(forceSync As Boolean = False)
+  overload: AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool*
+  nameWithType.vb: PoseCharacterRenderer.SyncRenderingConfigFromPool(Boolean)
+  fullName.vb: AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool(Boolean)
+  name.vb: SyncRenderingConfigFromPool(Boolean)
+- uid: AngeliA.PoseCharacterRenderer.OverridePoseAnimation(AngeliA.CharacterAnimationType,System.Int32,System.Int32)
+  commentId: M:AngeliA.PoseCharacterRenderer.OverridePoseAnimation(AngeliA.CharacterAnimationType,System.Int32,System.Int32)
+  id: OverridePoseAnimation(AngeliA.CharacterAnimationType,System.Int32,System.Int32)
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: OverridePoseAnimation(CharacterAnimationType, int, int)
+  nameWithType: PoseCharacterRenderer.OverridePoseAnimation(CharacterAnimationType, int, int)
+  fullName: AngeliA.PoseCharacterRenderer.OverridePoseAnimation(AngeliA.CharacterAnimationType, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OverridePoseAnimation
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 929
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Override animation for given animation type for specified frames long
+  example: []
+  syntax:
+    content: public void OverridePoseAnimation(CharacterAnimationType type, int id, int duration = 1)
+    parameters:
+    - id: type
+      type: AngeliA.CharacterAnimationType
+    - id: id
+      type: System.Int32
+    - id: duration
+      type: System.Int32
+    content.vb: Public Sub OverridePoseAnimation(type As CharacterAnimationType, id As Integer, duration As Integer = 1)
+  overload: AngeliA.PoseCharacterRenderer.OverridePoseAnimation*
+  nameWithType.vb: PoseCharacterRenderer.OverridePoseAnimation(CharacterAnimationType, Integer, Integer)
+  fullName.vb: AngeliA.PoseCharacterRenderer.OverridePoseAnimation(AngeliA.CharacterAnimationType, Integer, Integer)
+  name.vb: OverridePoseAnimation(CharacterAnimationType, Integer, Integer)
+- uid: AngeliA.PoseCharacterRenderer.ManualPoseAnimate(System.Int32,System.Int32)
+  commentId: M:AngeliA.PoseCharacterRenderer.ManualPoseAnimate(System.Int32,System.Int32)
+  id: ManualPoseAnimate(System.Int32,System.Int32)
+  parent: AngeliA.PoseCharacterRenderer
+  langs:
+  - csharp
+  - vb
+  name: ManualPoseAnimate(int, int)
+  nameWithType: PoseCharacterRenderer.ManualPoseAnimate(int, int)
+  fullName: AngeliA.PoseCharacterRenderer.ManualPoseAnimate(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ManualPoseAnimate
+    path: ../AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs
+    startLine: 934
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Make the renderer draw the character based on the given animation for specified frames long
+  example: []
+  syntax:
+    content: public void ManualPoseAnimate(int id, int duration = 1)
+    parameters:
+    - id: id
+      type: System.Int32
+    - id: duration
+      type: System.Int32
+    content.vb: Public Sub ManualPoseAnimate(id As Integer, duration As Integer = 1)
+  overload: AngeliA.PoseCharacterRenderer.ManualPoseAnimate*
+  nameWithType.vb: PoseCharacterRenderer.ManualPoseAnimate(Integer, Integer)
+  fullName.vb: AngeliA.PoseCharacterRenderer.ManualPoseAnimate(Integer, Integer)
+  name.vb: ManualPoseAnimate(Integer, Integer)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: AngeliA.CharacterRenderer
+  commentId: T:AngeliA.CharacterRenderer
+  parent: AngeliA
+  href: AngeliA.CharacterRenderer.html
+  name: CharacterRenderer
+  nameWithType: CharacterRenderer
+  fullName: AngeliA.CharacterRenderer
+- uid: AngeliA.CharacterRenderer.TargetCharacter
+  commentId: F:AngeliA.CharacterRenderer.TargetCharacter
+  parent: AngeliA.CharacterRenderer
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_TargetCharacter
+  name: TargetCharacter
+  nameWithType: CharacterRenderer.TargetCharacter
+  fullName: AngeliA.CharacterRenderer.TargetCharacter
+- uid: AngeliA.CharacterRenderer.CurrentAnimationFrame
+  commentId: P:AngeliA.CharacterRenderer.CurrentAnimationFrame
+  parent: AngeliA.CharacterRenderer
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_CurrentAnimationFrame
+  name: CurrentAnimationFrame
+  nameWithType: CharacterRenderer.CurrentAnimationFrame
+  fullName: AngeliA.CharacterRenderer.CurrentAnimationFrame
+- uid: AngeliA.CharacterRenderer.CurrentRenderingBounce
+  commentId: P:AngeliA.CharacterRenderer.CurrentRenderingBounce
+  parent: AngeliA.CharacterRenderer
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_CurrentRenderingBounce
+  name: CurrentRenderingBounce
+  nameWithType: CharacterRenderer.CurrentRenderingBounce
+  fullName: AngeliA.CharacterRenderer.CurrentRenderingBounce
+- uid: AngeliA.CharacterRenderer.SpinOnGroundPound
+  commentId: P:AngeliA.CharacterRenderer.SpinOnGroundPound
+  parent: AngeliA.CharacterRenderer
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_SpinOnGroundPound
+  name: SpinOnGroundPound
+  nameWithType: CharacterRenderer.SpinOnGroundPound
+  fullName: AngeliA.CharacterRenderer.SpinOnGroundPound
+- uid: AngeliA.CharacterRenderer.Tint
+  commentId: P:AngeliA.CharacterRenderer.Tint
+  parent: AngeliA.CharacterRenderer
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_Tint
+  name: Tint
+  nameWithType: CharacterRenderer.Tint
+  fullName: AngeliA.CharacterRenderer.Tint
+- uid: AngeliA.CharacterRenderer.Scale
+  commentId: P:AngeliA.CharacterRenderer.Scale
+  parent: AngeliA.CharacterRenderer
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_Scale
+  name: Scale
+  nameWithType: CharacterRenderer.Scale
+  fullName: AngeliA.CharacterRenderer.Scale
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.Int32[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int[]
+  nameWithType: int[]
+  fullName: int[]
+  nameWithType.vb: Integer()
+  fullName.vb: Integer()
+  name.vb: Integer()
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: (
+  - name: )
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: AngeliA.PoseCharacterRenderer.BasicRootY*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.BasicRootY
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_BasicRootY
+  name: BasicRootY
+  nameWithType: PoseCharacterRenderer.BasicRootY
+  fullName: AngeliA.PoseCharacterRenderer.BasicRootY
+- uid: AngeliA.PoseCharacterRenderer.PoseRootX*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.PoseRootX
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_PoseRootX
+  name: PoseRootX
+  nameWithType: PoseCharacterRenderer.PoseRootX
+  fullName: AngeliA.PoseCharacterRenderer.PoseRootX
+- uid: AngeliA.PoseCharacterRenderer.PoseRootY*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.PoseRootY
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_PoseRootY
+  name: PoseRootY
+  nameWithType: PoseCharacterRenderer.PoseRootY
+  fullName: AngeliA.PoseCharacterRenderer.PoseRootY
+- uid: AngeliA.PoseCharacterRenderer.HeadTwist*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.HeadTwist
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_HeadTwist
+  name: HeadTwist
+  nameWithType: PoseCharacterRenderer.HeadTwist
+  fullName: AngeliA.PoseCharacterRenderer.HeadTwist
+- uid: AngeliA.PoseCharacterRenderer.BodyTwist*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.BodyTwist
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_BodyTwist
+  name: BodyTwist
+  nameWithType: PoseCharacterRenderer.BodyTwist
+  fullName: AngeliA.PoseCharacterRenderer.BodyTwist
+- uid: AngeliA.PoseCharacterRenderer.CharacterHeight*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.CharacterHeight
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_CharacterHeight
+  name: CharacterHeight
+  nameWithType: PoseCharacterRenderer.CharacterHeight
+  fullName: AngeliA.PoseCharacterRenderer.CharacterHeight
+- uid: AngeliA.PoseCharacterRenderer.RenderedCellZ*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.RenderedCellZ
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_RenderedCellZ
+  name: RenderedCellZ
+  nameWithType: PoseCharacterRenderer.RenderedCellZ
+  fullName: AngeliA.PoseCharacterRenderer.RenderedCellZ
+- uid: AngeliA.PoseCharacterRenderer.BlendDuration*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.BlendDuration
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_BlendDuration
+  name: BlendDuration
+  nameWithType: PoseCharacterRenderer.BlendDuration
+  fullName: AngeliA.PoseCharacterRenderer.BlendDuration
+- uid: AngeliA.BodyPart[]
+  isExternal: true
+  href: AngeliA.BodyPart.html
+  name: BodyPart[]
+  nameWithType: BodyPart[]
+  fullName: AngeliA.BodyPart[]
+  nameWithType.vb: BodyPart()
+  fullName.vb: AngeliA.BodyPart()
+  name.vb: BodyPart()
+  spec.csharp:
+  - uid: AngeliA.BodyPart
+    name: BodyPart
+    href: AngeliA.BodyPart.html
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: AngeliA.BodyPart
+    name: BodyPart
+    href: AngeliA.BodyPart.html
+  - name: (
+  - name: )
+- uid: AngeliA.PoseCharacterRenderer.Head*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.Head
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_Head
+  name: Head
+  nameWithType: PoseCharacterRenderer.Head
+  fullName: AngeliA.PoseCharacterRenderer.Head
+- uid: AngeliA.BodyPart
+  commentId: T:AngeliA.BodyPart
+  parent: AngeliA
+  href: AngeliA.BodyPart.html
+  name: BodyPart
+  nameWithType: BodyPart
+  fullName: AngeliA.BodyPart
+- uid: AngeliA.PoseCharacterRenderer.Body*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.Body
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_Body
+  name: Body
+  nameWithType: PoseCharacterRenderer.Body
+  fullName: AngeliA.PoseCharacterRenderer.Body
+- uid: AngeliA.PoseCharacterRenderer.Hip*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.Hip
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_Hip
+  name: Hip
+  nameWithType: PoseCharacterRenderer.Hip
+  fullName: AngeliA.PoseCharacterRenderer.Hip
+- uid: AngeliA.PoseCharacterRenderer.ShoulderL*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.ShoulderL
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_ShoulderL
+  name: ShoulderL
+  nameWithType: PoseCharacterRenderer.ShoulderL
+  fullName: AngeliA.PoseCharacterRenderer.ShoulderL
+- uid: AngeliA.PoseCharacterRenderer.ShoulderR*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.ShoulderR
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_ShoulderR
+  name: ShoulderR
+  nameWithType: PoseCharacterRenderer.ShoulderR
+  fullName: AngeliA.PoseCharacterRenderer.ShoulderR
+- uid: AngeliA.PoseCharacterRenderer.UpperArmL*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.UpperArmL
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_UpperArmL
+  name: UpperArmL
+  nameWithType: PoseCharacterRenderer.UpperArmL
+  fullName: AngeliA.PoseCharacterRenderer.UpperArmL
+- uid: AngeliA.PoseCharacterRenderer.UpperArmR*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.UpperArmR
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_UpperArmR
+  name: UpperArmR
+  nameWithType: PoseCharacterRenderer.UpperArmR
+  fullName: AngeliA.PoseCharacterRenderer.UpperArmR
+- uid: AngeliA.PoseCharacterRenderer.LowerArmL*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.LowerArmL
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_LowerArmL
+  name: LowerArmL
+  nameWithType: PoseCharacterRenderer.LowerArmL
+  fullName: AngeliA.PoseCharacterRenderer.LowerArmL
+- uid: AngeliA.PoseCharacterRenderer.LowerArmR*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.LowerArmR
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_LowerArmR
+  name: LowerArmR
+  nameWithType: PoseCharacterRenderer.LowerArmR
+  fullName: AngeliA.PoseCharacterRenderer.LowerArmR
+- uid: AngeliA.PoseCharacterRenderer.HandL*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.HandL
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_HandL
+  name: HandL
+  nameWithType: PoseCharacterRenderer.HandL
+  fullName: AngeliA.PoseCharacterRenderer.HandL
+- uid: AngeliA.PoseCharacterRenderer.HandR*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.HandR
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_HandR
+  name: HandR
+  nameWithType: PoseCharacterRenderer.HandR
+  fullName: AngeliA.PoseCharacterRenderer.HandR
+- uid: AngeliA.PoseCharacterRenderer.UpperLegL*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.UpperLegL
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_UpperLegL
+  name: UpperLegL
+  nameWithType: PoseCharacterRenderer.UpperLegL
+  fullName: AngeliA.PoseCharacterRenderer.UpperLegL
+- uid: AngeliA.PoseCharacterRenderer.UpperLegR*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.UpperLegR
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_UpperLegR
+  name: UpperLegR
+  nameWithType: PoseCharacterRenderer.UpperLegR
+  fullName: AngeliA.PoseCharacterRenderer.UpperLegR
+- uid: AngeliA.PoseCharacterRenderer.LowerLegL*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.LowerLegL
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_LowerLegL
+  name: LowerLegL
+  nameWithType: PoseCharacterRenderer.LowerLegL
+  fullName: AngeliA.PoseCharacterRenderer.LowerLegL
+- uid: AngeliA.PoseCharacterRenderer.LowerLegR*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.LowerLegR
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_LowerLegR
+  name: LowerLegR
+  nameWithType: PoseCharacterRenderer.LowerLegR
+  fullName: AngeliA.PoseCharacterRenderer.LowerLegR
+- uid: AngeliA.PoseCharacterRenderer.FootL*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.FootL
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_FootL
+  name: FootL
+  nameWithType: PoseCharacterRenderer.FootL
+  fullName: AngeliA.PoseCharacterRenderer.FootL
+- uid: AngeliA.PoseCharacterRenderer.FootR*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.FootR
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_FootR
+  name: FootR
+  nameWithType: PoseCharacterRenderer.FootR
+  fullName: AngeliA.PoseCharacterRenderer.FootR
+- uid: AngeliA.FrameBasedInt
+  commentId: T:AngeliA.FrameBasedInt
+  parent: AngeliA
+  href: AngeliA.FrameBasedInt.html
+  name: FrameBasedInt
+  nameWithType: FrameBasedInt
+  fullName: AngeliA.FrameBasedInt
+- uid: AngeliA.PoseCharacterRenderer.#ctor*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.#ctor
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer__ctor_AngeliA_Character_
+  name: PoseCharacterRenderer
+  nameWithType: PoseCharacterRenderer.PoseCharacterRenderer
+  fullName: AngeliA.PoseCharacterRenderer.PoseCharacterRenderer
+  nameWithType.vb: PoseCharacterRenderer.New
+  fullName.vb: AngeliA.PoseCharacterRenderer.New
+  name.vb: New
+- uid: AngeliA.Character
+  commentId: T:AngeliA.Character
+  parent: AngeliA
+  href: AngeliA.Character.html
+  name: Character
+  nameWithType: Character
+  fullName: AngeliA.Character
+- uid: AngeliA.CharacterRenderer.OnActivated
+  commentId: M:AngeliA.CharacterRenderer.OnActivated
+  parent: AngeliA.CharacterRenderer
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_OnActivated
+  name: OnActivated()
+  nameWithType: CharacterRenderer.OnActivated()
+  fullName: AngeliA.CharacterRenderer.OnActivated()
+  spec.csharp:
+  - uid: AngeliA.CharacterRenderer.OnActivated
+    name: OnActivated
+    href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_OnActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.CharacterRenderer.OnActivated
+    name: OnActivated
+    href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_OnActivated
+  - name: (
+  - name: )
+- uid: AngeliA.PoseCharacterRenderer.OnActivated*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.OnActivated
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_OnActivated
+  name: OnActivated
+  nameWithType: PoseCharacterRenderer.OnActivated
+  fullName: AngeliA.PoseCharacterRenderer.OnActivated
+- uid: AngeliA.CharacterRenderer.BeforeUpdate
+  commentId: M:AngeliA.CharacterRenderer.BeforeUpdate
+  parent: AngeliA.CharacterRenderer
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_BeforeUpdate
+  name: BeforeUpdate()
+  nameWithType: CharacterRenderer.BeforeUpdate()
+  fullName: AngeliA.CharacterRenderer.BeforeUpdate()
+  spec.csharp:
+  - uid: AngeliA.CharacterRenderer.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_BeforeUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.CharacterRenderer.BeforeUpdate
+    name: BeforeUpdate
+    href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_BeforeUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.PoseCharacterRenderer.BeforeUpdate*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.BeforeUpdate
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_BeforeUpdate
+  name: BeforeUpdate
+  nameWithType: PoseCharacterRenderer.BeforeUpdate
+  fullName: AngeliA.PoseCharacterRenderer.BeforeUpdate
+- uid: AngeliA.CharacterRenderer.LateUpdate
+  commentId: M:AngeliA.CharacterRenderer.LateUpdate
+  parent: AngeliA.CharacterRenderer
+  href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_LateUpdate
+  name: LateUpdate()
+  nameWithType: CharacterRenderer.LateUpdate()
+  fullName: AngeliA.CharacterRenderer.LateUpdate()
+  spec.csharp:
+  - uid: AngeliA.CharacterRenderer.LateUpdate
+    name: LateUpdate
+    href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_LateUpdate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: AngeliA.CharacterRenderer.LateUpdate
+    name: LateUpdate
+    href: AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_LateUpdate
+  - name: (
+  - name: )
+- uid: AngeliA.PoseCharacterRenderer.LateUpdate*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.LateUpdate
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_LateUpdate
+  name: LateUpdate
+  nameWithType: PoseCharacterRenderer.LateUpdate
+  fullName: AngeliA.PoseCharacterRenderer.LateUpdate
+- uid: AngeliA.PoseCharacterRenderer.RenderBodyGadgets*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.RenderBodyGadgets
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_RenderBodyGadgets
+  name: RenderBodyGadgets
+  nameWithType: PoseCharacterRenderer.RenderBodyGadgets
+  fullName: AngeliA.PoseCharacterRenderer.RenderBodyGadgets
+- uid: AngeliA.PoseCharacterRenderer.RenderCloths*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.RenderCloths
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_RenderCloths
+  name: RenderCloths
+  nameWithType: PoseCharacterRenderer.RenderCloths
+  fullName: AngeliA.PoseCharacterRenderer.RenderCloths
+- uid: AngeliA.PoseCharacterRenderer.PerformPoseAnimation*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.PerformPoseAnimation
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_PerformPoseAnimation
+  name: PerformPoseAnimation
+  nameWithType: PoseCharacterRenderer.PerformPoseAnimation
+  fullName: AngeliA.PoseCharacterRenderer.PerformPoseAnimation
+- uid: AngeliA.PoseCharacterRenderer.RenderEquipment*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.RenderEquipment
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_RenderEquipment
+  name: RenderEquipment
+  nameWithType: PoseCharacterRenderer.RenderEquipment
+  fullName: AngeliA.PoseCharacterRenderer.RenderEquipment
+- uid: AngeliA.PoseCharacterRenderer.RenderInventory*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.RenderInventory
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_RenderInventory
+  name: RenderInventory
+  nameWithType: PoseCharacterRenderer.RenderInventory
+  fullName: AngeliA.PoseCharacterRenderer.RenderInventory
+- uid: AngeliA.PoseCharacterRenderer.GetGadgetID*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.GetGadgetID
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_GetGadgetID_AngeliA_BodyGadgetType_
+  name: GetGadgetID
+  nameWithType: PoseCharacterRenderer.GetGadgetID
+  fullName: AngeliA.PoseCharacterRenderer.GetGadgetID
+- uid: AngeliA.BodyGadgetType
+  commentId: T:AngeliA.BodyGadgetType
+  parent: AngeliA
+  href: AngeliA.BodyGadgetType.html
+  name: BodyGadgetType
+  nameWithType: BodyGadgetType
+  fullName: AngeliA.BodyGadgetType
+- uid: AngeliA.PoseCharacterRenderer.GetSuitID*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.GetSuitID
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_GetSuitID_AngeliA_ClothType_
+  name: GetSuitID
+  nameWithType: PoseCharacterRenderer.GetSuitID
+  fullName: AngeliA.PoseCharacterRenderer.GetSuitID
+- uid: AngeliA.ClothType
+  commentId: T:AngeliA.ClothType
+  parent: AngeliA
+  href: AngeliA.ClothType.html
+  name: ClothType
+  nameWithType: ClothType
+  fullName: AngeliA.ClothType
+- uid: AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_ReloadRenderingConfigPoolFromFileAndSheet_System_Boolean_
+  name: ReloadRenderingConfigPoolFromFileAndSheet
+  nameWithType: PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet
+  fullName: AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: AngeliA.PoseCharacterRenderer.TryGetConfigFromPool*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.TryGetConfigFromPool
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_TryGetConfigFromPool_System_Int32_AngeliA_CharacterRenderingConfig__
+  name: TryGetConfigFromPool
+  nameWithType: PoseCharacterRenderer.TryGetConfigFromPool
+  fullName: AngeliA.PoseCharacterRenderer.TryGetConfigFromPool
+- uid: AngeliA.CharacterRenderingConfig
+  commentId: T:AngeliA.CharacterRenderingConfig
+  parent: AngeliA
+  href: AngeliA.CharacterRenderingConfig.html
+  name: CharacterRenderingConfig
+  nameWithType: CharacterRenderingConfig
+  fullName: AngeliA.CharacterRenderingConfig
+- uid: AngeliA.PoseCharacterRenderer.SaveCharacterToConfig*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.SaveCharacterToConfig
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_SaveCharacterToConfig_System_Boolean_
+  name: SaveCharacterToConfig
+  nameWithType: PoseCharacterRenderer.SaveCharacterToConfig
+  fullName: AngeliA.PoseCharacterRenderer.SaveCharacterToConfig
+- uid: AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_SyncRenderingConfigFromPool_System_Boolean_
+  name: SyncRenderingConfigFromPool
+  nameWithType: PoseCharacterRenderer.SyncRenderingConfigFromPool
+  fullName: AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool
+- uid: AngeliA.PoseCharacterRenderer.OverridePoseAnimation*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.OverridePoseAnimation
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_OverridePoseAnimation_AngeliA_CharacterAnimationType_System_Int32_System_Int32_
+  name: OverridePoseAnimation
+  nameWithType: PoseCharacterRenderer.OverridePoseAnimation
+  fullName: AngeliA.PoseCharacterRenderer.OverridePoseAnimation
+- uid: AngeliA.CharacterAnimationType
+  commentId: T:AngeliA.CharacterAnimationType
+  parent: AngeliA
+  href: AngeliA.CharacterAnimationType.html
+  name: CharacterAnimationType
+  nameWithType: CharacterAnimationType
+  fullName: AngeliA.CharacterAnimationType
+- uid: AngeliA.PoseCharacterRenderer.ManualPoseAnimate*
+  commentId: Overload:AngeliA.PoseCharacterRenderer.ManualPoseAnimate
+  href: AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_ManualPoseAnimate_System_Int32_System_Int32_
+  name: ManualPoseAnimate
+  nameWithType: PoseCharacterRenderer.ManualPoseAnimate
+  fullName: AngeliA.PoseCharacterRenderer.ManualPoseAnimate

@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: JordanPeck
+  commentId: N:JordanPeck
+  id: JordanPeck
+  children:
+  - JordanPeck.CellularDistanceFunction
+  - JordanPeck.CellularReturnType
+  - JordanPeck.DomainWarpType
+  - JordanPeck.FastNoiseLite
+  - JordanPeck.FractalType
+  - JordanPeck.NoiseType
+  - JordanPeck.RotationType3D
+  langs:
+  - csharp
+  - vb
+  name: JordanPeck
+  nameWithType: JordanPeck
+  fullName: JordanPeck
+  type: Namespace
+  assemblies:
+  - AngeliA Framework
+references:
+- uid: JordanPeck.FastNoiseLite
+  commentId: T:JordanPeck.FastNoiseLite
+  parent: JordanPeck
+  href: JordanPeck.FastNoiseLite.html
+  name: FastNoiseLite
+  nameWithType: FastNoiseLite
+  fullName: JordanPeck.FastNoiseLite
+- uid: JordanPeck.NoiseType
+  commentId: T:JordanPeck.NoiseType
+  parent: JordanPeck
+  href: JordanPeck.NoiseType.html
+  name: NoiseType
+  nameWithType: NoiseType
+  fullName: JordanPeck.NoiseType
+- uid: JordanPeck.FractalType
+  commentId: T:JordanPeck.FractalType
+  parent: JordanPeck
+  href: JordanPeck.FractalType.html
+  name: FractalType
+  nameWithType: FractalType
+  fullName: JordanPeck.FractalType
+- uid: JordanPeck.CellularDistanceFunction
+  commentId: T:JordanPeck.CellularDistanceFunction
+  parent: JordanPeck
+  href: JordanPeck.CellularDistanceFunction.html
+  name: CellularDistanceFunction
+  nameWithType: CellularDistanceFunction
+  fullName: JordanPeck.CellularDistanceFunction
+- uid: JordanPeck.CellularReturnType
+  commentId: T:JordanPeck.CellularReturnType
+  parent: JordanPeck
+  href: JordanPeck.CellularReturnType.html
+  name: CellularReturnType
+  nameWithType: CellularReturnType
+  fullName: JordanPeck.CellularReturnType
+- uid: JordanPeck.DomainWarpType
+  commentId: T:JordanPeck.DomainWarpType
+  parent: JordanPeck
+  href: JordanPeck.DomainWarpType.html
+  name: DomainWarpType
+  nameWithType: DomainWarpType
+  fullName: JordanPeck.DomainWarpType
+- uid: JordanPeck.RotationType3D
+  commentId: T:JordanPeck.RotationType3D
+  parent: JordanPeck
+  href: JordanPeck.RotationType3D.html
+  name: RotationType3D
+  nameWithType: RotationType3D
+  fullName: JordanPeck.RotationType3D
+- uid: JordanPeck
+  commentId: N:JordanPeck
+  href: JordanPeck.html
+  name: JordanPeck
+  nameWithType: JordanPeck
+  fullName: JordanPeck

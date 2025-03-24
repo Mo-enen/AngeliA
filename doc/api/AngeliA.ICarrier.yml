@@ -1,0 +1,602 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.ICarrier
+  commentId: T:AngeliA.ICarrier
+  id: ICarrier
+  parent: AngeliA
+  children:
+  - AngeliA.ICarrier.AllowBeingCarry
+  - AngeliA.ICarrier.CarryHorizontalFrame
+  - AngeliA.ICarrier.CarryLeft
+  - AngeliA.ICarrier.CarryRight
+  - AngeliA.ICarrier.CarryTargetsOnTopHorizontally(AngeliA.Entity,System.Int32,AngeliA.OperationMode)
+  - AngeliA.ICarrier.CarryTargetsOnTopVertically(AngeliA.Entity,System.Int32,AngeliA.OperationMode)
+  - AngeliA.ICarrier.OnBeingCarry(System.Int32,System.Int32)
+  - AngeliA.ICarrier.PerformCarry(System.Int32,System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: ICarrier
+  nameWithType: ICarrier
+  fullName: AngeliA.ICarrier
+  type: Interface
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICarrier.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ICarrier
+    path: ../AngeliA Framework/src/Entity/Interface/ICarrier.cs
+    startLine: 5
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public interface ICarrier
+    content.vb: Public Interface ICarrier
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.ICarrier.AllowBeingCarry
+  commentId: P:AngeliA.ICarrier.AllowBeingCarry
+  id: AllowBeingCarry
+  parent: AngeliA.ICarrier
+  langs:
+  - csharp
+  - vb
+  name: AllowBeingCarry
+  nameWithType: ICarrier.AllowBeingCarry
+  fullName: AngeliA.ICarrier.AllowBeingCarry
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICarrier.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: AllowBeingCarry
+    path: ../AngeliA Framework/src/Entity/Interface/ICarrier.cs
+    startLine: 8
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: bool AllowBeingCarry { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property AllowBeingCarry As Boolean
+  overload: AngeliA.ICarrier.AllowBeingCarry*
+- uid: AngeliA.ICarrier.CarryLeft
+  commentId: P:AngeliA.ICarrier.CarryLeft
+  id: CarryLeft
+  parent: AngeliA.ICarrier
+  langs:
+  - csharp
+  - vb
+  name: CarryLeft
+  nameWithType: ICarrier.CarryLeft
+  fullName: AngeliA.ICarrier.CarryLeft
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICarrier.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CarryLeft
+    path: ../AngeliA Framework/src/Entity/Interface/ICarrier.cs
+    startLine: 9
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: int CarryLeft { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property CarryLeft As Integer
+  overload: AngeliA.ICarrier.CarryLeft*
+- uid: AngeliA.ICarrier.CarryRight
+  commentId: P:AngeliA.ICarrier.CarryRight
+  id: CarryRight
+  parent: AngeliA.ICarrier
+  langs:
+  - csharp
+  - vb
+  name: CarryRight
+  nameWithType: ICarrier.CarryRight
+  fullName: AngeliA.ICarrier.CarryRight
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICarrier.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CarryRight
+    path: ../AngeliA Framework/src/Entity/Interface/ICarrier.cs
+    startLine: 10
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: int CarryRight { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property CarryRight As Integer
+  overload: AngeliA.ICarrier.CarryRight*
+- uid: AngeliA.ICarrier.CarryHorizontalFrame
+  commentId: P:AngeliA.ICarrier.CarryHorizontalFrame
+  id: CarryHorizontalFrame
+  parent: AngeliA.ICarrier
+  langs:
+  - csharp
+  - vb
+  name: CarryHorizontalFrame
+  nameWithType: ICarrier.CarryHorizontalFrame
+  fullName: AngeliA.ICarrier.CarryHorizontalFrame
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICarrier.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CarryHorizontalFrame
+    path: ../AngeliA Framework/src/Entity/Interface/ICarrier.cs
+    startLine: 11
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: int CarryHorizontalFrame { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property CarryHorizontalFrame As Integer
+  overload: AngeliA.ICarrier.CarryHorizontalFrame*
+- uid: AngeliA.ICarrier.OnBeingCarry(System.Int32,System.Int32)
+  commentId: M:AngeliA.ICarrier.OnBeingCarry(System.Int32,System.Int32)
+  id: OnBeingCarry(System.Int32,System.Int32)
+  parent: AngeliA.ICarrier
+  langs:
+  - csharp
+  - vb
+  name: OnBeingCarry(int, int)
+  nameWithType: ICarrier.OnBeingCarry(int, int)
+  fullName: AngeliA.ICarrier.OnBeingCarry(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICarrier.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: OnBeingCarry
+    path: ../AngeliA Framework/src/Entity/Interface/ICarrier.cs
+    startLine: 17
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: void OnBeingCarry(int deltaX, int deltaY)
+    parameters:
+    - id: deltaX
+      type: System.Int32
+    - id: deltaY
+      type: System.Int32
+    content.vb: Sub OnBeingCarry(deltaX As Integer, deltaY As Integer)
+  overload: AngeliA.ICarrier.OnBeingCarry*
+  nameWithType.vb: ICarrier.OnBeingCarry(Integer, Integer)
+  fullName.vb: AngeliA.ICarrier.OnBeingCarry(Integer, Integer)
+  name.vb: OnBeingCarry(Integer, Integer)
+- uid: AngeliA.ICarrier.PerformCarry(System.Int32,System.Int32)
+  commentId: M:AngeliA.ICarrier.PerformCarry(System.Int32,System.Int32)
+  id: PerformCarry(System.Int32,System.Int32)
+  parent: AngeliA.ICarrier
+  langs:
+  - csharp
+  - vb
+  name: PerformCarry(int, int)
+  nameWithType: ICarrier.PerformCarry(int, int)
+  fullName: AngeliA.ICarrier.PerformCarry(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICarrier.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PerformCarry
+    path: ../AngeliA Framework/src/Entity/Interface/ICarrier.cs
+    startLine: 19
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: void PerformCarry(int x, int y)
+    parameters:
+    - id: x
+      type: System.Int32
+    - id: y
+      type: System.Int32
+    content.vb: Sub PerformCarry(x As Integer, y As Integer)
+  overload: AngeliA.ICarrier.PerformCarry*
+  nameWithType.vb: ICarrier.PerformCarry(Integer, Integer)
+  fullName.vb: AngeliA.ICarrier.PerformCarry(Integer, Integer)
+  name.vb: PerformCarry(Integer, Integer)
+- uid: AngeliA.ICarrier.CarryTargetsOnTopHorizontally(AngeliA.Entity,System.Int32,AngeliA.OperationMode)
+  commentId: M:AngeliA.ICarrier.CarryTargetsOnTopHorizontally(AngeliA.Entity,System.Int32,AngeliA.OperationMode)
+  id: CarryTargetsOnTopHorizontally(AngeliA.Entity,System.Int32,AngeliA.OperationMode)
+  parent: AngeliA.ICarrier
+  langs:
+  - csharp
+  - vb
+  name: CarryTargetsOnTopHorizontally(Entity, int, OperationMode)
+  nameWithType: ICarrier.CarryTargetsOnTopHorizontally(Entity, int, OperationMode)
+  fullName: AngeliA.ICarrier.CarryTargetsOnTopHorizontally(AngeliA.Entity, int, AngeliA.OperationMode)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICarrier.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CarryTargetsOnTopHorizontally
+    path: ../AngeliA Framework/src/Entity/Interface/ICarrier.cs
+    startLine: 22
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void CarryTargetsOnTopHorizontally(Entity self, int _deltaX, OperationMode colMode = OperationMode.ColliderOnly)
+    parameters:
+    - id: self
+      type: AngeliA.Entity
+    - id: _deltaX
+      type: System.Int32
+    - id: colMode
+      type: AngeliA.OperationMode
+    content.vb: Public Shared Sub CarryTargetsOnTopHorizontally(self As Entity, _deltaX As Integer, colMode As OperationMode = OperationMode.ColliderOnly)
+  overload: AngeliA.ICarrier.CarryTargetsOnTopHorizontally*
+  nameWithType.vb: ICarrier.CarryTargetsOnTopHorizontally(Entity, Integer, OperationMode)
+  fullName.vb: AngeliA.ICarrier.CarryTargetsOnTopHorizontally(AngeliA.Entity, Integer, AngeliA.OperationMode)
+  name.vb: CarryTargetsOnTopHorizontally(Entity, Integer, OperationMode)
+- uid: AngeliA.ICarrier.CarryTargetsOnTopVertically(AngeliA.Entity,System.Int32,AngeliA.OperationMode)
+  commentId: M:AngeliA.ICarrier.CarryTargetsOnTopVertically(AngeliA.Entity,System.Int32,AngeliA.OperationMode)
+  id: CarryTargetsOnTopVertically(AngeliA.Entity,System.Int32,AngeliA.OperationMode)
+  parent: AngeliA.ICarrier
+  langs:
+  - csharp
+  - vb
+  name: CarryTargetsOnTopVertically(Entity, int, OperationMode)
+  nameWithType: ICarrier.CarryTargetsOnTopVertically(Entity, int, OperationMode)
+  fullName: AngeliA.ICarrier.CarryTargetsOnTopVertically(AngeliA.Entity, int, AngeliA.OperationMode)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Entity/Interface/ICarrier.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CarryTargetsOnTopVertically
+    path: ../AngeliA Framework/src/Entity/Interface/ICarrier.cs
+    startLine: 74
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static void CarryTargetsOnTopVertically(Entity self, int _deltaY, OperationMode colMode = OperationMode.ColliderOnly)
+    parameters:
+    - id: self
+      type: AngeliA.Entity
+    - id: _deltaY
+      type: System.Int32
+    - id: colMode
+      type: AngeliA.OperationMode
+    content.vb: Public Shared Sub CarryTargetsOnTopVertically(self As Entity, _deltaY As Integer, colMode As OperationMode = OperationMode.ColliderOnly)
+  overload: AngeliA.ICarrier.CarryTargetsOnTopVertically*
+  nameWithType.vb: ICarrier.CarryTargetsOnTopVertically(Entity, Integer, OperationMode)
+  fullName.vb: AngeliA.ICarrier.CarryTargetsOnTopVertically(AngeliA.Entity, Integer, AngeliA.OperationMode)
+  name.vb: CarryTargetsOnTopVertically(Entity, Integer, OperationMode)
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.ICarrier.AllowBeingCarry*
+  commentId: Overload:AngeliA.ICarrier.AllowBeingCarry
+  href: AngeliA.ICarrier.html#AngeliA_ICarrier_AllowBeingCarry
+  name: AllowBeingCarry
+  nameWithType: ICarrier.AllowBeingCarry
+  fullName: AngeliA.ICarrier.AllowBeingCarry
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.ICarrier.CarryLeft*
+  commentId: Overload:AngeliA.ICarrier.CarryLeft
+  href: AngeliA.ICarrier.html#AngeliA_ICarrier_CarryLeft
+  name: CarryLeft
+  nameWithType: ICarrier.CarryLeft
+  fullName: AngeliA.ICarrier.CarryLeft
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.ICarrier.CarryRight*
+  commentId: Overload:AngeliA.ICarrier.CarryRight
+  href: AngeliA.ICarrier.html#AngeliA_ICarrier_CarryRight
+  name: CarryRight
+  nameWithType: ICarrier.CarryRight
+  fullName: AngeliA.ICarrier.CarryRight
+- uid: AngeliA.ICarrier.CarryHorizontalFrame*
+  commentId: Overload:AngeliA.ICarrier.CarryHorizontalFrame
+  href: AngeliA.ICarrier.html#AngeliA_ICarrier_CarryHorizontalFrame
+  name: CarryHorizontalFrame
+  nameWithType: ICarrier.CarryHorizontalFrame
+  fullName: AngeliA.ICarrier.CarryHorizontalFrame
+- uid: AngeliA.ICarrier.OnBeingCarry*
+  commentId: Overload:AngeliA.ICarrier.OnBeingCarry
+  href: AngeliA.ICarrier.html#AngeliA_ICarrier_OnBeingCarry_System_Int32_System_Int32_
+  name: OnBeingCarry
+  nameWithType: ICarrier.OnBeingCarry
+  fullName: AngeliA.ICarrier.OnBeingCarry
+- uid: AngeliA.ICarrier.PerformCarry*
+  commentId: Overload:AngeliA.ICarrier.PerformCarry
+  href: AngeliA.ICarrier.html#AngeliA_ICarrier_PerformCarry_System_Int32_System_Int32_
+  name: PerformCarry
+  nameWithType: ICarrier.PerformCarry
+  fullName: AngeliA.ICarrier.PerformCarry
+- uid: AngeliA.ICarrier.CarryTargetsOnTopHorizontally*
+  commentId: Overload:AngeliA.ICarrier.CarryTargetsOnTopHorizontally
+  href: AngeliA.ICarrier.html#AngeliA_ICarrier_CarryTargetsOnTopHorizontally_AngeliA_Entity_System_Int32_AngeliA_OperationMode_
+  name: CarryTargetsOnTopHorizontally
+  nameWithType: ICarrier.CarryTargetsOnTopHorizontally
+  fullName: AngeliA.ICarrier.CarryTargetsOnTopHorizontally
+- uid: AngeliA.Entity
+  commentId: T:AngeliA.Entity
+  parent: AngeliA
+  href: AngeliA.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: AngeliA.Entity
+- uid: AngeliA.OperationMode
+  commentId: T:AngeliA.OperationMode
+  parent: AngeliA
+  href: AngeliA.OperationMode.html
+  name: OperationMode
+  nameWithType: OperationMode
+  fullName: AngeliA.OperationMode
+- uid: AngeliA.ICarrier.CarryTargetsOnTopVertically*
+  commentId: Overload:AngeliA.ICarrier.CarryTargetsOnTopVertically
+  href: AngeliA.ICarrier.html#AngeliA_ICarrier_CarryTargetsOnTopVertically_AngeliA_Entity_System_Int32_AngeliA_OperationMode_
+  name: CarryTargetsOnTopVertically
+  nameWithType: ICarrier.CarryTargetsOnTopVertically
+  fullName: AngeliA.ICarrier.CarryTargetsOnTopVertically

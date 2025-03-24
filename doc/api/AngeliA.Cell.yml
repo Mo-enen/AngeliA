@@ -1,0 +1,1578 @@
+### YamlMime:ManagedReference
+items:
+- uid: AngeliA.Cell
+  commentId: T:AngeliA.Cell
+  id: Cell
+  parent: AngeliA
+  children:
+  - AngeliA.Cell.BorderSide
+  - AngeliA.Cell.Clamp(AngeliA.IRect)
+  - AngeliA.Cell.Color
+  - AngeliA.Cell.CopyFrom(AngeliA.Cell)
+  - AngeliA.Cell.EMPTY
+  - AngeliA.Cell.GetGlobalBounds
+  - AngeliA.Cell.GlobalLerp(System.Single,System.Single)
+  - AngeliA.Cell.GlobalToLocal(System.Int32,System.Int32)
+  - AngeliA.Cell.Height
+  - AngeliA.Cell.LocalToGlobal(System.Int32,System.Int32)
+  - AngeliA.Cell.PivotX
+  - AngeliA.Cell.PivotY
+  - AngeliA.Cell.ReturnPivots
+  - AngeliA.Cell.ReturnPivots(System.Single,System.Single)
+  - AngeliA.Cell.ReturnPosition(System.Int32,System.Int32)
+  - AngeliA.Cell.RotateAround(System.Int32,System.Int32,System.Int32)
+  - AngeliA.Cell.Rotation
+  - AngeliA.Cell.Rotation1000
+  - AngeliA.Cell.ScaleFrom(System.Int32,System.Int32,System.Int32)
+  - AngeliA.Cell.ScaleFrom(System.Single,System.Int32,System.Int32)
+  - AngeliA.Cell.SetRect(AngeliA.IRect)
+  - AngeliA.Cell.SheetIndex
+  - AngeliA.Cell.Shift
+  - AngeliA.Cell.Sprite
+  - AngeliA.Cell.TextSprite
+  - AngeliA.Cell.Width
+  - AngeliA.Cell.X
+  - AngeliA.Cell.Y
+  - AngeliA.Cell.Z
+  langs:
+  - csharp
+  - vb
+  name: Cell
+  nameWithType: Cell
+  fullName: AngeliA.Cell
+  type: Class
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Cell
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 52
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Rendering cell
+  example: []
+  syntax:
+    content: public class Cell
+    content.vb: Public Class Cell
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  - System.Object.AngeliA.Extension.ForAllProperties``1
+- uid: AngeliA.Cell.EMPTY
+  commentId: F:AngeliA.Cell.EMPTY
+  id: EMPTY
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: EMPTY
+  nameWithType: Cell.EMPTY
+  fullName: AngeliA.Cell.EMPTY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: EMPTY
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 54
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public static readonly Cell EMPTY
+    return:
+      type: AngeliA.Cell
+    content.vb: Public Shared ReadOnly EMPTY As Cell
+- uid: AngeliA.Cell.Sprite
+  commentId: F:AngeliA.Cell.Sprite
+  id: Sprite
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: Sprite
+  nameWithType: Cell.Sprite
+  fullName: AngeliA.Cell.Sprite
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Sprite
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 56
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public AngeSprite Sprite
+    return:
+      type: AngeliA.AngeSprite
+    content.vb: Public Sprite As AngeSprite
+- uid: AngeliA.Cell.TextSprite
+  commentId: P:AngeliA.Cell.TextSprite
+  id: TextSprite
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: TextSprite
+  nameWithType: Cell.TextSprite
+  fullName: AngeliA.Cell.TextSprite
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: TextSprite
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 60
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Sprite for rendering text character
+  example: []
+  syntax:
+    content: public CharSprite TextSprite { get; set; }
+    parameters: []
+    return:
+      type: AngeliA.CharSprite
+    content.vb: Public Property TextSprite As CharSprite
+  overload: AngeliA.Cell.TextSprite*
+- uid: AngeliA.Cell.SheetIndex
+  commentId: F:AngeliA.Cell.SheetIndex
+  id: SheetIndex
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: SheetIndex
+  nameWithType: Cell.SheetIndex
+  fullName: AngeliA.Cell.SheetIndex
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SheetIndex
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 64
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Which sprite sheet does this cell use. -1 means main sheet.
+  example: []
+  syntax:
+    content: public int SheetIndex
+    return:
+      type: System.Int32
+    content.vb: Public SheetIndex As Integer
+- uid: AngeliA.Cell.X
+  commentId: F:AngeliA.Cell.X
+  id: X
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: X
+  nameWithType: Cell.X
+  fullName: AngeliA.Cell.X
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: X
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 66
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int X
+    return:
+      type: System.Int32
+    content.vb: Public X As Integer
+- uid: AngeliA.Cell.Y
+  commentId: F:AngeliA.Cell.Y
+  id: Y
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: Y
+  nameWithType: Cell.Y
+  fullName: AngeliA.Cell.Y
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Y
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 67
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Y
+    return:
+      type: System.Int32
+    content.vb: Public Y As Integer
+- uid: AngeliA.Cell.Z
+  commentId: F:AngeliA.Cell.Z
+  id: Z
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: Z
+  nameWithType: Cell.Z
+  fullName: AngeliA.Cell.Z
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Z
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 71
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Z position for sorting
+  example: []
+  syntax:
+    content: public int Z
+    return:
+      type: System.Int32
+    content.vb: Public Z As Integer
+- uid: AngeliA.Cell.Width
+  commentId: F:AngeliA.Cell.Width
+  id: Width
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: Width
+  nameWithType: Cell.Width
+  fullName: AngeliA.Cell.Width
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Width
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 72
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Width
+    return:
+      type: System.Int32
+    content.vb: Public Width As Integer
+- uid: AngeliA.Cell.Height
+  commentId: F:AngeliA.Cell.Height
+  id: Height
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: Height
+  nameWithType: Cell.Height
+  fullName: AngeliA.Cell.Height
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Height
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 73
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public int Height
+    return:
+      type: System.Int32
+    content.vb: Public Height As Integer
+- uid: AngeliA.Cell.Rotation
+  commentId: P:AngeliA.Cell.Rotation
+  id: Rotation
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: Rotation
+  nameWithType: Cell.Rotation
+  fullName: AngeliA.Cell.Rotation
+  type: Property
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Rotation
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 77
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Rotation of the cell, 0 means up, 90 means right
+  example: []
+  syntax:
+    content: public int Rotation { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Rotation As Integer
+  overload: AngeliA.Cell.Rotation*
+- uid: AngeliA.Cell.Rotation1000
+  commentId: F:AngeliA.Cell.Rotation1000
+  id: Rotation1000
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: Rotation1000
+  nameWithType: Cell.Rotation1000
+  fullName: AngeliA.Cell.Rotation1000
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Rotation1000
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 84
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Actual rotation data of the cell, 0 means up, 90000 means right
+  example: []
+  syntax:
+    content: public int Rotation1000
+    return:
+      type: System.Int32
+    content.vb: Public Rotation1000 As Integer
+- uid: AngeliA.Cell.PivotX
+  commentId: F:AngeliA.Cell.PivotX
+  id: PivotX
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: PivotX
+  nameWithType: Cell.PivotX
+  fullName: AngeliA.Cell.PivotX
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PivotX
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 88
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Which place of the cell should be align with the X position. 0 means left edge, 1 means right edge.
+  example: []
+  syntax:
+    content: public float PivotX
+    return:
+      type: System.Single
+    content.vb: Public PivotX As Single
+- uid: AngeliA.Cell.PivotY
+  commentId: F:AngeliA.Cell.PivotY
+  id: PivotY
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: PivotY
+  nameWithType: Cell.PivotY
+  fullName: AngeliA.Cell.PivotY
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: PivotY
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 92
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Which place of the cell should be align with the Y position. 0 means bottom edge, 1 means top edge.
+  example: []
+  syntax:
+    content: public float PivotY
+    return:
+      type: System.Single
+    content.vb: Public PivotY As Single
+- uid: AngeliA.Cell.Color
+  commentId: F:AngeliA.Cell.Color
+  id: Color
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: Color
+  nameWithType: Cell.Color
+  fullName: AngeliA.Cell.Color
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Color
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 93
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Color32 Color
+    return:
+      type: AngeliA.Color32
+    content.vb: Public Color As Color32
+- uid: AngeliA.Cell.Shift
+  commentId: F:AngeliA.Cell.Shift
+  id: Shift
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: Shift
+  nameWithType: Cell.Shift
+  fullName: AngeliA.Cell.Shift
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Shift
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 97
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: How many edge should be clip off. 0 means no clip off, set left into "width" means clip off all of them
+  example: []
+  syntax:
+    content: public Int4 Shift
+    return:
+      type: AngeliA.Int4
+    content.vb: Public Shift As Int4
+- uid: AngeliA.Cell.BorderSide
+  commentId: F:AngeliA.Cell.BorderSide
+  id: BorderSide
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: BorderSide
+  nameWithType: Cell.BorderSide
+  fullName: AngeliA.Cell.BorderSide
+  type: Field
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: BorderSide
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 101
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Which side does this cell belongs to when it's rendered in 9-slice mode
+  example: []
+  syntax:
+    content: public Alignment BorderSide
+    return:
+      type: AngeliA.Alignment
+    content.vb: Public BorderSide As Alignment
+- uid: AngeliA.Cell.SetRect(AngeliA.IRect)
+  commentId: M:AngeliA.Cell.SetRect(AngeliA.IRect)
+  id: SetRect(AngeliA.IRect)
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: SetRect(IRect)
+  nameWithType: Cell.SetRect(IRect)
+  fullName: AngeliA.Cell.SetRect(AngeliA.IRect)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: SetRect
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 106
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Set X,Y,Width,Height with a rect
+  example: []
+  syntax:
+    content: public void SetRect(IRect rect)
+    parameters:
+    - id: rect
+      type: AngeliA.IRect
+    content.vb: Public Sub SetRect(rect As IRect)
+  overload: AngeliA.Cell.SetRect*
+- uid: AngeliA.Cell.CopyFrom(AngeliA.Cell)
+  commentId: M:AngeliA.Cell.CopyFrom(AngeliA.Cell)
+  id: CopyFrom(AngeliA.Cell)
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: CopyFrom(Cell)
+  nameWithType: Cell.CopyFrom(Cell)
+  fullName: AngeliA.Cell.CopyFrom(AngeliA.Cell)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: CopyFrom
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 112
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public void CopyFrom(Cell other)
+    parameters:
+    - id: other
+      type: AngeliA.Cell
+    content.vb: Public Sub CopyFrom(other As Cell)
+  overload: AngeliA.Cell.CopyFrom*
+- uid: AngeliA.Cell.LocalToGlobal(System.Int32,System.Int32)
+  commentId: M:AngeliA.Cell.LocalToGlobal(System.Int32,System.Int32)
+  id: LocalToGlobal(System.Int32,System.Int32)
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: LocalToGlobal(int, int)
+  nameWithType: Cell.LocalToGlobal(int, int)
+  fullName: AngeliA.Cell.LocalToGlobal(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: LocalToGlobal
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 128
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Int2 LocalToGlobal(int localX, int localY)
+    parameters:
+    - id: localX
+      type: System.Int32
+    - id: localY
+      type: System.Int32
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Function LocalToGlobal(localX As Integer, localY As Integer) As Int2
+  overload: AngeliA.Cell.LocalToGlobal*
+  nameWithType.vb: Cell.LocalToGlobal(Integer, Integer)
+  fullName.vb: AngeliA.Cell.LocalToGlobal(Integer, Integer)
+  name.vb: LocalToGlobal(Integer, Integer)
+- uid: AngeliA.Cell.GlobalToLocal(System.Int32,System.Int32)
+  commentId: M:AngeliA.Cell.GlobalToLocal(System.Int32,System.Int32)
+  id: GlobalToLocal(System.Int32,System.Int32)
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: GlobalToLocal(int, int)
+  nameWithType: Cell.GlobalToLocal(int, int)
+  fullName: AngeliA.Cell.GlobalToLocal(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GlobalToLocal
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 139
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Int2 GlobalToLocal(int globalX, int globalY)
+    parameters:
+    - id: globalX
+      type: System.Int32
+    - id: globalY
+      type: System.Int32
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Function GlobalToLocal(globalX As Integer, globalY As Integer) As Int2
+  overload: AngeliA.Cell.GlobalToLocal*
+  nameWithType.vb: Cell.GlobalToLocal(Integer, Integer)
+  fullName.vb: AngeliA.Cell.GlobalToLocal(Integer, Integer)
+  name.vb: GlobalToLocal(Integer, Integer)
+- uid: AngeliA.Cell.GlobalLerp(System.Single,System.Single)
+  commentId: M:AngeliA.Cell.GlobalLerp(System.Single,System.Single)
+  id: GlobalLerp(System.Single,System.Single)
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: GlobalLerp(float, float)
+  nameWithType: Cell.GlobalLerp(float, float)
+  fullName: AngeliA.Cell.GlobalLerp(float, float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GlobalLerp
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 150
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  syntax:
+    content: public Int2 GlobalLerp(float x01, float y01)
+    parameters:
+    - id: x01
+      type: System.Single
+    - id: y01
+      type: System.Single
+    return:
+      type: AngeliA.Int2
+    content.vb: Public Function GlobalLerp(x01 As Single, y01 As Single) As Int2
+  overload: AngeliA.Cell.GlobalLerp*
+  nameWithType.vb: Cell.GlobalLerp(Single, Single)
+  fullName.vb: AngeliA.Cell.GlobalLerp(Single, Single)
+  name.vb: GlobalLerp(Single, Single)
+- uid: AngeliA.Cell.ReturnPivots
+  commentId: M:AngeliA.Cell.ReturnPivots
+  id: ReturnPivots
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: ReturnPivots()
+  nameWithType: Cell.ReturnPivots()
+  fullName: AngeliA.Cell.ReturnPivots()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ReturnPivots
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 163
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Set pivot of the cell into (0,0) and let position adapt, so the final position of the cell remain the same
+  example: []
+  syntax:
+    content: public void ReturnPivots()
+    content.vb: Public Sub ReturnPivots()
+  overload: AngeliA.Cell.ReturnPivots*
+- uid: AngeliA.Cell.ReturnPivots(System.Single,System.Single)
+  commentId: M:AngeliA.Cell.ReturnPivots(System.Single,System.Single)
+  id: ReturnPivots(System.Single,System.Single)
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: ReturnPivots(float, float)
+  nameWithType: Cell.ReturnPivots(float, float)
+  fullName: AngeliA.Cell.ReturnPivots(float, float)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ReturnPivots
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 178
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Set pivot of the cell and let position adapt, so the final position of the cell remain the same
+  example: []
+  syntax:
+    content: public void ReturnPivots(float newPivotX, float newPivotY)
+    parameters:
+    - id: newPivotX
+      type: System.Single
+    - id: newPivotY
+      type: System.Single
+    content.vb: Public Sub ReturnPivots(newPivotX As Single, newPivotY As Single)
+  overload: AngeliA.Cell.ReturnPivots*
+  nameWithType.vb: Cell.ReturnPivots(Single, Single)
+  fullName.vb: AngeliA.Cell.ReturnPivots(Single, Single)
+  name.vb: ReturnPivots(Single, Single)
+- uid: AngeliA.Cell.ReturnPosition(System.Int32,System.Int32)
+  commentId: M:AngeliA.Cell.ReturnPosition(System.Int32,System.Int32)
+  id: ReturnPosition(System.Int32,System.Int32)
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: ReturnPosition(int, int)
+  nameWithType: Cell.ReturnPosition(int, int)
+  fullName: AngeliA.Cell.ReturnPosition(int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ReturnPosition
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 193
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Set position of the cell and let pivot adapt, so the final position of the cell remain the same
+  example: []
+  syntax:
+    content: public void ReturnPosition(int globalX, int globalY)
+    parameters:
+    - id: globalX
+      type: System.Int32
+    - id: globalY
+      type: System.Int32
+    content.vb: Public Sub ReturnPosition(globalX As Integer, globalY As Integer)
+  overload: AngeliA.Cell.ReturnPosition*
+  nameWithType.vb: Cell.ReturnPosition(Integer, Integer)
+  fullName.vb: AngeliA.Cell.ReturnPosition(Integer, Integer)
+  name.vb: ReturnPosition(Integer, Integer)
+- uid: AngeliA.Cell.RotateAround(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.Cell.RotateAround(System.Int32,System.Int32,System.Int32)
+  id: RotateAround(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: RotateAround(int, int, int)
+  nameWithType: Cell.RotateAround(int, int, int)
+  fullName: AngeliA.Cell.RotateAround(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: RotateAround
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 203
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Rotate the cell around the given position
+  example: []
+  syntax:
+    content: public void RotateAround(int rotation, int pointX, int pointY)
+    parameters:
+    - id: rotation
+      type: System.Int32
+    - id: pointX
+      type: System.Int32
+    - id: pointY
+      type: System.Int32
+    content.vb: Public Sub RotateAround(rotation As Integer, pointX As Integer, pointY As Integer)
+  overload: AngeliA.Cell.RotateAround*
+  nameWithType.vb: Cell.RotateAround(Integer, Integer, Integer)
+  fullName.vb: AngeliA.Cell.RotateAround(Integer, Integer, Integer)
+  name.vb: RotateAround(Integer, Integer, Integer)
+- uid: AngeliA.Cell.ScaleFrom(System.Int32,System.Int32,System.Int32)
+  commentId: M:AngeliA.Cell.ScaleFrom(System.Int32,System.Int32,System.Int32)
+  id: ScaleFrom(System.Int32,System.Int32,System.Int32)
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: ScaleFrom(int, int, int)
+  nameWithType: Cell.ScaleFrom(int, int, int)
+  fullName: AngeliA.Cell.ScaleFrom(int, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ScaleFrom
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 215
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Scale the cell based on the given position
+  example: []
+  syntax:
+    content: public void ScaleFrom(int scale, int pointX, int pointY)
+    parameters:
+    - id: scale
+      type: System.Int32
+    - id: pointX
+      type: System.Int32
+    - id: pointY
+      type: System.Int32
+    content.vb: Public Sub ScaleFrom(scale As Integer, pointX As Integer, pointY As Integer)
+  overload: AngeliA.Cell.ScaleFrom*
+  nameWithType.vb: Cell.ScaleFrom(Integer, Integer, Integer)
+  fullName.vb: AngeliA.Cell.ScaleFrom(Integer, Integer, Integer)
+  name.vb: ScaleFrom(Integer, Integer, Integer)
+- uid: AngeliA.Cell.ScaleFrom(System.Single,System.Int32,System.Int32)
+  commentId: M:AngeliA.Cell.ScaleFrom(System.Single,System.Int32,System.Int32)
+  id: ScaleFrom(System.Single,System.Int32,System.Int32)
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: ScaleFrom(float, int, int)
+  nameWithType: Cell.ScaleFrom(float, int, int)
+  fullName: AngeliA.Cell.ScaleFrom(float, int, int)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: ScaleFrom
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 227
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Scale the cell based on the given position
+  example: []
+  syntax:
+    content: public void ScaleFrom(float scale, int pointX, int pointY)
+    parameters:
+    - id: scale
+      type: System.Single
+    - id: pointX
+      type: System.Int32
+    - id: pointY
+      type: System.Int32
+    content.vb: Public Sub ScaleFrom(scale As Single, pointX As Integer, pointY As Integer)
+  overload: AngeliA.Cell.ScaleFrom*
+  nameWithType.vb: Cell.ScaleFrom(Single, Integer, Integer)
+  fullName.vb: AngeliA.Cell.ScaleFrom(Single, Integer, Integer)
+  name.vb: ScaleFrom(Single, Integer, Integer)
+- uid: AngeliA.Cell.GetGlobalBounds
+  commentId: M:AngeliA.Cell.GetGlobalBounds
+  id: GetGlobalBounds
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: GetGlobalBounds()
+  nameWithType: Cell.GetGlobalBounds()
+  fullName: AngeliA.Cell.GetGlobalBounds()
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: GetGlobalBounds
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 239
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Get the boundary occupied by the cell
+  example: []
+  syntax:
+    content: public IRect GetGlobalBounds()
+    return:
+      type: AngeliA.IRect
+    content.vb: Public Function GetGlobalBounds() As IRect
+  overload: AngeliA.Cell.GetGlobalBounds*
+- uid: AngeliA.Cell.Clamp(AngeliA.IRect)
+  commentId: M:AngeliA.Cell.Clamp(AngeliA.IRect)
+  id: Clamp(AngeliA.IRect)
+  parent: AngeliA.Cell
+  langs:
+  - csharp
+  - vb
+  name: Clamp(IRect)
+  nameWithType: Cell.Clamp(IRect)
+  fullName: AngeliA.Cell.Clamp(AngeliA.IRect)
+  type: Method
+  source:
+    remote:
+      path: AngeliA Framework/src/Common/Cell.cs
+      branch: main
+      repo: https://github.com/Mo-enen/AngeliA.git
+    id: Clamp
+    path: ../AngeliA Framework/src/Common/Cell.cs
+    startLine: 303
+  assemblies:
+  - AngeliA Framework
+  namespace: AngeliA
+  summary: Clamp the content inside the given rect range
+  example: []
+  syntax:
+    content: public void Clamp(IRect rect)
+    parameters:
+    - id: rect
+      type: AngeliA.IRect
+    content.vb: Public Sub Clamp(rect As IRect)
+  overload: AngeliA.Cell.Clamp*
+references:
+- uid: AngeliA
+  commentId: N:AngeliA
+  href: AngeliA.html
+  name: AngeliA
+  nameWithType: AngeliA
+  fullName: AngeliA
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllFields``1(System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Object.AngeliA.Extension.ForAllProperties``1
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  parent: AngeliA.Extension
+  definition: AngeliA.Extension.ForAllProperties``1(System.Object)
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  commentId: M:AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  name: ForAllFields<T>(object, BindingFlags, bool)
+  nameWithType: Extension.ForAllFields<T>(object, BindingFlags, bool)
+  fullName: AngeliA.Extension.ForAllFields<T>(object, System.Reflection.BindingFlags, bool)
+  nameWithType.vb: Extension.ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  fullName.vb: AngeliA.Extension.ForAllFields(Of T)(Object, System.Reflection.BindingFlags, Boolean)
+  name.vb: ForAllFields(Of T)(Object, BindingFlags, Boolean)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllFields``1(System.Object,System.Reflection.BindingFlags,System.Boolean)
+    name: ForAllFields
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.bindingflags
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: AngeliA.Extension
+  commentId: T:AngeliA.Extension
+  parent: AngeliA
+  href: AngeliA.Extension.html
+  name: Extension
+  nameWithType: Extension
+  fullName: AngeliA.Extension
+- uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+  commentId: M:AngeliA.Extension.ForAllProperties``1(System.Object)
+  isExternal: true
+  href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  name: ForAllProperties<T>(object)
+  nameWithType: Extension.ForAllProperties<T>(object)
+  fullName: AngeliA.Extension.ForAllProperties<T>(object)
+  nameWithType.vb: Extension.ForAllProperties(Of T)(Object)
+  fullName.vb: AngeliA.Extension.ForAllProperties(Of T)(Object)
+  name.vb: ForAllProperties(Of T)(Object)
+  spec.csharp:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: AngeliA.Extension.ForAllProperties``1(System.Object)
+    name: ForAllProperties
+    href: AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: AngeliA.Cell
+  commentId: T:AngeliA.Cell
+  parent: AngeliA
+  href: AngeliA.Cell.html
+  name: Cell
+  nameWithType: Cell
+  fullName: AngeliA.Cell
+- uid: AngeliA.AngeSprite
+  commentId: T:AngeliA.AngeSprite
+  parent: AngeliA
+  href: AngeliA.AngeSprite.html
+  name: AngeSprite
+  nameWithType: AngeSprite
+  fullName: AngeliA.AngeSprite
+- uid: AngeliA.Cell.TextSprite*
+  commentId: Overload:AngeliA.Cell.TextSprite
+  href: AngeliA.Cell.html#AngeliA_Cell_TextSprite
+  name: TextSprite
+  nameWithType: Cell.TextSprite
+  fullName: AngeliA.Cell.TextSprite
+- uid: AngeliA.CharSprite
+  commentId: T:AngeliA.CharSprite
+  parent: AngeliA
+  href: AngeliA.CharSprite.html
+  name: CharSprite
+  nameWithType: CharSprite
+  fullName: AngeliA.CharSprite
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: AngeliA.Cell.Rotation*
+  commentId: Overload:AngeliA.Cell.Rotation
+  href: AngeliA.Cell.html#AngeliA_Cell_Rotation
+  name: Rotation
+  nameWithType: Cell.Rotation
+  fullName: AngeliA.Cell.Rotation
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: AngeliA.Color32
+  commentId: T:AngeliA.Color32
+  parent: AngeliA
+  href: AngeliA.Color32.html
+  name: Color32
+  nameWithType: Color32
+  fullName: AngeliA.Color32
+- uid: AngeliA.Int4
+  commentId: T:AngeliA.Int4
+  parent: AngeliA
+  href: AngeliA.Int4.html
+  name: Int4
+  nameWithType: Int4
+  fullName: AngeliA.Int4
+- uid: AngeliA.Alignment
+  commentId: T:AngeliA.Alignment
+  parent: AngeliA
+  href: AngeliA.Alignment.html
+  name: Alignment
+  nameWithType: Alignment
+  fullName: AngeliA.Alignment
+- uid: AngeliA.Cell.SetRect*
+  commentId: Overload:AngeliA.Cell.SetRect
+  href: AngeliA.Cell.html#AngeliA_Cell_SetRect_AngeliA_IRect_
+  name: SetRect
+  nameWithType: Cell.SetRect
+  fullName: AngeliA.Cell.SetRect
+- uid: AngeliA.IRect
+  commentId: T:AngeliA.IRect
+  parent: AngeliA
+  href: AngeliA.IRect.html
+  name: IRect
+  nameWithType: IRect
+  fullName: AngeliA.IRect
+- uid: AngeliA.Cell.CopyFrom*
+  commentId: Overload:AngeliA.Cell.CopyFrom
+  href: AngeliA.Cell.html#AngeliA_Cell_CopyFrom_AngeliA_Cell_
+  name: CopyFrom
+  nameWithType: Cell.CopyFrom
+  fullName: AngeliA.Cell.CopyFrom
+- uid: AngeliA.Cell.LocalToGlobal*
+  commentId: Overload:AngeliA.Cell.LocalToGlobal
+  href: AngeliA.Cell.html#AngeliA_Cell_LocalToGlobal_System_Int32_System_Int32_
+  name: LocalToGlobal
+  nameWithType: Cell.LocalToGlobal
+  fullName: AngeliA.Cell.LocalToGlobal
+- uid: AngeliA.Int2
+  commentId: T:AngeliA.Int2
+  parent: AngeliA
+  href: AngeliA.Int2.html
+  name: Int2
+  nameWithType: Int2
+  fullName: AngeliA.Int2
+- uid: AngeliA.Cell.GlobalToLocal*
+  commentId: Overload:AngeliA.Cell.GlobalToLocal
+  href: AngeliA.Cell.html#AngeliA_Cell_GlobalToLocal_System_Int32_System_Int32_
+  name: GlobalToLocal
+  nameWithType: Cell.GlobalToLocal
+  fullName: AngeliA.Cell.GlobalToLocal
+- uid: AngeliA.Cell.GlobalLerp*
+  commentId: Overload:AngeliA.Cell.GlobalLerp
+  href: AngeliA.Cell.html#AngeliA_Cell_GlobalLerp_System_Single_System_Single_
+  name: GlobalLerp
+  nameWithType: Cell.GlobalLerp
+  fullName: AngeliA.Cell.GlobalLerp
+- uid: AngeliA.Cell.ReturnPivots*
+  commentId: Overload:AngeliA.Cell.ReturnPivots
+  href: AngeliA.Cell.html#AngeliA_Cell_ReturnPivots
+  name: ReturnPivots
+  nameWithType: Cell.ReturnPivots
+  fullName: AngeliA.Cell.ReturnPivots
+- uid: AngeliA.Cell.ReturnPosition*
+  commentId: Overload:AngeliA.Cell.ReturnPosition
+  href: AngeliA.Cell.html#AngeliA_Cell_ReturnPosition_System_Int32_System_Int32_
+  name: ReturnPosition
+  nameWithType: Cell.ReturnPosition
+  fullName: AngeliA.Cell.ReturnPosition
+- uid: AngeliA.Cell.RotateAround*
+  commentId: Overload:AngeliA.Cell.RotateAround
+  href: AngeliA.Cell.html#AngeliA_Cell_RotateAround_System_Int32_System_Int32_System_Int32_
+  name: RotateAround
+  nameWithType: Cell.RotateAround
+  fullName: AngeliA.Cell.RotateAround
+- uid: AngeliA.Cell.ScaleFrom*
+  commentId: Overload:AngeliA.Cell.ScaleFrom
+  href: AngeliA.Cell.html#AngeliA_Cell_ScaleFrom_System_Int32_System_Int32_System_Int32_
+  name: ScaleFrom
+  nameWithType: Cell.ScaleFrom
+  fullName: AngeliA.Cell.ScaleFrom
+- uid: AngeliA.Cell.GetGlobalBounds*
+  commentId: Overload:AngeliA.Cell.GetGlobalBounds
+  href: AngeliA.Cell.html#AngeliA_Cell_GetGlobalBounds
+  name: GetGlobalBounds
+  nameWithType: Cell.GetGlobalBounds
+  fullName: AngeliA.Cell.GetGlobalBounds
+- uid: AngeliA.Cell.Clamp*
+  commentId: Overload:AngeliA.Cell.Clamp
+  href: AngeliA.Cell.html#AngeliA_Cell_Clamp_AngeliA_IRect_
+  name: Clamp
+  nameWithType: Cell.Clamp
+  fullName: AngeliA.Cell.Clamp
