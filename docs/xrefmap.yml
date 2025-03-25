@@ -10920,12 +10920,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Cloth.CoverClothOn
   nameWithType: Cloth.CoverClothOn
-- uid: AngeliA.Cloth.DefaultPool
-  name: DefaultPool
-  href: api/AngeliA.Cloth.html#AngeliA_Cloth_DefaultPool
-  commentId: F:AngeliA.Cloth.DefaultPool
-  fullName: AngeliA.Cloth.DefaultPool
-  nameWithType: Cloth.DefaultPool
 - uid: AngeliA.Cloth.DrawCloth(AngeliA.PoseCharacterRenderer)
   name: DrawCloth(PoseCharacterRenderer)
   href: api/AngeliA.Cloth.html#AngeliA_Cloth_DrawCloth_AngeliA_PoseCharacterRenderer_
@@ -11032,12 +11026,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Cloth.HasCloth
   nameWithType: Cloth.HasCloth
-- uid: AngeliA.Cloth.Pool
-  name: Pool
-  href: api/AngeliA.Cloth.html#AngeliA_Cloth_Pool
-  commentId: F:AngeliA.Cloth.Pool
-  fullName: AngeliA.Cloth.Pool
-  nameWithType: Cloth.Pool
 - uid: AngeliA.Cloth.SheetIndex
   name: SheetIndex
   href: api/AngeliA.Cloth.html#AngeliA_Cloth_SheetIndex
@@ -14025,32 +14013,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Ear.MotionAmount
   nameWithType: Ear.MotionAmount
-- uid: AngeliA.Ear.SpriteEarLeft
-  name: SpriteEarLeft
-  href: api/AngeliA.Ear.html#AngeliA_Ear_SpriteEarLeft
-  commentId: P:AngeliA.Ear.SpriteEarLeft
-  fullName: AngeliA.Ear.SpriteEarLeft
-  nameWithType: Ear.SpriteEarLeft
-- uid: AngeliA.Ear.SpriteEarLeft*
-  name: SpriteEarLeft
-  href: api/AngeliA.Ear.html#AngeliA_Ear_SpriteEarLeft_
-  commentId: Overload:AngeliA.Ear.SpriteEarLeft
-  isSpec: "True"
-  fullName: AngeliA.Ear.SpriteEarLeft
-  nameWithType: Ear.SpriteEarLeft
-- uid: AngeliA.Ear.SpriteEarRight
-  name: SpriteEarRight
-  href: api/AngeliA.Ear.html#AngeliA_Ear_SpriteEarRight
-  commentId: P:AngeliA.Ear.SpriteEarRight
-  fullName: AngeliA.Ear.SpriteEarRight
-  nameWithType: Ear.SpriteEarRight
-- uid: AngeliA.Ear.SpriteEarRight*
-  name: SpriteEarRight
-  href: api/AngeliA.Ear.html#AngeliA_Ear_SpriteEarRight_
-  commentId: Overload:AngeliA.Ear.SpriteEarRight
-  isSpec: "True"
-  fullName: AngeliA.Ear.SpriteEarRight
-  nameWithType: Ear.SpriteEarRight
 - uid: AngeliA.Ear.SpriteLoaded
   name: SpriteLoaded
   href: api/AngeliA.Ear.html#AngeliA_Ear_SpriteLoaded
@@ -32292,15 +32254,15 @@ references:
   commentId: T:AngeliA.Hair
   fullName: AngeliA.Hair
   nameWithType: Hair
-- uid: AngeliA.Hair.DrawBraid(AngeliA.PoseCharacterRenderer,System.Boolean,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32)
-  name: DrawBraid(PoseCharacterRenderer, bool, OrientedSprite, OrientedSprite, int, int, int, int, bool, int, int)
-  href: api/AngeliA.Hair.html#AngeliA_Hair_DrawBraid_AngeliA_PoseCharacterRenderer_System_Boolean_AngeliA_OrientedSprite_AngeliA_OrientedSprite_System_Int32_System_Int32_System_Int32_System_Int32_System_Boolean_System_Int32_System_Int32_
-  commentId: M:AngeliA.Hair.DrawBraid(AngeliA.PoseCharacterRenderer,System.Boolean,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32)
-  name.vb: DrawBraid(PoseCharacterRenderer, Boolean, OrientedSprite, OrientedSprite, Integer, Integer, Integer, Integer, Boolean, Integer, Integer)
-  fullName: AngeliA.Hair.DrawBraid(AngeliA.PoseCharacterRenderer, bool, AngeliA.OrientedSprite, AngeliA.OrientedSprite, int, int, int, int, bool, int, int)
-  fullName.vb: AngeliA.Hair.DrawBraid(AngeliA.PoseCharacterRenderer, Boolean, AngeliA.OrientedSprite, AngeliA.OrientedSprite, Integer, Integer, Integer, Integer, Boolean, Integer, Integer)
-  nameWithType: Hair.DrawBraid(PoseCharacterRenderer, bool, OrientedSprite, OrientedSprite, int, int, int, int, bool, int, int)
-  nameWithType.vb: Hair.DrawBraid(PoseCharacterRenderer, Boolean, OrientedSprite, OrientedSprite, Integer, Integer, Integer, Integer, Boolean, Integer, Integer)
+- uid: AngeliA.Hair.DrawBraid(AngeliA.PoseCharacterRenderer,System.Boolean,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32)
+  name: DrawBraid(PoseCharacterRenderer, bool, OrientedSprite, OrientedSprite, int, int, int, bool, int, int)
+  href: api/AngeliA.Hair.html#AngeliA_Hair_DrawBraid_AngeliA_PoseCharacterRenderer_System_Boolean_AngeliA_OrientedSprite_AngeliA_OrientedSprite_System_Int32_System_Int32_System_Int32_System_Boolean_System_Int32_System_Int32_
+  commentId: M:AngeliA.Hair.DrawBraid(AngeliA.PoseCharacterRenderer,System.Boolean,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32)
+  name.vb: DrawBraid(PoseCharacterRenderer, Boolean, OrientedSprite, OrientedSprite, Integer, Integer, Integer, Boolean, Integer, Integer)
+  fullName: AngeliA.Hair.DrawBraid(AngeliA.PoseCharacterRenderer, bool, AngeliA.OrientedSprite, AngeliA.OrientedSprite, int, int, int, bool, int, int)
+  fullName.vb: AngeliA.Hair.DrawBraid(AngeliA.PoseCharacterRenderer, Boolean, AngeliA.OrientedSprite, AngeliA.OrientedSprite, Integer, Integer, Integer, Boolean, Integer, Integer)
+  nameWithType: Hair.DrawBraid(PoseCharacterRenderer, bool, OrientedSprite, OrientedSprite, int, int, int, bool, int, int)
+  nameWithType.vb: Hair.DrawBraid(PoseCharacterRenderer, Boolean, OrientedSprite, OrientedSprite, Integer, Integer, Integer, Boolean, Integer, Integer)
 - uid: AngeliA.Hair.DrawBraid*
   name: DrawBraid
   href: api/AngeliA.Hair.html#AngeliA_Hair_DrawBraid_
@@ -32366,32 +32328,19 @@ references:
   isSpec: "True"
   fullName: AngeliA.Hair.DrawSpriteAsHair
   nameWithType: Hair.DrawSpriteAsHair
-- uid: AngeliA.Hair.DropMotionAmount
-  name: DropMotionAmount
-  href: api/AngeliA.Hair.html#AngeliA_Hair_DropMotionAmount
-  commentId: P:AngeliA.Hair.DropMotionAmount
-  fullName: AngeliA.Hair.DropMotionAmount
-  nameWithType: Hair.DropMotionAmount
-- uid: AngeliA.Hair.DropMotionAmount*
-  name: DropMotionAmount
-  href: api/AngeliA.Hair.html#AngeliA_Hair_DropMotionAmount_
-  commentId: Overload:AngeliA.Hair.DropMotionAmount
+- uid: AngeliA.Hair.DropMotionAmountForBraid
+  name: DropMotionAmountForBraid
+  href: api/AngeliA.Hair.html#AngeliA_Hair_DropMotionAmountForBraid
+  commentId: P:AngeliA.Hair.DropMotionAmountForBraid
+  fullName: AngeliA.Hair.DropMotionAmountForBraid
+  nameWithType: Hair.DropMotionAmountForBraid
+- uid: AngeliA.Hair.DropMotionAmountForBraid*
+  name: DropMotionAmountForBraid
+  href: api/AngeliA.Hair.html#AngeliA_Hair_DropMotionAmountForBraid_
+  commentId: Overload:AngeliA.Hair.DropMotionAmountForBraid
   isSpec: "True"
-  fullName: AngeliA.Hair.DropMotionAmount
-  nameWithType: Hair.DropMotionAmount
-- uid: AngeliA.Hair.FacingLeftOffsetX
-  name: FacingLeftOffsetX
-  href: api/AngeliA.Hair.html#AngeliA_Hair_FacingLeftOffsetX
-  commentId: P:AngeliA.Hair.FacingLeftOffsetX
-  fullName: AngeliA.Hair.FacingLeftOffsetX
-  nameWithType: Hair.FacingLeftOffsetX
-- uid: AngeliA.Hair.FacingLeftOffsetX*
-  name: FacingLeftOffsetX
-  href: api/AngeliA.Hair.html#AngeliA_Hair_FacingLeftOffsetX_
-  commentId: Overload:AngeliA.Hair.FacingLeftOffsetX
-  isSpec: "True"
-  fullName: AngeliA.Hair.FacingLeftOffsetX
-  nameWithType: Hair.FacingLeftOffsetX
+  fullName: AngeliA.Hair.DropMotionAmountForBraid
+  nameWithType: Hair.DropMotionAmountForBraid
 - uid: AngeliA.Hair.FillFromSheet(System.String)
   name: FillFromSheet(string)
   href: api/AngeliA.Hair.html#AngeliA_Hair_FillFromSheet_System_String_
@@ -32434,32 +32383,32 @@ references:
   isSpec: "True"
   fullName: AngeliA.Hair.FlowAmountY
   nameWithType: Hair.FlowAmountY
-- uid: AngeliA.Hair.FlowMotionAmount
-  name: FlowMotionAmount
-  href: api/AngeliA.Hair.html#AngeliA_Hair_FlowMotionAmount
-  commentId: P:AngeliA.Hair.FlowMotionAmount
-  fullName: AngeliA.Hair.FlowMotionAmount
-  nameWithType: Hair.FlowMotionAmount
-- uid: AngeliA.Hair.FlowMotionAmount*
-  name: FlowMotionAmount
-  href: api/AngeliA.Hair.html#AngeliA_Hair_FlowMotionAmount_
-  commentId: Overload:AngeliA.Hair.FlowMotionAmount
+- uid: AngeliA.Hair.FlowMotionAmountForBraid
+  name: FlowMotionAmountForBraid
+  href: api/AngeliA.Hair.html#AngeliA_Hair_FlowMotionAmountForBraid
+  commentId: P:AngeliA.Hair.FlowMotionAmountForBraid
+  fullName: AngeliA.Hair.FlowMotionAmountForBraid
+  nameWithType: Hair.FlowMotionAmountForBraid
+- uid: AngeliA.Hair.FlowMotionAmountForBraid*
+  name: FlowMotionAmountForBraid
+  href: api/AngeliA.Hair.html#AngeliA_Hair_FlowMotionAmountForBraid_
+  commentId: Overload:AngeliA.Hair.FlowMotionAmountForBraid
   isSpec: "True"
-  fullName: AngeliA.Hair.FlowMotionAmount
-  nameWithType: Hair.FlowMotionAmount
-- uid: AngeliA.Hair.ForceBackOnFlow
-  name: ForceBackOnFlow
-  href: api/AngeliA.Hair.html#AngeliA_Hair_ForceBackOnFlow
-  commentId: P:AngeliA.Hair.ForceBackOnFlow
-  fullName: AngeliA.Hair.ForceBackOnFlow
-  nameWithType: Hair.ForceBackOnFlow
-- uid: AngeliA.Hair.ForceBackOnFlow*
-  name: ForceBackOnFlow
-  href: api/AngeliA.Hair.html#AngeliA_Hair_ForceBackOnFlow_
-  commentId: Overload:AngeliA.Hair.ForceBackOnFlow
+  fullName: AngeliA.Hair.FlowMotionAmountForBraid
+  nameWithType: Hair.FlowMotionAmountForBraid
+- uid: AngeliA.Hair.ForceBackOnFlowForBraid
+  name: ForceBackOnFlowForBraid
+  href: api/AngeliA.Hair.html#AngeliA_Hair_ForceBackOnFlowForBraid
+  commentId: P:AngeliA.Hair.ForceBackOnFlowForBraid
+  fullName: AngeliA.Hair.ForceBackOnFlowForBraid
+  nameWithType: Hair.ForceBackOnFlowForBraid
+- uid: AngeliA.Hair.ForceBackOnFlowForBraid*
+  name: ForceBackOnFlowForBraid
+  href: api/AngeliA.Hair.html#AngeliA_Hair_ForceBackOnFlowForBraid_
+  commentId: Overload:AngeliA.Hair.ForceBackOnFlowForBraid
   isSpec: "True"
-  fullName: AngeliA.Hair.ForceBackOnFlow
-  nameWithType: Hair.ForceBackOnFlow
+  fullName: AngeliA.Hair.ForceBackOnFlowForBraid
+  nameWithType: Hair.ForceBackOnFlowForBraid
 - uid: AngeliA.Hair.GadgetType
   name: GadgetType
   href: api/AngeliA.Hair.html#AngeliA_Hair_GadgetType
@@ -32473,19 +32422,19 @@ references:
   isSpec: "True"
   fullName: AngeliA.Hair.GadgetType
   nameWithType: Hair.GadgetType
-- uid: AngeliA.Hair.MotionAmount
-  name: MotionAmount
-  href: api/AngeliA.Hair.html#AngeliA_Hair_MotionAmount
-  commentId: P:AngeliA.Hair.MotionAmount
-  fullName: AngeliA.Hair.MotionAmount
-  nameWithType: Hair.MotionAmount
-- uid: AngeliA.Hair.MotionAmount*
-  name: MotionAmount
-  href: api/AngeliA.Hair.html#AngeliA_Hair_MotionAmount_
-  commentId: Overload:AngeliA.Hair.MotionAmount
+- uid: AngeliA.Hair.MotionAmountForBraid
+  name: MotionAmountForBraid
+  href: api/AngeliA.Hair.html#AngeliA_Hair_MotionAmountForBraid
+  commentId: P:AngeliA.Hair.MotionAmountForBraid
+  fullName: AngeliA.Hair.MotionAmountForBraid
+  nameWithType: Hair.MotionAmountForBraid
+- uid: AngeliA.Hair.MotionAmountForBraid*
+  name: MotionAmountForBraid
+  href: api/AngeliA.Hair.html#AngeliA_Hair_MotionAmountForBraid_
+  commentId: Overload:AngeliA.Hair.MotionAmountForBraid
   isSpec: "True"
-  fullName: AngeliA.Hair.MotionAmount
-  nameWithType: Hair.MotionAmount
+  fullName: AngeliA.Hair.MotionAmountForBraid
+  nameWithType: Hair.MotionAmountForBraid
 - uid: AngeliA.Hair.SpriteBraidLeft
   name: SpriteBraidLeft
   href: api/AngeliA.Hair.html#AngeliA_Hair_SpriteBraidLeft
@@ -32551,19 +32500,19 @@ references:
   isSpec: "True"
   fullName: AngeliA.Hair.SpriteLoaded
   nameWithType: Hair.SpriteLoaded
-- uid: AngeliA.Hair.UseLimbRotate
-  name: UseLimbRotate
-  href: api/AngeliA.Hair.html#AngeliA_Hair_UseLimbRotate
-  commentId: P:AngeliA.Hair.UseLimbRotate
-  fullName: AngeliA.Hair.UseLimbRotate
-  nameWithType: Hair.UseLimbRotate
-- uid: AngeliA.Hair.UseLimbRotate*
-  name: UseLimbRotate
-  href: api/AngeliA.Hair.html#AngeliA_Hair_UseLimbRotate_
-  commentId: Overload:AngeliA.Hair.UseLimbRotate
+- uid: AngeliA.Hair.UseLimbRotateForBraid
+  name: UseLimbRotateForBraid
+  href: api/AngeliA.Hair.html#AngeliA_Hair_UseLimbRotateForBraid
+  commentId: P:AngeliA.Hair.UseLimbRotateForBraid
+  fullName: AngeliA.Hair.UseLimbRotateForBraid
+  nameWithType: Hair.UseLimbRotateForBraid
+- uid: AngeliA.Hair.UseLimbRotateForBraid*
+  name: UseLimbRotateForBraid
+  href: api/AngeliA.Hair.html#AngeliA_Hair_UseLimbRotateForBraid_
+  commentId: Overload:AngeliA.Hair.UseLimbRotateForBraid
   isSpec: "True"
-  fullName: AngeliA.Hair.UseLimbRotate
-  nameWithType: Hair.UseLimbRotate
+  fullName: AngeliA.Hair.UseLimbRotateForBraid
+  nameWithType: Hair.UseLimbRotateForBraid
 - uid: AngeliA.HandCloth
   name: HandCloth
   href: api/AngeliA.HandCloth.html
@@ -33652,32 +33601,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Horn.GadgetType
   nameWithType: Horn.GadgetType
-- uid: AngeliA.Horn.SpriteHornLeft
-  name: SpriteHornLeft
-  href: api/AngeliA.Horn.html#AngeliA_Horn_SpriteHornLeft
-  commentId: P:AngeliA.Horn.SpriteHornLeft
-  fullName: AngeliA.Horn.SpriteHornLeft
-  nameWithType: Horn.SpriteHornLeft
-- uid: AngeliA.Horn.SpriteHornLeft*
-  name: SpriteHornLeft
-  href: api/AngeliA.Horn.html#AngeliA_Horn_SpriteHornLeft_
-  commentId: Overload:AngeliA.Horn.SpriteHornLeft
-  isSpec: "True"
-  fullName: AngeliA.Horn.SpriteHornLeft
-  nameWithType: Horn.SpriteHornLeft
-- uid: AngeliA.Horn.SpriteHornRight
-  name: SpriteHornRight
-  href: api/AngeliA.Horn.html#AngeliA_Horn_SpriteHornRight
-  commentId: P:AngeliA.Horn.SpriteHornRight
-  fullName: AngeliA.Horn.SpriteHornRight
-  nameWithType: Horn.SpriteHornRight
-- uid: AngeliA.Horn.SpriteHornRight*
-  name: SpriteHornRight
-  href: api/AngeliA.Horn.html#AngeliA_Horn_SpriteHornRight_
-  commentId: Overload:AngeliA.Horn.SpriteHornRight
-  isSpec: "True"
-  fullName: AngeliA.Horn.SpriteHornRight
-  nameWithType: Horn.SpriteHornRight
 - uid: AngeliA.Horn.SpriteLoaded
   name: SpriteLoaded
   href: api/AngeliA.Horn.html#AngeliA_Horn_SpriteLoaded
@@ -67745,19 +67668,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Tail.SpriteLoaded
   nameWithType: Tail.SpriteLoaded
-- uid: AngeliA.Tail.SpriteTail
-  name: SpriteTail
-  href: api/AngeliA.Tail.html#AngeliA_Tail_SpriteTail
-  commentId: P:AngeliA.Tail.SpriteTail
-  fullName: AngeliA.Tail.SpriteTail
-  nameWithType: Tail.SpriteTail
-- uid: AngeliA.Tail.SpriteTail*
-  name: SpriteTail
-  href: api/AngeliA.Tail.html#AngeliA_Tail_SpriteTail_
-  commentId: Overload:AngeliA.Tail.SpriteTail
-  isSpec: "True"
-  fullName: AngeliA.Tail.SpriteTail
-  nameWithType: Tail.SpriteTail
 - uid: AngeliA.Task
   name: Task
   href: api/AngeliA.Task.html
@@ -72972,19 +72882,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Wing.SpriteLoaded
   nameWithType: Wing.SpriteLoaded
-- uid: AngeliA.Wing.SpriteWing
-  name: SpriteWing
-  href: api/AngeliA.Wing.html#AngeliA_Wing_SpriteWing
-  commentId: P:AngeliA.Wing.SpriteWing
-  fullName: AngeliA.Wing.SpriteWing
-  nameWithType: Wing.SpriteWing
-- uid: AngeliA.Wing.SpriteWing*
-  name: SpriteWing
-  href: api/AngeliA.Wing.html#AngeliA_Wing_SpriteWing_
-  commentId: Overload:AngeliA.Wing.SpriteWing
-  isSpec: "True"
-  fullName: AngeliA.Wing.SpriteWing
-  nameWithType: Wing.SpriteWing
 - uid: AngeliA.World
   name: World
   href: api/AngeliA.World.html

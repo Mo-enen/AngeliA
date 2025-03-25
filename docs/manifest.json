@@ -596,7 +596,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BodyGadget",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.BodyGadget.yml\" sourcestartlinenumber=\"1\">Representation of a pose character's extra body part. Always use instance from pool.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -946,7 +946,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.CharacterFaceExpression",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.CharacterFaceExpression.yml\" sourcestartlinenumber=\"1\">Face expression type for pose animation characters</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1156,7 +1156,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Cloth",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Cloth.yml\" sourcestartlinenumber=\"1\">Cloth for pose style character (not for equipment items). Get instance with Cloth.TryGetCloth(id, out var result)</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1562,7 +1562,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Ear",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Ear.yml\" sourcestartlinenumber=\"1\">Animal ear body gadget for pose character. (Like cat-girl's ears, not human ears)</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1968,7 +1968,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Face",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Face.yml\" sourcestartlinenumber=\"1\">Face gadget for pose characters</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2626,7 +2626,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Hair",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Hair.yml\" sourcestartlinenumber=\"1\">Hair gadget for pose styled characters</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2724,7 +2724,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Horn",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Horn.yml\" sourcestartlinenumber=\"1\">Horn body gadget for pose style character</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3578,7 +3578,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ModularEar",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ModularEar.yml\" sourcestartlinenumber=\"1\">Ear body gadget that auto generate from artwork sheet</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3592,7 +3592,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ModularFace",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ModularFace.yml\" sourcestartlinenumber=\"1\">Face body gadget that auto generate from artwork sheet</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3620,7 +3620,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ModularHair",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ModularHair.yml\" sourcestartlinenumber=\"1\">Hair body gadget that auto generate from artwork sheet</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3676,7 +3676,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ModularHorn",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ModularHorn.yml\" sourcestartlinenumber=\"1\">Horn body gadget that auto generate from artwork sheet</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3690,7 +3690,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ModularTail",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ModularTail.yml\" sourcestartlinenumber=\"1\">Tail body gadget that auto generate from artwork sheet</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3704,7 +3704,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ModularWing",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ModularWing.yml\" sourcestartlinenumber=\"1\">Wing body gadget that auto generate from artwork sheet</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8030,7 +8030,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Tail",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Tail.yml\" sourcestartlinenumber=\"1\">Tail body gadget for pose style character</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8254,7 +8254,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Wing",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Wing.yml\" sourcestartlinenumber=\"1\">Wing body gadget for pose style character</p>\n"
     },
     {
       "type": "ManagedReference",

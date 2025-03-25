@@ -38,6 +38,7 @@
     ],
     "output": "",
     "template": [
+      "default",
       "template"
     ],
     "globalMetadata": {

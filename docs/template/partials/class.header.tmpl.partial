@@ -3,18 +3,6 @@
 <h1 id="{{id}}" data-uid="{{uid}}" class="text-break">{{>partials/title}}</h1>
 <div class="markdown level0 summary">{{{summary}}}</div>
 <div class="markdown level0 conceptual">{{{conceptual}}}</div>
-{{#inClass}}
-<div class="inheritance">
-  <h5>{{__global.inheritance}}</h5>
-  {{#inheritance}}
-  <div class="level{{index}}">{{{specName.0.value}}}</div>
-  {{/inheritance}}
-  <div class="level{{level}}"><span class="xref">{{name.0.value}}</span></div>
-  {{#derivedClasses}}
-    <div class="level{{index}}">{{{specName.0.value}}}</div>
-  {{/derivedClasses}}
-</div>
-{{/inClass}}
 {{#implements.0}}
 <div class="implements">
   <h5>{{__global.implements}}</h5>
@@ -25,23 +13,6 @@
 {{#implements.0}}
 </div>
 {{/implements.0}}
-{{#inheritedMembers.0}}
-<div class="inheritedMembers">
-  <h5>{{__global.inheritedMembers}}</h5>
-{{/inheritedMembers.0}}
-{{#inheritedMembers}}
-  <div>
-  {{#definition}}
-    <xref uid="{{definition}}" text="{{nameWithType.0.value}}" alt="{{fullName.0.value}}"/>
-  {{/definition}}
-  {{^definition}}
-    <xref uid="{{uid}}" text="{{nameWithType.0.value}}" alt="{{fullName.0.value}}"/>
-  {{/definition}}
-  </div>
-{{/inheritedMembers}}
-{{#inheritedMembers.0}}
-</div>
-{{/inheritedMembers.0}}
 <h6><strong>{{__global.namespace}}</strong>: {{{namespace.specName.0.value}}}</h6>
 <h6><strong>{{__global.assembly}}</strong>: {{assemblies.0}}.dll</h6>
 <h5 id="{{id}}_syntax">{{__global.syntax}}</h5>
