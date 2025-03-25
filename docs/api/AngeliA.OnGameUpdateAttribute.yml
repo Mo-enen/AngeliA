@@ -20,13 +20,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnGameUpdateAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 45
+    startLine: 63
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called every time game update (60 times per second)
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[OnGameUpdate]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: 'public class OnGameUpdateAttribute : EventAttribute'
     content.vb: Public Class OnGameUpdateAttribute Inherits EventAttribute
@@ -100,13 +103,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 45
+    startLine: 63
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called every time game update (60 times per second)
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[OnGameUpdate]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: public OnGameUpdateAttribute(int order = 0)
     parameters:

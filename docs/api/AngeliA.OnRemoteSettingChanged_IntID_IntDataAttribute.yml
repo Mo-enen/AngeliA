@@ -20,13 +20,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnRemoteSettingChanged_IntID_IntDataAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 115
+    startLine: 160
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when engine send remote message to rigged game
   example:
-  - internal static void ExampleFunction (int id, int data) { }
+  - >-
+    <pre><code class="lang-csharp">[OnRemoteSettingChanged_IntID_IntData]
+
+    internal static void ExampleFunction (int id, int data) { }</code></pre>
   syntax:
     content: 'public class OnRemoteSettingChanged_IntID_IntDataAttribute : EventAttribute'
     content.vb: Public Class OnRemoteSettingChanged_IntID_IntDataAttribute Inherits EventAttribute
@@ -100,13 +103,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 115
+    startLine: 160
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when engine send remote message to rigged game
   example:
-  - internal static void ExampleFunction (int id, int data) { }
+  - >-
+    <pre><code class="lang-csharp">[OnRemoteSettingChanged_IntID_IntData]
+
+    internal static void ExampleFunction (int id, int data) { }</code></pre>
   syntax:
     content: public OnRemoteSettingChanged_IntID_IntDataAttribute(int order = 0)
     parameters:

@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnGameFocusedAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 93
+    startLine: 129
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when the application window regain focus.
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[OnGameFocused]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: 'public class OnGameFocusedAttribute : EventAttribute'
     content.vb: Public Class OnGameFocusedAttribute Inherits EventAttribute

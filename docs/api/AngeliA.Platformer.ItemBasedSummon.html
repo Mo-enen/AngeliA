@@ -1,745 +1,259 @@
 <!DOCTYPE html>
+<!--[if IE]><![endif]-->
 <html>
+
   <head>
     <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <title>Class ItemBasedSummon | AngeliA </title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class ItemBasedSummon | AngeliA ">
-      
-      
-      <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css">
-      <link rel="stylesheet" href="../public/main.css">
-      <meta name="docfx:navrel" content="../toc.html">
-      <meta name="docfx:tocrel" content="toc.html">
-      
-      <meta name="docfx:rel" content="../">
-      
-      
-      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_ItemBasedSummon.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.ItemBasedSummon%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
-      <meta name="loc:inThisArticle" content="In this article">
-      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
-      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
-      <meta name="loc:tocFilter" content="Filter by title">
-      <meta name="loc:nextArticle" content="Next">
-      <meta name="loc:prevArticle" content="Previous">
-      <meta name="loc:themeLight" content="Light">
-      <meta name="loc:themeDark" content="Dark">
-      <meta name="loc:themeAuto" content="Auto">
-      <meta name="loc:changeTheme" content="Change theme">
-      <meta name="loc:copy" content="Copy">
-      <meta name="loc:downloadPdf" content="Download PDF">
-
-      <script type="module" src="./../public/docfx.min.js"></script>
-
-      <script>
-        const theme = localStorage.getItem('theme') || 'auto'
-        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-      </script>
-
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
   </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
-    <header class="bg-body border-bottom">
-      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
-        <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
-            AngeliA
-          </a>
-          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="bi bi-three-dots"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navpanel">
-            <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
               </form>
             </div>
           </div>
-        </div>
-      </nav>
-    </header>
+        </nav>
 
-    <main class="container-xxl">
-      <div class="toc-offcanvas">
-        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
           </div>
-          <div class="offcanvas-body">
-            <nav class="toc" id="toc"></nav>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
+      <div role="main" class="container body-content hide-when-search">
 
-      <div class="content">
-        <div class="actionbar">
-          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
-            <i class="bi bi-list"></i>
-          </button>
-
-          <nav id="breadcrumb"></nav>
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
         </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AngeliA.Platformer.ItemBasedSummon">
 
-        <article data-uid="AngeliA.Platformer.ItemBasedSummon">
 
 
-
-  <h1 id="AngeliA_Platformer_ItemBasedSummon" data-uid="AngeliA.Platformer.ItemBasedSummon" class="text-break">
-Class ItemBasedSummon  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/ItemBasedSummon.cs/#L5"><i class="bi bi-code-slash"></i></a>
-  </h1>
-
-  <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a>.<a class="xref" href="AngeliA.Platformer.html">Platformer</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>com.angelia.platformer.dll</dd></dl>
+  <h1 id="AngeliA_Platformer_ItemBasedSummon" data-uid="AngeliA.Platformer.ItemBasedSummon" class="text-break">Class ItemBasedSummon</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></div>
+    <div><a class="xref" href="AngeliA.ICarrier.html">ICarrier</a></div>
+    <div><a class="xref" href="AngeliA.IWithCharacterMovement.html">IWithCharacterMovement</a></div>
+    <div><a class="xref" href="AngeliA.IWithCharacterAttackness.html">IWithCharacterAttackness</a></div>
+    <div><a class="xref" href="AngeliA.IWithCharacterHealth.html">IWithCharacterHealth</a></div>
+    <div><a class="xref" href="AngeliA.IWithCharacterBuff.html">IWithCharacterBuff</a></div>
+    <div><a class="xref" href="AngeliA.IWithCharacterRenderer.html">IWithCharacterRenderer</a></div>
+    <div><a class="xref" href="AngeliA.IDamageReceiver.html">IDamageReceiver</a></div>
+    <div><a class="xref" href="AngeliA.IActionTarget.html">IActionTarget</a></div>
   </div>
-
-  <div class="markdown summary"></div>
-  <div class="markdown conceptual"></div>
-
+  <h6><strong>Namespace</strong>: <a class="xref" href="AngeliA.html">AngeliA</a>.<a class="xref" href="AngeliA.Platformer.html">Platformer</a></h6>
+  <h6><strong>Assembly</strong>: com.angelia.platformer.dll</h6>
+  <h5 id="AngeliA_Platformer_ItemBasedSummon_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class ItemBasedSummon : Summon, IMapItem, ICarrier, IWithCharacterMovement, IWithCharacterAttackness, IWithCharacterHealth, IWithCharacterBuff, IWithCharacterRenderer, IDamageReceiver, IActionTarget</code></pre>
   </div>
-
-
-
-
-  <dl class="typelist inheritance">
-    <dt>Inheritance</dt>
-    <dd>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><a class="xref" href="AngeliA.Entity.html">Entity</a></div>
-      <div><a class="xref" href="AngeliA.Rigidbody.html">Rigidbody</a></div>
-      <div><a class="xref" href="AngeliA.Character.html">Character</a></div>
-      <div><a class="xref" href="AngeliA.Platformer.Summon.html">Summon</a></div>
-      <div><span class="xref">ItemBasedSummon</span></div>
-    </dd>
-  </dl>
-
-  <dl class="typelist implements">
-    <dt>Implements</dt>
-    <dd>
-      <div><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></div>
-      <div><a class="xref" href="AngeliA.ICarrier.html">ICarrier</a></div>
-      <div><a class="xref" href="AngeliA.IWithCharacterMovement.html">IWithCharacterMovement</a></div>
-      <div><a class="xref" href="AngeliA.IWithCharacterAttackness.html">IWithCharacterAttackness</a></div>
-      <div><a class="xref" href="AngeliA.IWithCharacterHealth.html">IWithCharacterHealth</a></div>
-      <div><a class="xref" href="AngeliA.IWithCharacterBuff.html">IWithCharacterBuff</a></div>
-      <div><a class="xref" href="AngeliA.IWithCharacterRenderer.html">IWithCharacterRenderer</a></div>
-      <div><a class="xref" href="AngeliA.IDamageReceiver.html">IDamageReceiver</a></div>
-      <div><a class="xref" href="AngeliA.IActionTarget.html">IActionTarget</a></div>
-    </dd>
-  </dl>
-
-
-  <dl class="typelist inheritedMembers">
-    <dt>Inherited Members</dt>
-    <dd>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_Owner">Summon.Owner</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_InventoryUpdatedFrame">Summon.InventoryUpdatedFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_Navigation">Summon.Navigation</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_RequireOwner">Summon.RequireOwner</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_AllowRescueWhenPassout">Summon.AllowRescueWhenPassout</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_AllowBeingPush">Summon.AllowBeingPush</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_CarryOtherOnTop">Summon.CarryOtherOnTop</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_Team">Summon.Team</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_AttackTargetTeam">Summon.AttackTargetTeam</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_OnInactivated">Summon.OnInactivated()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_FirstUpdate">Summon.FirstUpdate()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_OnSummoned_System_Boolean_">Summon.OnSummoned(bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_LateUpdate">Summon.LateUpdate()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_OnDamaged_AngeliA_Damage_">Summon.OnDamaged(Damage)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_CreateNativeAttackness">Summon.CreateNativeAttackness()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_CreateSummonNavigation">Summon.CreateSummonNavigation()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_SetCharacterState_AngeliA_CharacterState_">Summon.SetCharacterState(CharacterState)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_CreateSummon__1_AngeliA_Character_System_Int32_System_Int32_System_Boolean_">Summon.CreateSummon&lt;T&gt;(Character, int, int, bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_CreateSummon_AngeliA_Character_System_Int32_System_Int32_System_Int32_System_Boolean_">Summon.CreateSummon(Character, int, int, int, bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_INVENTORY_COLUMN">Character.INVENTORY_COLUMN</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_INVENTORY_ROW">Character.INVENTORY_ROW</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_Teleporting">Character.Teleporting</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_TeleportEndFrame">Character.TeleportEndFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_TeleportingWithPortal">Character.TeleportingWithPortal</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_TeleportToFrontSide">Character.TeleportToFrontSide</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_CurrentAttackSpeedRate">Character.CurrentAttackSpeedRate</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_PhysicalLayer">Character.PhysicalLayer</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_SelfCollisionMask">Character.SelfCollisionMask</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_AirDragX">Character.AirDragX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_AirDragY">Character.AirDragY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_FacingRight">Character.FacingRight</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_EjectWhenInsideGround">Character.EjectWhenInsideGround</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_InventoryType">Character.InventoryType</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_FinalCharacterHeight">Character.FinalCharacterHeight</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_DefaultCharacterHeight">Character.DefaultCharacterHeight</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_IgnoreDamageType">Character.IgnoreDamageType</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_Bouncy">Character.Bouncy</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_HelmetInteractable">Character.HelmetInteractable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_BodySuitInteractable">Character.BodySuitInteractable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_GlovesInteractable">Character.GlovesInteractable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_ShoesInteractable">Character.ShoesInteractable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_JewelryInteractable">Character.JewelryInteractable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_HandToolInteractable">Character.HandToolInteractable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_CharacterState">Character.CharacterState</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_AnimationType">Character.AnimationType</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_SleepStartFrame">Character.SleepStartFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_PassOutFrame">Character.PassOutFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_LastRequireBounceFrame">Character.LastRequireBounceFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_DespawnAfterPassoutDelay">Character.DespawnAfterPassoutDelay</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_InventoryID">Character.InventoryID</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_RenderingCellIndex">Character.RenderingCellIndex</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_FullSleepDuration">Character.FullSleepDuration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_TeleportDuration">Character.TeleportDuration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_Movement">Character.Movement</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_Attackness">Character.Attackness</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_Health">Character.Health</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_Rendering">Character.Rendering</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_NativeMovement">Character.NativeMovement</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_NativeAttackness">Character.NativeAttackness</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_NativeHealth">Character.NativeHealth</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_NativeRenderer">Character.NativeRenderer</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_Buff">Character.Buff</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_AfterReposition_AngeliA_Int3_AngeliA_Int3_">Character.AfterReposition(Int3, Int3)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_BeforeUpdate">Character.BeforeUpdate()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_GetCurrentPoseAnimationType">Character.GetCurrentPoseAnimationType()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_OnCharacterRendered">Character.OnCharacterRendered()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_EnterTeleportState_System_Boolean_System_Boolean_System_Boolean_">Character.EnterTeleportState(bool, bool, bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_LockAnimationType_AngeliA_CharacterAnimationType_System_Int32_">Character.LockAnimationType(CharacterAnimationType, int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_GetBonusFromFullSleep">Character.GetBonusFromFullSleep()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_InsideGroundCheck">Character.InsideGroundCheck()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_Bounce">Character.Bounce()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_CancelBounce">Character.CancelBounce()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_ResetInventoryUpdate_System_Int32_">Character.ResetInventoryUpdate(int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_EquipmentAvailable_AngeliA_EquipmentType_">Character.EquipmentAvailable(EquipmentType)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_TryRepairAllEquipments_System_Boolean_">Character.TryRepairAllEquipments(bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_CreateNativeMovement">Character.CreateNativeMovement()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_CreateNativeHealth">Character.CreateNativeHealth()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_CreateNativeRenderer">Character.CreateNativeRenderer()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_OverrideMovement_AngeliA_CharacterMovement_System_Int32_">Character.OverrideMovement(CharacterMovement, int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_OverrideAttackness_AngeliA_CharacterAttackness_System_Int32_">Character.OverrideAttackness(CharacterAttackness, int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_OverrideHealth_AngeliA_CharacterHealth_System_Int32_">Character.OverrideHealth(CharacterHealth, int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_OverrideRenderer_AngeliA_CharacterRenderer_System_Int32_">Character.OverrideRenderer(CharacterRenderer, int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_IsAttackAllowedByMovement">Character.IsAttackAllowedByMovement()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_IsAttackAllowedByEquipment">Character.IsAttackAllowedByEquipment()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_ForceFillTrigger_System_Int32_">Character.ForceFillTrigger(int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_IgnoreDamageFromLevel_System_Int32_">Character.IgnoreDamageFromLevel(int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_GetDisplayName">Character.GetDisplayName()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Character.html#AngeliA_Character_GetDescription">Character.GetDescription()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_Rect">Rigidbody.Rect</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_IsGrounded">Rigidbody.IsGrounded</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_IsInsideGround">Rigidbody.IsInsideGround</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_InWater">Rigidbody.InWater</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_VelocityX">Rigidbody.VelocityX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_VelocityY">Rigidbody.VelocityY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_BounceSpeedRate">Rigidbody.BounceSpeedRate</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_OffsetX">Rigidbody.OffsetX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_OffsetY">Rigidbody.OffsetY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_GroundedID">Rigidbody.GroundedID</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_PrevX">Rigidbody.PrevX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_PrevY">Rigidbody.PrevY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_DeltaPositionX">Rigidbody.DeltaPositionX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_DeltaPositionY">Rigidbody.DeltaPositionY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_MomentumX">Rigidbody.MomentumX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_MomentumY">Rigidbody.MomentumY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_RequireDodgeOverlap">Rigidbody.RequireDodgeOverlap</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_GlobalGravity">Rigidbody.GlobalGravity</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_FallingGravityScale">Rigidbody.FallingGravityScale</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_RisingGravityScale">Rigidbody.RisingGravityScale</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_CollisionMask">Rigidbody.CollisionMask</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_IgnoreGroundCheck">Rigidbody.IgnoreGroundCheck</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_IgnoreGravity">Rigidbody.IgnoreGravity</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_IgnorePhysics">Rigidbody.IgnorePhysics</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_IgnoreInsideGround">Rigidbody.IgnoreInsideGround</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_IgnoreOneway">Rigidbody.IgnoreOneway</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_IgnoreMomentum">Rigidbody.IgnoreMomentum</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_MaxGravitySpeed">Rigidbody.MaxGravitySpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_WaterFloatSpeed">Rigidbody.WaterFloatSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_WaterSpeedRate">Rigidbody.WaterSpeedRate</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_DestroyWhenInsideGround">Rigidbody.DestroyWhenInsideGround</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_PerformMove_System_Int32_System_Int32_System_Boolean_">Rigidbody.PerformMove(int, int, bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_MakeGrounded_System_Int32_System_Int32_">Rigidbody.MakeGrounded(int, int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_CancelMakeGrounded">Rigidbody.CancelMakeGrounded()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_Push_System_Int32_">Rigidbody.Push(int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_PerformGroundCheck_AngeliA_IRect_AngeliA_PhysicsCell__">Rigidbody.PerformGroundCheck(IRect, out PhysicsCell)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_FillAsTrigger_System_Int32_System_Int32_">Rigidbody.FillAsTrigger(int, int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_FillAsOnewayUp_System_Int32_System_Int32_">Rigidbody.FillAsOnewayUp(int, int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_OnInsideGroundDestroyed">Rigidbody.OnInsideGroundDestroyed()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_GroundedCheck">Rigidbody.GroundedCheck()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Rigidbody.html#AngeliA_Rigidbody_RefreshPrevPosition">Rigidbody.RefreshPrevPosition()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Active">Entity.Active</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_X">Entity.X</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Y">Entity.Y</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Width">Entity.Width</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Height">Entity.Height</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_TypeID">Entity.TypeID</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_SpawnFrame">Entity.SpawnFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_FromWorld">Entity.FromWorld</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_InstanceOrder">Entity.InstanceOrder</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_MapUnitPos">Entity.MapUnitPos</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_InstanceID">Entity.InstanceID</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_IgnoreReposition">Entity.IgnoreReposition</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_XY">Entity.XY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Size">Entity.Size</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Center">Entity.Center</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CenterX">Entity.CenterX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CenterY">Entity.CenterY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_PivotUnitPosition">Entity.PivotUnitPosition</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_">Entity.IgnoreDespawnFromMap(int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap">Entity.CancelIgnoreDespawnFromMap()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Draw">Entity.Draw()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
-    </div>
-  </dd></dl>
-
-  <dl class="typelist extensionMethods">
-    <dt>Extension Methods</dt>
-    <dd>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><a class="xref" href="AngeliA.Entity.html">Entity</a></div>
+    <div class="level2"><a class="xref" href="AngeliA.Rigidbody.html">Rigidbody</a></div>
+    <div class="level3"><a class="xref" href="AngeliA.Character.html">Character</a></div>
+    <div class="level4"><a class="xref" href="AngeliA.Platformer.Summon.html">Summon</a></div>
+    <div class="level5"><span class="xref">ItemBasedSummon</span></div>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_ItemBasedSummon_OriginItemID.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.ItemBasedSummon.OriginItemID%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/ItemBasedSummon.cs/#L7">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_ItemBasedSummon_OriginItemID_" data-uid="AngeliA.Platformer.ItemBasedSummon.OriginItemID*"></a>
+  <h4 id="AngeliA_Platformer_ItemBasedSummon_OriginItemID" data-uid="AngeliA.Platformer.ItemBasedSummon.OriginItemID">OriginItemID</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int OriginItemID { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_ItemBasedSummon_OnActivated.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.ItemBasedSummon.OnActivated%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/ItemBasedSummon.cs/#L9">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_ItemBasedSummon_OnActivated_" data-uid="AngeliA.Platformer.ItemBasedSummon.OnActivated*"></a>
+  <h4 id="AngeliA_Platformer_ItemBasedSummon_OnActivated" data-uid="AngeliA.Platformer.ItemBasedSummon.OnActivated">OnActivated()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnActivated()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_OnActivated">Summon.OnActivated()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_ItemBasedSummon_Update.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.ItemBasedSummon.Update%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/ItemBasedSummon.cs/#L14">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_ItemBasedSummon_Update_" data-uid="AngeliA.Platformer.ItemBasedSummon.Update*"></a>
+  <h4 id="AngeliA_Platformer_ItemBasedSummon_Update" data-uid="AngeliA.Platformer.ItemBasedSummon.Update">Update()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Update()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.Summon.html#AngeliA_Platformer_Summon_Update">Summon.Update()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="AngeliA.IMapItem.html">IMapItem</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.ICarrier.html">ICarrier</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.IWithCharacterMovement.html">IWithCharacterMovement</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.IWithCharacterAttackness.html">IWithCharacterAttackness</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.IWithCharacterHealth.html">IWithCharacterHealth</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.IWithCharacterBuff.html">IWithCharacterBuff</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.IWithCharacterRenderer.html">IWithCharacterRenderer</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.IDamageReceiver.html">IDamageReceiver</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.IActionTarget.html">IActionTarget</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
   </div>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
   </div>
-  </dd></dl>
-
-
-
-
-
-  <h2 class="section" id="properties">Properties
-</h2>
-
-
-  <a id="AngeliA_Platformer_ItemBasedSummon_OriginItemID_" data-uid="AngeliA.Platformer.ItemBasedSummon.OriginItemID*"></a>
-
-  <h3 id="AngeliA_Platformer_ItemBasedSummon_OriginItemID" data-uid="AngeliA.Platformer.ItemBasedSummon.OriginItemID">
-  OriginItemID
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/ItemBasedSummon.cs/#L7"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int OriginItemID { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <h2 class="section" id="methods">Methods
-</h2>
-
-
-  <a id="AngeliA_Platformer_ItemBasedSummon_OnActivated_" data-uid="AngeliA.Platformer.ItemBasedSummon.OnActivated*"></a>
-
-  <h3 id="AngeliA_Platformer_ItemBasedSummon_OnActivated" data-uid="AngeliA.Platformer.ItemBasedSummon.OnActivated">
-  OnActivated()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/ItemBasedSummon.cs/#L9"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnActivated()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_ItemBasedSummon_Update_" data-uid="AngeliA.Platformer.ItemBasedSummon.Update*"></a>
-
-  <h3 id="AngeliA_Platformer_ItemBasedSummon_Update" data-uid="AngeliA.Platformer.ItemBasedSummon.Update">
-  Update()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/ItemBasedSummon.cs/#L14"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Update()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </article>
+          </div>
 
-        <div class="contribution d-print-none">
-          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/ItemBasedSummon.cs/#L5" class="edit-link">Edit this page</a>
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_ItemBasedSummon.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.ItemBasedSummon%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/ItemBasedSummon.cs/#L5" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
         </div>
-
-
       </div>
 
-      <div class="affix">
-        <nav id="affix"></nav>
-      </div>
-    </main>
-
-    <div class="container-xxl search-results" id="search-results"></div>
-
-    <footer class="border-top text-secondary">
-      <div class="container-xxl">
-        <div class="flex-fill">
-          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
   </body>
 </html>

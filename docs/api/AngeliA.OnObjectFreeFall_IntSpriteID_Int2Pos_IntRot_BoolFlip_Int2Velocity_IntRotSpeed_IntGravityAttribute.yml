@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 394
+    startLine: 542
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when an object start to free fall
   example:
-  - internal static void ExampleFunction (int spriteID, Int2 pos, int startRotation, bool flip, Int2 velocity, int rotationSpeed, int gravity) { }
+  - >-
+    <pre><code class="lang-csharp">[OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravity]
+
+    internal static void ExampleFunction (int spriteID, Int2 pos, int startRotation, bool flip, Int2 velocity, int rotationSpeed, int gravity) { }</code></pre>
   syntax:
     content: 'public class OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute : EventAttribute'
     content.vb: Public Class OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute Inherits EventAttribute

@@ -1,1970 +1,1123 @@
 <!DOCTYPE html>
+<!--[if IE]><![endif]-->
 <html>
+
   <head>
     <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <title>Namespace AngeliA | AngeliA </title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width">
       <meta name="title" content="Namespace AngeliA | AngeliA ">
-      
-      
-      <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css">
-      <link rel="stylesheet" href="../public/main.css">
-      <meta name="docfx:navrel" content="../toc.html">
-      <meta name="docfx:tocrel" content="toc.html">
-      
-      <meta name="docfx:rel" content="../">
-      
-      
-      
-      <meta name="loc:inThisArticle" content="In this article">
-      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
-      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
-      <meta name="loc:tocFilter" content="Filter by title">
-      <meta name="loc:nextArticle" content="Next">
-      <meta name="loc:prevArticle" content="Previous">
-      <meta name="loc:themeLight" content="Light">
-      <meta name="loc:themeDark" content="Dark">
-      <meta name="loc:themeAuto" content="Auto">
-      <meta name="loc:changeTheme" content="Change theme">
-      <meta name="loc:copy" content="Copy">
-      <meta name="loc:downloadPdf" content="Download PDF">
-
-      <script type="module" src="./../public/docfx.min.js"></script>
-
-      <script>
-        const theme = localStorage.getItem('theme') || 'auto'
-        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-      </script>
-
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
   </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
-    <header class="bg-body border-bottom">
-      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
-        <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
-            AngeliA
-          </a>
-          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="bi bi-three-dots"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navpanel">
-            <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
               </form>
             </div>
           </div>
-        </div>
-      </nav>
-    </header>
+        </nav>
 
-    <main class="container-xxl">
-      <div class="toc-offcanvas">
-        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
           </div>
-          <div class="offcanvas-body">
-            <nav class="toc" id="toc"></nav>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
+      <div role="main" class="container body-content hide-when-search">
 
-      <div class="content">
-        <div class="actionbar">
-          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
-            <i class="bi bi-list"></i>
-          </button>
-
-          <nav id="breadcrumb"></nav>
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
         </div>
-
-        <article data-uid="AngeliA">
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AngeliA">
 
   <h1 id="AngeliA" data-uid="AngeliA" class="text-break">Namespace AngeliA</h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
-
     <h3 id="classes">
 Classes
 </h3>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AfterLateUpdateAttribute.html">AfterLateUpdateAttribute</a></dt>
-      <dd><p>The function will be called after all entity.LateUpdate is called</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AfterLayerFrameUpdate_IntLayerAttribute.html">AfterLayerFrameUpdate_IntLayerAttribute</a></dt>
-      <dd><p>The function will be called after rendering layer update</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AfterLevelRenderedAttribute.html">AfterLevelRenderedAttribute</a></dt>
-      <dd><p>The function will be called after world squad render all level blocks for the current frame</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AngePath.html">AngePath</a></dt>
-      <dd><p>Utility class for path related logic for an AngeliA project</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AngeSprite.html">AngeSprite</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AntiBuffItem-1.html">AntiBuffItem&lt;B&gt;</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Atlas.html">Atlas</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AudioCode.html">AudioCode</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AudioData.html">AudioData</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AutoValidList-1.html">AutoValidList&lt;T&gt;</a></dt>
-      <dd><p>A list that auto remove element inside based on the given function</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BasicGlobalItemCombinationAttribute.html">BasicGlobalItemCombinationAttribute</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BasicItemCombinationAttribute.html">BasicItemCombinationAttribute</a></dt>
-      <dd><p>Define a item combination to craft the item.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BeforeBeforeUpdateAttribute.html">BeforeBeforeUpdateAttribute</a></dt>
-      <dd><p>The function will be called before any entity.BeforeUpdate is called</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BeforeFirstUpdateAttribute.html">BeforeFirstUpdateAttribute</a></dt>
-      <dd><p>The function will be called before any entity.FirstUpdate is called</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BeforeLateUpdateAttribute.html">BeforeLateUpdateAttribute</a></dt>
-      <dd><p>The function will be called before any entity.LateUpdate is called</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BeforeLayerFrameUpdate_IntLayerAttribute.html">BeforeLayerFrameUpdate_IntLayerAttribute</a></dt>
-      <dd><p>The function will be called before rendering layer update</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BeforeLevelRenderedAttribute.html">BeforeLevelRenderedAttribute</a></dt>
-      <dd><p>The function will be called before world squad rendering any level blocks for the current frame</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BeforeSavingSlotChanged.html">BeforeSavingSlotChanged</a></dt>
-      <dd><p>The function will be called before user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is still the old value when this function is called.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BeforeUpdateUpdateAttribute.html">BeforeUpdateUpdateAttribute</a></dt>
-      <dd><p>The function will be called before any entity.Update is called</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockBuilder.html">BlockBuilder</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColor.html">BlockColor</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColorBlack.html">BlockColorBlack</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColorBlue.html">BlockColorBlue</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColorCyan.html">BlockColorCyan</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColorGreen.html">BlockColorGreen</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColorGrey.html">BlockColorGrey</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColorOrange.html">BlockColorOrange</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColorPink.html">BlockColorPink</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColorPurple.html">BlockColorPurple</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColorRed.html">BlockColorRed</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColorYellow.html">BlockColorYellow</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockColoringSystem.html">BlockColoringSystem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BodyCloth.html">BodyCloth</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BodyGadget.html">BodyGadget</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BodyGadgetItem.html">BodyGadgetItem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BodySetAttribute.html">BodySetAttribute</a></dt>
-      <dd><p>Treat specified sprites as bodyset for pose-characters</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BodySetItem.html">BodySetItem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Buff.html">Buff</a></dt>
-      <dd><p>Represent a type of buff</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BuffItem.html">BuffItem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BuffItem-1.html">BuffItem&lt;B&gt;</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BuiltInSprite.html">BuiltInSprite</a></dt>
-      <dd><p>Utility class to get built-in sprites</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BuiltInText.html">BuiltInText</a></dt>
-      <dd><p>Utility class to get built-in text though language system</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Bullet.html">Bullet</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Cell.html">Cell</a></dt>
-      <dd><p>Rendering cell</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CellScreenshotSystem.html">CellScreenshotSystem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CellScreenshotSystem.Screenshot.html">CellScreenshotSystem.Screenshot</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ChangeSavingSlotTask.html">ChangeSavingSlotTask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharSprite.html">CharSprite</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Character.html">Character</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterAttackness.html">CharacterAttackness</a></dt>
-      <dd><p>Behavour class that handle attack logic for character</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterAttribute.html">CharacterAttribute</a></dt>
-      <dd><p>Attribute for character class</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute.html">CharacterAttribute.DefaultSelectedPlayerAttribute</a></dt>
-      <dd><p>Make the character as default selected player</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterBuff.html">CharacterBuff</a></dt>
-      <dd><p>Behavour class that handles buff logic for characters</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterHealth.html">CharacterHealth</a></dt>
-      <dd><p>Behavour class that handle health logic for character</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterMovement.html">CharacterMovement</a></dt>
-      <dd><p>Behavour class that handle movement logic for character</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterPose.html">CharacterPose</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterRenderer.html">CharacterRenderer</a></dt>
-      <dd><p>Behaviour class handles rendering of character</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterRenderingConfig.html">CharacterRenderingConfig</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CheatCodeAttribute.html">CheatCodeAttribute</a></dt>
-      <dd><p>The function will be called when user perform the given cheat code. Cheat code can be perform like those in NES games.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CheatSystem.html">CheatSystem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From.html">CircuitOperate_Int3UnitPos_IntStamp_Direction5From</a></dt>
-      <dd><p>The function will be called when CircuitSystem triggers the entity that holds this function</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CircuitSystem.html">CircuitSystem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Cloth.html">Cloth</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ClothItem.html">ClothItem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ColorGradient.html">ColorGradient</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Const.html">Const</a></dt>
-      <dd><p>Utility class for constant values</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ControlHintUI.html">ControlHintUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Cursor.html">Cursor</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Debug.html">Debug</a></dt>
-      <dd><p>Log debug messages to the console or screen</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.DefaultDialogueUI.html">DefaultDialogueUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.DefaultGamepadGamekeyAttribute.html">DefaultGamepadGamekeyAttribute</a></dt>
-      <dd><p>Default gamepad binding for the given gamekey</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.DefaultKeyboardGamekeyAttribute.html">DefaultKeyboardGamekeyAttribute</a></dt>
-      <dd><p>Default keyboard binding for the given gamekey</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.DefaultPropellerWing.html">DefaultPropellerWing</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.DefaultWing.html">DefaultWing</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.DelayTask.html">DelayTask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.DespawnEntityTask.html">DespawnEntityTask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.DialogueTask.html">DialogueTask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.DialogueUI.html">DialogueUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Ear.html">Ear</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Ease.html">Ease</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EchoDictionary-2.html">EchoDictionary&lt;TKey, TValue&gt;</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EnablePlayerSystemAttribute.html">EnablePlayerSystemAttribute</a></dt>
-      <dd><p>The current application use player system or not</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Entity.html">Entity</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.html">EntityAttribute</a></dt>
-      <dd><p>Attribute for entities</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.CapacityAttribute.html">EntityAttribute.CapacityAttribute</a></dt>
-      <dd><p>Spawn limit count of this entity</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.DontDespawnOutOfRangeAttribute.html">EntityAttribute.DontDespawnOutOfRangeAttribute</a></dt>
-      <dd><p>Do not despawn this entity when it's out of view rect</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.DontDestroyOnZChangedAttribute.html">EntityAttribute.DontDestroyOnZChangedAttribute</a></dt>
-      <dd><p>This entity do not despawn when player enter another map layer</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.DontDrawBehindAttribute.html">EntityAttribute.DontDrawBehindAttribute</a></dt>
-      <dd><p>This entity will not display on the behind layer</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.DontSpawnFromWorld.html">EntityAttribute.DontSpawnFromWorld</a></dt>
-      <dd><p>Do not spawn this entity when it's painted into the map</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.ExcludeInMapEditorAttribute.html">EntityAttribute.ExcludeInMapEditorAttribute</a></dt>
-      <dd><p>Do not show this entity inside the palette panel of map editor.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.LayerAttribute.html">EntityAttribute.LayerAttribute</a></dt>
-      <dd><p>Which layer should this entity spawn inside.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.MapEditorGroupAttribute.html">EntityAttribute.MapEditorGroupAttribute</a></dt>
-      <dd><p>Which map editor palette group should this entity in</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.RepositionWhenInactiveAttribute.html">EntityAttribute.RepositionWhenInactiveAttribute</a></dt>
-      <dd><p>When the entity despawn, reset the position in map. So next time it will be load from the position where it last appeared</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.SpawnWithCheatCodeAttribute.html">EntityAttribute.SpawnWithCheatCodeAttribute</a></dt>
-      <dd><p>Player can use &quot;Spawn---&quot; to spawn this entity to stage.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.StageOrderAttribute.html">EntityAttribute.StageOrderAttribute</a></dt>
-      <dd><p>The order in which this entity gets updated in it's layer</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityAttribute.UpdateOutOfRangeAttribute.html">EntityAttribute.UpdateOutOfRangeAttribute</a></dt>
-      <dd><p>This entity will update when it's outside view rect</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityHookTask.html">EntityHookTask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityLayer.html">EntityLayer</a></dt>
-      <dd><p>Layer for entity spawning</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityLayerCapacityAttribute.html">EntityLayerCapacityAttribute</a></dt>
-      <dd><p>Max entity count for the layer</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EntityUI.html">EntityUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Equipment.html">Equipment</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EventAttribute.html">EventAttribute</a></dt>
-      <dd><p>Attribute for link all static methods with a System.Action. When the action is invoked, all methods get called.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Extension.html">Extension</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Face.html">Face</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FadeInTask.html">FadeInTask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FadeOutTask.html">FadeOutTask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FastNoiseGroup.html">FastNoiseGroup</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FileBrowserUI.html">FileBrowserUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FontData.html">FontData</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Food.html">Food</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FootCloth.html">FootCloth</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FrameBasedColor.html">FrameBasedColor</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FrameBasedValue.html">FrameBasedValue</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FrameBasedValue-1.html">FrameBasedValue&lt;T&gt;</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FrameworkUtil.html">FrameworkUtil</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUI.html">GUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUISkin.html">GUISkin</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Game.html">Game</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GenericDialogUI.html">GenericDialogUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GenericDialogUI.Option.html">GenericDialogUI.Option</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GenericPopupUI.html">GenericPopupUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GlobalGravityAttribute.html">GlobalGravityAttribute</a></dt>
-      <dd><p>The gravity value applys on all rigidbody</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GlobalItemCombinationAttribute.html">GlobalItemCombinationAttribute</a></dt>
-      <dd><p>Define a item combination to craft the item.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GlobalItemCombinationAttribute-1.html">GlobalItemCombinationAttribute&lt;I0&gt;</a></dt>
-      <dd><p>Define a item combination to craft the item.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GlobalItemCombinationAttribute-2.html">GlobalItemCombinationAttribute&lt;I0, I1&gt;</a></dt>
-      <dd><p>Define a item combination to craft the item.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GlobalItemCombinationAttribute-3.html">GlobalItemCombinationAttribute&lt;I0, I1, I2&gt;</a></dt>
-      <dd><p>Define a item combination to craft the item.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GlobalItemCombinationAttribute-4.html">GlobalItemCombinationAttribute&lt;I0, I1, I2, I3&gt;</a></dt>
-      <dd><p>Define a item combination to craft the item.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GroupAnimationHolder.html">GroupAnimationHolder</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Hair.html">Hair</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.HandCloth.html">HandCloth</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.HandTool.html">HandTool</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.HandheldPoseAnimation.html">HandheldPoseAnimation</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.HeadCloth.html">HeadCloth</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.HipCloth.html">HipCloth</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Horn.html">Horn</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IgnoreArtworkPixelsAttribute.html">IgnoreArtworkPixelsAttribute</a></dt>
-      <dd><p>Current application do not load pixel data from sheet</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Input.html">Input</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IntToChars.html">IntToChars</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Inventory.html">Inventory</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.InventoryPartnerUI.html">InventoryPartnerUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Item.html">Item</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ItemCombinationAttribute.html">ItemCombinationAttribute</a></dt>
-      <dd><p>Define a item combination to craft the item.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ItemCombinationAttribute-1.html">ItemCombinationAttribute&lt;I0&gt;</a></dt>
-      <dd><p>Define a item combination to craft the item.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ItemCombinationAttribute-2.html">ItemCombinationAttribute&lt;I0, I1&gt;</a></dt>
-      <dd><p>Define a item combination to craft the item.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ItemCombinationAttribute-3.html">ItemCombinationAttribute&lt;I0, I1, I2&gt;</a></dt>
-      <dd><p>Define a item combination to craft the item.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ItemCombinationAttribute-4.html">ItemCombinationAttribute&lt;I0, I1, I2, I3&gt;</a></dt>
-      <dd><p>Define a item combination to craft the item.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ItemCombinationParam.html">ItemCombinationParam</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ItemDropAttribute.html">ItemDropAttribute</a></dt>
-      <dd><p>Register item drop for the entity, use ItemSystem.DropItemFor(Entity) to perform the item drop.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ItemDropAttribute-1.html">ItemDropAttribute&lt;I&gt;</a></dt>
-      <dd><p>Register item drop for the entity, use ItemSystem.DropItemFor(Entity) to perform the item drop.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ItemHolder.html">ItemHolder</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ItemSystem.html">ItemSystem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ItemSystem.ItemData.html">ItemSystem.ItemData</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Jewelry.html">Jewelry</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.JsonUtil.html">JsonUtil</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Language.html">Language</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.LanguageCode.html">LanguageCode</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.LanguageUtil.html">LanguageUtil</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.LightingSystem.html">LightingSystem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.MapEditor.html">MapEditor</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.MapEditorBlinkParticle.html">MapEditorBlinkParticle</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.MapEditorToolbarButton.html">MapEditorToolbarButton</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.MenuUI.html">MenuUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.MethodTask.html">MethodTask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ModularBodySuit.html">ModularBodySuit</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ModularEar.html">ModularEar</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ModularFace.html">ModularFace</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ModularFootSuit.html">ModularFootSuit</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ModularHair.html">ModularHair</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ModularHandSuit.html">ModularHandSuit</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ModularHeadSuit.html">ModularHeadSuit</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ModularHipSuit.html">ModularHipSuit</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ModularHorn.html">ModularHorn</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ModularTail.html">ModularTail</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ModularWing.html">ModularWing</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.MovementEditor.html">MovementEditor</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.MusicData.html">MusicData</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NoItemCombinationAttribute.html">NoItemCombinationAttribute</a></dt>
-      <dd><p>Indicates to the system that this item does not require crafting combination</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NonStackableItem.html">NonStackableItem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NotificationUI.html">NotificationUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NumberEight.html">NumberEight</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NumberFive.html">NumberFive</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NumberFour.html">NumberFour</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NumberNine.html">NumberNine</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NumberOne.html">NumberOne</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NumberSeven.html">NumberSeven</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NumberSix.html">NumberSix</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NumberThree.html">NumberThree</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NumberTwo.html">NumberTwo</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NumberZero.html">NumberZero</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute.html">OnBlockPicked_IntSpriteID_IRectAttribute</a></dt>
-      <dd><p>The function will be called when a map block has been picked</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnBulletHitEnvironment_Bullet.html">OnBulletHitEnvironment_Bullet</a></dt>
-      <dd><p>The function will be called when a bullet hit environment (something not an IDamageReceiver)</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute.html">OnCameOutOfWater_Rigidbody_EntityAttribute</a></dt>
-      <dd><p>The function will be called when a rigidbody came out of water</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCharacterCrash_Entity.html">OnCharacterCrash_Entity</a></dt>
-      <dd><p>The function will be called when a character crash</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCharacterFly_Entity.html">OnCharacterFly_Entity</a></dt>
-      <dd><p>The function will be called when a character fly</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCharacterFootStepped_Entity.html">OnCharacterFootStepped_Entity</a></dt>
-      <dd><p>The function will be called when a character makes a foot step on running</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCharacterJump_Entity.html">OnCharacterJump_Entity</a></dt>
-      <dd><p>The function will be called when a character jumps</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCharacterPassOut_Entity.html">OnCharacterPassOut_Entity</a></dt>
-      <dd><p>The function will be called when a character pass out</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCharacterPound_Entity.html">OnCharacterPound_Entity</a></dt>
-      <dd><p>The function will be called when a character ground pound</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCharacterSleeping_Entity.html">OnCharacterSleeping_Entity</a></dt>
-      <dd><p>The function will be called when a character is sleeping</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCharacterSlideStepped_Entity.html">OnCharacterSlideStepped_Entity</a></dt>
-      <dd><p>The function will be called when a character makes a step when sliding</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCharacterTeleport_Entity.html">OnCharacterTeleport_Entity</a></dt>
-      <dd><p>The function will be called when a character teleport</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCheatPerformed_StringCodeAttribute.html">OnCheatPerformed_StringCodeAttribute</a></dt>
-      <dd><p>The function will be called when user performed any cheat code. Cheat code can be perform like those in NES games.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnCircuitWireActived_Int3UnitPosAttribute.html">OnCircuitWireActived_Int3UnitPosAttribute</a></dt>
-      <dd><p>The function will be called when CircuitSystem's electric current pass through</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnDealDamage_Damage_IDamageReceiver.html">OnDealDamage_Damage_IDamageReceiver</a></dt>
-      <dd><p>The function will be called when something deal damage to a damage-receiver</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute.html">OnFallIntoWater_Rigidbody_EntityAttribute</a></dt>
-      <dd><p>The function will be called when a rigidbody fall into water</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnFileDropped_StringPathAttribute.html">OnFileDropped_StringPathAttribute</a></dt>
-      <dd><p>The function will be called when user drag and drop a file into the application window</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnGameFocusedAttribute.html">OnGameFocusedAttribute</a></dt>
-      <dd><p>The function will be called when the application window regain focus.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnGameInitializeAttribute.html">OnGameInitializeAttribute</a></dt>
-      <dd><p>The function will be called when game initialize.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnGameInitializeLaterAttribute.html">OnGameInitializeLaterAttribute</a></dt>
-      <dd><p>The function will be called when game initialize but after all [OnGameInitialize] functions already called</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnGameLostFocusAttribute.html">OnGameLostFocusAttribute</a></dt>
-      <dd><p>The function will be called when the application window lost focus.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnGameQuittingAttribute.html">OnGameQuittingAttribute</a></dt>
-      <dd><p>The function will be called before the application actually quit.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnGameRestartAttribute.html">OnGameRestartAttribute</a></dt>
-      <dd><p>The function will be called when game restart.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnGameTryingToQuitAttribute.html">OnGameTryingToQuitAttribute</a></dt>
-      <dd><p>The function will be called when player try to quit the game. Return false will stop the application from quiting.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnGameUpdateAttribute.html">OnGameUpdateAttribute</a></dt>
-      <dd><p>The function will be called every time game update (60 times per second)</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnGameUpdateLaterAttribute.html">OnGameUpdateLaterAttribute</a></dt>
-      <dd><p>The function will be called every time game update (60 times per second), but after all [OnGameUpdate] functions already called.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnGameUpdatePauselessAttribute.html">OnGameUpdatePauselessAttribute</a></dt>
-      <dd><p>The function will be called every time game update (60 times per second), even when the game is paused.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute.html">OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute</a></dt>
-      <dd><p>The function will be called when a character collect an item</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute.html">OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute</a></dt>
-      <dd><p>The function will be called when an item is damaged into another item</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnItemError_Entity_Int2Pos_IntIconID.html">OnItemError_Entity_Int2Pos_IntIconID</a></dt>
-      <dd><p>The function will be called when something wrong about an item (like when guns out of ammo)</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnItemLost_Character_IntItemIDAttribute.html">OnItemLost_Character_IntItemIDAttribute</a></dt>
-      <dd><p>The function will be called when a character lost an item</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnItemUnlocked_IntItemIDAttribute.html">OnItemUnlocked_IntItemIDAttribute</a></dt>
-      <dd><p>The function will be called when an item is unlocked by player</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnLanguageChangedAttribute.html">OnLanguageChangedAttribute</a></dt>
-      <dd><p>The function will be called when user change game display language. Language.CurrentLanguage is already set to new value when this function is called.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnMainSheetReloadAttribute.html">OnMainSheetReloadAttribute</a></dt>
-      <dd><p>The function will be called when artwork sheet for rendering loaded from file</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnMapEditorModeChange_ModeAttribute.html">OnMapEditorModeChange_ModeAttribute</a></dt>
-      <dd><p>The function will be called when user change map editor editing mode</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute.html">OnObjectBreak_IntSpriteID_IRectAttribute</a></dt>
-      <dd><p>The function will be called when an object break</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute.html">OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute</a></dt>
-      <dd><p>The function will be called when an object start to free fall</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute.html">OnRemoteSettingChanged_IntID_IntDataAttribute</a></dt>
-      <dd><p>The function will be called when engine send remote message to rigged game</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnSavingSlotChanged.html">OnSavingSlotChanged</a></dt>
-      <dd><p>The function will be called after user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is the new value when this function is called.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData.html">OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData</a></dt>
-      <dd><p>The function will be called when message from TransferSystem.StartTransfer() arrived</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData.html">OnTransferPassAttribute_Int3UnitPos_ObjectData</a></dt>
-      <dd><p>The function will be called when message from TransferSystem.StartTransfer() pass through</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnViewZChangedAttribute.html">OnViewZChangedAttribute</a></dt>
-      <dd><p>The function will be called when player change the map layer</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnWindowSizeChangedAttribute.html">OnWindowSizeChangedAttribute</a></dt>
-      <dd><p>The function will be called when user change the size of the application window</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnWorldCreatedBySquad_WorldAttribute.html">OnWorldCreatedBySquad_WorldAttribute</a></dt>
-      <dd><p>The function will be called when a world instance is created by world squad</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnWorldLoadedBySquad_WorldAttribute.html">OnWorldLoadedBySquad_WorldAttribute</a></dt>
-      <dd><p>The function will be called when a world instance is loaded by world squad</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnWorldSavedByMapEditor_WorldAttribute.html">OnWorldSavedByMapEditor_WorldAttribute</a></dt>
-      <dd><p>The function will be called when a world instance is saved to file by the world squad</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OrderedAttribute.html">OrderedAttribute</a></dt>
-      <dd><p>Attribute apply to method and call all of them in given order</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Particle.html">Particle</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PauseMenuUI.html">PauseMenuUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Physics.html">Physics</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PhysicsLayer.html">PhysicsLayer</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PhysicsMask.html">PhysicsMask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Pipe-1.html">Pipe&lt;T&gt;</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PlayerMenuItem-1.html">PlayerMenuItem&lt;UI&gt;</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PlayerMenuPartnerUI.html">PlayerMenuPartnerUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PlayerMenuUI.html">PlayerMenuUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PlayerQuickMenuUI.html">PlayerQuickMenuUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PlayerSystem.html">PlayerSystem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation.html">PoseAnimation</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Animation_TakingDamage.html">PoseAnimation_Animation_TakingDamage</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Brake.html">PoseAnimation_Brake</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Climb.html">PoseAnimation_Climb</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Crash.html">PoseAnimation_Crash</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Dash.html">PoseAnimation_Dash</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Fly.html">PoseAnimation_Fly</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_GrabSide.html">PoseAnimation_GrabSide</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_GrabTop.html">PoseAnimation_GrabTop</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Idle.html">PoseAnimation_Idle</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_JumpDown.html">PoseAnimation_JumpDown</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_JumpUp.html">PoseAnimation_JumpUp</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_PassOut.html">PoseAnimation_PassOut</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Pound.html">PoseAnimation_Pound</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Rolling.html">PoseAnimation_Rolling</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Run.html">PoseAnimation_Run</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Rush.html">PoseAnimation_Rush</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Sleep.html">PoseAnimation_Sleep</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Slide.html">PoseAnimation_Slide</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Spin.html">PoseAnimation_Spin</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_SquatIdle.html">PoseAnimation_SquatIdle</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_SquatMove.html">PoseAnimation_SquatMove</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_SwimIdle.html">PoseAnimation_SwimIdle</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_SwimMove.html">PoseAnimation_SwimMove</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseAnimation_Walk.html">PoseAnimation_Walk</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseCharacter.html">PoseCharacter</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseCharacterRenderer.html">PoseCharacterRenderer</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseHandheld_Block.html">PoseHandheld_Block</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PoseHandheld_Tool.html">PoseHandheld_Tool</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PosePerform_Block.html">PosePerform_Block</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PosePerform_Tool.html">PosePerform_Tool</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PropGroupAttribute.html">PropGroupAttribute</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PropSeparatorAttribute.html">PropSeparatorAttribute</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PropVisibilityAttribute.html">PropVisibilityAttribute</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.RenderLayer.html">RenderLayer</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Renderer.html">Renderer</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Renderer.CellComparer.html">Renderer.CellComparer</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.RendererLayerCapacityAttribute.html">RendererLayerCapacityAttribute</a></dt>
-      <dd><p>Max rendering cell count for the layer</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.RestartGameTask.html">RestartGameTask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Rigidbody.html">Rigidbody</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Saving.html">Saving</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SavingBool.html">SavingBool</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SavingColor32.html">SavingColor32</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SavingColor32NoAlpha.html">SavingColor32NoAlpha</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SavingHotkey.html">SavingHotkey</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SavingInt.html">SavingInt</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SavingString.html">SavingString</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SavingSystem.html">SavingSystem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Saving-1.html">Saving&lt;T&gt;</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SelectPlayerTask.html">SelectPlayerTask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Sheet.html">Sheet</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SheetCharacterRenderer.html">SheetCharacterRenderer</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Sky.html">Sky</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SoundData.html">SoundData</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SpawnEntityTask.html">SpawnEntityTask</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SpriteGroup.html">SpriteGroup</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Stage.html">Stage</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SummonAttackness.html">SummonAttackness</a></dt>
-      <dd><p>Behavour class that handle attack logic for summon type character</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SwitchItem-1.html">SwitchItem&lt;TargetItem&gt;</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.TagUtil.html">TagUtil</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Tail.html">Tail</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Task.html">Task</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.TaskSystem.html">TaskSystem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ToolApplicationAttribute.html">ToolApplicationAttribute</a></dt>
-      <dd><p>If application with current assembly should be treat as a &quot;tool&quot; rather than &quot;game&quot;</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.TransferSystem.html">TransferSystem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.UndoRedo.html">UndoRedo</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Universe.html">Universe</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.UniverseInfo.html">UniverseInfo</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Util.html">Util</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Weapon.html">Weapon</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Weapon-1.html">Weapon&lt;B&gt;</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.WindowUI.html">WindowUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Wing.html">Wing</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.World.html">World</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.WorldPathPool.html">WorldPathPool</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.WorldSquad.html">WorldSquad</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.WorldStream.html">WorldStream</a></dt>
-      <dd></dd>
-    </dl>
+      <h4><a class="xref" href="AngeliA.AfterLateUpdateAttribute.html">AfterLateUpdateAttribute</a></h4>
+      <section><p>The function will be called after all entity.LateUpdate is called</p>
+</section>
+      <h4><a class="xref" href="AngeliA.AfterLayerFrameUpdate_IntLayerAttribute.html">AfterLayerFrameUpdate_IntLayerAttribute</a></h4>
+      <section><p>The function will be called after rendering layer update</p>
+</section>
+      <h4><a class="xref" href="AngeliA.AfterLevelRenderedAttribute.html">AfterLevelRenderedAttribute</a></h4>
+      <section><p>The function will be called after world squad render all level blocks for the current frame</p>
+</section>
+      <h4><a class="xref" href="AngeliA.AngePath.html">AngePath</a></h4>
+      <section><p>Utility class for path related logic for an AngeliA project</p>
+</section>
+      <h4><a class="xref" href="AngeliA.AngeSprite.html">AngeSprite</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.AntiBuffItem-1.html">AntiBuffItem&lt;B&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Atlas.html">Atlas</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.AudioCode.html">AudioCode</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.AudioData.html">AudioData</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.AutoValidList-1.html">AutoValidList&lt;T&gt;</a></h4>
+      <section><p>A list that auto remove element inside based on the given function</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BasicGlobalItemCombinationAttribute.html">BasicGlobalItemCombinationAttribute</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BasicItemCombinationAttribute.html">BasicItemCombinationAttribute</a></h4>
+      <section><p>Define a item combination to craft the item.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BeforeBeforeUpdateAttribute.html">BeforeBeforeUpdateAttribute</a></h4>
+      <section><p>The function will be called before any entity.BeforeUpdate is called</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BeforeFirstUpdateAttribute.html">BeforeFirstUpdateAttribute</a></h4>
+      <section><p>The function will be called before any entity.FirstUpdate is called</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BeforeLateUpdateAttribute.html">BeforeLateUpdateAttribute</a></h4>
+      <section><p>The function will be called before any entity.LateUpdate is called</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BeforeLayerFrameUpdate_IntLayerAttribute.html">BeforeLayerFrameUpdate_IntLayerAttribute</a></h4>
+      <section><p>The function will be called before rendering layer update</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BeforeLevelRenderedAttribute.html">BeforeLevelRenderedAttribute</a></h4>
+      <section><p>The function will be called before world squad rendering any level blocks for the current frame</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BeforeSavingSlotChangedAttribute.html">BeforeSavingSlotChangedAttribute</a></h4>
+      <section><p>The function will be called before user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is still the old value when this function is called.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BeforeUpdateUpdateAttribute.html">BeforeUpdateUpdateAttribute</a></h4>
+      <section><p>The function will be called before any entity.Update is called</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BlockBuilder.html">BlockBuilder</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColor.html">BlockColor</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColorBlack.html">BlockColorBlack</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColorBlue.html">BlockColorBlue</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColorCyan.html">BlockColorCyan</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColorGreen.html">BlockColorGreen</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColorGrey.html">BlockColorGrey</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColorOrange.html">BlockColorOrange</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColorPink.html">BlockColorPink</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColorPurple.html">BlockColorPurple</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColorRed.html">BlockColorRed</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColorYellow.html">BlockColorYellow</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockColoringSystem.html">BlockColoringSystem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BodyCloth.html">BodyCloth</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BodyGadget.html">BodyGadget</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BodyGadgetItem.html">BodyGadgetItem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BodySetAttribute.html">BodySetAttribute</a></h4>
+      <section><p>Treat specified sprites as bodyset for pose-characters</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BodySetItem.html">BodySetItem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Buff.html">Buff</a></h4>
+      <section><p>Represent a type of buff</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BuffItem.html">BuffItem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BuffItem-1.html">BuffItem&lt;B&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BuiltInSprite.html">BuiltInSprite</a></h4>
+      <section><p>Utility class to get built-in sprites</p>
+</section>
+      <h4><a class="xref" href="AngeliA.BuiltInText.html">BuiltInText</a></h4>
+      <section><p>Utility class to get built-in text through language system</p>
+</section>
+      <h4><a class="xref" href="AngeliA.Bullet.html">Bullet</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Cell.html">Cell</a></h4>
+      <section><p>Rendering cell</p>
+</section>
+      <h4><a class="xref" href="AngeliA.CellScreenshotSystem.html">CellScreenshotSystem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CellScreenshotSystem.Screenshot.html">CellScreenshotSystem.Screenshot</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ChangeSavingSlotTask.html">ChangeSavingSlotTask</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CharSprite.html">CharSprite</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Character.html">Character</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CharacterAttackness.html">CharacterAttackness</a></h4>
+      <section><p>Behavior class that handle attack logic for character</p>
+</section>
+      <h4><a class="xref" href="AngeliA.CharacterAttribute.html">CharacterAttribute</a></h4>
+      <section><p>Attribute for character class</p>
+</section>
+      <h4><a class="xref" href="AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute.html">CharacterAttribute.DefaultSelectedPlayerAttribute</a></h4>
+      <section><p>Make the character as default selected player</p>
+</section>
+      <h4><a class="xref" href="AngeliA.CharacterBuff.html">CharacterBuff</a></h4>
+      <section><p>Behavior class that handles buff logic for characters</p>
+</section>
+      <h4><a class="xref" href="AngeliA.CharacterHealth.html">CharacterHealth</a></h4>
+      <section><p>Behavior class that handle health logic for character</p>
+</section>
+      <h4><a class="xref" href="AngeliA.CharacterMovement.html">CharacterMovement</a></h4>
+      <section><p>Behavior class that handle movement logic for character</p>
+</section>
+      <h4><a class="xref" href="AngeliA.CharacterPose.html">CharacterPose</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CharacterRenderer.html">CharacterRenderer</a></h4>
+      <section><p>Behaviour class handles rendering of character</p>
+</section>
+      <h4><a class="xref" href="AngeliA.CharacterRenderingConfig.html">CharacterRenderingConfig</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CheatCodeAttribute.html">CheatCodeAttribute</a></h4>
+      <section><p>The function will be called when user perform the given cheat code. Cheat code can be perform like those in NES games.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.CheatSystem.html">CheatSystem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute.html">CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute</a></h4>
+      <section><p>The function will be called when CircuitSystem triggers the entity that holds this function</p>
+</section>
+      <h4><a class="xref" href="AngeliA.CircuitSystem.html">CircuitSystem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Cloth.html">Cloth</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ClothItem.html">ClothItem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ColorGradient.html">ColorGradient</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Const.html">Const</a></h4>
+      <section><p>Utility class for constant values</p>
+</section>
+      <h4><a class="xref" href="AngeliA.ControlHintUI.html">ControlHintUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Cursor.html">Cursor</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Debug.html">Debug</a></h4>
+      <section><p>Log debug messages to the console or screen</p>
+</section>
+      <h4><a class="xref" href="AngeliA.DefaultDialogueUI.html">DefaultDialogueUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.DefaultGamepadGamekeyAttribute.html">DefaultGamepadGamekeyAttribute</a></h4>
+      <section><p>Default gamepad binding for the given gamekey</p>
+</section>
+      <h4><a class="xref" href="AngeliA.DefaultKeyboardGamekeyAttribute.html">DefaultKeyboardGamekeyAttribute</a></h4>
+      <section><p>Default keyboard binding for the given gamekey</p>
+</section>
+      <h4><a class="xref" href="AngeliA.DefaultPropellerWing.html">DefaultPropellerWing</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.DefaultWing.html">DefaultWing</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.DelayTask.html">DelayTask</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.DespawnEntityTask.html">DespawnEntityTask</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.DialogueTask.html">DialogueTask</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.DialogueUI.html">DialogueUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Ear.html">Ear</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Ease.html">Ease</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.EchoDictionary-2.html">EchoDictionary&lt;TKey, TValue&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.EnablePlayerSystemAttribute.html">EnablePlayerSystemAttribute</a></h4>
+      <section><p>The current application use player system or not</p>
+</section>
+      <h4><a class="xref" href="AngeliA.Entity.html">Entity</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.html">EntityAttribute</a></h4>
+      <section><p>Attribute for entities</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.CapacityAttribute.html">EntityAttribute.CapacityAttribute</a></h4>
+      <section><p>Spawn limit count of this entity</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.DontDespawnOutOfRangeAttribute.html">EntityAttribute.DontDespawnOutOfRangeAttribute</a></h4>
+      <section><p>Do not despawn this entity when it's out of view rect</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.DontDestroyOnZChangedAttribute.html">EntityAttribute.DontDestroyOnZChangedAttribute</a></h4>
+      <section><p>This entity do not despawn when player enter another map layer</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.DontDrawBehindAttribute.html">EntityAttribute.DontDrawBehindAttribute</a></h4>
+      <section><p>This entity will not display on the behind layer</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.DontSpawnFromWorld.html">EntityAttribute.DontSpawnFromWorld</a></h4>
+      <section><p>Do not spawn this entity when it's painted into the map</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.ExcludeInMapEditorAttribute.html">EntityAttribute.ExcludeInMapEditorAttribute</a></h4>
+      <section><p>Do not show this entity inside the palette panel of map editor.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.LayerAttribute.html">EntityAttribute.LayerAttribute</a></h4>
+      <section><p>Which layer should this entity spawn inside.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.MapEditorGroupAttribute.html">EntityAttribute.MapEditorGroupAttribute</a></h4>
+      <section><p>Which map editor palette group should this entity in</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.RepositionWhenInactiveAttribute.html">EntityAttribute.RepositionWhenInactiveAttribute</a></h4>
+      <section><p>When the entity despawn, reset the position in map. So next time it will be load from the position where it last appeared</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.SpawnWithCheatCodeAttribute.html">EntityAttribute.SpawnWithCheatCodeAttribute</a></h4>
+      <section><p>Player can use &quot;Spawn---&quot; to spawn this entity to stage.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.StageOrderAttribute.html">EntityAttribute.StageOrderAttribute</a></h4>
+      <section><p>The order in which this entity gets updated in it's layer</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityAttribute.UpdateOutOfRangeAttribute.html">EntityAttribute.UpdateOutOfRangeAttribute</a></h4>
+      <section><p>This entity will update when it's outside view rect</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityHookTask.html">EntityHookTask</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.EntityLayer.html">EntityLayer</a></h4>
+      <section><p>Layer for entity spawning</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityLayerCapacityAttribute.html">EntityLayerCapacityAttribute</a></h4>
+      <section><p>Max entity count for the layer</p>
+</section>
+      <h4><a class="xref" href="AngeliA.EntityUI.html">EntityUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Equipment.html">Equipment</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.EventAttribute.html">EventAttribute</a></h4>
+      <section><p>Attribute for link all static methods with a System.Action. When the action is invoked, all methods get called.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.Extension.html">Extension</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Face.html">Face</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.FadeInTask.html">FadeInTask</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.FadeOutTask.html">FadeOutTask</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.FastNoiseGroup.html">FastNoiseGroup</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.FileBrowserUI.html">FileBrowserUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.FontData.html">FontData</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Food.html">Food</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.FootCloth.html">FootCloth</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.FrameBasedBool.html">FrameBasedBool</a></h4>
+      <section><p>A data that can be override for specified frames</p>
+</section>
+      <h4><a class="xref" href="AngeliA.FrameBasedColor.html">FrameBasedColor</a></h4>
+      <section><p>A data that can be override for specified frames</p>
+</section>
+      <h4><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></h4>
+      <section><p>A data that can be override for specified frames</p>
+</section>
+      <h4><a class="xref" href="AngeliA.FrameBasedValue.html">FrameBasedValue</a></h4>
+      <section><p>A data that can be override for specified frames</p>
+</section>
+      <h4><a class="xref" href="AngeliA.FrameBasedValue-1.html">FrameBasedValue&lt;T&gt;</a></h4>
+      <section><p>A data that can be override for specified frames</p>
+</section>
+      <h4><a class="xref" href="AngeliA.FrameworkUtil.html">FrameworkUtil</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUI.html">GUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUISkin.html">GUISkin</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Game.html">Game</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GenericDialogUI.html">GenericDialogUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GenericDialogUI.Option.html">GenericDialogUI.Option</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GenericPopupUI.html">GenericPopupUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GlobalGravityAttribute.html">GlobalGravityAttribute</a></h4>
+      <section><p>The gravity value applys on all rigidbody</p>
+</section>
+      <h4><a class="xref" href="AngeliA.GlobalItemCombinationAttribute.html">GlobalItemCombinationAttribute</a></h4>
+      <section><p>Define a item combination to craft the item.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.GlobalItemCombinationAttribute-1.html">GlobalItemCombinationAttribute&lt;I0&gt;</a></h4>
+      <section><p>Define a item combination to craft the item.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.GlobalItemCombinationAttribute-2.html">GlobalItemCombinationAttribute&lt;I0, I1&gt;</a></h4>
+      <section><p>Define a item combination to craft the item.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.GlobalItemCombinationAttribute-3.html">GlobalItemCombinationAttribute&lt;I0, I1, I2&gt;</a></h4>
+      <section><p>Define a item combination to craft the item.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.GlobalItemCombinationAttribute-4.html">GlobalItemCombinationAttribute&lt;I0, I1, I2, I3&gt;</a></h4>
+      <section><p>Define a item combination to craft the item.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.GroupAnimationHolder.html">GroupAnimationHolder</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Hair.html">Hair</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.HandCloth.html">HandCloth</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.HandTool.html">HandTool</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.HandheldPoseAnimation.html">HandheldPoseAnimation</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.HeadCloth.html">HeadCloth</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.HipCloth.html">HipCloth</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Horn.html">Horn</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IgnoreArtworkPixelsAttribute.html">IgnoreArtworkPixelsAttribute</a></h4>
+      <section><p>Current application do not load pixel data from sheet</p>
+</section>
+      <h4><a class="xref" href="AngeliA.Input.html">Input</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IntToChars.html">IntToChars</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Inventory.html">Inventory</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.InventoryPartnerUI.html">InventoryPartnerUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Item.html">Item</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ItemCombinationAttribute.html">ItemCombinationAttribute</a></h4>
+      <section><p>Define a item combination to craft the item.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.ItemCombinationAttribute-1.html">ItemCombinationAttribute&lt;I0&gt;</a></h4>
+      <section><p>Define a item combination to craft the item.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.ItemCombinationAttribute-2.html">ItemCombinationAttribute&lt;I0, I1&gt;</a></h4>
+      <section><p>Define a item combination to craft the item.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.ItemCombinationAttribute-3.html">ItemCombinationAttribute&lt;I0, I1, I2&gt;</a></h4>
+      <section><p>Define a item combination to craft the item.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.ItemCombinationAttribute-4.html">ItemCombinationAttribute&lt;I0, I1, I2, I3&gt;</a></h4>
+      <section><p>Define a item combination to craft the item.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.ItemCombinationParam.html">ItemCombinationParam</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ItemDropAttribute.html">ItemDropAttribute</a></h4>
+      <section><p>Register item drop for the entity, use ItemSystem.DropItemFor(Entity) to perform the item drop.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.ItemDropAttribute-1.html">ItemDropAttribute&lt;I&gt;</a></h4>
+      <section><p>Register item drop for the entity, use ItemSystem.DropItemFor(Entity) to perform the item drop.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.ItemHolder.html">ItemHolder</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ItemSystem.html">ItemSystem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ItemSystem.ItemData.html">ItemSystem.ItemData</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Jewelry.html">Jewelry</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.JsonUtil.html">JsonUtil</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Language.html">Language</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.LanguageCode.html">LanguageCode</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.LanguageUtil.html">LanguageUtil</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.LightingSystem.html">LightingSystem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.MapEditor.html">MapEditor</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.MapEditorBlinkParticle.html">MapEditorBlinkParticle</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.MapEditorToolbarButton.html">MapEditorToolbarButton</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.MenuUI.html">MenuUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.MethodTask.html">MethodTask</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ModularBodySuit.html">ModularBodySuit</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ModularEar.html">ModularEar</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ModularFace.html">ModularFace</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ModularFootSuit.html">ModularFootSuit</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ModularHair.html">ModularHair</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ModularHandSuit.html">ModularHandSuit</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ModularHeadSuit.html">ModularHeadSuit</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ModularHipSuit.html">ModularHipSuit</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ModularHorn.html">ModularHorn</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ModularTail.html">ModularTail</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ModularWing.html">ModularWing</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.MovementEditor.html">MovementEditor</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.MusicData.html">MusicData</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NoItemCombinationAttribute.html">NoItemCombinationAttribute</a></h4>
+      <section><p>Indicates to the system that this item does not require crafting combination</p>
+</section>
+      <h4><a class="xref" href="AngeliA.NonStackableItem.html">NonStackableItem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NotificationUI.html">NotificationUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NumberEight.html">NumberEight</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NumberFive.html">NumberFive</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NumberFour.html">NumberFour</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NumberNine.html">NumberNine</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NumberOne.html">NumberOne</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NumberSeven.html">NumberSeven</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NumberSix.html">NumberSix</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NumberThree.html">NumberThree</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NumberTwo.html">NumberTwo</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NumberZero.html">NumberZero</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute.html">OnBlockPicked_IntSpriteID_IRectAttribute</a></h4>
+      <section><p>The function will be called when a map block has been picked</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnBulletHitEnvironment_BulletAttribute.html">OnBulletHitEnvironment_BulletAttribute</a></h4>
+      <section><p>The function will be called when a bullet hit environment (something not an IDamageReceiver)</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute.html">OnCameOutOfWater_Rigidbody_EntityAttribute</a></h4>
+      <section><p>The function will be called when a rigidbody came out of water</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCharacterCrash_EntityAttribute.html">OnCharacterCrash_EntityAttribute</a></h4>
+      <section><p>The function will be called when a character crash</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCharacterFly_EntityAttribute.html">OnCharacterFly_EntityAttribute</a></h4>
+      <section><p>The function will be called when a character fly</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCharacterFootStepped_EntityAttribute.html">OnCharacterFootStepped_EntityAttribute</a></h4>
+      <section><p>The function will be called when a character makes a foot step on running</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCharacterJump_EntityAttribute.html">OnCharacterJump_EntityAttribute</a></h4>
+      <section><p>The function will be called when a character jumps</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCharacterPassOut_EntityAttribute.html">OnCharacterPassOut_EntityAttribute</a></h4>
+      <section><p>The function will be called when a character pass out</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCharacterPound_EntityAttribute.html">OnCharacterPound_EntityAttribute</a></h4>
+      <section><p>The function will be called when a character ground pound</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCharacterSleeping_EntityAttribute.html">OnCharacterSleeping_EntityAttribute</a></h4>
+      <section><p>The function will be called when a character is sleeping</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCharacterSlideStepped_EntityAttribute.html">OnCharacterSlideStepped_EntityAttribute</a></h4>
+      <section><p>The function will be called when a character makes a step when sliding</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCharacterTeleport_EntityAttribute.html">OnCharacterTeleport_EntityAttribute</a></h4>
+      <section><p>The function will be called when a character teleport</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCheatPerformed_StringCodeAttribute.html">OnCheatPerformed_StringCodeAttribute</a></h4>
+      <section><p>The function will be called when user performed any cheat code. Cheat code can be perform like those in NES games.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnCircuitWireActived_Int3UnitPosAttribute.html">OnCircuitWireActived_Int3UnitPosAttribute</a></h4>
+      <section><p>The function will be called when CircuitSystem's electric current pass through</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute.html">OnDealDamage_Damage_IDamageReceiverAttribute</a></h4>
+      <section><p>The function will be called when something deal damage to a damage-receiver</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute.html">OnFallIntoWater_Rigidbody_EntityAttribute</a></h4>
+      <section><p>The function will be called when a rigidbody fall into water</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnFileDropped_StringPathAttribute.html">OnFileDropped_StringPathAttribute</a></h4>
+      <section><p>The function will be called when user drag and drop a file into the application window</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnGameFocusedAttribute.html">OnGameFocusedAttribute</a></h4>
+      <section><p>The function will be called when the application window regain focus.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnGameInitializeAttribute.html">OnGameInitializeAttribute</a></h4>
+      <section><p>The function will be called when game initialize.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnGameInitializeLaterAttribute.html">OnGameInitializeLaterAttribute</a></h4>
+      <section><p>The function will be called when game initialize but after all [OnGameInitialize] functions already called</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnGameLostFocusAttribute.html">OnGameLostFocusAttribute</a></h4>
+      <section><p>The function will be called when the application window lost focus.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnGameQuittingAttribute.html">OnGameQuittingAttribute</a></h4>
+      <section><p>The function will be called before the application actually quit.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnGameRestartAttribute.html">OnGameRestartAttribute</a></h4>
+      <section><p>The function will be called when game restart.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnGameTryingToQuitAttribute.html">OnGameTryingToQuitAttribute</a></h4>
+      <section><p>The function will be called when player try to quit the game. Return false will stop the application from quiting.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnGameUpdateAttribute.html">OnGameUpdateAttribute</a></h4>
+      <section><p>The function will be called every time game update (60 times per second)</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnGameUpdateLaterAttribute.html">OnGameUpdateLaterAttribute</a></h4>
+      <section><p>The function will be called every time game update (60 times per second), but after all [OnGameUpdate] functions already called.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnGameUpdatePauselessAttribute.html">OnGameUpdatePauselessAttribute</a></h4>
+      <section><p>The function will be called every time game update (60 times per second), even when the game is paused.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute.html">OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute</a></h4>
+      <section><p>The function will be called when a character collect an item</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute.html">OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute</a></h4>
+      <section><p>The function will be called when an item is damaged into another item</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnItemError_Entity_Int2Pos_IntIconID.html">OnItemError_Entity_Int2Pos_IntIconID</a></h4>
+      <section><p>The function will be called when something wrong about an item (like when guns out of ammo)</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnItemLost_Character_IntItemIDAttribute.html">OnItemLost_Character_IntItemIDAttribute</a></h4>
+      <section><p>The function will be called when a character lost an item</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnItemUnlocked_IntItemIDAttribute.html">OnItemUnlocked_IntItemIDAttribute</a></h4>
+      <section><p>The function will be called when an item is unlocked by player</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnLanguageChangedAttribute.html">OnLanguageChangedAttribute</a></h4>
+      <section><p>The function will be called when user change game display language. Language.CurrentLanguage is already set to new value when this function is called.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnMainSheetReloadAttribute.html">OnMainSheetReloadAttribute</a></h4>
+      <section><p>The function will be called when artwork sheet for rendering loaded from file</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnMapEditorModeChange_ModeAttribute.html">OnMapEditorModeChange_ModeAttribute</a></h4>
+      <section><p>The function will be called when user change map editor editing mode</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute.html">OnObjectBreak_IntSpriteID_IRectAttribute</a></h4>
+      <section><p>The function will be called when an object break</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute.html">OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute</a></h4>
+      <section><p>The function will be called when an object start to free fall</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute.html">OnRemoteSettingChanged_IntID_IntDataAttribute</a></h4>
+      <section><p>The function will be called when engine send remote message to rigged game</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnSavingSlotChangedAttribute.html">OnSavingSlotChangedAttribute</a></h4>
+      <section><p>The function will be called after user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is the new value when this function is called.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute.html">OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute</a></h4>
+      <section><p>The function will be called when message from TransferSystem.StartTransfer() arrived</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute.html">OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute</a></h4>
+      <section><p>The function will be called when message from TransferSystem.StartTransfer() pass through</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnViewZChangedAttribute.html">OnViewZChangedAttribute</a></h4>
+      <section><p>The function will be called when player change the map layer</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnWindowSizeChangedAttribute.html">OnWindowSizeChangedAttribute</a></h4>
+      <section><p>The function will be called when user change the size of the application window</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnWorldCreatedBySquad_WorldAttribute.html">OnWorldCreatedBySquad_WorldAttribute</a></h4>
+      <section><p>The function will be called when a world instance is created by world squad</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnWorldLoadedBySquad_WorldAttribute.html">OnWorldLoadedBySquad_WorldAttribute</a></h4>
+      <section><p>The function will be called when a world instance is loaded by world squad</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OnWorldSavedByMapEditor_WorldAttribute.html">OnWorldSavedByMapEditor_WorldAttribute</a></h4>
+      <section><p>The function will be called when a world instance is saved to file by the world squad</p>
+</section>
+      <h4><a class="xref" href="AngeliA.OrderedAttribute.html">OrderedAttribute</a></h4>
+      <section><p>Attribute apply to method and call all of them in given order</p>
+</section>
+      <h4><a class="xref" href="AngeliA.Particle.html">Particle</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PauseMenuUI.html">PauseMenuUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Physics.html">Physics</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PhysicsLayer.html">PhysicsLayer</a></h4>
+      <section><p>A single physics layer</p>
+</section>
+      <h4><a class="xref" href="AngeliA.PhysicsMask.html">PhysicsMask</a></h4>
+      <section><p>A group of physics layera</p>
+</section>
+      <h4><a class="xref" href="AngeliA.Pipe-1.html">Pipe&lt;T&gt;</a></h4>
+      <section><p>A linked list that can add/remove from head/tail. No heap pressure.</p>
+</section>
+      <h4><a class="xref" href="AngeliA.PlayerMenuItem-1.html">PlayerMenuItem&lt;UI&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PlayerMenuPartnerUI.html">PlayerMenuPartnerUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PlayerMenuUI.html">PlayerMenuUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PlayerQuickMenuUI.html">PlayerQuickMenuUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PlayerSystem.html">PlayerSystem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation.html">PoseAnimation</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Animation_TakingDamage.html">PoseAnimation_Animation_TakingDamage</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Brake.html">PoseAnimation_Brake</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Climb.html">PoseAnimation_Climb</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Crash.html">PoseAnimation_Crash</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Dash.html">PoseAnimation_Dash</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Fly.html">PoseAnimation_Fly</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_GrabSide.html">PoseAnimation_GrabSide</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_GrabTop.html">PoseAnimation_GrabTop</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Idle.html">PoseAnimation_Idle</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_JumpDown.html">PoseAnimation_JumpDown</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_JumpUp.html">PoseAnimation_JumpUp</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_PassOut.html">PoseAnimation_PassOut</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Pound.html">PoseAnimation_Pound</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Rolling.html">PoseAnimation_Rolling</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Run.html">PoseAnimation_Run</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Rush.html">PoseAnimation_Rush</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Sleep.html">PoseAnimation_Sleep</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Slide.html">PoseAnimation_Slide</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Spin.html">PoseAnimation_Spin</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_SquatIdle.html">PoseAnimation_SquatIdle</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_SquatMove.html">PoseAnimation_SquatMove</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_SwimIdle.html">PoseAnimation_SwimIdle</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_SwimMove.html">PoseAnimation_SwimMove</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseAnimation_Walk.html">PoseAnimation_Walk</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseCharacter.html">PoseCharacter</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseCharacterRenderer.html">PoseCharacterRenderer</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseHandheld_Block.html">PoseHandheld_Block</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PoseHandheld_Tool.html">PoseHandheld_Tool</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PosePerform_Block.html">PosePerform_Block</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PosePerform_Tool.html">PosePerform_Tool</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PropGroupAttribute.html">PropGroupAttribute</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PropSeparatorAttribute.html">PropSeparatorAttribute</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PropVisibilityAttribute.html">PropVisibilityAttribute</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.RenderLayer.html">RenderLayer</a></h4>
+      <section><p>Layer for rendering</p>
+</section>
+      <h4><a class="xref" href="AngeliA.Renderer.html">Renderer</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Renderer.CellComparer.html">Renderer.CellComparer</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.RendererLayerCapacityAttribute.html">RendererLayerCapacityAttribute</a></h4>
+      <section><p>Max rendering cell count for the layer</p>
+</section>
+      <h4><a class="xref" href="AngeliA.RestartGameTask.html">RestartGameTask</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Rigidbody.html">Rigidbody</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Saving.html">Saving</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SavingBool.html">SavingBool</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SavingColor32.html">SavingColor32</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SavingColor32NoAlpha.html">SavingColor32NoAlpha</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SavingHotkey.html">SavingHotkey</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SavingInt.html">SavingInt</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SavingString.html">SavingString</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SavingSystem.html">SavingSystem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Saving-1.html">Saving&lt;T&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SelectPlayerTask.html">SelectPlayerTask</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Sheet.html">Sheet</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SheetCharacterRenderer.html">SheetCharacterRenderer</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Sky.html">Sky</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SoundData.html">SoundData</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SpawnEntityTask.html">SpawnEntityTask</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SpriteGroup.html">SpriteGroup</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Stage.html">Stage</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SummonAttackness.html">SummonAttackness</a></h4>
+      <section><p>Behavior class that handle attack logic for summon type character</p>
+</section>
+      <h4><a class="xref" href="AngeliA.SwitchItem-1.html">SwitchItem&lt;TargetItem&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.TagUtil.html">TagUtil</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Tail.html">Tail</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Task.html">Task</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.TaskSystem.html">TaskSystem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ToolApplicationAttribute.html">ToolApplicationAttribute</a></h4>
+      <section><p>If application with current assembly should be treat as a &quot;tool&quot; rather than &quot;game&quot;</p>
+</section>
+      <h4><a class="xref" href="AngeliA.TransferSystem.html">TransferSystem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.UndoRedo.html">UndoRedo</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Universe.html">Universe</a></h4>
+      <section><p>Representation of game asset folder</p>
+</section>
+      <h4><a class="xref" href="AngeliA.UniverseInfo.html">UniverseInfo</a></h4>
+      <section><p>Representation of Info.json in universe folder</p>
+</section>
+      <h4><a class="xref" href="AngeliA.Util.html">Util</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Weapon.html">Weapon</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Weapon-1.html">Weapon&lt;B&gt;</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.WindowUI.html">WindowUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Wing.html">Wing</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.World.html">World</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.WorldPathPool.html">WorldPathPool</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.WorldSquad.html">WorldSquad</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.WorldStream.html">WorldStream</a></h4>
+      <section></section>
     <h3 id="structs">
 Structs
 </h3>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AfterimageScope.html">AfterimageScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockRule.html">BlockRule</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CellZScope.html">CellZScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ClampCellsScope.html">ClampCellsScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ColorF.html">ColorF</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ColorGradient.Data.html">ColorGradient.Data</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Damage.html">Damage</a></dt>
-      <dd><p>Data structure for a single damage performed</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.DefaultLayerScope.html">DefaultLayerScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.DynamicClampCellScope.html">DynamicClampCellScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EmptyScope.html">EmptyScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EnvironmentShadowScope.html">EnvironmentShadowScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FRect.html">FRect</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Float3.html">Float3</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Float4.html">Float4</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FontScope.html">FontScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUIBodyColorScope.html">GUIBodyColorScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUIColorScope.html">GUIColorScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUIContentColorScope.html">GUIContentColorScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUIEnableScope.html">GUIEnableScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUIHorizontalScrollScope.html">GUIHorizontalScrollScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUIInteractableScope.html">GUIInteractableScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUILabelWidthScope.html">GUILabelWidthScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUIScrollScope.html">GUIScrollScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUISkinScope.html">GUISkinScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUIVerticalScrollScope.html">GUIVerticalScrollScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Hotkey.html">Hotkey</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IgnoreInputScope.html">IgnoreInputScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Int3.html">Int3</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Int4.html">Int4</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.LayerScope.html">LayerScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Long4.html">Long4</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OrientedSprite.html">OrientedSprite</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.PhysicsCell.html">PhysicsCell</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ReverseCellsScope.html">ReverseCellsScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.RotateCellScope.html">RotateCellScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SheetIndexScope.html">SheetIndexScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ShiftCellsScope.html">ShiftCellsScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.UILayerScope.html">UILayerScope</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Util.MathfInternal.html">Util.MathfInternal</a></dt>
-      <dd></dd>
-    </dl>
+      <h4><a class="xref" href="AngeliA.AfterimageScope.html">AfterimageScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockRule.html">BlockRule</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CellZScope.html">CellZScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ClampCellsScope.html">ClampCellsScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Color32.html">Color32</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ColorF.html">ColorF</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ColorGradient.Data.html">ColorGradient.Data</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Damage.html">Damage</a></h4>
+      <section><p>Data structure for a single damage performed</p>
+</section>
+      <h4><a class="xref" href="AngeliA.DefaultLayerScope.html">DefaultLayerScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.DynamicClampCellScope.html">DynamicClampCellScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.EmptyScope.html">EmptyScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.EnvironmentShadowScope.html">EnvironmentShadowScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.FRect.html">FRect</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Float2.html">Float2</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Float3.html">Float3</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Float4.html">Float4</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.FontScope.html">FontScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUIBodyColorScope.html">GUIBodyColorScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUIColorScope.html">GUIColorScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUIContentColorScope.html">GUIContentColorScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUIEnableScope.html">GUIEnableScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUIHorizontalScrollScope.html">GUIHorizontalScrollScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUIInteractableScope.html">GUIInteractableScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUILabelWidthScope.html">GUILabelWidthScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUIScrollScope.html">GUIScrollScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUISkinScope.html">GUISkinScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUIVerticalScrollScope.html">GUIVerticalScrollScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Hotkey.html">Hotkey</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IRect.html">IRect</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IgnoreInputScope.html">IgnoreInputScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Int2.html">Int2</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Int3.html">Int3</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Int4.html">Int4</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.LayerScope.html">LayerScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Long4.html">Long4</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.OrientedSprite.html">OrientedSprite</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.PhysicsCell.html">PhysicsCell</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ReverseCellsScope.html">ReverseCellsScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.RotateCellScope.html">RotateCellScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SheetIndexScope.html">SheetIndexScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ShiftCellsScope.html">ShiftCellsScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.UILayerScope.html">UILayerScope</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Util.MathfInternal.html">Util.MathfInternal</a></h4>
+      <section></section>
     <h3 id="interfaces">
 Interfaces
 </h3>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IActionTarget.html">IActionTarget</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IBlockEntity.html">IBlockEntity</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IBlockSquad.html">IBlockSquad</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IBumpable.html">IBumpable</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ICarrier.html">ICarrier</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ICircuitOperator.html">ICircuitOperator</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ICombustible.html">ICombustible</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IDamageReceiver.html">IDamageReceiver</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IFire.html">IFire</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IItemTransfer.html">IItemTransfer</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IJsonSerializationCallback.html">IJsonSerializationCallback</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IPlayable.html">IPlayable</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IProgressiveItem.html">IProgressiveItem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IRouteWalker.html">IRouteWalker</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IUndoItem.html">IUndoItem</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IWindowEntityUI.html">IWindowEntityUI</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IWithCharacterAttackness.html">IWithCharacterAttackness</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IWithCharacterBuff.html">IWithCharacterBuff</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IWithCharacterHealth.html">IWithCharacterHealth</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IWithCharacterMovement.html">IWithCharacterMovement</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.IWithCharacterRenderer.html">IWithCharacterRenderer</a></dt>
-      <dd></dd>
-    </dl>
+      <h4><a class="xref" href="AngeliA.IActionTarget.html">IActionTarget</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IBlockEntity.html">IBlockEntity</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IBlockSquad.html">IBlockSquad</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IBumpable.html">IBumpable</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ICarrier.html">ICarrier</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ICircuitOperator.html">ICircuitOperator</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ICombustible.html">ICombustible</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IDamageReceiver.html">IDamageReceiver</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IFire.html">IFire</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IItemTransfer.html">IItemTransfer</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IJsonSerializationCallback.html">IJsonSerializationCallback</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IPlayable.html">IPlayable</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IProgressiveItem.html">IProgressiveItem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IRouteWalker.html">IRouteWalker</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IUndoItem.html">IUndoItem</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IWindowEntityUI.html">IWindowEntityUI</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IWithCharacterAttackness.html">IWithCharacterAttackness</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IWithCharacterBuff.html">IWithCharacterBuff</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IWithCharacterHealth.html">IWithCharacterHealth</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IWithCharacterMovement.html">IWithCharacterMovement</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.IWithCharacterRenderer.html">IWithCharacterRenderer</a></h4>
+      <section></section>
     <h3 id="enums">
 Enums
 </h3>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Alignment.html">Alignment</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AntiBuffItem-1.TriggerMode.html">AntiBuffItem&lt;B&gt;.TriggerMode</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AtlasState.html">AtlasState</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.AtlasType.html">AtlasType</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BlockType.html">BlockType</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BodyGadgetType.html">BodyGadgetType</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.BodyPart.CoverMode.html">BodyPart.CoverMode</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterAnimationType.html">CharacterAnimationType</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterFaceExpression.html">CharacterFaceExpression</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterInventoryType.html">CharacterInventoryType</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterMovementState.html">CharacterMovementState</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CharacterState.html">CharacterState</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ClothType.html">ClothType</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.CompareMode.html">CompareMode</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Direction2.html">Direction2</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Direction3.html">Direction3</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Direction4.html">Direction4</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Direction5.html">Direction5</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Direction8.html">Direction8</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.EquipmentType.html">EquipmentType</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.FittingPose.html">FittingPose</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUISkin.LabelPattern.html">GUISkin.LabelPattern</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GUIState.html">GUIState</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Gamekey.html">Gamekey</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.GamepadKey.html">GamepadKey</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.HipCloth.HipClothType.html">HipCloth.HipClothType</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.KeyboardKey.html">KeyboardKey</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.NoiseMatching.html">NoiseMatching</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.html">OnMapEditorModeChange_ModeAttribute.Mode</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.OperationMode.html">OperationMode</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.ProjectType.html">ProjectType</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Rule.html">Rule</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.SavingLocation.html">SavingLocation</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.Tag.html">Tag</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.TaskResult.html">TaskResult</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.WeaponValidDirection.html">WeaponValidDirection</a></dt>
-      <dd></dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="AngeliA.WrapMode.html">WrapMode</a></dt>
-      <dd><p>How text wrap when reach edge</p>
-</dd>
-    </dl>
+      <h4><a class="xref" href="AngeliA.Alignment.html">Alignment</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.AntiBuffItem-1.TriggerMode.html">AntiBuffItem&lt;B&gt;.TriggerMode</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.AtlasState.html">AtlasState</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.AtlasType.html">AtlasType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BlockType.html">BlockType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BodyGadgetType.html">BodyGadgetType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.BodyPart.CoverMode.html">BodyPart.CoverMode</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CharacterAnimationType.html">CharacterAnimationType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CharacterFaceExpression.html">CharacterFaceExpression</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CharacterInventoryType.html">CharacterInventoryType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CharacterMovementState.html">CharacterMovementState</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CharacterState.html">CharacterState</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ClothType.html">ClothType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.CompareMode.html">CompareMode</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Direction2.html">Direction2</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Direction3.html">Direction3</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Direction4.html">Direction4</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Direction5.html">Direction5</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Direction8.html">Direction8</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.EquipmentType.html">EquipmentType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.FittingPose.html">FittingPose</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUISkin.LabelPattern.html">GUISkin.LabelPattern</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GUIState.html">GUIState</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Gamekey.html">Gamekey</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.GamepadKey.html">GamepadKey</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.HipCloth.HipClothType.html">HipCloth.HipClothType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.KeyboardKey.html">KeyboardKey</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.NoiseMatching.html">NoiseMatching</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.html">OnMapEditorModeChange_ModeAttribute.Mode</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.OperationMode.html">OperationMode</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.ProjectType.html">ProjectType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Rule.html">Rule</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.SavingLocation.html">SavingLocation</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.Tag.html">Tag</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.TaskResult.html">TaskResult</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.WeaponValidDirection.html">WeaponValidDirection</a></h4>
+      <section></section>
+      <h4><a class="xref" href="AngeliA.WrapMode.html">WrapMode</a></h4>
+      <section><p>How text wrap when reach edge</p>
+</section>
 
 
 </article>
+          </div>
 
-        <div class="contribution d-print-none">
-        </div>
-
-
-      </div>
-
-      <div class="affix">
-        <nav id="affix"></nav>
-      </div>
-    </main>
-
-    <div class="container-xxl search-results" id="search-results"></div>
-
-    <footer class="border-top text-secondary">
-      <div class="container-xxl">
-        <div class="flex-fill">
-          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
-    </footer>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
   </body>
 </html>

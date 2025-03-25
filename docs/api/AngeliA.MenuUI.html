@@ -1,1727 +1,1653 @@
 <!DOCTYPE html>
+<!--[if IE]><![endif]-->
 <html>
+
   <head>
     <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <title>Class MenuUI | AngeliA </title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class MenuUI | AngeliA ">
-      
-      
-      <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css">
-      <link rel="stylesheet" href="../public/main.css">
-      <meta name="docfx:navrel" content="../toc.html">
-      <meta name="docfx:tocrel" content="toc.html">
-      
-      <meta name="docfx:rel" content="../">
-      
-      
-      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
-      <meta name="loc:inThisArticle" content="In this article">
-      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
-      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
-      <meta name="loc:tocFilter" content="Filter by title">
-      <meta name="loc:nextArticle" content="Next">
-      <meta name="loc:prevArticle" content="Previous">
-      <meta name="loc:themeLight" content="Light">
-      <meta name="loc:themeDark" content="Dark">
-      <meta name="loc:themeAuto" content="Auto">
-      <meta name="loc:changeTheme" content="Change theme">
-      <meta name="loc:copy" content="Copy">
-      <meta name="loc:downloadPdf" content="Download PDF">
-
-      <script type="module" src="./../public/docfx.min.js"></script>
-
-      <script>
-        const theme = localStorage.getItem('theme') || 'auto'
-        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-      </script>
-
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
   </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
-    <header class="bg-body border-bottom">
-      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
-        <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
-            AngeliA
-          </a>
-          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="bi bi-three-dots"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navpanel">
-            <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
               </form>
             </div>
           </div>
-        </div>
-      </nav>
-    </header>
+        </nav>
 
-    <main class="container-xxl">
-      <div class="toc-offcanvas">
-        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
           </div>
-          <div class="offcanvas-body">
-            <nav class="toc" id="toc"></nav>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
+      <div role="main" class="container body-content hide-when-search">
 
-      <div class="content">
-        <div class="actionbar">
-          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
-            <i class="bi bi-list"></i>
-          </button>
-
-          <nav id="breadcrumb"></nav>
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
         </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AngeliA.MenuUI">
 
-        <article data-uid="AngeliA.MenuUI">
 
 
-
-  <h1 id="AngeliA_MenuUI" data-uid="AngeliA.MenuUI" class="text-break">
-Class MenuUI  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L7"><i class="bi bi-code-slash"></i></a>
-  </h1>
-
-  <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>AngeliA Framework.dll</dd></dl>
+  <h1 id="AngeliA_MenuUI" data-uid="AngeliA.MenuUI" class="text-break">Class MenuUI</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></div>
+    <div><a class="xref" href="AngeliA.IWindowEntityUI.html">IWindowEntityUI</a></div>
   </div>
-
-  <div class="markdown summary"></div>
-  <div class="markdown conceptual"></div>
-
+  <h6><strong>Namespace</strong>: <a class="xref" href="AngeliA.html">AngeliA</a></h6>
+  <h6><strong>Assembly</strong>: AngeliA Framework.dll</h6>
+  <h5 id="AngeliA_MenuUI_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class MenuUI : EntityUI, IMapItem, IWindowEntityUI</code></pre>
   </div>
-
-
-
-
-  <dl class="typelist inheritance">
-    <dt>Inheritance</dt>
-    <dd>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><a class="xref" href="AngeliA.Entity.html">Entity</a></div>
-      <div><a class="xref" href="AngeliA.EntityUI.html">EntityUI</a></div>
-      <div><span class="xref">MenuUI</span></div>
-    </dd>
-  </dl>
-
-  <dl class="typelist implements">
-    <dt>Implements</dt>
-    <dd>
-      <div><a class="xref" href="AngeliA.IMapItem.html">IMapItem</a></div>
-      <div><a class="xref" href="AngeliA.IWindowEntityUI.html">IWindowEntityUI</a></div>
-    </dd>
-  </dl>
-
-  <dl class="typelist derived">
-    <dt>Derived</dt>
-    <dd>
-      <div><a class="xref" href="AngeliA.GenericDialogUI.html">GenericDialogUI</a></div>
-      <div><a class="xref" href="AngeliA.PauseMenuUI.html">PauseMenuUI</a></div>
-    </dd>
-  </dl>
-
-  <dl class="typelist inheritedMembers">
-    <dt>Inherited Members</dt>
-    <dd>
-    <div>
-      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_FirstUpdate">EntityUI.FirstUpdate()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_Update">EntityUI.Update()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_LateUpdate">EntityUI.LateUpdate()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_Unify_System_Int32_">EntityUI.Unify(int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Active">Entity.Active</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_X">Entity.X</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Y">Entity.Y</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Width">Entity.Width</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Height">Entity.Height</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_TypeID">Entity.TypeID</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_SpawnFrame">Entity.SpawnFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_FromWorld">Entity.FromWorld</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Rect">Entity.Rect</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_InstanceOrder">Entity.InstanceOrder</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_MapUnitPos">Entity.MapUnitPos</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_InstanceID">Entity.InstanceID</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_IgnoreReposition">Entity.IgnoreReposition</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_XY">Entity.XY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Size">Entity.Size</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Center">Entity.Center</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CenterX">Entity.CenterX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CenterY">Entity.CenterY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_PivotUnitPosition">Entity.PivotUnitPosition</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_OnInactivated">Entity.OnInactivated()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_AfterReposition_AngeliA_Int3_AngeliA_Int3_">Entity.AfterReposition(Int3, Int3)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_IgnoreDespawnFromMap_System_Int32_">Entity.IgnoreDespawnFromMap(int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_CancelIgnoreDespawnFromMap">Entity.CancelIgnoreDespawnFromMap()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_Draw">Entity.Draw()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
-    </div>
-  </dd></dl>
-
-  <dl class="typelist extensionMethods">
-    <dt>Extension Methods</dt>
-    <dd>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><a class="xref" href="AngeliA.Entity.html">Entity</a></div>
+    <div class="level2"><a class="xref" href="AngeliA.EntityUI.html">EntityUI</a></div>
+    <div class="level3"><span class="xref">MenuUI</span></div>
+      <div class="level4"><a class="xref" href="AngeliA.GenericDialogUI.html">GenericDialogUI</a></div>
+      <div class="level4"><a class="xref" href="AngeliA.PauseMenuUI.html">PauseMenuUI</a></div>
+  </div>
+  <h3 id="fields">Fields
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_AllowMouseClick.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.AllowMouseClick%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L46">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_AllowMouseClick" data-uid="AngeliA.MenuUI.AllowMouseClick">AllowMouseClick</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool AllowMouseClick</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_AnimationAmount.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.AnimationAmount%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L48">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_AnimationAmount" data-uid="AngeliA.MenuUI.AnimationAmount">AnimationAmount</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int AnimationAmount</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_ArrowMarkCode.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.ArrowMarkCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L31">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_ArrowMarkCode" data-uid="AngeliA.MenuUI.ArrowMarkCode">ArrowMarkCode</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SpriteCode ArrowMarkCode</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_BackgroundCode.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.BackgroundCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L28">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_BackgroundCode" data-uid="AngeliA.MenuUI.BackgroundCode">BackgroundCode</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SpriteCode BackgroundCode</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_BackgroundTint.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.BackgroundTint%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L41">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_BackgroundTint" data-uid="AngeliA.MenuUI.BackgroundTint">BackgroundTint</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Color32 BackgroundTint</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Color32.html">Color32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_ContentPadding.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.ContentPadding%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L36">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_ContentPadding" data-uid="AngeliA.MenuUI.ContentPadding">ContentPadding</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Int4 ContentPadding</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Int4.html">Int4</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_Interactable.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.Interactable%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L45">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_Interactable" data-uid="AngeliA.MenuUI.Interactable">Interactable</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool Interactable</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_ItemGap.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.ItemGap%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L34">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_ItemGap" data-uid="AngeliA.MenuUI.ItemGap">ItemGap</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int ItemGap</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_ItemHeight.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.ItemHeight%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L33">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_ItemHeight" data-uid="AngeliA.MenuUI.ItemHeight">ItemHeight</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int ItemHeight</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_MaxItemCount.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.MaxItemCount%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L35">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_MaxItemCount" data-uid="AngeliA.MenuUI.MaxItemCount">MaxItemCount</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int MaxItemCount</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_MoreItemMarkCode.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.MoreItemMarkCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L30">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_MoreItemMarkCode" data-uid="AngeliA.MenuUI.MoreItemMarkCode">MoreItemMarkCode</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SpriteCode MoreItemMarkCode</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_MoreMarkSize.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.MoreMarkSize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L39">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_MoreMarkSize" data-uid="AngeliA.MenuUI.MoreMarkSize">MoreMarkSize</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Int2 MoreMarkSize</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Int2.html">Int2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_MoreMarkTint.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.MoreMarkTint%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L43">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_MoreMarkTint" data-uid="AngeliA.MenuUI.MoreMarkTint">MoreMarkTint</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Color32 MoreMarkTint</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Color32.html">Color32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_MouseHighlightTint.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.MouseHighlightTint%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L44">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_MouseHighlightTint" data-uid="AngeliA.MenuUI.MouseHighlightTint">MouseHighlightTint</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Color32 MouseHighlightTint</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Color32.html">Color32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_QuitOnPressStartOrEscKey.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.QuitOnPressStartOrEscKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L47">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_QuitOnPressStartOrEscKey" data-uid="AngeliA.MenuUI.QuitOnPressStartOrEscKey">QuitOnPressStartOrEscKey</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool QuitOnPressStartOrEscKey</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_ScreenTint.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.ScreenTint%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L40">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_ScreenTint" data-uid="AngeliA.MenuUI.ScreenTint">ScreenTint</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Color32 ScreenTint</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Color32.html">Color32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_SelectionArrowMarkSize.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.SelectionArrowMarkSize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L38">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_SelectionArrowMarkSize" data-uid="AngeliA.MenuUI.SelectionArrowMarkSize">SelectionArrowMarkSize</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Int2 SelectionArrowMarkSize</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Int2.html">Int2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_SelectionMarkCode.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.SelectionMarkCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L29">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_SelectionMarkCode" data-uid="AngeliA.MenuUI.SelectionMarkCode">SelectionMarkCode</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SpriteCode SelectionMarkCode</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_SelectionMarkSize.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.SelectionMarkSize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L37">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_SelectionMarkSize" data-uid="AngeliA.MenuUI.SelectionMarkSize">SelectionMarkSize</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Int2 SelectionMarkSize</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Int2.html">Int2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_SelectionMarkTint.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.SelectionMarkTint%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L42">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_SelectionMarkTint" data-uid="AngeliA.MenuUI.SelectionMarkTint">SelectionMarkTint</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Color32 SelectionMarkTint</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Color32.html">Color32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_WindowWidth.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.WindowWidth%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L32">View Source</a>
+  </span>
+  <h4 id="AngeliA_MenuUI_WindowWidth" data-uid="AngeliA.MenuUI.WindowWidth">WindowWidth</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int WindowWidth</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_AnimationDuration.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.AnimationDuration%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L20">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_AnimationDuration_" data-uid="AngeliA.MenuUI.AnimationDuration*"></a>
+  <h4 id="AngeliA_MenuUI_AnimationDuration" data-uid="AngeliA.MenuUI.AnimationDuration">AnimationDuration</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int AnimationDuration { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_BackgroundRect.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.BackgroundRect%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L18">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_BackgroundRect_" data-uid="AngeliA.MenuUI.BackgroundRect*"></a>
+  <h4 id="AngeliA_MenuUI_BackgroundRect" data-uid="AngeliA.MenuUI.BackgroundRect">BackgroundRect</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRect BackgroundRect { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.IRect.html">IRect</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_BackgroundStyle.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.BackgroundStyle%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L21">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_BackgroundStyle_" data-uid="AngeliA.MenuUI.BackgroundStyle*"></a>
+  <h4 id="AngeliA_MenuUI_BackgroundStyle" data-uid="AngeliA.MenuUI.BackgroundStyle">BackgroundStyle</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GUIStyle BackgroundStyle { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_BlockEvent.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.BlockEvent%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L25">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_BlockEvent_" data-uid="AngeliA.MenuUI.BlockEvent*"></a>
+  <h4 id="AngeliA_MenuUI_BlockEvent" data-uid="AngeliA.MenuUI.BlockEvent">BlockEvent</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override bool BlockEvent { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_BlockEvent">EntityUI.BlockEvent</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_DefaultContentStyle.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.DefaultContentStyle%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L24">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_DefaultContentStyle_" data-uid="AngeliA.MenuUI.DefaultContentStyle*"></a>
+  <h4 id="AngeliA_MenuUI_DefaultContentStyle" data-uid="AngeliA.MenuUI.DefaultContentStyle">DefaultContentStyle</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GUIStyle DefaultContentStyle { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_DefaultLabelStyle.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.DefaultLabelStyle%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L23">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_DefaultLabelStyle_" data-uid="AngeliA.MenuUI.DefaultLabelStyle*"></a>
+  <h4 id="AngeliA_MenuUI_DefaultLabelStyle" data-uid="AngeliA.MenuUI.DefaultLabelStyle">DefaultLabelStyle</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GUIStyle DefaultLabelStyle { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_Message.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.Message%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L17">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_Message_" data-uid="AngeliA.MenuUI.Message*"></a>
+  <h4 id="AngeliA_MenuUI_Message" data-uid="AngeliA.MenuUI.Message">Message</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Message { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_MessageStyle.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.MessageStyle%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L22">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_MessageStyle_" data-uid="AngeliA.MenuUI.MessageStyle*"></a>
+  <h4 id="AngeliA_MenuUI_MessageStyle" data-uid="AngeliA.MenuUI.MessageStyle">MessageStyle</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GUIStyle MessageStyle { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_OverrideWindowWidth.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.OverrideWindowWidth%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L19">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_OverrideWindowWidth_" data-uid="AngeliA.MenuUI.OverrideWindowWidth*"></a>
+  <h4 id="AngeliA_MenuUI_OverrideWindowWidth" data-uid="AngeliA.MenuUI.OverrideWindowWidth">OverrideWindowWidth</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int OverrideWindowWidth { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_SelectionAdjustable.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.SelectionAdjustable%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L15">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_SelectionAdjustable_" data-uid="AngeliA.MenuUI.SelectionAdjustable*"></a>
+  <h4 id="AngeliA_MenuUI_SelectionAdjustable" data-uid="AngeliA.MenuUI.SelectionAdjustable">SelectionAdjustable</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SelectionAdjustable { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_SelectionIndex.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.SelectionIndex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L16">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_SelectionIndex_" data-uid="AngeliA.MenuUI.SelectionIndex*"></a>
+  <h4 id="AngeliA_MenuUI_SelectionIndex" data-uid="AngeliA.MenuUI.SelectionIndex">SelectionIndex</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SelectionIndex { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_BeforeUpdate.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.BeforeUpdate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L84">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_BeforeUpdate_" data-uid="AngeliA.MenuUI.BeforeUpdate*"></a>
+  <h4 id="AngeliA_MenuUI_BeforeUpdate" data-uid="AngeliA.MenuUI.BeforeUpdate">BeforeUpdate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void BeforeUpdate()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_BeforeUpdate">Entity.BeforeUpdate()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_DrawArrowItem_System_String_System_Char___System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.DrawArrowItem(System.String%2CSystem.Char%5B%5D%2CSystem.Boolean%2CSystem.Boolean%2CSystem.Int32%40%2CSystem.Int32%2CAngeliA.GUIStyle%2CAngeliA.GUIStyle%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L305">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_DrawArrowItem_" data-uid="AngeliA.MenuUI.DrawArrowItem*"></a>
+  <h4 id="AngeliA_MenuUI_DrawArrowItem_System_String_System_Char___System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_" data-uid="AngeliA.MenuUI.DrawArrowItem(System.String,System.Char[],System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">DrawArrowItem(string, char[], bool, bool, out int, int, GUIStyle, GUIStyle, bool)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool DrawArrowItem(string label, char[] chars, bool leftArrow, bool rightArrow, out int delta, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">label</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>[]</td>
+        <td><span class="parametername">chars</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">leftArrow</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">rightArrow</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">delta</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">icon</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td><span class="parametername">labelStyle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td><span class="parametername">contentStyle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">drawStyleBody</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_DrawArrowItem_System_String_System_String_System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.DrawArrowItem(System.String%2CSystem.String%2CSystem.Boolean%2CSystem.Boolean%2CSystem.Int32%40%2CSystem.Int32%2CAngeliA.GUIStyle%2CAngeliA.GUIStyle%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L303">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_DrawArrowItem_" data-uid="AngeliA.MenuUI.DrawArrowItem*"></a>
+  <h4 id="AngeliA_MenuUI_DrawArrowItem_System_String_System_String_System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_" data-uid="AngeliA.MenuUI.DrawArrowItem(System.String,System.String,System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">DrawArrowItem(string, string, bool, bool, out int, int, GUIStyle, GUIStyle, bool)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool DrawArrowItem(string label, string content, bool leftArrow, bool rightArrow, out int delta, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">label</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">content</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">leftArrow</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">rightArrow</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">delta</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">icon</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td><span class="parametername">labelStyle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td><span class="parametername">contentStyle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">drawStyleBody</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_DrawItem_System_String_System_Char___System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.DrawItem(System.String%2CSystem.Char%5B%5D%2CSystem.Int32%2CAngeliA.GUIStyle%2CAngeliA.GUIStyle%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L304">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_DrawItem_" data-uid="AngeliA.MenuUI.DrawItem*"></a>
+  <h4 id="AngeliA_MenuUI_DrawItem_System_String_System_Char___System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_" data-uid="AngeliA.MenuUI.DrawItem(System.String,System.Char[],System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">DrawItem(string, char[], int, GUIStyle, GUIStyle, bool)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool DrawItem(string label, char[] chars, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">label</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>[]</td>
+        <td><span class="parametername">chars</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">icon</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td><span class="parametername">labelStyle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td><span class="parametername">contentStyle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">drawStyleBody</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_DrawItem_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.DrawItem(System.String%2CSystem.Int32%2CAngeliA.GUIStyle%2CAngeliA.GUIStyle%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L301">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_DrawItem_" data-uid="AngeliA.MenuUI.DrawItem*"></a>
+  <h4 id="AngeliA_MenuUI_DrawItem_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_" data-uid="AngeliA.MenuUI.DrawItem(System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">DrawItem(string, int, GUIStyle, GUIStyle, bool)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool DrawItem(string label, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">label</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">icon</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td><span class="parametername">labelStyle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td><span class="parametername">contentStyle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">drawStyleBody</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_DrawItem_System_String_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.DrawItem(System.String%2CSystem.String%2CSystem.Int32%2CAngeliA.GUIStyle%2CAngeliA.GUIStyle%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L302">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_DrawItem_" data-uid="AngeliA.MenuUI.DrawItem*"></a>
+  <h4 id="AngeliA_MenuUI_DrawItem_System_String_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_" data-uid="AngeliA.MenuUI.DrawItem(System.String,System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">DrawItem(string, string, int, GUIStyle, GUIStyle, bool)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool DrawItem(string label, string content, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">label</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">content</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">icon</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td><span class="parametername">labelStyle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></td>
+        <td><span class="parametername">contentStyle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">drawStyleBody</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_DrawMenu.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.DrawMenu%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L277">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_DrawMenu_" data-uid="AngeliA.MenuUI.DrawMenu*"></a>
+  <h4 id="AngeliA_MenuUI_DrawMenu" data-uid="AngeliA.MenuUI.DrawMenu">DrawMenu()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void DrawMenu()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_GetWindowRect.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.GetWindowRect%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L291">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_GetWindowRect_" data-uid="AngeliA.MenuUI.GetWindowRect*"></a>
+  <h4 id="AngeliA_MenuUI_GetWindowRect" data-uid="AngeliA.MenuUI.GetWindowRect">GetWindowRect()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IRect GetWindowRect()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.IRect.html">IRect</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_OnActivated.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.OnActivated%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L70">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_OnActivated_" data-uid="AngeliA.MenuUI.OnActivated*"></a>
+  <h4 id="AngeliA_MenuUI_OnActivated" data-uid="AngeliA.MenuUI.OnActivated">OnActivated()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnActivated()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Entity.html#AngeliA_Entity_OnActivated">Entity.OnActivated()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_OnSelectionChanged.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.OnSelectionChanged%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L280">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_OnSelectionChanged_" data-uid="AngeliA.MenuUI.OnSelectionChanged*"></a>
+  <h4 id="AngeliA_MenuUI_OnSelectionChanged" data-uid="AngeliA.MenuUI.OnSelectionChanged">OnSelectionChanged()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnSelectionChanged()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_RefreshAnimation.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.RefreshAnimation%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L523">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_RefreshAnimation_" data-uid="AngeliA.MenuUI.RefreshAnimation*"></a>
+  <h4 id="AngeliA_MenuUI_RefreshAnimation" data-uid="AngeliA.MenuUI.RefreshAnimation">RefreshAnimation()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RefreshAnimation()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_SetSelection_System_Int32_.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.SetSelection(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L520">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_SetSelection_" data-uid="AngeliA.MenuUI.SetSelection*"></a>
+  <h4 id="AngeliA_MenuUI_SetSelection_System_Int32_" data-uid="AngeliA.MenuUI.SetSelection(System.Int32)">SetSelection(int)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void SetSelection(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI_UpdateUI.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI.UpdateUI%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L94">View Source</a>
+  </span>
+  <a id="AngeliA_MenuUI_UpdateUI_" data-uid="AngeliA.MenuUI.UpdateUI*"></a>
+  <h4 id="AngeliA_MenuUI_UpdateUI" data-uid="AngeliA.MenuUI.UpdateUI">UpdateUI()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void UpdateUI()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.EntityUI.html#AngeliA_EntityUI_UpdateUI">EntityUI.UpdateUI()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="AngeliA.IMapItem.html">IMapItem</a>
+  </div>
+  <div>
+      <a class="xref" href="AngeliA.IWindowEntityUI.html">IWindowEntityUI</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
   </div>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
   </div>
-  </dd></dl>
-
-
-
-
-
-  <h2 class="section" id="fields">Fields
-</h2>
-
-
-
-  <h3 id="AngeliA_MenuUI_AllowMouseClick" data-uid="AngeliA.MenuUI.AllowMouseClick">
-  AllowMouseClick
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L46"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool AllowMouseClick</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_AnimationAmount" data-uid="AngeliA.MenuUI.AnimationAmount">
-  AnimationAmount
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L48"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected int AnimationAmount</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_ArrowMarkCode" data-uid="AngeliA.MenuUI.ArrowMarkCode">
-  ArrowMarkCode
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L31"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected SpriteCode ArrowMarkCode</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_BackgroundCode" data-uid="AngeliA.MenuUI.BackgroundCode">
-  BackgroundCode
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L28"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected SpriteCode BackgroundCode</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_BackgroundTint" data-uid="AngeliA.MenuUI.BackgroundTint">
-  BackgroundTint
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L41"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Color32 BackgroundTint</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_ContentPadding" data-uid="AngeliA.MenuUI.ContentPadding">
-  ContentPadding
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L36"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Int4 ContentPadding</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Int4.html">Int4</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_Interactable" data-uid="AngeliA.MenuUI.Interactable">
-  Interactable
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L45"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool Interactable</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_ItemGap" data-uid="AngeliA.MenuUI.ItemGap">
-  ItemGap
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L34"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected int ItemGap</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_ItemHeight" data-uid="AngeliA.MenuUI.ItemHeight">
-  ItemHeight
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L33"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected int ItemHeight</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_MaxItemCount" data-uid="AngeliA.MenuUI.MaxItemCount">
-  MaxItemCount
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L35"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected int MaxItemCount</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_MoreItemMarkCode" data-uid="AngeliA.MenuUI.MoreItemMarkCode">
-  MoreItemMarkCode
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L30"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected SpriteCode MoreItemMarkCode</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_MoreMarkSize" data-uid="AngeliA.MenuUI.MoreMarkSize">
-  MoreMarkSize
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L39"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Int2 MoreMarkSize</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_MoreMarkTint" data-uid="AngeliA.MenuUI.MoreMarkTint">
-  MoreMarkTint
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L43"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Color32 MoreMarkTint</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_MouseHighlightTint" data-uid="AngeliA.MenuUI.MouseHighlightTint">
-  MouseHighlightTint
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L44"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Color32 MouseHighlightTint</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_QuitOnPressStartOrEscKey" data-uid="AngeliA.MenuUI.QuitOnPressStartOrEscKey">
-  QuitOnPressStartOrEscKey
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L47"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool QuitOnPressStartOrEscKey</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_ScreenTint" data-uid="AngeliA.MenuUI.ScreenTint">
-  ScreenTint
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L40"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Color32 ScreenTint</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_SelectionArrowMarkSize" data-uid="AngeliA.MenuUI.SelectionArrowMarkSize">
-  SelectionArrowMarkSize
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L38"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Int2 SelectionArrowMarkSize</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_SelectionMarkCode" data-uid="AngeliA.MenuUI.SelectionMarkCode">
-  SelectionMarkCode
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L29"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected SpriteCode SelectionMarkCode</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.SpriteCode.html">SpriteCode</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_SelectionMarkSize" data-uid="AngeliA.MenuUI.SelectionMarkSize">
-  SelectionMarkSize
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L37"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Int2 SelectionMarkSize</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Int2.html">Int2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_SelectionMarkTint" data-uid="AngeliA.MenuUI.SelectionMarkTint">
-  SelectionMarkTint
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L42"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Color32 SelectionMarkTint</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Color32.html">Color32</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_MenuUI_WindowWidth" data-uid="AngeliA.MenuUI.WindowWidth">
-  WindowWidth
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L32"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected int WindowWidth</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-  <h2 class="section" id="properties">Properties
-</h2>
-
-
-  <a id="AngeliA_MenuUI_AnimationDuration_" data-uid="AngeliA.MenuUI.AnimationDuration*"></a>
-
-  <h3 id="AngeliA_MenuUI_AnimationDuration" data-uid="AngeliA.MenuUI.AnimationDuration">
-  AnimationDuration
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L20"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int AnimationDuration { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_BackgroundRect_" data-uid="AngeliA.MenuUI.BackgroundRect*"></a>
-
-  <h3 id="AngeliA_MenuUI_BackgroundRect" data-uid="AngeliA.MenuUI.BackgroundRect">
-  BackgroundRect
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L18"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IRect BackgroundRect { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_BackgroundStyle_" data-uid="AngeliA.MenuUI.BackgroundStyle*"></a>
-
-  <h3 id="AngeliA_MenuUI_BackgroundStyle" data-uid="AngeliA.MenuUI.BackgroundStyle">
-  BackgroundStyle
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L21"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected GUIStyle BackgroundStyle { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_BlockEvent_" data-uid="AngeliA.MenuUI.BlockEvent*"></a>
-
-  <h3 id="AngeliA_MenuUI_BlockEvent" data-uid="AngeliA.MenuUI.BlockEvent">
-  BlockEvent
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L25"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override bool BlockEvent { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_DefaultContentStyle_" data-uid="AngeliA.MenuUI.DefaultContentStyle*"></a>
-
-  <h3 id="AngeliA_MenuUI_DefaultContentStyle" data-uid="AngeliA.MenuUI.DefaultContentStyle">
-  DefaultContentStyle
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L24"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected GUIStyle DefaultContentStyle { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_DefaultLabelStyle_" data-uid="AngeliA.MenuUI.DefaultLabelStyle*"></a>
-
-  <h3 id="AngeliA_MenuUI_DefaultLabelStyle" data-uid="AngeliA.MenuUI.DefaultLabelStyle">
-  DefaultLabelStyle
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L23"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected GUIStyle DefaultLabelStyle { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_Message_" data-uid="AngeliA.MenuUI.Message*"></a>
-
-  <h3 id="AngeliA_MenuUI_Message" data-uid="AngeliA.MenuUI.Message">
-  Message
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L17"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Message { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_MessageStyle_" data-uid="AngeliA.MenuUI.MessageStyle*"></a>
-
-  <h3 id="AngeliA_MenuUI_MessageStyle" data-uid="AngeliA.MenuUI.MessageStyle">
-  MessageStyle
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L22"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected GUIStyle MessageStyle { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_OverrideWindowWidth_" data-uid="AngeliA.MenuUI.OverrideWindowWidth*"></a>
-
-  <h3 id="AngeliA_MenuUI_OverrideWindowWidth" data-uid="AngeliA.MenuUI.OverrideWindowWidth">
-  OverrideWindowWidth
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L19"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int OverrideWindowWidth { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_SelectionAdjustable_" data-uid="AngeliA.MenuUI.SelectionAdjustable*"></a>
-
-  <h3 id="AngeliA_MenuUI_SelectionAdjustable" data-uid="AngeliA.MenuUI.SelectionAdjustable">
-  SelectionAdjustable
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L15"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool SelectionAdjustable { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_SelectionIndex_" data-uid="AngeliA.MenuUI.SelectionIndex*"></a>
-
-  <h3 id="AngeliA_MenuUI_SelectionIndex" data-uid="AngeliA.MenuUI.SelectionIndex">
-  SelectionIndex
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L16"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int SelectionIndex { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <h2 class="section" id="methods">Methods
-</h2>
-
-
-  <a id="AngeliA_MenuUI_BeforeUpdate_" data-uid="AngeliA.MenuUI.BeforeUpdate*"></a>
-
-  <h3 id="AngeliA_MenuUI_BeforeUpdate" data-uid="AngeliA.MenuUI.BeforeUpdate">
-  BeforeUpdate()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L84"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void BeforeUpdate()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_DrawArrowItem_" data-uid="AngeliA.MenuUI.DrawArrowItem*"></a>
-
-  <h3 id="AngeliA_MenuUI_DrawArrowItem_System_String_System_Char___System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_" data-uid="AngeliA.MenuUI.DrawArrowItem(System.String,System.Char[],System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
-  DrawArrowItem(string, char[], bool, bool, out int, int, GUIStyle, GUIStyle, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L305"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool DrawArrowItem(string label, char[] chars, bool leftArrow, bool rightArrow, out int delta, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>chars</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>[]</dt>
-    <dd></dd>
-    <dt><code>leftArrow</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-    <dt><code>rightArrow</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-    <dt><code>contentStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-    <dt><code>drawStyleBody</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_DrawArrowItem_" data-uid="AngeliA.MenuUI.DrawArrowItem*"></a>
-
-  <h3 id="AngeliA_MenuUI_DrawArrowItem_System_String_System_String_System_Boolean_System_Boolean_System_Int32__System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_" data-uid="AngeliA.MenuUI.DrawArrowItem(System.String,System.String,System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
-  DrawArrowItem(string, string, bool, bool, out int, int, GUIStyle, GUIStyle, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L303"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool DrawArrowItem(string label, string content, bool leftArrow, bool rightArrow, out int delta, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>content</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>leftArrow</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-    <dt><code>rightArrow</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-    <dt><code>delta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-    <dt><code>contentStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-    <dt><code>drawStyleBody</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_DrawItem_" data-uid="AngeliA.MenuUI.DrawItem*"></a>
-
-  <h3 id="AngeliA_MenuUI_DrawItem_System_String_System_Char___System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_" data-uid="AngeliA.MenuUI.DrawItem(System.String,System.Char[],System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
-  DrawItem(string, char[], int, GUIStyle, GUIStyle, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L304"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool DrawItem(string label, char[] chars, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>chars</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>[]</dt>
-    <dd></dd>
-    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-    <dt><code>contentStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-    <dt><code>drawStyleBody</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_DrawItem_" data-uid="AngeliA.MenuUI.DrawItem*"></a>
-
-  <h3 id="AngeliA_MenuUI_DrawItem_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_" data-uid="AngeliA.MenuUI.DrawItem(System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
-  DrawItem(string, int, GUIStyle, GUIStyle, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L301"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool DrawItem(string label, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-    <dt><code>contentStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-    <dt><code>drawStyleBody</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_DrawItem_" data-uid="AngeliA.MenuUI.DrawItem*"></a>
-
-  <h3 id="AngeliA_MenuUI_DrawItem_System_String_System_String_System_Int32_AngeliA_GUIStyle_AngeliA_GUIStyle_System_Boolean_" data-uid="AngeliA.MenuUI.DrawItem(System.String,System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
-  DrawItem(string, string, int, GUIStyle, GUIStyle, bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L302"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool DrawItem(string label, string content, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>label</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>content</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>icon</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-    <dt><code>labelStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-    <dt><code>contentStyle</code> <a class="xref" href="AngeliA.GUIStyle.html">GUIStyle</a></dt>
-    <dd></dd>
-    <dt><code>drawStyleBody</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_DrawMenu_" data-uid="AngeliA.MenuUI.DrawMenu*"></a>
-
-  <h3 id="AngeliA_MenuUI_DrawMenu" data-uid="AngeliA.MenuUI.DrawMenu">
-  DrawMenu()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L277"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected abstract void DrawMenu()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_GetWindowRect_" data-uid="AngeliA.MenuUI.GetWindowRect*"></a>
-
-  <h3 id="AngeliA_MenuUI_GetWindowRect" data-uid="AngeliA.MenuUI.GetWindowRect">
-  GetWindowRect()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L291"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual IRect GetWindowRect()</code></pre>
-  </div>
-
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.IRect.html">IRect</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_OnActivated_" data-uid="AngeliA.MenuUI.OnActivated*"></a>
-
-  <h3 id="AngeliA_MenuUI_OnActivated" data-uid="AngeliA.MenuUI.OnActivated">
-  OnActivated()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L70"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnActivated()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_OnSelectionChanged_" data-uid="AngeliA.MenuUI.OnSelectionChanged*"></a>
-
-  <h3 id="AngeliA_MenuUI_OnSelectionChanged" data-uid="AngeliA.MenuUI.OnSelectionChanged">
-  OnSelectionChanged()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L280"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void OnSelectionChanged()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_RefreshAnimation_" data-uid="AngeliA.MenuUI.RefreshAnimation*"></a>
-
-  <h3 id="AngeliA_MenuUI_RefreshAnimation" data-uid="AngeliA.MenuUI.RefreshAnimation">
-  RefreshAnimation()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L523"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void RefreshAnimation()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_SetSelection_" data-uid="AngeliA.MenuUI.SetSelection*"></a>
-
-  <h3 id="AngeliA_MenuUI_SetSelection_System_Int32_" data-uid="AngeliA.MenuUI.SetSelection(System.Int32)">
-  SetSelection(int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L520"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void SetSelection(int index)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_MenuUI_UpdateUI_" data-uid="AngeliA.MenuUI.UpdateUI*"></a>
-
-  <h3 id="AngeliA_MenuUI_UpdateUI" data-uid="AngeliA.MenuUI.UpdateUI">
-  UpdateUI()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L94"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void UpdateUI()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </article>
+          </div>
 
-        <div class="contribution d-print-none">
-          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L7" class="edit-link">Edit this page</a>
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_MenuUI.md&amp;value=---%0Auid%3A%20AngeliA.MenuUI%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Entity/UI/MenuUI.cs/#L7" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
         </div>
-
-
       </div>
 
-      <div class="affix">
-        <nav id="affix"></nav>
-      </div>
-    </main>
-
-    <div class="container-xxl search-results" id="search-results"></div>
-
-    <footer class="border-top text-secondary">
-      <div class="container-xxl">
-        <div class="flex-fill">
-          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
   </body>
 </html>

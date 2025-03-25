@@ -8,8 +8,6 @@ items:
   - AngeliA.Pipe`1.#ctor(System.Int32)
   - AngeliA.Pipe`1.Capacity
   - AngeliA.Pipe`1.Data
-  - AngeliA.Pipe`1.DetchHead(System.Int32)
-  - AngeliA.Pipe`1.DetchTail(System.Int32)
   - AngeliA.Pipe`1.IsFull
   - AngeliA.Pipe`1.Item(System.Int32)
   - AngeliA.Pipe`1.Length
@@ -37,10 +35,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Pipe
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 4
+    startLine: 7
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: A linked list that can add/remove from head/tail. No heap pressure.
+  example: []
   syntax:
     content: public class Pipe<T>
     typeParameters:
@@ -80,10 +80,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 4
+    startLine: 7
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: A linked list that can add/remove from head/tail. No heap pressure.
+  example: []
   syntax:
     content: public Pipe(int capacity = 1024)
     parameters:
@@ -112,15 +114,18 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: this[]
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 13
+    startLine: 20
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Get filled data at index
+  example: []
   syntax:
     content: public T this[int index] { get; set; }
     parameters:
     - id: index
       type: System.Int32
+      description: Local index from "Start"
     return:
       type: '{T}'
     content.vb: Public Default Property this[](index As Integer) As T
@@ -146,10 +151,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Data
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 17
+    startLine: 27
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Raw data of this pipe
+  example: []
   syntax:
     content: public T[] Data { get; init; }
     parameters: []
@@ -177,10 +184,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Capacity
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 18
+    startLine: 31
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Total length of the data
+  example: []
   syntax:
     content: public int Capacity { get; init; }
     parameters: []
@@ -208,10 +217,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Start
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 19
+    startLine: 35
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Head index of the filled data
+  example: []
   syntax:
     content: public int Start { get; }
     parameters: []
@@ -239,10 +250,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Length
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 20
+    startLine: 39
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Length of the filled data
+  example: []
   syntax:
     content: public int Length { get; }
     parameters: []
@@ -270,10 +283,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: IsFull
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 21
+    startLine: 43
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: True if the pipe reached max capacity
+  example: []
   syntax:
     content: public bool IsFull { get; }
     parameters: []
@@ -301,10 +316,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: TryPeekHead
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 33
+    startLine: 59
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Get data at head without remove the data from pipe
+  example: []
   syntax:
     content: public bool TryPeekHead(out T data)
     parameters:
@@ -312,6 +329,7 @@ items:
       type: '{T}'
     return:
       type: System.Boolean
+      description: True if length of pipe is not 0
     content.vb: Public Function TryPeekHead(data As T) As Boolean
   overload: AngeliA.Pipe`1.TryPeekHead*
   nameWithType.vb: Pipe(Of T).TryPeekHead(T)
@@ -335,10 +353,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: TryPeekTail
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 41
+    startLine: 71
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Get data at tail without remove the data from pipe
+  example: []
   syntax:
     content: public bool TryPeekTail(out T data)
     parameters:
@@ -346,6 +366,7 @@ items:
       type: '{T}'
     return:
       type: System.Boolean
+      description: True if length of pipe is not 0
     content.vb: Public Function TryPeekTail(data As T) As Boolean
   overload: AngeliA.Pipe`1.TryPeekTail*
   nameWithType.vb: Pipe(Of T).TryPeekTail(T)
@@ -369,10 +390,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LinkToHead
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 50
+    startLine: 84
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Add data before head
+  example: []
   syntax:
     content: public bool LinkToHead(T data)
     parameters:
@@ -380,6 +403,7 @@ items:
       type: '{T}'
     return:
       type: System.Boolean
+      description: True if the data is added
     content.vb: Public Function LinkToHead(data As T) As Boolean
   overload: AngeliA.Pipe`1.LinkToHead*
   nameWithType.vb: Pipe(Of T).LinkToHead(T)
@@ -402,10 +426,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LinkToTail
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 59
+    startLine: 97
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Add data after tail
+  example: []
   syntax:
     content: public bool LinkToTail(T data)
     parameters:
@@ -413,6 +439,7 @@ items:
       type: '{T}'
     return:
       type: System.Boolean
+      description: True if the data is added
     content.vb: Public Function LinkToTail(data As T) As Boolean
   overload: AngeliA.Pipe`1.LinkToTail*
   nameWithType.vb: Pipe(Of T).LinkToTail(T)
@@ -435,10 +462,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: TryPopHead
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 69
+    startLine: 111
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Get and remove data at head
+  example: []
   syntax:
     content: public bool TryPopHead(out T data)
     parameters:
@@ -446,6 +475,7 @@ items:
       type: '{T}'
     return:
       type: System.Boolean
+      description: True if pipe is not empty
     content.vb: Public Function TryPopHead(data As T) As Boolean
   overload: AngeliA.Pipe`1.TryPopHead*
   nameWithType.vb: Pipe(Of T).TryPopHead(T)
@@ -469,10 +499,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: TryPopTail
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 80
+    startLine: 126
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Get and remove data at tail
+  example: []
   syntax:
     content: public bool TryPopTail(out T data)
     parameters:
@@ -480,75 +512,12 @@ items:
       type: '{T}'
     return:
       type: System.Boolean
+      description: True if pipe is not empty
     content.vb: Public Function TryPopTail(data As T) As Boolean
   overload: AngeliA.Pipe`1.TryPopTail*
   nameWithType.vb: Pipe(Of T).TryPopTail(T)
   fullName.vb: AngeliA.Pipe(Of T).TryPopTail(T)
   name.vb: TryPopTail(T)
-- uid: AngeliA.Pipe`1.DetchHead(System.Int32)
-  commentId: M:AngeliA.Pipe`1.DetchHead(System.Int32)
-  id: DetchHead(System.Int32)
-  parent: AngeliA.Pipe`1
-  langs:
-  - csharp
-  - vb
-  name: DetchHead(int)
-  nameWithType: Pipe<T>.DetchHead(int)
-  fullName: AngeliA.Pipe<T>.DetchHead(int)
-  type: Method
-  source:
-    remote:
-      path: AngeliA Framework/src/Common/Pipe.cs
-      branch: main
-      repo: https://github.com/Mo-enen/AngeliA.git
-    id: DetchHead
-    path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 92
-  assemblies:
-  - AngeliA Framework
-  namespace: AngeliA
-  syntax:
-    content: public void DetchHead(int newLength)
-    parameters:
-    - id: newLength
-      type: System.Int32
-    content.vb: Public Sub DetchHead(newLength As Integer)
-  overload: AngeliA.Pipe`1.DetchHead*
-  nameWithType.vb: Pipe(Of T).DetchHead(Integer)
-  fullName.vb: AngeliA.Pipe(Of T).DetchHead(Integer)
-  name.vb: DetchHead(Integer)
-- uid: AngeliA.Pipe`1.DetchTail(System.Int32)
-  commentId: M:AngeliA.Pipe`1.DetchTail(System.Int32)
-  id: DetchTail(System.Int32)
-  parent: AngeliA.Pipe`1
-  langs:
-  - csharp
-  - vb
-  name: DetchTail(int)
-  nameWithType: Pipe<T>.DetchTail(int)
-  fullName: AngeliA.Pipe<T>.DetchTail(int)
-  type: Method
-  source:
-    remote:
-      path: AngeliA Framework/src/Common/Pipe.cs
-      branch: main
-      repo: https://github.com/Mo-enen/AngeliA.git
-    id: DetchTail
-    path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 99
-  assemblies:
-  - AngeliA Framework
-  namespace: AngeliA
-  syntax:
-    content: public void DetchTail(int newLength)
-    parameters:
-    - id: newLength
-      type: System.Int32
-    content.vb: Public Sub DetchTail(newLength As Integer)
-  overload: AngeliA.Pipe`1.DetchTail*
-  nameWithType.vb: Pipe(Of T).DetchTail(Integer)
-  fullName.vb: AngeliA.Pipe(Of T).DetchTail(Integer)
-  name.vb: DetchTail(Integer)
 - uid: AngeliA.Pipe`1.Reset
   commentId: M:AngeliA.Pipe`1.Reset
   id: Reset
@@ -567,7 +536,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Reset
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 106
+    startLine: 138
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -595,10 +564,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Reorganize
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 112
+    startLine: 147
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Move data at head to the first of the internal array
+  example: []
   syntax:
     content: public void Reorganize()
     content.vb: Public Sub Reorganize()
@@ -623,7 +594,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Sort
     path: ../AngeliA Framework/src/Common/Pipe.cs
-    startLine: 124
+    startLine: 159
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -1244,22 +1215,6 @@ references:
   fullName: AngeliA.Pipe<T>.TryPopTail
   nameWithType.vb: Pipe(Of T).TryPopTail
   fullName.vb: AngeliA.Pipe(Of T).TryPopTail
-- uid: AngeliA.Pipe`1.DetchHead*
-  commentId: Overload:AngeliA.Pipe`1.DetchHead
-  href: AngeliA.Pipe-1.html#AngeliA_Pipe_1_DetchHead_System_Int32_
-  name: DetchHead
-  nameWithType: Pipe<T>.DetchHead
-  fullName: AngeliA.Pipe<T>.DetchHead
-  nameWithType.vb: Pipe(Of T).DetchHead
-  fullName.vb: AngeliA.Pipe(Of T).DetchHead
-- uid: AngeliA.Pipe`1.DetchTail*
-  commentId: Overload:AngeliA.Pipe`1.DetchTail
-  href: AngeliA.Pipe-1.html#AngeliA_Pipe_1_DetchTail_System_Int32_
-  name: DetchTail
-  nameWithType: Pipe<T>.DetchTail
-  fullName: AngeliA.Pipe<T>.DetchTail
-  nameWithType.vb: Pipe(Of T).DetchTail
-  fullName.vb: AngeliA.Pipe(Of T).DetchTail
 - uid: AngeliA.Pipe`1.Reset*
   commentId: Overload:AngeliA.Pipe`1.Reset
   href: AngeliA.Pipe-1.html#AngeliA_Pipe_1_Reset

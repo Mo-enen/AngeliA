@@ -4,8 +4,10 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Animal ear body gadget for pose character. (Like cat-girl's ears, not human ears)
+/// </summary>
 public abstract class Ear : BodyGadget {
-
 
 
 
@@ -16,9 +18,12 @@ public abstract class Ear : BodyGadget {
 	// Api
 	public sealed override BodyGadgetType GadgetType => BodyGadgetType.Ear;
 	public override bool SpriteLoaded => SpriteEarLeft.IsValid || SpriteEarRight.IsValid;
+	/// <summary>
+	/// How much ease motion will be apply from the character's movement (0 means 0%, 1000 means 100%)
+	/// </summary>
 	protected virtual int MotionAmount => 618;
-	public OrientedSprite SpriteEarLeft { get; private set; }
-	public OrientedSprite SpriteEarRight { get; private set; }
+	private OrientedSprite SpriteEarLeft;
+	private OrientedSprite SpriteEarRight;
 
 
 	#endregion
@@ -67,12 +72,20 @@ public abstract class Ear : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// True if the left ear should be rendered in front of the head
+	/// </summary>
 	protected virtual bool FrontOfHeadL (PoseCharacterRenderer renderer) => true;
 
-
+	/// <summary>
+	/// True if the right ear should be rendered in front of the head
+	/// </summary>
 	protected virtual bool FrontOfHeadR (PoseCharacterRenderer renderer) => true;
 
 
+	/// <summary>
+	/// Draw ear gadgets for the given character.
+	/// </summary>
 	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
 		if (renderer.EarID != 0 && TryGetGadget(renderer.EarID, out var ear)) {
 			ear.DrawGadget(renderer);
@@ -80,6 +93,16 @@ public abstract class Ear : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Draw given sprite as ear
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="spriteLeft">Left ear artwork sprite</param>
+	/// <param name="spriteRight">Right ear artwork sprite</param>
+	/// <param name="frontOfHeadL">Draw left ear in front of head</param>
+	/// <param name="frontOfHeadR">Draw right ear in front of head</param>
+	/// <param name="motionAmount"></param>
+	/// <param name="selfMotion">True if the ear randomly shakes</param>
 	public static void DrawSpriteAsEar (
 		PoseCharacterRenderer renderer,
 		OrientedSprite spriteLeft, OrientedSprite spriteRight,

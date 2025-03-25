@@ -51,20 +51,20 @@ items:
   - AngeliA.BeforeUpdateUpdateAttribute
   - AngeliA.CheatCodeAttribute
   - AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute
-  - AngeliA.OnBulletHitEnvironment_Bullet
+  - AngeliA.OnBulletHitEnvironment_BulletAttribute
   - AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute
-  - AngeliA.OnCharacterCrash_Entity
-  - AngeliA.OnCharacterFly_Entity
-  - AngeliA.OnCharacterFootStepped_Entity
-  - AngeliA.OnCharacterJump_Entity
-  - AngeliA.OnCharacterPassOut_Entity
-  - AngeliA.OnCharacterPound_Entity
-  - AngeliA.OnCharacterSleeping_Entity
-  - AngeliA.OnCharacterSlideStepped_Entity
-  - AngeliA.OnCharacterTeleport_Entity
+  - AngeliA.OnCharacterCrash_EntityAttribute
+  - AngeliA.OnCharacterFly_EntityAttribute
+  - AngeliA.OnCharacterFootStepped_EntityAttribute
+  - AngeliA.OnCharacterJump_EntityAttribute
+  - AngeliA.OnCharacterPassOut_EntityAttribute
+  - AngeliA.OnCharacterPound_EntityAttribute
+  - AngeliA.OnCharacterSleeping_EntityAttribute
+  - AngeliA.OnCharacterSlideStepped_EntityAttribute
+  - AngeliA.OnCharacterTeleport_EntityAttribute
   - AngeliA.OnCheatPerformed_StringCodeAttribute
   - AngeliA.OnCircuitWireActived_Int3UnitPosAttribute
-  - AngeliA.OnDealDamage_Damage_IDamageReceiver
+  - AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute
   - AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute
   - AngeliA.OnFileDropped_StringPathAttribute
   - AngeliA.OnGameFocusedAttribute
@@ -86,8 +86,8 @@ items:
   - AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute
   - AngeliA.OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute
   - AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute
-  - AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-  - AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
+  - AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+  - AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
   - AngeliA.OnViewZChangedAttribute
   - AngeliA.OnWindowSizeChangedAttribute
   - AngeliA.OnWorldCreatedBySquad_WorldAttribute

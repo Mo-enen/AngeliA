@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnBlockPicked_IntSpriteID_IRectAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 401
+    startLine: 552
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when a map block has been picked
   example:
-  - internal static void ExampleFunction (int spriteID, IRect rectPosition) { }
+  - >-
+    <pre><code class="lang-csharp">[OnBlockPicked_IntSpriteID_IRect]
+
+    internal static void ExampleFunction (int spriteID, IRect rectPosition) { }</code></pre>
   syntax:
     content: 'public class OnBlockPicked_IntSpriteID_IRectAttribute : EventAttribute'
     content.vb: Public Class OnBlockPicked_IntSpriteID_IRectAttribute Inherits EventAttribute

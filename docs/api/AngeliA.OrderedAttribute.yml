@@ -40,11 +40,11 @@ items:
   - System.Object
   - System.Attribute
   derivedClasses:
-  - AngeliA.BeforeSavingSlotChanged
+  - AngeliA.BeforeSavingSlotChangedAttribute
   - AngeliA.EventAttribute
   - AngeliA.OnGameInitializeAttribute
   - AngeliA.OnGameInitializeLaterAttribute
-  - AngeliA.OnSavingSlotChanged
+  - AngeliA.OnSavingSlotChangedAttribute
   inheritedMembers:
   - System.Attribute.Equals(System.Object)
   - System.Attribute.GetCustomAttribute(System.Reflection.Assembly,System.Type)

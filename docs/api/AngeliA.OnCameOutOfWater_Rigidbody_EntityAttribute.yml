@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnCameOutOfWater_Rigidbody_EntityAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 415
+    startLine: 572
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when a rigidbody came out of water
   example:
-  - internal static void ExampleFunction (Rigidbody rig, Entity water) { }
+  - >-
+    <pre><code class="lang-csharp">[OnCameOutOfWater_Rigidbody_Entity]
+
+    internal static void ExampleFunction (Rigidbody rig, Entity water) { }</code></pre>
   syntax:
     content: 'public class OnCameOutOfWater_Rigidbody_EntityAttribute : EventAttribute'
     content.vb: Public Class OnCameOutOfWater_Rigidbody_EntityAttribute Inherits EventAttribute

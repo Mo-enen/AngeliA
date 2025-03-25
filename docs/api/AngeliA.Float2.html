@@ -1,140 +1,2249 @@
 <!DOCTYPE html>
+<!--[if IE]><![endif]-->
 <html>
+
   <head>
     <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <title>Struct Float2 | AngeliA </title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width">
       <meta name="title" content="Struct Float2 | AngeliA ">
-      
-      
-      <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css">
-      <link rel="stylesheet" href="../public/main.css">
-      <meta name="docfx:navrel" content="../toc.html">
-      <meta name="docfx:tocrel" content="toc.html">
-      
-      <meta name="docfx:rel" content="../">
-      
-      
-      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2.md&amp;value=---%0Auid%3A%20AngeliA.Float2%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
-      <meta name="loc:inThisArticle" content="In this article">
-      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
-      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
-      <meta name="loc:tocFilter" content="Filter by title">
-      <meta name="loc:nextArticle" content="Next">
-      <meta name="loc:prevArticle" content="Previous">
-      <meta name="loc:themeLight" content="Light">
-      <meta name="loc:themeDark" content="Dark">
-      <meta name="loc:themeAuto" content="Auto">
-      <meta name="loc:changeTheme" content="Change theme">
-      <meta name="loc:copy" content="Copy">
-      <meta name="loc:downloadPdf" content="Download PDF">
-
-      <script type="module" src="./../public/docfx.min.js"></script>
-
-      <script>
-        const theme = localStorage.getItem('theme') || 'auto'
-        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-      </script>
-
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
   </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
-    <header class="bg-body border-bottom">
-      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
-        <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
-            AngeliA
-          </a>
-          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="bi bi-three-dots"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navpanel">
-            <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
               </form>
             </div>
           </div>
-        </div>
-      </nav>
-    </header>
+        </nav>
 
-    <main class="container-xxl">
-      <div class="toc-offcanvas">
-        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
           </div>
-          <div class="offcanvas-body">
-            <nav class="toc" id="toc"></nav>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
+      <div role="main" class="container body-content hide-when-search">
 
-      <div class="content">
-        <div class="actionbar">
-          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
-            <i class="bi bi-list"></i>
-          </button>
-
-          <nav id="breadcrumb"></nav>
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
         </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AngeliA.Float2">
 
-        <article data-uid="AngeliA.Float2">
 
 
-
-  <h1 id="AngeliA_Float2" data-uid="AngeliA.Float2" class="text-break">
-Struct Float2  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L7"><i class="bi bi-code-slash"></i></a>
-  </h1>
-
-  <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>AngeliA Framework.dll</dd></dl>
+  <h1 id="AngeliA_Float2" data-uid="AngeliA.Float2" class="text-break">Struct Float2</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="AngeliA.Float2.html">Float2</a>&gt;</div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformattable">IFormattable</a></div>
   </div>
-
-  <div class="markdown summary"></div>
-  <div class="markdown conceptual"></div>
-
+  <h6><strong>Namespace</strong>: <a class="xref" href="AngeliA.html">AngeliA</a></h6>
+  <h6><strong>Assembly</strong>: AngeliA Framework.dll</h6>
+  <h5 id="AngeliA_Float2_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
 public struct Float2 : IEquatable&lt;Float2&gt;, IFormattable</code></pre>
   </div>
-
-
-
-
-
-  <dl class="typelist implements">
-    <dt>Implements</dt>
-    <dd>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="AngeliA.Float2.html">Float2</a>&gt;</div>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformattable">IFormattable</a></div>
-    </dd>
-  </dl>
-
-
-  <dl class="typelist inheritedMembers">
-    <dt>Inherited Members</dt>
-    <dd>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
-    </div>
-  </dd></dl>
-
-  <dl class="typelist extensionMethods">
-    <dt>Extension Methods</dt>
-    <dd>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2__ctor_System_Single_System_Single_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.%23ctor(System.Single%2CSystem.Single)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L135">View Source</a>
+  </span>
+  <a id="AngeliA_Float2__ctor_" data-uid="AngeliA.Float2.#ctor*"></a>
+  <h4 id="AngeliA_Float2__ctor_System_Single_System_Single_" data-uid="AngeliA.Float2.#ctor(System.Single,System.Single)">Float2(float, float)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Float2(float x, float y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_kEpsilon.md&amp;value=---%0Auid%3A%20AngeliA.Float2.kEpsilon%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L29">View Source</a>
+  </span>
+  <h4 id="AngeliA_Float2_kEpsilon" data-uid="AngeliA.Float2.kEpsilon">kEpsilon</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const float kEpsilon = 1E-05</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_kEpsilonNormalSqrt.md&amp;value=---%0Auid%3A%20AngeliA.Float2.kEpsilonNormalSqrt%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L31">View Source</a>
+  </span>
+  <h4 id="AngeliA_Float2_kEpsilonNormalSqrt" data-uid="AngeliA.Float2.kEpsilonNormalSqrt">kEpsilonNormalSqrt</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const float kEpsilonNormalSqrt = 1E-15</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_x.md&amp;value=---%0Auid%3A%20AngeliA.Float2.x%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L10">View Source</a>
+  </span>
+  <h4 id="AngeliA_Float2_x" data-uid="AngeliA.Float2.x">x</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float x</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_y.md&amp;value=---%0Auid%3A%20AngeliA.Float2.y%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L11">View Source</a>
+  </span>
+  <h4 id="AngeliA_Float2_y" data-uid="AngeliA.Float2.y">y</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float y</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_Item_System_Int32_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.Item(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L33">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_Item_" data-uid="AngeliA.Float2.Item*"></a>
+  <h4 id="AngeliA_Float2_Item_System_Int32_" data-uid="AngeliA.Float2.Item(System.Int32)">this[int]</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float this[int index] { readonly get; set; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_down.md&amp;value=---%0Auid%3A%20AngeliA.Float2.down%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L100">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_down_" data-uid="AngeliA.Float2.down*"></a>
+  <h4 id="AngeliA_Float2_down" data-uid="AngeliA.Float2.down">down</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 down { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_left.md&amp;value=---%0Auid%3A%20AngeliA.Float2.left%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L107">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_left_" data-uid="AngeliA.Float2.left*"></a>
+  <h4 id="AngeliA_Float2_left" data-uid="AngeliA.Float2.left">left</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 left { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_magnitude.md&amp;value=---%0Auid%3A%20AngeliA.Float2.magnitude%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L65">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_magnitude_" data-uid="AngeliA.Float2.magnitude*"></a>
+  <h4 id="AngeliA_Float2_magnitude" data-uid="AngeliA.Float2.magnitude">magnitude</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly float magnitude { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_negativeInfinity.md&amp;value=---%0Auid%3A%20AngeliA.Float2.negativeInfinity%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L128">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_negativeInfinity_" data-uid="AngeliA.Float2.negativeInfinity*"></a>
+  <h4 id="AngeliA_Float2_negativeInfinity" data-uid="AngeliA.Float2.negativeInfinity">negativeInfinity</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 negativeInfinity { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_normalized.md&amp;value=---%0Auid%3A%20AngeliA.Float2.normalized%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L56">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_normalized_" data-uid="AngeliA.Float2.normalized*"></a>
+  <h4 id="AngeliA_Float2_normalized" data-uid="AngeliA.Float2.normalized">normalized</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly Float2 normalized { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_one.md&amp;value=---%0Auid%3A%20AngeliA.Float2.one%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L86">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_one_" data-uid="AngeliA.Float2.one*"></a>
+  <h4 id="AngeliA_Float2_one" data-uid="AngeliA.Float2.one">one</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 one { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_positiveInfinity.md&amp;value=---%0Auid%3A%20AngeliA.Float2.positiveInfinity%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L121">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_positiveInfinity_" data-uid="AngeliA.Float2.positiveInfinity*"></a>
+  <h4 id="AngeliA_Float2_positiveInfinity" data-uid="AngeliA.Float2.positiveInfinity">positiveInfinity</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 positiveInfinity { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_right.md&amp;value=---%0Auid%3A%20AngeliA.Float2.right%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L114">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_right_" data-uid="AngeliA.Float2.right*"></a>
+  <h4 id="AngeliA_Float2_right" data-uid="AngeliA.Float2.right">right</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 right { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_sqrMagnitude.md&amp;value=---%0Auid%3A%20AngeliA.Float2.sqrMagnitude%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L72">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_sqrMagnitude_" data-uid="AngeliA.Float2.sqrMagnitude*"></a>
+  <h4 id="AngeliA_Float2_sqrMagnitude" data-uid="AngeliA.Float2.sqrMagnitude">sqrMagnitude</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly float sqrMagnitude { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_up.md&amp;value=---%0Auid%3A%20AngeliA.Float2.up%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L93">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_up_" data-uid="AngeliA.Float2.up*"></a>
+  <h4 id="AngeliA_Float2_up" data-uid="AngeliA.Float2.up">up</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 up { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_zero.md&amp;value=---%0Auid%3A%20AngeliA.Float2.zero%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L79">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_zero_" data-uid="AngeliA.Float2.zero*"></a>
+  <h4 id="AngeliA_Float2_zero" data-uid="AngeliA.Float2.zero">zero</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 zero { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_ClampMagnitude_AngeliA_Float2_System_Single_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.ClampMagnitude(AngeliA.Float2%2CSystem.Single)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L239">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_ClampMagnitude_" data-uid="AngeliA.Float2.ClampMagnitude*"></a>
+  <h4 id="AngeliA_Float2_ClampMagnitude_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.ClampMagnitude(AngeliA.Float2,System.Single)">ClampMagnitude(Float2, float)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 ClampMagnitude(Float2 vector, float maxLength)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">vector</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">maxLength</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_Distance_AngeliA_Float2_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.Distance(AngeliA.Float2%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L233">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_Distance_" data-uid="AngeliA.Float2.Distance*"></a>
+  <h4 id="AngeliA_Float2_Distance_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.Distance(AngeliA.Float2,AngeliA.Float2)">Distance(Float2, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float Distance(Float2 a, Float2 b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_Dot_AngeliA_Float2_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.Dot(AngeliA.Float2%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L223">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_Dot_" data-uid="AngeliA.Float2.Dot*"></a>
+  <h4 id="AngeliA_Float2_Dot_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.Dot(AngeliA.Float2,AngeliA.Float2)">Dot(Float2, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float Dot(Float2 lhs, Float2 rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_Equals_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.Equals(AngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L214">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_Equals_" data-uid="AngeliA.Float2.Equals*"></a>
+  <h4 id="AngeliA_Float2_Equals_AngeliA_Float2_" data-uid="AngeliA.Float2.Equals(AngeliA.Float2)">Equals(Float2)</h4>
+  <div class="markdown level1 summary"><p>Indicates whether the current object is equal to another object of the same type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(Float2 other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">other</span></td>
+        <td><p>An object to compare with this object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_Equals_System_Object_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L206">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_Equals_" data-uid="AngeliA.Float2.Equals*"></a>
+  <h4 id="AngeliA_Float2_Equals_System_Object_" data-uid="AngeliA.Float2.Equals(System.Object)">Equals(object)</h4>
+  <div class="markdown level1 summary"><p>Indicates whether this instance and a specified object are equal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">obj</code> and this instance are the same type and represent the same value; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.equals">ValueType.Equals(object)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_GetHashCode.md&amp;value=---%0Auid%3A%20AngeliA.Float2.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L202">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_GetHashCode_" data-uid="AngeliA.Float2.GetHashCode*"></a>
+  <h4 id="AngeliA_Float2_GetHashCode" data-uid="AngeliA.Float2.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>Returns the hash code for this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><p>A 32-bit signed integer that is the hash code for this instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode">ValueType.GetHashCode()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_Lerp_AngeliA_Float2_AngeliA_Float2_System_Single_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.Lerp(AngeliA.Float2%2CAngeliA.Float2%2CSystem.Single)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L145">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_Lerp_" data-uid="AngeliA.Float2.Lerp*"></a>
+  <h4 id="AngeliA_Float2_Lerp_AngeliA_Float2_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.Lerp(AngeliA.Float2,AngeliA.Float2,System.Single)">Lerp(Float2, Float2, float)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 Lerp(Float2 a, Float2 b, float t)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">t</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_LerpUnclamped_AngeliA_Float2_AngeliA_Float2_System_Single_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.LerpUnclamped(AngeliA.Float2%2CAngeliA.Float2%2CSystem.Single)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L150">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_LerpUnclamped_" data-uid="AngeliA.Float2.LerpUnclamped*"></a>
+  <h4 id="AngeliA_Float2_LerpUnclamped_AngeliA_Float2_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.LerpUnclamped(AngeliA.Float2,AngeliA.Float2,System.Single)">LerpUnclamped(Float2, Float2, float)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 LerpUnclamped(Float2 a, Float2 b, float t)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">t</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_MoveTowards_AngeliA_Float2_AngeliA_Float2_System_Single_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.MoveTowards(AngeliA.Float2%2CAngeliA.Float2%2CSystem.Single)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L154">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_MoveTowards_" data-uid="AngeliA.Float2.MoveTowards*"></a>
+  <h4 id="AngeliA_Float2_MoveTowards_AngeliA_Float2_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.MoveTowards(AngeliA.Float2,AngeliA.Float2,System.Single)">MoveTowards(Float2, Float2, float)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 MoveTowards(Float2 current, Float2 target, float maxDistanceDelta)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">current</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">maxDistanceDelta</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_Normalize.md&amp;value=---%0Auid%3A%20AngeliA.Float2.Normalize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L175">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_Normalize_" data-uid="AngeliA.Float2.Normalize*"></a>
+  <h4 id="AngeliA_Float2_Normalize" data-uid="AngeliA.Float2.Normalize">Normalize()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Normalize()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_Reflect_AngeliA_Float2_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.Reflect(AngeliA.Float2%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L218">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_Reflect_" data-uid="AngeliA.Float2.Reflect*"></a>
+  <h4 id="AngeliA_Float2_Reflect_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.Reflect(AngeliA.Float2,AngeliA.Float2)">Reflect(Float2, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 Reflect(Float2 inDirection, Float2 inNormal)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">inDirection</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">inNormal</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_Scale_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.Scale(AngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L170">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_Scale_" data-uid="AngeliA.Float2.Scale*"></a>
+  <h4 id="AngeliA_Float2_Scale_AngeliA_Float2_" data-uid="AngeliA.Float2.Scale(AngeliA.Float2)">Scale(Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Scale(Float2 scale)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">scale</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_Scale_AngeliA_Float2_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.Scale(AngeliA.Float2%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L166">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_Scale_" data-uid="AngeliA.Float2.Scale*"></a>
+  <h4 id="AngeliA_Float2_Scale_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.Scale(AngeliA.Float2,AngeliA.Float2)">Scale(Float2, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 Scale(Float2 a, Float2 b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_Set_System_Single_System_Single_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.Set(System.Single%2CSystem.Single)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L140">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_Set_" data-uid="AngeliA.Float2.Set*"></a>
+  <h4 id="AngeliA_Float2_Set_System_Single_System_Single_" data-uid="AngeliA.Float2.Set(System.Single,System.Single)">Set(float, float)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Set(float newX, float newY)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">newX</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">newY</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_SignedAngle_AngeliA_Float2_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.SignedAngle(AngeliA.Float2%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L227">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_SignedAngle_" data-uid="AngeliA.Float2.SignedAngle*"></a>
+  <h4 id="AngeliA_Float2_SignedAngle_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.SignedAngle(AngeliA.Float2,AngeliA.Float2)">SignedAngle(Float2, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float SignedAngle(Float2 from, Float2 to)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">from</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">to</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_SmoothDamp_AngeliA_Float2_AngeliA_Float2_AngeliA_Float2__System_Single_System_Single_System_Single_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.SmoothDamp(AngeliA.Float2%2CAngeliA.Float2%2CAngeliA.Float2%40%2CSystem.Single%2CSystem.Single%2CSystem.Single)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L259">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_SmoothDamp_" data-uid="AngeliA.Float2.SmoothDamp*"></a>
+  <h4 id="AngeliA_Float2_SmoothDamp_AngeliA_Float2_AngeliA_Float2_AngeliA_Float2__System_Single_System_Single_System_Single_" data-uid="AngeliA.Float2.SmoothDamp(AngeliA.Float2,AngeliA.Float2,AngeliA.Float2@,System.Single,System.Single,System.Single)">SmoothDamp(Float2, Float2, ref Float2, float, float, float)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 SmoothDamp(Float2 current, Float2 target, ref Float2 currentVelocity, float smoothTime, float maxSpeed, float deltaTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">current</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">currentVelocity</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">smoothTime</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">maxSpeed</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">deltaTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_SqrMagnitude.md&amp;value=---%0Auid%3A%20AngeliA.Float2.SqrMagnitude%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L255">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_SqrMagnitude_" data-uid="AngeliA.Float2.SqrMagnitude*"></a>
+  <h4 id="AngeliA_Float2_SqrMagnitude" data-uid="AngeliA.Float2.SqrMagnitude">SqrMagnitude()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly float SqrMagnitude()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_SqrMagnitude_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.SqrMagnitude(AngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L251">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_SqrMagnitude_" data-uid="AngeliA.Float2.SqrMagnitude*"></a>
+  <h4 id="AngeliA_Float2_SqrMagnitude_AngeliA_Float2_" data-uid="AngeliA.Float2.SqrMagnitude(AngeliA.Float2)">SqrMagnitude(Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float SqrMagnitude(Float2 a)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_ToString.md&amp;value=---%0Auid%3A%20AngeliA.Float2.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L184">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_ToString_" data-uid="AngeliA.Float2.ToString*"></a>
+  <h4 id="AngeliA_Float2_ToString" data-uid="AngeliA.Float2.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Returns the fully qualified type name of this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>The fully qualified type name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetype.tostring">ValueType.ToString()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_ToString_System_String_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.ToString(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L188">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_ToString_" data-uid="AngeliA.Float2.ToString*"></a>
+  <h4 id="AngeliA_Float2_ToString_System_String_" data-uid="AngeliA.Float2.ToString(System.String)">ToString(string)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string format)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">format</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_ToString_System_String_System_IFormatProvider_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.ToString(System.String%2CSystem.IFormatProvider)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L192">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_ToString_" data-uid="AngeliA.Float2.ToString*"></a>
+  <h4 id="AngeliA_Float2_ToString_System_String_System_IFormatProvider_" data-uid="AngeliA.Float2.ToString(System.String,System.IFormatProvider)">ToString(string, IFormatProvider)</h4>
+  <div class="markdown level1 summary"><p>Formats the value of the current instance using the specified format.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly string ToString(string format, IFormatProvider formatProvider)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">format</span></td>
+        <td><p>The format to use.</p>
+<p>-or-</p>
+<p>A null reference (<code>Nothing</code> in Visual Basic) to use the default format defined for the type of the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformattable">IFormattable</a> implementation.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></td>
+        <td><span class="parametername">formatProvider</span></td>
+        <td><p>The provider to use to format the value.</p>
+<p>-or-</p>
+<p>A null reference (<code>Nothing</code> in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>The value of the current instance in the specified format.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="operators">Operators
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_Addition_AngeliA_Float2_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_Addition(AngeliA.Float2%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L298">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_Addition_" data-uid="AngeliA.Float2.op_Addition*"></a>
+  <h4 id="AngeliA_Float2_op_Addition_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Addition(AngeliA.Float2,AngeliA.Float2)">operator +(Float2, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 operator +(Float2 a, Float2 b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_Division_AngeliA_Float2_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_Division(AngeliA.Float2%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L310">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_Division_" data-uid="AngeliA.Float2.op_Division*"></a>
+  <h4 id="AngeliA_Float2_op_Division_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Division(AngeliA.Float2,AngeliA.Float2)">operator /(Float2, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 operator /(Float2 a, Float2 b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_Division_AngeliA_Float2_System_Single_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_Division(AngeliA.Float2%2CSystem.Single)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L326">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_Division_" data-uid="AngeliA.Float2.op_Division*"></a>
+  <h4 id="AngeliA_Float2_op_Division_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.op_Division(AngeliA.Float2,System.Single)">operator /(Float2, float)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 operator /(Float2 a, float d)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">d</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_Equality_AngeliA_Float2_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_Equality(AngeliA.Float2%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L330">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_Equality_" data-uid="AngeliA.Float2.op_Equality*"></a>
+  <h4 id="AngeliA_Float2_op_Equality_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Equality(AngeliA.Float2,AngeliA.Float2)">operator ==(Float2, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(Float2 lhs, Float2 rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_Implicit_AngeliA_Float2__AngeliA_Float3.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_Implicit(AngeliA.Float2)~AngeliA.Float3%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L344">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_Implicit_" data-uid="AngeliA.Float2.op_Implicit*"></a>
+  <h4 id="AngeliA_Float2_op_Implicit_AngeliA_Float2__AngeliA_Float3" data-uid="AngeliA.Float2.op_Implicit(AngeliA.Float2)~AngeliA.Float3">implicit operator Float3(Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Float3(Float2 v)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float3.html">Float3</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_Implicit_AngeliA_Float3__AngeliA_Float2.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_Implicit(AngeliA.Float3)~AngeliA.Float2%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L340">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_Implicit_" data-uid="AngeliA.Float2.op_Implicit*"></a>
+  <h4 id="AngeliA_Float2_op_Implicit_AngeliA_Float3__AngeliA_Float2" data-uid="AngeliA.Float2.op_Implicit(AngeliA.Float3)~AngeliA.Float2">implicit operator Float2(Float3)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator Float2(Float3 v)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float3.html">Float3</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_Inequality_AngeliA_Float2_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_Inequality(AngeliA.Float2%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L336">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_Inequality_" data-uid="AngeliA.Float2.op_Inequality*"></a>
+  <h4 id="AngeliA_Float2_op_Inequality_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Inequality(AngeliA.Float2,AngeliA.Float2)">operator !=(Float2, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(Float2 lhs, Float2 rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_Multiply_AngeliA_Float2_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_Multiply(AngeliA.Float2%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L306">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_Multiply_" data-uid="AngeliA.Float2.op_Multiply*"></a>
+  <h4 id="AngeliA_Float2_op_Multiply_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Multiply(AngeliA.Float2,AngeliA.Float2)">operator *(Float2, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 operator *(Float2 a, Float2 b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_Multiply_AngeliA_Float2_System_Single_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_Multiply(AngeliA.Float2%2CSystem.Single)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L318">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_Multiply_" data-uid="AngeliA.Float2.op_Multiply*"></a>
+  <h4 id="AngeliA_Float2_op_Multiply_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.op_Multiply(AngeliA.Float2,System.Single)">operator *(Float2, float)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 operator *(Float2 a, float d)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">d</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_Multiply_System_Single_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_Multiply(System.Single%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L322">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_Multiply_" data-uid="AngeliA.Float2.op_Multiply*"></a>
+  <h4 id="AngeliA_Float2_op_Multiply_System_Single_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Multiply(System.Single,AngeliA.Float2)">operator *(float, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 operator *(float d, Float2 a)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></td>
+        <td><span class="parametername">d</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_Subtraction_AngeliA_Float2_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_Subtraction(AngeliA.Float2%2CAngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L302">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_Subtraction_" data-uid="AngeliA.Float2.op_Subtraction*"></a>
+  <h4 id="AngeliA_Float2_op_Subtraction_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Subtraction(AngeliA.Float2,AngeliA.Float2)">operator -(Float2, Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 operator -(Float2 a, Float2 b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2_op_UnaryNegation_AngeliA_Float2_.md&amp;value=---%0Auid%3A%20AngeliA.Float2.op_UnaryNegation(AngeliA.Float2)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L314">View Source</a>
+  </span>
+  <a id="AngeliA_Float2_op_UnaryNegation_" data-uid="AngeliA.Float2.op_UnaryNegation*"></a>
+  <h4 id="AngeliA_Float2_op_UnaryNegation_AngeliA_Float2_" data-uid="AngeliA.Float2.op_UnaryNegation(AngeliA.Float2)">operator -(Float2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Float2 operator -(Float2 a)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Float2.html">Float2</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformattable">IFormattable</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_Almost_AngeliA_Float2_AngeliA_Float2_">Extension.Almost(Float2, Float2)</a>
   </div>
@@ -174,1811 +2283,47 @@ public struct Float2 : IEquatable&lt;Float2&gt;, IFormattable</code></pre>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
   </div>
-  </dd></dl>
-
-
-
-
-
-  <h2 class="section" id="constructors">Constructors
-</h2>
-
-
-  <a id="AngeliA_Float2__ctor_" data-uid="AngeliA.Float2.#ctor*"></a>
-
-  <h3 id="AngeliA_Float2__ctor_System_Single_System_Single_" data-uid="AngeliA.Float2.#ctor(System.Single,System.Single)">
-  Float2(float, float)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L135"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Float2(float x, float y)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <h2 class="section" id="fields">Fields
-</h2>
-
-
-
-  <h3 id="AngeliA_Float2_kEpsilon" data-uid="AngeliA.Float2.kEpsilon">
-  kEpsilon
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L29"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const float kEpsilon = 1E-05</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_Float2_kEpsilonNormalSqrt" data-uid="AngeliA.Float2.kEpsilonNormalSqrt">
-  kEpsilonNormalSqrt
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L31"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const float kEpsilonNormalSqrt = 1E-15</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_Float2_x" data-uid="AngeliA.Float2.x">
-  x
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L10"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float x</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_Float2_y" data-uid="AngeliA.Float2.y">
-  y
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L11"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float y</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-  <h2 class="section" id="properties">Properties
-</h2>
-
-
-  <a id="AngeliA_Float2_Item_" data-uid="AngeliA.Float2.Item*"></a>
-
-  <h3 id="AngeliA_Float2_Item_System_Int32_" data-uid="AngeliA.Float2.Item(System.Int32)">
-  this[int]
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L33"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float this[int index] { readonly get; set; }</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_down_" data-uid="AngeliA.Float2.down*"></a>
-
-  <h3 id="AngeliA_Float2_down" data-uid="AngeliA.Float2.down">
-  down
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L100"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 down { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_left_" data-uid="AngeliA.Float2.left*"></a>
-
-  <h3 id="AngeliA_Float2_left" data-uid="AngeliA.Float2.left">
-  left
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L107"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 left { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_magnitude_" data-uid="AngeliA.Float2.magnitude*"></a>
-
-  <h3 id="AngeliA_Float2_magnitude" data-uid="AngeliA.Float2.magnitude">
-  magnitude
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L65"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly float magnitude { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_negativeInfinity_" data-uid="AngeliA.Float2.negativeInfinity*"></a>
-
-  <h3 id="AngeliA_Float2_negativeInfinity" data-uid="AngeliA.Float2.negativeInfinity">
-  negativeInfinity
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L128"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 negativeInfinity { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_normalized_" data-uid="AngeliA.Float2.normalized*"></a>
-
-  <h3 id="AngeliA_Float2_normalized" data-uid="AngeliA.Float2.normalized">
-  normalized
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L56"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly Float2 normalized { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_one_" data-uid="AngeliA.Float2.one*"></a>
-
-  <h3 id="AngeliA_Float2_one" data-uid="AngeliA.Float2.one">
-  one
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L86"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 one { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_positiveInfinity_" data-uid="AngeliA.Float2.positiveInfinity*"></a>
-
-  <h3 id="AngeliA_Float2_positiveInfinity" data-uid="AngeliA.Float2.positiveInfinity">
-  positiveInfinity
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L121"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 positiveInfinity { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_right_" data-uid="AngeliA.Float2.right*"></a>
-
-  <h3 id="AngeliA_Float2_right" data-uid="AngeliA.Float2.right">
-  right
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L114"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 right { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_sqrMagnitude_" data-uid="AngeliA.Float2.sqrMagnitude*"></a>
-
-  <h3 id="AngeliA_Float2_sqrMagnitude" data-uid="AngeliA.Float2.sqrMagnitude">
-  sqrMagnitude
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L72"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly float sqrMagnitude { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_up_" data-uid="AngeliA.Float2.up*"></a>
-
-  <h3 id="AngeliA_Float2_up" data-uid="AngeliA.Float2.up">
-  up
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L93"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 up { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_zero_" data-uid="AngeliA.Float2.zero*"></a>
-
-  <h3 id="AngeliA_Float2_zero" data-uid="AngeliA.Float2.zero">
-  zero
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L79"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 zero { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <h2 class="section" id="methods">Methods
-</h2>
-
-
-  <a id="AngeliA_Float2_ClampMagnitude_" data-uid="AngeliA.Float2.ClampMagnitude*"></a>
-
-  <h3 id="AngeliA_Float2_ClampMagnitude_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.ClampMagnitude(AngeliA.Float2,System.Single)">
-  ClampMagnitude(Float2, float)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L239"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 ClampMagnitude(Float2 vector, float maxLength)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>vector</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>maxLength</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_Distance_" data-uid="AngeliA.Float2.Distance*"></a>
-
-  <h3 id="AngeliA_Float2_Distance_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.Distance(AngeliA.Float2,AngeliA.Float2)">
-  Distance(Float2, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L233"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static float Distance(Float2 a, Float2 b)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>b</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_Dot_" data-uid="AngeliA.Float2.Dot*"></a>
-
-  <h3 id="AngeliA_Float2_Dot_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.Dot(AngeliA.Float2,AngeliA.Float2)">
-  Dot(Float2, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L223"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static float Dot(Float2 lhs, Float2 rhs)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>lhs</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>rhs</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_Equals_" data-uid="AngeliA.Float2.Equals*"></a>
-
-  <h3 id="AngeliA_Float2_Equals_AngeliA_Float2_" data-uid="AngeliA.Float2.Equals(AngeliA.Float2)">
-  Equals(Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L214"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Indicates whether the current object is equal to another object of the same type.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly bool Equals(Float2 other)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>other</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd><p>An object to compare with this object.</p>
-</dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the current object is equal to the <code class="paramref">other</code> parameter; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_Equals_" data-uid="AngeliA.Float2.Equals*"></a>
-
-  <h3 id="AngeliA_Float2_Equals_System_Object_" data-uid="AngeliA.Float2.Equals(System.Object)">
-  Equals(object)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L206"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Indicates whether this instance and a specified object are equal.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object other)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>other</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">obj</code> and this instance are the same type and represent the same value; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_GetHashCode_" data-uid="AngeliA.Float2.GetHashCode*"></a>
-
-  <h3 id="AngeliA_Float2_GetHashCode" data-uid="AngeliA.Float2.GetHashCode">
-  GetHashCode()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L202"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Returns the hash code for this instance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
-  </div>
-
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd><p>A 32-bit signed integer that is the hash code for this instance.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_Lerp_" data-uid="AngeliA.Float2.Lerp*"></a>
-
-  <h3 id="AngeliA_Float2_Lerp_AngeliA_Float2_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.Lerp(AngeliA.Float2,AngeliA.Float2,System.Single)">
-  Lerp(Float2, Float2, float)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L145"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 Lerp(Float2 a, Float2 b, float t)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>b</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>t</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_LerpUnclamped_" data-uid="AngeliA.Float2.LerpUnclamped*"></a>
-
-  <h3 id="AngeliA_Float2_LerpUnclamped_AngeliA_Float2_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.LerpUnclamped(AngeliA.Float2,AngeliA.Float2,System.Single)">
-  LerpUnclamped(Float2, Float2, float)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L150"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 LerpUnclamped(Float2 a, Float2 b, float t)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>b</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>t</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_MoveTowards_" data-uid="AngeliA.Float2.MoveTowards*"></a>
-
-  <h3 id="AngeliA_Float2_MoveTowards_AngeliA_Float2_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.MoveTowards(AngeliA.Float2,AngeliA.Float2,System.Single)">
-  MoveTowards(Float2, Float2, float)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L154"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 MoveTowards(Float2 current, Float2 target, float maxDistanceDelta)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>current</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>target</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>maxDistanceDelta</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_Normalize_" data-uid="AngeliA.Float2.Normalize*"></a>
-
-  <h3 id="AngeliA_Float2_Normalize" data-uid="AngeliA.Float2.Normalize">
-  Normalize()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L175"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Normalize()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_Reflect_" data-uid="AngeliA.Float2.Reflect*"></a>
-
-  <h3 id="AngeliA_Float2_Reflect_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.Reflect(AngeliA.Float2,AngeliA.Float2)">
-  Reflect(Float2, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L218"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 Reflect(Float2 inDirection, Float2 inNormal)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>inDirection</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>inNormal</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_Scale_" data-uid="AngeliA.Float2.Scale*"></a>
-
-  <h3 id="AngeliA_Float2_Scale_AngeliA_Float2_" data-uid="AngeliA.Float2.Scale(AngeliA.Float2)">
-  Scale(Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L170"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Scale(Float2 scale)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>scale</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_Scale_" data-uid="AngeliA.Float2.Scale*"></a>
-
-  <h3 id="AngeliA_Float2_Scale_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.Scale(AngeliA.Float2,AngeliA.Float2)">
-  Scale(Float2, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L166"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 Scale(Float2 a, Float2 b)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>b</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_Set_" data-uid="AngeliA.Float2.Set*"></a>
-
-  <h3 id="AngeliA_Float2_Set_System_Single_System_Single_" data-uid="AngeliA.Float2.Set(System.Single,System.Single)">
-  Set(float, float)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L140"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Set(float newX, float newY)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>newX</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-    <dt><code>newY</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_SignedAngle_" data-uid="AngeliA.Float2.SignedAngle*"></a>
-
-  <h3 id="AngeliA_Float2_SignedAngle_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.SignedAngle(AngeliA.Float2,AngeliA.Float2)">
-  SignedAngle(Float2, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L227"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static float SignedAngle(Float2 from, Float2 to)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>from</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>to</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_SmoothDamp_" data-uid="AngeliA.Float2.SmoothDamp*"></a>
-
-  <h3 id="AngeliA_Float2_SmoothDamp_AngeliA_Float2_AngeliA_Float2_AngeliA_Float2__System_Single_System_Single_System_Single_" data-uid="AngeliA.Float2.SmoothDamp(AngeliA.Float2,AngeliA.Float2,AngeliA.Float2@,System.Single,System.Single,System.Single)">
-  SmoothDamp(Float2, Float2, ref Float2, float, float, float)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L259"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 SmoothDamp(Float2 current, Float2 target, ref Float2 currentVelocity, float smoothTime, float maxSpeed, float deltaTime)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>current</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>target</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>currentVelocity</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>smoothTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-    <dt><code>maxSpeed</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-    <dt><code>deltaTime</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_SqrMagnitude_" data-uid="AngeliA.Float2.SqrMagnitude*"></a>
-
-  <h3 id="AngeliA_Float2_SqrMagnitude" data-uid="AngeliA.Float2.SqrMagnitude">
-  SqrMagnitude()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L255"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly float SqrMagnitude()</code></pre>
-  </div>
-
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_SqrMagnitude_" data-uid="AngeliA.Float2.SqrMagnitude*"></a>
-
-  <h3 id="AngeliA_Float2_SqrMagnitude_AngeliA_Float2_" data-uid="AngeliA.Float2.SqrMagnitude(AngeliA.Float2)">
-  SqrMagnitude(Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L251"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static float SqrMagnitude(Float2 a)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_ToString_" data-uid="AngeliA.Float2.ToString*"></a>
-
-  <h3 id="AngeliA_Float2_ToString" data-uid="AngeliA.Float2.ToString">
-  ToString()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L184"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Returns the fully qualified type name of this instance.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
-  </div>
-
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The fully qualified type name.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_ToString_" data-uid="AngeliA.Float2.ToString*"></a>
-
-  <h3 id="AngeliA_Float2_ToString_System_String_" data-uid="AngeliA.Float2.ToString(System.String)">
-  ToString(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L188"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly string ToString(string format)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_ToString_" data-uid="AngeliA.Float2.ToString*"></a>
-
-  <h3 id="AngeliA_Float2_ToString_System_String_System_IFormatProvider_" data-uid="AngeliA.Float2.ToString(System.String,System.IFormatProvider)">
-  ToString(string, IFormatProvider)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L192"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Formats the value of the current instance using the specified format.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly string ToString(string format, IFormatProvider formatProvider)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The format to use.</p>
-<p>-or-</p>
-<p>A null reference (<code>Nothing</code> in Visual Basic) to use the default format defined for the type of the <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformattable">IFormattable</a> implementation.</p>
-</dd>
-    <dt><code>formatProvider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
-    <dd><p>The provider to use to format the value.</p>
-<p>-or-</p>
-<p>A null reference (<code>Nothing</code> in Visual Basic) to obtain the numeric format information from the current locale setting of the operating system.</p>
-</dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The value of the current instance in the specified format.</p>
-</dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <h2 class="section" id="operators">Operators
-</h2>
-
-
-  <a id="AngeliA_Float2_op_Addition_" data-uid="AngeliA.Float2.op_Addition*"></a>
-
-  <h3 id="AngeliA_Float2_op_Addition_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Addition(AngeliA.Float2,AngeliA.Float2)">
-  operator +(Float2, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L298"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 operator +(Float2 a, Float2 b)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>b</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_op_Division_" data-uid="AngeliA.Float2.op_Division*"></a>
-
-  <h3 id="AngeliA_Float2_op_Division_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Division(AngeliA.Float2,AngeliA.Float2)">
-  operator /(Float2, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L310"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 operator /(Float2 a, Float2 b)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>b</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_op_Division_" data-uid="AngeliA.Float2.op_Division*"></a>
-
-  <h3 id="AngeliA_Float2_op_Division_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.op_Division(AngeliA.Float2,System.Single)">
-  operator /(Float2, float)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L326"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 operator /(Float2 a, float d)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>d</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_op_Equality_" data-uid="AngeliA.Float2.op_Equality*"></a>
-
-  <h3 id="AngeliA_Float2_op_Equality_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Equality(AngeliA.Float2,AngeliA.Float2)">
-  operator ==(Float2, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L330"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator ==(Float2 lhs, Float2 rhs)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>lhs</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>rhs</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_op_Implicit_" data-uid="AngeliA.Float2.op_Implicit*"></a>
-
-  <h3 id="AngeliA_Float2_op_Implicit_AngeliA_Float2__AngeliA_Float3" data-uid="AngeliA.Float2.op_Implicit(AngeliA.Float2)~AngeliA.Float3">
-  implicit operator Float3(Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L344"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static implicit operator Float3(Float2 v)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>v</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float3.html">Float3</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_op_Implicit_" data-uid="AngeliA.Float2.op_Implicit*"></a>
-
-  <h3 id="AngeliA_Float2_op_Implicit_AngeliA_Float3__AngeliA_Float2" data-uid="AngeliA.Float2.op_Implicit(AngeliA.Float3)~AngeliA.Float2">
-  implicit operator Float2(Float3)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L340"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static implicit operator Float2(Float3 v)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>v</code> <a class="xref" href="AngeliA.Float3.html">Float3</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_op_Inequality_" data-uid="AngeliA.Float2.op_Inequality*"></a>
-
-  <h3 id="AngeliA_Float2_op_Inequality_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Inequality(AngeliA.Float2,AngeliA.Float2)">
-  operator !=(Float2, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L336"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator !=(Float2 lhs, Float2 rhs)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>lhs</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>rhs</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_op_Multiply_" data-uid="AngeliA.Float2.op_Multiply*"></a>
-
-  <h3 id="AngeliA_Float2_op_Multiply_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Multiply(AngeliA.Float2,AngeliA.Float2)">
-  operator *(Float2, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L306"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 operator *(Float2 a, Float2 b)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>b</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_op_Multiply_" data-uid="AngeliA.Float2.op_Multiply*"></a>
-
-  <h3 id="AngeliA_Float2_op_Multiply_AngeliA_Float2_System_Single_" data-uid="AngeliA.Float2.op_Multiply(AngeliA.Float2,System.Single)">
-  operator *(Float2, float)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L318"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 operator *(Float2 a, float d)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>d</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_op_Multiply_" data-uid="AngeliA.Float2.op_Multiply*"></a>
-
-  <h3 id="AngeliA_Float2_op_Multiply_System_Single_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Multiply(System.Single,AngeliA.Float2)">
-  operator *(float, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L322"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 operator *(float d, Float2 a)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>d</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
-    <dd></dd>
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_op_Subtraction_" data-uid="AngeliA.Float2.op_Subtraction*"></a>
-
-  <h3 id="AngeliA_Float2_op_Subtraction_AngeliA_Float2_AngeliA_Float2_" data-uid="AngeliA.Float2.op_Subtraction(AngeliA.Float2,AngeliA.Float2)">
-  operator -(Float2, Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L302"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 operator -(Float2 a, Float2 b)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-    <dt><code>b</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Float2_op_UnaryNegation_" data-uid="AngeliA.Float2.op_UnaryNegation*"></a>
-
-  <h3 id="AngeliA_Float2_op_UnaryNegation_AngeliA_Float2_" data-uid="AngeliA.Float2.op_UnaryNegation(AngeliA.Float2)">
-  operator -(Float2)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L314"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Float2 operator -(Float2 a)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>a</code> <a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.Float2.html">Float2</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
 
 </article>
+          </div>
 
-        <div class="contribution d-print-none">
-          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L7" class="edit-link">Edit this page</a>
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Float2.md&amp;value=---%0Auid%3A%20AngeliA.Float2%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Structure/Float2.cs/#L7" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
         </div>
-
-
       </div>
 
-      <div class="affix">
-        <nav id="affix"></nav>
-      </div>
-    </main>
-
-    <div class="container-xxl search-results" id="search-results"></div>
-
-    <footer class="border-top text-secondary">
-      <div class="container-xxl">
-        <div class="flex-fill">
-          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
   </body>
 </html>

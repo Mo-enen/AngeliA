@@ -85,8 +85,8 @@ items:
       Public Shared Sub SaveAndClearAllBackgroundTrigger()
   overload: AngeliA.CircuitSystem.SaveAndClearAllBackgroundTrigger*
   attributes:
-  - type: AngeliA.BeforeSavingSlotChanged
-    ctor: AngeliA.BeforeSavingSlotChanged.#ctor(System.Int32)
+  - type: AngeliA.BeforeSavingSlotChangedAttribute
+    ctor: AngeliA.BeforeSavingSlotChangedAttribute.#ctor(System.Int32)
     arguments:
     - type: System.Int32
       value: 0

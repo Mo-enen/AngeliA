@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnMapEditorModeChange_ModeAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 231
+    startLine: 321
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when user change map editor editing mode
   example:
-  - internal static void ExampleFunction (OnMapEditorModeChange_ModeAttribute.Mode mode) { }
+  - >-
+    <pre><code class="lang-csharp">[OnMapEditorModeChange_Mode]
+
+    internal static void ExampleFunction (OnMapEditorModeChange_ModeAttribute.Mode mode) { }</code></pre>
   syntax:
     content: 'public class OnMapEditorModeChange_ModeAttribute : EventAttribute'
     content.vb: Public Class OnMapEditorModeChange_ModeAttribute Inherits EventAttribute

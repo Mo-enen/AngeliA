@@ -40,7 +40,7 @@ public static class CircuitSystem {
 	internal static void OnGameInitialize () {
 		// Init Operator Pool
 		OperatorPool.Clear();
-		foreach (var (method, _) in Util.AllStaticMethodWithAttribute<CircuitOperate_Int3UnitPos_IntStamp_Direction5From>()) {
+		foreach (var (method, _) in Util.AllStaticMethodWithAttribute<CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute>()) {
 			if (method.DeclaringType == null) continue;
 			var type = method.DeclaringType;
 			if (type.IsAbstract) {

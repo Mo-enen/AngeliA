@@ -26,7 +26,7 @@ items:
   - AngeliA.BeforeLateUpdateAttribute
   - AngeliA.BeforeLayerFrameUpdate_IntLayerAttribute
   - AngeliA.BeforeLevelRenderedAttribute
-  - AngeliA.BeforeSavingSlotChanged
+  - AngeliA.BeforeSavingSlotChangedAttribute
   - AngeliA.BeforeUpdateUpdateAttribute
   - AngeliA.BlockBuilder
   - AngeliA.BlockColor
@@ -80,7 +80,7 @@ items:
   - AngeliA.CharacterState
   - AngeliA.CheatCodeAttribute
   - AngeliA.CheatSystem
-  - AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
+  - AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
   - AngeliA.CircuitSystem
   - AngeliA.ClampCellsScope
   - AngeliA.Cloth
@@ -283,20 +283,20 @@ items:
   - AngeliA.NumberTwo
   - AngeliA.NumberZero
   - AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute
-  - AngeliA.OnBulletHitEnvironment_Bullet
+  - AngeliA.OnBulletHitEnvironment_BulletAttribute
   - AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute
-  - AngeliA.OnCharacterCrash_Entity
-  - AngeliA.OnCharacterFly_Entity
-  - AngeliA.OnCharacterFootStepped_Entity
-  - AngeliA.OnCharacterJump_Entity
-  - AngeliA.OnCharacterPassOut_Entity
-  - AngeliA.OnCharacterPound_Entity
-  - AngeliA.OnCharacterSleeping_Entity
-  - AngeliA.OnCharacterSlideStepped_Entity
-  - AngeliA.OnCharacterTeleport_Entity
+  - AngeliA.OnCharacterCrash_EntityAttribute
+  - AngeliA.OnCharacterFly_EntityAttribute
+  - AngeliA.OnCharacterFootStepped_EntityAttribute
+  - AngeliA.OnCharacterJump_EntityAttribute
+  - AngeliA.OnCharacterPassOut_EntityAttribute
+  - AngeliA.OnCharacterPound_EntityAttribute
+  - AngeliA.OnCharacterSleeping_EntityAttribute
+  - AngeliA.OnCharacterSlideStepped_EntityAttribute
+  - AngeliA.OnCharacterTeleport_EntityAttribute
   - AngeliA.OnCheatPerformed_StringCodeAttribute
   - AngeliA.OnCircuitWireActived_Int3UnitPosAttribute
-  - AngeliA.OnDealDamage_Damage_IDamageReceiver
+  - AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute
   - AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute
   - AngeliA.OnFileDropped_StringPathAttribute
   - AngeliA.OnGameFocusedAttribute
@@ -321,9 +321,9 @@ items:
   - AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute
   - AngeliA.OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute
   - AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute
-  - AngeliA.OnSavingSlotChanged
-  - AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-  - AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
+  - AngeliA.OnSavingSlotChangedAttribute
+  - AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+  - AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
   - AngeliA.OnViewZChangedAttribute
   - AngeliA.OnWindowSizeChangedAttribute
   - AngeliA.OnWorldCreatedBySquad_WorldAttribute
@@ -1159,19 +1159,19 @@ references:
   name: OnGameInitializeLaterAttribute
   nameWithType: OnGameInitializeLaterAttribute
   fullName: AngeliA.OnGameInitializeLaterAttribute
-- uid: AngeliA.BeforeSavingSlotChanged
-  commentId: T:AngeliA.BeforeSavingSlotChanged
+- uid: AngeliA.BeforeSavingSlotChangedAttribute
+  commentId: T:AngeliA.BeforeSavingSlotChangedAttribute
   parent: AngeliA
-  href: AngeliA.BeforeSavingSlotChanged.html
-  name: BeforeSavingSlotChanged
-  nameWithType: BeforeSavingSlotChanged
-  fullName: AngeliA.BeforeSavingSlotChanged
-- uid: AngeliA.OnSavingSlotChanged
-  commentId: T:AngeliA.OnSavingSlotChanged
-  href: AngeliA.OnSavingSlotChanged.html
-  name: OnSavingSlotChanged
-  nameWithType: OnSavingSlotChanged
-  fullName: AngeliA.OnSavingSlotChanged
+  href: AngeliA.BeforeSavingSlotChangedAttribute.html
+  name: BeforeSavingSlotChangedAttribute
+  nameWithType: BeforeSavingSlotChangedAttribute
+  fullName: AngeliA.BeforeSavingSlotChangedAttribute
+- uid: AngeliA.OnSavingSlotChangedAttribute
+  commentId: T:AngeliA.OnSavingSlotChangedAttribute
+  href: AngeliA.OnSavingSlotChangedAttribute.html
+  name: OnSavingSlotChangedAttribute
+  nameWithType: OnSavingSlotChangedAttribute
+  fullName: AngeliA.OnSavingSlotChangedAttribute
 - uid: AngeliA.OnGameUpdateAttribute
   commentId: T:AngeliA.OnGameUpdateAttribute
   parent: AngeliA
@@ -1405,60 +1405,60 @@ references:
   name: OnItemUnlocked_IntItemIDAttribute
   nameWithType: OnItemUnlocked_IntItemIDAttribute
   fullName: AngeliA.OnItemUnlocked_IntItemIDAttribute
-- uid: AngeliA.OnCharacterFootStepped_Entity
-  commentId: T:AngeliA.OnCharacterFootStepped_Entity
-  href: AngeliA.OnCharacterFootStepped_Entity.html
-  name: OnCharacterFootStepped_Entity
-  nameWithType: OnCharacterFootStepped_Entity
-  fullName: AngeliA.OnCharacterFootStepped_Entity
-- uid: AngeliA.OnCharacterSleeping_Entity
-  commentId: T:AngeliA.OnCharacterSleeping_Entity
-  href: AngeliA.OnCharacterSleeping_Entity.html
-  name: OnCharacterSleeping_Entity
-  nameWithType: OnCharacterSleeping_Entity
-  fullName: AngeliA.OnCharacterSleeping_Entity
-- uid: AngeliA.OnCharacterJump_Entity
-  commentId: T:AngeliA.OnCharacterJump_Entity
-  href: AngeliA.OnCharacterJump_Entity.html
-  name: OnCharacterJump_Entity
-  nameWithType: OnCharacterJump_Entity
-  fullName: AngeliA.OnCharacterJump_Entity
-- uid: AngeliA.OnCharacterPound_Entity
-  commentId: T:AngeliA.OnCharacterPound_Entity
-  href: AngeliA.OnCharacterPound_Entity.html
-  name: OnCharacterPound_Entity
-  nameWithType: OnCharacterPound_Entity
-  fullName: AngeliA.OnCharacterPound_Entity
-- uid: AngeliA.OnCharacterFly_Entity
-  commentId: T:AngeliA.OnCharacterFly_Entity
-  href: AngeliA.OnCharacterFly_Entity.html
-  name: OnCharacterFly_Entity
-  nameWithType: OnCharacterFly_Entity
-  fullName: AngeliA.OnCharacterFly_Entity
-- uid: AngeliA.OnCharacterSlideStepped_Entity
-  commentId: T:AngeliA.OnCharacterSlideStepped_Entity
-  href: AngeliA.OnCharacterSlideStepped_Entity.html
-  name: OnCharacterSlideStepped_Entity
-  nameWithType: OnCharacterSlideStepped_Entity
-  fullName: AngeliA.OnCharacterSlideStepped_Entity
-- uid: AngeliA.OnCharacterPassOut_Entity
-  commentId: T:AngeliA.OnCharacterPassOut_Entity
-  href: AngeliA.OnCharacterPassOut_Entity.html
-  name: OnCharacterPassOut_Entity
-  nameWithType: OnCharacterPassOut_Entity
-  fullName: AngeliA.OnCharacterPassOut_Entity
-- uid: AngeliA.OnCharacterTeleport_Entity
-  commentId: T:AngeliA.OnCharacterTeleport_Entity
-  href: AngeliA.OnCharacterTeleport_Entity.html
-  name: OnCharacterTeleport_Entity
-  nameWithType: OnCharacterTeleport_Entity
-  fullName: AngeliA.OnCharacterTeleport_Entity
-- uid: AngeliA.OnCharacterCrash_Entity
-  commentId: T:AngeliA.OnCharacterCrash_Entity
-  href: AngeliA.OnCharacterCrash_Entity.html
-  name: OnCharacterCrash_Entity
-  nameWithType: OnCharacterCrash_Entity
-  fullName: AngeliA.OnCharacterCrash_Entity
+- uid: AngeliA.OnCharacterFootStepped_EntityAttribute
+  commentId: T:AngeliA.OnCharacterFootStepped_EntityAttribute
+  href: AngeliA.OnCharacterFootStepped_EntityAttribute.html
+  name: OnCharacterFootStepped_EntityAttribute
+  nameWithType: OnCharacterFootStepped_EntityAttribute
+  fullName: AngeliA.OnCharacterFootStepped_EntityAttribute
+- uid: AngeliA.OnCharacterSleeping_EntityAttribute
+  commentId: T:AngeliA.OnCharacterSleeping_EntityAttribute
+  href: AngeliA.OnCharacterSleeping_EntityAttribute.html
+  name: OnCharacterSleeping_EntityAttribute
+  nameWithType: OnCharacterSleeping_EntityAttribute
+  fullName: AngeliA.OnCharacterSleeping_EntityAttribute
+- uid: AngeliA.OnCharacterJump_EntityAttribute
+  commentId: T:AngeliA.OnCharacterJump_EntityAttribute
+  href: AngeliA.OnCharacterJump_EntityAttribute.html
+  name: OnCharacterJump_EntityAttribute
+  nameWithType: OnCharacterJump_EntityAttribute
+  fullName: AngeliA.OnCharacterJump_EntityAttribute
+- uid: AngeliA.OnCharacterPound_EntityAttribute
+  commentId: T:AngeliA.OnCharacterPound_EntityAttribute
+  href: AngeliA.OnCharacterPound_EntityAttribute.html
+  name: OnCharacterPound_EntityAttribute
+  nameWithType: OnCharacterPound_EntityAttribute
+  fullName: AngeliA.OnCharacterPound_EntityAttribute
+- uid: AngeliA.OnCharacterFly_EntityAttribute
+  commentId: T:AngeliA.OnCharacterFly_EntityAttribute
+  href: AngeliA.OnCharacterFly_EntityAttribute.html
+  name: OnCharacterFly_EntityAttribute
+  nameWithType: OnCharacterFly_EntityAttribute
+  fullName: AngeliA.OnCharacterFly_EntityAttribute
+- uid: AngeliA.OnCharacterSlideStepped_EntityAttribute
+  commentId: T:AngeliA.OnCharacterSlideStepped_EntityAttribute
+  href: AngeliA.OnCharacterSlideStepped_EntityAttribute.html
+  name: OnCharacterSlideStepped_EntityAttribute
+  nameWithType: OnCharacterSlideStepped_EntityAttribute
+  fullName: AngeliA.OnCharacterSlideStepped_EntityAttribute
+- uid: AngeliA.OnCharacterPassOut_EntityAttribute
+  commentId: T:AngeliA.OnCharacterPassOut_EntityAttribute
+  href: AngeliA.OnCharacterPassOut_EntityAttribute.html
+  name: OnCharacterPassOut_EntityAttribute
+  nameWithType: OnCharacterPassOut_EntityAttribute
+  fullName: AngeliA.OnCharacterPassOut_EntityAttribute
+- uid: AngeliA.OnCharacterTeleport_EntityAttribute
+  commentId: T:AngeliA.OnCharacterTeleport_EntityAttribute
+  href: AngeliA.OnCharacterTeleport_EntityAttribute.html
+  name: OnCharacterTeleport_EntityAttribute
+  nameWithType: OnCharacterTeleport_EntityAttribute
+  fullName: AngeliA.OnCharacterTeleport_EntityAttribute
+- uid: AngeliA.OnCharacterCrash_EntityAttribute
+  commentId: T:AngeliA.OnCharacterCrash_EntityAttribute
+  href: AngeliA.OnCharacterCrash_EntityAttribute.html
+  name: OnCharacterCrash_EntityAttribute
+  nameWithType: OnCharacterCrash_EntityAttribute
+  fullName: AngeliA.OnCharacterCrash_EntityAttribute
 - uid: AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute
   commentId: T:AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute
   href: AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute.html
@@ -1489,36 +1489,36 @@ references:
   name: OnCameOutOfWater_Rigidbody_EntityAttribute
   nameWithType: OnCameOutOfWater_Rigidbody_EntityAttribute
   fullName: AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute
-- uid: AngeliA.OnDealDamage_Damage_IDamageReceiver
-  commentId: T:AngeliA.OnDealDamage_Damage_IDamageReceiver
-  href: AngeliA.OnDealDamage_Damage_IDamageReceiver.html
-  name: OnDealDamage_Damage_IDamageReceiver
-  nameWithType: OnDealDamage_Damage_IDamageReceiver
-  fullName: AngeliA.OnDealDamage_Damage_IDamageReceiver
-- uid: AngeliA.OnBulletHitEnvironment_Bullet
-  commentId: T:AngeliA.OnBulletHitEnvironment_Bullet
-  href: AngeliA.OnBulletHitEnvironment_Bullet.html
-  name: OnBulletHitEnvironment_Bullet
-  nameWithType: OnBulletHitEnvironment_Bullet
-  fullName: AngeliA.OnBulletHitEnvironment_Bullet
-- uid: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-  commentId: T:AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-  href: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData.html
-  name: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-  nameWithType: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-  fullName: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-- uid: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
-  commentId: T:AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
-  href: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData.html
-  name: OnTransferPassAttribute_Int3UnitPos_ObjectData
-  nameWithType: OnTransferPassAttribute_Int3UnitPos_ObjectData
-  fullName: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
-- uid: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
-  commentId: T:AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
-  href: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From.html
-  name: CircuitOperate_Int3UnitPos_IntStamp_Direction5From
-  nameWithType: CircuitOperate_Int3UnitPos_IntStamp_Direction5From
-  fullName: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
+- uid: AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute
+  commentId: T:AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute
+  href: AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute.html
+  name: OnDealDamage_Damage_IDamageReceiverAttribute
+  nameWithType: OnDealDamage_Damage_IDamageReceiverAttribute
+  fullName: AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute
+- uid: AngeliA.OnBulletHitEnvironment_BulletAttribute
+  commentId: T:AngeliA.OnBulletHitEnvironment_BulletAttribute
+  href: AngeliA.OnBulletHitEnvironment_BulletAttribute.html
+  name: OnBulletHitEnvironment_BulletAttribute
+  nameWithType: OnBulletHitEnvironment_BulletAttribute
+  fullName: AngeliA.OnBulletHitEnvironment_BulletAttribute
+- uid: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+  commentId: T:AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+  href: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute.html
+  name: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+  nameWithType: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+  fullName: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+- uid: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
+  commentId: T:AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
+  href: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute.html
+  name: OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
+  nameWithType: OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
+  fullName: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
+- uid: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
+  commentId: T:AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
+  href: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute.html
+  name: CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
+  nameWithType: CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
+  fullName: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
 - uid: AngeliA.OnCircuitWireActived_Int3UnitPosAttribute
   commentId: T:AngeliA.OnCircuitWireActived_Int3UnitPosAttribute
   href: AngeliA.OnCircuitWireActived_Int3UnitPosAttribute.html

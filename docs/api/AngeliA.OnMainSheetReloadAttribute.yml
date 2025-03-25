@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnMainSheetReloadAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 130
+    startLine: 181
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when artwork sheet for rendering loaded from file
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[OnMainSheetReload]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: 'public class OnMainSheetReloadAttribute : EventAttribute'
     content.vb: Public Class OnMainSheetReloadAttribute Inherits EventAttribute

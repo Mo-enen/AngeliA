@@ -10,16 +10,37 @@ internal interface IModularBodyGadget {
 	public string ModularName { get; }
 }
 
+/// <summary>
+/// Representation of a pose character's extra body part. Always use instance from pool.
+/// </summary>
+/// <example><code>
+/// BodyGadget.TryGetGadget(id, out var result);
+/// </code></example>
 public abstract class BodyGadget {
 
 
 	private static readonly Dictionary<int, BodyGadget> Pool = [];
 	private static Dictionary<int, int>[] DefaultPool = null;
 	public static bool BodyGadgetSystemReady { get; private set; } = false;
+	/// <summary>
+	/// Which artwork sheet does this body gadget get it's artwork from
+	/// </summary>
 	public int SheetIndex { get; private set; } = -1;
+	/// <summary>
+	/// Global unique AngeHash of this body gadget
+	/// </summary>
 	public int GadgetID { get; private set; } = 0;
+	/// <summary>
+	/// Global unique AngeName of this body gadget 
+	/// </summary>
 	public string GadgetName { get; private set; } = "";
+	/// <summary>
+	/// Type of this body gadget
+	/// </summary>
 	public abstract BodyGadgetType GadgetType { get; }
+	/// <summary>
+	/// True if artwork sprite is loaded
+	/// </summary>
 	public virtual bool SpriteLoaded => true;
 
 
@@ -87,15 +108,27 @@ public abstract class BodyGadget {
 	}
 
 
-	public abstract void DrawGadget (PoseCharacterRenderer character);
+	/// <summary>
+	/// Render the gadget for the given character
+	/// </summary>
+	public abstract void DrawGadget (PoseCharacterRenderer renderer);
 
 
+	/// <summary>
+	/// Load sprite data from Renderer.CurrentSheet
+	/// </summary>
 	public virtual bool FillFromSheet (string basicName) {
 		SheetIndex = Renderer.CurrentSheetIndex;
 		return true;
 	}
 
 
+	/// <summary>
+	/// Render the gadget as gizmos
+	/// </summary>
+	/// <param name="rect">Global rect position</param>
+	/// <param name="tint">Color tint</param>
+	/// <param name="z">Z position for sorting</param>
 	public virtual void DrawGadgetGizmos (IRect rect, Color32 tint, int z) {
 		if (Renderer.TryGetSpriteForGizmos(GadgetID, out var sprite)) {
 			Renderer.Draw(sprite, rect.Fit(sprite), tint, z);
@@ -104,11 +137,18 @@ public abstract class BodyGadget {
 
 
 	// API
+	/// <summary>
+	/// Iterate through all body gadgets
+	/// </summary>
+	/// <returns></returns>
 	public static IEnumerable<KeyValuePair<int, BodyGadget>> ForAllGadget () {
 		foreach (var pair in Pool) yield return pair;
 	}
 
 
+	/// <summary>
+	/// Get body gadget id of the default gadget for the given character
+	/// </summary>
 	public static int GetDefaultGadgetID (int characterID, BodyGadgetType type) {
 		int typeIndex = (int)type;
 		if (typeIndex < 0 || typeIndex >= DefaultPool.Length) return 0;
@@ -117,6 +157,9 @@ public abstract class BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Get body gadget instance from system pool
+	/// </summary>
 	public static bool TryGetGadget (int gadgetID, out BodyGadget gadget) => Pool.TryGetValue(gadgetID, out gadget);
 
 

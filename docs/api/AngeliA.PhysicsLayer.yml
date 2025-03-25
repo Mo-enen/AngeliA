@@ -25,10 +25,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: PhysicsLayer
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 2
+    startLine: 6
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: A single physics layer
+  example: []
   syntax:
     content: public static class PhysicsLayer
     content.vb: Public Module PhysicsLayer
@@ -60,7 +62,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LEVEL
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 3
+    startLine: 7
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -87,7 +89,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ENVIRONMENT
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 4
+    startLine: 8
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -114,7 +116,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ITEM
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 5
+    startLine: 9
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -141,7 +143,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: CHARACTER
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 6
+    startLine: 10
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -168,7 +170,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: DAMAGE
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 7
+    startLine: 11
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -195,7 +197,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: COUNT
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 8
+    startLine: 12
   assemblies:
   - AngeliA Framework
   namespace: AngeliA

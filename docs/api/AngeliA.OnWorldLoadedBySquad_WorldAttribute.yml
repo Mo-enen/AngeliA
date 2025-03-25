@@ -20,13 +20,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnWorldLoadedBySquad_WorldAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 216
+    startLine: 300
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when a world instance is loaded by world squad
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[OnWorldLoadedBySquad_World]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: 'public class OnWorldLoadedBySquad_WorldAttribute : EventAttribute'
     content.vb: Public Class OnWorldLoadedBySquad_WorldAttribute Inherits EventAttribute
@@ -100,13 +103,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 216
+    startLine: 300
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when a world instance is loaded by world squad
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[OnWorldLoadedBySquad_World]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: public OnWorldLoadedBySquad_WorldAttribute(int order = 0)
     parameters:

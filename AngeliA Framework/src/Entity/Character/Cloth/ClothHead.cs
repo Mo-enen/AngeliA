@@ -20,7 +20,7 @@ public abstract class HeadCloth : Cloth {
 	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
 		if (
 			renderer.SuitHead != 0 &&
-			Pool.TryGetValue(renderer.SuitHead, out var cloth)
+			TryGetCloth(renderer.SuitHead, out var cloth)
 		) {
 			cloth.DrawCloth(renderer);
 		}

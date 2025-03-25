@@ -37,7 +37,7 @@ public abstract class HipCloth : Cloth {
 	}
 
 	public static void DrawClothFromPool (PoseCharacterRenderer rendering) {
-		if (rendering.SuitHip != 0 && Pool.TryGetValue(rendering.SuitHip, out var cloth)) {
+		if (rendering.SuitHip != 0 && TryGetCloth(rendering.SuitHip, out var cloth)) {
 			cloth.DrawCloth(rendering);
 		}
 	}

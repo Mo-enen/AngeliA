@@ -4,8 +4,10 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Wing body gadget for pose style character
+/// </summary>
 public abstract class Wing : BodyGadget {
-
 
 
 
@@ -14,11 +16,17 @@ public abstract class Wing : BodyGadget {
 
 
 	// Api
+	/// <summary>
+	/// True if this wing is in tail-propeller style (like character "Tails" from Sonic)
+	/// </summary>
 	public bool IsPropeller { get; private set; } = false;
 	public override bool SpriteLoaded => SpriteWing.IsValid;
 	public sealed override BodyGadgetType GadgetType => BodyGadgetType.Wing;
+	/// <summary>
+	/// Size scale for the wing (0 means 0%, 1000 means 100%)
+	/// </summary>
 	protected virtual int Scale => 1000;
-	public OrientedSprite SpriteWing { get; private set; }
+	private OrientedSprite SpriteWing;
 
 
 	#endregion
@@ -69,6 +77,9 @@ public abstract class Wing : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Draw gadget for given character
+	/// </summary>
 	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
 		if (renderer.WingID != 0 && TryGetGadget(renderer.WingID, out var wing)) {
 			wing.DrawGadget(renderer);
@@ -76,6 +87,13 @@ public abstract class Wing : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Draw given artwork sprite as wing for given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="oSprite">Artwork sprite</param>
+	/// <param name="isPropeller">True if this wing is in propeller style (like character "Tails" from Sonic)</param>
+	/// <param name="scale">Size scale (0 means 0%, 1000 means 100%)</param>
 	public static void DrawSpriteAsWing (PoseCharacterRenderer renderer, OrientedSprite oSprite, bool isPropeller, int scale = 1000) {
 
 		if (!oSprite.IsValid) return;
@@ -182,6 +200,9 @@ public abstract class Wing : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// True if the given wing is a propeller style wing
+	/// </summary>
 	public static bool IsPropellerWing (int wingID) => wingID != 0 && TryGetGadget(wingID, out var gadget) && gadget is Wing wing && wing.IsPropeller;
 
 

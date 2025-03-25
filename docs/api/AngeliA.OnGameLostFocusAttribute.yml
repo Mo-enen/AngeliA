@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnGameLostFocusAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 100
+    startLine: 139
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when the application window lost focus.
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[OnGameLostFocus]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: 'public class OnGameLostFocusAttribute : EventAttribute'
     content.vb: Public Class OnGameLostFocusAttribute Inherits EventAttribute

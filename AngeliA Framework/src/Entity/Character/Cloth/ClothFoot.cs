@@ -19,7 +19,7 @@ public abstract class FootCloth : Cloth {
 	}
 
 	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
-		if (renderer.SuitFoot != 0 && renderer.TargetCharacter.CharacterState != CharacterState.Sleep && Pool.TryGetValue(renderer.SuitFoot, out var cloth)) {
+		if (renderer.SuitFoot != 0 && renderer.TargetCharacter.CharacterState != CharacterState.Sleep && TryGetCloth(renderer.SuitFoot, out var cloth)) {
 			cloth.DrawCloth(renderer);
 		}
 	}

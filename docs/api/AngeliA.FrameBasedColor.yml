@@ -23,10 +23,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: FrameBasedColor
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 118
+    startLine: 125
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: A data that can be override for specified frames
+  example: []
   syntax:
     content: 'public class FrameBasedColor : FrameBasedValue<Color32>'
     content.vb: Public Class FrameBasedColor Inherits FrameBasedValue(Of Color32)
@@ -71,10 +73,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 118
+    startLine: 125
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: A data that can be override for specified frames
+  example: []
   syntax:
     content: public FrameBasedColor(Color32 value)
     parameters:
@@ -103,7 +107,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Tint
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 119
+    startLine: 126
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -139,7 +143,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 130
+    startLine: 137
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -168,7 +172,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: op_Implicit
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 131
+    startLine: 138
   assemblies:
   - AngeliA Framework
   namespace: AngeliA

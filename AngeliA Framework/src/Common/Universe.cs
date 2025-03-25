@@ -177,10 +177,10 @@ public class Universe {
 	/// <param name="forceReload">Perform this function even the "newSlot" is same with current</param>
 	public void ReloadSavingSlot (int newSlot, bool forceReload = false) {
 		if (!forceReload && newSlot == CurrentSavingSlot) return;
-		OrderedAttribute.InvokeAsAutoOrderingTask<BeforeSavingSlotChanged>();
+		OrderedAttribute.InvokeAsAutoOrderingTask<BeforeSavingSlotChangedAttribute>();
 		CurrentSavingSlot = newSlot;
 		SetSavingRoot(SavingRoot, newSlot);
-		OrderedAttribute.InvokeAsAutoOrderingTask<OnSavingSlotChanged>();
+		OrderedAttribute.InvokeAsAutoOrderingTask<OnSavingSlotChangedAttribute>();
 	}
 
 

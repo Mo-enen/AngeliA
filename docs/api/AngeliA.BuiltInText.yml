@@ -73,7 +73,7 @@ items:
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
-  summary: Utility class to get built-in text though language system
+  summary: Utility class to get built-in text through language system
   example: []
   syntax:
     content: public static class BuiltInText

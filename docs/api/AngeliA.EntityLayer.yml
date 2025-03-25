@@ -120,10 +120,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: GAME
     path: ../AngeliA Framework/src/Common/EntityLayer.cs
-    startLine: 10
+    startLine: 13
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Default option
+  example: []
   syntax:
     content: public const int GAME = 1
     return:
@@ -147,7 +149,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: CHARACTER
     path: ../AngeliA Framework/src/Common/EntityLayer.cs
-    startLine: 11
+    startLine: 14
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -174,7 +176,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ENVIRONMENT
     path: ../AngeliA Framework/src/Common/EntityLayer.cs
-    startLine: 12
+    startLine: 15
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -201,7 +203,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: WATER
     path: ../AngeliA Framework/src/Common/EntityLayer.cs
-    startLine: 13
+    startLine: 16
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -228,7 +230,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: BULLET
     path: ../AngeliA Framework/src/Common/EntityLayer.cs
-    startLine: 14
+    startLine: 17
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -255,7 +257,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ITEM
     path: ../AngeliA Framework/src/Common/EntityLayer.cs
-    startLine: 15
+    startLine: 18
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -282,10 +284,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: DECORATE
     path: ../AngeliA Framework/src/Common/EntityLayer.cs
-    startLine: 16
+    startLine: 22
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Particles, Effects etc...
+  example: []
   syntax:
     content: public const int DECORATE = 7
     return:
@@ -309,7 +313,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: COUNT
     path: ../AngeliA Framework/src/Common/EntityLayer.cs
-    startLine: 17
+    startLine: 23
   assemblies:
   - AngeliA Framework
   namespace: AngeliA

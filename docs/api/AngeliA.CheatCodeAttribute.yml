@@ -20,13 +20,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: CheatCodeAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 270
+    startLine: 367
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when user perform the given cheat code. Cheat code can be perform like those in NES games.
   example:
-  - internal static void ExampleFunction (string code) { }
+  - >-
+    <pre><code class="lang-csharp">[CheatCode]
+
+    internal static void ExampleFunction (string code) { }</code></pre>
   syntax:
     content: 'public class CheatCodeAttribute : EventAttribute'
     content.vb: Public Class CheatCodeAttribute Inherits EventAttribute
@@ -100,13 +103,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 270
+    startLine: 367
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when user perform the given cheat code. Cheat code can be perform like those in NES games.
   example:
-  - internal static void ExampleFunction (string code) { }
+  - >-
+    <pre><code class="lang-csharp">[CheatCode]
+
+    internal static void ExampleFunction (string code) { }</code></pre>
   syntax:
     content: public CheatCodeAttribute(string code)
     parameters:

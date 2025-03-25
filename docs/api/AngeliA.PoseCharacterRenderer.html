@@ -1,2247 +1,2103 @@
 <!DOCTYPE html>
+<!--[if IE]><![endif]-->
 <html>
+
   <head>
     <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <title>Class PoseCharacterRenderer | AngeliA </title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class PoseCharacterRenderer | AngeliA ">
-      
-      
-      <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css">
-      <link rel="stylesheet" href="../public/main.css">
-      <meta name="docfx:navrel" content="../toc.html">
-      <meta name="docfx:tocrel" content="toc.html">
-      
-      <meta name="docfx:rel" content="../">
-      
-      
-      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
-      <meta name="loc:inThisArticle" content="In this article">
-      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
-      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
-      <meta name="loc:tocFilter" content="Filter by title">
-      <meta name="loc:nextArticle" content="Next">
-      <meta name="loc:prevArticle" content="Previous">
-      <meta name="loc:themeLight" content="Light">
-      <meta name="loc:themeDark" content="Dark">
-      <meta name="loc:themeAuto" content="Auto">
-      <meta name="loc:changeTheme" content="Change theme">
-      <meta name="loc:copy" content="Copy">
-      <meta name="loc:downloadPdf" content="Download PDF">
-
-      <script type="module" src="./../public/docfx.min.js"></script>
-
-      <script>
-        const theme = localStorage.getItem('theme') || 'auto'
-        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-      </script>
-
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
   </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
-    <header class="bg-body border-bottom">
-      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
-        <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
-            AngeliA
-          </a>
-          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="bi bi-three-dots"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navpanel">
-            <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
               </form>
             </div>
           </div>
-        </div>
-      </nav>
-    </header>
+        </nav>
 
-    <main class="container-xxl">
-      <div class="toc-offcanvas">
-        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
           </div>
-          <div class="offcanvas-body">
-            <nav class="toc" id="toc"></nav>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
+      <div role="main" class="container body-content hide-when-search">
 
-      <div class="content">
-        <div class="actionbar">
-          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
-            <i class="bi bi-list"></i>
-          </button>
-
-          <nav id="breadcrumb"></nav>
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
         </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AngeliA.PoseCharacterRenderer">
 
-        <article data-uid="AngeliA.PoseCharacterRenderer">
 
 
-
-  <h1 id="AngeliA_PoseCharacterRenderer" data-uid="AngeliA.PoseCharacterRenderer" class="text-break">
-Class PoseCharacterRenderer  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L6"><i class="bi bi-code-slash"></i></a>
-  </h1>
-
-  <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>AngeliA Framework.dll</dd></dl>
-  </div>
-
-  <div class="markdown summary"></div>
-  <div class="markdown conceptual"></div>
-
+  <h1 id="AngeliA_PoseCharacterRenderer" data-uid="AngeliA.PoseCharacterRenderer" class="text-break">Class PoseCharacterRenderer</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AngeliA.html">AngeliA</a></h6>
+  <h6><strong>Assembly</strong>: AngeliA Framework.dll</h6>
+  <h5 id="AngeliA_PoseCharacterRenderer_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class PoseCharacterRenderer : CharacterRenderer</code></pre>
   </div>
-
-
-
-
-  <dl class="typelist inheritance">
-    <dt>Inheritance</dt>
-    <dd>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><a class="xref" href="AngeliA.CharacterRenderer.html">CharacterRenderer</a></div>
-      <div><span class="xref">PoseCharacterRenderer</span></div>
-    </dd>
-  </dl>
-
-
-
-  <dl class="typelist inheritedMembers">
-    <dt>Inherited Members</dt>
-    <dd>
-    <div>
-      <a class="xref" href="AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_TargetCharacter">CharacterRenderer.TargetCharacter</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_CurrentAnimationFrame">CharacterRenderer.CurrentAnimationFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_CurrentRenderingBounce">CharacterRenderer.CurrentRenderingBounce</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_SpinOnGroundPound">CharacterRenderer.SpinOnGroundPound</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_Tint">CharacterRenderer.Tint</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_Scale">CharacterRenderer.Scale</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
-    </div>
-  </dd></dl>
-
-  <dl class="typelist extensionMethods">
-    <dt>Extension Methods</dt>
-    <dd>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><a class="xref" href="AngeliA.CharacterRenderer.html">CharacterRenderer</a></div>
+    <div class="level2"><span class="xref">PoseCharacterRenderer</span></div>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer__ctor_AngeliA_Character_.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.%23ctor(AngeliA.Character)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L279">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer__ctor_" data-uid="AngeliA.PoseCharacterRenderer.#ctor*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer__ctor_AngeliA_Character_" data-uid="AngeliA.PoseCharacterRenderer.#ctor(AngeliA.Character)">PoseCharacterRenderer(Character)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PoseCharacterRenderer(Character target)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Character.html">Character</a></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_BODY_PART_COUNT.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.BODY_PART_COUNT%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L18">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_BODY_PART_COUNT" data-uid="AngeliA.PoseCharacterRenderer.BODY_PART_COUNT">BODY_PART_COUNT</h4>
+  <div class="markdown level1 summary"><p>How many body part does a pose character have</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int BODY_PART_COUNT = 17</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_BODY_PART_NAME.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.BODY_PART_NAME%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L25">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_BODY_PART_NAME" data-uid="AngeliA.PoseCharacterRenderer.BODY_PART_NAME">BODY_PART_NAME</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly string[] BODY_PART_NAME</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_BodyParts.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.BodyParts%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L76">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_BodyParts" data-uid="AngeliA.PoseCharacterRenderer.BodyParts">BodyParts</h4>
+  <div class="markdown level1 summary"><p>All body parts of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly BodyPart[] BodyParts</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_CM_PER_PX.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.CM_PER_PX%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L22">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_CM_PER_PX" data-uid="AngeliA.PoseCharacterRenderer.CM_PER_PX">CM_PER_PX</h4>
+  <div class="markdown level1 summary"><p>How many cm does one artwork pixel represents</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int CM_PER_PX = 5</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_DEFAULT_BODY_PART_ID.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.DEFAULT_BODY_PART_ID%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L24">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_DEFAULT_BODY_PART_ID" data-uid="AngeliA.PoseCharacterRenderer.DEFAULT_BODY_PART_ID">DEFAULT_BODY_PART_ID</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly int[] DEFAULT_BODY_PART_ID</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_EarID.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.EarID%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L184">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_EarID" data-uid="AngeliA.PoseCharacterRenderer.EarID">EarID</h4>
+  <div class="markdown level1 summary"><p>ID of current animal-ear gadget instance (like cat-girl's ears, not human ears)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt EarID</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_FaceID.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.FaceID%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L176">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_FaceID" data-uid="AngeliA.PoseCharacterRenderer.FaceID">FaceID</h4>
+  <div class="markdown level1 summary"><p>ID of current face gadget instance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt FaceID</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_ForceFaceExpressionIndex.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.ForceFaceExpressionIndex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L200">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_ForceFaceExpressionIndex" data-uid="AngeliA.PoseCharacterRenderer.ForceFaceExpressionIndex">ForceFaceExpressionIndex</h4>
+  <div class="markdown level1 summary"><p>Which face expression does the face need to render</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt ForceFaceExpressionIndex</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_HairID.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.HairID%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L180">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_HairID" data-uid="AngeliA.PoseCharacterRenderer.HairID">HairID</h4>
+  <div class="markdown level1 summary"><p>ID of current hair gadget instance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HairID</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_HandGrabAttackTwistL.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.HandGrabAttackTwistL%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L166">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_HandGrabAttackTwistL" data-uid="AngeliA.PoseCharacterRenderer.HandGrabAttackTwistL">HandGrabAttackTwistL</h4>
+  <div class="markdown level1 summary"><p>Angle twist of the object grabbing by the left hand (0 means disappear, 1000 means normal)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabAttackTwistL</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_HandGrabAttackTwistR.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.HandGrabAttackTwistR%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L170">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_HandGrabAttackTwistR" data-uid="AngeliA.PoseCharacterRenderer.HandGrabAttackTwistR">HandGrabAttackTwistR</h4>
+  <div class="markdown level1 summary"><p>Angle twist of the object grabbing by the right hand (0 means disappear, 1000 means normal)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabAttackTwistR</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_HandGrabRotationL.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.HandGrabRotationL%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L150">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_HandGrabRotationL" data-uid="AngeliA.PoseCharacterRenderer.HandGrabRotationL">HandGrabRotationL</h4>
+  <div class="markdown level1 summary"><p>Rotation of the object grabbing by the left hand</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabRotationL</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_HandGrabRotationR.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.HandGrabRotationR%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L154">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_HandGrabRotationR" data-uid="AngeliA.PoseCharacterRenderer.HandGrabRotationR">HandGrabRotationR</h4>
+  <div class="markdown level1 summary"><p>Rotation of the object grabbing by the right hand</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabRotationR</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_HandGrabScaleL.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.HandGrabScaleL%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L158">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_HandGrabScaleL" data-uid="AngeliA.PoseCharacterRenderer.HandGrabScaleL">HandGrabScaleL</h4>
+  <div class="markdown level1 summary"><p>Size scaling of the object grabbing by the left hand (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabScaleL</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_HandGrabScaleR.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.HandGrabScaleR%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L162">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_HandGrabScaleR" data-uid="AngeliA.PoseCharacterRenderer.HandGrabScaleR">HandGrabScaleR</h4>
+  <div class="markdown level1 summary"><p>Size scaling of the object grabbing by the right hand (0 means 0%, 1000 means 100%)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabScaleR</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_HornID.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.HornID%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L196">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_HornID" data-uid="AngeliA.PoseCharacterRenderer.HornID">HornID</h4>
+  <div class="markdown level1 summary"><p>ID of current horn gadget instance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HornID</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_SuitBody.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.SuitBody%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L210">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_SuitBody" data-uid="AngeliA.PoseCharacterRenderer.SuitBody">SuitBody</h4>
+  <div class="markdown level1 summary"><p>Current body suit id (cloth with sleeves)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt SuitBody</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_SuitFoot.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.SuitFoot%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L222">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_SuitFoot" data-uid="AngeliA.PoseCharacterRenderer.SuitFoot">SuitFoot</h4>
+  <div class="markdown level1 summary"><p>Current shoes suit id</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt SuitFoot</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_SuitHand.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.SuitHand%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L218">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_SuitHand" data-uid="AngeliA.PoseCharacterRenderer.SuitHand">SuitHand</h4>
+  <div class="markdown level1 summary"><p>Current gloves suit id</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt SuitHand</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_SuitHead.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.SuitHead%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L206">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_SuitHead" data-uid="AngeliA.PoseCharacterRenderer.SuitHead">SuitHead</h4>
+  <div class="markdown level1 summary"><p>Current hat suit id</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt SuitHead</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_SuitHip.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.SuitHip%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L214">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_SuitHip" data-uid="AngeliA.PoseCharacterRenderer.SuitHip">SuitHip</h4>
+  <div class="markdown level1 summary"><p>Current hip suit id (pants or skirt)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt SuitHip</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_TailID.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.TailID%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L188">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_TailID" data-uid="AngeliA.PoseCharacterRenderer.TailID">TailID</h4>
+  <div class="markdown level1 summary"><p>ID of current tail gadget instance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt TailID</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_WingID.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.WingID%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L192">View Source</a>
+  </span>
+  <h4 id="AngeliA_PoseCharacterRenderer_WingID" data-uid="AngeliA.PoseCharacterRenderer.WingID">WingID</h4>
+  <div class="markdown level1 summary"><p>ID of current wing gadget instance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt WingID</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_BasicRootY.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.BasicRootY%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L42">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_BasicRootY_" data-uid="AngeliA.PoseCharacterRenderer.BasicRootY*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_BasicRootY" data-uid="AngeliA.PoseCharacterRenderer.BasicRootY">BasicRootY</h4>
+  <div class="markdown level1 summary"><p>Mid-Bottom local position of character hip y position</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int BasicRootY { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_BlendDuration.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.BlendDuration%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L70">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_BlendDuration_" data-uid="AngeliA.PoseCharacterRenderer.BlendDuration*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_BlendDuration" data-uid="AngeliA.PoseCharacterRenderer.BlendDuration">BlendDuration</h4>
+  <div class="markdown level1 summary"><p>How many frames does it takes the character to transition from one pose to another</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int BlendDuration { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_Body.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.Body%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L84">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_Body_" data-uid="AngeliA.PoseCharacterRenderer.Body*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_Body" data-uid="AngeliA.PoseCharacterRenderer.Body">Body</h4>
+  <div class="markdown level1 summary"><p>Body of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart Body { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_BodyTwist.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.BodyTwist%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L58">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_BodyTwist_" data-uid="AngeliA.PoseCharacterRenderer.BodyTwist*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_BodyTwist" data-uid="AngeliA.PoseCharacterRenderer.BodyTwist">BodyTwist</h4>
+  <div class="markdown level1 summary"><p>Make body rotate left or right</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int BodyTwist { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_CharacterHeight.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.CharacterHeight%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L62">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_CharacterHeight_" data-uid="AngeliA.PoseCharacterRenderer.CharacterHeight*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_CharacterHeight" data-uid="AngeliA.PoseCharacterRenderer.CharacterHeight">CharacterHeight</h4>
+  <div class="markdown level1 summary"><p>Character body height in cm</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CharacterHeight { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_FootL.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.FootL%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L140">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_FootL_" data-uid="AngeliA.PoseCharacterRenderer.FootL*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_FootL" data-uid="AngeliA.PoseCharacterRenderer.FootL">FootL</h4>
+  <div class="markdown level1 summary"><p>Left foot of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart FootL { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_FootR.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.FootR%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L144">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_FootR_" data-uid="AngeliA.PoseCharacterRenderer.FootR*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_FootR" data-uid="AngeliA.PoseCharacterRenderer.FootR">FootR</h4>
+  <div class="markdown level1 summary"><p>Right foot of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart FootR { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_HandL.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.HandL%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L116">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_HandL_" data-uid="AngeliA.PoseCharacterRenderer.HandL*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_HandL" data-uid="AngeliA.PoseCharacterRenderer.HandL">HandL</h4>
+  <div class="markdown level1 summary"><p>Left hand of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart HandL { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_HandR.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.HandR%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L120">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_HandR_" data-uid="AngeliA.PoseCharacterRenderer.HandR*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_HandR" data-uid="AngeliA.PoseCharacterRenderer.HandR">HandR</h4>
+  <div class="markdown level1 summary"><p>Right hand of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart HandR { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_Head.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.Head%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L80">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_Head_" data-uid="AngeliA.PoseCharacterRenderer.Head*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_Head" data-uid="AngeliA.PoseCharacterRenderer.Head">Head</h4>
+  <div class="markdown level1 summary"><p>Head of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart Head { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_HeadTwist.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.HeadTwist%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L54">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_HeadTwist_" data-uid="AngeliA.PoseCharacterRenderer.HeadTwist*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_HeadTwist" data-uid="AngeliA.PoseCharacterRenderer.HeadTwist">HeadTwist</h4>
+  <div class="markdown level1 summary"><p>Make head rotate like shaking head</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int HeadTwist { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_Hip.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.Hip%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L88">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_Hip_" data-uid="AngeliA.PoseCharacterRenderer.Hip*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_Hip" data-uid="AngeliA.PoseCharacterRenderer.Hip">Hip</h4>
+  <div class="markdown level1 summary"><p>Hip of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart Hip { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_LowerArmL.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.LowerArmL%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L108">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_LowerArmL_" data-uid="AngeliA.PoseCharacterRenderer.LowerArmL*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_LowerArmL" data-uid="AngeliA.PoseCharacterRenderer.LowerArmL">LowerArmL</h4>
+  <div class="markdown level1 summary"><p>Left lower arm of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart LowerArmL { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_LowerArmR.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.LowerArmR%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L112">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_LowerArmR_" data-uid="AngeliA.PoseCharacterRenderer.LowerArmR*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_LowerArmR" data-uid="AngeliA.PoseCharacterRenderer.LowerArmR">LowerArmR</h4>
+  <div class="markdown level1 summary"><p>Right lower arm of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart LowerArmR { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_LowerLegL.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.LowerLegL%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L132">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_LowerLegL_" data-uid="AngeliA.PoseCharacterRenderer.LowerLegL*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_LowerLegL" data-uid="AngeliA.PoseCharacterRenderer.LowerLegL">LowerLegL</h4>
+  <div class="markdown level1 summary"><p>Left lower leg of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart LowerLegL { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_LowerLegR.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.LowerLegR%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L136">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_LowerLegR_" data-uid="AngeliA.PoseCharacterRenderer.LowerLegR*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_LowerLegR" data-uid="AngeliA.PoseCharacterRenderer.LowerLegR">LowerLegR</h4>
+  <div class="markdown level1 summary"><p>Right lower leg of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart LowerLegR { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_PoseRootX.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.PoseRootX%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L46">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_PoseRootX_" data-uid="AngeliA.PoseCharacterRenderer.PoseRootX*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_PoseRootX" data-uid="AngeliA.PoseCharacterRenderer.PoseRootX">PoseRootX</h4>
+  <div class="markdown level1 summary"><p>Total offset X for pose rendering</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int PoseRootX { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_PoseRootY.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.PoseRootY%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L50">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_PoseRootY_" data-uid="AngeliA.PoseCharacterRenderer.PoseRootY*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_PoseRootY" data-uid="AngeliA.PoseCharacterRenderer.PoseRootY">PoseRootY</h4>
+  <div class="markdown level1 summary"><p>Total offset Y for pose rendering</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int PoseRootY { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_RenderedCellZ.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.RenderedCellZ%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L66">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_RenderedCellZ_" data-uid="AngeliA.PoseCharacterRenderer.RenderedCellZ*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_RenderedCellZ" data-uid="AngeliA.PoseCharacterRenderer.RenderedCellZ">RenderedCellZ</h4>
+  <div class="markdown level1 summary"><p>Basic rendering Z value for last time character get rendered</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int RenderedCellZ { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_ShoulderL.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.ShoulderL%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L92">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_ShoulderL_" data-uid="AngeliA.PoseCharacterRenderer.ShoulderL*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_ShoulderL" data-uid="AngeliA.PoseCharacterRenderer.ShoulderL">ShoulderL</h4>
+  <div class="markdown level1 summary"><p>Left shoulder of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart ShoulderL { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_ShoulderR.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.ShoulderR%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L96">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_ShoulderR_" data-uid="AngeliA.PoseCharacterRenderer.ShoulderR*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_ShoulderR" data-uid="AngeliA.PoseCharacterRenderer.ShoulderR">ShoulderR</h4>
+  <div class="markdown level1 summary"><p>Right shoulder of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart ShoulderR { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_UpperArmL.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.UpperArmL%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L100">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_UpperArmL_" data-uid="AngeliA.PoseCharacterRenderer.UpperArmL*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_UpperArmL" data-uid="AngeliA.PoseCharacterRenderer.UpperArmL">UpperArmL</h4>
+  <div class="markdown level1 summary"><p>Left upper arm of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart UpperArmL { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_UpperArmR.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.UpperArmR%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L104">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_UpperArmR_" data-uid="AngeliA.PoseCharacterRenderer.UpperArmR*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_UpperArmR" data-uid="AngeliA.PoseCharacterRenderer.UpperArmR">UpperArmR</h4>
+  <div class="markdown level1 summary"><p>Right upper arm of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart UpperArmR { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_UpperLegL.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.UpperLegL%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L124">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_UpperLegL_" data-uid="AngeliA.PoseCharacterRenderer.UpperLegL*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_UpperLegL" data-uid="AngeliA.PoseCharacterRenderer.UpperLegL">UpperLegL</h4>
+  <div class="markdown level1 summary"><p>Left upper leg of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart UpperLegL { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_UpperLegR.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.UpperLegR%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L128">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_UpperLegR_" data-uid="AngeliA.PoseCharacterRenderer.UpperLegR*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_UpperLegR" data-uid="AngeliA.PoseCharacterRenderer.UpperLegR">UpperLegR</h4>
+  <div class="markdown level1 summary"><p>Right upper leg of the pose character</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BodyPart UpperLegR { get; init; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_BeforeUpdate.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.BeforeUpdate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L330">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_BeforeUpdate_" data-uid="AngeliA.PoseCharacterRenderer.BeforeUpdate*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_BeforeUpdate" data-uid="AngeliA.PoseCharacterRenderer.BeforeUpdate">BeforeUpdate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void BeforeUpdate()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_BeforeUpdate">CharacterRenderer.BeforeUpdate()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_GetGadgetID_AngeliA_BodyGadgetType_.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.GetGadgetID(AngeliA.BodyGadgetType)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L813">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_GetGadgetID_" data-uid="AngeliA.PoseCharacterRenderer.GetGadgetID*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_GetGadgetID_AngeliA_BodyGadgetType_" data-uid="AngeliA.PoseCharacterRenderer.GetGadgetID(AngeliA.BodyGadgetType)">GetGadgetID(BodyGadgetType)</h4>
+  <div class="markdown level1 summary"><p>Get current body gadget ID the character is using</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetGadgetID(BodyGadgetType type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.BodyGadgetType.html">BodyGadgetType</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_GetSuitID_AngeliA_ClothType_.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.GetSuitID(AngeliA.ClothType)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L827">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_GetSuitID_" data-uid="AngeliA.PoseCharacterRenderer.GetSuitID*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_GetSuitID_AngeliA_ClothType_" data-uid="AngeliA.PoseCharacterRenderer.GetSuitID(AngeliA.ClothType)">GetSuitID(ClothType)</h4>
+  <div class="markdown level1 summary"><p>Get current suit ID the character is using</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetSuitID(ClothType type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.ClothType.html">ClothType</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_LateUpdate.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.LateUpdate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L336">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_LateUpdate_" data-uid="AngeliA.PoseCharacterRenderer.LateUpdate*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_LateUpdate" data-uid="AngeliA.PoseCharacterRenderer.LateUpdate">LateUpdate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void LateUpdate()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_LateUpdate">CharacterRenderer.LateUpdate()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_ManualPoseAnimate_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.ManualPoseAnimate(System.Int32%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L935">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_ManualPoseAnimate_" data-uid="AngeliA.PoseCharacterRenderer.ManualPoseAnimate*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_ManualPoseAnimate_System_Int32_System_Int32_" data-uid="AngeliA.PoseCharacterRenderer.ManualPoseAnimate(System.Int32,System.Int32)">ManualPoseAnimate(int, int)</h4>
+  <div class="markdown level1 summary"><p>Make the renderer draw the character based on the given animation for specified frames long</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ManualPoseAnimate(int id, int duration = 1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">duration</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_OnActivated.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.OnActivated%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L322">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_OnActivated_" data-uid="AngeliA.PoseCharacterRenderer.OnActivated*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_OnActivated" data-uid="AngeliA.PoseCharacterRenderer.OnActivated">OnActivated()</h4>
+  <div class="markdown level1 summary"><p>Callback function for character entity get activated</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnActivated()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.CharacterRenderer.html#AngeliA_CharacterRenderer_OnActivated">CharacterRenderer.OnActivated()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_OverridePoseAnimation_AngeliA_CharacterAnimationType_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.OverridePoseAnimation(AngeliA.CharacterAnimationType%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L930">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_OverridePoseAnimation_" data-uid="AngeliA.PoseCharacterRenderer.OverridePoseAnimation*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_OverridePoseAnimation_AngeliA_CharacterAnimationType_System_Int32_System_Int32_" data-uid="AngeliA.PoseCharacterRenderer.OverridePoseAnimation(AngeliA.CharacterAnimationType,System.Int32,System.Int32)">OverridePoseAnimation(CharacterAnimationType, int, int)</h4>
+  <div class="markdown level1 summary"><p>Override animation for given animation type for specified frames long</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OverridePoseAnimation(CharacterAnimationType type, int id, int duration = 1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.CharacterAnimationType.html">CharacterAnimationType</a></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">duration</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_PerformPoseAnimation.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.PerformPoseAnimation%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L373">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_PerformPoseAnimation_" data-uid="AngeliA.PoseCharacterRenderer.PerformPoseAnimation*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_PerformPoseAnimation" data-uid="AngeliA.PoseCharacterRenderer.PerformPoseAnimation">PerformPoseAnimation()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void PerformPoseAnimation()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_ReloadRenderingConfigPoolFromFileAndSheet_System_Boolean_.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L838">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_ReloadRenderingConfigPoolFromFileAndSheet_" data-uid="AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_ReloadRenderingConfigPoolFromFileAndSheet_System_Boolean_" data-uid="AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet(System.Boolean)">ReloadRenderingConfigPoolFromFileAndSheet(bool)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ReloadRenderingConfigPoolFromFileAndSheet(bool forceReset = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">forceReset</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_RenderBodyGadgets.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.RenderBodyGadgets%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L352">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_RenderBodyGadgets_" data-uid="AngeliA.PoseCharacterRenderer.RenderBodyGadgets*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_RenderBodyGadgets" data-uid="AngeliA.PoseCharacterRenderer.RenderBodyGadgets">RenderBodyGadgets()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void RenderBodyGadgets()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_RenderCloths.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.RenderCloths%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L364">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_RenderCloths_" data-uid="AngeliA.PoseCharacterRenderer.RenderCloths*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_RenderCloths" data-uid="AngeliA.PoseCharacterRenderer.RenderCloths">RenderCloths()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void RenderCloths()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_RenderEquipment.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.RenderEquipment%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L402">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_RenderEquipment_" data-uid="AngeliA.PoseCharacterRenderer.RenderEquipment*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_RenderEquipment" data-uid="AngeliA.PoseCharacterRenderer.RenderEquipment">RenderEquipment()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void RenderEquipment()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_RenderInventory.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.RenderInventory%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L444">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_RenderInventory_" data-uid="AngeliA.PoseCharacterRenderer.RenderInventory*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_RenderInventory" data-uid="AngeliA.PoseCharacterRenderer.RenderInventory">RenderInventory()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void RenderInventory()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_SaveCharacterToConfig_System_Boolean_.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.SaveCharacterToConfig(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L863">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_SaveCharacterToConfig_" data-uid="AngeliA.PoseCharacterRenderer.SaveCharacterToConfig*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_SaveCharacterToConfig_System_Boolean_" data-uid="AngeliA.PoseCharacterRenderer.SaveCharacterToConfig(System.Boolean)">SaveCharacterToConfig(bool)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SaveCharacterToConfig(bool saveToFile = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">saveToFile</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_SyncRenderingConfigFromPool_System_Boolean_.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L913">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_SyncRenderingConfigFromPool_" data-uid="AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_SyncRenderingConfigFromPool_System_Boolean_" data-uid="AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool(System.Boolean)">SyncRenderingConfigFromPool(bool)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SyncRenderingConfigFromPool(bool forceSync = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">forceSync</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer_TryGetConfigFromPool_System_Int32_AngeliA_CharacterRenderingConfig__.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer.TryGetConfigFromPool(System.Int32%2CAngeliA.CharacterRenderingConfig%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L860">View Source</a>
+  </span>
+  <a id="AngeliA_PoseCharacterRenderer_TryGetConfigFromPool_" data-uid="AngeliA.PoseCharacterRenderer.TryGetConfigFromPool*"></a>
+  <h4 id="AngeliA_PoseCharacterRenderer_TryGetConfigFromPool_System_Int32_AngeliA_CharacterRenderingConfig__" data-uid="AngeliA.PoseCharacterRenderer.TryGetConfigFromPool(System.Int32,AngeliA.CharacterRenderingConfig@)">TryGetConfigFromPool(int, out CharacterRenderingConfig)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryGetConfigFromPool(int id, out CharacterRenderingConfig config)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="AngeliA.CharacterRenderingConfig.html">CharacterRenderingConfig</a></td>
+        <td><span class="parametername">config</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
   </div>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
   </div>
-  </dd></dl>
-
-
-
-
-
-  <h2 class="section" id="constructors">Constructors
-</h2>
-
-
-  <a id="AngeliA_PoseCharacterRenderer__ctor_" data-uid="AngeliA.PoseCharacterRenderer.#ctor*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer__ctor_AngeliA_Character_" data-uid="AngeliA.PoseCharacterRenderer.#ctor(AngeliA.Character)">
-  PoseCharacterRenderer(Character)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L279"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PoseCharacterRenderer(Character target)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>target</code> <a class="xref" href="AngeliA.Character.html">Character</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <h2 class="section" id="fields">Fields
-</h2>
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_BODY_PART_COUNT" data-uid="AngeliA.PoseCharacterRenderer.BODY_PART_COUNT">
-  BODY_PART_COUNT
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L18"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>How many body part does a pose character have</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int BODY_PART_COUNT = 17</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_BODY_PART_NAME" data-uid="AngeliA.PoseCharacterRenderer.BODY_PART_NAME">
-  BODY_PART_NAME
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L25"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly string[] BODY_PART_NAME</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_BodyParts" data-uid="AngeliA.PoseCharacterRenderer.BodyParts">
-  BodyParts
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L76"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>All body parts of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly BodyPart[] BodyParts</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a>[]</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_CM_PER_PX" data-uid="AngeliA.PoseCharacterRenderer.CM_PER_PX">
-  CM_PER_PX
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L22"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>How many cm does one artwork pixel represents</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CM_PER_PX = 5</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_DEFAULT_BODY_PART_ID" data-uid="AngeliA.PoseCharacterRenderer.DEFAULT_BODY_PART_ID">
-  DEFAULT_BODY_PART_ID
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L24"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static readonly int[] DEFAULT_BODY_PART_ID</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>[]</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_EarID" data-uid="AngeliA.PoseCharacterRenderer.EarID">
-  EarID
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L184"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>ID of current animal-ear gadget instance (like cat-girl's ears, not human ears)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt EarID</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_FaceID" data-uid="AngeliA.PoseCharacterRenderer.FaceID">
-  FaceID
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L176"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>ID of current face gadget instance</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt FaceID</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_ForceFaceExpressionIndex" data-uid="AngeliA.PoseCharacterRenderer.ForceFaceExpressionIndex">
-  ForceFaceExpressionIndex
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L200"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Which face expression does the face need to render</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt ForceFaceExpressionIndex</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_HairID" data-uid="AngeliA.PoseCharacterRenderer.HairID">
-  HairID
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L180"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>ID of current hair gadget instance</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HairID</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_HandGrabAttackTwistL" data-uid="AngeliA.PoseCharacterRenderer.HandGrabAttackTwistL">
-  HandGrabAttackTwistL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L166"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Angle twist of the object grabbing by the left hand (0 means disappear, 1000 means normal)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabAttackTwistL</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_HandGrabAttackTwistR" data-uid="AngeliA.PoseCharacterRenderer.HandGrabAttackTwistR">
-  HandGrabAttackTwistR
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L170"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Angle twist of the object grabbing by the right hand (0 means disappear, 1000 means normal)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabAttackTwistR</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_HandGrabRotationL" data-uid="AngeliA.PoseCharacterRenderer.HandGrabRotationL">
-  HandGrabRotationL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L150"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Rotation of the object grabbing by the left hand</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabRotationL</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_HandGrabRotationR" data-uid="AngeliA.PoseCharacterRenderer.HandGrabRotationR">
-  HandGrabRotationR
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L154"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Rotation of the object grabbing by the right hand</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabRotationR</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_HandGrabScaleL" data-uid="AngeliA.PoseCharacterRenderer.HandGrabScaleL">
-  HandGrabScaleL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L158"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Size scaling of the object grabbing by the left hand (0 means 0%, 1000 means 100%)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabScaleL</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_HandGrabScaleR" data-uid="AngeliA.PoseCharacterRenderer.HandGrabScaleR">
-  HandGrabScaleR
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L162"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Size scaling of the object grabbing by the right hand (0 means 0%, 1000 means 100%)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HandGrabScaleR</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_HornID" data-uid="AngeliA.PoseCharacterRenderer.HornID">
-  HornID
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L196"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>ID of current horn gadget instance</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt HornID</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_SuitBody" data-uid="AngeliA.PoseCharacterRenderer.SuitBody">
-  SuitBody
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L210"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Current body suit id (cloth with sleeves)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt SuitBody</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_SuitFoot" data-uid="AngeliA.PoseCharacterRenderer.SuitFoot">
-  SuitFoot
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L222"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Current shoes suit id</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt SuitFoot</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_SuitHand" data-uid="AngeliA.PoseCharacterRenderer.SuitHand">
-  SuitHand
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L218"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Current gloves suit id</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt SuitHand</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_SuitHead" data-uid="AngeliA.PoseCharacterRenderer.SuitHead">
-  SuitHead
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L206"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Current hat suit id</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt SuitHead</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_SuitHip" data-uid="AngeliA.PoseCharacterRenderer.SuitHip">
-  SuitHip
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L214"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Current hip suit id (pants or skirt)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt SuitHip</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_TailID" data-uid="AngeliA.PoseCharacterRenderer.TailID">
-  TailID
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L188"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>ID of current tail gadget instance</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt TailID</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <h3 id="AngeliA_PoseCharacterRenderer_WingID" data-uid="AngeliA.PoseCharacterRenderer.WingID">
-  WingID
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L192"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>ID of current wing gadget instance</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly FrameBasedInt WingID</code></pre>
-  </div>
-
-
-
-
-  <h4 class="section">Field Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.FrameBasedInt.html">FrameBasedInt</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-  <h2 class="section" id="properties">Properties
-</h2>
-
-
-  <a id="AngeliA_PoseCharacterRenderer_BasicRootY_" data-uid="AngeliA.PoseCharacterRenderer.BasicRootY*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_BasicRootY" data-uid="AngeliA.PoseCharacterRenderer.BasicRootY">
-  BasicRootY
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L42"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Mid-Bottom local position of character hip y position</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int BasicRootY { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_BlendDuration_" data-uid="AngeliA.PoseCharacterRenderer.BlendDuration*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_BlendDuration" data-uid="AngeliA.PoseCharacterRenderer.BlendDuration">
-  BlendDuration
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L70"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>How many frames does it takes the character to transition from one pose to another</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int BlendDuration { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_Body_" data-uid="AngeliA.PoseCharacterRenderer.Body*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_Body" data-uid="AngeliA.PoseCharacterRenderer.Body">
-  Body
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L84"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Body of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart Body { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_BodyTwist_" data-uid="AngeliA.PoseCharacterRenderer.BodyTwist*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_BodyTwist" data-uid="AngeliA.PoseCharacterRenderer.BodyTwist">
-  BodyTwist
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L58"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Make body rotate left or right</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int BodyTwist { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_CharacterHeight_" data-uid="AngeliA.PoseCharacterRenderer.CharacterHeight*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_CharacterHeight" data-uid="AngeliA.PoseCharacterRenderer.CharacterHeight">
-  CharacterHeight
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L62"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Character body height in cm</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int CharacterHeight { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_FootL_" data-uid="AngeliA.PoseCharacterRenderer.FootL*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_FootL" data-uid="AngeliA.PoseCharacterRenderer.FootL">
-  FootL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L140"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Left foot of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart FootL { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_FootR_" data-uid="AngeliA.PoseCharacterRenderer.FootR*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_FootR" data-uid="AngeliA.PoseCharacterRenderer.FootR">
-  FootR
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L144"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Right foot of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart FootR { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_HandL_" data-uid="AngeliA.PoseCharacterRenderer.HandL*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_HandL" data-uid="AngeliA.PoseCharacterRenderer.HandL">
-  HandL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L116"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Left hand of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart HandL { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_HandR_" data-uid="AngeliA.PoseCharacterRenderer.HandR*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_HandR" data-uid="AngeliA.PoseCharacterRenderer.HandR">
-  HandR
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L120"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Right hand of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart HandR { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_Head_" data-uid="AngeliA.PoseCharacterRenderer.Head*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_Head" data-uid="AngeliA.PoseCharacterRenderer.Head">
-  Head
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L80"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Head of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart Head { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_HeadTwist_" data-uid="AngeliA.PoseCharacterRenderer.HeadTwist*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_HeadTwist" data-uid="AngeliA.PoseCharacterRenderer.HeadTwist">
-  HeadTwist
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L54"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Make head rotate like shaking head</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int HeadTwist { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_Hip_" data-uid="AngeliA.PoseCharacterRenderer.Hip*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_Hip" data-uid="AngeliA.PoseCharacterRenderer.Hip">
-  Hip
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L88"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Hip of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart Hip { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_LowerArmL_" data-uid="AngeliA.PoseCharacterRenderer.LowerArmL*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_LowerArmL" data-uid="AngeliA.PoseCharacterRenderer.LowerArmL">
-  LowerArmL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L108"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Left lower arm of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart LowerArmL { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_LowerArmR_" data-uid="AngeliA.PoseCharacterRenderer.LowerArmR*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_LowerArmR" data-uid="AngeliA.PoseCharacterRenderer.LowerArmR">
-  LowerArmR
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L112"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Right lower arm of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart LowerArmR { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_LowerLegL_" data-uid="AngeliA.PoseCharacterRenderer.LowerLegL*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_LowerLegL" data-uid="AngeliA.PoseCharacterRenderer.LowerLegL">
-  LowerLegL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L132"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Left lower leg of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart LowerLegL { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_LowerLegR_" data-uid="AngeliA.PoseCharacterRenderer.LowerLegR*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_LowerLegR" data-uid="AngeliA.PoseCharacterRenderer.LowerLegR">
-  LowerLegR
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L136"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Right lower leg of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart LowerLegR { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_PoseRootX_" data-uid="AngeliA.PoseCharacterRenderer.PoseRootX*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_PoseRootX" data-uid="AngeliA.PoseCharacterRenderer.PoseRootX">
-  PoseRootX
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L46"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Total offset X for pose rendering</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int PoseRootX { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_PoseRootY_" data-uid="AngeliA.PoseCharacterRenderer.PoseRootY*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_PoseRootY" data-uid="AngeliA.PoseCharacterRenderer.PoseRootY">
-  PoseRootY
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L50"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Total offset Y for pose rendering</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int PoseRootY { get; set; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_RenderedCellZ_" data-uid="AngeliA.PoseCharacterRenderer.RenderedCellZ*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_RenderedCellZ" data-uid="AngeliA.PoseCharacterRenderer.RenderedCellZ">
-  RenderedCellZ
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L66"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Basic rendering Z value for last time character get rendered</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int RenderedCellZ { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_ShoulderL_" data-uid="AngeliA.PoseCharacterRenderer.ShoulderL*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_ShoulderL" data-uid="AngeliA.PoseCharacterRenderer.ShoulderL">
-  ShoulderL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L92"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Left shoulder of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart ShoulderL { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_ShoulderR_" data-uid="AngeliA.PoseCharacterRenderer.ShoulderR*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_ShoulderR" data-uid="AngeliA.PoseCharacterRenderer.ShoulderR">
-  ShoulderR
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L96"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Right shoulder of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart ShoulderR { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_UpperArmL_" data-uid="AngeliA.PoseCharacterRenderer.UpperArmL*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_UpperArmL" data-uid="AngeliA.PoseCharacterRenderer.UpperArmL">
-  UpperArmL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L100"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Left upper arm of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart UpperArmL { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_UpperArmR_" data-uid="AngeliA.PoseCharacterRenderer.UpperArmR*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_UpperArmR" data-uid="AngeliA.PoseCharacterRenderer.UpperArmR">
-  UpperArmR
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L104"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Right upper arm of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart UpperArmR { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_UpperLegL_" data-uid="AngeliA.PoseCharacterRenderer.UpperLegL*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_UpperLegL" data-uid="AngeliA.PoseCharacterRenderer.UpperLegL">
-  UpperLegL
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L124"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Left upper leg of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart UpperLegL { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_UpperLegR_" data-uid="AngeliA.PoseCharacterRenderer.UpperLegR*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_UpperLegR" data-uid="AngeliA.PoseCharacterRenderer.UpperLegR">
-  UpperLegR
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L128"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Right upper leg of the pose character</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BodyPart UpperLegR { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.BodyPart.html">BodyPart</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <h2 class="section" id="methods">Methods
-</h2>
-
-
-  <a id="AngeliA_PoseCharacterRenderer_BeforeUpdate_" data-uid="AngeliA.PoseCharacterRenderer.BeforeUpdate*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_BeforeUpdate" data-uid="AngeliA.PoseCharacterRenderer.BeforeUpdate">
-  BeforeUpdate()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L330"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void BeforeUpdate()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_GetGadgetID_" data-uid="AngeliA.PoseCharacterRenderer.GetGadgetID*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_GetGadgetID_AngeliA_BodyGadgetType_" data-uid="AngeliA.PoseCharacterRenderer.GetGadgetID(AngeliA.BodyGadgetType)">
-  GetGadgetID(BodyGadgetType)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L813"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Get current body gadget ID the character is using</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GetGadgetID(BodyGadgetType type)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>type</code> <a class="xref" href="AngeliA.BodyGadgetType.html">BodyGadgetType</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_GetSuitID_" data-uid="AngeliA.PoseCharacterRenderer.GetSuitID*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_GetSuitID_AngeliA_ClothType_" data-uid="AngeliA.PoseCharacterRenderer.GetSuitID(AngeliA.ClothType)">
-  GetSuitID(ClothType)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L827"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Get current suit ID the character is using</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GetSuitID(ClothType type)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>type</code> <a class="xref" href="AngeliA.ClothType.html">ClothType</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_LateUpdate_" data-uid="AngeliA.PoseCharacterRenderer.LateUpdate*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_LateUpdate" data-uid="AngeliA.PoseCharacterRenderer.LateUpdate">
-  LateUpdate()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L336"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void LateUpdate()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_ManualPoseAnimate_" data-uid="AngeliA.PoseCharacterRenderer.ManualPoseAnimate*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_ManualPoseAnimate_System_Int32_System_Int32_" data-uid="AngeliA.PoseCharacterRenderer.ManualPoseAnimate(System.Int32,System.Int32)">
-  ManualPoseAnimate(int, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L935"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Make the renderer draw the character based on the given animation for specified frames long</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void ManualPoseAnimate(int id, int duration = 1)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-    <dt><code>duration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_OnActivated_" data-uid="AngeliA.PoseCharacterRenderer.OnActivated*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_OnActivated" data-uid="AngeliA.PoseCharacterRenderer.OnActivated">
-  OnActivated()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L322"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Callback function for character entity get activated</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnActivated()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_OverridePoseAnimation_" data-uid="AngeliA.PoseCharacterRenderer.OverridePoseAnimation*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_OverridePoseAnimation_AngeliA_CharacterAnimationType_System_Int32_System_Int32_" data-uid="AngeliA.PoseCharacterRenderer.OverridePoseAnimation(AngeliA.CharacterAnimationType,System.Int32,System.Int32)">
-  OverridePoseAnimation(CharacterAnimationType, int, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L930"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Override animation for given animation type for specified frames long</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OverridePoseAnimation(CharacterAnimationType type, int id, int duration = 1)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>type</code> <a class="xref" href="AngeliA.CharacterAnimationType.html">CharacterAnimationType</a></dt>
-    <dd></dd>
-    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-    <dt><code>duration</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_PerformPoseAnimation_" data-uid="AngeliA.PoseCharacterRenderer.PerformPoseAnimation*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_PerformPoseAnimation" data-uid="AngeliA.PoseCharacterRenderer.PerformPoseAnimation">
-  PerformPoseAnimation()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L373"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void PerformPoseAnimation()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_ReloadRenderingConfigPoolFromFileAndSheet_" data-uid="AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_ReloadRenderingConfigPoolFromFileAndSheet_System_Boolean_" data-uid="AngeliA.PoseCharacterRenderer.ReloadRenderingConfigPoolFromFileAndSheet(System.Boolean)">
-  ReloadRenderingConfigPoolFromFileAndSheet(bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L838"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void ReloadRenderingConfigPoolFromFileAndSheet(bool forceReset = false)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>forceReset</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_RenderBodyGadgets_" data-uid="AngeliA.PoseCharacterRenderer.RenderBodyGadgets*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_RenderBodyGadgets" data-uid="AngeliA.PoseCharacterRenderer.RenderBodyGadgets">
-  RenderBodyGadgets()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L352"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void RenderBodyGadgets()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_RenderCloths_" data-uid="AngeliA.PoseCharacterRenderer.RenderCloths*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_RenderCloths" data-uid="AngeliA.PoseCharacterRenderer.RenderCloths">
-  RenderCloths()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L364"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void RenderCloths()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_RenderEquipment_" data-uid="AngeliA.PoseCharacterRenderer.RenderEquipment*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_RenderEquipment" data-uid="AngeliA.PoseCharacterRenderer.RenderEquipment">
-  RenderEquipment()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L402"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void RenderEquipment()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_RenderInventory_" data-uid="AngeliA.PoseCharacterRenderer.RenderInventory*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_RenderInventory" data-uid="AngeliA.PoseCharacterRenderer.RenderInventory">
-  RenderInventory()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L444"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void RenderInventory()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_SaveCharacterToConfig_" data-uid="AngeliA.PoseCharacterRenderer.SaveCharacterToConfig*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_SaveCharacterToConfig_System_Boolean_" data-uid="AngeliA.PoseCharacterRenderer.SaveCharacterToConfig(System.Boolean)">
-  SaveCharacterToConfig(bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L863"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SaveCharacterToConfig(bool saveToFile = false)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>saveToFile</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_SyncRenderingConfigFromPool_" data-uid="AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_SyncRenderingConfigFromPool_System_Boolean_" data-uid="AngeliA.PoseCharacterRenderer.SyncRenderingConfigFromPool(System.Boolean)">
-  SyncRenderingConfigFromPool(bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L913"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SyncRenderingConfigFromPool(bool forceSync = false)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>forceSync</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_PoseCharacterRenderer_TryGetConfigFromPool_" data-uid="AngeliA.PoseCharacterRenderer.TryGetConfigFromPool*"></a>
-
-  <h3 id="AngeliA_PoseCharacterRenderer_TryGetConfigFromPool_System_Int32_AngeliA_CharacterRenderingConfig__" data-uid="AngeliA.PoseCharacterRenderer.TryGetConfigFromPool(System.Int32,AngeliA.CharacterRenderingConfig@)">
-  TryGetConfigFromPool(int, out CharacterRenderingConfig)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L860"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryGetConfigFromPool(int id, out CharacterRenderingConfig config)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-    <dt><code>config</code> <a class="xref" href="AngeliA.CharacterRenderingConfig.html">CharacterRenderingConfig</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
 
 </article>
+          </div>
 
-        <div class="contribution d-print-none">
-          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L6" class="edit-link">Edit this page</a>
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_PoseCharacterRenderer.md&amp;value=---%0Auid%3A%20AngeliA.PoseCharacterRenderer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Framework/src/Behaviour/Renderer/PoseCharacterRenderer.cs/#L6" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
         </div>
-
-
       </div>
 
-      <div class="affix">
-        <nav id="affix"></nav>
-      </div>
-    </main>
-
-    <div class="container-xxl search-results" id="search-results"></div>
-
-    <footer class="border-top text-secondary">
-      <div class="container-xxl">
-        <div class="flex-fill">
-          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
   </body>
 </html>

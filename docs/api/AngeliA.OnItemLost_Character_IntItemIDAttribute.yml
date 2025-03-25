@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnItemLost_Character_IntItemIDAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 294
+    startLine: 400
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when a character lost an item
   example:
-  - internal static void ExampleFunction (Character holder, int itemID) { }
+  - >-
+    <pre><code class="lang-csharp">[OnItemLost_Character_IntItemID]
+
+    internal static void ExampleFunction (Character holder, int itemID) { }</code></pre>
   syntax:
     content: 'public class OnItemLost_Character_IntItemIDAttribute : EventAttribute'
     content.vb: Public Class OnItemLost_Character_IntItemIDAttribute Inherits EventAttribute

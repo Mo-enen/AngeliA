@@ -23,10 +23,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: FrameBasedValue
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 6
+    startLine: 9
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: A data that can be override for specified frames
+  example: []
   syntax:
     content: public abstract class FrameBasedValue
     content.vb: Public MustInherit Class FrameBasedValue
@@ -63,7 +65,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Overrided
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 7
+    startLine: 10
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -92,7 +94,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OverrideFrame
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 8
+    startLine: 11
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -119,7 +121,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OverridePriority
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 9
+    startLine: 12
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -146,7 +148,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ClearOverride
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 10
+    startLine: 13
   assemblies:
   - AngeliA Framework
   namespace: AngeliA

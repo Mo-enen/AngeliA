@@ -38,8 +38,7 @@
     ],
     "output": "",
     "template": [
-      "default",
-      "modern"
+      "template"
     ],
     "globalMetadata": {
       "_appName": "AngeliA",

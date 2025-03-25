@@ -20,13 +20,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnGameInitializeLaterAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 20
+    startLine: 29
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when game initialize but after all [OnGameInitialize] functions already called
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[OnGameInitializeLater]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: 'public class OnGameInitializeLaterAttribute : OrderedAttribute'
     content.vb: Public Class OnGameInitializeLaterAttribute Inherits OrderedAttribute
@@ -99,13 +102,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 20
+    startLine: 29
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when game initialize but after all [OnGameInitialize] functions already called
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[OnGameInitializeLater]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: public OnGameInitializeLaterAttribute(int order = 0)
     parameters:

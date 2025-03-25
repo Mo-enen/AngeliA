@@ -70,8 +70,8 @@ items:
   - uid: AngeliA.BeforeLevelRenderedAttribute
     name: BeforeLevelRenderedAttribute
     type: Class
-  - uid: AngeliA.BeforeSavingSlotChanged
-    name: BeforeSavingSlotChanged
+  - uid: AngeliA.BeforeSavingSlotChangedAttribute
+    name: BeforeSavingSlotChangedAttribute
     type: Class
   - uid: AngeliA.BeforeUpdateUpdateAttribute
     name: BeforeUpdateUpdateAttribute
@@ -232,8 +232,8 @@ items:
   - uid: AngeliA.CheatSystem
     name: CheatSystem
     type: Class
-  - uid: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
-    name: CircuitOperate_Int3UnitPos_IntStamp_Direction5From
+  - uid: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
+    name: CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
     type: Class
   - uid: AngeliA.CircuitSystem
     name: CircuitSystem
@@ -841,38 +841,38 @@ items:
   - uid: AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute
     name: OnBlockPicked_IntSpriteID_IRectAttribute
     type: Class
-  - uid: AngeliA.OnBulletHitEnvironment_Bullet
-    name: OnBulletHitEnvironment_Bullet
+  - uid: AngeliA.OnBulletHitEnvironment_BulletAttribute
+    name: OnBulletHitEnvironment_BulletAttribute
     type: Class
   - uid: AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute
     name: OnCameOutOfWater_Rigidbody_EntityAttribute
     type: Class
-  - uid: AngeliA.OnCharacterCrash_Entity
-    name: OnCharacterCrash_Entity
+  - uid: AngeliA.OnCharacterCrash_EntityAttribute
+    name: OnCharacterCrash_EntityAttribute
     type: Class
-  - uid: AngeliA.OnCharacterFly_Entity
-    name: OnCharacterFly_Entity
+  - uid: AngeliA.OnCharacterFly_EntityAttribute
+    name: OnCharacterFly_EntityAttribute
     type: Class
-  - uid: AngeliA.OnCharacterFootStepped_Entity
-    name: OnCharacterFootStepped_Entity
+  - uid: AngeliA.OnCharacterFootStepped_EntityAttribute
+    name: OnCharacterFootStepped_EntityAttribute
     type: Class
-  - uid: AngeliA.OnCharacterJump_Entity
-    name: OnCharacterJump_Entity
+  - uid: AngeliA.OnCharacterJump_EntityAttribute
+    name: OnCharacterJump_EntityAttribute
     type: Class
-  - uid: AngeliA.OnCharacterPassOut_Entity
-    name: OnCharacterPassOut_Entity
+  - uid: AngeliA.OnCharacterPassOut_EntityAttribute
+    name: OnCharacterPassOut_EntityAttribute
     type: Class
-  - uid: AngeliA.OnCharacterPound_Entity
-    name: OnCharacterPound_Entity
+  - uid: AngeliA.OnCharacterPound_EntityAttribute
+    name: OnCharacterPound_EntityAttribute
     type: Class
-  - uid: AngeliA.OnCharacterSleeping_Entity
-    name: OnCharacterSleeping_Entity
+  - uid: AngeliA.OnCharacterSleeping_EntityAttribute
+    name: OnCharacterSleeping_EntityAttribute
     type: Class
-  - uid: AngeliA.OnCharacterSlideStepped_Entity
-    name: OnCharacterSlideStepped_Entity
+  - uid: AngeliA.OnCharacterSlideStepped_EntityAttribute
+    name: OnCharacterSlideStepped_EntityAttribute
     type: Class
-  - uid: AngeliA.OnCharacterTeleport_Entity
-    name: OnCharacterTeleport_Entity
+  - uid: AngeliA.OnCharacterTeleport_EntityAttribute
+    name: OnCharacterTeleport_EntityAttribute
     type: Class
   - uid: AngeliA.OnCheatPerformed_StringCodeAttribute
     name: OnCheatPerformed_StringCodeAttribute
@@ -880,8 +880,8 @@ items:
   - uid: AngeliA.OnCircuitWireActived_Int3UnitPosAttribute
     name: OnCircuitWireActived_Int3UnitPosAttribute
     type: Class
-  - uid: AngeliA.OnDealDamage_Damage_IDamageReceiver
-    name: OnDealDamage_Damage_IDamageReceiver
+  - uid: AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute
+    name: OnDealDamage_Damage_IDamageReceiverAttribute
     type: Class
   - uid: AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute
     name: OnFallIntoWater_Rigidbody_EntityAttribute
@@ -955,14 +955,14 @@ items:
   - uid: AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute
     name: OnRemoteSettingChanged_IntID_IntDataAttribute
     type: Class
-  - uid: AngeliA.OnSavingSlotChanged
-    name: OnSavingSlotChanged
+  - uid: AngeliA.OnSavingSlotChangedAttribute
+    name: OnSavingSlotChangedAttribute
     type: Class
-  - uid: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-    name: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
+  - uid: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+    name: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
     type: Class
-  - uid: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
-    name: OnTransferPassAttribute_Int3UnitPos_ObjectData
+  - uid: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
+    name: OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
     type: Class
   - uid: AngeliA.OnViewZChangedAttribute
     name: OnViewZChangedAttribute

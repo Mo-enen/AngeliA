@@ -1,843 +1,235 @@
 <!DOCTYPE html>
+<!--[if IE]><![endif]-->
 <html>
+
   <head>
     <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <title>Class BarrelMovement | AngeliA </title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class BarrelMovement | AngeliA ">
-      
-      
-      <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css">
-      <link rel="stylesheet" href="../public/main.css">
-      <meta name="docfx:navrel" content="../toc.html">
-      <meta name="docfx:tocrel" content="toc.html">
-      
-      <meta name="docfx:rel" content="../">
-      
-      
-      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_BarrelMovement.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.BarrelMovement%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
-      <meta name="loc:inThisArticle" content="In this article">
-      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
-      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
-      <meta name="loc:tocFilter" content="Filter by title">
-      <meta name="loc:nextArticle" content="Next">
-      <meta name="loc:prevArticle" content="Previous">
-      <meta name="loc:themeLight" content="Light">
-      <meta name="loc:themeDark" content="Dark">
-      <meta name="loc:themeAuto" content="Auto">
-      <meta name="loc:changeTheme" content="Change theme">
-      <meta name="loc:copy" content="Copy">
-      <meta name="loc:downloadPdf" content="Download PDF">
-
-      <script type="module" src="./../public/docfx.min.js"></script>
-
-      <script>
-        const theme = localStorage.getItem('theme') || 'auto'
-        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-      </script>
-
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
   </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
-    <header class="bg-body border-bottom">
-      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
-        <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
-            AngeliA
-          </a>
-          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="bi bi-three-dots"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navpanel">
-            <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
               </form>
             </div>
           </div>
-        </div>
-      </nav>
-    </header>
+        </nav>
 
-    <main class="container-xxl">
-      <div class="toc-offcanvas">
-        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
           </div>
-          <div class="offcanvas-body">
-            <nav class="toc" id="toc"></nav>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
+      <div role="main" class="container body-content hide-when-search">
 
-      <div class="content">
-        <div class="actionbar">
-          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
-            <i class="bi bi-list"></i>
-          </button>
-
-          <nav id="breadcrumb"></nav>
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
         </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AngeliA.Platformer.BarrelMovement">
 
-        <article data-uid="AngeliA.Platformer.BarrelMovement">
 
 
-
-  <h1 id="AngeliA_Platformer_BarrelMovement" data-uid="AngeliA.Platformer.BarrelMovement" class="text-break">
-Class BarrelMovement  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Vehicle/Barrel/BarrelMovement.cs/#L3"><i class="bi bi-code-slash"></i></a>
-  </h1>
-
-  <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a>.<a class="xref" href="AngeliA.Platformer.html">Platformer</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>com.angelia.platformer.dll</dd></dl>
-  </div>
-
-  <div class="markdown summary"></div>
-  <div class="markdown conceptual"></div>
-
+  <h1 id="AngeliA_Platformer_BarrelMovement" data-uid="AngeliA.Platformer.BarrelMovement" class="text-break">Class BarrelMovement</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AngeliA.html">AngeliA</a>.<a class="xref" href="AngeliA.Platformer.html">Platformer</a></h6>
+  <h6><strong>Assembly</strong>: com.angelia.platformer.dll</h6>
+  <h5 id="AngeliA_Platformer_BarrelMovement_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class BarrelMovement : VehicleMovement</code></pre>
   </div>
-
-
-
-
-  <dl class="typelist inheritance">
-    <dt>Inheritance</dt>
-    <dd>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><a class="xref" href="AngeliA.CharacterMovement.html">CharacterMovement</a></div>
-      <div><a class="xref" href="AngeliA.Platformer.VehicleMovement.html">VehicleMovement</a></div>
-      <div><span class="xref">BarrelMovement</span></div>
-    </dd>
-  </dl>
-
-
-
-  <dl class="typelist inheritedMembers">
-    <dt>Inherited Members</dt>
-    <dd>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.VehicleMovement.html#AngeliA_Platformer_VehicleMovement_SyncFromConfigFile">VehicleMovement.SyncFromConfigFile</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.VehicleMovement.html#AngeliA_Platformer_VehicleMovement_Driver">VehicleMovement.Driver</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.VehicleMovement.html#AngeliA_Platformer_VehicleMovement_Move_AngeliA_Direction3_AngeliA_Direction3_System_Boolean_">VehicleMovement.Move(Direction3, Direction3, bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.VehicleMovement.html#AngeliA_Platformer_VehicleMovement_Stop">VehicleMovement.Stop()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.VehicleMovement.html#AngeliA_Platformer_VehicleMovement_Jump_System_Boolean_">VehicleMovement.Jump(bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.VehicleMovement.html#AngeliA_Platformer_VehicleMovement_HoldJump_System_Boolean_">VehicleMovement.HoldJump(bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.VehicleMovement.html#AngeliA_Platformer_VehicleMovement_Crash">VehicleMovement.Crash()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.VehicleMovement.html#AngeliA_Platformer_VehicleMovement_Dash">VehicleMovement.Dash()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.VehicleMovement.html#AngeliA_Platformer_VehicleMovement_Pound">VehicleMovement.Pound()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.VehicleMovement.html#AngeliA_Platformer_VehicleMovement_Rush">VehicleMovement.Rush()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_MovementWidth">CharacterMovement.MovementWidth</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_MovementHeight">CharacterMovement.MovementHeight</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_WalkAvailable">CharacterMovement.WalkAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_WalkSpeed">CharacterMovement.WalkSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_WalkAcceleration">CharacterMovement.WalkAcceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_WalkBrakeAcceleration">CharacterMovement.WalkBrakeAcceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_WalkDeceleration">CharacterMovement.WalkDeceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RunAvailable">CharacterMovement.RunAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RunSpeed">CharacterMovement.RunSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RunAcceleration">CharacterMovement.RunAcceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RunBrakeAcceleration">CharacterMovement.RunBrakeAcceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RunDeceleration">CharacterMovement.RunDeceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_JumpCount">CharacterMovement.JumpCount</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_JumpSpeed">CharacterMovement.JumpSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_JumpReleaseSpeedRate">CharacterMovement.JumpReleaseSpeedRate</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_JumpRiseGravityRate">CharacterMovement.JumpRiseGravityRate</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_JumpBoostFromMoveRate">CharacterMovement.JumpBoostFromMoveRate</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FirstJumpWithRoll">CharacterMovement.FirstJumpWithRoll</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SubsequentJumpWithRoll">CharacterMovement.SubsequentJumpWithRoll</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_JumpBreakRush">CharacterMovement.JumpBreakRush</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_JumpBreakDash">CharacterMovement.JumpBreakDash</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_AllowSquatJump">CharacterMovement.AllowSquatJump</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_JumpDownThroughOneway">CharacterMovement.JumpDownThroughOneway</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SquatAvailable">CharacterMovement.SquatAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SquatHeightAmount">CharacterMovement.SquatHeightAmount</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SquatMoveSpeed">CharacterMovement.SquatMoveSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SquatAcceleration">CharacterMovement.SquatAcceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SquatDeceleration">CharacterMovement.SquatDeceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_DashAvailable">CharacterMovement.DashAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_DashHeightAmount">CharacterMovement.DashHeightAmount</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_DashWithRoll">CharacterMovement.DashWithRoll</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_DashPutoutFire">CharacterMovement.DashPutoutFire</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_DashSpeed">CharacterMovement.DashSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_DashDuration">CharacterMovement.DashDuration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_DashCooldown">CharacterMovement.DashCooldown</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_DashAcceleration">CharacterMovement.DashAcceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_DashCancelLoseRate">CharacterMovement.DashCancelLoseRate</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushAvailable">CharacterMovement.RushAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushHeightAmount">CharacterMovement.RushHeightAmount</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushInAir">CharacterMovement.RushInAir</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushInWater">CharacterMovement.RushInWater</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushWhenClimb">CharacterMovement.RushWhenClimb</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushWhenSquat">CharacterMovement.RushWhenSquat</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushPutoutFire">CharacterMovement.RushPutoutFire</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushSpeed">CharacterMovement.RushSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushStopSpeed">CharacterMovement.RushStopSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushDuration">CharacterMovement.RushDuration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushStiff">CharacterMovement.RushStiff</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushCooldown">CharacterMovement.RushCooldown</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushAcceleration">CharacterMovement.RushAcceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_RushDeceleration">CharacterMovement.RushDeceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SlipAvailable">CharacterMovement.SlipAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SlipAcceleration">CharacterMovement.SlipAcceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SlipDeceleration">CharacterMovement.SlipDeceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_PoundAvailable">CharacterMovement.PoundAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_PoundPutoutFire">CharacterMovement.PoundPutoutFire</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_PoundSpeed">CharacterMovement.PoundSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SwimAvailable">CharacterMovement.SwimAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_InWaterSpeedRate">CharacterMovement.InWaterSpeedRate</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SwimWidthAmount">CharacterMovement.SwimWidthAmount</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SwimHeightAmount">CharacterMovement.SwimHeightAmount</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SwimSpeed">CharacterMovement.SwimSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SwimJumpSpeed">CharacterMovement.SwimJumpSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SwimAcceleration">CharacterMovement.SwimAcceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SwimDeceleration">CharacterMovement.SwimDeceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_ClimbAvailable">CharacterMovement.ClimbAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_AllowJumpWhenClimbing">CharacterMovement.AllowJumpWhenClimbing</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_ClimbSpeedX">CharacterMovement.ClimbSpeedX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_ClimbSpeedY">CharacterMovement.ClimbSpeedY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FlyAvailable">CharacterMovement.FlyAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FlyHeightAmount">CharacterMovement.FlyHeightAmount</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GlideOnFlying">CharacterMovement.GlideOnFlying</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FlyCooldown">CharacterMovement.FlyCooldown</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FlyRiseSpeed">CharacterMovement.FlyRiseSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FlyGravityRiseRate">CharacterMovement.FlyGravityRiseRate</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FlyGravityFallRate">CharacterMovement.FlyGravityFallRate</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FlyFallSpeed">CharacterMovement.FlyFallSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FlyMoveSpeed">CharacterMovement.FlyMoveSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FlyAcceleration">CharacterMovement.FlyAcceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FlyDeceleration">CharacterMovement.FlyDeceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SlideAvailable">CharacterMovement.SlideAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SlideOnAnyBlock">CharacterMovement.SlideOnAnyBlock</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_ResetJumpCountWhenSlide">CharacterMovement.ResetJumpCountWhenSlide</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SlideJumpKickSpeed">CharacterMovement.SlideJumpKickSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SlideDropSpeed">CharacterMovement.SlideDropSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GrabTopAvailable">CharacterMovement.GrabTopAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GrabSideAvailable">CharacterMovement.GrabSideAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GrabTopHeightAmount">CharacterMovement.GrabTopHeightAmount</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GrabSideHeightAmount">CharacterMovement.GrabSideHeightAmount</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_ResetJumpCountWhenGrab">CharacterMovement.ResetJumpCountWhenGrab</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GrabFlipThroughDownAvailable">CharacterMovement.GrabFlipThroughDownAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GrabFlipThroughUpAvailable">CharacterMovement.GrabFlipThroughUpAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GrabFlipThroughDuration">CharacterMovement.GrabFlipThroughDuration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GrabMoveSpeedX">CharacterMovement.GrabMoveSpeedX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GrabMoveSpeedY">CharacterMovement.GrabMoveSpeedY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GrabSideJumpKickSpeed">CharacterMovement.GrabSideJumpKickSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_CrashAvailable">CharacterMovement.CrashAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_CrashWhenSlippy">CharacterMovement.CrashWhenSlippy</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_CrashDuration">CharacterMovement.CrashDuration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_CrashRunDurationRequire">CharacterMovement.CrashRunDurationRequire</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_CrashDeceleration">CharacterMovement.CrashDeceleration</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_PushAvailable">CharacterMovement.PushAvailable</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_PushSpeed">CharacterMovement.PushSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_Target">CharacterMovement.Target</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_TargetCharacter">CharacterMovement.TargetCharacter</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastMoveDirection">CharacterMovement.LastMoveDirection</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IntendedX">CharacterMovement.IntendedX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IntendedY">CharacterMovement.IntendedY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_CurrentJumpCount">CharacterMovement.CurrentJumpCount</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FacingRight">CharacterMovement.FacingRight</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_FacingFront">CharacterMovement.FacingFront</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_ShouldRun">CharacterMovement.ShouldRun</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastGroundFrame">CharacterMovement.LastGroundFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastGroundingFrame">CharacterMovement.LastGroundingFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastStartMoveFrame">CharacterMovement.LastStartMoveFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastEndMoveFrame">CharacterMovement.LastEndMoveFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastJumpFrame">CharacterMovement.LastJumpFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastClimbFrame">CharacterMovement.LastClimbFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastDashFrame">CharacterMovement.LastDashFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastRushStartFrame">CharacterMovement.LastRushStartFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastCrashFrame">CharacterMovement.LastCrashFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastSlippyMoveStartFrame">CharacterMovement.LastSlippyMoveStartFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastSquatStartFrame">CharacterMovement.LastSquatStartFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastSquattingFrame">CharacterMovement.LastSquattingFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastPoundingFrame">CharacterMovement.LastPoundingFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastSlidingFrame">CharacterMovement.LastSlidingFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastGrabbingFrame">CharacterMovement.LastGrabbingFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastFlyFrame">CharacterMovement.LastFlyFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastGrabFlipUpFrame">CharacterMovement.LastGrabFlipUpFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastGrabFlipDownFrame">CharacterMovement.LastGrabFlipDownFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastGrabCancelFrame">CharacterMovement.LastGrabCancelFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastStartRunFrame">CharacterMovement.LastStartRunFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LastFacingChangeFrame">CharacterMovement.LastFacingChangeFrame</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_MovementState">CharacterMovement.MovementState</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsGrabFlipping">CharacterMovement.IsGrabFlipping</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsGrabFlippingUp">CharacterMovement.IsGrabFlippingUp</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsGrabFlippingDown">CharacterMovement.IsGrabFlippingDown</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsMoving">CharacterMovement.IsMoving</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsWalking">CharacterMovement.IsWalking</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsRunning">CharacterMovement.IsRunning</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsRolling">CharacterMovement.IsRolling</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsDashing">CharacterMovement.IsDashing</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsRushing">CharacterMovement.IsRushing</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsCrashing">CharacterMovement.IsCrashing</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsSquatting">CharacterMovement.IsSquatting</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsPounding">CharacterMovement.IsPounding</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsClimbing">CharacterMovement.IsClimbing</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsFlying">CharacterMovement.IsFlying</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsSliding">CharacterMovement.IsSliding</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsGrabbingTop">CharacterMovement.IsGrabbingTop</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsGrabbingSide">CharacterMovement.IsGrabbingSide</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_Rect">CharacterMovement.Rect</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_X">CharacterMovement.X</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_Y">CharacterMovement.Y</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_Width">CharacterMovement.Width</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_Height">CharacterMovement.Height</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_OffsetX">CharacterMovement.OffsetX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_OffsetY">CharacterMovement.OffsetY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_VelocityX">CharacterMovement.VelocityX</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_VelocityY">CharacterMovement.VelocityY</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsInsideGround">CharacterMovement.IsInsideGround</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_InWater">CharacterMovement.InWater</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_IsGrounded">CharacterMovement.IsGrounded</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_CollisionMask">CharacterMovement.CollisionMask</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_OnActivated">CharacterMovement.OnActivated()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_PhysicsUpdateGamePlay">CharacterMovement.PhysicsUpdateGamePlay()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_UpdateLater">CharacterMovement.UpdateLater()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_ReloadMovementConfigFromFile">CharacterMovement.ReloadMovementConfigFromFile()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_StopDash">CharacterMovement.StopDash()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_StopRush">CharacterMovement.StopRush()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_StopCrash">CharacterMovement.StopCrash()</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LockFacingRight_System_Boolean_System_Int32_">CharacterMovement.LockFacingRight(bool, int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_LockSquat_System_Int32_">CharacterMovement.LockSquat(int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_SetSpeedRate_System_Int32_System_Int32_">CharacterMovement.SetSpeedRate(int, int)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_CalculateMovementState_AngeliA_CharacterMovement_">CharacterMovement.CalculateMovementState(CharacterMovement)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_MoveLogic_System_Int32_System_Int32_System_Boolean_">CharacterMovement.MoveLogic(int, int, bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
-    </div>
-  </dd></dl>
-
-  <dl class="typelist extensionMethods">
-    <dt>Extension Methods</dt>
-    <dd>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><a class="xref" href="AngeliA.CharacterMovement.html">CharacterMovement</a></div>
+    <div class="level2"><a class="xref" href="AngeliA.Platformer.VehicleMovement.html">VehicleMovement</a></div>
+    <div class="level3"><span class="xref">BarrelMovement</span></div>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_BarrelMovement__ctor_AngeliA_Rigidbody_.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.BarrelMovement.%23ctor(AngeliA.Rigidbody)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Vehicle/Barrel/BarrelMovement.cs/#L4">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_BarrelMovement__ctor_" data-uid="AngeliA.Platformer.BarrelMovement.#ctor*"></a>
+  <h4 id="AngeliA_Platformer_BarrelMovement__ctor_AngeliA_Rigidbody_" data-uid="AngeliA.Platformer.BarrelMovement.#ctor(AngeliA.Rigidbody)">BarrelMovement(Rigidbody)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BarrelMovement(Rigidbody rig)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Rigidbody.html">Rigidbody</a></td>
+        <td><span class="parametername">rig</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_BarrelMovement_GetMovementState.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.BarrelMovement.GetMovementState%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Vehicle/Barrel/BarrelMovement.cs/#L14">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_BarrelMovement_GetMovementState_" data-uid="AngeliA.Platformer.BarrelMovement.GetMovementState*"></a>
+  <h4 id="AngeliA_Platformer_BarrelMovement_GetMovementState" data-uid="AngeliA.Platformer.BarrelMovement.GetMovementState">GetMovementState()</h4>
+  <div class="markdown level1 summary"><p>Get current movement type base on current cached data</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override CharacterMovementState GetMovementState()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.CharacterMovementState.html">CharacterMovementState</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.CharacterMovement.html#AngeliA_CharacterMovement_GetMovementState">CharacterMovement.GetMovementState()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_BarrelMovement_InitializeMeta.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.BarrelMovement.InitializeMeta%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Vehicle/Barrel/BarrelMovement.cs/#L5">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_BarrelMovement_InitializeMeta_" data-uid="AngeliA.Platformer.BarrelMovement.InitializeMeta*"></a>
+  <h4 id="AngeliA_Platformer_BarrelMovement_InitializeMeta" data-uid="AngeliA.Platformer.BarrelMovement.InitializeMeta">InitializeMeta()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void InitializeMeta()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.VehicleMovement.html#AngeliA_Platformer_VehicleMovement_InitializeMeta">VehicleMovement.InitializeMeta()</a></div>
+  <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
   </div>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
   </div>
-  </dd></dl>
-
-
-
-
-
-  <h2 class="section" id="constructors">Constructors
-</h2>
-
-
-  <a id="AngeliA_Platformer_BarrelMovement__ctor_" data-uid="AngeliA.Platformer.BarrelMovement.#ctor*"></a>
-
-  <h3 id="AngeliA_Platformer_BarrelMovement__ctor_AngeliA_Rigidbody_" data-uid="AngeliA.Platformer.BarrelMovement.#ctor(AngeliA.Rigidbody)">
-  BarrelMovement(Rigidbody)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Vehicle/Barrel/BarrelMovement.cs/#L4"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BarrelMovement(Rigidbody rig)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>rig</code> <a class="xref" href="AngeliA.Rigidbody.html">Rigidbody</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <h2 class="section" id="methods">Methods
-</h2>
-
-
-  <a id="AngeliA_Platformer_BarrelMovement_GetMovementState_" data-uid="AngeliA.Platformer.BarrelMovement.GetMovementState*"></a>
-
-  <h3 id="AngeliA_Platformer_BarrelMovement_GetMovementState" data-uid="AngeliA.Platformer.BarrelMovement.GetMovementState">
-  GetMovementState()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Vehicle/Barrel/BarrelMovement.cs/#L14"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Get current movement type base on current cached data</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override CharacterMovementState GetMovementState()</code></pre>
-  </div>
-
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="AngeliA.CharacterMovementState.html">CharacterMovementState</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_BarrelMovement_InitializeMeta_" data-uid="AngeliA.Platformer.BarrelMovement.InitializeMeta*"></a>
-
-  <h3 id="AngeliA_Platformer_BarrelMovement_InitializeMeta" data-uid="AngeliA.Platformer.BarrelMovement.InitializeMeta">
-  InitializeMeta()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Vehicle/Barrel/BarrelMovement.cs/#L5"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void InitializeMeta()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </article>
+          </div>
 
-        <div class="contribution d-print-none">
-          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Vehicle/Barrel/BarrelMovement.cs/#L3" class="edit-link">Edit this page</a>
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_BarrelMovement.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.BarrelMovement%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Vehicle/Barrel/BarrelMovement.cs/#L3" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
         </div>
-
-
       </div>
 
-      <div class="affix">
-        <nav id="affix"></nav>
-      </div>
-    </main>
-
-    <div class="container-xxl search-results" id="search-results"></div>
-
-    <footer class="border-top text-secondary">
-      <div class="container-xxl">
-        <div class="flex-fill">
-          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
   </body>
 </html>

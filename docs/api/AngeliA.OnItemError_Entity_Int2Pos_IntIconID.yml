@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnItemError_Entity_Int2Pos_IntIconID
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 301
+    startLine: 410
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when something wrong about an item (like when guns out of ammo)
   example:
-  - internal static void ExampleFunction (Entity holder, Int2 pos, int iconID) { }
+  - >-
+    <pre><code class="lang-csharp">[OnItemError_Entity_Int2Pos_IntIconID]
+
+    internal static void ExampleFunction (Entity holder, Int2 pos, int iconID) { }</code></pre>
   syntax:
     content: 'public class OnItemError_Entity_Int2Pos_IntIconID : EventAttribute'
     content.vb: Public Class OnItemError_Entity_Int2Pos_IntIconID Inherits EventAttribute

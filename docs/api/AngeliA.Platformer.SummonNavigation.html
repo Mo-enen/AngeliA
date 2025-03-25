@@ -1,808 +1,712 @@
 <!DOCTYPE html>
+<!--[if IE]><![endif]-->
 <html>
+
   <head>
     <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <title>Class SummonNavigation | AngeliA </title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class SummonNavigation | AngeliA ">
-      
-      
-      <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css">
-      <link rel="stylesheet" href="../public/main.css">
-      <meta name="docfx:navrel" content="../toc.html">
-      <meta name="docfx:tocrel" content="toc.html">
-      
-      <meta name="docfx:rel" content="../">
-      
-      
-      <meta name="docfx:docurl" content="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
-      <meta name="loc:inThisArticle" content="In this article">
-      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
-      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
-      <meta name="loc:tocFilter" content="Filter by title">
-      <meta name="loc:nextArticle" content="Next">
-      <meta name="loc:prevArticle" content="Previous">
-      <meta name="loc:themeLight" content="Light">
-      <meta name="loc:themeDark" content="Dark">
-      <meta name="loc:themeAuto" content="Auto">
-      <meta name="loc:changeTheme" content="Change theme">
-      <meta name="loc:copy" content="Copy">
-      <meta name="loc:downloadPdf" content="Download PDF">
-
-      <script type="module" src="./../public/docfx.min.js"></script>
-
-      <script>
-        const theme = localStorage.getItem('theme') || 'auto'
-        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-      </script>
-
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
   </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
-    <header class="bg-body border-bottom">
-      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
-        <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
-            AngeliA
-          </a>
-          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="bi bi-three-dots"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navpanel">
-            <div id="navbar">
-              <form class="search" role="search" id="search">
-                <i class="bi bi-search"></i>
-                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
               </form>
             </div>
           </div>
-        </div>
-      </nav>
-    </header>
+        </nav>
 
-    <main class="container-xxl">
-      <div class="toc-offcanvas">
-        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
           </div>
-          <div class="offcanvas-body">
-            <nav class="toc" id="toc"></nav>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
         </div>
       </div>
+      <div role="main" class="container body-content hide-when-search">
 
-      <div class="content">
-        <div class="actionbar">
-          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
-            <i class="bi bi-list"></i>
-          </button>
-
-          <nav id="breadcrumb"></nav>
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
         </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="AngeliA.Platformer.SummonNavigation">
 
-        <article data-uid="AngeliA.Platformer.SummonNavigation">
 
 
-
-  <h1 id="AngeliA_Platformer_SummonNavigation" data-uid="AngeliA.Platformer.SummonNavigation" class="text-break">
-Class SummonNavigation  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L7"><i class="bi bi-code-slash"></i></a>
-  </h1>
-
-  <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="AngeliA.html">AngeliA</a>.<a class="xref" href="AngeliA.Platformer.html">Platformer</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>com.angelia.platformer.dll</dd></dl>
-  </div>
-
-  <div class="markdown summary"></div>
-  <div class="markdown conceptual"></div>
-
+  <h1 id="AngeliA_Platformer_SummonNavigation" data-uid="AngeliA.Platformer.SummonNavigation" class="text-break">Class SummonNavigation</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="AngeliA.html">AngeliA</a>.<a class="xref" href="AngeliA.Platformer.html">Platformer</a></h6>
+  <h6><strong>Assembly</strong>: com.angelia.platformer.dll</h6>
+  <h5 id="AngeliA_Platformer_SummonNavigation_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class SummonNavigation : RigidbodyNavigation</code></pre>
   </div>
-
-
-
-
-  <dl class="typelist inheritance">
-    <dt>Inheritance</dt>
-    <dd>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html">RigidbodyNavigation</a></div>
-      <div><span class="xref">SummonNavigation</span></div>
-    </dd>
-  </dl>
-
-
-
-  <dl class="typelist inheritedMembers">
-    <dt>Inherited Members</dt>
-    <dd>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_Target">RigidbodyNavigation.Target</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_NavigationState">RigidbodyNavigation.NavigationState</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_NavigationAim">RigidbodyNavigation.NavigationAim</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_NavigationAimGrounded">RigidbodyNavigation.NavigationAimGrounded</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_HasPerformableOperation">RigidbodyNavigation.HasPerformableOperation</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_TeleportWhenCantFly">RigidbodyNavigation.TeleportWhenCantFly</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_DefaultRunSpeed">RigidbodyNavigation.DefaultRunSpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_DefaultFlySpeed">RigidbodyNavigation.DefaultFlySpeed</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_EndMoveSlowDown">RigidbodyNavigation.EndMoveSlowDown</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_SetNavigationAim_AngeliA_Int2_System_Boolean_">RigidbodyNavigation.SetNavigationAim(Int2, bool)</a>
-    </div>
-    <div>
-      <a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_ResetNavigation">RigidbodyNavigation.ResetNavigation()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
-    </div>
-  </dd></dl>
-
-  <dl class="typelist extensionMethods">
-    <dt>Extension Methods</dt>
-    <dd>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html">RigidbodyNavigation</a></div>
+    <div class="level2"><span class="xref">SummonNavigation</span></div>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation__ctor_AngeliA_Platformer_Summon_.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.%23ctor(AngeliA.Platformer.Summon)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L7">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation__ctor_" data-uid="AngeliA.Platformer.SummonNavigation.#ctor*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation__ctor_AngeliA_Platformer_Summon_" data-uid="AngeliA.Platformer.SummonNavigation.#ctor(AngeliA.Platformer.Summon)">SummonNavigation(Summon)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SummonNavigation(Summon target)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="AngeliA.Platformer.Summon.html">Summon</a></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_ClampInSpawnRect.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.ClampInSpawnRect%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L13">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_ClampInSpawnRect_" data-uid="AngeliA.Platformer.SummonNavigation.ClampInSpawnRect*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_ClampInSpawnRect" data-uid="AngeliA.Platformer.SummonNavigation.ClampInSpawnRect">ClampInSpawnRect</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool ClampInSpawnRect { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_ClampInSpawnRect">RigidbodyNavigation.ClampInSpawnRect</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_EndFlyDistance.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.EndFlyDistance%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L18">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_EndFlyDistance_" data-uid="AngeliA.Platformer.SummonNavigation.EndFlyDistance*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_EndFlyDistance" data-uid="AngeliA.Platformer.SummonNavigation.EndFlyDistance">EndFlyDistance</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int EndFlyDistance { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_EndFlyDistance">RigidbodyNavigation.EndFlyDistance</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_EndMoveDistance.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.EndMoveDistance%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L16">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_EndMoveDistance_" data-uid="AngeliA.Platformer.SummonNavigation.EndMoveDistance*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_EndMoveDistance" data-uid="AngeliA.Platformer.SummonNavigation.EndMoveDistance">EndMoveDistance</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int EndMoveDistance { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_EndMoveDistance">RigidbodyNavigation.EndMoveDistance</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_InstanceShift.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.InstanceShift%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L14">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_InstanceShift_" data-uid="AngeliA.Platformer.SummonNavigation.InstanceShift*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_InstanceShift" data-uid="AngeliA.Platformer.SummonNavigation.InstanceShift">InstanceShift</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int InstanceShift { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_InstanceShift">RigidbodyNavigation.InstanceShift</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_IsFollowingOwner.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.IsFollowingOwner%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L22">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_IsFollowingOwner_" data-uid="AngeliA.Platformer.SummonNavigation.IsFollowingOwner*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_IsFollowingOwner" data-uid="AngeliA.Platformer.SummonNavigation.IsFollowingOwner">IsFollowingOwner</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsFollowingOwner { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_IsWandering.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.IsWandering%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L23">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_IsWandering_" data-uid="AngeliA.Platformer.SummonNavigation.IsWandering*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_IsWandering" data-uid="AngeliA.Platformer.SummonNavigation.IsWandering">IsWandering</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsWandering { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_JumpSpeed.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.JumpSpeed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L20">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_JumpSpeed_" data-uid="AngeliA.Platformer.SummonNavigation.JumpSpeed*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_JumpSpeed" data-uid="AngeliA.Platformer.SummonNavigation.JumpSpeed">JumpSpeed</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int JumpSpeed { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_JumpSpeed">RigidbodyNavigation.JumpSpeed</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_MaxJumpDuration.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.MaxJumpDuration%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L21">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_MaxJumpDuration_" data-uid="AngeliA.Platformer.SummonNavigation.MaxJumpDuration*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_MaxJumpDuration" data-uid="AngeliA.Platformer.SummonNavigation.MaxJumpDuration">MaxJumpDuration</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int MaxJumpDuration { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_MaxJumpDuration">RigidbodyNavigation.MaxJumpDuration</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_MinimumFlyDuration.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.MinimumFlyDuration%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L19">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_MinimumFlyDuration_" data-uid="AngeliA.Platformer.SummonNavigation.MinimumFlyDuration*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_MinimumFlyDuration" data-uid="AngeliA.Platformer.SummonNavigation.MinimumFlyDuration">MinimumFlyDuration</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int MinimumFlyDuration { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_MinimumFlyDuration">RigidbodyNavigation.MinimumFlyDuration</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_NavigationEnable.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.NavigationEnable%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L12">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_NavigationEnable_" data-uid="AngeliA.Platformer.SummonNavigation.NavigationEnable*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_NavigationEnable" data-uid="AngeliA.Platformer.SummonNavigation.NavigationEnable">NavigationEnable</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool NavigationEnable { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_NavigationEnable">RigidbodyNavigation.NavigationEnable</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_StartFlyDistance.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.StartFlyDistance%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L17">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_StartFlyDistance_" data-uid="AngeliA.Platformer.SummonNavigation.StartFlyDistance*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_StartFlyDistance" data-uid="AngeliA.Platformer.SummonNavigation.StartFlyDistance">StartFlyDistance</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int StartFlyDistance { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_StartFlyDistance">RigidbodyNavigation.StartFlyDistance</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_StartMoveDistance.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.StartMoveDistance%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L15">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_StartMoveDistance_" data-uid="AngeliA.Platformer.SummonNavigation.StartMoveDistance*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_StartMoveDistance" data-uid="AngeliA.Platformer.SummonNavigation.StartMoveDistance">StartMoveDistance</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int StartMoveDistance { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_StartMoveDistance">RigidbodyNavigation.StartMoveDistance</a></div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_MakeFollowOwner.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.MakeFollowOwner%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L83">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_MakeFollowOwner_" data-uid="AngeliA.Platformer.SummonNavigation.MakeFollowOwner*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_MakeFollowOwner" data-uid="AngeliA.Platformer.SummonNavigation.MakeFollowOwner">MakeFollowOwner()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MakeFollowOwner()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_MakeWander_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.MakeWander(System.Int32%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L93">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_MakeWander_" data-uid="AngeliA.Platformer.SummonNavigation.MakeWander*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_MakeWander_System_Int32_System_Int32_" data-uid="AngeliA.Platformer.SummonNavigation.MakeWander(System.Int32,System.Int32)">MakeWander(int, int)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MakeWander(int x, int y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_MakeWander__1.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.MakeWander%60%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L85">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_MakeWander_" data-uid="AngeliA.Platformer.SummonNavigation.MakeWander*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_MakeWander__1" data-uid="AngeliA.Platformer.SummonNavigation.MakeWander``1">MakeWander&lt;E&gt;()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool MakeWander&lt;E&gt;() where E : Entity</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">E</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_OnActivated.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.OnActivated%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L32">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_OnActivated_" data-uid="AngeliA.Platformer.SummonNavigation.OnActivated*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_OnActivated" data-uid="AngeliA.Platformer.SummonNavigation.OnActivated">OnActivated()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnActivated()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_OnActivated">RigidbodyNavigation.OnActivated()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_PhysicsUpdate.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.PhysicsUpdate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L41">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_PhysicsUpdate_" data-uid="AngeliA.Platformer.SummonNavigation.PhysicsUpdate*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_PhysicsUpdate" data-uid="AngeliA.Platformer.SummonNavigation.PhysicsUpdate">PhysicsUpdate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PhysicsUpdate()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="AngeliA.Platformer.RigidbodyNavigation.html#AngeliA_Platformer_RigidbodyNavigation_PhysicsUpdate">RigidbodyNavigation.PhysicsUpdate()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation_Refresh.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation.Refresh%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L81">View Source</a>
+  </span>
+  <a id="AngeliA_Platformer_SummonNavigation_Refresh_" data-uid="AngeliA.Platformer.SummonNavigation.Refresh*"></a>
+  <h4 id="AngeliA_Platformer_SummonNavigation_Refresh" data-uid="AngeliA.Platformer.SummonNavigation.Refresh">Refresh()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Refresh()</code></pre>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllFields__1_System_Object_System_Reflection_BindingFlags_System_Boolean_">Extension.ForAllFields&lt;T&gt;(object, BindingFlags, bool)</a>
   </div>
   <div>
       <a class="xref" href="AngeliA.Extension.html#AngeliA_Extension_ForAllProperties__1_System_Object_">Extension.ForAllProperties&lt;T&gt;(object)</a>
   </div>
-  </dd></dl>
-
-
-
-
-
-  <h2 class="section" id="constructors">Constructors
-</h2>
-
-
-  <a id="AngeliA_Platformer_SummonNavigation__ctor_" data-uid="AngeliA.Platformer.SummonNavigation.#ctor*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation__ctor_AngeliA_Platformer_Summon_" data-uid="AngeliA.Platformer.SummonNavigation.#ctor(AngeliA.Platformer.Summon)">
-  SummonNavigation(Summon)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L7"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SummonNavigation(Summon target)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>target</code> <a class="xref" href="AngeliA.Platformer.Summon.html">Summon</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <h2 class="section" id="properties">Properties
-</h2>
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_ClampInSpawnRect_" data-uid="AngeliA.Platformer.SummonNavigation.ClampInSpawnRect*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_ClampInSpawnRect" data-uid="AngeliA.Platformer.SummonNavigation.ClampInSpawnRect">
-  ClampInSpawnRect
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L13"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool ClampInSpawnRect { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_EndFlyDistance_" data-uid="AngeliA.Platformer.SummonNavigation.EndFlyDistance*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_EndFlyDistance" data-uid="AngeliA.Platformer.SummonNavigation.EndFlyDistance">
-  EndFlyDistance
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L18"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int EndFlyDistance { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_EndMoveDistance_" data-uid="AngeliA.Platformer.SummonNavigation.EndMoveDistance*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_EndMoveDistance" data-uid="AngeliA.Platformer.SummonNavigation.EndMoveDistance">
-  EndMoveDistance
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L16"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int EndMoveDistance { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_InstanceShift_" data-uid="AngeliA.Platformer.SummonNavigation.InstanceShift*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_InstanceShift" data-uid="AngeliA.Platformer.SummonNavigation.InstanceShift">
-  InstanceShift
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L14"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int InstanceShift { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_IsFollowingOwner_" data-uid="AngeliA.Platformer.SummonNavigation.IsFollowingOwner*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_IsFollowingOwner" data-uid="AngeliA.Platformer.SummonNavigation.IsFollowingOwner">
-  IsFollowingOwner
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L22"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsFollowingOwner { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_IsWandering_" data-uid="AngeliA.Platformer.SummonNavigation.IsWandering*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_IsWandering" data-uid="AngeliA.Platformer.SummonNavigation.IsWandering">
-  IsWandering
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L23"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsWandering { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_JumpSpeed_" data-uid="AngeliA.Platformer.SummonNavigation.JumpSpeed*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_JumpSpeed" data-uid="AngeliA.Platformer.SummonNavigation.JumpSpeed">
-  JumpSpeed
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L20"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int JumpSpeed { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_MaxJumpDuration_" data-uid="AngeliA.Platformer.SummonNavigation.MaxJumpDuration*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_MaxJumpDuration" data-uid="AngeliA.Platformer.SummonNavigation.MaxJumpDuration">
-  MaxJumpDuration
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L21"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int MaxJumpDuration { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_MinimumFlyDuration_" data-uid="AngeliA.Platformer.SummonNavigation.MinimumFlyDuration*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_MinimumFlyDuration" data-uid="AngeliA.Platformer.SummonNavigation.MinimumFlyDuration">
-  MinimumFlyDuration
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L19"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int MinimumFlyDuration { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_NavigationEnable_" data-uid="AngeliA.Platformer.SummonNavigation.NavigationEnable*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_NavigationEnable" data-uid="AngeliA.Platformer.SummonNavigation.NavigationEnable">
-  NavigationEnable
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L12"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool NavigationEnable { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_StartFlyDistance_" data-uid="AngeliA.Platformer.SummonNavigation.StartFlyDistance*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_StartFlyDistance" data-uid="AngeliA.Platformer.SummonNavigation.StartFlyDistance">
-  StartFlyDistance
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L17"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int StartFlyDistance { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_StartMoveDistance_" data-uid="AngeliA.Platformer.SummonNavigation.StartMoveDistance*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_StartMoveDistance" data-uid="AngeliA.Platformer.SummonNavigation.StartMoveDistance">
-  StartMoveDistance
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L15"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int StartMoveDistance { get; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-  <h2 class="section" id="methods">Methods
-</h2>
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_MakeFollowOwner_" data-uid="AngeliA.Platformer.SummonNavigation.MakeFollowOwner*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_MakeFollowOwner" data-uid="AngeliA.Platformer.SummonNavigation.MakeFollowOwner">
-  MakeFollowOwner()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L83"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void MakeFollowOwner()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_MakeWander_" data-uid="AngeliA.Platformer.SummonNavigation.MakeWander*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_MakeWander_System_Int32_System_Int32_" data-uid="AngeliA.Platformer.SummonNavigation.MakeWander(System.Int32,System.Int32)">
-  MakeWander(int, int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L93"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void MakeWander(int x, int y)</code></pre>
-  </div>
-
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_MakeWander_" data-uid="AngeliA.Platformer.SummonNavigation.MakeWander*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_MakeWander__1" data-uid="AngeliA.Platformer.SummonNavigation.MakeWander``1">
-  MakeWander&lt;E&gt;()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L85"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool MakeWander&lt;E&gt;() where E : Entity</code></pre>
-  </div>
-
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd></dd>
-  </dl>
-
-  <h4 class="section">Type Parameters</h4>
-  <dl class="parameters">
-    <dt><code>E</code></dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_OnActivated_" data-uid="AngeliA.Platformer.SummonNavigation.OnActivated*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_OnActivated" data-uid="AngeliA.Platformer.SummonNavigation.OnActivated">
-  OnActivated()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L32"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnActivated()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_PhysicsUpdate_" data-uid="AngeliA.Platformer.SummonNavigation.PhysicsUpdate*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_PhysicsUpdate" data-uid="AngeliA.Platformer.SummonNavigation.PhysicsUpdate">
-  PhysicsUpdate()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L41"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void PhysicsUpdate()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <a id="AngeliA_Platformer_SummonNavigation_Refresh_" data-uid="AngeliA.Platformer.SummonNavigation.Refresh*"></a>
-
-  <h3 id="AngeliA_Platformer_SummonNavigation_Refresh" data-uid="AngeliA.Platformer.SummonNavigation.Refresh">
-  Refresh()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L81"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Refresh()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </article>
+          </div>
 
-        <div class="contribution d-print-none">
-          <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L7" class="edit-link">Edit this page</a>
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/new/main/apiSpec/new?filename=AngeliA_Platformer_SummonNavigation.md&amp;value=---%0Auid%3A%20AngeliA.Platformer.SummonNavigation%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Mo-enen/AngeliA/blob/main/AngeliA Platformer/src/Entity/Character/Navigation/SummonNavigation.cs/#L7" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
         </div>
-
-
       </div>
 
-      <div class="affix">
-        <nav id="affix"></nav>
-      </div>
-    </main>
-
-    <div class="container-xxl search-results" id="search-results"></div>
-
-    <footer class="border-top text-secondary">
-      <div class="container-xxl">
-        <div class="flex-fill">
-          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      <span>Generated by <strong>DocFX</strong></span>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
   </body>
 </html>

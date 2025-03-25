@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: AfterLayerFrameUpdate_IntLayerAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 152
+    startLine: 209
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called after rendering layer update
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[AfterLayerFrameUpdate_IntLayer]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: 'public class AfterLayerFrameUpdate_IntLayerAttribute : EventAttribute'
     content.vb: Public Class AfterLayerFrameUpdate_IntLayerAttribute Inherits EventAttribute

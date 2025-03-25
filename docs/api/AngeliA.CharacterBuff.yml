@@ -36,7 +36,7 @@ items:
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
-  summary: Behavour class that handles buff logic for characters
+  summary: Behavior class that handles buff logic for characters
   example: []
   syntax:
     content: public sealed class CharacterBuff

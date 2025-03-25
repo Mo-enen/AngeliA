@@ -30,10 +30,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: RenderLayer
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 2
+    startLine: 5
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Layer for rendering
+  example: []
   syntax:
     content: public static class RenderLayer
     content.vb: Public Module RenderLayer
@@ -65,10 +67,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: WALLPAPER
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 4
+    startLine: 10
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Most behind rendering layer, only overlap on top of sky color
+  example: []
   syntax:
     content: public const int WALLPAPER = 0
     return:
@@ -92,10 +96,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: BEHIND
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 5
+    startLine: 14
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Behind layer of level blocks
+  example: []
   syntax:
     content: public const int BEHIND = 1
     return:
@@ -119,10 +125,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: SHADOW
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 6
+    startLine: 18
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Hold shadow of level blocks and environment entities
+  example: []
   syntax:
     content: public const int SHADOW = 2
     return:
@@ -146,7 +154,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: DEFAULT
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 7
+    startLine: 19
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -173,10 +181,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: COLOR
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 8
+    startLine: 23
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Render cells with pure color, ignore sprite content
+  example: []
   syntax:
     content: public const int COLOR = 4
     return:
@@ -200,10 +210,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: MULT
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 9
+    startLine: 27
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Render cells with multiply shader
+  example: []
   syntax:
     content: public const int MULT = 5
     return:
@@ -227,10 +239,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ADD
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 10
+    startLine: 31
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Render cells with additive shader
+  example: []
   syntax:
     content: public const int ADD = 6
     return:
@@ -254,7 +268,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: UI
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 11
+    startLine: 32
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -281,7 +295,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: COUNT
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 13
+    startLine: 34
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -308,7 +322,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: NAMES
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 15
+    startLine: 36
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -335,7 +349,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: DEFAULT_CAPACITY
     path: ../AngeliA Framework/src/Common/RenderLayer.cs
-    startLine: 18
+    startLine: 39
   assemblies:
   - AngeliA Framework
   namespace: AngeliA

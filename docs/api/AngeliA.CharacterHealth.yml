@@ -40,7 +40,7 @@ items:
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
-  summary: Behavour class that handle health logic for character
+  summary: Behavior class that handle health logic for character
   example: []
   syntax:
     content: public class CharacterHealth

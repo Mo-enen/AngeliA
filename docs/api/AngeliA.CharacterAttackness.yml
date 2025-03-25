@@ -68,7 +68,7 @@ items:
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
-  summary: Behavour class that handle attack logic for character
+  summary: Behavior class that handle attack logic for character
   example: []
   syntax:
     content: public class CharacterAttackness
@@ -110,7 +110,7 @@ items:
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
-  summary: Behavour class that handle attack logic for character
+  summary: Behavior class that handle attack logic for character
   example: []
   syntax:
     content: public CharacterAttackness(Character character)

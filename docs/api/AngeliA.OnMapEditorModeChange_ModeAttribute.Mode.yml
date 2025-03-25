@@ -23,10 +23,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Mode
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 233
+    startLine: 324
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: ''
+  example: []
   syntax:
     content: public enum OnMapEditorModeChange_ModeAttribute.Mode
     content.vb: Public Enum OnMapEditorModeChange_ModeAttribute.Mode
@@ -53,7 +55,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: EnterPlayMode
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 237
+    startLine: 328
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -81,7 +83,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ExitPlayMode
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 242
+    startLine: 333
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -109,7 +111,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: EnterEditMode
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 247
+    startLine: 338
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -137,7 +139,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ExitEditMode
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 252
+    startLine: 343
   assemblies:
   - AngeliA Framework
   namespace: AngeliA

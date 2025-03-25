@@ -347,189 +347,273 @@
             <summary>
             The function will be called when game initialize.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
             <param name="order">Function with smaller order will be called earlier</param>
+            <example><code>
+            [OnGameInitialize]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="M:AngeliA.OnGameInitializeAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called when game initialize.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
             <param name="order">Function with smaller order will be called earlier</param>
+            <example><code>
+            [OnGameInitialize]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnGameInitializeLaterAttribute">
             <summary>
             The function will be called when game initialize but after all [OnGameInitialize] functions already called
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameInitializeLater]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="M:AngeliA.OnGameInitializeLaterAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called when game initialize but after all [OnGameInitialize] functions already called
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameInitializeLater]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
-        <member name="T:AngeliA.BeforeSavingSlotChanged">
+        <member name="T:AngeliA.BeforeSavingSlotChangedAttribute">
             <summary>
             The function will be called before user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is still the old value when this function is called.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [BeforeSavingSlotChanged]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
-        <member name="M:AngeliA.BeforeSavingSlotChanged.#ctor(System.Int32)">
+        <member name="M:AngeliA.BeforeSavingSlotChangedAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called before user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is still the old value when this function is called.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [BeforeSavingSlotChanged]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
-        <member name="T:AngeliA.OnSavingSlotChanged">
+        <member name="T:AngeliA.OnSavingSlotChangedAttribute">
             <summary>
             The function will be called after user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is the new value when this function is called.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnSavingSlotChanged]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
-        <member name="M:AngeliA.OnSavingSlotChanged.#ctor(System.Int32)">
+        <member name="M:AngeliA.OnSavingSlotChangedAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called after user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is the new value when this function is called.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnSavingSlotChanged]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="T:AngeliA.OnGameUpdateAttribute">
             <summary>
             The function will be called every time game update (60 times per second)
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameUpdate]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="M:AngeliA.OnGameUpdateAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called every time game update (60 times per second)
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameUpdate]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="T:AngeliA.OnGameUpdateLaterAttribute">
             <summary>
             The function will be called every time game update (60 times per second), but after all [OnGameUpdate] functions already called.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameUpdateLater]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="M:AngeliA.OnGameUpdateLaterAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called every time game update (60 times per second), but after all [OnGameUpdate] functions already called.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameUpdateLater]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="T:AngeliA.OnGameUpdatePauselessAttribute">
             <summary>
             The function will be called every time game update (60 times per second), even when the game is paused.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameUpdatePauseless]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="M:AngeliA.OnGameUpdatePauselessAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called every time game update (60 times per second), even when the game is paused.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameUpdatePauseless]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="T:AngeliA.OnGameRestartAttribute">
             <summary>
             The function will be called when game restart.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameRestart]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="M:AngeliA.OnGameRestartAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called when game restart.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameRestart]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="T:AngeliA.OnGameTryingToQuitAttribute">
             <summary>
             The function will be called when player try to quit the game. Return false will stop the application from quiting.
             </summary>
-            <example>internal static bool ExampleFunction () => true; </example>
+            <example><code>
+            [OnGameTryingToQuit]
+            internal static bool ExampleFunction () { return true; }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="M:AngeliA.OnGameTryingToQuitAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called when player try to quit the game. Return false will stop the application from quiting.
             </summary>
-            <example>internal static bool ExampleFunction () => true; </example>
+            <example><code>
+            [OnGameTryingToQuit]
+            internal static bool ExampleFunction () { return true; }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="T:AngeliA.OnGameQuittingAttribute">
             <summary>
             The function will be called before the application actually quit.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameQuitting]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="M:AngeliA.OnGameQuittingAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called before the application actually quit.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameQuitting]
+            internal static void ExampleFunction () { }
+            </code></example>
             <param name="order">Function with smaller order will be called earlier</param>
         </member>
         <member name="T:AngeliA.OnGameFocusedAttribute">
             <summary>
             The function will be called when the application window regain focus.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameFocused]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnGameLostFocusAttribute">
             <summary>
             The function will be called when the application window lost focus.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnGameLostFocus]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnWindowSizeChangedAttribute">
             <summary>
             The function will be called when user change the size of the application window
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnWindowSizeChanged]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute">
             <summary>
             The function will be called when engine send remote message to rigged game
             </summary>
-            <example>internal static void ExampleFunction (int id, int data) { }</example>
+            <example><code>
+            [OnRemoteSettingChanged_IntID_IntData]
+            internal static void ExampleFunction (int id, int data) { }
+            </code></example>
         </member>
         <member name="M:AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called when engine send remote message to rigged game
             </summary>
-            <example>internal static void ExampleFunction (int id, int data) { }</example>
+            <example><code>
+            [OnRemoteSettingChanged_IntID_IntData]
+            internal static void ExampleFunction (int id, int data) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnFileDropped_StringPathAttribute">
             <summary>
             The function will be called when user drag and drop a file into the application window
             </summary>
-            <example>internal static void ExampleFunction (string filePath) { }</example>
+            <example><code>
+            [OnFileDropped_StringPath]
+            internal static void ExampleFunction (string filePath) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnMainSheetReloadAttribute">
             <summary>
             The function will be called when artwork sheet for rendering loaded from file
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnMainSheetReload]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnViewZChangedAttribute">
             <summary>
             The function will be called when player change the map layer
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnViewZChanged]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.BeforeLayerFrameUpdate_IntLayerAttribute">
             <summary>
@@ -541,97 +625,148 @@
             <summary>
             The function will be called after rendering layer update 
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [AfterLayerFrameUpdate_IntLayer]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.BeforeFirstUpdateAttribute">
             <summary>
             The function will be called before any entity.FirstUpdate is called
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [BeforeFirstUpdate]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.BeforeBeforeUpdateAttribute">
             <summary>
             The function will be called before any entity.BeforeUpdate is called 
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [BeforeBeforeUpdate]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.BeforeUpdateUpdateAttribute">
             <summary>
             The function will be called before any entity.Update is called 
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [BeforeUpdateUpdate]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.BeforeLateUpdateAttribute">
             <summary>
             The function will be called before any entity.LateUpdate is called 
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [BeforeLateUpdate]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.AfterLateUpdateAttribute">
             <summary>
             The function will be called after all entity.LateUpdate is called 
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [AfterLateUpdate]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.BeforeLevelRenderedAttribute">
             <summary>
             The function will be called before world squad rendering any level blocks for the current frame
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [BeforeLevelRendered]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="M:AngeliA.BeforeLevelRenderedAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called before world squad rendering any level blocks for the current frame
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [BeforeLevelRendered]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.AfterLevelRenderedAttribute">
             <summary>
             The function will be called after world squad render all level blocks for the current frame 
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [AfterLevelRendered]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="M:AngeliA.AfterLevelRenderedAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called after world squad render all level blocks for the current frame 
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [AfterLevelRendered]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnWorldCreatedBySquad_WorldAttribute">
             <summary>
             The function will be called when a world instance is created by world squad
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnWorldCreatedBySquad_World]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="M:AngeliA.OnWorldCreatedBySquad_WorldAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called when a world instance is created by world squad
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnWorldCreatedBySquad_World]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnWorldLoadedBySquad_WorldAttribute">
             <summary>
             The function will be called when a world instance is loaded by world squad 
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnWorldLoadedBySquad_World]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="M:AngeliA.OnWorldLoadedBySquad_WorldAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called when a world instance is loaded by world squad 
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnWorldLoadedBySquad_World]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnWorldSavedByMapEditor_WorldAttribute">
             <summary>
             The function will be called when a world instance is saved to file by the world squad
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnWorldSavedByMapEditor_World]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnMapEditorModeChange_ModeAttribute">
             <summary>
             The function will be called when user change map editor editing mode
             </summary>
-            <example>internal static void ExampleFunction (OnMapEditorModeChange_ModeAttribute.Mode mode) { }</example>
+            <example><code>
+            [OnMapEditorModeChange_Mode]
+            internal static void ExampleFunction (OnMapEditorModeChange_ModeAttribute.Mode mode) { }
+            </code></example>
+        </member>
+        <member name="T:AngeliA.OnMapEditorModeChange_ModeAttribute.Mode">
+            <summary></summary>
         </member>
         <member name="F:AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.EnterPlayMode">
             <summary>
@@ -657,175 +792,262 @@
             <summary>
             The function will be called when user change game display language. Language.CurrentLanguage is already set to new value when this function is called.
             </summary>
-            <example>internal static void ExampleFunction () { }</example>
+            <example><code>
+            [OnLanguageChanged]
+            internal static void ExampleFunction () { }
+            </code></example>
         </member>
         <member name="T:AngeliA.CheatCodeAttribute">
             <summary>
             The function will be called when user perform the given cheat code. Cheat code can be perform like those in NES games.
             </summary>
-            <example>internal static void ExampleFunction (string code) { }</example>
+            <example><code>
+            [CheatCode]
+            internal static void ExampleFunction (string code) { }
+            </code></example>
         </member>
         <member name="M:AngeliA.CheatCodeAttribute.#ctor(System.String)">
             <summary>
             The function will be called when user perform the given cheat code. Cheat code can be perform like those in NES games.
             </summary>
-            <example>internal static void ExampleFunction (string code) { }</example>
+            <example><code>
+            [CheatCode]
+            internal static void ExampleFunction (string code) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnCheatPerformed_StringCodeAttribute">
             <summary>
             The function will be called when user performed any cheat code. Cheat code can be perform like those in NES games.
             </summary>
-            <example>internal static void ExampleFunction (string code) { }</example>
+            <example><code>
+            [OnCheatPerformed_StringCode]
+            internal static void ExampleFunction (string code) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCountAttribute">
             <summary>
             The function will be called when a character collect an item
             </summary>
-            <example>internal static void ExampleFunction (Entity holder, Int2 pos, int itemID, int itemCount) { }</example>
+            <example><code>
+            [OnItemCollected_Entity_Int2Pos_IntItemID_IntItemCount]
+            internal static void ExampleFunction (Entity holder, Int2 pos, int itemID, int itemCount) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnItemLost_Character_IntItemIDAttribute">
             <summary>
             The function will be called when a character lost an item
             </summary>
-            <example>internal static void ExampleFunction (Character holder, int itemID) { }</example>
+            <example><code>
+            [OnItemLost_Character_IntItemID]
+            internal static void ExampleFunction (Character holder, int itemID) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnItemError_Entity_Int2Pos_IntIconID">
             <summary>
             The function will be called when something wrong about an item (like when guns out of ammo)
             </summary>
-            <example>internal static void ExampleFunction (Entity holder, Int2 pos, int iconID) { }</example>
+            <example><code>
+            [OnItemError_Entity_Int2Pos_IntIconID]
+            internal static void ExampleFunction (Entity holder, Int2 pos, int iconID) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnItemDamage_Character_IntItemBefore_IntItemAfterAttribute">
             <summary>
             The function will be called when an item is damaged into another item
             </summary>
-            <example>internal static void ExampleFunction (Character holder, int itemIdBefore, int itemIdAfter) { }</example>
+            <example><code>
+            [OnItemDamage_Character_IntItemBefore_IntItemAfter]
+            internal static void ExampleFunction (Character holder, int itemIdBefore, int itemIdAfter) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnItemUnlocked_IntItemIDAttribute">
             <summary>
             The function will be called when an item is unlocked by player
             </summary>
-            <example>internal static void ExampleFunction (int itemID) { }</example>
+            <example><code>
+            [OnItemUnlocked_IntItemID]
+            internal static void ExampleFunction (int itemID) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnCharacterFootStepped_Entity">
+        <member name="T:AngeliA.OnCharacterFootStepped_EntityAttribute">
             <summary>
             The function will be called when a character makes a foot step on running
             </summary>
-            <example>internal static void ExampleFunction (Entity character) { }</example>
+            <example><code>
+            [OnCharacterFootStepped_Entity]
+            internal static void ExampleFunction (Entity character) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnCharacterSleeping_Entity">
+        <member name="T:AngeliA.OnCharacterSleeping_EntityAttribute">
             <summary>
             The function will be called when a character is sleeping
             </summary>
-            <example>internal static void ExampleFunction (Entity character) { }</example>
+            <example><code>
+            [OnCharacterSleeping_Entity]
+            internal static void ExampleFunction (Entity character) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnCharacterJump_Entity">
+        <member name="T:AngeliA.OnCharacterJump_EntityAttribute">
             <summary>
             The function will be called when a character jumps
             </summary>
-            <example>internal static void ExampleFunction (Entity character) { }</example>
+            <example><code>
+            [OnCharacterJump_Entity]
+            internal static void ExampleFunction (Entity character) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnCharacterPound_Entity">
+        <member name="T:AngeliA.OnCharacterPound_EntityAttribute">
             <summary>
             The function will be called when a character ground pound
             </summary>
-            <example>internal static void ExampleFunction (Entity character) { }</example>
+            <example><code>
+            [OnCharacterPound_Entity]
+            internal static void ExampleFunction (Entity character) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnCharacterFly_Entity">
+        <member name="T:AngeliA.OnCharacterFly_EntityAttribute">
             <summary>
             The function will be called when a character fly
             </summary>
-            <example>internal static void ExampleFunction (Entity character) { }</example>
+            <example><code>
+            [OnCharacterFly_Entity]
+            internal static void ExampleFunction (Entity character) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnCharacterSlideStepped_Entity">
+        <member name="T:AngeliA.OnCharacterSlideStepped_EntityAttribute">
             <summary>
             The function will be called when a character makes a step when sliding
             </summary>
-            <example>internal static void ExampleFunction (Entity character) { }</example>
+            <example><code>
+            [OnCharacterSlideStepped_Entity]
+            internal static void ExampleFunction (Entity character) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnCharacterPassOut_Entity">
+        <member name="T:AngeliA.OnCharacterPassOut_EntityAttribute">
             <summary>
             The function will be called when a character pass out
             </summary>
-            <example>internal static void ExampleFunction (Entity character) { }</example>
+            <example><code>
+            [OnCharacterPassOut_Entity]
+            internal static void ExampleFunction (Entity character) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnCharacterTeleport_Entity">
+        <member name="T:AngeliA.OnCharacterTeleport_EntityAttribute">
             <summary>
             The function will be called when a character teleport
             </summary>
-            <example>internal static void ExampleFunction (Entity character) { }</example>
+            <example><code>
+            [OnCharacterTeleport_Entity]
+            internal static void ExampleFunction (Entity character) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnCharacterCrash_Entity">
+        <member name="T:AngeliA.OnCharacterCrash_EntityAttribute">
             <summary>
             The function will be called when a character crash
             </summary>
-            <example>internal static void ExampleFunction (Entity character) { }</example>
+            <example><code>
+            [OnCharacterCrash_Entity]
+            internal static void ExampleFunction (Entity character) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnObjectBreak_IntSpriteID_IRectAttribute">
             <summary>
             The function will be called when an object break
             </summary>
-            <example>internal static void ExampleFunction (int spriteID, IRect rectPosition) { }</example>
+            <example><code>
+            [OnObjectBreak_IntSpriteID_IRect]
+            internal static void ExampleFunction (int spriteID, IRect rectPosition) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravityAttribute">
             <summary>
             The function will be called when an object start to free fall
             </summary>
-            <example>internal static void ExampleFunction (int spriteID, Int2 pos, int startRotation, bool flip, Int2 velocity, int rotationSpeed, int gravity) { }</example>
+            <example><code>
+            [OnObjectFreeFall_IntSpriteID_Int2Pos_IntRot_BoolFlip_Int2Velocity_IntRotSpeed_IntGravity]
+            internal static void ExampleFunction (int spriteID, Int2 pos, int startRotation, bool flip, Int2 velocity, int rotationSpeed, int gravity) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute">
             <summary>
             The function will be called when a map block has been picked
             </summary>
-            <example>internal static void ExampleFunction (int spriteID, IRect rectPosition) { }</example>
+            <example><code>
+            [OnBlockPicked_IntSpriteID_IRect]
+            internal static void ExampleFunction (int spriteID, IRect rectPosition) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute">
             <summary>
             The function will be called when a rigidbody fall into water
             </summary>
-            <example>internal static void ExampleFunction (Rigidbody rig, Entity water) { }</example>
+            <example><code>
+            [OnFallIntoWater_Rigidbody_Entity]
+            internal static void ExampleFunction (Rigidbody rig, Entity water) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute">
             <summary>
             The function will be called when a rigidbody came out of water
             </summary>
-            <example>internal static void ExampleFunction (Rigidbody rig, Entity water) { }</example>
+            <example><code>
+            [OnCameOutOfWater_Rigidbody_Entity]
+            internal static void ExampleFunction (Rigidbody rig, Entity water) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnDealDamage_Damage_IDamageReceiver">
+        <member name="T:AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute">
             <summary>
             The function will be called when something deal damage to a damage-receiver
             </summary>
-            <example>internal static void ExampleFunction (Damage damage, IDamageReceiver receiver) { }</example>
+            <example><code>
+            [OnDealDamage_Damage_IDamageReceiver]
+            internal static void ExampleFunction (Damage damage, IDamageReceiver receiver) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnBulletHitEnvironment_Bullet">
+        <member name="T:AngeliA.OnBulletHitEnvironment_BulletAttribute">
             <summary>
             The function will be called when a bullet hit environment (something not an IDamageReceiver)
             </summary>
-            <example>internal static void ExampleFunction (Bullet bullet) { }</example>
+            <example><code>
+            [OnBulletHitEnvironment_Bullet]
+            internal static void ExampleFunction (Bullet bullet) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData">
+        <member name="T:AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute">
             <summary>
             The function will be called when message from TransferSystem.StartTransfer() arrived
             </summary>
-            <example>internal static void ExampleFunction (int receiverID, Int3 unitPosition, object userData) { }</example>
+            <example><code>
+            [OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData]
+            internal static void ExampleFunction (int receiverID, Int3 unitPosition, object userData) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData">
+        <member name="T:AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute">
             <summary>
             The function will be called when message from TransferSystem.StartTransfer() pass through
             </summary>
-            <example>internal static void ExampleFunction (Int3 unitPos, object userData) { }</example>
+            <example><code>
+            [OnTransferPassAttribute_Int3UnitPos_ObjectData]
+            internal static void ExampleFunction (Int3 unitPos, object userData) { }
+            </code></example>
         </member>
-        <member name="T:AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From">
+        <member name="T:AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute">
             <summary>
             The function will be called when CircuitSystem triggers the entity that holds this function
             </summary>
-            <example>internal static void ExampleFunction (Int3 unitPos, int stamp, Direction5 from) { }</example>
+            <example><code>
+            [CircuitOperate_Int3UnitPos_IntStamp_Direction5From]
+            internal static void ExampleFunction (Int3 unitPos, int stamp, Direction5 from) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.OnCircuitWireActived_Int3UnitPosAttribute">
             <summary>
             The function will be called when CircuitSystem's electric current pass through
             </summary>
-            <example>internal static void ExampleFunction (Int3 unitPos) { }</example>
+            <example><code>
+            [OnCircuitWireActived_Int3UnitPos]
+            internal static void ExampleFunction (Int3 unitPos) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.EventAttribute">
             <summary>
@@ -856,12 +1078,12 @@
         </member>
         <member name="T:AngeliA.CharacterAttackness">
             <summary>
-            Behavour class that handle attack logic for character
+            Behavior class that handle attack logic for character
             </summary>
         </member>
         <member name="M:AngeliA.CharacterAttackness.#ctor(AngeliA.Character)">
             <summary>
-            Behavour class that handle attack logic for character
+            Behavior class that handle attack logic for character
             </summary>
         </member>
         <member name="F:AngeliA.CharacterAttackness.TargetCharacter">
@@ -1089,12 +1311,12 @@
         </member>
         <member name="T:AngeliA.SummonAttackness">
             <summary>
-            Behavour class that handle attack logic for summon type character
+            Behavior class that handle attack logic for summon type character
             </summary>
         </member>
         <member name="M:AngeliA.SummonAttackness.#ctor(AngeliA.Character)">
             <summary>
-            Behavour class that handle attack logic for summon type character
+            Behavior class that handle attack logic for summon type character
             </summary>
         </member>
         <member name="T:AngeliA.Buff">
@@ -1129,7 +1351,7 @@
         </member>
         <member name="T:AngeliA.CharacterBuff">
             <summary>
-            Behavour class that handles buff logic for characters
+            Behavior class that handles buff logic for characters
             </summary>
         </member>
         <member name="P:AngeliA.CharacterBuff.BuffCount">
@@ -1199,7 +1421,7 @@
         </member>
         <member name="T:AngeliA.CharacterHealth">
             <summary>
-            Behavour class that handle health logic for character
+            Behavior class that handle health logic for character
             </summary>
         </member>
         <member name="P:AngeliA.CharacterHealth.HP">
@@ -1290,12 +1512,12 @@
         </member>
         <member name="T:AngeliA.CharacterMovement">
             <summary>
-            Behavour class that handle movement logic for character
+            Behavior class that handle movement logic for character
             </summary>
         </member>
         <member name="M:AngeliA.CharacterMovement.#ctor(AngeliA.Rigidbody)">
             <summary>
-            Behavour class that handle movement logic for character
+            Behavior class that handle movement logic for character
             </summary>
         </member>
         <member name="F:AngeliA.CharacterMovement.MovementWidth">
@@ -2461,7 +2683,7 @@
         </member>
         <member name="T:AngeliA.BuiltInText">
             <summary>
-            Utility class to get built-in text though language system
+            Utility class to get built-in text through language system
             </summary>
         </member>
         <member name="T:AngeliA.Cell">
@@ -2773,6 +2995,16 @@
             Layer for entity spawning
             </summary>
         </member>
+        <member name="F:AngeliA.EntityLayer.GAME">
+            <summary>
+            Default option
+            </summary>
+        </member>
+        <member name="F:AngeliA.EntityLayer.DECORATE">
+            <summary>
+            Particles, Effects etc...
+            </summary>
+        </member>
         <member name="T:AngeliA.WrapMode">
             <summary>
             How text wrap when reach edge
@@ -2808,6 +3040,47 @@
             True if the character should be rendered lying down
             </summary>
         </member>
+        <member name="T:AngeliA.FrameBasedValue">
+            <summary>
+            A data that can be override for specified frames
+            </summary>
+        </member>
+        <member name="T:AngeliA.FrameBasedValue`1">
+            <inheritdoc cref="T:AngeliA.FrameBasedValue"/>
+        </member>
+        <member name="T:AngeliA.FrameBasedInt">
+            <inheritdoc cref="T:AngeliA.FrameBasedValue"/>
+        </member>
+        <member name="M:AngeliA.FrameBasedInt.#ctor(System.Int32)">
+            <inheritdoc cref="T:AngeliA.FrameBasedValue"/>
+        </member>
+        <member name="T:AngeliA.FrameBasedBool">
+            <inheritdoc cref="T:AngeliA.FrameBasedValue"/>
+        </member>
+        <member name="M:AngeliA.FrameBasedBool.#ctor(System.Boolean)">
+            <inheritdoc cref="T:AngeliA.FrameBasedValue"/>
+        </member>
+        <member name="T:AngeliA.FrameBasedColor">
+            <inheritdoc cref="T:AngeliA.FrameBasedValue"/>
+        </member>
+        <member name="M:AngeliA.FrameBasedColor.#ctor(AngeliA.Color32)">
+            <inheritdoc cref="T:AngeliA.FrameBasedValue"/>
+        </member>
+        <member name="T:AngeliA.PhysicsLayer">
+            <summary>
+            A single physics layer
+            </summary>
+        </member>
+        <member name="T:AngeliA.PhysicsMask">
+            <summary>
+            A group of physics layera
+            </summary>
+        </member>
+        <member name="F:AngeliA.PhysicsMask.DAMAGE">
+            <summary>
+            Colliders inside damage layer will deal damage when overlape with IDamageReceiver
+            </summary>
+        </member>
         <member name="F:AngeliA.PhysicsMask.ENTITY">
             <summary>
             ENVIRONMENT | CHARACTER
@@ -2828,6 +3101,448 @@
             LEVEL | ENVIRONMENT
             </summary>
         </member>
+        <member name="T:AngeliA.Pipe`1">
+            <summary>
+            A linked list that can add/remove from head/tail. No heap pressure.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Pipe`1.#ctor(System.Int32)">
+            <summary>
+            A linked list that can add/remove from head/tail. No heap pressure.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Pipe`1.Item(System.Int32)">
+            <summary>
+            Get filled data at index
+            </summary>
+            <param name="index">Local index from "Start"</param>
+        </member>
+        <member name="P:AngeliA.Pipe`1.Data">
+            <summary>
+            Raw data of this pipe
+            </summary>
+        </member>
+        <member name="P:AngeliA.Pipe`1.Capacity">
+            <summary>
+            Total length of the data
+            </summary>
+        </member>
+        <member name="P:AngeliA.Pipe`1.Start">
+            <summary>
+            Head index of the filled data
+            </summary>
+        </member>
+        <member name="P:AngeliA.Pipe`1.Length">
+            <summary>
+            Length of the filled data
+            </summary>
+        </member>
+        <member name="P:AngeliA.Pipe`1.IsFull">
+            <summary>
+            True if the pipe reached max capacity
+            </summary>
+        </member>
+        <member name="M:AngeliA.Pipe`1.TryPeekHead(`0@)">
+            <summary>
+            Get data at head without remove the data from pipe
+            </summary>
+            <returns>True if length of pipe is not 0</returns>
+        </member>
+        <member name="M:AngeliA.Pipe`1.TryPeekTail(`0@)">
+            <summary>
+            Get data at tail without remove the data from pipe
+            </summary>
+            <returns>True if length of pipe is not 0</returns>
+        </member>
+        <member name="M:AngeliA.Pipe`1.LinkToHead(`0)">
+            <summary>
+            Add data before head
+            </summary>
+            <returns>True if the data is added</returns>
+        </member>
+        <member name="M:AngeliA.Pipe`1.LinkToTail(`0)">
+            <summary>
+            Add data after tail
+            </summary>
+            <returns>True if the data is added</returns>
+        </member>
+        <member name="M:AngeliA.Pipe`1.TryPopHead(`0@)">
+            <summary>
+            Get and remove data at head
+            </summary>
+            <returns>True if pipe is not empty</returns>
+        </member>
+        <member name="M:AngeliA.Pipe`1.TryPopTail(`0@)">
+            <summary>
+            Get and remove data at tail
+            </summary>
+            <returns>True if pipe is not empty</returns>
+        </member>
+        <member name="M:AngeliA.Pipe`1.Reorganize">
+            <summary>
+            Move data at head to the first of the internal array
+            </summary>
+        </member>
+        <member name="T:AngeliA.RenderLayer">
+            <summary>
+            Layer for rendering
+            </summary>
+        </member>
+        <member name="F:AngeliA.RenderLayer.WALLPAPER">
+            <summary>
+            Most behind rendering layer, only overlap on top of sky color
+            </summary>
+        </member>
+        <member name="F:AngeliA.RenderLayer.BEHIND">
+            <summary>
+            Behind layer of level blocks
+            </summary>
+        </member>
+        <member name="F:AngeliA.RenderLayer.SHADOW">
+            <summary>
+            Hold shadow of level blocks and environment entities
+            </summary>
+        </member>
+        <member name="F:AngeliA.RenderLayer.COLOR">
+            <summary>
+            Render cells with pure color, ignore sprite content
+            </summary>
+        </member>
+        <member name="F:AngeliA.RenderLayer.MULT">
+            <summary>
+            Render cells with multiply shader
+            </summary>
+        </member>
+        <member name="F:AngeliA.RenderLayer.ADD">
+            <summary>
+            Render cells with additive shader
+            </summary>
+        </member>
+        <member name="T:AngeliA.Universe">
+            <summary>
+            Representation of game asset folder
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.BuiltIn">
+            <summary>
+            Built-in universe of the current game
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.BuiltInInfo">
+            <summary>
+            Info.json of the built-in universe
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.UniverseRoot">
+            <summary>
+            Root folder path of this universe
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.SheetRoot">
+            <summary>
+            Artwork sheets root folder path
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.BuiltInSheetPath">
+            <summary>
+            Built-in artwork sheet file path. This file is generated by the game engine.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.GameSheetPath">
+            <summary>
+            Artwork sheet file path. This file is painted by the developer of the game.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.InfoPath">
+            <summary>
+            Info.json file path
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.ConversationRoot">
+            <summary>
+            Path of the folder that hold conversation files
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.UniverseMetaRoot">
+            <summary>
+            Root meta folder path. This folder hold random text data.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.BuiltInMapRoot">
+            <summary>
+            Map root folder path. Map inside this folder should not be edit by the player.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.LanguageRoot">
+            <summary>
+            Folder that holds the localization files
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.MusicRoot">
+            <summary>
+            Folder that holds BGM audio files
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.SoundRoot">
+            <summary>
+            Folder that holds SFX audio files
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.FontRoot">
+            <summary>
+            Folder that holds font files
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.CharacterMovementConfigRoot">
+            <summary>
+            Folder that holds character movement config json files
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.Info">
+            <summary>
+            Data from Info.json file
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.CurrentSavingSlot">
+            <summary>
+            Current selected saving slot index
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.SavingRoot">
+            <summary>
+            Root of the saving folder
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.SlotRoot">
+            <summary>
+            Folder path of the current selected slot
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.SlotMetaRoot">
+            <summary>
+            Meta root folder path of the current selected slot
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.SlotUserMapRoot">
+            <summary>
+            Map root folder of the current selected slot. Maps inside this folder can be edit by player
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.SlotCharacterRenderingConfigRoot">
+            <summary>
+            Root folder path holds the rendering config json files for pose characters
+            </summary>
+        </member>
+        <member name="P:AngeliA.Universe.SlotInventoryRoot">
+            <summary>
+            Root folder path holds the inventory files
+            </summary>
+        </member>
+        <member name="M:AngeliA.Universe.LoadFromFile(System.String,System.Boolean)">
+            <summary>
+            Create a new universe instance from file
+            </summary>
+        </member>
+        <member name="M:AngeliA.Universe.ReloadSavingSlot(System.Int32,System.Boolean)">
+            <summary>
+            Change saving slot
+            </summary>
+            <param name="newSlot">Slot index</param>
+            <param name="forceReload">Perform this function even the "newSlot" is same with current</param>
+        </member>
+        <member name="M:AngeliA.Universe.SetSavingRoot(System.String,System.Int32)">
+            <summary>
+            Set saving data of the universe instance
+            </summary>
+        </member>
+        <member name="T:AngeliA.ProjectType">
+            <summary></summary>
+        </member>
+        <member name="F:AngeliA.ProjectType.Game">
+            <summary>
+            Project with coded logic, pixel artwork and audio etc...
+            </summary>
+        </member>
+        <member name="F:AngeliA.ProjectType.Artwork">
+            <summary>
+            Project with only pixel artwork
+            </summary>
+        </member>
+        <member name="F:AngeliA.ProjectType.EngineTheme">
+            <summary>
+            Project with only pixel artwork for theme of AngeliA Engine
+            </summary>
+        </member>
+        <member name="T:AngeliA.UniverseInfo">
+            <summary>
+            Representation of Info.json in universe folder
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.ProductName">
+            <summary>
+            Official name of this project in English
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.DeveloperName">
+            <summary>
+            Developer name of this project in English
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.ProjectType">
+            <summary>
+            Type of this project
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.MajorVersion">
+            <summary>
+            Major version of this project
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.MinorVersion">
+            <summary>
+            Minor version of this project
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.PatchVersion">
+            <summary>
+            Patch version of this project
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.EngineBuildVersion">
+            <summary>
+            Which version of AngeliA Engine published this project
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.UseProceduralMap">
+            <summary>
+            Generate map proceduraly during game play
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.UseMapEditor">
+            <summary>
+            Require map editor from AngeliA Engine when under development
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.UseLightingSystem">
+            <summary>
+            Use the global lighting system
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.ReadonlyMap">
+            <summary>
+            Save map file changes made by the player
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.AllowCheatCode">
+            <summary>
+            Use cheat code after release
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.AllowPause">
+            <summary>
+            Allow player press start button (esc) to pause
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.AllowQuitFromMenu">
+            <summary>
+            Show quit option inside pause menu
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.AllowRestartFromMenu">
+            <summary>
+            Show restart option inside pause menu
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.ScaleUiBasedOnMonitor">
+            <summary>
+            Scale ui elements based on the monitor height instead of application window height
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.ViewRatio">
+            <summary>
+            Size ratio of the view rect. (1000 means 1:1, 2000 means 2:1)
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.DefaultViewHeight">
+            <summary>
+            Default view rect height in global size
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.MinViewHeight">
+            <summary>
+            Minimal view rect height in global size
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.MaxViewHeight">
+            <summary>
+            Maximal view rect height in global size
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.LightMap_PixelStyle">
+            <summary>
+            Use pixel style lighting
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.LightMap_SelfLerp">
+            <summary>
+            Adjust the shadow generating influence between "Solid block itself" and "Global sun light"
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.LightMap_SolidIlluminance">
+            <summary>
+            How much does solid blocks luminous
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.LightMap_AirIlluminanceDay">
+            <summary>
+            How much does air luminous during daytime
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.LightMap_AirIlluminanceNight">
+            <summary>
+            How much does air luminous during nighttime
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.LightMap_BackgroundTint">
+            <summary>
+            How much does background blocks luminous
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.LightMap_LevelIlluminateRemain">
+            <summary>
+            How much does light remain after it hit solid blocks
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.WorldBehindParallax">
+            <summary>
+            Parallax amount of the behind map layer. (1000 means no parallax, 2000 means behind move 2 times faster)
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.WorldBehindAlpha">
+            <summary>
+            Transparent amount of the behind map layer. (255 means not tramsparent, 0 means full tramsparent)
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.LastOpenAtlasIndex">
+            <summary>
+            Last opened atlas index by AngeliA Engine
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.LastEdittingViewPos">
+            <summary>
+            Last edit view rect position from map editor
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.LastEdittingViewHeight">
+            <summary>
+            Last edit view rect height from map editor
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.LastBackupSavingDate">
+            <summary>
+            Last time AngeliA Engine backup the saving files
+            </summary>
+        </member>
         <member name="M:AngeliA.Inventory.AddItemAt(System.Int32,System.Int32,System.Int32)">
             <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
         </member>
@@ -2842,6 +3557,479 @@
         </member>
         <member name="M:AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
             <returns>How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.</returns>
+        </member>
+        <member name="T:AngeliA.BodyGadget">
+            <summary>
+            Representation of a pose character's extra body part. Always use instance from pool.
+            </summary>
+            <example><code>
+            BodyGadget.TryGetGadget(id, out var result);
+            </code></example>
+        </member>
+        <member name="P:AngeliA.BodyGadget.SheetIndex">
+            <summary>
+            Which artwork sheet does this body gadget get it's artwork from
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyGadget.GadgetID">
+            <summary>
+            Global unique AngeHash of this body gadget
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyGadget.GadgetName">
+            <summary>
+            Global unique AngeName of this body gadget 
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyGadget.GadgetType">
+            <summary>
+            Type of this body gadget
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyGadget.SpriteLoaded">
+            <summary>
+            True if artwork sprite is loaded
+            </summary>
+        </member>
+        <member name="M:AngeliA.BodyGadget.DrawGadget(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Render the gadget for the given character
+            </summary>
+        </member>
+        <member name="M:AngeliA.BodyGadget.FillFromSheet(System.String)">
+            <summary>
+            Load sprite data from Renderer.CurrentSheet
+            </summary>
+            <param name="basicName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.BodyGadget.DrawGadgetGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)">
+            <summary>
+            Render the gadget as gizmos
+            </summary>
+            <param name="rect">Global rect position</param>
+            <param name="tint">Color tint</param>
+            <param name="z">Z position for sorting</param>
+        </member>
+        <member name="M:AngeliA.BodyGadget.ForAllGadget">
+            <summary>
+            Iterate through all body gadgets
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.BodyGadget.GetDefaultGadgetID(System.Int32,AngeliA.BodyGadgetType)">
+            <summary>
+            Get body gadget id of the default gadget for the given character
+            </summary>
+        </member>
+        <member name="M:AngeliA.BodyGadget.TryGetGadget(System.Int32,AngeliA.BodyGadget@)">
+            <summary>
+            Get body gadget instance from system pool
+            </summary>
+        </member>
+        <member name="T:AngeliA.Ear">
+            <summary>
+            Animal ear body gadget for pose character. (Like cat-girl's ears, not human ears)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Ear.MotionAmount">
+            <summary>
+            How much ease motion will be apply from the character's movement (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ear.FrontOfHeadL(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            True if the left ear should be rendered in front of the head
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ear.FrontOfHeadR(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            True if the right ear should be rendered in front of the head
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ear.DrawGadgetFromPool(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Draw ear gadgets for the given character.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Ear.DrawSpriteAsEar(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Boolean,System.Boolean,System.Int32,System.Boolean)">
+            <summary>
+            Draw given sprite as ear
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="spriteLeft">Left ear artwork sprite</param>
+            <param name="spriteRight">Right ear artwork sprite</param>
+            <param name="frontOfHeadL">Draw left ear in front of head</param>
+            <param name="frontOfHeadR">Draw right ear in front of head</param>
+            <param name="motionAmount"></param>
+            <param name="selfMotion">True if the ear randomly shakes</param>
+        </member>
+        <member name="T:AngeliA.CharacterFaceExpression">
+            <summary>
+            Face expression type for pose animation characters
+            </summary>
+        </member>
+        <member name="T:AngeliA.Face">
+            <summary>
+            Face gadget for pose characters
+            </summary>
+        </member>
+        <member name="M:AngeliA.Face.DrawEye(AngeliA.CharacterFaceExpression,AngeliA.IRect,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            Draw one eye for pose style character
+            </summary>
+            <param name="expression">Current face expression</param>
+            <param name="faceRect">Rect position for the character's face</param>
+            <param name="leftEye">True if this eye is the left eye</param>
+            <param name="facingRight">True if the character is facing right</param>
+            <param name="animationFrame"></param>
+        </member>
+        <member name="M:AngeliA.Face.DrawMouth(AngeliA.CharacterFaceExpression,AngeliA.IRect,System.Boolean,System.Int32)">
+            <summary>
+            Draw mouth for pose style character
+            </summary>
+            <param name="expression">Current face expression</param>
+            <param name="faceRect">Rect position for the character's face</param>
+            <param name="facingRight">True if the character is facing right</param>
+            <param name="animationFrame"></param>
+        </member>
+        <member name="M:AngeliA.Face.GetFaceRect(AngeliA.PoseCharacterRenderer,AngeliA.IRect@)">
+            <summary>
+            Get current rect position for the given character's face
+            </summary>
+        </member>
+        <member name="M:AngeliA.Face.GetScleraRect(AngeliA.PoseCharacterRenderer,System.Boolean)">
+            <summary>
+            Get rect position of sclera part of the eye
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="leftEye">True if the eye is left eye</param>
+        </member>
+        <member name="M:AngeliA.Face.DrawGadgetFromPool(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Draw face gadget for given character
+            </summary>
+        </member>
+        <member name="M:AngeliA.Face.DrawSpriteAsHumanEar(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32,System.Int32)">
+            <summary>
+            Draw two human style ears on both sides of the face
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="spriteLeft">Left ear sprite</param>
+            <param name="spriteRight">Right ear sprite</param>
+            <param name="offsetXL">Horizontal offset for left ear in global space</param>
+            <param name="offsetXR">Horizontal offset for right ear in global space</param>
+        </member>
+        <member name="T:AngeliA.Hair">
+            <summary>
+            Hair gadget for pose styled characters
+            </summary>
+        </member>
+        <member name="P:AngeliA.Hair.FlowAmountX">
+            <summary>
+            Amount of the horizontal flow animation generate from character's movements (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Hair.FlowAmountY">
+            <summary>
+            Amount of the vertical flow animation generate from character's movements (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Hair.SpriteHairForward">
+            <summary>
+            Artwork sprite rendering in the front-side of character's head
+            </summary>
+        </member>
+        <member name="P:AngeliA.Hair.SpriteHairBackward">
+            <summary>
+            Artwork sprite rendering in the back-side of character's head
+            </summary>
+        </member>
+        <member name="P:AngeliA.Hair.SpriteBraidLeft">
+            <summary>
+            Artwork sprite of left braid
+            </summary>
+        </member>
+        <member name="P:AngeliA.Hair.SpriteBraidRight">
+            <summary>
+            Artwork sprite of right braid
+            </summary>
+        </member>
+        <member name="P:AngeliA.Hair.UseLimbRotateForBraid">
+            <summary>
+            Make braids perform limb rotate instead of simply rotate the rendering cell
+            </summary>
+        </member>
+        <member name="P:AngeliA.Hair.ForceBackOnFlowForBraid">
+            <summary>
+            Set to true will make braid rendered in backside when it flows
+            </summary>
+        </member>
+        <member name="P:AngeliA.Hair.MotionAmountForBraid">
+            <summary>
+            Amount of the braid's rotating animation generate from character's movements (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Hair.FlowMotionAmountForBraid">
+            <summary>
+            Amount of the braid's motion animation for hairs flowing in air (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Hair.DropMotionAmountForBraid">
+            <summary>
+            Amount of the braid's animation generate when character rise and drop (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Hair.DrawGadgetFromPool(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Draw hair gadget for given character
+            </summary>
+        </member>
+        <member name="M:AngeliA.Hair.DrawSpriteAsHair(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32,System.Int32)">
+            <summary>
+            Draw given sprites as hair for given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="spriteForward">Hair artwork sprite for the front-side</param>
+            <param name="spriteBackward">Hair artwork sprite for the back-side</param>
+            <param name="flowAmountX">Horizontal motion animation amount for hairs flowing in air</param>
+            <param name="flowAmountY">Vertical motion animation amount for hairs flowing in air</param>
+        </member>
+        <member name="M:AngeliA.Hair.DrawBraid(AngeliA.PoseCharacterRenderer,System.Boolean,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Draw given sprites as braids for given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="forceBackOnFlow">Set to true will make braid rendered in backside when it flows</param>
+            <param name="spriteLeft">Artwork sprite on the left side</param>
+            <param name="spriteRight">Artwork sprite on the right side</param>
+            <param name="motionAmount">Motion animation amount</param>
+            <param name="flowMotionAmount">Motion animation amount for hairs flowing in air</param>
+            <param name="dropMotionAmount">Motion animation amount from character's rise and drop</param>
+            <param name="useLimbRotate">Perform limb rotate instead of simply rotate the rendering cell</param>
+            <param name="offsetX">Position offset X</param>
+            <param name="offsetY">Position offset Y</param>
+        </member>
+        <member name="T:AngeliA.Horn">
+            <summary>
+            Horn body gadget for pose style character
+            </summary>
+        </member>
+        <member name="P:AngeliA.Horn.AnchorOnFace">
+            <summary>
+            True if the horn grows from character's face (like Ayame from Hololive)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Horn.FrontOfHeadL(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            True if the left horn should render in front of character's head
+            </summary>
+        </member>
+        <member name="M:AngeliA.Horn.FrontOfHeadR(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            True if the right horn should render in front of character's head
+            </summary>
+        </member>
+        <member name="M:AngeliA.Horn.DrawGadgetFromPool(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Draw horn gadget for given character
+            </summary>
+        </member>
+        <member name="M:AngeliA.Horn.DrawSpriteAsHorn(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Draw given sprites as horn for given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="spriteLeft">Artwork sprite for left horn</param>
+            <param name="spriteRight">Artwork sprite for right horn</param>
+            <param name="frontOfHeadL">True if the left horn should render in front of character's head</param>
+            <param name="frontOfHeadR">True if the right horn should render in front of character's head</param>
+            <param name="onFace">True if the horn grows from character's face (like Ayame from Hololive)</param>
+        </member>
+        <member name="T:AngeliA.ModularEar">
+            <summary>
+            Ear body gadget that auto generate from artwork sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.ModularFace">
+            <summary>
+            Face body gadget that auto generate from artwork sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.ModularHair">
+            <summary>
+            Hair body gadget that auto generate from artwork sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.ModularHorn">
+            <summary>
+            Horn body gadget that auto generate from artwork sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.ModularTail">
+            <summary>
+            Tail body gadget that auto generate from artwork sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.ModularWing">
+            <summary>
+            Wing body gadget that auto generate from artwork sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.Tail">
+            <summary>
+            Tail body gadget for pose style character
+            </summary>
+        </member>
+        <member name="P:AngeliA.Tail.LimbGrow">
+            <summary>
+            Size-growing amount for limb rotation (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Tail.AngleAmountRoot">
+            <summary>
+            Total rotating angle amount for limb rotation (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Tail.AngleAmountSubsequent">
+            <summary>
+            Subsequent sugment's rotating angle amount for limb rotation (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Tail.AngleOffset">
+            <summary>
+            Total offset angle for the root sugment
+            </summary>
+        </member>
+        <member name="P:AngeliA.Tail.Frequency">
+            <summary>
+            Motion frequency for the limb rotation, smaller means faster
+            </summary>
+        </member>
+        <member name="P:AngeliA.Tail.FrequencyAlt">
+            <summary>
+            Motion frequency for the less influential part limb rotation, smaller means faster
+            </summary>
+        </member>
+        <member name="P:AngeliA.Tail.FrameLen">
+            <summary>
+            Looping duration for the limb rotation
+            </summary>
+        </member>
+        <member name="P:AngeliA.Tail.FrameDelta">
+            <summary>
+            Looping duration for the less influential part limb rotation
+            </summary>
+        </member>
+        <member name="P:AngeliA.Tail.OffsetX">
+            <summary>
+            Total position offset X
+            </summary>
+        </member>
+        <member name="P:AngeliA.Tail.OffsetY">
+            <summary>
+            Total position offset Y
+            </summary>
+        </member>
+        <member name="M:AngeliA.Tail.DrawSpriteAsWhipTail(AngeliA.OrientedSprite,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Draw given artwork sprite as tail at given position
+            </summary>
+            <param name="oSprite">Artwork sprite</param>
+            <param name="x">Position X in global space</param>
+            <param name="y">Position Y in global space</param>
+            <param name="facingFront">Is character facing front</param>
+            <param name="facingRight">Is character facing right</param>
+            <param name="facingUp">Is character facing up</param>
+            <param name="frequency">Motion frequency for the limb rotation, smaller means faster</param>
+            <param name="frequencyAlt">Motion frequency for the less influential part limb rotation, smaller means faster</param>
+            <param name="frameLen">Looping duration for the limb rotation</param>
+            <param name="frameDelta">Looping duration for the less influential part limb rotation</param>
+            <param name="angleAmountRoot">Total rotating angle amount for limb rotation (0 means 0%, 1000 means 100%)</param>
+            <param name="angleAmountSubsequent">Subsequent sugment's rotating angle amount for limb rotation (0 means 0%, 1000 means 100%)</param>
+            <param name="angleOffset">Total offset angle for the root sugment</param>
+            <param name="limbGrow">Size-growing amount for limb rotation (0 means 0%, 1000 means 100%)</param>
+            <param name="offsetX">Total position offset X</param>
+            <param name="offsetY">Total position offset Y</param>
+            <param name="isFlying">Is character flying</param>
+            <param name="frameOffset">Current animation frame</param>
+            <param name="z">Z value for sorting rendering cell</param>
+        </member>
+        <member name="M:AngeliA.Tail.DrawSpriteAsSimpleTail(AngeliA.OrientedSprite,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            Draw given artwork sprite as tail with only one segment
+            </summary>
+            <param name="oSprite">Artwork sprite</param>
+            <param name="x">Position X in global space</param>
+            <param name="y">Position Y in global space</param>
+            <param name="facingFront">Is character facing front</param>
+            <param name="facingRight">Is character facing right</param>
+            <param name="facingUp">Is character facing up</param>
+            <param name="z">Z value for sorting rendering cell</param>
+        </member>
+        <member name="T:AngeliA.Wing">
+            <summary>
+            Wing body gadget for pose style character
+            </summary>
+        </member>
+        <member name="P:AngeliA.Wing.IsPropeller">
+            <summary>
+            True if this wing is in tail-propeller style (like character "Tails" from Sonic)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Wing.Scale">
+            <summary>
+            Size scale for the wing (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Wing.DrawGadgetFromPool(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Draw gadget for given character
+            </summary>
+        </member>
+        <member name="M:AngeliA.Wing.DrawSpriteAsWing(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,System.Boolean,System.Int32)">
+            <summary>
+            Draw given artwork sprite as wing for given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="oSprite">Artwork sprite</param>
+            <param name="isPropeller">True if this wing is in propeller style (like character "Tails" from Sonic)</param>
+            <param name="scale">Size scale (0 means 0%, 1000 means 100%)</param>
+        </member>
+        <member name="M:AngeliA.Wing.IsPropellerWing(System.Int32)">
+            <summary>
+            True if the given wing is a propeller style wing
+            </summary>
+        </member>
+        <member name="T:AngeliA.Cloth">
+            <summary>
+            Cloth for pose style character (not for equipment items). Get instance with Cloth.TryGetCloth(id, out var result)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Cloth.ClothID">
+            <summary>
+            Global unique id for this type of cloth
+            </summary>
+        </member>
+        <member name="P:AngeliA.Cloth.ClothName">
+            <summary>
+            Type name for this type of cloth
+            </summary>
+        </member>
+        <member name="P:AngeliA.Cloth.ClothType">
+            <summary>
+            Where should characters wear this cloth 
+            </summary>
+        </member>
+        <member name="P:AngeliA.Cloth.SpriteLoaded">
+            <summary>
+            True if the artwork sprites are loaded
+            </summary>
+        </member>
+        <member name="P:AngeliA.Cloth.SheetIndex">
+            <summary>
+            Which artwork sheet does this cloth get it's artwork from
+            </summary>
         </member>
         <member name="M:AngeliA.Util.QuickRandom(System.Int32,System.Int32)">
             <summary>

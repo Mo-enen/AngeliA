@@ -20,13 +20,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: AfterLevelRenderedAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 202
+    startLine: 280
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called after world squad render all level blocks for the current frame
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[AfterLevelRendered]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: 'public class AfterLevelRenderedAttribute : EventAttribute'
     content.vb: Public Class AfterLevelRenderedAttribute Inherits EventAttribute
@@ -100,13 +103,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 202
+    startLine: 280
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called after world squad render all level blocks for the current frame
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[AfterLevelRendered]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: public AfterLevelRenderedAttribute(int order = 0)
     parameters:

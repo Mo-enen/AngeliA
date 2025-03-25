@@ -56,10 +56,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: UniverseInfo
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 10
+    startLine: 23
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Representation of Info.json in universe folder
+  example: []
   syntax:
     content: >-
       [Serializable]
@@ -106,10 +108,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ProductName
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 13
+    startLine: 29
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Official name of this project in English
+  example: []
   syntax:
     content: public string ProductName
     return:
@@ -133,10 +137,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: DeveloperName
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 14
+    startLine: 33
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Developer name of this project in English
+  example: []
   syntax:
     content: public string DeveloperName
     return:
@@ -160,10 +166,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ProjectType
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 15
+    startLine: 37
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Type of this project
+  example: []
   syntax:
     content: public ProjectType ProjectType
     return:
@@ -187,10 +195,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: MajorVersion
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 16
+    startLine: 41
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Major version of this project
+  example: []
   syntax:
     content: public int MajorVersion
     return:
@@ -214,10 +224,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: MinorVersion
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 17
+    startLine: 45
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Minor version of this project
+  example: []
   syntax:
     content: public int MinorVersion
     return:
@@ -241,10 +253,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: PatchVersion
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 18
+    startLine: 49
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Patch version of this project
+  example: []
   syntax:
     content: public int PatchVersion
     return:
@@ -268,10 +282,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: EngineBuildVersion
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 19
+    startLine: 53
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Which version of AngeliA Engine published this project
+  example: []
   syntax:
     content: public uint EngineBuildVersion
     return:
@@ -295,10 +311,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: UseProceduralMap
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 20
+    startLine: 57
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Generate map proceduraly during game play
+  example: []
   syntax:
     content: public bool UseProceduralMap
     return:
@@ -322,10 +340,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: UseMapEditor
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 21
+    startLine: 61
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Require map editor from AngeliA Engine when under development
+  example: []
   syntax:
     content: public bool UseMapEditor
     return:
@@ -349,10 +369,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: UseLightingSystem
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 22
+    startLine: 65
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Use the global lighting system
+  example: []
   syntax:
     content: public bool UseLightingSystem
     return:
@@ -376,10 +398,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ReadonlyMap
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 23
+    startLine: 69
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Save map file changes made by the player
+  example: []
   syntax:
     content: public bool ReadonlyMap
     return:
@@ -403,10 +427,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: AllowCheatCode
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 24
+    startLine: 73
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Use cheat code after release
+  example: []
   syntax:
     content: public bool AllowCheatCode
     return:
@@ -430,10 +456,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: AllowPause
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 25
+    startLine: 77
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Allow player press start button (esc) to pause
+  example: []
   syntax:
     content: public bool AllowPause
     return:
@@ -457,10 +485,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: AllowQuitFromMenu
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 26
+    startLine: 81
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Show quit option inside pause menu
+  example: []
   syntax:
     content: public bool AllowQuitFromMenu
     return:
@@ -484,10 +514,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: AllowRestartFromMenu
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 27
+    startLine: 85
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Show restart option inside pause menu
+  example: []
   syntax:
     content: public bool AllowRestartFromMenu
     return:
@@ -511,10 +543,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ScaleUiBasedOnMonitor
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 28
+    startLine: 89
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Scale ui elements based on the monitor height instead of application window height
+  example: []
   syntax:
     content: public bool ScaleUiBasedOnMonitor
     return:
@@ -538,10 +572,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ViewRatio
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 29
+    startLine: 93
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Size ratio of the view rect. (1000 means 1:1, 2000 means 2:1)
+  example: []
   syntax:
     content: public int ViewRatio
     return:
@@ -565,10 +601,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: DefaultViewHeight
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 30
+    startLine: 97
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Default view rect height in global size
+  example: []
   syntax:
     content: public int DefaultViewHeight
     return:
@@ -592,10 +630,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: MinViewHeight
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 31
+    startLine: 101
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Minimal view rect height in global size
+  example: []
   syntax:
     content: public int MinViewHeight
     return:
@@ -619,10 +659,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: MaxViewHeight
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 32
+    startLine: 105
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Maximal view rect height in global size
+  example: []
   syntax:
     content: public int MaxViewHeight
     return:
@@ -646,10 +688,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LightMap_PixelStyle
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 33
+    startLine: 109
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Use pixel style lighting
+  example: []
   syntax:
     content: public bool LightMap_PixelStyle
     return:
@@ -673,10 +717,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LightMap_SelfLerp
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 34
+    startLine: 113
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Adjust the shadow generating influence between "Solid block itself" and "Global sun light"
+  example: []
   syntax:
     content: public float LightMap_SelfLerp
     return:
@@ -700,10 +746,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LightMap_SolidIlluminance
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 35
+    startLine: 117
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: How much does solid blocks luminous
+  example: []
   syntax:
     content: public float LightMap_SolidIlluminance
     return:
@@ -727,10 +775,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LightMap_AirIlluminanceDay
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 36
+    startLine: 121
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: How much does air luminous during daytime
+  example: []
   syntax:
     content: public float LightMap_AirIlluminanceDay
     return:
@@ -754,10 +804,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LightMap_AirIlluminanceNight
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 37
+    startLine: 125
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: How much does air luminous during nighttime
+  example: []
   syntax:
     content: public float LightMap_AirIlluminanceNight
     return:
@@ -781,10 +833,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LightMap_BackgroundTint
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 38
+    startLine: 129
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: How much does background blocks luminous
+  example: []
   syntax:
     content: public float LightMap_BackgroundTint
     return:
@@ -808,10 +862,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LightMap_LevelIlluminateRemain
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 39
+    startLine: 133
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: How much does light remain after it hit solid blocks
+  example: []
   syntax:
     content: public float LightMap_LevelIlluminateRemain
     return:
@@ -835,10 +891,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: WorldBehindParallax
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 40
+    startLine: 137
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Parallax amount of the behind map layer. (1000 means no parallax, 2000 means behind move 2 times faster)
+  example: []
   syntax:
     content: public int WorldBehindParallax
     return:
@@ -862,10 +920,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: WorldBehindAlpha
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 41
+    startLine: 141
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Transparent amount of the behind map layer. (255 means not tramsparent, 0 means full tramsparent)
+  example: []
   syntax:
     content: public byte WorldBehindAlpha
     return:
@@ -889,7 +949,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: RequireFixScriptNamesWhenAnalyse
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 42
+    startLine: 142
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -916,10 +976,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LastOpenAtlasIndex
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 43
+    startLine: 146
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Last opened atlas index by AngeliA Engine
+  example: []
   syntax:
     content: public int LastOpenAtlasIndex
     return:
@@ -943,10 +1005,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LastEdittingViewPos
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 44
+    startLine: 150
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Last edit view rect position from map editor
+  example: []
   syntax:
     content: public Int3 LastEdittingViewPos
     return:
@@ -970,10 +1034,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LastEdittingViewHeight
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 45
+    startLine: 154
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Last edit view rect height from map editor
+  example: []
   syntax:
     content: public int LastEdittingViewHeight
     return:
@@ -997,10 +1063,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LastBackupSavingDate
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 46
+    startLine: 158
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Last time AngeliA Engine backup the saving files
+  example: []
   syntax:
     content: public long LastBackupSavingDate
     return:
@@ -1024,7 +1092,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnAfterLoadedFromDisk
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 48
+    startLine: 160
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -1053,7 +1121,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnBeforeSaveToDisk
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 49
+    startLine: 161
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -1082,7 +1150,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Valid
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 50
+    startLine: 162
   assemblies:
   - AngeliA Framework
   namespace: AngeliA

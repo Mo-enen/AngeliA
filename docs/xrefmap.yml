@@ -1568,6 +1568,31 @@ references:
   fullName.vb: AngeliA.BeforeSavingSlotChanged.New
   nameWithType: BeforeSavingSlotChanged.BeforeSavingSlotChanged
   nameWithType.vb: BeforeSavingSlotChanged.New
+- uid: AngeliA.BeforeSavingSlotChangedAttribute
+  name: BeforeSavingSlotChangedAttribute
+  href: api/AngeliA.BeforeSavingSlotChangedAttribute.html
+  commentId: T:AngeliA.BeforeSavingSlotChangedAttribute
+  fullName: AngeliA.BeforeSavingSlotChangedAttribute
+  nameWithType: BeforeSavingSlotChangedAttribute
+- uid: AngeliA.BeforeSavingSlotChangedAttribute.#ctor(System.Int32)
+  name: BeforeSavingSlotChangedAttribute(int)
+  href: api/AngeliA.BeforeSavingSlotChangedAttribute.html#AngeliA_BeforeSavingSlotChangedAttribute__ctor_System_Int32_
+  commentId: M:AngeliA.BeforeSavingSlotChangedAttribute.#ctor(System.Int32)
+  name.vb: New(Integer)
+  fullName: AngeliA.BeforeSavingSlotChangedAttribute.BeforeSavingSlotChangedAttribute(int)
+  fullName.vb: AngeliA.BeforeSavingSlotChangedAttribute.New(Integer)
+  nameWithType: BeforeSavingSlotChangedAttribute.BeforeSavingSlotChangedAttribute(int)
+  nameWithType.vb: BeforeSavingSlotChangedAttribute.New(Integer)
+- uid: AngeliA.BeforeSavingSlotChangedAttribute.#ctor*
+  name: BeforeSavingSlotChangedAttribute
+  href: api/AngeliA.BeforeSavingSlotChangedAttribute.html#AngeliA_BeforeSavingSlotChangedAttribute__ctor_
+  commentId: Overload:AngeliA.BeforeSavingSlotChangedAttribute.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: AngeliA.BeforeSavingSlotChangedAttribute.BeforeSavingSlotChangedAttribute
+  fullName.vb: AngeliA.BeforeSavingSlotChangedAttribute.New
+  nameWithType: BeforeSavingSlotChangedAttribute.BeforeSavingSlotChangedAttribute
+  nameWithType.vb: BeforeSavingSlotChangedAttribute.New
 - uid: AngeliA.BeforeUpdateUpdateAttribute
   name: BeforeUpdateUpdateAttribute
   href: api/AngeliA.BeforeUpdateUpdateAttribute.html
@@ -10554,6 +10579,12 @@ references:
   commentId: T:AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
   fullName: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
   nameWithType: CircuitOperate_Int3UnitPos_IntStamp_Direction5From
+- uid: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
+  name: CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
+  href: api/AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute.html
+  commentId: T:AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
+  fullName: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
+  nameWithType: CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
 - uid: AngeliA.CircuitSystem
   name: CircuitSystem
   href: api/AngeliA.CircuitSystem.html
@@ -43278,6 +43309,12 @@ references:
   commentId: T:AngeliA.OnBulletHitEnvironment_Bullet
   fullName: AngeliA.OnBulletHitEnvironment_Bullet
   nameWithType: OnBulletHitEnvironment_Bullet
+- uid: AngeliA.OnBulletHitEnvironment_BulletAttribute
+  name: OnBulletHitEnvironment_BulletAttribute
+  href: api/AngeliA.OnBulletHitEnvironment_BulletAttribute.html
+  commentId: T:AngeliA.OnBulletHitEnvironment_BulletAttribute
+  fullName: AngeliA.OnBulletHitEnvironment_BulletAttribute
+  nameWithType: OnBulletHitEnvironment_BulletAttribute
 - uid: AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute
   name: OnCameOutOfWater_Rigidbody_EntityAttribute
   href: api/AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute.html
@@ -43290,54 +43327,108 @@ references:
   commentId: T:AngeliA.OnCharacterCrash_Entity
   fullName: AngeliA.OnCharacterCrash_Entity
   nameWithType: OnCharacterCrash_Entity
+- uid: AngeliA.OnCharacterCrash_EntityAttribute
+  name: OnCharacterCrash_EntityAttribute
+  href: api/AngeliA.OnCharacterCrash_EntityAttribute.html
+  commentId: T:AngeliA.OnCharacterCrash_EntityAttribute
+  fullName: AngeliA.OnCharacterCrash_EntityAttribute
+  nameWithType: OnCharacterCrash_EntityAttribute
 - uid: AngeliA.OnCharacterFly_Entity
   name: OnCharacterFly_Entity
   href: api/AngeliA.OnCharacterFly_Entity.html
   commentId: T:AngeliA.OnCharacterFly_Entity
   fullName: AngeliA.OnCharacterFly_Entity
   nameWithType: OnCharacterFly_Entity
+- uid: AngeliA.OnCharacterFly_EntityAttribute
+  name: OnCharacterFly_EntityAttribute
+  href: api/AngeliA.OnCharacterFly_EntityAttribute.html
+  commentId: T:AngeliA.OnCharacterFly_EntityAttribute
+  fullName: AngeliA.OnCharacterFly_EntityAttribute
+  nameWithType: OnCharacterFly_EntityAttribute
 - uid: AngeliA.OnCharacterFootStepped_Entity
   name: OnCharacterFootStepped_Entity
   href: api/AngeliA.OnCharacterFootStepped_Entity.html
   commentId: T:AngeliA.OnCharacterFootStepped_Entity
   fullName: AngeliA.OnCharacterFootStepped_Entity
   nameWithType: OnCharacterFootStepped_Entity
+- uid: AngeliA.OnCharacterFootStepped_EntityAttribute
+  name: OnCharacterFootStepped_EntityAttribute
+  href: api/AngeliA.OnCharacterFootStepped_EntityAttribute.html
+  commentId: T:AngeliA.OnCharacterFootStepped_EntityAttribute
+  fullName: AngeliA.OnCharacterFootStepped_EntityAttribute
+  nameWithType: OnCharacterFootStepped_EntityAttribute
 - uid: AngeliA.OnCharacterJump_Entity
   name: OnCharacterJump_Entity
   href: api/AngeliA.OnCharacterJump_Entity.html
   commentId: T:AngeliA.OnCharacterJump_Entity
   fullName: AngeliA.OnCharacterJump_Entity
   nameWithType: OnCharacterJump_Entity
+- uid: AngeliA.OnCharacterJump_EntityAttribute
+  name: OnCharacterJump_EntityAttribute
+  href: api/AngeliA.OnCharacterJump_EntityAttribute.html
+  commentId: T:AngeliA.OnCharacterJump_EntityAttribute
+  fullName: AngeliA.OnCharacterJump_EntityAttribute
+  nameWithType: OnCharacterJump_EntityAttribute
 - uid: AngeliA.OnCharacterPassOut_Entity
   name: OnCharacterPassOut_Entity
   href: api/AngeliA.OnCharacterPassOut_Entity.html
   commentId: T:AngeliA.OnCharacterPassOut_Entity
   fullName: AngeliA.OnCharacterPassOut_Entity
   nameWithType: OnCharacterPassOut_Entity
+- uid: AngeliA.OnCharacterPassOut_EntityAttribute
+  name: OnCharacterPassOut_EntityAttribute
+  href: api/AngeliA.OnCharacterPassOut_EntityAttribute.html
+  commentId: T:AngeliA.OnCharacterPassOut_EntityAttribute
+  fullName: AngeliA.OnCharacterPassOut_EntityAttribute
+  nameWithType: OnCharacterPassOut_EntityAttribute
 - uid: AngeliA.OnCharacterPound_Entity
   name: OnCharacterPound_Entity
   href: api/AngeliA.OnCharacterPound_Entity.html
   commentId: T:AngeliA.OnCharacterPound_Entity
   fullName: AngeliA.OnCharacterPound_Entity
   nameWithType: OnCharacterPound_Entity
+- uid: AngeliA.OnCharacterPound_EntityAttribute
+  name: OnCharacterPound_EntityAttribute
+  href: api/AngeliA.OnCharacterPound_EntityAttribute.html
+  commentId: T:AngeliA.OnCharacterPound_EntityAttribute
+  fullName: AngeliA.OnCharacterPound_EntityAttribute
+  nameWithType: OnCharacterPound_EntityAttribute
 - uid: AngeliA.OnCharacterSleeping_Entity
   name: OnCharacterSleeping_Entity
   href: api/AngeliA.OnCharacterSleeping_Entity.html
   commentId: T:AngeliA.OnCharacterSleeping_Entity
   fullName: AngeliA.OnCharacterSleeping_Entity
   nameWithType: OnCharacterSleeping_Entity
+- uid: AngeliA.OnCharacterSleeping_EntityAttribute
+  name: OnCharacterSleeping_EntityAttribute
+  href: api/AngeliA.OnCharacterSleeping_EntityAttribute.html
+  commentId: T:AngeliA.OnCharacterSleeping_EntityAttribute
+  fullName: AngeliA.OnCharacterSleeping_EntityAttribute
+  nameWithType: OnCharacterSleeping_EntityAttribute
 - uid: AngeliA.OnCharacterSlideStepped_Entity
   name: OnCharacterSlideStepped_Entity
   href: api/AngeliA.OnCharacterSlideStepped_Entity.html
   commentId: T:AngeliA.OnCharacterSlideStepped_Entity
   fullName: AngeliA.OnCharacterSlideStepped_Entity
   nameWithType: OnCharacterSlideStepped_Entity
+- uid: AngeliA.OnCharacterSlideStepped_EntityAttribute
+  name: OnCharacterSlideStepped_EntityAttribute
+  href: api/AngeliA.OnCharacterSlideStepped_EntityAttribute.html
+  commentId: T:AngeliA.OnCharacterSlideStepped_EntityAttribute
+  fullName: AngeliA.OnCharacterSlideStepped_EntityAttribute
+  nameWithType: OnCharacterSlideStepped_EntityAttribute
 - uid: AngeliA.OnCharacterTeleport_Entity
   name: OnCharacterTeleport_Entity
   href: api/AngeliA.OnCharacterTeleport_Entity.html
   commentId: T:AngeliA.OnCharacterTeleport_Entity
   fullName: AngeliA.OnCharacterTeleport_Entity
   nameWithType: OnCharacterTeleport_Entity
+- uid: AngeliA.OnCharacterTeleport_EntityAttribute
+  name: OnCharacterTeleport_EntityAttribute
+  href: api/AngeliA.OnCharacterTeleport_EntityAttribute.html
+  commentId: T:AngeliA.OnCharacterTeleport_EntityAttribute
+  fullName: AngeliA.OnCharacterTeleport_EntityAttribute
+  nameWithType: OnCharacterTeleport_EntityAttribute
 - uid: AngeliA.OnCheatPerformed_StringCodeAttribute
   name: OnCheatPerformed_StringCodeAttribute
   href: api/AngeliA.OnCheatPerformed_StringCodeAttribute.html
@@ -43356,6 +43447,12 @@ references:
   commentId: T:AngeliA.OnDealDamage_Damage_IDamageReceiver
   fullName: AngeliA.OnDealDamage_Damage_IDamageReceiver
   nameWithType: OnDealDamage_Damage_IDamageReceiver
+- uid: AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute
+  name: OnDealDamage_Damage_IDamageReceiverAttribute
+  href: api/AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute.html
+  commentId: T:AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute
+  fullName: AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute
+  nameWithType: OnDealDamage_Damage_IDamageReceiverAttribute
 - uid: AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute
   name: OnFallIntoWater_Rigidbody_EntityAttribute
   href: api/AngeliA.OnFallIntoWater_Rigidbody_EntityAttribute.html
@@ -43720,18 +43817,55 @@ references:
   fullName.vb: AngeliA.OnSavingSlotChanged.New
   nameWithType: OnSavingSlotChanged.OnSavingSlotChanged
   nameWithType.vb: OnSavingSlotChanged.New
+- uid: AngeliA.OnSavingSlotChangedAttribute
+  name: OnSavingSlotChangedAttribute
+  href: api/AngeliA.OnSavingSlotChangedAttribute.html
+  commentId: T:AngeliA.OnSavingSlotChangedAttribute
+  fullName: AngeliA.OnSavingSlotChangedAttribute
+  nameWithType: OnSavingSlotChangedAttribute
+- uid: AngeliA.OnSavingSlotChangedAttribute.#ctor(System.Int32)
+  name: OnSavingSlotChangedAttribute(int)
+  href: api/AngeliA.OnSavingSlotChangedAttribute.html#AngeliA_OnSavingSlotChangedAttribute__ctor_System_Int32_
+  commentId: M:AngeliA.OnSavingSlotChangedAttribute.#ctor(System.Int32)
+  name.vb: New(Integer)
+  fullName: AngeliA.OnSavingSlotChangedAttribute.OnSavingSlotChangedAttribute(int)
+  fullName.vb: AngeliA.OnSavingSlotChangedAttribute.New(Integer)
+  nameWithType: OnSavingSlotChangedAttribute.OnSavingSlotChangedAttribute(int)
+  nameWithType.vb: OnSavingSlotChangedAttribute.New(Integer)
+- uid: AngeliA.OnSavingSlotChangedAttribute.#ctor*
+  name: OnSavingSlotChangedAttribute
+  href: api/AngeliA.OnSavingSlotChangedAttribute.html#AngeliA_OnSavingSlotChangedAttribute__ctor_
+  commentId: Overload:AngeliA.OnSavingSlotChangedAttribute.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: AngeliA.OnSavingSlotChangedAttribute.OnSavingSlotChangedAttribute
+  fullName.vb: AngeliA.OnSavingSlotChangedAttribute.New
+  nameWithType: OnSavingSlotChangedAttribute.OnSavingSlotChangedAttribute
+  nameWithType.vb: OnSavingSlotChangedAttribute.New
 - uid: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
   name: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
   href: api/AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData.html
   commentId: T:AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
   fullName: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
   nameWithType: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
+- uid: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+  name: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+  href: api/AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute.html
+  commentId: T:AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+  fullName: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
+  nameWithType: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
 - uid: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
   name: OnTransferPassAttribute_Int3UnitPos_ObjectData
   href: api/AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData.html
   commentId: T:AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
   fullName: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
   nameWithType: OnTransferPassAttribute_Int3UnitPos_ObjectData
+- uid: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
+  name: OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
+  href: api/AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute.html
+  commentId: T:AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
+  fullName: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
+  nameWithType: OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
 - uid: AngeliA.OnViewZChangedAttribute
   name: OnViewZChangedAttribute
   href: api/AngeliA.OnViewZChangedAttribute.html
@@ -44929,42 +45063,6 @@ references:
   fullName.vb: AngeliA.Pipe(Of T).Data
   nameWithType: Pipe<T>.Data
   nameWithType.vb: Pipe(Of T).Data
-- uid: AngeliA.Pipe`1.DetchHead(System.Int32)
-  name: DetchHead(int)
-  href: api/AngeliA.Pipe-1.html#AngeliA_Pipe_1_DetchHead_System_Int32_
-  commentId: M:AngeliA.Pipe`1.DetchHead(System.Int32)
-  name.vb: DetchHead(Integer)
-  fullName: AngeliA.Pipe<T>.DetchHead(int)
-  fullName.vb: AngeliA.Pipe(Of T).DetchHead(Integer)
-  nameWithType: Pipe<T>.DetchHead(int)
-  nameWithType.vb: Pipe(Of T).DetchHead(Integer)
-- uid: AngeliA.Pipe`1.DetchHead*
-  name: DetchHead
-  href: api/AngeliA.Pipe-1.html#AngeliA_Pipe_1_DetchHead_
-  commentId: Overload:AngeliA.Pipe`1.DetchHead
-  isSpec: "True"
-  fullName: AngeliA.Pipe<T>.DetchHead
-  fullName.vb: AngeliA.Pipe(Of T).DetchHead
-  nameWithType: Pipe<T>.DetchHead
-  nameWithType.vb: Pipe(Of T).DetchHead
-- uid: AngeliA.Pipe`1.DetchTail(System.Int32)
-  name: DetchTail(int)
-  href: api/AngeliA.Pipe-1.html#AngeliA_Pipe_1_DetchTail_System_Int32_
-  commentId: M:AngeliA.Pipe`1.DetchTail(System.Int32)
-  name.vb: DetchTail(Integer)
-  fullName: AngeliA.Pipe<T>.DetchTail(int)
-  fullName.vb: AngeliA.Pipe(Of T).DetchTail(Integer)
-  nameWithType: Pipe<T>.DetchTail(int)
-  nameWithType.vb: Pipe(Of T).DetchTail(Integer)
-- uid: AngeliA.Pipe`1.DetchTail*
-  name: DetchTail
-  href: api/AngeliA.Pipe-1.html#AngeliA_Pipe_1_DetchTail_
-  commentId: Overload:AngeliA.Pipe`1.DetchTail
-  isSpec: "True"
-  fullName: AngeliA.Pipe<T>.DetchTail
-  fullName.vb: AngeliA.Pipe(Of T).DetchTail
-  nameWithType: Pipe<T>.DetchTail
-  nameWithType.vb: Pipe(Of T).DetchTail
 - uid: AngeliA.Pipe`1.IsFull
   name: IsFull
   href: api/AngeliA.Pipe-1.html#AngeliA_Pipe_1_IsFull

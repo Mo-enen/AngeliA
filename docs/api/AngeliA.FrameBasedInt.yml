@@ -26,10 +26,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: FrameBasedInt
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 36
+    startLine: 41
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: A data that can be override for specified frames
+  example: []
   syntax:
     content: 'public class FrameBasedInt : FrameBasedValue<int>'
     content.vb: Public Class FrameBasedInt Inherits FrameBasedValue(Of Integer)
@@ -74,10 +76,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 36
+    startLine: 41
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: A data that can be override for specified frames
+  example: []
   syntax:
     content: public FrameBasedInt(int value)
     parameters:
@@ -106,7 +110,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Add
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 37
+    startLine: 42
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -142,7 +146,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Multiply
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 48
+    startLine: 53
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -178,7 +182,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Min
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 59
+    startLine: 64
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -214,7 +218,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Max
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 71
+    startLine: 76
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -250,7 +254,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 83
+    startLine: 88
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -279,7 +283,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: op_Implicit
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 84
+    startLine: 89
   assemblies:
   - AngeliA Framework
   namespace: AngeliA

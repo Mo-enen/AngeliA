@@ -120,7 +120,7 @@ public abstract class BodyCloth : Cloth {
 
 	// Static Draw
 	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
-		if (renderer.SuitBody != 0 && Pool.TryGetValue(renderer.SuitBody, out var cloth)) {
+		if (renderer.SuitBody != 0 && TryGetCloth(renderer.SuitBody, out var cloth)) {
 			cloth.DrawCloth(renderer);
 		}
 	}

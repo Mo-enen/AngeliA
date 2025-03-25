@@ -5,6 +5,9 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Face expression type for pose animation characters
+/// </summary>
 public enum CharacterFaceExpression {
 	Normal = 0,
 	Blink = 1,
@@ -17,8 +20,10 @@ public enum CharacterFaceExpression {
 }
 
 
+/// <summary>
+/// Face gadget for pose characters
+/// </summary>
 public abstract class Face : BodyGadget {
-
 
 
 
@@ -113,6 +118,14 @@ public abstract class Face : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Draw one eye for pose style character
+	/// </summary>
+	/// <param name="expression">Current face expression</param>
+	/// <param name="faceRect">Rect position for the character's face</param>
+	/// <param name="leftEye">True if this eye is the left eye</param>
+	/// <param name="facingRight">True if the character is facing right</param>
+	/// <param name="animationFrame"></param>
 	protected virtual void DrawEye (CharacterFaceExpression expression, IRect faceRect, bool leftEye, bool facingRight, int animationFrame) {
 
 		var SpriteEye = leftEye ? SpriteEyeLeft : SpriteEyeRight;
@@ -276,6 +289,13 @@ public abstract class Face : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Draw mouth for pose style character
+	/// </summary>
+	/// <param name="expression">Current face expression</param>
+	/// <param name="faceRect">Rect position for the character's face</param>
+	/// <param name="facingRight">True if the character is facing right</param>
+	/// <param name="animationFrame"></param>
 	protected virtual void DrawMouth (CharacterFaceExpression expression, IRect faceRect, bool facingRight, int animationFrame) {
 
 		if (expression != CharacterFaceExpression.PassOut && expression != CharacterFaceExpression.Damage) return;
@@ -345,6 +365,9 @@ public abstract class Face : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Get current rect position for the given character's face
+	/// </summary>
 	public IRect GetFaceRect (PoseCharacterRenderer renderer, out IRect headRect) {
 
 		var head = renderer.Head;
@@ -385,6 +408,11 @@ public abstract class Face : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Get rect position of sclera part of the eye
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="leftEye">True if the eye is left eye</param>
 	public IRect GetScleraRect (PoseCharacterRenderer renderer, bool leftEye) {
 		var SpriteSclera = leftEye ? SpriteScleraLeft : SpriteScleraRight;
 		bool facingRight = renderer.Head.Width > 0;
@@ -396,12 +424,23 @@ public abstract class Face : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Draw face gadget for given character
+	/// </summary>
 	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
 		if (renderer.FaceID == 0 || !TryGetGadget(renderer.FaceID, out var face)) return;
 		face.DrawGadget(renderer);
 	}
 
 
+	/// <summary>
+	/// Draw two human style ears on both sides of the face
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="spriteLeft">Left ear sprite</param>
+	/// <param name="spriteRight">Right ear sprite</param>
+	/// <param name="offsetXL">Horizontal offset for left ear in global space</param>
+	/// <param name="offsetXR">Horizontal offset for right ear in global space</param>
 	public static void DrawSpriteAsHumanEar (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int offsetXL = 0, int offsetXR = 0) {
 
 		// Get Face Rect

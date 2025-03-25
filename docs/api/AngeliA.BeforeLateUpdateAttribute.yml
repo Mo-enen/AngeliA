@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: BeforeLateUpdateAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 180
+    startLine: 249
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called before any entity.LateUpdate is called
   example:
-  - internal static void ExampleFunction () { }
+  - >-
+    <pre><code class="lang-csharp">[BeforeLateUpdate]
+
+    internal static void ExampleFunction () { }</code></pre>
   syntax:
     content: 'public class BeforeLateUpdateAttribute : EventAttribute'
     content.vb: Public Class BeforeLateUpdateAttribute Inherits EventAttribute

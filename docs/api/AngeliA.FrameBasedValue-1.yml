@@ -26,10 +26,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: FrameBasedValue
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 14
+    startLine: 18
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: A data that can be override for specified frames
+  example: []
   syntax:
     content: 'public abstract class FrameBasedValue<T> : FrameBasedValue'
     typeParameters:
@@ -77,7 +79,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: FinalValue
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 15
+    startLine: 19
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -108,7 +110,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: BaseValue
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 16
+    startLine: 20
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -137,7 +139,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OverrideValue
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 17
+    startLine: 21
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -166,7 +168,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 18
+    startLine: 22
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -195,7 +197,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: .ctor
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 22
+    startLine: 26
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -227,7 +229,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Override
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 26
+    startLine: 30
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -263,7 +265,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ToString
     path: ../AngeliA Framework/src/Common/FrameBasedValue.cs
-    startLine: 32
+    startLine: 36
   assemblies:
   - AngeliA Framework
   namespace: AngeliA

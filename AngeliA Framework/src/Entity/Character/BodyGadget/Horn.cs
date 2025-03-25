@@ -4,6 +4,9 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Horn body gadget for pose style character
+/// </summary>
 public abstract class Horn : BodyGadget {
 
 
@@ -16,9 +19,12 @@ public abstract class Horn : BodyGadget {
 	// Api
 	public sealed override BodyGadgetType GadgetType => BodyGadgetType.Horn;
 	public override bool SpriteLoaded => SpriteHornLeft.IsValid || SpriteHornRight.IsValid;
+	/// <summary>
+	/// True if the horn grows from character's face (like Ayame from Hololive)
+	/// </summary>
 	protected virtual bool AnchorOnFace => false;
-	public OrientedSprite SpriteHornLeft { get; private set; }
-	public OrientedSprite SpriteHornRight { get; private set; }
+	private OrientedSprite SpriteHornLeft;
+	private OrientedSprite SpriteHornRight;
 
 
 	#endregion
@@ -68,12 +74,21 @@ public abstract class Horn : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// True if the left horn should render in front of character's head
+	/// </summary>
 	protected virtual bool FrontOfHeadL (PoseCharacterRenderer renderer) => true;
 
 
+	/// <summary>
+	/// True if the right horn should render in front of character's head
+	/// </summary>
 	protected virtual bool FrontOfHeadR (PoseCharacterRenderer renderer) => true;
 
 
+	/// <summary>
+	/// Draw horn gadget for given character
+	/// </summary>
 	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
 		if (renderer.HornID != 0 && TryGetGadget(renderer.HornID, out var horn)) {
 			horn.DrawGadget(renderer);
@@ -81,6 +96,15 @@ public abstract class Horn : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Draw given sprites as horn for given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="spriteLeft">Artwork sprite for left horn</param>
+	/// <param name="spriteRight">Artwork sprite for right horn</param>
+	/// <param name="frontOfHeadL">True if the left horn should render in front of character's head</param>
+	/// <param name="frontOfHeadR">True if the right horn should render in front of character's head</param>
+	/// <param name="onFace">True if the horn grows from character's face (like Ayame from Hololive)</param>
 	public static void DrawSpriteAsHorn (
 		PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight,
 		bool frontOfHeadL = true, bool frontOfHeadR = true, bool onFace = false

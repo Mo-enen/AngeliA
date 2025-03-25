@@ -19,13 +19,16 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: OnObjectBreak_IntSpriteID_IRectAttribute
     path: ../AngeliA Framework/src/Attribute/Attribute_Method.cs
-    startLine: 387
+    startLine: 532
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
   summary: The function will be called when an object break
   example:
-  - internal static void ExampleFunction (int spriteID, IRect rectPosition) { }
+  - >-
+    <pre><code class="lang-csharp">[OnObjectBreak_IntSpriteID_IRect]
+
+    internal static void ExampleFunction (int spriteID, IRect rectPosition) { }</code></pre>
   syntax:
     content: 'public class OnObjectBreak_IntSpriteID_IRectAttribute : EventAttribute'
     content.vb: Public Class OnObjectBreak_IntSpriteID_IRectAttribute Inherits EventAttribute

@@ -18,7 +18,7 @@ public abstract class HandCloth : Cloth {
 	}
 
 	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
-		if (renderer.SuitHand != 0 && renderer.TargetCharacter.CharacterState != CharacterState.Sleep && Pool.TryGetValue(renderer.SuitHand, out var cloth)) {
+		if (renderer.SuitHand != 0 && renderer.TargetCharacter.CharacterState != CharacterState.Sleep && TryGetCloth(renderer.SuitHand, out var cloth)) {
 			cloth.DrawCloth(renderer);
 		}
 	}

@@ -5,6 +5,9 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Hair gadget for pose styled characters
+/// </summary>
 public abstract class Hair : BodyGadget {
 
 
@@ -18,19 +21,51 @@ public abstract class Hair : BodyGadget {
 
 	// Api
 	public sealed override BodyGadgetType GadgetType => BodyGadgetType.Hair;
+	/// <summary>
+	/// Amount of the horizontal flow animation generate from character's movements (0 means 0%, 1000 means 100%)
+	/// </summary>
 	protected virtual int FlowAmountX => 500;
+	/// <summary>
+	/// Amount of the vertical flow animation generate from character's movements (0 means 0%, 1000 means 100%)
+	/// </summary>
 	protected virtual int FlowAmountY => 500;
 	public override bool SpriteLoaded => SpriteHairForward.IsValid || SpriteHairBackward.IsValid;
+	/// <summary>
+	/// Artwork sprite rendering in the front-side of character's head
+	/// </summary>
 	public OrientedSprite SpriteHairForward { get; private set; }
+	/// <summary>
+	/// Artwork sprite rendering in the back-side of character's head
+	/// </summary>
 	public OrientedSprite SpriteHairBackward { get; private set; }
+	/// <summary>
+	/// Artwork sprite of left braid
+	/// </summary>
 	public OrientedSprite SpriteBraidLeft { get; private set; }
+	/// <summary>
+	/// Artwork sprite of right braid
+	/// </summary>
 	public OrientedSprite SpriteBraidRight { get; private set; }
-	protected virtual int FacingLeftOffsetX => 0;
-	protected virtual bool UseLimbRotate => false;
-	protected virtual bool ForceBackOnFlow => true;
-	protected virtual int MotionAmount => 618;
-	protected virtual int FlowMotionAmount => 618;
-	protected virtual int DropMotionAmount => 200;
+	/// <summary>
+	/// Make braids perform limb rotate instead of simply rotate the rendering cell
+	/// </summary>
+	protected virtual bool UseLimbRotateForBraid => false;
+	/// <summary>
+	/// Set to true will make braid rendered in backside when it flows
+	/// </summary>
+	protected virtual bool ForceBackOnFlowForBraid => true;
+	/// <summary>
+	/// Amount of the braid's rotating animation generate from character's movements (0 means 0%, 1000 means 100%)
+	/// </summary>
+	protected virtual int MotionAmountForBraid => 618;
+	/// <summary>
+	/// Amount of the braid's motion animation for hairs flowing in air (0 means 0%, 1000 means 100%)
+	/// </summary>
+	protected virtual int FlowMotionAmountForBraid => 618;
+	/// <summary>
+	/// Amount of the braid's animation generate when character rise and drop (0 means 0%, 1000 means 100%)
+	/// </summary>
+	protected virtual int DropMotionAmountForBraid => 200;
 
 
 	#endregion
@@ -49,9 +84,8 @@ public abstract class Hair : BodyGadget {
 		// Braid
 		if (SpriteBraidLeft.IsValid || SpriteBraidRight.IsValid) {
 			DrawBraid(
-				renderer, ForceBackOnFlow, SpriteBraidLeft, SpriteBraidRight,
-				FacingLeftOffsetX, MotionAmount,
-				FlowMotionAmount, DropMotionAmount, UseLimbRotate, 0, 0
+				renderer, ForceBackOnFlowForBraid, SpriteBraidLeft, SpriteBraidRight,
+				MotionAmountForBraid, FlowMotionAmountForBraid, DropMotionAmountForBraid, UseLimbRotateForBraid, 0, 0
 			);
 		}
 	}
@@ -86,6 +120,9 @@ public abstract class Hair : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Draw hair gadget for given character
+	/// </summary>
 	public static void DrawGadgetFromPool (PoseCharacterRenderer renderer) {
 		if (renderer.HairID != 0 && TryGetGadget(renderer.HairID, out var hair)) {
 			hair.DrawGadget(renderer);
@@ -93,6 +130,14 @@ public abstract class Hair : BodyGadget {
 	}
 
 
+	/// <summary>
+	/// Draw given sprites as hair for given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="spriteForward">Hair artwork sprite for the front-side</param>
+	/// <param name="spriteBackward">Hair artwork sprite for the back-side</param>
+	/// <param name="flowAmountX">Horizontal motion animation amount for hairs flowing in air</param>
+	/// <param name="flowAmountY">Vertical motion animation amount for hairs flowing in air</param>
 	public static void DrawSpriteAsHair (PoseCharacterRenderer renderer, OrientedSprite spriteForward, OrientedSprite spriteBackward, int flowAmountX, int flowAmountY) {
 
 		var head = renderer.Head;
@@ -308,9 +353,22 @@ public abstract class Hair : BodyGadget {
 
 
 	// Braid
+	/// <summary>
+	/// Draw given sprites as braids for given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="forceBackOnFlow">Set to true will make braid rendered in backside when it flows</param>
+	/// <param name="spriteLeft">Artwork sprite on the left side</param>
+	/// <param name="spriteRight">Artwork sprite on the right side</param>
+	/// <param name="motionAmount">Motion animation amount</param>
+	/// <param name="flowMotionAmount">Motion animation amount for hairs flowing in air</param>
+	/// <param name="dropMotionAmount">Motion animation amount from character's rise and drop</param>
+	/// <param name="useLimbRotate">Perform limb rotate instead of simply rotate the rendering cell</param>
+	/// <param name="offsetX">Position offset X</param>
+	/// <param name="offsetY">Position offset Y</param>
 	public static void DrawBraid (
 		PoseCharacterRenderer renderer, bool forceBackOnFlow, OrientedSprite spriteLeft, OrientedSprite spriteRight,
-		int facingLeftOffsetX, int motionAmount, int flowMotionAmount, int dropMotionAmount, bool useLimbRotate,
+		int motionAmount, int flowMotionAmount, int dropMotionAmount, bool useLimbRotate,
 		int offsetX, int offsetY
 	) {
 
@@ -356,10 +414,6 @@ public abstract class Hair : BodyGadget {
 		int rot = 0;
 		int deltaHeight = 0;
 		bool rolling = movement.IsRolling;
-		if (!movement.FacingRight && facingLeftOffsetX != 0) {
-			l += facingLeftOffsetX;
-			r += facingLeftOffsetX;
-		}
 
 		int shakePosY = (renderer.PoseRootY - renderer.BasicRootY) / 2;
 		yl += shakePosY;

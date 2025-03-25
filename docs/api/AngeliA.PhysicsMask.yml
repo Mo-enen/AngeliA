@@ -30,10 +30,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: PhysicsMask
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 11
+    startLine: 19
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: A group of physics layera
+  example: []
   syntax:
     content: public static class PhysicsMask
     content.vb: Public Module PhysicsMask
@@ -65,7 +67,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: NONE
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 13
+    startLine: 21
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -92,7 +94,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ALL
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 14
+    startLine: 22
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -119,7 +121,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: LEVEL
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 16
+    startLine: 24
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -146,7 +148,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ENVIRONMENT
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 17
+    startLine: 25
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -173,7 +175,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ITEM
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 18
+    startLine: 26
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -200,7 +202,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: CHARACTER
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 19
+    startLine: 27
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -227,10 +229,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: DAMAGE
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 20
+    startLine: 31
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Colliders inside damage layer will deal damage when overlape with IDamageReceiver
+  example: []
   syntax:
     content: public const int DAMAGE = 16
     return:
@@ -254,7 +258,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ENTITY
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 25
+    startLine: 36
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -283,7 +287,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: DYNAMIC
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 29
+    startLine: 40
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -312,7 +316,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: SOLID
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 33
+    startLine: 44
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
@@ -341,7 +345,7 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: MAP
     path: ../AngeliA Framework/src/Common/PhysicsLayer.cs
-    startLine: 37
+    startLine: 48
   assemblies:
   - AngeliA Framework
   namespace: AngeliA

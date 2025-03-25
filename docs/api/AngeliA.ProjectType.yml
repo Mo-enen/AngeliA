@@ -22,10 +22,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: ProjectType
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 3
+    startLine: 4
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: ''
+  example: []
   syntax:
     content: public enum ProjectType
     content.vb: Public Enum ProjectType
@@ -52,10 +54,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Game
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 4
+    startLine: 8
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Project with coded logic, pixel artwork and audio etc...
+  example: []
   syntax:
     content: Game = 0
     return:
@@ -78,10 +82,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: Artwork
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 5
+    startLine: 12
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Project with only pixel artwork
+  example: []
   syntax:
     content: Artwork = 1
     return:
@@ -104,10 +110,12 @@ items:
       repo: https://github.com/Mo-enen/AngeliA.git
     id: EngineTheme
     path: ../AngeliA Framework/src/Common/UniverseInfo.cs
-    startLine: 6
+    startLine: 16
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
+  summary: Project with only pixel artwork for theme of AngeliA Engine
+  example: []
   syntax:
     content: EngineTheme = 2
     return:

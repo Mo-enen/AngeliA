@@ -24,7 +24,7 @@ items:
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
-  summary: Behavour class that handle attack logic for summon type character
+  summary: Behavior class that handle attack logic for summon type character
   example: []
   syntax:
     content: 'public class SummonAttackness : CharacterAttackness'
@@ -109,7 +109,7 @@ items:
   assemblies:
   - AngeliA Framework
   namespace: AngeliA
-  summary: Behavour class that handle attack logic for summon type character
+  summary: Behavior class that handle attack logic for summon type character
   example: []
   syntax:
     content: public SummonAttackness(Character character)
