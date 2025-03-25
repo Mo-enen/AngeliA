@@ -20,7 +20,8 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
 ## Documentation & API Reference
 
-- under construction... 🏗️
+- [Documentation](https://mo-enen.github.io/AngeliA/docs/introduction.html) | [API Reference](https://mo-enen.github.io/AngeliA/api/AngeliA.html)
+- Documentations are still under construction... 🏗️
 
 ## Screenshots
 
@@ -29,9 +30,10 @@ A 2D game engine focused on open-world platformer games, built with C#.
 <img src="AngeliA Engine\Resources\ScreenshotProject.png" width="100%"/>
 <img src="AngeliA Engine\Resources\ScreenshotGameplay.png" width="100%"/>
 
+## Contributors
+<a href="https://github.com/Mo-enen/AngeliA/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Mo-enen/AngeliA" />
+</a>
+<br/>
 
-
-More features and improvements are coming soon. Stay tuned :)
-
-
-
+###### More features and improvements are coming soon. Stay tuned :)
