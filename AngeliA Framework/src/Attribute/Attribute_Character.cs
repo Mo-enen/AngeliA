@@ -11,7 +11,7 @@ public static class CharacterAttribute {
 
 
 	/// <summary>
-	/// Make the character as default selected player
+	/// Make the character the default selected player
 	/// </summary>
 	/// <param name="priority"></param>
 	[AttributeUsage(AttributeTargets.Class)]

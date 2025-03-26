@@ -79,7 +79,7 @@ public class GlobalGravityAttribute (int gravity) : Attribute {
 
 
 /// <summary>
-/// The current application use player system or not
+/// Indicates whether the current application uses the player system or not
 /// </summary>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class EnablePlayerSystemAttribute : Attribute { }

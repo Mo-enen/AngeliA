@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 /// <summary>
-/// Hat for a pose style character
+/// Hat for a pose-style character
 /// </summary>
 public abstract class HeadCloth : Cloth {
 

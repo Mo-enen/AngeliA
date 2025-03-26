@@ -5,7 +5,7 @@ namespace AngeliA;
 
 
 /// <summary>
-/// Wing body gadget for pose style character
+/// Wing body gadget for pose-style character
 /// </summary>
 public abstract class Wing : BodyGadget {
 

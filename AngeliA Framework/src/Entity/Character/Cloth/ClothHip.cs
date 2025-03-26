@@ -2,7 +2,7 @@
 
 
 /// <summary>
-/// Pants or skirt for a pose style character. Include hip and legs (no foot)
+/// Pants or skirt for a pose-style character. Include hip and legs (no foot)
 /// </summary>
 public abstract class HipCloth : Cloth {
 

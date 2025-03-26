@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 /// <summary>
-/// Behavior class that handle attack logic for character
+/// Behavior class that handles attack logic for character
 /// </summary>
 public class CharacterAttackness (Character character) {
 

@@ -1,7 +1,7 @@
 ﻿namespace AngeliA;
 
 [EntityAttribute.Capacity(4, 0)]
-public class MapEditorBlinkParticle : Particle {
+internal class MapEditorBlinkParticle : Particle {
 	public static readonly int TYPE_ID = typeof(MapEditorBlinkParticle).AngeHash();
 	public override int Duration => 8;
 	public override bool Loop => false;

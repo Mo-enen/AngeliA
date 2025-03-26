@@ -5,7 +5,7 @@ namespace AngeliA;
 
 
 /// <summary>
-/// Shoes of a pose style character
+/// Shoes of a pose-style character
 /// </summary>
 public abstract class FootCloth : Cloth {
 

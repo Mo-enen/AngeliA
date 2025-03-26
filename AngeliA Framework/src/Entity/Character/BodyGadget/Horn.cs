@@ -5,7 +5,7 @@ namespace AngeliA;
 
 
 /// <summary>
-/// Horn body gadget for pose style character
+/// Horn body gadget for pose-style character
 /// </summary>
 public abstract class Horn : BodyGadget {
 

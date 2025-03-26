@@ -8,7 +8,7 @@ public enum ClothType { Head, Body, Hand, Hip, Foot, }
 
 
 /// <summary>
-/// Cloth for pose style character (not for equipment items). Get instance with Cloth.TryGetCloth(id, out var result)
+/// Cloth for pose-style character (not for equipment items). Get instance with Cloth.TryGetCloth(id, out var result)
 /// </summary>
 public abstract class Cloth {
 

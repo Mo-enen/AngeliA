@@ -5,11 +5,9 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
-public interface IWindowEntityUI {
-	public IRect BackgroundRect { get; }
-}
-
-
+/// <summary>
+/// Entities which spawns into the stage and serves as UI
+/// </summary>
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.MapEditorGroup("UI")]
 [EntityAttribute.UpdateOutOfRange]
@@ -19,6 +17,9 @@ public interface IWindowEntityUI {
 [EntityAttribute.Layer(EntityLayer.UI)]
 public abstract class EntityUI : Entity {
 
+	/// <summary>
+	/// True if this UI blocks mouse button event
+	/// </summary>
 	protected virtual bool BlockEvent => false;
 	private static int BlockingEventFrame = -1;
 	private bool IgnoringMouseInput;
@@ -75,6 +76,7 @@ public abstract class EntityUI : Entity {
 	public virtual void UpdateUI () { }
 
 	// API
+	/// <inheritdoc cref="GUI.Unify(int)"/>
 	protected static int Unify (int value) => GUI.Unify(value);
 
 }

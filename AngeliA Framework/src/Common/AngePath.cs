@@ -5,7 +5,7 @@ using System;
 namespace AngeliA;
 
 /// <summary>
-/// Utility class for path related logic for an AngeliA project
+/// Utility class for path-related logic in an AngeliA project
 /// </summary>
 public static class AngePath {
 

@@ -5,6 +5,9 @@ using GeorgeMamaladze;
 
 namespace AngeliA;
 
+/// <summary>
+/// Entity for edit the map in run-time
+/// </summary>
 [EntityAttribute.StageOrder(-4096)]
 public sealed partial class MapEditor : WindowUI {
 
@@ -66,10 +69,25 @@ public sealed partial class MapEditor : WindowUI {
 
 
 	// Const
+	/// <summary>
+	/// Map editor's type id
+	/// </summary>
 	public static readonly int TYPE_ID = typeof(MapEditor).AngeHash();
+	/// <summary>
+	/// ID for send/receive remote setting with the engine
+	/// </summary>
 	public const int SETTING_QUICK_PLAYER_DROP = 92176_1;
+	/// <summary>
+	/// ID for send/receive remote setting with the engine
+	/// </summary>
 	public const int SETTING_SHOW_BEHIND = 92176_2;
+	/// <summary>
+	/// ID for send/receive remote setting with the engine
+	/// </summary>
 	public const int SETTING_SHOW_STATE = 92176_3;
+	/// <summary>
+	/// ID for send/receive remote setting with the engine
+	/// </summary>
 	public const int SETTING_SHOW_GRID_GIZMOS = 92176_4;
 	private const int PANEL_WIDTH = 256;
 	private static readonly int ENTITY_CODE = typeof(Entity).AngeHash();
@@ -91,18 +109,31 @@ public sealed partial class MapEditor : WindowUI {
 	// Api
 	[OnWorldSavedByMapEditor_World] internal static System.Action<World> OnWorldSavedByMapEditor;
 	[OnMapEditorModeChange_Mode] internal static System.Action<OnMapEditorModeChange_ModeAttribute.Mode> OnMapEditorModeChange;
+	/// <summary>
+	/// Single instance of the map editor
+	/// </summary>
 	public static MapEditor Instance { get; private set; }
+	/// <summary>
+	/// True if the map editor entity is actived
+	/// </summary>
 	public static bool IsActived => Instance != null && Instance.Active;
+	/// <summary>
+	/// True if the map editor is in edit mode
+	/// </summary>
 	public static bool IsEditing => IsActived && !Instance.PlayingGame;
+	/// <summary>
+	/// True if the map editor entity is in play mode
+	/// </summary>
 	public static bool IsPlaying => IsActived && Instance.PlayingGame;
+	/// <summary>
+	/// True if the map editor entity is in navigating mode
+	/// </summary>
 	public static bool IsEditorNavigating => Instance != null && Instance.IsNavigating;
-	public static bool QuickPlayerDrop { get; set; } = false;
-	public static bool ShowState { get; set; } = false;
-	public static bool ShowBehind { get; set; } = true;
-	public static bool ShowGridGizmos { get; set; } = true;
-	public static string MapRoot => Instance != null && Instance.Stream != null ? Instance.Stream.MapRoot : "";
-	public int CurrentZ { get; private set; } = 0;
 	public override IRect BackgroundRect => default;
+	/// <summary>
+	/// Current position Z value for the camera view
+	/// </summary>
+	public int CurrentZ { get; private set; } = 0;
 
 	// Pools
 	private readonly Dictionary<int, PaletteItem> PalettePool = [];
@@ -119,6 +150,10 @@ public sealed partial class MapEditor : WindowUI {
 	private MapEditorMeta EditorMeta = new();
 
 	// Data
+	private static bool QuickPlayerDrop = false;
+	private static bool ShowState = false;
+	private static bool ShowBehind = true;
+	private static bool ShowGridGizmos = true;
 	private readonly IntToChars StateXLabelToString = new("x:");
 	private readonly IntToChars StateYLabelToString = new("y:");
 	private readonly IntToChars StateZLabelToString = new("z:");
@@ -162,10 +197,10 @@ public sealed partial class MapEditor : WindowUI {
 	private int TransitionDuration = 20;
 
 	// Saving
-	public static readonly SavingInt LastEdittingViewX = new("MapEditor.LastEdittingViewX", Const.CEL * -10, SavingLocation.Global);
-	public static readonly SavingInt LastEdittingViewY = new("MapEditor.LastEdittingViewY", Const.CEL * -5, SavingLocation.Global);
-	public static readonly SavingInt LastEdittingViewZ = new("MapEditor.LastEdittingViewZ", 0, SavingLocation.Global);
-	public static readonly SavingInt LastEdittingViewH = new("MapEditor.LastEdittingViewH", Const.CEL * 33, SavingLocation.Global);
+	private static readonly SavingInt LastEdittingViewX = new("MapEditor.LastEdittingViewX", Const.CEL * -10, SavingLocation.Global);
+	private static readonly SavingInt LastEdittingViewY = new("MapEditor.LastEdittingViewY", Const.CEL * -5, SavingLocation.Global);
+	private static readonly SavingInt LastEdittingViewZ = new("MapEditor.LastEdittingViewZ", 0, SavingLocation.Global);
+	private static readonly SavingInt LastEdittingViewH = new("MapEditor.LastEdittingViewH", Const.CEL * 33, SavingLocation.Global);
 
 
 	#endregion
@@ -331,12 +366,16 @@ public sealed partial class MapEditor : WindowUI {
 		WorldBehindParallax = info.WorldBehindParallax;
 
 		// Init View
-		SetView(new IRect(
+		var newView = new IRect(
 			LastEdittingViewX.Value,
 			LastEdittingViewY.Value,
 			Game.GetViewWidthFromViewHeight(LastEdittingViewH.Value),
 			LastEdittingViewH.Value
-		), LastEdittingViewZ.Value, true);
+		);
+		TargetViewRect = ViewRect = newView;
+		SetViewZ(LastEdittingViewZ.Value);
+		Stage.SetViewRectImmediately(newView, true);
+		Stage.SetViewZ(LastEdittingViewZ.Value, immediately: true);
 
 	}
 
@@ -1115,31 +1154,14 @@ public sealed partial class MapEditor : WindowUI {
 	#region --- API ---
 
 
-	public void SetView (IRect view, int z, bool remapAllRenderingCells = false) {
-		TargetViewRect = ViewRect = view;
-		SetViewZ(z);
-		Stage.SetViewRectImmediately(view, remapAllRenderingCells);
-		Stage.SetViewZ(z, immediately: true);
-	}
-
-
+	/// <summary>
+	/// Set view position Z for map editor
+	/// </summary>
 	public void SetViewZ (int newZ) {
 		CurrentZ = newZ;
 		if (IsNavigating) {
 			Game.ResetDoodle();
 		}
-	}
-
-
-	public void GotoPlayMode () {
-		if (PlayingGame) return;
-		SetEditorMode(true);
-	}
-
-
-	public void GotoEditMode () {
-		if (!PlayingGame) return;
-		SetEditorMode(false);
 	}
 
 

@@ -84,7 +84,7 @@
         </member>
         <member name="T:AngeliA.EnablePlayerSystemAttribute">
             <summary>
-            The current application use player system or not
+            Indicates whether the current application uses the player system or not
             </summary>
         </member>
         <member name="T:AngeliA.BodySetAttribute">
@@ -106,13 +106,13 @@
         </member>
         <member name="T:AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute">
             <summary>
-            Make the character as default selected player
+            Make the character the default selected player
             </summary>
             <param name="priority"></param>
         </member>
         <member name="M:AngeliA.CharacterAttribute.DefaultSelectedPlayerAttribute.#ctor(System.Int32)">
             <summary>
-            Make the character as default selected player
+            Make the character the default selected player
             </summary>
             <param name="priority"></param>
         </member>
@@ -1078,12 +1078,12 @@
         </member>
         <member name="T:AngeliA.CharacterAttackness">
             <summary>
-            Behavior class that handle attack logic for character
+            Behavior class that handles attack logic for character
             </summary>
         </member>
         <member name="M:AngeliA.CharacterAttackness.#ctor(AngeliA.Character)">
             <summary>
-            Behavior class that handle attack logic for character
+            Behavior class that handles attack logic for character
             </summary>
         </member>
         <member name="F:AngeliA.CharacterAttackness.TargetCharacter">
@@ -1311,12 +1311,12 @@
         </member>
         <member name="T:AngeliA.SummonAttackness">
             <summary>
-            Behavior class that handle attack logic for summon type character
+            Behavior class that handles attack logic for summon type character
             </summary>
         </member>
         <member name="M:AngeliA.SummonAttackness.#ctor(AngeliA.Character)">
             <summary>
-            Behavior class that handle attack logic for summon type character
+            Behavior class that handles attack logic for summon type character
             </summary>
         </member>
         <member name="T:AngeliA.Buff">
@@ -1421,7 +1421,7 @@
         </member>
         <member name="T:AngeliA.CharacterHealth">
             <summary>
-            Behavior class that handle health logic for character
+            Behavior class that handles health logic for character
             </summary>
         </member>
         <member name="P:AngeliA.CharacterHealth.HP">
@@ -1512,12 +1512,12 @@
         </member>
         <member name="T:AngeliA.CharacterMovement">
             <summary>
-            Behavior class that handle movement logic for character
+            Behavior class that handles movement logic for character
             </summary>
         </member>
         <member name="M:AngeliA.CharacterMovement.#ctor(AngeliA.Rigidbody)">
             <summary>
-            Behavior class that handle movement logic for character
+            Behavior class that handles movement logic for character
             </summary>
         </member>
         <member name="F:AngeliA.CharacterMovement.MovementWidth">
@@ -2643,7 +2643,7 @@
         </member>
         <member name="T:AngeliA.AngePath">
             <summary>
-            Utility class for path related logic for an AngeliA project
+            Utility class for path-related logic in an AngeliA project
             </summary>
         </member>
         <member name="F:AngeliA.AngePath.EQ_INVENTORY_FILE_EXT">
@@ -2663,12 +2663,22 @@
         </member>
         <member name="T:AngeliA.AutoValidList`1">
             <summary>
-            A list that auto remove element inside based on the given function
+            A list that automatically remove element inside based on the given function
             </summary>
         </member>
         <member name="M:AngeliA.AutoValidList`1.#ctor(System.Int32,System.Func{`0,System.Boolean})">
             <summary>
-            A list that auto remove element inside based on the given function
+            A list that automatically remove element inside based on the given function
+            </summary>
+        </member>
+        <member name="P:AngeliA.AutoValidList`1.Count">
+            <summary>
+            How many elements are currently inside this list
+            </summary>
+        </member>
+        <member name="P:AngeliA.AutoValidList`1.Capacity">
+            <summary>
+            Max element count
             </summary>
         </member>
         <member name="M:AngeliA.AutoValidList`1.Update">
@@ -3674,7 +3684,7 @@
         </member>
         <member name="M:AngeliA.Face.DrawEye(AngeliA.CharacterFaceExpression,AngeliA.IRect,System.Boolean,System.Boolean,System.Int32)">
             <summary>
-            Draw one eye for pose style character
+            Draw one eye for pose-style character
             </summary>
             <param name="expression">Current face expression</param>
             <param name="faceRect">Rect position for the character's face</param>
@@ -3684,7 +3694,7 @@
         </member>
         <member name="M:AngeliA.Face.DrawMouth(AngeliA.CharacterFaceExpression,AngeliA.IRect,System.Boolean,System.Int32)">
             <summary>
-            Draw mouth for pose style character
+            Draw mouth for pose-style character
             </summary>
             <param name="expression">Current face expression</param>
             <param name="faceRect">Rect position for the character's face</param>
@@ -3810,7 +3820,7 @@
         </member>
         <member name="T:AngeliA.Horn">
             <summary>
-            Horn body gadget for pose style character
+            Horn body gadget for pose-style character
             </summary>
         </member>
         <member name="P:AngeliA.Horn.AnchorOnFace">
@@ -3876,7 +3886,7 @@
         </member>
         <member name="T:AngeliA.Tail">
             <summary>
-            Tail body gadget for pose style character
+            Tail body gadget for pose-style character
             </summary>
         </member>
         <member name="P:AngeliA.Tail.LimbGrow">
@@ -3967,7 +3977,7 @@
         </member>
         <member name="T:AngeliA.Wing">
             <summary>
-            Wing body gadget for pose style character
+            Wing body gadget for pose-style character
             </summary>
         </member>
         <member name="P:AngeliA.Wing.IsPropeller">
@@ -4001,7 +4011,7 @@
         </member>
         <member name="T:AngeliA.BodyPart">
             <summary>
-            Representation of a bodypart for a pose style character
+            Representation of a bodypart for a pose-style character
             </summary>
             <param name="parent">Which bodypart does this bodypart attached on. Set to null if it's not a limb</param>
             <param name="useLimbFlip">True if the limb flip horizontaly when rotate over specified angle</param>
@@ -4009,7 +4019,7 @@
         </member>
         <member name="M:AngeliA.BodyPart.#ctor(AngeliA.BodyPart,System.Boolean,System.Boolean)">
             <summary>
-            Representation of a bodypart for a pose style character
+            Representation of a bodypart for a pose-style character
             </summary>
             <param name="parent">Which bodypart does this bodypart attached on. Set to null if it's not a limb</param>
             <param name="useLimbFlip">True if the limb flip horizontaly when rotate over specified angle</param>
@@ -4622,7 +4632,7 @@
         </member>
         <member name="T:AngeliA.Cloth">
             <summary>
-            Cloth for pose style character (not for equipment items). Get instance with Cloth.TryGetCloth(id, out var result)
+            Cloth for pose-style character (not for equipment items). Get instance with Cloth.TryGetCloth(id, out var result)
             </summary>
         </member>
         <member name="P:AngeliA.Cloth.ClothID">
@@ -4729,7 +4739,7 @@
         </member>
         <member name="T:AngeliA.BodyCloth">
             <summary>
-            Body cloth of a pose style character. Include body, shoulder and arms
+            Body cloth of a pose-style character. Include body, shoulder and arms
             </summary>
         </member>
         <member name="P:AngeliA.BodyCloth.TwistShiftTopAmount">
@@ -4793,7 +4803,7 @@
         </member>
         <member name="T:AngeliA.FootCloth">
             <summary>
-            Shoes of a pose style character
+            Shoes of a pose-style character
             </summary>
         </member>
         <member name="M:AngeliA.FootCloth.DrawClothFromPool(AngeliA.PoseCharacterRenderer)">
@@ -4812,7 +4822,7 @@
         </member>
         <member name="T:AngeliA.HandCloth">
             <summary>
-            Gloves for a pose style character
+            Gloves for a pose-style character
             </summary>
         </member>
         <member name="M:AngeliA.HandCloth.DrawClothFromPool(AngeliA.PoseCharacterRenderer)">
@@ -4831,7 +4841,7 @@
         </member>
         <member name="T:AngeliA.HeadCloth">
             <summary>
-            Hat for a pose style character
+            Hat for a pose-style character
             </summary>
         </member>
         <member name="M:AngeliA.HeadCloth.DrawClothFromPool(AngeliA.PoseCharacterRenderer)">
@@ -4848,7 +4858,7 @@
         </member>
         <member name="T:AngeliA.HipCloth">
             <summary>
-            Pants or skirt for a pose style character. Include hip and legs (no foot)
+            Pants or skirt for a pose-style character. Include hip and legs (no foot)
             </summary>
         </member>
         <member name="P:AngeliA.HipCloth.CoverLegs">
@@ -5167,6 +5177,36 @@
             True if this entity can be carry by other carrier
             </summary>
         </member>
+        <member name="M:AngeliA.ICarrier.OnBeingCarry(System.Int32,System.Int32)">
+            <summary>
+            This function is called when this entity is being carried by other
+            </summary>
+            <param name="deltaX">Position delta X at current frame in global space</param>
+            <param name="deltaY">Position delta Y at current frame in global space</param>
+        </member>
+        <member name="M:AngeliA.ICarrier.PerformCarry(System.Int32,System.Int32)">
+            <summary>
+            Carry other entities for once
+            </summary>
+            <param name="x">Position delta X at current frame in global space</param>
+            <param name="y">Position delta Y at current frame in global space</param>
+        </member>
+        <member name="M:AngeliA.ICarrier.CarryTargetsOnTopHorizontally(AngeliA.Entity,System.Int32,AngeliA.OperationMode)">
+            <summary>
+            Carry all ICarrier on top. This operation do not make any movement for the host entity itself
+            </summary>
+            <param name="self">Host entity</param>
+            <param name="_deltaX">Position delta X at current frame in global space</param>
+            <param name="colMode">Does this operation include colliders and triggers</param>
+        </member>
+        <member name="M:AngeliA.ICarrier.CarryTargetsOnTopVertically(AngeliA.Entity,System.Int32,AngeliA.OperationMode)">
+            <summary>
+            Carry all ICarrier on top. This operation do not make any movement for the host entity itself
+            </summary>
+            <param name="self">Host entity</param>
+            <param name="_deltaY">Position delta Y at current frame in global space</param>
+            <param name="colMode">Does this operation include colliders and triggers</param>
+        </member>
         <member name="T:AngeliA.ICircuitOperator">
             <summary>
             Interface that makes an entity behave like operator in circuit system
@@ -5373,6 +5413,276 @@
         <member name="T:AngeliA.IWithCharacterRenderer">
             <summary>
             Interface that makes the entity contains a instance of character rendering behaviour
+            </summary>
+        </member>
+        <member name="T:AngeliA.IMapItem">
+            <summary>
+            Marks class as item that can be paint as map editor block
+            </summary>
+        </member>
+        <member name="T:AngeliA.MapEditor">
+            <summary>
+            Entity for edit the map in run-time
+            </summary>
+        </member>
+        <member name="F:AngeliA.MapEditor.TYPE_ID">
+            <summary>
+            Map editor's type id
+            </summary>
+        </member>
+        <member name="F:AngeliA.MapEditor.SETTING_QUICK_PLAYER_DROP">
+            <summary>
+            ID for send/receive remote setting with the engine
+            </summary>
+        </member>
+        <member name="F:AngeliA.MapEditor.SETTING_SHOW_BEHIND">
+            <summary>
+            ID for send/receive remote setting with the engine
+            </summary>
+        </member>
+        <member name="F:AngeliA.MapEditor.SETTING_SHOW_STATE">
+            <summary>
+            ID for send/receive remote setting with the engine
+            </summary>
+        </member>
+        <member name="F:AngeliA.MapEditor.SETTING_SHOW_GRID_GIZMOS">
+            <summary>
+            ID for send/receive remote setting with the engine
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditor.Instance">
+            <summary>
+            Single instance of the map editor
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditor.IsActived">
+            <summary>
+            True if the map editor entity is actived
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditor.IsEditing">
+            <summary>
+            True if the map editor is in edit mode
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditor.IsPlaying">
+            <summary>
+            True if the map editor entity is in play mode
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditor.IsEditorNavigating">
+            <summary>
+            True if the map editor entity is in navigating mode
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditor.CurrentZ">
+            <summary>
+            Current position Z value for the camera view
+            </summary>
+        </member>
+        <member name="M:AngeliA.MapEditor.SetViewZ(System.Int32)">
+            <summary>
+            Set view position Z for map editor
+            </summary>
+        </member>
+        <member name="T:AngeliA.MapEditorToolbarButton">
+            <summary>
+            Base class for detect toolbar button logic of the map editor
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditorToolbarButton.Icon">
+            <summary>
+            Icon artwork sprite for the button
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditorToolbarButton.Tip">
+            <summary>
+            Tooltip which shows when user hover mouse on it
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditorToolbarButton.Func">
+            <summary>
+            This function is called when user click the button
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditorToolbarButton.Enable">
+            <summary>
+            True if the button apears to be enabled
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditorToolbarButton.Active">
+            <summary>
+            True if the button display inside the toolbar
+            </summary>
+        </member>
+        <member name="P:AngeliA.MapEditorToolbarButton.Order">
+            <summary>
+            Order of the button inside the toolbar
+            </summary>
+        </member>
+        <member name="M:AngeliA.MapEditorToolbarButton.ButtonGUI(AngeliA.IRect)">
+            <summary>
+            Draw UI for the button
+            </summary>
+            <param name="rect">Rect position in global space</param>
+        </member>
+        <member name="T:AngeliA.ControlHintUI">
+            <summary>
+            Hint for active buttons displays at botton-left corner of the screen during gameplay
+            </summary>
+        </member>
+        <member name="P:AngeliA.ControlHintUI.Instance">
+            <summary>
+            Single instance of this entity
+            </summary>
+        </member>
+        <member name="P:AngeliA.ControlHintUI.UseGamePadHint">
+            <summary>
+            True if show the gamepad UI indicator
+            </summary>
+        </member>
+        <member name="P:AngeliA.ControlHintUI.UseControlHint">
+            <summary>
+            True if show the control hint UI
+            </summary>
+        </member>
+        <member name="P:AngeliA.ControlHintUI.OffsetX">
+            <summary>
+            Position offset X in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.ControlHintUI.OffsetY">
+            <summary>
+            Position offset Y in global space
+            </summary>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey,System.String,System.Int32)">
+            <summary>
+            Require hint for given game-key for the current frame
+            </summary>
+            <param name="key"></param>
+            <param name="label"></param>
+            <param name="priority">Require with large priority will override the one with small priority</param>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Int32)">
+            <inheritdoc cref="M:AngeliA.ControlHintUI.AddHint(AngeliA.Gamekey,System.String,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey,System.String)">
+            <summary>
+            Require hint for given keyboard-key for the current frame
+            </summary>
+            <param name="key"></param>
+            <param name="label"></param>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey,AngeliA.KeyboardKey,System.String)">
+            <inheritdoc cref="M:AngeliA.ControlHintUI.AddHint(AngeliA.KeyboardKey,System.String)"/>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,System.String,System.Boolean)">
+            <summary>
+            Draw a control hint UI on the given position
+            </summary>
+            <param name="globalX">Position X in global space</param>
+            <param name="globalY">Position Y in global space</param>
+            <param name="key">Target key</param>
+            <param name="label">Hint content</param>
+            <param name="background">True if the hint renders with a black background</param>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,AngeliA.Gamekey,System.String,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,System.String,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.KeyboardKey,System.String,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,System.String,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.KeyboardKey,AngeliA.KeyboardKey,System.String,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,System.String,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.GamepadKey,System.String,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,System.String,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.GamepadKey,AngeliA.GamepadKey,System.String,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.Gamekey,System.String,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.ForceShowHint(System.Int32)">
+            <summary>
+            Show control hint even user have turn it off in setting menu
+            </summary>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.ForceHideGamepad(System.Int32)">
+            <summary>
+            Hide gamepad indicator even user have turn it on in setting menu
+            </summary>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.ForceHideGlobalHint(System.Int32)">
+            <summary>
+            Hide all global hints for given frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.ControlHintUI.ForceOffset(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Override global position offset for given frames
+            </summary>
+        </member>
+        <member name="T:AngeliA.DefaultDialogueUI">
+            <summary>
+            Implementation of the dialogueUI with default settings
+            </summary>
+        </member>
+        <member name="T:AngeliA.DialogueUI">
+            <summary>
+            Entity that shows dialogue content. Driven by the DialogueTask.
+            </summary>
+        </member>
+        <member name="P:AngeliA.DialogueUI.PanelRect">
+            <summary>
+            Rect position for the total boundary
+            </summary>
+        </member>
+        <member name="P:AngeliA.DialogueUI.ContentRect">
+            <summary>
+            Rect position for the text content
+            </summary>
+        </member>
+        <member name="P:AngeliA.DialogueUI.IconRect">
+            <summary>
+            Rect position for the character avatar icon
+            </summary>
+        </member>
+        <member name="P:AngeliA.DialogueUI.NameRect">
+            <summary>
+            Rect position for the character name
+            </summary>
+        </member>
+        <member name="P:AngeliA.DialogueUI.RollingSpeed">
+            <summary>
+            How many characters does it add per frame during the rolling animation
+            </summary>
+        </member>
+        <member name="P:AngeliA.DialogueUI.BackgroundRect">
+            <summary>
+            Rect position for the background
+            </summary>
+        </member>
+        <member name="T:AngeliA.EntityUI">
+            <summary>
+            Entities which spawns into the stage and serves as UI
+            </summary>
+        </member>
+        <member name="P:AngeliA.EntityUI.BlockEvent">
+            <summary>
+            True if this UI blocks mouse button event
+            </summary>
+        </member>
+        <member name="M:AngeliA.EntityUI.Unify(System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.Unify(System.Int32)"/>
+        </member>
+        <member name="T:AngeliA.IWindowEntityUI">
+            <summary>
+            Interface that indicate the entity is a UI window
+            </summary>
+        </member>
+        <member name="P:AngeliA.IWindowEntityUI.BackgroundRect">
+            <summary>
+            Rect position of the background in global space
             </summary>
         </member>
         <member name="M:AngeliA.Util.QuickRandom(System.Int32,System.Int32)">

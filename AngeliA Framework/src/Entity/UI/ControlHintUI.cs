@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
+/// <summary>
+/// Hint for active buttons displays at botton-left corner of the screen during gameplay
+/// </summary>
 [EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.StageOrder(int.MaxValue)]
@@ -30,16 +33,31 @@ public class ControlHintUI : EntityUI {
 	private const int GAP = 4;
 
 	// Api
+	/// <summary>
+	/// Single instance of this entity
+	/// </summary>
 	public static ControlHintUI Instance { get; private set; } = null;
+	/// <summary>
+	/// True if show the gamepad UI indicator
+	/// </summary>
 	public static bool UseGamePadHint {
 		get => ShowGamePadUI.Value;
 		set => ShowGamePadUI.Value = value;
 	}
+	/// <summary>
+	/// True if show the control hint UI
+	/// </summary>
 	public static bool UseControlHint {
 		get => ShowControlHint.Value;
 		set => ShowControlHint.Value = value;
 	}
+	/// <summary>
+	/// Position offset X in global space
+	/// </summary>
 	public int OffsetX { get; set; } = 0;
+	/// <summary>
+	/// Position offset Y in global space
+	/// </summary>
 	public int OffsetY { get; set; } = 0;
 
 	// Short
@@ -71,7 +89,7 @@ public class ControlHintUI : EntityUI {
 
 	// MSG
 	[OnGameInitializeLater(64)]
-	public static TaskResult OnGameInitializeLater () {
+	internal static TaskResult OnGameInitializeLater () {
 		if (!Stage.IsReady) return TaskResult.Continue;
 		Stage.SpawnEntity<ControlHintUI>(0, 0);
 		return TaskResult.End;
@@ -79,7 +97,7 @@ public class ControlHintUI : EntityUI {
 
 
 	[OnGameUpdatePauseless]
-	public static void OnGameUpdateLater () {
+	internal static void OnGameUpdateLater () {
 		// Draw Hints
 		if (Instance != null) {
 			if (Instance.GamepadVisible) Instance.DrawGamePad();
@@ -235,9 +253,25 @@ public class ControlHintUI : EntityUI {
 
 
 	// API
+	/// <summary>
+	/// Require hint for given game-key for the current frame
+	/// </summary>
+	/// <param name="key"></param>
+	/// <param name="label"></param>
+	/// <param name="priority">Require with large priority will override the one with small priority</param>
 	public static void AddHint (Gamekey key, string label, int priority = int.MinValue) => Instance?.AddHintLogic(key, key, label, priority);
+
+	/// <inheritdoc cref="AddHint(Gamekey, string, int)"/>
 	public static void AddHint (Gamekey keyA, Gamekey keyB, string label, int priority = int.MinValue) => Instance?.AddHintLogic(keyA, keyB, label, priority);
+
+	/// <summary>
+	/// Require hint for given keyboard-key for the current frame
+	/// </summary>
+	/// <param name="key"></param>
+	/// <param name="label"></param>
 	public static void AddHint (KeyboardKey key, string label) => AddHint(key, key, label);
+
+	/// <inheritdoc cref="AddHint(KeyboardKey, string)"/>
 	public static void AddHint (KeyboardKey keyA, KeyboardKey keyB, string label) {
 		if (Instance == null || !Instance.HintVisible) return;
 		int x =
@@ -254,56 +288,86 @@ public class ControlHintUI : EntityUI {
 	}
 
 
+	/// <summary>
+	/// Draw a control hint UI on the given position
+	/// </summary>
+	/// <param name="globalX">Position X in global space</param>
+	/// <param name="globalY">Position Y in global space</param>
+	/// <param name="key">Target key</param>
+	/// <param name="label">Hint content</param>
+	/// <param name="background">True if the hint renders with a black background</param>
 	public static void DrawGlobalHint (int globalX, int globalY, Gamekey key, string label, bool background = false) {
 		if (Game.IsPausing || Instance == null) return;
 		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
 		Instance.DrawGamekey(globalX, globalY, key, key, label, background);
 	}
+
+	/// <inheritdoc cref="DrawGlobalHint(int, int, Gamekey, string, bool)"/>
 	public static void DrawGlobalHint (int globalX, int globalY, Gamekey keyA, Gamekey keyB, string label, bool background = false) {
 		if (Game.IsPausing || Instance == null) return;
 		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
 		Instance.DrawGamekey(globalX, globalY, keyA, keyB, label, background);
 	}
-	internal static void DrawGlobalHint (int globalX, int globalY, KeyboardKey key, string label, bool background = false) {
+
+	/// <inheritdoc cref="DrawGlobalHint(int, int, Gamekey, string, bool)"/>
+	public static void DrawGlobalHint (int globalX, int globalY, KeyboardKey key, string label, bool background = false) {
 		if (Game.IsPausing || Instance == null) return;
 		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
 		Instance.DrawKey(globalX, globalY, key, key, label, background);
 	}
-	internal static void DrawGlobalHint (int globalX, int globalY, KeyboardKey keyA, KeyboardKey keyB, string label, bool background = false) {
+
+	/// <inheritdoc cref="DrawGlobalHint(int, int, Gamekey, string, bool)"/>
+	public static void DrawGlobalHint (int globalX, int globalY, KeyboardKey keyA, KeyboardKey keyB, string label, bool background = false) {
 		if (Game.IsPausing || Instance == null) return;
 		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
 		Instance.DrawKey(globalX, globalY, keyA, keyB, label, background);
 	}
-	internal static void DrawGlobalHint (int globalX, int globalY, GamepadKey key, string label, bool background = false) {
+
+	/// <inheritdoc cref="DrawGlobalHint(int, int, Gamekey, string, bool)"/>
+	public static void DrawGlobalHint (int globalX, int globalY, GamepadKey key, string label, bool background = false) {
 		if (Game.IsPausing || Instance == null) return;
 		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
 		Instance.DrawGamepadButton(globalX, globalY, key, key, label, background);
 	}
-	internal static void DrawGlobalHint (int globalX, int globalY, GamepadKey keyA, GamepadKey keyB, string label, bool background = false) {
+
+	/// <inheritdoc cref="DrawGlobalHint(int, int, Gamekey, string, bool)"/>
+	public static void DrawGlobalHint (int globalX, int globalY, GamepadKey keyA, GamepadKey keyB, string label, bool background = false) {
 		if (Game.IsPausing || Instance == null) return;
 		if (Game.PauselessFrame <= Instance.ForceHideGlobalHintFrame) return;
 		Instance.DrawGamepadButton(globalX, globalY, keyA, keyB, label, background);
 	}
 
 
+	/// <summary>
+	/// Show control hint even user have turn it off in setting menu
+	/// </summary>
 	public static void ForceShowHint (int duration = 1) {
 		if (Instance == null) return;
 		Instance.ForceHintFrame = Game.PauselessFrame + duration;
 	}
 
 
+	/// <summary>
+	/// Hide gamepad indicator even user have turn it on in setting menu
+	/// </summary>
 	public static void ForceHideGamepad (int duration = 1) {
 		if (Instance == null) return;
 		Instance.ForceHideGamepadFrame = Game.PauselessFrame + duration;
 	}
 
 
+	/// <summary>
+	/// Hide all global hints for given frames
+	/// </summary>
 	public static void ForceHideGlobalHint (int duration = 1) {
 		if (Instance == null) return;
 		Instance.ForceHideGlobalHintFrame = Game.PauselessFrame + duration;
 	}
 
 
+	/// <summary>
+	/// Override global position offset for given frames
+	/// </summary>
 	public static void ForceOffset (int x, int y, int duration = 1) {
 		if (Instance == null) return;
 		Instance.OffsetResetFrame = Game.PauselessFrame + duration;

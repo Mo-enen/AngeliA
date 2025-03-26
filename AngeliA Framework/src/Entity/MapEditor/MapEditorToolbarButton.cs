@@ -14,13 +14,38 @@ internal class BuiltInMapEditorToolbarButton (SpriteCode icon, LanguageCode tip,
 }
 
 
+/// <summary>
+/// Base class for detect toolbar button logic of the map editor
+/// </summary>
 public abstract class MapEditorToolbarButton {
+	/// <summary>
+	/// Icon artwork sprite for the button
+	/// </summary>
 	public abstract SpriteCode Icon { get; }
+	/// <summary>
+	/// Tooltip which shows when user hover mouse on it
+	/// </summary>
 	public abstract LanguageCode Tip { get; }
+	/// <summary>
+	/// This function is called when user click the button
+	/// </summary>
 	public abstract System.Action Func { get; }
+	/// <summary>
+	/// True if the button apears to be enabled
+	/// </summary>
 	public virtual System.Func<bool> Enable => null;
+	/// <summary>
+	/// True if the button display inside the toolbar
+	/// </summary>
 	public virtual System.Func<bool> Active => null;
+	/// <summary>
+	/// Order of the button inside the toolbar
+	/// </summary>
 	public virtual int Order => 0;
+	/// <summary>
+	/// Draw UI for the button
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
 	public virtual void ButtonGUI (IRect rect) {
 		if (GUI.DarkButton(rect, Icon)) {
 			Func?.Invoke();

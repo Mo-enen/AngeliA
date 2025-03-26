@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 /// <summary>
-/// Behavior class that handle health logic for character
+/// Behavior class that handles health logic for character
 /// </summary>
 public partial class CharacterHealth {
 

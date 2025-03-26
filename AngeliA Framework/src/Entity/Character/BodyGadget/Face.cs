@@ -119,7 +119,7 @@ public abstract class Face : BodyGadget {
 
 
 	/// <summary>
-	/// Draw one eye for pose style character
+	/// Draw one eye for pose-style character
 	/// </summary>
 	/// <param name="expression">Current face expression</param>
 	/// <param name="faceRect">Rect position for the character's face</param>
@@ -290,7 +290,7 @@ public abstract class Face : BodyGadget {
 
 
 	/// <summary>
-	/// Draw mouth for pose style character
+	/// Draw mouth for pose-style character
 	/// </summary>
 	/// <param name="expression">Current face expression</param>
 	/// <param name="faceRect">Rect position for the character's face</param>

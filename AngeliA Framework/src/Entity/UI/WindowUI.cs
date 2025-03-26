@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
 
 [EntityAttribute.DontDestroyOnZChanged]
@@ -10,15 +9,40 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 
 
 	// Api
+	/// <summary>
+	/// Rect position of the background part in global space
+	/// </summary>
 	public virtual IRect BackgroundRect => Rect;
+	/// <summary>
+	/// Failback display name of this type of window
+	/// </summary>
 	public virtual string DefaultWindowName => "";
+	/// <summary>
+	/// Rect position for the root boundary
+	/// </summary>
 	public static IRect WindowRect { get; private set; }
+	/// <summary>
+	/// True if the content of the window have unsaved changes
+	/// </summary>
 	public bool IsDirty { get; private set; } = false;
+	/// <summary>
+	/// Rect position in global space for the tooltip this window require to display
+	/// </summary>
 	public IRect RequiringTooltipRect { get; private set; } = default;
+	/// <summary>
+	/// Content data for the tooltip this window require to display
+	/// </summary>
 	public string RequiringTooltipContent { get; set; } = null;
+	/// <summary>
+	/// Content data for the notification this window require to display
+	/// </summary>
 	public string NotificationContent { get; set; } = null;
+	/// <summary>
+	/// Secondary content data for the notification this window require to display
+	/// </summary>
 	public string NotificationSubContent { get; set; } = null;
-	protected GUISkin Skin { get; private set; }
+	/// <inheritdoc cref="GUI.Skin"/>
+	protected GUISkin Skin => GUI.Skin;
 
 	// Data
 	private static int UpdatedFrame = -1;
@@ -27,7 +51,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 
 	// MSG
 	[OnGameQuitting]
-	public static void OnGameQuitting () {
+	internal static void OnGameQuitting () {
 		if (!Stage.Enable) return;
 		int len = Stage.EntityCounts[EntityLayer.UI];
 		var entities = Stage.Entities[EntityLayer.UI];
@@ -43,7 +67,6 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 
 	public sealed override void UpdateUI () {
 		base.UpdateUI();
-		Skin = GUI.Skin;
 		WindowRect = Game.PauselessFrame > WindowRectOverrideFrame ? Renderer.CameraRect : WindowRect;
 		if (Game.PauselessFrame > UpdatedFrame) {
 			// First
@@ -68,35 +91,44 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 	}
 
 	// API
-	public static void OpenWindow (int typeID) => Stage.SpawnEntity(typeID, 0, 0);
-
-	public static void CloseWindow (int typeID) {
-		if (!Stage.Enable) return;
-		int len = Stage.EntityCounts[EntityLayer.UI];
-		var entities = Stage.Entities[EntityLayer.UI];
-		for (int i = 0; i < len; i++) {
-			var e = entities[i];
-			if (e.TypeID == typeID) e.Active = false;
-		}
-	}
-
+	/// <summary>
+	/// Set window rect for all window UI
+	/// </summary>
 	public static void ForceWindowRect (IRect newRect) {
 		WindowRectOverrideFrame = Game.PauselessFrame;
 		WindowRect = newRect;
 	}
 
+	/// <summary>
+	/// Mark this window as dirty (contains unsaved changes)
+	/// </summary>
 	public virtual void SetDirty () => IsDirty = true;
 
+	/// <summary>
+	/// Mark this window as not dirty (do not contains unsaved changes)
+	/// </summary>
 	public virtual void CleanDirty () => IsDirty = false;
 
+	/// <summary>
+	/// Require save the data
+	/// </summary>
+	/// <param name="forceSave">True if this save performs without dirty checks</param>
 	public virtual void Save (bool forceSave = false) { }
 
+	/// <summary>
+	/// Require display tooltip for given range. Call this function every frame no matter the tooltip should be currently display or not.
+	/// </summary>
 	protected void RequireTooltip (IRect rect, string content) {
 		if (!rect.MouseInside()) return;
 		RequiringTooltipRect = rect.Shift(-Input.MousePositionShift.x, -Input.MousePositionShift.y);
 		RequiringTooltipContent = content;
 	}
 
+	/// <summary>
+	/// Require a notification.
+	/// </summary>
+	/// <param name="content"></param>
+	/// <param name="subContent"></param>
 	protected void RequireNotification (string content, string subContent = null) {
 		NotificationContent = content;
 		NotificationSubContent = subContent;

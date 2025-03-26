@@ -17,7 +17,7 @@ public enum CharacterMovementState {
 
 
 /// <summary>
-/// Behavior class that handle movement logic for character
+/// Behavior class that handles movement logic for character
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 public class CharacterMovement (Rigidbody rig) {

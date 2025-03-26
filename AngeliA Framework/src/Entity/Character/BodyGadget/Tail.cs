@@ -5,7 +5,7 @@ namespace AngeliA;
 
 
 /// <summary>
-/// Tail body gadget for pose style character
+/// Tail body gadget for pose-style character
 /// </summary>
 public abstract class Tail : BodyGadget {
 

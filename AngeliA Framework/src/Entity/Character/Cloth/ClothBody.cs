@@ -8,7 +8,7 @@ namespace AngeliA;
 
 
 /// <summary>
-/// Body cloth of a pose style character. Include body, shoulder and arms
+/// Body cloth of a pose-style character. Include body, shoulder and arms
 /// </summary>
 public abstract class BodyCloth : Cloth {
 

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Implementation of the dialogueUI with default settings
+/// </summary>
 public sealed class DefaultDialogueUI : DialogueUI {
 
 	protected override IRect PanelRect => new(
@@ -29,6 +32,9 @@ public sealed class DefaultDialogueUI : DialogueUI {
 }
 
 
+/// <summary>
+/// Entity that shows dialogue content. Driven by the DialogueTask.
+/// </summary>
 [EntityAttribute.Capacity(1, 1)]
 public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 
@@ -39,11 +45,29 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 
 
 	// Api
+	/// <summary>
+	/// Rect position for the total boundary
+	/// </summary>
 	protected abstract IRect PanelRect { get; }
+	/// <summary>
+	/// Rect position for the text content
+	/// </summary>
 	protected abstract IRect ContentRect { get; }
+	/// <summary>
+	/// Rect position for the character avatar icon
+	/// </summary>
 	protected abstract IRect IconRect { get; }
+	/// <summary>
+	/// Rect position for the character name
+	/// </summary>
 	protected abstract IRect NameRect { get; }
+	/// <summary>
+	/// How many characters does it add per frame during the rolling animation
+	/// </summary>
 	protected virtual int RollingSpeed => 16; // Char per Frame
+	/// <summary>
+	/// Rect position for the background
+	/// </summary>
 	public IRect BackgroundRect { get; private set; }
 
 	// Data
@@ -143,18 +167,18 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 	#region --- API ---
 
 
-	public void UpdateDialogue () => UpdatedFrame = Game.GlobalFrame;
+	internal void UpdateDialogue () => UpdatedFrame = Game.GlobalFrame;
 
 
-	public void SetData (string content, int identity, string name, Color32[] colors) {
+	internal void SetData (string content, int identity, string name, Color32[] colors) {
 		Content = content;
 		Identity = identity;
 		Colors = colors;
 		Name = name;
 	}
 
-	
-	public bool Roll () {
+
+	internal bool Roll () {
 		RolledFrame = Game.GlobalFrame;
 		if (EndIndex >= Content.Length - 1) {
 			// End
@@ -167,15 +191,6 @@ public abstract class DialogueUI : EntityUI, IWindowEntityUI {
 			return false;
 		}
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
 
 
 	#endregion

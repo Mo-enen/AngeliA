@@ -4,11 +4,17 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 /// <summary>
-/// A list that auto remove element inside based on the given function
+/// A list that automatically remove element inside based on the given function
 /// </summary>
 public class AutoValidList<T> (int capacity, System.Func<T, bool> updateFunc) {
 
+	/// <summary>
+	/// How many elements are currently inside this list
+	/// </summary>
 	public int Count { get; private set; } = 0;
+	/// <summary>
+	/// Max element count
+	/// </summary>
 	public int Capacity => Data.Length;
 	private readonly T[] Data = new T[capacity];
 	private readonly System.Func<T, bool> UpdateFunc = updateFunc;

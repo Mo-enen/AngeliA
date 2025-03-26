@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 /// <summary>
-/// Representation of a bodypart for a pose style character
+/// Representation of a bodypart for a pose-style character
 /// </summary>
 /// <param name="parent">Which bodypart does this bodypart attached on. Set to null if it's not a limb</param>
 /// <param name="useLimbFlip">True if the limb flip horizontaly when rotate over specified angle</param>
