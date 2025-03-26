@@ -1,35 +1,41 @@
 ﻿namespace AngeliA;
 
 
+/// <summary>
+/// Interface that makes the entity contains a instance of character movement behaviour
+/// </summary>
 public interface IWithCharacterMovement {
 	CharacterMovement CurrentMovement { get; }
 }
 
 
+/// <summary>
+/// Interface that makes the entity contains a instance of character attackness behaviour
+/// </summary>
 public interface IWithCharacterAttackness {
 	CharacterAttackness CurrentAttackness { get; }
 }
 
 
+/// <summary>
+/// Interface that makes the entity contains a instance of character buff behaviour
+/// </summary>
 public interface IWithCharacterBuff {
 	CharacterBuff CurrentBuff { get; }
-	public static void GiveBuffFromMap (IWithCharacterBuff wBuff, int unitX = int.MinValue, int unitY = int.MinValue, int unitZ = int.MinValue, int duration = -1) {
-		if (wBuff is not Entity entity) return;
-		unitX = unitX == int.MinValue ? (entity.X + 1).ToUnit() : unitX;
-		unitY = unitY == int.MinValue ? (entity.Y + 1).ToUnit() : unitY;
-		unitZ = unitZ == int.MinValue ? Stage.ViewZ : unitZ;
-		int id = WorldSquad.Front.GetBlockAt(unitX, unitY, unitZ, BlockType.Element);
-		if (id == 0) return;
-		wBuff.CurrentBuff.GiveBuff(id, duration);
-	}
 }
 
 
+/// <summary>
+/// Interface that makes the entity contains a instance of character health behaviour
+/// </summary>
 public interface IWithCharacterHealth {
 	CharacterHealth CurrentHealth { get; }
 }
 
 
+/// <summary>
+/// Interface that makes the entity contains a instance of character rendering behaviour
+/// </summary>
 public interface IWithCharacterRenderer {
 	CharacterRenderer CurrentRenderer { get; }
 }

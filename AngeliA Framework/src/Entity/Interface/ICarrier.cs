@@ -3,23 +3,45 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Interface that makes entity carry other entities on top
+/// </summary>
 public interface ICarrier {
 
 	private const int DETECT_RANGE = 96;
+	/// <summary>
+	/// True if this entity can be carry by other carrier
+	/// </summary>
 	public bool AllowBeingCarry => true;
-	public int CarryLeft { get; set; }
-	public int CarryRight { get; set; }
-	public int CarryHorizontalFrame { get; set; }
+	internal int CarryLeft { get; set; }
+	internal int CarryRight { get; set; }
+	internal int CarryHorizontalFrame { get; set; }
 
 	private static readonly Pipe<(IRect rect, int delta)> CarryBuffer = new(1024);
 	private static readonly Pipe<(Entity entity, int delta)> CarryPerformBuffer = new(1024);
 
 	// MSG
+	/// <summary>
+	/// This function is called when this entity is being carried by other
+	/// </summary>
+	/// <param name="deltaX">Position delta X at current frame in global space</param>
+	/// <param name="deltaY">Position delta Y at current frame in global space</param>
 	public void OnBeingCarry (int deltaX, int deltaY) { }
 
+	/// <summary>
+	/// Carry other entities for once
+	/// </summary>
+	/// <param name="x">Position delta X at current frame in global space</param>
+	/// <param name="y">Position delta Y at current frame in global space</param>
 	public void PerformCarry (int x, int y);
 
 	// API
+	/// <summary>
+	/// Carry all ICarrier on top. This operation do not make any movement for the host entity itself
+	/// </summary>
+	/// <param name="self">Host entity</param>
+	/// <param name="_deltaX">Position delta X at current frame in global space</param>
+	/// <param name="colMode">Does this operation include colliders and triggers</param>
 	public static void CarryTargetsOnTopHorizontally (Entity self, int _deltaX, OperationMode colMode = OperationMode.ColliderOnly) {
 		if (_deltaX == 0) return;
 		CarryBuffer.Reset();
@@ -72,6 +94,12 @@ public interface ICarrier {
 		}
 	}
 
+	/// <summary>
+	/// Carry all ICarrier on top. This operation do not make any movement for the host entity itself
+	/// </summary>
+	/// <param name="self">Host entity</param>
+	/// <param name="_deltaY">Position delta Y at current frame in global space</param>
+	/// <param name="colMode">Does this operation include colliders and triggers</param>
 	public static void CarryTargetsOnTopVertically (Entity self, int _deltaY, OperationMode colMode = OperationMode.ColliderOnly) {
 
 		if (_deltaY == 0) return;

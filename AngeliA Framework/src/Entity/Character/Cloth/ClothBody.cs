@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 namespace AngeliA;
 
 
+/// <summary>
+/// Body cloth of a pose style character. Include body, shoulder and arms
+/// </summary>
 public abstract class BodyCloth : Cloth {
 
 
@@ -18,7 +21,13 @@ public abstract class BodyCloth : Cloth {
 	// Api
 	public sealed override ClothType ClothType => ClothType.Body;
 	public override bool SpriteLoaded => SpriteBody.IsValid;
+	/// <summary>
+	/// How much does it shift left and right with character's body movement (0 means 0%, 1000 means 100%)
+	/// </summary>
 	protected virtual int TwistShiftTopAmount => 300;
+	/// <summary>
+	/// Z value for sorting rendering cells
+	/// </summary>
 	protected virtual int LocalZ => 7;
 
 	// Data
@@ -119,12 +128,22 @@ public abstract class BodyCloth : Cloth {
 	}
 
 	// Static Draw
+	/// <summary>
+	/// Draw all body cloths for given character from system pool
+	/// </summary>
 	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
 		if (renderer.SuitBody != 0 && TryGetCloth(renderer.SuitBody, out var cloth)) {
 			cloth.DrawCloth(renderer);
 		}
 	}
 
+	/// <summary>
+	/// Draw artwork sprite as cloth for only "Body" of the given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="clothSprite">Artwork sprite</param>
+	/// <param name="localZ">Z value for sorting rendering cells</param>
+	/// <param name="twistShiftTopAmount">How much does it shift left and right with character's body movement</param>
 	public static void DrawClothForBody (PoseCharacterRenderer renderer, OrientedSprite clothSprite, int localZ, int twistShiftTopAmount) {
 
 		if (!clothSprite.IsValid) return;
@@ -195,6 +214,13 @@ public abstract class BodyCloth : Cloth {
 
 	}
 
+	/// <summary>
+	/// Draw artwork sprite as cloth for shoulders of the given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="spriteLeft">Artwork sprite for left shoulder</param>
+	/// <param name="spriteRight">Artwork sprite for right shoulder</param>
+	/// <param name="localZ">Z value for sorting rendering cells</param>
 	public static void DrawClothForShoulder (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
 		bool facingRight = renderer.Body.Width > 0;
 		if (spriteLeft.IsValid) {
@@ -211,6 +237,13 @@ public abstract class BodyCloth : Cloth {
 		}
 	}
 
+	/// <summary>
+	/// Draw artwork sprite as cloth for upper-arms of the given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="spriteLeft">Artwork sprite for left upper-arm</param>
+	/// <param name="spriteRight">Artwork sprite for right upper-arm</param>
+	/// <param name="localZ">Z value for sorting rendering cells</param>
 	public static void DrawClothForUpperArm (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
 		bool facingRight = renderer.Body.Width > 0;
 		if (spriteLeft.IsValid) {
@@ -227,6 +260,13 @@ public abstract class BodyCloth : Cloth {
 		}
 	}
 
+	/// <summary>
+	/// Draw artwork sprite as cloth for lower-arms of the given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="spriteLeft">Artwork sprite for left lower-arm</param>
+	/// <param name="spriteRight">Artwork sprite for right lower-arm</param>
+	/// <param name="localZ">Z value for sorting rendering cells</param>
 	public static void DrawClothForLowerArm (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
 		bool facingRight = renderer.Body.Width > 0;
 		if (spriteLeft.IsValid) {
@@ -243,6 +283,12 @@ public abstract class BodyCloth : Cloth {
 		}
 	}
 
+	/// <summary>
+	/// Draw artwork sprite as cape for given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="clothSprite">Artwork sprite</param>
+	/// <param name="motionAmount">How much does the cape flow with character's movement (0 means 0%, 1000 means 100%)</param>
 	public static void DrawCape (PoseCharacterRenderer renderer, OrientedSprite clothSprite, int motionAmount = 1000) {
 
 		if (!clothSprite.IsValid) return;

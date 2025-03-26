@@ -3,11 +3,22 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Interface that makes an entity walks along a given path
+/// </summary>
 public interface IRouteWalker {
 
+	/// <summary>
+	/// Which direction this entity is currently walking
+	/// </summary>
 	Direction8 CurrentDirection { get; set; }
+
+	/// <summary>
+	/// Where does this entity currently walking 
+	/// </summary>
 	Int2 TargetPosition { get; set; }
 
+	/// <inheritdoc cref="GetNextRoutePosition(Entity, ref Direction8, ref Int2, int, int, bool, BlockType, bool, HashSet{int})"/>
 	public static Int2 GetNextRoutePosition (IRouteWalker walker, int pathID, int speed, bool allowTurnBack = false, BlockType pathType = BlockType.Element, bool allowTilt = true, HashSet<int> pathSet = null) {
 		if (walker is not Entity eWalker) return default;
 		var currentDir = walker.CurrentDirection;
@@ -18,6 +29,20 @@ public interface IRouteWalker {
 		return result;
 	}
 
+	/// <summary>
+	/// Get the position in global space that the walker entity should go to
+	/// </summary>
+	/// /// <param name="walker">Target walker</param>
+	/// <param name="entity">Target entity that walks</param>
+	/// <param name="currentDirection">Which direction this entity is currently walking</param>
+	/// <param name="targetPosition">Where does this entity currently walking</param>
+	/// <param name="pathID">Which map block should be treat as the path marker</param>
+	/// <param name="speed">Movement speed in global space</param>
+	/// <param name="allowTurnBack">True if the walker turn back when reach the edge</param>
+	/// <param name="pathType">Block type of the path marker</param>
+	/// <param name="allowTilt">True if the walker can walk diagonally</param>
+	/// <param name="pathSet">A hash set of path marks, set to null if there's only one mark</param>
+	/// <returns>The final position in global space</returns>
 	public static Int2 GetNextRoutePosition (Entity entity, ref Direction8 currentDirection, ref Int2 targetPosition, int pathID, int speed, bool allowTurnBack = false, BlockType pathType = BlockType.Element, bool allowTilt = true, HashSet<int> pathSet = null) {
 
 		var newPos = entity.XY;
@@ -80,6 +105,7 @@ public interface IRouteWalker {
 		return newPos;
 	}
 
+	/// <inheritdoc cref="TryGetRouteFromMap(HashSet{int}, int, int, Direction8, out Direction8, BlockType, bool)"/>
 	public static bool TryGetRouteFromMap (int pathID, int unitX, int unitY, Direction8 currentDirection, out Direction8 result, BlockType pathType = BlockType.Element, bool allowTilt = true) {
 
 		var squad = WorldSquad.Front;
@@ -115,6 +141,18 @@ public interface IRouteWalker {
 		return false;
 	}
 
+	/// <summary>
+	/// Get path marker block from map
+	/// </summary>
+	/// /// <param name="pathID">ID of the path marker block</param>
+	/// <param name="pathSet">A hash set of path marks, set to null if there's only one mark</param>
+	/// <param name="unitX">Position X in unit space</param>
+	/// <param name="unitY">Position Y in unit space</param>
+	/// <param name="currentDirection">Which direction this entity is currently walking</param>
+	/// <param name="result">Direction the walker should go</param>
+	/// <param name="pathType">Block type of the path marker</param>
+	/// <param name="allowTilt">True if the walker can walk diagonally</param>
+	/// <returns>True if the path is successfuly found</returns>
 	public static bool TryGetRouteFromMap (HashSet<int> pathSet, int unitX, int unitY, Direction8 currentDirection, out Direction8 result, BlockType pathType = BlockType.Element, bool allowTilt = true) {
 
 		var squad = WorldSquad.Front;

@@ -3600,8 +3600,6 @@
             <summary>
             Load sprite data from Renderer.CurrentSheet
             </summary>
-            <param name="basicName"></param>
-            <returns></returns>
         </member>
         <member name="M:AngeliA.BodyGadget.DrawGadgetGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)">
             <summary>
@@ -4001,6 +3999,627 @@
             True if the given wing is a propeller style wing
             </summary>
         </member>
+        <member name="T:AngeliA.BodyPart">
+            <summary>
+            Representation of a bodypart for a pose style character
+            </summary>
+            <param name="parent">Which bodypart does this bodypart attached on. Set to null if it's not a limb</param>
+            <param name="useLimbFlip">True if the limb flip horizontaly when rotate over specified angle</param>
+            <param name="rotateWithBody">True if the limb apply rotation from body of the character</param>
+        </member>
+        <member name="M:AngeliA.BodyPart.#ctor(AngeliA.BodyPart,System.Boolean,System.Boolean)">
+            <summary>
+            Representation of a bodypart for a pose style character
+            </summary>
+            <param name="parent">Which bodypart does this bodypart attached on. Set to null if it's not a limb</param>
+            <param name="useLimbFlip">True if the limb flip horizontaly when rotate over specified angle</param>
+            <param name="rotateWithBody">True if the limb apply rotation from body of the character</param>
+        </member>
+        <member name="T:AngeliA.BodyPart.CoverMode">
+            <summary>
+            How cloths is covering the bodypart
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.ID">
+            <summary>
+            Global unique id for this bodypart
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.Border">
+            <summary>
+            Artwork sprite border
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.SpritePivotX">
+            <summary>
+            Artwork sprite pivot X
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.SpritePivotY">
+            <summary>
+            Artwork sprite pivot Y
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.SizeX">
+            <summary>
+            Artwork sprite Width in global size
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.SizeY">
+            <summary>
+            Artwork sprite Height in global size
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.FlexableSizeY">
+            <summary>
+            Height that changes with character's body height
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.UseLimbFlip">
+            <summary>
+            True if the limb flip horizontaly when rotate over specified angle	
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.LimbParent">
+            <summary>
+            Which bodypart does this bodypart attached on. Set to null if it's not a limb
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.RotateWithBody">
+            <summary>
+            True if the limb apply rotation from body of the character
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.IsFullCovered">
+            <summary>
+            True if this bodypart is totaly covered by cloth
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.FacingSign">
+            <summary>
+            Return 1 if this bodypart is facing right
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.FacingRight">
+            <summary>
+            True if this bodypart is facing right
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.GlobalX">
+            <summary>
+            Position X in global space
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.GlobalY">
+            <summary>
+            Position Y in global space
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.X">
+            <summary>
+            Position X in local space
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.Y">
+            <summary>
+            Position Y in local space
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.Z">
+            <summary>
+            Z value for sort rendering cells
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.Rotation">
+            <summary>
+            Angle of this bodypart
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.Width">
+            <summary>
+            Horizontal size of this bodypart
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.Height">
+            <summary>
+            Vertical size of this bodypart
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.PivotX">
+            <summary>
+            Current pivot X of this bodypart (0 means left, 1000 means right)
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.PivotY">
+            <summary>
+            Current pivot Y of this bodypart (0 means bottom, 1000 means top)
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.FrontSide">
+            <summary>
+            True if the bodypart is facing front
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.Covered">
+            <summary>
+            How this bodypart is being covered by cloths
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPart.Tint">
+            <summary>
+            Color tint
+            </summary>
+        </member>
+        <member name="M:AngeliA.BodyPart.TryGetSpriteIdFromSheet(System.Type,System.String,System.Boolean,System.Int32@)">
+            <summary>
+            Get sprite id to rendering bodypart for given type of character
+            </summary>
+            <param name="characterType">Target type of character</param>
+            <param name="bodyPartName">Basic name of this bodypart</param>
+            <param name="checkForGroup">True if the sprite can be get from sprite group</param>
+            <param name="id">Global ID of the result bodypart</param>
+            <returns>True if the id is found</returns>
+        </member>
+        <member name="M:AngeliA.BodyPart.SetData(System.Int32)">
+            <summary>
+            Set bodypart data by giving a sprite ID
+            </summary>
+        </member>
+        <member name="M:AngeliA.BodyPart.Imitate(AngeliA.BodyPart)">
+            <summary>
+            Copy motion data from another bodypart without changing anything about data about source sprite
+            </summary>
+        </member>
+        <member name="M:AngeliA.BodyPart.GetGlobalRect">
+            <summary>
+            Get current position rect in global space
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.BodyPart.GetLocalCenter">
+            <summary>
+            Get current center position in local space
+            </summary>
+        </member>
+        <member name="M:AngeliA.BodyPart.GetGlobalCenter">
+            <summary>
+            Get current center position in global space
+            </summary>
+        </member>
+        <member name="M:AngeliA.BodyPart.GlobalLerp(System.Single,System.Single,System.Boolean)">
+            <summary>
+            Get global position that lerp from given value
+            </summary>
+            <param name="x01">X lerp value (0 means left, 1 means right)</param>
+            <param name="y01">Y lerp value (0 means bottom, 1 means top)</param>
+            <param name="natural">True if this lerping logic respect character's natural orientation (like Tokino Sora's hairpin should always on her left side)</param>
+        </member>
+        <member name="M:AngeliA.BodyPart.LimbRotate(System.Int32,System.Int32)">
+            <summary>
+            Rotate the bodypart with "LimbRotate" logic
+            </summary>
+            <param name="rotation"></param>
+            <param name="grow">How much does the limb grow it's size from the rotation (0 means don't grow. 1000 means general amount)</param>
+        </member>
+        <member name="T:AngeliA.CharacterState">
+            <summary>
+            General game state of a character
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterState.GamePlay">
+            <summary>
+            The character is online
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterState.Sleep">
+            <summary>
+            The character is sleeping
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterState.PassOut">
+            <summary>
+            The character is offline
+            </summary>
+        </member>
+        <member name="T:AngeliA.CharacterInventoryType">
+            <summary>
+            Which type of inventory does this character have
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterInventoryType.None">
+            <summary>
+            No inventory logic should be perform
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterInventoryType.Unique">
+            <summary>
+            All instance of this type of characters share the same inventory data
+            </summary>
+        </member>
+        <member name="F:AngeliA.CharacterInventoryType.Map">
+            <summary>
+            Every instance of this type of characters have it's own inventory data based on where this character spawn from map
+            </summary>
+        </member>
+        <member name="T:AngeliA.CharacterAnimationType">
+            <summary>
+            Which type of animation does this character shows
+            </summary>
+        </member>
+        <member name="T:AngeliA.Character">
+            <summary>
+            General representation of characters in AngeliA games
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.Teleporting">
+            <summary>
+            True if the character is teleporting
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.TeleportEndFrame">
+            <summary>
+            End frame of the end of teleport
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.TeleportingWithPortal">
+            <summary>
+            True if the character is teleporting with a portal
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.TeleportToFrontSide">
+            <summary>
+            True if the character is teleporting to front side layer (closer to camera)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.CurrentAttackSpeedRate">
+            <summary>
+            How fast should the character attacks (0 means couldn't attack, 1000 means normal speed)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.InventoryType">
+            <summary>
+            Which type of inventory does this character have
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.InventoryColumn">
+            <summary>
+            Column count for this character's inventory
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.InventoryRow">
+            <summary>
+            Row count for this character's inventory
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.FinalCharacterHeight">
+            <summary>
+            Get the height of this character in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.DefaultCharacterHeight">
+            <summary>
+            Intrinsic body height of this character in cm
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.Team">
+            <summary>
+            Target team for taking damage from other
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.AttackTargetTeam">
+            <summary>
+            Target team for dealing damage to other
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.IgnoreDamageType">
+            <summary>
+            Do not take damage in these types
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.Bouncy">
+            <summary>
+            How bouncy is this character appears to be (150 by default)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.AngeliA#ICarrier#AllowBeingCarry">
+            <summary>
+            True if this character can be carry by other ICarrier
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.AngeliA#IDamageReceiver#IsInvincible">
+            <summary>
+            True if the character is currently invencible from taking damage
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.AngeliA#IDamageReceiver#TakeDamageFromLevel">
+            <summary>
+            True if the character take damage from level blocks
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.AngeliA#IWithCharacterMovement#CurrentMovement">
+            <inheritdoc cref="F:AngeliA.Character.Movement"/>
+        </member>
+        <member name="P:AngeliA.Character.AngeliA#IWithCharacterAttackness#CurrentAttackness">
+            <inheritdoc cref="F:AngeliA.Character.Attackness"/>
+        </member>
+        <member name="P:AngeliA.Character.AngeliA#IWithCharacterHealth#CurrentHealth">
+            <inheritdoc cref="F:AngeliA.Character.Health"/>
+        </member>
+        <member name="P:AngeliA.Character.AngeliA#IWithCharacterBuff#CurrentBuff">
+            <inheritdoc cref="F:AngeliA.Character.Buff"/>
+        </member>
+        <member name="P:AngeliA.Character.AngeliA#IWithCharacterRenderer#CurrentRenderer">
+            <inheritdoc cref="F:AngeliA.Character.Rendering"/>
+        </member>
+        <member name="P:AngeliA.Character.HelmetInteractable">
+            <summary>
+            True if this character can equip helmet from equipment items (not effect cloths)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.BodySuitInteractable">
+            <summary>
+            True if this character can equip body armor from equipment items (not effect cloths)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.GlovesInteractable">
+            <summary>
+            True if this character can equip gloves from equipment items (not effect cloths)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.ShoesInteractable">
+            <summary>
+            True if this character can equip shoes from equipment items (not effect cloths)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.JewelryInteractable">
+            <summary>
+            True if this character can equip jewelry from equipment items
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.HandToolInteractable">
+            <summary>
+            True if this character can equip handtool from equipment items
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.CharacterState">
+            <summary>
+            Current general game state of this character
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.AnimationType">
+            <summary>
+            Current animation type of this character is showing
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.SleepStartFrame">
+            <summary>
+            Frame when character start to sleep
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.PassOutFrame">
+            <summary>
+            Frame when character passout
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.LastRequireBounceFrame">
+            <summary>
+            Frame when character last start to bounce
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.DespawnAfterPassoutDelay">
+            <summary>
+            How many frames does this character despawn after passout. Set to -1 if they don't despawn
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.InventoryID">
+            <summary>
+            Unique ID of this character from inventory system
+            </summary>
+        </member>
+        <member name="P:AngeliA.Character.RenderingCellIndex">
+            <summary>
+            First rendering cell's index for current frame
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.FullSleepDuration">
+            <summary>
+            How long does it takes to get into full sleep
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.TeleportDuration">
+            <summary>
+            How long does it takes to complete teleport
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.Movement">
+            <summary>
+            Instance of the current functioning movement behaviour
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.Attackness">
+            <summary>
+            Instance of the current functioning attackness behaviour
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.Health">
+            <summary>
+            Instance of the current functioning health behaviour
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.Rendering">
+            <summary>
+            Instance of the current functioning rendering behaviour
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.MovementOverride">
+            <summary>
+            Instance of the movement behaviour override from outside
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.AttacknessOverride">
+            <summary>
+            Instance of the attackness behaviour override from outside
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.HealthOverride">
+            <summary>
+            Instance of the health behaviour override from outside
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.RendererOverride">
+            <summary>
+            Instance of the rendering behaviour override from outside
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.NativeMovement">
+            <summary>
+            Instance of the movement behaviour from the character themselfs
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.NativeAttackness">
+            <summary>
+            Instance of the attackness behaviour from the character themselfs
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.NativeHealth">
+            <summary>
+            Instance of the health behaviour from the character themselfs
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.NativeRenderer">
+            <summary>
+            Instance of the rendering behaviour from the character themselfs
+            </summary>
+        </member>
+        <member name="F:AngeliA.Character.Buff">
+            <summary>
+            Instance of the buff behaviour
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.SetCharacterState(AngeliA.CharacterState)">
+            <summary>
+            Set character's general game state, ignore when state already is the current one
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.GetCurrentPoseAnimationType">
+            <summary>
+            Calculate which type of animation should this character shows
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.OnCharacterRendered">
+            <summary>
+            This function is called after character is rendered
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.EnterTeleportState(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Make character apears to be teleported. This will not actually teleport the character.
+            </summary>
+            <param name="front">True if teleport to front layer</param>
+            <param name="portal">True if teleport by a portal</param>
+            <param name="lastHalfOnly">True if only shows the last half part of the teleport</param>
+        </member>
+        <member name="M:AngeliA.Character.LockAnimationType(AngeliA.CharacterAnimationType,System.Int32)">
+            <summary>
+            Force character to show the given type of animation for specified frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.GetBonusFromFullSleep">
+            <summary>
+            Give the character all bonus from full sleep
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.OnDamaged(AngeliA.Damage)">
+            <summary>
+            This function is called when character take damage
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.Bounce">
+            <summary>
+            Make the character bounce
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.CancelBounce">
+            <summary>
+            Stop the character from bouncing
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.EquipmentAvailable(AngeliA.EquipmentType)">
+            <summary>
+            True if given type of equipment is available for this character
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.TryRepairAllEquipments(System.Boolean)">
+            <summary>
+            Repair equipments once for this character
+            </summary>
+            <param name="requireMultiple">Set to true to repair all equipments for once</param>
+        </member>
+        <member name="M:AngeliA.Character.CreateNativeMovement">
+            <summary>
+            Create new instance for character's intrinsic movement behaviour
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.CreateNativeAttackness">
+            <summary>
+            Create new instance for character's intrinsic attackness behaviour
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.CreateNativeHealth">
+            <summary>
+            Create new instance for character's intrinsic health behaviour
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.CreateNativeRenderer">
+            <summary>
+            Create new instance for character's intrinsic rendering behaviour
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.OverrideMovement(AngeliA.CharacterMovement,System.Int32)">
+            <summary>
+            Override the movement behaviour for specified frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.OverrideAttackness(AngeliA.CharacterAttackness,System.Int32)">
+            <summary>
+            Override the attackness behaviour for specified frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.OverrideHealth(AngeliA.CharacterHealth,System.Int32)">
+            <summary>
+            Override the health behaviour for specified frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.OverrideRenderer(AngeliA.CharacterRenderer,System.Int32)">
+            <summary>
+            Override the rendering behaviour for specified frames
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.IsAttackAllowedByMovement">
+            <summary>
+            True if character can perform attack under current movement
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.IsAttackAllowedByEquipment">
+            <summary>
+            True if character can perform attack unfer current equipment set
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.IgnoreDamageFromLevel(System.Int32)">
+            <summary>
+            Make character not taking damage from level blocks for specified frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.GetDisplayName">
+            <summary>
+            Get character's display name from language system
+            </summary>
+        </member>
+        <member name="M:AngeliA.Character.GetDescription">
+            <summary>
+            Get character's description from language system
+            </summary>
+        </member>
         <member name="T:AngeliA.Cloth">
             <summary>
             Cloth for pose style character (not for equipment items). Get instance with Cloth.TryGetCloth(id, out var result)
@@ -4029,6 +4648,731 @@
         <member name="P:AngeliA.Cloth.SheetIndex">
             <summary>
             Which artwork sheet does this cloth get it's artwork from
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cloth.DrawCloth(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Draw cloth for the given character
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cloth.DrawClothGizmos(AngeliA.IRect,AngeliA.Color32,System.Int32)">
+            <summary>
+            Draw cloth as gizmos
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="tint">Color tint</param>
+            <param name="z">Z value for sort rendering cell</param>
+        </member>
+        <member name="M:AngeliA.Cloth.FillFromSheet(System.String)">
+            <summary>
+            Load sprite data from Renderer.CurrentSheet
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cloth.HasCloth(System.Int32)">
+            <summary>
+            Does cloth with given id exists in the pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cloth.TryGetCloth(System.Int32,AngeliA.Cloth@)">
+            <summary>
+            Get cloth instance from pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cloth.GetDefaultClothID(System.Int32,AngeliA.ClothType)">
+            <summary>
+            Get ID of given character's default cloth. Return 0 if not found
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cloth.ForAllCloth">
+            <summary>
+            Iterate through all cloth instance in pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cloth.AttachClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Attach the given artwork sprite as a general cloth to given bodypart. Cloth will use it's own size no matter how big the bodypart is.
+            </summary>
+            <param name="bodyPart">Target bodypart</param>
+            <param name="sprite">Artwork sprite</param>
+            <param name="locationX">Position X in bodypart's local space</param>
+            <param name="locationY">Position Y in bodypart's local space</param>
+            <param name="localZ">Local Z value the sort rendering cells</param>
+            <param name="widthAmount">Horizontal size scaling (0 means 0%, 1000 means 100%)</param>
+            <param name="heightAmount">Vertical size scaling (0 means 0%, 1000 means 100%)</param>
+            <param name="localRotation">Rotation of the cloth in bodypart's local space</param>
+            <param name="shiftPixelX">Position offset X</param>
+            <param name="shiftPixelY">Position offset Y</param>
+            <param name="defaultHideLimb">True if it requires the bodypart to be hiden. Artwork sprite's tag will override this value.</param>
+            <returns>Rendering cells which holds the cloth rendering data</returns>
+        </member>
+        <member name="M:AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite)">
+            <inheritdoc cref="M:AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,AngeliA.Color32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,AngeliA.Color32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Cloth.CoverClothOn(AngeliA.BodyPart,AngeliA.AngeSprite,System.Int32,AngeliA.Color32,System.Boolean)">
+            <summary>
+            Cover the given artwork sprite as a general cloth to given bodypart. Size of the sprite will change based on how big the bodypart is.
+            </summary>
+            <param name="bodyPart">Target bodypart</param>
+            <param name="sprite">Artwork sprite</param>
+            <param name="localZ">Local Z value the sort rendering cells</param>
+            <param name="tint">Color tint</param>
+            <param name="defaultHideLimb">True if it requires the bodypart to be hiden. Artwork sprite's tag will override this value.</param>
+            <returns>Rendering cells which holds the cloth rendering data</returns>
+        </member>
+        <member name="M:AngeliA.Cloth.GetDisplayName(System.Int32@)">
+            <summary>
+            Get display name for this cloth from language system.
+            </summary>
+        </member>
+        <member name="T:AngeliA.BodyCloth">
+            <summary>
+            Body cloth of a pose style character. Include body, shoulder and arms
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyCloth.TwistShiftTopAmount">
+            <summary>
+            How much does it shift left and right with character's body movement (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyCloth.LocalZ">
+            <summary>
+            Z value for sorting rendering cells
+            </summary>
+        </member>
+        <member name="M:AngeliA.BodyCloth.DrawClothFromPool(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Draw all body cloths for given character from system pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.BodyCloth.DrawClothForBody(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,System.Int32,System.Int32)">
+            <summary>
+            Draw artwork sprite as cloth for only "Body" of the given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="clothSprite">Artwork sprite</param>
+            <param name="localZ">Z value for sorting rendering cells</param>
+            <param name="twistShiftTopAmount">How much does it shift left and right with character's body movement</param>
+        </member>
+        <member name="M:AngeliA.BodyCloth.DrawClothForShoulder(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32)">
+            <summary>
+            Draw artwork sprite as cloth for shoulders of the given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="spriteLeft">Artwork sprite for left shoulder</param>
+            <param name="spriteRight">Artwork sprite for right shoulder</param>
+            <param name="localZ">Z value for sorting rendering cells</param>
+        </member>
+        <member name="M:AngeliA.BodyCloth.DrawClothForUpperArm(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32)">
+            <summary>
+            Draw artwork sprite as cloth for upper-arms of the given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="spriteLeft">Artwork sprite for left upper-arm</param>
+            <param name="spriteRight">Artwork sprite for right upper-arm</param>
+            <param name="localZ">Z value for sorting rendering cells</param>
+        </member>
+        <member name="M:AngeliA.BodyCloth.DrawClothForLowerArm(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32)">
+            <summary>
+            Draw artwork sprite as cloth for lower-arms of the given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="spriteLeft">Artwork sprite for left lower-arm</param>
+            <param name="spriteRight">Artwork sprite for right lower-arm</param>
+            <param name="localZ">Z value for sorting rendering cells</param>
+        </member>
+        <member name="M:AngeliA.BodyCloth.DrawCape(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,System.Int32)">
+            <summary>
+            Draw artwork sprite as cape for given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="clothSprite">Artwork sprite</param>
+            <param name="motionAmount">How much does the cape flow with character's movement (0 means 0%, 1000 means 100%)</param>
+        </member>
+        <member name="T:AngeliA.FootCloth">
+            <summary>
+            Shoes of a pose style character
+            </summary>
+        </member>
+        <member name="M:AngeliA.FootCloth.DrawClothFromPool(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Draw shoes for given character from system pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.FootCloth.DrawClothForFoot(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32)">
+            <summary>
+            Draw given artwork sprite as shoes for given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="spriteLeft">Artwork sprite for left shoe</param>
+            <param name="spriteRight">Artwork sprite for right shoe</param>
+            <param name="localZ">Z value for sorting rendering cells</param>
+        </member>
+        <member name="T:AngeliA.HandCloth">
+            <summary>
+            Gloves for a pose style character
+            </summary>
+        </member>
+        <member name="M:AngeliA.HandCloth.DrawClothFromPool(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Draw gloves for given character from system pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.HandCloth.DrawClothForHand(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32)">
+            <summary>
+            Draw artwork sprite as gloves for given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="spriteLeft">Artwork for left glove</param>
+            <param name="spriteRight">Artwork for right glove</param>
+            <param name="localZ">Z value for sort rendering cells</param>
+        </member>
+        <member name="T:AngeliA.HeadCloth">
+            <summary>
+            Hat for a pose style character
+            </summary>
+        </member>
+        <member name="M:AngeliA.HeadCloth.DrawClothFromPool(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Draw hat for given character from system pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.HeadCloth.DrawClothForHead(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite)">
+            <summary>
+            Draw artwork sprite as hat for given character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="clothSprite">Artwork sprite</param>
+        </member>
+        <member name="T:AngeliA.HipCloth">
+            <summary>
+            Pants or skirt for a pose style character. Include hip and legs (no foot)
+            </summary>
+        </member>
+        <member name="P:AngeliA.HipCloth.CoverLegs">
+            <summary>
+            True if the pants renders on front of lengs
+            </summary>
+        </member>
+        <member name="M:AngeliA.HipCloth.DrawClothFromPool(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Draw pants/skirt for given character from system pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.HipCloth.DrawClothAsPants(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,System.Int32)">
+            <summary>
+            Draw artwork sprite as pants for given character
+            </summary>
+            <param name="rendering">Target character</param>
+            <param name="clothSprite">Artwork sprite</param>
+            <param name="localZ">Z value for sort rendering cells</param>
+        </member>
+        <member name="M:AngeliA.HipCloth.DrawClothAsSkirt(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,System.Int32,System.Int32)">
+            <summary>
+            Draw artwork sprite as skirt for given character
+            </summary>
+            <param name="rendering">Target character</param>
+            <param name="clothSprite">Artwork sprite (should be a sprite group)</param>
+            <param name="localZ">Z value for sort rendering cells</param>
+            <param name="motionAmount">How much does the skirt flow with character movement (0 means 0%, 1000 means 100%)</param>
+        </member>
+        <member name="M:AngeliA.HipCloth.DrawClothForUpperLeg(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32)">
+            <summary>
+            Draw artwork sprite as cloth only for upper-leg
+            </summary>
+            <param name="rendering">Target character</param>
+            <param name="spriteLeft">Artwork sprite for left leg</param>
+            <param name="spriteRight">Artwork sprite for right leg</param>
+            <param name="localZ">Z value for sort rendering cells</param>
+        </member>
+        <member name="M:AngeliA.HipCloth.DrawClothForLowerLeg(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,AngeliA.OrientedSprite,System.Int32)">
+            <summary>
+            Draw artwork sprite as cloth only for lower-leg
+            </summary>
+            <param name="rendering">Target character</param>
+            <param name="spriteLeft">Artwork sprite for left leg</param>
+            <param name="spriteRight">Artwork sprite for right leg</param>
+            <param name="localZ">Z value for sort rendering cells</param>
+        </member>
+        <member name="M:AngeliA.HipCloth.DrawDoubleClothTailsOnHip(AngeliA.PoseCharacterRenderer,AngeliA.OrientedSprite,System.Boolean)">
+            <summary>
+            Draw two tails as cloth decoration (like Suisei's standard suit from Hololive)
+            </summary>
+            <param name="rendering">Target character</param>
+            <param name="clothSprite">Artwork sprite</param>
+            <param name="drawOnAllPose">Draw this tail even when character is Rolling, Sleeping, Passout and Flying</param>
+        </member>
+        <member name="M:AngeliA.HipCloth.DrawSingleClothTail(AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw a single tail as cloth decoration (like Suisei's standard suit from Hololive)
+            </summary>
+            <param name="sprite">Artwork sprite</param>
+            <param name="globalX">Pivot position X of the tail in global space</param>
+            <param name="globalY">Pivot position Y of the tail in global space</param>
+            <param name="z">Z value for sorting rendering cells</param>
+            <param name="rotation">Rotation of this tail</param>
+            <param name="deltaY">Character's current movement speed Y</param>
+            <param name="scaleX">Horizontal size scale (0 means 0%, 1000 means 100%)</param>
+            <param name="scaleY">Vertical size scale (0 means 0%, 1000 means 100%)</param>
+            <param name="motionAmount">How much flow motion should apply from characters movement (0 means 0%, 1000 means 100%)</param>
+        </member>
+        <member name="T:AngeliA.ModularBodySuit">
+            <summary>
+            Body cloth that auto generate from artwork sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.ModularFootSuit">
+            <summary>
+            Shoes that auto generate from artwork sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.ModularHandSuit">
+            <summary>
+            Gloves that auto generate from artwork sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.ModularHeadSuit">
+            <summary>
+            Hat that auto generate from artwork sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.ModularHipSuit">
+            <summary>
+            Pants or skirt that auto generate from artwork sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.IActionTarget">
+            <summary>
+            Interface that makes the entity react with player action. When player goes nearby, they can press action button to invoke the logic from this entity
+            </summary>
+        </member>
+        <member name="P:AngeliA.IActionTarget.LockInput">
+            <summary>
+            True if this entity lock player's input when highlighting
+            </summary>
+        </member>
+        <member name="P:AngeliA.IActionTarget.IsHighlighted">
+            <summary>
+            True if this entity is currently highlighting
+            </summary>
+        </member>
+        <member name="P:AngeliA.IActionTarget.AllowInvokeOnStand">
+            <summary>
+            True if this entity can be highlight when player is standing
+            </summary>
+        </member>
+        <member name="P:AngeliA.IActionTarget.AllowInvokeOnSquat">
+            <summary>
+            True if this entity can be highlight when player is squatting
+            </summary>
+        </member>
+        <member name="P:AngeliA.IActionTarget.InvokeOnTouch">
+            <summary>
+            True if this entity will be invoke when player comes nearby without pressing the action button
+            </summary>
+        </member>
+        <member name="M:AngeliA.IActionTarget.Invoke">
+            <summary>
+            Invoke the logic provided by this entity.
+            </summary>
+            <returns>True if the logic performs successfuly</returns>
+        </member>
+        <member name="M:AngeliA.IActionTarget.AllowInvoke">
+            <summary>
+            True if the entity can be invoke at current frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.IActionTarget.DrawActionTarget(AngeliA.IActionTarget,AngeliA.AngeSprite,AngeliA.IRect,System.Single,System.Single,System.Boolean,System.Boolean)">
+            <summary>
+            Draw the artwork sprite for given action target entity
+            </summary>
+            <param name="target">The action target entity</param>
+            <param name="sprite"></param>
+            <param name="rect">Rect position in global space</param>
+            <param name="pivotX">Pivot X for the artwork sprite</param>
+            <param name="pivotY">Pivot Y for the artwork sprite</param>
+            <param name="blinkHorizontal">True if the entity blink with nearby entities together horizontaly</param>
+            <param name="blinkVertical">True if the entity blink with nearby entities together Verticaly</param>
+        </member>
+        <member name="M:AngeliA.IActionTarget.MakeCellAsActionTarget(AngeliA.IActionTarget,AngeliA.Cell,System.Single,System.Single,System.Boolean,System.Boolean)">
+            <summary>
+            Make the rendering cell blink like an action target entity
+            </summary>
+            <param name="target">The entity</param>
+            <param name="cell">The rendering cell</param>
+            <param name="pivotX">Pivot X for the artwork sprite</param>
+            <param name="pivotY">Pivot Y for the artwork sprite</param>
+            <param name="blinkHorizontal">True if the entity blink with nearby entities together horizontaly</param>
+            <param name="blinkVertical">True if the entity blink with nearby entities together Verticaly</param>
+        </member>
+        <member name="T:AngeliA.IBlockEntity">
+            <summary>
+            Interface that makes the entity behave like a block from map. This will make the entity become a block item for ItemSystem.
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBlockEntity.MaxStackCount">
+            <summary>
+            Max item stack count as a block item.
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBlockEntity.EmbedEntityAsElement">
+            <summary>
+            True if this entity can embed other entity as a element in map (like putting a coin into a launcher in SMM2 and this entity would be the launcher)
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBlockEntity.AllowBeingEmbedAsElement">
+            <summary>
+            True if this entity can be embed as a element in map (like putting a coin into a launcher in SMM2 and this entity would be the coin)
+            </summary>
+        </member>
+        <member name="M:AngeliA.IBlockEntity.OnEntityPicked">
+            <summary>
+            This function is called when this entity being picked as a block by a pick-tool
+            </summary>
+        </member>
+        <member name="M:AngeliA.IBlockEntity.OnEntityPut">
+            <summary>
+            This function is called when this entity being put into the map as a block
+            </summary>
+        </member>
+        <member name="M:AngeliA.IBlockEntity.OnEntityRefresh">
+            <summary>
+            This function is called when there are map changes happens nearby and the entity needs to refresh itself
+            </summary>
+        </member>
+        <member name="M:AngeliA.IBlockEntity.RefreshBlockEntitiesNearby(AngeliA.Int2,AngeliA.Entity)">
+            <summary>
+            Refresh all block entity instances near the given position.
+            </summary>
+            <param name="centerUnitPos">This position is in unit space</param>
+            <param name="ignore">Do not refresh this entity</param>
+        </member>
+        <member name="M:AngeliA.IBlockEntity.IsIgnoreEmbedAsElement(System.Int32)">
+            <summary>
+            True if the given type of entity do not take other entity as embed element
+            </summary>
+        </member>
+        <member name="T:AngeliA.IBumpable">
+            <summary>
+            Interface that makes the entity can be bump by other (like question mark block in Mario)
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBumpable.FromBelow">
+            <summary>
+            True if the entity can be bump from below
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBumpable.FromAbove">
+            <summary>
+            True if the entity can be bump from above
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBumpable.FromLeft">
+            <summary>
+            True if the entity can be bump from left
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBumpable.FromRight">
+            <summary>
+            True if the entity can be bump from right
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBumpable.TransferBumpToOther">
+            <summary>
+            True if the entity bump other entities when being bumped
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBumpable.TransferBumpFromOther">
+            <summary>
+            True if the entity take transfered bumps from other
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBumpable.TransferWithAttack">
+            <summary>
+            True if the entity perform attack to the entity when transfer bumps (like in Mario bump on question block can kill the goombas on top)
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBumpable.BumpTransferPower">
+            <summary>
+            Extra speed that gives to the rigidbody when they got transfered bump from this entity
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBumpable.BumpCooldown">
+            <summary>
+            How many frames does it have to wait to be bump again
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBumpable.LastBumpedFrame">
+            <summary>
+            Frame when the entity get it's last bump
+            </summary>
+        </member>
+        <member name="P:AngeliA.IBumpable.LastBumpFrom">
+            <summary>
+            Direction for the last bump of this entity
+            </summary>
+        </member>
+        <member name="M:AngeliA.IBumpable.OnBumped(AngeliA.Entity,AngeliA.Damage)">
+            <summary>
+            This function is called when this entity is bumped
+            </summary>
+            <param name="rig">Rigidbody that bumps this entity</param>
+            <param name="damage">The damage this entity got from this bump</param>
+        </member>
+        <member name="M:AngeliA.IBumpable.AllowBump(AngeliA.Entity,AngeliA.Direction4)">
+            <summary>
+            True if the entity can be bump by the given target and direction currently
+            </summary>
+        </member>
+        <member name="M:AngeliA.IBumpable.GetBumpTransferDamage">
+            <summary>
+            Get the instance of the damage that this entity deal to other when it transfer bump
+            </summary>
+        </member>
+        <member name="M:AngeliA.IBumpable.AnimateForBump(AngeliA.IBumpable,AngeliA.Cell,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Update the animation for bump, call this function every frame
+            </summary>
+            <param name="bumpable">Target entity</param>
+            <param name="cell">Rendering cell</param>
+            <param name="duration">How length does the animation takes when it get bump</param>
+            <param name="distance">How far does it move when it get bump</param>
+            <param name="size">How big does it scale when it get bump</param>
+        </member>
+        <member name="M:AngeliA.IBumpable.IsValidBumpDirection(AngeliA.IBumpable,AngeliA.Direction4)">
+            <summary>
+            Trie if the given direction can be bump
+            </summary>
+            <param name="bump">Target entity</param>
+        </member>
+        <member name="M:AngeliA.IBumpable.BumpAllOverlap(AngeliA.Entity,AngeliA.Direction4,System.Boolean,AngeliA.Damage,System.Int32)">
+            <summary>
+            Perform bump for all overlaped IBumpable entities
+            </summary>
+            <param name="sender">Entity that send the bump</param>
+            <param name="directionTo">Bump the IBumpables to this direction</param>
+            <param name="forceBump">True if ignore the AllowBump function check this time</param>
+            <param name="damageToBumpedObject">Damage data that apply to the entities being bump</param>
+            <param name="collisionMask">Which layer does this bump applies</param>
+        </member>
+        <member name="T:AngeliA.ICarrier">
+            <summary>
+            Interface that makes entity carry other entities on top
+            </summary>
+        </member>
+        <member name="P:AngeliA.ICarrier.AllowBeingCarry">
+            <summary>
+            True if this entity can be carry by other carrier
+            </summary>
+        </member>
+        <member name="T:AngeliA.ICircuitOperator">
+            <summary>
+            Interface that makes an entity behave like operator in circuit system
+            </summary>
+        </member>
+        <member name="M:AngeliA.ICircuitOperator.IsOperator(System.Int32)">
+            <summary>
+            True if the given type of entity is a circuit operator
+            </summary>
+        </member>
+        <member name="M:AngeliA.ICircuitOperator.OnTriggeredByCircuit">
+            <summary>
+            This function is called when the operator get triggered by the system
+            </summary>
+        </member>
+        <member name="T:AngeliA.ICombustible">
+            <summary>
+            This interface makes the entity can be set on fire
+            </summary>
+        </member>
+        <member name="P:AngeliA.ICombustible.IsBurning">
+            <summary>
+            True if the entity is having a fire entity on
+            </summary>
+        </member>
+        <member name="P:AngeliA.ICombustible.BurnedDuration">
+            <summary>
+            How many frames does it takes to burn down this entity
+            </summary>
+        </member>
+        <member name="P:AngeliA.ICombustible.BurnStartFrame">
+            <summary>
+            The frame this entity start on fire
+            </summary>
+        </member>
+        <member name="M:AngeliA.ICombustible.OnBurned">
+            <summary>
+            This function is called when the entity is burned down
+            </summary>
+        </member>
+        <member name="T:AngeliA.IDamageReceiver">
+            <summary>
+            Interface that makes entity take damage from other
+            </summary>
+        </member>
+        <member name="P:AngeliA.IDamageReceiver.Team">
+            <summary>
+            Which team does this entity belongs to
+            </summary>
+        </member>
+        <member name="P:AngeliA.IDamageReceiver.IsInvincible">
+            <summary>
+            True if this entity is invincible
+            </summary>
+        </member>
+        <member name="P:AngeliA.IDamageReceiver.TakeDamageFromLevel">
+            <summary>
+            True if this entity take damage when overlap with colliders from PhysicsLayer.Damage
+            </summary>
+        </member>
+        <member name="P:AngeliA.IDamageReceiver.IgnoreDamageType">
+            <summary>
+            This entity do not take damage with this tags
+            </summary>
+        </member>
+        <member name="M:AngeliA.IDamageReceiver.OnDamaged(AngeliA.Damage)">
+            <summary>
+            This function is called when the entity takes a damage
+            </summary>
+        </member>
+        <member name="M:AngeliA.IDamageReceiver.ValidDamage(AngeliA.Damage)">
+            <summary>
+            True if the damage will be take by this entity
+            </summary>
+        </member>
+        <member name="M:AngeliA.IDamageReceiver.TakeDamage(AngeliA.Damage)">
+            <summary>
+            Make this entity take the given damage. This function will call ValidDamage internally
+            </summary>
+            <returns>True if the damage is taken</returns>
+        </member>
+        <member name="M:AngeliA.IDamageReceiver.DamageAllOverlap(AngeliA.IRect,AngeliA.Damage,System.Int32,AngeliA.Entity,AngeliA.OperationMode,System.Boolean)">
+            <summary>
+            Deal damage to all IDamageReceiver overlap by given range
+            </summary>
+            <param name="rect">The range in global space</param>
+            <param name="damage"></param>
+            <param name="physicsMask">Which physics layer is included</param>
+            <param name="host">Sender of this damage</param>
+            <param name="mode">Does this operation include collider or trigger</param>
+            <param name="allowMultipleDamage">True if more than one receiver will take damage</param>
+        </member>
+        <member name="T:AngeliA.IFire">
+            <summary>
+            Interface that makes the entity behave like fire
+            </summary>
+        </member>
+        <member name="M:AngeliA.IFire.Setup(AngeliA.ICombustible)">
+            <summary>
+            Set fire onto a target
+            </summary>
+        </member>
+        <member name="M:AngeliA.IFire.Putout(System.Boolean)">
+            <summary>
+            Putout this fire
+            </summary>
+            <param name="manually">True if the fire got putout by something else</param>
+        </member>
+        <member name="M:AngeliA.IFire.SpreadFire(System.Int32,AngeliA.IRect,AngeliA.Entity)">
+            <summary>
+            Set fire at given range
+            </summary>
+            <param name="fireID">Which type of fire will be spawn</param>
+            <param name="rect">Target range in global space</param>
+            <param name="ignore">Do not set this entity on fire</param>
+        </member>
+        <member name="M:AngeliA.IFire.PutoutFire(AngeliA.IRect)">
+            <summary>
+            Putout fire in given range
+            </summary>
+            <param name="rect">Range in global space</param>
+        </member>
+        <member name="T:AngeliA.IItemTransfer">
+            <summary>
+            Interface that mark the entity as can be transfer item through map
+            </summary>
+        </member>
+        <member name="T:AngeliA.IPlayable">
+            <summary>
+            Interface that mark the character as playable character
+            </summary>
+        </member>
+        <member name="T:AngeliA.IRouteWalker">
+            <summary>
+            Interface that makes an entity walks along a given path
+            </summary>
+        </member>
+        <member name="P:AngeliA.IRouteWalker.CurrentDirection">
+            <summary>
+            Which direction this entity is currently walking
+            </summary>
+        </member>
+        <member name="P:AngeliA.IRouteWalker.TargetPosition">
+            <summary>
+            Where does this entity currently walking 
+            </summary>
+        </member>
+        <member name="M:AngeliA.IRouteWalker.GetNextRoutePosition(AngeliA.IRouteWalker,System.Int32,System.Int32,System.Boolean,AngeliA.BlockType,System.Boolean,System.Collections.Generic.HashSet{System.Int32})">
+            <inheritdoc cref="M:AngeliA.IRouteWalker.GetNextRoutePosition(AngeliA.Entity,AngeliA.Direction8@,AngeliA.Int2@,System.Int32,System.Int32,System.Boolean,AngeliA.BlockType,System.Boolean,System.Collections.Generic.HashSet{System.Int32})"/>
+        </member>
+        <member name="M:AngeliA.IRouteWalker.GetNextRoutePosition(AngeliA.Entity,AngeliA.Direction8@,AngeliA.Int2@,System.Int32,System.Int32,System.Boolean,AngeliA.BlockType,System.Boolean,System.Collections.Generic.HashSet{System.Int32})">
+            <summary>
+            Get the position in global space that the walker entity should go to
+            </summary>
+            /// <param name="walker">Target walker</param>
+            <param name="entity">Target entity that walks</param>
+            <param name="currentDirection">Which direction this entity is currently walking</param>
+            <param name="targetPosition">Where does this entity currently walking</param>
+            <param name="pathID">Which map block should be treat as the path marker</param>
+            <param name="speed">Movement speed in global space</param>
+            <param name="allowTurnBack">True if the walker turn back when reach the edge</param>
+            <param name="pathType">Block type of the path marker</param>
+            <param name="allowTilt">True if the walker can walk diagonally</param>
+            <param name="pathSet">A hash set of path marks, set to null if there's only one mark</param>
+            <returns>The final position in global space</returns>
+        </member>
+        <member name="M:AngeliA.IRouteWalker.TryGetRouteFromMap(System.Int32,System.Int32,System.Int32,AngeliA.Direction8,AngeliA.Direction8@,AngeliA.BlockType,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.IRouteWalker.TryGetRouteFromMap(System.Collections.Generic.HashSet{System.Int32},System.Int32,System.Int32,AngeliA.Direction8,AngeliA.Direction8@,AngeliA.BlockType,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.IRouteWalker.TryGetRouteFromMap(System.Collections.Generic.HashSet{System.Int32},System.Int32,System.Int32,AngeliA.Direction8,AngeliA.Direction8@,AngeliA.BlockType,System.Boolean)">
+            <summary>
+            Get path marker block from map
+            </summary>
+            /// <param name="pathID">ID of the path marker block</param>
+            <param name="pathSet">A hash set of path marks, set to null if there's only one mark</param>
+            <param name="unitX">Position X in unit space</param>
+            <param name="unitY">Position Y in unit space</param>
+            <param name="currentDirection">Which direction this entity is currently walking</param>
+            <param name="result">Direction the walker should go</param>
+            <param name="pathType">Block type of the path marker</param>
+            <param name="allowTilt">True if the walker can walk diagonally</param>
+            <returns>True if the path is successfuly found</returns>
+        </member>
+        <member name="T:AngeliA.IWithCharacterMovement">
+            <summary>
+            Interface that makes the entity contains a instance of character movement behaviour
+            </summary>
+        </member>
+        <member name="T:AngeliA.IWithCharacterAttackness">
+            <summary>
+            Interface that makes the entity contains a instance of character attackness behaviour
+            </summary>
+        </member>
+        <member name="T:AngeliA.IWithCharacterBuff">
+            <summary>
+            Interface that makes the entity contains a instance of character buff behaviour
+            </summary>
+        </member>
+        <member name="T:AngeliA.IWithCharacterHealth">
+            <summary>
+            Interface that makes the entity contains a instance of character health behaviour
+            </summary>
+        </member>
+        <member name="T:AngeliA.IWithCharacterRenderer">
+            <summary>
+            Interface that makes the entity contains a instance of character rendering behaviour
             </summary>
         </member>
         <member name="M:AngeliA.Util.QuickRandom(System.Int32,System.Int32)">

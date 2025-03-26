@@ -6,12 +6,47 @@ using System.Linq;
 namespace AngeliA;
 
 
-public enum CharacterState { GamePlay = 0, Sleep, PassOut, }
+/// <summary>
+/// General game state of a character
+/// </summary>
+public enum CharacterState {
+	/// <summary>
+	/// The character is online
+	/// </summary>
+	GamePlay = 0,
+	/// <summary>
+	/// The character is sleeping
+	/// </summary>
+	Sleep,
+	/// <summary>
+	/// The character is offline
+	/// </summary>
+	PassOut,
+}
 
 
-public enum CharacterInventoryType { None = 0, Unique, Map, }
+/// <summary>
+/// Which type of inventory does this character have
+/// </summary>
+public enum CharacterInventoryType {
+	/// <summary>
+	/// No inventory logic should be perform
+	/// </summary>
+	None = 0,
+	/// <summary>
+	/// All instance of this type of characters share the same inventory data
+	/// </summary>
+	Unique,
+	/// <summary>
+	/// Every instance of this type of characters have it's own inventory data based on where this character spawn from map
+	/// </summary>
+	Map,
+}
 
 
+/// <summary>
+/// Which type of animation does this character shows
+/// </summary>
 public enum CharacterAnimationType {
 	Idle = 0, Walk, Run,
 	JumpUp, JumpDown, SwimIdle, SwimMove,
@@ -21,6 +56,9 @@ public enum CharacterAnimationType {
 }
 
 
+/// <summary>
+/// General representation of characters in AngeliA games
+/// </summary>
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("Character")]
 [EntityAttribute.Layer(EntityLayer.CHARACTER)]
@@ -32,15 +70,26 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	#region --- VAR ---
 
 
-	// Const
-	public const int INVENTORY_COLUMN = 6;
-	public const int INVENTORY_ROW = 3;
-
 	// Api
+	/// <summary>
+	/// True if the character is teleporting
+	/// </summary>
 	public bool Teleporting => Game.GlobalFrame < _TeleportEndFrame.Abs();
+	/// <summary>
+	/// End frame of the end of teleport
+	/// </summary>
 	public int TeleportEndFrame => _TeleportEndFrame.Abs();
+	/// <summary>
+	/// True if the character is teleporting with a portal
+	/// </summary>
 	public bool TeleportingWithPortal => Teleporting && _TeleportDuration < 0;
+	/// <summary>
+	/// True if the character is teleporting to front side layer (closer to camera)
+	/// </summary>
 	public bool TeleportToFrontSide => _TeleportEndFrame > 0;
+	/// <summary>
+	/// How fast should the character attacks (0 means couldn't attack, 1000 means normal speed)
+	/// </summary>
 	public int CurrentAttackSpeedRate => Movement.MovementState switch {
 		CharacterMovementState.Walk => Attackness.WalkingSpeedRateOnAttack,
 		CharacterMovementState.Run => Attackness.RunningSpeedRateOnAttack,
@@ -56,52 +105,181 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	public override bool AllowBeingPush => true;
 	public override bool FacingRight => Movement.FacingRight;
 	public override bool EjectWhenInsideGround => false;
+	/// <summary>
+	/// Which type of inventory does this character have
+	/// </summary>
 	public virtual CharacterInventoryType InventoryType => CharacterInventoryType.None;
+	/// <summary>
+	/// Column count for this character's inventory
+	/// </summary>
+	public virtual int InventoryColumn => 6;
+	/// <summary>
+	/// Row count for this character's inventory
+	/// </summary>
+	public virtual int InventoryRow => 3;
+	/// <summary>
+	/// Get the height of this character in global space
+	/// </summary>
 	public virtual int FinalCharacterHeight => Movement.MovementHeight;
+	/// <summary>
+	/// Intrinsic body height of this character in cm
+	/// </summary>
 	public virtual int DefaultCharacterHeight => 160;
+	/// <summary>
+	/// Target team for taking damage from other
+	/// </summary>
 	public virtual int Team => Const.TEAM_NEUTRAL;
+	/// <summary>
+	/// Target team for dealing damage to other
+	/// </summary>
 	public virtual int AttackTargetTeam => Const.TEAM_ALL;
+	/// <summary>
+	/// Do not take damage in these types
+	/// </summary>
 	public virtual Tag IgnoreDamageType => Tag.None;
+	/// <summary>
+	/// How bouncy is this character appears to be (150 by default)
+	/// </summary>
+	public virtual int Bouncy => 150;
+	/// <summary>
+	/// True if this character can be carry by other ICarrier
+	/// </summary>
 	bool ICarrier.AllowBeingCarry => true;
+	/// <summary>
+	/// True if the character is currently invencible from taking damage
+	/// </summary>
 	bool IDamageReceiver.IsInvincible => Health.IsInvincible;
+	/// <summary>
+	/// True if the character take damage from level blocks
+	/// </summary>
 	bool IDamageReceiver.TakeDamageFromLevel => Game.GlobalFrame > IgnoreDamageFromLevelFrame;
+	/// <inheritdoc cref="Movement"/>
 	CharacterMovement IWithCharacterMovement.CurrentMovement => Movement;
+	/// <inheritdoc cref="Attackness"/>
 	CharacterAttackness IWithCharacterAttackness.CurrentAttackness => Attackness;
+	/// <inheritdoc cref="Health"/>
 	CharacterHealth IWithCharacterHealth.CurrentHealth => Health;
+	/// <inheritdoc cref="Buff"/>
 	CharacterBuff IWithCharacterBuff.CurrentBuff => Buff;
+	/// <inheritdoc cref="Rendering"/>
 	CharacterRenderer IWithCharacterRenderer.CurrentRenderer => Rendering;
-	public int Bouncy { get; set; } = 150;
+	/// <summary>
+	/// True if this character can equip helmet from equipment items (not effect cloths)
+	/// </summary>
 	public bool HelmetInteractable { get; set; } = true;
+	/// <summary>
+	/// True if this character can equip body armor from equipment items (not effect cloths)
+	/// </summary>
 	public bool BodySuitInteractable { get; set; } = true;
+	/// <summary>
+	/// True if this character can equip gloves from equipment items (not effect cloths)
+	/// </summary>
 	public bool GlovesInteractable { get; set; } = true;
+	/// <summary>
+	/// True if this character can equip shoes from equipment items (not effect cloths)
+	/// </summary>
 	public bool ShoesInteractable { get; set; } = true;
+	/// <summary>
+	/// True if this character can equip jewelry from equipment items
+	/// </summary>
 	public bool JewelryInteractable { get; set; } = true;
+	/// <summary>
+	/// True if this character can equip handtool from equipment items
+	/// </summary>
 	public bool HandToolInteractable { get; set; } = true;
+	/// <summary>
+	/// Current general game state of this character
+	/// </summary>
 	public CharacterState CharacterState { get; private set; } = CharacterState.GamePlay;
+	/// <summary>
+	/// Current animation type of this character is showing
+	/// </summary>
 	public CharacterAnimationType AnimationType { get; set; } = CharacterAnimationType.Idle;
+	/// <summary>
+	/// Frame when character start to sleep
+	/// </summary>
 	public int SleepStartFrame { get; set; } = int.MinValue;
+	/// <summary>
+	/// Frame when character passout
+	/// </summary>
 	public int PassOutFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Frame when character last start to bounce
+	/// </summary>
 	public int LastRequireBounceFrame { get; set; } = int.MinValue;
+	/// <summary>
+	/// How many frames does this character despawn after passout. Set to -1 if they don't despawn
+	/// </summary>
 	public int DespawnAfterPassoutDelay { get; set; } = 60;
+	/// <summary>
+	/// Unique ID of this character from inventory system
+	/// </summary>
 	public int InventoryID { get; private set; }
+	/// <summary>
+	/// First rendering cell's index for current frame
+	/// </summary>
 	public int RenderingCellIndex { get; private set; }
-
+	/// <summary>
+	/// How long does it takes to get into full sleep
+	/// </summary>
 	public readonly FrameBasedInt FullSleepDuration = new(90);
+	/// <summary>
+	/// How long does it takes to complete teleport
+	/// </summary>
 	public readonly FrameBasedInt TeleportDuration = new(30);
 
 	// Behaviour
+	/// <summary>
+	/// Instance of the current functioning movement behaviour
+	/// </summary>
 	public CharacterMovement Movement;
+	/// <summary>
+	/// Instance of the current functioning attackness behaviour
+	/// </summary>
 	public CharacterAttackness Attackness;
+	/// <summary>
+	/// Instance of the current functioning health behaviour
+	/// </summary>
 	public CharacterHealth Health;
+	/// <summary>
+	/// Instance of the current functioning rendering behaviour
+	/// </summary>
 	public CharacterRenderer Rendering;
+	/// <summary>
+	/// Instance of the movement behaviour override from outside
+	/// </summary>
 	private CharacterMovement MovementOverride;
+	/// <summary>
+	/// Instance of the attackness behaviour override from outside
+	/// </summary>
 	private CharacterAttackness AttacknessOverride;
+	/// <summary>
+	/// Instance of the health behaviour override from outside
+	/// </summary>
 	private CharacterHealth HealthOverride;
+	/// <summary>
+	/// Instance of the rendering behaviour override from outside
+	/// </summary>
 	private CharacterRenderer RendererOverride;
+	/// <summary>
+	/// Instance of the movement behaviour from the character themselfs
+	/// </summary>
 	public readonly CharacterMovement NativeMovement;
+	/// <summary>
+	/// Instance of the attackness behaviour from the character themselfs
+	/// </summary>
 	public readonly CharacterAttackness NativeAttackness;
+	/// <summary>
+	/// Instance of the health behaviour from the character themselfs
+	/// </summary>
 	public readonly CharacterHealth NativeHealth;
+	/// <summary>
+	/// Instance of the rendering behaviour from the character themselfs
+	/// </summary>
 	public readonly CharacterRenderer NativeRenderer;
+	/// <summary>
+	/// Instance of the buff behaviour
+	/// </summary>
 	public readonly CharacterBuff Buff;
 	private int OverridingMovementFrame = int.MinValue;
 	private int OverridingAttacknessFrame = int.MinValue;
@@ -116,7 +294,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	private int _TeleportDuration = 0;
 	private CharacterAnimationType LockedAnimationType = CharacterAnimationType.Idle;
 	private int LockedAnimationTypeFrame = int.MinValue;
-	private int ForceTriggerFrame = -1;
 	private int IgnoreDamageFromLevelFrame = -1;
 
 
@@ -144,7 +321,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		// Init Inventory
 		if (InventoryType == CharacterInventoryType.Unique) {
 			InventoryID = Inventory.InitializeInventoryData(
-				TypeName, INVENTORY_COLUMN * INVENTORY_ROW, hasEquipment: true
+				TypeName, InventoryColumn * InventoryRow, hasEquipment: true
 			);
 		}
 
@@ -162,7 +339,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		if (InventoryType == CharacterInventoryType.Map) {
 			if (MapUnitPos.HasValue) {
 				InventoryID = Inventory.InitializeInventoryData(
-					TypeID, TypeName, INVENTORY_COLUMN * INVENTORY_ROW, MapUnitPos.Value, hasEquipment: true
+					TypeID, TypeName, InventoryColumn * InventoryRow, MapUnitPos.Value, hasEquipment: true
 				);
 			} else {
 				InventoryID = TypeID;
@@ -180,7 +357,7 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		NativeRenderer.OnActivated();
 
 		// Load Buff from Map
-		IWithCharacterBuff.GiveBuffFromMap(this);
+		FrameworkUtil.GiveBuffFromMap(this);
 
 		// Misc
 		CharacterState = CharacterState.GamePlay;
@@ -196,7 +373,6 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		OverridingHealthFrame = int.MinValue;
 		OverridingRendererFrame = int.MinValue;
 		DespawnAfterPassoutDelay = 60;
-		Bouncy = 150;
 		bool allowInv = InventoryType != CharacterInventoryType.None;
 		HelmetInteractable = allowInv;
 		BodySuitInteractable = allowInv;
@@ -234,12 +410,8 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		Rendering = Game.GlobalFrame <= OverridingRendererFrame && RendererOverride != null ? RendererOverride : NativeRenderer;
 
 		// Fill Physics
-		bool trigger = Game.GlobalFrame <= ForceTriggerFrame;
 		if (CharacterState == CharacterState.GamePlay && !IgnorePhysics) {
-			Physics.FillEntity(PhysicalLayer, this, trigger);
-		}
-		if (trigger) {
-			Movement.PushAvailable.Override(false, priority: 4096);
+			Physics.FillEntity(PhysicalLayer, this);
 		}
 
 		RefreshPrevPosition();
@@ -589,6 +761,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	#region --- API ---
 
 
+	/// <summary>
+	/// Set character's general game state, ignore when state already is the current one
+	/// </summary>
 	public virtual void SetCharacterState (CharacterState state) {
 
 		if (CharacterState == state) return;
@@ -622,6 +797,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	}
 
 
+	/// <summary>
+	/// Calculate which type of animation should this character shows
+	/// </summary>
 	public virtual CharacterAnimationType GetCurrentPoseAnimationType () {
 		if (Game.GlobalFrame <= LockedAnimationTypeFrame) return LockedAnimationType;
 		if (Teleporting) return _TeleportDuration < 0 ? CharacterAnimationType.Rolling : CharacterAnimationType.Idle;
@@ -655,9 +833,18 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	}
 
 
+	/// <summary>
+	/// This function is called after character is rendered
+	/// </summary>
 	public virtual void OnCharacterRendered () => Buff.ApplyOnCharacterRenderered();
 
 
+	/// <summary>
+	/// Make character apears to be teleported. This will not actually teleport the character.
+	/// </summary>
+	/// <param name="front">True if teleport to front layer</param>
+	/// <param name="portal">True if teleport by a portal</param>
+	/// <param name="lastHalfOnly">True if only shows the last half part of the teleport</param>
 	public void EnterTeleportState (bool front, bool portal, bool lastHalfOnly = false) {
 		int duration = portal ? -TeleportDuration : TeleportDuration;
 		if (portal) {
@@ -671,12 +858,18 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	}
 
 
+	/// <summary>
+	/// Force character to show the given type of animation for specified frames long
+	/// </summary>
 	public void LockAnimationType (CharacterAnimationType type, int duration = 1) {
 		LockedAnimationType = type;
 		LockedAnimationTypeFrame = Game.GlobalFrame + duration;
 	}
 
 
+	/// <summary>
+	/// Give the character all bonus from full sleep
+	/// </summary>
 	public void GetBonusFromFullSleep () {
 		Health.Heal(Health.MaxHP);
 		Buff.ClearAllBuffs();
@@ -699,6 +892,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 
 	// Damage
+	/// <summary>
+	/// This function is called when character take damage
+	/// </summary>
 	public virtual void OnDamaged (Damage damage) {
 
 		if (!Active || damage.Amount <= 0 || Health.HP <= 0) return;
@@ -743,12 +939,20 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 
 	// Bounce
+	/// <summary>
+	/// Make the character bounce
+	/// </summary>
 	public void Bounce () => LastRequireBounceFrame = Game.GlobalFrame;
+
+
+	/// <summary>
+	/// Stop the character from bouncing
+	/// </summary>
 	public void CancelBounce () => LastRequireBounceFrame = int.MinValue;
 
 
 	// Inventory
-	public void ResetInventoryUpdate (int invCapacity) {
+	internal void ResetInventoryUpdate (int invCapacity) {
 		for (int i = 0; i < invCapacity; i++) {
 			int id = Inventory.GetItemAt(InventoryID, i);
 			var item = id != 0 ? ItemSystem.GetItem(id) : null;
@@ -758,6 +962,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	}
 
 
+	/// <summary>
+	/// True if given type of equipment is available for this character
+	/// </summary>
 	public bool EquipmentAvailable (EquipmentType equipmentType) => equipmentType switch {
 		EquipmentType.HandTool => HandToolInteractable,
 		EquipmentType.BodyArmor => BodySuitInteractable,
@@ -769,6 +976,10 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	};
 
 
+	/// <summary>
+	/// Repair equipments once for this character
+	/// </summary>
+	/// <param name="requireMultiple">Set to true to repair all equipments for once</param>
 	public int TryRepairAllEquipments (bool requireMultiple = false) {
 		int repairedCount = 0;
 		for (int i = 0; i < Const.EQUIPMENT_TYPE_COUNT; i++) {
@@ -785,12 +996,27 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 
 	// Behaviour
+	/// <summary>
+	/// Create new instance for character's intrinsic movement behaviour
+	/// </summary>
 	protected virtual CharacterMovement CreateNativeMovement () => new(this);
+	/// <summary>
+	/// Create new instance for character's intrinsic attackness behaviour
+	/// </summary>
 	protected virtual CharacterAttackness CreateNativeAttackness () => new(this);
+	/// <summary>
+	/// Create new instance for character's intrinsic health behaviour
+	/// </summary>
 	protected virtual CharacterHealth CreateNativeHealth () => new();
+	/// <summary>
+	/// Create new instance for character's intrinsic rendering behaviour
+	/// </summary>
 	protected virtual CharacterRenderer CreateNativeRenderer () => new SheetCharacterRenderer(this);
 
 
+	/// <summary>
+	/// Override the movement behaviour for specified frames
+	/// </summary>
 	public void OverrideMovement (CharacterMovement movementOverride, int duration = 1) {
 		if (movementOverride == null) return;
 		if (movementOverride != MovementOverride) {
@@ -799,6 +1025,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		OverridingMovementFrame = Game.GlobalFrame + duration;
 		MovementOverride = movementOverride;
 	}
+	/// <summary>
+	/// Override the attackness behaviour for specified frames
+	/// </summary>
 	public void OverrideAttackness (CharacterAttackness attacknessOverride, int duration = 1) {
 		if (attacknessOverride == null) return;
 		if (attacknessOverride != AttacknessOverride) {
@@ -807,6 +1036,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		OverridingAttacknessFrame = Game.GlobalFrame + duration;
 		AttacknessOverride = attacknessOverride;
 	}
+	/// <summary>
+	/// Override the health behaviour for specified frames
+	/// </summary>
 	public void OverrideHealth (CharacterHealth healthOverride, int duration = 1) {
 		if (healthOverride == null) return;
 		if (healthOverride != HealthOverride) {
@@ -815,6 +1047,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		OverridingHealthFrame = Game.GlobalFrame + duration;
 		HealthOverride = healthOverride;
 	}
+	/// <summary>
+	/// Override the rendering behaviour for specified frames
+	/// </summary>
 	public void OverrideRenderer (CharacterRenderer rendererOverride, int duration = 1) {
 		if (rendererOverride == null) return;
 		if (rendererOverride != RendererOverride) {
@@ -826,6 +1061,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 
 
 	// Misc
+	/// <summary>
+	/// True if character can perform attack under current movement
+	/// </summary>
 	public virtual bool IsAttackAllowedByMovement () =>
 		!Movement.IsCrashing &&
 		(Attackness.AttackInAir || IsGrounded || InWater || Movement.IsClimbing) &&
@@ -843,6 +1081,9 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 		(Attackness.AttackWhenRush || !Movement.IsRushing);
 
 
+	/// <summary>
+	/// True if character can perform attack unfer current equipment set
+	/// </summary>
 	public virtual bool IsAttackAllowedByEquipment () {
 		int id = Inventory.GetEquipment(InventoryID, EquipmentType.HandTool, out int equipmentCount);
 		var tool = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as HandTool : null;
@@ -850,15 +1091,21 @@ public abstract class Character : Rigidbody, IDamageReceiver, ICarrier, IWithCha
 	}
 
 
-	public void ForceFillTrigger (int duration = 1) => ForceTriggerFrame = Game.GlobalFrame + duration;
-
-
+	/// <summary>
+	/// Make character not taking damage from level blocks for specified frames long
+	/// </summary>
 	public void IgnoreDamageFromLevel (int duration = 1) => IgnoreDamageFromLevelFrame = Game.GlobalFrame + duration;
 
 
+	/// <summary>
+	/// Get character's display name from language system
+	/// </summary>
 	public string GetDisplayName () => Language.Get(DisplayNameID, TypeName);
 
 
+	/// <summary>
+	/// Get character's description from language system
+	/// </summary>
 	public string GetDescription () => Language.Get(DescriptionID, "");
 
 

@@ -1,18 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
+using AngeliA.Platformer;
 
-namespace AngeliA.Platformer;
+namespace Project;
 
 [EntityAttribute.Capacity(1, 0)]
 [EntityAttribute.StageOrder(4096)]
-public class DefaultCharacter : PoseCharacter, IPlayable {
+public class DefaultCharacter : Character, IPlayable {
 
 	// VAR
 	public override int Team => Const.TEAM_PLAYER;
 	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_ENVIRONMENT;
 	public override CharacterInventoryType InventoryType => CharacterInventoryType.Unique;
 	public override bool AllowBeingPush => true;
+	public override int FinalCharacterHeight => Rendering is PoseCharacterRenderer rendering ?
+		base.FinalCharacterHeight * rendering.CharacterHeight / 160 :
+		base.FinalCharacterHeight;
 
 	// MSG
 	public override void BeforeUpdate () {
@@ -27,5 +31,9 @@ public class DefaultCharacter : PoseCharacter, IPlayable {
 			}
 		}
 	}
+
+
+	protected override CharacterRenderer CreateNativeRenderer () => new PoseCharacterRenderer(this);
+
 
 }

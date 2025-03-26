@@ -4,13 +4,18 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Shoes of a pose style character
+/// </summary>
 public abstract class FootCloth : Cloth {
 
+	// VAR
 	public sealed override ClothType ClothType => ClothType.Foot;
 	public override bool SpriteLoaded => SpriteFootLeft.IsValid || SpriteFootRight.IsValid;
 	private OrientedSprite SpriteFootLeft;
 	private OrientedSprite SpriteFootRight;
 
+	// MSG
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
 		SpriteFootLeft = new OrientedSprite(name, "FootSuitLeft", "FootSuit");
@@ -18,6 +23,9 @@ public abstract class FootCloth : Cloth {
 		return SpriteLoaded;
 	}
 
+	/// <summary>
+	/// Draw shoes for given character from system pool
+	/// </summary>
 	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
 		if (renderer.SuitFoot != 0 && renderer.TargetCharacter.CharacterState != CharacterState.Sleep && TryGetCloth(renderer.SuitFoot, out var cloth)) {
 			cloth.DrawCloth(renderer);
@@ -36,6 +44,13 @@ public abstract class FootCloth : Cloth {
 		}
 	}
 
+	/// <summary>
+	/// Draw given artwork sprite as shoes for given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="spriteLeft">Artwork sprite for left shoe</param>
+	/// <param name="spriteRight">Artwork sprite for right shoe</param>
+	/// <param name="localZ">Z value for sorting rendering cells</param>
 	public static void DrawClothForFoot (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
 		if (spriteLeft.IsValid) {
 			spriteLeft.TryGetSprite(renderer.FootL.FrontSide, renderer.FootL.Width > 0, renderer.CurrentAnimationFrame, out var sprite);

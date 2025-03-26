@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Hat for a pose style character
+/// </summary>
 public abstract class HeadCloth : Cloth {
 
 	// VAR
@@ -17,6 +20,9 @@ public abstract class HeadCloth : Cloth {
 		return SpriteLoaded;
 	}
 
+	/// <summary>
+	/// Draw hat for given character from system pool
+	/// </summary>
 	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
 		if (
 			renderer.SuitHead != 0 &&
@@ -38,6 +44,11 @@ public abstract class HeadCloth : Cloth {
 		}
 	}
 
+	/// <summary>
+	/// Draw artwork sprite as hat for given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="clothSprite">Artwork sprite</param>
 	public static void DrawClothForHead (PoseCharacterRenderer renderer, OrientedSprite clothSprite) {
 
 		var head = renderer.Head;

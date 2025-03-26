@@ -127,7 +127,8 @@ public class PlayerMenuUI : EntityUI {
 
 	public override void UpdateUI () {
 		base.UpdateUI();
-		if (PlayerSystem.Selecting == null) {
+
+		if (PlayerSystem.Selecting == null || !PlayerSystem.Selecting.Active) {
 			Active = false;
 			return;
 		}
@@ -162,12 +163,13 @@ public class PlayerMenuUI : EntityUI {
 		HoveringItemField = false;
 		MouseInPanel = false;
 		HoveringItemID = 0;
+		var player = PlayerSystem.Selecting;
 
 		// Bottom Panel
 		RenderingBottomPanel = true;
-		var playerPanelRect = GetPanelRect(Character.INVENTORY_COLUMN, Character.INVENTORY_ROW, ITEM_SIZE, false);
+		var playerPanelRect = GetPanelRect(player.InventoryColumn, player.InventoryRow, ITEM_SIZE, false);
 		Renderer.DrawPixel(playerPanelRect.Expand(Unify(WINDOW_PADDING)), Color32.BLACK);
-		DrawInventory(PlayerSystem.Selecting.InventoryID, Character.INVENTORY_COLUMN, Character.INVENTORY_ROW, false);
+		DrawInventory(player.InventoryID, player.InventoryColumn, player.InventoryRow, false);
 
 		// Top Panel
 		RenderingBottomPanel = false;
@@ -457,8 +459,9 @@ public class PlayerMenuUI : EntityUI {
 
 		if (Input.DirectionX == Direction3.None && Input.DirectionY == Direction3.None) return;
 
-		int column = CursorInBottomPanel ? Character.INVENTORY_COLUMN : TopPanelColumn;
-		int row = CursorInBottomPanel ? Character.INVENTORY_ROW : TopPanelRow;
+		var player = PlayerSystem.Selecting;
+		int column = CursorInBottomPanel ? player.InventoryColumn : TopPanelColumn;
+		int row = CursorInBottomPanel ? player.InventoryRow : TopPanelRow;
 		int x = CursorIndex % column;
 		int y = CursorIndex / column;
 
@@ -480,13 +483,13 @@ public class PlayerMenuUI : EntityUI {
 			if (!CursorInBottomPanel && y == 0) {
 				CursorInBottomPanel = true;
 				if (Partner == null) {
-					x = x == 0 ? 0 : Character.INVENTORY_COLUMN / 2;
+					x = x == 0 ? 0 : player.InventoryColumn / 2;
 				} else {
 					x = CursorWrap(x, false);
 				}
-				y = Character.INVENTORY_ROW - 1;
-				column = Character.INVENTORY_COLUMN;
-				row = Character.INVENTORY_ROW;
+				y = player.InventoryRow - 1;
+				column = player.InventoryColumn;
+				row = player.InventoryRow;
 			} else {
 				y = Util.Max(y - 1, 0);
 			}
@@ -498,7 +501,7 @@ public class PlayerMenuUI : EntityUI {
 			if (CursorInBottomPanel && y == row - 1) {
 				CursorInBottomPanel = false;
 				if (Partner == null) {
-					x = x < Character.INVENTORY_COLUMN / 2 ? 0 : 1;
+					x = x < player.InventoryColumn / 2 ? 0 : 1;
 				} else {
 					x = CursorWrap(x, true);
 				}
@@ -1416,8 +1419,9 @@ public class PlayerMenuUI : EntityUI {
 
 
 	private int CursorWrap (int x, bool fromBottom) {
-		int fromColumn = fromBottom ? Character.INVENTORY_COLUMN : TopPanelColumn;
-		int toColumn = !fromBottom ? Character.INVENTORY_COLUMN : TopPanelColumn;
+		var player = PlayerSystem.Selecting;
+		int fromColumn = fromBottom ? player.InventoryColumn : TopPanelColumn;
+		int toColumn = !fromBottom ? player.InventoryColumn : TopPanelColumn;
 		if (fromColumn != toColumn && fromColumn != 0 && toColumn != 0) {
 			x = x * toColumn / fromColumn;
 		}

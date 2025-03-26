@@ -1,6 +1,9 @@
 ﻿namespace AngeliA;
 
 
+/// <summary>
+/// Pants or skirt for a pose style character. Include hip and legs (no foot)
+/// </summary>
 public abstract class HipCloth : Cloth {
 
 	// SUB
@@ -9,6 +12,9 @@ public abstract class HipCloth : Cloth {
 	// VAR
 	public sealed override ClothType ClothType => ClothType.Hip;
 	public override bool SpriteLoaded => SpriteHip.IsValid;
+	/// <summary>
+	/// True if the pants renders on front of lengs
+	/// </summary>
 	protected virtual bool CoverLegs => true;
 
 	private HipClothType HipType = HipClothType.None;
@@ -36,6 +42,9 @@ public abstract class HipCloth : Cloth {
 		return SpriteLoaded;
 	}
 
+	/// <summary>
+	/// Draw pants/skirt for given character from system pool
+	/// </summary>
 	public static void DrawClothFromPool (PoseCharacterRenderer rendering) {
 		if (rendering.SuitHip != 0 && TryGetCloth(rendering.SuitHip, out var cloth)) {
 			cloth.DrawCloth(rendering);
@@ -123,6 +132,12 @@ public abstract class HipCloth : Cloth {
 
 	}
 
+	/// <summary>
+	/// Draw artwork sprite as pants for given character
+	/// </summary>
+	/// <param name="rendering">Target character</param>
+	/// <param name="clothSprite">Artwork sprite</param>
+	/// <param name="localZ">Z value for sort rendering cells</param>
 	public static void DrawClothAsPants (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 1) {
 
 		var hip = rendering.Hip;
@@ -157,6 +172,13 @@ public abstract class HipCloth : Cloth {
 
 	}
 
+	/// <summary>
+	/// Draw artwork sprite as skirt for given character
+	/// </summary>
+	/// <param name="rendering">Target character</param>
+	/// <param name="clothSprite">Artwork sprite (should be a sprite group)</param>
+	/// <param name="localZ">Z value for sort rendering cells</param>
+	/// <param name="motionAmount">How much does the skirt flow with character movement (0 means 0%, 1000 means 100%)</param>
 	public static void DrawClothAsSkirt (PoseCharacterRenderer rendering, OrientedSprite clothSprite, int localZ = 6, int motionAmount = 1000) {
 
 		var hip = rendering.Hip;
@@ -276,6 +298,13 @@ public abstract class HipCloth : Cloth {
 	}
 
 	// Leg
+	/// <summary>
+	/// Draw artwork sprite as cloth only for upper-leg
+	/// </summary>
+	/// <param name="rendering">Target character</param>
+	/// <param name="spriteLeft">Artwork sprite for left leg</param>
+	/// <param name="spriteRight">Artwork sprite for right leg</param>
+	/// <param name="localZ">Z value for sort rendering cells</param>
 	public static void DrawClothForUpperLeg (PoseCharacterRenderer rendering, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
 		bool facingRight = rendering.Body.Width > 0;
 		if (spriteLeft.IsValid) {
@@ -288,6 +317,13 @@ public abstract class HipCloth : Cloth {
 		}
 	}
 
+	/// <summary>
+	/// Draw artwork sprite as cloth only for lower-leg
+	/// </summary>
+	/// <param name="rendering">Target character</param>
+	/// <param name="spriteLeft">Artwork sprite for left leg</param>
+	/// <param name="spriteRight">Artwork sprite for right leg</param>
+	/// <param name="localZ">Z value for sort rendering cells</param>
 	public static void DrawClothForLowerLeg (PoseCharacterRenderer rendering, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
 		bool facingRight = rendering.Body.Width > 0;
 		if (spriteLeft.IsValid) {
@@ -301,6 +337,12 @@ public abstract class HipCloth : Cloth {
 	}
 
 	// Cloth Tail
+	/// <summary>
+	/// Draw two tails as cloth decoration (like Suisei's standard suit from Hololive)
+	/// </summary>
+	/// <param name="rendering">Target character</param>
+	/// <param name="clothSprite">Artwork sprite</param>
+	/// <param name="drawOnAllPose">Draw this tail even when character is Rolling, Sleeping, Passout and Flying</param>
 	public static void DrawDoubleClothTailsOnHip (PoseCharacterRenderer rendering, OrientedSprite clothSprite, bool drawOnAllPose = false) {
 
 		var animatedPoseType = rendering.TargetCharacter.AnimationType;
@@ -334,12 +376,25 @@ public abstract class HipCloth : Cloth {
 		clothSprite.TryGetSprite(hip.FrontSide, false, rendering.CurrentAnimationFrame, out var spriteL);
 		clothSprite.TryGetSprite(hip.FrontSide, true, rendering.CurrentAnimationFrame, out var spriteR);
 
-		DrawSingleClothTail(rendering, spriteL, hipRect.x + 16, hipRect.y, z, rotL, scaleX, scaleY);
-		DrawSingleClothTail(rendering, spriteR, hipRect.xMax - 16, hipRect.y, z, rotR, scaleX, scaleY);
+		int deltaY = rendering.TargetCharacter.DeltaPositionY;
+		DrawSingleClothTail(spriteL, hipRect.x + 16, hipRect.y, z, rotL, deltaY, scaleX, scaleY);
+		DrawSingleClothTail(spriteR, hipRect.xMax - 16, hipRect.y, z, rotR, deltaY, scaleX, scaleY);
 
 	}
 
-	public static void DrawSingleClothTail (PoseCharacterRenderer rendering, AngeSprite sprite, int globalX, int globalY, int z, int rotation, int scaleX = 1000, int scaleY = 1000, int motionAmount = 1000) {
+	/// <summary>
+	/// Draw a single tail as cloth decoration (like Suisei's standard suit from Hololive)
+	/// </summary>
+	/// <param name="sprite">Artwork sprite</param>
+	/// <param name="globalX">Pivot position X of the tail in global space</param>
+	/// <param name="globalY">Pivot position Y of the tail in global space</param>
+	/// <param name="z">Z value for sorting rendering cells</param>
+	/// <param name="rotation">Rotation of this tail</param>
+	/// <param name="deltaY">Character's current movement speed Y</param>
+	/// <param name="scaleX">Horizontal size scale (0 means 0%, 1000 means 100%)</param>
+	/// <param name="scaleY">Vertical size scale (0 means 0%, 1000 means 100%)</param>
+	/// <param name="motionAmount">How much flow motion should apply from characters movement (0 means 0%, 1000 means 100%)</param>
+	public static void DrawSingleClothTail (AngeSprite sprite, int globalX, int globalY, int z, int rotation, int deltaY, int scaleX = 1000, int scaleY = 1000, int motionAmount = 1000) {
 
 		if (sprite == null) return;
 
@@ -348,10 +403,9 @@ public abstract class HipCloth : Cloth {
 		// Motion
 		if (motionAmount != 0) {
 			// Idle Rot
-			int animationFrame = (rendering.TargetCharacter.TypeID + Game.GlobalFrame).Abs(); // ※ Intended ※
+			int animationFrame = (sprite.ID * 62154 + Game.GlobalFrame).Abs(); // ※ Intended ※
 			rot += rotation.Sign() * (animationFrame.PingPong(180) / 10 - 9);
 			// Delta Y >> Rot
-			int deltaY = rendering.TargetCharacter.DeltaPositionY;
 			rot -= rotation.Sign() * (deltaY * 2 / 3).Clamp(-20, 20);
 		}
 

@@ -3,28 +3,75 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Interface that makes the entity can be bump by other (like question mark block in Mario)
+/// </summary>
 public interface IBumpable {
 
 
 	// VAR
+	/// <summary>
+	/// True if the entity can be bump from below
+	/// </summary>
 	public bool FromBelow => true;
+	/// <summary>
+	/// True if the entity can be bump from above
+	/// </summary>
 	public bool FromAbove => false;
+	/// <summary>
+	/// True if the entity can be bump from left
+	/// </summary>
 	public bool FromLeft => false;
+	/// <summary>
+	/// True if the entity can be bump from right
+	/// </summary>
 	public bool FromRight => false;
+	/// <summary>
+	/// True if the entity bump other entities when being bumped
+	/// </summary>
 	public bool TransferBumpToOther => true;
+	/// <summary>
+	/// True if the entity take transfered bumps from other
+	/// </summary>
 	public bool TransferBumpFromOther => false;
+	/// <summary>
+	/// True if the entity perform attack to the entity when transfer bumps (like in Mario bump on question block can kill the goombas on top)
+	/// </summary>
 	public bool TransferWithAttack => true;
+	/// <summary>
+	/// Extra speed that gives to the rigidbody when they got transfered bump from this entity
+	/// </summary>
 	public int BumpTransferPower => 60;
+	/// <summary>
+	/// How many frames does it have to wait to be bump again
+	/// </summary>
 	public int BumpCooldown => 16;
+	/// <summary>
+	/// Frame when the entity get it's last bump
+	/// </summary>
 	public int LastBumpedFrame { get; set; }
+	/// <summary>
+	/// Direction for the last bump of this entity
+	/// </summary>
 	public Direction4 LastBumpFrom { get; set; }
 
 
 	// MSG
+	/// <summary>
+	/// This function is called when this entity is bumped
+	/// </summary>
+	/// <param name="rig">Rigidbody that bumps this entity</param>
+	/// <param name="damage">The damage this entity got from this bump</param>
 	protected void OnBumped (Entity rig, Damage damage);
 
+	/// <summary>
+	/// True if the entity can be bump by the given target and direction currently
+	/// </summary>
 	protected bool AllowBump (Entity rig, Direction4 from) => IsValidBumpDirection(this, from);
 
+	/// <summary>
+	/// Get the instance of the damage that this entity deal to other when it transfer bump
+	/// </summary>
 	protected Damage GetBumpTransferDamage () => new(1);
 
 
@@ -73,6 +120,14 @@ public interface IBumpable {
 		}
 	}
 
+	/// <summary>
+	/// Update the animation for bump, call this function every frame
+	/// </summary>
+	/// <param name="bumpable">Target entity</param>
+	/// <param name="cell">Rendering cell</param>
+	/// <param name="duration">How length does the animation takes when it get bump</param>
+	/// <param name="distance">How far does it move when it get bump</param>
+	/// <param name="size">How big does it scale when it get bump</param>
 	public static void AnimateForBump (IBumpable bumpable, Cell cell, int duration = 12, int distance = 32, int size = 32) {
 		if (Game.GlobalFrame >= bumpable.LastBumpedFrame + duration) return;
 		float ease01 = Ease.OutBack((Game.GlobalFrame - bumpable.LastBumpedFrame) / (float)duration);
@@ -99,6 +154,10 @@ public interface IBumpable {
 		cell.Z++;
 	}
 
+	/// <summary>
+	/// Trie if the given direction can be bump
+	/// </summary>
+	/// <param name="bump">Target entity</param>
 	public static bool IsValidBumpDirection (IBumpable bump, Direction4 from) => from switch {
 		Direction4.Up => bump.FromAbove,
 		Direction4.Down => bump.FromBelow,
@@ -107,6 +166,14 @@ public interface IBumpable {
 		_ => true,
 	};
 
+	/// <summary>
+	/// Perform bump for all overlaped IBumpable entities
+	/// </summary>
+	/// <param name="sender">Entity that send the bump</param>
+	/// <param name="directionTo">Bump the IBumpables to this direction</param>
+	/// <param name="forceBump">True if ignore the AllowBump function check this time</param>
+	/// <param name="damageToBumpedObject">Damage data that apply to the entities being bump</param>
+	/// <param name="collisionMask">Which layer does this bump applies</param>
 	public static void BumpAllOverlap (Entity sender, Direction4 directionTo, bool forceBump = false, Damage damageToBumpedObject = default, int collisionMask = PhysicsMask.MAP) {
 		var hits = Physics.OverlapAll(
 			collisionMask,

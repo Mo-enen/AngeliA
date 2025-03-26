@@ -161,7 +161,7 @@ public static class PlayerSystem {
 	[OnViewZChanged]
 	internal static void OnViewZChanged () {
 		if (Selecting != null) {
-			IWithCharacterBuff.GiveBuffFromMap(Selecting);
+			FrameworkUtil.GiveBuffFromMap(Selecting);
 		}
 	}
 

@@ -3,13 +3,18 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Gloves for a pose style character
+/// </summary>
 public abstract class HandCloth : Cloth {
 
+	// AVR
 	public sealed override ClothType ClothType => ClothType.Hand;
 	public override bool SpriteLoaded => SpriteHandLeft.IsValid || SpriteHandRight.IsValid;
 	private OrientedSprite SpriteHandLeft;
 	private OrientedSprite SpriteHandRight;
 
+	// MSG
 	public override bool FillFromSheet (string name) {
 		base.FillFromSheet(name);
 		SpriteHandLeft = new OrientedSprite(name, "HandSuitLeft", "HandSuit");
@@ -17,6 +22,9 @@ public abstract class HandCloth : Cloth {
 		return SpriteLoaded;
 	}
 
+	/// <summary>
+	/// Draw gloves for given character from system pool
+	/// </summary>
 	public static void DrawClothFromPool (PoseCharacterRenderer renderer) {
 		if (renderer.SuitHand != 0 && renderer.TargetCharacter.CharacterState != CharacterState.Sleep && TryGetCloth(renderer.SuitHand, out var cloth)) {
 			cloth.DrawCloth(renderer);
@@ -35,6 +43,13 @@ public abstract class HandCloth : Cloth {
 		}
 	}
 
+	/// <summary>
+	/// Draw artwork sprite as gloves for given character
+	/// </summary>
+	/// <param name="renderer">Target character</param>
+	/// <param name="spriteLeft">Artwork for left glove</param>
+	/// <param name="spriteRight">Artwork for right glove</param>
+	/// <param name="localZ">Z value for sort rendering cells</param>
 	public static void DrawClothForHand (PoseCharacterRenderer renderer, OrientedSprite spriteLeft, OrientedSprite spriteRight, int localZ = 1) {
 		var body = renderer.Body;
 		using var _ = new RotateCellScope(body.Rotation, body.GlobalX, body.GlobalY);

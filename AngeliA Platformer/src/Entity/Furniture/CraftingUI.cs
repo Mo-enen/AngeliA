@@ -200,9 +200,15 @@ public sealed class CraftingUI : InventoryPartnerUI {
 			// Down Key
 			if (Input.GameKeyDown(Gamekey.Down)) {
 				Input.UseGameKey(Gamekey.Down);
-				int x = (Character.INVENTORY_COLUMN - 1).Clamp(0, Character.INVENTORY_COLUMN - 1);
-				int y = Character.INVENTORY_ROW - 1;
-				menu.CursorIndex = x + Character.INVENTORY_COLUMN * y;
+				int column = 6;
+				int row = 3;
+				var player = PlayerSystem.Selecting;
+				if (player != null) {
+					(column, row) = (player.InventoryColumn, player.InventoryRow);
+				}
+				int x = (column - 1).Clamp(0, column - 1);
+				int y = row - 1;
+				menu.CursorIndex = x + column * y;
 				menu.CursorInBottomPanel = true;
 			}
 

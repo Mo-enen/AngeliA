@@ -63,7 +63,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	public IRect BackgroundRect { get; private set; } = default;
 
 	// Data
-	private static readonly HandToolData[] HandToolList = new HandToolData[Character.INVENTORY_ROW * Character.INVENTORY_COLUMN + 2].FillWithNewValue();
+	private static HandToolData[] HandToolList;
 	private int CurrentSlotIndex = 0;
 	private int HandToolCount = 0;
 
@@ -82,6 +82,17 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	public override void OnActivated () {
 		base.OnActivated();
 
+		var player = PlayerSystem.Selecting;
+		if (player == null || !player.Active) {
+			Active = false;
+			return;
+		}
+
+		int targetLen = player.InventoryColumn * player.InventoryRow;
+		if (HandToolList == null || HandToolList.Length != targetLen) {
+			HandToolList = new HandToolData[targetLen + 2].FillWithNewValue();
+		}
+
 		X = Renderer.CameraRect.CenterX();
 		Y = Renderer.CameraRect.CenterY();
 		IsDirty = false;
@@ -89,7 +100,7 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 		HandToolCount = 0;
 
 		// Init Item List
-		int invID = PlayerSystem.Selecting.InventoryID;
+		int invID = player.InventoryID;
 		int currentIndex = 0;
 		bool allowHand =
 			Inventory.GetEquipment(invID, EquipmentType.HandTool, out _) == 0 ||
