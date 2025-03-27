@@ -2891,19 +2891,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.BodyPart.FacingSign
   nameWithType: BodyPart.FacingSign
-- uid: AngeliA.BodyPart.FixApproximatelyRotation
-  name: FixApproximatelyRotation()
-  href: api/AngeliA.BodyPart.html#AngeliA_BodyPart_FixApproximatelyRotation
-  commentId: M:AngeliA.BodyPart.FixApproximatelyRotation
-  fullName: AngeliA.BodyPart.FixApproximatelyRotation()
-  nameWithType: BodyPart.FixApproximatelyRotation()
-- uid: AngeliA.BodyPart.FixApproximatelyRotation*
-  name: FixApproximatelyRotation
-  href: api/AngeliA.BodyPart.html#AngeliA_BodyPart_FixApproximatelyRotation_
-  commentId: Overload:AngeliA.BodyPart.FixApproximatelyRotation
-  isSpec: "True"
-  fullName: AngeliA.BodyPart.FixApproximatelyRotation
-  nameWithType: BodyPart.FixApproximatelyRotation
 - uid: AngeliA.BodyPart.FlexableSizeY
   name: FlexableSizeY
   href: api/AngeliA.BodyPart.html#AngeliA_BodyPart_FlexableSizeY
@@ -6157,22 +6144,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Character.FirstUpdate
   nameWithType: Character.FirstUpdate
-- uid: AngeliA.Character.ForceFillTrigger(System.Int32)
-  name: ForceFillTrigger(int)
-  href: api/AngeliA.Character.html#AngeliA_Character_ForceFillTrigger_System_Int32_
-  commentId: M:AngeliA.Character.ForceFillTrigger(System.Int32)
-  name.vb: ForceFillTrigger(Integer)
-  fullName: AngeliA.Character.ForceFillTrigger(int)
-  fullName.vb: AngeliA.Character.ForceFillTrigger(Integer)
-  nameWithType: Character.ForceFillTrigger(int)
-  nameWithType.vb: Character.ForceFillTrigger(Integer)
-- uid: AngeliA.Character.ForceFillTrigger*
-  name: ForceFillTrigger
-  href: api/AngeliA.Character.html#AngeliA_Character_ForceFillTrigger_
-  commentId: Overload:AngeliA.Character.ForceFillTrigger
-  isSpec: "True"
-  fullName: AngeliA.Character.ForceFillTrigger
-  nameWithType: Character.ForceFillTrigger
 - uid: AngeliA.Character.FullSleepDuration
   name: FullSleepDuration
   href: api/AngeliA.Character.html#AngeliA_Character_FullSleepDuration
@@ -6276,18 +6247,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Character.HelmetInteractable
   nameWithType: Character.HelmetInteractable
-- uid: AngeliA.Character.INVENTORY_COLUMN
-  name: INVENTORY_COLUMN
-  href: api/AngeliA.Character.html#AngeliA_Character_INVENTORY_COLUMN
-  commentId: F:AngeliA.Character.INVENTORY_COLUMN
-  fullName: AngeliA.Character.INVENTORY_COLUMN
-  nameWithType: Character.INVENTORY_COLUMN
-- uid: AngeliA.Character.INVENTORY_ROW
-  name: INVENTORY_ROW
-  href: api/AngeliA.Character.html#AngeliA_Character_INVENTORY_ROW
-  commentId: F:AngeliA.Character.INVENTORY_ROW
-  fullName: AngeliA.Character.INVENTORY_ROW
-  nameWithType: Character.INVENTORY_ROW
 - uid: AngeliA.Character.IgnoreDamageFromLevel(System.Int32)
   name: IgnoreDamageFromLevel(int)
   href: api/AngeliA.Character.html#AngeliA_Character_IgnoreDamageFromLevel_System_Int32_
@@ -6330,6 +6289,19 @@ references:
   isSpec: "True"
   fullName: AngeliA.Character.InsideGroundCheck
   nameWithType: Character.InsideGroundCheck
+- uid: AngeliA.Character.InventoryColumn
+  name: InventoryColumn
+  href: api/AngeliA.Character.html#AngeliA_Character_InventoryColumn
+  commentId: P:AngeliA.Character.InventoryColumn
+  fullName: AngeliA.Character.InventoryColumn
+  nameWithType: Character.InventoryColumn
+- uid: AngeliA.Character.InventoryColumn*
+  name: InventoryColumn
+  href: api/AngeliA.Character.html#AngeliA_Character_InventoryColumn_
+  commentId: Overload:AngeliA.Character.InventoryColumn
+  isSpec: "True"
+  fullName: AngeliA.Character.InventoryColumn
+  nameWithType: Character.InventoryColumn
 - uid: AngeliA.Character.InventoryID
   name: InventoryID
   href: api/AngeliA.Character.html#AngeliA_Character_InventoryID
@@ -6343,6 +6315,19 @@ references:
   isSpec: "True"
   fullName: AngeliA.Character.InventoryID
   nameWithType: Character.InventoryID
+- uid: AngeliA.Character.InventoryRow
+  name: InventoryRow
+  href: api/AngeliA.Character.html#AngeliA_Character_InventoryRow
+  commentId: P:AngeliA.Character.InventoryRow
+  fullName: AngeliA.Character.InventoryRow
+  nameWithType: Character.InventoryRow
+- uid: AngeliA.Character.InventoryRow*
+  name: InventoryRow
+  href: api/AngeliA.Character.html#AngeliA_Character_InventoryRow_
+  commentId: Overload:AngeliA.Character.InventoryRow
+  isSpec: "True"
+  fullName: AngeliA.Character.InventoryRow
+  nameWithType: Character.InventoryRow
 - uid: AngeliA.Character.InventoryType
   name: InventoryType
   href: api/AngeliA.Character.html#AngeliA_Character_InventoryType
@@ -6628,22 +6613,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Character.RenderingCellIndex
   nameWithType: Character.RenderingCellIndex
-- uid: AngeliA.Character.ResetInventoryUpdate(System.Int32)
-  name: ResetInventoryUpdate(int)
-  href: api/AngeliA.Character.html#AngeliA_Character_ResetInventoryUpdate_System_Int32_
-  commentId: M:AngeliA.Character.ResetInventoryUpdate(System.Int32)
-  name.vb: ResetInventoryUpdate(Integer)
-  fullName: AngeliA.Character.ResetInventoryUpdate(int)
-  fullName.vb: AngeliA.Character.ResetInventoryUpdate(Integer)
-  nameWithType: Character.ResetInventoryUpdate(int)
-  nameWithType.vb: Character.ResetInventoryUpdate(Integer)
-- uid: AngeliA.Character.ResetInventoryUpdate*
-  name: ResetInventoryUpdate
-  href: api/AngeliA.Character.html#AngeliA_Character_ResetInventoryUpdate_
-  commentId: Overload:AngeliA.Character.ResetInventoryUpdate
-  isSpec: "True"
-  fullName: AngeliA.Character.ResetInventoryUpdate
-  nameWithType: Character.ResetInventoryUpdate
 - uid: AngeliA.Character.SelfCollisionMask
   name: SelfCollisionMask
   href: api/AngeliA.Character.html#AngeliA_Character_SelfCollisionMask
@@ -12533,6 +12502,42 @@ references:
   fullName.vb: AngeliA.ControlHintUI.DrawGlobalHint(Integer, Integer, AngeliA.Gamekey, String, Boolean)
   nameWithType: ControlHintUI.DrawGlobalHint(int, int, Gamekey, string, bool)
   nameWithType.vb: ControlHintUI.DrawGlobalHint(Integer, Integer, Gamekey, String, Boolean)
+- uid: AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.GamepadKey,AngeliA.GamepadKey,System.String,System.Boolean)
+  name: DrawGlobalHint(int, int, GamepadKey, GamepadKey, string, bool)
+  href: api/AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_DrawGlobalHint_System_Int32_System_Int32_AngeliA_GamepadKey_AngeliA_GamepadKey_System_String_System_Boolean_
+  commentId: M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.GamepadKey,AngeliA.GamepadKey,System.String,System.Boolean)
+  name.vb: DrawGlobalHint(Integer, Integer, GamepadKey, GamepadKey, String, Boolean)
+  fullName: AngeliA.ControlHintUI.DrawGlobalHint(int, int, AngeliA.GamepadKey, AngeliA.GamepadKey, string, bool)
+  fullName.vb: AngeliA.ControlHintUI.DrawGlobalHint(Integer, Integer, AngeliA.GamepadKey, AngeliA.GamepadKey, String, Boolean)
+  nameWithType: ControlHintUI.DrawGlobalHint(int, int, GamepadKey, GamepadKey, string, bool)
+  nameWithType.vb: ControlHintUI.DrawGlobalHint(Integer, Integer, GamepadKey, GamepadKey, String, Boolean)
+- uid: AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.GamepadKey,System.String,System.Boolean)
+  name: DrawGlobalHint(int, int, GamepadKey, string, bool)
+  href: api/AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_DrawGlobalHint_System_Int32_System_Int32_AngeliA_GamepadKey_System_String_System_Boolean_
+  commentId: M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.GamepadKey,System.String,System.Boolean)
+  name.vb: DrawGlobalHint(Integer, Integer, GamepadKey, String, Boolean)
+  fullName: AngeliA.ControlHintUI.DrawGlobalHint(int, int, AngeliA.GamepadKey, string, bool)
+  fullName.vb: AngeliA.ControlHintUI.DrawGlobalHint(Integer, Integer, AngeliA.GamepadKey, String, Boolean)
+  nameWithType: ControlHintUI.DrawGlobalHint(int, int, GamepadKey, string, bool)
+  nameWithType.vb: ControlHintUI.DrawGlobalHint(Integer, Integer, GamepadKey, String, Boolean)
+- uid: AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.KeyboardKey,AngeliA.KeyboardKey,System.String,System.Boolean)
+  name: DrawGlobalHint(int, int, KeyboardKey, KeyboardKey, string, bool)
+  href: api/AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_DrawGlobalHint_System_Int32_System_Int32_AngeliA_KeyboardKey_AngeliA_KeyboardKey_System_String_System_Boolean_
+  commentId: M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.KeyboardKey,AngeliA.KeyboardKey,System.String,System.Boolean)
+  name.vb: DrawGlobalHint(Integer, Integer, KeyboardKey, KeyboardKey, String, Boolean)
+  fullName: AngeliA.ControlHintUI.DrawGlobalHint(int, int, AngeliA.KeyboardKey, AngeliA.KeyboardKey, string, bool)
+  fullName.vb: AngeliA.ControlHintUI.DrawGlobalHint(Integer, Integer, AngeliA.KeyboardKey, AngeliA.KeyboardKey, String, Boolean)
+  nameWithType: ControlHintUI.DrawGlobalHint(int, int, KeyboardKey, KeyboardKey, string, bool)
+  nameWithType.vb: ControlHintUI.DrawGlobalHint(Integer, Integer, KeyboardKey, KeyboardKey, String, Boolean)
+- uid: AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.KeyboardKey,System.String,System.Boolean)
+  name: DrawGlobalHint(int, int, KeyboardKey, string, bool)
+  href: api/AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_DrawGlobalHint_System_Int32_System_Int32_AngeliA_KeyboardKey_System_String_System_Boolean_
+  commentId: M:AngeliA.ControlHintUI.DrawGlobalHint(System.Int32,System.Int32,AngeliA.KeyboardKey,System.String,System.Boolean)
+  name.vb: DrawGlobalHint(Integer, Integer, KeyboardKey, String, Boolean)
+  fullName: AngeliA.ControlHintUI.DrawGlobalHint(int, int, AngeliA.KeyboardKey, string, bool)
+  fullName.vb: AngeliA.ControlHintUI.DrawGlobalHint(Integer, Integer, AngeliA.KeyboardKey, String, Boolean)
+  nameWithType: ControlHintUI.DrawGlobalHint(int, int, KeyboardKey, string, bool)
+  nameWithType.vb: ControlHintUI.DrawGlobalHint(Integer, Integer, KeyboardKey, String, Boolean)
 - uid: AngeliA.ControlHintUI.DrawGlobalHint*
   name: DrawGlobalHint
   href: api/AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_DrawGlobalHint_
@@ -12656,32 +12661,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.ControlHintUI.OnActivated
   nameWithType: ControlHintUI.OnActivated
-- uid: AngeliA.ControlHintUI.OnGameInitializeLater
-  name: OnGameInitializeLater()
-  href: api/AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_OnGameInitializeLater
-  commentId: M:AngeliA.ControlHintUI.OnGameInitializeLater
-  fullName: AngeliA.ControlHintUI.OnGameInitializeLater()
-  nameWithType: ControlHintUI.OnGameInitializeLater()
-- uid: AngeliA.ControlHintUI.OnGameInitializeLater*
-  name: OnGameInitializeLater
-  href: api/AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_OnGameInitializeLater_
-  commentId: Overload:AngeliA.ControlHintUI.OnGameInitializeLater
-  isSpec: "True"
-  fullName: AngeliA.ControlHintUI.OnGameInitializeLater
-  nameWithType: ControlHintUI.OnGameInitializeLater
-- uid: AngeliA.ControlHintUI.OnGameUpdateLater
-  name: OnGameUpdateLater()
-  href: api/AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_OnGameUpdateLater
-  commentId: M:AngeliA.ControlHintUI.OnGameUpdateLater
-  fullName: AngeliA.ControlHintUI.OnGameUpdateLater()
-  nameWithType: ControlHintUI.OnGameUpdateLater()
-- uid: AngeliA.ControlHintUI.OnGameUpdateLater*
-  name: OnGameUpdateLater
-  href: api/AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_OnGameUpdateLater_
-  commentId: Overload:AngeliA.ControlHintUI.OnGameUpdateLater
-  isSpec: "True"
-  fullName: AngeliA.ControlHintUI.OnGameUpdateLater
-  nameWithType: ControlHintUI.OnGameUpdateLater
 - uid: AngeliA.ControlHintUI.UseControlHint
   name: UseControlHint
   href: api/AngeliA.ControlHintUI.html#AngeliA_ControlHintUI_UseControlHint
@@ -13541,19 +13520,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.DialogueUI.PanelRect
   nameWithType: DialogueUI.PanelRect
-- uid: AngeliA.DialogueUI.Roll
-  name: Roll()
-  href: api/AngeliA.DialogueUI.html#AngeliA_DialogueUI_Roll
-  commentId: M:AngeliA.DialogueUI.Roll
-  fullName: AngeliA.DialogueUI.Roll()
-  nameWithType: DialogueUI.Roll()
-- uid: AngeliA.DialogueUI.Roll*
-  name: Roll
-  href: api/AngeliA.DialogueUI.html#AngeliA_DialogueUI_Roll_
-  commentId: Overload:AngeliA.DialogueUI.Roll
-  isSpec: "True"
-  fullName: AngeliA.DialogueUI.Roll
-  nameWithType: DialogueUI.Roll
 - uid: AngeliA.DialogueUI.RollingSpeed
   name: RollingSpeed
   href: api/AngeliA.DialogueUI.html#AngeliA_DialogueUI_RollingSpeed
@@ -13567,35 +13533,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.DialogueUI.RollingSpeed
   nameWithType: DialogueUI.RollingSpeed
-- uid: AngeliA.DialogueUI.SetData(System.String,System.Int32,System.String,AngeliA.Color32[])
-  name: SetData(string, int, string, Color32[])
-  href: api/AngeliA.DialogueUI.html#AngeliA_DialogueUI_SetData_System_String_System_Int32_System_String_AngeliA_Color32___
-  commentId: M:AngeliA.DialogueUI.SetData(System.String,System.Int32,System.String,AngeliA.Color32[])
-  name.vb: SetData(String, Integer, String, Color32())
-  fullName: AngeliA.DialogueUI.SetData(string, int, string, AngeliA.Color32[])
-  fullName.vb: AngeliA.DialogueUI.SetData(String, Integer, String, AngeliA.Color32())
-  nameWithType: DialogueUI.SetData(string, int, string, Color32[])
-  nameWithType.vb: DialogueUI.SetData(String, Integer, String, Color32())
-- uid: AngeliA.DialogueUI.SetData*
-  name: SetData
-  href: api/AngeliA.DialogueUI.html#AngeliA_DialogueUI_SetData_
-  commentId: Overload:AngeliA.DialogueUI.SetData
-  isSpec: "True"
-  fullName: AngeliA.DialogueUI.SetData
-  nameWithType: DialogueUI.SetData
-- uid: AngeliA.DialogueUI.UpdateDialogue
-  name: UpdateDialogue()
-  href: api/AngeliA.DialogueUI.html#AngeliA_DialogueUI_UpdateDialogue
-  commentId: M:AngeliA.DialogueUI.UpdateDialogue
-  fullName: AngeliA.DialogueUI.UpdateDialogue()
-  nameWithType: DialogueUI.UpdateDialogue()
-- uid: AngeliA.DialogueUI.UpdateDialogue*
-  name: UpdateDialogue
-  href: api/AngeliA.DialogueUI.html#AngeliA_DialogueUI_UpdateDialogue_
-  commentId: Overload:AngeliA.DialogueUI.UpdateDialogue
-  isSpec: "True"
-  fullName: AngeliA.DialogueUI.UpdateDialogue
-  nameWithType: DialogueUI.UpdateDialogue
 - uid: AngeliA.DialogueUI.UpdateUI
   name: UpdateUI()
   href: api/AngeliA.DialogueUI.html#AngeliA_DialogueUI_UpdateUI
@@ -24253,6 +24190,22 @@ references:
   isSpec: "True"
   fullName: AngeliA.FrameworkUtil.GetSummaryTint
   nameWithType: FrameworkUtil.GetSummaryTint
+- uid: AngeliA.FrameworkUtil.GiveBuffFromMap(AngeliA.IWithCharacterBuff,System.Int32,System.Int32,System.Int32,System.Int32)
+  name: GiveBuffFromMap(IWithCharacterBuff, int, int, int, int)
+  href: api/AngeliA.FrameworkUtil.html#AngeliA_FrameworkUtil_GiveBuffFromMap_AngeliA_IWithCharacterBuff_System_Int32_System_Int32_System_Int32_System_Int32_
+  commentId: M:AngeliA.FrameworkUtil.GiveBuffFromMap(AngeliA.IWithCharacterBuff,System.Int32,System.Int32,System.Int32,System.Int32)
+  name.vb: GiveBuffFromMap(IWithCharacterBuff, Integer, Integer, Integer, Integer)
+  fullName: AngeliA.FrameworkUtil.GiveBuffFromMap(AngeliA.IWithCharacterBuff, int, int, int, int)
+  fullName.vb: AngeliA.FrameworkUtil.GiveBuffFromMap(AngeliA.IWithCharacterBuff, Integer, Integer, Integer, Integer)
+  nameWithType: FrameworkUtil.GiveBuffFromMap(IWithCharacterBuff, int, int, int, int)
+  nameWithType.vb: FrameworkUtil.GiveBuffFromMap(IWithCharacterBuff, Integer, Integer, Integer, Integer)
+- uid: AngeliA.FrameworkUtil.GiveBuffFromMap*
+  name: GiveBuffFromMap
+  href: api/AngeliA.FrameworkUtil.html#AngeliA_FrameworkUtil_GiveBuffFromMap_
+  commentId: Overload:AngeliA.FrameworkUtil.GiveBuffFromMap
+  isSpec: "True"
+  fullName: AngeliA.FrameworkUtil.GiveBuffFromMap
+  nameWithType: FrameworkUtil.GiveBuffFromMap
 - uid: AngeliA.FrameworkUtil.HasOnewayTag(AngeliA.Tag)
   name: HasOnewayTag(Tag)
   href: api/AngeliA.FrameworkUtil.html#AngeliA_FrameworkUtil_HasOnewayTag_AngeliA_Tag_
@@ -33400,15 +33353,15 @@ references:
   isSpec: "True"
   fullName: AngeliA.HipCloth.DrawDoubleClothTailsOnHip
   nameWithType: HipCloth.DrawDoubleClothTailsOnHip
-- uid: AngeliA.HipCloth.DrawSingleClothTail(AngeliA.PoseCharacterRenderer,AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
-  name: DrawSingleClothTail(PoseCharacterRenderer, AngeSprite, int, int, int, int, int, int, int)
-  href: api/AngeliA.HipCloth.html#AngeliA_HipCloth_DrawSingleClothTail_AngeliA_PoseCharacterRenderer_AngeliA_AngeSprite_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_
-  commentId: M:AngeliA.HipCloth.DrawSingleClothTail(AngeliA.PoseCharacterRenderer,AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
-  name.vb: DrawSingleClothTail(PoseCharacterRenderer, AngeSprite, Integer, Integer, Integer, Integer, Integer, Integer, Integer)
-  fullName: AngeliA.HipCloth.DrawSingleClothTail(AngeliA.PoseCharacterRenderer, AngeliA.AngeSprite, int, int, int, int, int, int, int)
-  fullName.vb: AngeliA.HipCloth.DrawSingleClothTail(AngeliA.PoseCharacterRenderer, AngeliA.AngeSprite, Integer, Integer, Integer, Integer, Integer, Integer, Integer)
-  nameWithType: HipCloth.DrawSingleClothTail(PoseCharacterRenderer, AngeSprite, int, int, int, int, int, int, int)
-  nameWithType.vb: HipCloth.DrawSingleClothTail(PoseCharacterRenderer, AngeSprite, Integer, Integer, Integer, Integer, Integer, Integer, Integer)
+- uid: AngeliA.HipCloth.DrawSingleClothTail(AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  name: DrawSingleClothTail(AngeSprite, int, int, int, int, int, int, int, int)
+  href: api/AngeliA.HipCloth.html#AngeliA_HipCloth_DrawSingleClothTail_AngeliA_AngeSprite_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_
+  commentId: M:AngeliA.HipCloth.DrawSingleClothTail(AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  name.vb: DrawSingleClothTail(AngeSprite, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer)
+  fullName: AngeliA.HipCloth.DrawSingleClothTail(AngeliA.AngeSprite, int, int, int, int, int, int, int, int)
+  fullName.vb: AngeliA.HipCloth.DrawSingleClothTail(AngeliA.AngeSprite, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer)
+  nameWithType: HipCloth.DrawSingleClothTail(AngeSprite, int, int, int, int, int, int, int, int)
+  nameWithType.vb: HipCloth.DrawSingleClothTail(AngeSprite, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer)
 - uid: AngeliA.HipCloth.DrawSingleClothTail*
   name: DrawSingleClothTail
   href: api/AngeliA.HipCloth.html#AngeliA_HipCloth_DrawSingleClothTail_
@@ -34343,45 +34296,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.ICarrier.AllowBeingCarry
   nameWithType: ICarrier.AllowBeingCarry
-- uid: AngeliA.ICarrier.CarryHorizontalFrame
-  name: CarryHorizontalFrame
-  href: api/AngeliA.ICarrier.html#AngeliA_ICarrier_CarryHorizontalFrame
-  commentId: P:AngeliA.ICarrier.CarryHorizontalFrame
-  fullName: AngeliA.ICarrier.CarryHorizontalFrame
-  nameWithType: ICarrier.CarryHorizontalFrame
-- uid: AngeliA.ICarrier.CarryHorizontalFrame*
-  name: CarryHorizontalFrame
-  href: api/AngeliA.ICarrier.html#AngeliA_ICarrier_CarryHorizontalFrame_
-  commentId: Overload:AngeliA.ICarrier.CarryHorizontalFrame
-  isSpec: "True"
-  fullName: AngeliA.ICarrier.CarryHorizontalFrame
-  nameWithType: ICarrier.CarryHorizontalFrame
-- uid: AngeliA.ICarrier.CarryLeft
-  name: CarryLeft
-  href: api/AngeliA.ICarrier.html#AngeliA_ICarrier_CarryLeft
-  commentId: P:AngeliA.ICarrier.CarryLeft
-  fullName: AngeliA.ICarrier.CarryLeft
-  nameWithType: ICarrier.CarryLeft
-- uid: AngeliA.ICarrier.CarryLeft*
-  name: CarryLeft
-  href: api/AngeliA.ICarrier.html#AngeliA_ICarrier_CarryLeft_
-  commentId: Overload:AngeliA.ICarrier.CarryLeft
-  isSpec: "True"
-  fullName: AngeliA.ICarrier.CarryLeft
-  nameWithType: ICarrier.CarryLeft
-- uid: AngeliA.ICarrier.CarryRight
-  name: CarryRight
-  href: api/AngeliA.ICarrier.html#AngeliA_ICarrier_CarryRight
-  commentId: P:AngeliA.ICarrier.CarryRight
-  fullName: AngeliA.ICarrier.CarryRight
-  nameWithType: ICarrier.CarryRight
-- uid: AngeliA.ICarrier.CarryRight*
-  name: CarryRight
-  href: api/AngeliA.ICarrier.html#AngeliA_ICarrier_CarryRight_
-  commentId: Overload:AngeliA.ICarrier.CarryRight
-  isSpec: "True"
-  fullName: AngeliA.ICarrier.CarryRight
-  nameWithType: ICarrier.CarryRight
 - uid: AngeliA.ICarrier.CarryTargetsOnTopHorizontally(AngeliA.Entity,System.Int32,AngeliA.OperationMode)
   name: CarryTargetsOnTopHorizontally(Entity, int, OperationMode)
   href: api/AngeliA.ICarrier.html#AngeliA_ICarrier_CarryTargetsOnTopHorizontally_AngeliA_Entity_System_Int32_AngeliA_OperationMode_
@@ -35407,22 +35321,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.IWithCharacterBuff.CurrentBuff
   nameWithType: IWithCharacterBuff.CurrentBuff
-- uid: AngeliA.IWithCharacterBuff.GiveBuffFromMap(AngeliA.IWithCharacterBuff,System.Int32,System.Int32,System.Int32,System.Int32)
-  name: GiveBuffFromMap(IWithCharacterBuff, int, int, int, int)
-  href: api/AngeliA.IWithCharacterBuff.html#AngeliA_IWithCharacterBuff_GiveBuffFromMap_AngeliA_IWithCharacterBuff_System_Int32_System_Int32_System_Int32_System_Int32_
-  commentId: M:AngeliA.IWithCharacterBuff.GiveBuffFromMap(AngeliA.IWithCharacterBuff,System.Int32,System.Int32,System.Int32,System.Int32)
-  name.vb: GiveBuffFromMap(IWithCharacterBuff, Integer, Integer, Integer, Integer)
-  fullName: AngeliA.IWithCharacterBuff.GiveBuffFromMap(AngeliA.IWithCharacterBuff, int, int, int, int)
-  fullName.vb: AngeliA.IWithCharacterBuff.GiveBuffFromMap(AngeliA.IWithCharacterBuff, Integer, Integer, Integer, Integer)
-  nameWithType: IWithCharacterBuff.GiveBuffFromMap(IWithCharacterBuff, int, int, int, int)
-  nameWithType.vb: IWithCharacterBuff.GiveBuffFromMap(IWithCharacterBuff, Integer, Integer, Integer, Integer)
-- uid: AngeliA.IWithCharacterBuff.GiveBuffFromMap*
-  name: GiveBuffFromMap
-  href: api/AngeliA.IWithCharacterBuff.html#AngeliA_IWithCharacterBuff_GiveBuffFromMap_
-  commentId: Overload:AngeliA.IWithCharacterBuff.GiveBuffFromMap
-  isSpec: "True"
-  fullName: AngeliA.IWithCharacterBuff.GiveBuffFromMap
-  nameWithType: IWithCharacterBuff.GiveBuffFromMap
 - uid: AngeliA.IWithCharacterHealth
   name: IWithCharacterHealth
   href: api/AngeliA.IWithCharacterHealth.html
@@ -41905,32 +41803,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.MapEditor.CurrentZ
   nameWithType: MapEditor.CurrentZ
-- uid: AngeliA.MapEditor.GotoEditMode
-  name: GotoEditMode()
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_GotoEditMode
-  commentId: M:AngeliA.MapEditor.GotoEditMode
-  fullName: AngeliA.MapEditor.GotoEditMode()
-  nameWithType: MapEditor.GotoEditMode()
-- uid: AngeliA.MapEditor.GotoEditMode*
-  name: GotoEditMode
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_GotoEditMode_
-  commentId: Overload:AngeliA.MapEditor.GotoEditMode
-  isSpec: "True"
-  fullName: AngeliA.MapEditor.GotoEditMode
-  nameWithType: MapEditor.GotoEditMode
-- uid: AngeliA.MapEditor.GotoPlayMode
-  name: GotoPlayMode()
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_GotoPlayMode
-  commentId: M:AngeliA.MapEditor.GotoPlayMode
-  fullName: AngeliA.MapEditor.GotoPlayMode()
-  nameWithType: MapEditor.GotoPlayMode()
-- uid: AngeliA.MapEditor.GotoPlayMode*
-  name: GotoPlayMode
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_GotoPlayMode_
-  commentId: Overload:AngeliA.MapEditor.GotoPlayMode
-  isSpec: "True"
-  fullName: AngeliA.MapEditor.GotoPlayMode
-  nameWithType: MapEditor.GotoPlayMode
 - uid: AngeliA.MapEditor.Instance
   name: Instance
   href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_Instance
@@ -41996,43 +41868,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.MapEditor.IsPlaying
   nameWithType: MapEditor.IsPlaying
-- uid: AngeliA.MapEditor.LastEdittingViewH
-  name: LastEdittingViewH
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_LastEdittingViewH
-  commentId: F:AngeliA.MapEditor.LastEdittingViewH
-  fullName: AngeliA.MapEditor.LastEdittingViewH
-  nameWithType: MapEditor.LastEdittingViewH
-- uid: AngeliA.MapEditor.LastEdittingViewX
-  name: LastEdittingViewX
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_LastEdittingViewX
-  commentId: F:AngeliA.MapEditor.LastEdittingViewX
-  fullName: AngeliA.MapEditor.LastEdittingViewX
-  nameWithType: MapEditor.LastEdittingViewX
-- uid: AngeliA.MapEditor.LastEdittingViewY
-  name: LastEdittingViewY
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_LastEdittingViewY
-  commentId: F:AngeliA.MapEditor.LastEdittingViewY
-  fullName: AngeliA.MapEditor.LastEdittingViewY
-  nameWithType: MapEditor.LastEdittingViewY
-- uid: AngeliA.MapEditor.LastEdittingViewZ
-  name: LastEdittingViewZ
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_LastEdittingViewZ
-  commentId: F:AngeliA.MapEditor.LastEdittingViewZ
-  fullName: AngeliA.MapEditor.LastEdittingViewZ
-  nameWithType: MapEditor.LastEdittingViewZ
-- uid: AngeliA.MapEditor.MapRoot
-  name: MapRoot
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_MapRoot
-  commentId: P:AngeliA.MapEditor.MapRoot
-  fullName: AngeliA.MapEditor.MapRoot
-  nameWithType: MapEditor.MapRoot
-- uid: AngeliA.MapEditor.MapRoot*
-  name: MapRoot
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_MapRoot_
-  commentId: Overload:AngeliA.MapEditor.MapRoot
-  isSpec: "True"
-  fullName: AngeliA.MapEditor.MapRoot
-  nameWithType: MapEditor.MapRoot
 - uid: AngeliA.MapEditor.OnActivated
   name: OnActivated()
   href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_OnActivated
@@ -42046,19 +41881,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.MapEditor.OnActivated
   nameWithType: MapEditor.OnActivated
-- uid: AngeliA.MapEditor.QuickPlayerDrop
-  name: QuickPlayerDrop
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_QuickPlayerDrop
-  commentId: P:AngeliA.MapEditor.QuickPlayerDrop
-  fullName: AngeliA.MapEditor.QuickPlayerDrop
-  nameWithType: MapEditor.QuickPlayerDrop
-- uid: AngeliA.MapEditor.QuickPlayerDrop*
-  name: QuickPlayerDrop
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_QuickPlayerDrop_
-  commentId: Overload:AngeliA.MapEditor.QuickPlayerDrop
-  isSpec: "True"
-  fullName: AngeliA.MapEditor.QuickPlayerDrop
-  nameWithType: MapEditor.QuickPlayerDrop
 - uid: AngeliA.MapEditor.SETTING_QUICK_PLAYER_DROP
   name: SETTING_QUICK_PLAYER_DROP
   href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_SETTING_QUICK_PLAYER_DROP
@@ -42099,22 +41921,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.MapEditor.Save
   nameWithType: MapEditor.Save
-- uid: AngeliA.MapEditor.SetView(AngeliA.IRect,System.Int32,System.Boolean)
-  name: SetView(IRect, int, bool)
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_SetView_AngeliA_IRect_System_Int32_System_Boolean_
-  commentId: M:AngeliA.MapEditor.SetView(AngeliA.IRect,System.Int32,System.Boolean)
-  name.vb: SetView(IRect, Integer, Boolean)
-  fullName: AngeliA.MapEditor.SetView(AngeliA.IRect, int, bool)
-  fullName.vb: AngeliA.MapEditor.SetView(AngeliA.IRect, Integer, Boolean)
-  nameWithType: MapEditor.SetView(IRect, int, bool)
-  nameWithType.vb: MapEditor.SetView(IRect, Integer, Boolean)
-- uid: AngeliA.MapEditor.SetView*
-  name: SetView
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_SetView_
-  commentId: Overload:AngeliA.MapEditor.SetView
-  isSpec: "True"
-  fullName: AngeliA.MapEditor.SetView
-  nameWithType: MapEditor.SetView
 - uid: AngeliA.MapEditor.SetViewZ(System.Int32)
   name: SetViewZ(int)
   href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_SetViewZ_System_Int32_
@@ -42131,45 +41937,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.MapEditor.SetViewZ
   nameWithType: MapEditor.SetViewZ
-- uid: AngeliA.MapEditor.ShowBehind
-  name: ShowBehind
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_ShowBehind
-  commentId: P:AngeliA.MapEditor.ShowBehind
-  fullName: AngeliA.MapEditor.ShowBehind
-  nameWithType: MapEditor.ShowBehind
-- uid: AngeliA.MapEditor.ShowBehind*
-  name: ShowBehind
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_ShowBehind_
-  commentId: Overload:AngeliA.MapEditor.ShowBehind
-  isSpec: "True"
-  fullName: AngeliA.MapEditor.ShowBehind
-  nameWithType: MapEditor.ShowBehind
-- uid: AngeliA.MapEditor.ShowGridGizmos
-  name: ShowGridGizmos
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_ShowGridGizmos
-  commentId: P:AngeliA.MapEditor.ShowGridGizmos
-  fullName: AngeliA.MapEditor.ShowGridGizmos
-  nameWithType: MapEditor.ShowGridGizmos
-- uid: AngeliA.MapEditor.ShowGridGizmos*
-  name: ShowGridGizmos
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_ShowGridGizmos_
-  commentId: Overload:AngeliA.MapEditor.ShowGridGizmos
-  isSpec: "True"
-  fullName: AngeliA.MapEditor.ShowGridGizmos
-  nameWithType: MapEditor.ShowGridGizmos
-- uid: AngeliA.MapEditor.ShowState
-  name: ShowState
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_ShowState
-  commentId: P:AngeliA.MapEditor.ShowState
-  fullName: AngeliA.MapEditor.ShowState
-  nameWithType: MapEditor.ShowState
-- uid: AngeliA.MapEditor.ShowState*
-  name: ShowState
-  href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_ShowState_
-  commentId: Overload:AngeliA.MapEditor.ShowState
-  isSpec: "True"
-  fullName: AngeliA.MapEditor.ShowState
-  nameWithType: MapEditor.ShowState
 - uid: AngeliA.MapEditor.TYPE_ID
   name: TYPE_ID
   href: api/AngeliA.MapEditor.html#AngeliA_MapEditor_TYPE_ID
@@ -72485,22 +72252,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.WindowUI.CleanDirty
   nameWithType: WindowUI.CleanDirty
-- uid: AngeliA.WindowUI.CloseWindow(System.Int32)
-  name: CloseWindow(int)
-  href: api/AngeliA.WindowUI.html#AngeliA_WindowUI_CloseWindow_System_Int32_
-  commentId: M:AngeliA.WindowUI.CloseWindow(System.Int32)
-  name.vb: CloseWindow(Integer)
-  fullName: AngeliA.WindowUI.CloseWindow(int)
-  fullName.vb: AngeliA.WindowUI.CloseWindow(Integer)
-  nameWithType: WindowUI.CloseWindow(int)
-  nameWithType.vb: WindowUI.CloseWindow(Integer)
-- uid: AngeliA.WindowUI.CloseWindow*
-  name: CloseWindow
-  href: api/AngeliA.WindowUI.html#AngeliA_WindowUI_CloseWindow_
-  commentId: Overload:AngeliA.WindowUI.CloseWindow
-  isSpec: "True"
-  fullName: AngeliA.WindowUI.CloseWindow
-  nameWithType: WindowUI.CloseWindow
 - uid: AngeliA.WindowUI.DefaultWindowName
   name: DefaultWindowName
   href: api/AngeliA.WindowUI.html#AngeliA_WindowUI_DefaultWindowName
@@ -72566,35 +72317,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.WindowUI.NotificationSubContent
   nameWithType: WindowUI.NotificationSubContent
-- uid: AngeliA.WindowUI.OnGameQuitting
-  name: OnGameQuitting()
-  href: api/AngeliA.WindowUI.html#AngeliA_WindowUI_OnGameQuitting
-  commentId: M:AngeliA.WindowUI.OnGameQuitting
-  fullName: AngeliA.WindowUI.OnGameQuitting()
-  nameWithType: WindowUI.OnGameQuitting()
-- uid: AngeliA.WindowUI.OnGameQuitting*
-  name: OnGameQuitting
-  href: api/AngeliA.WindowUI.html#AngeliA_WindowUI_OnGameQuitting_
-  commentId: Overload:AngeliA.WindowUI.OnGameQuitting
-  isSpec: "True"
-  fullName: AngeliA.WindowUI.OnGameQuitting
-  nameWithType: WindowUI.OnGameQuitting
-- uid: AngeliA.WindowUI.OpenWindow(System.Int32)
-  name: OpenWindow(int)
-  href: api/AngeliA.WindowUI.html#AngeliA_WindowUI_OpenWindow_System_Int32_
-  commentId: M:AngeliA.WindowUI.OpenWindow(System.Int32)
-  name.vb: OpenWindow(Integer)
-  fullName: AngeliA.WindowUI.OpenWindow(int)
-  fullName.vb: AngeliA.WindowUI.OpenWindow(Integer)
-  nameWithType: WindowUI.OpenWindow(int)
-  nameWithType.vb: WindowUI.OpenWindow(Integer)
-- uid: AngeliA.WindowUI.OpenWindow*
-  name: OpenWindow
-  href: api/AngeliA.WindowUI.html#AngeliA_WindowUI_OpenWindow_
-  commentId: Overload:AngeliA.WindowUI.OpenWindow
-  isSpec: "True"
-  fullName: AngeliA.WindowUI.OpenWindow
-  nameWithType: WindowUI.OpenWindow
 - uid: AngeliA.WindowUI.RequireNotification(System.String,System.String)
   name: RequireNotification(string, string)
   href: api/AngeliA.WindowUI.html#AngeliA_WindowUI_RequireNotification_System_String_System_String_

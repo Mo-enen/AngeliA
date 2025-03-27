@@ -5,6 +5,9 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Menu UI for display player's state, manage equipments and items. Display when player press "select" button once.
+/// </summary>
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.Capacity(1, 1)]
@@ -38,21 +41,48 @@ public class PlayerMenuUI : EntityUI {
 	private const int ANIMATION_DURATION = 12;
 	private const int FLASH_PANEL_DURATION = 52;
 	private const int WINDOW_PADDING = 6;
-	public const int PREVIEW_SIZE = 108;
-	public const int INFO_WIDTH = 142;
-	public const int ITEM_SIZE = 42;
-	public const int EQUIP_PANEL_WIDTH = 256;
-	public const int EQUIP_ITEM_HEIGHT = 48;
+	private const int PREVIEW_SIZE = 108;
+	private const int INFO_WIDTH = 142;
+	private const int ITEM_SIZE = 42;
+	private const int EQUIP_PANEL_WIDTH = 256;
+	private const int EQUIP_ITEM_HEIGHT = 48;
 
 	// Api
+	/// <summary>
+	/// Global instance of this entity
+	/// </summary>
 	public static PlayerMenuUI Instance { get; private set; } = null;
+	/// <summary>
+	/// True is this menu is currently displaying
+	/// </summary>
 	public static bool ShowingUI => Instance != null && Instance.Active;
+	/// <summary>
+	/// Instance of the current partner UI. Partner is the panel shows on top. The bottom one always display player's inventory. When partner panel is null, it display player's equipment panel.
+	/// </summary>
 	public PlayerMenuPartnerUI Partner { get; private set; } = null;
+	/// <summary>
+	/// Column count of the partner panel's inventory
+	/// </summary>
 	public int TopPanelColumn => Partner != null ? Partner.Column : 2;
+	/// <summary>
+	/// Row count of the partner panel's inventory
+	/// </summary>
 	public int TopPanelRow => Partner != null ? Partner.Row : 3;
+	/// <summary>
+	/// Index of the inventory cursor. (0 means bottom left, 1 makes the cursor go right)
+	/// </summary>
 	public int CursorIndex { get; set; } = 0;
+	/// <summary>
+	/// True if the cursor is in bottom inventory panel (the one for player's inventory)
+	/// </summary>
 	public bool CursorInBottomPanel { get; set; } = true;
+	/// <summary>
+	/// ID of the current taking item (the one move with the cursor), 0 means no item is taking.
+	/// </summary>
 	public int TakingID { get; private set; } = 0;
+	/// <summary>
+	/// Count of the current taking item.
+	/// </summary>
 	public int TakingCount { get; private set; } = 0;
 
 	// Data
@@ -673,6 +703,11 @@ public class PlayerMenuUI : EntityUI {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Open player menu ui with given partner ui
+	/// </summary>
+	/// <param name="partner">Instance of the partner ui which will be display on top</param>
+	/// <returns>True if the menu is opened</returns>
 	public static bool OpenMenuWithPartner (PlayerMenuPartnerUI partner, int partnerInventoryID) {
 		// Reload Current Menu
 		if (ShowingUI) {
@@ -691,6 +726,10 @@ public class PlayerMenuUI : EntityUI {
 	}
 
 
+	/// <summary>
+	/// Open player menu ui without partner. Player equipment ui will be display on top.
+	/// </summary>
+	/// <returns>Instance of the player menu ui</returns>
 	public static PlayerMenuUI OpenMenu () {
 		var ins = Instance;
 		if (ins == null) return null;
@@ -707,18 +746,40 @@ public class PlayerMenuUI : EntityUI {
 	}
 
 
+	/// <summary>
+	/// Close the current opening player menu ui
+	/// </summary>
 	public static void CloseMenu () {
 		if (Instance == null) return;
 		Instance.Active = false;
 	}
 
 
+	/// <summary>
+	/// Draw stardard inventory panel ui
+	/// </summary>
+	/// <param name="inventoryID">Inventory ID for the partner ui</param>
+	/// <param name="column">Inventory column count for the partner ui</param>
+	/// <param name="row">Inventory row count for the partner ui</param>
+	/// <param name="avatarID">Artwork sprite ID of the partner avatar</param>
 	public static void DrawTopInventory (int inventoryID, int column, int row, int avatarID = 0) => Instance?.DrawInventory(inventoryID, column, row, true, avatarID);
 
 
+	/// <summary>
+	/// Draw a single item field
+	/// </summary>
+	/// <param name="itemID">ID of the item from this field</param>
+	/// <param name="itemCount">Count of the item from this field</param>
+	/// <param name="frameCode">Artwork sprite ID of the field's frame</param>
+	/// <param name="itemRect">Rect position of this field in global space</param>
+	/// <param name="interactable">True if this field is currently interactable</param>
+	/// <param name="uiIndex">Cursor index for this field for UI logic only</param>
 	public static void DrawItemFieldUI (int itemID, int itemCount, int frameCode, IRect itemRect, bool interactable, int uiIndex) => Instance?.DrawItemField(itemID, itemCount, frameCode, itemRect, interactable, uiIndex);
 
 
+	/// <summary>
+	/// Set current taking item on the cursor
+	/// </summary>
 	public void SetTaking (int takingID, int takingCount) {
 		TakingID = takingID;
 		TakingCount = takingCount;
@@ -784,7 +845,7 @@ public class PlayerMenuUI : EntityUI {
 	}
 
 
-	public void DrawItemField (int itemID, int itemCount, int frameCode, IRect itemRect, bool interactable, int uiIndex) {
+	private void DrawItemField (int itemID, int itemCount, int frameCode, IRect itemRect, bool interactable, int uiIndex) {
 
 		if (itemCount <= 0) itemID = 0;
 		var item = itemID == 0 ? null : ItemSystem.GetItem(itemID);

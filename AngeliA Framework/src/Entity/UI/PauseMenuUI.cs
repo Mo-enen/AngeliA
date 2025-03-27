@@ -3,11 +3,14 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// UI entity for the menu that displays when game is paused
+/// </summary>
 [EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.Capacity(1, 1)]
 [EntityAttribute.StageOrder(4096)]
-public class PauseMenuUI : MenuUI {
+internal class PauseMenuUI : MenuUI {
 
 
 
@@ -90,7 +93,7 @@ public class PauseMenuUI : MenuUI {
 
 
 	[OnGameTryingToQuit]
-	public static bool OnGameTryingToQuit () {
+	internal static bool OnGameTryingToQuit () {
 		if (Game.IsToolApplication) return true;
 		Stage.TrySpawnEntity(Instance.TypeID, 0, 0, out _);
 		Instance.Mode = Instance.RequireMode = MenuMode.Quit;
@@ -99,7 +102,7 @@ public class PauseMenuUI : MenuUI {
 
 
 	[OnGameUpdatePauseless]
-	public static void OnGameUpdatePauseless () {
+	internal static void OnGameUpdatePauseless () {
 		if (Instance == null || !Game.IsPausing || Instance.Active) return;
 		Stage.TrySpawnEntity(Instance.TypeID, 0, 0, out _);
 	}

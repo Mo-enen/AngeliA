@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Class for the entities which apply general physics by the system
+/// </summary>
 public abstract class Rigidbody : Entity, ICarrier {
 
 
@@ -13,47 +16,161 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 	// Api
 	public override IRect Rect => new(X + OffsetX, Y + OffsetY, Width, Height);
+	/// <summary>
+	/// True if this entity is touching ground
+	/// </summary>
 	public bool IsGrounded { get; protected set; } = false;
+	/// <summary>
+	/// True if this entity is stucking inside the ground
+	/// </summary>
 	public bool IsInsideGround { get; private set; } = false;
+	/// <summary>
+	/// True if this entity is inside water
+	/// </summary>
 	public bool InWater => InWaterHit.Rect != default;
+	/// <summary>
+	/// Horizontal velocity at current frame
+	/// </summary>
 	public int VelocityX { get; set; } = 0;
+	/// <summary>
+	/// Vertical velocity at current frame
+	/// </summary>
 	public int VelocityY { get; set; } = 0;
+	/// <summary>
+	/// How many speed remain after this entity collide on another entity (0 means 0%, 1000 means 100%)
+	/// </summary>
 	public int BounceSpeedRate { get; set; } = 0;
+	/// <summary>
+	/// Position offset between X value and Rect.x value
+	/// </summary>
 	public int OffsetX { get; set; } = 0;
+	/// <summary>
+	/// Position offset between Y value and Rect.y value
+	/// </summary>
 	public int OffsetY { get; set; } = 0;
+	/// <summary>
+	/// Block ID of the current touching ground block
+	/// </summary>
 	public int GroundedID { get; set; } = 0;
+	/// <summary>
+	/// Position X for the last frame in global space
+	/// </summary>
 	public int PrevX { get; private set; } = 0;
+	/// <summary>
+	/// Position Y for the last frame in global space
+	/// </summary>
 	public int PrevY { get; private set; } = 0;
+	/// <summary>
+	/// Changes of position X at current frame in global space
+	/// </summary>
 	public int DeltaPositionX => X - PrevX;
+	/// <summary>
+	/// Changes of position Y at current frame in global space
+	/// </summary>
 	public int DeltaPositionY => Y - PrevY;
+	/// <summary>
+	/// Velocity X that keep applying on this entity. Every frame the value will move to 0 by "decay"
+	/// </summary>
 	public (int value, int decay) MomentumX = (0, 1);
+	/// <summary>
+	/// Velocity Y that keep applying on this entity. Every frame the value will move to 0 by "decay"
+	/// </summary>
 	public (int value, int decay) MomentumY = (0, 1);
+	/// <summary>
+	/// True if this entity do not react to the colliders which already overlaps on it.
+	/// </summary>
 	public bool RequireDodgeOverlap { get; set; } = false;
+	/// <summary>
+	/// True if this entity is facing right side
+	/// </summary>
 	public virtual bool FacingRight => true;
+	/// <summary>
+	/// True if this entity try to move out of ground automatically when it stuck inside ground
+	/// </summary>
 	public virtual bool EjectWhenInsideGround => true;
 
 	// Based Value
+	/// <summary>
+	/// Gravity value that applys to all rigidbody
+	/// </summary>
 	public static readonly FrameBasedInt GlobalGravity = new(5);
+	/// <summary>
+	/// Amount of gravity apply to this entity when it's moving downward (0 means 0%, 1000 means 100%)
+	/// </summary>
 	public readonly FrameBasedInt FallingGravityScale = new(1000);
+	/// <summary>
+	/// Amount of gravity apply to this entity when it's moving upward (0 means 0%, 1000 means 100%)
+	/// </summary>
 	public readonly FrameBasedInt RisingGravityScale = new(1000);
+	/// <summary>
+	/// Which physics layers should this entity collide with
+	/// </summary>
 	public readonly FrameBasedInt CollisionMask = new();
+	/// <summary>
+	/// If this entity currently check for touching ground
+	/// </summary>
 	public readonly FrameBasedBool IgnoreGroundCheck = new(false);
+	/// <summary>
+	/// True if this entity currently should not apply gravity
+	/// </summary>
 	public readonly FrameBasedBool IgnoreGravity = new(false);
+	/// <summary>
+	/// True if this entity currently should not apply any physics logic
+	/// </summary>
 	public readonly FrameBasedBool IgnorePhysics = new(false);
+	/// <summary>
+	/// If this entity currently check for stuck inside ground
+	/// </summary>
 	public readonly FrameBasedBool IgnoreInsideGround = new(false);
+	/// <summary>
+	/// True if this entity currently should not collide with oneway gates
+	/// </summary>
 	public readonly FrameBasedBool IgnoreOneway = new(false);
+	/// <summary>
+	/// True if this entity currently should not apply any momentum
+	/// </summary>
 	public readonly FrameBasedBool IgnoreMomentum = new(false);
 
 	// Override
+	/// <summary>
+	/// Which physical layer should this entity fill it's collider in
+	/// </summary>
 	public abstract int PhysicalLayer { get; }
+	/// <summary>
+	/// Intrinsic physics layers this entity should collide with
+	/// </summary>
 	public virtual int SelfCollisionMask => PhysicsMask.SOLID;
+	/// <summary>
+	/// Limitation for speed from gravity
+	/// </summary>
 	public virtual int MaxGravitySpeed => 96;
+	/// <summary>
+	/// Amount of horizontal speed lost every frame
+	/// </summary>
 	public virtual int AirDragX => 3;
+	/// <summary>
+	/// Amount of vertical speed lost every frame
+	/// </summary>
 	public virtual int AirDragY => 0;
+	/// <summary>
+	/// Amount of upward speed apply when the entity inside water
+	/// </summary>
 	public virtual int WaterFloatSpeed => 0;
+	/// <summary>
+	/// Amount of speed scales when entity inside water (0 means 0%, 1000 means 100%)
+	/// </summary>
 	public virtual int WaterSpeedRate => 400;
+	/// <summary>
+	/// True if this entity can be push by other
+	/// </summary>
 	public virtual bool AllowBeingPush => true;
+	/// <summary>
+	/// True if this entity despawns when it's inside ground
+	/// </summary>
 	public virtual bool DestroyWhenInsideGround => false;
+	/// <summary>
+	/// Trhe if this entity can carry other ICarrier on top
+	/// </summary>
 	public virtual bool CarryOtherOnTop => true;
 	bool ICarrier.AllowBeingCarry => true;
 	int ICarrier.CarryLeft { get; set; }
@@ -345,6 +462,12 @@ public abstract class Rigidbody : Entity, ICarrier {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Make this entity move with physics rules at this frame
+	/// </summary>
+	/// <param name="speedX">Delta position X</param>
+	/// <param name="speedY">Delta position Y</param>
+	/// <param name="ignoreCarry">True if this entity don't carry other on top</param>
 	public void PerformMove (int speedX, int speedY, bool ignoreCarry = false) {
 
 		if (IgnorePhysics) return;
@@ -396,6 +519,11 @@ public abstract class Rigidbody : Entity, ICarrier {
 	}
 
 
+	/// <summary>
+	/// Mark this entity as touching ground for given frames long
+	/// </summary>
+	/// <param name="frame"></param>
+	/// <param name="blockID">Ground block ID</param>
 	public void MakeGrounded (int frame = 1, int blockID = 0) {
 		IsGrounded = true;
 		IgnoreGroundCheck.True(frame);
@@ -403,6 +531,9 @@ public abstract class Rigidbody : Entity, ICarrier {
 	}
 
 
+	/// <summary>
+	/// Stop making this entity marked as touching ground
+	/// </summary>
 	public void CancelMakeGrounded () {
 		IsGrounded = PerformGroundCheck(Rect, out var hit);
 		GroundedID = IsGrounded ? hit.SourceID : 0;
@@ -410,9 +541,17 @@ public abstract class Rigidbody : Entity, ICarrier {
 	}
 
 
+	/// <summary>
+	/// This function is called when the entity is being pushed
+	/// </summary>
 	public virtual void Push (int speedX) => PerformMove(speedX, 0);
 
 
+	/// <summary>
+	/// Return true if the entity is touching ground
+	/// </summary>
+	/// <param name="rect">Blocks overlap this rect range will be count as touching ground</param>
+	/// <param name="hit">The physics data from the ground block</param>
 	public bool PerformGroundCheck (IRect rect, out PhysicsCell hit) {
 		return !Physics.RoomCheck(
 			CollisionMask, rect, this, Direction4.Down, out hit
@@ -422,10 +561,21 @@ public abstract class Rigidbody : Entity, ICarrier {
 	}
 
 
+	/// <summary>
+	/// Make this entity fill trigger into the physics system for given frames long
+	/// </summary>
 	public void FillAsTrigger (int duration = 0, int priority = 0) => FillModeIndex.Override(1, duration, priority);
+
+
+	/// <summary>
+	/// Make this entity fill upward oneway gate into the physics system for given frames long
+	/// </summary>
 	public void FillAsOnewayUp (int duration = 0, int priority = 0) => FillModeIndex.Override(2, duration, priority);
 
 
+	/// <summary>
+	/// This function is called when this entity is despawn by being stuck inside ground
+	/// </summary>
 	protected virtual void OnInsideGroundDestroyed () { }
 
 
@@ -437,6 +587,9 @@ public abstract class Rigidbody : Entity, ICarrier {
 	#region --- LGC ---
 
 
+	/// <summary>
+	/// Function that holds the touching ground checking logic
+	/// </summary>
 	protected virtual bool GroundedCheck () {
 		if (IsInsideGround) return true;
 		if (IgnoreGroundCheck) return IsGrounded;
@@ -447,6 +600,9 @@ public abstract class Rigidbody : Entity, ICarrier {
 	}
 
 
+	/// <summary>
+	/// Function that holds the stuch inside ground checking logic
+	/// </summary>
 	protected virtual bool InsideGroundCheck () {
 		if (IgnoreInsideGround) return IsInsideGround;
 		int mask = PhysicsMask.MAP & CollisionMask;

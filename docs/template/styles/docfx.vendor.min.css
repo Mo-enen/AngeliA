@@ -7195,7 +7195,7 @@ code.hljs {
     color: #d73a49
 }
 
-.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ {
+.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__ {
     color: #4ec9b0
 }
 
@@ -7203,7 +7203,15 @@ code.hljs {
     color: #005cc5
 }
 
-.hljs-meta, .hljs-regexp {
+.hljs-title.function_ {
+    color: #ded3a0
+}
+
+.hljs-meta {
+    color: #ccd5dc
+}
+
+.hljs-regexp {
     color: #d69d85
 }
 

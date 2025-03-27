@@ -32,7 +32,8 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
 		UiPool.Clear();
-		UiPool.Add(InventoryPartnerUI.TYPE_ID, InventoryPartnerUI.Instance);
+		var invUI = new InventoryPartnerUI();
+		UiPool.Add(invUI.GetType().AngeHash(), invUI);
 		foreach (var type in typeof(InventoryPartnerUI).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not InventoryPartnerUI ui) continue;
 			UiPool.TryAdd(type.AngeHash(), ui);

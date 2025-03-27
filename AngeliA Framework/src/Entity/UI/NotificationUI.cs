@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Display a temporarily notification on top of screen during gameplay
+/// </summary>
 [EntityAttribute.Capacity(6, 0)]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDespawnOutOfRange]
@@ -83,6 +86,11 @@ public class NotificationUI : EntityUI {
 
 	}
 
+	/// <summary>
+	/// Require a notification. Call this function once for a single notification.
+	/// </summary>
+	/// <param name="content">Text content of the notification</param>
+	/// <param name="icon">Artwork sprite ID for the notification. Set to int.MinValue if no icon should be display.</param>
 	public static void SpawnNotification (string content, int icon = int.MinValue) {
 		if (Stage.SpawnEntity(TYPE_ID, 0, 0) is not NotificationUI ui) return;
 		ui.Content = content;

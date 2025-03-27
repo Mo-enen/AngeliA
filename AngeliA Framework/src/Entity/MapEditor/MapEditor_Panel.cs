@@ -980,7 +980,7 @@ public partial class MapEditor {
 			}
 		}
 
-		if (GenericPopupUI.CurrentItemCount > 0) {
+		if (EditorMeta.PinnedLists.Count > 0) {
 			GenericPopupUI.AddSeparator();
 		}
 

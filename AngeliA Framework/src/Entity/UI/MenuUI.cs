@@ -4,6 +4,9 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// General class for menu entity ui
+/// </summary>
 public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
@@ -12,42 +15,132 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	#region --- VAR ---
 
 	// Api
-	public bool SelectionAdjustable { get; private set; } = false;
+	/// <summary>
+	/// Index of the current selecting item
+	/// </summary>
 	public int SelectionIndex { get; private set; } = 0;
+	/// <summary>
+	/// Text content of the message display on top. Set to empty means no message should be display.
+	/// </summary>
 	public string Message { get; set; } = "";
+	/// <summary>
+	/// Rect position of the background range in global space
+	/// </summary>
 	public IRect BackgroundRect { get; private set; }
+	/// <summary>
+	/// Forced horizontal size in global space 
+	/// </summary>
 	public int OverrideWindowWidth { get; set; } = -1;
+	/// <summary>
+	/// Length in frame for the appearing animation
+	/// </summary>
 	public int AnimationDuration { get; set; } = 8;
+	/// <summary>
+	/// GUI style instance of the background panel
+	/// </summary>
 	protected GUIStyle BackgroundStyle { get; set; }
+	/// <summary>
+	/// GUI style instance of the message box
+	/// </summary>
 	protected GUIStyle MessageStyle { get; set; }
+	/// <summary>
+	/// GUI style instance of the item label
+	/// </summary>
 	protected GUIStyle DefaultLabelStyle { get; init; } = null;
+	/// <summary>
+	/// GUI style instance of the item content
+	/// </summary>
 	protected GUIStyle DefaultContentStyle { get; init; } = null;
 	protected override bool BlockEvent => true;
 
 	// Config
+	/// <summary>
+	/// Artwork sprite for the background
+	/// </summary>
 	protected SpriteCode BackgroundCode = "Pixel";
+	/// <summary>
+	/// Artwork sprite for the selecting item mark
+	/// </summary>
 	protected SpriteCode SelectionMarkCode = BuiltInSprite.MENU_SELECTION_MARK;
+	/// <summary>
+	/// Artwork sprite for the mark displays on bottom when there's hiden item under the menu
+	/// </summary>
 	protected SpriteCode MoreItemMarkCode = BuiltInSprite.MENU_MORE_MARK;
+	/// <summary>
+	/// Artwork sprite for the adjusting arrows
+	/// </summary>
 	protected SpriteCode ArrowMarkCode = BuiltInSprite.MENU_ARROW_MARK;
+	/// <summary>
+	/// Unified width of the window
+	/// </summary>
 	protected int WindowWidth = 660;
+	/// <summary>
+	/// Unified height of a single item
+	/// </summary>
 	protected int ItemHeight = 32;
+	/// <summary>
+	/// Unified space between two items
+	/// </summary>
 	protected int ItemGap = 16;
+	/// <summary>
+	/// How many items can it display at the same time
+	/// </summary>
 	protected int MaxItemCount = 10;
+	/// <summary>
+	/// Unified padding gap for the content panel
+	/// </summary>
 	protected Int4 ContentPadding = new(32, 32, 18, 46);
+	/// <summary>
+	/// Unified size of the selection hand mark
+	/// </summary>
 	protected Int2 SelectionMarkSize = new(32, 32);
+	/// <summary>
+	/// Unified size of the item adjusting arrow
+	/// </summary>
 	protected Int2 SelectionArrowMarkSize = new(24, 24);
+	/// <summary>
+	/// Unified size of the hidden item indicator
+	/// </summary>
 	protected Int2 MoreMarkSize = new(28, 28);
+	/// <summary>
+	/// Color tint that blocks all screen behind
+	/// </summary>
 	protected Color32 ScreenTint = new(0, 0, 0, 0);
+	/// <summary>
+	/// Color tint of the background panel
+	/// </summary>
 	protected Color32 BackgroundTint = new(0, 0, 0, 255);
+	/// <summary>
+	/// Color tint of the selecting hand mark
+	/// </summary>
 	protected Color32 SelectionMarkTint = new(255, 255, 255, 255);
+	/// <summary>
+	/// Color tint of the hidden item indicator
+	/// </summary>
 	protected Color32 MoreMarkTint = new(220, 220, 220, 255);
+	/// <summary>
+	/// Color tint for the current hovering item
+	/// </summary>
 	protected Color32 MouseHighlightTint = new(255, 255, 255, 16);
+	/// <summary>
+	/// True if the menu react to player input currently
+	/// </summary>
 	protected bool Interactable = true;
+	/// <summary>
+	/// True if the menu react to mouse input
+	/// </summary>
 	protected bool AllowMouseClick = true;
+	/// <summary>
+	/// True if the menu close when player press "Start" button
+	/// </summary>
 	protected bool QuitOnPressStartOrEscKey = true;
+	/// <summary>
+	/// How many amount of appearing animation should apply on this menu
+	/// </summary>
 	protected int AnimationAmount = -32;
 
 	// Data
+	private bool SelectionAdjustable = false;
 	private int ItemCount;
 	private int ScrollY = 0;
 	private int MarkPingPongFrame = 0;
@@ -277,6 +370,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	protected abstract void DrawMenu ();
 
 
+	/// <summary>
+	/// This function is called when item selection is changed
+	/// </summary>
 	protected virtual void OnSelectionChanged () { }
 
 
@@ -288,6 +384,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Get the rect position of the panel window in global space
+	/// </summary>
 	protected virtual IRect GetWindowRect () {
 		int w = OverrideWindowWidth >= 0 ? OverrideWindowWidth : Unify(WindowWidth);
 		int h = Unify(TargetItemCount * ItemHeight + (TargetItemCount - 1) * ItemGap);
@@ -298,11 +397,30 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
 	// Draw Item
+	/// <inheritdoc cref="DrawItemLogic"/>
 	protected bool DrawItem (string label, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false) => DrawItemLogic(label, "", null, icon, false, false, out _, labelStyle, contentStyle, drawStyleBody);
+	/// <inheritdoc cref="DrawItemLogic"/>
 	protected bool DrawItem (string label, string content, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false) => DrawItemLogic(label, content, null, icon, false, false, out _, labelStyle, contentStyle, drawStyleBody);
+	/// <inheritdoc cref="DrawItemLogic"/>
 	protected bool DrawArrowItem (string label, string content, bool leftArrow, bool rightArrow, out int delta, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false) => DrawItemLogic(label, content, null, icon, leftArrow, rightArrow, out delta, labelStyle, contentStyle, drawStyleBody);
+	/// <inheritdoc cref="DrawItemLogic"/>
 	protected bool DrawItem (string label, char[] chars, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false) => DrawItemLogic(label, "", chars, icon, false, false, out _, labelStyle, contentStyle, drawStyleBody);
+	/// <inheritdoc cref="DrawItemLogic"/>
 	protected bool DrawArrowItem (string label, char[] chars, bool leftArrow, bool rightArrow, out int delta, int icon = 0, GUIStyle labelStyle = null, GUIStyle contentStyle = null, bool drawStyleBody = false) => DrawItemLogic(label, "", chars, icon, leftArrow, rightArrow, out delta, labelStyle, contentStyle, drawStyleBody);
+	/// <summary>
+	/// Draw an item inside the menu
+	/// </summary>
+	/// <param name="label">Text displays on left side of this item</param>
+	/// <param name="content">Text displays on right side of this item</param>
+	/// <param name="chars">Text displays on right side of this item</param>
+	/// <param name="icon">Artwork sprite</param>
+	/// <param name="useLeftArrow">True if there should be an arrow at left side</param>
+	/// <param name="useRightArrow">True if there should be an arrow at right side</param>
+	/// <param name="delta">Adjusted value from the user at current frame</param>
+	/// <param name="labelStyle">GUI style of the label part</param>
+	/// <param name="contentStyle">GUI style of the content part</param>
+	/// <param name="drawStyleBody">True if the body of GUI style should be display</param>
+	/// <returns>True if the item is pressed</returns>
 	private bool DrawItemLogic (
 		string label, string content, char[] chars, int icon,
 		bool useLeftArrow, bool useRightArrow, out int delta,
@@ -517,6 +635,9 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 
 
 	// Misc
+	/// <summary>
+	/// Set current selecting item
+	/// </summary>
 	protected void SetSelection (int index) => RequireSetSelection = index;
 
 

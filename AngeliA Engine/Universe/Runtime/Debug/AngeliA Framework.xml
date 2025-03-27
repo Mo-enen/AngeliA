@@ -3568,6 +3568,123 @@
         <member name="M:AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
             <returns>How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.</returns>
         </member>
+        <member name="T:AngeliA.Bullet">
+            <summary>
+            An entity represent bullet from weapons that deal damage to IDamageReceiver
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.AttackIndex">
+            <summary>
+            Index for style of the attack from the sender
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.AttackCharged">
+            <summary>
+            True if the attack is charged
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.DamageType">
+            <summary>
+            What extra type of damage does this bullet deal
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.Sender">
+            <summary>
+            This entity send the bullet
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.FailbackTargetTeam">
+            <summary>
+            Default team for checking attack target
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.TargetTeam">
+            <summary>
+            Team data for checking which group of target should be attack
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.BasicDamage">
+            <summary>
+            Intrinsic damage value
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.EnvironmentMask">
+            <summary>
+            Group of physics layers for checking environment that this bullet can react with
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.ReceiverMask">
+            <summary>
+            Group of physics layers for checking target that this bullet can react with
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.EnvironmentHitCount">
+            <summary>
+            How many environment collider can this bullet hit without getting despawn
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.ReceiverHitCount">
+            <summary>
+            How many target collider can this bullet hit without getting despawn
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.RoundHitCheck">
+            <summary>
+            True if the bullet check for target in a round shaped range
+            </summary>
+        </member>
+        <member name="P:AngeliA.Bullet.Duration">
+            <summary>
+            How long can this bullet exists on stage in frame
+            </summary>
+        </member>
+        <member name="F:AngeliA.Bullet.Damage">
+            <summary>
+            Final damage value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Bullet.ReceiverHitCheck(System.Boolean@)">
+            <summary>
+            Check for hitting any IDamageReceiver
+            </summary>
+            <param name="requireSelfDestroy">True if this bullet should be despawn</param>
+        </member>
+        <member name="M:AngeliA.Bullet.EnvironmentHitCheck(System.Boolean@)">
+            <summary>
+            Check for hitting any environment block
+            </summary>
+            <param name="requireSelfDestroy">True if this bullet should be despawn</param>
+        </member>
+        <member name="M:AngeliA.Bullet.BeforeDespawn(AngeliA.IDamageReceiver)">
+            <summary>
+            This function is called before the bullet get despawn by performing damage logic
+            </summary>
+            <param name="receiver">The target it hits</param>
+        </member>
+        <member name="M:AngeliA.Bullet.PerformHitEnvironment(System.Boolean@)">
+            <summary>
+            This function is called when the bullet hit environment colliders
+            </summary>
+            <param name="requireSelfDestroy">True if this bullet should be despawn</param>
+        </member>
+        <member name="M:AngeliA.Bullet.PerformHitReceiver(AngeliA.IDamageReceiver,System.Boolean@)">
+            <summary>
+            This function is called when the bullet hit IDamageReceiver
+            </summary>
+            <param name="receiver">The target it hits</param>
+            <param name="requireSelfDestroy">True if this bullet should be despawn</param>
+        </member>
+        <member name="M:AngeliA.Bullet.GroundCheck(AngeliA.Color32@)">
+            <summary>
+            True if the bullet is touching ground
+            </summary>
+        </member>
+        <member name="M:AngeliA.Bullet.GetDamage">
+            <summary>
+            Get the damage data using by this bullet to deal damage
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:AngeliA.BodyGadget">
             <summary>
             Representation of a pose character's extra body part. Always use instance from pool.
@@ -4953,6 +5070,193 @@
             Pants or skirt that auto generate from artwork sheet
             </summary>
         </member>
+        <member name="T:AngeliA.Entity">
+            <summary>
+            General object with logic which can spawn into the stage
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.Active">
+            <summary>
+            True if the entity is currently in stage
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.X">
+            <summary>
+            Position X of this entity in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.Y">
+            <summary>
+            Position Y of this entity in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.Width">
+            <summary>
+            Size X of thie entity in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.Height">
+            <summary>
+            Size Y of thie entity in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.TypeID">
+            <summary>
+            Unique ID represent what type of entity is it
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.SpawnFrame">
+            <summary>
+            Which frame does this entity get spawned into the stage
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.FromWorld">
+            <summary>
+            True if the entity is spawned by the world squad
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.Rect">
+            <summary>
+            Rect position of this entity in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.InstanceOrder">
+            <summary>
+            Unique index for this entity that distinguish from other same-type entities on stage
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.MapUnitPos">
+            <summary>
+            The position of this entity on the map in unit space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.InstanceID">
+            <summary>
+            Unique ID for this entity as a instance on stage
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.IgnoreReposition">
+            <summary>
+            True if the entity do not reposition when it out of view
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.XY">
+            <summary>
+            Position in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.Size">
+            <summary>
+            Size in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.Center">
+            <summary>
+            Center position of the Rect in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.CenterX">
+            <summary>
+            Center position X of the Rect in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.CenterY">
+            <summary>
+            Center position Y of the Rect in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Entity.PivotUnitPosition">
+            <summary>
+            Position that this entity belongs to in unit space. Get the MapUnitPos when it's from world. Get rect center's unit position when not from world.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Entity.OnActivated">
+            <summary>
+            This function is called when entity enter the stage
+            </summary>
+        </member>
+        <member name="M:AngeliA.Entity.OnInactivated">
+            <summary>
+            This function is called when entity leave the stage
+            </summary>
+        </member>
+        <member name="M:AngeliA.Entity.FirstUpdate">
+            <summary>
+            [1/4] This function is called every frame when entity is in stage. Prioritize using this function to fill collider in to physics system.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Entity.BeforeUpdate">
+            <summary>
+            [2/4] This function is called every frame when entity is in stage. Prioritize using this function to update physics logic.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Entity.Update">
+            <summary>
+            [3/4] This function is called every frame when entity is in stage. Prioritize using this function to update physics logic.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Entity.LateUpdate">
+            <summary>
+            [4/4] This function is called every frame when entity is in stage. Prioritize using this function to render the entity.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Entity.AfterReposition(AngeliA.Int3,AngeliA.Int3)">
+            <summary>
+            This function is called when the entity's map position got repositioned by stage
+            </summary>
+        </member>
+        <member name="M:AngeliA.Entity.IgnoreDespawnFromMap(System.Int32)">
+            <summary>
+            Force this entity not despawn by stage when out of range for given frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.Entity.CancelIgnoreDespawnFromMap">
+            <summary>
+            Do not force this entity not despawn by stage
+            </summary>
+        </member>
+        <member name="M:AngeliA.Entity.Draw">
+            <summary>
+            Draw this entity by it's type ID and rect position
+            </summary>
+        </member>
+        <member name="T:AngeliA.GroupAnimationHolder">
+            <summary>
+            Display animation from artwork sheet
+            </summary>
+        </member>
+        <member name="M:AngeliA.GroupAnimationHolder.Spawn(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GroupAnimationHolder.Spawn(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,AngeliA.Color32,System.Int32,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GroupAnimationHolder.Spawn(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,AngeliA.Color32,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GroupAnimationHolder.Spawn(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,AngeliA.Color32,System.Int32,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GroupAnimationHolder.Spawn(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,AngeliA.Color32,System.Int32,System.Int32)">
+            <summary>
+            Create a new animation to the stage
+            </summary>
+            <param name="groupID">Artwork sprite group ID</param>
+            <param name="x">Position X in global space</param>
+            <param name="y">Position Y in global space</param>
+            <param name="width">Size X in global space</param>
+            <param name="height">Size Y in global space</param>
+            <param name="pivotX">Pivot X of the artwork sprite</param>
+            <param name="pivotY">Pivot Y of the artwork sprite</param>
+            <param name="rotation1000">Initialize rotation (0 means 0°, 1000 means 1°)</param>
+            <param name="rotationSpeed">Speed of the rotation (0 means 0°, 1 means 1°)</param>
+            <param name="duration">How long this animation is in frame. Set to -1 to get duration from artwork sprite group</param>
+            <param name="framePerSprite">How long does a single sprite takes in frame</param>
+            <param name="loop">True if the animation loops</param>
+            <param name="tint">Color tint</param>
+            <param name="z">Z value for sort rendering cells</param>
+            <param name="renderLayer">Which rendering layer does it renders into</param>
+            <returns>Instance of the holder</returns>
+        </member>
+        <member name="M:AngeliA.GroupAnimationHolder.Follow(AngeliA.Entity)">
+            <summary>
+            Makes the holder follow the target all the time
+            </summary>
+        </member>
         <member name="T:AngeliA.IActionTarget">
             <summary>
             Interface that makes the entity react with player action. When player goes nearby, they can press action button to invoke the logic from this entity
@@ -5415,6 +5719,38 @@
             Interface that makes the entity contains a instance of character rendering behaviour
             </summary>
         </member>
+        <member name="T:AngeliA.ItemHolder">
+            <summary>
+            Entity that represent an item on map
+            </summary>
+        </member>
+        <member name="P:AngeliA.ItemHolder.ItemID">
+            <summary>
+            Item ID from inventory system
+            </summary>
+        </member>
+        <member name="P:AngeliA.ItemHolder.ItemCount">
+            <summary>
+            How many items does this holder contains
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemHolder.Jump(System.Int32)">
+            <summary>
+            Perform a jump for once
+            </summary>
+            <param name="velocity">Initial speed Y</param>
+        </member>
+        <member name="M:AngeliA.ItemHolder.Collect(AngeliA.Character)">
+            <summary>
+            Collect the item holded inside this container
+            </summary>
+            <returns>True if the item has been collected</returns>
+        </member>
+        <member name="M:AngeliA.ItemHolder.ClearHoldingPool">
+            <summary>
+            Reset the internal data of the items that's exists outside player's view
+            </summary>
+        </member>
         <member name="T:AngeliA.IMapItem">
             <summary>
             Marks class as item that can be paint as map editor block
@@ -5525,6 +5861,363 @@
             Draw UI for the button
             </summary>
             <param name="rect">Rect position in global space</param>
+        </member>
+        <member name="T:AngeliA.Particle">
+            <summary>
+            Entity that represent a animated decoration
+            </summary>
+        </member>
+        <member name="P:AngeliA.Particle.Duration">
+            <summary>
+            How long of this particle exists in stage in frames
+            </summary>
+        </member>
+        <member name="P:AngeliA.Particle.Loop">
+            <summary>
+            True if this particle animation loops
+            </summary>
+        </member>
+        <member name="P:AngeliA.Particle.Scale">
+            <summary>
+            Size scale this particle should apply (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Particle.RenderingZ">
+            <summary>
+            Z value the sort rendering cells
+            </summary>
+        </member>
+        <member name="P:AngeliA.Particle.AutoArtworkID">
+            <summary>
+            Artwork sprite ID if this particle is using the built-in logic for rendering
+            </summary>
+        </member>
+        <member name="P:AngeliA.Particle.RenderingLayer">
+            <summary>
+            Which layer should this particle rendering into
+            </summary>
+        </member>
+        <member name="P:AngeliA.Particle.Tint">
+            <summary>
+            Color tint for this particle
+            </summary>
+        </member>
+        <member name="P:AngeliA.Particle.LocalFrame">
+            <summary>
+            Animation frame start from 0
+            </summary>
+        </member>
+        <member name="P:AngeliA.Particle.Rotation">
+            <summary>
+            Angle of this particle
+            </summary>
+        </member>
+        <member name="P:AngeliA.Particle.UserData">
+            <summary>
+            Custom data this particle holds
+            </summary>
+        </member>
+        <member name="T:AngeliA.Rigidbody">
+            <summary>
+            Class for the entities which apply general physics by the system
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.IsGrounded">
+            <summary>
+            True if this entity is touching ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.IsInsideGround">
+            <summary>
+            True if this entity is stucking inside the ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.InWater">
+            <summary>
+            True if this entity is inside water
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.VelocityX">
+            <summary>
+            Horizontal velocity at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.VelocityY">
+            <summary>
+            Vertical velocity at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.BounceSpeedRate">
+            <summary>
+            How many speed remain after this entity collide on another entity (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.OffsetX">
+            <summary>
+            Position offset between X value and Rect.x value
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.OffsetY">
+            <summary>
+            Position offset between Y value and Rect.y value
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.GroundedID">
+            <summary>
+            Block ID of the current touching ground block
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.PrevX">
+            <summary>
+            Position X for the last frame in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.PrevY">
+            <summary>
+            Position Y for the last frame in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.DeltaPositionX">
+            <summary>
+            Changes of position X at current frame in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.DeltaPositionY">
+            <summary>
+            Changes of position Y at current frame in global space
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.MomentumX">
+            <summary>
+            Velocity X that keep applying on this entity. Every frame the value will move to 0 by "decay"
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.MomentumY">
+            <summary>
+            Velocity Y that keep applying on this entity. Every frame the value will move to 0 by "decay"
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.RequireDodgeOverlap">
+            <summary>
+            True if this entity do not react to the colliders which already overlaps on it.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.FacingRight">
+            <summary>
+            True if this entity is facing right side
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.EjectWhenInsideGround">
+            <summary>
+            True if this entity try to move out of ground automatically when it stuck inside ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.GlobalGravity">
+            <summary>
+            Gravity value that applys to all rigidbody
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.FallingGravityScale">
+            <summary>
+            Amount of gravity apply to this entity when it's moving downward (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.RisingGravityScale">
+            <summary>
+            Amount of gravity apply to this entity when it's moving upward (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.CollisionMask">
+            <summary>
+            Which physics layers should this entity collide with
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.IgnoreGroundCheck">
+            <summary>
+            If this entity currently check for touching ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.IgnoreGravity">
+            <summary>
+            True if this entity currently should not apply gravity
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.IgnorePhysics">
+            <summary>
+            True if this entity currently should not apply any physics logic
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.IgnoreInsideGround">
+            <summary>
+            If this entity currently check for stuck inside ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.IgnoreOneway">
+            <summary>
+            True if this entity currently should not collide with oneway gates
+            </summary>
+        </member>
+        <member name="F:AngeliA.Rigidbody.IgnoreMomentum">
+            <summary>
+            True if this entity currently should not apply any momentum
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.PhysicalLayer">
+            <summary>
+            Which physical layer should this entity fill it's collider in
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.SelfCollisionMask">
+            <summary>
+            Intrinsic physics layers this entity should collide with
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.MaxGravitySpeed">
+            <summary>
+            Limitation for speed from gravity
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.AirDragX">
+            <summary>
+            Amount of horizontal speed lost every frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.AirDragY">
+            <summary>
+            Amount of vertical speed lost every frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.WaterFloatSpeed">
+            <summary>
+            Amount of upward speed apply when the entity inside water
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.WaterSpeedRate">
+            <summary>
+            Amount of speed scales when entity inside water (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.AllowBeingPush">
+            <summary>
+            True if this entity can be push by other
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.DestroyWhenInsideGround">
+            <summary>
+            True if this entity despawns when it's inside ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.CarryOtherOnTop">
+            <summary>
+            Trhe if this entity can carry other ICarrier on top
+            </summary>
+        </member>
+        <member name="M:AngeliA.Rigidbody.PerformMove(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Make this entity move with physics rules at this frame
+            </summary>
+            <param name="speedX">Delta position X</param>
+            <param name="speedY">Delta position Y</param>
+            <param name="ignoreCarry">True if this entity don't carry other on top</param>
+        </member>
+        <member name="M:AngeliA.Rigidbody.MakeGrounded(System.Int32,System.Int32)">
+            <summary>
+            Mark this entity as touching ground for given frames long
+            </summary>
+            <param name="frame"></param>
+            <param name="blockID">Ground block ID</param>
+        </member>
+        <member name="M:AngeliA.Rigidbody.CancelMakeGrounded">
+            <summary>
+            Stop making this entity marked as touching ground
+            </summary>
+        </member>
+        <member name="M:AngeliA.Rigidbody.Push(System.Int32)">
+            <summary>
+            This function is called when the entity is being pushed
+            </summary>
+        </member>
+        <member name="M:AngeliA.Rigidbody.PerformGroundCheck(AngeliA.IRect,AngeliA.PhysicsCell@)">
+            <summary>
+            Return true if the entity is touching ground
+            </summary>
+            <param name="rect">Blocks overlap this rect range will be count as touching ground</param>
+            <param name="hit">The physics data from the ground block</param>
+        </member>
+        <member name="M:AngeliA.Rigidbody.FillAsTrigger(System.Int32,System.Int32)">
+            <summary>
+            Make this entity fill trigger into the physics system for given frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.Rigidbody.FillAsOnewayUp(System.Int32,System.Int32)">
+            <summary>
+            Make this entity fill upward oneway gate into the physics system for given frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.Rigidbody.OnInsideGroundDestroyed">
+            <summary>
+            This function is called when this entity is despawn by being stuck inside ground
+            </summary>
+        </member>
+        <member name="M:AngeliA.Rigidbody.GroundedCheck">
+            <summary>
+            Function that holds the touching ground checking logic
+            </summary>
+        </member>
+        <member name="M:AngeliA.Rigidbody.InsideGroundCheck">
+            <summary>
+            Function that holds the stuch inside ground checking logic
+            </summary>
+        </member>
+        <member name="T:AngeliA.NumberZero">
+            <summary>
+            Element for indicate a number on map
+            </summary>
+        </member>
+        <member name="T:AngeliA.NumberOne">
+            <summary>
+            Element for indicate a number on map
+            </summary>
+        </member>
+        <member name="T:AngeliA.NumberTwo">
+            <summary>
+            Element for indicate a number on map
+            </summary>
+        </member>
+        <member name="T:AngeliA.NumberThree">
+            <summary>
+            Element for indicate a number on map
+            </summary>
+        </member>
+        <member name="T:AngeliA.NumberFour">
+            <summary>
+            Element for indicate a number on map
+            </summary>
+        </member>
+        <member name="T:AngeliA.NumberFive">
+            <summary>
+            Element for indicate a number on map
+            </summary>
+        </member>
+        <member name="T:AngeliA.NumberSix">
+            <summary>
+            Element for indicate a number on map
+            </summary>
+        </member>
+        <member name="T:AngeliA.NumberSeven">
+            <summary>
+            Element for indicate a number on map
+            </summary>
+        </member>
+        <member name="T:AngeliA.NumberEight">
+            <summary>
+            Element for indicate a number on map
+            </summary>
+        </member>
+        <member name="T:AngeliA.NumberNine">
+            <summary>
+            Element for indicate a number on map
+            </summary>
         </member>
         <member name="T:AngeliA.ControlHintUI">
             <summary>
@@ -5675,6 +6368,273 @@
         <member name="M:AngeliA.EntityUI.Unify(System.Int32)">
             <inheritdoc cref="M:AngeliA.GUI.Unify(System.Int32)"/>
         </member>
+        <member name="T:AngeliA.FileBrowserUI">
+            <summary>
+            Built-in file brower entity for PC only
+            </summary>
+        </member>
+        <member name="P:AngeliA.FileBrowserUI.Instance">
+            <summary>
+            Global single instance for this class
+            </summary>
+        </member>
+        <member name="P:AngeliA.FileBrowserUI.ShowingBrowser">
+            <summary>
+            True if the entity is currently displaying
+            </summary>
+        </member>
+        <member name="P:AngeliA.FileBrowserUI.BackgroundRect">
+            <summary>
+            Rect position for background range in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.FileBrowserUI.CurrentFolder">
+            <summary>
+            Path of the current browsing folder
+            </summary>
+        </member>
+        <member name="P:AngeliA.FileBrowserUI.CurrentName">
+            <summary>
+            Name of the current selecting file/folder
+            </summary>
+        </member>
+        <member name="P:AngeliA.FileBrowserUI.Title">
+            <summary>
+            Title of the current window
+            </summary>
+        </member>
+        <member name="P:AngeliA.FileBrowserUI.SearchPatterns">
+            <summary>
+            Files that will be display inside the content panel
+            </summary>
+        </member>
+        <member name="M:AngeliA.FileBrowserUI.OpenFolder(System.String,System.Action{System.String})">
+            <summary>
+            Start file browser for open an existing folder
+            </summary>
+            <param name="title">Title of the window</param>
+            <param name="onFolderOpen">Callback function for a folder being open</param>
+        </member>
+        <member name="M:AngeliA.FileBrowserUI.OpenFile(System.String,System.Action{System.String},System.String[])">
+            <summary>
+            Start file browser for open an existing file
+            </summary>
+            <param name="title">Title of the window</param>
+            <param name="onFileOpen">Callback function for a file being open</param>
+            <param name="searchPatterns">Which file should be display. eg."*.png", "*.jpg"</param>
+        </member>
+        <member name="M:AngeliA.FileBrowserUI.SaveFolder(System.String,System.String,System.Action{System.String})">
+            <summary>
+            Start file browser for create/save a folder
+            </summary>
+            <param name="title">Title of the window</param>
+            <param name="defaultFolderName">Default name shown in the input field</param>
+            <param name="onFolderSaved">Callback function for the folder being create/save</param>
+        </member>
+        <member name="M:AngeliA.FileBrowserUI.SaveFile(System.String,System.String,System.Action{System.String},System.String[])">
+            <summary>
+            Start file browser for create/save a file
+            </summary>
+            <param name="title">Title of the window</param>
+            <param name="defaultFileNameWithExt">Default name shown in the input field. eg. "name.png"</param>
+            <param name="onFileSaved">Callback function for the file being create/save</param>
+            <param name="searchPatterns">Which type of file is allowed be create/save. eg."*.png", "*.jpg"</param>
+        </member>
+        <member name="T:AngeliA.GenericDialogUI">
+            <summary>
+            Dialog UI entity for general purpose
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericDialogUI.Instance">
+            <summary>
+            Global instance of this entity
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericDialogUI.ShowingDialog">
+            <summary>
+            True if the dialog is currently displaying
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericDialogUI.InvokingData">
+            <summary>
+            Custom data for internal logic
+            </summary>
+        </member>
+        <member name="M:AngeliA.GenericDialogUI.SpawnDialog_Button(System.String,System.String,System.Action)">
+            <inheritdoc cref="M:AngeliA.GenericDialogUI.SpawnDialog(System.String,System.String,System.Action,System.String,System.Action,System.String,System.Action)"/>
+        </member>
+        <member name="M:AngeliA.GenericDialogUI.SpawnDialog_Button(System.String,System.String,System.Action,System.String,System.Action)">
+            <inheritdoc cref="M:AngeliA.GenericDialogUI.SpawnDialog(System.String,System.String,System.Action,System.String,System.Action,System.String,System.Action)"/>
+        </member>
+        <member name="M:AngeliA.GenericDialogUI.SpawnDialog_Button(System.String,System.String,System.Action,System.String,System.Action,System.String,System.Action)">
+            <inheritdoc cref="M:AngeliA.GenericDialogUI.SpawnDialog(System.String,System.String,System.Action,System.String,System.Action,System.String,System.Action)"/>
+        </member>
+        <member name="M:AngeliA.GenericDialogUI.SpawnDialog(System.String,System.String,System.Action)">
+            <inheritdoc cref="M:AngeliA.GenericDialogUI.SpawnDialog(System.String,System.String,System.Action,System.String,System.Action,System.String,System.Action)"/>
+        </member>
+        <member name="M:AngeliA.GenericDialogUI.SpawnDialog(System.String,System.String,System.Action,System.String,System.Action)">
+            <inheritdoc cref="M:AngeliA.GenericDialogUI.SpawnDialog(System.String,System.String,System.Action,System.String,System.Action,System.String,System.Action)"/>
+        </member>
+        <member name="M:AngeliA.GenericDialogUI.SpawnDialog(System.String,System.String,System.Action,System.String,System.Action,System.String,System.Action)">
+            <summary>
+            Start a dialog with buttons with solid-looking part
+            </summary>
+            <param name="message">Text message display on top</param>
+            <param name="label">Label content of the button</param>
+            <param name="action">This function is called when the button is pressed</param>
+            <param name="labelA">Label content of the button</param>
+            <param name="actionA">This function is called when the button is pressed</param>
+            <param name="labelB">Label content of the button</param>
+            <param name="actionB">This function is called when the button is pressed</param>
+            <param name="labelC">Label content of the button</param>
+            <param name="actionC">This function is called when the button is pressed</param>
+        </member>
+        <member name="M:AngeliA.GenericDialogUI.SetItemTint(AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.GenericDialogUI.SetItemTint(AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.GenericDialogUI.SetItemTint(AngeliA.Color32,AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.GenericDialogUI.SetItemTint(AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.GenericDialogUI.SetItemTint(AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)">
+            <summary>
+            Set content tint of specified item
+            </summary>
+        </member>
+        <member name="M:AngeliA.GenericDialogUI.SetCustomData(System.Object,System.Object,System.Object)">
+            <summary>
+            Set custom data for the specified item. Get this data from GenericDialogUI.InvokingData inside the "action" from SpawnDialog funtion
+            </summary>
+        </member>
+        <member name="T:AngeliA.GenericPopupUI">
+            <summary>
+            Popup menu UI for general perpose
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericPopupUI.Instance">
+            <summary>
+            Global single instance of this entity
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericPopupUI.ShowingPopup">
+            <summary>
+            True is the menu is currently displaying
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericPopupUI.BackgroundRect">
+            <summary>
+            Rect position of the background in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericPopupUI.OffsetX">
+            <summary>
+            Position offset X in global space between left edge of the camera to the left edge of this menu
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericPopupUI.OffsetY">
+            <summary>
+            Position offset X in global space between bottom edge of the camera to the bottom edge of this menu
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericPopupUI.InvokingItemlabel">
+            <summary>
+            Label of the currently pressed item
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericPopupUI.InvokingItemData">
+            <summary>
+            Custom data of the currently pressed item
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericPopupUI.MenuID">
+            <summary>
+            Custom ID of the menu
+            </summary>
+        </member>
+        <member name="P:AngeliA.GenericPopupUI.CurrentSubLevel">
+            <summary>
+            Recursive layer count of the sub-menu if a new item is added
+            </summary>
+        </member>
+        <member name="M:AngeliA.GenericPopupUI.BeginPopup(System.Int32)">
+            <summary>
+            Start to make a new menu list
+            </summary>
+        </member>
+        <member name="M:AngeliA.GenericPopupUI.BeginPopup(AngeliA.Int2,System.Int32)">
+            <summary>
+            Start to make a new menu list
+            </summary>
+        </member>
+        <member name="M:AngeliA.GenericPopupUI.AddSeparator">
+            <summary>
+            Add a empty line (call BeginPopup first)
+            </summary>
+        </member>
+        <member name="M:AngeliA.GenericPopupUI.AddItem(System.String,System.Action,System.Boolean,System.Boolean,System.Object,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.GenericPopupUI.AddItemLogic(System.String,System.Int32,AngeliA.Direction2,System.Int32,System.Action,System.Boolean,System.Boolean,System.Object,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.GenericPopupUI.AddItem(System.String,System.Int32,AngeliA.Direction2,System.Int32,System.Action,System.Boolean,System.Boolean,System.Object,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.GenericPopupUI.AddItemLogic(System.String,System.Int32,AngeliA.Direction2,System.Int32,System.Action,System.Boolean,System.Boolean,System.Object,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.GenericPopupUI.BeginSubItem">
+            <summary>
+            Start to make a sub menu
+            </summary>
+        </member>
+        <member name="M:AngeliA.GenericPopupUI.EndSubItem">
+            <summary>
+            Stop making a sub menu
+            </summary>
+        </member>
+        <member name="M:AngeliA.GenericPopupUI.ClosePopup">
+            <summary>
+            Close current open popup menu
+            </summary>
+        </member>
+        <member name="M:AngeliA.GenericPopupUI.ClearItems">
+            <summary>
+            Remove all items inside the current popup menu
+            </summary>
+        </member>
+        <member name="M:AngeliA.GenericPopupUI.SetTint(AngeliA.Color32,AngeliA.Color32)">
+            <summary>
+            Set color tint for the popup menu ui
+            </summary>
+        </member>
+        <member name="M:AngeliA.GenericPopupUI.AddItemLogic(System.String,System.Int32,AngeliA.Direction2,System.Int32,System.Action,System.Boolean,System.Boolean,System.Object,System.Boolean)">
+            <summary>
+            Add a new item (call BeginPopup first)
+            </summary>
+            <param name="icon">Artwork sprite of this item</param>
+            <param name="checkMarkSprite">Artwork sprite of the check mark</param>
+            <param name="iconPosition">Position offset of this icon</param>
+            <param name="label">Text content inside this item</param>
+            <param name="action">This function is called when the item is pressed</param>
+            <param name="enabled">True if this item can be press</param>
+            <param name="checked">True if there should be a check mark display on this item</param>
+            <param name="data">Custom data for this item. Get this data with GenericPopupUI.InvokingItemData inside the "action" from param</param>
+            <param name="editable">True if this label can be edit by the user</param>
+        </member>
+        <member name="T:AngeliA.InventoryPartnerUI">
+            <summary>
+            A partner UI display on top of the player menu that display and manage an inventory
+            </summary>
+        </member>
+        <member name="P:AngeliA.InventoryPartnerUI.AvatarID">
+            <summary>
+            Artwork sprite ID of the avatar icon
+            </summary>
+        </member>
+        <member name="P:AngeliA.InventoryPartnerUI._Column">
+            <summary>
+            Column count of the inventory
+            </summary>
+        </member>
+        <member name="P:AngeliA.InventoryPartnerUI._Row">
+            <summary>
+            Row count of the inventory
+            </summary>
+        </member>
         <member name="T:AngeliA.IWindowEntityUI">
             <summary>
             Interface that indicate the entity is a UI window
@@ -5684,6 +6644,640 @@
             <summary>
             Rect position of the background in global space
             </summary>
+        </member>
+        <member name="T:AngeliA.MenuUI">
+            <summary>
+            General class for menu entity ui
+            </summary>
+        </member>
+        <member name="P:AngeliA.MenuUI.SelectionIndex">
+            <summary>
+            Index of the current selecting item
+            </summary>
+        </member>
+        <member name="P:AngeliA.MenuUI.Message">
+            <summary>
+            Text content of the message display on top. Set to empty means no message should be display.
+            </summary>
+        </member>
+        <member name="P:AngeliA.MenuUI.BackgroundRect">
+            <summary>
+            Rect position of the background range in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.MenuUI.OverrideWindowWidth">
+            <summary>
+            Forced horizontal size in global space 
+            </summary>
+        </member>
+        <member name="P:AngeliA.MenuUI.AnimationDuration">
+            <summary>
+            Length in frame for the appearing animation
+            </summary>
+        </member>
+        <member name="P:AngeliA.MenuUI.BackgroundStyle">
+            <summary>
+            GUI style instance of the background panel
+            </summary>
+        </member>
+        <member name="P:AngeliA.MenuUI.MessageStyle">
+            <summary>
+            GUI style instance of the message box
+            </summary>
+        </member>
+        <member name="P:AngeliA.MenuUI.DefaultLabelStyle">
+            <summary>
+            GUI style instance of the item label
+            </summary>
+        </member>
+        <member name="P:AngeliA.MenuUI.DefaultContentStyle">
+            <summary>
+            GUI style instance of the item content
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.BackgroundCode">
+            <summary>
+            Artwork sprite for the background
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.SelectionMarkCode">
+            <summary>
+            Artwork sprite for the selecting item mark
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.MoreItemMarkCode">
+            <summary>
+            Artwork sprite for the mark displays on bottom when there's hiden item under the menu
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.ArrowMarkCode">
+            <summary>
+            Artwork sprite for the adjusting arrows
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.WindowWidth">
+            <summary>
+            Unified width of the window
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.ItemHeight">
+            <summary>
+            Unified height of a single item
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.ItemGap">
+            <summary>
+            Unified space between two items
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.MaxItemCount">
+            <summary>
+            How many items can it display at the same time
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.ContentPadding">
+            <summary>
+            Unified padding gap for the content panel
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.SelectionMarkSize">
+            <summary>
+            Unified size of the selection hand mark
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.SelectionArrowMarkSize">
+            <summary>
+            Unified size of the item adjusting arrow
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.MoreMarkSize">
+            <summary>
+            Unified size of the hidden item indicator
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.ScreenTint">
+            <summary>
+            Color tint that blocks all screen behind
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.BackgroundTint">
+            <summary>
+            Color tint of the background panel
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.SelectionMarkTint">
+            <summary>
+            Color tint of the selecting hand mark
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.MoreMarkTint">
+            <summary>
+            Color tint of the hidden item indicator
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.MouseHighlightTint">
+            <summary>
+            Color tint for the current hovering item
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.Interactable">
+            <summary>
+            True if the menu react to player input currently
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.AllowMouseClick">
+            <summary>
+            True if the menu react to mouse input
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.QuitOnPressStartOrEscKey">
+            <summary>
+            True if the menu close when player press "Start" button
+            </summary>
+        </member>
+        <member name="F:AngeliA.MenuUI.AnimationAmount">
+            <summary>
+            How many amount of appearing animation should apply on this menu
+            </summary>
+        </member>
+        <member name="M:AngeliA.MenuUI.OnSelectionChanged">
+            <summary>
+            This function is called when item selection is changed
+            </summary>
+        </member>
+        <member name="M:AngeliA.MenuUI.GetWindowRect">
+            <summary>
+            Get the rect position of the panel window in global space
+            </summary>
+        </member>
+        <member name="M:AngeliA.MenuUI.DrawItem(System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.MenuUI.DrawItemLogic(System.String,System.String,System.Char[],System.Int32,System.Boolean,System.Boolean,System.Int32@,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.MenuUI.DrawItem(System.String,System.String,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.MenuUI.DrawItemLogic(System.String,System.String,System.Char[],System.Int32,System.Boolean,System.Boolean,System.Int32@,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.MenuUI.DrawArrowItem(System.String,System.String,System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.MenuUI.DrawItemLogic(System.String,System.String,System.Char[],System.Int32,System.Boolean,System.Boolean,System.Int32@,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.MenuUI.DrawItem(System.String,System.Char[],System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.MenuUI.DrawItemLogic(System.String,System.String,System.Char[],System.Int32,System.Boolean,System.Boolean,System.Int32@,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.MenuUI.DrawArrowItem(System.String,System.Char[],System.Boolean,System.Boolean,System.Int32@,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.MenuUI.DrawItemLogic(System.String,System.String,System.Char[],System.Int32,System.Boolean,System.Boolean,System.Int32@,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.MenuUI.DrawItemLogic(System.String,System.String,System.Char[],System.Int32,System.Boolean,System.Boolean,System.Int32@,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
+            <summary>
+            Draw an item inside the menu
+            </summary>
+            <param name="label">Text displays on left side of this item</param>
+            <param name="content">Text displays on right side of this item</param>
+            <param name="chars">Text displays on right side of this item</param>
+            <param name="icon">Artwork sprite</param>
+            <param name="useLeftArrow">True if there should be an arrow at left side</param>
+            <param name="useRightArrow">True if there should be an arrow at right side</param>
+            <param name="delta">Adjusted value from the user at current frame</param>
+            <param name="labelStyle">GUI style of the label part</param>
+            <param name="contentStyle">GUI style of the content part</param>
+            <param name="drawStyleBody">True if the body of GUI style should be display</param>
+            <returns>True if the item is pressed</returns>
+        </member>
+        <member name="M:AngeliA.MenuUI.SetSelection(System.Int32)">
+            <summary>
+            Set current selecting item
+            </summary>
+        </member>
+        <member name="T:AngeliA.NotificationUI">
+            <summary>
+            Display a temporarily notification on top of screen during gameplay
+            </summary>
+        </member>
+        <member name="M:AngeliA.NotificationUI.SpawnNotification(System.String,System.Int32)">
+            <summary>
+            Require a notification. Call this function once for a single notification.
+            </summary>
+            <param name="content">Text content of the notification</param>
+            <param name="icon">Artwork sprite ID for the notification. Set to int.MinValue if no icon should be display.</param>
+        </member>
+        <member name="T:AngeliA.PauseMenuUI">
+            <summary>
+            UI entity for the menu that displays when game is paused
+            </summary>
+        </member>
+        <member name="T:AngeliA.PlayerMenuPartnerUI">
+            <summary>
+            Class for customize partner ui for player menu ui
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuPartnerUI.InventoryID">
+            <summary>
+            ID for inventory system
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuPartnerUI.Column">
+            <summary>
+            Inventory column count
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuPartnerUI.Row">
+            <summary>
+            Inventory row count
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuPartnerUI.ItemFieldSize">
+            <summary>
+            Unified size of a single item field
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuPartnerUI.MouseInPanel">
+            <summary>
+            Trie if mouse cursor is currently inside this panel
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuPartnerUI.BackgroundRect">
+            <summary>
+            Rect position of the background range in global space
+            </summary>
+        </member>
+        <member name="M:AngeliA.PlayerMenuPartnerUI.EnablePanel">
+            <summary>
+            This function is called when the panel start to display
+            </summary>
+        </member>
+        <member name="M:AngeliA.PlayerMenuPartnerUI.DrawPanel(AngeliA.IRect)">
+            <summary>
+            This function is called every frame for displaying this panel
+            </summary>
+            <param name="panelRect">Rect position for the range of this panel in global space</param>
+        </member>
+        <member name="M:AngeliA.PlayerMenuPartnerUI.Unify(System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.Unify(System.Int32)"/>
+        </member>
+        <member name="T:AngeliA.PlayerMenuUI">
+            <summary>
+            Menu UI for display player's state, manage equipments and items. Display when player press "select" button once.
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuUI.Instance">
+            <summary>
+            Global instance of this entity
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuUI.ShowingUI">
+            <summary>
+            True is this menu is currently displaying
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuUI.Partner">
+            <summary>
+            Instance of the current partner UI. Partner is the panel shows on top. The bottom one always display player's inventory. When partner panel is null, it display player's equipment panel.
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuUI.TopPanelColumn">
+            <summary>
+            Column count of the partner panel's inventory
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuUI.TopPanelRow">
+            <summary>
+            Row count of the partner panel's inventory
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuUI.CursorIndex">
+            <summary>
+            Index of the inventory cursor. (0 means bottom left, 1 makes the cursor go right)
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuUI.CursorInBottomPanel">
+            <summary>
+            True if the cursor is in bottom inventory panel (the one for player's inventory)
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuUI.TakingID">
+            <summary>
+            ID of the current taking item (the one move with the cursor), 0 means no item is taking.
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuUI.TakingCount">
+            <summary>
+            Count of the current taking item.
+            </summary>
+        </member>
+        <member name="M:AngeliA.PlayerMenuUI.OpenMenuWithPartner(AngeliA.PlayerMenuPartnerUI,System.Int32)">
+            <summary>
+            Open player menu ui with given partner ui
+            </summary>
+            <param name="partner">Instance of the partner ui which will be display on top</param>
+            <returns>True if the menu is opened</returns>
+        </member>
+        <member name="M:AngeliA.PlayerMenuUI.OpenMenu">
+            <summary>
+            Open player menu ui without partner. Player equipment ui will be display on top.
+            </summary>
+            <returns>Instance of the player menu ui</returns>
+        </member>
+        <member name="M:AngeliA.PlayerMenuUI.CloseMenu">
+            <summary>
+            Close the current opening player menu ui
+            </summary>
+        </member>
+        <member name="M:AngeliA.PlayerMenuUI.DrawTopInventory(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw stardard inventory panel ui
+            </summary>
+            <param name="inventoryID">Inventory ID for the partner ui</param>
+            <param name="column">Inventory column count for the partner ui</param>
+            <param name="row">Inventory row count for the partner ui</param>
+            <param name="avatarID">Artwork sprite ID of the partner avatar</param>
+        </member>
+        <member name="M:AngeliA.PlayerMenuUI.DrawItemFieldUI(System.Int32,System.Int32,System.Int32,AngeliA.IRect,System.Boolean,System.Int32)">
+            <summary>
+            Draw a single item field
+            </summary>
+            <param name="itemID">ID of the item from this field</param>
+            <param name="itemCount">Count of the item from this field</param>
+            <param name="frameCode">Artwork sprite ID of the field's frame</param>
+            <param name="itemRect">Rect position of this field in global space</param>
+            <param name="interactable">True if this field is currently interactable</param>
+            <param name="uiIndex">Cursor index for this field for UI logic only</param>
+        </member>
+        <member name="M:AngeliA.PlayerMenuUI.SetTaking(System.Int32,System.Int32)">
+            <summary>
+            Set current taking item on the cursor
+            </summary>
+        </member>
+        <member name="T:AngeliA.PlayerQuickMenuUI">
+            <summary>
+            UI menu that display when player hold "select" button during gameplay
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerQuickMenuUI.Instance">
+            <summary>
+            Global single instance for this entity
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerQuickMenuUI.ShowingUI">
+            <summary>
+            True if the ui id currently displaying
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerQuickMenuUI.BackgroundRect">
+            <summary>
+            Rect position for background panel range in global size
+            </summary>
+        </member>
+        <member name="M:AngeliA.PlayerQuickMenuUI.OpenMenu">
+            <summary>
+            Open the quick menu UI
+            </summary>
+            <returns>Instance of the opened menu</returns>
+        </member>
+        <member name="M:AngeliA.PlayerQuickMenuUI.CloseMenu">
+            <summary>
+            Close the quick menu UI if it's opening
+            </summary>
+        </member>
+        <member name="P:AngeliA.WindowUI.BackgroundRect">
+            <summary>
+            Rect position of the background part in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.WindowUI.DefaultWindowName">
+            <summary>
+            Failback display name of this type of window
+            </summary>
+        </member>
+        <member name="P:AngeliA.WindowUI.WindowRect">
+            <summary>
+            Rect position for the root boundary
+            </summary>
+        </member>
+        <member name="P:AngeliA.WindowUI.IsDirty">
+            <summary>
+            True if the content of the window have unsaved changes
+            </summary>
+        </member>
+        <member name="P:AngeliA.WindowUI.RequiringTooltipRect">
+            <summary>
+            Rect position in global space for the tooltip this window require to display
+            </summary>
+        </member>
+        <member name="P:AngeliA.WindowUI.RequiringTooltipContent">
+            <summary>
+            Content data for the tooltip this window require to display
+            </summary>
+        </member>
+        <member name="P:AngeliA.WindowUI.NotificationContent">
+            <summary>
+            Content data for the notification this window require to display
+            </summary>
+        </member>
+        <member name="P:AngeliA.WindowUI.NotificationSubContent">
+            <summary>
+            Secondary content data for the notification this window require to display
+            </summary>
+        </member>
+        <member name="P:AngeliA.WindowUI.Skin">
+            <inheritdoc cref="P:AngeliA.GUI.Skin"/>
+        </member>
+        <member name="M:AngeliA.WindowUI.ForceWindowRect(AngeliA.IRect)">
+            <summary>
+            Set window rect for all window UI
+            </summary>
+        </member>
+        <member name="M:AngeliA.WindowUI.SetDirty">
+            <summary>
+            Mark this window as dirty (contains unsaved changes)
+            </summary>
+        </member>
+        <member name="M:AngeliA.WindowUI.CleanDirty">
+            <summary>
+            Mark this window as not dirty (do not contains unsaved changes)
+            </summary>
+        </member>
+        <member name="M:AngeliA.WindowUI.Save(System.Boolean)">
+            <summary>
+            Require save the data
+            </summary>
+            <param name="forceSave">True if this save performs without dirty checks</param>
+        </member>
+        <member name="M:AngeliA.WindowUI.RequireTooltip(AngeliA.IRect,System.String)">
+            <summary>
+            Require display tooltip for given range. Call this function every frame no matter the tooltip should be currently display or not.
+            </summary>
+        </member>
+        <member name="M:AngeliA.WindowUI.RequireNotification(System.String,System.String)">
+            <summary>
+            Require a notification.
+            </summary>
+            <param name="content"></param>
+            <param name="subContent"></param>
+        </member>
+        <member name="T:AngeliA.Game">
+            <summary>
+            Represent an AngeliA game
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.GlobalFrame">
+            <summary>
+            Frame number that grows every 1/60 second
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.SettleFrame">
+            <summary>
+            Frame number that could be reset by the stage
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.PauselessFrame">
+            <summary>
+            Frame number that still grows when the game is pausing
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsPausing">
+            <summary>
+            True if the game is currently pausing
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsPlaying">
+            <summary>
+            True if the game is currently not pausing
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.MusicVolume">
+            <summary>
+            Volume amount for the background music (0 for mute, 1000 for loudest)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.SoundVolume">
+            <summary>
+            Volume amount for the sound effect (0 for mute, 1000 for loudest)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.ScaledMusicVolume">
+            <summary>
+            Music volume that effect by the internal procedure audio volume
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.ScaledSoundVolume">
+            <summary>
+            Sound volume that effect by the internal procedure audio volume
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.ProcedureAudioVolume">
+            <summary>
+            Audio volume used by internal script
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.CurrentBGM">
+            <summary>
+            Instance that represent the background music
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsToolApplication">
+            <summary>
+            True if the application should be treated as tool instead of game
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IgnoreArtworkPixels">
+            <summary>
+            True if the application don't need pixel data from artwork sheet
+            </summary>
+        </member>
+        <member name="F:AngeliA.Game.SoundPool">
+            <summary>
+            Instance pool for all available sound effect
+            </summary>
+        </member>
+        <member name="F:AngeliA.Game.MusicPool">
+            <summary>
+            Instance pool for all available background music
+            </summary>
+        </member>
+        <member name="F:AngeliA.Game.Fonts">
+            <summary>
+            Instance pool for all available font
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.#ctor(System.String[])">
+            <summary>
+            Create a game instance with command-line arguments 
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.Initialize">
+            <summary>
+            Call this function once to initialize the game. Must be called before any Update function called.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.Update">
+            <summary>
+            Call this function 60 times per second. Only call this after Initialize has been called.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.RestartGame">
+            <summary>
+            Invoke the OnGameRestart event. The game-play logic will be reset after this is called
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.UnpauseGame">
+            <summary>
+            Continue game from pausing
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.PauseGame">
+            <summary>
+            Pause the game from playing
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.LoadFontsIntoPool(System.String,System.Boolean)">
+            <summary>
+            Load font file into system pool from given folder
+            </summary>
+            <param name="rootPath"></param>
+            <param name="builtIn">True if the fonts are used for built-in font</param>
+        </member>
+        <member name="M:AngeliA.Game.SyncFontsWithPool(System.String)">
+            <summary>
+            Reload font file if any font is modified
+            </summary>
+            <param name="rootPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.Game.UnloadFontsFromPool(System.Boolean)">
+            <summary>
+            Unload fonts from system pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SyncAudioPool(System.String[])">
+            <summary>
+            Update audio files between system pool and file
+            </summary>
+            <param name="universeRoots">Folder path of the universe</param>
+        </member>
+        <member name="M:AngeliA.Game.ClearAndUnloadAudioPool">
+            <summary>
+            Reset audio pool and unload the data in the memory
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.InvokeGameQuitting">
+            <summary>
+            Invoke the OnGameQuitting event
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.InvokeGameTryingToQuit">
+            <summary>
+            Invoke the OnGameTryingToQuit event
+            </summary>
+            <returns>True if the game should quit</returns>
+        </member>
+        <member name="M:AngeliA.Game.InvokeWindowFocusChanged(System.Boolean)">
+            <summary>
+            Invoke OnGameFocus/OnGameLostFocus event
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.InvokeFileDropped(System.String)">
+            <summary>
+            Invoke OnFileDropped event
+            </summary>
+            <param name="path">Path of the dropped file</param>
         </member>
         <member name="M:AngeliA.Util.QuickRandom(System.Int32,System.Int32)">
             <summary>

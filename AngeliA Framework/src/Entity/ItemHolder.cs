@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Entity that represent an item on map
+/// </summary>
 [EntityAttribute.Capacity(2048, 0)]
 [EntityAttribute.Layer(EntityLayer.ITEM)]
 [EntityAttribute.ExcludeInMapEditor]
@@ -42,7 +45,13 @@ public class ItemHolder : Rigidbody {
 	// Api
 	public override int PhysicalLayer => PhysicsLayer.ITEM;
 	public override int SelfCollisionMask => PhysicsMask.MAP;
+	/// <summary>
+	/// Item ID from inventory system
+	/// </summary>
 	public int ItemID { get; set; } = 0;
+	/// <summary>
+	/// How many items does this holder contains
+	/// </summary>
 	public int ItemCount { get; set; } = 1;
 	public override bool CarryOtherOnTop => false;
 
@@ -271,12 +280,20 @@ public class ItemHolder : Rigidbody {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Perform a jump for once
+	/// </summary>
+	/// <param name="velocity">Initial speed Y</param>
 	public void Jump (int velocity = 42) {
 		VelocityY = velocity;
 		Y += velocity;
 	}
 
 
+	/// <summary>
+	/// Collect the item holded inside this container
+	/// </summary>
+	/// <returns>True if the item has been collected</returns>
 	public bool Collect (Character character) {
 
 		if (ItemID == 0 || character is null) return false;
@@ -328,6 +345,9 @@ public class ItemHolder : Rigidbody {
 	}
 
 
+	/// <summary>
+	/// Reset the internal data of the items that's exists outside player's view
+	/// </summary>
 	public static void ClearHoldingPool () => HoldingPool.Clear();
 
 

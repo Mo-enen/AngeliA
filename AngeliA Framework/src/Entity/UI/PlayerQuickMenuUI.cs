@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// UI menu that display when player hold "select" button during gameplay
+/// </summary>
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.Capacity(1, 1)]
@@ -57,10 +60,19 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	private static readonly LanguageCode HAND_LABEL = ("PlayerQMenu.Hand", "Hand");
 
 	// Api
+	/// <summary>
+	/// Global single instance for this entity
+	/// </summary>
 	public static PlayerQuickMenuUI Instance { get; private set; } = null;
+	/// <summary>
+	/// True if the ui id currently displaying
+	/// </summary>
 	public static bool ShowingUI => Instance != null && Instance.Active;
-	public bool IsDirty { get; private set; } = false;
+	/// <summary>
+	/// Rect position for background panel range in global size
+	/// </summary>
 	public IRect BackgroundRect { get; private set; } = default;
+	internal bool IsDirty { get; private set; } = false;
 
 	// Data
 	private static HandToolData[] HandToolList;
@@ -331,6 +343,10 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Open the quick menu UI
+	/// </summary>
+	/// <returns>Instance of the opened menu</returns>
 	public static PlayerQuickMenuUI OpenMenu () {
 		var ins = Instance;
 		if (ins == null) return null;
@@ -344,6 +360,9 @@ public class PlayerQuickMenuUI : EntityUI, IWindowEntityUI {
 	}
 
 
+	/// <summary>
+	/// Close the quick menu UI if it's opening
+	/// </summary>
 	public static void CloseMenu () {
 		if (Instance == null) return;
 		Instance.Active = false;

@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace AngeliA;
 
+/// <summary>
+/// Represent an AngeliA game
+/// </summary>
 public abstract partial class Game {
 
 
@@ -14,21 +17,51 @@ public abstract partial class Game {
 
 
 	// Api
+	/// <summary>
+	/// Frame number that grows every 1/60 second
+	/// </summary>
 	public static int GlobalFrame { get; private set; } = 0;
+	/// <summary>
+	/// Frame number that could be reset by the stage
+	/// </summary>
 	public static int SettleFrame => GlobalFrame - Stage.LastSettleFrame;
+	/// <summary>
+	/// Frame number that still grows when the game is pausing
+	/// </summary>
 	public static int PauselessFrame { get; private set; } = 0;
+	/// <summary>
+	/// True if the game is currently pausing
+	/// </summary>
 	public static bool IsPausing => !IsPlaying;
+	/// <summary>
+	/// True if the game is currently not pausing
+	/// </summary>
 	public static bool IsPlaying { get; private set; } = true;
+	/// <summary>
+	/// Volume amount for the background music (0 for mute, 1000 for loudest)
+	/// </summary>
 	public static int MusicVolume {
 		get => _MusicVolume.Value;
 		set => _MusicVolume.Value = value;
 	}
+	/// <summary>
+	/// Volume amount for the sound effect (0 for mute, 1000 for loudest)
+	/// </summary>
 	public static int SoundVolume {
 		get => _SoundVolume.Value;
 		set => _SoundVolume.Value = value;
 	}
+	/// <summary>
+	/// Music volume that effect by the internal procedure audio volume
+	/// </summary>
 	public static float ScaledMusicVolume => FrameworkUtil.GetScaledAudioVolume(_MusicVolume.Value, ProcedureAudioVolume);
+	/// <summary>
+	/// Sound volume that effect by the internal procedure audio volume
+	/// </summary>
 	public static float ScaledSoundVolume => FrameworkUtil.GetScaledAudioVolume(_SoundVolume.Value, ProcedureAudioVolume);
+	/// <summary>
+	/// Audio volume used by internal script
+	/// </summary>
 	public static int ProcedureAudioVolume {
 		get => _ProcedureAudioVolume;
 		set {
@@ -37,10 +70,19 @@ public abstract partial class Game {
 			SetMusicVolume(_MusicVolume.Value);
 		}
 	}
+	/// <summary>
+	/// Instance that represent the background music
+	/// </summary>
 	public static object CurrentBGM { get; protected set; }
 
 	// Attribute Info
+	/// <summary>
+	/// True if the application should be treated as tool instead of game
+	/// </summary>
 	public static bool IsToolApplication { get; private set; } = false;
+	/// <summary>
+	/// True if the application don't need pixel data from artwork sheet
+	/// </summary>
 	public static bool IgnoreArtworkPixels { get; private set; } = false;
 
 	// Event
@@ -57,8 +99,17 @@ public abstract partial class Game {
 
 	// Data
 	private static Game Instance = null;
+	/// <summary>
+	/// Instance pool for all available sound effect
+	/// </summary>
 	public static readonly Dictionary<int, SoundData> SoundPool = [];
+	/// <summary>
+	/// Instance pool for all available background music
+	/// </summary>
 	public static readonly Dictionary<int, MusicData> MusicPool = [];
+	/// <summary>
+	/// Instance pool for all available font
+	/// </summary>
 	public static readonly List<FontData> Fonts = [];
 	private static readonly HashSet<int> CacheForAudioSync = [];
 	private static readonly List<int> CacheForAudioSyncRemove = [];
@@ -96,6 +147,9 @@ public abstract partial class Game {
 	}
 
 
+	/// <summary>
+	/// Create a game instance with command-line arguments 
+	/// </summary>
 	public Game (params string[] args) {
 
 		Instance = this;
@@ -144,6 +198,9 @@ public abstract partial class Game {
 	}
 
 
+	/// <summary>
+	/// Call this function once to initialize the game. Must be called before any Update function called.
+	/// </summary>
 	public void Initialize () {
 		try {
 
@@ -173,7 +230,8 @@ public abstract partial class Game {
 
 			// Start Game !!
 			if (IsToolApplication) {
-				StopGame();
+				WorldSquad.Enable = false;
+				Stage.DespawnAllNonUiEntities();
 			} else {
 				RestartGame();
 			}
@@ -182,6 +240,9 @@ public abstract partial class Game {
 	}
 
 
+	/// <summary>
+	/// Call this function 60 times per second. Only call this after Initialize has been called.
+	/// </summary>
 	public void Update () {
 		try {
 
@@ -314,15 +375,19 @@ public abstract partial class Game {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Invoke the OnGameRestart event. The game-play logic will be reset after this is called
+	/// </summary>
 	public static void RestartGame () => OnGameRestart?.Invoke();
 
-	public static void StopGame () {
-		WorldSquad.Enable = false;
-		Stage.DespawnAllNonUiEntities();
-	}
-
+	/// <summary>
+	/// Continue game from pausing
+	/// </summary>
 	public static void UnpauseGame () => IsPlaying = true;
 
+	/// <summary>
+	/// Pause the game from playing
+	/// </summary>
 	public static void PauseGame () {
 		if (!IsPlaying || !Universe.BuiltInInfo.AllowPause) return;
 		StopAllSounds();
@@ -331,6 +396,11 @@ public abstract partial class Game {
 
 
 	// Fonts
+	/// <summary>
+	/// Load font file into system pool from given folder
+	/// </summary>
+	/// <param name="rootPath"></param>
+	/// <param name="builtIn">True if the fonts are used for built-in font</param>
 	public static void LoadFontsIntoPool (string rootPath, bool builtIn) {
 		if (builtIn) {
 			for (int i = 0; i < Fonts.Count; i++) {
@@ -359,6 +429,11 @@ public abstract partial class Game {
 		Renderer.ClearFontIndexIdMap();
 	}
 
+	/// <summary>
+	/// Reload font file if any font is modified
+	/// </summary>
+	/// <param name="rootPath"></param>
+	/// <returns></returns>
 	public static bool SyncFontsWithPool (string rootPath) {
 		bool fontChanged = false;
 		for (int i = 0; i < Fonts.Count; i++) {
@@ -402,6 +477,9 @@ public abstract partial class Game {
 		return fontChanged;
 	}
 
+	/// <summary>
+	/// Unload fonts from system pool
+	/// </summary>
 	public static void UnloadFontsFromPool (bool ignoreBuiltIn = true) {
 		for (int i = 0; i < Fonts.Count; i++) {
 			var font = Fonts[i];
@@ -417,6 +495,10 @@ public abstract partial class Game {
 
 
 	// Audio
+	/// <summary>
+	/// Update audio files between system pool and file
+	/// </summary>
+	/// <param name="universeRoots">Folder path of the universe</param>
 	public static void SyncAudioPool (params string[] universeRoots) {
 
 		// Music
@@ -480,6 +562,9 @@ public abstract partial class Game {
 
 	}
 
+	/// <summary>
+	/// Reset audio pool and unload the data in the memory
+	/// </summary>
 	public static void ClearAndUnloadAudioPool () {
 		UnloadMusic(CurrentBGM);
 		foreach (var (_, sound) in SoundPool) {
@@ -491,6 +576,9 @@ public abstract partial class Game {
 
 
 	// Invoke
+	/// <summary>
+	/// Invoke the OnGameQuitting event
+	/// </summary>
 	protected void InvokeGameQuitting () {
 		int width = _GetScreenWidth();
 		int height = _GetScreenHeight();
@@ -503,6 +591,10 @@ public abstract partial class Game {
 		OnGameQuitting?.InvokeSafe();
 	}
 
+	/// <summary>
+	/// Invoke the OnGameTryingToQuit event
+	/// </summary>
+	/// <returns>True if the game should quit</returns>
 	protected bool InvokeGameTryingToQuit () {
 #if DEBUG
 		if (!IsKeyboardKeyHolding(KeyboardKey.LeftCtrl) && !IsToolApplication) return true;
@@ -516,8 +608,15 @@ public abstract partial class Game {
 		return true;
 	}
 
+	/// <summary>
+	/// Invoke OnGameFocus/OnGameLostFocus event
+	/// </summary>
 	protected void InvokeWindowFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();
 
+	/// <summary>
+	/// Invoke OnFileDropped event
+	/// </summary>
+	/// <param name="path">Path of the dropped file</param>
 	protected void InvokeFileDropped (string path) => OnFileDropped?.Invoke(path);
 
 

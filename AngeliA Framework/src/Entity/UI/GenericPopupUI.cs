@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Popup menu UI for general perpose
+/// </summary>
 [EntityAttribute.StageOrder(4096)]
 [EntityAttribute.Capacity(1, 1)]
 public class GenericPopupUI : EntityUI, IWindowEntityUI {
@@ -39,16 +42,42 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 
 
 	// Api
+	/// <summary>
+	/// Global single instance of this entity
+	/// </summary>
 	public static GenericPopupUI Instance { get; private set; }
+	/// <summary>
+	/// True is the menu is currently displaying
+	/// </summary>
 	public static bool ShowingPopup => Instance != null && Instance.Active;
-	public static int CurrentItemCount => Instance != null ? Instance.ItemCount : 0;
 	protected override bool BlockEvent => true;
+	/// <summary>
+	/// Rect position of the background in global space
+	/// </summary>
 	public IRect BackgroundRect { get; private set; }
+	/// <summary>
+	/// Position offset X in global space between left edge of the camera to the left edge of this menu
+	/// </summary>
 	public int OffsetX { get; set; } = 0;
+	/// <summary>
+	/// Position offset X in global space between bottom edge of the camera to the bottom edge of this menu
+	/// </summary>
 	public int OffsetY { get; set; } = 0;
+	/// <summary>
+	/// Label of the currently pressed item
+	/// </summary>
 	public static string InvokingItemlabel { get; private set; } = "";
+	/// <summary>
+	/// Custom data of the currently pressed item
+	/// </summary>
 	public static object InvokingItemData { get; private set; } = null;
+	/// <summary>
+	/// Custom ID of the menu
+	/// </summary>
 	public int MenuID { get; private set; } = 0;
+	/// <summary>
+	/// Recursive layer count of the sub-menu if a new item is added
+	/// </summary>
 	public int CurrentSubLevel { get; set; } = 0;
 
 	// Data
@@ -395,7 +424,13 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Start to make a new menu list
+	/// </summary>
 	public static void BeginPopup (int menuID = 0) => BeginPopup(Input.UnshiftedMouseGlobalPosition, menuID);
+	/// <summary>
+	/// Start to make a new menu list
+	/// </summary>
 	public static void BeginPopup (Int2 globalOffset, int menuID = 0) => Instance?.BeginPopupLogic(globalOffset, menuID);
 	private void BeginPopupLogic (Int2 globalOffset, int menuID = 0) {
 		if (Stage.Enable) {
@@ -419,6 +454,9 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	}
 
 
+	/// <summary>
+	/// Add a empty line (call BeginPopup first)
+	/// </summary>
 	public static void AddSeparator () {
 		var item = AddItemLogic("", 0, default, 0, Const.EmptyMethod, true, false, null, false);
 		if (item != null) {
@@ -427,15 +465,19 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	}
 
 
+	/// <inheritdoc cref="AddItemLogic"/>
 	public static void AddItem (string label, System.Action action, bool enabled = true, bool @checked = false, object data = null, bool editable = false) => AddItem(label, 0, default, 0, action, enabled, @checked, data, editable);
 
-
+	/// <inheritdoc cref="AddItemLogic"/>
 	public static void AddItem (string label, int icon, Direction2 iconPosition, int checkMarkSprite, System.Action action, bool enabled = true, bool @checked = false, object data = null, bool editable = false) {
 		if (Instance == null || Instance.ItemCount >= Instance.Items.Length - 1) return;
 		AddItemLogic(label, icon, iconPosition, checkMarkSprite, action, enabled, @checked, data, editable);
 	}
 
 
+	/// <summary>
+	/// Start to make a sub menu
+	/// </summary>
 	public static void BeginSubItem () {
 		Instance.CurrentSubLevel++;
 		int last = Instance.ItemCount - 1;
@@ -445,14 +487,23 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	}
 
 
+	/// <summary>
+	/// Stop making a sub menu
+	/// </summary>
 	public static void EndSubItem () => Instance.CurrentSubLevel = (Instance.CurrentSubLevel - 1).GreaterOrEquelThanZero();
 
 
+	/// <summary>
+	/// Close current open popup menu
+	/// </summary>
 	public static void ClosePopup () {
 		if (Instance != null) Instance.Active = false;
 	}
 
 
+	/// <summary>
+	/// Remove all items inside the current popup menu
+	/// </summary>
 	public static void ClearItems () {
 		if (Instance == null) return;
 		for (int i = 0; i < Instance.ItemCount; i++) {
@@ -463,6 +514,9 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	}
 
 
+	/// <summary>
+	/// Set color tint for the popup menu ui
+	/// </summary>
 	public static void SetTint (Color32 labelTint, Color32 iconTint) {
 		Instance.LabelTint = labelTint;
 		Instance.IconTint = iconTint;
@@ -477,7 +531,20 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 	#region --- LGC ---
 
 
+	/// <summary>
+	/// Add a new item (call BeginPopup first)
+	/// </summary>
+	/// <param name="icon">Artwork sprite of this item</param>
+	/// <param name="checkMarkSprite">Artwork sprite of the check mark</param>
+	/// <param name="iconPosition">Position offset of this icon</param>
+	/// <param name="label">Text content inside this item</param>
+	/// <param name="action">This function is called when the item is pressed</param>
+	/// <param name="enabled">True if this item can be press</param>
+	/// <param name="checked">True if there should be a check mark display on this item</param>
+	/// <param name="data">Custom data for this item. Get this data with GenericPopupUI.InvokingItemData inside the "action" from param</param>
+	/// <param name="editable">True if this label can be edit by the user</param>
 	private static Item AddItemLogic (string label, int icon, Direction2 iconPosition, int checkMarkSprite, System.Action action, bool enabled, bool @checked, object data, bool editable) {
+
 		int level = Instance.CurrentSubLevel;
 		var item = Instance.Items[Instance.ItemCount];
 		item.Label = label;
@@ -496,7 +563,6 @@ public class GenericPopupUI : EntityUI, IWindowEntityUI {
 		Instance.ItemCount++;
 		return item;
 	}
-
 
 	private void HideAll () {
 		foreach (var item in Items) {

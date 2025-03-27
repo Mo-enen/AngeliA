@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// An entity represent bullet from weapons that deal damage to IDamageReceiver
+/// </summary>
 [EntityAttribute.Capacity(128, 0)]
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.UpdateOutOfRange]
@@ -18,19 +21,61 @@ public abstract class Bullet : Entity {
 
 	// Api
 	[OnBulletHitEnvironment_Bullet] internal static System.Action<Bullet> OnBulletHitEnvironment;
+	/// <summary>
+	/// Index for style of the attack from the sender
+	/// </summary>
 	public int AttackIndex => Sender is IWithCharacterAttackness attSender ? attSender.CurrentAttackness.AttackStyleIndex : 0;
+	/// <summary>
+	/// True if the attack is charged
+	/// </summary>
 	public bool AttackCharged => Sender is IWithCharacterAttackness attSender && attSender.CurrentAttackness.LastAttackCharged;
+	/// <summary>
+	/// What extra type of damage does this bullet deal
+	/// </summary>
 	public Tag DamageType { get; set; } = Tag.PhysicalDamage;
+	/// <summary>
+	/// This entity send the bullet
+	/// </summary>
 	public Entity Sender { get; set; } = null;
+	/// <summary>
+	/// Default team for checking attack target
+	/// </summary>
 	public int FailbackTargetTeam { get; set; } = Const.TEAM_ALL;
+	/// <summary>
+	/// Team data for checking which group of target should be attack
+	/// </summary>
 	public int TargetTeam => Sender is Character chSender ? chSender.AttackTargetTeam : FailbackTargetTeam;
+	/// <summary>
+	/// Intrinsic damage value
+	/// </summary>
 	protected virtual int BasicDamage => 1;
+	/// <summary>
+	/// Group of physics layers for checking environment that this bullet can react with
+	/// </summary>
 	protected virtual int EnvironmentMask => PhysicsMask.MAP;
+	/// <summary>
+	/// Group of physics layers for checking target that this bullet can react with
+	/// </summary>
 	protected virtual int ReceiverMask => PhysicsMask.ENTITY;
+	/// <summary>
+	/// How many environment collider can this bullet hit without getting despawn
+	/// </summary>
 	protected virtual int EnvironmentHitCount => int.MaxValue;
+	/// <summary>
+	/// How many target collider can this bullet hit without getting despawn
+	/// </summary>
 	protected virtual int ReceiverHitCount => int.MaxValue;
+	/// <summary>
+	/// True if the bullet check for target in a round shaped range
+	/// </summary>
 	protected virtual bool RoundHitCheck => false;
+	/// <summary>
+	/// How long can this bullet exists on stage in frame
+	/// </summary>
 	public virtual int Duration => 60;
+	/// <summary>
+	/// Final damage value
+	/// </summary>
 	public readonly FrameBasedInt Damage = new(1);
 
 	// Data
@@ -87,6 +132,10 @@ public abstract class Bullet : Entity {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Check for hitting any IDamageReceiver
+	/// </summary>
+	/// <param name="requireSelfDestroy">True if this bullet should be despawn</param>
 	protected void ReceiverHitCheck (out bool requireSelfDestroy) {
 		var rect = Rect;
 		requireSelfDestroy = false;
@@ -104,7 +153,7 @@ public abstract class Bullet : Entity {
 				int hitRad = (hit.Rect.width.Abs() + hit.Rect.height.Abs()) / 4;
 				if (dis > rad + hitRad) continue;
 			}
-			
+
 			// Perform Damage
 			PerformHitReceiver(receiver, out bool _requireSelfDestroy);
 
@@ -113,7 +162,10 @@ public abstract class Bullet : Entity {
 		}
 	}
 
-
+	/// <summary>
+	/// Check for hitting any environment block
+	/// </summary>
+	/// <param name="requireSelfDestroy">True if this bullet should be despawn</param>
 	protected void EnvironmentHitCheck (out bool requireSelfDestroy) {
 		if (Physics.Overlap(EnvironmentMask, Rect, Sender)) {
 			PerformHitEnvironment(out requireSelfDestroy);
@@ -123,9 +175,17 @@ public abstract class Bullet : Entity {
 	}
 
 
+	/// <summary>
+	/// This function is called before the bullet get despawn by performing damage logic
+	/// </summary>
+	/// <param name="receiver">The target it hits</param>
 	protected virtual void BeforeDespawn (IDamageReceiver receiver) { }
 
 
+	/// <summary>
+	/// This function is called when the bullet hit environment colliders
+	/// </summary>
+	/// <param name="requireSelfDestroy">True if this bullet should be despawn</param>
 	protected virtual void PerformHitEnvironment (out bool requireSelfDestroy) {
 		CurrentEnvironmentHitCount--;
 		if (CurrentEnvironmentHitCount <= 0) {
@@ -139,6 +199,11 @@ public abstract class Bullet : Entity {
 	}
 
 
+	/// <summary>
+	/// This function is called when the bullet hit IDamageReceiver
+	/// </summary>
+	/// <param name="receiver">The target it hits</param>
+	/// <param name="requireSelfDestroy">True if this bullet should be despawn</param>
 	protected virtual void PerformHitReceiver (IDamageReceiver receiver, out bool requireSelfDestroy) {
 
 		requireSelfDestroy = false;
@@ -157,6 +222,9 @@ public abstract class Bullet : Entity {
 	}
 
 
+	/// <summary>
+	/// True if the bullet is touching ground
+	/// </summary>
 	public bool GroundCheck (out Color32 groundTint) {
 		groundTint = Color32.WHITE;
 		bool grounded =
@@ -169,6 +237,10 @@ public abstract class Bullet : Entity {
 	}
 
 
+	/// <summary>
+	/// Get the damage data using by this bullet to deal damage
+	/// </summary>
+	/// <returns></returns>
 	public Damage GetDamage () => new(Damage, TargetTeam, this, DamageType);
 
 

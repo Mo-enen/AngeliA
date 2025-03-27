@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
+
+/// <summary>
+/// Built-in file brower entity for PC only
+/// </summary>
 [EntityAttribute.StageOrder(4095)]
 [EntityAttribute.Capacity(1, 1)]
 public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
@@ -55,13 +58,34 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	};
 
 	// Api
+	/// <summary>
+	/// Global single instance for this class
+	/// </summary>
 	public static FileBrowserUI Instance { get; private set; }
+	/// <summary>
+	/// True if the entity is currently displaying
+	/// </summary>
 	public static bool ShowingBrowser => Instance != null && Instance.Active;
+	/// <summary>
+	/// Rect position for background range in global space
+	/// </summary>
 	public IRect BackgroundRect { get; private set; }
 	protected override bool BlockEvent => true;
+	/// <summary>
+	/// Path of the current browsing folder
+	/// </summary>
 	public string CurrentFolder { get; set; } = "";
+	/// <summary>
+	/// Name of the current selecting file/folder
+	/// </summary>
 	public string CurrentName { get; set; } = "";
+	/// <summary>
+	/// Title of the current window
+	/// </summary>
 	public string Title { get; set; } = "";
+	/// <summary>
+	/// Files that will be display inside the content panel
+	/// </summary>
 	public string[] SearchPatterns { get; private set; }
 
 	// Data
@@ -90,7 +114,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 
 
 	[OnGameInitialize]
-	public static void OnGameInitialize () {
+	internal static void OnGameInitialize () {
 		Disks.Clear();
 		for (int i = 2; i < 26; i++) {
 			string path = $"{(char)('A' + i)}:\\";
@@ -401,9 +425,33 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Start file browser for open an existing folder
+	/// </summary>
+	/// <param name="title">Title of the window</param>
+	/// <param name="onFolderOpen">Callback function for a folder being open</param>
 	public static void OpenFolder (string title, System.Action<string> onFolderOpen) => SpawnBrowserLogic(title, "", null, BrowserActionType.Open, BrowserTargetType.Folder, onFolderOpen);
+	/// <summary>
+	/// Start file browser for open an existing file
+	/// </summary>
+	/// <param name="title">Title of the window</param>
+	/// <param name="onFileOpen">Callback function for a file being open</param>
+	/// <param name="searchPatterns">Which file should be display. eg."*.png", "*.jpg"</param>
 	public static void OpenFile (string title, System.Action<string> onFileOpen, params string[] searchPatterns) => SpawnBrowserLogic(title, "", searchPatterns, BrowserActionType.Open, BrowserTargetType.File, onFileOpen);
+	/// <summary>
+	/// Start file browser for create/save a folder
+	/// </summary>
+	/// <param name="title">Title of the window</param>
+	/// <param name="defaultFolderName">Default name shown in the input field</param>
+	/// <param name="onFolderSaved">Callback function for the folder being create/save</param>
 	public static void SaveFolder (string title, string defaultFolderName, System.Action<string> onFolderSaved) => SpawnBrowserLogic(title, defaultFolderName, null, BrowserActionType.Save, BrowserTargetType.Folder, onFolderSaved);
+	/// <summary>
+	/// Start file browser for create/save a file
+	/// </summary>
+	/// <param name="title">Title of the window</param>
+	/// <param name="defaultFileNameWithExt">Default name shown in the input field. eg. "name.png"</param>
+	/// <param name="onFileSaved">Callback function for the file being create/save</param>
+	/// <param name="searchPatterns">Which type of file is allowed be create/save. eg."*.png", "*.jpg"</param>
 	public static void SaveFile (string title, string defaultFileNameWithExt, System.Action<string> onFileSaved, params string[] searchPatterns) => SpawnBrowserLogic(title, defaultFileNameWithExt, searchPatterns, BrowserActionType.Save, BrowserTargetType.File, onFileSaved);
 
 
