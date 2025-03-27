@@ -20415,19 +20415,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.FileBrowserUI.OnActivated
   nameWithType: FileBrowserUI.OnActivated
-- uid: AngeliA.FileBrowserUI.OnGameInitialize
-  name: OnGameInitialize()
-  href: api/AngeliA.FileBrowserUI.html#AngeliA_FileBrowserUI_OnGameInitialize
-  commentId: M:AngeliA.FileBrowserUI.OnGameInitialize
-  fullName: AngeliA.FileBrowserUI.OnGameInitialize()
-  nameWithType: FileBrowserUI.OnGameInitialize()
-- uid: AngeliA.FileBrowserUI.OnGameInitialize*
-  name: OnGameInitialize
-  href: api/AngeliA.FileBrowserUI.html#AngeliA_FileBrowserUI_OnGameInitialize_
-  commentId: Overload:AngeliA.FileBrowserUI.OnGameInitialize
-  isSpec: "True"
-  fullName: AngeliA.FileBrowserUI.OnGameInitialize
-  nameWithType: FileBrowserUI.OnGameInitialize
 - uid: AngeliA.FileBrowserUI.OpenFile(System.String,System.Action{System.String},System.String[])
   name: OpenFile(string, Action<string>, params string[])
   href: api/AngeliA.FileBrowserUI.html#AngeliA_FileBrowserUI_OpenFile_System_String_System_Action_System_String__System_String___
@@ -28853,38 +28840,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Game.LoadFontsIntoPool
   nameWithType: Game.LoadFontsIntoPool
-- uid: AngeliA.Game.LoadSound(System.String)
-  name: LoadSound(string)
-  href: api/AngeliA.Game.html#AngeliA_Game_LoadSound_System_String_
-  commentId: M:AngeliA.Game.LoadSound(System.String)
-  name.vb: LoadSound(String)
-  fullName: AngeliA.Game.LoadSound(string)
-  fullName.vb: AngeliA.Game.LoadSound(String)
-  nameWithType: Game.LoadSound(string)
-  nameWithType.vb: Game.LoadSound(String)
-- uid: AngeliA.Game.LoadSound*
-  name: LoadSound
-  href: api/AngeliA.Game.html#AngeliA_Game_LoadSound_
-  commentId: Overload:AngeliA.Game.LoadSound
-  isSpec: "True"
-  fullName: AngeliA.Game.LoadSound
-  nameWithType: Game.LoadSound
-- uid: AngeliA.Game.LoadSoundAlias(System.Object)
-  name: LoadSoundAlias(object)
-  href: api/AngeliA.Game.html#AngeliA_Game_LoadSoundAlias_System_Object_
-  commentId: M:AngeliA.Game.LoadSoundAlias(System.Object)
-  name.vb: LoadSoundAlias(Object)
-  fullName: AngeliA.Game.LoadSoundAlias(object)
-  fullName.vb: AngeliA.Game.LoadSoundAlias(Object)
-  nameWithType: Game.LoadSoundAlias(object)
-  nameWithType.vb: Game.LoadSoundAlias(Object)
-- uid: AngeliA.Game.LoadSoundAlias*
-  name: LoadSoundAlias
-  href: api/AngeliA.Game.html#AngeliA_Game_LoadSoundAlias_
-  commentId: Overload:AngeliA.Game.LoadSoundAlias
-  isSpec: "True"
-  fullName: AngeliA.Game.LoadSoundAlias
-  nameWithType: Game.LoadSoundAlias
 - uid: AngeliA.Game.MakeWindowFocused
   name: MakeWindowFocused()
   href: api/AngeliA.Game.html#AngeliA_Game_MakeWindowFocused
@@ -29326,12 +29281,6 @@ references:
   fullName.vb: AngeliA.Game.SetClipboardText(String)
   nameWithType: Game.SetClipboardText(string)
   nameWithType.vb: Game.SetClipboardText(String)
-- uid: AngeliA.Game.SetClipboardText(System.Text.StringBuilder)
-  name: SetClipboardText(StringBuilder)
-  href: api/AngeliA.Game.html#AngeliA_Game_SetClipboardText_System_Text_StringBuilder_
-  commentId: M:AngeliA.Game.SetClipboardText(System.Text.StringBuilder)
-  fullName: AngeliA.Game.SetClipboardText(System.Text.StringBuilder)
-  nameWithType: Game.SetClipboardText(StringBuilder)
 - uid: AngeliA.Game.SetClipboardText*
   name: SetClipboardText
   href: api/AngeliA.Game.html#AngeliA_Game_SetClipboardText_
@@ -29628,19 +29577,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Game.StopAllSounds
   nameWithType: Game.StopAllSounds
-- uid: AngeliA.Game.StopGame
-  name: StopGame()
-  href: api/AngeliA.Game.html#AngeliA_Game_StopGame
-  commentId: M:AngeliA.Game.StopGame
-  fullName: AngeliA.Game.StopGame()
-  nameWithType: Game.StopGame()
-- uid: AngeliA.Game.StopGame*
-  name: StopGame
-  href: api/AngeliA.Game.html#AngeliA_Game_StopGame_
-  commentId: Overload:AngeliA.Game.StopGame
-  isSpec: "True"
-  fullName: AngeliA.Game.StopGame
-  nameWithType: Game.StopGame
 - uid: AngeliA.Game.StopMusic
   name: StopMusic()
   href: api/AngeliA.Game.html#AngeliA_Game_StopMusic
@@ -29718,35 +29654,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Game.UnloadFontsFromPool
   nameWithType: Game.UnloadFontsFromPool
-- uid: AngeliA.Game.UnloadMusic(System.Object)
-  name: UnloadMusic(object)
-  href: api/AngeliA.Game.html#AngeliA_Game_UnloadMusic_System_Object_
-  commentId: M:AngeliA.Game.UnloadMusic(System.Object)
-  name.vb: UnloadMusic(Object)
-  fullName: AngeliA.Game.UnloadMusic(object)
-  fullName.vb: AngeliA.Game.UnloadMusic(Object)
-  nameWithType: Game.UnloadMusic(object)
-  nameWithType.vb: Game.UnloadMusic(Object)
-- uid: AngeliA.Game.UnloadMusic*
-  name: UnloadMusic
-  href: api/AngeliA.Game.html#AngeliA_Game_UnloadMusic_
-  commentId: Overload:AngeliA.Game.UnloadMusic
-  isSpec: "True"
-  fullName: AngeliA.Game.UnloadMusic
-  nameWithType: Game.UnloadMusic
-- uid: AngeliA.Game.UnloadSound(AngeliA.SoundData)
-  name: UnloadSound(SoundData)
-  href: api/AngeliA.Game.html#AngeliA_Game_UnloadSound_AngeliA_SoundData_
-  commentId: M:AngeliA.Game.UnloadSound(AngeliA.SoundData)
-  fullName: AngeliA.Game.UnloadSound(AngeliA.SoundData)
-  nameWithType: Game.UnloadSound(SoundData)
-- uid: AngeliA.Game.UnloadSound*
-  name: UnloadSound
-  href: api/AngeliA.Game.html#AngeliA_Game_UnloadSound_
-  commentId: Overload:AngeliA.Game.UnloadSound
-  isSpec: "True"
-  fullName: AngeliA.Game.UnloadSound
-  nameWithType: Game.UnloadSound
 - uid: AngeliA.Game.UnloadTexture(System.Object)
   name: UnloadTexture(object)
   href: api/AngeliA.Game.html#AngeliA_Game_UnloadTexture_System_Object_
@@ -31752,19 +31659,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.GenericPopupUI.ClosePopup
   nameWithType: GenericPopupUI.ClosePopup
-- uid: AngeliA.GenericPopupUI.CurrentItemCount
-  name: CurrentItemCount
-  href: api/AngeliA.GenericPopupUI.html#AngeliA_GenericPopupUI_CurrentItemCount
-  commentId: P:AngeliA.GenericPopupUI.CurrentItemCount
-  fullName: AngeliA.GenericPopupUI.CurrentItemCount
-  nameWithType: GenericPopupUI.CurrentItemCount
-- uid: AngeliA.GenericPopupUI.CurrentItemCount*
-  name: CurrentItemCount
-  href: api/AngeliA.GenericPopupUI.html#AngeliA_GenericPopupUI_CurrentItemCount_
-  commentId: Overload:AngeliA.GenericPopupUI.CurrentItemCount
-  isSpec: "True"
-  fullName: AngeliA.GenericPopupUI.CurrentItemCount
-  nameWithType: GenericPopupUI.CurrentItemCount
 - uid: AngeliA.GenericPopupUI.CurrentSubLevel
   name: CurrentSubLevel
   href: api/AngeliA.GenericPopupUI.html#AngeliA_GenericPopupUI_CurrentSubLevel
@@ -38869,12 +38763,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.InventoryPartnerUI.DrawPanel
   nameWithType: InventoryPartnerUI.DrawPanel
-- uid: AngeliA.InventoryPartnerUI.Instance
-  name: Instance
-  href: api/AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI_Instance
-  commentId: F:AngeliA.InventoryPartnerUI.Instance
-  fullName: AngeliA.InventoryPartnerUI.Instance
-  nameWithType: InventoryPartnerUI.Instance
 - uid: AngeliA.InventoryPartnerUI.Row
   name: Row
   href: api/AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI_Row
@@ -38888,12 +38776,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.InventoryPartnerUI.Row
   nameWithType: InventoryPartnerUI.Row
-- uid: AngeliA.InventoryPartnerUI.TYPE_ID
-  name: TYPE_ID
-  href: api/AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI_TYPE_ID
-  commentId: F:AngeliA.InventoryPartnerUI.TYPE_ID
-  fullName: AngeliA.InventoryPartnerUI.TYPE_ID
-  nameWithType: InventoryPartnerUI.TYPE_ID
 - uid: AngeliA.InventoryPartnerUI._Column
   name: _Column
   href: api/AngeliA.InventoryPartnerUI.html#AngeliA_InventoryPartnerUI__Column
@@ -42473,19 +42355,6 @@ references:
   commentId: F:AngeliA.MenuUI.ScreenTint
   fullName: AngeliA.MenuUI.ScreenTint
   nameWithType: MenuUI.ScreenTint
-- uid: AngeliA.MenuUI.SelectionAdjustable
-  name: SelectionAdjustable
-  href: api/AngeliA.MenuUI.html#AngeliA_MenuUI_SelectionAdjustable
-  commentId: P:AngeliA.MenuUI.SelectionAdjustable
-  fullName: AngeliA.MenuUI.SelectionAdjustable
-  nameWithType: MenuUI.SelectionAdjustable
-- uid: AngeliA.MenuUI.SelectionAdjustable*
-  name: SelectionAdjustable
-  href: api/AngeliA.MenuUI.html#AngeliA_MenuUI_SelectionAdjustable_
-  commentId: Overload:AngeliA.MenuUI.SelectionAdjustable
-  isSpec: "True"
-  fullName: AngeliA.MenuUI.SelectionAdjustable
-  nameWithType: MenuUI.SelectionAdjustable
 - uid: AngeliA.MenuUI.SelectionArrowMarkSize
   name: SelectionArrowMarkSize
   href: api/AngeliA.MenuUI.html#AngeliA_MenuUI_SelectionArrowMarkSize
@@ -59503,22 +59372,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.PlayerMenuUI.CursorIndex
   nameWithType: PlayerMenuUI.CursorIndex
-- uid: AngeliA.PlayerMenuUI.DrawItemField(System.Int32,System.Int32,System.Int32,AngeliA.IRect,System.Boolean,System.Int32)
-  name: DrawItemField(int, int, int, IRect, bool, int)
-  href: api/AngeliA.PlayerMenuUI.html#AngeliA_PlayerMenuUI_DrawItemField_System_Int32_System_Int32_System_Int32_AngeliA_IRect_System_Boolean_System_Int32_
-  commentId: M:AngeliA.PlayerMenuUI.DrawItemField(System.Int32,System.Int32,System.Int32,AngeliA.IRect,System.Boolean,System.Int32)
-  name.vb: DrawItemField(Integer, Integer, Integer, IRect, Boolean, Integer)
-  fullName: AngeliA.PlayerMenuUI.DrawItemField(int, int, int, AngeliA.IRect, bool, int)
-  fullName.vb: AngeliA.PlayerMenuUI.DrawItemField(Integer, Integer, Integer, AngeliA.IRect, Boolean, Integer)
-  nameWithType: PlayerMenuUI.DrawItemField(int, int, int, IRect, bool, int)
-  nameWithType.vb: PlayerMenuUI.DrawItemField(Integer, Integer, Integer, IRect, Boolean, Integer)
-- uid: AngeliA.PlayerMenuUI.DrawItemField*
-  name: DrawItemField
-  href: api/AngeliA.PlayerMenuUI.html#AngeliA_PlayerMenuUI_DrawItemField_
-  commentId: Overload:AngeliA.PlayerMenuUI.DrawItemField
-  isSpec: "True"
-  fullName: AngeliA.PlayerMenuUI.DrawItemField
-  nameWithType: PlayerMenuUI.DrawItemField
 - uid: AngeliA.PlayerMenuUI.DrawItemFieldUI(System.Int32,System.Int32,System.Int32,AngeliA.IRect,System.Boolean,System.Int32)
   name: DrawItemFieldUI(int, int, int, IRect, bool, int)
   href: api/AngeliA.PlayerMenuUI.html#AngeliA_PlayerMenuUI_DrawItemFieldUI_System_Int32_System_Int32_System_Int32_AngeliA_IRect_System_Boolean_System_Int32_
@@ -59551,30 +59404,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.PlayerMenuUI.DrawTopInventory
   nameWithType: PlayerMenuUI.DrawTopInventory
-- uid: AngeliA.PlayerMenuUI.EQUIP_ITEM_HEIGHT
-  name: EQUIP_ITEM_HEIGHT
-  href: api/AngeliA.PlayerMenuUI.html#AngeliA_PlayerMenuUI_EQUIP_ITEM_HEIGHT
-  commentId: F:AngeliA.PlayerMenuUI.EQUIP_ITEM_HEIGHT
-  fullName: AngeliA.PlayerMenuUI.EQUIP_ITEM_HEIGHT
-  nameWithType: PlayerMenuUI.EQUIP_ITEM_HEIGHT
-- uid: AngeliA.PlayerMenuUI.EQUIP_PANEL_WIDTH
-  name: EQUIP_PANEL_WIDTH
-  href: api/AngeliA.PlayerMenuUI.html#AngeliA_PlayerMenuUI_EQUIP_PANEL_WIDTH
-  commentId: F:AngeliA.PlayerMenuUI.EQUIP_PANEL_WIDTH
-  fullName: AngeliA.PlayerMenuUI.EQUIP_PANEL_WIDTH
-  nameWithType: PlayerMenuUI.EQUIP_PANEL_WIDTH
-- uid: AngeliA.PlayerMenuUI.INFO_WIDTH
-  name: INFO_WIDTH
-  href: api/AngeliA.PlayerMenuUI.html#AngeliA_PlayerMenuUI_INFO_WIDTH
-  commentId: F:AngeliA.PlayerMenuUI.INFO_WIDTH
-  fullName: AngeliA.PlayerMenuUI.INFO_WIDTH
-  nameWithType: PlayerMenuUI.INFO_WIDTH
-- uid: AngeliA.PlayerMenuUI.ITEM_SIZE
-  name: ITEM_SIZE
-  href: api/AngeliA.PlayerMenuUI.html#AngeliA_PlayerMenuUI_ITEM_SIZE
-  commentId: F:AngeliA.PlayerMenuUI.ITEM_SIZE
-  fullName: AngeliA.PlayerMenuUI.ITEM_SIZE
-  nameWithType: PlayerMenuUI.ITEM_SIZE
 - uid: AngeliA.PlayerMenuUI.Instance
   name: Instance
   href: api/AngeliA.PlayerMenuUI.html#AngeliA_PlayerMenuUI_Instance
@@ -59643,12 +59472,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.PlayerMenuUI.OpenMenuWithPartner
   nameWithType: PlayerMenuUI.OpenMenuWithPartner
-- uid: AngeliA.PlayerMenuUI.PREVIEW_SIZE
-  name: PREVIEW_SIZE
-  href: api/AngeliA.PlayerMenuUI.html#AngeliA_PlayerMenuUI_PREVIEW_SIZE
-  commentId: F:AngeliA.PlayerMenuUI.PREVIEW_SIZE
-  fullName: AngeliA.PlayerMenuUI.PREVIEW_SIZE
-  nameWithType: PlayerMenuUI.PREVIEW_SIZE
 - uid: AngeliA.PlayerMenuUI.Partner
   name: Partner
   href: api/AngeliA.PlayerMenuUI.html#AngeliA_PlayerMenuUI_Partner
@@ -59820,19 +59643,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.PlayerQuickMenuUI.Instance
   nameWithType: PlayerQuickMenuUI.Instance
-- uid: AngeliA.PlayerQuickMenuUI.IsDirty
-  name: IsDirty
-  href: api/AngeliA.PlayerQuickMenuUI.html#AngeliA_PlayerQuickMenuUI_IsDirty
-  commentId: P:AngeliA.PlayerQuickMenuUI.IsDirty
-  fullName: AngeliA.PlayerQuickMenuUI.IsDirty
-  nameWithType: PlayerQuickMenuUI.IsDirty
-- uid: AngeliA.PlayerQuickMenuUI.IsDirty*
-  name: IsDirty
-  href: api/AngeliA.PlayerQuickMenuUI.html#AngeliA_PlayerQuickMenuUI_IsDirty_
-  commentId: Overload:AngeliA.PlayerQuickMenuUI.IsDirty
-  isSpec: "True"
-  fullName: AngeliA.PlayerQuickMenuUI.IsDirty
-  nameWithType: PlayerQuickMenuUI.IsDirty
 - uid: AngeliA.PlayerQuickMenuUI.OnActivated
   name: OnActivated()
   href: api/AngeliA.PlayerQuickMenuUI.html#AngeliA_PlayerQuickMenuUI_OnActivated

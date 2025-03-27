@@ -764,7 +764,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Bullet",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Bullet.yml\" sourcestartlinenumber=\"1\">An entity represent bullet from weapons that deal damage to IDamageReceiver</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1632,7 +1632,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Entity",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Entity.yml\" sourcestartlinenumber=\"1\">General object with logic which can spawn into the stage</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2024,7 +2024,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.FileBrowserUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.FileBrowserUI.yml\" sourcestartlinenumber=\"1\">Built-in file brower entity for PC only</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2444,7 +2444,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Game",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Game.yml\" sourcestartlinenumber=\"1\">Represent an AngeliA game</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2500,7 +2500,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GenericDialogUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GenericDialogUI.yml\" sourcestartlinenumber=\"1\">Dialog UI entity for general purpose</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2514,7 +2514,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GenericPopupUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GenericPopupUI.yml\" sourcestartlinenumber=\"1\">Popup menu UI for general perpose</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2612,7 +2612,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GroupAnimationHolder",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GroupAnimationHolder.yml\" sourcestartlinenumber=\"1\">Display animation from artwork sheet</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3186,7 +3186,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.InventoryPartnerUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.InventoryPartnerUI.yml\" sourcestartlinenumber=\"1\">A partner UI display on top of the player menu that display and manage an inventory</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3326,7 +3326,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ItemHolder",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ItemHolder.yml\" sourcestartlinenumber=\"1\">Entity that represent an item on map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3536,7 +3536,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.MenuUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.MenuUI.yml\" sourcestartlinenumber=\"1\">General class for menu entity ui</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3788,7 +3788,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NotificationUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NotificationUI.yml\" sourcestartlinenumber=\"1\">Display a temporarily notification on top of screen during gameplay</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3802,7 +3802,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NumberEight",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NumberEight.yml\" sourcestartlinenumber=\"1\">Element for indicate a number on map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3816,7 +3816,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NumberFive",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NumberFive.yml\" sourcestartlinenumber=\"1\">Element for indicate a number on map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3830,7 +3830,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NumberFour",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NumberFour.yml\" sourcestartlinenumber=\"1\">Element for indicate a number on map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3844,7 +3844,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NumberNine",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NumberNine.yml\" sourcestartlinenumber=\"1\">Element for indicate a number on map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3858,7 +3858,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NumberOne",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NumberOne.yml\" sourcestartlinenumber=\"1\">Element for indicate a number on map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3872,7 +3872,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NumberSeven",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NumberSeven.yml\" sourcestartlinenumber=\"1\">Element for indicate a number on map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3886,7 +3886,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NumberSix",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NumberSix.yml\" sourcestartlinenumber=\"1\">Element for indicate a number on map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3900,7 +3900,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NumberThree",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NumberThree.yml\" sourcestartlinenumber=\"1\">Element for indicate a number on map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3914,7 +3914,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NumberTwo",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NumberTwo.yml\" sourcestartlinenumber=\"1\">Element for indicate a number on map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3928,7 +3928,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NumberZero",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NumberZero.yml\" sourcestartlinenumber=\"1\">Element for indicate a number on map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4838,7 +4838,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Particle",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Particle.yml\" sourcestartlinenumber=\"1\">Entity that represent a animated decoration</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7008,7 +7008,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.PlayerMenuPartnerUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.PlayerMenuPartnerUI.yml\" sourcestartlinenumber=\"1\">Class for customize partner ui for player menu ui</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7022,7 +7022,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.PlayerMenuUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.PlayerMenuUI.yml\" sourcestartlinenumber=\"1\">Menu UI for display player's state, manage equipments and items. Display when player press &quot;select&quot; button once.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7036,7 +7036,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.PlayerQuickMenuUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.PlayerQuickMenuUI.yml\" sourcestartlinenumber=\"1\">UI menu that display when player hold &quot;select&quot; button during gameplay</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7638,7 +7638,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Rigidbody",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Rigidbody.yml\" sourcestartlinenumber=\"1\">Class for the entities which apply general physics by the system</p>\n"
     },
     {
       "type": "ManagedReference",

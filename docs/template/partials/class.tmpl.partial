@@ -27,6 +27,7 @@
   <pre><code class="lang-csharp hljs">{{syntax.content.0.value}}</code></pre>
 </div>
 {{#parameters.0}}
+{{#description}}
 <h5 class="parameters">{{__global.parameters}}</h5>
 <table class="table table-bordered table-condensed">
   <thead>
@@ -37,19 +38,23 @@
     </tr>
   </thead>
   <tbody>
+{{/description}}
 {{/parameters.0}}
 {{#parameters}}
+{{#description}}
     <tr>
       <td>{{{type.specName.0.value}}}</td>
       <td><span class="parametername">{{{id}}}</span></td>
       <td>{{{description}}}</td>
     </tr>
+{{/description}}
 {{/parameters}}
 {{#parameters.0}}
   </tbody>
 </table>
 {{/parameters.0}}
 {{#return}}
+{{#description}}
 <h5 class="returns">{{__global.returns}}</h5>
 <table class="table table-bordered table-condensed">
   <thead>
@@ -65,8 +70,10 @@
     </tr>
   </tbody>
 </table>
+{{/description}}
 {{/return}}
 {{#typeParameters.0}}
+{{#description}}
 <h5 class="typeParameters">{{__global.typeParameters}}</h5>
 <table class="table table-bordered table-condensed">
   <thead>
@@ -76,18 +83,22 @@
     </tr>
   </thead>
   <tbody>
+{{/description}}
 {{/typeParameters.0}}
 {{#typeParameters}}
+{{#description}}
     <tr>
       <td><span class="parametername">{{{id}}}</span></td>
       <td>{{{description}}}</td>
     </tr>
+{{/description}}
 {{/typeParameters}}
 {{#typeParameters.0}}
   </tbody>
 </table>
 {{/typeParameters.0}}
 {{#fieldValue}}
+{{#description}}
 <h5 class="fieldValue">{{__global.fieldValue}}</h5>
 <table class="table table-bordered table-condensed">
   <thead>
@@ -103,8 +114,10 @@
     </tr>
   </tbody>
 </table>
+{{/description}}
 {{/fieldValue}}
 {{#propertyValue}}
+{{#description}}
 <h5 class="propertyValue">{{__global.propertyValue}}</h5>
 <table class="table table-bordered table-condensed">
   <thead>
@@ -120,8 +133,10 @@
     </tr>
   </tbody>
 </table>
+{{/description}}
 {{/propertyValue}}
 {{#eventType}}
+{{#description}}
 <h5 class="eventType">{{__global.eventType}}</h5>
 <table class="table table-bordered table-condensed">
   <thead>
@@ -137,6 +152,7 @@
     </tr>
   </tbody>
 </table>
+{{/description}}
 {{/eventType}}
 {{/syntax}}
 {{#overridden}}
@@ -165,10 +181,12 @@
   <tbody>
 {{/exceptions.0}}
 {{#exceptions}}
+{{#description}}
     <tr>
       <td>{{{type.specName.0.value}}}</td>
       <td>{{{description}}}</td>
     </tr>
+{{/description}}
 {{/exceptions}}
 {{#exceptions.0}}
   </tbody>
