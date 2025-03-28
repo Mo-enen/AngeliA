@@ -4,13 +4,22 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Item that represent a map block inside inventory. Also handles the build block to map/stage logic
+/// </summary>
 [EntityAttribute.ExcludeInMapEditor]
 [NoItemCombination]
 public sealed class BlockBuilder : HandTool {
 
 
 	// VAR
+	/// <summary>
+	/// ID of the block it holds
+	/// </summary>
 	public int BlockID { get; init; }
+	/// <summary>
+	/// Type of the block it holds
+	/// </summary>
 	public BlockType BlockType { get; init; }
 	public override bool AvailableWhenSquatting => true;
 	public override bool AvailableWhenWalking => true;
@@ -22,7 +31,7 @@ public sealed class BlockBuilder : HandTool {
 	public override int MaxStackCount => _MaxStackCount;
 	public override int Duration => 12;
 	private int _MaxStackCount { get; init; }
-	
+
 
 	// MSG
 	public BlockBuilder (int blockID, string blockName, BlockType blockType, int maxStackCount) {
@@ -148,7 +157,7 @@ public sealed class BlockBuilder : HandTool {
 
 
 	public override int GetPerformPoseAnimationID (Character character) => PosePerform_Block.TYPE_ID;
-	
+
 
 	public override int GetHandheldPoseAnimationID (Character character) => PoseHandheld_Block.TYPE_ID;
 

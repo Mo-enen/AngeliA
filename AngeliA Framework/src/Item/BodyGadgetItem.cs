@@ -3,10 +3,17 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// A type of item that holds a body gadget.
+/// </summary>
+/// <param name="id">ID of the body gadget it holds</param>
 [EntityAttribute.ExcludeInMapEditor]
 [NoItemCombination]
 public sealed class BodyGadgetItem (int id) : NonStackableItem {
 
+	/// <summary>
+	/// ID of the body gadget it holds
+	/// </summary>
 	public int GadgetID { get; init; } = id;
 
 	public override void DrawItem (Entity holder, IRect rect, Color32 tint, int z) {

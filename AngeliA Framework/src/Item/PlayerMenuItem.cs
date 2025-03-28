@@ -3,12 +3,23 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// A type of item that spawns a player partner menu when use
+/// </summary>
+/// <typeparam name="UI">What type of menu does it spawns</typeparam>
 public abstract class PlayerMenuItem<UI> : Item where UI : PlayerMenuPartnerUI {
 
 	public override int MaxStackCount => 1;
 	private static readonly Dictionary<int, PlayerMenuPartnerUI> Pool = [];
 	private readonly int InventoryID;
+
+	/// <summary>
+	/// Inventory row count of the menu
+	/// </summary>
 	protected abstract int Row { get; }
+	/// <summary>
+	/// Inventory column count of the menu
+	/// </summary>
 	protected abstract int Column { get; }
 
 	[OnGameInitialize]
@@ -24,6 +35,10 @@ public abstract class PlayerMenuItem<UI> : Item where UI : PlayerMenuPartnerUI {
 
 	public PlayerMenuItem () => InventoryID = Inventory.InitializeInventoryData(GetType().AngeName(), Row * Column, hasEquipment: false);
 
+	/// <summary>
+	/// This function is called when the menu is spawned
+	/// </summary>
+	/// <param name="panelUI">Instance of the menu</param>
 	protected virtual void OnPanelOpened (UI panelUI) { }
 
 	public override bool Use (Character character, int inventoryID, int itemIndex, out bool consume) {

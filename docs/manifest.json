@@ -120,7 +120,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.AntiBuffItem<B>.TriggerMode",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.AntiBuffItem-1.TriggerMode.yml\" sourcestartlinenumber=\"1\">How anti buff item been trigger</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -134,7 +134,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.AntiBuffItem<B>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.AntiBuffItem-1.yml\" sourcestartlinenumber=\"1\">A type of item that prevents a given type of buff from giving to the host</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -320,20 +320,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.BeforeSavingSlotChanged.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.BeforeSavingSlotChanged.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.BeforeSavingSlotChanged",
-      "Summary": "<p sourcefile=\"api/AngeliA.BeforeSavingSlotChanged.yml\" sourcestartlinenumber=\"1\">The function will be called before user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is still the old value when this function is called.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.BeforeSavingSlotChangedAttribute.yml",
       "output": {
         ".html": {
@@ -372,7 +358,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BlockBuilder",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.BlockBuilder.yml\" sourcestartlinenumber=\"1\">Item that represent a map block inside inventory. Also handles the build block to map/stage logic</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -610,7 +596,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BodyGadgetItem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.BodyGadgetItem.yml\" sourcestartlinenumber=\"1\">A type of item that holds a body gadget.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1087,20 +1073,6 @@
       "IsMRef": true,
       "Title": "AngeliA.CheatSystem",
       "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From",
-      "Summary": "<p sourcefile=\"api/AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From.yml\" sourcestartlinenumber=\"1\">The function will be called when CircuitSystem triggers the entity that holds this function</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2234,7 +2206,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GUI.yml\" sourcestartlinenumber=\"1\">GUI for Game-User-Interface. Handles UI related rendering and interaction logic</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2350,20 +2322,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.GUISkin.LabelPattern.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.GUISkin.LabelPattern.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.GUISkin.LabelPattern",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.GUISkin.yml",
       "output": {
         ".html": {
@@ -2472,20 +2430,6 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GamepadKey",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.GenericDialogUI.Option.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.GenericDialogUI.Option.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.GenericDialogUI.Option",
       "Summary": null
     },
     {
@@ -3200,7 +3144,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Item",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Item.yml\" sourcestartlinenumber=\"1\">Basic unit inside inventory system. ※※⚠ Use global single instance ⚠※※</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3368,7 +3312,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Jewelry",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Jewelry.yml\" sourcestartlinenumber=\"1\">A type of equipment that EquipmentType always set to Jewelry</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3495,20 +3439,6 @@
       "IsMRef": true,
       "Title": "AngeliA.MapEditor",
       "Summary": "<p sourcefile=\"api/AngeliA.MapEditor.yml\" sourcestartlinenumber=\"1\">Entity for edit the map in run-time</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.MapEditorBlinkParticle.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.MapEditorBlinkParticle.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.MapEditorBlinkParticle",
-      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -3774,7 +3704,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.NonStackableItem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.NonStackableItem.yml\" sourcestartlinenumber=\"1\">A type of item that do not stack-up inside inventory panel. The MaxStackCount is always 1.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3946,20 +3876,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnBulletHitEnvironment_Bullet.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnBulletHitEnvironment_Bullet.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnBulletHitEnvironment_Bullet",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnBulletHitEnvironment_Bullet.yml\" sourcestartlinenumber=\"1\">The function will be called when a bullet hit environment (something not an IDamageReceiver)</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.OnBulletHitEnvironment_BulletAttribute.yml",
       "output": {
         ".html": {
@@ -3988,20 +3904,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnCharacterCrash_Entity.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnCharacterCrash_Entity.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnCharacterCrash_Entity",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterCrash_Entity.yml\" sourcestartlinenumber=\"1\">The function will be called when a character crash</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.OnCharacterCrash_EntityAttribute.yml",
       "output": {
         ".html": {
@@ -4013,20 +3915,6 @@
       "IsMRef": true,
       "Title": "AngeliA.OnCharacterCrash_EntityAttribute",
       "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterCrash_EntityAttribute.yml\" sourcestartlinenumber=\"1\">The function will be called when a character crash</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnCharacterFly_Entity.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnCharacterFly_Entity.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnCharacterFly_Entity",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterFly_Entity.yml\" sourcestartlinenumber=\"1\">The function will be called when a character fly</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4044,20 +3932,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnCharacterFootStepped_Entity.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnCharacterFootStepped_Entity.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnCharacterFootStepped_Entity",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterFootStepped_Entity.yml\" sourcestartlinenumber=\"1\">The function will be called when a character makes a foot step on running</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.OnCharacterFootStepped_EntityAttribute.yml",
       "output": {
         ".html": {
@@ -4069,20 +3943,6 @@
       "IsMRef": true,
       "Title": "AngeliA.OnCharacterFootStepped_EntityAttribute",
       "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterFootStepped_EntityAttribute.yml\" sourcestartlinenumber=\"1\">The function will be called when a character makes a foot step on running</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnCharacterJump_Entity.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnCharacterJump_Entity.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnCharacterJump_Entity",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterJump_Entity.yml\" sourcestartlinenumber=\"1\">The function will be called when a character jumps</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4100,20 +3960,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnCharacterPassOut_Entity.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnCharacterPassOut_Entity.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnCharacterPassOut_Entity",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterPassOut_Entity.yml\" sourcestartlinenumber=\"1\">The function will be called when a character pass out</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.OnCharacterPassOut_EntityAttribute.yml",
       "output": {
         ".html": {
@@ -4125,20 +3971,6 @@
       "IsMRef": true,
       "Title": "AngeliA.OnCharacterPassOut_EntityAttribute",
       "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterPassOut_EntityAttribute.yml\" sourcestartlinenumber=\"1\">The function will be called when a character pass out</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnCharacterPound_Entity.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnCharacterPound_Entity.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnCharacterPound_Entity",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterPound_Entity.yml\" sourcestartlinenumber=\"1\">The function will be called when a character ground pound</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4156,20 +3988,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnCharacterSleeping_Entity.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnCharacterSleeping_Entity.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnCharacterSleeping_Entity",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterSleeping_Entity.yml\" sourcestartlinenumber=\"1\">The function will be called when a character is sleeping</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.OnCharacterSleeping_EntityAttribute.yml",
       "output": {
         ".html": {
@@ -4184,20 +4002,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnCharacterSlideStepped_Entity.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnCharacterSlideStepped_Entity.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnCharacterSlideStepped_Entity",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterSlideStepped_Entity.yml\" sourcestartlinenumber=\"1\">The function will be called when a character makes a step when sliding</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.OnCharacterSlideStepped_EntityAttribute.yml",
       "output": {
         ".html": {
@@ -4209,20 +4013,6 @@
       "IsMRef": true,
       "Title": "AngeliA.OnCharacterSlideStepped_EntityAttribute",
       "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterSlideStepped_EntityAttribute.yml\" sourcestartlinenumber=\"1\">The function will be called when a character makes a step when sliding</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnCharacterTeleport_Entity.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnCharacterTeleport_Entity.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnCharacterTeleport_Entity",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnCharacterTeleport_Entity.yml\" sourcestartlinenumber=\"1\">The function will be called when a character teleport</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4265,20 +4055,6 @@
       "IsMRef": true,
       "Title": "AngeliA.OnCircuitWireActived_Int3UnitPosAttribute",
       "Summary": "<p sourcefile=\"api/AngeliA.OnCircuitWireActived_Int3UnitPosAttribute.yml\" sourcestartlinenumber=\"1\">The function will be called when CircuitSystem's electric current pass through</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnDealDamage_Damage_IDamageReceiver.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnDealDamage_Damage_IDamageReceiver.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnDealDamage_Damage_IDamageReceiver",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnDealDamage_Damage_IDamageReceiver.yml\" sourcestartlinenumber=\"1\">The function will be called when something deal damage to a damage-receiver</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4632,20 +4408,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnSavingSlotChanged.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnSavingSlotChanged.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnSavingSlotChanged",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnSavingSlotChanged.yml\" sourcestartlinenumber=\"1\">The function will be called after user change the saving slot. Universe.BuiltIn.CurrentSavingSlot is the new value when this function is called.</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.OnSavingSlotChangedAttribute.yml",
       "output": {
         ".html": {
@@ -4660,20 +4422,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData.yml\" sourcestartlinenumber=\"1\">The function will be called when message from TransferSystem.StartTransfer() arrived</p>\n"
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute.yml",
       "output": {
         ".html": {
@@ -4685,20 +4433,6 @@
       "IsMRef": true,
       "Title": "AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute",
       "Summary": "<p sourcefile=\"api/AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute.yml\" sourcestartlinenumber=\"1\">The function will be called when message from TransferSystem.StartTransfer() arrived</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData",
-      "Summary": "<p sourcefile=\"api/AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData.yml\" sourcestartlinenumber=\"1\">The function will be called when message from TransferSystem.StartTransfer() pass through</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4839,20 +4573,6 @@
       "IsMRef": true,
       "Title": "AngeliA.Particle",
       "Summary": "<p sourcefile=\"api/AngeliA.Particle.yml\" sourcestartlinenumber=\"1\">Entity that represent a animated decoration</p>\n"
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.PauseMenuUI.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.PauseMenuUI.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.PauseMenuUI",
-      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -5412,20 +5132,6 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CraftingUI",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.Platformer.DefaultCharacter.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.Platformer.DefaultCharacter.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.Platformer.DefaultCharacter",
       "Summary": null
     },
     {
@@ -6994,7 +6700,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.PlayerMenuItem<UI>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.PlayerMenuItem-1.yml\" sourcestartlinenumber=\"1\">A type of item that spawns a player partner menu when use</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7400,20 +7106,6 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.PoseAnimation_Walk",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/AngeliA.PoseCharacter.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/AngeliA.PoseCharacter.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "AngeliA.PoseCharacter",
       "Summary": null
     },
     {
@@ -7988,7 +7680,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SwitchItem<TargetItem>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SwitchItem-1.yml\" sourcestartlinenumber=\"1\">A type of item that switch to another item when use</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8198,7 +7890,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Weapon<B>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Weapon-1.yml\" sourcestartlinenumber=\"1\">A type of handtool that launch a type of bullet when being used</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8212,7 +7904,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Weapon",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Weapon.yml\" sourcestartlinenumber=\"1\">A type of handtool that launch a type of bullet when being used</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8226,7 +7918,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.WeaponValidDirection",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.WeaponValidDirection.yml\" sourcestartlinenumber=\"1\">Which direction can the weapon attack to</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8338,174 +8030,6 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/GeorgeMamaladze.Trie-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/GeorgeMamaladze.Trie-1.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "GeorgeMamaladze.Trie<TValue>",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/GeorgeMamaladze.TrieNode-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/GeorgeMamaladze.TrieNode-1.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "GeorgeMamaladze.TrieNode<TValue>",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/GeorgeMamaladze.TrieNodeBase-1.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/GeorgeMamaladze.TrieNodeBase-1.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "GeorgeMamaladze.TrieNodeBase<TValue>",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/GeorgeMamaladze.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/GeorgeMamaladze.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "GeorgeMamaladze",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/JordanPeck.CellularDistanceFunction.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/JordanPeck.CellularDistanceFunction.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "JordanPeck.CellularDistanceFunction",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/JordanPeck.CellularReturnType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/JordanPeck.CellularReturnType.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "JordanPeck.CellularReturnType",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/JordanPeck.DomainWarpType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/JordanPeck.DomainWarpType.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "JordanPeck.DomainWarpType",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/JordanPeck.FastNoiseLite.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/JordanPeck.FastNoiseLite.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "JordanPeck.FastNoiseLite",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/JordanPeck.FractalType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/JordanPeck.FractalType.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "JordanPeck.FractalType",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/JordanPeck.NoiseType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/JordanPeck.NoiseType.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "JordanPeck.NoiseType",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/JordanPeck.RotationType3D.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/JordanPeck.RotationType3D.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "JordanPeck.RotationType3D",
-      "Summary": null
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/JordanPeck.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/JordanPeck.html"
-        }
-      },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "JordanPeck",
       "Summary": null
     },
     {

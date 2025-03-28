@@ -1,13 +1,26 @@
 ﻿
 namespace AngeliA;
 
+/// <summary>
+/// A type of item that prevents a given type of buff from giving to the host
+/// </summary>
+/// <typeparam name="B">Type of the buff to prevent</typeparam>
 public abstract class AntiBuffItem<B> : Item where B : Buff {
 
 	// SUB
+	/// <summary>
+	/// How anti buff item been trigger
+	/// </summary>
 	protected enum TriggerMode { Auto, Manual, }
 
 	// VAR
+	/// <summary>
+	/// How this item been trigger
+	/// </summary>
 	protected abstract TriggerMode Mode { get; }
+	/// <summary>
+	/// How long does it work after been use in frame
+	/// </summary>
 	public abstract int Duration { get; }
 	private int BuffID { get; init; }
 
@@ -41,6 +54,10 @@ public abstract class AntiBuffItem<B> : Item where B : Buff {
 		return true;
 	}
 
+	/// <summary>
+	/// This function is called when the item is triggered
+	/// </summary>
+	/// <param name="target">Target character that will get the effect</param>
 	public virtual void OnAntiBuffTriggerd (Character target) { }
 
 }

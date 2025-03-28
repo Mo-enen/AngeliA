@@ -18,7 +18,8 @@
           ]
         }
       ],
-      "dest": "api"
+      "dest": "api",
+       "filter": "filterConfig.yml"
     }
   ],
   "build": {
@@ -28,7 +29,8 @@
           "**/*.{md,yml}"
         ],
         "exclude": [
-          "_site/**"
+          "_site/**",
+          "**/ThridParty/**"
         ]
       }
     ],

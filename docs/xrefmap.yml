@@ -1543,31 +1543,6 @@ references:
   fullName.vb: AngeliA.BeforeLevelRenderedAttribute.New
   nameWithType: BeforeLevelRenderedAttribute.BeforeLevelRenderedAttribute
   nameWithType.vb: BeforeLevelRenderedAttribute.New
-- uid: AngeliA.BeforeSavingSlotChanged
-  name: BeforeSavingSlotChanged
-  href: api/AngeliA.BeforeSavingSlotChanged.html
-  commentId: T:AngeliA.BeforeSavingSlotChanged
-  fullName: AngeliA.BeforeSavingSlotChanged
-  nameWithType: BeforeSavingSlotChanged
-- uid: AngeliA.BeforeSavingSlotChanged.#ctor(System.Int32)
-  name: BeforeSavingSlotChanged(int)
-  href: api/AngeliA.BeforeSavingSlotChanged.html#AngeliA_BeforeSavingSlotChanged__ctor_System_Int32_
-  commentId: M:AngeliA.BeforeSavingSlotChanged.#ctor(System.Int32)
-  name.vb: New(Integer)
-  fullName: AngeliA.BeforeSavingSlotChanged.BeforeSavingSlotChanged(int)
-  fullName.vb: AngeliA.BeforeSavingSlotChanged.New(Integer)
-  nameWithType: BeforeSavingSlotChanged.BeforeSavingSlotChanged(int)
-  nameWithType.vb: BeforeSavingSlotChanged.New(Integer)
-- uid: AngeliA.BeforeSavingSlotChanged.#ctor*
-  name: BeforeSavingSlotChanged
-  href: api/AngeliA.BeforeSavingSlotChanged.html#AngeliA_BeforeSavingSlotChanged__ctor_
-  commentId: Overload:AngeliA.BeforeSavingSlotChanged.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: AngeliA.BeforeSavingSlotChanged.BeforeSavingSlotChanged
-  fullName.vb: AngeliA.BeforeSavingSlotChanged.New
-  nameWithType: BeforeSavingSlotChanged.BeforeSavingSlotChanged
-  nameWithType.vb: BeforeSavingSlotChanged.New
 - uid: AngeliA.BeforeSavingSlotChangedAttribute
   name: BeforeSavingSlotChangedAttribute
   href: api/AngeliA.BeforeSavingSlotChangedAttribute.html
@@ -10542,12 +10517,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.CheatSystem.TryAddCheatAction
   nameWithType: CheatSystem.TryAddCheatAction
-- uid: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
-  name: CircuitOperate_Int3UnitPos_IntStamp_Direction5From
-  href: api/AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From.html
-  commentId: T:AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
-  fullName: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5From
-  nameWithType: CircuitOperate_Int3UnitPos_IntStamp_Direction5From
 - uid: AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
   name: CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute
   href: api/AngeliA.CircuitOperate_Int3UnitPos_IntStamp_Direction5FromAttribute.html
@@ -26936,96 +26905,6 @@ references:
   commentId: F:AngeliA.GUISkin.LabelButton
   fullName: AngeliA.GUISkin.LabelButton
   nameWithType: GUISkin.LabelButton
-- uid: AngeliA.GUISkin.LabelPattern
-  name: GUISkin.LabelPattern
-  href: api/AngeliA.GUISkin.LabelPattern.html
-  commentId: T:AngeliA.GUISkin.LabelPattern
-  fullName: AngeliA.GUISkin.LabelPattern
-  nameWithType: GUISkin.LabelPattern
-- uid: AngeliA.GUISkin.LabelPattern.Auto
-  name: Auto
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_Auto
-  commentId: F:AngeliA.GUISkin.LabelPattern.Auto
-  fullName: AngeliA.GUISkin.LabelPattern.Auto
-  nameWithType: GUISkin.LabelPattern.Auto
-- uid: AngeliA.GUISkin.LabelPattern.Clip
-  name: Clip
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_Clip
-  commentId: F:AngeliA.GUISkin.LabelPattern.Clip
-  fullName: AngeliA.GUISkin.LabelPattern.Clip
-  nameWithType: GUISkin.LabelPattern.Clip
-- uid: AngeliA.GUISkin.LabelPattern.Dark
-  name: Dark
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_Dark
-  commentId: F:AngeliA.GUISkin.LabelPattern.Dark
-  fullName: AngeliA.GUISkin.LabelPattern.Dark
-  nameWithType: GUISkin.LabelPattern.Dark
-- uid: AngeliA.GUISkin.LabelPattern.Default
-  name: Default
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_Default
-  commentId: F:AngeliA.GUISkin.LabelPattern.Default
-  fullName: AngeliA.GUISkin.LabelPattern.Default
-  nameWithType: GUISkin.LabelPattern.Default
-- uid: AngeliA.GUISkin.LabelPattern.Grey
-  name: Grey
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_Grey
-  commentId: F:AngeliA.GUISkin.LabelPattern.Grey
-  fullName: AngeliA.GUISkin.LabelPattern.Grey
-  nameWithType: GUISkin.LabelPattern.Grey
-- uid: AngeliA.GUISkin.LabelPattern.Large
-  name: Large
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_Large
-  commentId: F:AngeliA.GUISkin.LabelPattern.Large
-  fullName: AngeliA.GUISkin.LabelPattern.Large
-  nameWithType: GUISkin.LabelPattern.Large
-- uid: AngeliA.GUISkin.LabelPattern.Light
-  name: Light
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_Light
-  commentId: F:AngeliA.GUISkin.LabelPattern.Light
-  fullName: AngeliA.GUISkin.LabelPattern.Light
-  nameWithType: GUISkin.LabelPattern.Light
-- uid: AngeliA.GUISkin.LabelPattern.MidLeft
-  name: MidLeft
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_MidLeft
-  commentId: F:AngeliA.GUISkin.LabelPattern.MidLeft
-  fullName: AngeliA.GUISkin.LabelPattern.MidLeft
-  nameWithType: GUISkin.LabelPattern.MidLeft
-- uid: AngeliA.GUISkin.LabelPattern.MidMid
-  name: MidMid
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_MidMid
-  commentId: F:AngeliA.GUISkin.LabelPattern.MidMid
-  fullName: AngeliA.GUISkin.LabelPattern.MidMid
-  nameWithType: GUISkin.LabelPattern.MidMid
-- uid: AngeliA.GUISkin.LabelPattern.Normal
-  name: Normal
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_Normal
-  commentId: F:AngeliA.GUISkin.LabelPattern.Normal
-  fullName: AngeliA.GUISkin.LabelPattern.Normal
-  nameWithType: GUISkin.LabelPattern.Normal
-- uid: AngeliA.GUISkin.LabelPattern.Small
-  name: Small
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_Small
-  commentId: F:AngeliA.GUISkin.LabelPattern.Small
-  fullName: AngeliA.GUISkin.LabelPattern.Small
-  nameWithType: GUISkin.LabelPattern.Small
-- uid: AngeliA.GUISkin.LabelPattern.TopLeft
-  name: TopLeft
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_TopLeft
-  commentId: F:AngeliA.GUISkin.LabelPattern.TopLeft
-  fullName: AngeliA.GUISkin.LabelPattern.TopLeft
-  nameWithType: GUISkin.LabelPattern.TopLeft
-- uid: AngeliA.GUISkin.LabelPattern.TopMid
-  name: TopMid
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_TopMid
-  commentId: F:AngeliA.GUISkin.LabelPattern.TopMid
-  fullName: AngeliA.GUISkin.LabelPattern.TopMid
-  nameWithType: GUISkin.LabelPattern.TopMid
-- uid: AngeliA.GUISkin.LabelPattern.WordWrap
-  name: WordWrap
-  href: api/AngeliA.GUISkin.LabelPattern.html#AngeliA_GUISkin_LabelPattern_WordWrap
-  commentId: F:AngeliA.GUISkin.LabelPattern.WordWrap
-  fullName: AngeliA.GUISkin.LabelPattern.WordWrap
-  nameWithType: GUISkin.LabelPattern.WordWrap
 - uid: AngeliA.GUISkin.LargeCenterGreyLabel
   name: LargeCenterGreyLabel
   href: api/AngeliA.GUISkin.html#AngeliA_GUISkin_LargeCenterGreyLabel
@@ -27154,22 +27033,6 @@ references:
   commentId: F:AngeliA.GUISkin.Name
   fullName: AngeliA.GUISkin.Name
   nameWithType: GUISkin.Name
-- uid: AngeliA.GUISkin.ProduceLabel(AngeliA.GUISkin.LabelPattern,System.Int32,System.Int32)
-  name: ProduceLabel(LabelPattern, int, int)
-  href: api/AngeliA.GUISkin.html#AngeliA_GUISkin_ProduceLabel_AngeliA_GUISkin_LabelPattern_System_Int32_System_Int32_
-  commentId: M:AngeliA.GUISkin.ProduceLabel(AngeliA.GUISkin.LabelPattern,System.Int32,System.Int32)
-  name.vb: ProduceLabel(LabelPattern, Integer, Integer)
-  fullName: AngeliA.GUISkin.ProduceLabel(AngeliA.GUISkin.LabelPattern, int, int)
-  fullName.vb: AngeliA.GUISkin.ProduceLabel(AngeliA.GUISkin.LabelPattern, Integer, Integer)
-  nameWithType: GUISkin.ProduceLabel(GUISkin.LabelPattern, int, int)
-  nameWithType.vb: GUISkin.ProduceLabel(GUISkin.LabelPattern, Integer, Integer)
-- uid: AngeliA.GUISkin.ProduceLabel*
-  name: ProduceLabel
-  href: api/AngeliA.GUISkin.html#AngeliA_GUISkin_ProduceLabel_
-  commentId: Overload:AngeliA.GUISkin.ProduceLabel
-  isSpec: "True"
-  fullName: AngeliA.GUISkin.ProduceLabel
-  nameWithType: GUISkin.ProduceLabel
 - uid: AngeliA.GUISkin.RightLabel
   name: RightLabel
   href: api/AngeliA.GUISkin.html#AngeliA_GUISkin_RightLabel
@@ -27419,12 +27282,6 @@ references:
   commentId: F:AngeliA.GUIStyle.Alignment
   fullName: AngeliA.GUIStyle.Alignment
   nameWithType: GUIStyle.Alignment
-- uid: AngeliA.GUIStyle.BORDER_SCALE
-  name: BORDER_SCALE
-  href: api/AngeliA.GUIStyle.html#AngeliA_GUIStyle_BORDER_SCALE
-  commentId: F:AngeliA.GUIStyle.BORDER_SCALE
-  fullName: AngeliA.GUIStyle.BORDER_SCALE
-  nameWithType: GUIStyle.BORDER_SCALE
 - uid: AngeliA.GUIStyle.BodyColor
   name: BodyColor
   href: api/AngeliA.GUIStyle.html#AngeliA_GUIStyle_BodyColor
@@ -28290,15 +28147,15 @@ references:
   isSpec: "True"
   fullName: AngeliA.Game.GetPixelsFromTexture
   nameWithType: Game.GetPixelsFromTexture
-- uid: AngeliA.Game.GetResizedTexture(System.Object,System.Int32,System.Int32)
-  name: GetResizedTexture(object, int, int)
-  href: api/AngeliA.Game.html#AngeliA_Game_GetResizedTexture_System_Object_System_Int32_System_Int32_
-  commentId: M:AngeliA.Game.GetResizedTexture(System.Object,System.Int32,System.Int32)
-  name.vb: GetResizedTexture(Object, Integer, Integer)
-  fullName: AngeliA.Game.GetResizedTexture(object, int, int)
-  fullName.vb: AngeliA.Game.GetResizedTexture(Object, Integer, Integer)
-  nameWithType: Game.GetResizedTexture(object, int, int)
-  nameWithType.vb: Game.GetResizedTexture(Object, Integer, Integer)
+- uid: AngeliA.Game.GetResizedTexture(System.Object,System.Int32,System.Int32,System.Boolean)
+  name: GetResizedTexture(object, int, int, bool)
+  href: api/AngeliA.Game.html#AngeliA_Game_GetResizedTexture_System_Object_System_Int32_System_Int32_System_Boolean_
+  commentId: M:AngeliA.Game.GetResizedTexture(System.Object,System.Int32,System.Int32,System.Boolean)
+  name.vb: GetResizedTexture(Object, Integer, Integer, Boolean)
+  fullName: AngeliA.Game.GetResizedTexture(object, int, int, bool)
+  fullName.vb: AngeliA.Game.GetResizedTexture(Object, Integer, Integer, Boolean)
+  nameWithType: Game.GetResizedTexture(object, int, int, bool)
+  nameWithType.vb: Game.GetResizedTexture(Object, Integer, Integer, Boolean)
 - uid: AngeliA.Game.GetResizedTexture*
   name: GetResizedTexture
   href: api/AngeliA.Game.html#AngeliA_Game_GetResizedTexture_
@@ -30121,15 +29978,15 @@ references:
   isSpec: "True"
   fullName: AngeliA.Game._GetPixelsFromTexture
   nameWithType: Game._GetPixelsFromTexture
-- uid: AngeliA.Game._GetResizedTexture(System.Object,System.Int32,System.Int32)
-  name: _GetResizedTexture(object, int, int)
-  href: api/AngeliA.Game.html#AngeliA_Game__GetResizedTexture_System_Object_System_Int32_System_Int32_
-  commentId: M:AngeliA.Game._GetResizedTexture(System.Object,System.Int32,System.Int32)
-  name.vb: _GetResizedTexture(Object, Integer, Integer)
-  fullName: AngeliA.Game._GetResizedTexture(object, int, int)
-  fullName.vb: AngeliA.Game._GetResizedTexture(Object, Integer, Integer)
-  nameWithType: Game._GetResizedTexture(object, int, int)
-  nameWithType.vb: Game._GetResizedTexture(Object, Integer, Integer)
+- uid: AngeliA.Game._GetResizedTexture(System.Object,System.Int32,System.Int32,System.Boolean)
+  name: _GetResizedTexture(object, int, int, bool)
+  href: api/AngeliA.Game.html#AngeliA_Game__GetResizedTexture_System_Object_System_Int32_System_Int32_System_Boolean_
+  commentId: M:AngeliA.Game._GetResizedTexture(System.Object,System.Int32,System.Int32,System.Boolean)
+  name.vb: _GetResizedTexture(Object, Integer, Integer, Boolean)
+  fullName: AngeliA.Game._GetResizedTexture(object, int, int, bool)
+  fullName.vb: AngeliA.Game._GetResizedTexture(Object, Integer, Integer, Boolean)
+  nameWithType: Game._GetResizedTexture(object, int, int, bool)
+  nameWithType.vb: Game._GetResizedTexture(Object, Integer, Integer, Boolean)
 - uid: AngeliA.Game._GetResizedTexture*
   name: _GetResizedTexture
   href: api/AngeliA.Game.html#AngeliA_Game__GetResizedTexture_
@@ -31366,24 +31223,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.GenericDialogUI.OnInactivated
   nameWithType: GenericDialogUI.OnInactivated
-- uid: AngeliA.GenericDialogUI.Option
-  name: GenericDialogUI.Option
-  href: api/AngeliA.GenericDialogUI.Option.html
-  commentId: T:AngeliA.GenericDialogUI.Option
-  fullName: AngeliA.GenericDialogUI.Option
-  nameWithType: GenericDialogUI.Option
-- uid: AngeliA.GenericDialogUI.Option.Action
-  name: Action
-  href: api/AngeliA.GenericDialogUI.Option.html#AngeliA_GenericDialogUI_Option_Action
-  commentId: F:AngeliA.GenericDialogUI.Option.Action
-  fullName: AngeliA.GenericDialogUI.Option.Action
-  nameWithType: GenericDialogUI.Option.Action
-- uid: AngeliA.GenericDialogUI.Option.Label
-  name: Label
-  href: api/AngeliA.GenericDialogUI.Option.html#AngeliA_GenericDialogUI_Option_Label
-  commentId: F:AngeliA.GenericDialogUI.Option.Label
-  fullName: AngeliA.GenericDialogUI.Option.Label
-  nameWithType: GenericDialogUI.Option.Label
 - uid: AngeliA.GenericDialogUI.SetCustomData(System.Object,System.Object,System.Object)
   name: SetCustomData(object, object, object)
   href: api/AngeliA.GenericDialogUI.html#AngeliA_GenericDialogUI_SetCustomData_System_Object_System_Object_System_Object_
@@ -41838,70 +41677,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.MapEditor.UpdateWindowUI
   nameWithType: MapEditor.UpdateWindowUI
-- uid: AngeliA.MapEditorBlinkParticle
-  name: MapEditorBlinkParticle
-  href: api/AngeliA.MapEditorBlinkParticle.html
-  commentId: T:AngeliA.MapEditorBlinkParticle
-  fullName: AngeliA.MapEditorBlinkParticle
-  nameWithType: MapEditorBlinkParticle
-- uid: AngeliA.MapEditorBlinkParticle.Duration
-  name: Duration
-  href: api/AngeliA.MapEditorBlinkParticle.html#AngeliA_MapEditorBlinkParticle_Duration
-  commentId: P:AngeliA.MapEditorBlinkParticle.Duration
-  fullName: AngeliA.MapEditorBlinkParticle.Duration
-  nameWithType: MapEditorBlinkParticle.Duration
-- uid: AngeliA.MapEditorBlinkParticle.Duration*
-  name: Duration
-  href: api/AngeliA.MapEditorBlinkParticle.html#AngeliA_MapEditorBlinkParticle_Duration_
-  commentId: Overload:AngeliA.MapEditorBlinkParticle.Duration
-  isSpec: "True"
-  fullName: AngeliA.MapEditorBlinkParticle.Duration
-  nameWithType: MapEditorBlinkParticle.Duration
-- uid: AngeliA.MapEditorBlinkParticle.LateUpdate
-  name: LateUpdate()
-  href: api/AngeliA.MapEditorBlinkParticle.html#AngeliA_MapEditorBlinkParticle_LateUpdate
-  commentId: M:AngeliA.MapEditorBlinkParticle.LateUpdate
-  fullName: AngeliA.MapEditorBlinkParticle.LateUpdate()
-  nameWithType: MapEditorBlinkParticle.LateUpdate()
-- uid: AngeliA.MapEditorBlinkParticle.LateUpdate*
-  name: LateUpdate
-  href: api/AngeliA.MapEditorBlinkParticle.html#AngeliA_MapEditorBlinkParticle_LateUpdate_
-  commentId: Overload:AngeliA.MapEditorBlinkParticle.LateUpdate
-  isSpec: "True"
-  fullName: AngeliA.MapEditorBlinkParticle.LateUpdate
-  nameWithType: MapEditorBlinkParticle.LateUpdate
-- uid: AngeliA.MapEditorBlinkParticle.Loop
-  name: Loop
-  href: api/AngeliA.MapEditorBlinkParticle.html#AngeliA_MapEditorBlinkParticle_Loop
-  commentId: P:AngeliA.MapEditorBlinkParticle.Loop
-  fullName: AngeliA.MapEditorBlinkParticle.Loop
-  nameWithType: MapEditorBlinkParticle.Loop
-- uid: AngeliA.MapEditorBlinkParticle.Loop*
-  name: Loop
-  href: api/AngeliA.MapEditorBlinkParticle.html#AngeliA_MapEditorBlinkParticle_Loop_
-  commentId: Overload:AngeliA.MapEditorBlinkParticle.Loop
-  isSpec: "True"
-  fullName: AngeliA.MapEditorBlinkParticle.Loop
-  nameWithType: MapEditorBlinkParticle.Loop
-- uid: AngeliA.MapEditorBlinkParticle.SpriteID
-  name: SpriteID
-  href: api/AngeliA.MapEditorBlinkParticle.html#AngeliA_MapEditorBlinkParticle_SpriteID
-  commentId: P:AngeliA.MapEditorBlinkParticle.SpriteID
-  fullName: AngeliA.MapEditorBlinkParticle.SpriteID
-  nameWithType: MapEditorBlinkParticle.SpriteID
-- uid: AngeliA.MapEditorBlinkParticle.SpriteID*
-  name: SpriteID
-  href: api/AngeliA.MapEditorBlinkParticle.html#AngeliA_MapEditorBlinkParticle_SpriteID_
-  commentId: Overload:AngeliA.MapEditorBlinkParticle.SpriteID
-  isSpec: "True"
-  fullName: AngeliA.MapEditorBlinkParticle.SpriteID
-  nameWithType: MapEditorBlinkParticle.SpriteID
-- uid: AngeliA.MapEditorBlinkParticle.TYPE_ID
-  name: TYPE_ID
-  href: api/AngeliA.MapEditorBlinkParticle.html#AngeliA_MapEditorBlinkParticle_TYPE_ID
-  commentId: F:AngeliA.MapEditorBlinkParticle.TYPE_ID
-  fullName: AngeliA.MapEditorBlinkParticle.TYPE_ID
-  nameWithType: MapEditorBlinkParticle.TYPE_ID
 - uid: AngeliA.MapEditorToolbarButton
   name: MapEditorToolbarButton
   href: api/AngeliA.MapEditorToolbarButton.html
@@ -42862,12 +42637,6 @@ references:
   commentId: T:AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute
   fullName: AngeliA.OnBlockPicked_IntSpriteID_IRectAttribute
   nameWithType: OnBlockPicked_IntSpriteID_IRectAttribute
-- uid: AngeliA.OnBulletHitEnvironment_Bullet
-  name: OnBulletHitEnvironment_Bullet
-  href: api/AngeliA.OnBulletHitEnvironment_Bullet.html
-  commentId: T:AngeliA.OnBulletHitEnvironment_Bullet
-  fullName: AngeliA.OnBulletHitEnvironment_Bullet
-  nameWithType: OnBulletHitEnvironment_Bullet
 - uid: AngeliA.OnBulletHitEnvironment_BulletAttribute
   name: OnBulletHitEnvironment_BulletAttribute
   href: api/AngeliA.OnBulletHitEnvironment_BulletAttribute.html
@@ -42880,108 +42649,54 @@ references:
   commentId: T:AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute
   fullName: AngeliA.OnCameOutOfWater_Rigidbody_EntityAttribute
   nameWithType: OnCameOutOfWater_Rigidbody_EntityAttribute
-- uid: AngeliA.OnCharacterCrash_Entity
-  name: OnCharacterCrash_Entity
-  href: api/AngeliA.OnCharacterCrash_Entity.html
-  commentId: T:AngeliA.OnCharacterCrash_Entity
-  fullName: AngeliA.OnCharacterCrash_Entity
-  nameWithType: OnCharacterCrash_Entity
 - uid: AngeliA.OnCharacterCrash_EntityAttribute
   name: OnCharacterCrash_EntityAttribute
   href: api/AngeliA.OnCharacterCrash_EntityAttribute.html
   commentId: T:AngeliA.OnCharacterCrash_EntityAttribute
   fullName: AngeliA.OnCharacterCrash_EntityAttribute
   nameWithType: OnCharacterCrash_EntityAttribute
-- uid: AngeliA.OnCharacterFly_Entity
-  name: OnCharacterFly_Entity
-  href: api/AngeliA.OnCharacterFly_Entity.html
-  commentId: T:AngeliA.OnCharacterFly_Entity
-  fullName: AngeliA.OnCharacterFly_Entity
-  nameWithType: OnCharacterFly_Entity
 - uid: AngeliA.OnCharacterFly_EntityAttribute
   name: OnCharacterFly_EntityAttribute
   href: api/AngeliA.OnCharacterFly_EntityAttribute.html
   commentId: T:AngeliA.OnCharacterFly_EntityAttribute
   fullName: AngeliA.OnCharacterFly_EntityAttribute
   nameWithType: OnCharacterFly_EntityAttribute
-- uid: AngeliA.OnCharacterFootStepped_Entity
-  name: OnCharacterFootStepped_Entity
-  href: api/AngeliA.OnCharacterFootStepped_Entity.html
-  commentId: T:AngeliA.OnCharacterFootStepped_Entity
-  fullName: AngeliA.OnCharacterFootStepped_Entity
-  nameWithType: OnCharacterFootStepped_Entity
 - uid: AngeliA.OnCharacterFootStepped_EntityAttribute
   name: OnCharacterFootStepped_EntityAttribute
   href: api/AngeliA.OnCharacterFootStepped_EntityAttribute.html
   commentId: T:AngeliA.OnCharacterFootStepped_EntityAttribute
   fullName: AngeliA.OnCharacterFootStepped_EntityAttribute
   nameWithType: OnCharacterFootStepped_EntityAttribute
-- uid: AngeliA.OnCharacterJump_Entity
-  name: OnCharacterJump_Entity
-  href: api/AngeliA.OnCharacterJump_Entity.html
-  commentId: T:AngeliA.OnCharacterJump_Entity
-  fullName: AngeliA.OnCharacterJump_Entity
-  nameWithType: OnCharacterJump_Entity
 - uid: AngeliA.OnCharacterJump_EntityAttribute
   name: OnCharacterJump_EntityAttribute
   href: api/AngeliA.OnCharacterJump_EntityAttribute.html
   commentId: T:AngeliA.OnCharacterJump_EntityAttribute
   fullName: AngeliA.OnCharacterJump_EntityAttribute
   nameWithType: OnCharacterJump_EntityAttribute
-- uid: AngeliA.OnCharacterPassOut_Entity
-  name: OnCharacterPassOut_Entity
-  href: api/AngeliA.OnCharacterPassOut_Entity.html
-  commentId: T:AngeliA.OnCharacterPassOut_Entity
-  fullName: AngeliA.OnCharacterPassOut_Entity
-  nameWithType: OnCharacterPassOut_Entity
 - uid: AngeliA.OnCharacterPassOut_EntityAttribute
   name: OnCharacterPassOut_EntityAttribute
   href: api/AngeliA.OnCharacterPassOut_EntityAttribute.html
   commentId: T:AngeliA.OnCharacterPassOut_EntityAttribute
   fullName: AngeliA.OnCharacterPassOut_EntityAttribute
   nameWithType: OnCharacterPassOut_EntityAttribute
-- uid: AngeliA.OnCharacterPound_Entity
-  name: OnCharacterPound_Entity
-  href: api/AngeliA.OnCharacterPound_Entity.html
-  commentId: T:AngeliA.OnCharacterPound_Entity
-  fullName: AngeliA.OnCharacterPound_Entity
-  nameWithType: OnCharacterPound_Entity
 - uid: AngeliA.OnCharacterPound_EntityAttribute
   name: OnCharacterPound_EntityAttribute
   href: api/AngeliA.OnCharacterPound_EntityAttribute.html
   commentId: T:AngeliA.OnCharacterPound_EntityAttribute
   fullName: AngeliA.OnCharacterPound_EntityAttribute
   nameWithType: OnCharacterPound_EntityAttribute
-- uid: AngeliA.OnCharacterSleeping_Entity
-  name: OnCharacterSleeping_Entity
-  href: api/AngeliA.OnCharacterSleeping_Entity.html
-  commentId: T:AngeliA.OnCharacterSleeping_Entity
-  fullName: AngeliA.OnCharacterSleeping_Entity
-  nameWithType: OnCharacterSleeping_Entity
 - uid: AngeliA.OnCharacterSleeping_EntityAttribute
   name: OnCharacterSleeping_EntityAttribute
   href: api/AngeliA.OnCharacterSleeping_EntityAttribute.html
   commentId: T:AngeliA.OnCharacterSleeping_EntityAttribute
   fullName: AngeliA.OnCharacterSleeping_EntityAttribute
   nameWithType: OnCharacterSleeping_EntityAttribute
-- uid: AngeliA.OnCharacterSlideStepped_Entity
-  name: OnCharacterSlideStepped_Entity
-  href: api/AngeliA.OnCharacterSlideStepped_Entity.html
-  commentId: T:AngeliA.OnCharacterSlideStepped_Entity
-  fullName: AngeliA.OnCharacterSlideStepped_Entity
-  nameWithType: OnCharacterSlideStepped_Entity
 - uid: AngeliA.OnCharacterSlideStepped_EntityAttribute
   name: OnCharacterSlideStepped_EntityAttribute
   href: api/AngeliA.OnCharacterSlideStepped_EntityAttribute.html
   commentId: T:AngeliA.OnCharacterSlideStepped_EntityAttribute
   fullName: AngeliA.OnCharacterSlideStepped_EntityAttribute
   nameWithType: OnCharacterSlideStepped_EntityAttribute
-- uid: AngeliA.OnCharacterTeleport_Entity
-  name: OnCharacterTeleport_Entity
-  href: api/AngeliA.OnCharacterTeleport_Entity.html
-  commentId: T:AngeliA.OnCharacterTeleport_Entity
-  fullName: AngeliA.OnCharacterTeleport_Entity
-  nameWithType: OnCharacterTeleport_Entity
 - uid: AngeliA.OnCharacterTeleport_EntityAttribute
   name: OnCharacterTeleport_EntityAttribute
   href: api/AngeliA.OnCharacterTeleport_EntityAttribute.html
@@ -43000,12 +42715,6 @@ references:
   commentId: T:AngeliA.OnCircuitWireActived_Int3UnitPosAttribute
   fullName: AngeliA.OnCircuitWireActived_Int3UnitPosAttribute
   nameWithType: OnCircuitWireActived_Int3UnitPosAttribute
-- uid: AngeliA.OnDealDamage_Damage_IDamageReceiver
-  name: OnDealDamage_Damage_IDamageReceiver
-  href: api/AngeliA.OnDealDamage_Damage_IDamageReceiver.html
-  commentId: T:AngeliA.OnDealDamage_Damage_IDamageReceiver
-  fullName: AngeliA.OnDealDamage_Damage_IDamageReceiver
-  nameWithType: OnDealDamage_Damage_IDamageReceiver
 - uid: AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute
   name: OnDealDamage_Damage_IDamageReceiverAttribute
   href: api/AngeliA.OnDealDamage_Damage_IDamageReceiverAttribute.html
@@ -43351,31 +43060,6 @@ references:
   fullName.vb: AngeliA.OnRemoteSettingChanged_IntID_IntDataAttribute.New
   nameWithType: OnRemoteSettingChanged_IntID_IntDataAttribute.OnRemoteSettingChanged_IntID_IntDataAttribute
   nameWithType.vb: OnRemoteSettingChanged_IntID_IntDataAttribute.New
-- uid: AngeliA.OnSavingSlotChanged
-  name: OnSavingSlotChanged
-  href: api/AngeliA.OnSavingSlotChanged.html
-  commentId: T:AngeliA.OnSavingSlotChanged
-  fullName: AngeliA.OnSavingSlotChanged
-  nameWithType: OnSavingSlotChanged
-- uid: AngeliA.OnSavingSlotChanged.#ctor(System.Int32)
-  name: OnSavingSlotChanged(int)
-  href: api/AngeliA.OnSavingSlotChanged.html#AngeliA_OnSavingSlotChanged__ctor_System_Int32_
-  commentId: M:AngeliA.OnSavingSlotChanged.#ctor(System.Int32)
-  name.vb: New(Integer)
-  fullName: AngeliA.OnSavingSlotChanged.OnSavingSlotChanged(int)
-  fullName.vb: AngeliA.OnSavingSlotChanged.New(Integer)
-  nameWithType: OnSavingSlotChanged.OnSavingSlotChanged(int)
-  nameWithType.vb: OnSavingSlotChanged.New(Integer)
-- uid: AngeliA.OnSavingSlotChanged.#ctor*
-  name: OnSavingSlotChanged
-  href: api/AngeliA.OnSavingSlotChanged.html#AngeliA_OnSavingSlotChanged__ctor_
-  commentId: Overload:AngeliA.OnSavingSlotChanged.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: AngeliA.OnSavingSlotChanged.OnSavingSlotChanged
-  fullName.vb: AngeliA.OnSavingSlotChanged.New
-  nameWithType: OnSavingSlotChanged.OnSavingSlotChanged
-  nameWithType.vb: OnSavingSlotChanged.New
 - uid: AngeliA.OnSavingSlotChangedAttribute
   name: OnSavingSlotChangedAttribute
   href: api/AngeliA.OnSavingSlotChangedAttribute.html
@@ -43401,24 +43085,12 @@ references:
   fullName.vb: AngeliA.OnSavingSlotChangedAttribute.New
   nameWithType: OnSavingSlotChangedAttribute.OnSavingSlotChangedAttribute
   nameWithType.vb: OnSavingSlotChangedAttribute.New
-- uid: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-  name: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-  href: api/AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData.html
-  commentId: T:AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-  fullName: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
-  nameWithType: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectData
 - uid: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
   name: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
   href: api/AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute.html
   commentId: T:AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
   fullName: AngeliA.OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
   nameWithType: OnTransferArrivedAttribute_IntEntityID_Int3UnitPos_ObjectDataAttribute
-- uid: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
-  name: OnTransferPassAttribute_Int3UnitPos_ObjectData
-  href: api/AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData.html
-  commentId: T:AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
-  fullName: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectData
-  nameWithType: OnTransferPassAttribute_Int3UnitPos_ObjectData
 - uid: AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
   name: OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute
   href: api/AngeliA.OnTransferPassAttribute_Int3UnitPos_ObjectDataAttribute.html
@@ -43933,109 +43605,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Particle.UserData
   nameWithType: Particle.UserData
-- uid: AngeliA.PauseMenuUI
-  name: PauseMenuUI
-  href: api/AngeliA.PauseMenuUI.html
-  commentId: T:AngeliA.PauseMenuUI
-  fullName: AngeliA.PauseMenuUI
-  nameWithType: PauseMenuUI
-- uid: AngeliA.PauseMenuUI.#ctor
-  name: PauseMenuUI()
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI__ctor
-  commentId: M:AngeliA.PauseMenuUI.#ctor
-  name.vb: New()
-  fullName: AngeliA.PauseMenuUI.PauseMenuUI()
-  fullName.vb: AngeliA.PauseMenuUI.New()
-  nameWithType: PauseMenuUI.PauseMenuUI()
-  nameWithType.vb: PauseMenuUI.New()
-- uid: AngeliA.PauseMenuUI.#ctor*
-  name: PauseMenuUI
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI__ctor_
-  commentId: Overload:AngeliA.PauseMenuUI.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: AngeliA.PauseMenuUI.PauseMenuUI
-  fullName.vb: AngeliA.PauseMenuUI.New
-  nameWithType: PauseMenuUI.PauseMenuUI
-  nameWithType.vb: PauseMenuUI.New
-- uid: AngeliA.PauseMenuUI.DrawMenu
-  name: DrawMenu()
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_DrawMenu
-  commentId: M:AngeliA.PauseMenuUI.DrawMenu
-  fullName: AngeliA.PauseMenuUI.DrawMenu()
-  nameWithType: PauseMenuUI.DrawMenu()
-- uid: AngeliA.PauseMenuUI.DrawMenu*
-  name: DrawMenu
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_DrawMenu_
-  commentId: Overload:AngeliA.PauseMenuUI.DrawMenu
-  isSpec: "True"
-  fullName: AngeliA.PauseMenuUI.DrawMenu
-  nameWithType: PauseMenuUI.DrawMenu
-- uid: AngeliA.PauseMenuUI.LateUpdate
-  name: LateUpdate()
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_LateUpdate
-  commentId: M:AngeliA.PauseMenuUI.LateUpdate
-  fullName: AngeliA.PauseMenuUI.LateUpdate()
-  nameWithType: PauseMenuUI.LateUpdate()
-- uid: AngeliA.PauseMenuUI.LateUpdate*
-  name: LateUpdate
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_LateUpdate_
-  commentId: Overload:AngeliA.PauseMenuUI.LateUpdate
-  isSpec: "True"
-  fullName: AngeliA.PauseMenuUI.LateUpdate
-  nameWithType: PauseMenuUI.LateUpdate
-- uid: AngeliA.PauseMenuUI.OnActivated
-  name: OnActivated()
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnActivated
-  commentId: M:AngeliA.PauseMenuUI.OnActivated
-  fullName: AngeliA.PauseMenuUI.OnActivated()
-  nameWithType: PauseMenuUI.OnActivated()
-- uid: AngeliA.PauseMenuUI.OnActivated*
-  name: OnActivated
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnActivated_
-  commentId: Overload:AngeliA.PauseMenuUI.OnActivated
-  isSpec: "True"
-  fullName: AngeliA.PauseMenuUI.OnActivated
-  nameWithType: PauseMenuUI.OnActivated
-- uid: AngeliA.PauseMenuUI.OnGameTryingToQuit
-  name: OnGameTryingToQuit()
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnGameTryingToQuit
-  commentId: M:AngeliA.PauseMenuUI.OnGameTryingToQuit
-  fullName: AngeliA.PauseMenuUI.OnGameTryingToQuit()
-  nameWithType: PauseMenuUI.OnGameTryingToQuit()
-- uid: AngeliA.PauseMenuUI.OnGameTryingToQuit*
-  name: OnGameTryingToQuit
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnGameTryingToQuit_
-  commentId: Overload:AngeliA.PauseMenuUI.OnGameTryingToQuit
-  isSpec: "True"
-  fullName: AngeliA.PauseMenuUI.OnGameTryingToQuit
-  nameWithType: PauseMenuUI.OnGameTryingToQuit
-- uid: AngeliA.PauseMenuUI.OnGameUpdatePauseless
-  name: OnGameUpdatePauseless()
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnGameUpdatePauseless
-  commentId: M:AngeliA.PauseMenuUI.OnGameUpdatePauseless
-  fullName: AngeliA.PauseMenuUI.OnGameUpdatePauseless()
-  nameWithType: PauseMenuUI.OnGameUpdatePauseless()
-- uid: AngeliA.PauseMenuUI.OnGameUpdatePauseless*
-  name: OnGameUpdatePauseless
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnGameUpdatePauseless_
-  commentId: Overload:AngeliA.PauseMenuUI.OnGameUpdatePauseless
-  isSpec: "True"
-  fullName: AngeliA.PauseMenuUI.OnGameUpdatePauseless
-  nameWithType: PauseMenuUI.OnGameUpdatePauseless
-- uid: AngeliA.PauseMenuUI.OnInactivated
-  name: OnInactivated()
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnInactivated
-  commentId: M:AngeliA.PauseMenuUI.OnInactivated
-  fullName: AngeliA.PauseMenuUI.OnInactivated()
-  nameWithType: PauseMenuUI.OnInactivated()
-- uid: AngeliA.PauseMenuUI.OnInactivated*
-  name: OnInactivated
-  href: api/AngeliA.PauseMenuUI.html#AngeliA_PauseMenuUI_OnInactivated_
-  commentId: Overload:AngeliA.PauseMenuUI.OnInactivated
-  isSpec: "True"
-  fullName: AngeliA.PauseMenuUI.OnInactivated
-  nameWithType: PauseMenuUI.OnInactivated
 - uid: AngeliA.Physics
   name: Physics
   href: api/AngeliA.Physics.html
@@ -48203,77 +47772,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.Platformer.CraftingUI.SetColumnAndRow
   nameWithType: CraftingUI.SetColumnAndRow
-- uid: AngeliA.Platformer.DefaultCharacter
-  name: DefaultCharacter
-  href: api/AngeliA.Platformer.DefaultCharacter.html
-  commentId: T:AngeliA.Platformer.DefaultCharacter
-  fullName: AngeliA.Platformer.DefaultCharacter
-  nameWithType: DefaultCharacter
-- uid: AngeliA.Platformer.DefaultCharacter.AllowBeingPush
-  name: AllowBeingPush
-  href: api/AngeliA.Platformer.DefaultCharacter.html#AngeliA_Platformer_DefaultCharacter_AllowBeingPush
-  commentId: P:AngeliA.Platformer.DefaultCharacter.AllowBeingPush
-  fullName: AngeliA.Platformer.DefaultCharacter.AllowBeingPush
-  nameWithType: DefaultCharacter.AllowBeingPush
-- uid: AngeliA.Platformer.DefaultCharacter.AllowBeingPush*
-  name: AllowBeingPush
-  href: api/AngeliA.Platformer.DefaultCharacter.html#AngeliA_Platformer_DefaultCharacter_AllowBeingPush_
-  commentId: Overload:AngeliA.Platformer.DefaultCharacter.AllowBeingPush
-  isSpec: "True"
-  fullName: AngeliA.Platformer.DefaultCharacter.AllowBeingPush
-  nameWithType: DefaultCharacter.AllowBeingPush
-- uid: AngeliA.Platformer.DefaultCharacter.AttackTargetTeam
-  name: AttackTargetTeam
-  href: api/AngeliA.Platformer.DefaultCharacter.html#AngeliA_Platformer_DefaultCharacter_AttackTargetTeam
-  commentId: P:AngeliA.Platformer.DefaultCharacter.AttackTargetTeam
-  fullName: AngeliA.Platformer.DefaultCharacter.AttackTargetTeam
-  nameWithType: DefaultCharacter.AttackTargetTeam
-- uid: AngeliA.Platformer.DefaultCharacter.AttackTargetTeam*
-  name: AttackTargetTeam
-  href: api/AngeliA.Platformer.DefaultCharacter.html#AngeliA_Platformer_DefaultCharacter_AttackTargetTeam_
-  commentId: Overload:AngeliA.Platformer.DefaultCharacter.AttackTargetTeam
-  isSpec: "True"
-  fullName: AngeliA.Platformer.DefaultCharacter.AttackTargetTeam
-  nameWithType: DefaultCharacter.AttackTargetTeam
-- uid: AngeliA.Platformer.DefaultCharacter.BeforeUpdate
-  name: BeforeUpdate()
-  href: api/AngeliA.Platformer.DefaultCharacter.html#AngeliA_Platformer_DefaultCharacter_BeforeUpdate
-  commentId: M:AngeliA.Platformer.DefaultCharacter.BeforeUpdate
-  fullName: AngeliA.Platformer.DefaultCharacter.BeforeUpdate()
-  nameWithType: DefaultCharacter.BeforeUpdate()
-- uid: AngeliA.Platformer.DefaultCharacter.BeforeUpdate*
-  name: BeforeUpdate
-  href: api/AngeliA.Platformer.DefaultCharacter.html#AngeliA_Platformer_DefaultCharacter_BeforeUpdate_
-  commentId: Overload:AngeliA.Platformer.DefaultCharacter.BeforeUpdate
-  isSpec: "True"
-  fullName: AngeliA.Platformer.DefaultCharacter.BeforeUpdate
-  nameWithType: DefaultCharacter.BeforeUpdate
-- uid: AngeliA.Platformer.DefaultCharacter.InventoryType
-  name: InventoryType
-  href: api/AngeliA.Platformer.DefaultCharacter.html#AngeliA_Platformer_DefaultCharacter_InventoryType
-  commentId: P:AngeliA.Platformer.DefaultCharacter.InventoryType
-  fullName: AngeliA.Platformer.DefaultCharacter.InventoryType
-  nameWithType: DefaultCharacter.InventoryType
-- uid: AngeliA.Platformer.DefaultCharacter.InventoryType*
-  name: InventoryType
-  href: api/AngeliA.Platformer.DefaultCharacter.html#AngeliA_Platformer_DefaultCharacter_InventoryType_
-  commentId: Overload:AngeliA.Platformer.DefaultCharacter.InventoryType
-  isSpec: "True"
-  fullName: AngeliA.Platformer.DefaultCharacter.InventoryType
-  nameWithType: DefaultCharacter.InventoryType
-- uid: AngeliA.Platformer.DefaultCharacter.Team
-  name: Team
-  href: api/AngeliA.Platformer.DefaultCharacter.html#AngeliA_Platformer_DefaultCharacter_Team
-  commentId: P:AngeliA.Platformer.DefaultCharacter.Team
-  fullName: AngeliA.Platformer.DefaultCharacter.Team
-  nameWithType: DefaultCharacter.Team
-- uid: AngeliA.Platformer.DefaultCharacter.Team*
-  name: Team
-  href: api/AngeliA.Platformer.DefaultCharacter.html#AngeliA_Platformer_DefaultCharacter_Team_
-  commentId: Overload:AngeliA.Platformer.DefaultCharacter.Team
-  isSpec: "True"
-  fullName: AngeliA.Platformer.DefaultCharacter.Team
-  nameWithType: DefaultCharacter.Team
 - uid: AngeliA.Platformer.DollItem
   name: DollItem
   href: api/AngeliA.Platformer.DollItem.html
@@ -61049,51 +60547,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.PoseAnimation_Walk.Animate
   nameWithType: PoseAnimation_Walk.Animate
-- uid: AngeliA.PoseCharacter
-  name: PoseCharacter
-  href: api/AngeliA.PoseCharacter.html
-  commentId: T:AngeliA.PoseCharacter
-  fullName: AngeliA.PoseCharacter
-  nameWithType: PoseCharacter
-- uid: AngeliA.PoseCharacter.BeforeUpdate
-  name: BeforeUpdate()
-  href: api/AngeliA.PoseCharacter.html#AngeliA_PoseCharacter_BeforeUpdate
-  commentId: M:AngeliA.PoseCharacter.BeforeUpdate
-  fullName: AngeliA.PoseCharacter.BeforeUpdate()
-  nameWithType: PoseCharacter.BeforeUpdate()
-- uid: AngeliA.PoseCharacter.BeforeUpdate*
-  name: BeforeUpdate
-  href: api/AngeliA.PoseCharacter.html#AngeliA_PoseCharacter_BeforeUpdate_
-  commentId: Overload:AngeliA.PoseCharacter.BeforeUpdate
-  isSpec: "True"
-  fullName: AngeliA.PoseCharacter.BeforeUpdate
-  nameWithType: PoseCharacter.BeforeUpdate
-- uid: AngeliA.PoseCharacter.CreateNativeRenderer
-  name: CreateNativeRenderer()
-  href: api/AngeliA.PoseCharacter.html#AngeliA_PoseCharacter_CreateNativeRenderer
-  commentId: M:AngeliA.PoseCharacter.CreateNativeRenderer
-  fullName: AngeliA.PoseCharacter.CreateNativeRenderer()
-  nameWithType: PoseCharacter.CreateNativeRenderer()
-- uid: AngeliA.PoseCharacter.CreateNativeRenderer*
-  name: CreateNativeRenderer
-  href: api/AngeliA.PoseCharacter.html#AngeliA_PoseCharacter_CreateNativeRenderer_
-  commentId: Overload:AngeliA.PoseCharacter.CreateNativeRenderer
-  isSpec: "True"
-  fullName: AngeliA.PoseCharacter.CreateNativeRenderer
-  nameWithType: PoseCharacter.CreateNativeRenderer
-- uid: AngeliA.PoseCharacter.FinalCharacterHeight
-  name: FinalCharacterHeight
-  href: api/AngeliA.PoseCharacter.html#AngeliA_PoseCharacter_FinalCharacterHeight
-  commentId: P:AngeliA.PoseCharacter.FinalCharacterHeight
-  fullName: AngeliA.PoseCharacter.FinalCharacterHeight
-  nameWithType: PoseCharacter.FinalCharacterHeight
-- uid: AngeliA.PoseCharacter.FinalCharacterHeight*
-  name: FinalCharacterHeight
-  href: api/AngeliA.PoseCharacter.html#AngeliA_PoseCharacter_FinalCharacterHeight_
-  commentId: Overload:AngeliA.PoseCharacter.FinalCharacterHeight
-  isSpec: "True"
-  fullName: AngeliA.PoseCharacter.FinalCharacterHeight
-  nameWithType: PoseCharacter.FinalCharacterHeight
 - uid: AngeliA.PoseCharacterRenderer
   name: PoseCharacterRenderer
   href: api/AngeliA.PoseCharacterRenderer.html
@@ -73237,925 +72690,3 @@ references:
   commentId: F:AngeliA.WrapMode.Wrap
   fullName: AngeliA.WrapMode.Wrap
   nameWithType: WrapMode.Wrap
-- uid: GeorgeMamaladze
-  name: GeorgeMamaladze
-  href: api/GeorgeMamaladze.html
-  commentId: N:GeorgeMamaladze
-  fullName: GeorgeMamaladze
-  nameWithType: GeorgeMamaladze
-- uid: GeorgeMamaladze.TrieNodeBase`1
-  name: TrieNodeBase<TValue>
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html
-  commentId: T:GeorgeMamaladze.TrieNodeBase`1
-  name.vb: TrieNodeBase(Of TValue)
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue)
-  nameWithType: TrieNodeBase<TValue>
-  nameWithType.vb: TrieNodeBase(Of TValue)
-- uid: GeorgeMamaladze.TrieNodeBase`1.Add(System.String,System.Int32,`0)
-  name: Add(string, int, TValue)
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Add_System_String_System_Int32__0_
-  commentId: M:GeorgeMamaladze.TrieNodeBase`1.Add(System.String,System.Int32,`0)
-  name.vb: Add(String, Integer, TValue)
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Add(string, int, TValue)
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Add(String, Integer, TValue)
-  nameWithType: TrieNodeBase<TValue>.Add(string, int, TValue)
-  nameWithType.vb: TrieNodeBase(Of TValue).Add(String, Integer, TValue)
-- uid: GeorgeMamaladze.TrieNodeBase`1.Add*
-  name: Add
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Add_
-  commentId: Overload:GeorgeMamaladze.TrieNodeBase`1.Add
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Add
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Add
-  nameWithType: TrieNodeBase<TValue>.Add
-  nameWithType.vb: TrieNodeBase(Of TValue).Add
-- uid: GeorgeMamaladze.TrieNodeBase`1.AddValue(`0)
-  name: AddValue(TValue)
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_AddValue__0_
-  commentId: M:GeorgeMamaladze.TrieNodeBase`1.AddValue(`0)
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.AddValue(TValue)
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).AddValue(TValue)
-  nameWithType: TrieNodeBase<TValue>.AddValue(TValue)
-  nameWithType.vb: TrieNodeBase(Of TValue).AddValue(TValue)
-- uid: GeorgeMamaladze.TrieNodeBase`1.AddValue*
-  name: AddValue
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_AddValue_
-  commentId: Overload:GeorgeMamaladze.TrieNodeBase`1.AddValue
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.AddValue
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).AddValue
-  nameWithType: TrieNodeBase<TValue>.AddValue
-  nameWithType.vb: TrieNodeBase(Of TValue).AddValue
-- uid: GeorgeMamaladze.TrieNodeBase`1.Children
-  name: Children()
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Children
-  commentId: M:GeorgeMamaladze.TrieNodeBase`1.Children
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Children()
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Children()
-  nameWithType: TrieNodeBase<TValue>.Children()
-  nameWithType.vb: TrieNodeBase(Of TValue).Children()
-- uid: GeorgeMamaladze.TrieNodeBase`1.Children*
-  name: Children
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Children_
-  commentId: Overload:GeorgeMamaladze.TrieNodeBase`1.Children
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Children
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Children
-  nameWithType: TrieNodeBase<TValue>.Children
-  nameWithType.vb: TrieNodeBase(Of TValue).Children
-- uid: GeorgeMamaladze.TrieNodeBase`1.GetChildOrNull(System.String,System.Int32)
-  name: GetChildOrNull(string, int)
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_GetChildOrNull_System_String_System_Int32_
-  commentId: M:GeorgeMamaladze.TrieNodeBase`1.GetChildOrNull(System.String,System.Int32)
-  name.vb: GetChildOrNull(String, Integer)
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.GetChildOrNull(string, int)
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).GetChildOrNull(String, Integer)
-  nameWithType: TrieNodeBase<TValue>.GetChildOrNull(string, int)
-  nameWithType.vb: TrieNodeBase(Of TValue).GetChildOrNull(String, Integer)
-- uid: GeorgeMamaladze.TrieNodeBase`1.GetChildOrNull*
-  name: GetChildOrNull
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_GetChildOrNull_
-  commentId: Overload:GeorgeMamaladze.TrieNodeBase`1.GetChildOrNull
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.GetChildOrNull
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).GetChildOrNull
-  nameWithType: TrieNodeBase<TValue>.GetChildOrNull
-  nameWithType.vb: TrieNodeBase(Of TValue).GetChildOrNull
-- uid: GeorgeMamaladze.TrieNodeBase`1.GetOrCreateChild(System.Char)
-  name: GetOrCreateChild(char)
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_GetOrCreateChild_System_Char_
-  commentId: M:GeorgeMamaladze.TrieNodeBase`1.GetOrCreateChild(System.Char)
-  name.vb: GetOrCreateChild(Char)
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.GetOrCreateChild(char)
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).GetOrCreateChild(Char)
-  nameWithType: TrieNodeBase<TValue>.GetOrCreateChild(char)
-  nameWithType.vb: TrieNodeBase(Of TValue).GetOrCreateChild(Char)
-- uid: GeorgeMamaladze.TrieNodeBase`1.GetOrCreateChild*
-  name: GetOrCreateChild
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_GetOrCreateChild_
-  commentId: Overload:GeorgeMamaladze.TrieNodeBase`1.GetOrCreateChild
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.GetOrCreateChild
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).GetOrCreateChild
-  nameWithType: TrieNodeBase<TValue>.GetOrCreateChild
-  nameWithType.vb: TrieNodeBase(Of TValue).GetOrCreateChild
-- uid: GeorgeMamaladze.TrieNodeBase`1.KeyLength
-  name: KeyLength
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_KeyLength
-  commentId: P:GeorgeMamaladze.TrieNodeBase`1.KeyLength
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.KeyLength
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).KeyLength
-  nameWithType: TrieNodeBase<TValue>.KeyLength
-  nameWithType.vb: TrieNodeBase(Of TValue).KeyLength
-- uid: GeorgeMamaladze.TrieNodeBase`1.KeyLength*
-  name: KeyLength
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_KeyLength_
-  commentId: Overload:GeorgeMamaladze.TrieNodeBase`1.KeyLength
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.KeyLength
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).KeyLength
-  nameWithType: TrieNodeBase<TValue>.KeyLength
-  nameWithType.vb: TrieNodeBase(Of TValue).KeyLength
-- uid: GeorgeMamaladze.TrieNodeBase`1.Retrieve(System.String,System.Int32)
-  name: Retrieve(string, int)
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Retrieve_System_String_System_Int32_
-  commentId: M:GeorgeMamaladze.TrieNodeBase`1.Retrieve(System.String,System.Int32)
-  name.vb: Retrieve(String, Integer)
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Retrieve(string, int)
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Retrieve(String, Integer)
-  nameWithType: TrieNodeBase<TValue>.Retrieve(string, int)
-  nameWithType.vb: TrieNodeBase(Of TValue).Retrieve(String, Integer)
-- uid: GeorgeMamaladze.TrieNodeBase`1.Retrieve*
-  name: Retrieve
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Retrieve_
-  commentId: Overload:GeorgeMamaladze.TrieNodeBase`1.Retrieve
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Retrieve
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Retrieve
-  nameWithType: TrieNodeBase<TValue>.Retrieve
-  nameWithType.vb: TrieNodeBase(Of TValue).Retrieve
-- uid: GeorgeMamaladze.TrieNodeBase`1.SearchDeep(System.String,System.Int32)
-  name: SearchDeep(string, int)
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_SearchDeep_System_String_System_Int32_
-  commentId: M:GeorgeMamaladze.TrieNodeBase`1.SearchDeep(System.String,System.Int32)
-  name.vb: SearchDeep(String, Integer)
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.SearchDeep(string, int)
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).SearchDeep(String, Integer)
-  nameWithType: TrieNodeBase<TValue>.SearchDeep(string, int)
-  nameWithType.vb: TrieNodeBase(Of TValue).SearchDeep(String, Integer)
-- uid: GeorgeMamaladze.TrieNodeBase`1.SearchDeep*
-  name: SearchDeep
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_SearchDeep_
-  commentId: Overload:GeorgeMamaladze.TrieNodeBase`1.SearchDeep
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.SearchDeep
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).SearchDeep
-  nameWithType: TrieNodeBase<TValue>.SearchDeep
-  nameWithType.vb: TrieNodeBase(Of TValue).SearchDeep
-- uid: GeorgeMamaladze.TrieNodeBase`1.Size
-  name: Size()
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Size
-  commentId: M:GeorgeMamaladze.TrieNodeBase`1.Size
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Size()
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Size()
-  nameWithType: TrieNodeBase<TValue>.Size()
-  nameWithType.vb: TrieNodeBase(Of TValue).Size()
-- uid: GeorgeMamaladze.TrieNodeBase`1.Size*
-  name: Size
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Size_
-  commentId: Overload:GeorgeMamaladze.TrieNodeBase`1.Size
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Size
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Size
-  nameWithType: TrieNodeBase<TValue>.Size
-  nameWithType.vb: TrieNodeBase(Of TValue).Size
-- uid: GeorgeMamaladze.TrieNodeBase`1.Subtree
-  name: Subtree()
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Subtree
-  commentId: M:GeorgeMamaladze.TrieNodeBase`1.Subtree
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Subtree()
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Subtree()
-  nameWithType: TrieNodeBase<TValue>.Subtree()
-  nameWithType.vb: TrieNodeBase(Of TValue).Subtree()
-- uid: GeorgeMamaladze.TrieNodeBase`1.Subtree*
-  name: Subtree
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Subtree_
-  commentId: Overload:GeorgeMamaladze.TrieNodeBase`1.Subtree
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Subtree
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Subtree
-  nameWithType: TrieNodeBase<TValue>.Subtree
-  nameWithType.vb: TrieNodeBase(Of TValue).Subtree
-- uid: GeorgeMamaladze.TrieNodeBase`1.Values
-  name: Values()
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Values
-  commentId: M:GeorgeMamaladze.TrieNodeBase`1.Values
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Values()
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Values()
-  nameWithType: TrieNodeBase<TValue>.Values()
-  nameWithType.vb: TrieNodeBase(Of TValue).Values()
-- uid: GeorgeMamaladze.TrieNodeBase`1.Values*
-  name: Values
-  href: api/GeorgeMamaladze.TrieNodeBase-1.html#GeorgeMamaladze_TrieNodeBase_1_Values_
-  commentId: Overload:GeorgeMamaladze.TrieNodeBase`1.Values
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNodeBase<TValue>.Values
-  fullName.vb: GeorgeMamaladze.TrieNodeBase(Of TValue).Values
-  nameWithType: TrieNodeBase<TValue>.Values
-  nameWithType.vb: TrieNodeBase(Of TValue).Values
-- uid: GeorgeMamaladze.TrieNode`1
-  name: TrieNode<TValue>
-  href: api/GeorgeMamaladze.TrieNode-1.html
-  commentId: T:GeorgeMamaladze.TrieNode`1
-  name.vb: TrieNode(Of TValue)
-  fullName: GeorgeMamaladze.TrieNode<TValue>
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue)
-  nameWithType: TrieNode<TValue>
-  nameWithType.vb: TrieNode(Of TValue)
-- uid: GeorgeMamaladze.TrieNode`1.#ctor
-  name: TrieNode()
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1__ctor
-  commentId: M:GeorgeMamaladze.TrieNode`1.#ctor
-  name.vb: New()
-  fullName: GeorgeMamaladze.TrieNode<TValue>.TrieNode()
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).New()
-  nameWithType: TrieNode<TValue>.TrieNode()
-  nameWithType.vb: TrieNode(Of TValue).New()
-- uid: GeorgeMamaladze.TrieNode`1.#ctor*
-  name: TrieNode
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1__ctor_
-  commentId: Overload:GeorgeMamaladze.TrieNode`1.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: GeorgeMamaladze.TrieNode<TValue>.TrieNode
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).New
-  nameWithType: TrieNode<TValue>.TrieNode
-  nameWithType.vb: TrieNode(Of TValue).New
-- uid: GeorgeMamaladze.TrieNode`1.AddValue(`0)
-  name: AddValue(TValue)
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_AddValue__0_
-  commentId: M:GeorgeMamaladze.TrieNode`1.AddValue(`0)
-  fullName: GeorgeMamaladze.TrieNode<TValue>.AddValue(TValue)
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).AddValue(TValue)
-  nameWithType: TrieNode<TValue>.AddValue(TValue)
-  nameWithType.vb: TrieNode(Of TValue).AddValue(TValue)
-- uid: GeorgeMamaladze.TrieNode`1.AddValue*
-  name: AddValue
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_AddValue_
-  commentId: Overload:GeorgeMamaladze.TrieNode`1.AddValue
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNode<TValue>.AddValue
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).AddValue
-  nameWithType: TrieNode<TValue>.AddValue
-  nameWithType.vb: TrieNode(Of TValue).AddValue
-- uid: GeorgeMamaladze.TrieNode`1.Children
-  name: Children()
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_Children
-  commentId: M:GeorgeMamaladze.TrieNode`1.Children
-  fullName: GeorgeMamaladze.TrieNode<TValue>.Children()
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).Children()
-  nameWithType: TrieNode<TValue>.Children()
-  nameWithType.vb: TrieNode(Of TValue).Children()
-- uid: GeorgeMamaladze.TrieNode`1.Children*
-  name: Children
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_Children_
-  commentId: Overload:GeorgeMamaladze.TrieNode`1.Children
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNode<TValue>.Children
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).Children
-  nameWithType: TrieNode<TValue>.Children
-  nameWithType.vb: TrieNode(Of TValue).Children
-- uid: GeorgeMamaladze.TrieNode`1.Clear
-  name: Clear()
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_Clear
-  commentId: M:GeorgeMamaladze.TrieNode`1.Clear
-  fullName: GeorgeMamaladze.TrieNode<TValue>.Clear()
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).Clear()
-  nameWithType: TrieNode<TValue>.Clear()
-  nameWithType.vb: TrieNode(Of TValue).Clear()
-- uid: GeorgeMamaladze.TrieNode`1.Clear*
-  name: Clear
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_Clear_
-  commentId: Overload:GeorgeMamaladze.TrieNode`1.Clear
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNode<TValue>.Clear
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).Clear
-  nameWithType: TrieNode<TValue>.Clear
-  nameWithType.vb: TrieNode(Of TValue).Clear
-- uid: GeorgeMamaladze.TrieNode`1.GetChildOrNull(System.String,System.Int32)
-  name: GetChildOrNull(string, int)
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_GetChildOrNull_System_String_System_Int32_
-  commentId: M:GeorgeMamaladze.TrieNode`1.GetChildOrNull(System.String,System.Int32)
-  name.vb: GetChildOrNull(String, Integer)
-  fullName: GeorgeMamaladze.TrieNode<TValue>.GetChildOrNull(string, int)
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).GetChildOrNull(String, Integer)
-  nameWithType: TrieNode<TValue>.GetChildOrNull(string, int)
-  nameWithType.vb: TrieNode(Of TValue).GetChildOrNull(String, Integer)
-- uid: GeorgeMamaladze.TrieNode`1.GetChildOrNull*
-  name: GetChildOrNull
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_GetChildOrNull_
-  commentId: Overload:GeorgeMamaladze.TrieNode`1.GetChildOrNull
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNode<TValue>.GetChildOrNull
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).GetChildOrNull
-  nameWithType: TrieNode<TValue>.GetChildOrNull
-  nameWithType.vb: TrieNode(Of TValue).GetChildOrNull
-- uid: GeorgeMamaladze.TrieNode`1.GetOrCreateChild(System.Char)
-  name: GetOrCreateChild(char)
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_GetOrCreateChild_System_Char_
-  commentId: M:GeorgeMamaladze.TrieNode`1.GetOrCreateChild(System.Char)
-  name.vb: GetOrCreateChild(Char)
-  fullName: GeorgeMamaladze.TrieNode<TValue>.GetOrCreateChild(char)
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).GetOrCreateChild(Char)
-  nameWithType: TrieNode<TValue>.GetOrCreateChild(char)
-  nameWithType.vb: TrieNode(Of TValue).GetOrCreateChild(Char)
-- uid: GeorgeMamaladze.TrieNode`1.GetOrCreateChild*
-  name: GetOrCreateChild
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_GetOrCreateChild_
-  commentId: Overload:GeorgeMamaladze.TrieNode`1.GetOrCreateChild
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNode<TValue>.GetOrCreateChild
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).GetOrCreateChild
-  nameWithType: TrieNode<TValue>.GetOrCreateChild
-  nameWithType.vb: TrieNode(Of TValue).GetOrCreateChild
-- uid: GeorgeMamaladze.TrieNode`1.KeyLength
-  name: KeyLength
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_KeyLength
-  commentId: P:GeorgeMamaladze.TrieNode`1.KeyLength
-  fullName: GeorgeMamaladze.TrieNode<TValue>.KeyLength
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).KeyLength
-  nameWithType: TrieNode<TValue>.KeyLength
-  nameWithType.vb: TrieNode(Of TValue).KeyLength
-- uid: GeorgeMamaladze.TrieNode`1.KeyLength*
-  name: KeyLength
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_KeyLength_
-  commentId: Overload:GeorgeMamaladze.TrieNode`1.KeyLength
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNode<TValue>.KeyLength
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).KeyLength
-  nameWithType: TrieNode<TValue>.KeyLength
-  nameWithType.vb: TrieNode(Of TValue).KeyLength
-- uid: GeorgeMamaladze.TrieNode`1.Values
-  name: Values()
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_Values
-  commentId: M:GeorgeMamaladze.TrieNode`1.Values
-  fullName: GeorgeMamaladze.TrieNode<TValue>.Values()
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).Values()
-  nameWithType: TrieNode<TValue>.Values()
-  nameWithType.vb: TrieNode(Of TValue).Values()
-- uid: GeorgeMamaladze.TrieNode`1.Values*
-  name: Values
-  href: api/GeorgeMamaladze.TrieNode-1.html#GeorgeMamaladze_TrieNode_1_Values_
-  commentId: Overload:GeorgeMamaladze.TrieNode`1.Values
-  isSpec: "True"
-  fullName: GeorgeMamaladze.TrieNode<TValue>.Values
-  fullName.vb: GeorgeMamaladze.TrieNode(Of TValue).Values
-  nameWithType: TrieNode<TValue>.Values
-  nameWithType.vb: TrieNode(Of TValue).Values
-- uid: GeorgeMamaladze.Trie`1
-  name: Trie<TValue>
-  href: api/GeorgeMamaladze.Trie-1.html
-  commentId: T:GeorgeMamaladze.Trie`1
-  name.vb: Trie(Of TValue)
-  fullName: GeorgeMamaladze.Trie<TValue>
-  fullName.vb: GeorgeMamaladze.Trie(Of TValue)
-  nameWithType: Trie<TValue>
-  nameWithType.vb: Trie(Of TValue)
-- uid: GeorgeMamaladze.Trie`1.Add(System.String,`0)
-  name: Add(string, TValue)
-  href: api/GeorgeMamaladze.Trie-1.html#GeorgeMamaladze_Trie_1_Add_System_String__0_
-  commentId: M:GeorgeMamaladze.Trie`1.Add(System.String,`0)
-  name.vb: Add(String, TValue)
-  fullName: GeorgeMamaladze.Trie<TValue>.Add(string, TValue)
-  fullName.vb: GeorgeMamaladze.Trie(Of TValue).Add(String, TValue)
-  nameWithType: Trie<TValue>.Add(string, TValue)
-  nameWithType.vb: Trie(Of TValue).Add(String, TValue)
-- uid: GeorgeMamaladze.Trie`1.Add*
-  name: Add
-  href: api/GeorgeMamaladze.Trie-1.html#GeorgeMamaladze_Trie_1_Add_
-  commentId: Overload:GeorgeMamaladze.Trie`1.Add
-  isSpec: "True"
-  fullName: GeorgeMamaladze.Trie<TValue>.Add
-  fullName.vb: GeorgeMamaladze.Trie(Of TValue).Add
-  nameWithType: Trie<TValue>.Add
-  nameWithType.vb: Trie(Of TValue).Add
-- uid: GeorgeMamaladze.Trie`1.AddForSearching(System.String,`0)
-  name: AddForSearching(string, TValue)
-  href: api/GeorgeMamaladze.Trie-1.html#GeorgeMamaladze_Trie_1_AddForSearching_System_String__0_
-  commentId: M:GeorgeMamaladze.Trie`1.AddForSearching(System.String,`0)
-  name.vb: AddForSearching(String, TValue)
-  fullName: GeorgeMamaladze.Trie<TValue>.AddForSearching(string, TValue)
-  fullName.vb: GeorgeMamaladze.Trie(Of TValue).AddForSearching(String, TValue)
-  nameWithType: Trie<TValue>.AddForSearching(string, TValue)
-  nameWithType.vb: Trie(Of TValue).AddForSearching(String, TValue)
-- uid: GeorgeMamaladze.Trie`1.AddForSearching*
-  name: AddForSearching
-  href: api/GeorgeMamaladze.Trie-1.html#GeorgeMamaladze_Trie_1_AddForSearching_
-  commentId: Overload:GeorgeMamaladze.Trie`1.AddForSearching
-  isSpec: "True"
-  fullName: GeorgeMamaladze.Trie<TValue>.AddForSearching
-  fullName.vb: GeorgeMamaladze.Trie(Of TValue).AddForSearching
-  nameWithType: Trie<TValue>.AddForSearching
-  nameWithType.vb: Trie(Of TValue).AddForSearching
-- uid: GeorgeMamaladze.Trie`1.Retrieve(System.String)
-  name: Retrieve(string)
-  href: api/GeorgeMamaladze.Trie-1.html#GeorgeMamaladze_Trie_1_Retrieve_System_String_
-  commentId: M:GeorgeMamaladze.Trie`1.Retrieve(System.String)
-  name.vb: Retrieve(String)
-  fullName: GeorgeMamaladze.Trie<TValue>.Retrieve(string)
-  fullName.vb: GeorgeMamaladze.Trie(Of TValue).Retrieve(String)
-  nameWithType: Trie<TValue>.Retrieve(string)
-  nameWithType.vb: Trie(Of TValue).Retrieve(String)
-- uid: GeorgeMamaladze.Trie`1.Retrieve*
-  name: Retrieve
-  href: api/GeorgeMamaladze.Trie-1.html#GeorgeMamaladze_Trie_1_Retrieve_
-  commentId: Overload:GeorgeMamaladze.Trie`1.Retrieve
-  isSpec: "True"
-  fullName: GeorgeMamaladze.Trie<TValue>.Retrieve
-  fullName.vb: GeorgeMamaladze.Trie(Of TValue).Retrieve
-  nameWithType: Trie<TValue>.Retrieve
-  nameWithType.vb: Trie(Of TValue).Retrieve
-- uid: JordanPeck
-  name: JordanPeck
-  href: api/JordanPeck.html
-  commentId: N:JordanPeck
-  fullName: JordanPeck
-  nameWithType: JordanPeck
-- uid: JordanPeck.CellularDistanceFunction
-  name: CellularDistanceFunction
-  href: api/JordanPeck.CellularDistanceFunction.html
-  commentId: T:JordanPeck.CellularDistanceFunction
-  fullName: JordanPeck.CellularDistanceFunction
-  nameWithType: CellularDistanceFunction
-- uid: JordanPeck.CellularDistanceFunction.Euclidean
-  name: Euclidean
-  href: api/JordanPeck.CellularDistanceFunction.html#JordanPeck_CellularDistanceFunction_Euclidean
-  commentId: F:JordanPeck.CellularDistanceFunction.Euclidean
-  fullName: JordanPeck.CellularDistanceFunction.Euclidean
-  nameWithType: CellularDistanceFunction.Euclidean
-- uid: JordanPeck.CellularDistanceFunction.EuclideanSq
-  name: EuclideanSq
-  href: api/JordanPeck.CellularDistanceFunction.html#JordanPeck_CellularDistanceFunction_EuclideanSq
-  commentId: F:JordanPeck.CellularDistanceFunction.EuclideanSq
-  fullName: JordanPeck.CellularDistanceFunction.EuclideanSq
-  nameWithType: CellularDistanceFunction.EuclideanSq
-- uid: JordanPeck.CellularDistanceFunction.Hybrid
-  name: Hybrid
-  href: api/JordanPeck.CellularDistanceFunction.html#JordanPeck_CellularDistanceFunction_Hybrid
-  commentId: F:JordanPeck.CellularDistanceFunction.Hybrid
-  fullName: JordanPeck.CellularDistanceFunction.Hybrid
-  nameWithType: CellularDistanceFunction.Hybrid
-- uid: JordanPeck.CellularDistanceFunction.Manhattan
-  name: Manhattan
-  href: api/JordanPeck.CellularDistanceFunction.html#JordanPeck_CellularDistanceFunction_Manhattan
-  commentId: F:JordanPeck.CellularDistanceFunction.Manhattan
-  fullName: JordanPeck.CellularDistanceFunction.Manhattan
-  nameWithType: CellularDistanceFunction.Manhattan
-- uid: JordanPeck.CellularReturnType
-  name: CellularReturnType
-  href: api/JordanPeck.CellularReturnType.html
-  commentId: T:JordanPeck.CellularReturnType
-  fullName: JordanPeck.CellularReturnType
-  nameWithType: CellularReturnType
-- uid: JordanPeck.CellularReturnType.CellValue
-  name: CellValue
-  href: api/JordanPeck.CellularReturnType.html#JordanPeck_CellularReturnType_CellValue
-  commentId: F:JordanPeck.CellularReturnType.CellValue
-  fullName: JordanPeck.CellularReturnType.CellValue
-  nameWithType: CellularReturnType.CellValue
-- uid: JordanPeck.CellularReturnType.Distance
-  name: Distance
-  href: api/JordanPeck.CellularReturnType.html#JordanPeck_CellularReturnType_Distance
-  commentId: F:JordanPeck.CellularReturnType.Distance
-  fullName: JordanPeck.CellularReturnType.Distance
-  nameWithType: CellularReturnType.Distance
-- uid: JordanPeck.CellularReturnType.Distance2
-  name: Distance2
-  href: api/JordanPeck.CellularReturnType.html#JordanPeck_CellularReturnType_Distance2
-  commentId: F:JordanPeck.CellularReturnType.Distance2
-  fullName: JordanPeck.CellularReturnType.Distance2
-  nameWithType: CellularReturnType.Distance2
-- uid: JordanPeck.CellularReturnType.Distance2Add
-  name: Distance2Add
-  href: api/JordanPeck.CellularReturnType.html#JordanPeck_CellularReturnType_Distance2Add
-  commentId: F:JordanPeck.CellularReturnType.Distance2Add
-  fullName: JordanPeck.CellularReturnType.Distance2Add
-  nameWithType: CellularReturnType.Distance2Add
-- uid: JordanPeck.CellularReturnType.Distance2Div
-  name: Distance2Div
-  href: api/JordanPeck.CellularReturnType.html#JordanPeck_CellularReturnType_Distance2Div
-  commentId: F:JordanPeck.CellularReturnType.Distance2Div
-  fullName: JordanPeck.CellularReturnType.Distance2Div
-  nameWithType: CellularReturnType.Distance2Div
-- uid: JordanPeck.CellularReturnType.Distance2Mul
-  name: Distance2Mul
-  href: api/JordanPeck.CellularReturnType.html#JordanPeck_CellularReturnType_Distance2Mul
-  commentId: F:JordanPeck.CellularReturnType.Distance2Mul
-  fullName: JordanPeck.CellularReturnType.Distance2Mul
-  nameWithType: CellularReturnType.Distance2Mul
-- uid: JordanPeck.CellularReturnType.Distance2Sub
-  name: Distance2Sub
-  href: api/JordanPeck.CellularReturnType.html#JordanPeck_CellularReturnType_Distance2Sub
-  commentId: F:JordanPeck.CellularReturnType.Distance2Sub
-  fullName: JordanPeck.CellularReturnType.Distance2Sub
-  nameWithType: CellularReturnType.Distance2Sub
-- uid: JordanPeck.DomainWarpType
-  name: DomainWarpType
-  href: api/JordanPeck.DomainWarpType.html
-  commentId: T:JordanPeck.DomainWarpType
-  fullName: JordanPeck.DomainWarpType
-  nameWithType: DomainWarpType
-- uid: JordanPeck.DomainWarpType.BasicGrid
-  name: BasicGrid
-  href: api/JordanPeck.DomainWarpType.html#JordanPeck_DomainWarpType_BasicGrid
-  commentId: F:JordanPeck.DomainWarpType.BasicGrid
-  fullName: JordanPeck.DomainWarpType.BasicGrid
-  nameWithType: DomainWarpType.BasicGrid
-- uid: JordanPeck.DomainWarpType.OpenSimplex2
-  name: OpenSimplex2
-  href: api/JordanPeck.DomainWarpType.html#JordanPeck_DomainWarpType_OpenSimplex2
-  commentId: F:JordanPeck.DomainWarpType.OpenSimplex2
-  fullName: JordanPeck.DomainWarpType.OpenSimplex2
-  nameWithType: DomainWarpType.OpenSimplex2
-- uid: JordanPeck.DomainWarpType.OpenSimplex2Reduced
-  name: OpenSimplex2Reduced
-  href: api/JordanPeck.DomainWarpType.html#JordanPeck_DomainWarpType_OpenSimplex2Reduced
-  commentId: F:JordanPeck.DomainWarpType.OpenSimplex2Reduced
-  fullName: JordanPeck.DomainWarpType.OpenSimplex2Reduced
-  nameWithType: DomainWarpType.OpenSimplex2Reduced
-- uid: JordanPeck.FastNoiseLite
-  name: FastNoiseLite
-  href: api/JordanPeck.FastNoiseLite.html
-  commentId: T:JordanPeck.FastNoiseLite
-  fullName: JordanPeck.FastNoiseLite
-  nameWithType: FastNoiseLite
-- uid: JordanPeck.FastNoiseLite.#ctor
-  name: FastNoiseLite()
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite__ctor
-  commentId: M:JordanPeck.FastNoiseLite.#ctor
-  name.vb: New()
-  fullName: JordanPeck.FastNoiseLite.FastNoiseLite()
-  fullName.vb: JordanPeck.FastNoiseLite.New()
-  nameWithType: FastNoiseLite.FastNoiseLite()
-  nameWithType.vb: FastNoiseLite.New()
-- uid: JordanPeck.FastNoiseLite.#ctor*
-  name: FastNoiseLite
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite__ctor_
-  commentId: Overload:JordanPeck.FastNoiseLite.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: JordanPeck.FastNoiseLite.FastNoiseLite
-  fullName.vb: JordanPeck.FastNoiseLite.New
-  nameWithType: FastNoiseLite.FastNoiseLite
-  nameWithType.vb: FastNoiseLite.New
-- uid: JordanPeck.FastNoiseLite.AppendCSharpCode(System.Text.StringBuilder,System.String,System.Int32)
-  name: AppendCSharpCode(StringBuilder, string, int)
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_AppendCSharpCode_System_Text_StringBuilder_System_String_System_Int32_
-  commentId: M:JordanPeck.FastNoiseLite.AppendCSharpCode(System.Text.StringBuilder,System.String,System.Int32)
-  name.vb: AppendCSharpCode(StringBuilder, String, Integer)
-  fullName: JordanPeck.FastNoiseLite.AppendCSharpCode(System.Text.StringBuilder, string, int)
-  fullName.vb: JordanPeck.FastNoiseLite.AppendCSharpCode(System.Text.StringBuilder, String, Integer)
-  nameWithType: FastNoiseLite.AppendCSharpCode(StringBuilder, string, int)
-  nameWithType.vb: FastNoiseLite.AppendCSharpCode(StringBuilder, String, Integer)
-- uid: JordanPeck.FastNoiseLite.AppendCSharpCode*
-  name: AppendCSharpCode
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_AppendCSharpCode_
-  commentId: Overload:JordanPeck.FastNoiseLite.AppendCSharpCode
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.AppendCSharpCode
-  nameWithType: FastNoiseLite.AppendCSharpCode
-- uid: JordanPeck.FastNoiseLite.CellularDistanceFunction
-  name: CellularDistanceFunction
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_CellularDistanceFunction
-  commentId: P:JordanPeck.FastNoiseLite.CellularDistanceFunction
-  fullName: JordanPeck.FastNoiseLite.CellularDistanceFunction
-  nameWithType: FastNoiseLite.CellularDistanceFunction
-- uid: JordanPeck.FastNoiseLite.CellularDistanceFunction*
-  name: CellularDistanceFunction
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_CellularDistanceFunction_
-  commentId: Overload:JordanPeck.FastNoiseLite.CellularDistanceFunction
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.CellularDistanceFunction
-  nameWithType: FastNoiseLite.CellularDistanceFunction
-- uid: JordanPeck.FastNoiseLite.CellularJitterModifier
-  name: CellularJitterModifier
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_CellularJitterModifier
-  commentId: P:JordanPeck.FastNoiseLite.CellularJitterModifier
-  fullName: JordanPeck.FastNoiseLite.CellularJitterModifier
-  nameWithType: FastNoiseLite.CellularJitterModifier
-- uid: JordanPeck.FastNoiseLite.CellularJitterModifier*
-  name: CellularJitterModifier
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_CellularJitterModifier_
-  commentId: Overload:JordanPeck.FastNoiseLite.CellularJitterModifier
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.CellularJitterModifier
-  nameWithType: FastNoiseLite.CellularJitterModifier
-- uid: JordanPeck.FastNoiseLite.CellularReturnType
-  name: CellularReturnType
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_CellularReturnType
-  commentId: P:JordanPeck.FastNoiseLite.CellularReturnType
-  fullName: JordanPeck.FastNoiseLite.CellularReturnType
-  nameWithType: FastNoiseLite.CellularReturnType
-- uid: JordanPeck.FastNoiseLite.CellularReturnType*
-  name: CellularReturnType
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_CellularReturnType_
-  commentId: Overload:JordanPeck.FastNoiseLite.CellularReturnType
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.CellularReturnType
-  nameWithType: FastNoiseLite.CellularReturnType
-- uid: JordanPeck.FastNoiseLite.DomainWarpAmp
-  name: DomainWarpAmp
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_DomainWarpAmp
-  commentId: P:JordanPeck.FastNoiseLite.DomainWarpAmp
-  fullName: JordanPeck.FastNoiseLite.DomainWarpAmp
-  nameWithType: FastNoiseLite.DomainWarpAmp
-- uid: JordanPeck.FastNoiseLite.DomainWarpAmp*
-  name: DomainWarpAmp
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_DomainWarpAmp_
-  commentId: Overload:JordanPeck.FastNoiseLite.DomainWarpAmp
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.DomainWarpAmp
-  nameWithType: FastNoiseLite.DomainWarpAmp
-- uid: JordanPeck.FastNoiseLite.DomainWarpType
-  name: DomainWarpType
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_DomainWarpType
-  commentId: P:JordanPeck.FastNoiseLite.DomainWarpType
-  fullName: JordanPeck.FastNoiseLite.DomainWarpType
-  nameWithType: FastNoiseLite.DomainWarpType
-- uid: JordanPeck.FastNoiseLite.DomainWarpType*
-  name: DomainWarpType
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_DomainWarpType_
-  commentId: Overload:JordanPeck.FastNoiseLite.DomainWarpType
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.DomainWarpType
-  nameWithType: FastNoiseLite.DomainWarpType
-- uid: JordanPeck.FastNoiseLite.FractalType
-  name: FractalType
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_FractalType
-  commentId: P:JordanPeck.FastNoiseLite.FractalType
-  fullName: JordanPeck.FastNoiseLite.FractalType
-  nameWithType: FastNoiseLite.FractalType
-- uid: JordanPeck.FastNoiseLite.FractalType*
-  name: FractalType
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_FractalType_
-  commentId: Overload:JordanPeck.FastNoiseLite.FractalType
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.FractalType
-  nameWithType: FastNoiseLite.FractalType
-- uid: JordanPeck.FastNoiseLite.Frequency
-  name: Frequency
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Frequency
-  commentId: P:JordanPeck.FastNoiseLite.Frequency
-  fullName: JordanPeck.FastNoiseLite.Frequency
-  nameWithType: FastNoiseLite.Frequency
-- uid: JordanPeck.FastNoiseLite.Frequency*
-  name: Frequency
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Frequency_
-  commentId: Overload:JordanPeck.FastNoiseLite.Frequency
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.Frequency
-  nameWithType: FastNoiseLite.Frequency
-- uid: JordanPeck.FastNoiseLite.Gain
-  name: Gain
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Gain
-  commentId: P:JordanPeck.FastNoiseLite.Gain
-  fullName: JordanPeck.FastNoiseLite.Gain
-  nameWithType: FastNoiseLite.Gain
-- uid: JordanPeck.FastNoiseLite.Gain*
-  name: Gain
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Gain_
-  commentId: Overload:JordanPeck.FastNoiseLite.Gain
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.Gain
-  nameWithType: FastNoiseLite.Gain
-- uid: JordanPeck.FastNoiseLite.GetNoise(System.Single,System.Single)
-  name: GetNoise(float, float)
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_GetNoise_System_Single_System_Single_
-  commentId: M:JordanPeck.FastNoiseLite.GetNoise(System.Single,System.Single)
-  name.vb: GetNoise(Single, Single)
-  fullName: JordanPeck.FastNoiseLite.GetNoise(float, float)
-  fullName.vb: JordanPeck.FastNoiseLite.GetNoise(Single, Single)
-  nameWithType: FastNoiseLite.GetNoise(float, float)
-  nameWithType.vb: FastNoiseLite.GetNoise(Single, Single)
-- uid: JordanPeck.FastNoiseLite.GetNoise(System.Single,System.Single,System.Single)
-  name: GetNoise(float, float, float)
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_GetNoise_System_Single_System_Single_System_Single_
-  commentId: M:JordanPeck.FastNoiseLite.GetNoise(System.Single,System.Single,System.Single)
-  name.vb: GetNoise(Single, Single, Single)
-  fullName: JordanPeck.FastNoiseLite.GetNoise(float, float, float)
-  fullName.vb: JordanPeck.FastNoiseLite.GetNoise(Single, Single, Single)
-  nameWithType: FastNoiseLite.GetNoise(float, float, float)
-  nameWithType.vb: FastNoiseLite.GetNoise(Single, Single, Single)
-- uid: JordanPeck.FastNoiseLite.GetNoise*
-  name: GetNoise
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_GetNoise_
-  commentId: Overload:JordanPeck.FastNoiseLite.GetNoise
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.GetNoise
-  nameWithType: FastNoiseLite.GetNoise
-- uid: JordanPeck.FastNoiseLite.Lacunarity
-  name: Lacunarity
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Lacunarity
-  commentId: P:JordanPeck.FastNoiseLite.Lacunarity
-  fullName: JordanPeck.FastNoiseLite.Lacunarity
-  nameWithType: FastNoiseLite.Lacunarity
-- uid: JordanPeck.FastNoiseLite.Lacunarity*
-  name: Lacunarity
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Lacunarity_
-  commentId: Overload:JordanPeck.FastNoiseLite.Lacunarity
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.Lacunarity
-  nameWithType: FastNoiseLite.Lacunarity
-- uid: JordanPeck.FastNoiseLite.Max
-  name: Max
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Max
-  commentId: P:JordanPeck.FastNoiseLite.Max
-  fullName: JordanPeck.FastNoiseLite.Max
-  nameWithType: FastNoiseLite.Max
-- uid: JordanPeck.FastNoiseLite.Max*
-  name: Max
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Max_
-  commentId: Overload:JordanPeck.FastNoiseLite.Max
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.Max
-  nameWithType: FastNoiseLite.Max
-- uid: JordanPeck.FastNoiseLite.Min
-  name: Min
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Min
-  commentId: P:JordanPeck.FastNoiseLite.Min
-  fullName: JordanPeck.FastNoiseLite.Min
-  nameWithType: FastNoiseLite.Min
-- uid: JordanPeck.FastNoiseLite.Min*
-  name: Min
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Min_
-  commentId: Overload:JordanPeck.FastNoiseLite.Min
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.Min
-  nameWithType: FastNoiseLite.Min
-- uid: JordanPeck.FastNoiseLite.NoiseType
-  name: NoiseType
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_NoiseType
-  commentId: P:JordanPeck.FastNoiseLite.NoiseType
-  fullName: JordanPeck.FastNoiseLite.NoiseType
-  nameWithType: FastNoiseLite.NoiseType
-- uid: JordanPeck.FastNoiseLite.NoiseType*
-  name: NoiseType
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_NoiseType_
-  commentId: Overload:JordanPeck.FastNoiseLite.NoiseType
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.NoiseType
-  nameWithType: FastNoiseLite.NoiseType
-- uid: JordanPeck.FastNoiseLite.Octaves
-  name: Octaves
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Octaves
-  commentId: P:JordanPeck.FastNoiseLite.Octaves
-  fullName: JordanPeck.FastNoiseLite.Octaves
-  nameWithType: FastNoiseLite.Octaves
-- uid: JordanPeck.FastNoiseLite.Octaves*
-  name: Octaves
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Octaves_
-  commentId: Overload:JordanPeck.FastNoiseLite.Octaves
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.Octaves
-  nameWithType: FastNoiseLite.Octaves
-- uid: JordanPeck.FastNoiseLite.PingPongStrength
-  name: PingPongStrength
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_PingPongStrength
-  commentId: P:JordanPeck.FastNoiseLite.PingPongStrength
-  fullName: JordanPeck.FastNoiseLite.PingPongStrength
-  nameWithType: FastNoiseLite.PingPongStrength
-- uid: JordanPeck.FastNoiseLite.PingPongStrength*
-  name: PingPongStrength
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_PingPongStrength_
-  commentId: Overload:JordanPeck.FastNoiseLite.PingPongStrength
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.PingPongStrength
-  nameWithType: FastNoiseLite.PingPongStrength
-- uid: JordanPeck.FastNoiseLite.RotationType3D
-  name: RotationType3D
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_RotationType3D
-  commentId: P:JordanPeck.FastNoiseLite.RotationType3D
-  fullName: JordanPeck.FastNoiseLite.RotationType3D
-  nameWithType: FastNoiseLite.RotationType3D
-- uid: JordanPeck.FastNoiseLite.RotationType3D*
-  name: RotationType3D
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_RotationType3D_
-  commentId: Overload:JordanPeck.FastNoiseLite.RotationType3D
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.RotationType3D
-  nameWithType: FastNoiseLite.RotationType3D
-- uid: JordanPeck.FastNoiseLite.Seed
-  name: Seed
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Seed
-  commentId: P:JordanPeck.FastNoiseLite.Seed
-  fullName: JordanPeck.FastNoiseLite.Seed
-  nameWithType: FastNoiseLite.Seed
-- uid: JordanPeck.FastNoiseLite.Seed*
-  name: Seed
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_Seed_
-  commentId: Overload:JordanPeck.FastNoiseLite.Seed
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.Seed
-  nameWithType: FastNoiseLite.Seed
-- uid: JordanPeck.FastNoiseLite.WeightedStrength
-  name: WeightedStrength
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_WeightedStrength
-  commentId: P:JordanPeck.FastNoiseLite.WeightedStrength
-  fullName: JordanPeck.FastNoiseLite.WeightedStrength
-  nameWithType: FastNoiseLite.WeightedStrength
-- uid: JordanPeck.FastNoiseLite.WeightedStrength*
-  name: WeightedStrength
-  href: api/JordanPeck.FastNoiseLite.html#JordanPeck_FastNoiseLite_WeightedStrength_
-  commentId: Overload:JordanPeck.FastNoiseLite.WeightedStrength
-  isSpec: "True"
-  fullName: JordanPeck.FastNoiseLite.WeightedStrength
-  nameWithType: FastNoiseLite.WeightedStrength
-- uid: JordanPeck.FractalType
-  name: FractalType
-  href: api/JordanPeck.FractalType.html
-  commentId: T:JordanPeck.FractalType
-  fullName: JordanPeck.FractalType
-  nameWithType: FractalType
-- uid: JordanPeck.FractalType.DomainWarpIndependent
-  name: DomainWarpIndependent
-  href: api/JordanPeck.FractalType.html#JordanPeck_FractalType_DomainWarpIndependent
-  commentId: F:JordanPeck.FractalType.DomainWarpIndependent
-  fullName: JordanPeck.FractalType.DomainWarpIndependent
-  nameWithType: FractalType.DomainWarpIndependent
-- uid: JordanPeck.FractalType.DomainWarpProgressive
-  name: DomainWarpProgressive
-  href: api/JordanPeck.FractalType.html#JordanPeck_FractalType_DomainWarpProgressive
-  commentId: F:JordanPeck.FractalType.DomainWarpProgressive
-  fullName: JordanPeck.FractalType.DomainWarpProgressive
-  nameWithType: FractalType.DomainWarpProgressive
-- uid: JordanPeck.FractalType.FBm
-  name: FBm
-  href: api/JordanPeck.FractalType.html#JordanPeck_FractalType_FBm
-  commentId: F:JordanPeck.FractalType.FBm
-  fullName: JordanPeck.FractalType.FBm
-  nameWithType: FractalType.FBm
-- uid: JordanPeck.FractalType.None
-  name: None
-  href: api/JordanPeck.FractalType.html#JordanPeck_FractalType_None
-  commentId: F:JordanPeck.FractalType.None
-  fullName: JordanPeck.FractalType.None
-  nameWithType: FractalType.None
-- uid: JordanPeck.FractalType.PingPong
-  name: PingPong
-  href: api/JordanPeck.FractalType.html#JordanPeck_FractalType_PingPong
-  commentId: F:JordanPeck.FractalType.PingPong
-  fullName: JordanPeck.FractalType.PingPong
-  nameWithType: FractalType.PingPong
-- uid: JordanPeck.FractalType.Ridged
-  name: Ridged
-  href: api/JordanPeck.FractalType.html#JordanPeck_FractalType_Ridged
-  commentId: F:JordanPeck.FractalType.Ridged
-  fullName: JordanPeck.FractalType.Ridged
-  nameWithType: FractalType.Ridged
-- uid: JordanPeck.NoiseType
-  name: NoiseType
-  href: api/JordanPeck.NoiseType.html
-  commentId: T:JordanPeck.NoiseType
-  fullName: JordanPeck.NoiseType
-  nameWithType: NoiseType
-- uid: JordanPeck.NoiseType.Cellular
-  name: Cellular
-  href: api/JordanPeck.NoiseType.html#JordanPeck_NoiseType_Cellular
-  commentId: F:JordanPeck.NoiseType.Cellular
-  fullName: JordanPeck.NoiseType.Cellular
-  nameWithType: NoiseType.Cellular
-- uid: JordanPeck.NoiseType.OpenSimplex2
-  name: OpenSimplex2
-  href: api/JordanPeck.NoiseType.html#JordanPeck_NoiseType_OpenSimplex2
-  commentId: F:JordanPeck.NoiseType.OpenSimplex2
-  fullName: JordanPeck.NoiseType.OpenSimplex2
-  nameWithType: NoiseType.OpenSimplex2
-- uid: JordanPeck.NoiseType.OpenSimplex2S
-  name: OpenSimplex2S
-  href: api/JordanPeck.NoiseType.html#JordanPeck_NoiseType_OpenSimplex2S
-  commentId: F:JordanPeck.NoiseType.OpenSimplex2S
-  fullName: JordanPeck.NoiseType.OpenSimplex2S
-  nameWithType: NoiseType.OpenSimplex2S
-- uid: JordanPeck.NoiseType.Perlin
-  name: Perlin
-  href: api/JordanPeck.NoiseType.html#JordanPeck_NoiseType_Perlin
-  commentId: F:JordanPeck.NoiseType.Perlin
-  fullName: JordanPeck.NoiseType.Perlin
-  nameWithType: NoiseType.Perlin
-- uid: JordanPeck.NoiseType.Value
-  name: Value
-  href: api/JordanPeck.NoiseType.html#JordanPeck_NoiseType_Value
-  commentId: F:JordanPeck.NoiseType.Value
-  fullName: JordanPeck.NoiseType.Value
-  nameWithType: NoiseType.Value
-- uid: JordanPeck.NoiseType.ValueCubic
-  name: ValueCubic
-  href: api/JordanPeck.NoiseType.html#JordanPeck_NoiseType_ValueCubic
-  commentId: F:JordanPeck.NoiseType.ValueCubic
-  fullName: JordanPeck.NoiseType.ValueCubic
-  nameWithType: NoiseType.ValueCubic
-- uid: JordanPeck.RotationType3D
-  name: RotationType3D
-  href: api/JordanPeck.RotationType3D.html
-  commentId: T:JordanPeck.RotationType3D
-  fullName: JordanPeck.RotationType3D
-  nameWithType: RotationType3D
-- uid: JordanPeck.RotationType3D.ImproveXYPlanes
-  name: ImproveXYPlanes
-  href: api/JordanPeck.RotationType3D.html#JordanPeck_RotationType3D_ImproveXYPlanes
-  commentId: F:JordanPeck.RotationType3D.ImproveXYPlanes
-  fullName: JordanPeck.RotationType3D.ImproveXYPlanes
-  nameWithType: RotationType3D.ImproveXYPlanes
-- uid: JordanPeck.RotationType3D.ImproveXZPlanes
-  name: ImproveXZPlanes
-  href: api/JordanPeck.RotationType3D.html#JordanPeck_RotationType3D_ImproveXZPlanes
-  commentId: F:JordanPeck.RotationType3D.ImproveXZPlanes
-  fullName: JordanPeck.RotationType3D.ImproveXZPlanes
-  nameWithType: RotationType3D.ImproveXZPlanes
-- uid: JordanPeck.RotationType3D.None
-  name: None
-  href: api/JordanPeck.RotationType3D.html#JordanPeck_RotationType3D_None
-  commentId: F:JordanPeck.RotationType3D.None
-  fullName: JordanPeck.RotationType3D.None
-  nameWithType: RotationType3D.None
