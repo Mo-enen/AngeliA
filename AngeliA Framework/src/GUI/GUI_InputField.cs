@@ -7,9 +7,23 @@ public static partial class GUI {
 
 
 	// Input Field
+	/// <inheritdoc cref="InputField(int, IRect, string, out bool, out bool, GUIStyle, Color32?)"/>
 	public static string SmallInputField (int controlID, IRect rect, string text, Color32? selectionColor = null) => InputField(controlID, rect, text, out _, out _, Skin.SmallInputField, selectionColor);
+	/// <inheritdoc cref="InputField(int, IRect, string, out bool, out bool, GUIStyle, Color32?)"/>
 	public static string SmallInputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, Color32? selectionColor = null) => InputField(controlID, rect, text, out changed, out confirm, Skin.SmallInputField, selectionColor);
+	/// <inheritdoc cref="InputField(int, IRect, string, out bool, out bool, GUIStyle, Color32?)"/>
 	public static string InputField (int controlID, IRect rect, string text, GUIStyle bodyStyle = null, Color32? selectionColor = null) => InputField(controlID, rect, text, out _, out _, bodyStyle, selectionColor);
+	/// <summary>
+	/// Draw a GUI element to allow the user to edit a text content
+	/// </summary>
+	/// <param name="controlID">ID to identify the interaction of this element</param>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="text">Input content</param>
+	/// <param name="changed">True if the field changed it's content at current frame</param>
+	/// <param name="confirm">True if the field stop edit at current frame</param>
+	/// <param name="bodyStyle"></param>
+	/// <param name="selectionColor">Color of the selection block</param>
+	/// <returns>Editted text content</returns>
 	public static string InputField (int controlID, IRect rect, string text, out bool changed, out bool confirm, GUIStyle bodyStyle = null, Color32? selectionColor = null) {
 
 		text ??= "";

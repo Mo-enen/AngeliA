@@ -7,7 +7,14 @@ namespace AngeliA;
 public partial class GUISkin {
 
 
+	/// <summary>
+	/// Default gui skin instance
+	/// </summary>
 	public static readonly GUISkin Default = new() { Name = "Built-in" };
+
+	/// <summary>
+	/// Name of this gui skin
+	/// </summary>
 	public string Name = "";
 
 	// Misc

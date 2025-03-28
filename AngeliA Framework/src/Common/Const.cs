@@ -156,22 +156,67 @@ public static class Const {
 	];
 
 	// Cursor
+	/// <summary>
+	/// No mouse cursor
+	/// </summary>
 	public const int CURSOR_NONE = -2;
+	/// <summary>
+	/// Default mouse cursor
+	/// </summary>
 	public const int CURSOR_DEFAULT = 0;
+	/// <summary>
+	/// Pointing arrow mouse cursor
+	/// </summary>
 	public const int CURSOR_ARROW = 1;
+	/// <summary>
+	/// Texting beam mouse cursor for input field
+	/// </summary>
 	public const int CURSOR_BEAM = 2;
+	/// <summary>
+	/// Cross shape mouse cursor with no arrow on the edge
+	/// </summary>
 	public const int CURSOR_CROSSHAIR = 3;
+	/// <summary>
+	/// Point hand mouse cursor
+	/// </summary>
 	public const int CURSOR_HAND = 4;
+	/// <summary>
+	/// Mouse cursor with arrows pointing left and right
+	/// </summary>
 	public const int CURSOR_RESIZE_HORIZONTAL = 5;
+	/// <summary>
+	/// Mouse cursor with arrows pointing up and down
+	/// </summary>
 	public const int CURSOR_RESIZE_VERTICAL = 6;
+	/// <summary>
+	/// Mouse cursor with arrows pointing top-left and bottom-right (like \)
+	/// </summary>
 	public const int CURSOR_RESIZE_TOPLEFT = 7;
+	/// <summary>
+	/// Mouse cursor with arrows pointing top-right and bottom-left (like /)
+	/// </summary>
 	public const int CURSOR_RESIZE_TOPRIGHT = 8;
+	/// <summary>
+	/// Mouse cursor with arrows pointing left, right, up and down.
+	/// </summary>
 	public const int CURSOR_RESIZE_CROSS = 9;
+	/// <summary>
+	/// Forbidden symbol mouse cursor
+	/// </summary>
 	public const int CURSOR_PROHIBIT = 10;
+	/// <summary>
+	/// Total count of mouse cursor styles
+	/// </summary>
 	public const int CURSOR_COUNT = 11;
 
 	// Misc
+	/// <summary>
+	/// Literally an empty method
+	/// </summary>
 	public static void EmptyMethod () { }
+	/// <summary>
+	/// Literally an empty method that returns a bool value (It returns "true" if you wonder)
+	/// </summary>
 	public static bool EmptyBoolMethod () => true;
 
 	public const int MIN_CHARACTER_HEIGHT = 65;

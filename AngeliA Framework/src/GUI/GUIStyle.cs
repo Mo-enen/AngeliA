@@ -5,7 +5,7 @@ namespace AngeliA;
 
 public sealed class GUIStyle {
 
-	public const int BORDER_SCALE = 16;
+	internal const int BORDER_SCALE = 16;
 
 	public static readonly GUIStyle None = new() {
 		BodySprite = 0,

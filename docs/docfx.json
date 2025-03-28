@@ -7,6 +7,9 @@
           "src": "../AngeliA Framework",
           "files": [
             "AngeliA Framework.csproj"
+          ],
+          "exclude": [
+            "**/ThridParty/**"
           ]
         }, {
           "src": "../AngeliA Platformer",

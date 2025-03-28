@@ -436,7 +436,7 @@ public partial class RayGame {
 
 	protected override bool _IsTextureReady (object texture) => RayUtil.IsTextureReady(texture);
 
-	protected override object _GetResizedTexture (object texture, int newWidth, int newHeight) => RayUtil.GetResizedTexture(texture, newWidth, newHeight);
+	protected override object _GetResizedTexture (object texture, int newWidth, int newHeight, bool nearestNeighbor = true) => RayUtil.GetResizedTexture(texture, newWidth, newHeight, nearestNeighbor);
 
 
 	// Gizmos

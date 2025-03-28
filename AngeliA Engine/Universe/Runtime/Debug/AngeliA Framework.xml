@@ -2956,6 +2956,81 @@
             Screen effect total count
             </summary>
         </member>
+        <member name="F:AngeliA.Const.CURSOR_NONE">
+            <summary>
+            No mouse cursor
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_DEFAULT">
+            <summary>
+            Default mouse cursor
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_ARROW">
+            <summary>
+            Pointing arrow mouse cursor
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_BEAM">
+            <summary>
+            Texting beam mouse cursor for input field
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_CROSSHAIR">
+            <summary>
+            Cross shape mouse cursor with no arrow on the edge
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_HAND">
+            <summary>
+            Point hand mouse cursor
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_RESIZE_HORIZONTAL">
+            <summary>
+            Mouse cursor with arrows pointing left and right
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_RESIZE_VERTICAL">
+            <summary>
+            Mouse cursor with arrows pointing up and down
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_RESIZE_TOPLEFT">
+            <summary>
+            Mouse cursor with arrows pointing top-left and bottom-right (like \)
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_RESIZE_TOPRIGHT">
+            <summary>
+            Mouse cursor with arrows pointing top-right and bottom-left (like /)
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_RESIZE_CROSS">
+            <summary>
+            Mouse cursor with arrows pointing left, right, up and down.
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_PROHIBIT">
+            <summary>
+            Forbidden symbol mouse cursor
+            </summary>
+        </member>
+        <member name="F:AngeliA.Const.CURSOR_COUNT">
+            <summary>
+            Total count of mouse cursor styles
+            </summary>
+        </member>
+        <member name="M:AngeliA.Const.EmptyMethod">
+            <summary>
+            Literally an empty method
+            </summary>
+        </member>
+        <member name="M:AngeliA.Const.EmptyBoolMethod">
+            <summary>
+            Literally an empty method that returns a bool value (It returns "true" if you wonder)
+            </summary>
+        </member>
         <member name="T:AngeliA.Damage">
             <summary>
             Data structure for a single damage performed
@@ -7278,6 +7353,1589 @@
             Invoke OnFileDropped event
             </summary>
             <param name="path">Path of the dropped file</param>
+        </member>
+        <member name="M:AngeliA.Game._UnloadMusic(System.Object)">
+            <summary>
+            Unload the bgm object from memory
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.PlayMusic(System.Int32,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._PlayMusic(System.Int32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game._PlayMusic(System.Int32,System.Boolean)">
+            <summary>
+            Load the music file, create the stream and play it as the background music 
+            </summary>
+            <param name="id">ID of the audio</param>
+            <param name="fromStart">True if seek the music to start</param>
+        </member>
+        <member name="M:AngeliA.Game.StopMusic">
+            <inheritdoc cref="M:AngeliA.Game._StopMusic"/>
+        </member>
+        <member name="M:AngeliA.Game._StopMusic">
+            <summary>
+            Stop the music stream and unload from memory
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.PauseMusic">
+            <inheritdoc cref="M:AngeliA.Game._PauseMusic"/>
+        </member>
+        <member name="M:AngeliA.Game._PauseMusic">
+            <summary>
+            Pause the background music
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.UnpauseMusic">
+            <inheritdoc cref="M:AngeliA.Game._UnPauseMusic"/>
+        </member>
+        <member name="M:AngeliA.Game._UnPauseMusic">
+            <summary>
+            Resume the background music
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetMusicVolume(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._SetMusicVolume(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetMusicVolume(System.Int32)">
+            <summary>
+            Set volume for the background music (0 means mute, 1000 means loudest)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsMusicPlaying">
+            <inheritdoc cref="M:AngeliA.Game._IsMusicPlaying"/>
+        </member>
+        <member name="M:AngeliA.Game._IsMusicPlaying">
+            <summary>
+            True if the background music is currently playing
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.CurrentMusicID">
+            <inheritdoc cref="M:AngeliA.Game._GetCurrentMusicID"/>
+        </member>
+        <member name="M:AngeliA.Game._GetCurrentMusicID">
+            <summary>
+            Audio ID of the current loaded background music
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._LoadSound(System.String)">
+            <summary>
+            Load a audio file as sound effect
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._LoadSoundAlias(System.Object)">
+            <summary>
+            Copy a sound instance that shares the same audio data with given sound object
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._UnloadSound(AngeliA.SoundData)">
+            <summary>
+            Unload the sound object from memory
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.PlaySoundAtPosition(System.Int32,AngeliA.Int2,System.Single,System.Single)">
+            <summary>
+            Play a sound like it cames from the given position
+            </summary>
+            <param name="id">Audio ID</param>
+            <param name="globalPosition">Position in global space</param>
+            <param name="volume"></param>
+            <param name="pitch"></param>
+        </member>
+        <member name="M:AngeliA.Game.PlaySound(System.Int32,System.Single,System.Single,System.Single)">
+            <inheritdoc cref="M:AngeliA.Game._PlaySound(System.Int32,System.Single,System.Single,System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Game._PlaySound(System.Int32,System.Single,System.Single,System.Single)">
+            <summary>
+            Play a sound
+            </summary>
+            <param name="id">Audio ID</param>
+            <param name="volume"></param>
+            <param name="pitch"></param>
+            <param name="pan"></param>
+        </member>
+        <member name="M:AngeliA.Game.StopAllSounds">
+            <inheritdoc cref="M:AngeliA.Game._StopAllSounds"/>
+        </member>
+        <member name="M:AngeliA.Game._StopAllSounds">
+            <summary>
+            Stop all sound effects that currently playing
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetSoundVolume(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._SetSoundVolume(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetSoundVolume(System.Int32)">
+            <summary>
+            Set volume for all sound effects
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.ShowCursor">
+            <inheritdoc cref="M:AngeliA.Game._ShowCursor"/>
+        </member>
+        <member name="M:AngeliA.Game._ShowCursor">
+            <summary>
+            Make the mouse cursor appear (not only for the current frame)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.HideCursor">
+            <inheritdoc cref="M:AngeliA.Game._HideCursor"/>
+        </member>
+        <member name="M:AngeliA.Game._HideCursor">
+            <summary>
+            Make the mouse cursor disappear (not only for the current frame)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.CenterCursor">
+            <inheritdoc cref="M:AngeliA.Game._CenterCursor"/>
+        </member>
+        <member name="M:AngeliA.Game._CenterCursor">
+            <summary>
+            Move the mouse cursor to the center of screen. This works when mouse cursor is hidding.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.CursorVisible">
+            <inheritdoc cref="M:AngeliA.Game._CursorVisible"/>
+        </member>
+        <member name="M:AngeliA.Game._CursorVisible">
+            <summary>
+            True if the mouse cursor is currently visible
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetCursor(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._SetCursor(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetCursor(System.Int32)">
+            <summary>
+            Set the appearance of the mouse cursor. Use Const.CURSOR_XXX for the index param
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetCursorToNormal">
+            <inheritdoc cref="M:AngeliA.Game._SetCursorToNormal"/>
+        </member>
+        <member name="M:AngeliA.Game._SetCursorToNormal">
+            <summary>
+            Set the mouse cursor to default
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.CursorInScreen">
+            <inheritdoc cref="M:AngeliA.Game._CursorInScreen"/>
+        </member>
+        <member name="M:AngeliA.Game._CursorInScreen">
+            <summary>
+            True if the mouse cursor is currently inside application window
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsMouseAvailable">
+            <inheritdoc cref="M:AngeliA.Game._IsMouseAvailable"/>
+        </member>
+        <member name="M:AngeliA.Game._IsMouseAvailable">
+            <summary>
+            True if the mouse device is currently available to use
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsMouseLeftHolding">
+            <inheritdoc cref="M:AngeliA.Game._IsMouseLeftHolding"/>
+        </member>
+        <member name="M:AngeliA.Game._IsMouseLeftHolding">
+            <summary>
+            True if the mouse left button is currently holding
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsMouseMidHolding">
+            <inheritdoc cref="M:AngeliA.Game._IsMouseMidHolding"/>
+        </member>
+        <member name="M:AngeliA.Game._IsMouseMidHolding">
+            <summary>
+            True if the mouse middle button is currently holding
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsMouseRightHolding">
+            <inheritdoc cref="M:AngeliA.Game._IsMouseRightHolding"/>
+        </member>
+        <member name="M:AngeliA.Game._IsMouseRightHolding">
+            <summary>
+            True if the mouse right button is currently holding
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.MouseScrollDelta">
+            <inheritdoc cref="M:AngeliA.Game._GetMouseScrollDelta"/>
+        </member>
+        <member name="M:AngeliA.Game._GetMouseScrollDelta">
+            <summary>
+            Mouse wheel scrolling value at current frame. Return negative value when the page scrolls down (the content appears to move upward)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.MouseScreenPosition">
+            <inheritdoc cref="M:AngeliA.Game._GetMouseScreenPosition"/>
+        </member>
+        <member name="M:AngeliA.Game._GetMouseScreenPosition">
+            <summary>
+            Mouse position in screen space. (0,0) means top-left corner
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsKeyboardAvailable">
+            <inheritdoc cref="M:AngeliA.Game._IsKeyboardAvailable"/>
+        </member>
+        <member name="M:AngeliA.Game._IsKeyboardAvailable">
+            <summary>
+            True is the keyboard device is currently available to use
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.IsKeyboardKeyHolding(AngeliA.KeyboardKey)">
+            <inheritdoc cref="M:AngeliA.Game._IsKeyboardKeyHolding(AngeliA.KeyboardKey)"/>
+        </member>
+        <member name="M:AngeliA.Game._IsKeyboardKeyHolding(AngeliA.KeyboardKey)">
+            <summary>
+            True if the given keyboard key is currently holding
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.ForAllPressingCharsThisFrame">
+            <summary>
+            Iterate through all pressing character at current frame. Not include non-character keys
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetCharPressed">
+            <summary>
+            Get the current pressing charcter and remove it from internal queue. Return '\0' if no character is pressed.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.ForAllPressingKeysThisFrame">
+            <summary>
+            Iterate through all pressing keyboard keys at current frame. Include non-character keys
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetKeyPressed">
+            <summary>
+            Get the current pressing keyboard key and remove it from internal queue. Return null if no key is pressed.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsGamepadAvailable">
+            <inheritdoc cref="M:AngeliA.Game._IsGamepadAvailable"/>
+        </member>
+        <member name="M:AngeliA.Game._IsGamepadAvailable">
+            <summary>
+            True if any gamepad device is currently available to use
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.IsGamepadKeyHolding(AngeliA.GamepadKey)">
+            <inheritdoc cref="M:AngeliA.Game._IsGamepadKeyHolding(AngeliA.GamepadKey)"/>
+        </member>
+        <member name="M:AngeliA.Game._IsGamepadKeyHolding(AngeliA.GamepadKey)">
+            <summary>
+            True if the given gamepad button is currently holding
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.IsGamepadLeftStickHolding(AngeliA.Direction4)">
+            <inheritdoc cref="M:AngeliA.Game._IsGamepadLeftStickHolding(AngeliA.Direction4)"/>
+        </member>
+        <member name="M:AngeliA.Game._IsGamepadLeftStickHolding(AngeliA.Direction4)">
+            <summary>
+            True if the left gamepad stick is tilting to given direction
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.IsGamepadRightStickHolding(AngeliA.Direction4)">
+            <inheritdoc cref="M:AngeliA.Game._IsGamepadRightStickHolding(AngeliA.Direction4)"/>
+        </member>
+        <member name="M:AngeliA.Game._IsGamepadRightStickHolding(AngeliA.Direction4)">
+            <summary>
+            True if the right gamepad stick is tilting to given direction
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.GamepadLeftStickDirection">
+            <inheritdoc cref="M:AngeliA.Game._GetGamepadLeftStickDirection"/>
+        </member>
+        <member name="M:AngeliA.Game._GetGamepadLeftStickDirection">
+            <summary>
+            Get the specific direction of the left gamepad stick
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.GamepadRightStickDirection">
+            <inheritdoc cref="M:AngeliA.Game._GetGamepadRightStickDirection"/>
+        </member>
+        <member name="M:AngeliA.Game._GetGamepadRightStickDirection">
+            <summary>
+            Get the specific direction of the right gamepad stick
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetCameraRectFromViewRect(AngeliA.IRect)">
+            <summary>
+            Calculate the camera rect based on given view rect
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetViewWidthFromViewHeight(System.Int32)">
+            <summary>
+            Calculate view rect width based on given view rect height
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.BeforeAllLayersUpdate">
+            <inheritdoc cref="M:AngeliA.Game._BeforeAllLayersUpdate"/>
+        </member>
+        <member name="M:AngeliA.Game._BeforeAllLayersUpdate">
+            <summary>
+            This function is called before any rendering layer get updated
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.AfterAllLayersUpdate">
+            <inheritdoc cref="M:AngeliA.Game._AfterAllLayersUpdate"/>
+        </member>
+        <member name="M:AngeliA.Game._AfterAllLayersUpdate">
+            <summary>
+            This function is called after all rendering layer get updated
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.OnLayerUpdate(System.Int32,AngeliA.Cell[],System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._OnLayerUpdate(System.Int32,AngeliA.Cell[],System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._OnLayerUpdate(System.Int32,AngeliA.Cell[],System.Int32)">
+            <summary>
+            This function holds the logic to draw all rendering cells for the current frame.
+            </summary>
+            <param name="layerIndex">Index of the rendering layer</param>
+            <param name="cells">All rendering cells that may need to be drawn</param>
+            <param name="cellCount">How many rendering cells need to be drawn</param>
+        </member>
+        <member name="P:AngeliA.Game.ScreenEffectPadding">
+            <summary>
+            Border size of all screen effects
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.PassEffect(System.Int32,System.Int32)">
+            <summary>
+            Active screen effect for given frames long.
+            </summary>
+            <param name="effectIndex">Use Const.SCREEN_EFFECT_XXXX for this index</param>
+            <param name="duration"></param>
+        </member>
+        <member name="M:AngeliA.Game.PassEffect_Tint(AngeliA.Color32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._Effect_SetTintParams(AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.Game._Effect_SetTintParams(AngeliA.Color32)">
+            <summary>
+            Enable color tint screen effect and set the params
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.PassEffect_RetroDarken(System.Single,System.Single,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._Effect_SetDarkenParams(System.Single,System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Game._Effect_SetDarkenParams(System.Single,System.Single)">
+            <summary>
+            Enable darken screen effect and set the params
+            </summary>
+            /// <param name="amount">0 means no darken, 1 means full darken</param>
+            <param name="step">How intermittent the darken should be. Default 8 steps.</param>
+        </member>
+        <member name="M:AngeliA.Game.PassEffect_RetroLighten(System.Single,System.Single,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._Effect_SetLightenParams(System.Single,System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Game._Effect_SetLightenParams(System.Single,System.Single)">
+            <summary>
+            Enable lighten screen effect and set the params
+            </summary>
+            <param name="amount">0 means no lighten, 1 means full lighten</param>
+            <param name="step">How intermittent the lighten should be. Default 8 steps.</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            		Game.PassEffect_RetroLighten(
+            			QTest.Float("amount", 0f, 0f, 1f),
+            			QTest.Float("step", 8f, 2f, 16f),
+            			1
+            		);
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="M:AngeliA.Game.PassEffect_Vignette(System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._Effect_SetVignetteParams(System.Single,System.Single,System.Single,System.Single,System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Game._Effect_SetVignetteParams(System.Single,System.Single,System.Single,System.Single,System.Single)">
+             <summary>
+             Enable vignette screen effect and set the params
+             </summary>
+             <param name="radius">Size of the circle view. 0 means no view. 1 means the view covers whole screen.</param>
+             <param name="feather">How smooth is the edge of the circle view. 0 means sharp edge. 1 means smooth edge.</param>
+             <param name="offsetX">Position offset of the circle view. 0 means view's center at left edge of screen. 1 for right edge.</param>
+             <param name="offsetY">Position offset of the circle view. 0 means view's center at bottom edge of screen. 1 for top edge.</param>
+             <param name="round">How perfect the circle view is. 0 means the aspect ratio is the same with window aspect ratio. 1 means perfect circle.</param>
+             <example><code>
+             using AngeliA;
+            
+             namespace AngeliaGame;
+            
+             public class Example {
+            
+            		[OnGameUpdate]
+            		internal static void OnGameUpdate () {
+            			Game.PassEffect_Vignette(
+            				QTest.Float("radius", 1f, 0f, 1f),
+            				QTest.Float("feather", 0f, 0f, 1f),
+            				QTest.Float("x", 0f, -1f, 1f),
+            				QTest.Float("y", 0f, -1f, 1f),
+            				QTest.Float("round", 0f, 0f, 1f),
+            				1
+            			);
+            		}
+            
+             }
+             </code></example>
+        </member>
+        <member name="M:AngeliA.Game.PassEffect_Greyscale(System.Int32)">
+            <summary>
+            Enable greyscale screen effect
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            		Game.PassEffect_Greyscale(1);
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="M:AngeliA.Game.PassEffect_Invert(System.Int32)">
+            <summary>
+            Enable invert screen effect
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            		Game.PassEffect_Invert(1);
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="M:AngeliA.Game.GetEffectEnable(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._GetEffectEnable(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._GetEffectEnable(System.Int32)">
+            <summary>
+            True if the given screen effect is currently enabled.
+            </summary>
+            <param name="effectIndex">Use Const.SCREEN_EFFECT_XXXX for this index</param>
+        </member>
+        <member name="M:AngeliA.Game.SetEffectEnable(System.Int32,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._SetEffectEnable(System.Int32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetEffectEnable(System.Int32,System.Boolean)">
+            <summary>
+            Make given screen effect enable of disable.
+            </summary>
+            <param name="effectIndex">Use Const.SCREEN_EFFECT_XXXX for this index</param>
+            <param name="enable"></param>
+        </member>
+        <member name="M:AngeliA.Game.GetTextureFromPixels(AngeliA.Color32[],System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._GetTextureFromPixels(AngeliA.Color32[],System.Int32,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._GetTextureFromPixels(AngeliA.Color32[],System.Int32,System.Int32)">
+            <summary>
+            Create a new instance of texture from given pixels data. 
+            </summary>
+            <returns>Never return null and Don't throw exception.</returns>
+            <param name="pixels">Pixel data. 0 means bottom-left corner. 1 makes it goes right for 1 pixel.</param>
+            <param name="width">Width of the pixel data in pixel</param>
+            <param name="height">Heigh of the pixel data in pixel</param>
+        </member>
+        <member name="M:AngeliA.Game.GetPixelsFromTexture(System.Object)">
+            <inheritdoc cref="M:AngeliA.Game._GetPixelsFromTexture(System.Object)"/>
+        </member>
+        <member name="M:AngeliA.Game._GetPixelsFromTexture(System.Object)">
+            <summary>
+            Create a new instance of Color32 array from the given texture
+            </summary>
+            <returns>Return [] when invalid. Don't throw exception.</returns>
+        </member>
+        <member name="M:AngeliA.Game.FillPixelsIntoTexture(AngeliA.Color32[],System.Object)">
+            <inheritdoc cref="M:AngeliA.Game._FillPixelsIntoTexture(AngeliA.Color32[],System.Object)"/>
+        </member>
+        <member name="M:AngeliA.Game._FillPixelsIntoTexture(AngeliA.Color32[],System.Object)">
+            <summary>
+            Set the given pixel data into the given texture instance.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetTextureSize(System.Object)">
+            <inheritdoc cref="M:AngeliA.Game._GetTextureSize(System.Object)"/>
+        </member>
+        <member name="M:AngeliA.Game._GetTextureSize(System.Object)">
+            <summary>
+            Get the size in pixel of the given texture instance
+            </summary>
+            <returns>Return default when invalid. Don't throw exception.</returns>
+        </member>
+        <member name="M:AngeliA.Game.PngBytesToTexture(System.Byte[])">
+            <inheritdoc cref="M:AngeliA.Game._PngBytesToTexture(System.Byte[])"/>
+        </member>
+        <member name="M:AngeliA.Game._PngBytesToTexture(System.Byte[])">
+            <summary>
+            Create a new instance of texture from a byte array load from png file.
+            </summary>
+            <returns>Never return null and Don't throw exception.</returns>
+        </member>
+        <member name="M:AngeliA.Game.TextureToPngBytes(System.Object)">
+            <inheritdoc cref="M:AngeliA.Game._TextureToPngBytes(System.Object)"/>
+        </member>
+        <member name="M:AngeliA.Game._TextureToPngBytes(System.Object)">
+            <summary>
+            Encode the given texture instance into png byte array.
+            </summary>
+            <returns>Return [] when invalid. Don't throw exception.</returns>
+        </member>
+        <member name="M:AngeliA.Game.UnloadTexture(System.Object)">
+            <inheritdoc cref="M:AngeliA.Game._UnloadTexture(System.Object)"/>
+        </member>
+        <member name="M:AngeliA.Game._UnloadTexture(System.Object)">
+            <summary>
+            Unload the given texture instance from memory
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetTextureID(System.Object)">
+            <inheritdoc cref="M:AngeliA.Game._GetTextureID(System.Object)"/>
+        </member>
+        <member name="M:AngeliA.Game._GetTextureID(System.Object)">
+            <summary>
+            Get internal ID of the given texture instance.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.IsTextureReady(System.Object)">
+            <inheritdoc cref="M:AngeliA.Game._IsTextureReady(System.Object)"/>
+        </member>
+        <member name="M:AngeliA.Game._IsTextureReady(System.Object)">
+            <summary>
+            True if the given texture instance is ready to use
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetResizedTexture(System.Object,System.Int32,System.Int32,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._GetResizedTexture(System.Object,System.Int32,System.Int32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game._GetResizedTexture(System.Object,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Create a new instance of texture which is the resized version of the given texture.
+            </summary>
+            <param name="texture"></param>
+            <param name="newWidth"></param>
+            <param name="newHeight"></param>
+            <param name="nearestNeighbor">True if the misaligned pixels should be averaged with it's nearby pixels</param>
+            <returns>Return null if invalid. Don't throw exception.</returns>
+        </member>
+        <member name="M:AngeliA.Game.DrawGizmosFrame(AngeliA.IRect,AngeliA.Color32,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game.DrawGizmosFrame(AngeliA.IRect,AngeliA.Color32,AngeliA.Int4,AngeliA.Int4)"/>
+        </member>
+        <member name="M:AngeliA.Game.DrawGizmosFrame(AngeliA.IRect,AngeliA.Color32,AngeliA.Int4,AngeliA.Int4)">
+            <summary>
+            Draw a holo rectangle as gizmos for current frame
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="color">Color tint</param>
+            <param name="thickness">Border size in global space</param>
+            <param name="gap">How big the fracture part in the middle in global space</param>
+        </member>
+        <member name="M:AngeliA.Game.DrawGizmosRect(AngeliA.IRect,AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.Game.DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.Game.DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)">
+            <summary>
+            Draw a rectangle as gizmos for current frame
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="colorTL">Color tint</param>
+            <param name="colorTR">Color tint</param>
+            <param name="colorBL">Color tint</param>
+            <param name="colorBR">Color tint</param>
+            <param name="colorT">Color tint</param>
+            <param name="colorB">Color tint</param>
+            <param name="color">Color tint</param>
+        </member>
+        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,AngeliA.Color32,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)">
+            <summary>
+            Draw the given texture as gizmos for current frame
+            </summary>
+            <param name="rect">Rect position</param>
+            <param name="uv">Which part of this texture should be draw. (0, 0, 1, 1) means all of them. (0, 0, 0.5f, 1) means left half.</param>
+            <param name="texture"></param>
+            <param name="tint">Color tint</param>
+            <param name="inverse">True if the texture display as the inversed color of the current rendered pixel on screen.</param>
+        </member>
+        <member name="M:AngeliA.Game.DrawGizmosLine(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosLine(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.Game._DrawGizmosLine(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.Color32)">
+            <summary>
+            Draw a line as gizmos for current frame
+            </summary>
+            <param name="startX">Start point of the line in global space</param>
+            <param name="startY">Start point of the line in global space</param>
+            <param name="endX">End point of the line in global space</param>
+            <param name="endY">End point of the line in global space</param>
+            <param name="thickness">Thickness in global space</param>
+            <param name="color">Color tint</param>
+        </member>
+        <member name="M:AngeliA.Game.IgnoreGizmos(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._IgnoreGizmos(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._IgnoreGizmos(System.Int32)">
+            <summary>
+            Hide all gizmos for given frames long.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.GizmosOnTopOfUiFrame">
+            <summary>
+            Gizmos should cover the UI rendering layer if current global frame less than this value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.ForceGizmosOnTopOfUI(System.Int32)">
+            <summary>
+            Make gizmos cover UI rendering layer for given frames long.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.CancelGizmosOnTopOfUI">
+            <summary>
+            Do not make gizmos cover UI rendering layer anymore.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.ShowingDoodle">
+            <summary>
+            True if the doodle pixels are displaying at this frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.DoodleScreenPadding">
+            <summary>
+            Border size in screen space for the doodle canvas
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.DoodleFrame">
+            <summary>
+            Doodle pixels should be rendered of the global frame is less or equal to (this value + 1)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.DoodleOnTopOfUiFrame">
+            <summary>
+            Doodle pixels should cover the UI rendering layer if current global frame less than this value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.ForceDoodleOnTopOfUI(System.Int32)">
+            <summary>
+             Make doodle pixels cover UI rendering layer for given frames long.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.CancelDoodleOnTopOfUI">
+            <summary>
+            Do not make doodle pixels cover UI rendering layer anymore.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.ShowDoodle(System.Int32)">
+            <summary>
+            Display the doodled pixels
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.HideDoodle">
+            <summary>
+            Do not display doodled pixels
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.ResetDoodle">
+            <inheritdoc cref="M:AngeliA.Game._ResetDoodle"/>
+        </member>
+        <member name="M:AngeliA.Game._ResetDoodle">
+            <summary>
+            Clear the doodle pixels canvas
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetDoodleOffset(AngeliA.Float2)">
+            <inheritdoc cref="M:AngeliA.Game._SetDoodleOffset(AngeliA.Float2)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetDoodleOffset(AngeliA.Float2)">
+            <summary>
+            Set position offset of the doodle pixels. x=1 means right shift the whole screen width.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetDoodleZoom(System.Single)">
+            <inheritdoc cref="M:AngeliA.Game._SetDoodleZoom(System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetDoodleZoom(System.Single)">
+            <summary>
+            Set zoom amount of the doodle pixels. 1 means general size. 2 means zoom-in to double the size.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.DoodleRectSwap(AngeliA.FRect,AngeliA.Color32)">
+            <summary>
+            Doodle the given color as pixels into the screen-space canvas. Pixels remains on screen until you hide all doodle or reset the canvas.
+            </summary>
+            <param name="screenRect">Rect position in screen space that swap around when out of range</param>
+            <param name="color"></param>
+        </member>
+        <member name="M:AngeliA.Game.DoodleRect(AngeliA.FRect,AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Game._DoodleRect(AngeliA.FRect,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.Game._DoodleRect(AngeliA.FRect,AngeliA.Color32)">
+            <summary>
+            Doodle the given color as pixels into the screen-space canvas. Pixels remains on screen until you hide all doodle or reset the canvas.
+            </summary>
+            <param name="screenRect">Rect position in screen space</param>
+            <param name="color"></param>
+        </member>
+        <member name="M:AngeliA.Game.DoodleWorld(AngeliA.IBlockSquad,AngeliA.FRect,AngeliA.IRect,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._DoodleWorld(AngeliA.IBlockSquad,AngeliA.FRect,AngeliA.IRect,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game._DoodleWorld(AngeliA.IBlockSquad,AngeliA.FRect,AngeliA.IRect,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Doodle the given map data on screen based on summary tint from rendering sheet
+            </summary>
+            <param name="squad">Source of the map block data</param>
+            <param name="screenRect">Position rect in screen space for the given world-unit-range</param>
+            <param name="worldUnitRange">Rect range on the map in unit space</param>
+            <param name="z">Position Z on the map</param>
+            <param name="ignoreLevel">True if level blocks should be ignored</param>
+            <param name="ignoreBG">True if background blocks should be ignored</param>
+            <param name="ignoreEntity">True if entity blocks should be ignored</param>
+            <param name="ignoreElement">True if element blocks should be ignored</param>
+        </member>
+        <member name="P:AngeliA.Game.FontCount">
+            <inheritdoc cref="M:AngeliA.Game._GetFontCount"/>
+        </member>
+        <member name="M:AngeliA.Game._GetFontCount">
+            <summary>
+            Total count of loaded fonts
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetClipboardText">
+            <inheritdoc cref="M:AngeliA.Game._GetClipboardText"/>
+        </member>
+        <member name="M:AngeliA.Game._GetClipboardText">
+            <summary>
+            Text content of the current system clipboard
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetClipboardText(System.String)">
+            <inheritdoc cref="M:AngeliA.Game._SetClipboardText(System.String)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetClipboardText(System.String)">
+            <summary>
+            Set the text content of the system clipboard
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetCharSprite(System.Int32,System.Char,AngeliA.CharSprite@)">
+            <inheritdoc cref="M:AngeliA.Game._GetCharSprite(System.Int32,System.Char,AngeliA.CharSprite@)"/>
+        </member>
+        <member name="M:AngeliA.Game._GetCharSprite(System.Int32,System.Char,AngeliA.CharSprite@)">
+            <summary>
+            Get artwork sprite for rendering a text character
+            </summary>
+            <param name="fontIndex"></param>
+            <param name="c"></param>
+            <param name="result"></param>
+            <returns>True if the sprite is successfuly required</returns>
+        </member>
+        <member name="M:AngeliA.Game.CreateNewFontData">
+            <summary>
+            Create a new instance of the internal data for font
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsFullscreen">
+            <inheritdoc cref="M:AngeliA.Game._SetFullscreen(System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetFullscreen(System.Boolean)">
+            <summary>
+            Set to true to make the application fullscreen
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.ScreenWidth">
+            <inheritdoc cref="M:AngeliA.Game._GetScreenWidth"/>
+        </member>
+        <member name="P:AngeliA.Game.MonitorWidth">
+            <summary>
+            Width of the monitor which the application currently inside
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._GetScreenWidth">
+            <summary>
+            Width of the application window
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.ScreenHeight">
+            <inheritdoc cref="M:AngeliA.Game._GetScreenHeight"/>
+        </member>
+        <member name="P:AngeliA.Game.MonitorHeight">
+            <summary>
+            Height of the monitor which the application currently inside
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._GetScreenHeight">
+            <summary>
+            Height of the application window
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.QuitApplication">
+            <inheritdoc cref="M:AngeliA.Game._QuitApplication"/>
+        </member>
+        <member name="M:AngeliA.Game._QuitApplication">
+            <summary>
+            Make the application quit without any confirmation
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.OpenUrl(System.String)">
+            <inheritdoc cref="M:AngeliA.Game._OpenUrl(System.String)"/>
+        </member>
+        <member name="M:AngeliA.Game._OpenUrl(System.String)">
+            <summary>
+            Open the given url with OS default application
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.ForceTargetFramerate(System.Int32,System.Int32)">
+            <summary>
+            Override the target framerate for specified frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.CancelForceTargetFramerate">
+            <summary>
+            Do not override the target framerate anymore
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsWindowFocused">
+            <inheritdoc cref="M:AngeliA.Game._IsWindowFocused"/>
+        </member>
+        <member name="M:AngeliA.Game._IsWindowFocused">
+            <summary>
+            True if the application window is currently focused
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.MakeWindowFocused">
+            <inheritdoc cref="M:AngeliA.Game._MakeWindowFocused"/>
+        </member>
+        <member name="M:AngeliA.Game._MakeWindowFocused">
+            <summary>
+            Make the application window focused
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetWindowPosition(System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._SetWindowPosition(System.Int32,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetWindowPosition(System.Int32,System.Int32)">
+            <summary>
+            Set application window position. (0,0) is top-left corner
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetWindowPosition">
+            <inheritdoc cref="M:AngeliA.Game._GetWindowPosition"/>
+        </member>
+        <member name="M:AngeliA.Game._GetWindowPosition">
+            <summary>
+            Get application window position. (0,0) is top-left corner
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.Game.SetWindowSize(System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._SetWindowSize(System.Int32,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetWindowSize(System.Int32,System.Int32)">
+            <summary>
+            Set application window size. Use Game.GetMonitorWidth and Game.GetMonitorHeight to get the size of screen size
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.CurrentMonitor">
+            <inheritdoc cref="M:AngeliA.Game._GetCurrentMonitor"/>
+        </member>
+        <member name="M:AngeliA.Game._GetCurrentMonitor">
+            <summary>
+            Get index of the monitor which this application window currently in
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetMonitorWidth(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._GetMonitorWidth(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._GetMonitorWidth(System.Int32)">
+            <summary>
+            Get width of the current monitor. Use Game.CurrentMonitor to get the monitor index
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.GetMonitorHeight(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._GetMonitorHeight(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._GetMonitorHeight(System.Int32)">
+            <summary>
+            Get height of the current monitor. Use Game.CurrentMonitor to get the monitor index
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsWindowDecorated">
+            <summary>
+            If the application window has title bar and border frame or not
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._GetWindowDecorated">
+            <summary>
+            True if the application window is currently having Title bar and border frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._SetWindowDecorated(System.Boolean)">
+            <summary>
+            Set to true to make the application window have title bar and border frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsWindowTopmost">
+            <summary>
+            If the application window renders on top of all other windows
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._GetWindowTopmost">
+            <summary>
+            True if the application window renders on top of all other windows
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._SetWindowTopmost(System.Boolean)">
+            <summary>
+            Set to true to make the application window renders on top of all other windows
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsWindowResizable">
+            <summary>
+            If the application window can be resize by the user
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._GetWindowResizable">
+            <summary>
+            True if the application window can be resize by the user
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._SetWindowResizable(System.Boolean)">
+            <summary>
+            Set to true to make the application window can be resize by the user
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsWindowMaximized">
+            <summary>
+            If the application window is currently maximized
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._GetWindowMaximized">
+            <summary>
+            True if the application window is currently maximized
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._SetWindowMaximized(System.Boolean)">
+            <summary>
+            Set to true to make the application window is currently maximized
+            </summary>
+        </member>
+        <member name="P:AngeliA.Game.IsWindowMinimized">
+            <summary>
+            If the application window is currently minimized
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._GetWindowMinimized">
+            <summary>
+            True if the application window is currently minimized
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game._SetWindowMinimized(System.Boolean)">
+            <summary>
+            Set to true to make the application window is currently minimized
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetWindowTitle(System.String)">
+            <inheritdoc cref="M:AngeliA.Game._SetWindowTitle(System.String)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetWindowTitle(System.String)">
+            <summary>
+            Set to title text of the application window
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetWindowIcon(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._SetWindowIcon(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetWindowIcon(System.Int32)">
+            <summary>
+            Set the icon of the application window using a loaded artwork sprite from the main sheet
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetWindowMinSize(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Game._SetWindowMinSize(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetWindowMinSize(System.Int32)">
+            <summary>
+            Set the minimal size limitation of the application window
+            </summary>
+        </member>
+        <member name="M:AngeliA.Game.SetEventWaiting(System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._SetEventWaiting(System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game._SetEventWaiting(System.Boolean)">
+            <summary>
+            Set to true to make the application only repaint when a user input happens
+            </summary>
+        </member>
+        <member name="T:AngeliA.GUI">
+            <summary>
+            GUI for Game-User-Interface. Handles UI related rendering and interaction logic
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.IsTyping">
+            <summary>
+            True if the user is typing in text field at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.Enable">
+            <summary>
+            True if the current invoke GUI element should be interactable with user 
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.Interactable">
+            <summary>
+            False if the current invoke GUI element should be not interactable with user but still looks interactable
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.TypingTextFieldID">
+            <summary>
+            Control ID of the current typing input field
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.Color">
+            <summary>
+            Total color tint of the current invoke GUI element
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.BodyColor">
+            <summary>
+            Color tint of the current invoke GUI element's body
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.ContentColor">
+            <summary>
+            Color tint of the current invoke GUI element's content part
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.LabelWidth">
+            <summary>
+            Unified width of the label part of the current invoke GUI element
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.Skin">
+            <summary>
+            Built-in skin of the system
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.FieldHeight">
+            <summary>
+            Unified height of a standard field-like element should have
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.FieldPadding">
+            <summary>
+            Unified gap of a standard element should have
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.ToolbarSize">
+            <summary>
+            Unified size of a standard toolbar element should have
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.ScrollbarSize">
+            <summary>
+            Unified size of a standard scrollbar element should have
+            </summary>
+        </member>
+        <member name="P:AngeliA.GUI.ContentVersion">
+            <summary>
+            Internal changing version of the GUI content
+            </summary>
+        </member>
+        <member name="M:AngeliA.GUI.Unify(System.Int32)">
+            <summary>
+            Convert unified size into global size
+            </summary>
+        </member>
+        <member name="M:AngeliA.GUI.UnifyMonitor(System.Int32)">
+            <summary>
+            Convert unified size into global size based on monitor size instead of application window height
+            </summary>
+        </member>
+        <member name="M:AngeliA.GUI.UnifyBorder(AngeliA.Int4)">
+            <summary>
+            Convert unified size into global size
+            </summary>
+        </member>
+        <member name="M:AngeliA.GUI.ReverseUnify(System.Int32)">
+            <summary>
+            Convert global size into unified size
+            </summary>
+        </member>
+        <member name="M:AngeliA.GUI.ReverseUnifyMonitor(System.Int32)">
+            <summary>
+            Convert global size into unified size based on monitor size instead of application window height
+            </summary>
+        </member>
+        <member name="M:AngeliA.GUI.GetContentRect(AngeliA.IRect,AngeliA.GUIStyle,AngeliA.GUIState)">
+            <summary>
+            Get rect position in global space for content inside a GUI element
+            </summary>
+        </member>
+        <member name="M:AngeliA.GUI.DrawStyleBody(AngeliA.IRect,AngeliA.GUIStyle,AngeliA.GUIState)">
+            <inheritdoc cref="M:AngeliA.GUI.DrawStyleBody(AngeliA.IRect,AngeliA.GUIStyle,AngeliA.GUIState,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.DrawStyleBody(AngeliA.IRect,AngeliA.GUIStyle,AngeliA.GUIState,AngeliA.Color32)">
+            <summary>
+            Draw the given style as body of a GUI element
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="style"></param>
+            <param name="state"></param>
+            <param name="tint">Color tint that apply on this element</param>
+        </member>
+        <member name="M:AngeliA.GUI.DrawStyleContent(AngeliA.IRect,System.Int32,AngeliA.GUIStyle,AngeliA.GUIState,System.Boolean,System.Boolean)">
+            <summary>
+            Draw the given style as content of a GUI element
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="sprite">Artwork sprite</param>
+            <param name="style"></param>
+            <param name="state"></param>
+            <param name="ignoreSlice">True if not apply 9-slice logic</param>
+            <param name="fit">True if keep the aspect ratio of the sprite</param>
+        </member>
+        <member name="M:AngeliA.GUI.DrawSlice(System.Int32,AngeliA.IRect)">
+            <summary>
+            Draw the artwork sprite with 9-slice logic. Border size will be unified.
+            </summary>
+            <param name="spriteID">ID of the artwork sprite</param>
+            <param name="rect">Rect position in global space</param>
+            <returns>Rendering cells of this element</returns>
+        </member>
+        <member name="M:AngeliA.GUI.DrawSlice(AngeliA.AngeSprite,AngeliA.IRect)">
+            <summary>
+            Draw the artwork sprite with 9-slice logic. Border size will be unified.
+            </summary>
+            <param name="sprite">Artwork sprite</param>
+            <param name="rect">Rect position in global space</param>
+            <returns>Rendering cells of this element</returns>
+        </member>
+        <member name="M:AngeliA.GUI.StartTyping(System.Int32)">
+            <summary>
+            Procedurelly start typing with an input field
+            </summary>
+            <param name="controlID">Control ID of the target input field</param>
+        </member>
+        <member name="M:AngeliA.GUI.CancelTyping">
+            <summary>
+            Stop typing on any input field
+            </summary>
+        </member>
+        <member name="M:AngeliA.GUI.SmallLabel(AngeliA.IRect,System.String)">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.SmallLabel(AngeliA.IRect,System.Char[])">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.SmallLabel(AngeliA.IRect,System.String,AngeliA.IRect@)">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.SmallLabel(AngeliA.IRect,System.Char[],AngeliA.IRect@)">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.SmallLabel(AngeliA.IRect,System.String,System.Int32,System.Boolean,AngeliA.IRect@,System.Int32@)">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.SmallLabel(AngeliA.IRect,System.String,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@)">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Label(AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Label(AngeliA.IRect,System.Char[],AngeliA.GUIStyle,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Label(AngeliA.IRect,System.String,AngeliA.IRect@,AngeliA.GUIStyle,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Label(AngeliA.IRect,System.Char[],AngeliA.IRect@,AngeliA.GUIStyle,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Label(AngeliA.IRect,System.String,System.Int32,System.Boolean,AngeliA.IRect@,System.Int32@,AngeliA.GUIStyle,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Label(AngeliA.IRect,System.String,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,AngeliA.GUIStyle,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.LabelLogic(AngeliA.IRect,System.String,System.Char[],AngeliA.GUIStyle,AngeliA.GUIState,System.Int32,System.Int32,System.Boolean,AngeliA.IRect@,AngeliA.IRect@,System.Int32@,System.Int32)">
+            <summary>
+            Draw a text content on screen
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="text">Text content</param>
+            <param name="chars">Char array as text content</param>
+            <param name="style"></param>
+            <param name="state"></param>
+            <param name="beamIndex">Index of the typing beam inside the text content</param>
+            <param name="startIndex">Label content start with this index</param>
+            <param name="drawInvisibleChar">True if invisible characters should make the internal iteration grow</param>
+            <param name="bounds">Total rendering boundary of the characters in global space</param>
+            <param name="beamRect">Rendering rect position of the typing beam</param>
+            <param name="endIndex">Last rendered character index</param>
+            <param name="charSize">Unified height of the character</param>
+        </member>
+        <member name="M:AngeliA.GUI.ScrollLabel(System.String,AngeliA.IRect,System.Int32,AngeliA.GUIStyle)">
+            <summary>
+            Label that scroll the content inside verticaly
+            </summary>
+            <param name="text">Text content</param>
+            <param name="rect">Rect position in global space</param>
+            <param name="scrollPosition">Offset Y position in global space</param>
+            <param name="style"></param>
+            <returns>The new scrolling position</returns>
+        </member>
+        <member name="M:AngeliA.GUI.BackgroundLabel(AngeliA.IRect,System.Char[],AngeliA.Color32,System.Int32,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.BackgroundLabel(AngeliA.IRect,System.String,AngeliA.Color32,AngeliA.IRect@,System.Int32,System.Boolean,AngeliA.GUIStyle)"/>
+        </member>
+        <member name="M:AngeliA.GUI.BackgroundLabel(AngeliA.IRect,System.Char[],AngeliA.Color32,AngeliA.IRect@,System.Int32,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.BackgroundLabel(AngeliA.IRect,System.String,AngeliA.Color32,AngeliA.IRect@,System.Int32,System.Boolean,AngeliA.GUIStyle)"/>
+        </member>
+        <member name="M:AngeliA.GUI.BackgroundLabel(AngeliA.IRect,System.String,AngeliA.Color32,System.Int32,System.Boolean,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.BackgroundLabel(AngeliA.IRect,System.String,AngeliA.Color32,AngeliA.IRect@,System.Int32,System.Boolean,AngeliA.GUIStyle)"/>
+        </member>
+        <member name="M:AngeliA.GUI.BackgroundLabel(AngeliA.IRect,System.String,AngeliA.Color32,AngeliA.IRect@,System.Int32,System.Boolean,AngeliA.GUIStyle)">
+            <summary>
+            Label with a color block as background
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="text">Text content</param>
+            <param name="backgroundColor">Color of the background block</param>
+            <param name="bounds">Rendering boundary of the text content in global space</param>
+            <param name="backgroundPadding">Border size of the background block in unified size</param>
+            <param name="forceInside">True if the text content clamp inside the background block</param>
+            <param name="style"></param>
+        </member>
+        <member name="M:AngeliA.GUI.ShadowLabel(AngeliA.IRect,System.Char[],System.Int32,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.ShadowLabel(AngeliA.IRect,System.String,System.Int32,AngeliA.GUIStyle)"/>
+        </member>
+        <member name="M:AngeliA.GUI.ShadowLabel(AngeliA.IRect,System.String,System.Int32,AngeliA.GUIStyle)">
+            <summary>
+            Label with shadow below
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="text">Text content</param>
+            <param name="shadowDistance">Offset Y of the shadow in unified space</param>
+            <param name="style"></param>
+        </member>
+        <member name="M:AngeliA.GUI.IntLabel(AngeliA.IRect,System.Int32,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.IntLabel(AngeliA.IRect,System.Int32,AngeliA.IRect@,AngeliA.GUIStyle)"/>
+        </member>
+        <member name="M:AngeliA.GUI.IntLabel(AngeliA.IRect,System.Int32,AngeliA.IRect@,AngeliA.GUIStyle)">
+            <summary>
+            Label for intager content
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="number">Intager content</param>
+            <param name="bounds">Rendering boundary of the text content in global space</param>
+            <param name="style"></param>
+        </member>
+        <member name="M:AngeliA.GUI.FrameBasedIntLabel(AngeliA.IRect,AngeliA.FrameBasedInt,AngeliA.Color32,AngeliA.Color32,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.FrameBasedIntLabel(AngeliA.IRect,AngeliA.FrameBasedInt,AngeliA.Color32,AngeliA.Color32,AngeliA.IRect@,AngeliA.GUIStyle)"/>
+        </member>
+        <member name="M:AngeliA.GUI.FrameBasedIntLabel(AngeliA.IRect,AngeliA.FrameBasedInt,AngeliA.Color32,AngeliA.Color32,AngeliA.IRect@,AngeliA.GUIStyle)">
+            <summary>
+            Label for draw FrameBasedInt as a buff
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="number">Intager content</param>
+            <param name="greaterColor">Text color for the extra part when final value is greater</param>
+            <param name="lessColor">Text color for the extra part when final value is less</param>
+            <param name="bounds">Rendering boundary of the text content in global space</param>
+            <param name="style"></param>
+        </member>
+        <member name="M:AngeliA.GUI.SmallLinkButton(AngeliA.IRect,System.String,System.Boolean,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.LinkButton(AngeliA.IRect,System.String,AngeliA.IRect@,AngeliA.GUIStyle,System.Boolean,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.SmallLinkButton(AngeliA.IRect,System.String,AngeliA.IRect@,System.Boolean,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.LinkButton(AngeliA.IRect,System.String,AngeliA.IRect@,AngeliA.GUIStyle,System.Boolean,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.LinkButton(AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Boolean,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.LinkButton(AngeliA.IRect,System.String,AngeliA.IRect@,AngeliA.GUIStyle,System.Boolean,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.LinkButton(AngeliA.IRect,System.String,AngeliA.IRect@,AngeliA.GUIStyle,System.Boolean,System.Int32)">
+            <summary>
+            Button that behave like a link
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="label">Text content</param>
+            <param name="bounds">Boundary of the rendered content in global space</param>
+            <param name="labelStyle">GUI style for the label content</param>
+            <param name="useUnderLine">True if draw a line below the text</param>
+            <param name="charSize">Character size in unified space</param>
+            <returns>True if the link is pressed at current frame</returns>
+        </member>
+        <member name="M:AngeliA.GUI.DarkButton(AngeliA.IRect,System.String,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankButton(AngeliA.IRect,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.DarkButton(AngeliA.IRect,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankButton(AngeliA.IRect,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Button(AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankButton(AngeliA.IRect,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Button(AngeliA.IRect,System.String,AngeliA.GUIState@,AngeliA.GUIStyle,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankButton(AngeliA.IRect,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Button(AngeliA.IRect,System.Int32,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankButton(AngeliA.IRect,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Button(AngeliA.IRect,System.Int32,AngeliA.GUIState@,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankButton(AngeliA.IRect,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.BlankButton(AngeliA.IRect,AngeliA.GUIState@)">
+            <summary>
+            GUI element that behave like a button
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="icon">Artwork sprite ID for the icon inside this button</param>
+            <param name="label">Text content inside this button</param>
+            <param name="charSize">Character size of the label in unified space</param>
+            <returns>True if the button is pressed at current frame</returns>
+        </member>
+        <member name="M:AngeliA.GUI.IconToggle(AngeliA.IRect,System.Boolean,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankToggle(AngeliA.IRect,System.Boolean,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.ToggleLeft(AngeliA.IRect,System.Boolean,System.String,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankToggle(AngeliA.IRect,System.Boolean,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.ToggleButton(AngeliA.IRect,System.Boolean,System.String,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankToggle(AngeliA.IRect,System.Boolean,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.ToggleButton(AngeliA.IRect,System.Boolean,System.Int32,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankToggle(AngeliA.IRect,System.Boolean,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.ToggleFold(AngeliA.IRect,System.Boolean@,System.Int32,System.String,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankToggle(AngeliA.IRect,System.Boolean,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Toggle(AngeliA.IRect,System.Boolean,AngeliA.GUIStyle,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankToggle(AngeliA.IRect,System.Boolean,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Toggle(AngeliA.IRect,System.Boolean,System.String,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankToggle(AngeliA.IRect,System.Boolean,AngeliA.GUIState@)"/>
+        </member>
+        <member name="M:AngeliA.GUI.BlankToggle(AngeliA.IRect,System.Boolean,AngeliA.GUIState@)">
+            <summary>
+            Draw a GUI element with a check box and check mark
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="isOn">True if the toggle is checked</param>
+            <param name="icon">Artwork sprite of the content inside the toggle</param>
+            <param name="label">Text content inside the toggle</param>
+            <param name="markStyle">GUI style of the check mark</param>
+            <param name="iconStyle">GUI style of the icon content</param>
+            <param name="labelStyle">GUI style of the text label</param>
+            <param name="bodyStyle">GUI style of the toggle box</param>
+            <param name="folding">True if the panel if folded</param>
+            <param name="state"></param>
+            <returns>True if the toggle is checked</returns>
+        </member>
+        <member name="M:AngeliA.GUI.Icon(AngeliA.IRect,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.Icon(AngeliA.IRect,System.Int32,AngeliA.GUIStyle,AngeliA.GUIState)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Icon(AngeliA.IRect,System.Int32,AngeliA.GUIStyle,AngeliA.GUIState)">
+            <summary>
+            Draw a artwork sprite as an icon
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="sprite">Artwork sprite</param>
+            <param name="style"></param>
+            <param name="state"></param>
+        </member>
+        <member name="M:AngeliA.GUI.PopupTriangleIcon(AngeliA.IRect,System.Int32)">
+            <summary>
+            Draw the triangle icon inside a popup button
+            </summary>
+            <param name="rect">Rect position of the whole button in global space</param>
+            <param name="iconSprite">Artwork sprite ID. Leave it 0 to use the built-in sprite</param>
+        </member>
+        <member name="M:AngeliA.GUI.SmallIntDial(AngeliA.IRect,System.Int32,System.String,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.IntDial(AngeliA.IRect,System.Int32,System.Boolean@,System.String,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Int32,System.Int32,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.SmallIntDial(AngeliA.IRect,System.Int32,System.Boolean@,System.String,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.IntDial(AngeliA.IRect,System.Int32,System.Boolean@,System.String,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Int32,System.Int32,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.IntDial(AngeliA.IRect,System.Int32,System.String,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.IntDial(AngeliA.IRect,System.Int32,System.Boolean@,System.String,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Int32,System.Int32,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.IntDial(AngeliA.IRect,System.Int32,System.Boolean@,System.String,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw a label display an intager with two buttons to add and remove value
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="value">The intager value</param>
+            <param name="changed">True if the value is changed in this frame</param>
+            <param name="label">Text content displays on the left</param>
+            <param name="labelStyle">GUI style for the text label</param>
+            <param name="bodyStyle">GUI style for the int field</param>
+            <param name="dialButtonStyle">GUI style for the buttons</param>
+            <param name="delta">How many value does it add/remove when the button get pressed</param>
+            <param name="min">Minimal value for the intager</param>
+            <param name="max">Maximal value for the intager</param>
+            <returns>New value after modified</returns>
+        </member>
+        <member name="M:AngeliA.GUI.ScrollBar(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean)">
+            <summary>
+            Draw a bar that slide when user drag the handle inside
+            </summary>
+            <param name="controlID">ID to identify the interaction of this element</param>
+            <param name="contentRect">Rect position of the content panel in global space</param>
+            <param name="position">Scrolling offset position in global space</param>
+            <param name="totalSize">Size of all content in global space</param>
+            <param name="pageSize">Size of the displaying content in global space</param>
+            <param name="handleStyle">GUI style for the handle</param>
+            <param name="bgStyle">GUI style for the background</param>
+            <param name="vertical">True if it scrolls in vertical direction</param>
+            <returns>New position value</returns>
+        </member>
+        <member name="M:AngeliA.GUI.FilledSlider(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankSlider(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,AngeliA.GUIState@,System.Boolean,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.HandleSlider(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Boolean,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankSlider(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,AngeliA.GUIState@,System.Boolean,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.Slider(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,AngeliA.GUIStyle,AngeliA.GUIStyle,AngeliA.GUIStyle,System.Boolean,System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.BlankSlider(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,AngeliA.GUIState@,System.Boolean,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.BlankSlider(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,AngeliA.GUIState@,System.Boolean,System.Int32)">
+            <summary>
+            Draw a slider that user can drag with mouse to change a intager value
+            </summary>
+            <param name="controlID">ID to identify the interaction of this element</param>
+            <param name="rect">Rect position in global space</param>
+            <param name="value"></param>
+            <param name="min">Minimal limitation for the value</param>
+            <param name="max">Maximal limitation for the value</param>
+            <param name="state"></param>
+            <param name="vertical">True if this slider slide verticaly</param>
+            <param name="step">Smooth step of the sliding. 0 means no step.</param>
+            <returns>New value after slide</returns>
+        </member>
+        <member name="M:AngeliA.GUI.HighlightCursor(System.Int32,AngeliA.IRect)">
+            <inheritdoc cref="M:AngeliA.GUI.HighlightCursor(System.Int32,AngeliA.IRect,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.GUI.HighlightCursor(System.Int32,AngeliA.IRect,AngeliA.Color32)">
+            <summary>
+            Draw an animated cursor
+            </summary>
+            <param name="spriteID">Artwork sprite ID</param>
+            <param name="rect">Rect position in global space</param>
+            <param name="color">Color tint for this element only</param>
+        </member>
+        <member name="M:AngeliA.GUI.VerticalColorField(AngeliA.ColorF,AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Nullable{AngeliA.ColorF})">
+            <inheritdoc cref="M:AngeliA.GUI.ColorFieldInternal(AngeliA.ColorF,System.Nullable{AngeliA.ColorF},AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Boolean,System.Boolean,System.Boolean,System.Single,System.Single,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.GUI.HorizontalColorField(AngeliA.ColorF,AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Nullable{AngeliA.ColorF})">
+            <inheritdoc cref="M:AngeliA.GUI.ColorFieldInternal(AngeliA.ColorF,System.Nullable{AngeliA.ColorF},AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Boolean,System.Boolean,System.Boolean,System.Single,System.Single,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.GUI.VerticalColorField(AngeliA.ColorF,AngeliA.IRect,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Nullable{AngeliA.ColorF})">
+            <inheritdoc cref="M:AngeliA.GUI.ColorFieldInternal(AngeliA.ColorF,System.Nullable{AngeliA.ColorF},AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Boolean,System.Boolean,System.Boolean,System.Single,System.Single,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.GUI.HorizontalColorField(AngeliA.ColorF,AngeliA.IRect,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Nullable{AngeliA.ColorF})">
+            <inheritdoc cref="M:AngeliA.GUI.ColorFieldInternal(AngeliA.ColorF,System.Nullable{AngeliA.ColorF},AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Boolean,System.Boolean,System.Boolean,System.Single,System.Single,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.GUI.ColorFieldInternal(AngeliA.ColorF,System.Nullable{AngeliA.ColorF},AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Boolean,System.Boolean,System.Boolean,System.Single,System.Single,System.Boolean)">
+            <summary>
+            Draw a GUI element to edit color value
+            </summary>
+            <param name="color">The color value</param>
+            <param name="defaultColor">Default value will set to the color value when user press the reset button. Set to null when you don't want the reset button.</param>
+            <param name="rect">Rect position in global space</param>
+            <param name="label">Text content display on left of the field</param>
+            <param name="labelStyle">GUI style for the label</param>
+            <param name="hsv">True if the field use HSV instead of RGB</param>
+            <param name="alpha">True if the field include alpha value</param>
+            <param name="horizontal">True if the field display horizontaly</param>
+            <param name="hueStep">Smooth step for HUE slider. 0 means no step</param>
+            <param name="step">Smooth step for other sliders. 0 means no step</param>
+            <param name="folded">True if the field is folded</param>
+            <param name="stepped">True if the field use smooth step when dragging</param>
+            <returns>New color after edit</returns>
+        </member>
+        <member name="M:AngeliA.GUI.BeginChangeCheck">
+            <summary>
+            Start the change check. Use GUI.EndChangeCheck to get the result
+            </summary>
+        </member>
+        <member name="M:AngeliA.GUI.EndChangeCheck">
+            <summary>
+            True if any GUI element changed it's value during the change check
+            </summary>
+        </member>
+        <member name="M:AngeliA.GUI.SetChange">
+            <summary>
+            Mark the GUI system as changed
+            </summary>
+        </member>
+        <member name="M:AngeliA.GUI.SmallInputField(System.Int32,AngeliA.IRect,System.String,System.Nullable{AngeliA.Color32})">
+            <inheritdoc cref="M:AngeliA.GUI.InputField(System.Int32,AngeliA.IRect,System.String,System.Boolean@,System.Boolean@,AngeliA.GUIStyle,System.Nullable{AngeliA.Color32})"/>
+        </member>
+        <member name="M:AngeliA.GUI.SmallInputField(System.Int32,AngeliA.IRect,System.String,System.Boolean@,System.Boolean@,System.Nullable{AngeliA.Color32})">
+            <inheritdoc cref="M:AngeliA.GUI.InputField(System.Int32,AngeliA.IRect,System.String,System.Boolean@,System.Boolean@,AngeliA.GUIStyle,System.Nullable{AngeliA.Color32})"/>
+        </member>
+        <member name="M:AngeliA.GUI.InputField(System.Int32,AngeliA.IRect,System.String,AngeliA.GUIStyle,System.Nullable{AngeliA.Color32})">
+            <inheritdoc cref="M:AngeliA.GUI.InputField(System.Int32,AngeliA.IRect,System.String,System.Boolean@,System.Boolean@,AngeliA.GUIStyle,System.Nullable{AngeliA.Color32})"/>
+        </member>
+        <member name="M:AngeliA.GUI.InputField(System.Int32,AngeliA.IRect,System.String,System.Boolean@,System.Boolean@,AngeliA.GUIStyle,System.Nullable{AngeliA.Color32})">
+            <summary>
+            Draw a GUI element to allow the user to edit a text content
+            </summary>
+            <param name="controlID">ID to identify the interaction of this element</param>
+            <param name="rect">Rect position in global space</param>
+            <param name="text">Input content</param>
+            <param name="changed">True if the field changed it's content at current frame</param>
+            <param name="confirm">True if the field stop edit at current frame</param>
+            <param name="bodyStyle"></param>
+            <param name="selectionColor">Color of the selection block</param>
+            <returns>Editted text content</returns>
+        </member>
+        <member name="F:AngeliA.GUISkin.Default">
+            <summary>
+            Default gui skin instance
+            </summary>
+        </member>
+        <member name="F:AngeliA.GUISkin.Name">
+            <summary>
+            Name of this gui skin
+            </summary>
         </member>
         <member name="M:AngeliA.Util.QuickRandom(System.Int32,System.Int32)">
             <summary>

@@ -5,6 +5,9 @@ using System.Text;
 
 namespace AngeliA;
 
+/// <summary>
+/// GUI for Game-User-Interface. Handles UI related rendering and interaction logic
+/// </summary>
 public static partial class GUI {
 
 
@@ -17,19 +20,61 @@ public static partial class GUI {
 	private const int MAX_INPUT_CHAR = 256;
 
 	// Api
+	/// <summary>
+	/// True if the user is typing in text field at current frame
+	/// </summary>
 	public static bool IsTyping => TypingTextFieldID != 0;
+	/// <summary>
+	/// True if the current invoke GUI element should be interactable with user 
+	/// </summary>
 	public static bool Enable { get; set; } = true;
+	/// <summary>
+	/// False if the current invoke GUI element should be not interactable with user but still looks interactable
+	/// </summary>
 	public static bool Interactable { get; set; } = true;
+	/// <summary>
+	/// Control ID of the current typing input field
+	/// </summary>
 	public static int TypingTextFieldID { get; private set; }
+	/// <summary>
+	/// Total color tint of the current invoke GUI element
+	/// </summary>
 	public static Color32 Color { get; set; } = Color32.WHITE;
+	/// <summary>
+	/// Color tint of the current invoke GUI element's body
+	/// </summary>
 	public static Color32 BodyColor { get; set; } = Color32.WHITE;
+	/// <summary>
+	/// Color tint of the current invoke GUI element's content part
+	/// </summary>
 	public static Color32 ContentColor { get; set; } = Color32.WHITE;
+	/// <summary>
+	/// Unified width of the label part of the current invoke GUI element
+	/// </summary>
 	public static int LabelWidth { get; set; } = 1;
+	/// <summary>
+	/// Built-in skin of the system
+	/// </summary>
 	public static GUISkin Skin { get; set; } = GUISkin.Default;
+	/// <summary>
+	/// Unified height of a standard field-like element should have
+	/// </summary>
 	public static int FieldHeight { get; private set; } = 1;
+	/// <summary>
+	/// Unified gap of a standard element should have
+	/// </summary>
 	public static int FieldPadding { get; private set; } = 1;
+	/// <summary>
+	/// Unified size of a standard toolbar element should have
+	/// </summary>
 	public static int ToolbarSize { get; private set; } = 42;
+	/// <summary>
+	/// Unified size of a standard scrollbar element should have
+	/// </summary>
 	public static int ScrollbarSize { get; private set; } = 12;
+	/// <summary>
+	/// Internal changing version of the GUI content
+	/// </summary>
 	public static int ContentVersion { get; private set; } = int.MinValue;
 
 	// Data
@@ -118,10 +163,23 @@ public static partial class GUI {
 
 
 	// Unify
+	/// <summary>
+	/// Convert unified size into global size
+	/// </summary>
 	public static int Unify (int value) => ForceUnifyBasedOnMonitor ? UnifyMonitor(value) : (value * Renderer.CameraRect.height / 1000f).RoundToInt();
+
+
+	/// <summary>
+	/// Convert unified size into global size based on monitor size instead of application window height
+	/// </summary>
 	public static int UnifyMonitor (int value) => (
 		value / 1000f * Renderer.CameraRect.height * Game.MonitorHeight / Game.ScreenHeight.GreaterOrEquel(1)
 	).RoundToInt();
+
+
+	/// <summary>
+	/// Convert unified size into global size
+	/// </summary>
 	public static Int4 UnifyBorder (Int4 border) {
 		border.left = Unify(border.left);
 		border.right = Unify(border.right);
@@ -130,10 +188,22 @@ public static partial class GUI {
 		return border;
 	}
 
+
+	/// <summary>
+	/// Convert global size into unified size
+	/// </summary>
 	public static int ReverseUnify (int value) => ForceUnifyBasedOnMonitor ? ReverseUnifyMonitor(value) : (value * 1000f / Renderer.CameraRect.height).RoundToInt();
+
+
+	/// <summary>
+	/// Convert global size into unified size based on monitor size instead of application window height
+	/// </summary>
 	public static int ReverseUnifyMonitor (int value) => (value * 1000f / Renderer.CameraRect.height / Game.MonitorHeight * Game.ScreenHeight.GreaterOrEquel(1)).RoundToInt();
 
 
+	/// <summary>
+	/// Get rect position in global space for content inside a GUI element
+	/// </summary>
 	public static IRect GetContentRect (IRect rect, GUIStyle style, GUIState state) {
 		// Border
 		var contentBorder = style.GetContentBorder(state);
@@ -150,7 +220,15 @@ public static partial class GUI {
 
 
 	// Draw
+	/// <inheritdoc cref="DrawStyleBody(IRect, GUIStyle, GUIState, Color32)"/>
 	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state) => DrawStyleBody(rect, style, state, Color32.WHITE);
+	/// <summary>
+	/// Draw the given style as body of a GUI element
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="style"></param>
+	/// <param name="state"></param>
+	/// <param name="tint">Color tint that apply on this element</param>
 	public static void DrawStyleBody (IRect rect, GUIStyle style, GUIState state, Color32 tint) {
 		int sprite = style.GetBodySprite(state);
 		if (sprite == 0 || !Renderer.TryGetSprite(sprite, out var _sprite)) return;
@@ -171,6 +249,15 @@ public static partial class GUI {
 	}
 
 
+	/// <summary>
+	/// Draw the given style as content of a GUI element
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="sprite">Artwork sprite</param>
+	/// <param name="style"></param>
+	/// <param name="state"></param>
+	/// <param name="ignoreSlice">True if not apply 9-slice logic</param>
+	/// <param name="fit">True if keep the aspect ratio of the sprite</param>
 	public static void DrawStyleContent (IRect rect, int sprite, GUIStyle style, GUIState state, bool ignoreSlice = false, bool fit = false) {
 		if (!Renderer.TryGetSprite(sprite, out var _sprite)) return;
 		var color = ContentColor == Color32.WHITE ?
@@ -195,12 +282,24 @@ public static partial class GUI {
 	}
 
 
+	/// <summary>
+	/// Draw the artwork sprite with 9-slice logic. Border size will be unified.
+	/// </summary>
+	/// <param name="spriteID">ID of the artwork sprite</param>
+	/// <param name="rect">Rect position in global space</param>
+	/// <returns>Rendering cells of this element</returns>
 	public static Cell[] DrawSlice (int spriteID, IRect rect) {
 		if (Renderer.TryGetSprite(spriteID, out var sprite)) {
 			return DrawSlice(sprite, rect);
 		}
 		return null;
 	}
+	/// <summary>
+	/// Draw the artwork sprite with 9-slice logic. Border size will be unified.
+	/// </summary>
+	/// <param name="sprite">Artwork sprite</param>
+	/// <param name="rect">Rect position in global space</param>
+	/// <returns>Rendering cells of this element</returns>
 	public static Cell[] DrawSlice (AngeSprite sprite, IRect rect) {
 		var border = sprite.GlobalBorder;
 		border.left /= GUIStyle.BORDER_SCALE;
@@ -213,6 +312,10 @@ public static partial class GUI {
 
 
 	// Typing
+	/// <summary>
+	/// Procedurelly start typing with an input field
+	/// </summary>
+	/// <param name="controlID">Control ID of the target input field</param>
 	public static void StartTyping (int controlID) {
 		TypingTextFieldID = controlID;
 		BeamIndex = 0;
@@ -222,6 +325,9 @@ public static partial class GUI {
 		TypingTextFieldUpdateFrame = Game.PauselessFrame;
 	}
 
+	/// <summary>
+	/// Stop typing on any input field
+	/// </summary>
 	public static void CancelTyping () {
 		TypingTextFieldID = 0;
 		TypingBuilderCount = 0;
@@ -232,19 +338,46 @@ public static partial class GUI {
 
 
 	// Label
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void SmallLabel (IRect rect, string text) => LabelLogic(rect, text, null, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void SmallLabel (IRect rect, char[] text) => LabelLogic(rect, "", text, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _);
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void SmallLabel (IRect rect, string text, out IRect bounds) => LabelLogic(rect, text, null, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void SmallLabel (IRect rect, char[] text, out IRect bounds) => LabelLogic(rect, "", text, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void SmallLabel (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex) => LabelLogic(rect, text, null, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex);
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void SmallLabel (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex) => LabelLogic(rect, text, null, Skin.SmallLabel, Enable ? GUIState.Normal : GUIState.Disable, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex);
 
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void Label (IRect rect, string text, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _, charSize);
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void Label (IRect rect, char[] text, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, "", text, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out _, out _, out _, charSize);
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void Label (IRect rect, string text, out IRect bounds, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _, charSize);
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void Label (IRect rect, char[] text, out IRect bounds, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, "", text, style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _, charSize);
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void Label (IRect rect, string text, int startIndex, bool drawInvisibleChar, out IRect bounds, out int endIndex, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, -1, startIndex, drawInvisibleChar, out bounds, out _, out endIndex, charSize);
+	/// <inheritdoc cref="LabelLogic"/>
 	public static void Label (IRect rect, string text, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex, GUIStyle style = null, int charSize = -2) => LabelLogic(rect, text, null, style, Enable ? GUIState.Normal : GUIState.Disable, beamIndex, startIndex, drawInvisibleChar, out bounds, out beamRect, out endIndex, charSize);
+	/// <summary>
+	/// Draw a text content on screen
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="text">Text content</param>
+	/// <param name="chars">Char array as text content</param>
+	/// <param name="style"></param>
+	/// <param name="state"></param>
+	/// <param name="beamIndex">Index of the typing beam inside the text content</param>
+	/// <param name="startIndex">Label content start with this index</param>
+	/// <param name="drawInvisibleChar">True if invisible characters should make the internal iteration grow</param>
+	/// <param name="bounds">Total rendering boundary of the characters in global space</param>
+	/// <param name="beamRect">Rendering rect position of the typing beam</param>
+	/// <param name="endIndex">Last rendered character index</param>
+	/// <param name="charSize">Unified height of the character</param>
 	private static void LabelLogic (IRect rect, string text, char[] chars, GUIStyle style, GUIState state, int beamIndex, int startIndex, bool drawInvisibleChar, out IRect bounds, out IRect beamRect, out int endIndex, int charSize = -2) {
 
 		if (Game.FontCount == 0 || (text == null && chars == null)) {
@@ -428,6 +561,14 @@ public static partial class GUI {
 
 
 	// Label Extra
+	/// <summary>
+	/// Label that scroll the content inside verticaly
+	/// </summary>
+	/// <param name="text">Text content</param>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="scrollPosition">Offset Y position in global space</param>
+	/// <param name="style"></param>
+	/// <returns>The new scrolling position</returns>
 	public static int ScrollLabel (string text, IRect rect, int scrollPosition, GUIStyle style) {
 		style ??= Skin.Label;
 		int before = Renderer.GetUsedCellCount();
@@ -450,7 +591,27 @@ public static partial class GUI {
 		return scrollPosition;
 	}
 
+
+	/// <inheritdoc cref="BackgroundLabel(IRect, string, Color32, out IRect, int, bool, GUIStyle)"/>
+	public static void BackgroundLabel (IRect rect, char[] chars, Color32 backgroundColor, int backgroundPadding = 0, GUIStyle style = null) => BackgroundLabel(rect, chars, backgroundColor, out _, backgroundPadding, style);
+	/// <inheritdoc cref="BackgroundLabel(IRect, string, Color32, out IRect, int, bool, GUIStyle)"/>
+	public static void BackgroundLabel (IRect rect, char[] chars, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, GUIStyle style = null) {
+		var bg = Renderer.DrawPixel(default, Color * BodyColor * backgroundColor, z: 0);
+		LabelLogic(rect, null, chars, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
+		bg.SetRect(bounds.Expand(backgroundPadding));
+	}
+	/// <inheritdoc cref="BackgroundLabel(IRect, string, Color32, out IRect, int, bool, GUIStyle)"/>
 	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, int backgroundPadding = 0, bool forceInside = false, GUIStyle style = null) => BackgroundLabel(rect, text, backgroundColor, out _, backgroundPadding, forceInside, style);
+	/// <summary>
+	/// Label with a color block as background
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="text">Text content</param>
+	/// <param name="backgroundColor">Color of the background block</param>
+	/// <param name="bounds">Rendering boundary of the text content in global space</param>
+	/// <param name="backgroundPadding">Border size of the background block in unified size</param>
+	/// <param name="forceInside">True if the text content clamp inside the background block</param>
+	/// <param name="style"></param>
 	public static void BackgroundLabel (IRect rect, string text, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, bool forceInside = false, GUIStyle style = null) {
 		int startIndex = Renderer.GetUsedCellCount();
 		var bg = Renderer.DrawPixel(default, Color * BodyColor * backgroundColor, z: 0);
@@ -462,20 +623,8 @@ public static partial class GUI {
 		bg.SetRect(bounds.Expand(backgroundPadding));
 	}
 
-	public static void BackgroundLabel (IRect rect, char[] chars, Color32 backgroundColor, int backgroundPadding = 0, GUIStyle style = null) => BackgroundLabel(rect, chars, backgroundColor, out _, backgroundPadding, style);
-	public static void BackgroundLabel (IRect rect, char[] chars, Color32 backgroundColor, out IRect bounds, int backgroundPadding = 0, GUIStyle style = null) {
-		var bg = Renderer.DrawPixel(default, Color * BodyColor * backgroundColor, z: 0);
-		LabelLogic(rect, null, chars, style, GUIState.Normal, -1, 0, false, out bounds, out _, out _);
-		bg.SetRect(bounds.Expand(backgroundPadding));
-	}
 
-	public static void ShadowLabel (IRect rect, string text, int shadowDistance = 3, GUIStyle style = null) {
-		var oldC = ContentColor;
-		ContentColor = Color32.GREY_20;
-		LabelLogic(rect.Shift(0, -Unify(shadowDistance)), text, null, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
-		ContentColor = oldC;
-		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
-	}
+	/// <inheritdoc cref="ShadowLabel(IRect, string, int, GUIStyle)"/>
 	public static void ShadowLabel (IRect rect, char[] chars, int shadowDistance = 3, GUIStyle style = null) {
 		var oldC = ContentColor;
 		ContentColor = Color32.GREY_20;
@@ -483,11 +632,45 @@ public static partial class GUI {
 		ContentColor = oldC;
 		LabelLogic(rect, null, chars, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
 	}
+	/// <summary>
+	/// Label with shadow below
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="text">Text content</param>
+	/// <param name="shadowDistance">Offset Y of the shadow in unified space</param>
+	/// <param name="style"></param>
+	public static void ShadowLabel (IRect rect, string text, int shadowDistance = 3, GUIStyle style = null) {
+		var oldC = ContentColor;
+		ContentColor = Color32.GREY_20;
+		LabelLogic(rect.Shift(0, -Unify(shadowDistance)), text, null, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
+		ContentColor = oldC;
+		LabelLogic(rect, text, null, style, GUIState.Normal, -1, 0, false, out _, out _, out _);
+	}
 
+
+	/// <inheritdoc cref="IntLabel(IRect, int, out IRect, GUIStyle)"/>
 	public static void IntLabel (IRect rect, int number, GUIStyle style = null) => IntLabel(rect, number, out _, style);
+	/// <summary>
+	/// Label for intager content
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="number">Intager content</param>
+	/// <param name="bounds">Rendering boundary of the text content in global space</param>
+	/// <param name="style"></param>
 	public static void IntLabel (IRect rect, int number, out IRect bounds, GUIStyle style = null) => LabelLogic(rect, "", IntLabelChars.GetChars(number), style, Enable ? GUIState.Normal : GUIState.Disable, -1, 0, false, out bounds, out _, out _);
 
+
+	/// <inheritdoc cref="FrameBasedIntLabel(IRect, FrameBasedInt, Color32, Color32, out IRect, GUIStyle)"/>
 	public static void FrameBasedIntLabel (IRect rect, FrameBasedInt number, Color32 greaterColor, Color32 lessColor, GUIStyle style = null) => FrameBasedIntLabel(rect, number, greaterColor, lessColor, out _, style);
+	/// <summary>
+	/// Label for draw FrameBasedInt as a buff
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="number">Intager content</param>
+	/// <param name="greaterColor">Text color for the extra part when final value is greater</param>
+	/// <param name="lessColor">Text color for the extra part when final value is less</param>
+	/// <param name="bounds">Rendering boundary of the text content in global space</param>
+	/// <param name="style"></param>
 	public static void FrameBasedIntLabel (IRect rect, FrameBasedInt number, Color32 greaterColor, Color32 lessColor, out IRect bounds, GUIStyle style = null) {
 		int baseValue = number.BaseValue;
 		int finalValue = number.FinalValue;
@@ -506,9 +689,22 @@ public static partial class GUI {
 
 
 	// Button
+	/// <inheritdoc cref="LinkButton(IRect, string, out IRect, GUIStyle, bool, int)"/>
 	public static bool SmallLinkButton (IRect rect, string label, bool useUnderLine = true, int charSize = -2) => LinkButton(rect, label, out _, Skin.SmallLabel, useUnderLine, charSize);
+	/// <inheritdoc cref="LinkButton(IRect, string, out IRect, GUIStyle, bool, int)"/>
 	public static bool SmallLinkButton (IRect rect, string label, out IRect bounds, bool useUnderLine = true, int charSize = -2) => LinkButton(rect, label, out bounds, Skin.SmallLabel, useUnderLine, charSize);
+	/// <inheritdoc cref="LinkButton(IRect, string, out IRect, GUIStyle, bool, int)"/>
 	public static bool LinkButton (IRect rect, string label, GUIStyle labelStyle = null, bool useUnderLine = true, int charSize = -2) => LinkButton(rect, label, out _, labelStyle, useUnderLine, charSize);
+	/// <summary>
+	/// Button that behave like a link
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="label">Text content</param>
+	/// <param name="bounds">Boundary of the rendered content in global space</param>
+	/// <param name="labelStyle">GUI style for the label content</param>
+	/// <param name="useUnderLine">True if draw a line below the text</param>
+	/// <param name="charSize">Character size in unified space</param>
+	/// <returns>True if the link is pressed at current frame</returns>
 	public static bool LinkButton (IRect rect, string label, out IRect bounds, GUIStyle labelStyle = null, bool useUnderLine = true, int charSize = -2) {
 
 		bounds = default;
@@ -539,9 +735,13 @@ public static partial class GUI {
 		return result;
 	}
 
+	/// <inheritdoc cref="BlankButton"/>
 	public static bool DarkButton (IRect rect, string label, int charSize = -2) => Button(rect, label, Skin.DarkButton, charSize);
+	/// <inheritdoc cref="BlankButton"/>
 	public static bool DarkButton (IRect rect, int icon) => Button(rect, icon, Skin.DarkButton);
+	/// <inheritdoc cref="BlankButton"/>
 	public static bool Button (IRect rect, string label, GUIStyle style = null, int charSize = -2) => Button(rect, label, out _, style, charSize);
+	/// <inheritdoc cref="BlankButton"/>
 	public static bool Button (IRect rect, string label, out GUIState state, GUIStyle style = null, int charSize = -2) {
 		style ??= Skin.Button;
 		bool result = BlankButton(rect, out state);
@@ -552,7 +752,9 @@ public static partial class GUI {
 		}
 		return result;
 	}
+	/// <inheritdoc cref="BlankButton"/>
 	public static bool Button (IRect rect, int icon, GUIStyle style = null) => Button(rect, icon, out _, style);
+	/// <inheritdoc cref="BlankButton"/>
 	public static bool Button (IRect rect, int icon, out GUIState state, GUIStyle style = null) {
 		style ??= Skin.Button;
 		bool result = BlankButton(rect, out state);
@@ -560,7 +762,14 @@ public static partial class GUI {
 		Icon(rect, icon, style, state);
 		return result;
 	}
-
+	/// <summary>
+	/// GUI element that behave like a button
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="icon">Artwork sprite ID for the icon inside this button</param>
+	/// <param name="label">Text content inside this button</param>
+	/// <param name="charSize">Character size of the label in unified space</param>
+	/// <returns>True if the button is pressed at current frame</returns>
 	public static bool BlankButton (IRect rect, out GUIState state) {
 		state = GUIState.Normal;
 		if (!Enable) {
@@ -582,6 +791,7 @@ public static partial class GUI {
 
 
 	// Toggle
+	/// <inheritdoc cref="BlankToggle"/>
 	public static bool IconToggle (IRect rect, bool isOn, int icon, GUIStyle markStyle = null, GUIStyle iconStyle = null) {
 		markStyle ??= Skin.GreenPixel;
 		isOn = BlankToggle(rect, isOn, out var state);
@@ -597,6 +807,7 @@ public static partial class GUI {
 		}
 		return isOn;
 	}
+	/// <inheritdoc cref="BlankToggle"/>
 	public static bool ToggleLeft (IRect rect, bool isOn, string label, GUIStyle bodyStyle = null, GUIStyle labelStyle = null, GUIStyle markStyle = null) {
 		bodyStyle ??= Skin.Toggle;
 		labelStyle ??= Skin.Label;
@@ -610,6 +821,7 @@ public static partial class GUI {
 		}
 		return isOn;
 	}
+	/// <inheritdoc cref="BlankToggle"/>
 	public static bool ToggleButton (IRect rect, bool isOn, string label, GUIStyle bodyStyle = null) {
 		bodyStyle ??= Skin.DarkButton;
 		isOn = BlankToggle(rect, isOn, out var state);
@@ -617,6 +829,7 @@ public static partial class GUI {
 		LabelLogic(rect, label, null, bodyStyle, state, -1, 0, false, out _, out _, out _);
 		return isOn;
 	}
+	/// <inheritdoc cref="BlankToggle"/>
 	public static bool ToggleButton (IRect rect, bool isOn, int icon, GUIStyle style = null) {
 		style ??= Skin.DarkButton;
 		isOn = BlankToggle(rect, isOn, out var state);
@@ -628,6 +841,7 @@ public static partial class GUI {
 		Icon(rect, icon, style, fakeState);
 		return isOn;
 	}
+	/// <inheritdoc cref="BlankToggle"/>
 	public static bool ToggleFold (IRect rect, ref bool folding, int icon, string label, int paddingLeft = 0, int paddingRight = 0) {
 
 		// Fold Icon
@@ -649,8 +863,10 @@ public static partial class GUI {
 
 		return folding;
 	}
+	/// <inheritdoc cref="BlankToggle"/>
 	public static bool Toggle (IRect rect, bool isOn, GUIStyle bodyStyle = null, GUIStyle markStyle = null) =>
 		Toggle(rect, isOn, null, bodyStyle, markStyle, null);
+	/// <inheritdoc cref="BlankToggle"/>
 	public static bool Toggle (IRect rect, bool isOn, string label, GUIStyle bodyStyle = null, GUIStyle markStyle = null, GUIStyle labelStyle = null) {
 		bodyStyle ??= Skin.Toggle;
 		markStyle ??= Skin.ToggleMark;
@@ -667,6 +883,20 @@ public static partial class GUI {
 		}
 		return isOn;
 	}
+	/// <summary>
+	/// Draw a GUI element with a check box and check mark
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="isOn">True if the toggle is checked</param>
+	/// <param name="icon">Artwork sprite of the content inside the toggle</param>
+	/// <param name="label">Text content inside the toggle</param>
+	/// <param name="markStyle">GUI style of the check mark</param>
+	/// <param name="iconStyle">GUI style of the icon content</param>
+	/// <param name="labelStyle">GUI style of the text label</param>
+	/// <param name="bodyStyle">GUI style of the toggle box</param>
+	/// <param name="folding">True if the panel if folded</param>
+	/// <param name="state"></param>
+	/// <returns>True if the toggle is checked</returns>
 	public static bool BlankToggle (IRect rect, bool isOn, out GUIState state) {
 		if (BlankButton(rect, out state)) {
 			isOn = !isOn;
@@ -682,7 +912,15 @@ public static partial class GUI {
 
 
 	// Icon
+	/// <inheritdoc cref="Icon(IRect, int, GUIStyle, GUIState)"/>
 	public static void Icon (IRect rect, int sprite) => Icon(rect, sprite, null, default);
+	/// <summary>
+	/// Draw a artwork sprite as an icon
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="sprite">Artwork sprite</param>
+	/// <param name="style"></param>
+	/// <param name="state"></param>
 	public static void Icon (IRect rect, int sprite, GUIStyle style, GUIState state) {
 		if (!Renderer.TryGetSprite(sprite, out var icon)) return;
 		if (style != null) {
@@ -691,6 +929,13 @@ public static partial class GUI {
 			Renderer.Draw(icon, rect.Fit(icon), Color * ContentColor);
 		}
 	}
+
+
+	/// <summary>
+	/// Draw the triangle icon inside a popup button
+	/// </summary>
+	/// <param name="rect">Rect position of the whole button in global space</param>
+	/// <param name="iconSprite">Artwork sprite ID. Leave it 0 to use the built-in sprite</param>
 	public static void PopupTriangleIcon (IRect rect, int iconSprite = 0) {
 		iconSprite = iconSprite == 0 ? BuiltInSprite.ICON_TRIANGLE_DOWN : iconSprite;
 		Renderer.Draw(iconSprite, rect.Shrink(rect.height / 4).EdgeInsideSquareRight());
@@ -698,9 +943,26 @@ public static partial class GUI {
 
 
 	// Int Dial
+	/// <inheritdoc cref="IntDial(IRect, int, out bool, string, GUIStyle, GUIStyle, GUIStyle, int, int, int)"/>
 	public static int SmallIntDial (IRect rect, int value, string label = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out _, label, Skin.SmallLabel, Skin.SmallCenterLabel, Skin.SmallDarkButton, delta, min, max);
+	/// <inheritdoc cref="IntDial(IRect, int, out bool, string, GUIStyle, GUIStyle, GUIStyle, int, int, int)"/>
 	public static int SmallIntDial (IRect rect, int value, out bool changed, string label = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out changed, label, Skin.SmallLabel, Skin.SmallCenterLabel, Skin.SmallDarkButton, delta, min, max);
+	/// <inheritdoc cref="IntDial(IRect, int, out bool, string, GUIStyle, GUIStyle, GUIStyle, int, int, int)"/>
 	public static int IntDial (IRect rect, int value, string label = null, GUIStyle labelStyle = null, GUIStyle bodyStyle = null, GUIStyle dialButtonStyle = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) => IntDial(rect, value, out _, label, labelStyle, bodyStyle, dialButtonStyle, delta, min, max);
+	/// <summary>
+	/// Draw a label display an intager with two buttons to add and remove value
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="value">The intager value</param>
+	/// <param name="changed">True if the value is changed in this frame</param>
+	/// <param name="label">Text content displays on the left</param>
+	/// <param name="labelStyle">GUI style for the text label</param>
+	/// <param name="bodyStyle">GUI style for the int field</param>
+	/// <param name="dialButtonStyle">GUI style for the buttons</param>
+	/// <param name="delta">How many value does it add/remove when the button get pressed</param>
+	/// <param name="min">Minimal value for the intager</param>
+	/// <param name="max">Maximal value for the intager</param>
+	/// <returns>New value after modified</returns>
 	public static int IntDial (IRect rect, int value, out bool changed, string label = null, GUIStyle labelStyle = null, GUIStyle bodyStyle = null, GUIStyle dialButtonStyle = null, int delta = 1, int min = int.MinValue, int max = int.MaxValue) {
 
 		bodyStyle ??= Skin.SmallCenterLabel;
@@ -736,6 +998,18 @@ public static partial class GUI {
 
 
 	// Scrollbar
+	/// <summary>
+	/// Draw a bar that slide when user drag the handle inside
+	/// </summary>
+	/// <param name="controlID">ID to identify the interaction of this element</param>
+	/// <param name="contentRect">Rect position of the content panel in global space</param>
+	/// <param name="position">Scrolling offset position in global space</param>
+	/// <param name="totalSize">Size of all content in global space</param>
+	/// <param name="pageSize">Size of the displaying content in global space</param>
+	/// <param name="handleStyle">GUI style for the handle</param>
+	/// <param name="bgStyle">GUI style for the background</param>
+	/// <param name="vertical">True if it scrolls in vertical direction</param>
+	/// <returns>New position value</returns>
 	public static int ScrollBar (int controlID, IRect contentRect, int position, int totalSize, int pageSize, GUIStyle handleStyle = null, GUIStyle bgStyle = null, bool vertical = true) {
 
 		if (pageSize >= totalSize) return 0;
@@ -818,8 +1092,11 @@ public static partial class GUI {
 
 
 	// Slider
+	/// <inheritdoc cref="BlankSlider"/>
 	public static int FilledSlider (int controlID, IRect rect, int value, int min, int max, bool vertical = false, int step = 0) => Slider(controlID, rect, value, min, max, Skin.SliderBody, null, Skin.SliderFill, vertical, step);
+	/// <inheritdoc cref="BlankSlider"/>
 	public static int HandleSlider (int controlID, IRect rect, int value, int min, int max, bool vertical = false, int step = 0) => Slider(controlID, rect, value, min, max, Skin.SliderBody, Skin.SliderHandle, null, vertical, step);
+	/// <inheritdoc cref="BlankSlider"/>
 	public static int Slider (int controlID, IRect rect, int value, int min, int max, GUIStyle bodyStyle, GUIStyle handleStyle, GUIStyle fillStyle, bool vertical = false, int step = 0) {
 
 		value = BlankSlider(controlID, rect, value, min, max, out var state, vertical, step);
@@ -849,6 +1126,18 @@ public static partial class GUI {
 
 		return value;
 	}
+	/// <summary>
+	/// Draw a slider that user can drag with mouse to change a intager value
+	/// </summary>
+	/// <param name="controlID">ID to identify the interaction of this element</param>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="value"></param>
+	/// <param name="min">Minimal limitation for the value</param>
+	/// <param name="max">Maximal limitation for the value</param>
+	/// <param name="state"></param>
+	/// <param name="vertical">True if this slider slide verticaly</param>
+	/// <param name="step">Smooth step of the sliding. 0 means no step.</param>
+	/// <returns>New value after slide</returns>
 	public static int BlankSlider (int controlID, IRect rect, int value, int min, int max, out GUIState state, bool vertical = false, int step = 0) {
 
 		int oldValue = value;
@@ -893,7 +1182,14 @@ public static partial class GUI {
 
 
 	// Highlight
+	/// <inheritdoc cref="HighlightCursor(int, IRect, Color32)"/>
 	public static void HighlightCursor (int spriteID, IRect rect) => HighlightCursor(spriteID, rect, Color32.GREEN);
+	/// <summary>
+	/// Draw an animated cursor
+	/// </summary>
+	/// <param name="spriteID">Artwork sprite ID</param>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="color">Color tint for this element only</param>
 	public static void HighlightCursor (int spriteID, IRect rect, Color32 color) {
 		int border = Unify(4);
 		int thickness = Unify(8);
@@ -906,10 +1202,30 @@ public static partial class GUI {
 
 
 	// Color
+	/// <inheritdoc cref="ColorFieldInternal"/>
 	public static ColorF VerticalColorField (ColorF color, IRect rect, string label, GUIStyle labelStyle = null, bool hsv = true, bool alpha = false, bool stepped = true, bool folded = false, ColorF? defaultColor = null) => ColorFieldInternal(color, defaultColor, rect, label, labelStyle, hsv, alpha, false, stepped ? 1f / 32f : 0f, stepped ? 1 / 20f : 0f, folded);
+	/// <inheritdoc cref="ColorFieldInternal"/>
 	public static ColorF HorizontalColorField (ColorF color, IRect rect, string label, GUIStyle labelStyle = null, bool hsv = true, bool alpha = false, bool stepped = true, bool folded = false, ColorF? defaultColor = null) => ColorFieldInternal(color, defaultColor, rect, label, labelStyle, hsv, alpha, true, stepped ? 1f / 32f : 0f, stepped ? 1 / 20f : 0f, folded);
+	/// <inheritdoc cref="ColorFieldInternal"/>
 	public static ColorF VerticalColorField (ColorF color, IRect rect, bool hsv = true, bool alpha = false, bool stepped = true, bool folded = false, ColorF? defaultColor = null) => ColorFieldInternal(color, defaultColor, rect, null, null, hsv, alpha, false, stepped ? 1f / 32f : 0f, stepped ? 1 / 20f : 0f, folded);
+	/// <inheritdoc cref="ColorFieldInternal"/>
 	public static ColorF HorizontalColorField (ColorF color, IRect rect, bool hsv = true, bool alpha = false, bool stepped = true, bool folded = false, ColorF? defaultColor = null) => ColorFieldInternal(color, defaultColor, rect, null, null, hsv, alpha, true, stepped ? 1f / 32f : 0f, stepped ? 1 / 20f : 0f, folded);
+	/// <summary>
+	/// Draw a GUI element to edit color value
+	/// </summary>
+	/// <param name="color">The color value</param>
+	/// <param name="defaultColor">Default value will set to the color value when user press the reset button. Set to null when you don't want the reset button.</param>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="label">Text content display on left of the field</param>
+	/// <param name="labelStyle">GUI style for the label</param>
+	/// <param name="hsv">True if the field use HSV instead of RGB</param>
+	/// <param name="alpha">True if the field include alpha value</param>
+	/// <param name="horizontal">True if the field display horizontaly</param>
+	/// <param name="hueStep">Smooth step for HUE slider. 0 means no step</param>
+	/// <param name="step">Smooth step for other sliders. 0 means no step</param>
+	/// <param name="folded">True if the field is folded</param>
+	/// <param name="stepped">True if the field use smooth step when dragging</param>
+	/// <returns>New color after edit</returns>
 	private static ColorF ColorFieldInternal (ColorF color, ColorF? defaultColor, IRect rect, string label, GUIStyle labelStyle, bool hsv, bool alpha, bool horizontal, float hueStep, float step, bool folded) {
 
 		// Label
@@ -1081,9 +1397,15 @@ public static partial class GUI {
 	}
 
 
+	/// <summary>
+	/// Start the change check. Use GUI.EndChangeCheck to get the result
+	/// </summary>
 	public static void BeginChangeCheck () => CheckingContentVersion = ContentVersion;
 
 
+	/// <summary>
+	/// True if any GUI element changed it's value during the change check
+	/// </summary>
 	public static bool EndChangeCheck () => CheckingContentVersion != ContentVersion;
 
 
@@ -1158,6 +1480,9 @@ public static partial class GUI {
 	}
 
 
+	/// <summary>
+	/// Mark the GUI system as changed
+	/// </summary>
 	public static void SetChange () => ContentVersion++;
 
 

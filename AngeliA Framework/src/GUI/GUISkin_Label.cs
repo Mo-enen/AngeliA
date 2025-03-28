@@ -7,7 +7,7 @@ public partial class GUISkin {
 
 
 	[System.Flags]
-	public enum LabelPattern : int {
+	private enum LabelPattern : int {
 		Default = 0,
 		Normal = 0, Small = 0b01, Large = 0b10, Auto = 0b11,
 		Light = 0, Grey = 0b0100, Dark = 0b1000,
@@ -17,7 +17,7 @@ public partial class GUISkin {
 	}
 
 
-	public static GUIStyle ProduceLabel (LabelPattern pattern, int lineSpace = 5, int charSpace = 0) {
+	private static GUIStyle ProduceLabel (LabelPattern pattern, int lineSpace = 5, int charSpace = 0) {
 		bool dark = pattern.HasFlag(LabelPattern.Dark);
 		bool grey = pattern.HasFlag(LabelPattern.Grey);
 		return new() {
