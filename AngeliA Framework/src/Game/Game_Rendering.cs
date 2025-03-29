@@ -94,6 +94,25 @@ public partial class Game {
 	/// <summary>
 	/// Enable color tint screen effect and set the params
 	/// </summary>
+	/// <example><code>
+	/// using AngeliA;
+	/// 
+	/// namespace AngeliaGame;
+	/// 
+	/// public class Example {
+	/// 
+	/// 	[OnGameUpdate]
+	/// 	internal static void OnGameUpdate () {
+	/// 		var color = new Color32(
+	/// 			(byte)QTest.Int("r", 255, 0, 255),
+	/// 			(byte)QTest.Int("g", 255, 0, 255),
+	/// 			(byte)QTest.Int("b", 255, 0, 255)
+	/// 		);
+	/// 		Game.PassEffect_Tint(color, 1);
+	/// 	}
+	/// 
+	/// }
+	/// </code></example>
 	protected abstract void _Effect_SetTintParams (Color32 color);
 
 
@@ -105,8 +124,26 @@ public partial class Game {
 	/// <summary>
 	/// Enable darken screen effect and set the params
 	/// </summary>
-	/// /// <param name="amount">0 means no darken, 1 means full darken</param>
+	/// <param name="amount">0 means no darken, 1 means full darken</param>
 	/// <param name="step">How intermittent the darken should be. Default 8 steps.</param>
+	/// <example><code>
+	/// using AngeliA;
+	/// 
+	/// namespace AngeliaGame;
+	/// 
+	/// public class Example {
+	/// 
+	/// 	[OnGameUpdate]
+	/// 	internal static void OnGameUpdate () {
+	/// 		Game.PassEffect_RetroDarken(
+	/// 			QTest.Float("amount", 0f, 0f, 1f),
+	/// 			QTest.Float("step", 8f, 2f, 16f),
+	/// 			1
+	/// 		);
+	/// 	}
+	/// 
+	/// }
+	/// </code></example>
 	protected abstract void _Effect_SetDarkenParams (float amount, float step);
 
 

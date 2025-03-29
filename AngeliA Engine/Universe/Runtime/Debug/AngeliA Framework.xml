@@ -7713,6 +7713,25 @@
             <summary>
             Enable color tint screen effect and set the params
             </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            		var color = new Color32(
+            			(byte)QTest.Int("r", 255, 0, 255),
+            			(byte)QTest.Int("g", 255, 0, 255),
+            			(byte)QTest.Int("b", 255, 0, 255)
+            		);
+            		Game.PassEffect_Tint(color, 1);
+            	}
+            
+            }
+            </code></example>
         </member>
         <member name="M:AngeliA.Game.PassEffect_RetroDarken(System.Single,System.Single,System.Int32)">
             <inheritdoc cref="M:AngeliA.Game._Effect_SetDarkenParams(System.Single,System.Single)"/>
@@ -7721,8 +7740,26 @@
             <summary>
             Enable darken screen effect and set the params
             </summary>
-            /// <param name="amount">0 means no darken, 1 means full darken</param>
+            <param name="amount">0 means no darken, 1 means full darken</param>
             <param name="step">How intermittent the darken should be. Default 8 steps.</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            		Game.PassEffect_RetroDarken(
+            			QTest.Float("amount", 0f, 0f, 1f),
+            			QTest.Float("step", 8f, 2f, 16f),
+            			1
+            		);
+            	}
+            
+            }
+            </code></example>
         </member>
         <member name="M:AngeliA.Game.PassEffect_RetroLighten(System.Single,System.Single,System.Int32)">
             <inheritdoc cref="M:AngeliA.Game._Effect_SetLightenParams(System.Single,System.Single)"/>
@@ -8935,6 +8972,2188 @@
         <member name="F:AngeliA.GUISkin.Name">
             <summary>
             Name of this gui skin
+            </summary>
+        </member>
+        <member name="T:AngeliA.AntiBuffItem`1">
+            <summary>
+            A type of item that prevents a given type of buff from giving to the host
+            </summary>
+            <typeparam name="B">Type of the buff to prevent</typeparam>
+        </member>
+        <member name="T:AngeliA.AntiBuffItem`1.TriggerMode">
+            <summary>
+            How anti buff item been trigger
+            </summary>
+        </member>
+        <member name="P:AngeliA.AntiBuffItem`1.Mode">
+            <summary>
+            How this item been trigger
+            </summary>
+        </member>
+        <member name="P:AngeliA.AntiBuffItem`1.Duration">
+            <summary>
+            How long does it work after been use in frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.AntiBuffItem`1.OnAntiBuffTriggerd(AngeliA.Character)">
+            <summary>
+            This function is called when the item is triggered
+            </summary>
+            <param name="target">Target character that will get the effect</param>
+        </member>
+        <member name="T:AngeliA.BlockBuilder">
+            <summary>
+            Item that represent a map block inside inventory. Also handles the build block to map/stage logic
+            </summary>
+        </member>
+        <member name="P:AngeliA.BlockBuilder.BlockID">
+            <summary>
+            ID of the block it holds
+            </summary>
+        </member>
+        <member name="P:AngeliA.BlockBuilder.BlockType">
+            <summary>
+            Type of the block it holds
+            </summary>
+        </member>
+        <member name="T:AngeliA.BodyGadgetItem">
+            <summary>
+            A type of item that holds a body gadget.
+            </summary>
+            <param name="id">ID of the body gadget it holds</param>
+        </member>
+        <member name="M:AngeliA.BodyGadgetItem.#ctor(System.Int32)">
+            <summary>
+            A type of item that holds a body gadget.
+            </summary>
+            <param name="id">ID of the body gadget it holds</param>
+        </member>
+        <member name="P:AngeliA.BodyGadgetItem.GadgetID">
+            <summary>
+            ID of the body gadget it holds
+            </summary>
+        </member>
+        <member name="T:AngeliA.BodySetItem">
+            <summary>
+            Represent an item that holds a whole set of bodypart for pose-style characters to apply
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodySetItem.TargetCharacterID">
+            <summary>
+            ID of the target character for the bodypart it holds
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodySetItem.TargetCharacterName">
+            <summary>
+            Name of the target character for the bodypart it holds
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodySetItem.Data">
+            <summary>
+            Rendering config data for the bodypart it holds
+            </summary>
+        </member>
+        <member name="M:AngeliA.BodySetItem.ForAllBodySetCharacterType">
+            <summary>
+            Iterate through all body-set the current project have
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameInitializeLater(4096)]
+            	internal static void OnGameUpdate () {
+            		Debug.Log("All body-set inside this game:");
+            		foreach (var (id, (type, typeName)) in BodySetItem.ForAllBodySetCharacterType()) {
+            			string setName = ItemSystem.GetItemDisplayName(id);
+            			Debug.Log($"{setName} - {typeName}");
+            		}
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="M:AngeliA.BodySetItem.GetDisplayName(System.String,System.Int32@)">
+            <summary>
+            Get display name for bodyset from language system
+            </summary>
+        </member>
+        <member name="T:AngeliA.BuffItem`1">
+            <summary>
+            Item that gives the holder a buff
+            </summary>
+            <typeparam name="B">Type of the buff</typeparam>
+        </member>
+        <member name="T:AngeliA.BuffItem">
+            <summary>
+            Item that gives the holder a buff
+            </summary>
+        </member>
+        <member name="P:AngeliA.BuffItem.BuffID">
+            <summary>
+            Type of the buff
+            </summary>
+        </member>
+        <member name="T:AngeliA.ClothItem">
+            <summary>
+            Represent an item that holds a cloth for pose-style character to wear. Unlike body armor, cloth do not occupy equipment slot.
+            </summary>
+            <param name="id">ID of the cloth</param>
+        </member>
+        <member name="M:AngeliA.ClothItem.#ctor(System.Int32)">
+            <summary>
+            Represent an item that holds a cloth for pose-style character to wear. Unlike body armor, cloth do not occupy equipment slot.
+            </summary>
+            <param name="id">ID of the cloth</param>
+        </member>
+        <member name="P:AngeliA.ClothItem.ClothID">
+            <summary>
+            ID of the cloth
+            </summary>
+        </member>
+        <member name="T:AngeliA.EquipmentType">
+            <summary>
+            Represent the type of the equipment
+            </summary>
+        </member>
+        <member name="F:AngeliA.EquipmentType.HandTool">
+            <summary>
+            Equipment that equip into hand slot and can be use as a tool
+            </summary>
+        </member>
+        <member name="F:AngeliA.EquipmentType.BodyArmor">
+            <summary>
+            Equipment that equip into body slot
+            </summary>
+        </member>
+        <member name="F:AngeliA.EquipmentType.Helmet">
+            <summary>
+            Equipment that equip into head slot 
+            </summary>
+        </member>
+        <member name="F:AngeliA.EquipmentType.Shoes">
+            <summary>
+            Equipment that equip into foot slot
+            </summary>
+        </member>
+        <member name="F:AngeliA.EquipmentType.Gloves">
+            <summary>
+            Equipment that equip into hand slot
+            </summary>
+        </member>
+        <member name="F:AngeliA.EquipmentType.Jewelry">
+            <summary>
+            Equipment that equip into jewelry slot. Do not render onto the character by default.
+            </summary>
+        </member>
+        <member name="T:AngeliA.Equipment">
+            <summary>
+            Represent an item that can be equip into a slot for a character
+            </summary>
+        </member>
+        <member name="P:AngeliA.Equipment.EquipmentType">
+            <summary>
+            Which type is this quipment
+            </summary>
+        </member>
+        <member name="T:AngeliA.Food">
+            <summary>
+            Item that represent food
+            </summary>
+        </member>
+        <member name="T:AngeliA.HandTool">
+            <summary>
+            Tool equipment that can be equip in hand slot of a character
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.SpriteID">
+            <summary>
+            Artwork sprite ID for render this tool
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.PerformDelayFrame">
+            <summary>
+            How many frame does the internal tool logic invoke after character start to use the tool
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.PerformDelayRate">
+            <summary>
+            How many frame based on "duration" does the internal tool logic invoke after character start to use the tool. (0 means immediately invoke. 1000 means invoke after "duration" frames)
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.TypeName">
+            <summary>
+            Name of the class type 
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.Duration">
+            <summary>
+            How long does the tool perform it's function for once
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.Cooldown">
+            <summary>
+            How long have to wait to use again after the tool being used for once
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.HoldPunish">
+            <summary>
+            How many extra frames have to wait if the user hold the action button to use the tool multiple time
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.ChargeDuration">
+            <summary>
+            How many frames does it have to charge to perform the tool as charged. Set to int.MaxValue to disable charge feature.
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.DefaultMovementSpeedRateOnUse">
+            <summary>
+            How fast can the character move when using this tool. (0 means do not move. 1000 means move as normal speed. null means do not effect movement speed.)
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.WalkingMovementSpeedRateOnUse">
+            <summary>
+            How fast can the character move when using this tool when walking. (0 means do not move. 1000 means move as normal speed. null means do not effect movement speed.)
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.RunningMovementSpeedRateOnUse">
+            <summary>
+            How fast can the character move when using this tool when running. (0 means do not move. 1000 means move as normal speed. null means do not effect movement speed.)
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.UseStackAsUsage">
+            <summary>
+            True if this tool treat it's inventory stack count as durability bar
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.RepeatWhenHolding">
+            <summary>
+            True if this tool can be use repeatedly when holding the action button
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.CancelUseWhenRelease">
+            <summary>
+            True if usage of this tool should be stop when user relase the action button
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.LockFacingOnUse">
+            <summary>
+            Do not change character facing when the tool is being use
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.IgnoreGrabTwist">
+            <summary>
+            Do not read grab twist data from character when rendering this tool
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableInAir">
+            <summary>
+            True if character can use this tool when not touching ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableInWater">
+            <summary>
+            True if character can use this tool when inside water
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableWhenWalking">
+            <summary>
+            True if character can use this tool when walking
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableWhenRunning">
+            <summary>
+            True if character can use this tool when running
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableWhenClimbing">
+            <summary>
+            True if character can use this tool when climbing
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableWhenFlying">
+            <summary>
+            True if character can use this tool when flying
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableWhenRolling">
+            <summary>
+            True if character can use this tool when rolling
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableWhenSquatting">
+            <summary>
+            True if character can use this tool when squatting
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableWhenDashing">
+            <summary>
+            True if character can use this tool when dashing
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableWhenSliding">
+            <summary>
+            True if character can use this tool when sliding on wall
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableWhenGrabbing">
+            <summary>
+            True if character can use this tool when grabbing
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableWhenRushing">
+            <summary>
+            True if character can use this tool when rushing
+            </summary>
+        </member>
+        <member name="P:AngeliA.HandTool.AvailableWhenPounding">
+            <summary>
+            True if character can use this tool when ground pounding
+            </summary>
+        </member>
+        <member name="M:AngeliA.HandTool.LoadFromSheet">
+            <summary>
+            Load artwork sprite from current rendering sheet
+            </summary>
+        </member>
+        <member name="M:AngeliA.HandTool.OnToolSpriteRendered(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.AngeSprite,System.Int32)">
+            <summary>
+            This function is called when the tool is rendering by pose-style character
+            </summary>
+            <param name="renderer">Target character</param>
+            <param name="x">Position X of the sprite in global space</param>
+            <param name="y">Position Y of the sprite in global space</param>
+            <param name="width">Width of the sprite in global space</param>
+            <param name="height">Height of the sprite in global space</param>
+            <param name="grabRotation">Rotation of the sprite</param>
+            <param name="grabScale">Size scale of the sprite (0 means 0%, 1000 means 100%)</param>
+            <param name="sprite">Artwork sprite</param>
+            <param name="z">Z value for sort rendering cells</param>
+        </member>
+        <member name="M:AngeliA.HandTool.AllowingUse(AngeliA.Character)">
+            <summary>
+            True if the tool can be use by the character
+            </summary>
+        </member>
+        <member name="M:AngeliA.HandTool.OnToolPerform(AngeliA.Character)">
+            <summary>
+            This function is called when this tool is used for once by the given character
+            </summary>
+        </member>
+        <member name="M:AngeliA.HandTool.GetHandheldPoseAnimationID(AngeliA.Character)">
+            <summary>
+            Get the ID of the pose animation for handheld
+            </summary>
+        </member>
+        <member name="M:AngeliA.HandTool.GetPerformPoseAnimationID(AngeliA.Character)">
+            <summary>
+            Get the ID of the pose animation for using the tool
+            </summary>
+        </member>
+        <member name="T:AngeliA.IProgressiveItem">
+            <summary>
+            Interface that makes the item break/repair into other item
+            </summary>
+        </member>
+        <member name="P:AngeliA.IProgressiveItem.Progress">
+            <summary>
+            Current localtion inside the profress chain
+            </summary>
+        </member>
+        <member name="P:AngeliA.IProgressiveItem.TotalProgress">
+            <summary>
+            Total count of the profress chain
+            </summary>
+        </member>
+        <member name="P:AngeliA.IProgressiveItem.PrevItemID">
+            <summary>
+            ID of the item that this item will become when it's broken
+            </summary>
+        </member>
+        <member name="P:AngeliA.IProgressiveItem.NextItemID">
+            <summary>
+            ID of the item that this item will become when it got repair
+            </summary>
+        </member>
+        <member name="T:AngeliA.Item">
+            <summary>
+            Basic unit inside inventory system. ※※⚠ Use global single instance ⚠※※
+            </summary>
+        </member>
+        <member name="P:AngeliA.Item.MaxStackCount">
+            <summary>
+            Count limitation for multiple items inside one inventory slot
+            </summary>
+        </member>
+        <member name="P:AngeliA.Item.AllowDuplicateUpdate">
+            <summary>
+            True if same type of item can update multiple times during same frame for same holder
+            </summary>
+        </member>
+        <member name="P:AngeliA.Item.EmbedIntoLevel">
+            <summary>
+            True if this item can Embed into level blocks and get spawn when the block is picked. (like ore inside stone)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Item.TypeID">
+            <summary>
+            Unique ID for this type of item
+            </summary>
+        </member>
+        <member name="M:AngeliA.Item.BeforeItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)">
+            <summary>
+            This function is called every frame when this item is in an holder's inventory
+            </summary>
+            <param name="holder">The holder of the inventory</param>
+            <param name="inventoryID">ID of the inventory</param>
+            <param name="itemIndex"></param>
+        </member>
+        <member name="M:AngeliA.Item.OnItemUpdate_FromInventory(AngeliA.Character,System.Int32,System.Int32)">
+            <summary>
+            This function is called every frame when this item is in an holder's inventory
+            </summary>
+            <param name="holder">The holder of the inventory</param>
+            <param name="inventoryID">ID of the inventory</param>
+            <param name="itemIndex"></param>
+        </member>
+        <member name="M:AngeliA.Item.OnPoseAnimationUpdate_FromInventory(AngeliA.PoseCharacterRenderer,System.Int32,System.Int32)">
+            <summary>
+            This function is called every frame when pose-style character update after rendering is ready
+            </summary>
+            <param name="rendering">The inventory holder</param>
+            <param name="inventoryID">ID of the inventory</param>
+            <param name="itemIndex"></param>
+        </member>
+        <member name="M:AngeliA.Item.OnTakeDamage_FromInventory(AngeliA.Character,System.Int32,System.Int32,AngeliA.Damage@)">
+            <summary>
+            This function is called when holder take damage
+            </summary>
+            <param name="holder">The inventory holder</param>
+            <param name="inventoryID">ID of the inventory</param>
+            <param name="itemIndex"></param>
+            <param name="damage"></param>
+        </member>
+        <member name="M:AngeliA.Item.OnCharacterAttack_FromInventory(AngeliA.Character,AngeliA.Bullet,System.Int32,System.Int32)">
+            <summary>
+            This function is called when holder attacks
+            </summary>
+            <param name="character">The inventory holder</param>
+            <param name="bullet">Bullet entity this attack spawns</param>
+            <param name="inventoryID">ID of the inventory</param>
+            <param name="itemIndex"></param>
+        </member>
+        <member name="M:AngeliA.Item.BeforeItemUpdate_FromEquipment(AngeliA.Character)">
+            <summary>
+            This function is called every frame when the holder is equipping this item 
+            </summary>
+        </member>
+        <member name="M:AngeliA.Item.OnItemUpdate_FromEquipment(AngeliA.Character)">
+            <summary>
+            This function is called every frame when the holder is equipping this item 
+            </summary>
+        </member>
+        <member name="M:AngeliA.Item.BeforePoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            This function is called every frame when a pose-style character equipping this item
+            </summary>
+        </member>
+        <member name="M:AngeliA.Item.OnPoseAnimationUpdate_FromEquipment(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            This function is called every frame when a pose-style character equipping this item
+            </summary>
+        </member>
+        <member name="M:AngeliA.Item.OnTakeDamage_FromEquipment(AngeliA.Character,AngeliA.Damage@)">
+            <summary>
+            This function is called when the holder took damage with this item equipping
+            </summary>
+        </member>
+        <member name="M:AngeliA.Item.OnCharacterAttack_FromEquipment(AngeliA.Character,AngeliA.Bullet)">
+            <summary>
+            This function is called when the holder attack with this item equipping
+            </summary>
+            <param name="character"></param>
+            <param name="bullet">Instance of the bullet entity from the attack</param>
+        </member>
+        <member name="M:AngeliA.Item.TryRepairEquipment(AngeliA.Character)">
+            <summary>
+            Perform a repair for this item as an equipment
+            </summary>
+        </member>
+        <member name="M:AngeliA.Item.OnItemUpdate_FromItemHolder(AngeliA.ItemHolder,System.Int32)">
+            <summary>
+            This funtion is called every frame when it's being holded by a ItemHolder entity on stage
+            </summary>
+        </member>
+        <member name="M:AngeliA.Item.OnCollect(AngeliA.Character)">
+            <summary>
+            This function is called when this item get collect from ItemHolder
+            </summary>
+            <param name="holder">Character that collects this item</param>
+        </member>
+        <member name="M:AngeliA.Item.CanUse(AngeliA.Character)">
+            <summary>
+            True if this item can be use at current frame
+            </summary>
+            <param name="holder">Holder that trying to use this item</param>
+        </member>
+        <member name="M:AngeliA.Item.Use(AngeliA.Character,System.Int32,System.Int32,System.Boolean@)">
+            <summary>
+            Perform the logic when the item get used
+            </summary>
+            <param name="holder">Holder that using this item</param>
+            <param name="inventoryID">Inventory ID of this holder</param>
+            <param name="itemIndex">Index of this item inside the inventory</param>
+            <param name="consume">True if the item should disappear after being used</param>
+            <returns>True if the item is used</returns>
+        </member>
+        <member name="M:AngeliA.Item.ItemConditionCheck(AngeliA.Character)">
+            <summary>
+            True if the item should receive update callback at current condition
+            </summary>
+            <param name="holder">Holder that own this item</param>
+        </member>
+        <member name="M:AngeliA.Item.DrawItem(AngeliA.Entity,AngeliA.IRect,AngeliA.Color32,System.Int32)">
+            <summary>
+            Call this function to render the item
+            </summary>
+            <param name="holder">Holder that own this item</param>
+            <param name="rect">Rect position in global space</param>
+            <param name="tint">Color tint</param>
+            <param name="z">Z value for sort rendering cells</param>
+        </member>
+        <member name="T:AngeliA.ItemSystem">
+            <summary>
+            Core system that handles item related logic
+            </summary>
+        </member>
+        <member name="P:AngeliA.ItemSystem.ItemPoolReady">
+            <summary>
+            True if the system is ready to use
+            </summary>
+        </member>
+        <member name="P:AngeliA.ItemSystem.ItemUnlockReady">
+            <summary>
+            True if the item unlock data is loaded
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemSystem.GetItem(System.Int32)">
+            <summary>
+            Get global single instance of the item from given ID
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemSystem.GetItemDisplayName(System.Int32)">
+            <summary>
+            Get display name from the language system from the given item ID
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemSystem.GetItemDescription(System.Int32)">
+            <summary>
+            Get description from the language system from the given item ID
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemSystem.GetItemMaxStackCount(System.Int32)">
+            <summary>
+            Get stack count limit of the given item in inventory panel
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemSystem.HasItem(System.Int32)">
+            <summary>
+            True if there is an item inside the system pool for the given ID
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemSystem.CanUseItem(System.Int32,AngeliA.Character)">
+            <summary>
+            True if the item can be use by the given character
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemSystem.TryGetCombination(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@,System.Int32@,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Get item crafting combination data of the given item ID pair
+            </summary>
+            <param name="item0">Source item ID</param>
+            <param name="item1">Source item ID</param>
+            <param name="item2">Source item ID</param>
+            <param name="item3">Source item ID</param>
+            <param name="result">Result item ID that the given pair will craft into</param>
+            <param name="resultCount">How many result item does a single craft will get</param>
+            <param name="keep0">Source item ID which do not get consume after craft</param>
+            <param name="keep1">Source item ID which do not get consume after craft</param>
+            <param name="keep2">Source item ID which do not get consume after craft</param>
+            <param name="keep3">Source item ID which do not get consume after craft</param>
+            <returns>True if it is a valid craft combination</returns>
+        </member>
+        <member name="M:AngeliA.ItemSystem.ClearCombination">
+            <summary>
+            Reset the system craft combination pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemSystem.GetRelatedCombinations(AngeliA.Int4,System.Collections.Generic.List{AngeliA.Int4},System.Int32)">
+            <summary>
+            Get all craft combination that include the given combination. This is for making a helper list for the user to know what items can they craft.
+            </summary>
+            <param name="combination">Current combination the user putted into the crafting fields</param>
+            <param name="output">The helper list data</param>
+            <param name="materialCountLimit">Combinations which have more source items than this number will be ignored</param>
+        </member>
+        <member name="M:AngeliA.ItemSystem.GetSortedCombination(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Sort the given combination to make it always unique no matter what order the source items are
+            </summary>
+            <param name="a">Crafting source item ID</param>
+            <param name="b">Crafting source item ID</param>
+            <param name="c">Crafting source item ID</param>
+            <param name="d">Crafting source item ID</param>
+            <returns>Sorted combination ID</returns>
+        </member>
+        <member name="M:AngeliA.ItemSystem.ForAllCombinations">
+            <summary>
+            Iterate through all crafting combination inside the pool
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameInitializeLater(4096)]
+            	internal static void OnGameUpdate () {
+            		Debug.Log("All item combinations inside this game:");
+            		foreach (var com in ItemSystem.ForAllCombinations()) {
+            			string name0 = ItemSystem.GetItemDisplayName(com.Key.x);
+            			string name1 = ItemSystem.GetItemDisplayName(com.Key.y);
+            			string name2 = ItemSystem.GetItemDisplayName(com.Key.z);
+            			string name3 = ItemSystem.GetItemDisplayName(com.Key.w);
+            			string nameResult = ItemSystem.GetItemDisplayName(com.Value);
+            			Debug.Log($"{name0} + {name1} + {name2} + {name3} = {nameResult}");
+            		}
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="M:AngeliA.ItemSystem.IsEquipment(System.Int32)">
+            <inheritdoc cref="M:AngeliA.ItemSystem.IsEquipment(System.Int32,AngeliA.EquipmentType@)"/>
+        </member>
+        <member name="M:AngeliA.ItemSystem.IsEquipment(System.Int32,AngeliA.EquipmentType@)">
+            <summary>
+            True if the given item is equipment type
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemSystem.IsItemUnlocked(System.Int32)">
+            <summary>
+            True if the given item is unlocked. Locked items will display as "?" in crafting UI helper menu
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemSystem.SetItemUnlocked(System.Int32,System.Boolean)">
+            <summary>
+            Set given item into locked or unlocked. Locked items will display as "?" in crafting UI helper menu
+            </summary>
+        </member>
+        <member name="M:AngeliA.ItemSystem.SpawnItem(System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Spawn an item holder entity that holds the given item.
+            </summary>
+            <param name="itemID">Target item id</param>
+            <param name="x">Position X of the item holder in global space</param>
+            <param name="y">Position Y of the item holder in global space</param>
+            <param name="count">Count of the target item inside the item holder. This function always spawn only one item holder entity.</param>
+            <param name="jump">True if the item holder entity jump up when it spawns</param>
+            <returns>Instance of the item holder entity</returns>
+        </member>
+        <member name="M:AngeliA.ItemSystem.DropItemFor(AngeliA.Entity)">
+            <summary>
+            Perform an item drop the target entity when the entity is destroyed
+            </summary>
+            <returns>True if the item drop successfuly performs</returns>
+        </member>
+        <member name="M:AngeliA.ItemSystem.DropItemFor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Perform an item drop the target entity when the entity is destroyed
+            </summary>
+            <param name="sourceID">ID of the target entity</param>
+            <param name="x">Position X of the item holder appears in global space</param>
+            <param name="y">Position Y of the item holder appears in global space</param>
+            <returns>True if the item drop successfuly performs</returns>
+        </member>
+        <member name="T:AngeliA.Jewelry">
+            <summary>
+            A type of equipment that EquipmentType always set to Jewelry
+            </summary>
+        </member>
+        <member name="T:AngeliA.NonStackableItem">
+            <summary>
+            A type of item that do not stack-up inside inventory panel. The MaxStackCount is always 1.
+            </summary>
+        </member>
+        <member name="T:AngeliA.PlayerMenuItem`1">
+            <summary>
+            A type of item that spawns a player partner menu when use
+            </summary>
+            <typeparam name="UI">What type of menu does it spawns</typeparam>
+        </member>
+        <member name="P:AngeliA.PlayerMenuItem`1.Row">
+            <summary>
+            Inventory row count of the menu
+            </summary>
+        </member>
+        <member name="P:AngeliA.PlayerMenuItem`1.Column">
+            <summary>
+            Inventory column count of the menu
+            </summary>
+        </member>
+        <member name="M:AngeliA.PlayerMenuItem`1.OnPanelOpened(`0)">
+            <summary>
+            This function is called when the menu is spawned
+            </summary>
+            <param name="panelUI">Instance of the menu</param>
+        </member>
+        <member name="T:AngeliA.SwitchItem`1">
+            <summary>
+            A type of item that switch to another item when use
+            </summary>
+            <typeparam name="TargetItem">The item it will switch to</typeparam>
+        </member>
+        <member name="P:AngeliA.SwitchItem`1.TargetID">
+            <summary>
+            ID of the item it will switch to
+            </summary>
+        </member>
+        <member name="T:AngeliA.WeaponValidDirection">
+            <summary>
+            Which direction can the weapon attack to
+            </summary>
+        </member>
+        <member name="F:AngeliA.WeaponValidDirection.Two">
+            <summary>
+            ← →
+            </summary>
+        </member>
+        <member name="F:AngeliA.WeaponValidDirection.Three">
+            <summary>
+            ← → ↑
+            </summary>
+        </member>
+        <member name="F:AngeliA.WeaponValidDirection.Four">
+            <summary>
+            ← → ↑ ↓
+            </summary>
+        </member>
+        <member name="F:AngeliA.WeaponValidDirection.Five">
+            <summary>
+            ← → ↑ ↖ ↗
+            </summary>
+        </member>
+        <member name="F:AngeliA.WeaponValidDirection.Eight">
+            <summary>
+            ← → ↑ ↖ ↗ ↓ ↙ ↘
+            </summary>
+        </member>
+        <member name="T:AngeliA.Weapon`1">
+            <inheritdoc cref="T:AngeliA.Weapon"/>
+        </member>
+        <member name="T:AngeliA.Weapon">
+            <summary>
+            A type of handtool that launch a type of bullet when being used
+            </summary>
+        </member>
+        <member name="P:AngeliA.Weapon.BulletID">
+            <summary>
+            Entity ID of the bullet
+            </summary>
+        </member>
+        <member name="P:AngeliA.Weapon.ValidDirection">
+            <summary>
+            Which direction can this weapon attack
+            </summary>
+        </member>
+        <member name="M:AngeliA.Weapon.SpawnBullet(AngeliA.Character)">
+            <summary>
+            Spawn the bullet entity
+            </summary>
+            <param name="sender">Character that use the weapon</param>
+            <returns>Instance of the spawned bullet entity. Return null when invalid</returns>
+        </member>
+        <member name="T:AngeliA.CharacterPose">
+            <summary>
+            Complete pose infomation at one moment for a pose-style character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterPose.ApplyToCharacter(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Make the character perform this pose
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterPose.RecordFromCharacter(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Read pose data from the character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterPose.BlendToCharacter(AngeliA.PoseCharacterRenderer,System.Single)">
+            <summary>
+            Make the character perform this pose with weight
+            </summary>
+        </member>
+        <member name="T:AngeliA.HandheldPoseAnimation">
+            <summary>
+            Pose animation which override onto a character for holding a handtool
+            </summary>
+        </member>
+        <member name="M:AngeliA.HandheldPoseAnimation.DrawTool(AngeliA.HandTool,AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Rendering the given handtool
+            </summary>
+        </member>
+        <member name="T:AngeliA.PoseAnimation">
+            <summary>
+            Procedure animation to animate a pose-style character. ⚠Use global single instance from system pool⚠
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.A2G">
+            <summary>
+            Scale values from artwork pixel space to global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseAnimation.ValidHeadPosition">
+            <summary>
+            True if head position need to be recalculate after perform this animation
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseAnimation.DontBlendToNext">
+            <summary>
+            True if this animation should immediately transition to the next
+            </summary>
+        </member>
+        <member name="P:AngeliA.PoseAnimation.DontBlendToPrev">
+            <summary>
+            True if the prev animation should immediately transition to this one
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.Target">
+            <summary>
+            Character that currently being animated
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.Rendering">
+            <summary>
+            Rendering behavior of the target character
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.Movement">
+            <summary>
+            Movement behavior of the target character
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.Attackness">
+            <summary>
+            Attackness behavior of the target character
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.FacingRight">
+            <summary>
+            True if the target character is facing right
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.FacingFront">
+            <summary>
+            True if the target character is facing front
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.IsChargingAttack">
+            <summary>
+            True if the target character is currently attacking
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.FacingSign">
+            <summary>
+            Return 1 if the target character is facing right
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.FrontSign">
+            <summary>
+            Return 1 if the target character is facing front
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.CurrentAnimationFrame">
+            <summary>
+            Local animation frame of the target character
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.AnimationType">
+            <summary>
+            Which type of animation does the current character require to show
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.AttackLerp">
+            <summary>
+            Liner progress of attack. (0 means start, 1 means end)
+            </summary>
+        </member>
+        <member name="F:AngeliA.PoseAnimation.AttackEase">
+            <summary>
+            Eased progress of attack. (0 means start, 1 means end)
+            </summary>
+        </member>
+        <member name="M:AngeliA.PoseAnimation.PerformAnimationFromPool(System.Int32,AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Animate the target character from animation inside system pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.PoseAnimation.PerformAnimation(AngeliA.PoseAnimation,AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Animate target character from given animation
+            </summary>
+        </member>
+        <member name="M:AngeliA.PoseAnimation.PerformAnimationBlendFromPool(System.Int32,System.Int32,System.Single,AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Animate the target character from two animations inside system pool
+            </summary>
+            <param name="idA"></param>
+            <param name="idB"></param>
+            <param name="blend01">0 means only perform animationA, 1 means only perform animationB. 0.5 means perform two animations equally.</param>
+            <param name="renderer"></param>
+        </member>
+        <member name="M:AngeliA.PoseAnimation.PerformAnimationBlend(AngeliA.PoseAnimation,AngeliA.PoseAnimation,System.Single,AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Animate the target character from two given animations
+            </summary>
+            <param name="animationA"></param>
+            <param name="animationB"></param>
+            <param name="blend01">0 means only perform animationA, 1 means only perform animationB. 0.5 means perform two animations equally.</param>
+            <param name="renderer"></param>
+        </member>
+        <member name="M:AngeliA.PoseAnimation.TryGetAnimationFromPool(System.Int32,AngeliA.PoseAnimation@)">
+            <summary>
+            Get global single instance from system pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.PoseAnimation.Animate(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Perform the animation logic to the given character
+            </summary>
+        </member>
+        <member name="M:AngeliA.PoseAnimation.ResetShoulderAndUpperArmPos(System.Boolean,System.Boolean)">
+            <summary>
+            Reset position of soulder and upper arm for cached character
+            </summary>
+        </member>
+        <member name="M:AngeliA.PoseAnimation.AttackHeadDown(System.Single,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Make head moves down for attack animation for cached character
+            </summary>
+        </member>
+        <member name="M:AngeliA.PoseAnimation.AttackLegShake(System.Single)">
+            <summary>
+            Make legs shake for attack animation for cached character
+            </summary>
+        </member>
+        <member name="T:AngeliA.SavingLocation">
+            <summary>
+            Where should the saving data local inside the disk
+            </summary>
+        </member>
+        <member name="F:AngeliA.SavingLocation.Global">
+            <summary>
+            Shared between all saving slot
+            </summary>
+        </member>
+        <member name="F:AngeliA.SavingLocation.Slot">
+            <summary>
+            Only for it's own saving slot
+            </summary>
+        </member>
+        <member name="T:AngeliA.Saving">
+            <summary>
+            Data that auto save into player saving data
+            </summary>
+        </member>
+        <member name="P:AngeliA.Saving.Key">
+            <summary>
+            Unique key to identify this data
+            </summary>
+        </member>
+        <member name="P:AngeliA.Saving.ID">
+            <summary>
+            AngeHash of the "Key"
+            </summary>
+        </member>
+        <member name="T:AngeliA.Saving`1">
+            <summary>
+            Data that auto save into player saving data
+            </summary>
+            <typeparam name="T">Type of the data</typeparam>
+        </member>
+        <member name="P:AngeliA.Saving`1.Value">
+            <summary>
+            Current value it holds
+            </summary>
+        </member>
+        <member name="P:AngeliA.Saving`1.DefaultValue">
+            <summary>
+            Default value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Saving`1.#ctor(System.String,`0,AngeliA.SavingLocation)">
+            <summary>
+            
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="M:AngeliA.Saving`1.GetValue(System.Boolean)">
+            <summary>
+            Get the value it currently holds
+            </summary>
+        </member>
+        <member name="M:AngeliA.Saving`1.SetValue(`0,System.Boolean)">
+            <summary>
+            Set the value it currently holds
+            </summary>
+        </member>
+        <member name="M:AngeliA.Saving`1.StringToValue(System.String)">
+            <summary>
+            Convert given string into the value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Saving`1.ValueToString(`0)">
+            <summary>
+            Convert given value into string data
+            </summary>
+        </member>
+        <member name="T:AngeliA.SavingBool">
+            <summary>
+            Boolean data that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="M:AngeliA.SavingBool.#ctor(System.String,System.Boolean,AngeliA.SavingLocation)">
+            <summary>
+            Boolean data that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="T:AngeliA.SavingColor32">
+            <summary>
+            Color data that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="M:AngeliA.SavingColor32.#ctor(System.String,AngeliA.Color32,AngeliA.SavingLocation)">
+            <summary>
+            Color data that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="T:AngeliA.SavingColor32NoAlpha">
+            <summary>
+            Color data without alpha value that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="M:AngeliA.SavingColor32NoAlpha.#ctor(System.String,AngeliA.Color32,AngeliA.SavingLocation)">
+            <summary>
+            Color data without alpha value that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="T:AngeliA.SavingHotkey">
+            <summary>
+            Hotkey data that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="M:AngeliA.SavingHotkey.#ctor(System.String,AngeliA.Hotkey,AngeliA.SavingLocation)">
+            <summary>
+            Hotkey data that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="T:AngeliA.SavingInt">
+            <summary>
+            Intager data that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="M:AngeliA.SavingInt.#ctor(System.String,System.Int32,AngeliA.SavingLocation)">
+            <summary>
+            Intager data that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="T:AngeliA.SavingString">
+            <summary>
+            String data that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="M:AngeliA.SavingString.#ctor(System.String,System.String,AngeliA.SavingLocation)">
+            <summary>
+            String data that auto save into player saving data
+            </summary>
+            <param name="key">Unique key to identify this data</param>
+            <param name="defaultValue"></param>
+            <param name="location">Set to "global" if this data shares between all saving slots</param>
+        </member>
+        <member name="T:AngeliA.SavingSystem">
+            <summary>
+            Core system for handle data that auto keeps inside disk.
+            </summary>
+        </member>
+        <member name="P:AngeliA.SavingSystem.FileLoaded">
+            <summary>
+            True if the internal pool is loaded from file
+            </summary>
+        </member>
+        <member name="P:AngeliA.SavingSystem.IsDirty">
+            <summary>
+            True if there's any unsaved change
+            </summary>
+        </member>
+        <member name="P:AngeliA.SavingSystem.PoolVersion">
+            <summary>
+            Data version of the internal pool
+            </summary>
+        </member>
+        <member name="P:AngeliA.SavingSystem.PoolReady">
+            <summary>
+            True if the internal pool is ready to use
+            </summary>
+        </member>
+        <member name="M:AngeliA.SavingSystem.HasKey(AngeliA.Saving)">
+            <summary>
+            True if the given key exists in the internal pool
+            </summary>
+        </member>
+        <member name="M:AngeliA.SavingSystem.HasKey(System.Int32)">
+            <summary>
+            True if the given key exists in the internal pool
+            </summary>
+        </member>
+        <member name="T:AngeliA.AfterimageScope">
+            <summary>
+            Draw a continuous tailing cell effect for the objects rendering inside
+            </summary>
+            <param name="speedX">How fast is the object moves horizontaly</param>
+            <param name="speedY">How fast is the object moves verticaly</param>
+            <param name="tintStart">Color tint for start of the effect</param>
+            <param name="tintEnd">Color tint for end of the effect</param>
+            <param name="rotateSpeed">How fast does the object rotate</param>
+            <param name="count">How many effect should be drawn</param>
+            <param name="frameStep">Frame distance between each effects</param>
+            <param name="scaleStart">Size scale when the effect start (0 means 0%, 1000 means 100%)</param>
+            <param name="scaleEnd">Size scale when the effect end (0 means 0%, 1000 means 100%)</param>
+            <param name="renderLayer">Which layer does this effect renders into. Use RenderLayer.XXX to get the value.</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	static int CurrentX = 0;
+            	static int CurrentY = 0;
+            	static int CurrentRot = 0;
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		int speedX = QTest.Int("Speed X", 50, -64, 64);
+            		int speedY = QTest.Int("Speed Y", 10, -64, 64);
+            		int rotateSpeed = QTest.Int("Rotate Speed", 8, -64, 64);
+            		int count = QTest.Int("Count", 8, 1, 24);
+            		int frameStep = QTest.Int("Frame Step", 16, 1, 32);
+            		int scaleStart = QTest.Int("Scale Start", 1000, 0, 2000);
+            		int scaleEnd = QTest.Int("Scale End", 100, 0, 2000);
+            
+            		using (new AfterimageScope(
+            			speedX, speedY, Color32.WHITE, Color32.CLEAR, 
+            			rotateSpeed, count, frameStep, scaleStart, scaleEnd
+            		)) {
+            
+            			var cameraRect = Renderer.CameraRect;
+            
+            			// Render object here
+            			Renderer.Draw(
+            				BuiltInSprite.ICON_ENTITY,
+            				cameraRect.x + CurrentX,
+            				cameraRect.y + CurrentY,
+            				500, 500, CurrentRot,
+            				Const.CEL * 2, Const.CEL * 2
+            			);
+            
+            			// Move the object
+            			CurrentX += speedX;
+            			CurrentY += speedY;
+            			CurrentRot += rotateSpeed;
+            			CurrentX = CurrentX.UMod(cameraRect.width);
+            			CurrentY = CurrentY.UMod(cameraRect.height);
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="M:AngeliA.AfterimageScope.#ctor(System.Int32,System.Int32,AngeliA.Color32,AngeliA.Color32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw a continuous tailing cell effect for the objects rendering inside
+            </summary>
+            <param name="speedX">How fast is the object moves horizontaly</param>
+            <param name="speedY">How fast is the object moves verticaly</param>
+            <param name="tintStart">Color tint for start of the effect</param>
+            <param name="tintEnd">Color tint for end of the effect</param>
+            <param name="rotateSpeed">How fast does the object rotate</param>
+            <param name="count">How many effect should be drawn</param>
+            <param name="frameStep">Frame distance between each effects</param>
+            <param name="scaleStart">Size scale when the effect start (0 means 0%, 1000 means 100%)</param>
+            <param name="scaleEnd">Size scale when the effect end (0 means 0%, 1000 means 100%)</param>
+            <param name="renderLayer">Which layer does this effect renders into. Use RenderLayer.XXX to get the value.</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	static int CurrentX = 0;
+            	static int CurrentY = 0;
+            	static int CurrentRot = 0;
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		int speedX = QTest.Int("Speed X", 50, -64, 64);
+            		int speedY = QTest.Int("Speed Y", 10, -64, 64);
+            		int rotateSpeed = QTest.Int("Rotate Speed", 8, -64, 64);
+            		int count = QTest.Int("Count", 8, 1, 24);
+            		int frameStep = QTest.Int("Frame Step", 16, 1, 32);
+            		int scaleStart = QTest.Int("Scale Start", 1000, 0, 2000);
+            		int scaleEnd = QTest.Int("Scale End", 100, 0, 2000);
+            
+            		using (new AfterimageScope(
+            			speedX, speedY, Color32.WHITE, Color32.CLEAR, 
+            			rotateSpeed, count, frameStep, scaleStart, scaleEnd
+            		)) {
+            
+            			var cameraRect = Renderer.CameraRect;
+            
+            			// Render object here
+            			Renderer.Draw(
+            				BuiltInSprite.ICON_ENTITY,
+            				cameraRect.x + CurrentX,
+            				cameraRect.y + CurrentY,
+            				500, 500, CurrentRot,
+            				Const.CEL * 2, Const.CEL * 2
+            			);
+            
+            			// Move the object
+            			CurrentX += speedX;
+            			CurrentY += speedY;
+            			CurrentRot += rotateSpeed;
+            			CurrentX = CurrentX.UMod(cameraRect.width);
+            			CurrentY = CurrentY.UMod(cameraRect.height);
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="M:AngeliA.AfterimageScope.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc cref="T:AngeliA.AfterimageScope"/>
+        </member>
+        <member name="T:AngeliA.CellZScope">
+            <summary>
+            Scope to change rendering cell z value
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		int newZ = 0;
+            
+            		using (new CellZScope(newZ)) {
+            
+            			// Rendering cell created inside will have their z value override
+            			
+            		}
+            
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="M:AngeliA.CellZScope.#ctor(System.Int32)">
+            <summary>
+            Scope to change rendering cell z value
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		int newZ = 0;
+            
+            		using (new CellZScope(newZ)) {
+            
+            			// Rendering cell created inside will have their z value override
+            			
+            		}
+            
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="T:AngeliA.ClampCellsScope">
+            <summary>
+            Scope to clamp rendering cell into given rect position
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		int x = QTest.Int("X", 0, 0, Const.CEL * 128);
+            		int y = QTest.Int("Y", 0, 0, Const.CEL * 128);
+            		int w = QTest.Int("W", Const.CEL * 24, 0, Const.CEL * 128);
+            		int h = QTest.Int("H", Const.CEL * 24, 0, Const.CEL * 128);
+            
+            		var cameraRect = Renderer.CameraRect;
+            
+            		Renderer.SetLayer(RenderLayer.UI);
+            
+            		using (new ClampCellsScope(new IRect(cameraRect.x + x, cameraRect.y + y, w, h))) {
+            
+            			// Rendering cell created inside will have be clamped inside
+            			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.Shrink(Const.CEL * 3).Fit(1, 1));
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="M:AngeliA.ClampCellsScope.#ctor(AngeliA.IRect)">
+            <summary>
+            Scope to clamp rendering cell into given rect position
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		int x = QTest.Int("X", 0, 0, Const.CEL * 128);
+            		int y = QTest.Int("Y", 0, 0, Const.CEL * 128);
+            		int w = QTest.Int("W", Const.CEL * 24, 0, Const.CEL * 128);
+            		int h = QTest.Int("H", Const.CEL * 24, 0, Const.CEL * 128);
+            
+            		var cameraRect = Renderer.CameraRect;
+            
+            		Renderer.SetLayer(RenderLayer.UI);
+            
+            		using (new ClampCellsScope(new IRect(cameraRect.x + x, cameraRect.y + y, w, h))) {
+            
+            			// Rendering cell created inside will have be clamped inside
+            			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.Shrink(Const.CEL * 3).Fit(1, 1));
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="T:AngeliA.DefaultLayerScope">
+            <summary>
+            Scope that makes renderer draw into default layer
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new DefaultLayerScope()) {
+            
+            			// Rendering cell created inside will draw into default layer
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="T:AngeliA.DynamicClampCellScope">
+            <summary>
+            Scope that clamp rendering cells inside given range by changing the size scale of the content
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		var range = new IRect();
+            
+            		using (new DynamicClampCellScope(range)) {
+            
+            			// Rendering cell created inside will be clamped by rescale
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="M:AngeliA.DynamicClampCellScope.#ctor(AngeliA.IRect)">
+            <summary>
+            Scope that clamp rendering cells inside given range by changing the size scale of the content
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		var range = new IRect();
+            
+            		using (new DynamicClampCellScope(range)) {
+            
+            			// Rendering cell created inside will be clamped by rescale
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="T:AngeliA.EnvironmentShadowScope">
+            <summary>
+            Scope that draw shadows for rendering cells inside
+            </summary>
+            <param name="offsetX">Shadow distance X in global space</param>
+            <param name="offsetY">Shadow distance Y in global space</param>
+            <param name="alpha">Transparency value of the shadow. (0 means transparent, 255 means not tramsparent)</param>
+            <param name="z">Z value for sort rendering cells</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new EnvironmentShadowScope()) {
+            
+            			// Rendering cell created inside will have a shadow
+            			Renderer.Draw(BuiltInSprite.ICON_ENTITY, Renderer.CameraRect.Shrink(Const.CEL * 8));
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="M:AngeliA.EnvironmentShadowScope.#ctor(System.Int32,System.Int32,System.Byte,System.Int32)">
+            <summary>
+            Scope that draw shadows for rendering cells inside
+            </summary>
+            <param name="offsetX">Shadow distance X in global space</param>
+            <param name="offsetY">Shadow distance Y in global space</param>
+            <param name="alpha">Transparency value of the shadow. (0 means transparent, 255 means not tramsparent)</param>
+            <param name="z">Z value for sort rendering cells</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new EnvironmentShadowScope()) {
+            
+            			// Rendering cell created inside will have a shadow
+            			Renderer.Draw(BuiltInSprite.ICON_ENTITY, Renderer.CameraRect.Shrink(Const.CEL * 8));
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="F:AngeliA.EnvironmentShadowScope.OffsetX">
+            <summary>
+            Shadow distance X in global space
+            </summary>
+        </member>
+        <member name="F:AngeliA.EnvironmentShadowScope.OffsetY">
+            <summary>
+            Shadow distance Y in global space
+            </summary>
+        </member>
+        <member name="F:AngeliA.EnvironmentShadowScope.Alpha">
+            <summary>
+            Transparency value of the shadow. (0 means transparent, 255 means not tramsparent)
+            </summary>
+        </member>
+        <member name="F:AngeliA.EnvironmentShadowScope.Z">
+            <summary>
+            Z value for sort rendering cells
+            </summary>
+        </member>
+        <member name="T:AngeliA.FontScope">
+            <summary>
+            Scope that makes labels inside display with given font
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		int fontID = /*Your font ID here*/;
+            
+            		using (new FontScope(fontID)) {
+            
+            			// Labels inside will be display with the given font
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="T:AngeliA.GUIBodyColorScope">
+            <summary>
+            Scope that change the body color of GUI element inside 
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new GUIBodyColorScope(Color32.GREEN)) {
+            
+            			// GUI elements inside will have their body color changed
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.GUIColorScope">
+            <summary>
+            Scope that change the color of GUI element inside 
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new GUIColorScope(Color32.GREEN)) {
+            
+            			// GUI elements inside will have their color changed
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.GUIContentColorScope">
+            <summary>
+            Scope that change the content color of GUI element inside 
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new GUIContentColorScope(Color32.GREEN)) {
+            
+            			// GUI elements inside will have their content color changed
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.GUIEnableScope">
+            <summary>
+            Scope that set enable of GUI elements inside
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new GUIEnableScope(false)) {
+            
+            			// GUI elements inside will be disabled
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.GUIInteractableScope">
+            <summary>
+            Scope that set interactable of GUI elements inside
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new GUIInteractableScope(false)) {
+            
+            			// GUI elements inside will be not interactable
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.GUILabelWidthScope">
+            <summary>
+            Scope that set internal label width of GUI elements inside
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new GUILabelWidthScope(128)) {
+            
+            			// GUI elements inside will have internal label with 128 in width
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.GUIVerticalScrollScope">
+            <inheritdoc cref="T:AngeliA.GUIScrollScope"/>
+        </member>
+        <member name="M:AngeliA.GUIVerticalScrollScope.#ctor(AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc cref="T:AngeliA.GUIScrollScope"/>
+        </member>
+        <member name="T:AngeliA.GUIHorizontalScrollScope">
+            <inheritdoc cref="T:AngeliA.GUIScrollScope"/>
+        </member>
+        <member name="M:AngeliA.GUIHorizontalScrollScope.#ctor(AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc cref="T:AngeliA.GUIScrollScope"/>
+        </member>
+        <member name="T:AngeliA.GUIScrollScope">
+            <summary>
+            Scope that make GUI elements inside scrolls
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	static Int2 ScrollPos;
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		var cameraRect = Renderer.CameraRect;
+            
+            		using (var scroll = new GUIScrollScope(cameraRect, ScrollPos, new Int2(0, -4096), new Int2(0, 4096))) {
+            			ScrollPos = scroll.Position;
+            
+            			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y, 0, 0, 0, 512, 512);
+            			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y + 1024, 0, 0, 0, 512, 512);
+            			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y + 2048, 0, 0, 0, 512, 512);
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="M:AngeliA.GUIScrollScope.#ctor(AngeliA.IRect,AngeliA.Int2,AngeliA.Int2,AngeliA.Int2,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            Scope that make GUI elements inside scrolls
+            </summary>
+            <param name="rect">Content rect position in global space</param>
+            <param name="position">Scroll position in global space</param>
+            <param name="min">Minimal limitation for the scrolling</param>
+            <param name="max">Maximal limitation for the scrolling</param>
+            <param name="mouseWheelForVertical">True if the mouse wheel control vertical scroll instead of horizontal</param>
+            <param name="reverseMouseWheel">True if the mouse wheel scroll should reverse in direction</param>
+            <param name="layer">Which render layer does it scrolls</param>
+        </member>
+        <member name="T:AngeliA.GUISkinScope">
+            <summary>
+            Scope that change the skin of the GUI elements inside
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new GUISkinScope(/*Your GUI Skin*/)) {
+            
+            			// GUI elements inside will use the given GUI skin
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.IgnoreInputScope">
+            <summary>
+            Scope that make GUI elements ignore keyboard or mouse input from user
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new IgnoreInputScope()) {
+            
+            			// GUI elements inside will ignore keyboard or mouse input from user
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.LayerScope">
+            <summary>
+            Scope that make rendering cells inside use given render layer
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new LayerScope(RenderLayer.ADD)) {
+            
+            			// Rendering cells inside will be draw into additive layer
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="M:AngeliA.LayerScope.#ctor(System.Int32)">
+            <summary>
+            Scope that make rendering cells inside use given render layer
+            </summary>
+            <param name="layer">Use RenderLayer.XXX to get this index</param>
+        </member>
+        <member name="T:AngeliA.ReverseCellsScope">
+            <summary>
+            Scope that make rendering cells reverse in sorting order
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new ReverseCellsScope()) {
+            
+            			// Rendering cells inside will be reversed in sorting order
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.RotateCellScope">
+            <summary>
+            Scope that make rendering cells rotate
+            </summary>
+            <param name="rotation"></param>
+            <param name="pointX">Orientation point X in global space</param>
+            <param name="pointY">Orientation point Y in global space</param>
+            <param name="keepOriginalRotation">True if only change the position of cells (not rotation)</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		var cameraRect = Renderer.CameraRect;
+            
+            		int rot = QTest.Int("Rot", 0, 0, 360);
+            		int pointX = QTest.Int("Pivot X", 4096, 0, 4096 * 2);
+            		int pointY = QTest.Int("Pivot Y", 2048, 0, 4096);
+            		QTest.Mark(new Int2(cameraRect.x + pointX, cameraRect.y + pointY));
+            
+            		using (var scroll = new RotateCellScope(rot, cameraRect.x + pointX, cameraRect.y + pointY)) {
+            
+            			Renderer.Draw(
+            				BuiltInSprite.ICON_ENTITY, 
+            				cameraRect.CenterX(), cameraRect.CenterY(), 
+            				500, 500, 0, 512, 512
+            			);
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="M:AngeliA.RotateCellScope.#ctor(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Scope that make rendering cells rotate
+            </summary>
+            <param name="rotation"></param>
+            <param name="pointX">Orientation point X in global space</param>
+            <param name="pointY">Orientation point Y in global space</param>
+            <param name="keepOriginalRotation">True if only change the position of cells (not rotation)</param>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		var cameraRect = Renderer.CameraRect;
+            
+            		int rot = QTest.Int("Rot", 0, 0, 360);
+            		int pointX = QTest.Int("Pivot X", 4096, 0, 4096 * 2);
+            		int pointY = QTest.Int("Pivot Y", 2048, 0, 4096);
+            		QTest.Mark(new Int2(cameraRect.x + pointX, cameraRect.y + pointY));
+            
+            		using (var scroll = new RotateCellScope(rot, cameraRect.x + pointX, cameraRect.y + pointY)) {
+            
+            			Renderer.Draw(
+            				BuiltInSprite.ICON_ENTITY, 
+            				cameraRect.CenterX(), cameraRect.CenterY(), 
+            				500, 500, 0, 512, 512
+            			);
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.SheetIndexScope">
+            <summary>
+            Scope that change sheet index of the rendering cells inside
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new SheetIndexScope(/*Your Sheet Index*/)) {
+            
+            			// Rendering cells inside will render with given sheet
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="M:AngeliA.SheetIndexScope.#ctor(System.Int32)">
+            <summary>
+            Scope that change sheet index of the rendering cells inside
+            </summary>
+        </member>
+        <member name="T:AngeliA.ShiftCellsScope">
+            <summary>
+            Scope that shift position of the rendering cells inside
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new ShiftCellsScope(/*Your Offset Position Here*/)) {
+            
+            			// Rendering cells inside will offset their position
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="M:AngeliA.ShiftCellsScope.#ctor(AngeliA.Int2)">
+            <summary>
+            Scope that shift position of the rendering cells inside
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new ShiftCellsScope(/*Your Offset Position Here*/)) {
+            
+            			// Rendering cells inside will offset their position
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.UILayerScope">
+            <summary>
+            Scope that make rendering cells inside into UI layer
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new UILayerScope()) {
+            
+            			// Rendering cells inside will draw into UI layer
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="T:AngeliA.AngeSprite">
+            <summary>
+            Artwork sprite data for rendering the game
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngeSprite.ID">
+            <summary>
+            Global unique ID for this sprite. from RealName.AngeHash();
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngeSprite.RealName">
+            <summary>
+            Uniaue logical name of this sprite.
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngeSprite.GlobalWidth">
+            <summary>
+            Width in global space. Calculate from the pixel rect width multiply Const.ART_SCALE
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngeSprite.GlobalHeight">
+            <summary>
+            Height in global space. Calculate from the pixel rect height multiply Const.ART_SCALE
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngeSprite.PixelRect">
+            <summary>
+            Rect position of the pixel data inside the atlas canvas
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngeSprite.PivotX">
+            <summary>
+            Pivot X (0 means left edge. 1000 means right edge)
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngeSprite.PivotY">
+            <summary>
+            Pivot Y (0 means bottom edge. 1000 means top edge)
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngeSprite.LocalZ">
+            <summary>
+            Z value for sort rendering cells
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngeSprite.GlobalBorder">
+            <summary>
+            Border value in global space.
+            </summary>
+        </member>
+        <member name="F:AngeliA.AngeSprite.AtlasID">
+            <summary>
+            AngeHash of the atlas this sprite belongs to
             </summary>
         </member>
         <member name="M:AngeliA.Util.QuickRandom(System.Int32,System.Int32)">

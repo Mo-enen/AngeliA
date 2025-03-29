@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Procedure animation to animate a pose-style character. ⚠Use global single instance from system pool⚠
+/// </summary>
 public abstract class PoseAnimation {
 
 
@@ -13,11 +16,23 @@ public abstract class PoseAnimation {
 
 	// Const
 	protected const int POSE_Z_HAND = 36;
+	/// <summary>
+	/// Scale values from artwork pixel space to global space
+	/// </summary>
 	protected const int A2G = Const.CEL / Const.ART_CEL;
 
 	// Api
+	/// <summary>
+	/// True if head position need to be recalculate after perform this animation
+	/// </summary>
 	protected virtual bool ValidHeadPosition => true;
+	/// <summary>
+	/// True if this animation should immediately transition to the next
+	/// </summary>
 	protected virtual bool DontBlendToNext => false;
+	/// <summary>
+	/// True if the prev animation should immediately transition to this one
+	/// </summary>
 	protected virtual bool DontBlendToPrev => false;
 
 	// Data
@@ -26,9 +41,21 @@ public abstract class PoseAnimation {
 	private static readonly CharacterPose BlendRecordAni = new();
 
 	// Cache
+	/// <summary>
+	/// Character that currently being animated
+	/// </summary>
 	protected static Character Target = null;
+	/// <summary>
+	/// Rendering behavior of the target character
+	/// </summary>
 	protected static PoseCharacterRenderer Rendering = null;
+	/// <summary>
+	/// Movement behavior of the target character
+	/// </summary>
 	protected static CharacterMovement Movement;
+	/// <summary>
+	/// Attackness behavior of the target character
+	/// </summary>
 	protected static CharacterAttackness Attackness;
 	protected static BodyPart Head = null;
 	protected static BodyPart Body = null;
@@ -47,14 +74,41 @@ public abstract class PoseAnimation {
 	protected static BodyPart LowerLegR = null;
 	protected static BodyPart FootL = null;
 	protected static BodyPart FootR = null;
+	/// <summary>
+	/// True if the target character is facing right
+	/// </summary>
 	protected static bool FacingRight = true;
+	/// <summary>
+	/// True if the target character is facing front
+	/// </summary>
 	protected static bool FacingFront = true;
+	/// <summary>
+	/// True if the target character is currently attacking
+	/// </summary>
 	protected static bool IsChargingAttack = false;
+	/// <summary>
+	/// Return 1 if the target character is facing right
+	/// </summary>
 	protected static int FacingSign = 0;
+	/// <summary>
+	/// Return 1 if the target character is facing front
+	/// </summary>
 	protected static int FrontSign = 0;
+	/// <summary>
+	/// Local animation frame of the target character
+	/// </summary>
 	protected static int CurrentAnimationFrame = 0;
+	/// <summary>
+	/// Which type of animation does the current character require to show
+	/// </summary>
 	protected static CharacterAnimationType AnimationType;
+	/// <summary>
+	/// Liner progress of attack. (0 means start, 1 means end)
+	/// </summary>
 	protected static float AttackLerp;
+	/// <summary>
+	/// Eased progress of attack. (0 means start, 1 means end)
+	/// </summary>
 	protected static float AttackEase;
 
 
@@ -67,7 +121,7 @@ public abstract class PoseAnimation {
 
 
 	[OnGameInitialize(-129)]
-	public static void OnGameInitialize () {
+	internal static void OnGameInitialize () {
 
 		// Code >> Pool
 		Pool.Clear();
@@ -81,6 +135,9 @@ public abstract class PoseAnimation {
 	}
 
 
+	/// <summary>
+	/// Animate the target character from animation inside system pool
+	/// </summary>
 	public static void PerformAnimationFromPool (int id, PoseCharacterRenderer renderer) {
 		if (Pool.TryGetValue(id, out var result)) {
 			PerformAnimation(result, renderer);
@@ -92,6 +149,9 @@ public abstract class PoseAnimation {
 	}
 
 
+	/// <summary>
+	/// Animate target character from given animation
+	/// </summary>
 	public static void PerformAnimation (PoseAnimation animation, PoseCharacterRenderer renderer) {
 		animation.Animate(renderer);
 		if (animation.ValidHeadPosition) {
@@ -101,6 +161,13 @@ public abstract class PoseAnimation {
 	}
 
 
+	/// <summary>
+	/// Animate the target character from two animations inside system pool
+	/// </summary>
+	/// <param name="idA"></param>
+	/// <param name="idB"></param>
+	/// <param name="blend01">0 means only perform animationA, 1 means only perform animationB. 0.5 means perform two animations equally.</param>
+	/// <param name="renderer"></param>
 	public static void PerformAnimationBlendFromPool (int idA, int idB, float blend01, PoseCharacterRenderer renderer) {
 		// Get Animation
 		Pool.TryGetValue(idA, out var resultA);
@@ -122,6 +189,13 @@ public abstract class PoseAnimation {
 	}
 
 
+	/// <summary>
+	/// Animate the target character from two given animations
+	/// </summary>
+	/// <param name="animationA"></param>
+	/// <param name="animationB"></param>
+	/// <param name="blend01">0 means only perform animationA, 1 means only perform animationB. 0.5 means perform two animations equally.</param>
+	/// <param name="renderer"></param>
 	public static void PerformAnimationBlend (PoseAnimation animationA, PoseAnimation animationB, float blend01, PoseCharacterRenderer renderer) {
 
 		SetAsAnimating(renderer);
@@ -155,9 +229,15 @@ public abstract class PoseAnimation {
 	}
 
 
+	/// <summary>
+	/// Get global single instance from system pool
+	/// </summary>
 	public static bool TryGetAnimationFromPool (int id, out PoseAnimation result) => Pool.TryGetValue(id, out result);
 
 
+	/// <summary>
+	/// Perform the animation logic to the given character
+	/// </summary>
 	public virtual void Animate (PoseCharacterRenderer renderer) => SetAsAnimating(renderer);
 
 
@@ -169,48 +249,15 @@ public abstract class PoseAnimation {
 	#region --- API ---
 
 
-	protected static void SetAsAnimating (PoseCharacterRenderer renderer) {
-		Target = renderer.TargetCharacter;
-		Rendering = renderer;
-		Attackness = renderer.TargetCharacter.Attackness;
-		Movement = renderer.TargetCharacter.Movement;
-		CurrentAnimationFrame = renderer.CurrentAnimationFrame;
-		Head = renderer.Head;
-		Body = renderer.Body;
-		Hip = renderer.Hip;
-		ShoulderL = renderer.ShoulderL;
-		ShoulderR = renderer.ShoulderR;
-		UpperArmL = renderer.UpperArmL;
-		UpperArmR = renderer.UpperArmR;
-		LowerArmL = renderer.LowerArmL;
-		LowerArmR = renderer.LowerArmR;
-		HandL = renderer.HandL;
-		HandR = renderer.HandR;
-		UpperLegL = renderer.UpperLegL;
-		UpperLegR = renderer.UpperLegR;
-		LowerLegL = renderer.LowerLegL;
-		LowerLegR = renderer.LowerLegR;
-		FootL = renderer.FootL;
-		FootR = renderer.FootR;
-		FacingRight = Movement.FacingRight;
-		FacingFront = Movement.FacingFront;
-		AnimationType = renderer.TargetCharacter.AnimationType;
-		FacingSign = FacingRight ? 1 : -1;
-		FrontSign = FacingFront ? 1 : -1;
-		IsChargingAttack = !Attackness.IsAttacking && Attackness.IsChargingAttack && Attackness.AttackChargeStartFrame.HasValue;
-		AttackLerp = IsChargingAttack ?
-			((float)(Game.GlobalFrame - Attackness.AttackChargeStartFrame.Value) / Util.Max(Attackness.MinimalChargeAttackDuration, 1)).Clamp01() :
-			(float)(Game.GlobalFrame - Attackness.LastAttackFrame) / Attackness.AttackDuration;
-		AttackEase = IsChargingAttack ? 1f - Ease.OutBack(AttackLerp) : Ease.OutBack(AttackLerp);
-		if (IsChargingAttack) {
-			AttackLerp = 1f - AttackLerp;
-		}
-	}
-
-
+	/// <summary>
+	/// Reset position of soulder and upper arm for cached character
+	/// </summary>
 	protected static void ResetShoulderAndUpperArmPos (bool resetLeft = true, bool resetRight = true) => FrameworkUtil.ResetShoulderAndUpperArmPos(Rendering, resetLeft, resetRight);
 
 
+	/// <summary>
+	/// Make head moves down for attack animation for cached character
+	/// </summary>
 	protected static void AttackHeadDown (float ease01, int headOffsetXAmount = 1000, int headOffsetYAmount = 1000, int headRotateAmount = 1000) {
 
 		// Head Rotate
@@ -246,6 +293,9 @@ public abstract class PoseAnimation {
 	}
 
 
+	/// <summary>
+	/// Make legs shake for attack animation for cached character
+	/// </summary>
 	protected static void AttackLegShake (float ease01) {
 		if (AnimationType != CharacterAnimationType.Idle) return;
 		int deltaX = (int)(1f * ease01 * A2G);
@@ -264,6 +314,53 @@ public abstract class PoseAnimation {
 			UpperLegR.X += deltaX / 2;
 			LowerLegR.X += deltaX;
 			FootR.X += deltaX;
+		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private static void SetAsAnimating (PoseCharacterRenderer renderer) {
+		Target = renderer.TargetCharacter;
+		Rendering = renderer;
+		Attackness = renderer.TargetCharacter.Attackness;
+		Movement = renderer.TargetCharacter.Movement;
+		CurrentAnimationFrame = renderer.CurrentAnimationFrame;
+		Head = renderer.Head;
+		Body = renderer.Body;
+		Hip = renderer.Hip;
+		ShoulderL = renderer.ShoulderL;
+		ShoulderR = renderer.ShoulderR;
+		UpperArmL = renderer.UpperArmL;
+		UpperArmR = renderer.UpperArmR;
+		LowerArmL = renderer.LowerArmL;
+		LowerArmR = renderer.LowerArmR;
+		HandL = renderer.HandL;
+		HandR = renderer.HandR;
+		UpperLegL = renderer.UpperLegL;
+		UpperLegR = renderer.UpperLegR;
+		LowerLegL = renderer.LowerLegL;
+		LowerLegR = renderer.LowerLegR;
+		FootL = renderer.FootL;
+		FootR = renderer.FootR;
+		FacingRight = Movement.FacingRight;
+		FacingFront = Movement.FacingFront;
+		AnimationType = renderer.TargetCharacter.AnimationType;
+		FacingSign = FacingRight ? 1 : -1;
+		FrontSign = FacingFront ? 1 : -1;
+		IsChargingAttack = !Attackness.IsAttacking && Attackness.IsChargingAttack && Attackness.AttackChargeStartFrame.HasValue;
+		AttackLerp = IsChargingAttack ?
+			((float)(Game.GlobalFrame - Attackness.AttackChargeStartFrame.Value) / Util.Max(Attackness.MinimalChargeAttackDuration, 1)).Clamp01() :
+			(float)(Game.GlobalFrame - Attackness.LastAttackFrame) / Attackness.AttackDuration;
+		AttackEase = IsChargingAttack ? 1f - Ease.OutBack(AttackLerp) : Ease.OutBack(AttackLerp);
+		if (IsChargingAttack) {
+			AttackLerp = 1f - AttackLerp;
 		}
 	}
 

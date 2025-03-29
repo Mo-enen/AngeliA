@@ -5,36 +5,93 @@ using System.Text;
 
 namespace AngeliA;
 
+/// <summary>
+/// Artwork sprite data for rendering the game
+/// </summary>
 public class AngeSprite {
 
 	// VAR
 	public static readonly AngeSprite EMPTY = new();
 	private static readonly StringBuilder CacheBuilder = new(256);
 
+	/// <summary>
+	/// Global unique ID for this sprite. from RealName.AngeHash();
+	/// </summary>
 	public int ID;
+	/// <summary>
+	/// Uniaue logical name of this sprite.
+	/// </summary>
 	public string RealName;
+	/// <summary>
+	/// Width in global space. Calculate from the pixel rect width multiply Const.ART_SCALE
+	/// </summary>
 	public int GlobalWidth;
+	/// <summary>
+	/// Height in global space. Calculate from the pixel rect height multiply Const.ART_SCALE
+	/// </summary>
 	public int GlobalHeight;
+	/// <summary>
+	/// Rect position of the pixel data inside the atlas canvas
+	/// </summary>
 	public IRect PixelRect;
+	/// <summary>
+	/// Pivot X (0 means left edge. 1000 means right edge)
+	/// </summary>
 	public int PivotX;
+	/// <summary>
+	/// Pivot Y (0 means bottom edge. 1000 means top edge)
+	/// </summary>
 	public int PivotY;
+	/// <summary>
+	/// Z value for sort rendering cells
+	/// </summary>
 	public int LocalZ;
+	/// <summary>
+	/// Border value in global space.
+	/// </summary>
 	public Int4 GlobalBorder;
+	/// <summary>
+	/// AngeHash of the atlas this sprite belongs to
+	/// </summary>
 	public int AtlasID;
-	public AngeSprite AttachedSprite;
+	/// <summary>
+	/// Instance of the atlas this sprite belongs to
+	/// </summary>
 	public Atlas Atlas;
+	/// <summary>
+	/// Instance of the sprite group this sprite belongs to. Null if this sprite is individual.
+	/// </summary>
 	public SpriteGroup Group;
+	/// <summary>
+	/// True if this sprite is tagged as trigger.
+	/// </summary>
 	public bool IsTrigger;
+	/// <summary>
+	/// Rule for auto tiling map blocks
+	/// </summary>
 	public BlockRule Rule;
+	/// <summary>
+	/// Meta tag of this sprite. Multiple tags can be contains at same time.
+	/// </summary>
 	public Tag Tag;
+	/// <summary>
+	/// Animation duration of this sprite
+	/// </summary>
 	public int Duration;
+	/// <summary>
+	/// Average color of the pixels
+	/// </summary>
 	public Color32 SummaryTint;
+	/// <summary>
+	/// The pixels content data
+	/// </summary>
 	public Color32[] Pixels;
+	internal AngeSprite AttachedSprite;
 
 	private bool PixelDirty = false;
 
 	// API
-	public void LoadFromBinary_v0 (BinaryReader reader, bool ignorePixels) {
+	internal void LoadFromBinary_v0 (BinaryReader reader, bool ignorePixels) {
 		uint byteLen = reader.ReadUInt32();
 		long endPos = reader.BaseStream.Position + byteLen;
 		PixelDirty = false;
@@ -107,7 +164,7 @@ public class AngeSprite {
 		reader.BaseStream.Position = endPos;
 	}
 
-	public void SaveToBinary_v0 (BinaryWriter writer) {
+	internal void SaveToBinary_v0 (BinaryWriter writer) {
 		long markPos = writer.BaseStream.Position;
 		writer.Write((uint)0);
 		long startPos = writer.BaseStream.Position;
@@ -173,6 +230,12 @@ public class AngeSprite {
 		writer.BaseStream.Position = endPos;
 	}
 
+	/// <summary>
+	/// Set pixel content data to new size without delete the data inside
+	/// </summary>
+	/// <param name="newRect">New pixel rect position</param>
+	/// <param name="resizeBorder">True if auto resize the border</param>
+	/// <param name="contentChanged">True if any pixel data changed</param>
 	public void ResizePixelRect (IRect newRect, bool resizeBorder, out bool contentChanged) {
 		newRect.width = newRect.width.GreaterOrEquel(1);
 		newRect.height = newRect.height.GreaterOrEquel(1);
@@ -234,8 +297,15 @@ public class AngeSprite {
 		GlobalHeight = PixelRect.height * Const.ART_SCALE;
 	}
 
+	/// <summary>
+	/// Create a new sprite instance with same data with this one
+	/// </summary>
 	public AngeSprite CreateCopy () => CopyTo(new AngeSprite());
 
+	/// <summary>
+	/// Copy the data to the given sprite
+	/// </summary>
+	/// <returns>The target sprite</returns>
 	public AngeSprite CopyTo (AngeSprite target) {
 		var pixels = new Color32[Pixels.Length];
 		Pixels.CopyTo(pixels, 0);
@@ -261,6 +331,9 @@ public class AngeSprite {
 		return target;
 	}
 
+	/// <summary>
+	/// Make sure the borders don't overlaps each others
+	/// </summary>
 	public void ValidBorders (Direction8? priority = null) {
 		priority ??= Direction8.BottomLeft;
 		if (GlobalBorder.horizontal >= GlobalWidth) {
@@ -283,15 +356,16 @@ public class AngeSprite {
 		}
 	}
 
+	/// <summary>
+	/// Mark this sprite as changed without save
+	/// </summary>
 	public void SetPixelDirty () => PixelDirty = true;
 
-	public Alignment GetAlignmentFromPivot () =>
-		PivotX < 333 ?
-			(PivotY < 333 ? Alignment.BottomLeft : PivotY < 666 ? Alignment.MidLeft : Alignment.TopLeft) :
-		PivotX < 666 ?
-			(PivotY < 333 ? Alignment.BottomMid : PivotY < 666 ? Alignment.MidMid : Alignment.TopMid) :
-			(PivotY < 333 ? Alignment.BottomRight : PivotY < 666 ? Alignment.MidRight : Alignment.TopRight);
-
+	/// <summary>
+	/// Link the given sprite to the texture
+	/// </summary>
+	/// <param name="texture"></param>
+	/// <param name="sheet"></param>
 	public void MakeDedicatedForTexture (object texture, Sheet sheet) {
 		RemoveFromDedicatedTexture(sheet);
 		sheet.TexturePool[ID] = texture;
@@ -302,6 +376,10 @@ public class AngeSprite {
 		GlobalHeight = tSize.y * Const.ART_SCALE;
 	}
 
+	/// <summary>
+	/// Remove the texture dedicated sprite 
+	/// </summary>
+	/// <param name="sheet"></param>
 	public void RemoveFromDedicatedTexture (Sheet sheet) {
 		if (sheet.TexturePool.ContainsKey(ID)) {
 			Game.UnloadTexture(sheet.TexturePool[ID]);

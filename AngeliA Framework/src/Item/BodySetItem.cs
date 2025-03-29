@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Represent an item that holds a whole set of bodypart for pose-style characters to apply
+/// </summary>
 [EntityAttribute.ExcludeInMapEditor]
 [NoItemCombination]
 public sealed class BodySetItem : NonStackableItem {
@@ -14,8 +17,17 @@ public sealed class BodySetItem : NonStackableItem {
 
 
 	// Api
+	/// <summary>
+	/// ID of the target character for the bodypart it holds
+	/// </summary>
 	public int TargetCharacterID { get; init; }
+	/// <summary>
+	/// Name of the target character for the bodypart it holds
+	/// </summary>
 	public string TargetCharacterName { get; init; }
+	/// <summary>
+	/// Rendering config data for the bodypart it holds
+	/// </summary>
 	public CharacterRenderingConfig Data { get; init; }
 
 	// Data
@@ -146,11 +158,35 @@ public sealed class BodySetItem : NonStackableItem {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Iterate through all body-set the current project have
+	/// </summary>
+	/// <example><code>
+	/// using AngeliA;
+	/// 
+	/// namespace AngeliaGame;
+	/// 
+	/// public class Example {
+	/// 
+	/// 	[OnGameInitializeLater(4096)]
+	/// 	internal static void OnGameUpdate () {
+	/// 		Debug.Log("All body-set inside this game:");
+	/// 		foreach (var (id, (type, typeName)) in BodySetItem.ForAllBodySetCharacterType()) {
+	/// 			string setName = ItemSystem.GetItemDisplayName(id);
+	/// 			Debug.Log($"{setName} - {typeName}");
+	/// 		}
+	/// 	}
+	/// 
+	/// }
+	/// </code></example>
 	public static IEnumerable<KeyValuePair<int, (System.Type, string)>> ForAllBodySetCharacterType () {
 		foreach (var pair in Pool) yield return pair;
 	}
 
 
+	/// <summary>
+	/// Get display name for bodyset from language system
+	/// </summary>
 	public string GetDisplayName (string typeName, out int languageID) {
 		string basicName = $"{typeName}.BodySet";
 		languageID = basicName.AngeHash();

@@ -3,6 +3,9 @@ using System.Text;
 
 namespace AngeliA;
 
+/// <summary>
+/// Core system for handle data that auto keeps inside disk.
+/// </summary>
 public static class SavingSystem {
 
 
@@ -15,9 +18,21 @@ public static class SavingSystem {
 
 	// Api
 	internal static readonly Dictionary<int, SavingLine> Pool = [];
+	/// <summary>
+	/// True if the internal pool is loaded from file
+	/// </summary>
 	public static bool FileLoaded { get; private set; } = false;
+	/// <summary>
+	/// True if there's any unsaved change
+	/// </summary>
 	public static bool IsDirty { get; set; } = true;
+	/// <summary>
+	/// Data version of the internal pool
+	/// </summary>
 	public static int PoolVersion { get; private set; } = 0;
+	/// <summary>
+	/// True if the internal pool is ready to use
+	/// </summary>
 	public static bool PoolReady { get; private set; } = false;
 
 	// Data
@@ -65,11 +80,19 @@ public static class SavingSystem {
 
 
 	// API
+	/// <summary>
+	/// True if the given key exists in the internal pool
+	/// </summary>
 	public static bool HasKey (Saving saving) => Pool.ContainsKey(saving.ID);
+
+
+	/// <summary>
+	/// True if the given key exists in the internal pool
+	/// </summary>
 	public static bool HasKey (int id) => Pool.ContainsKey(id);
 
 
-	public static void LoadFromFile () {
+	internal static void LoadFromFile () {
 		FileLoaded = true;
 		Pool.Clear();
 		PoolVersion++;
@@ -94,7 +117,7 @@ public static class SavingSystem {
 	}
 
 
-	public static void SaveToFile () {
+	internal static void SaveToFile () {
 		IsDirty = false;
 		SlotCacheBuilder.Clear();
 		GlobalCacheBuilder.Clear();

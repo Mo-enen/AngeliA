@@ -2,7 +2,30 @@
 
 namespace AngeliA;
 
-public readonly struct ReverseCellsScope : System.IDisposable {
+/// <summary>
+/// Scope that make rendering cells reverse in sorting order
+/// </summary>
+/// <example><code>
+/// using AngeliA;
+/// 
+/// namespace AngeliaGame;
+/// 
+/// public class Example {
+/// 
+/// 	[OnGameUpdate]
+/// 	internal static void OnGameUpdate () {
+/// 
+/// 		using (new ReverseCellsScope()) {
+/// 
+/// 			// Rendering cells inside will be reversed in sorting order
+/// 
+/// 		}
+/// 
+/// 	}
+/// 
+/// }
+/// </code></example>	
+public readonly struct ReverseCellsScope : IDisposable {
 	private readonly int LayerIndex;
 	private readonly int UsedCount;
 	public ReverseCellsScope () {

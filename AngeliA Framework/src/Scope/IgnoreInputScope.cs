@@ -1,5 +1,28 @@
 ﻿namespace AngeliA;
 
+/// <summary>
+/// Scope that make GUI elements ignore keyboard or mouse input from user
+/// </summary>
+/// <example><code>
+/// using AngeliA;
+/// 
+/// namespace AngeliaGame;
+/// 
+/// public class Example {
+/// 
+/// 	[OnGameUpdate]
+/// 	internal static void OnGameUpdate () {
+/// 
+/// 		using (new IgnoreInputScope()) {
+/// 
+/// 			// GUI elements inside will ignore keyboard or mouse input from user
+/// 
+/// 		}
+/// 
+/// 	}
+/// 
+/// }
+/// </code></example>	
 public readonly struct IgnoreInputScope : System.IDisposable {
 	private readonly bool OldIgnoreKey;
 	private readonly bool OldIgnoreMouse;

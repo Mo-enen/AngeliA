@@ -3,26 +3,65 @@ using System.Collections;
 namespace AngeliA;
 
 
-public enum SavingLocation { Global, Slot, }
+/// <summary>
+/// Where should the saving data local inside the disk
+/// </summary>
+public enum SavingLocation {
+	/// <summary>
+	/// Shared between all saving slot
+	/// </summary>
+	Global,
+	/// <summary>
+	/// Only for it's own saving slot
+	/// </summary>
+	Slot,
+}
 
 
+/// <summary>
+/// Data that auto save into player saving data
+/// </summary>
 public abstract class Saving {
+	/// <summary>
+	/// Unique key to identify this data
+	/// </summary>
 	public string Key { get; init; }
+	/// <summary>
+	/// AngeHash of the "Key"
+	/// </summary>
 	public int ID { get; init; }
 }
 
 
+/// <summary>
+/// Data that auto save into player saving data
+/// </summary>
+/// <typeparam name="T">Type of the data</typeparam>
 public abstract class Saving<T> : Saving {
 
+
+	/// <summary>
+	/// Current value it holds
+	/// </summary>
 	public T Value {
 		get => GetValue();
 		set => SetValue(value);
 	}
+	/// <summary>
+	/// Default value
+	/// </summary>
 	public T DefaultValue { get; init; }
 	private SavingLocation Location { get; init; }
 	private T _Value;
 	private int PoolVersion;
 
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="key">Unique key to identify this data</param>
+	/// <param name="defaultValue"></param>
+	/// <param name="location">Set to "global" if this data shares between all saving slots</param>
 	public Saving (string key, T defaultValue, SavingLocation location) {
 		Key = key;
 		ID = key.AngeHash();
@@ -32,6 +71,10 @@ public abstract class Saving<T> : Saving {
 		Location = location;
 	}
 
+
+	/// <summary>
+	/// Get the value it currently holds
+	/// </summary>
 	public T GetValue (bool forceLoad = false) {
 		if (!SavingSystem.FileLoaded) {
 			SavingSystem.LoadFromFile();
@@ -46,6 +89,11 @@ public abstract class Saving<T> : Saving {
 		}
 		return _Value;
 	}
+
+
+	/// <summary>
+	/// Set the value it currently holds
+	/// </summary>
 	public void SetValue (T value, bool forceSave = false) {
 		if (
 			PoolVersion != SavingSystem.PoolVersion ||
@@ -61,7 +109,17 @@ public abstract class Saving<T> : Saving {
 		}
 	}
 
+
+	/// <summary>
+	/// Convert given string into the value
+	/// </summary>
 	protected abstract T StringToValue (string str);
+
+
+	/// <summary>
+	/// Convert given value into string data
+	/// </summary>
 	protected abstract string ValueToString (T value);
+
 
 }

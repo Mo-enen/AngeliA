@@ -1,6 +1,12 @@
 ﻿
 namespace AngeliA;
 
+/// <summary>
+/// Quick setup for an language system key
+/// </summary>
+/// <example><code>
+/// private static readonly LanguageCode LanguageCodeName = ("Key for language system", "Default content in English");
+/// </code></example>
 public class LanguageCode (string name, string defaultValue) {
 	public string Name { get; } = name;
 	public string DefaultValue { get; } = defaultValue;

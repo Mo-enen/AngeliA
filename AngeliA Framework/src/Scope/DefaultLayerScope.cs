@@ -1,5 +1,28 @@
 ﻿namespace AngeliA;
 
+/// <summary>
+/// Scope that makes renderer draw into default layer
+/// </summary>
+/// <example><code>
+/// using AngeliA;
+/// 
+/// namespace AngeliaGame;
+/// 
+/// public class Example {
+/// 
+/// 	[OnGameUpdate]
+/// 	internal static void OnGameUpdate () {
+/// 
+/// 		using (new DefaultLayerScope()) {
+/// 
+/// 			// Rendering cell created inside will draw into default layer
+/// 
+/// 		}
+/// 
+/// 	}
+/// 
+/// }
+/// </code></example>
 public readonly struct DefaultLayerScope : System.IDisposable {
 	private readonly int OldLayer;
 	public DefaultLayerScope () {

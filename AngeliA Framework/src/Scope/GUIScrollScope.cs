@@ -1,7 +1,7 @@
 ﻿namespace AngeliA;
 
 
-
+/// <inheritdoc cref="GUIScrollScope"/>
 public readonly struct GUIVerticalScrollScope (IRect panelRect, int positionY, int min = int.MinValue, int max = int.MaxValue, int layer = RenderLayer.UI) : System.IDisposable {
 	public readonly int PositionY => Scope.Position.y;
 	public readonly GUIScrollScope Scope = new(panelRect, new Int2(0, positionY), new Int2(0, min), new Int2(0, max), true, false, layer);
@@ -9,7 +9,7 @@ public readonly struct GUIVerticalScrollScope (IRect panelRect, int positionY, i
 }
 
 
-
+/// <inheritdoc cref="GUIScrollScope"/>
 public readonly struct GUIHorizontalScrollScope (IRect rect, int positionX, int min = int.MinValue, int max = int.MaxValue, int layer = RenderLayer.UI) : System.IDisposable {
 	public readonly int PositionX => Scope.Position.x;
 	public readonly GUIScrollScope Scope = new(rect, new Int2(positionX, 0), new Int2(min, 0), new Int2(max, 0), false, false, layer);
@@ -17,6 +17,36 @@ public readonly struct GUIHorizontalScrollScope (IRect rect, int positionX, int 
 }
 
 
+/// <summary>
+/// Scope that make GUI elements inside scrolls
+/// </summary>
+/// <example><code>
+/// using AngeliA;
+/// 
+/// namespace AngeliaGame;
+/// 
+/// public class Example {
+/// 
+/// 	static Int2 ScrollPos;
+/// 
+/// 	[OnGameUpdate]
+/// 	internal static void OnGameUpdate () {
+/// 
+/// 		var cameraRect = Renderer.CameraRect;
+/// 
+/// 		using (var scroll = new GUIScrollScope(cameraRect, ScrollPos, new Int2(0, -4096), new Int2(0, 4096))) {
+/// 			ScrollPos = scroll.Position;
+/// 
+/// 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y, 0, 0, 0, 512, 512);
+/// 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y + 1024, 0, 0, 0, 512, 512);
+/// 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y + 2048, 0, 0, 0, 512, 512);
+/// 
+/// 		}
+/// 
+/// 	}
+/// 
+/// }
+/// </code></example>	
 public readonly struct GUIScrollScope : System.IDisposable {
 	public readonly Int2 Position;
 	public readonly IRect Rect;
@@ -24,9 +54,19 @@ public readonly struct GUIScrollScope : System.IDisposable {
 	public readonly int Layer;
 	public readonly Int2 MousePosShift;
 	public readonly bool PrevMouseInputIgnoring;
-	public GUIScrollScope (IRect rect, Int2 position, Int2 min, Int2 max, bool mouseWheelForVertical = true, bool reverseMouseWheel = false, int layer = RenderLayer.UI) {
+	/// <summary>
+	/// Scope that make GUI elements inside scrolls
+	/// </summary>
+	/// <param name="rect">Content rect position in global space</param>
+	/// <param name="position">Scroll position in global space</param>
+	/// <param name="min">Minimal limitation for the scrolling</param>
+	/// <param name="max">Maximal limitation for the scrolling</param>
+	/// <param name="mouseWheelForVertical">True if the mouse wheel control vertical scroll instead of horizontal</param>
+	/// <param name="reverseMouseWheel">True if the mouse wheel scroll should reverse in direction</param>
+	/// <param name="layer">Which render layer does it scrolls</param>
+	public GUIScrollScope (IRect rect, Int2 position, Int2 min, Int2 max, bool mouseWheelForVertical = true, bool reverseMouseWheel = false, int layer = int.MinValue) {
 
-		Layer = layer;
+		Layer = layer == int.MinValue ? Renderer.CurrentLayerIndex : layer;
 		bool mouseInside = rect.MouseInside();
 		Rect = rect;
 		PrevMouseInputIgnoring = Input.IgnoringMouseInput;

@@ -1,5 +1,30 @@
 namespace AngeliA;
 
+/// <summary>
+/// Scope to change rendering cell z value
+/// </summary>
+/// <example><code>
+/// using AngeliA;
+/// 
+/// namespace AngeliaGame;
+/// 
+/// public class Example {
+/// 
+/// 	[OnGameUpdate]
+/// 	internal static void OnGameUpdate () {
+/// 
+/// 		int newZ = 0;
+/// 
+/// 		using (new CellZScope(newZ)) {
+/// 
+/// 			// Rendering cell created inside will have their z value override
+/// 			
+/// 		}
+/// 
+/// 	}
+/// 
+/// }
+/// </code></example>
 public readonly struct CellZScope (int z) : System.IDisposable {
 	private readonly int LayerIndex = Renderer.CurrentLayerIndex;
 	private readonly int UsedCount = Renderer.GetUsedCellCount();

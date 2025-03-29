@@ -1,4 +1,28 @@
 ﻿namespace AngeliA;
+
+/// <summary>
+/// Scope that shift position of the rendering cells inside
+/// </summary>
+/// <example><code>
+/// using AngeliA;
+/// 
+/// namespace AngeliaGame;
+/// 
+/// public class Example {
+/// 
+/// 	[OnGameUpdate]
+/// 	internal static void OnGameUpdate () {
+/// 
+/// 		using (new ShiftCellsScope(/*Your Offset Position Here*/)) {
+/// 
+/// 			// Rendering cells inside will offset their position
+/// 
+/// 		}
+/// 
+/// 	}
+/// 
+/// }
+/// </code></example>	
 public readonly struct ShiftCellsScope (Int2 shift) : System.IDisposable {
 	private readonly int LayerIndex = Renderer.CurrentLayerIndex;
 	private readonly int UsedCount = Renderer.GetUsedCellCount();

@@ -1,11 +1,49 @@
 namespace AngeliA;
 
-public readonly struct RotateCellScope (int rotation, int pointX = int.MinValue, int piontY = int.MinValue, bool keepOriginalRotation = false) : System.IDisposable {
+/// <summary>
+/// Scope that make rendering cells rotate
+/// </summary>
+/// <param name="rotation"></param>
+/// <param name="pointX">Orientation point X in global space</param>
+/// <param name="pointY">Orientation point Y in global space</param>
+/// <param name="keepOriginalRotation">True if only change the position of cells (not rotation)</param>
+/// <example><code>
+/// using AngeliA;
+/// 
+/// namespace AngeliaGame;
+/// 
+/// public class Example {
+/// 
+/// 	[OnGameUpdate]
+/// 	internal static void OnGameUpdate () {
+/// 
+/// 		var cameraRect = Renderer.CameraRect;
+/// 
+/// 		int rot = QTest.Int("Rot", 0, 0, 360);
+/// 		int pointX = QTest.Int("Pivot X", 4096, 0, 4096 * 2);
+/// 		int pointY = QTest.Int("Pivot Y", 2048, 0, 4096);
+/// 		QTest.Mark(new Int2(cameraRect.x + pointX, cameraRect.y + pointY));
+/// 
+/// 		using (var scroll = new RotateCellScope(rot, cameraRect.x + pointX, cameraRect.y + pointY)) {
+/// 
+/// 			Renderer.Draw(
+/// 				BuiltInSprite.ICON_ENTITY, 
+/// 				cameraRect.CenterX(), cameraRect.CenterY(), 
+/// 				500, 500, 0, 512, 512
+/// 			);
+/// 
+/// 		}
+/// 
+/// 	}
+/// 
+/// }
+/// </code></example>	
+public readonly struct RotateCellScope (int rotation, int pointX = int.MinValue, int pointY = int.MinValue, bool keepOriginalRotation = false) : System.IDisposable {
 	private readonly int LayerIndex = Renderer.CurrentLayerIndex;
 	private readonly int UsedCount = Renderer.GetUsedCellCount();
 	private readonly int Rotation = rotation;
 	private readonly int PointX = pointX;
-	private readonly int PointY = piontY;
+	private readonly int PointY = pointY;
 	private readonly bool KeepRotation = keepOriginalRotation;
 	public RotateCellScope () : this(0, int.MinValue, int.MinValue, false) { }
 	public readonly void Dispose () {

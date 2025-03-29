@@ -7,6 +7,9 @@ using System;
 
 namespace AngeliA;
 
+/// <summary>
+/// Core system that handles item related logic
+/// </summary>
 public static class ItemSystem {
 
 
@@ -15,7 +18,7 @@ public static class ItemSystem {
 	#region --- SUB ---
 
 
-	public class ItemData (Item item, int nameID, int descriptionID, string typeName, int maxStackCount) {
+	private class ItemData (Item item, int nameID, int descriptionID, string typeName, int maxStackCount) {
 		public Item Item = item;
 		public int NameID = nameID;
 		public int DescriptionID = descriptionID;
@@ -56,7 +59,13 @@ public static class ItemSystem {
 	private const string UNLOCK_NAME = "UnlockedItem";
 
 	// Api
+	/// <summary>
+	/// True if the system is ready to use
+	/// </summary>
 	public static bool ItemPoolReady { get; private set; } = false;
+	/// <summary>
+	/// True if the item unlock data is loaded
+	/// </summary>
 	public static bool ItemUnlockReady { get; private set; } = false;
 
 	// Data
@@ -266,15 +275,39 @@ public static class ItemSystem {
 
 
 	// Item
+	/// <summary>
+	/// Get global single instance of the item from given ID
+	/// </summary>
 	public static Item GetItem (int id) => ItemPool.TryGetValue(id, out var item) ? item.Item : null;
+
+
+	/// <summary>
+	/// Get display name from the language system from the given item ID
+	/// </summary>
 	public static string GetItemDisplayName (int id) => ItemPool.TryGetValue(id, out var item) ? Language.Get(item.NameID, item.TypeName) : "";
+
+
+	/// <summary>
+	/// Get description from the language system from the given item ID
+	/// </summary>
 	public static string GetItemDescription (int id) => ItemPool.TryGetValue(id, out var item) ? Language.Get(item.DescriptionID) : "";
+
+
+	/// <summary>
+	/// Get stack count limit of the given item in inventory panel
+	/// </summary>
 	public static int GetItemMaxStackCount (int id) => ItemPool.TryGetValue(id, out var item) ? item.MaxStackCount : 0;
 
 
+	/// <summary>
+	/// True if there is an item inside the system pool for the given ID
+	/// </summary>
 	public static bool HasItem (int id) => ItemPool.ContainsKey(id);
 
 
+	/// <summary>
+	/// True if the item can be use by the given character
+	/// </summary>
 	public static bool CanUseItem (int id, Character target) {
 		var item = GetItem(id);
 		return item != null && item.ItemConditionCheck(target) && item.CanUse(target);
@@ -282,6 +315,20 @@ public static class ItemSystem {
 
 
 	// Combination
+	/// <summary>
+	/// Get item crafting combination data of the given item ID pair
+	/// </summary>
+	/// <param name="item0">Source item ID</param>
+	/// <param name="item1">Source item ID</param>
+	/// <param name="item2">Source item ID</param>
+	/// <param name="item3">Source item ID</param>
+	/// <param name="result">Result item ID that the given pair will craft into</param>
+	/// <param name="resultCount">How many result item does a single craft will get</param>
+	/// <param name="keep0">Source item ID which do not get consume after craft</param>
+	/// <param name="keep1">Source item ID which do not get consume after craft</param>
+	/// <param name="keep2">Source item ID which do not get consume after craft</param>
+	/// <param name="keep3">Source item ID which do not get consume after craft</param>
+	/// <returns>True if it is a valid craft combination</returns>
 	public static bool TryGetCombination (
 		int item0, int item1, int item2, int item3,
 		out int result, out int resultCount,
@@ -304,9 +351,18 @@ public static class ItemSystem {
 	}
 
 
+	/// <summary>
+	/// Reset the system craft combination pool
+	/// </summary>
 	public static void ClearCombination () => CombinationPool.Clear();
 
 
+	/// <summary>
+	/// Get all craft combination that include the given combination. This is for making a helper list for the user to know what items can they craft.
+	/// </summary>
+	/// <param name="combination">Current combination the user putted into the crafting fields</param>
+	/// <param name="output">The helper list data</param>
+	/// <param name="materialCountLimit">Combinations which have more source items than this number will be ignored</param>
 	public static void GetRelatedCombinations (Int4 combination, List<Int4> output, int materialCountLimit) {
 		if (combination.IsZero) return;
 		bool includeResult = combination.Count(0) == 3;
@@ -345,6 +401,14 @@ public static class ItemSystem {
 	}
 
 
+	/// <summary>
+	/// Sort the given combination to make it always unique no matter what order the source items are
+	/// </summary>
+	/// <param name="a">Crafting source item ID</param>
+	/// <param name="b">Crafting source item ID</param>
+	/// <param name="c">Crafting source item ID</param>
+	/// <param name="d">Crafting source item ID</param>
+	/// <returns>Sorted combination ID</returns>
 	public static Int4 GetSortedCombination (int a, int b, int c, int d) {
 
 		// Sort for Zero
@@ -367,6 +431,31 @@ public static class ItemSystem {
 	}
 
 
+	/// <summary>
+	/// Iterate through all crafting combination inside the pool
+	/// </summary>
+	/// <example><code>
+	/// using AngeliA;
+	/// 
+	/// namespace AngeliaGame;
+	/// 
+	/// public class Example {
+	/// 
+	/// 	[OnGameInitializeLater(4096)]
+	/// 	internal static void OnGameUpdate () {
+	/// 		Debug.Log("All item combinations inside this game:");
+	/// 		foreach (var com in ItemSystem.ForAllCombinations()) {
+	/// 			string name0 = ItemSystem.GetItemDisplayName(com.Key.x);
+	/// 			string name1 = ItemSystem.GetItemDisplayName(com.Key.y);
+	/// 			string name2 = ItemSystem.GetItemDisplayName(com.Key.z);
+	/// 			string name3 = ItemSystem.GetItemDisplayName(com.Key.w);
+	/// 			string nameResult = ItemSystem.GetItemDisplayName(com.Value);
+	/// 			Debug.Log($"{name0} + {name1} + {name2} + {name3} = {nameResult}");
+	/// 		}
+	/// 	}
+	/// 
+	/// }
+	/// </code></example>
 	public static IEnumerable<KeyValuePair<Int4, int>> ForAllCombinations () {
 		foreach (var (key, data) in CombinationPool) {
 			yield return new(key, data.Result);
@@ -375,7 +464,11 @@ public static class ItemSystem {
 
 
 	// Equipment
+	/// <inheritdoc cref="IsEquipment(int, out EquipmentType)"/>
 	public static bool IsEquipment (int itemID) => ItemPool.TryGetValue(itemID, out var data) && data.Item is Equipment;
+	/// <summary>
+	/// True if the given item is equipment type
+	/// </summary>
 	public static bool IsEquipment (int itemID, out EquipmentType type) {
 		if (ItemPool.TryGetValue(itemID, out var data) && data.Item is Equipment equip) {
 			type = equip.EquipmentType;
@@ -387,9 +480,15 @@ public static class ItemSystem {
 
 
 	// Unlock
+	/// <summary>
+	/// True if the given item is unlocked. Locked items will display as "?" in crafting UI helper menu
+	/// </summary>
 	public static bool IsItemUnlocked (int itemID) => ItemPool.TryGetValue(itemID, out var data) && data.Unlocked;
 
 
+	/// <summary>
+	/// Set given item into locked or unlocked. Locked items will display as "?" in crafting UI helper menu
+	/// </summary>
 	public static void SetItemUnlocked (int itemID, bool unlocked) {
 		if (!ItemPool.TryGetValue(itemID, out var data) || data.Unlocked == unlocked) return;
 		data.Unlocked = unlocked;
@@ -401,6 +500,15 @@ public static class ItemSystem {
 
 
 	// Spawn 
+	/// <summary>
+	/// Spawn an item holder entity that holds the given item.
+	/// </summary>
+	/// <param name="itemID">Target item id</param>
+	/// <param name="x">Position X of the item holder in global space</param>
+	/// <param name="y">Position Y of the item holder in global space</param>
+	/// <param name="count">Count of the target item inside the item holder. This function always spawn only one item holder entity.</param>
+	/// <param name="jump">True if the item holder entity jump up when it spawns</param>
+	/// <returns>Instance of the item holder entity</returns>
 	public static ItemHolder SpawnItem (int itemID, int x, int y, int count = 1, bool jump = true) {
 		if (!HasItem(itemID)) return null;
 		if (Stage.SpawnEntity(ItemHolder.TYPE_ID, x, y) is not ItemHolder holder) return null;
@@ -414,7 +522,18 @@ public static class ItemSystem {
 
 
 	// Drop
+	/// <summary>
+	/// Perform an item drop the target entity when the entity is destroyed
+	/// </summary>
+	/// <returns>True if the item drop successfuly performs</returns>
 	public static bool DropItemFor (Entity entity) => DropItemFor(entity.TypeID, entity.X, entity.Y);
+	/// <summary>
+	/// Perform an item drop the target entity when the entity is destroyed
+	/// </summary>
+	/// <param name="sourceID">ID of the target entity</param>
+	/// <param name="x">Position X of the item holder appears in global space</param>
+	/// <param name="y">Position Y of the item holder appears in global space</param>
+	/// <returns>True if the item drop successfuly performs</returns>
 	public static bool DropItemFor (int sourceID, int x, int y) {
 		if (!ItemDropPool.TryGetValue(sourceID, out var data)) return false;
 		if (data.Chance < 1000 && Util.QuickRandom(0, 1000) >= data.Chance) return false;
@@ -576,11 +695,6 @@ public static class ItemSystem {
 			}
 		}
 		CombinationPool.TrimExcess();
-	}
-
-
-	public static Item GetItem (object resultID) {
-		throw new NotImplementedException();
 	}
 
 

@@ -50,8 +50,8 @@ internal partial class Engine {
 	private readonly GUIStyle NotificationLabelStyle = new(GUI.Skin.Label) { Alignment = Alignment.BottomRight, };
 	private readonly GUIStyle NotificationSubLabelStyle = new(GUI.Skin.SmallLabel) { Alignment = Alignment.BottomRight, };
 	private readonly List<ProjectData> Projects = [];
-	private readonly Sheet RenderingSheet = new(ignoreGroups: false, ignoreSpriteWithIgnoreTag: true);
-	private readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithIgnoreTag: true);
+	private readonly Sheet RenderingSheet = new(ignoreGroups: false, ignoreSpriteWithPaletteTag: true);
+	private readonly Sheet ThemeSheet = new(ignoreGroups: true, ignoreSpriteWithPaletteTag: true);
 	private readonly GUISkin ThemeSkin = new() { Name = "Built-in" };
 	private EntityUI[] AllGenericUIs;
 	private WindowUI[] AllWindows;
@@ -933,7 +933,7 @@ internal partial class Engine {
 			if (builtInSheetModDate != Util.GetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath)) {
 				var engineSheet = new Sheet();
 				if (engineSheet.LoadFromDisk(Universe.BuiltIn.GameSheetPath)) {
-					engineSheet.RemoveAllAtlasAndAllSpritesInsideExcept("BuiltIn".AngeHash());
+					engineSheet.RemoveAllAtlasAndSpritesInsideExcept("BuiltIn".AngeHash());
 					if (engineSheet.Atlas.Count > 0) {
 						engineSheet.SaveToDisk(CurrentProject.Universe.BuiltInSheetPath);
 						Util.SetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath, builtInSheetModDate);
@@ -1141,7 +1141,7 @@ internal partial class Engine {
 			// Load Built-In from Engine
 			var builtInSheet = new Sheet();
 			if (builtInSheet.LoadFromDisk(Universe.BuiltIn.GameSheetPath)) {
-				builtInSheet.RemoveAllAtlasAndAllSpritesInsideExcept("BuiltIn".AngeHash());
+				builtInSheet.RemoveAllAtlasAndSpritesInsideExcept("BuiltIn".AngeHash());
 				if (builtInSheet.Atlas.Count > 0) {
 					ThemeSheet.CombineSheet(builtInSheet);
 				}

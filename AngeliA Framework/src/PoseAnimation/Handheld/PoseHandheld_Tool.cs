@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class PoseHandheld_Tool : HandheldPoseAnimation {
+internal class PoseHandheld_Tool : HandheldPoseAnimation {
 
 	public static readonly int TYPE_ID = typeof(PoseHandheld_Tool).AngeHash();
 

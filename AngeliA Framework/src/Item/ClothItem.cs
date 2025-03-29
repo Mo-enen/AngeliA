@@ -3,10 +3,17 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Represent an item that holds a cloth for pose-style character to wear. Unlike body armor, cloth do not occupy equipment slot.
+/// </summary>
+/// <param name="id">ID of the cloth</param>
 [EntityAttribute.ExcludeInMapEditor]
 [NoItemCombination]
 public sealed class ClothItem (int id) : NonStackableItem {
 
+	/// <summary>
+	/// ID of the cloth
+	/// </summary>
 	public int ClothID { get; init; } = id;
 
 	public override void DrawItem (Entity holder, IRect rect, Color32 tint, int z) {

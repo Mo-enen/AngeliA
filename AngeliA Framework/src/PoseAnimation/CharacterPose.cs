@@ -3,6 +3,9 @@ using System.Collections;
 
 namespace AngeliA;
 
+/// <summary>
+/// Complete pose infomation at one moment for a pose-style character
+/// </summary>
 public class CharacterPose {
 
 	// Api
@@ -61,6 +64,9 @@ public class CharacterPose {
 		FootR = BodyParts[16];
 	}
 
+	/// <summary>
+	/// Make the character perform this pose
+	/// </summary>
 	public void ApplyToCharacter (PoseCharacterRenderer rendering) {
 		for (int i = 0; i < BodyParts.Length; i++) {
 			var record = BodyParts[i];
@@ -89,6 +95,9 @@ public class CharacterPose {
 		rendering.HandGrabAttackTwistR.Override(HandGrabAttackTwistR);
 	}
 
+	/// <summary>
+	/// Read pose data from the character
+	/// </summary>
 	public void RecordFromCharacter (PoseCharacterRenderer rendering) {
 		for (int i = 0; i < BodyParts.Length; i++) {
 			var record = BodyParts[i];
@@ -117,6 +126,9 @@ public class CharacterPose {
 		HandGrabAttackTwistR = rendering.HandGrabAttackTwistR;
 	}
 
+	/// <summary>
+	/// Make the character perform this pose with weight
+	/// </summary>
 	public void BlendToCharacter (PoseCharacterRenderer rendering, float blend01) {
 		blend01 = 1f - blend01;
 		for (int i = 0; i < BodyParts.Length; i++) {

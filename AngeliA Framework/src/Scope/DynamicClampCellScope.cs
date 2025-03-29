@@ -1,5 +1,31 @@
 ﻿namespace AngeliA;
 
+/// <summary>
+/// Scope that clamp rendering cells inside given range by changing the size scale of the content
+/// </summary>
+/// <param name="rect">Rect position in global space</param>
+/// <example><code>
+/// using AngeliA;
+/// 
+/// namespace AngeliaGame;
+/// 
+/// public class Example {
+/// 
+/// 	[OnGameUpdate]
+/// 	internal static void OnGameUpdate () {
+/// 
+/// 		var range = new IRect();
+/// 
+/// 		using (new DynamicClampCellScope(range)) {
+/// 
+/// 			// Rendering cell created inside will be clamped by rescale
+/// 
+/// 		}
+/// 
+/// 	}
+/// 
+/// }
+/// </code></example>
 public readonly struct DynamicClampCellScope (IRect rect) : System.IDisposable {
 	private readonly int LayerIndex = Renderer.CurrentLayerIndex;
 	private readonly int UsedCount = Renderer.GetUsedCellCount();
