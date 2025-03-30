@@ -171,7 +171,7 @@ internal partial class Engine {
 				HubPanelScroll = scroll.PositionY;
 
 				var rect = contentRect.Shrink(
-					Renderer.TryGetSprite(PANEL_BG, out var bgSprite) ? bgSprite.GlobalBorder : Int4.zero
+					Renderer.TryGetSprite(PANEL_BG, out var bgSprite) ? bgSprite.GlobalBorder : Int4.Zero
 				).EdgeInside(Direction4.Up, itemHeight);
 
 				for (int i = 0; i < Projects.Count; i++) {

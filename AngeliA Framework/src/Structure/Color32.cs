@@ -4,8 +4,13 @@ using System.Collections.Generic;
 using System.Globalization;
 
 namespace AngeliA;
+
+
+/// <summary>
+/// Color with byte for data
+/// </summary>
 [Serializable]
-public struct Color32 (byte r, byte g, byte b, byte a = 255) : IFormattable, IComparable {
+public struct Color32 : IFormattable, IComparable {
 
 	public static readonly Color32 WHITE = new(255, 255, 255, 255);
 	public static readonly Color32 WHITE_196 = new(255, 255, 255, 196);
@@ -64,11 +69,36 @@ public struct Color32 (byte r, byte g, byte b, byte a = 255) : IFormattable, ICo
 	public static readonly Color32 GREY_12 = new(12, 12, 12, 255);
 	public static readonly Color32 SKIN_YELLOW = new(245, 217, 196, 255);
 
-	public byte r = r;
-	public byte g = g;
-	public byte b = b;
-	public byte a = a;
+	/// <summary>
+	/// Red channel (0 means no value, 255 means full value)
+	/// </summary>
+	public byte r;
+	/// <summary>
+	/// Green channel (0 means no value, 255 means full value)
+	/// </summary>
+	public byte g;
+	/// <summary>
+	/// Blue channel (0 means no value, 255 means full value)
+	/// </summary>
+	public byte b;
+	/// <summary>
+	/// Alpha channel (0 means no value, 255 means full value)
+	/// </summary>
+	public byte a;
 
+	public Color32 (byte r, byte g, byte b, byte a = 255) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+		this.a = a;
+	}
+
+	/// <summary>
+	/// Find a color transform between two given colors smoothly
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <param name="t">Representation of the position. 0 means value A, 1 means value B.</param>
 	public static Color32 Lerp (Color32 a, Color32 b, float t) {
 		t = t.Clamp01();
 		return new Color32(
@@ -79,6 +109,12 @@ public struct Color32 (byte r, byte g, byte b, byte a = 255) : IFormattable, ICo
 		);
 	}
 
+	/// <summary>
+	/// Find a color transform between two given colors smoothly without limiting the t value
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <param name="t">Representation of the position. 0 means value A, 1 means value B.</param>
 	public static Color32 LerpUnclamped (Color32 a, Color32 b, float t) {
 		return new Color32(
 			(byte)(a.r + (b.r - a.r) * t).Clamp(0, 255),

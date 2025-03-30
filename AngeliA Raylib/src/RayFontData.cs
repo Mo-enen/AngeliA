@@ -54,9 +54,9 @@ public class RayFontData : FontData {
 	// LGC
 	private unsafe bool TryGetCharData (char c, out Int2 offset, out int advance, out Int2 imageSize, out Texture2D texture) {
 
-		offset = Int2.zero;
+		offset = Int2.Zero;
 		advance = 0;
-		imageSize = Int2.zero;
+		imageSize = Int2.Zero;
 		texture = default;
 
 		if (ByteSize == 0) return false;

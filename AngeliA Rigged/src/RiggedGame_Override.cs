@@ -37,7 +37,7 @@ public partial class RiggedGame {
 
 	protected override void _SetWindowPosition (int x, int y) { }
 
-	protected override Int2 _GetWindowPosition () => Int2.zero;
+	protected override Int2 _GetWindowPosition () => Int2.Zero;
 
 	protected override void _SetWindowSize (int x, int y) { }
 

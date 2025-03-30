@@ -1,13 +1,22 @@
 namespace AngeliA;
 
+/// <summary>
+/// Represent a list of colors that creates smooth transitions between each other
+/// </summary>
 [System.Serializable]
-public class ColorGradient (params ColorGradient.Data[] values) {
-	[System.Serializable]
-	public struct Data (Color32 color, float time) {
-		public float time = time;
-		public Color32 color = color;
-	}
-	public Data[] Values = values;
+public class ColorGradient {
+
+	public (Color32 color, float time)[] Values;
+
+	/// <summary>
+	/// Represent a list of colors that creates smooth transitions between each other
+	/// </summary>
+	/// <param name="values">Color array</param>
+	public ColorGradient (params (Color32 color, float time)[] values) => Values = values;
+
+	/// <summary>
+	/// Get the smooth color transition for given value
+	/// </summary>
 	public Color32 Evaluate (float time) {
 		float prevTime = 0f;
 		var prevColor = Color32.CLEAR;
@@ -27,4 +36,5 @@ public class ColorGradient (params ColorGradient.Data[] values) {
 		}
 		return prevColor;
 	}
+
 }

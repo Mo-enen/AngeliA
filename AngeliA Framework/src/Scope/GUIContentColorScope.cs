@@ -25,6 +25,9 @@
 /// </code></example>	
 public readonly struct GUIContentColorScope : System.IDisposable {
 	private readonly Color32 OldColor;
+	/// <summary>
+	/// Scope that change the content color of GUI element inside 
+	/// </summary>
 	public GUIContentColorScope (Color32 color) {
 		OldColor = GUI.ContentColor;
 		GUI.ContentColor = color;

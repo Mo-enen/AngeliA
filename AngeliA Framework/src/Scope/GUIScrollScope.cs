@@ -1,18 +1,92 @@
 ﻿namespace AngeliA;
 
 
-/// <inheritdoc cref="GUIScrollScope"/>
-public readonly struct GUIVerticalScrollScope (IRect panelRect, int positionY, int min = int.MinValue, int max = int.MaxValue, int layer = RenderLayer.UI) : System.IDisposable {
+/// <summary>
+/// Scope that make GUI elements inside scrolls
+/// </summary>
+/// <example><code>
+/// using AngeliA;
+/// 
+/// namespace AngeliaGame;
+/// 
+/// public class Example {
+/// 
+/// 	static int ScrollPos;
+/// 
+/// 	[OnGameUpdate]
+/// 	internal static void OnGameUpdate () {
+/// 
+/// 		var cameraRect = Renderer.CameraRect;
+/// 
+/// 		using (var scroll = new GUIVerticalScrollScope(cameraRect, ScrollPos, 0, 4096)) {
+/// 			ScrollPos = scroll.PositionY;
+/// 
+/// 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y, 0, 0, 0, 512, 512);
+/// 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y + 1024, 0, 0, 0, 512, 512);
+/// 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y + 2048, 0, 0, 0, 512, 512);
+/// 
+/// 		}
+/// 
+/// 	}
+/// 
+/// }
+/// </code></example>	
+public readonly struct GUIVerticalScrollScope : System.IDisposable {
 	public readonly int PositionY => Scope.Position.y;
-	public readonly GUIScrollScope Scope = new(panelRect, new Int2(0, positionY), new Int2(0, min), new Int2(0, max), true, false, layer);
+	public readonly GUIScrollScope Scope;
+
+	/// <summary>
+	/// Scope that make GUI elements inside scrolls
+	/// </summary>
+	public GUIVerticalScrollScope (IRect panelRect, int positionY, int min = int.MinValue, int max = int.MaxValue, int layer = RenderLayer.UI) {
+		Scope = new(panelRect, new Int2(0, positionY), new Int2(0, min), new Int2(0, max), true, false, layer);
+	}
+
 	public readonly void Dispose () => Scope.Dispose();
 }
 
 
-/// <inheritdoc cref="GUIScrollScope"/>
-public readonly struct GUIHorizontalScrollScope (IRect rect, int positionX, int min = int.MinValue, int max = int.MaxValue, int layer = RenderLayer.UI) : System.IDisposable {
+/// <summary>
+/// Scope that make GUI elements inside scrolls
+/// </summary>
+/// <example><code>
+/// using AngeliA;
+/// 
+/// namespace AngeliaGame;
+/// 
+/// public class Example {
+/// 
+/// 	static int ScrollPos;
+/// 
+/// 	[OnGameUpdate]
+/// 	internal static void OnGameUpdate () {
+/// 
+/// 		var cameraRect = Renderer.CameraRect;
+/// 
+/// 		using (var scroll = new GUIHorizontalScrollScope(cameraRect, ScrollPos, 0, 4096)) {
+/// 			ScrollPos = scroll.PositionX;
+/// 
+/// 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y, 0, 0, 0, 512, 512);
+/// 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y + 1024, 0, 0, 0, 512, 512);
+/// 			Renderer.Draw(BuiltInSprite.ICON_ENTITY, cameraRect.x + 1024, cameraRect.y + 2048, 0, 0, 0, 512, 512);
+/// 
+/// 		}
+/// 
+/// 	}
+/// 
+/// }
+/// </code></example>	
+public readonly struct GUIHorizontalScrollScope : System.IDisposable {
 	public readonly int PositionX => Scope.Position.x;
-	public readonly GUIScrollScope Scope = new(rect, new Int2(positionX, 0), new Int2(min, 0), new Int2(max, 0), false, false, layer);
+	public readonly GUIScrollScope Scope;
+
+	/// <summary>
+	/// Scope that make GUI elements inside scrolls
+	/// </summary>
+	public GUIHorizontalScrollScope (IRect rect, int positionX, int min = int.MinValue, int max = int.MaxValue, int layer = RenderLayer.UI) {
+		Scope = new(rect, new Int2(positionX, 0), new Int2(min, 0), new Int2(max, 0), false, false, layer);
+	}
+
 	public readonly void Dispose () => Scope.Dispose();
 }
 

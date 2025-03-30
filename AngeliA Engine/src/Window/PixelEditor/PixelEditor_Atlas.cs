@@ -492,7 +492,7 @@ internal partial class PixelEditor {
 		SelectingPaletteIndex = -1;
 		CurrentProject.Universe.Info.LastOpenAtlasIndex = atlasIndex;
 		PixelSelectionPixelRect = default;
-		PixelBufferSize = Int2.zero;
+		PixelBufferSize = Int2.Zero;
 		if (resetUndo) Undo.Reset();
 		RequireUniverseDirty = true;
 	}

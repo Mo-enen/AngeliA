@@ -3,61 +3,46 @@ using System.Globalization;
 
 namespace AngeliA;
 
+/// <summary>
+/// Rectangle with float data
+/// </summary>
 [Serializable]
-public struct FRect : IEquatable<FRect>, IFormattable {
+public struct FRect : IEquatable<FRect> {
 
-	private float m_XMin;
-
-	private float m_YMin;
-
-	private float m_Width;
-
-	private float m_Height;
-
-	public static FRect zero => new(0f, 0f, 0f, 0f);
-
-	public float x {
-		readonly get {
-			return m_XMin;
-		}
-
-		set {
-			m_XMin = value;
-		}
-	}
-
-	public float y {
-		readonly get {
-			return m_YMin;
-		}
-
-		set {
-			m_YMin = value;
-		}
-	}
+	/// <summary>
+	/// Left position
+	/// </summary>
+	public float x;
+	/// <summary>
+	/// Bottom position
+	/// </summary>
+	public float y;
+	/// <summary>
+	/// Horizontal size
+	/// </summary>
+	public float width;
+	/// <summary>
+	/// Vertical size
+	/// </summary>
+	public float height;
 
 	public Float2 position {
 		readonly get {
-			return new Float2(m_XMin, m_YMin);
+			return new Float2(x, y);
 		}
 
 		set {
-			m_XMin = value.x;
-			m_YMin = value.y;
+			x = value.x;
+			y = value.y;
 		}
 	}
-
 	public Float2 center {
-		readonly get {
-			return new Float2(x + m_Width / 2f, y + m_Height / 2f);
-		}
-
+		readonly get => new(x + width / 2f, y + height / 2f);
 		set {
-			m_XMin = value.x - m_Width / 2f;
-			m_YMin = value.y - m_Height / 2f;
+			x = value.x - width / 2f;
+			y = value.y - height / 2f;
 		}
 	}
-
 	public Float2 min {
 		readonly get {
 			return new Float2(xMin, yMin);
@@ -68,7 +53,6 @@ public struct FRect : IEquatable<FRect>, IFormattable {
 			yMin = value.y;
 		}
 	}
-
 	public Float2 max {
 		readonly get {
 			return new Float2(xMax, yMax);
@@ -79,131 +63,91 @@ public struct FRect : IEquatable<FRect>, IFormattable {
 			yMax = value.y;
 		}
 	}
-
-	public float width {
-		readonly get {
-			return m_Width;
-		}
-
-		set {
-			m_Width = value;
-		}
-	}
-
-	public float height {
-		readonly get {
-			return m_Height;
-		}
-
-		set {
-			m_Height = value;
-		}
-	}
-
 	public Float2 size {
 		readonly get {
-			return new Float2(m_Width, m_Height);
+			return new Float2(width, height);
 		}
 
 		set {
-			m_Width = value.x;
-			m_Height = value.y;
+			width = value.x;
+			height = value.y;
 		}
 	}
-
 	public float xMin {
 		readonly get {
-			return m_XMin;
+			return x;
 		}
 
 		set {
 			float num = xMax;
-			m_XMin = value;
-			m_Width = num - m_XMin;
+			x = value;
+			width = num - x;
 		}
 	}
-
 	public float yMin {
 		readonly get {
-			return m_YMin;
+			return y;
 		}
 
 		set {
 			float num = yMax;
-			m_YMin = value;
-			m_Height = num - m_YMin;
+			y = value;
+			height = num - y;
 		}
 	}
-
 	public float xMax {
 		readonly get {
-			return m_Width + m_XMin;
+			return width + x;
 		}
 
 		set {
-			m_Width = value - m_XMin;
+			width = value - x;
 		}
 	}
-
 	public float yMax {
 		readonly get {
-			return m_Height + m_YMin;
+			return height + y;
 		}
 
 		set {
-			m_Height = value - m_YMin;
+			height = value - y;
 		}
 	}
 
-
+	// API
 	public FRect (float x, float y, float width, float height) {
-		m_XMin = x;
-		m_YMin = y;
-		m_Width = width;
-		m_Height = height;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
 	}
 
 	public FRect (Float2 position, Float2 size) {
-		m_XMin = position.x;
-		m_YMin = position.y;
-		m_Width = size.x;
-		m_Height = size.y;
+		x = position.x;
+		y = position.y;
+		width = size.x;
+		height = size.y;
 	}
 
 	public FRect (FRect source) {
-		m_XMin = source.m_XMin;
-		m_YMin = source.m_YMin;
-		m_Width = source.m_Width;
-		m_Height = source.m_Height;
+		x = source.x;
+		y = source.y;
+		width = source.width;
+		height = source.height;
 	}
 
+	/// <summary>
+	/// Create a rectangle from min and max positions
+	/// </summary>
 	public static FRect MinMaxRect (float xmin, float ymin, float xmax, float ymax) {
 		return new FRect(xmin, ymin, xmax - xmin, ymax - ymin);
 	}
 
-	public void Set (float x, float y, float width, float height) {
-		m_XMin = x;
-		m_YMin = y;
-		m_Width = width;
-		m_Height = height;
-	}
-
+	/// <summary>
+	/// True if the given point inside this rectangle
+	/// </summary>
 	public readonly bool Contains (Float2 point) {
 		return point.x >= xMin && point.x < xMax && point.y >= yMin && point.y < yMax;
-	}
-
-	public readonly bool Contains (Float3 point) {
-		return point.x >= xMin && point.x < xMax && point.y >= yMin && point.y < yMax;
-	}
-
-	public readonly bool Contains (Float3 point, bool allowInverse) {
-		if (!allowInverse) {
-			return Contains(point);
-		}
-
-		bool flag = (width < 0f && point.x <= xMin && point.x > xMax) || (width >= 0f && point.x >= xMin && point.x < xMax);
-		bool flag2 = (height < 0f && point.y <= yMin && point.y > yMax) || (height >= 0f && point.y >= yMin && point.y < yMax);
-		return flag && flag2;
 	}
 
 	private static FRect OrderMinMax (FRect rect) {
@@ -218,34 +162,11 @@ public struct FRect : IEquatable<FRect>, IFormattable {
 		return rect;
 	}
 
+	/// <summary>
+	/// True if the given rectangle overlaps the current one
+	/// </summary>
 	public readonly bool Overlaps (FRect other) {
 		return other.xMax > xMin && other.xMin < xMax && other.yMax > yMin && other.yMin < yMax;
-	}
-
-	public readonly bool Overlaps (FRect other, bool allowInverse) {
-		FRect rect = this;
-		if (allowInverse) {
-			rect = OrderMinMax(rect);
-			other = OrderMinMax(other);
-		}
-
-		return rect.Overlaps(other);
-	}
-
-	public static Float2 NormalizedToPoint (FRect rectangle, Float2 normalizedRectCoordinates) {
-		return new Float2(Util.Lerp(rectangle.x, rectangle.xMax, normalizedRectCoordinates.x), Util.Lerp(rectangle.y, rectangle.yMax, normalizedRectCoordinates.y));
-	}
-
-	public static Float2 PointToNormalized (FRect rectangle, Float2 point) {
-		return new Float2(Util.InverseLerp(rectangle.x, rectangle.xMax, point.x), Util.InverseLerp(rectangle.y, rectangle.yMax, point.y));
-	}
-
-	public static bool operator != (FRect lhs, FRect rhs) {
-		return !(lhs == rhs);
-	}
-
-	public static bool operator == (FRect lhs, FRect rhs) {
-		return lhs.x == rhs.x && lhs.y == rhs.y && lhs.width == rhs.width && lhs.height == rhs.height;
 	}
 
 	public override readonly int GetHashCode () {
@@ -264,23 +185,15 @@ public struct FRect : IEquatable<FRect>, IFormattable {
 		return x.Equals(other.x) && y.Equals(other.y) && width.Equals(other.width) && height.Equals(other.height);
 	}
 
-	public override readonly string ToString () {
-		return ToString(null, null);
+	public override readonly string ToString () => $"({x}, {y}, {width}, {height})";
+
+	// OPR
+	public static bool operator != (FRect lhs, FRect rhs) {
+		return !(lhs == rhs);
 	}
 
-	public readonly string ToString (string format) {
-		return ToString(format, null);
+	public static bool operator == (FRect lhs, FRect rhs) {
+		return lhs.x == rhs.x && lhs.y == rhs.y && lhs.width == rhs.width && lhs.height == rhs.height;
 	}
-
-	public readonly string ToString (string format, IFormatProvider formatProvider) {
-		if (string.IsNullOrEmpty(format)) {
-			format = "F2";
-		}
-
-		formatProvider ??= CultureInfo.InvariantCulture.NumberFormat;
-
-		return string.Format("(x:{0}, y:{1}, width:{2}, height:{3})", x.ToString(format, formatProvider), y.ToString(format, formatProvider), width.ToString(format, formatProvider), height.ToString(format, formatProvider));
-	}
-
 
 }

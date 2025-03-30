@@ -25,6 +25,10 @@
 /// </code></example>	
 public readonly struct GUIInteractableScope : System.IDisposable {
 	private readonly bool OldInteractable;
+
+	/// <summary>
+	/// Scope that set interactable of GUI elements inside
+	/// </summary>
 	public GUIInteractableScope (bool interactable) {
 		OldInteractable = GUI.Interactable;
 		GUI.Interactable = interactable;

@@ -69,7 +69,7 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 		// Update Rotation
 		CurrentRotation = Util.LerpAngleUnclamped(
 			CurrentRotation,
-			Float2.SignedAngle(Float2.up, CurrentVelocity),
+			Float2.SignedAngle(Float2.Up, CurrentVelocity),
 			0.2f
 		).RoundToInt();
 

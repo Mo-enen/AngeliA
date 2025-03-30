@@ -25,6 +25,12 @@
 /// </code></example>	
 public readonly struct SheetIndexScope : System.IDisposable {
 	private readonly int OldSheet;
+
+	/// <summary>
+	/// Scope that change sheet index of the rendering cells inside
+	/// </summary>
+	public SheetIndexScope () : this(-1) { }
+
 	/// <summary>
 	/// Scope that change sheet index of the rendering cells inside
 	/// </summary>
@@ -32,5 +38,6 @@ public readonly struct SheetIndexScope : System.IDisposable {
 		OldSheet = Renderer.CurrentSheetIndex;
 		Renderer.CurrentSheetIndex = sheet;
 	}
+
 	public readonly void Dispose () => Renderer.CurrentSheetIndex = OldSheet;
 }

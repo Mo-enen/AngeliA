@@ -28,6 +28,9 @@ namespace AngeliA;
 public readonly struct ReverseCellsScope : IDisposable {
 	private readonly int LayerIndex;
 	private readonly int UsedCount;
+	/// <summary>
+	/// Scope that make rendering cells reverse in sorting order
+	/// </summary>
 	public ReverseCellsScope () {
 		LayerIndex = Renderer.CurrentLayerIndex;
 		UsedCount = Renderer.GetUsedCellCount();

@@ -3,7 +3,6 @@
 /// <summary>
 /// Scope that clamp rendering cells inside given range by changing the size scale of the content
 /// </summary>
-/// <param name="rect">Rect position in global space</param>
 /// <example><code>
 /// using AngeliA;
 /// 
@@ -26,9 +25,20 @@
 /// 
 /// }
 /// </code></example>
-public readonly struct DynamicClampCellScope (IRect rect) : System.IDisposable {
+public readonly struct DynamicClampCellScope : System.IDisposable {
+
 	private readonly int LayerIndex = Renderer.CurrentLayerIndex;
 	private readonly int UsedCount = Renderer.GetUsedCellCount();
+	private readonly IRect rect;
+
+	/// <summary>
+	/// Scope that clamp rendering cells inside given range by changing the size scale of the content
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	public DynamicClampCellScope (IRect rect) {
+		this.rect = rect;
+	}
+
 	public readonly void Dispose () {
 		if (!Renderer.GetCells(LayerIndex, out var cells, out int count)) return;
 		int minX = int.MaxValue;
@@ -58,4 +68,5 @@ public readonly struct DynamicClampCellScope (IRect rect) : System.IDisposable {
 			cell.Height = (cell.Height * sizeScl).RoundToInt();
 		}
 	}
+
 }

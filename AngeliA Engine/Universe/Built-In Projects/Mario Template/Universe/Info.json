@@ -5,7 +5,7 @@
   "MajorVersion": 0,
   "MinorVersion": 0,
   "PatchVersion": 1,
-  "EngineBuildVersion": 17,
+  "EngineBuildVersion": 19,
   "UseProceduralMap": false,
   "UseMapEditor": true,
   "UseLightingSystem": false,
@@ -29,12 +29,12 @@
   "WorldBehindParallax": 1300,
   "WorldBehindAlpha": 64,
   "RequireFixScriptNamesWhenAnalyse": false,
-  "LastOpenAtlasIndex": 0,
+  "LastOpenAtlasIndex": 6,
   "LastEdittingViewPos": {
     "x": -8448,
     "y": -3227,
     "z": 0
   },
   "LastEdittingViewHeight": 8448,
-  "LastBackupSavingDate": 133872059853215495
+  "LastBackupSavingDate": 133878074517691132
 }

@@ -1,6 +1,8 @@
 namespace AngeliA;
 
-
+/// <summary>
+/// Task that select current player
+/// </summary>
 public class SelectPlayerTask : Task {
 	public static readonly int TYPE_ID = typeof(SelectPlayerTask).AngeHash();
 	public override TaskResult FrameUpdate () {

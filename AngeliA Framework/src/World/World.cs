@@ -6,14 +6,33 @@ using System.IO;
 
 namespace AngeliA;
 
+/// <summary>
+/// Type of blocks in map
+/// </summary>
 public enum BlockType {
+	/// <summary>
+	/// Dynamic object with logic attached
+	/// </summary>
 	Entity = 0,
+	/// <summary>
+	/// Static block with collider
+	/// </summary>
 	Level = 1,
+	/// <summary>
+	/// Static block without collider
+	/// </summary>
 	Background = 2,
+	/// <summary>
+	/// Internal IMapItem that do not spawn into stage
+	/// </summary>
 	Element = 3,
 }
 
-public class World (Int3 pos) {
+
+/// <summary>
+/// Instance of a 128x128 map data
+/// </summary>
+public class World {
 
 
 
@@ -22,12 +41,26 @@ public class World (Int3 pos) {
 
 
 	// Api
-	public static readonly Color32[] CacheMapPixels = new Color32[Const.MAP * Const.MAP];
-	public static readonly Dictionary<uint, Int3> TextureMapLinkedPool = [];
-	public Int3 WorldPosition { get; set; } = pos;
+	internal static readonly Dictionary<uint, Int3> TextureMapLinkedPool = [];
+	/// <summary>
+	/// Position for the bottom-left of the world in world space (1 world space = 256 * 128 global space)
+	/// </summary>
+	public Int3 WorldPosition { get; set; }
+	/// <summary>
+	/// ID of all background blocks (index 0 means bottom-left, index 1 make it goes right)
+	/// </summary>
 	public int[] Backgrounds { get; set; } = new int[Const.MAP * Const.MAP];
+	/// <summary>
+	/// ID of all level blocks (index 0 means bottom-left, index 1 make it goes right)
+	/// </summary>
 	public int[] Levels { get; set; } = new int[Const.MAP * Const.MAP];
+	/// <summary>
+	/// ID of all entity blocks (index 0 means bottom-left, index 1 make it goes right)
+	/// </summary>
 	public int[] Entities { get; set; } = new int[Const.MAP * Const.MAP];
+	/// <summary>
+	/// ID of all element blocks (index 0 means bottom-left, index 1 make it goes right)
+	/// </summary>
 	public int[] Elements { get; set; } = new int[Const.MAP * Const.MAP];
 
 
@@ -39,9 +72,22 @@ public class World (Int3 pos) {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Instance of a 128x128 map data
+	/// </summary>
+	/// <param name="pos">Position in world space (1 world space = 256 * 128 global space)</param>
+	public World (Int3 pos) => WorldPosition = pos;
+
+
+	/// <summary>
+	/// Instance of a 128x128 map data
+	/// </summary>
 	public World () : this(new Int3(int.MinValue, int.MinValue, int.MinValue)) { }
 
 
+	/// <summary>
+	/// True if the world data is empty
+	/// </summary>
 	public bool EmptyCheck () {
 		foreach (var a in Entities) if (a != 0) return false;
 		foreach (var a in Levels) if (a != 0) return false;
@@ -51,6 +97,11 @@ public class World (Int3 pos) {
 	}
 
 
+	/// <summary>
+	/// True if the given block ID exists inside this world
+	/// </summary>
+	/// <param name="blockID"></param>
+	/// <param name="type">Type of the block</param>
 	public bool ContainsBlock (int blockID, BlockType type) {
 		switch (type) {
 			case BlockType.Entity:
@@ -79,6 +130,10 @@ public class World (Int3 pos) {
 	}
 
 
+	/// <summary>
+	/// Reset all block data inside this world data
+	/// </summary>
+	/// <param name="pos">Set new world position. Set to null to not clear world position</param>
 	public void Clear (Int3? pos = null) {
 		WorldPosition = pos ?? WorldPosition;
 		System.Array.Clear(Levels, 0, Levels.Length);
@@ -147,60 +202,6 @@ public class World (Int3 pos) {
 
 		// Final
 		return success;
-	}
-
-
-	public static bool LoadMapIntoTexture (string filePath, object texture) {
-		lock (CacheMapPixels) {
-			if (texture == null) return false;
-			System.Array.Clear(CacheMapPixels, 0, CacheMapPixels.Length);
-			if (string.IsNullOrEmpty(filePath) || !Util.FileExists(filePath)) {
-				Game.FillPixelsIntoTexture(CacheMapPixels, texture);
-				return false;
-			}
-			using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-			using var reader = new BinaryReader(stream, System.Text.Encoding.ASCII);
-			int SIZE = Const.MAP;
-			while (reader.NotEnd()) {
-				int id = reader.ReadInt32();
-				int x = reader.ReadByte();
-				int y = reader.ReadByte();
-				if (x < SIZE && y >= SIZE) continue;
-				if (Renderer.TryGetSprite(id, out var sprite, false)) {
-					if (x >= SIZE) x -= SIZE;
-					if (y >= SIZE) y -= SIZE;
-					CacheMapPixels[y * SIZE + x] = sprite.SummaryTint;
-				}
-			}
-			Game.FillPixelsIntoTexture(CacheMapPixels, texture);
-			return true;
-		}
-	}
-
-
-	public void FillMapIntoTexture (object texture) {
-		lock (CacheMapPixels) {
-			int len = Const.MAP * Const.MAP;
-			for (int i = 0; i < len; i++) {
-				int id = Entities[i];
-				if (id != 0 && Renderer.TryGetSprite(id, out var sprite, false)) {
-					CacheMapPixels[i] = sprite.SummaryTint;
-					continue;
-				}
-				id = Levels[i];
-				if (id != 0 && Renderer.TryGetSprite(id, out sprite, false)) {
-					CacheMapPixels[i] = sprite.SummaryTint;
-					continue;
-				}
-				id = Backgrounds[i];
-				if (id != 0 && Renderer.TryGetSprite(id, out sprite, false)) {
-					CacheMapPixels[i] = sprite.SummaryTint;
-					continue;
-				}
-				CacheMapPixels[i] = Color32.CLEAR;
-			}
-			Game.FillPixelsIntoTexture(CacheMapPixels, texture);
-		}
 	}
 
 

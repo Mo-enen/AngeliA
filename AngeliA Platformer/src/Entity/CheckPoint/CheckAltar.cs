@@ -78,7 +78,7 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
-		var border = Renderer.TryGetSprite(TypeID, out var sprite, false) ? sprite.GlobalBorder : Int4.zero;
+		var border = Renderer.TryGetSprite(TypeID, out var sprite, false) ? sprite.GlobalBorder : Int4.Zero;
 		Physics.FillBlock(
 			PhysicsLayer.ENVIRONMENT, TypeID, Rect.Shrink(border), true, Tag.OnewayUp
 		);

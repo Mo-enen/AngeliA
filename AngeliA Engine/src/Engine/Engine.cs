@@ -335,8 +335,8 @@ internal partial class Engine {
 		}
 		if (Instance.CurrentWindow is GameEditor gameEDT) {
 			var padding = Int4.Direction(Instance.GetEngineLeftBarWidth(out int _), gameEDT.ToolbarWidth, 0, 0);
-			padding.left = padding.left * Game.ScreenWidth / Renderer.CameraRect.width;
-			padding.right = padding.right * Game.ScreenWidth / Renderer.CameraRect.width;
+			padding.left = padding.left * Game.ScreenWidth / Renderer.CameraRect.width.GreaterOrEquel(1);
+			padding.right = padding.right * Game.ScreenWidth / Renderer.CameraRect.width.GreaterOrEquel(1);
 			Game.ScreenEffectPadding = padding;
 		} else {
 			Game.ScreenEffectPadding = default;

@@ -1,5 +1,6 @@
 ﻿namespace AngeliA;
 
+
 /// <summary>
 /// Scope that make GUI elements ignore keyboard or mouse input from user
 /// </summary>
@@ -24,9 +25,19 @@
 /// }
 /// </code></example>	
 public readonly struct IgnoreInputScope : System.IDisposable {
+
 	private readonly bool OldIgnoreKey;
 	private readonly bool OldIgnoreMouse;
-	public IgnoreInputScope (bool ignoreKey = true, bool ignoreMouse = true) {
+
+	/// <summary>
+	/// Scope that make GUI elements ignore keyboard or mouse input from user
+	/// </summary>
+	public IgnoreInputScope () : this(true, true) { }
+
+	/// <summary>
+	/// Scope that make GUI elements ignore keyboard or mouse input from user
+	/// </summary>
+	public IgnoreInputScope (bool ignoreKey, bool ignoreMouse) {
 		OldIgnoreKey = Input.IgnoringKeyInput;
 		OldIgnoreMouse = Input.IgnoringMouseInput;
 		if (ignoreKey) {
@@ -40,6 +51,7 @@ public readonly struct IgnoreInputScope : System.IDisposable {
 			Input.CancelIgnoreMouseInput();
 		}
 	}
+
 	public readonly void Dispose () {
 		if (OldIgnoreKey) {
 			Input.IgnoreKeyInput();
@@ -52,4 +64,5 @@ public readonly struct IgnoreInputScope : System.IDisposable {
 			Input.CancelIgnoreMouseInput();
 		}
 	}
+
 }

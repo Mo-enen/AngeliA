@@ -288,7 +288,7 @@ public partial class MapEditor {
 
 	// Move
 	private void MoveSelection (Int2 delta) {
-		if (delta == Int2.zero || IsPlaying || DroppingPlayer || !SelectionUnitRect.HasValue) return;
+		if (delta == Int2.Zero || IsPlaying || DroppingPlayer || !SelectionUnitRect.HasValue) return;
 		if (!Pasting) StartPaste(true);
 		SelectionUnitRect = SelectionUnitRect.Value.Shift(delta.x, delta.y);
 	}

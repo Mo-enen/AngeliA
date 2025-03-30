@@ -27,6 +27,9 @@
 /// </code></example>
 public readonly struct FontScope : System.IDisposable {
 	private readonly int OldFontIndex;
+	/// <summary>
+	/// Scope that makes labels inside display with given font
+	/// </summary>
 	public FontScope (int fontID) {
 		OldFontIndex = Renderer.CurrentFontIndex;
 		Renderer.SetFontID(fontID);

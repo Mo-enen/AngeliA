@@ -79,7 +79,7 @@ public abstract class MovableBullet : Bullet {
 		CurrentRotation += Velocity.x > 0 ? RotateSpeed : -RotateSpeed;
 
 		if (AriDrag != default) {
-			Velocity = Velocity.MoveTowards(Int2.zero, AriDrag);
+			Velocity = Velocity.MoveTowards(Int2.Zero, AriDrag);
 		}
 		if (Gravity > 0) {
 			Velocity = new Int2(Velocity.x, Velocity.y - Gravity);
@@ -285,7 +285,7 @@ public abstract class MovableBullet : Bullet {
 		HitEndX + Width / 2,
 		HitEndY + Height / 2,
 		BeamLength,
-		(Float2.SignedAngle(Float2.up, Velocity) * 1000).RoundToInt(),
+		(Float2.SignedAngle(Float2.Up, Velocity) * 1000).RoundToInt(),
 		HitReceiver
 	);
 

@@ -1,5 +1,8 @@
 ﻿namespace AngeliA;
 
+/// <summary>
+/// Task that do nothing but stay inside the task system. Require UserData as duration in frame
+/// </summary>
 public class DelayTask : Task {
 	public static readonly int TYPE_ID = typeof(DelayTask).AngeHash();
 	public override TaskResult FrameUpdate () {

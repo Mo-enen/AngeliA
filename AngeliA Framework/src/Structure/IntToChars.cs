@@ -1,12 +1,20 @@
 ﻿namespace AngeliA;
 
+/// <summary>
+/// Get char array that holds the given intager as text content without creating heap pressure
+/// </summary>
 public class IntToChars {
 
 	private int IntValue = 0;
-	public readonly char[] CharsValue = null;
-	public readonly string Prefix = "";
-	public readonly string Suffix = "";
-	
+	private readonly char[] CharsValue = null;
+	private readonly string Prefix = "";
+	private readonly string Suffix = "";
+
+	/// <summary>
+	/// Get char array that holds the given intager as text content without creating heap pressure 
+	/// </summary>
+	/// <param name="prefix">Label that add before the text content</param>
+	/// <param name="suffix">Label that add after the text content</param>
 	public IntToChars (string prefix = "", string suffix = "") {
 		Prefix = prefix;
 		Suffix = suffix;
@@ -24,6 +32,9 @@ public class IntToChars {
 		}
 	}
 
+	/// <summary>
+	/// Calculate the char array based on the given intager
+	/// </summary>
 	public char[] GetChars (int value) {
 		if (value == IntValue) return CharsValue;
 		IntValue = value;
@@ -44,6 +55,12 @@ public class IntToChars {
 		return CharsValue;
 	}
 
+	/// <summary>
+	/// Calculate char array based on the given intager
+	/// </summary>
+	/// <param name="intValue"></param>
+	/// <param name="charsValue"></param>
+	/// <param name="startIndex">Index of the next edit value</param>
 	public static void Int_to_Chars (int intValue, char[] charsValue, ref int startIndex) {
 		int digitCount = intValue.DigitCount();
 		if (intValue < 0) {
@@ -60,6 +77,9 @@ public class IntToChars {
 		if (startIndex < charsValue.Length) charsValue[startIndex] = '\0';
 	}
 
+	/// <summary>
+	/// Get intager from the given char array
+	/// </summary>
 	public static int Chars_to_Int (char[] charsValue, int startIndex = 0) {
 		int result = 0;
 		for (int i = startIndex; i < charsValue.Length; i++) {

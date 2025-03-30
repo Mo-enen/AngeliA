@@ -1,6 +1,9 @@
 ﻿namespace AngeliA;
 
 
+/// <summary>
+/// Task that fade the screen from black to normal
+/// </summary>
 public class FadeInTask : Task {
 	public static readonly int TYPE_ID = typeof(FadeInTask).AngeHash();
 	private int Duration => UserData is int i ? i : 20;
@@ -11,6 +14,9 @@ public class FadeInTask : Task {
 }
 
 
+/// <summary>
+/// Task that fade the screen from normal to black
+/// </summary>
 public class FadeOutTask : Task {
 	public static readonly int TYPE_ID = typeof(FadeOutTask).AngeHash();
 	private int Duration => UserData is int i ? i : 20;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public class WorldPathPool : Dictionary<Int3, string> {
+internal class WorldPathPool : Dictionary<Int3, string> {
 
 	// VAR
 	private static readonly Dictionary<Int3, string> WorldNamePool = [];

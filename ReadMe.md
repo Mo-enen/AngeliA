@@ -4,7 +4,7 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
 ## Features
 
-- **Seamless Playtesting**: Test your game in real time while editing the map using the most advanced map editor available. The engine supports open-world-style maps without boundaries.
+- **Seamless Playtesting**: The built-in map editor is specifically designed for platformer games, allowing you to playtest while editing the map. The engine supports open-world-style maps without boundaries.
 - **Integrated Game Window**: Run your game directly within the engine. No need to launch a separate window every time.
 - **Built-in Pixel Art Editor**: A dedicated pixel art editor designed for creating and managing sprite sheets. Supports importing assets from Aseprite.
 - **PC-Only**: Currently, the engine and the games it produces are PC only. The implementation is based on Raylib. More platforms will be support in the future.

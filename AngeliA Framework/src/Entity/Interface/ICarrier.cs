@@ -13,9 +13,9 @@ public interface ICarrier {
 	/// True if this entity can be carry by other carrier
 	/// </summary>
 	public bool AllowBeingCarry => true;
-	internal int CarryLeft { get; set; }
-	internal int CarryRight { get; set; }
-	internal int CarryHorizontalFrame { get; set; }
+	public int CarryLeft { get; set; }
+	public int CarryRight { get; set; }
+	public int CarryHorizontalFrame { get; set; }
 
 	private static readonly Pipe<(IRect rect, int delta)> CarryBuffer = new(1024);
 	private static readonly Pipe<(Entity entity, int delta)> CarryPerformBuffer = new(1024);

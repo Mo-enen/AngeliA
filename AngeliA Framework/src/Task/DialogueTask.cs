@@ -4,6 +4,9 @@ using System.Text;
 
 namespace AngeliA;
 
+/// <summary>
+/// Task that run a dialogue UI entity and display conversation
+/// </summary>
 public class DialogueTask : Task {
 
 
@@ -81,6 +84,11 @@ public class DialogueTask : Task {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Start conversation from given name
+	/// </summary>
+	/// <typeparam name="D">Type of the dialogue UI entity</typeparam>
+	/// <param name="globalName">System name of the conversation</param>
 	public static void StartConversation<D> (string globalName) where D : DialogueUI {
 
 		string conversationPath = Util.CombinePaths(
@@ -189,6 +197,9 @@ public class DialogueTask : Task {
 	}
 
 
+	/// <summary>
+	/// Stop current conversation
+	/// </summary>
 	public static void EndConversation () {
 		if (Main == null) return;
 		Main.Sections.Clear();
@@ -196,17 +207,6 @@ public class DialogueTask : Task {
 		Main.LoadedSection = -1;
 		Main.DialogueUI = null;
 	}
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-
 
 
 	#endregion

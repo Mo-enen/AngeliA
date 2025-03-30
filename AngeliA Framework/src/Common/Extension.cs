@@ -393,7 +393,10 @@ public static class Extension {
 	}
 	[MethodImpl(INLINE)]
 	public static Int2 Clamped (this Int2 v, IRect range) {
-		v.Clamp(range);
+		v.x = System.Math.Max(range.xMin, v.x);
+		v.x = System.Math.Min(range.xMax, v.x);
+		v.y = System.Math.Max(range.yMin, v.y);
+		v.y = System.Math.Min(range.yMax, v.y);
 		return v;
 	}
 	[MethodImpl(INLINE)] public static Int3 ToVector3Int (this Int2 v, int z) => new(v.x, v.y, z);
@@ -445,7 +448,7 @@ public static class Extension {
 			dir.x == 0 ? (dir.y < 0 ? Direction8.Bottom : Direction8.Top) :
 			dir.x < 0 ? (dir.y == 0 ? Direction8.Left : dir.y < 0 ? Direction8.BottomLeft : Direction8.TopLeft) :
 			(dir.y == 0 ? Direction8.Right : dir.y < 0 ? Direction8.BottomRight : Direction8.TopRight);
-		return dir != Int2.zero;
+		return dir != Int2.Zero;
 	}
 
 	// Direction
@@ -532,7 +535,7 @@ public static class Extension {
 		Direction5.Up => new(0, 1),
 		Direction5.Left => new(-1, 0),
 		Direction5.Right => new(1, 0),
-		_ => Int2.zero,
+		_ => Int2.Zero,
 	};
 
 	[MethodImpl(INLINE)]

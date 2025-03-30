@@ -712,12 +712,6 @@ references:
   commentId: F:AngeliA.AngeSprite.AtlasID
   fullName: AngeliA.AngeSprite.AtlasID
   nameWithType: AngeSprite.AtlasID
-- uid: AngeliA.AngeSprite.AttachedSprite
-  name: AttachedSprite
-  href: api/AngeliA.AngeSprite.html#AngeliA_AngeSprite_AttachedSprite
-  commentId: F:AngeliA.AngeSprite.AttachedSprite
-  fullName: AngeliA.AngeSprite.AttachedSprite
-  nameWithType: AngeSprite.AttachedSprite
 - uid: AngeliA.AngeSprite.CopyTo(AngeliA.AngeSprite)
   name: CopyTo(AngeSprite)
   href: api/AngeliA.AngeSprite.html#AngeliA_AngeSprite_CopyTo_AngeliA_AngeSprite_
@@ -756,19 +750,6 @@ references:
   commentId: F:AngeliA.AngeSprite.EMPTY
   fullName: AngeliA.AngeSprite.EMPTY
   nameWithType: AngeSprite.EMPTY
-- uid: AngeliA.AngeSprite.GetAlignmentFromPivot
-  name: GetAlignmentFromPivot()
-  href: api/AngeliA.AngeSprite.html#AngeliA_AngeSprite_GetAlignmentFromPivot
-  commentId: M:AngeliA.AngeSprite.GetAlignmentFromPivot
-  fullName: AngeliA.AngeSprite.GetAlignmentFromPivot()
-  nameWithType: AngeSprite.GetAlignmentFromPivot()
-- uid: AngeliA.AngeSprite.GetAlignmentFromPivot*
-  name: GetAlignmentFromPivot
-  href: api/AngeliA.AngeSprite.html#AngeliA_AngeSprite_GetAlignmentFromPivot_
-  commentId: Overload:AngeliA.AngeSprite.GetAlignmentFromPivot
-  isSpec: "True"
-  fullName: AngeliA.AngeSprite.GetAlignmentFromPivot
-  nameWithType: AngeSprite.GetAlignmentFromPivot
 - uid: AngeliA.AngeSprite.GlobalBorder
   name: GlobalBorder
   href: api/AngeliA.AngeSprite.html#AngeliA_AngeSprite_GlobalBorder
@@ -805,22 +786,6 @@ references:
   commentId: F:AngeliA.AngeSprite.IsTrigger
   fullName: AngeliA.AngeSprite.IsTrigger
   nameWithType: AngeSprite.IsTrigger
-- uid: AngeliA.AngeSprite.LoadFromBinary_v0(System.IO.BinaryReader,System.Boolean)
-  name: LoadFromBinary_v0(BinaryReader, bool)
-  href: api/AngeliA.AngeSprite.html#AngeliA_AngeSprite_LoadFromBinary_v0_System_IO_BinaryReader_System_Boolean_
-  commentId: M:AngeliA.AngeSprite.LoadFromBinary_v0(System.IO.BinaryReader,System.Boolean)
-  name.vb: LoadFromBinary_v0(BinaryReader, Boolean)
-  fullName: AngeliA.AngeSprite.LoadFromBinary_v0(System.IO.BinaryReader, bool)
-  fullName.vb: AngeliA.AngeSprite.LoadFromBinary_v0(System.IO.BinaryReader, Boolean)
-  nameWithType: AngeSprite.LoadFromBinary_v0(BinaryReader, bool)
-  nameWithType.vb: AngeSprite.LoadFromBinary_v0(BinaryReader, Boolean)
-- uid: AngeliA.AngeSprite.LoadFromBinary_v0*
-  name: LoadFromBinary_v0
-  href: api/AngeliA.AngeSprite.html#AngeliA_AngeSprite_LoadFromBinary_v0_
-  commentId: Overload:AngeliA.AngeSprite.LoadFromBinary_v0
-  isSpec: "True"
-  fullName: AngeliA.AngeSprite.LoadFromBinary_v0
-  nameWithType: AngeSprite.LoadFromBinary_v0
 - uid: AngeliA.AngeSprite.LocalZ
   name: LocalZ
   href: api/AngeliA.AngeSprite.html#AngeliA_AngeSprite_LocalZ
@@ -908,19 +873,6 @@ references:
   commentId: F:AngeliA.AngeSprite.Rule
   fullName: AngeliA.AngeSprite.Rule
   nameWithType: AngeSprite.Rule
-- uid: AngeliA.AngeSprite.SaveToBinary_v0(System.IO.BinaryWriter)
-  name: SaveToBinary_v0(BinaryWriter)
-  href: api/AngeliA.AngeSprite.html#AngeliA_AngeSprite_SaveToBinary_v0_System_IO_BinaryWriter_
-  commentId: M:AngeliA.AngeSprite.SaveToBinary_v0(System.IO.BinaryWriter)
-  fullName: AngeliA.AngeSprite.SaveToBinary_v0(System.IO.BinaryWriter)
-  nameWithType: AngeSprite.SaveToBinary_v0(BinaryWriter)
-- uid: AngeliA.AngeSprite.SaveToBinary_v0*
-  name: SaveToBinary_v0
-  href: api/AngeliA.AngeSprite.html#AngeliA_AngeSprite_SaveToBinary_v0_
-  commentId: Overload:AngeliA.AngeSprite.SaveToBinary_v0
-  isSpec: "True"
-  fullName: AngeliA.AngeSprite.SaveToBinary_v0
-  nameWithType: AngeSprite.SaveToBinary_v0
 - uid: AngeliA.AngeSprite.SetPixelDirty
   name: SetPixelDirty()
   href: api/AngeliA.AngeSprite.html#AngeliA_AngeSprite_SetPixelDirty
@@ -1154,38 +1106,12 @@ references:
   isSpec: "True"
   fullName: AngeliA.Atlas.IsFolder
   nameWithType: Atlas.IsFolder
-- uid: AngeliA.Atlas.LoadFromBinary_v0(System.IO.BinaryReader)
-  name: LoadFromBinary_v0(BinaryReader)
-  href: api/AngeliA.Atlas.html#AngeliA_Atlas_LoadFromBinary_v0_System_IO_BinaryReader_
-  commentId: M:AngeliA.Atlas.LoadFromBinary_v0(System.IO.BinaryReader)
-  fullName: AngeliA.Atlas.LoadFromBinary_v0(System.IO.BinaryReader)
-  nameWithType: Atlas.LoadFromBinary_v0(BinaryReader)
-- uid: AngeliA.Atlas.LoadFromBinary_v0*
-  name: LoadFromBinary_v0
-  href: api/AngeliA.Atlas.html#AngeliA_Atlas_LoadFromBinary_v0_
-  commentId: Overload:AngeliA.Atlas.LoadFromBinary_v0
-  isSpec: "True"
-  fullName: AngeliA.Atlas.LoadFromBinary_v0
-  nameWithType: Atlas.LoadFromBinary_v0
 - uid: AngeliA.Atlas.Name
   name: Name
   href: api/AngeliA.Atlas.html#AngeliA_Atlas_Name
   commentId: F:AngeliA.Atlas.Name
   fullName: AngeliA.Atlas.Name
   nameWithType: Atlas.Name
-- uid: AngeliA.Atlas.SaveToBinary_v0(System.IO.BinaryWriter)
-  name: SaveToBinary_v0(BinaryWriter)
-  href: api/AngeliA.Atlas.html#AngeliA_Atlas_SaveToBinary_v0_System_IO_BinaryWriter_
-  commentId: M:AngeliA.Atlas.SaveToBinary_v0(System.IO.BinaryWriter)
-  fullName: AngeliA.Atlas.SaveToBinary_v0(System.IO.BinaryWriter)
-  nameWithType: Atlas.SaveToBinary_v0(BinaryWriter)
-- uid: AngeliA.Atlas.SaveToBinary_v0*
-  name: SaveToBinary_v0
-  href: api/AngeliA.Atlas.html#AngeliA_Atlas_SaveToBinary_v0_
-  commentId: Overload:AngeliA.Atlas.SaveToBinary_v0
-  isSpec: "True"
-  fullName: AngeliA.Atlas.SaveToBinary_v0
-  nameWithType: Atlas.SaveToBinary_v0
 - uid: AngeliA.Atlas.State
   name: State
   href: api/AngeliA.Atlas.html#AngeliA_Atlas_State
@@ -39510,15 +39436,6 @@ references:
   fullName.vb: AngeliA.ItemSystem.GetItem(Integer)
   nameWithType: ItemSystem.GetItem(int)
   nameWithType.vb: ItemSystem.GetItem(Integer)
-- uid: AngeliA.ItemSystem.GetItem(System.Object)
-  name: GetItem(object)
-  href: api/AngeliA.ItemSystem.html#AngeliA_ItemSystem_GetItem_System_Object_
-  commentId: M:AngeliA.ItemSystem.GetItem(System.Object)
-  name.vb: GetItem(Object)
-  fullName: AngeliA.ItemSystem.GetItem(object)
-  fullName.vb: AngeliA.ItemSystem.GetItem(Object)
-  nameWithType: ItemSystem.GetItem(object)
-  nameWithType.vb: ItemSystem.GetItem(Object)
 - uid: AngeliA.ItemSystem.GetItem*
   name: GetItem
   href: api/AngeliA.ItemSystem.html#AngeliA_ItemSystem_GetItem_
@@ -59855,19 +59772,6 @@ references:
   commentId: F:AngeliA.PoseAnimation.Movement
   fullName: AngeliA.PoseAnimation.Movement
   nameWithType: PoseAnimation.Movement
-- uid: AngeliA.PoseAnimation.OnGameInitialize
-  name: OnGameInitialize()
-  href: api/AngeliA.PoseAnimation.html#AngeliA_PoseAnimation_OnGameInitialize
-  commentId: M:AngeliA.PoseAnimation.OnGameInitialize
-  fullName: AngeliA.PoseAnimation.OnGameInitialize()
-  nameWithType: PoseAnimation.OnGameInitialize()
-- uid: AngeliA.PoseAnimation.OnGameInitialize*
-  name: OnGameInitialize
-  href: api/AngeliA.PoseAnimation.html#AngeliA_PoseAnimation_OnGameInitialize_
-  commentId: Overload:AngeliA.PoseAnimation.OnGameInitialize
-  isSpec: "True"
-  fullName: AngeliA.PoseAnimation.OnGameInitialize
-  nameWithType: PoseAnimation.OnGameInitialize
 - uid: AngeliA.PoseAnimation.POSE_Z_HAND
   name: POSE_Z_HAND
   href: api/AngeliA.PoseAnimation.html#AngeliA_PoseAnimation_POSE_Z_HAND
@@ -59957,19 +59861,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.PoseAnimation.ResetShoulderAndUpperArmPos
   nameWithType: PoseAnimation.ResetShoulderAndUpperArmPos
-- uid: AngeliA.PoseAnimation.SetAsAnimating(AngeliA.PoseCharacterRenderer)
-  name: SetAsAnimating(PoseCharacterRenderer)
-  href: api/AngeliA.PoseAnimation.html#AngeliA_PoseAnimation_SetAsAnimating_AngeliA_PoseCharacterRenderer_
-  commentId: M:AngeliA.PoseAnimation.SetAsAnimating(AngeliA.PoseCharacterRenderer)
-  fullName: AngeliA.PoseAnimation.SetAsAnimating(AngeliA.PoseCharacterRenderer)
-  nameWithType: PoseAnimation.SetAsAnimating(PoseCharacterRenderer)
-- uid: AngeliA.PoseAnimation.SetAsAnimating*
-  name: SetAsAnimating
-  href: api/AngeliA.PoseAnimation.html#AngeliA_PoseAnimation_SetAsAnimating_
-  commentId: Overload:AngeliA.PoseAnimation.SetAsAnimating
-  isSpec: "True"
-  fullName: AngeliA.PoseAnimation.SetAsAnimating
-  nameWithType: PoseAnimation.SetAsAnimating
 - uid: AngeliA.PoseAnimation.ShoulderL
   name: ShoulderL
   href: api/AngeliA.PoseAnimation.html#AngeliA_PoseAnimation_ShoulderL
@@ -64197,19 +64088,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.SavingSystem.IsDirty
   nameWithType: SavingSystem.IsDirty
-- uid: AngeliA.SavingSystem.LoadFromFile
-  name: LoadFromFile()
-  href: api/AngeliA.SavingSystem.html#AngeliA_SavingSystem_LoadFromFile
-  commentId: M:AngeliA.SavingSystem.LoadFromFile
-  fullName: AngeliA.SavingSystem.LoadFromFile()
-  nameWithType: SavingSystem.LoadFromFile()
-- uid: AngeliA.SavingSystem.LoadFromFile*
-  name: LoadFromFile
-  href: api/AngeliA.SavingSystem.html#AngeliA_SavingSystem_LoadFromFile_
-  commentId: Overload:AngeliA.SavingSystem.LoadFromFile
-  isSpec: "True"
-  fullName: AngeliA.SavingSystem.LoadFromFile
-  nameWithType: SavingSystem.LoadFromFile
 - uid: AngeliA.SavingSystem.PoolReady
   name: PoolReady
   href: api/AngeliA.SavingSystem.html#AngeliA_SavingSystem_PoolReady
@@ -64236,19 +64114,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.SavingSystem.PoolVersion
   nameWithType: SavingSystem.PoolVersion
-- uid: AngeliA.SavingSystem.SaveToFile
-  name: SaveToFile()
-  href: api/AngeliA.SavingSystem.html#AngeliA_SavingSystem_SaveToFile
-  commentId: M:AngeliA.SavingSystem.SaveToFile
-  fullName: AngeliA.SavingSystem.SaveToFile()
-  nameWithType: SavingSystem.SaveToFile()
-- uid: AngeliA.SavingSystem.SaveToFile*
-  name: SaveToFile
-  href: api/AngeliA.SavingSystem.html#AngeliA_SavingSystem_SaveToFile_
-  commentId: Overload:AngeliA.SavingSystem.SaveToFile
-  isSpec: "True"
-  fullName: AngeliA.SavingSystem.SaveToFile
-  nameWithType: SavingSystem.SaveToFile
 - uid: AngeliA.Saving`1
   name: Saving<T>
   href: api/AngeliA.Saving-1.html
@@ -64466,19 +64331,6 @@ references:
   commentId: F:AngeliA.Sheet.AtlasPool
   fullName: AngeliA.Sheet.AtlasPool
   nameWithType: Sheet.AtlasPool
-- uid: AngeliA.Sheet.CalculateExtraData
-  name: CalculateExtraData()
-  href: api/AngeliA.Sheet.html#AngeliA_Sheet_CalculateExtraData
-  commentId: M:AngeliA.Sheet.CalculateExtraData
-  fullName: AngeliA.Sheet.CalculateExtraData()
-  nameWithType: Sheet.CalculateExtraData()
-- uid: AngeliA.Sheet.CalculateExtraData*
-  name: CalculateExtraData
-  href: api/AngeliA.Sheet.html#AngeliA_Sheet_CalculateExtraData_
-  commentId: Overload:AngeliA.Sheet.CalculateExtraData
-  isSpec: "True"
-  fullName: AngeliA.Sheet.CalculateExtraData
-  nameWithType: Sheet.CalculateExtraData
 - uid: AngeliA.Sheet.Clear
   name: Clear()
   href: api/AngeliA.Sheet.html#AngeliA_Sheet_Clear
@@ -64677,22 +64529,22 @@ references:
   isSpec: "True"
   fullName: AngeliA.Sheet.MoveAtlas
   nameWithType: Sheet.MoveAtlas
-- uid: AngeliA.Sheet.RemoveAllAtlasAndAllSpritesInsideExcept(System.Int32)
-  name: RemoveAllAtlasAndAllSpritesInsideExcept(int)
-  href: api/AngeliA.Sheet.html#AngeliA_Sheet_RemoveAllAtlasAndAllSpritesInsideExcept_System_Int32_
-  commentId: M:AngeliA.Sheet.RemoveAllAtlasAndAllSpritesInsideExcept(System.Int32)
-  name.vb: RemoveAllAtlasAndAllSpritesInsideExcept(Integer)
-  fullName: AngeliA.Sheet.RemoveAllAtlasAndAllSpritesInsideExcept(int)
-  fullName.vb: AngeliA.Sheet.RemoveAllAtlasAndAllSpritesInsideExcept(Integer)
-  nameWithType: Sheet.RemoveAllAtlasAndAllSpritesInsideExcept(int)
-  nameWithType.vb: Sheet.RemoveAllAtlasAndAllSpritesInsideExcept(Integer)
-- uid: AngeliA.Sheet.RemoveAllAtlasAndAllSpritesInsideExcept*
-  name: RemoveAllAtlasAndAllSpritesInsideExcept
-  href: api/AngeliA.Sheet.html#AngeliA_Sheet_RemoveAllAtlasAndAllSpritesInsideExcept_
-  commentId: Overload:AngeliA.Sheet.RemoveAllAtlasAndAllSpritesInsideExcept
+- uid: AngeliA.Sheet.RemoveAllAtlasAndSpritesInsideExcept(System.Int32)
+  name: RemoveAllAtlasAndSpritesInsideExcept(int)
+  href: api/AngeliA.Sheet.html#AngeliA_Sheet_RemoveAllAtlasAndSpritesInsideExcept_System_Int32_
+  commentId: M:AngeliA.Sheet.RemoveAllAtlasAndSpritesInsideExcept(System.Int32)
+  name.vb: RemoveAllAtlasAndSpritesInsideExcept(Integer)
+  fullName: AngeliA.Sheet.RemoveAllAtlasAndSpritesInsideExcept(int)
+  fullName.vb: AngeliA.Sheet.RemoveAllAtlasAndSpritesInsideExcept(Integer)
+  nameWithType: Sheet.RemoveAllAtlasAndSpritesInsideExcept(int)
+  nameWithType.vb: Sheet.RemoveAllAtlasAndSpritesInsideExcept(Integer)
+- uid: AngeliA.Sheet.RemoveAllAtlasAndSpritesInsideExcept*
+  name: RemoveAllAtlasAndSpritesInsideExcept
+  href: api/AngeliA.Sheet.html#AngeliA_Sheet_RemoveAllAtlasAndSpritesInsideExcept_
+  commentId: Overload:AngeliA.Sheet.RemoveAllAtlasAndSpritesInsideExcept
   isSpec: "True"
-  fullName: AngeliA.Sheet.RemoveAllAtlasAndAllSpritesInsideExcept
-  nameWithType: Sheet.RemoveAllAtlasAndAllSpritesInsideExcept
+  fullName: AngeliA.Sheet.RemoveAllAtlasAndSpritesInsideExcept
+  nameWithType: Sheet.RemoveAllAtlasAndSpritesInsideExcept
 - uid: AngeliA.Sheet.RemoveAtlasAndAllSpritesInside(System.Int32)
   name: RemoveAtlasAndAllSpritesInside(int)
   href: api/AngeliA.Sheet.html#AngeliA_Sheet_RemoveAtlasAndAllSpritesInside_System_Int32_

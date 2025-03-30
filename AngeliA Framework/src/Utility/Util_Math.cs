@@ -259,6 +259,42 @@ public static partial class Util {
 	}
 
 
+	// Vector
+	public static Float2 ReflectVector2 (Float2 inDirection, Float2 inNormal) {
+		float num = -2f * Float2.Dot(inNormal, inDirection);
+		return new Float2(num * inNormal.x + inDirection.x, num * inNormal.y + inDirection.y);
+	}
+
+	public static Float3 CrossVector3 (Float3 lhs, Float3 rhs) => new(
+		lhs.y * rhs.z - lhs.z * rhs.y,
+		lhs.z * rhs.x - lhs.x * rhs.z,
+		lhs.x * rhs.y - lhs.y * rhs.x
+	);
+
+	public static Float3 ReflectVector3 (Float3 inDirection, Float3 inNormal) {
+		float num = -2f * Float3.Dot(inNormal, inDirection);
+		return new Float3(num * inNormal.x + inDirection.x, num * inNormal.y + inDirection.y, num * inNormal.z + inDirection.z);
+	}
+
+	public static Float3 ProjectVector3 (Float3 vector, Float3 onNormal) {
+		float num = Float3.Dot(onNormal, onNormal);
+		if (num < Epsilon) {
+			return Float3.Zero;
+		}
+		float num2 = Float3.Dot(vector, onNormal);
+		return new Float3(onNormal.x * num2 / num, onNormal.y * num2 / num, onNormal.z * num2 / num);
+	}
+
+	public static Float3 ProjectOnPlaneVector3 (Float3 vector, Float3 planeNormal) {
+		float num = Float3.Dot(planeNormal, planeNormal);
+		if (num < Epsilon) {
+			return vector;
+		}
+
+		float num2 = Float3.Dot(vector, planeNormal);
+		return new Float3(vector.x - planeNormal.x * num2 / num, vector.y - planeNormal.y * num2 / num, vector.z - planeNormal.z * num2 / num);
+	}
+
 	// Line
 	public static IEnumerable<Int2> DrawLine_DDA (int x0, int y0, int x1, int y1) {
 

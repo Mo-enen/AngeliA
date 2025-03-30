@@ -186,9 +186,9 @@ public class ControlHintUI : EntityUI {
 			var nDir = Input.Direction;
 			Renderer.Draw(
 				Const.PIXEL, DPadCenterPos.x + x + screenRect.x, DPadCenterPos.y + y + screenRect.y,
-				500, 0, (int)Float3.SignedAngle(Float3.up, (Float2)nDir, Float3.back),
+				500, 0, (int)Float3.SignedAngle(Float3.Up, (Float2)nDir, Float3.Back),
 				Unify(3),
-				Unify(nDir.magnitude.RoundToInt() / 50),
+				Unify(nDir.Magnitude.RoundToInt() / 50),
 				DirectionTint
 			);
 		}

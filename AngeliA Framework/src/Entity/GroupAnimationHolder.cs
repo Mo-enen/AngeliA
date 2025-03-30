@@ -78,7 +78,7 @@ public class GroupAnimationHolder : Entity {
 
 		// Draw Sprite
 		if (sprite != null) {
-			if (sprite.GlobalBorder == Int4.zero) {
+			if (sprite.GlobalBorder == Int4.Zero) {
 				cell = Renderer.Draw(
 					sprite, X, Y, PivotX, PivotY, 0, Width, Height, Tint, RenderingZ
 				);

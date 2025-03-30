@@ -369,7 +369,7 @@ public partial class MapEditor {
 			thickness, tint
 		);
 		static void DrawLine (int fromX, int fromY, int toX, int toY, int thickness, Color32 tint) {
-			float angle = Float2.SignedAngle(Float2.up, new Float2(toX - fromX, toY - fromY));
+			float angle = Float2.SignedAngle(Float2.Up, new Float2(toX - fromX, toY - fromY));
 			var cell = Renderer.Draw(
 				Const.PIXEL, fromX, fromY, 500, 0, 0,
 				thickness, Util.DistanceInt(fromX, fromY, toX, toY),

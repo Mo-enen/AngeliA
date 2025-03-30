@@ -718,7 +718,7 @@ internal partial class PixelEditor : WindowUI {
 			// Ctrl + Z
 			if (Input.KeyboardDown(KeyboardKey.Z)) {
 				TryApplyPixelBuffer(ignoreUndoStep: true);
-				PixelBufferSize = Int2.zero;
+				PixelBufferSize = Int2.Zero;
 				PixelSelectionPixelRect = default;
 				Undo.Undo();
 				RefreshSpriteInputContent();
@@ -727,7 +727,7 @@ internal partial class PixelEditor : WindowUI {
 			// Ctrl + Y
 			if (Input.KeyboardDown(KeyboardKey.Y)) {
 				TryApplyPixelBuffer(ignoreUndoStep: true);
-				PixelBufferSize = Int2.zero;
+				PixelBufferSize = Int2.Zero;
 				PixelSelectionPixelRect = default;
 				Undo.Redo();
 				RefreshSpriteInputContent();

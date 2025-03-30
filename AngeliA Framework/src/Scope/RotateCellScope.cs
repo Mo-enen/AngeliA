@@ -3,10 +3,6 @@ namespace AngeliA;
 /// <summary>
 /// Scope that make rendering cells rotate
 /// </summary>
-/// <param name="rotation"></param>
-/// <param name="pointX">Orientation point X in global space</param>
-/// <param name="pointY">Orientation point Y in global space</param>
-/// <param name="keepOriginalRotation">True if only change the position of cells (not rotation)</param>
 /// <example><code>
 /// using AngeliA;
 /// 
@@ -38,14 +34,34 @@ namespace AngeliA;
 /// 
 /// }
 /// </code></example>	
-public readonly struct RotateCellScope (int rotation, int pointX = int.MinValue, int pointY = int.MinValue, bool keepOriginalRotation = false) : System.IDisposable {
+public readonly struct RotateCellScope : System.IDisposable {
+
 	private readonly int LayerIndex = Renderer.CurrentLayerIndex;
 	private readonly int UsedCount = Renderer.GetUsedCellCount();
-	private readonly int Rotation = rotation;
-	private readonly int PointX = pointX;
-	private readonly int PointY = pointY;
-	private readonly bool KeepRotation = keepOriginalRotation;
+	private readonly int Rotation;
+	private readonly int PointX;
+	private readonly int PointY;
+	private readonly bool KeepRotation;
+
+	/// <summary>
+	/// Scope that make rendering cells rotate
+	/// </summary>
+	/// <param name="rotation"></param>
+	/// <param name="pointX">Orientation point X in global space</param>
+	/// <param name="pointY">Orientation point Y in global space</param>
+	/// <param name="keepOriginalRotation">True if only change the position of cells (not rotation)</param>
+	public RotateCellScope (int rotation, int pointX = int.MinValue, int pointY = int.MinValue, bool keepOriginalRotation = false) {
+		Rotation = rotation;
+		PointX = pointX;
+		PointY = pointY;
+		KeepRotation = keepOriginalRotation;
+	}
+
+	/// <summary>
+	/// Scope that make rendering cells rotate
+	/// </summary>
 	public RotateCellScope () : this(0, int.MinValue, int.MinValue, false) { }
+
 	public readonly void Dispose () {
 		if (!Renderer.GetCells(LayerIndex, out var cells, out int count)) return;
 		if (PointX != int.MinValue && PointY != int.MinValue && Rotation == 0) return;
@@ -65,4 +81,5 @@ public readonly struct RotateCellScope (int rotation, int pointX = int.MinValue,
 			}
 		}
 	}
+
 }

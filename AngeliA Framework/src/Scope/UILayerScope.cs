@@ -1,5 +1,6 @@
 ﻿namespace AngeliA;
 
+
 /// <summary>
 /// Scope that make rendering cells inside into UI layer
 /// </summary>
@@ -26,7 +27,13 @@
 public readonly struct UILayerScope : System.IDisposable {
 	private readonly int OldLayer;
 	private readonly bool IgnoreSorting;
+	/// <summary>
+	/// Scope that make rendering cells inside into UI layer
+	/// </summary>
 	public UILayerScope () : this(false) { }
+	/// <summary>
+	/// Scope that make rendering cells inside into UI layer
+	/// </summary>
 	public UILayerScope (bool ignoreSorting) {
 		OldLayer = Renderer.CurrentLayerIndex;
 		IgnoreSorting = ignoreSorting;

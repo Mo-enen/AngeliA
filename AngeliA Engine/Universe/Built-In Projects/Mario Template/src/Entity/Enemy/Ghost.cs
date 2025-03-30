@@ -37,7 +37,7 @@ public class Ghost : Enemy {
 			IsShy = player.FacingRight != CurrentFacingRight;
 
 			// Movement
-			var targetVel = IsShy ? Int2.zero : (((Float2)(player.Center - Center)).normalized * 8).RoundToInt();
+			var targetVel = IsShy ? Int2.Zero : (((Float2)(player.Center - Center)).Normalized * 8).RoundToInt();
 			CurrentVelocity.x = Util.LerpUnclamped(CurrentVelocity.x, targetVel.x, 0.1f);
 			CurrentVelocity.y = Util.LerpUnclamped(CurrentVelocity.y, targetVel.y, 0.1f);
 			XY += CurrentVelocity.RoundToInt();

@@ -3,7 +3,6 @@
 /// <summary>
 /// Scope to clamp rendering cell into given rect position
 /// </summary>
-/// <param name="rect">Rect position in global space</param>
 /// <example><code>
 /// using AngeliA;
 /// 
@@ -34,9 +33,19 @@
 /// 
 /// }
 /// </code></example>
-public readonly struct ClampCellsScope (IRect rect) : System.IDisposable {
+public readonly struct ClampCellsScope : System.IDisposable {
 	private readonly int LayerIndex = Renderer.CurrentLayerIndex;
 	private readonly int UsedCount = Renderer.GetUsedCellCount();
+	private readonly IRect rect;
+
+	/// <summary>
+	/// Scope to clamp rendering cell into given rect position
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	public ClampCellsScope (IRect rect) {
+		this.rect = rect;
+	}
+
 	public readonly void Dispose () {
 		Renderer.ClampCells(LayerIndex, rect, UsedCount);
 	}

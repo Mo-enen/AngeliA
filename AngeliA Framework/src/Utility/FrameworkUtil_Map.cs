@@ -484,7 +484,7 @@ public static partial class FrameworkUtil {
 
 
 	public static bool SearchlightBlockCheck (IBlockSquad squad, Int3 startUnitPoint, Direction8? direction, int unitDistance = Const.MAP, bool reverse = false) {
-		(int deltaX, int deltaY) = direction.HasValue ? direction.Value.Normal() : Int2.zero;
+		(int deltaX, int deltaY) = direction.HasValue ? direction.Value.Normal() : Int2.Zero;
 		int z = startUnitPoint.z;
 		if (deltaX == 0 && deltaY == 0) {
 			// No Direction
@@ -653,23 +653,23 @@ public static partial class FrameworkUtil {
 
 	public static void TryEjectOutsideGround (Rigidbody rig, int collisionMask = 0, int unitRange = 2, int speed = 32) {
 		var centerPos = rig.Rect.CenterInt();
-		var targetDir = Int2.zero;
+		var targetDir = Int2.Zero;
 		collisionMask = collisionMask == 0 ? rig.CollisionMask : collisionMask;
-		if (CheckForDir(centerPos, Int2.up, unitRange, collisionMask)) {
+		if (CheckForDir(centerPos, Int2.Up, unitRange, collisionMask)) {
 			// Up
-			targetDir = Int2.up;
-		} else if (CheckForDir(centerPos, Int2.right, unitRange, collisionMask)) {
+			targetDir = Int2.Up;
+		} else if (CheckForDir(centerPos, Int2.Right, unitRange, collisionMask)) {
 			// Right
-			targetDir = Int2.right;
-		} else if (CheckForDir(centerPos, Int2.left, unitRange, collisionMask)) {
+			targetDir = Int2.Right;
+		} else if (CheckForDir(centerPos, Int2.Left, unitRange, collisionMask)) {
 			// Left
-			targetDir = Int2.left;
-		} else if (CheckForDir(centerPos, Int2.down, unitRange, collisionMask)) {
+			targetDir = Int2.Left;
+		} else if (CheckForDir(centerPos, Int2.Down, unitRange, collisionMask)) {
 			// Down
-			targetDir = Int2.down;
+			targetDir = Int2.Down;
 		}
 		// Perform Eject
-		if (targetDir != Int2.zero) {
+		if (targetDir != Int2.Zero) {
 			rig.PerformMove(targetDir.x * speed, targetDir.y * speed, ignoreCarry: true);
 		}
 		// Func

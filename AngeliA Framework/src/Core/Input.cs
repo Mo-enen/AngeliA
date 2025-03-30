@@ -635,7 +635,7 @@ public static class Input {
 		if (gamepadAvailable) {
 			var value = Game.GamepadLeftStickDirection;
 			direction = new Float2(value.x, value.y);
-			magnitude = direction.magnitude;
+			magnitude = direction.Magnitude;
 		}
 		if (magnitude < 0.05f) {
 			direction.x = (int)DirectionX;
@@ -644,7 +644,7 @@ public static class Input {
 		} else {
 			UsingLeftStick = true;
 		}
-		_Direction = (1000f * magnitude * direction.normalized).FloorToInt();
+		_Direction = (1000f * magnitude * direction.Normalized).FloorToInt();
 
 	}
 

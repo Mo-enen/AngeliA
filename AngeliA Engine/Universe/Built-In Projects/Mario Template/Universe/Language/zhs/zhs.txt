@@ -1,5 +1,4 @@
-﻿UI.EngineSetting.ShowOutBoundsMark:标记画布外的图块
-AtlasType.Background:背景
+﻿AtlasType.Background:背景
 AtlasType.General:通用
 AtlasType.Level:关卡
 ConsoleWindow:终 端
@@ -272,7 +271,7 @@ Tip.Rule.Mode:平铺模式 （相同/不同）或（任何/空）
 Tip.Rule.NotSame:不同块
 Tip.Rule.Same:相同块
 Tip.Rule.Whatever:无视
-Tip.Run:在新窗口中以调试模式运行游戏
+Tip.Run:在新窗口中以发布模式运行游戏
 Tip.ShowAxis:显示轴标
 Tip.ShowCheckerBoard:显示棋盘格
 Tip.SizeX:宽度
@@ -355,6 +354,7 @@ UI.EngineSetting.MapEditor_ShowGizmos:显示网格
 UI.EngineSetting.MapEditor_ShowState:显示状态数字
 UI.EngineSetting.OpenLastProjectOnStart:打开上次的工程
 UI.EngineSetting.ShowLogTime:显示输出时间
+UI.EngineSetting.ShowOutBoundsMark:标记画布外的图块
 UI.EngineSetting.ShowTagPreview:显示标签预览
 UI.EngineSetting.SolidPaintingPreview:实心的绘制预览
 UI.EngineSetting.Theme:主题

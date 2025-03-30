@@ -24,8 +24,8 @@ internal partial class PixelEditor {
 	private readonly Color32[] PixelCopyBuffer = new Color32[MAX_SELECTION_SIZE * MAX_SELECTION_SIZE];
 	private readonly Queue<Int2> BucketCacheQueue = new();
 	private readonly HashSet<Int2> BucketCacheHash = [];
-	private Int2 PixelBufferSize = Int2.zero;
-	private Int2 PixelCopyBufferSize = Int2.zero;
+	private Int2 PixelBufferSize = Int2.Zero;
+	private Int2 PixelCopyBufferSize = Int2.Zero;
 	private Int2 MovePixelPixOffset;
 	private IRect DraggingPixelRect = default;
 	private IRect PixelSelectionPixelRect = default;
@@ -96,10 +96,10 @@ internal partial class PixelEditor {
 					MovePixelPixOffset = MousePixelPos - PixelSelectionPixelRect.position;
 					ClearSpriteSelection();
 					var oldSelectionRect = PixelSelectionPixelRect;
-					if (PixelBufferSize != Int2.zero && HoldingCtrl) {
+					if (PixelBufferSize != Int2.Zero && HoldingCtrl) {
 						TryApplyPixelBuffer(ignoreUndoStep: true);
 					}
-					if (PixelBufferSize == Int2.zero) {
+					if (PixelBufferSize == Int2.Zero) {
 						SetSelectingPixelAsBuffer(removePixels: !HoldingCtrl, ignoreUndoStep: true);
 					}
 					PixelSelectionPixelRect = oldSelectionRect;
@@ -209,7 +209,7 @@ internal partial class PixelEditor {
 								DraggingPixelRect.width,
 								DraggingPixelRect.height
 							)) {
-								PaintPixelRect(new IRect(point, Int2.one), PaintingColor, holo: false, out painted);
+								PaintPixelRect(new IRect(point, Int2.One), PaintingColor, holo: false, out painted);
 							}
 						} else {
 							foreach (var rect in Util.DrawFilledEllipse_Patrick(
@@ -278,7 +278,7 @@ internal partial class PixelEditor {
 				}
 				if (anyOverlaps) {
 					PixelSelectionPixelRect = DraggingPixelRect;
-					PixelBufferSize = Int2.zero;
+					PixelBufferSize = Int2.Zero;
 					if (DragChanged) {
 						DrawDottedFrame(Pixel_to_Stage(DraggingPixelRect), GizmosThickness);
 					}
@@ -755,7 +755,7 @@ internal partial class PixelEditor {
 					);
 				}
 			} else {
-				sprite.GlobalBorder = Int4.zero;
+				sprite.GlobalBorder = Int4.Zero;
 			}
 			if (oldBorder != sprite.GlobalBorder) {
 				changed = true;
@@ -866,7 +866,7 @@ internal partial class PixelEditor {
 	private void ClearPixelSelectionRect (bool ignoreUndoStep = false) {
 		TryApplyPixelBuffer(ignoreUndoStep);
 		PixelSelectionPixelRect = default;
-		PixelBufferSize = Int2.zero;
+		PixelBufferSize = Int2.Zero;
 		ColorAdjustData = (0, 0, 0, 0);
 	}
 
@@ -887,7 +887,7 @@ internal partial class PixelEditor {
 		if (PixelSelectionPixelRect == default) return;
 
 		if (PixelBufferSize.Area > 0 && PixelSelectionPixelRect != default) {
-			PixelBufferSize = Int2.zero;
+			PixelBufferSize = Int2.Zero;
 			PixelSelectionPixelRect = default;
 			SetDirty();
 			return;
@@ -929,13 +929,13 @@ internal partial class PixelEditor {
 
 		SetDirty();
 		PixelSelectionPixelRect = default;
-		PixelBufferSize = Int2.zero;
+		PixelBufferSize = Int2.Zero;
 	}
 
 
 	private void CopyCutPixel (bool cut) {
 		if (PixelSelectionPixelRect == default || PixelSelectionPixelRect.width * PixelSelectionPixelRect.height <= 0) return;
-		if (PixelBufferSize == Int2.zero) {
+		if (PixelBufferSize == Int2.Zero) {
 			// From Sprite
 			PixelCopyBufferSize = PixelSelectionPixelRect.size;
 			PixelToBuffer(PixelCopyBuffer, PixelCopyBufferSize, PixelSelectionPixelRect, false);

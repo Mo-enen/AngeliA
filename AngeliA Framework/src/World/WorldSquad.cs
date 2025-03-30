@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Core system that renders the level/background blocks and load the world data into stage
+/// </summary>
 public sealed class WorldSquad : IBlockSquad {
 
 
@@ -12,9 +15,21 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	// Api
+	/// <summary>
+	/// True if the system is required
+	/// </summary>
 	public static bool Enable { get; set; } = true;
+	/// <summary>
+	/// True if the system is ready to use
+	/// </summary>
 	public static bool SquadReady { get; private set; } = false;
+	/// <summary>
+	/// Squad that handles the front side map
+	/// </summary>
 	public static WorldSquad Front { get; set; } = null;
+	/// <summary>
+	/// Squad that handles the behind side map
+	/// </summary>
 	public static WorldSquad Behind { get; set; } = null;
 
 	// Data
@@ -101,11 +116,11 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	[OnGameRestart]
-	public static void OnGameRestart () => Enable = true;
+	internal static void OnGameRestart () => Enable = true;
 
 
 	[OnGameUpdate(-64)]
-	public static void OnGameUpdate () {
+	internal static void OnGameUpdate () {
 		if (!Enable) return;
 		// Render
 		Front.RenderCurrentFrame();
@@ -125,31 +140,77 @@ public sealed class WorldSquad : IBlockSquad {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Reset the internal world instance pool
+	/// </summary>
 	public static void ClearStreamWorldPool () => Stream?.ClearWorldPool();
 
 
+	/// <summary>
+	/// Make all existing user maps require reload from built-in maps without deleting the user map folder
+	/// </summary>
 	public static void ResetStreamFailbackCopying () => Stream?.ResetFailbackCopying();
 
 
+	/// <summary>
+	/// True if world exists at given world position
+	/// </summary>
+	/// <param name="worldPos">In world space (1 world space = 256 * 128 global space)</param>
 	public bool WorldExists (Int3 worldPos) => Stream.WorldExists(worldPos);
 
 
 	// Get Block
+	/// <summary>
+	/// Get all ID of blocks at given unit position
+	/// </summary>
+	/// <param name="unitX">Position in unit space</param>
+	/// <param name="unitY">Position in unit space</param>
+	/// <param name="z">Z position</param>
 	public (int level, int bg, int entity, int element) GetAllBlocksAt (int unitX, int unitY, int z) => Stream.GetAllBlocksAt(unitX, unitY, z);
 
 
+	/// <summary>
+	/// Get block ID at given unit position
+	/// </summary>
+	/// <param name="unitX">Position in unit space</param>
+	/// <param name="unitY">Position in unit space</param>
+	/// <param name="type">Type of the block</param>
 	public int GetBlockAt (int unitX, int unitY, BlockType type) => Stream.GetBlockAt(unitX, unitY, Stage.ViewZ, type);
+
+
+	/// <summary>
+	/// Get block ID at given unit position
+	/// </summary>
+	/// <param name="unitX">Position in unit space</param>
+	/// <param name="unitY">Position in unit space</param>
+	/// <param name="z">Position Z</param>
+	/// <param name="type">Type of the block</param>
 	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) => Stream.GetBlockAt(unitX, unitY, z, type);
 
 
 	// Set Block
+	/// <summary>
+	/// Set block ID at given unit position
+	/// </summary>
+	/// <param name="unitX">Position in unit space</param>
+	/// <param name="unitY">Position in unit space</param>
+	/// <param name="z">Position Z</param>
+	/// <param name="type">Type of the block</param>
+	/// <param name="newID">ID of the block</param>
 	public void SetBlockAt (int unitX, int unitY, int z, BlockType type, int newID) => Stream.SetBlockAt(unitX, unitY, z, type, newID);
 
 
 	// Redirect
+	/// <summary>
+	/// Add a pair of redirect ID to make all "fromID" block rendered with "toID"
+	/// </summary>
 	public static void AddBlockRedirect (int fromID, int toID) => BlockRedirect[fromID] = toID;
 
 
+	/// <summary>
+	/// Remove the redirect pair
+	/// </summary>
+	/// <returns>True if the pair removed</returns>
 	public static bool RemoveBlockRedirect (int fromID) => BlockRedirect.Remove(fromID);
 
 

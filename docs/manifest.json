@@ -106,7 +106,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.AngeSprite",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.AngeSprite.yml\" sourcestartlinenumber=\"1\">Artwork sprite data for rendering the game</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -148,7 +148,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Atlas",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Atlas.yml\" sourcestartlinenumber=\"1\">Segment container of sprites inside artwork sheet</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -162,7 +162,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.AtlasState",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.AtlasState.yml\" sourcestartlinenumber=\"1\">Internal data used for display folder layout</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -176,7 +176,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.AtlasType",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.AtlasType.yml\" sourcestartlinenumber=\"1\">Type of sprite atlas</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -190,7 +190,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.AudioCode",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.AudioCode.yml\" sourcestartlinenumber=\"1\">Quick setup for an audio ID</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -666,7 +666,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BodySetItem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.BodySetItem.yml\" sourcestartlinenumber=\"1\">Represent an item that holds a whole set of bodypart for pose-style characters to apply</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -694,7 +694,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BuffItem<B>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.BuffItem-1.yml\" sourcestartlinenumber=\"1\">Item that gives the holder a buff</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -708,7 +708,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BuffItem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.BuffItem.yml\" sourcestartlinenumber=\"1\">Item that gives the holder a buff</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -806,7 +806,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.CellZScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.CellZScope.yml\" sourcestartlinenumber=\"1\">Scope to change rendering cell z value</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1002,7 +1002,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.CharacterPose",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.CharacterPose.yml\" sourcestartlinenumber=\"1\">Complete pose infomation at one moment for a pose-style character</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1114,7 +1114,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ClampCellsScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ClampCellsScope.yml\" sourcestartlinenumber=\"1\">Scope to clamp rendering cell into given rect position</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1142,7 +1142,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ClothItem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ClothItem.yml\" sourcestartlinenumber=\"1\">Represent an item that holds a cloth for pose-style character to wear. Unlike body armor, cloth do not occupy equipment slot.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1352,7 +1352,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.DefaultLayerScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.DefaultLayerScope.yml\" sourcestartlinenumber=\"1\">Scope that makes renderer draw into default layer</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1520,7 +1520,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.DynamicClampCellScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.DynamicClampCellScope.yml\" sourcestartlinenumber=\"1\">Scope that clamp rendering cells inside given range by changing the size scale of the content</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1856,7 +1856,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.EnvironmentShadowScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.EnvironmentShadowScope.yml\" sourcestartlinenumber=\"1\">Scope that draw shadows for rendering cells inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1870,7 +1870,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Equipment",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Equipment.yml\" sourcestartlinenumber=\"1\">Represent an item that can be equip into a slot for a character</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1884,7 +1884,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.EquipmentType",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.EquipmentType.yml\" sourcestartlinenumber=\"1\">Represent the type of the equipment</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2080,7 +2080,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.FontScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.FontScope.yml\" sourcestartlinenumber=\"1\">Scope that makes labels inside display with given font</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2094,7 +2094,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Food",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Food.yml\" sourcestartlinenumber=\"1\">Item that represent food</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2220,7 +2220,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GUIBodyColorScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GUIBodyColorScope.yml\" sourcestartlinenumber=\"1\">Scope that change the body color of GUI element inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2234,7 +2234,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GUIColorScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GUIColorScope.yml\" sourcestartlinenumber=\"1\">Scope that change the color of GUI element inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2248,7 +2248,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GUIContentColorScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GUIContentColorScope.yml\" sourcestartlinenumber=\"1\">Scope that change the content color of GUI element inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2262,7 +2262,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GUIEnableScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GUIEnableScope.yml\" sourcestartlinenumber=\"1\">Scope that set enable of GUI elements inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2276,7 +2276,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GUIHorizontalScrollScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GUIHorizontalScrollScope.yml\" sourcestartlinenumber=\"1\">Scope that make GUI elements inside scrolls</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2290,7 +2290,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GUIInteractableScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GUIInteractableScope.yml\" sourcestartlinenumber=\"1\">Scope that set interactable of GUI elements inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2304,7 +2304,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GUILabelWidthScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GUILabelWidthScope.yml\" sourcestartlinenumber=\"1\">Scope that set internal label width of GUI elements inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2318,7 +2318,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GUIScrollScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GUIScrollScope.yml\" sourcestartlinenumber=\"1\">Scope that make GUI elements inside scrolls</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2346,7 +2346,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GUISkinScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GUISkinScope.yml\" sourcestartlinenumber=\"1\">Scope that change the skin of the GUI elements inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2388,7 +2388,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GUIVerticalScrollScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GUIVerticalScrollScope.yml\" sourcestartlinenumber=\"1\">Scope that make GUI elements inside scrolls</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2598,7 +2598,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.HandTool",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.HandTool.yml\" sourcestartlinenumber=\"1\">Tool equipment that can be equip in hand slot of a character</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2612,7 +2612,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.HandheldPoseAnimation",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.HandheldPoseAnimation.yml\" sourcestartlinenumber=\"1\">Pose animation which override onto a character for holding a handtool</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2878,7 +2878,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.IProgressiveItem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.IProgressiveItem.yml\" sourcestartlinenumber=\"1\">Interface that makes the item break/repair into other item</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3032,7 +3032,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.IgnoreInputScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.IgnoreInputScope.yml\" sourcestartlinenumber=\"1\">Scope that make GUI elements ignore keyboard or mouse input from user</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3298,7 +3298,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ItemSystem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ItemSystem.yml\" sourcestartlinenumber=\"1\">Core system that handles item related logic</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3368,7 +3368,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.LanguageCode",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.LanguageCode.yml\" sourcestartlinenumber=\"1\">Quick setup for an language system key</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3396,7 +3396,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.LayerScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.LayerScope.yml\" sourcestartlinenumber=\"1\">Scope that make rendering cells inside use given render layer</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6770,7 +6770,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.PoseAnimation",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.PoseAnimation.yml\" sourcestartlinenumber=\"1\">Procedure animation to animate a pose-style character. ⚠Use global single instance from system pool⚠</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7316,7 +7316,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ReverseCellsScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ReverseCellsScope.yml\" sourcestartlinenumber=\"1\">Scope that make rendering cells reverse in sorting order</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7344,7 +7344,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.RotateCellScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.RotateCellScope.yml\" sourcestartlinenumber=\"1\">Scope that make rendering cells rotate</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7372,7 +7372,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Saving<T>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Saving-1.yml\" sourcestartlinenumber=\"1\">Data that auto save into player saving data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7386,7 +7386,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Saving",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Saving.yml\" sourcestartlinenumber=\"1\">Data that auto save into player saving data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7400,7 +7400,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SavingBool",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SavingBool.yml\" sourcestartlinenumber=\"1\">Boolean data that auto save into player saving data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7414,7 +7414,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SavingColor32",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SavingColor32.yml\" sourcestartlinenumber=\"1\">Color data that auto save into player saving data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7428,7 +7428,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SavingColor32NoAlpha",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SavingColor32NoAlpha.yml\" sourcestartlinenumber=\"1\">Color data without alpha value that auto save into player saving data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7442,7 +7442,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SavingHotkey",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SavingHotkey.yml\" sourcestartlinenumber=\"1\">Hotkey data that auto save into player saving data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7456,7 +7456,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SavingInt",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SavingInt.yml\" sourcestartlinenumber=\"1\">Intager data that auto save into player saving data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7470,7 +7470,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SavingLocation",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SavingLocation.yml\" sourcestartlinenumber=\"1\">Where should the saving data local inside the disk</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7484,7 +7484,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SavingString",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SavingString.yml\" sourcestartlinenumber=\"1\">String data that auto save into player saving data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7498,7 +7498,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SavingSystem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SavingSystem.yml\" sourcestartlinenumber=\"1\">Core system for handle data that auto keeps inside disk.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7526,7 +7526,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Sheet",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Sheet.yml\" sourcestartlinenumber=\"1\">Artwork sheet that holds sprites, sprite groups, atlas and textures data for rendering</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7554,7 +7554,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SheetIndexScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SheetIndexScope.yml\" sourcestartlinenumber=\"1\">Scope that change sheet index of the rendering cells inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7568,7 +7568,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ShiftCellsScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ShiftCellsScope.yml\" sourcestartlinenumber=\"1\">Scope that shift position of the rendering cells inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7624,7 +7624,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SpriteCode",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SpriteCode.yml\" sourcestartlinenumber=\"1\">Quick setup for an artwork sprite</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7638,7 +7638,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SpriteGroup",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SpriteGroup.yml\" sourcestartlinenumber=\"1\">A chain of AngeSprites</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7708,7 +7708,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.TagUtil",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.TagUtil.yml\" sourcestartlinenumber=\"1\">Utility class for tags</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7806,7 +7806,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.UILayerScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.UILayerScope.yml\" sourcestartlinenumber=\"1\">Scope that make rendering cells inside into UI layer</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8074,6 +8074,86 @@
         },
         ".json": {
           "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/BiliBili.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/BiliBili.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Discord.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/Discord.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Icon.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/Icon.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/ScreenshotGameplay.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ScreenshotGameplay.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/ScreenshotMapEditor.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ScreenshotMapEditor.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/ScreenshotPixelEditor.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ScreenshotPixelEditor.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/ScreenshotProject.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ScreenshotProject.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/YouTube.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/YouTube.png"
         }
       },
       "version": ""

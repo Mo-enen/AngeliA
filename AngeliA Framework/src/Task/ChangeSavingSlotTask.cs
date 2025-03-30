@@ -1,4 +1,8 @@
 ﻿namespace AngeliA;
+
+/// <summary>
+/// Task that change player saving slot. Require UserData as slot index.
+/// </summary>
 public class ChangeSavingSlotTask : Task {
 	public static readonly int TYPE_ID = typeof(ChangeSavingSlotTask).AngeHash();
 	public override TaskResult FrameUpdate () {

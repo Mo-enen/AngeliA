@@ -5,11 +5,26 @@ using System.Globalization;
 
 namespace AngeliA;
 
+/// <summary>
+/// Color with float as data
+/// </summary>
 public struct ColorF {
 
+	/// <summary>
+	/// Red channel (0 means no value, 1 means full value)
+	/// </summary>
 	public float r;
+	/// <summary>
+	/// Green channel (0 means no value, 1 means full value)
+	/// </summary>
 	public float g;
+	/// <summary>
+	/// Blue channel (0 means no value, 1 means full value)
+	/// </summary>
 	public float b;
+	/// <summary>
+	/// Alpha channel (0 means no value, 1 means full value)
+	/// </summary>
 	public float a;
 
 	public ColorF (float r, float g, float b, float a = 1f) {
@@ -19,6 +34,12 @@ public struct ColorF {
 		this.a = a.Clamp01();
 	}
 
+	/// <summary>
+	/// Find a color transform between two given colors smoothly
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <param name="t">Representation of the position. 0 means value A, 1 means value B.</param>
 	public static ColorF Lerp (ColorF a, ColorF b, float t) {
 		t = t.Clamp01();
 		return new ColorF(

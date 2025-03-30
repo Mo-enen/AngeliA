@@ -604,7 +604,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (MouseDownOutsideBoundary) goto END;
 
 		// Move
-		var delta = Int2.zero;
+		var delta = Int2.Zero;
 		if (
 			(!Input.MouseMidButtonDown && Input.MouseMidButtonHolding) ||
 			(Input.MouseLeftButtonHolding && CtrlHolding)
@@ -745,16 +745,16 @@ public sealed partial class MapEditor : WindowUI {
 				// Move Selecting Blocks
 				if (SelectionUnitRect.HasValue) {
 					if (Input.KeyboardDownGUI(KeyboardKey.LeftArrow)) {
-						MoveSelection(Int2.left);
+						MoveSelection(Int2.Left);
 					}
 					if (Input.KeyboardDownGUI(KeyboardKey.RightArrow)) {
-						MoveSelection(Int2.right);
+						MoveSelection(Int2.Right);
 					}
 					if (Input.KeyboardDownGUI(KeyboardKey.DownArrow)) {
-						MoveSelection(Int2.down);
+						MoveSelection(Int2.Down);
 					}
 					if (Input.KeyboardDownGUI(KeyboardKey.UpArrow)) {
-						MoveSelection(Int2.up);
+						MoveSelection(Int2.Up);
 					}
 				}
 

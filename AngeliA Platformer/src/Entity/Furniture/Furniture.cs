@@ -21,7 +21,7 @@ public abstract class Furniture : Entity, IBlockEntity {
 	protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
 
 	// Data
-	protected Int4 ColliderBorder = Int4.zero;
+	protected Int4 ColliderBorder = Int4.Zero;
 
 
 	#endregion

@@ -87,8 +87,8 @@ public class RigCallingMessage {
 		var mousePos = Game.MouseScreenPosition;
 		var stickL = Game.GamepadLeftStickDirection;
 		var stickR = Game.GamepadRightStickDirection;
-		int screenLeftPadding = paddingL * Game.ScreenWidth / Renderer.CameraRect.width;
-		int screenRightPadding = paddingR * Game.ScreenWidth / Renderer.CameraRect.width;
+		int screenLeftPadding = paddingL * Game.ScreenWidth / Renderer.CameraRect.width.GreaterOrEquel(1);
+		int screenRightPadding = paddingR * Game.ScreenWidth / Renderer.CameraRect.width.GreaterOrEquel(1);
 		mousePos.x -= screenLeftPadding;
 
 		RequiringWindowIndex = requiringWindowIndex;

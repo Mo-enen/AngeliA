@@ -25,6 +25,9 @@
 /// </code></example>
 public readonly struct DefaultLayerScope : System.IDisposable {
 	private readonly int OldLayer;
+	/// <summary>
+	/// Scope that makes renderer draw into default layer
+	/// </summary>
 	public DefaultLayerScope () {
 		OldLayer = Renderer.CurrentLayerIndex;
 		Renderer.SetLayer(RenderLayer.DEFAULT);

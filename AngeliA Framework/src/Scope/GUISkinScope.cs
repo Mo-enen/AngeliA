@@ -24,10 +24,22 @@
 /// }
 /// </code></example>	
 public readonly struct GUISkinScope : System.IDisposable {
+
 	private readonly GUISkin OldSkin;
+
+	/// <summary>
+	/// Scope that change the skin of the GUI elements inside
+	/// </summary>
+	public GUISkinScope () : this(GUI.Skin) { }
+
+	/// <summary>
+	/// Scope that change the skin of the GUI elements inside
+	/// </summary>
 	public GUISkinScope (GUISkin skin) {
 		OldSkin = GUI.Skin;
 		GUI.Skin = skin;
 	}
+
 	public readonly void Dispose () => GUI.Skin = OldSkin;
+
 }

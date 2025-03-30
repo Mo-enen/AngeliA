@@ -379,7 +379,7 @@ internal partial class PixelEditor {
 
 		// Adjust Logic
 		if (newH != ColorAdjustData.h || newS != ColorAdjustData.s || newV != ColorAdjustData.v || newA != ColorAdjustData.a) {
-			if (PixelBufferSize == Int2.zero) {
+			if (PixelBufferSize == Int2.Zero) {
 				var oldSelectionRect = PixelSelectionPixelRect;
 				SetSelectingPixelAsBuffer(removePixels: true, ignoreUndoStep: true);
 				PixelSelectionPixelRect = oldSelectionRect;

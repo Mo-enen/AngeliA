@@ -841,7 +841,7 @@ public partial class MapEditor {
 		// Buttons
 		int padding = Unify(4);
 		int btnSize = Unify(TOOLBAR_BTN_SIZE).GreaterOrEquel(1);
-		int column = PanelRect.width.UDivide(btnSize);
+		int column = PanelRect.width.UDivide(btnSize).GreaterOrEquel(1);
 		int top = PanelRect.yMax - btnSize;
 		int activeBtnIndex = 0;
 		for (int index = 0; index < ToolbarButtons.Count; index++) {

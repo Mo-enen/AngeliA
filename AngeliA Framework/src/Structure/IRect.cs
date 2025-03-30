@@ -5,43 +5,30 @@ using System.Globalization;
 
 namespace AngeliA;
 
+/// <summary>
+/// rectangle with intager data
+/// </summary>
 [Serializable]
 public struct IRect : IEquatable<IRect>, IFormattable {
 
-	private int m_XMin;
+	/// <summary>
+	/// Left position
+	/// </summary>
+	public int x;
+	/// <summary>
+	/// Bottom position
+	/// </summary>
+	public int y;
+	/// <summary>
+	/// Horizontal size
+	/// </summary>
+	public int width;
+	/// <summary>
+	/// Vertical size
+	/// </summary>
+	public int height;
 
-	private int m_YMin;
-
-	private int m_Width;
-
-	private int m_Height;
-
-	public int x {
-		readonly get {
-			return m_XMin;
-		}
-
-		set {
-			m_XMin = value;
-		}
-	}
-
-	public int y {
-		readonly get {
-			return m_YMin;
-		}
-
-		set {
-			m_YMin = value;
-		}
-	}
-
-	public readonly Float2 center {
-
-		get {
-			return new Float2((float)x + (float)m_Width / 2f, (float)y + (float)m_Height / 2f);
-		}
-	}
+	public readonly Float2 center => new((float)x + (float)width / 2f, (float)y + (float)height / 2f);
 
 	public Int2 min {
 		readonly get {
@@ -65,105 +52,85 @@ public struct IRect : IEquatable<IRect>, IFormattable {
 		}
 	}
 
-	public int width {
-		readonly get {
-			return m_Width;
-		}
-
-		set {
-			m_Width = value;
-		}
-	}
-
-	public int height {
-		readonly get {
-			return m_Height;
-		}
-
-		set {
-			m_Height = value;
-		}
-	}
-
 	public int xMin {
-		readonly get {
-			return Math.Min(m_XMin, m_XMin + m_Width);
-		}
+		readonly get => Math.Min(x, x + width);
 
 		set {
 			int num = xMax;
-			m_XMin = value;
-			m_Width = num - m_XMin;
+			x = value;
+			width = num - x;
 		}
 	}
 
 	public int yMin {
 		readonly get {
-			return Math.Min(m_YMin, m_YMin + m_Height);
+			return Math.Min(y, y + height);
 		}
 
 		set {
 			int num = yMax;
-			m_YMin = value;
-			m_Height = num - m_YMin;
+			y = value;
+			height = num - y;
 		}
 	}
 
 	public int xMax {
-		readonly get {
-			return Math.Max(m_XMin, m_XMin + m_Width);
-		}
-
+		readonly get => Math.Max(x, x + width);
 		set {
-			m_Width = value - m_XMin;
+			width = value - x;
 		}
 	}
 
 	public int yMax {
-		readonly get {
-			return Math.Max(m_YMin, m_YMin + m_Height);
-		}
-
+		readonly get => Math.Max(y, y + height);
 		set {
-			m_Height = value - m_YMin;
+			height = value - y;
 		}
 	}
 
+	/// <summary>
+	/// Always return (x, y) no matter size is positive of negative
+	/// </summary>
 	public Int2 position {
-		readonly get {
-			return new Int2(m_XMin, m_YMin);
-		}
+		readonly get => new(x, y);
 
 		set {
-			m_XMin = value.x;
-			m_YMin = value.y;
+			x = value.x;
+			y = value.y;
 		}
 	}
 
+	/// <summary>
+	/// (width, height)
+	/// </summary>
 	public Int2 size {
-		readonly get {
-			return new Int2(m_Width, m_Height);
-		}
-
+		readonly get => new(width, height);
 		set {
-			m_Width = value.x;
-			m_Height = value.y;
+			width = value.x;
+			height = value.y;
 		}
 	}
 
-	public static IRect zero => new(0, 0, 0, 0);
-
+	/// <summary>
+	/// Set value of this rectangle with min and max position
+	/// </summary>
 	public void SetMinMax (Int2 minPosition, Int2 maxPosition) {
 		min = minPosition;
 		max = maxPosition;
 	}
 
+	/// <summary>
+	/// Create a rectangle with given min and max positions
+	/// </summary>
 	public static IRect MinMaxRect (Int2 min, Int2 max) => new() {
 		xMin = min.x,
 		yMin = min.y,
 		xMax = max.x,
 		yMax = max.y,
 	};
+	/// <summary>
+	/// Create a rectangle with given min and max positions
+	/// </summary>
 	public static IRect MinMaxRect (int minX, int minY, int maxX, int maxY) => new() {
 		xMin = minX,
 		yMin = minY,
@@ -172,31 +139,46 @@ public struct IRect : IEquatable<IRect>, IFormattable {
 	};
 
 	public IRect (IRect source) {
-		m_XMin = source.xMin;
-		m_YMin = source.yMin;
-		m_Width = source.width;
-		m_Height = source.height;
+		x = source.xMin;
+		y = source.yMin;
+		width = source.width;
+		height = source.height;
 	}
 
 	public IRect (int xMin, int yMin, int width, int height) {
-		m_XMin = xMin;
-		m_YMin = yMin;
-		m_Width = width;
-		m_Height = height;
+		this.x = xMin;
+		this.y = yMin;
+		this.width = width;
+		this.height = height;
 	}
 
 	public IRect (Int2 position, Int2 size) {
-		m_XMin = position.x;
-		m_YMin = position.y;
-		m_Width = size.x;
-		m_Height = size.y;
+		x = position.x;
+		y = position.y;
+		width = size.x;
+		height = size.y;
 	}
 
+	/// <summary>
+	/// True if the given position is inside this rectangle
+	/// </summary>
 	public readonly bool Contains (Int2 position) {
 		return position.x >= xMin && position.y >= yMin && position.x < xMax && position.y < yMax;
 	}
 
+	/// <summary>
+	/// True if the given rectangle overlap with current one
+	/// </summary>
 	public readonly bool Overlaps (IRect other) => other.xMin < xMax && other.xMax > xMin && other.yMin < yMax && other.yMax > yMin;
+
+	/// <summary>
+	/// Create a rectangle with 1 in width and height
+	/// </summary>
+	public static IRect Point (Int2 pos) => new(pos.x, pos.y, 1, 1);
+	/// <summary>
+	/// Create a rectangle with 1 in width and height
+	/// </summary>
+	public static IRect Point (int x, int y) => new(x, y, 1, 1);
 
 	public override readonly string ToString () {
 		return ToString(null, null);
@@ -219,8 +201,7 @@ public struct IRect : IEquatable<IRect>, IFormattable {
 		return lhs.x == rhs.x && lhs.y == rhs.y && lhs.width == rhs.width && lhs.height == rhs.height;
 	}
 
-	public static IRect Point (Int2 pos) => new(pos.x, pos.y, 1, 1);
-	public static IRect Point (int x, int y) => new(x, y, 1, 1);
+
 
 	public override readonly int GetHashCode () {
 		int hashCode = x.GetHashCode();
@@ -238,8 +219,6 @@ public struct IRect : IEquatable<IRect>, IFormattable {
 		return Equals((IRect)other);
 	}
 
-	public readonly bool Equals (IRect other) {
-		return m_XMin == other.m_XMin && m_YMin == other.m_YMin && m_Width == other.m_Width && m_Height == other.m_Height;
-	}
+	public readonly bool Equals (IRect other) => x == other.x && y == other.y && width == other.width && height == other.height;
 
 }

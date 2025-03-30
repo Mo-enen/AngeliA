@@ -448,7 +448,7 @@ public static class Renderer {
 		cell.PivotY = pivotY / 1000f;
 		cell.Color = color;
 		cell.BorderSide = Alignment.Full;
-		cell.Shift = Int4.zero;
+		cell.Shift = Int4.Zero;
 
 		// Move Next
 		layer.FocusedCell++;
@@ -499,7 +499,7 @@ public static class Renderer {
 		cell.PivotY = 0;
 		cell.Color = color;
 		cell.BorderSide = Alignment.Full;
-		cell.Shift = Int4.zero;
+		cell.Shift = Int4.Zero;
 		cell.X = x + (int)(width * uvOffset.x);
 		cell.Y = y + (int)(height * uvOffset.y);
 		cell.Width = (int)(width * uvOffset.width);

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Core system for the level block tint from element
+/// </summary>
 public static class BlockColoringSystem {
 
 
@@ -11,10 +14,8 @@ public static class BlockColoringSystem {
 	#region --- VAR ---
 
 
-	// Const
-	public static readonly Dictionary<int, Color32> COLOR_POOL = [];
-
 	// Data
+	private static readonly Dictionary<int, Color32> COLOR_POOL = [];
 	private static int CellIndexStart = -1;
 
 
@@ -72,16 +73,10 @@ public static class BlockColoringSystem {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Get the tint color from given element ID
+	/// </summary>
 	public static bool TryGetColor (int elementID, out Color32 color) => COLOR_POOL.TryGetValue(elementID, out color);
-
-
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
 
 
 	#endregion

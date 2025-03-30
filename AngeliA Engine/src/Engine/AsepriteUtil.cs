@@ -297,7 +297,7 @@ public static class AsepriteUtil {
 							sData.Height - sData.CenterY - sData.CenterHeight,
 							sData.Width - sData.CenterX - sData.CenterWidth,
 							sData.CenterY
-						) : Float4.zero,
+						) : Float4.Zero,
 						pivot = chunk.CheckFlag(Aseprite.SliceChunk.SliceFlag.HasPivot) ? new Float2(
 							(float)sData.PivotX / sData.Width,
 							1f - (float)sData.PivotY / sData.Height

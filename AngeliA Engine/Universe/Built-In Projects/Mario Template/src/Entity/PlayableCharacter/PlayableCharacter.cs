@@ -9,7 +9,7 @@ namespace MarioTemplate;
 [EntityAttribute.StageOrder(4096)]
 [EntityAttribute.SpawnWithCheatCode]
 [EntityAttribute.UpdateOutOfRange]
-public abstract class PlayableCharacter : PoseCharacter, IPlayable, IActionTarget {
+public abstract class PlayableCharacter : Character, IPlayable, IActionTarget {
 
 
 	private static readonly AudioCode PASSOUT_AC = "PlayerPassout";
@@ -20,6 +20,9 @@ public abstract class PlayableCharacter : PoseCharacter, IPlayable, IActionTarge
 	public override int Team => Const.TEAM_PLAYER;
 	public override int AttackTargetTeam => Const.TEAM_ENEMY | Const.TEAM_NEUTRAL;
 	public int CurrentStepCombo { get; set; } = 0;
+	public override int FinalCharacterHeight => Rendering is PoseCharacterRenderer rendering ?
+		base.FinalCharacterHeight * rendering.CharacterHeight / 160 :
+		base.FinalCharacterHeight;
 
 	public override void OnActivated () {
 		base.OnActivated();
@@ -60,5 +63,7 @@ public abstract class PlayableCharacter : PoseCharacter, IPlayable, IActionTarge
 			}
 		}
 	}
+
+	protected override CharacterRenderer CreateNativeRenderer () => new PoseCharacterRenderer(this);
 
 }

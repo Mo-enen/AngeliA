@@ -25,6 +25,9 @@
 /// </code></example>	
 public readonly struct GUIEnableScope : System.IDisposable {
 	private readonly bool OldEnable;
+	/// <summary>
+	/// Scope that set enable of GUI elements inside
+	/// </summary>
 	public GUIEnableScope (bool enable) {
 		OldEnable = GUI.Enable;
 		GUI.Enable = enable;

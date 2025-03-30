@@ -629,8 +629,8 @@ public static class PlayerSystem {
 			// Move
 			var viewRect = Stage.ViewRect;
 			var delta = (Float2)(mousePos - center);
-			float targetMag = (delta.magnitude - startMoveDis) / 16f;
-			delta = delta.normalized * targetMag;
+			float targetMag = (delta.Magnitude - startMoveDis) / 16f;
+			delta = delta.Normalized * targetMag;
 			viewRect.x += delta.x.RoundToInt();
 			viewRect.y += delta.y.RoundToInt() * cameraRect.width / cameraRect.height;
 			Stage.SetViewPositionDelay(viewRect.x, viewRect.y, priority: 4096);

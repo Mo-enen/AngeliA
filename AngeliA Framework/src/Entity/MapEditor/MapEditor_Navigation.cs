@@ -141,7 +141,7 @@ public partial class MapEditor {
 	private void Update_NavigationView () {
 
 		// Move View for Nav
-		var delta = Int2.zero;
+		var delta = Int2.Zero;
 		if (
 			Input.MouseMidButtonHolding ||
 			Input.MouseLeftButtonHolding
