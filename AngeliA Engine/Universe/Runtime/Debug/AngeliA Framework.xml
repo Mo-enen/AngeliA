@@ -3268,6 +3268,308 @@
             Move data at head to the first of the internal array
             </summary>
         </member>
+        <member name="T:AngeliA.QTest">
+            <summary>
+            Utility tool for quick testing ⚠Debug only. Do not work after game release.⚠
+            </summary>
+        </member>
+        <member name="F:AngeliA.QTest.MAX_WINDOW_COUNT">
+            <summary>
+            Limit of testing window panels
+            </summary>
+        </member>
+        <member name="P:AngeliA.QTest.Testing">
+            <summary>
+            True if the QTest is operating with window on screen
+            </summary>
+        </member>
+        <member name="P:AngeliA.QTest.ShowNotUpdatedData">
+            <summary>
+            True if the window include the fields that not update in current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.QTest.FieldHeight">
+            <summary>
+            Unified height of a field
+            </summary>
+        </member>
+        <member name="P:AngeliA.QTest.CurrentInvokingParam">
+            <summary>
+            User data for QTest.Func
+            </summary>
+        </member>
+        <member name="M:AngeliA.QTest.SetCurrentWindow(System.Int32,System.String)">
+            <summary>
+            Set which window should include the fields comes after
+            </summary>
+        </member>
+        <member name="M:AngeliA.QTest.LoadAllDataFromFile(System.String,System.Boolean)">
+            <summary>
+            Load testing data from file. This will override current data.
+            </summary>
+            <param name="path">Path of the data file (not a folder)</param>
+            <param name="ignorePanelOffset">True if this function do not adjust position of window panels</param>
+        </member>
+        <member name="M:AngeliA.QTest.SaveAllDataToFile(System.String)">
+            <summary>
+            Save current testing data into file
+            </summary>
+            <param name="path">Path of a file with any extension you want (not a folder)</param>
+        </member>
+        <member name="M:AngeliA.QTest.Bool(System.String,System.Boolean,System.String,System.Int32)">
+            <summary>
+            Require a toggle inside the current test window
+            </summary>
+            <param name="key">Unique key to identify this field</param>
+            <param name="defaultValue"></param>
+            <param name="displayLabel">Text content for rendering only</param>
+            <param name="windowIndex">Force field into given window instead of current window</param>
+            <returns>The current data of this field</returns>
+        </member>
+        <member name="M:AngeliA.QTest.Int(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.Int32)">
+            <summary>
+            Require a intager slider inside the current test window
+            </summary>
+            <param name="key">Unique key to identify this field</param>
+            <param name="defaultValue"></param>
+            <param name="min">Minimal limitation of this value</param>
+            <param name="max">Maximal limitation of this value</param>
+            <param name="step">Step count when dragging the slider. 0 means no step.</param>
+            <param name="displayLabel">Text content for rendering only</param>
+            <param name="windowIndex">Force field into given window instead of current window</param>
+            <returns>The current data of this field</returns>
+        </member>
+        <member name="M:AngeliA.QTest.Float(System.String,System.Single,System.Single,System.Single,System.Single,System.String,System.Int32)">
+            <summary>
+            Require a float slider inside the current test window
+            </summary>
+            <param name="key">Unique key to identify this field</param>
+            <param name="defaultValue"></param>
+            <param name="min">Minimal limitation of this value</param>
+            <param name="max">Maximal limitation of this value</param>
+            <param name="step">Step count when dragging the slider. 0 means no step.</param>
+            <param name="displayLabel">Text content for rendering only</param>
+            <param name="windowIndex">Force field into given window instead of current window</param>
+            <returns>The current data of this field</returns>
+        </member>
+        <member name="M:AngeliA.QTest.String(System.String,System.String,System.Int32)">
+            <summary>
+            Require a text input field inside the current test window
+            </summary>
+            <param name="key">Unique key to identify this field</param>
+            <param name="defaultValue"></param>
+            <param name="windowIndex">Force field into given window instead of current window</param>
+            <returns>The current data of this field</returns>
+        </member>
+        <member name="M:AngeliA.QTest.Button(System.String,System.Action,System.Object,System.Object,System.Int32,System.Action,System.String,System.String,System.Action,System.String,System.Action,System.String)">
+            <summary>
+            Require a set of buttons that invoke the given System.Action when pressed
+            </summary>
+            <param name="key">Unique key to identify this field</param>
+            <param name="action">First button's logic</param>
+            <param name="icon">Icon for rendering. This should be a texture instance.</param>
+            <param name="param">Custom user data for this field. (Use Qtest.CurrentInvokingParam inside the "action" to get this data)</param>
+            <param name="windowIndex">Force field into given window instead of current window</param>
+            <param name="action1">Second button's logic</param>
+            <param name="action2">Third button's logic</param>
+            <param name="action3">Fourth button's logic</param>
+            <param name="label">First button's label content</param>
+            <param name="label1">Second button's label content</param>
+            <param name="label2">Third button's label content</param>
+            <param name="label3">Fourth button's label content</param>
+        </member>
+        <member name="M:AngeliA.QTest.Func(System.String,System.Func{AngeliA.IRect,System.Int32},System.Object,System.Boolean,System.Int32)">
+            <summary>
+            GUI box that display custom content inside a given window area
+            </summary>
+            <param name="key">Unique key to identify this field</param>
+            <param name="func">GUI rendering function. The param is the rect position that this element should rendering content into. Return value is the height of this field.</param>
+            <param name="param">Custom user data for this field. (Use Qtest.CurrentInvokingParam inside the "action" to get this data)</param>
+            <param name="showLabel">True if this content require the label name on left side.</param>
+            <param name="windowIndex">Force field into given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.ClearAll(System.Int32)">
+            <summary>
+            Reset all data.
+            </summary>
+            <param name="windowIndex">Force reset given window instead of current window. Set to -1 to reset all windows.</param>
+        </member>
+        <member name="M:AngeliA.QTest.SetBool(System.String,System.Boolean,System.Int32)">
+            <summary>
+            Set a bool value without requiring any field.
+            </summary>
+            <param name="key">Unique key to identify the data</param>
+            <param name="value"></param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.SetInt(System.String,System.Int32,System.Int32)">
+            <summary>
+            Set a intager value without requiring any field.
+            </summary>
+            <param name="key">Unique key to identify the data</param>
+            <param name="value"></param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.SetFloat(System.String,System.Single,System.Int32)">
+            <summary>
+            Set a float value without requiring any field.
+            </summary>
+            <param name="key">Unique key to identify the data</param>
+            <param name="value"></param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.SetString(System.String,System.String,System.Int32)">
+            <summary>
+            Set a string value without requiring any field.
+            </summary>
+            <param name="key">Unique key to identify the data</param>
+            <param name="value"></param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.SetGroupFolding(System.String,System.Boolean,System.Int32)">
+            <summary>
+            Make given group fold or unfold
+            </summary>
+            <param name="key">Unique key to identify the group</param>
+            <param name="folding">True if the group should fold</param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.GetBool(System.String,System.Boolean,System.Int32)">
+            <summary>
+            Get a bool value without requiring any field.
+            </summary>
+            <param name="key">Unique key to identify the data</param>
+            <param name="defaultValue"></param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.GetInt(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get a intager value without requiring any field.
+            </summary>
+            <param name="key">Unique key to identify the data</param>
+            <param name="defaultValue"></param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.GetFloat(System.String,System.Single,System.Int32)">
+            <summary>
+            Get a float value without requiring any field.
+            </summary>
+            <param name="key">Unique key to identify the data</param>
+            <param name="defaultValue"></param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.GetString(System.String,System.String,System.Int32)">
+            <summary>
+            Get a string value without requiring any field.
+            </summary>
+            <param name="key">Unique key to identify the data</param>
+            <param name="defaultValue"></param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.StartDrawColumn(System.String,System.Int32,System.Boolean,System.Int32)">
+            <summary>
+            Start to draw 1D pixel column
+            </summary>
+            <param name="key">Unique key to identify the field</param>
+            <param name="size">Horizontal size in pixel</param>
+            <param name="clearPrevPixels">True if the existing pixels should be reset into clear</param>
+            <param name="windowIndex">Force start inside for given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.StartDrawPixels(System.String,System.Int32,System.Int32,System.Boolean,System.Int32)">
+            <summary>
+            Start to draw 2D pixel texture
+            </summary>
+            <param name="key">Unique key to identify the field</param>
+            <param name="width">Width in pixel</param>
+            <param name="height">Height in pixel</param>
+            <param name="clearPrevPixels">True if the existing pixels should be reset into clear</param>
+            <param name="windowIndex">Force start inside for given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.DrawColumn(System.Int32,System.Single,AngeliA.Color32,AngeliA.Color32,System.Int32)">
+            <summary>
+            Draw a pixel column. Only call this after QTest.StartDrawColumn
+            </summary>
+            <param name="x">Position X in local pixel space</param>
+            <param name="value01">Height of the column. 0 is no size, 1 is full size.</param>
+            <param name="color">Color of this column</param>
+            <param name="bgColor">Color of the background</param>
+            <param name="windowIndex">Force paint into given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.DrawPixel(System.Int32,System.Int32,AngeliA.Color32,System.Int32)">
+            <summary>
+            Draw a pixel. Only call this after QTest.StartDrawPixels
+            </summary>
+            <param name="x">Position X in local pixel space</param>
+            <param name="y">Position Y in local pixel space</param>
+            <param name="pixel">Color of this pixel</param>
+            <param name="windowIndex">Force paint into given window instead of current window</param>
+        </member>
+        <member name="M:AngeliA.QTest.GetPngByteFromPixels(System.Int32,System.Object@)">
+            <summary>
+            Get png texture file byte array from given window's current drawing cache.
+            </summary>
+            <param name="windowIndex">Index of the window</param>
+            <param name="texture">Result texture instance</param>
+            <returns>The png byte array. Return null if currently don't have any pixels data</returns>
+        </member>
+        <member name="M:AngeliA.QTest.Mark(AngeliA.Int2,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.QTest.Mark(System.Int32,System.Int32,AngeliA.Color32,System.Int32,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.QTest.Mark(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.QTest.Mark(System.Int32,System.Int32,AngeliA.Color32,System.Int32,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.QTest.Mark(AngeliA.Int2,AngeliA.Color32,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.QTest.Mark(System.Int32,System.Int32,AngeliA.Color32,System.Int32,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.QTest.Mark(System.Int32,System.Int32,AngeliA.Color32,System.Int32,System.Int32)">
+            <summary>
+            Paint a circle mark at screen for given frames long
+            </summary>
+            <param name="pos">Position in global space</param>
+            <param name="x">Position X in global space</param>
+            <param name="y">Position Y in global space</param>
+            <param name="color">Color tint of the circle</param>
+            <param name="duration">Length in frame</param>
+            <param name="size">Diameter in global space</param>
+        </member>
+        <member name="M:AngeliA.QTest.SetObject``1(System.String,``0,System.Int32)">
+            <summary>
+            Create/set the value of an object in given type
+            </summary>
+            <typeparam name="T">Type of the object</typeparam>
+            <param name="key">Unique key to identify the data</param>
+            <param name="obj">Value of the object</param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+            <returns>Instance of the object</returns>
+        </member>
+        <member name="M:AngeliA.QTest.TryGetObject``1(System.String,``0@,System.Int32)">
+            <summary>
+            Get an existing object data
+            </summary>
+            <typeparam name="T">Type of the object</typeparam>
+            <param name="key">Unique key to identify the data</param>
+            <param name="result">Instance of the result object</param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+            <returns>True if the object is found</returns>
+        </member>
+        <member name="M:AngeliA.QTest.HideTest">
+            <summary>
+            Hide the testing windows
+            </summary>
+        </member>
+        <member name="M:AngeliA.QTest.ShowTest">
+            <summary>
+            Show the testing windows
+            </summary>
+        </member>
+        <member name="M:AngeliA.QTest.Group(System.String,System.Boolean,System.Int32)">
+            <summary>
+            Following field requires will be inside this group
+            </summary>
+            <param name="group">Name/key of the group</param>
+            <param name="folding">True if the group is default folding</param>
+            <param name="windowIndex">Force value set for given window instead of current window</param>
+        </member>
         <member name="T:AngeliA.RenderLayer">
             <summary>
             Layer for rendering
@@ -12710,20 +13012,922 @@
             Task that select current player
             </summary>
         </member>
+        <member name="T:AngeliA.Util">
+            <summary>
+            Utility class of AngeliA
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.FileToText(System.String)">
+            <summary>
+            Load file into string text
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.FileToText(System.String,System.Text.Encoding)">
+            <summary>
+            Load file into string text
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.TextToFile(System.String,System.String,System.Boolean)">
+            <summary>
+            Save string text into file
+            </summary>
+            <param name="data"></param>
+            <param name="path"></param>
+            <param name="append">True if keep the existing content in the file</param>
+        </member>
+        <member name="M:AngeliA.Util.TextToFile(System.String,System.String,System.Text.Encoding,System.Boolean)">
+            <summary>
+            Save string text into file
+            </summary>
+            <param name="data"></param>
+            <param name="path"></param>
+            <param name="encoding"></param>
+            <param name="append">True if keep the existing content in the file</param>
+        </member>
+        <member name="M:AngeliA.Util.ForAllLinesInFile(System.String)">
+            <summary>
+            Iterate through every text lines inside given file 
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.ForAllLinesInFile(System.String,System.Text.Encoding)">
+            <summary>
+            Iterate through every text lines inside given file 
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.ForAllLinesInString(System.String)">
+            <summary>
+            Iterate through every text lines inside given string
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.CreateFolder(System.String)">
+            <summary>
+            Create a folder at given path. Ignore if folder exists.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.FileToBytes(System.String)">
+            <summary>
+            Load file as a byte array
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.BytesToFile(System.Byte[],System.String,System.Int32)">
+            <summary>
+            Save byte array into file
+            </summary>
+            <param name="bytes"></param>
+            <param name="path"></param>
+            <param name="length">Set to -1 to save all byte array</param>
+        </member>
+        <member name="M:AngeliA.Util.HasFileIn(System.String,System.Boolean,System.String)">
+            <summary>
+            True if there's any file match the pattern
+            </summary>
+            <param name="path">Root folder path</param>
+            <param name="topOnly">True if only search top level of the folder</param>
+            <param name="searchPattern">("*" means all files, "*.txt" means all txt files)</param>
+        </member>
+        <member name="M:AngeliA.Util.HasFileIn(System.String,System.Boolean,System.String[])">
+            <summary>
+            True if there's any file match any of the patterns
+            </summary>
+            <param name="path">Root folder path</param>
+            <param name="topOnly">True if only search top level of the folder</param>
+            <param name="searchPattern">("*" means all files, "*.txt" means all txt files)</param>
+        </member>
+        <member name="M:AngeliA.Util.EnumerateFiles(System.String,System.Boolean,System.String)">
+            <summary>
+            Iterate through path of all files that match given pattern
+            </summary>
+            <param name="path">Root folder path</param>
+            <param name="topOnly">True if only search top level of the folder</param>
+            <param name="searchPattern">("*" means all files, "*.txt" means all txt files)</param>
+        </member>
+        <member name="M:AngeliA.Util.EnumerateFiles(System.String,System.Boolean,System.String[])">
+            <summary>
+            Iterate through path of all files that match any given patterns
+            </summary>
+            <param name="path">Root folder path</param>
+            <param name="topOnly">True if only search top level of the folder</param>
+            <param name="searchPatterns">("*" means all files, "*.txt" means all txt files)</param>
+        </member>
+        <member name="M:AngeliA.Util.EnumerateFolders(System.String,System.Boolean,System.String)">
+            <summary>
+            Iterate through path of all folders that match given pattern
+            </summary>
+            <param name="path">Root folder path</param>
+            <param name="topOnly">True if only search top level of the folder</param>
+            <param name="searchPattern">("*" means all folders)</param>
+        </member>
+        <member name="M:AngeliA.Util.EnumerateFolders(System.String,System.Boolean,System.String[])">
+            <summary>
+            Iterate through path of all folders that match any given patterns
+            </summary>
+            <param name="path">Root folder path</param>
+            <param name="topOnly">True if only search top level of the folder</param>
+            <param name="searchPatterns">("*" means all folders)</param>
+        </member>
+        <member name="M:AngeliA.Util.DeleteFile(System.String)">
+            <summary>
+            Delete the file at given path. Do nothing when file not exists
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.CopyFile(System.String,System.String,System.Boolean)">
+            <summary>
+            Copy file from one path to other
+            </summary>
+            <param name="from"></param>
+            <param name="to"></param>
+            <param name="overwrite">True if overwrite existing file at "to"</param>
+            <returns>True if successfuly copied</returns>
+        </member>
+        <member name="M:AngeliA.Util.CopyFolder(System.String,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Copy folder from one path to other
+            </summary>
+            <param name="from"></param>
+            <param name="to"></param>
+            <param name="copySubDirs">True if copy all folder/files inside root folder</param>
+            <param name="ignoreHidden">True if hidden files/folders do not get copy</param>
+            <param name="overrideFile">True if overwrite existing files at "to"</param>
+            <returns>True if successfuly copied</returns>
+        </member>
+        <member name="M:AngeliA.Util.DeleteFolder(System.String)">
+            <summary>
+            Delete folder at given path. Do nothing when folder not exists
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetFileCount(System.String,System.String,System.IO.SearchOption)">
+            <summary>
+            Get how many files mathchs the search pattern inside given folder path
+            </summary>
+            <param name="path">Root folder path</param>
+            <param name="search">("*" means all files, "*.txt" means all txt files)</param>
+            <param name="option"></param>
+        </member>
+        <member name="M:AngeliA.Util.GetFolderCount(System.String,System.String,System.IO.SearchOption)">
+            <summary>
+            Get how many folders mathchs the search pattern inside given folder path
+            </summary>
+            <param name="path">Root folder path</param>
+            <param name="search">("*" means all files)</param>
+            <param name="option"></param>
+        </member>
+        <member name="M:AngeliA.Util.MoveFile(System.String,System.String)">
+            <summary>
+            Move file from one path to other. Use this function to rename files.
+            </summary>
+            <returns>True if successfuly moved</returns>
+        </member>
+        <member name="M:AngeliA.Util.MoveFolder(System.String,System.String)">
+            <summary>
+            Move folder from one path to other. Use this function to rename folder.
+            </summary>
+            /// <returns>True if successfuly moved</returns>
+        </member>
+        <member name="M:AngeliA.Util.ByteToCompressedFile(System.String,System.Byte[],System.Int32)">
+            <summary>
+            Save byte array into compressed file
+            </summary>
+            <param name="path"></param>
+            <param name="rawBytes"></param>
+            <param name="length">Set to -1 for the full array</param>
+        </member>
+        <member name="M:AngeliA.Util.CompressedFileToByte(System.String,System.Int32@)">
+            <summary>
+            Load compressed file into byte array
+            </summary>
+            <param name="path"></param>
+            <param name="byteLength">True length of the byte array</param>
+            <returns>The raw byte array</returns>
+        </member>
+        <member name="M:AngeliA.Util.DecompressBytes(System.Byte[])">
+            <summary>
+            Make compressed byte array into raw byte array
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.IsExistingFileEmpty(System.String)">
+            <summary>
+            True if path refers to existing file and the file is not empty.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.UpdateFile(System.String,System.String,System.Boolean)">
+            <summary>
+            Copy and override target if the modify date is different
+            </summary>
+            <param name="source"></param>
+            <param name="target"></param>
+            <param name="skipWhenTargetNotExists">True if only override existing file instead of create new file when target not exists.</param>
+        </member>
+        <member name="F:AngeliA.Util.Rad2Deg">
+            <summary>
+            Rad angle * Rad2Deg = Deg angle
+            </summary>
+        </member>
+        <member name="F:AngeliA.Util.Deg2Rad">
+            <summary>
+            Deg angle * Deg2Rad = Rad angle
+            </summary>
+        </member>
+        <member name="F:AngeliA.Util.PI">
+            <summary>
+            π = 3.14159274f
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.TryGetLanguageDisplayName(System.String,System.String@)">
+            <summary>
+            Get display name of the given language in it's native language
+            </summary>
+            <param name="iso">ISO of the language (eg. "en" for English, "zht" for Chinese Traditional, "de" for German)</param>
+            <param name="displayName">Result name</param>
+            <returns>True if the iso is valid</returns>
+        </member>
+        <member name="M:AngeliA.Util.GetLanguageDisplayNameInEnglish(System.String)">
+            <summary>
+            Get display name of the given language in English
+            </summary>
+            <param name="iso">ISO of the language (eg. "en" for English, "zht" for Chinese Traditional, "de" for German)</param>
+            <returns>Result name. Return empty string when iso not valid.</returns>
+        </member>
+        <member name="M:AngeliA.Util.GetLanguageDisplayName(System.String)">
+            <summary>
+            Get display name of the given language in it's native language
+            </summary>
+            <param name="iso">ISO of the language (eg. "en" for English, "zht" for Chinese Traditional, "de" for German)</param>
+            <returns>Result name. Return empty string when iso not valid.</returns>
+        </member>
+        <member name="M:AngeliA.Util.IsSupportedLanguageISO(System.String)">
+            <summary>
+            True if the given iso is valid
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.ForAllSystemLanguages">
+            <summary>
+            Iterate through iso of all language AngeliA support
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetKeyDisplayName(AngeliA.KeyboardKey)">
+            <summary>
+            Get display name in English for given keyboard key
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.AddEnvironmentVariable(System.String,System.String)">
+            <summary>
+            Add given key and value into system Environment Variable
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetDisplayName(System.String)">
+            <summary>
+            Make the given string (in English) looks better for user to read.
+            1. If the string start with "m_". Remove the "m_";
+            2. Replace all "_" into " "
+            3. Add space before capital letters that behind a lowercase letter
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.QuickSort``1(``0[],System.Int32,System.Int32,System.Collections.Generic.IComparer{``0})">
+            <inheritdoc cref="M:AngeliA.Util.QuickSort``1(System.Span{``0},System.Int32,System.Int32,System.Collections.Generic.IComparer{``0})"/>
+        </member>
+        <member name="M:AngeliA.Util.QuickSort``1(System.Span{``0},System.Int32,System.Int32,System.Collections.Generic.IComparer{``0})">
+            <summary>
+            Sort the given array with QuickSort algorithm.
+            </summary>
+            <typeparam name="T">Type of the array</typeparam>
+            <param name="array">The array data</param>
+            <param name="min">Index range left (included)</param>
+            <param name="max">Index range right (included)</param>
+            <param name="comparer">Comparer instance to comparer the array element</param>
+        </member>
+        <member name="M:AngeliA.Util.QuickRandomColor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Get a random color without spending too much CPU resources
+            </summary>
+            <param name="minH">(from 0 to 360)</param>
+            <param name="maxH">(from 0 to 360)</param>
+            <param name="minS">(from 0 to 100)</param>
+            <param name="maxS">(from 0 to 100)</param>
+            <param name="minV">(from 0 to 100)</param>
+            <param name="maxV">(from 0 to 100)</param>
+            <param name="minA">(from 0 to 255)</param>
+            <param name="maxA">(from 0 to 255)</param>
+        </member>
         <member name="M:AngeliA.Util.QuickRandom(System.Int32,System.Int32)">
             <summary>
-            "min" is Included, "max" is Excluded
+            Get a random int between min and max without spending too much CPU resources. ("min" is Included, "max" is Excluded)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.QuickRandom">
+            <summary>
+            Get a random int between int.MinValue and int.MaxValue without spending too much CPU resources.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.QuickRandomSign">
+            <summary>
+            Get a random int which is -1 or 1 without spending too much CPU resources
             </summary>
         </member>
         <member name="M:AngeliA.Util.QuickRandomWithSeed(System.Int32,System.Int32,System.Int32)">
             <summary>
-            "min" is Included, "max" is Excluded
+            Get a random int between min and max without spending too much CPU resources. ("min" is Included, "max" is Excluded)
             </summary>
+            <param name="seed">Same seed always return same result</param>
+            <param name="min"></param>
+            <param name="max"></param>
+        </member>
+        <member name="M:AngeliA.Util.QuickRandomWithSeed(System.Int32)">
+            <summary>
+            Get a random int between int.MinValue and int.MaxValue without spending too much CPU resources.
+            </summary>
+            <param name="seed">Same seed always return same result</param>
         </member>
         <member name="M:AngeliA.Util.QuickRandomWithSeed(System.Int64,System.Int32,System.Int32)">
             <summary>
-            "min" is Included, "max" is Excluded
+            Get a random int between min and max without spending too much CPU resources. ("min" is Included, "max" is Excluded)
             </summary>
+            <param name="seed">Same seed always return same result</param>
+            <param name="min"></param>
+            <param name="max"></param>
+        </member>
+        <member name="M:AngeliA.Util.QuickRandomWithSeed(System.Int64)">
+            <summary>
+            Get a random int between int.MinValue and int.MaxValue without spending too much CPU resources. ("min" is Included, "max" is Excluded)
+            </summary>
+            <param name="seed">Same seed always return same result</param>
+        </member>
+        <member name="M:AngeliA.Util.ExecuteCommand(System.String,System.String,System.Int32,System.Boolean)">
+            <summary>
+            Perform a command with the terminal
+            </summary>
+            <param name="workingDirectory">Path of the working directory</param>
+            <param name="arguments"></param>
+            <param name="logID">(-1 means ignore log. 0 means log with Debug.Log. >=1 means log with Debug.LogInternal)</param>
+            <param name="wait">True if wait the terminal process to exit</param>
+            <returns>Return code</returns>
+        </member>
+        <member name="M:AngeliA.Util.FindNextStringStep(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Get index of the nearby segment of the given string.
+            (eg. for "Test Content String 123" if the start index is 5 which is start of "Content", toRight is true, return value will be 12 which is the end of "Content".)
+            </summary>
+            <param name="content"></param>
+            <param name="start"></param>
+            <param name="toRight">True if move the cursor to right side</param>
+            <returns>Index of the next step segment</returns>
+        </member>
+        <member name="M:AngeliA.Util.GetTrimedPixels(AngeliA.Color32[]@,System.Int32,System.Int32,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Trim the clear pixels for the given pixels and create a new instance for the result
+            </summary>
+            <param name="pixels">Source pixel data. (will not be changed after this operation)</param>
+            <param name="width">Width in pixel</param>
+            <param name="height">Height in pixel</param>
+            <param name="left">Left position that first found a pixel in whole column</param>
+            <param name="right">Right position that first found a pixel in whole column</param>
+            <param name="down">Bottom position that first found a pixel in whole row</param>
+            <param name="up">Top position that first found a pixel in whole row</param>
+            <returns>New instance of pixel data created</returns>
+        </member>
+        <member name="M:AngeliA.Util.Remap(System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Value from one range to another, while maintaining it's relative position within the original range.
+            When "t" is "l", return "newL". 
+            When "t" is "r", return "newR". 
+            When "t" is something in the middle, it find a point between "newL" and "newR".
+            </summary>
+            <param name="l">Left range for t</param>
+            <param name="r">Right range for t</param>
+            <param name="newL">Left range for the result</param>
+            <param name="newR">Right range for the result</param>
+            <param name="t">Original value</param>
+            <returns>Remaped value</returns>
+        </member>
+        <member name="M:AngeliA.Util.RemapUnclamped(System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <inheritdoc cref="M:AngeliA.Util.Remap(System.Single,System.Single,System.Single,System.Single,System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Util.Remap(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Util.Remap(System.Single,System.Single,System.Single,System.Single,System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Util.RemapUnclamped(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Util.Remap(System.Single,System.Single,System.Single,System.Single,System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Util.InverseLerp(System.Single,System.Single,System.Single)">
+            <summary>
+            Remap "value" between ("from" and "to") into (0 and 1)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.InverseLerpUnclamped(System.Single,System.Single,System.Single)">
+            <inheritdoc cref="M:AngeliA.Util.InverseLerp(System.Single,System.Single,System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Util.PingPong(System.Single,System.Single)">
+            <summary>
+            Make value "t" liner oscillate between 0 and "length"
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Repeat(System.Single,System.Single)">
+            <summary>
+            Make value "t" liner loop between 0 and "length"
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Lerp(System.Single,System.Single,System.Single)">
+            <summary>
+            Remap value "t" between (0 and 1) into ("a" and "b")
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.LerpUnclamped(System.Single,System.Single,System.Single)">
+            <inheritdoc cref="M:AngeliA.Util.Lerp(System.Single,System.Single,System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Util.LerpAngle(System.Single,System.Single,System.Single)">
+            <summary>
+            Remap angle value "t" between (0 and 1) into ("a" and "b") 
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.LerpAngleUnclamped(System.Single,System.Single,System.Single)">
+            <inheritdoc cref="M:AngeliA.Util.LerpAngle(System.Single,System.Single,System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Util.Atan(System.Single,System.Single)">
+            <summary>
+            Return the arctangent of (x,y)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Min(System.Int32,System.Int32)">
+            <summary>
+            Return the smaller value 
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Min(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Return the smallest value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Max(System.Int32,System.Int32)">
+            <summary>
+            Return the bigger value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Max(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Return the biggest value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Min(System.Single,System.Single)">
+            <summary>
+            Return the smaller value 
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Max(System.Single,System.Single)">
+            <summary>
+            Return the bigger value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Sin(System.Single)">
+            <summary>
+            Return sin value for given angle in RAD. Use (degAngle * Util.Deg2Rad) to get the Rad angle.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Cos(System.Single)">
+            <summary>
+            Return cos value for given angle in RAD. Use (degAngle * Util.Deg2Rad) to get the Rad angle.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Abs(System.Int32)">
+            <summary>
+            Return the absolute value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Abs(System.Single)">
+            <summary>
+            Return the absolute value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Approximately(System.Single,System.Single)">
+            <summary>
+            True if the given two float is almost same
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Clamp(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Limit value "a" between "min" and "max"
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Clamp(System.Single,System.Single,System.Single)">
+            <summary>
+            Limit value "a" between "min" and "max"
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Clamp01(System.Single)">
+            <summary>
+            Limit value "a" between 0 and 1
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Pow(System.Single,System.Single)">
+            <summary>
+            Return "f" to the power of "p"
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.Sqrt(System.Single)">
+            <summary>
+            Return square root of "f"
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.RoundToInt(System.Single)">
+            <summary>
+            Round a float to the nearest integer
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.CeilToInt(System.Single)">
+            <summary>
+            Get the smallest intager that larger than "value"
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.FloorToInt(System.Single)">
+            <summary>
+            Get the largest intager that smaller than "value"
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.HsvToRgb(System.Single,System.Single,System.Single)">
+            <summary>
+            Convert Hue-Saturation-Value into Red-Green-Blue.
+            </summary>
+            <param name="h">Range: 0-1</param>
+            <param name="s">Range: 0-1</param>
+            <param name="v">Range: 0-1</param>
+        </member>
+        <member name="M:AngeliA.Util.HsvToRgbF(System.Single,System.Single,System.Single)">
+            <inheritdoc cref="M:AngeliA.Util.HsvToRgb(System.Single,System.Single,System.Single)"/>
+        </member>
+        <member name="M:AngeliA.Util.RgbToHsv(AngeliA.Color32,System.Single@,System.Single@,System.Single@)">
+            <summary>
+            Convert Red-Green-Blue into Hue-Saturation-Value.
+            </summary>
+            <param name="rgbColor"></param>
+            <param name="h">Range: 0-1</param>
+            <param name="s">Range: 0-1</param>
+            <param name="v">Range: 0-1</param>
+        </member>
+        <member name="M:AngeliA.Util.RgbToHsvF(AngeliA.ColorF,System.Single@,System.Single@,System.Single@)">
+            <inheritdoc cref="M:AngeliA.Util.RgbToHsv(AngeliA.Color32,System.Single@,System.Single@,System.Single@)"/>
+        </member>
+        <member name="M:AngeliA.Util.GetParentPath(System.String)">
+            <summary>
+            Get the parent full path of the given file/folder
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetFullPath(System.String)">
+            <summary>
+            Get the full path of given relative file path
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetFolderFullPath(System.String)">
+            <summary>
+            Get the full path of given relative folder path
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.CombinePaths(System.String,System.String)">
+            <inheritdoc cref="M:AngeliA.Util.CombinePaths(System.String,System.String,System.String,System.String)"/>
+        </member>
+        <member name="M:AngeliA.Util.CombinePaths(System.String,System.String,System.String)">
+            <inheritdoc cref="M:AngeliA.Util.CombinePaths(System.String,System.String,System.String,System.String)"/>
+        </member>
+        <member name="M:AngeliA.Util.CombinePaths(System.String,System.String,System.String,System.String)">
+            <summary>
+            Combine strings into a path
+            </summary>
+            <param name="path1">First part to combine</param>
+            <param name="path2">Second part to combine</param>
+            <param name="path3">Third part to combine</param>
+            <param name="path4">Fourth part to combine</param>
+            <returns>Full path</returns>
+        </member>
+        <member name="M:AngeliA.Util.CombinePaths(System.String[])">
+            <summary>
+            Combine strings into a path
+            </summary>
+            <param name="paths">Array of parts of path</param>
+            <returns>Full path</returns>
+        </member>
+        <member name="M:AngeliA.Util.GetExtensionWithDot(System.String)">
+            <summary>
+            Get file extension with the dot at front
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetNameWithoutExtension(System.String)">
+            <summary>
+            Get file/folder name without extension
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetNameWithExtension(System.String)">
+            <summary>
+            Get file/folder name with extension
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.ChangeExtension(System.String,System.String)">
+            <summary>
+            Change extension of the given path
+            </summary>
+            <param name="path"></param>
+            <param name="newEx">Works both with and without the dot</param>
+            <returns>New path with extension changed</returns>
+        </member>
+        <member name="M:AngeliA.Util.FolderExists(System.String)">
+            <summary>
+            True if the given path refers to an existing folder in disk
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.FileExists(System.String)">
+            <summary>
+            True if the given path refers to an existing file in disk
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.PathIsFolder(System.String)">
+            <summary>
+            True is the given path refers to an exist folder instead of file
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetUrl(System.String)">
+            <summary>
+            Get the AbsoluteUri of the given path
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetTimeString">
+            <summary>
+            Get a string for current date and time
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetLongTime">
+            <summary>
+            Get FileTimeUTC from UtcNow
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.Util.IsSameDay(System.Int64,System.Int64)">
+            <summary>
+            True if two ticks inside same day
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetDisplayTimeFromTicks(System.Int64)">
+            <summary>
+            Get time string for display label from given ticks
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.FixPath(System.String)">
+            <summary>
+            Make given path valid. 
+            1. Directory separator will be fixed to the valid one.
+            2. All separators in the start of the path will be removed.
+            3. All separators in the end of the path will be removed.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.IsSamePath(System.String,System.String)">
+            <summary>
+            True if the two given paths refers to the same location
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.IsHidden(System.String)">
+            <summary>
+            True if the file/folder at path is hidden
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.IsValidForFileName(System.String)">
+            <summary>
+            True if the given string can be a file name.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.IsPathValid(System.String)">
+            <summary>
+            True if the given path can be an qualified path
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.TryGetRelativePath(System.String,System.String,System.String@)">
+            <summary>
+            Get relative path from given path and root
+            </summary>
+            <param name="relativeTo">The root folder path</param>
+            <param name="path">The target path inside the root</param>
+            <param name="relativePath">Result relative path</param>
+            <returns>True if the path successfuly got</returns>
+        </member>
+        <member name="M:AngeliA.Util.GetAllTypeSpan">
+            <summary>
+            Get a ReadOnlySpan for all AngeliA related System.Types
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.AddAssembly(System.Reflection.Assembly)">
+            <summary>
+            Add a new assembly into AngeliA. Make sure the assembly is already loaded into .NET. ⚠ Only call this function inside a static constructor ⚠
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.AllChildClass(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Iterate through all child classes of given type
+            </summary>
+            <param name="type"></param>
+            <param name="includeAbstract">True if abstract class should be included</param>
+            <param name="includeInterface">True if interface should be included</param>
+        </member>
+        <member name="M:AngeliA.Util.AllChildClassID(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Iterate through all child class's ID of given type
+            </summary>
+            <param name="type"></param>
+            <param name="includeAbstract">True if abstract class should be included</param>
+            <param name="includeInterface">True if interface should be included</param>
+        </member>
+        <member name="M:AngeliA.Util.ForAllAssemblyWithAttribute``1">
+            <summary>
+            Iterate through all given assembly attribute with the inatance of the assembly
+            </summary>
+            <typeparam name="A">Type of the attribute</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.Util.TryGetAttributeFromAllAssemblies``1">
+            <summary>
+            Get first given attribute from all assemblies if found
+            </summary>
+            <typeparam name="A">Type of the attribute</typeparam>
+            <returns>True if the attribute is found</returns>
+        </member>
+        <member name="M:AngeliA.Util.TryGetAttributeFromAllAssemblies``1(``0@)">
+            <summary>
+            Get first given attribute from all assemblies if found
+            </summary>
+            <typeparam name="A">Type of the attribute</typeparam>
+            <param name="attribute">Instance of the founded attribute</param>
+            <returns>True if the attribute is found</returns>
+        </member>
+        <member name="M:AngeliA.Util.AllEnumIdPairs``1">
+            <summary>
+            Iterate through all value and name AngeHash for the given enum
+            </summary>
+            <typeparam name="E">Type of the enum</typeparam>
+        </member>
+        <member name="M:AngeliA.Util.AllClassImplemented(System.Type,System.Boolean)">
+            <summary>
+            Iterate through all class that implement the given interface
+            </summary>
+            <param name="interfaceType">Type of the target interface</param>
+            <param name="includeAbstract">True if abstract class is included</param>
+        </member>
+        <member name="M:AngeliA.Util.AllClassImplementedID(System.Type,System.Boolean)">
+            <summary>
+            Iterate through all class's ID that implement the given interface
+            </summary>
+            <param name="interfaceType">Type of the target interface</param>
+            <param name="includeAbstract">True if abstract class is included</param>
+        </member>
+        <member name="M:AngeliA.Util.AllClassWithAttribute(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Iterate through all classes with given attribute attaching on
+            </summary>
+            <param name="ignoreAbstract">True if abstract classes should be excluded</param>
+            <param name="ignoreInterface">True if interfaces should be excluded</param>
+            <param name="attribute">Type of the target attribute</param>
+        </member>
+        <member name="M:AngeliA.Util.AllClassWithAttribute``1(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Iterate through all classes with given attribute attaching on
+            </summary>
+            <typeparam name="A">Type of the target attribute</typeparam>
+            <param name="ignoreAbstract">True if abstract classes should be excluded</param>
+            <param name="ignoreInterface">True if interfaces should be excluded</param>
+            <param name="inherit">Set to true to inspect the ancestors of element</param>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.Util.AllStaticMethodWithAttribute``1">
+            <summary>
+            Iterate through all static method from all classes that with given attribute attached on
+            </summary>
+            <typeparam name="T">Type of the attribute</typeparam>
+        </member>
+        <member name="M:AngeliA.Util.InvokeAllStaticMethodWithAttribute``1">
+            <summary>
+            Invoke all static method from all classes that with given attribute attached on
+            </summary>
+            <typeparam name="A">Type of the attribute</typeparam>
+        </member>
+        <member name="M:AngeliA.Util.InvokeAllStaticMethodWithAttribute``1(System.Func{System.Collections.Generic.KeyValuePair{System.Reflection.MethodInfo,``0},System.Boolean})">
+            <summary>
+            Invoke all static method from all classes that with given attribute attached on
+            </summary>
+            <typeparam name="A">Type of the attribute</typeparam>
+            <param name="predicte">Only invoke the method if this function returns true</param>
+        </member>
+        <member name="M:AngeliA.Util.InvokeAllStaticMethodWithAttribute``1(System.Comparison{System.Collections.Generic.KeyValuePair{System.Reflection.MethodInfo,``0}})">
+            <summary>
+            Invoke all static method from all classes that with given attribute attached on
+            </summary>
+            <typeparam name="A">Type of the attribute</typeparam>
+            <param name="comparison">Sort the list with this cmoparison</param>
+        </member>
+        <member name="M:AngeliA.Util.InvokeStaticMethod(System.Type,System.String,System.Object[])">
+            <summary>
+            Invoke a static method from given name and type
+            </summary>
+            <param name="type">Type of the class that holds the method</param>
+            <param name="methodName">Name of the static method</param>
+            <param name="param">Param of the static method</param>
+            <returns>Return value of the static method</returns>
+        </member>
+        <member name="M:AngeliA.Util.InvokeMethod(System.Object,System.String,System.Object[])">
+            <summary>
+            Invoke a method from given name and type
+            </summary>
+            <param name="obj">Instance that holds the method</param>
+            <param name="methodName">Name of the method</param>
+            <param name="param">Param of the method</param>
+            <returns>Return value of the method</returns>
+        </member>
+        <member name="M:AngeliA.Util.GetStaticPropertyValue(System.Type,System.String)">
+            <summary>
+            Get current value of a static property
+            </summary>
+            <param name="type">Type of the class that holds the property</param>
+            <param name="name">Name of the property</param>
+            <returns>Value of the property</returns>
+        </member>
+        <member name="M:AngeliA.Util.GetPropertyValue(System.Object,System.String)">
+            <summary>
+            Get current value of a property
+            </summary>
+            <param name="target">Instance that holds the property</param>
+            <param name="name">Name of the property</param>
+            <returns>Value of the property</returns>
+        </member>
+        <member name="M:AngeliA.Util.GetProperty(System.Type,System.String)">
+            <summary>
+            Get PropertyInfo of the given type and name
+            </summary>
+            <param name="type">Type of class that holds the property</param>
+            <param name="name">Name of the property</param>
+            <returns>Instance of the PropertyInfo</returns>
+        </member>
+        <member name="M:AngeliA.Util.SetStaticPropertyValue(System.Type,System.String,System.Object)">
+            <summary>
+            Set current value of a static property
+            </summary>
+            <param name="type">Type of class that holds the property</param>
+            <param name="name">Name of the property</param>
+            <param name="value">Value of the property</param>
+        </member>
+        <member name="M:AngeliA.Util.SetPropertyValue(System.Object,System.String,System.Object)">
+            <summary>
+            Set current value of a property
+            </summary>
+            <param name="target">Instance that holds the property</param>
+            <param name="name">Name of the property</param>
+            <param name="value">Value of the property</param>
+        </member>
+        <member name="M:AngeliA.Util.GetFieldValue(System.Object,System.String)">
+            <summary>
+            Get value of the given field
+            </summary>
+            <param name="target">Instance that holds the field</param>
+            <param name="fieldName">Name of the field</param>
+            <returns>Value of the field</returns>
+        </member>
+        <member name="M:AngeliA.Util.GetField(System.Type,System.String)">
+            <summary>
+             Get FieldInfo of the given type and name
+            </summary>
+            <param name="type">Type of class that holds the field</param>
+            <param name="name">Name of the field</param>
+            <returns>Instance of the FieldInfo</returns>
+        </member>
+        <member name="M:AngeliA.Util.SetFieldValue(System.Object,System.String,System.Object)">
+            <summary>
+            Set value of the given field
+            </summary>
+            <param name="target">Instance that holds the field</param>
+            <param name="name">Name of the field</param>
+            <param name="value">Value of the field</param>
+        </member>
+        <member name="M:AngeliA.Util.GetStaticFieldValue(System.Type,System.String)">
+            <summary>
+            Get value of the given static field
+            </summary>
+            <param name="type">Type of class that holds the field</param>
+            <param name="name">Name of the field</param>
+            <returns>Value of the field</returns>
+        </member>
+        <member name="M:AngeliA.Util.SetStaticFieldValue(System.Type,System.String,System.Object)">
+            <summary>
+            Set value of the given static field
+            </summary>
+            <param name="type">Type of class that holds the field</param>
+            <param name="name">Name of the field</param>
+            <param name="value">Value of the field</param>
+        </member>
+        <member name="M:AngeliA.Util.GetFieldType(System.Object,System.String)">
+            <summary>
+            Get what type of data the given field holds
+            </summary>
+            <param name="target">Instance that holds the field</param>
+            <param name="name">Name of the field</param>
+            <returns>System.Type that this field holds</returns>
+        </member>
+        <member name="M:AngeliA.Util.GetStaticFieldType(System.Type,System.String)">
+            <summary>
+            Get what type of data the given static field holds
+            </summary>
+            <param name="type">Type of class that holds the field</param>
+            <param name="name">Name of the field</param>
+            <returns>System.Type that this field holds</returns>
         </member>
         <member name="T:AngeliA.BlockColor">
             <summary>

@@ -8,14 +8,26 @@ using System.Threading.Tasks;
 
 namespace AngeliA;
 
+/// <summary>
+/// Utility class for language system
+/// </summary>
 public static partial class LanguageUtil {
 
+	/// <summary>
+	/// Used for remote setting between engine and rigged game
+	/// </summary>
 	public const int ADD_KEYS_FOR_ALL_LANGUAGE_CODE_SETTING_ID = 914528783;
 
 	// Data
 	private static readonly StringBuilder CacheBuilder = new();
 
 	// Api
+	/// <summary>
+	/// Load and iterate through all language data pairs from given folder
+	/// </summary>
+	/// <param name="languageRoot">Root folder of the language data</param>
+	/// <param name="language">ISO of the target language</param>
+	/// <param name="keepEscapeCharacters">True if the escape characters (like "\n") will be set to original data</param>
 	public static IEnumerable<KeyValuePair<string, string>> LoadAllPairsFromFolder (string languageRoot, string language, bool keepEscapeCharacters = false) {
 		string lanFolder = GetLanguageFolderPath(languageRoot, language);
 		foreach (var filePath in Util.EnumerateFiles(lanFolder, true, AngePath.LANGUAGE_SEARCH_PATTERN)) {
@@ -25,6 +37,11 @@ public static partial class LanguageUtil {
 		}
 	}
 
+	/// <summary>
+	/// Load and iterate through all language data pairs from given file
+	/// </summary>
+	/// <param name="path">Language file path</param>
+	/// <param name="keepEscapeCharacters">True if the escape characters (like "\n") will be set to original data</param>
 	public static IEnumerable<KeyValuePair<string, string>> LoadAllPairsFromDiskAtPath (string path, bool keepEscapeCharacters = false) {
 		foreach (var line in Util.ForAllLinesInFile(path, Encoding.UTF8)) {
 			if (string.IsNullOrWhiteSpace(line)) continue;
@@ -37,6 +54,9 @@ public static partial class LanguageUtil {
 		}
 	}
 
+	/// <summary>
+	/// Save given language data pairs into file
+	/// </summary>
 	public static void SaveAllPairsToDisk (string filePath, IEnumerable<KeyValuePair<string, string>> pairs) {
 		CacheBuilder.Clear();
 		foreach (var pair in pairs) {
@@ -49,8 +69,17 @@ public static partial class LanguageUtil {
 		CacheBuilder.Clear();
 	}
 
+	/// <summary>
+	/// Get folder for given language
+	/// </summary>
+	/// <param name="languageRoot">Root of the language folder</param>
+	/// <param name="language">ISO of the target language</param>
+	/// <returns>Path for the target language file</returns>
 	public static string GetLanguageFolderPath (string languageRoot, string language) => Util.CombinePaths(languageRoot, language);
 
+	/// <summary>
+	/// Get current language ISO of the OS
+	/// </summary>
 	public static string GetSystemLanguageISO () {
 		string iso = CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
 		if (iso == "zh") {
@@ -59,6 +88,9 @@ public static partial class LanguageUtil {
 		return iso;
 	}
 
+	/// <summary>
+	/// Add all required keys for all language inside the root folder
+	/// </summary>
 	public static void AddKeysForAllLanguageCode (string languageRoot) {
 		var fieldBinding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 		foreach (string folderPath in Util.EnumerateFolders(languageRoot, true)) {

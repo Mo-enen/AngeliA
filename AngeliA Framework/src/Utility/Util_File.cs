@@ -8,11 +8,16 @@ using System.IO.Compression;
 
 namespace AngeliA;
 
+/// <summary>
+/// Utility class of AngeliA
+/// </summary>
 public static partial class Util {
 
 
-
 	// API
+	/// <summary>
+	/// Load file into string text
+	/// </summary>
 	public static string FileToText (string path) {
 		if (!FileExists(path)) return "";
 		using var sr = File.OpenText(path);
@@ -22,6 +27,9 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Load file into string text
+	/// </summary>
 	public static string FileToText (string path, Encoding encoding) {
 		if (!FileExists(path)) return "";
 		using StreamReader sr = new(path, encoding);
@@ -31,6 +39,12 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Save string text into file
+	/// </summary>
+	/// <param name="data"></param>
+	/// <param name="path"></param>
+	/// <param name="append">True if keep the existing content in the file</param>
 	public static void TextToFile (string data, string path, bool append = false) {
 		CreateFolder(GetParentPath(path));
 		using FileStream fs = new(path, append ? FileMode.Append : FileMode.Create);
@@ -41,6 +55,13 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Save string text into file
+	/// </summary>
+	/// <param name="data"></param>
+	/// <param name="path"></param>
+	/// <param name="encoding"></param>
+	/// <param name="append">True if keep the existing content in the file</param>
 	public static void TextToFile (string data, string path, Encoding encoding, bool append = false) {
 		CreateFolder(GetParentPath(path));
 		using FileStream fs = new(path, append ? FileMode.Append : FileMode.Create);
@@ -52,6 +73,9 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Iterate through every text lines inside given file 
+	/// </summary>
 	public static IEnumerable<string> ForAllLinesInFile (string path) {
 		if (!FileExists(path)) yield break;
 		using StreamReader sr = new(path);
@@ -59,6 +83,9 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Iterate through every text lines inside given file 
+	/// </summary>
 	public static IEnumerable<string> ForAllLinesInFile (string path, Encoding encoding) {
 		if (!FileExists(path)) yield break;
 		using var sr = new StreamReader(path, encoding);
@@ -66,27 +93,30 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Iterate through every text lines inside given string
+	/// </summary>
 	public static IEnumerable<string> ForAllLinesInString (string content) {
 		using var reader = new StringReader(content);
 		while (reader.Peek() >= 0) yield return reader.ReadLine();
 	}
 
 
-	public static IEnumerable<(string name, int value)> ForAllNameAndIntInFile (string path) {
+	internal static IEnumerable<(string name, int value)> ForAllNameAndIntInFile (string path) {
 		if (!FileExists(path)) yield break;
 		using var sr = new StreamReader(path);
 		foreach (var (name, value) in ForAllNameAndIntInFile(sr)) {
 			yield return (name, value);
 		}
 	}
-	public static IEnumerable<(string name, int value)> ForAllNameAndIntInFile (string path, Encoding encoding) {
+	internal static IEnumerable<(string name, int value)> ForAllNameAndIntInFile (string path, Encoding encoding) {
 		if (!FileExists(path)) yield break;
 		using var sr = new StreamReader(path, encoding);
 		foreach (var (name, value) in ForAllNameAndIntInFile(sr)) {
 			yield return (name, value);
 		}
 	}
-	public static IEnumerable<(string name, int value)> ForAllNameAndIntInFile (StreamReader reader) {
+	internal static IEnumerable<(string name, int value)> ForAllNameAndIntInFile (StreamReader reader) {
 		while (reader.Peek() >= 0) {
 			string line = reader.ReadLine();
 			int midIndex = line.IndexOf(':');
@@ -98,21 +128,21 @@ public static partial class Util {
 	}
 
 
-	public static IEnumerable<(string name, string value)> ForAllNameAndStringInFile (string path) {
+	internal static IEnumerable<(string name, string value)> ForAllNameAndStringInFile (string path) {
 		if (!FileExists(path)) yield break;
 		using var sr = new StreamReader(path);
 		foreach (var (name, value) in ForAllNameAndStringInFile(sr)) {
 			yield return (name, value);
 		}
 	}
-	public static IEnumerable<(string name, string value)> ForAllNameAndStringInFile (string path, Encoding encoding) {
+	internal static IEnumerable<(string name, string value)> ForAllNameAndStringInFile (string path, Encoding encoding) {
 		if (!FileExists(path)) yield break;
 		using var sr = new StreamReader(path, encoding);
 		foreach (var (name, value) in ForAllNameAndStringInFile(sr)) {
 			yield return (name, value);
 		}
 	}
-	public static IEnumerable<(string name, string value)> ForAllNameAndStringInFile (StreamReader reader) {
+	internal static IEnumerable<(string name, string value)> ForAllNameAndStringInFile (StreamReader reader) {
 		while (reader.Peek() >= 0) {
 			string line = reader.ReadLine();
 			int midIndex = line.IndexOf(':');
@@ -122,6 +152,9 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Create a folder at given path. Ignore if folder exists.
+	/// </summary>
 	public static void CreateFolder (string path) {
 		if (string.IsNullOrEmpty(path) || FolderExists(path)) return;
 		string pPath = GetParentPath(path);
@@ -132,6 +165,9 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Load file as a byte array
+	/// </summary>
 	public static byte[] FileToBytes (string path) {
 		byte[] bytes = null;
 		if (FileExists(path)) {
@@ -141,6 +177,12 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Save byte array into file
+	/// </summary>
+	/// <param name="bytes"></param>
+	/// <param name="path"></param>
+	/// <param name="length">Set to -1 to save all byte array</param>
 	public static void BytesToFile (byte[] bytes, string path, int length = -1) {
 		CreateFolder(GetParentPath(path));
 		using var fs = new FileStream(path, FileMode.Create, FileAccess.Write);
@@ -149,11 +191,23 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// True if there's any file match the pattern
+	/// </summary>
+	/// <param name="path">Root folder path</param>
+	/// <param name="topOnly">True if only search top level of the folder</param>
+	/// <param name="searchPattern">("*" means all files, "*.txt" means all txt files)</param>
 	public static bool HasFileIn (string path, bool topOnly, string searchPattern) {
 		if (!FolderExists(path)) return false;
 		foreach (var _ in EnumerateFiles(path, topOnly, searchPattern)) return true;
 		return false;
 	}
+	/// <summary>
+	/// True if there's any file match any of the patterns
+	/// </summary>
+	/// <param name="path">Root folder path</param>
+	/// <param name="topOnly">True if only search top level of the folder</param>
+	/// <param name="searchPattern">("*" means all files, "*.txt" means all txt files)</param>
 	public static bool HasFileIn (string path, bool topOnly, params string[] searchPattern) {
 		if (!FolderExists(path)) return false;
 		foreach (var _ in EnumerateFiles(path, topOnly, searchPattern)) return true;
@@ -161,6 +215,12 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Iterate through path of all files that match given pattern
+	/// </summary>
+	/// <param name="path">Root folder path</param>
+	/// <param name="topOnly">True if only search top level of the folder</param>
+	/// <param name="searchPattern">("*" means all files, "*.txt" means all txt files)</param>
 	public static IEnumerable<string> EnumerateFiles (string path, bool topOnly, string searchPattern) {
 		if (!FolderExists(path)) yield break;
 		var option = topOnly ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories;
@@ -168,6 +228,12 @@ public static partial class Util {
 			yield return str;
 		}
 	}
+	/// <summary>
+	/// Iterate through path of all files that match any given patterns
+	/// </summary>
+	/// <param name="path">Root folder path</param>
+	/// <param name="topOnly">True if only search top level of the folder</param>
+	/// <param name="searchPatterns">("*" means all files, "*.txt" means all txt files)</param>
 	public static IEnumerable<string> EnumerateFiles (string path, bool topOnly, params string[] searchPatterns) {
 		if (!FolderExists(path)) yield break;
 		var option = topOnly ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories;
@@ -185,6 +251,12 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Iterate through path of all folders that match given pattern
+	/// </summary>
+	/// <param name="path">Root folder path</param>
+	/// <param name="topOnly">True if only search top level of the folder</param>
+	/// <param name="searchPattern">("*" means all folders)</param>
 	public static IEnumerable<string> EnumerateFolders (string path, bool topOnly, string searchPattern = "*") {
 		if (!FolderExists(path)) yield break;
 		var option = topOnly ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories;
@@ -192,6 +264,12 @@ public static partial class Util {
 			yield return str;
 		}
 	}
+	/// <summary>
+	/// Iterate through path of all folders that match any given patterns
+	/// </summary>
+	/// <param name="path">Root folder path</param>
+	/// <param name="topOnly">True if only search top level of the folder</param>
+	/// <param name="searchPatterns">("*" means all folders)</param>
 	public static IEnumerable<string> EnumerateFolders (string path, bool topOnly, params string[] searchPatterns) {
 		if (!FolderExists(path)) yield break;
 		var option = topOnly ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories;
@@ -209,6 +287,9 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Delete the file at given path. Do nothing when file not exists
+	/// </summary>
 	public static void DeleteFile (string path) {
 		if (FileExists(path)) {
 			File.Delete(path);
@@ -216,6 +297,13 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Copy file from one path to other
+	/// </summary>
+	/// <param name="from"></param>
+	/// <param name="to"></param>
+	/// <param name="overwrite">True if overwrite existing file at "to"</param>
+	/// <returns>True if successfuly copied</returns>
 	public static bool CopyFile (string from, string to, bool overwrite = true) {
 		if (!FileExists(from)) return false;
 		try {
@@ -229,6 +317,15 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Copy folder from one path to other
+	/// </summary>
+	/// <param name="from"></param>
+	/// <param name="to"></param>
+	/// <param name="copySubDirs">True if copy all folder/files inside root folder</param>
+	/// <param name="ignoreHidden">True if hidden files/folders do not get copy</param>
+	/// <param name="overrideFile">True if overwrite existing files at "to"</param>
+	/// <returns>True if successfuly copied</returns>
 	public static bool CopyFolder (string from, string to, bool copySubDirs, bool ignoreHidden, bool overrideFile = false) {
 
 		// Get the subdirectories for the specified directory.
@@ -268,6 +365,9 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Delete folder at given path. Do nothing when folder not exists
+	/// </summary>
 	public static void DeleteFolder (string path) {
 		if (FolderExists(path)) {
 			Directory.Delete(path, true);
@@ -286,7 +386,7 @@ public static partial class Util {
 
 	public static T ReadXML<T> (string path) where T : class {
 		var serializer = new XmlSerializer(typeof(T));
-		var stream = new FileStream(path, FileMode.Open);
+		using var stream = new FileStream(path, FileMode.Open);
 		var container = serializer.Deserialize(stream) as T;
 		stream.Close();
 		return container;
@@ -295,12 +395,18 @@ public static partial class Util {
 
 	public static void WriteXML<T> (T data, string path) where T : class {
 		var serializer = new XmlSerializer(typeof(T));
-		var stream = new FileStream(path, FileMode.Create);
+		using var stream = new FileStream(path, FileMode.Create);
 		serializer.Serialize(stream, data);
 		stream.Close();
 	}
 
 
+	/// <summary>
+	/// Get how many files mathchs the search pattern inside given folder path
+	/// </summary>
+	/// <param name="path">Root folder path</param>
+	/// <param name="search">("*" means all files, "*.txt" means all txt files)</param>
+	/// <param name="option"></param>
 	public static int GetFileCount (string path, string search = "*", SearchOption option = SearchOption.TopDirectoryOnly) {
 		if (FolderExists(path)) {
 			return Directory.EnumerateFiles(path, search, option).Count();
@@ -309,6 +415,12 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Get how many folders mathchs the search pattern inside given folder path
+	/// </summary>
+	/// <param name="path">Root folder path</param>
+	/// <param name="search">("*" means all files)</param>
+	/// <param name="option"></param>
 	public static int GetFolderCount (string path, string search = "*", SearchOption option = SearchOption.TopDirectoryOnly) {
 		if (FolderExists(path)) {
 			return Directory.EnumerateDirectories(path, search, option).Count();
@@ -317,13 +429,23 @@ public static partial class Util {
 	}
 
 
-	public static void MoveFile (string from, string to) {
+	/// <summary>
+	/// Move file from one path to other. Use this function to rename files.
+	/// </summary>
+	/// <returns>True if successfuly moved</returns>
+	public static bool MoveFile (string from, string to) {
 		if (!from.Equals(to) && FileExists(from) && !FileExists(to)) {
 			File.Move(from, to);
+			return true;
 		}
+		return false;
 	}
 
 
+	/// <summary>
+	/// Move folder from one path to other. Use this function to rename folder.
+	/// </summary>
+	/// /// <returns>True if successfuly moved</returns>
 	public static bool MoveFolder (string from, string to) {
 		if (from != to && FolderExists(from)) {
 			try {
@@ -365,6 +487,12 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Save byte array into compressed file
+	/// </summary>
+	/// <param name="path"></param>
+	/// <param name="rawBytes"></param>
+	/// <param name="length">Set to -1 for the full array</param>
 	public static void ByteToCompressedFile (string path, byte[] rawBytes, int length = -1) {
 		CreateFolder(GetParentPath(path));
 		using var fileStream = File.Create(path);
@@ -373,6 +501,12 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Load compressed file into byte array
+	/// </summary>
+	/// <param name="path"></param>
+	/// <param name="byteLength">True length of the byte array</param>
+	/// <returns>The raw byte array</returns>
 	public static byte[] CompressedFileToByte (string path, out int byteLength) {
 		byteLength = 0;
 		if (!FileExists(path)) return [];
@@ -385,6 +519,9 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Make compressed byte array into raw byte array
+	/// </summary>
 	public static byte[] DecompressBytes (byte[] compressedBytes) {
 		if (compressedBytes == null || compressedBytes.Length == 0) return [];
 		using var memStream = new MemoryStream(compressedBytes);
@@ -400,9 +537,18 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// True if path refers to existing file and the file is not empty.
+	/// </summary>
 	public static bool IsExistingFileEmpty (string path) => new FileInfo(path).Length == 0;
 
 
+	/// <summary>
+	/// Copy and override target if the modify date is different
+	/// </summary>
+	/// <param name="source"></param>
+	/// <param name="target"></param>
+	/// <param name="skipWhenTargetNotExists">True if only override existing file instead of create new file when target not exists.</param>
 	public static void UpdateFile (string source, string target, bool skipWhenTargetNotExists = false) {
 		if (!FileExists(source)) return;
 		if (skipWhenTargetNotExists && !FileExists(target)) return;

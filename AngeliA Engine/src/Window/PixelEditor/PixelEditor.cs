@@ -993,7 +993,7 @@ internal partial class PixelEditor : WindowUI {
 		int targetIndex = -1;
 		AngeSprite targetSprite = null;
 		float minDis = float.MaxValue;
-		Util.RGBToHSV(PaintingColor, out float h, out float s, out float v);
+		Util.RgbToHsv(PaintingColor, out float h, out float s, out float v);
 		var pixels = palSprite.Pixels;
 		for (int i = 0; i < PALETTE_PIXELS.Length; i++) {
 			var pal = GetPixelFromPal(pixels, i, palSprite.PixelRect.width);
@@ -1002,7 +1002,7 @@ internal partial class PixelEditor : WindowUI {
 				targetSprite = palSprite;
 				break;
 			}
-			Util.RGBToHSV(pal, out float pH, out float pS, out float pV);
+			Util.RgbToHsv(pal, out float pH, out float pS, out float pV);
 			float dis = (pH - h).Abs() * 4f + (pS - s).Abs() * 1f + (pV - v).Abs() * 2f;
 			if (dis < minDis) {
 				minDis = dis;

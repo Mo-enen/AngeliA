@@ -14,16 +14,25 @@ public static partial class Util {
 	private const MethodImplOptions INLINE = MethodImplOptions.AggressiveInlining;
 
 	[StructLayout(LayoutKind.Sequential, Size = 1)]
-	public struct MathfInternal {
+	internal struct MathfInternal {
 		public static volatile float FloatMinNormal = 1.17549435E-38f;
 		public static volatile float FloatMinDenormal = float.Epsilon;
 		public static bool IsFlushToZeroEnabled = FloatMinDenormal == 0f;
 	}
 
+	/// <summary>
+	/// Rad angle * Rad2Deg = Deg angle
+	/// </summary>
 	public const float Rad2Deg = 57.29578f;
+	/// <summary>
+	/// Deg angle * Deg2Rad = Rad angle
+	/// </summary>
 	public const float Deg2Rad = PI / 180f;
-	public const float PI = 3.14159274F;
-	public static readonly float Epsilon = MathfInternal.IsFlushToZeroEnabled ? MathfInternal.FloatMinNormal : MathfInternal.FloatMinDenormal;
+	/// <summary>
+	/// π = 3.14159274f
+	/// </summary>
+	public const float PI = 3.14159274f;
+	internal static readonly float Epsilon = MathfInternal.IsFlushToZeroEnabled ? MathfInternal.FloatMinNormal : MathfInternal.FloatMinDenormal;
 	private static int QuickRandomSeed = 73633632;
 
 
@@ -60,15 +69,40 @@ public static partial class Util {
 		{ "zht", "Chinese Traditional" }, { "zu", "Zulu" }
 	};
 
+	/// <summary>
+	/// Get display name of the given language in it's native language
+	/// </summary>
+	/// <param name="iso">ISO of the language (eg. "en" for English, "zht" for Chinese Traditional, "de" for German)</param>
+	/// <param name="displayName">Result name</param>
+	/// <returns>True if the iso is valid</returns>
 	public static bool TryGetLanguageDisplayName (string iso, out string displayName) => IsoToDisplayName.TryGetValue(iso, out displayName);
+	/// <summary>
+	/// Get display name of the given language in English
+	/// </summary>
+	/// <param name="iso">ISO of the language (eg. "en" for English, "zht" for Chinese Traditional, "de" for German)</param>
+	/// <returns>Result name. Return empty string when iso not valid.</returns>
 	public static string GetLanguageDisplayNameInEnglish (string iso) => IsoToEnglishDisplayName.TryGetValue(iso, out var displayName) ? displayName : "";
+	/// <summary>
+	/// Get display name of the given language in it's native language
+	/// </summary>
+	/// <param name="iso">ISO of the language (eg. "en" for English, "zht" for Chinese Traditional, "de" for German)</param>
+	/// <returns>Result name. Return empty string when iso not valid.</returns>
 	public static string GetLanguageDisplayName (string iso) => IsoToDisplayName.TryGetValue(iso, out var displayName) ? displayName : "";
+	/// <summary>
+	/// True if the given iso is valid
+	/// </summary>
 	public static bool IsSupportedLanguageISO (string iso) => IsoToDisplayName.ContainsKey(iso);
+	/// <summary>
+	/// Iterate through iso of all language AngeliA support
+	/// </summary>
 	public static IEnumerable<string> ForAllSystemLanguages () => IsoToDisplayName.Keys;
 
 
 	// Input
 	private static readonly Dictionary<KeyboardKey, string> KeyDisplayName = new() { { KeyboardKey.NumpadDivide, "num /" }, { KeyboardKey.NumpadEquals, "num =" }, { KeyboardKey.NumpadMinus, "num -" }, { KeyboardKey.NumpadMultiply, "num *" }, { KeyboardKey.NumpadPeriod, "num ." }, { KeyboardKey.NumpadPlus, "num +" }, { KeyboardKey.F1, "F1" }, { KeyboardKey.F2, "F2" }, { KeyboardKey.F3, "F3" }, { KeyboardKey.F4, "F4" }, { KeyboardKey.F5, "F5" }, { KeyboardKey.F6, "F6" }, { KeyboardKey.F7, "F7" }, { KeyboardKey.F8, "F8" }, { KeyboardKey.F9, "F9" }, { KeyboardKey.F10, "F10" }, { KeyboardKey.F11, "F11" }, { KeyboardKey.F12, "F12" }, { KeyboardKey.Space, "Space" }, { KeyboardKey.Enter, "Enter" }, { KeyboardKey.Tab, "Tab" }, { KeyboardKey.Backquote, "`" }, { KeyboardKey.Quote, "'" }, { KeyboardKey.Semicolon, ";" }, { KeyboardKey.Comma, "," }, { KeyboardKey.Period, "." }, { KeyboardKey.Slash, "/" }, { KeyboardKey.Backslash, "\\" }, { KeyboardKey.LeftBracket, "[" }, { KeyboardKey.RightBracket, "]" }, { KeyboardKey.Minus, "-" }, { KeyboardKey.Equals, "=" }, { KeyboardKey.A, "A" }, { KeyboardKey.B, "B" }, { KeyboardKey.C, "C" }, { KeyboardKey.D, "D" }, { KeyboardKey.E, "E" }, { KeyboardKey.F, "F" }, { KeyboardKey.G, "G" }, { KeyboardKey.H, "H" }, { KeyboardKey.I, "I" }, { KeyboardKey.J, "J" }, { KeyboardKey.K, "K" }, { KeyboardKey.L, "L" }, { KeyboardKey.M, "M" }, { KeyboardKey.N, "N" }, { KeyboardKey.O, "O" }, { KeyboardKey.P, "P" }, { KeyboardKey.Q, "Q" }, { KeyboardKey.R, "R" }, { KeyboardKey.S, "S" }, { KeyboardKey.T, "T" }, { KeyboardKey.U, "U" }, { KeyboardKey.V, "V" }, { KeyboardKey.W, "W" }, { KeyboardKey.X, "X" }, { KeyboardKey.Y, "Y" }, { KeyboardKey.Z, "Z" }, { KeyboardKey.Digit1, "1" }, { KeyboardKey.Digit2, "2" }, { KeyboardKey.Digit3, "3" }, { KeyboardKey.Digit4, "4" }, { KeyboardKey.Digit5, "5" }, { KeyboardKey.Digit6, "6" }, { KeyboardKey.Digit7, "7" }, { KeyboardKey.Digit8, "8" }, { KeyboardKey.Digit9, "9" }, { KeyboardKey.Digit0, "0" }, { KeyboardKey.LeftShift, "Shift" }, { KeyboardKey.RightShift, "Shift" }, { KeyboardKey.LeftAlt, "Alt" }, { KeyboardKey.RightAlt, "Alt" }, { KeyboardKey.LeftCtrl, "Ctrl" }, { KeyboardKey.RightCtrl, "Ctrl" }, { KeyboardKey.Escape, "ESC" }, { KeyboardKey.LeftArrow, "←" }, { KeyboardKey.RightArrow, "→" }, { KeyboardKey.UpArrow, "↑" }, { KeyboardKey.DownArrow, "↓" }, { KeyboardKey.Backspace, "Backspace" }, { KeyboardKey.PageDown, "PageDown" }, { KeyboardKey.PageUp, "PageUp" }, { KeyboardKey.Home, "Home" }, { KeyboardKey.End, "End" }, { KeyboardKey.Insert, "Insert" }, { KeyboardKey.Delete, "Delete" }, { KeyboardKey.CapsLock, "CapsLock" }, { KeyboardKey.NumLock, "NumLock" }, { KeyboardKey.PrintScreen, "PrintScreen" }, { KeyboardKey.ScrollLock, "ScrollLock" }, { KeyboardKey.Numpad0, "Num 0" }, { KeyboardKey.Numpad1, "Num 1" }, { KeyboardKey.Numpad2, "Num 2" }, { KeyboardKey.Numpad3, "Num 3" }, { KeyboardKey.Numpad4, "Num 4" }, { KeyboardKey.Numpad5, "Num 5" }, { KeyboardKey.Numpad6, "Num 6" }, { KeyboardKey.Numpad7, "Num 7" }, { KeyboardKey.Numpad8, "Num 8" }, { KeyboardKey.Numpad9, "Num 9" }, };
+	/// <summary>
+	/// Get display name in English for given keyboard key
+	/// </summary>
 	public static string GetKeyDisplayName (KeyboardKey key) => KeyDisplayName.TryGetValue(key, out var value) ? value : string.Empty;
 
 
@@ -80,6 +114,9 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Add given key and value into system Environment Variable
+	/// </summary>
 	public static void AddEnvironmentVariable (string key, string value) {
 		string oldPath = System.Environment.GetEnvironmentVariable(
 			key, System.EnvironmentVariableTarget.Process
@@ -90,6 +127,12 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Make the given string (in English) looks better for user to read.
+	/// 1. If the string start with "m_". Remove the "m_";
+	/// 2. Replace all "_" into " "
+	/// 3. Add space before capital letters that behind a lowercase letter
+	/// </summary>
 	public static string GetDisplayName (string name) {
 
 		// Remove "m_" at Start
@@ -130,40 +173,58 @@ public static partial class Util {
 	}
 
 
-	public static void QuickSort<T> (T[] cells, int min, int max, IComparer<T> comparer) {
+	/// <inheritdoc cref="QuickSort{T}(Span{T}, int, int, IComparer{T})"/>
+	public static void QuickSort<T> (T[] array, int min, int max, IComparer<T> comparer) {
 		int lo = min;
 		int hi = max;
-		T pvt = cells[(min + max) / 2];
+		T pvt = array[(min + max) / 2];
 		while (lo <= hi) {
-			while (comparer.Compare(cells[lo], pvt) < 0) lo++;
-			while (comparer.Compare(cells[hi], pvt) > 0) hi--;
+			while (comparer.Compare(array[lo], pvt) < 0) lo++;
+			while (comparer.Compare(array[hi], pvt) > 0) hi--;
 			if (lo > hi) break;
-			(cells[lo], cells[hi]) = (cells[hi], cells[lo]);
+			(array[lo], array[hi]) = (array[hi], array[lo]);
 			lo++;
 			hi--;
 		}
-		if (min < hi) QuickSort(cells, min, hi, comparer);
-		if (lo < max) QuickSort(cells, lo, max, comparer);
+		if (min < hi) QuickSort(array, min, hi, comparer);
+		if (lo < max) QuickSort(array, lo, max, comparer);
 	}
-
-
-	public static void QuickSort<T> (Span<T> cells, int min, int max, IComparer<T> comparer) {
+	/// <summary>
+	/// Sort the given array with QuickSort algorithm.
+	/// </summary>
+	/// <typeparam name="T">Type of the array</typeparam>
+	/// <param name="array">The array data</param>
+	/// <param name="min">Index range left (included)</param>
+	/// <param name="max">Index range right (included)</param>
+	/// <param name="comparer">Comparer instance to comparer the array element</param>
+	public static void QuickSort<T> (Span<T> array, int min, int max, IComparer<T> comparer) {
 		int lo = min;
 		int hi = max;
-		T pvt = cells[(min + max) / 2];
+		T pvt = array[(min + max) / 2];
 		while (lo <= hi) {
-			while (comparer.Compare(cells[lo], pvt) < 0) lo++;
-			while (comparer.Compare(cells[hi], pvt) > 0) hi--;
+			while (comparer.Compare(array[lo], pvt) < 0) lo++;
+			while (comparer.Compare(array[hi], pvt) > 0) hi--;
 			if (lo > hi) break;
-			(cells[lo], cells[hi]) = (cells[hi], cells[lo]);
+			(array[lo], array[hi]) = (array[hi], array[lo]);
 			lo++;
 			hi--;
 		}
-		if (min < hi) QuickSort(cells, min, hi, comparer);
-		if (lo < max) QuickSort(cells, lo, max, comparer);
+		if (min < hi) QuickSort(array, min, hi, comparer);
+		if (lo < max) QuickSort(array, lo, max, comparer);
 	}
 
 
+	/// <summary>
+	/// Get a random color without spending too much CPU resources
+	/// </summary>
+	/// <param name="minH">(from 0 to 360)</param>
+	/// <param name="maxH">(from 0 to 360)</param>
+	/// <param name="minS">(from 0 to 100)</param>
+	/// <param name="maxS">(from 0 to 100)</param>
+	/// <param name="minV">(from 0 to 100)</param>
+	/// <param name="maxV">(from 0 to 100)</param>
+	/// <param name="minA">(from 0 to 255)</param>
+	/// <param name="maxA">(from 0 to 255)</param>
 	public static Color32 QuickRandomColor (int minH = 0, int maxH = 360, int minS = 0, int maxS = 100, int minV = 0, int maxV = 100, int minA = 0, int maxA = 255) {
 		var result = HsvToRgb(
 			QuickRandom(minH, maxH) / 360f,
@@ -174,16 +235,30 @@ public static partial class Util {
 		return result;
 	}
 
+
 	/// <summary>
-	/// "min" is Included, "max" is Excluded
+	/// Get a random int between min and max without spending too much CPU resources. ("min" is Included, "max" is Excluded)
 	/// </summary>
 	public static int QuickRandom (int min, int max) => (QuickRandomSeed = QuickRandomWithSeed(QuickRandomSeed)).UMod((max - min).GreaterOrEquel(1)) + min;
+	/// <summary>
+	/// Get a random int between int.MinValue and int.MaxValue without spending too much CPU resources.
+	/// </summary>
 	public static int QuickRandom () => QuickRandomSeed = QuickRandomWithSeed(QuickRandomSeed);
+	/// <summary>
+	/// Get a random int which is -1 or 1 without spending too much CPU resources
+	/// </summary>
 	public static int QuickRandomSign () => QuickRandom() % 2 == 0 ? 1 : -1;
 	/// <summary>
-	/// "min" is Included, "max" is Excluded
+	/// Get a random int between min and max without spending too much CPU resources. ("min" is Included, "max" is Excluded)
 	/// </summary>
+	/// <param name="seed">Same seed always return same result</param>
+	/// <param name="min"></param>
+	/// <param name="max"></param>
 	public static int QuickRandomWithSeed (int seed, int min, int max) => QuickRandomWithSeed(seed).UMod((max - min).GreaterOrEquel(1)) + min;
+	/// <summary>
+	/// Get a random int between int.MinValue and int.MaxValue without spending too much CPU resources.
+	/// </summary>
+	/// <param name="seed">Same seed always return same result</param>
 	public static int QuickRandomWithSeed (int seed) {
 		seed = (seed * 1103515245 + 12345) % 23456789;
 		seed = (seed * 16807) % 2147483647;
@@ -192,9 +267,16 @@ public static partial class Util {
 		return seed;
 	}
 	/// <summary>
-	/// "min" is Included, "max" is Excluded
+	/// Get a random int between min and max without spending too much CPU resources. ("min" is Included, "max" is Excluded)
 	/// </summary>
+	/// <param name="seed">Same seed always return same result</param>
+	/// <param name="min"></param>
+	/// <param name="max"></param>
 	public static int QuickRandomWithSeed (long seed, int min, int max) => QuickRandomWithSeed(seed).UMod((max - min).GreaterOrEquel(1)) + min;
+	/// <summary>
+	/// Get a random int between int.MinValue and int.MaxValue without spending too much CPU resources. ("min" is Included, "max" is Excluded)
+	/// </summary>
+	/// <param name="seed">Same seed always return same result</param>
 	public static int QuickRandomWithSeed (long seed) {
 		seed = (seed * 12234503515245 + 72456224) % 2223423456789;
 		seed = (seed * 168689307) % 21470543323483647;
@@ -204,6 +286,14 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Perform a command with the terminal
+	/// </summary>
+	/// <param name="workingDirectory">Path of the working directory</param>
+	/// <param name="arguments"></param>
+	/// <param name="logID">(-1 means ignore log. 0 means log with Debug.Log. >=1 means log with Debug.LogInternal)</param>
+	/// <param name="wait">True if wait the terminal process to exit</param>
+	/// <returns>Return code</returns>
 	public static int ExecuteCommand (string workingDirectory, string arguments, int logID = -1, bool wait = true) {
 		try {
 			var info = new ProcessStartInfo {
@@ -248,6 +338,14 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Get index of the nearby segment of the given string.
+	/// (eg. for "Test Content String 123" if the start index is 5 which is start of "Content", toRight is true, return value will be 12 which is the end of "Content".)
+	/// </summary>
+	/// <param name="content"></param>
+	/// <param name="start"></param>
+	/// <param name="toRight">True if move the cursor to right side</param>
+	/// <returns>Index of the next step segment</returns>
 	public static int FindNextStringStep (string content, int start, bool toRight) {
 		int result = start;
 		int delta = toRight ? 1 : -1;
@@ -267,7 +365,18 @@ public static partial class Util {
 	}
 
 
-	public static Color32[] GetTrimedPixels (Color32[] pixels, int width, int height, out int left, out int right, out int down, out int up) {
+	/// <summary>
+	/// Trim the clear pixels for the given pixels and create a new instance for the result
+	/// </summary>
+	/// <param name="pixels">Source pixel data. (will not be changed after this operation)</param>
+	/// <param name="width">Width in pixel</param>
+	/// <param name="height">Height in pixel</param>
+	/// <param name="left">Left position that first found a pixel in whole column</param>
+	/// <param name="right">Right position that first found a pixel in whole column</param>
+	/// <param name="down">Bottom position that first found a pixel in whole row</param>
+	/// <param name="up">Top position that first found a pixel in whole row</param>
+	/// <returns>New instance of pixel data created</returns>
+	public static Color32[] GetTrimedPixels (in Color32[] pixels, int width, int height, out int left, out int right, out int down, out int up) {
 
 		left = 0;
 		right = width - 1;
@@ -324,37 +433,31 @@ public static partial class Util {
 	}
 
 
-	// Number
-	public static Float3 Vector3Lerp3 (Float3 a, Float3 b, float x, float y, float z = 0f) => new(
-			LerpUnclamped(a.x, b.x, x),
-			LerpUnclamped(a.y, b.y, y),
-			LerpUnclamped(a.z, b.z, z)
-		);
-	public static Float2 Vector2Lerp2 (Float2 a, Float2 b, float x, float y) => new(
-			LerpUnclamped(a.x, b.x, x),
-			LerpUnclamped(a.y, b.y, y)
-		);
 
+	/// <summary>
+	/// Value from one range to another, while maintaining it's relative position within the original range.
+	/// When "t" is "l", return "newL". 
+	/// When "t" is "r", return "newR". 
+	/// When "t" is something in the middle, it find a point between "newL" and "newR".
+	/// </summary>
+	/// <param name="l">Left range for t</param>
+	/// <param name="r">Right range for t</param>
+	/// <param name="newL">Left range for the result</param>
+	/// <param name="newR">Right range for the result</param>
+	/// <param name="t">Original value</param>
+	/// <returns>Remaped value</returns>
+	[MethodImpl(INLINE)]
+	public static float Remap (float l, float r, float newL, float newR, float t) => l == r ? newL : Lerp(newL, newR, (t - l) / (r - l));
 
-	public static Float3 Vector3InverseLerp3 (Float3 a, Float3 b, float x, float y, float z = 0f) => new(
-		RemapUnclamped(a.x, b.x, 0f, 1f, x),
-		RemapUnclamped(a.y, b.y, 0f, 1f, y),
-		RemapUnclamped(a.z, b.z, 0f, 1f, z)
-	);
-	public static Float2 Vector2InverseLerp2 (Float2 a, Float2 b, float x, float y) => new(
-		RemapUnclamped(a.x, b.x, 0f, 1f, x),
-		RemapUnclamped(a.y, b.y, 0f, 1f, y)
-	);
-
-
-	public static float Remap (float l, float r, float newL, float newR, float t) {
-		return l == r ? newL : Lerp(
-			newL, newR,
-			(t - l) / (r - l)
-		);
-	}
+	/// <inheritdoc cref="Remap(float, float, float, float, float)"/>
+	[MethodImpl(INLINE)]
 	public static float RemapUnclamped (float l, float r, float newL, float newR, float t) => l == r ? newL : newL + (newR - newL) * ((t - l) / (r - l));
+
+	/// <inheritdoc cref="Remap(float, float, float, float, float)"/>
+	[MethodImpl(INLINE)]
 	public static int Remap (int l, int r, int newL, int newR, int t) => RemapUnclamped(l, r, newL, newR, t.ClampDisorder(l, r));
+
+	/// <inheritdoc cref="Remap(float, float, float, float, float)"/>
 	public static int RemapUnclamped (int l, int r, int newL, int newR, int t) {
 		if (l == r) return newL;
 		int deltaNew = newR - newL;
@@ -371,6 +474,10 @@ public static partial class Util {
 		}
 	}
 
+
+	/// <summary>
+	/// Remap "value" between ("from" and "to") into (0 and 1)
+	/// </summary>
 	[MethodImpl(INLINE)]
 	public static float InverseLerp (float from, float to, float value) {
 		if (from != to) {
@@ -378,6 +485,8 @@ public static partial class Util {
 		}
 		return 0f;
 	}
+
+	/// <inheritdoc cref="InverseLerp(float, float, float)"/>
 	[MethodImpl(INLINE)]
 	public static float InverseLerpUnclamped (float from, float to, float value) {
 		if (from != to) {
@@ -385,14 +494,32 @@ public static partial class Util {
 		}
 		return 0f;
 	}
+
+	/// <summary>
+	/// Make value "t" liner oscillate between 0 and "length"
+	/// </summary>
 	[MethodImpl(INLINE)]
 	public static float PingPong (float t, float length) {
 		t = Repeat(t, length * 2f);
 		return length - (t - length).Abs();
 	}
+
+	/// <summary>
+	/// Make value "t" liner loop between 0 and "length"
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Repeat (float t, float length) => (t - (t / length).FloorToInt() * length).Clamp(0, length);
+
+	/// <summary>
+	/// Remap value "t" between (0 and 1) into ("a" and "b")
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Lerp (float a, float b, float t) => a + (b - a) * t.Clamp01();
+
+	/// <inheritdoc cref="Lerp(float, float, float)"/>
 	[MethodImpl(INLINE)] public static float LerpUnclamped (float a, float b, float t) => a + (b - a) * t;
+
+	/// <summary>
+	/// Remap angle value "t" between (0 and 1) into ("a" and "b") 
+	/// </summary>
 	[MethodImpl(INLINE)]
 	public static float LerpAngle (float a, float b, float t) {
 		float delta = Repeat((b - a), 360);
@@ -400,6 +527,8 @@ public static partial class Util {
 			delta -= 360;
 		return a + delta * Clamp01(t);
 	}
+
+	/// <inheritdoc cref="LerpAngle(float, float, float)"/>
 	[MethodImpl(INLINE)]
 	public static float LerpAngleUnclamped (float a, float b, float t) {
 		float delta = Repeat((b - a), 360);
@@ -407,37 +536,126 @@ public static partial class Util {
 			delta -= 360;
 		return a + delta * t;
 	}
+
+
+	/// <summary>
+	/// Return the arctangent of (x,y)
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Atan (float x, float y) => (float)Math.Atan2(y, x) * Rad2Deg;
+
+	/// <summary>
+	/// Return the smaller value 
+	/// </summary>
 	[MethodImpl(INLINE)] public static int Min (int a, int b) => (a < b) ? a : b;
+
+	/// <summary>
+	/// Return the smallest value
+	/// </summary>
 	[MethodImpl(INLINE)]
 	public static int Min (int a, int b, int c) {
 		int ab = (a < b) ? a : b;
 		return (ab < c) ? ab : c;
 	}
+
+	/// <summary>
+	/// Return the bigger value
+	/// </summary>
 	[MethodImpl(INLINE)] public static int Max (int a, int b) => (a > b) ? a : b;
+
+	/// <summary>
+	/// Return the biggest value
+	/// </summary>
 	[MethodImpl(INLINE)]
 	public static int Max (int a, int b, int c) {
 		int ab = (a > b) ? a : b;
 		return (ab > c) ? ab : c;
 	}
+
+	/// <summary>
+	/// Return the smaller value 
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Min (float a, float b) => (a < b) ? a : b;
+
+	/// <summary>
+	/// Return the bigger value
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Max (float a, float b) => (a > b) ? a : b;
+
+	/// <summary>
+	/// Return sin value for given angle in RAD. Use (degAngle * Util.Deg2Rad) to get the Rad angle.
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Sin (float radAngle) => (float)Math.Sin(radAngle);
+
+	/// <summary>
+	/// Return cos value for given angle in RAD. Use (degAngle * Util.Deg2Rad) to get the Rad angle.
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Cos (float radAngle) => (float)Math.Cos(radAngle);
+
+	/// <summary>
+	/// Return the absolute value
+	/// </summary>
 	[MethodImpl(INLINE)] public static int Abs (int value) => value > 0 ? value : -value;
+
+	/// <summary>
+	/// Return the absolute value
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Abs (float value) => value > 0f ? value : -value;
+
+	/// <summary>
+	/// True if the given two float is almost same
+	/// </summary>
 	[MethodImpl(INLINE)] public static bool Approximately (float a, float b) => Abs(b - a) < Max(1E-06f * Max(Abs(a), Abs(b)), Epsilon * 8f);
+
+	/// <summary>
+	/// Limit value "a" between "min" and "max"
+	/// </summary>
 	[MethodImpl(INLINE)] public static int Clamp (int a, int min, int max) => a < min ? min : a > max ? max : a;
+
+	/// <summary>
+	/// Limit value "a" between "min" and "max"
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Clamp (float a, float min, float max) => a < min ? min : a > max ? max : a;
+
+	/// <summary>
+	/// Limit value "a" between 0 and 1
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Clamp01 (float value) => value < 0f ? 0f : value > 1f ? 1f : value;
+
+	/// <summary>
+	/// Return "f" to the power of "p"
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Pow (float f, float p) => (float)Math.Pow(f, p);
+
+	/// <summary>
+	/// Return square root of "f"
+	/// </summary>
 	[MethodImpl(INLINE)] public static float Sqrt (float f) => (float)Math.Sqrt(f);
+
+	/// <summary>
+	/// Round a float to the nearest integer
+	/// </summary>
 	[MethodImpl(INLINE)] public static int RoundToInt (float value) => (int)Math.Round(value);
+
+	/// <summary>
+	/// Get the smallest intager that larger than "value"
+	/// </summary>
 	[MethodImpl(INLINE)] public static int CeilToInt (float value) => (int)Math.Ceiling(value);
+
+	/// <summary>
+	/// Get the largest intager that smaller than "value"
+	/// </summary>
 	[MethodImpl(INLINE)] public static int FloorToInt (float value) => (int)Math.Floor(value);
 
 
+	/// <summary>
+	/// Convert Hue-Saturation-Value into Red-Green-Blue.
+	/// </summary>
+	/// <param name="h">Range: 0-1</param>
+	/// <param name="s">Range: 0-1</param>
+	/// <param name="v">Range: 0-1</param>
 	public static Color32 HsvToRgb (float h, float s, float v) => HsvToRgbF(h, s, v).ToColor32();
+
+	/// <inheritdoc cref="HsvToRgb"/>
 	public static ColorF HsvToRgbF (float h, float s, float v) {
 		ColorF result = new(1f, 1f, 1f);
 		if (s == 0f) {
@@ -511,8 +729,17 @@ public static partial class Util {
 	}
 
 
-	public static void RGBToHSV (Color32 rgbColor, out float h, out float s, out float v) => RGBToHSV(rgbColor.ToColorF(), out h, out s, out v);
-	public static void RGBToHSV (ColorF rgbColor, out float h, out float s, out float v) {
+	/// <summary>
+	/// Convert Red-Green-Blue into Hue-Saturation-Value.
+	/// </summary>
+	/// <param name="rgbColor"></param>
+	/// <param name="h">Range: 0-1</param>
+	/// <param name="s">Range: 0-1</param>
+	/// <param name="v">Range: 0-1</param>
+	public static void RgbToHsv (Color32 rgbColor, out float h, out float s, out float v) => RgbToHsvF(rgbColor.ToColorF(), out h, out s, out v);
+
+	/// <inheritdoc cref="RgbToHsv"/>
+	public static void RgbToHsvF (ColorF rgbColor, out float h, out float s, out float v) {
 		float r = rgbColor.r;
 		float g = rgbColor.g;
 		float b = rgbColor.b;
@@ -550,6 +777,9 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Draw color "top" onto "back" with blending overlay
+	/// </summary>
 	public static ColorF MergeColor_Overlay (ColorF top, ColorF back) {
 		float alpha = top.a + back.a * (1f - top.a);
 		return new ColorF(
@@ -559,6 +789,10 @@ public static partial class Util {
 			alpha
 		);
 	}
+
+	/// <summary>
+	/// Draw color "top" onto "back" with blending lerp
+	/// </summary>
 	public static ColorF MergeColor_Lerp (ColorF top, ColorF back) {
 		if (back.a.AlmostZero()) return top;
 		float lerp = Min(top.a / back.a, 1f);
@@ -569,6 +803,10 @@ public static partial class Util {
 			top.a + back.a * (1f - top.a)
 		);
 	}
+
+	/// <summary>
+	/// Draw color "top" onto "back" with no special blending
+	/// </summary>
 	public static ColorF MergeColor (ColorF top, ColorF back) => new(
 		top.r * top.a + back.r * (1f - top.a),
 		top.g * top.a + back.g * (1f - top.a),
@@ -576,12 +814,19 @@ public static partial class Util {
 		top.a + back.a * (1f - top.a)
 	);
 
-
+	/// <inheritdoc cref="MergeColor_Overlay(ColorF, ColorF)"/>
 	public static Color32 MergeColor_Overlay (Color32 top, Color32 back) => MergeColor_Overlay(top.ToColorF(), back.ToColorF()).ToColor32();
+
+	/// <inheritdoc cref="MergeColor_Lerp(ColorF, ColorF)"/>
 	public static Color32 MergeColor_Lerp (Color32 top, Color32 back) => MergeColor_Lerp(top.ToColorF(), back.ToColorF()).ToColor32();
+
+	/// <inheritdoc cref="MergeColor(ColorF, ColorF)"/>
 	public static Color32 MergeColor (Color32 top, Color32 back) => MergeColor(top.ToColorF(), back.ToColorF()).ToColor32();
 
 
+	/// <summary>
+	/// Draw color "top" onto "back" with blending for sprite editing
+	/// </summary>
 	public static Color32 MergeColor_Editor (Color32 top, Color32 back) {
 		if (back.a == 0) return top;
 		const int AMOUNT = 10240;
@@ -604,7 +849,7 @@ public static partial class Util {
 			System.Console.WriteLine();
 			for (int x = 0; x < width; x++) {
 				var p = pixels[(y).Clamp(0, height - 1) * width + (x).Clamp(0, width - 1)];
-				RGBToHSV(p, out float h, out float s, out float v);
+				RgbToHsv(p, out float h, out float s, out float v);
 				System.Console.BackgroundColor = (v * s < 0.2f) ?
 					(v < 0.33f ? System.ConsoleColor.Black : v > 0.66f ? System.ConsoleColor.White : System.ConsoleColor.Gray) :
 					(h < 0.08f ? (v > 0.5f ? System.ConsoleColor.Red : System.ConsoleColor.DarkRed) :
@@ -622,6 +867,9 @@ public static partial class Util {
 	}
 
 
+	/// <summary>
+	/// Get closest direction for vector (deltaX, deltaY)
+	/// </summary>
 	public static Direction8 GetDirection (int deltaX, int deltaY) {
 		if (deltaX == 0 && deltaY == 0) return Direction8.Right;
 		var normal = new Float2(deltaX, deltaY);

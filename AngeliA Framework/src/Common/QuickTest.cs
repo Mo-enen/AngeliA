@@ -7,6 +7,9 @@ using System;
 namespace AngeliA;
 
 #if DEBUG
+/// <summary>
+/// Utility tool for quick testing ⚠Debug only. Do not work after game release.⚠
+/// </summary>
 public class QTest {
 
 
@@ -132,10 +135,25 @@ public class QTest {
 
 
 	// Api
+	/// <summary>
+	/// Limit of testing window panels
+	/// </summary>
 	public const int MAX_WINDOW_COUNT = 16;
+	/// <summary>
+	/// True if the QTest is operating with window on screen
+	/// </summary>
 	public static bool Testing => ShowingWindow && !IgnoringWindow;
+	/// <summary>
+	/// True if the window include the fields that not update in current frame
+	/// </summary>
 	public static bool ShowNotUpdatedData { get; set; } = true;
+	/// <summary>
+	/// Unified height of a field
+	/// </summary>
 	public static int FieldHeight { get; set; } = 22;
+	/// <summary>
+	/// User data for QTest.Func
+	/// </summary>
 	public static object CurrentInvokingParam { get; private set; } = null;
 
 	// Data
@@ -573,12 +591,20 @@ public class QTest {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Set which window should include the fields comes after
+	/// </summary>
 	public static void SetCurrentWindow (int index, string title = "") {
 		CurrentWindowIndex = index.Clamp(0, MAX_WINDOW_COUNT - 1);
 		Windows[CurrentWindowIndex].Title = title;
 	}
 
 
+	/// <summary>
+	/// Load testing data from file. This will override current data.
+	/// </summary>
+	/// <param name="path">Path of the data file (not a folder)</param>
+	/// <param name="ignorePanelOffset">True if this function do not adjust position of window panels</param>
 	public static void LoadAllDataFromFile (string path, bool ignorePanelOffset = false) {
 		ClearAll();
 		if (!Util.FileExists(path)) return;
@@ -722,6 +748,10 @@ public class QTest {
 	}
 
 
+	/// <summary>
+	/// Save current testing data into file
+	/// </summary>
+	/// <param name="path">Path of a file with any extension you want (not a folder)</param>
 	public static void SaveAllDataToFile (string path) {
 
 		using var fs = File.OpenWrite(path);
@@ -814,6 +844,14 @@ public class QTest {
 
 
 	// Data
+	/// <summary>
+	/// Require a toggle inside the current test window
+	/// </summary>
+	/// <param name="key">Unique key to identify this field</param>
+	/// <param name="defaultValue"></param>
+	/// <param name="displayLabel">Text content for rendering only</param>
+	/// <param name="windowIndex">Force field into given window instead of current window</param>
+	/// <returns>The current data of this field</returns>
 	public static bool Bool (string key, bool defaultValue = false, string displayLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].BoolLogic(key, defaultValue, displayLabel);
 	private bool BoolLogic (string key, bool defaultValue = false, string displayLabel = null) {
 		ShowingWindow = true;
@@ -844,6 +882,17 @@ public class QTest {
 	}
 
 
+	/// <summary>
+	/// Require a intager slider inside the current test window
+	/// </summary>
+	/// <param name="key">Unique key to identify this field</param>
+	/// <param name="defaultValue"></param>
+	/// <param name="min">Minimal limitation of this value</param>
+	/// <param name="max">Maximal limitation of this value</param>
+	/// <param name="step">Step count when dragging the slider. 0 means no step.</param>
+	/// <param name="displayLabel">Text content for rendering only</param>
+	/// <param name="windowIndex">Force field into given window instead of current window</param>
+	/// <returns>The current data of this field</returns>
 	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].IntLogic(key, defaultValue, min, max, step, displayLabel);
 	private int IntLogic (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null) {
 		ShowingWindow = true;
@@ -882,6 +931,17 @@ public class QTest {
 	}
 
 
+	/// <summary>
+	/// Require a float slider inside the current test window
+	/// </summary>
+	/// <param name="key">Unique key to identify this field</param>
+	/// <param name="defaultValue"></param>
+	/// <param name="min">Minimal limitation of this value</param>
+	/// <param name="max">Maximal limitation of this value</param>
+	/// <param name="step">Step count when dragging the slider. 0 means no step.</param>
+	/// <param name="displayLabel">Text content for rendering only</param>
+	/// <param name="windowIndex">Force field into given window instead of current window</param>
+	/// <returns>The current data of this field</returns>
 	public static float Float (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0, string displayLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].FloatLogic(key, defaultValue, min, max, step, displayLabel);
 	private float FloatLogic (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0f, string displayLabel = null) {
 		ShowingWindow = true;
@@ -920,6 +980,13 @@ public class QTest {
 	}
 
 
+	/// <summary>
+	/// Require a text input field inside the current test window
+	/// </summary>
+	/// <param name="key">Unique key to identify this field</param>
+	/// <param name="defaultValue"></param>
+	/// <param name="windowIndex">Force field into given window instead of current window</param>
+	/// <returns>The current data of this field</returns>
 	public static string String (string key, string defaultValue = "", int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].StringLogic(key, defaultValue);
 	private string StringLogic (string key, string defaultValue = "") {
 		ShowingWindow = true;
@@ -948,8 +1015,23 @@ public class QTest {
 	}
 
 
+	/// <summary>
+	/// Require a set of buttons that invoke the given System.Action when pressed
+	/// </summary>
+	/// <param name="key">Unique key to identify this field</param>
+	/// <param name="action">First button's logic</param>
+	/// <param name="icon">Icon for rendering. This should be a texture instance.</param>
+	/// <param name="param">Custom user data for this field. (Use Qtest.CurrentInvokingParam inside the "action" to get this data)</param>
+	/// <param name="windowIndex">Force field into given window instead of current window</param>
+	/// <param name="action1">Second button's logic</param>
+	/// <param name="action2">Third button's logic</param>
+	/// <param name="action3">Fourth button's logic</param>
+	/// <param name="label">First button's label content</param>
+	/// <param name="label1">Second button's label content</param>
+	/// <param name="label2">Third button's label content</param>
+	/// <param name="label3">Fourth button's label content</param>
 	public static void Button (string key, Action action, object icon = null, object param = null, int windowIndex = -1, Action action1 = null, string label = "", string label1 = "", Action action2 = null, string label2 = "", Action action3 = null, string label3 = "") => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].ButtonLogic(key, action, icon, param, action1, action2, action3, label, label1, label2, label3);
-	public void ButtonLogic (string key, Action action, object icon, object param, Action action1, Action action2, Action action3, string label, string label1, string label2, string label3) {
+	private void ButtonLogic (string key, Action action, object icon, object param, Action action1, Action action2, Action action3, string label, string label1, string label2, string label3) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (ButtonPool.TryGetValue(key, out var result)) {
@@ -996,8 +1078,16 @@ public class QTest {
 	}
 
 
+	/// <summary>
+	/// GUI box that display custom content inside a given window area
+	/// </summary>
+	/// <param name="key">Unique key to identify this field</param>
+	/// <param name="func">GUI rendering function. The param is the rect position that this element should rendering content into. Return value is the height of this field.</param>
+	/// <param name="param">Custom user data for this field. (Use Qtest.CurrentInvokingParam inside the "action" to get this data)</param>
+	/// <param name="showLabel">True if this content require the label name on left side.</param>
+	/// <param name="windowIndex">Force field into given window instead of current window</param>
 	public static void Func (string key, Func<IRect, int> func, object param = null, bool showLabel = false, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].FuncLogic(key, func, param, showLabel);
-	public void FuncLogic (string key, Func<IRect, int> func, object param, bool showLabel) {
+	private void FuncLogic (string key, Func<IRect, int> func, object param, bool showLabel) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (FuncPool.TryGetValue(key, out var result)) {
@@ -1028,6 +1118,10 @@ public class QTest {
 	}
 
 
+	/// <summary>
+	/// Reset all data.
+	/// </summary>
+	/// <param name="windowIndex">Force reset given window instead of current window. Set to -1 to reset all windows.</param>
 	public static void ClearAll (int windowIndex = -1) {
 		if (windowIndex < 0) {
 			foreach (var win in Windows) {
@@ -1053,6 +1147,12 @@ public class QTest {
 
 
 	// Set Data
+	/// <summary>
+	/// Set a bool value without requiring any field.
+	/// </summary>
+	/// <param name="key">Unique key to identify the data</param>
+	/// <param name="value"></param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void SetBool (string key, bool value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetBoolLogic(key, value);
 	private void SetBoolLogic (string key, bool value) {
 		if (BoolPool.TryGetValue(key, out var data)) {
@@ -1060,6 +1160,12 @@ public class QTest {
 		}
 	}
 
+	/// <summary>
+	/// Set a intager value without requiring any field.
+	/// </summary>
+	/// <param name="key">Unique key to identify the data</param>
+	/// <param name="value"></param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void SetInt (string key, int value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetIntLogic(key, value);
 	private void SetIntLogic (string key, int value) {
 		if (IntPool.TryGetValue(key, out var data)) {
@@ -1067,6 +1173,12 @@ public class QTest {
 		}
 	}
 
+	/// <summary>
+	/// Set a float value without requiring any field.
+	/// </summary>
+	/// <param name="key">Unique key to identify the data</param>
+	/// <param name="value"></param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void SetFloat (string key, float value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetFloatLogic(key, value);
 	private void SetFloatLogic (string key, float value) {
 		if (FloatPool.TryGetValue(key, out var data)) {
@@ -1074,6 +1186,12 @@ public class QTest {
 		}
 	}
 
+	/// <summary>
+	/// Set a string value without requiring any field.
+	/// </summary>
+	/// <param name="key">Unique key to identify the data</param>
+	/// <param name="value"></param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void SetString (string key, string value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetStringLogic(key, value);
 	private void SetStringLogic (string key, string value) {
 		if (StringPool.TryGetValue(key, out var data)) {
@@ -1081,8 +1199,14 @@ public class QTest {
 		}
 	}
 
+	/// <summary>
+	/// Make given group fold or unfold
+	/// </summary>
+	/// <param name="key">Unique key to identify the group</param>
+	/// <param name="folding">True if the group should fold</param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void SetGroupFolding (string key, bool folding, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetGroupFoldingLogic(key, folding);
-	public void SetGroupFoldingLogic (string key, bool folding) {
+	private void SetGroupFoldingLogic (string key, bool folding) {
 		if (GroupFolding.TryGetValue(key, out var gData)) {
 			gData.Folding = folding;
 		} else {
@@ -1095,31 +1219,70 @@ public class QTest {
 
 
 	// Get Data
+	/// <summary>
+	/// Get a bool value without requiring any field.
+	/// </summary>
+	/// <param name="key">Unique key to identify the data</param>
+	/// <param name="defaultValue"></param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static bool GetBool (string key, bool defaultValue = false, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].GetBoolLogic(key, defaultValue);
 	private bool GetBoolLogic (string key, bool defaultValue = false) => BoolPool.TryGetValue(key, out var data) ? data.value : defaultValue;
 
+	/// <summary>
+	/// Get a intager value without requiring any field.
+	/// </summary>
+	/// <param name="key">Unique key to identify the data</param>
+	/// <param name="defaultValue"></param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static int GetInt (string key, int defaultValue = 0, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].GetIntLogic(key, defaultValue);
 	private int GetIntLogic (string key, int defaultValue = 0) => IntPool.TryGetValue(key, out var data) ? data.value : defaultValue;
 
+	/// <summary>
+	/// Get a float value without requiring any field.
+	/// </summary>
+	/// <param name="key">Unique key to identify the data</param>
+	/// <param name="defaultValue"></param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static float GetFloat (string key, float defaultValue = 0, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].GetFloatLogic(key, defaultValue);
 	private float GetFloatLogic (string key, float defaultValue = 0f) => FloatPool.TryGetValue(key, out var data) ? data.value : defaultValue;
 
+	/// <summary>
+	/// Get a string value without requiring any field.
+	/// </summary>
+	/// <param name="key">Unique key to identify the data</param>
+	/// <param name="defaultValue"></param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static string GetString (string key, string defaultValue = "", int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].GetStringLogic(key, defaultValue);
 	private string GetStringLogic (string key, string defaultValue = "") => StringPool.TryGetValue(key, out var data) ? data.value : defaultValue;
 
 
 	// Pixels
+	/// <summary>
+	/// Start to draw 1D pixel column
+	/// </summary>
+	/// <param name="key">Unique key to identify the field</param>
+	/// <param name="size">Horizontal size in pixel</param>
+	/// <param name="clearPrevPixels">True if the existing pixels should be reset into clear</param>
+	/// <param name="windowIndex">Force start inside for given window instead of current window</param>
 	public static void StartDrawColumn (string key, int size, bool clearPrevPixels = true, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].StartDrawColumnLogic(key, size, clearPrevPixels);
 	private void StartDrawColumnLogic (string key, int size, bool clearPrevPixels = true) => StartDrawPixelsLogic(key, size, (int)(size * 0.618f), clearPrevPixels);
 
 
+	/// <summary>
+	/// Start to draw 2D pixel texture
+	/// </summary>
+	/// <param name="key">Unique key to identify the field</param>
+	/// <param name="width">Width in pixel</param>
+	/// <param name="height">Height in pixel</param>
+	/// <param name="clearPrevPixels">True if the existing pixels should be reset into clear</param>
+	/// <param name="windowIndex">Force start inside for given window instead of current window</param>
 	public static void StartDrawPixels (string key, int width, int height, bool clearPrevPixels = true, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].StartDrawPixelsLogic(key, width, height, clearPrevPixels);
 	private void StartDrawPixelsLogic (string key, int width, int height, bool clearPrevPixels = true) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (PixelsPool.TryGetValue(key, out var result)) {
 			if (clearPrevPixels) {
-				System.Array.Clear(result.pixels);
+				Array.Clear(result.pixels);
 			}
 			CurrentPixels = result.pixels;
 			var kData = result.Key;
@@ -1144,6 +1307,14 @@ public class QTest {
 	}
 
 
+	/// <summary>
+	/// Draw a pixel column. Only call this after QTest.StartDrawColumn
+	/// </summary>
+	/// <param name="x">Position X in local pixel space</param>
+	/// <param name="value01">Height of the column. 0 is no size, 1 is full size.</param>
+	/// <param name="color">Color of this column</param>
+	/// <param name="bgColor">Color of the background</param>
+	/// <param name="windowIndex">Force paint into given window instead of current window</param>
 	public static void DrawColumn (int x, float value01, Color32 color, Color32 bgColor, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].DrawColumnLogic(x, value01, color, bgColor);
 	private void DrawColumnLogic (int x, float value01, Color32 color, Color32 bgColor) {
 		int height = CurrentPixels.GetLength(1);
@@ -1153,11 +1324,24 @@ public class QTest {
 		}
 	}
 
+	/// <summary>
+	/// Draw a pixel. Only call this after QTest.StartDrawPixels
+	/// </summary>
+	/// <param name="x">Position X in local pixel space</param>
+	/// <param name="y">Position Y in local pixel space</param>
+	/// <param name="pixel">Color of this pixel</param>
+	/// <param name="windowIndex">Force paint into given window instead of current window</param>
 	public static void DrawPixel (int x, int y, Color32 pixel, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].CurrentPixels[x, y] = pixel;
 
 
+	/// <summary>
+	/// Get png texture file byte array from given window's current drawing cache.
+	/// </summary>
+	/// <param name="windowIndex">Index of the window</param>
+	/// <param name="texture">Result texture instance</param>
+	/// <returns>The png byte array. Return null if currently don't have any pixels data</returns>
 	public static byte[] GetPngByteFromPixels (int windowIndex, out object texture) => Windows[windowIndex].GetPngByteFromPixels(out texture);
-	public byte[] GetPngByteFromPixels (out object texture) {
+	private byte[] GetPngByteFromPixels (out object texture) {
 		texture = null;
 		if (CurrentPixels == null || CurrentPixels.Length == 0) return null;
 		int w = CurrentPixels.GetLength(0);
@@ -1174,17 +1358,45 @@ public class QTest {
 
 
 	// Mark
+	/// <inheritdoc cref="Mark(int, int, Color32, int, int)"/>
 	public static void Mark (Int2 pos, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, Color32.RED));
+	/// <inheritdoc cref="Mark(int, int, Color32, int, int)"/>
 	public static void Mark (int x, int y, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, Color32.RED));
+	/// <inheritdoc cref="Mark(int, int, Color32, int, int)"/>
 	public static void Mark (Int2 pos, Color32 color, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, color));
+	/// <summary>
+	/// Paint a circle mark at screen for given frames long
+	/// </summary>
+	/// <param name="pos">Position in global space</param>
+	/// <param name="x">Position X in global space</param>
+	/// <param name="y">Position Y in global space</param>
+	/// <param name="color">Color tint of the circle</param>
+	/// <param name="duration">Length in frame</param>
+	/// <param name="size">Diameter in global space</param>
 	public static void Mark (int x, int y, Color32 color, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, color));
 
 
 	// Obj
+	/// <summary>
+	/// Create/set the value of an object in given type
+	/// </summary>
+	/// <typeparam name="T">Type of the object</typeparam>
+	/// <param name="key">Unique key to identify the data</param>
+	/// <param name="obj">Value of the object</param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
+	/// <returns>Instance of the object</returns>
 	public static T SetObject<T> (string key, T obj, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetObjectLogic(key, obj);
 	private T SetObjectLogic<T> (string key, T obj) => (T)(ObjectPool[key] = obj);
 
 
+	/// <summary>
+	/// Get an existing object data
+	/// </summary>
+	/// <typeparam name="T">Type of the object</typeparam>
+	/// <param name="key">Unique key to identify the data</param>
+	/// <param name="result">Instance of the result object</param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
+	/// <returns>True if the object is found</returns>
 	public static bool TryGetObject<T> (string key, out T result, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].TryGetObjectLogic(key, out result);
 	private bool TryGetObjectLogic<T> (string key, out T result) {
 		if (ObjectPool.TryGetValue(key, out var obj) && obj is T tObj) {
@@ -1198,18 +1410,30 @@ public class QTest {
 
 
 	// Misc
+	/// <summary>
+	/// Hide the testing windows
+	/// </summary>
 	public static void HideTest () {
 		ShowingWindow = false;
 		IgnoringWindow = true;
 	}
 
 
+	/// <summary>
+	/// Show the testing windows
+	/// </summary>
 	public static void ShowTest () {
 		ShowingWindow = true;
 		IgnoringWindow = false;
 	}
 
 
+	/// <summary>
+	/// Following field requires will be inside this group
+	/// </summary>
+	/// <param name="group">Name/key of the group</param>
+	/// <param name="folding">True if the group is default folding</param>
+	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void Group (string group, bool folding = false, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].GroupLogic(group, folding);
 	private void GroupLogic (string group, bool folding = false) {
 		CurrentGroup = group;

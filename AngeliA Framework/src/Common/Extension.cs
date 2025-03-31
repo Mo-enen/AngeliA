@@ -1268,7 +1268,7 @@ public static class Extension {
 	[MethodImpl(INLINE)]
 	public static Color32 Adjust (this Color32 color, float hue, float saturation, float volume, float alpha) {
 		if (hue.AlmostZero() && saturation.AlmostZero() && volume.AlmostZero() && alpha.AlmostZero()) return color;
-		Util.RGBToHSV(color, out float h, out float s, out float v);
+		Util.RgbToHsv(color, out float h, out float s, out float v);
 		h = (h + hue).UMod(1f);
 		s = (s + saturation).Clamp01();
 		v = (v + volume).Clamp01();

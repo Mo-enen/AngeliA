@@ -505,7 +505,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		Renderer.TryGetSprite(BuiltInSprite.FILE_ICON_FOLDER, out var folderSprite);
 		Renderer.TryGetSprite(BuiltInSprite.FILE_ICON_FILE, out var commenFileSprite);
 		foreach (string folderPath in Util.EnumerateFolders(path, true)) {
-			if (Util.IsFolderHidden(folderPath)) continue;
+			if (Util.IsHidden(folderPath)) continue;
 			string name = Util.GetNameWithExtension(folderPath);
 			Items.Add(new ItemData() {
 				DisplayName = name.Length <= MAX_NAME_LEN ? name : $"{name[..(MAX_NAME_LEN - 2)]}..",
@@ -518,7 +518,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 			}
 		}
 		foreach (string filePath in Util.EnumerateFiles(path, true, SearchPatterns)) {
-			if (Util.IsFileHidden(filePath)) continue;
+			if (Util.IsHidden(filePath)) continue;
 			string name = Util.GetNameWithExtension(filePath);
 			int fileSpriteID = FileIconPool.TryGetValue(
 				Util.GetExtensionWithDot(name).AngeHash(), out var fileSpriteCode
@@ -587,7 +587,7 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 				}
 			}
 		}
-		targetPath = Util.FixPath(targetPath, forUnity: false);
+		targetPath = Util.FixPath(targetPath);
 
 		// Perform
 		if (isSaving || (forFolder ? Util.FolderExists(targetPath) : Util.FileExists(targetPath))) {

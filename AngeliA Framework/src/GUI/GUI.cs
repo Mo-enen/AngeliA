@@ -1265,7 +1265,7 @@ public static partial class GUI {
 			bool warnOnChange = color.a.AlmostZero();
 			if (hsv) {
 				// HSV
-				Util.RGBToHSV(color, out float h, out float s, out float v);
+				Util.RgbToHsvF(color, out float h, out float s, out float v);
 				float a = color.a;
 				bool changed = false;
 				// H
