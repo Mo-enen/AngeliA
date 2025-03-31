@@ -7,13 +7,9 @@ using System.Text.Json;
 
 namespace AngeliA;
 
-
-public interface IJsonSerializationCallback {
-	void OnBeforeSaveToDisk ();
-	void OnAfterLoadedFromDisk ();
-}
-
-
+/// <summary>
+/// Utility class for json operation
+/// </summary>
 public static class JsonUtil {
 
 
@@ -44,10 +40,30 @@ public static class JsonUtil {
 
 
 	// API
+	/// <summary>
+	/// Calculate auto path fot json file
+	/// </summary>
+	/// <typeparam name="T">Type of the json object</typeparam>
+	/// <param name="rootPath">Root folder</param>
+	/// <param name="name">Name that override the type name</param>
+	/// <param name="ext">Extension of the file</param>
 	public static string GetJsonPath<T> (string rootPath, string name = "", string ext = "json") => Util.CombinePaths(rootPath, $"{(string.IsNullOrEmpty(name) ? typeof(T).Name : name)}.{ext}");
 
 
+	/// <summary>
+	/// Load json file inside given folder. Create new instance if file not found.
+	/// </summary>
+	/// <typeparam name="T">Type of the json object</typeparam>
+	/// <param name="rootPath">Root folder</param>
+	/// <param name="name">Name that override the type name</param>
+	/// <param name="ext">Extension of the file</param>
 	public static T LoadOrCreateJson<T> (string rootPath, string name = "", string ext = "json") where T : new() => LoadOrCreateJsonFromPath<T>(GetJsonPath<T>(rootPath, name, ext));
+
+	/// <summary>
+	/// Load json file at given path. Create new instance if file not found.
+	/// </summary>
+	/// <typeparam name="T">Type of the json object</typeparam>
+	/// <param name="jsonPath"></param>
 	public static T LoadOrCreateJsonFromPath<T> (string jsonPath) where T : new() {
 		var result = LoadJsonFromPath<T>(jsonPath);
 		if (result == null) {
@@ -60,7 +76,22 @@ public static class JsonUtil {
 	}
 
 
+	/// <summary>
+	/// Load json file inside given folder.
+	/// </summary>
+	/// <typeparam name="T">Type of the json object</typeparam>
+	/// <param name="rootPath">Root folder</param>
+	/// <param name="name">Name that override the type name</param>
+	/// <param name="ext">Extension of the file</param>
+	/// <returns>Json object instance if file valid. Return default if file not valid.</returns>
 	public static T LoadJson<T> (string rootPath, string name = "", string ext = "json") => LoadJsonFromPath<T>(GetJsonPath<T>(rootPath, name, ext));
+
+	/// <summary>
+	/// Load json file at given path.
+	/// </summary>
+	/// <typeparam name="T">Type of the json object</typeparam>
+	/// <param name="jsonPath"></param>
+	/// <returns>Json object instance if file valid. Return default if file not valid</returns>
 	public static T LoadJsonFromPath<T> (string jsonPath) {
 		try {
 			if (!Util.FileExists(jsonPath)) return default;
@@ -75,8 +106,23 @@ public static class JsonUtil {
 		return default;
 	}
 
-
+	/// <summary>
+	/// Save json object into given folder
+	/// </summary>
+	/// <typeparam name="T">Type of the json object</typeparam>
+	/// <param name="data"></param>
+	/// <param name="rootPath">Root folder path</param>
+	/// <param name="name">Name that override the type name</param>
+	/// <param name="ext">Extension of the file</param>
+	/// <param name="prettyPrint">True if write with indent and line warp</param>
 	public static void SaveJson<T> (T data, string rootPath, string name = "", string ext = "json", bool prettyPrint = false) => SaveJsonToPath(data, GetJsonPath<T>(rootPath, name, ext), prettyPrint);
+
+	/// <summary>
+	/// Save json object into given path
+	/// </summary>
+	/// <param name="data"></param>
+	/// <param name="jsonPath"></param>
+	/// <param name="prettyPrint">True if write with indent and line warp</param>
 	public static void SaveJsonToPath (object data, string jsonPath, bool prettyPrint = false) {
 		if (data == null) return;
 		if (data is IJsonSerializationCallback ser) {

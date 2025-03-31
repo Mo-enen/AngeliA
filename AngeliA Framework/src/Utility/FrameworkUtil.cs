@@ -7,12 +7,24 @@ using System.Reflection;
 
 namespace AngeliA;
 
+/// <summary>
+/// Utility class for the AngeliA framework
+/// </summary>
 public static partial class FrameworkUtil {
 
 
 	// VAR
+	/// <summary>
+	/// For remote setting between engine and rigged game
+	/// </summary>
 	public const int RUN_CODE_ANALYSIS_SETTING_ID = 895245367;
+	/// <summary>
+	/// For remote setting between engine and rigged game
+	/// </summary>
 	public const int RUN_CODE_ANALYSIS_SETTING_SILENTLY_ID = 895245368;
+	/// <summary>
+	/// ID of artwork sprite for gamepad button icons
+	/// </summary>
 	public static readonly Dictionary<GamepadKey, int> GAMEPAD_CODE = new() {
 		{ GamepadKey.DpadLeft, BuiltInSprite.GAMEPAD_LEFT},
 		{ GamepadKey.DpadRight, BuiltInSprite.GAMEPAD_RIGHT},
@@ -32,6 +44,9 @@ public static partial class FrameworkUtil {
 
 
 	// API
+	/// <summary>
+	/// Get name of a map block without hashtags
+	/// </summary>
 	public static string GetBlockRealName (string name) {
 		int hashIndex = name.IndexOf('#');
 		if (hashIndex >= 0) {
@@ -40,7 +55,9 @@ public static partial class FrameworkUtil {
 		return name.TrimEnd(' ');
 	}
 
-
+	/// <summary>
+	/// Get tag for oneway gate that facing to given direction
+	/// </summary>
 	public static Tag GetOnewayTag (Direction4 gateDirection) => gateDirection switch {
 		Direction4.Down => Tag.OnewayDown,
 		Direction4.Up => Tag.OnewayUp,
@@ -49,10 +66,14 @@ public static partial class FrameworkUtil {
 		_ => Tag.OnewayUp,
 	};
 
-
+	/// <summary>
+	/// True if the given tag contains oneway gate tag.
+	/// </summary>
 	public static bool HasOnewayTag (Tag tag) => tag.HasAny(Tag.OnewayUp | Tag.OnewayDown | Tag.OnewayLeft | Tag.OnewayRight);
 
-
+	/// <summary>
+	/// Get direction from a single oneway gate tag. The tag value can only be a single oneway gate tag.
+	/// </summary>
 	public static bool TryGetOnewayDirection (Tag tag, out Direction4 direction) {
 		switch (tag) {
 			case Tag.OnewayUp:
@@ -72,7 +93,13 @@ public static partial class FrameworkUtil {
 		return false;
 	}
 
-
+	/// <summary>
+	/// Get position for flying entities
+	/// </summary>
+	/// <param name="pos">Center position</param>
+	/// <param name="column">Column of the current element</param>
+	/// <param name="instanceIndex">Local index of the current element</param>
+	/// <returns>Final position of this element</returns>
 	public static Int2 GetFlyingFormation (Int2 pos, int column, int instanceIndex) {
 
 		int sign = instanceIndex % 2 == 0 ? -1 : 1;
@@ -86,7 +113,19 @@ public static partial class FrameworkUtil {
 		return new(pos.x + instanceOffsetX, pos.y + instanceOffsetY);
 	}
 
-
+	/// <summary>
+	/// Get infomation from naming tag of an artwork sprite
+	/// </summary>
+	/// <param name="name">Full name of the artwork sprite</param>
+	/// <param name="realName">Name without hashtag</param>
+	/// <param name="isTrigger">True if this sprite is trigger</param>
+	/// <param name="tag">Tag value of this sprite</param>
+	/// <param name="rule">Rule for auto tiling in map editor</param>
+	/// <param name="noCollider">True if this sprite ignore collider</param>
+	/// <param name="offsetZ">Z value for sort rendering cells</param>
+	/// <param name="aniDuration">Duration in frame for animation</param>
+	/// <param name="pivotX"></param>
+	/// <param name="pivotY"></param>
 	public static void GetSpriteInfoFromName (string name, out string realName, out bool isTrigger, out Tag tag, out BlockRule rule, out bool noCollider, out int offsetZ, out int aniDuration, out int? pivotX, out int? pivotY) {
 		tag = Tag.None;
 		isTrigger = false;
@@ -241,7 +280,13 @@ HasOnewayTag(tag) ||
 
 	}
 
-
+	/// <summary>
+	/// Get sprite group infomation from the name of artwork sprite
+	/// </summary>
+	/// <param name="realName">Name without hashtags</param>
+	/// <param name="groupName">Name without index</param>
+	/// <param name="groupIndex">Index in group</param>
+	/// <returns>True if the data successfuly calculated</returns>
 	public static bool GetGroupInfoFromSpriteRealName (string realName, out string groupName, out int groupIndex) {
 		groupName = realName;
 		groupIndex = -1;
@@ -260,14 +305,23 @@ HasOnewayTag(tag) ||
 		return false;
 	}
 
-
+	/// <summary>
+	/// Scale the given audio volume
+	/// </summary>
+	/// <param name="volume"></param>
+	/// <param name="scale">0 means 0%, 1000 means 100%</param>
 	public static float GetScaledAudioVolume (int volume, int scale = 1000) {
 		float fVolume = volume / 1000f;
 		if (scale != 1000) fVolume *= scale / 1000f;
 		return fVolume * fVolume;
 	}
 
-
+	/// <summary>
+	/// Reset the shoulder and upper arm position for given pose-styled character
+	/// </summary>
+	/// <param name="rendering">Target character</param>
+	/// <param name="resetLeft"></param>
+	/// <param name="resetRight"></param>
 	public static void ResetShoulderAndUpperArmPos (PoseCharacterRenderer rendering, bool resetLeft = true, bool resetRight = true) {
 
 		const int A2G = Const.CEL / Const.ART_CEL;
@@ -333,7 +387,14 @@ HasOnewayTag(tag) ||
 		}
 	}
 
-
+	/// <summary>
+	/// Blink the given cell for action target highlighting
+	/// </summary>
+	/// <param name="cell"></param>
+	/// <param name="pivotX"></param>
+	/// <param name="pivotY"></param>
+	/// <param name="horizontal">True if the target attached with nearby entity in left or right</param>
+	/// <param name="vertical">True if the target attached with nearby entity in up or down</param>
 	public static void HighlightBlink (Cell cell, float pivotX = 0.5f, float pivotY = 0f, bool horizontal = true, bool vertical = true) {
 		if (Game.GlobalFrame % 30 > 15) return;
 		const int OFFSET = Const.CEL / 20;
@@ -346,20 +407,39 @@ HasOnewayTag(tag) ||
 		}
 	}
 
-
+	/// <summary>
+	/// Convert a float value into time
+	/// </summary>
+	/// <param name="time01">0 means 0:00, 0.5 means 12:00. 1 means 24:00</param>
+	/// <param name="hour"></param>
+	/// <param name="minute"></param>
+	/// <param name="second"></param>
 	public static void Time01_to_TimeDigit (float time01, out int hour, out int minute, out int second) {
 		hour = (int)(time01 * 24f).UMod(24f);
 		minute = (int)(hour * 24f * 60f).UMod(60f);
 		second = (int)(hour * 24f * 60f * 60f).UMod(60f);
 	}
 
-
+	/// <summary>
+	/// Convert time into a float value
+	/// </summary>
+	/// <param name="hour"></param>
+	/// <param name="minute"></param>
+	/// <param name="second"></param>
+	/// <returns>0 means 0:00, 0.5 means 12:00. 1 means 24:00</returns>
 	public static float TimeDigit_to_Time01 (int hour, int minute, int second) => ((hour + (minute + second / 60f) / 60f) / 24f).UMod(1f);
 
-
-	public static bool PerformSpringBounce (Entity springEntity, Direction4 side, int power, int powerSide = 0) {
+	/// <summary>
+	/// Bounce entities on stage for once
+	/// </summary>
+	/// <param name="springEntity">Entity that exists as the spring</param>
+	/// <param name="direction">Direction that the spring power goes</param>
+	/// <param name="power">Initial speed for entities get bounced</param>
+	/// <param name="powerSide">Initial speed on side direction for entities get bounced</param>
+	/// <returns>True if any entity get bounced</returns>
+	public static bool PerformSpringBounce (Entity springEntity, Direction4 direction, int power, int powerSide = 0) {
 		bool bounced = false;
-		var globalRect = springEntity.Rect.EdgeOutside(side, 16);
+		var globalRect = springEntity.Rect.EdgeOutside(direction, 16);
 		for (int safe = 0; safe < 2048; safe++) {
 			var hits = Physics.OverlapAll(PhysicsMask.DYNAMIC, globalRect, out int count, springEntity, OperationMode.ColliderAndTrigger);
 			if (count == 0) break;
@@ -368,9 +448,9 @@ HasOnewayTag(tag) ||
 				if (hit.Entity is not Rigidbody rig) continue;
 				bounced = true;
 				var hitRect = hit.Entity.Rect;
-				if (side.IsHorizontal()) {
+				if (direction.IsHorizontal()) {
 					globalRect.y = hitRect.y;
-					if (side == Direction4.Left) {
+					if (direction == Direction4.Left) {
 						globalRect.x = Util.Min(globalRect.x, hitRect.x - globalRect.width);
 					} else {
 						globalRect.x = Util.Max(globalRect.x, hitRect.xMax);
@@ -379,7 +459,7 @@ HasOnewayTag(tag) ||
 					globalRect.x = hitRect.x;
 					globalRect.y = Util.Max(globalRect.y, hitRect.yMax);
 				}
-				PerformSpringBounce(rig, springEntity, side, power, powerSide);
+				PerformSpringBounce(rig, springEntity, direction, power, powerSide);
 				springEntity = hit.Entity;
 				break;
 			}
@@ -387,12 +467,19 @@ HasOnewayTag(tag) ||
 		return bounced;
 	}
 
-
-	public static void PerformSpringBounce (Rigidbody target, Entity spring, Direction4 side, int power, int powerSide = 0) {
+	/// <summary>
+	/// Bounce the given target for once
+	/// </summary>
+	/// <param name="target">Target to get bounce</param>
+	/// <param name="spring">Entity that exists as the spring</param>
+	/// <param name="direction">Direction that the spring power goes</param>
+	/// <param name="power">Initial speed for entities get bounced</param>
+	/// <param name="powerSide">Initial speed on side direction for entities get bounced</param>
+	public static void PerformSpringBounce (Rigidbody target, Entity spring, Direction4 direction, int power, int powerSide = 0) {
 		if (target == null) return;
-		if (side.IsHorizontal()) {
+		if (direction.IsHorizontal()) {
 			// Horizontal
-			if (side == Direction4.Left) {
+			if (direction == Direction4.Left) {
 				if (target.VelocityX > -power) {
 					//target.VelocityX = -power;
 					target.MomentumX = (-power, 1);
@@ -425,7 +512,9 @@ HasOnewayTag(tag) ||
 		}
 	}
 
-
+	/// <summary>
+	/// Try get buff from map element at given unit position
+	/// </summary>
 	public static void GiveBuffFromMap (IWithCharacterBuff wBuff, int unitX = int.MinValue, int unitY = int.MinValue, int unitZ = int.MinValue, int duration = -1) {
 		if (wBuff is not Entity entity) return;
 		unitX = unitX == int.MinValue ? (entity.X + 1).ToUnit() : unitX;
@@ -438,14 +527,14 @@ HasOnewayTag(tag) ||
 
 
 	// FrameBasedValue Load/Save
-	public static bool NameAndIntFile_to_List (List<(string name, int value)> list, string path) {
+	internal static bool NameAndIntFile_to_List (List<(string name, int value)> list, string path) {
 		if (!Util.FileExists(path)) return false;
 		list.AddRange(Util.ForAllNameAndIntInFile(path));
 		return true;
 	}
 
 
-	public static bool List_to_FrameBasedFields (List<(string name, int value)> list, object target) {
+	internal static bool List_to_FrameBasedFields (List<(string name, int value)> list, object target) {
 		if (target == null || list == null) return false;
 		var targetType = target.GetType();
 		foreach (var (name, value) in list) {
@@ -464,7 +553,7 @@ HasOnewayTag(tag) ||
 	}
 
 
-	public static void FrameBasedFields_to_List (object target, List<(string name, int value)> list) {
+	internal static void FrameBasedFields_to_List (object target, List<(string name, int value)> list) {
 		if (target == null || list == null || list.Count == 0) return;
 		foreach (var (field, value) in target.ForAllFields<FrameBasedValue>(BindingFlags.Public | BindingFlags.Instance)) {
 			if (value == null) continue;
@@ -479,7 +568,7 @@ HasOnewayTag(tag) ||
 	}
 
 
-	public static void Pairs_to_NameAndIntFile (IEnumerable<KeyValuePair<string, int>> list, string path) {
+	internal static void Pairs_to_NameAndIntFile (IEnumerable<KeyValuePair<string, int>> list, string path) {
 		if (list == null) return;
 		Util.CreateFolder(Util.GetParentPath(path));
 		using var fs = new FileStream(path, FileMode.Create);
@@ -495,43 +584,18 @@ HasOnewayTag(tag) ||
 	}
 
 
-	// Input
-	public static bool MouseInside (this IRect rect) => Game.CursorInScreen && rect.Contains(Input.MouseGlobalPosition);
-
-
 	// Item
-	public static void DrawItemShortInfo (int itemID, IRect panelRect, int z, int armorIcon, int armorEmptyIcon, Color32 tint) {
-
-		var item = ItemSystem.GetItem(itemID);
-		if (item == null) return;
-
-		// Equipment
-		if (item is Equipment equipment) {
-			switch (equipment.EquipmentType) {
-				case EquipmentType.HandTool:
-					break;
-				case EquipmentType.Jewelry:
-				case EquipmentType.BodyArmor:
-				case EquipmentType.Helmet:
-				case EquipmentType.Shoes:
-				case EquipmentType.Gloves:
-					if (equipment is IProgressiveItem progItem) {
-						int progress = progItem.Progress;
-						int totalProgress = progItem.TotalProgress;
-						var rect = new IRect(panelRect.x, panelRect.y, panelRect.height, panelRect.height);
-						for (int i = 0; i < totalProgress - 1; i++) {
-							Renderer.Draw(i < progress ? armorIcon : armorEmptyIcon, rect, tint, z);
-							rect.x += rect.width;
-						}
-					}
-					break;
-			}
-		}
-
-
-	}
-
-
+	/// <summary>
+	/// Spawn item based on items list from map. This is used for the map chest.
+	/// </summary>
+	/// <param name="squad">Source of the map blocks</param>
+	/// <param name="unitX">Position X in unit space</param>
+	/// <param name="unitY">Position Y in unit space</param>
+	/// <param name="z">Position Z</param>
+	/// <param name="maxDeltaX">Limitation on horizontal checking distance</param>
+	/// <param name="maxDeltaY">Limitation on verticle checking distance</param>
+	/// <param name="placeHolderID">Set spawned item into this ID</param>
+	/// <param name="spawnEntity">True if spawn the entity that paint as map element</param>
 	public static void SpawnItemFromMap (
 		IBlockSquad squad, int unitX, int unitY, int z,
 		int maxDeltaX = 1024, int maxDeltaY = 1024, int placeHolderID = 0, bool spawnEntity = true
@@ -568,7 +632,10 @@ HasOnewayTag(tag) ||
 	}
 
 
-
+	/// <summary>
+	/// Get global single instance of the handtool that player currently equipping
+	/// </summary>
+	/// <returns></returns>
 	public static HandTool GetPlayerHoldingHandTool () {
 		if (PlayerSystem.Selecting == null) return null;
 		int id = Inventory.GetEquipment(PlayerSystem.Selecting.InventoryID, EquipmentType.HandTool, out _);
@@ -578,6 +645,9 @@ HasOnewayTag(tag) ||
 
 
 	// Buff
+	/// <summary>
+	/// Give buff for all buff holder in given rectangle range
+	/// </summary>
 	public static void BroadcastBuff (IRect range, int buffID, int duration = 1) {
 		var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, range, out int count);
 		for (int i = 0; i < count; i++) {
@@ -587,7 +657,9 @@ HasOnewayTag(tag) ||
 		}
 	}
 
-
+	/// <summary>
+	/// Give buff for all buff holder in given circle range
+	/// </summary>
 	public static void BroadcastBuff (int x, int y, int radius, int buffID, int duration = 1) {
 		var range = new IRect(x - radius, y - radius, radius * 2, radius * 2);
 		var hits = Physics.OverlapAll(PhysicsMask.CHARACTER, range, out int count);
@@ -602,6 +674,9 @@ HasOnewayTag(tag) ||
 
 
 	// Analysys
+	/// <summary>
+	/// Perform checking logic for checking built-in sprite sync with artwork sheet or not
+	/// </summary>
 	public static void RunBuiltInSpriteAnalysys (bool onlyLogWhenWarningFounded = false) {
 		bool anyWarning = false;
 		var sheet = new Sheet();
@@ -619,7 +694,9 @@ HasOnewayTag(tag) ||
 		}
 	}
 
-
+	/// <summary>
+	/// Check for empty script file in given project root
+	/// </summary>
 	public static void RunEmptyScriptFileAnalysis (string rootPath, bool onlyLogWhenWarningFounded = false) {
 		bool anyWarning = false;
 		foreach (string path in Util.EnumerateFiles(rootPath, false, "*.cs")) {
@@ -640,7 +717,9 @@ HasOnewayTag(tag) ||
 		}
 	}
 
-
+	/// <summary>
+	/// Perform analyses for current AngeliA project and log the report
+	/// </summary>
 	public static void RunAngeliaCodeAnalysis (bool onlyLogWhenWarningFounded = false, bool fixScriptFileName = false, bool checkNoItemCombination = true) {
 
 		if (!onlyLogWhenWarningFounded) {

@@ -707,6 +707,7 @@ public class PlayerMenuUI : EntityUI {
 	/// Open player menu ui with given partner ui
 	/// </summary>
 	/// <param name="partner">Instance of the partner ui which will be display on top</param>
+	/// <param name="partnerInventoryID"></param>
 	/// <returns>True if the menu is opened</returns>
 	public static bool OpenMenuWithPartner (PlayerMenuPartnerUI partner, int partnerInventoryID) {
 		// Reload Current Menu
@@ -1132,11 +1133,10 @@ public class PlayerMenuUI : EntityUI {
 				fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, itemRect.height / 2, 0), label
 			);
 		}
-		FrameworkUtil.DrawItemShortInfo(
+		DrawItemShortInfo(
 			itemID,
 			fieldRect.Shrink(itemRect.width + fieldPadding * 3, 0, 0, itemRect.height / 2),
 			int.MinValue + 3,
-			ARMOR_ICON, ARMOR_EMPTY_ICON,
 			enableTint
 		);
 
@@ -1536,6 +1536,36 @@ public class PlayerMenuUI : EntityUI {
 		return panelRect;
 	}
 
+	private static void DrawItemShortInfo (int itemID, IRect panelRect, int z, Color32 tint) {
+
+		var item = ItemSystem.GetItem(itemID);
+		if (item == null) return;
+
+		// Equipment
+		if (item is Equipment equipment) {
+			switch (equipment.EquipmentType) {
+				case EquipmentType.HandTool:
+					break;
+				case EquipmentType.Jewelry:
+				case EquipmentType.BodyArmor:
+				case EquipmentType.Helmet:
+				case EquipmentType.Shoes:
+				case EquipmentType.Gloves:
+					if (equipment is IProgressiveItem progItem) {
+						int progress = progItem.Progress;
+						int totalProgress = progItem.TotalProgress;
+						var rect = new IRect(panelRect.x, panelRect.y, panelRect.height, panelRect.height);
+						for (int i = 0; i < totalProgress - 1; i++) {
+							Renderer.Draw(i < progress ? ARMOR_ICON : ARMOR_EMPTY_ICON, rect, tint, z);
+							rect.x += rect.width;
+						}
+					}
+					break;
+			}
+		}
+
+
+	}
 
 	#endregion
 

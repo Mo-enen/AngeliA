@@ -89,6 +89,11 @@ public static class Extension {
 	/// </summary>
 	public static bool IsLyingDown (this CharacterAnimationType aniType) => aniType == CharacterAnimationType.Crash || aniType == CharacterAnimationType.PassOut || aniType == CharacterAnimationType.Sleep;
 
+	/// <summary>
+	/// True if mouse currently inside the given rectangle
+	/// </summary>
+	public static bool MouseInside (this IRect rect) => Game.CursorInScreen && rect.Contains(Input.MouseGlobalPosition);
+
 	public static System.Span<T> GetSpan<T> (this List<T> list) => CollectionsMarshal.AsSpan(list);
 	public static System.Span<T> GetSpan<T> (this T[] arr) => new(arr);
 	public static System.ReadOnlySpan<T> GetReadOnlySpan<T> (this T[] arr) => new(arr);
