@@ -40,11 +40,9 @@
 		<None Remove=".editorconfig" />
 		<None Remove=".gitignore" />
 		<None Remove="desktop.ini" />
-		<None Remove="Generate API.bat" />
+		<None Remove="Get ready for publish.bat" />
 		<None Remove="Icon.ico" />
-		<None Remove="publish pause.bat" />
-		<None Remove="publish.bat" />
-		<None Remove="update raylib.dll.bat" />
+		<None Remove="update raylib dll.bat" />
 		<Compile Remove="API\**" />
 		<Compile Remove="Entry\**" />
 		<Compile Remove="Properties\**" />
@@ -80,21 +78,10 @@
 		<Delete Files="$(OutputPath)Library\com.angelia.platformer.dll" ContinueOnError="true" />
 	</Target>
 
-	<!--Copy Framework dll/exe to Runtime Folder-->
+	<!--Copy Framework dll to ProjectTemplate/lib/Debug Folder-->
 	<Target Name="Copy AngeFramework Dll and Project Template" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<Copy SourceFiles="$(OutputPath)AngeliA Framework.dll" DestinationFiles="$(SolutionDir)Universe\ProjectTemplate\lib\Debug\AngeliA Framework.dll" ContinueOnError="true" />
-	</Target>
-
-	<Target Name="Copy Entry Exe" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<Copy SourceFiles="$(OutputPath)AngeliA Entry.exe" DestinationFiles="$(SolutionDir)Universe\Runtime\Debug\AngeliA Entry.exe" ContinueOnError="true" />
-	</Target>
-
-	<Target Name="Copy Entry Dll" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<Copy SourceFiles="$(OutputPath)AngeliA Entry.dll" DestinationFiles="$(SolutionDir)Universe\Runtime\Debug\AngeliA Entry.dll" ContinueOnError="true" />
-	</Target>
-
-	<Target Name="Copy Entry Config Json" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<Copy SourceFiles="$(OutputPath)AngeliA Entry.runtimeconfig.json" DestinationFiles="$(SolutionDir)Universe\Runtime\Debug\AngeliA Entry.runtimeconfig.json" ContinueOnError="true" />
+		<Copy SourceFiles="$(OutputPath)AngeliA Framework.xml" DestinationFiles="$(SolutionDir)Universe\ProjectTemplate\lib\Debug\AngeliA Framework.xml" ContinueOnError="true" />
 	</Target>
 
 </Project>

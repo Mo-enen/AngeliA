@@ -21,6 +21,7 @@ public abstract class MovableBullet : Bullet {
 	public virtual int Scale => 1000;
 	public virtual int WaterSpeedRate => 200;
 	public virtual int MaxRange => 46339;
+	public virtual bool FacingRight => Velocity.x > 0;
 	public override int Duration => 600;
 	protected override int EnvironmentHitCount => 1;
 	protected override int ReceiverHitCount => 1;
@@ -134,7 +135,7 @@ public abstract class MovableBullet : Bullet {
 	public override void LateUpdate () {
 		base.LateUpdate();
 		if (!Active) return;
-		FrameworkUtil.DrawBullet(this, ArtworkID, Velocity.x > 0, CurrentRotation, Scale);
+		DrawBullet(this, ArtworkID, FacingRight, CurrentRotation, Scale);
 	}
 
 
@@ -288,5 +289,38 @@ public abstract class MovableBullet : Bullet {
 		(Float2.SignedAngle(Float2.Up, Velocity) * 1000).RoundToInt(),
 		HitReceiver
 	);
+
+
+	// LGC
+	private static void DrawBullet (Bullet bullet, int artworkID, bool facingRight, int rotation, int scale, int z = int.MaxValue - 16) {
+		if (!Renderer.TryGetSprite(artworkID, out var sprite, false)) return;
+		int facingSign = facingRight ? 1 : -1;
+		int x = bullet.X + bullet.Width / 2;
+		int y = bullet.Y + bullet.Height / 2;
+		if (Renderer.TryGetAnimationGroup(artworkID, out var aniGroup)) {
+			Renderer.DrawAnimation(
+				aniGroup,
+				x, y,
+				sprite.PivotX,
+				sprite.PivotY,
+				rotation,
+				facingSign * sprite.GlobalWidth * scale / 1000,
+				sprite.GlobalHeight * scale / 1000,
+				Game.GlobalFrame - bullet.SpawnFrame,
+				z
+			);
+		} else {
+			Renderer.Draw(
+				artworkID,
+				x, y,
+				sprite.PivotX,
+				sprite.PivotY,
+				rotation,
+				facingSign * sprite.GlobalWidth * scale / 1000,
+				sprite.GlobalHeight * scale / 1000,
+				z
+			);
+		}
+	}
 
 }

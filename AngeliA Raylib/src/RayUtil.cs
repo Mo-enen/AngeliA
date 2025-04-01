@@ -50,6 +50,52 @@ public static unsafe class RayUtil {
 		);
 	}
 
+	public static void GetSlicedUvBorder (AngeSprite sprite, Alignment alignment, out Float2 bl, out Float2 br, out Float2 tl, out Float2 tr) {
+
+		bl = new(0f, 0f);
+		br = new(1f, 0f);
+		tl = new(0f, 1f);
+		tr = new(1f, 1f);
+
+		// Y
+		switch (alignment) {
+			case Alignment.TopLeft:
+			case Alignment.TopMid:
+			case Alignment.TopRight:
+				bl.y = br.y = (sprite.GlobalHeight - sprite.GlobalBorder.up) / (float)sprite.GlobalHeight;
+				break;
+			case Alignment.MidLeft:
+			case Alignment.MidMid:
+			case Alignment.MidRight:
+				tl.y = tr.y = (sprite.GlobalHeight - sprite.GlobalBorder.up) / (float)sprite.GlobalHeight;
+				bl.y = br.y = sprite.GlobalBorder.down / (float)sprite.GlobalHeight;
+				break;
+			case Alignment.BottomLeft:
+			case Alignment.BottomMid:
+			case Alignment.BottomRight:
+				tl.y = tr.y = sprite.GlobalBorder.down / (float)sprite.GlobalHeight;
+				break;
+		}
+		// X
+		switch (alignment) {
+			case Alignment.TopLeft:
+			case Alignment.MidLeft:
+			case Alignment.BottomLeft:
+				br.x = tr.x = sprite.GlobalBorder.left / (float)sprite.GlobalWidth;
+				break;
+			case Alignment.TopMid:
+			case Alignment.MidMid:
+			case Alignment.BottomMid:
+				br.x = tr.x = (sprite.GlobalWidth - sprite.GlobalBorder.right) / (float)sprite.GlobalWidth;
+				bl.x = tl.x = sprite.GlobalBorder.left / (float)sprite.GlobalWidth;
+				break;
+			case Alignment.TopRight:
+			case Alignment.MidRight:
+			case Alignment.BottomRight:
+				bl.x = tl.x = (sprite.GlobalWidth - sprite.GlobalBorder.right) / (float)sprite.GlobalWidth;
+				break;
+		}
+	}
 
 	// Texture
 	public static object GetTextureFromPixels (Color32[] pixels, int width, int height) {

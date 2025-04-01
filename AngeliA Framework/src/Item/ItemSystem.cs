@@ -527,6 +527,7 @@ public static class ItemSystem {
 	/// </summary>
 	/// <returns>True if the item drop successfuly performs</returns>
 	public static bool DropItemFor (Entity entity) => DropItemFor(entity.TypeID, entity.X, entity.Y);
+	
 	/// <summary>
 	/// Perform an item drop the target entity when the entity is destroyed
 	/// </summary>

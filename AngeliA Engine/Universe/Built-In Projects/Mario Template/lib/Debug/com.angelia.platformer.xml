@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>com.angelia.platformer</name>
+    </assembly>
+    <members>
+        <member name="T:AngeliA.Platformer.PlatformerUtil">
+            <summary>
+            Utility class for platformer package
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ISlimeWalker.AttachingDirection">
+            <summary>
+            When this value is "Up" the walker will be upside-down. "Center" means not attaching anything.
+            </summary>
+        </member>
+    </members>
+</doc>

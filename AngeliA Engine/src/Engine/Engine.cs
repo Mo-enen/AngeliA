@@ -1201,6 +1201,7 @@ internal partial class Engine {
 
 		// Framework Dll Files
 		Util.UpdateFile(EngineUtil.TemplateFrameworkDll_Debug, Util.CombinePaths(CurrentProject.DllLibPath_Debug, "AngeliA Framework.dll"));
+		Util.UpdateFile(Util.ChangeExtension(EngineUtil.TemplateFrameworkDll_Debug, "xml"), Util.CombinePaths(CurrentProject.DllLibPath_Debug, "AngeliA Framework.xml"));
 		Util.UpdateFile(EngineUtil.TemplateFrameworkDll_Release, Util.CombinePaths(CurrentProject.DllLibPath_Release, "AngeliA Framework.dll"));
 
 		// Raylib Dll Files for Entry

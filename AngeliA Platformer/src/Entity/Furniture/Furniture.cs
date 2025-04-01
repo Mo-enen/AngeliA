@@ -66,7 +66,7 @@ public abstract class Furniture : Entity, IBlockEntity {
 			if (ModuleType != Direction3.None) {
 				Pose = FrameworkUtil.GetEntityPose(
 					this, ModuleType == Direction3.Horizontal, PhysicsMask.ENVIRONMENT,
-					out var ld, out var ru, OperationMode.ColliderAndTrigger
+					out var ld, out var ru
 				);
 				FurnitureLeftOrDown = ld as Furniture;
 				FurnitureRightOrUp = ru as Furniture;

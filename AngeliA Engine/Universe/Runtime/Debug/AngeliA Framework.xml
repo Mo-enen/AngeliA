@@ -3095,6 +3095,11 @@
             How text wrap when reach edge
             </summary>
         </member>
+        <member name="T:AngeliA.Extension">
+            <summary>
+            Extension method for AngeliA projects
+            </summary>
+        </member>
         <member name="M:AngeliA.Extension.AngeName(System.Type)">
             <summary>
             Name of this type that used inside AngeliA
@@ -3123,6 +3128,11 @@
         <member name="M:AngeliA.Extension.IsLyingDown(AngeliA.CharacterAnimationType)">
             <summary>
             True if the character should be rendered lying down
+            </summary>
+        </member>
+        <member name="M:AngeliA.Extension.MouseInside(AngeliA.IRect)">
+            <summary>
+            True if mouse currently inside the given rectangle
             </summary>
         </member>
         <member name="T:AngeliA.FrameBasedValue">
@@ -7344,6 +7354,7 @@
             Open player menu ui with given partner ui
             </summary>
             <param name="partner">Instance of the partner ui which will be display on top</param>
+            <param name="partnerInventoryID"></param>
             <returns>True if the menu is opened</returns>
         </member>
         <member name="M:AngeliA.PlayerMenuUI.OpenMenu">
@@ -9305,7 +9316,7 @@
         </member>
         <member name="T:AngeliA.BlockBuilder">
             <summary>
-            Item that represent a map block inside inventory. Also handles the build block to map/stage logic
+            Item that represent a map block inside inventory. Also handles the build block to map logic
             </summary>
         </member>
         <member name="P:AngeliA.BlockBuilder.BlockID">
@@ -9317,6 +9328,49 @@
             <summary>
             Type of the block it holds
             </summary>
+        </member>
+        <member name="T:AngeliA.BlockPicker">
+            <summary>
+            Item that represent a map tool inside inventory. Also handles the pick block from map logic
+            </summary>
+        </member>
+        <member name="P:AngeliA.BlockPicker.AllowPickLevelBlock">
+            <summary>
+            True if the tool can pick level blocks from map
+            </summary>
+        </member>
+        <member name="P:AngeliA.BlockPicker.AllowPickBackgroundBlock">
+            <summary>
+            True if the tool can pick background blocks from map
+            </summary>
+        </member>
+        <member name="P:AngeliA.BlockPicker.AllowPickBlockEntity">
+            <summary>
+            True if the tool can pick entity blocks from map
+            </summary>
+        </member>
+        <member name="P:AngeliA.BlockPicker.DropItemAfterPicked">
+            <summary>
+            True if the tool create an ItemHolder holds the block after pick the block
+            </summary>
+        </member>
+        <member name="P:AngeliA.BlockPicker.UseMouseToPick">
+            <summary>
+            True if the tool allow user to use mouse 
+            </summary>
+        </member>
+        <member name="P:AngeliA.BlockPicker.MouseUnitRange">
+            <summary>
+            Range limitation for mouse in unit space
+            </summary>
+        </member>
+        <member name="M:AngeliA.BlockPicker.DrawPickTargetHighlight(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Draw the UI cursor for target block
+            </summary>
+            <param name="unitX">Position in unit space</param>
+            <param name="unitY">Position in unit space</param>
+            <param name="hasTarget">True if target map block founded</param>
         </member>
         <member name="T:AngeliA.BodyGadgetItem">
             <summary>
@@ -10759,6 +10813,36 @@
             Scope that makes labels inside display with given font
             </summary>
         </member>
+        <member name="T:AngeliA.GlitchScope">
+            <summary>
+            Scope that make element inside looks glitched
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new GlitchScope()) {
+            
+            			// Rendering cells inside will looks glitched
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>	
+        </member>
+        <member name="M:AngeliA.GlitchScope.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Scope that make element inside looks glitched
+            </summary>
+        </member>
         <member name="T:AngeliA.GUIBodyColorScope">
             <summary>
             Scope that change the body color of GUI element inside 
@@ -11311,6 +11395,41 @@
         <member name="M:AngeliA.ShiftCellsScope.#ctor(AngeliA.Int2)">
             <summary>
             Scope that shift position of the rendering cells inside
+            </summary>
+        </member>
+        <member name="T:AngeliA.TechGlitchEffectScope">
+            <summary>
+            Scope that make element inside looks glitched in the tech item style
+            </summary>
+            <example><code>
+            using AngeliA;
+            
+            namespace AngeliaGame;
+            
+            public class Example {
+            
+            	[OnGameUpdate]
+            	internal static void OnGameUpdate () {
+            
+            		using (new TechGlitchEffectScope()) {
+            
+            			// Rendering cells inside will looks glitched in the tech item style
+            
+            		}
+            
+            	}
+            
+            }
+            </code></example>
+        </member>
+        <member name="M:AngeliA.TechGlitchEffectScope.#ctor(System.Int32,AngeliA.Color32)">
+            <summary>
+            Scope that make element inside looks glitched in the tech item style
+            </summary>
+        </member>
+        <member name="M:AngeliA.TechGlitchEffectScope.#ctor">
+            <summary>
+            Scope that make element inside looks glitched in the tech item style
             </summary>
         </member>
         <member name="T:AngeliA.UILayerScope">
@@ -13012,6 +13131,938 @@
             Task that select current player
             </summary>
         </member>
+        <member name="T:AngeliA.FrameworkUtil">
+            <summary>
+            Utility class for the AngeliA framework
+            </summary>
+        </member>
+        <member name="F:AngeliA.FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_ID">
+            <summary>
+            For remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="F:AngeliA.FrameworkUtil.RUN_CODE_ANALYSIS_SETTING_SILENTLY_ID">
+            <summary>
+            For remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="F:AngeliA.FrameworkUtil.GAMEPAD_CODE">
+            <summary>
+            ID of artwork sprite for gamepad button icons
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetBlockRealName(System.String)">
+            <summary>
+            Get name of a map block without hashtags
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetOnewayTag(AngeliA.Direction4)">
+            <summary>
+            Get tag for oneway gate that facing to given direction
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.HasOnewayTag(AngeliA.Tag)">
+            <summary>
+            True if the given tag contains oneway gate tag.
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.TryGetOnewayDirection(AngeliA.Tag,AngeliA.Direction4@)">
+            <summary>
+            Get direction from a single oneway gate tag. The tag value can only be a single oneway gate tag.
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetFlyingFormation(AngeliA.Int2,System.Int32,System.Int32)">
+            <summary>
+            Get position for flying entities
+            </summary>
+            <param name="pos">Center position</param>
+            <param name="column">Column of the current element</param>
+            <param name="instanceIndex">Local index of the current element</param>
+            <returns>Final position of this element</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetSpriteInfoFromName(System.String,System.String@,System.Boolean@,AngeliA.Tag@,AngeliA.BlockRule@,System.Boolean@,System.Int32@,System.Int32@,System.Nullable{System.Int32}@,System.Nullable{System.Int32}@)">
+            <summary>
+            Get infomation from naming tag of an artwork sprite
+            </summary>
+            <param name="name">Full name of the artwork sprite</param>
+            <param name="realName">Name without hashtag</param>
+            <param name="isTrigger">True if this sprite is trigger</param>
+            <param name="tag">Tag value of this sprite</param>
+            <param name="rule">Rule for auto tiling in map editor</param>
+            <param name="noCollider">True if this sprite ignore collider</param>
+            <param name="offsetZ">Z value for sort rendering cells</param>
+            <param name="aniDuration">Duration in frame for animation</param>
+            <param name="pivotX"></param>
+            <param name="pivotY"></param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetGroupInfoFromSpriteRealName(System.String,System.String@,System.Int32@)">
+            <summary>
+            Get sprite group infomation from the name of artwork sprite
+            </summary>
+            <param name="realName">Name without hashtags</param>
+            <param name="groupName">Name without index</param>
+            <param name="groupIndex">Index in group</param>
+            <returns>True if the data successfuly calculated</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetScaledAudioVolume(System.Int32,System.Int32)">
+            <summary>
+            Scale the given audio volume
+            </summary>
+            <param name="volume"></param>
+            <param name="scale">0 means 0%, 1000 means 100%</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.ResetShoulderAndUpperArmPos(AngeliA.PoseCharacterRenderer,System.Boolean,System.Boolean)">
+            <summary>
+            Reset the shoulder and upper arm position for given pose-styled character
+            </summary>
+            <param name="rendering">Target character</param>
+            <param name="resetLeft"></param>
+            <param name="resetRight"></param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.HighlightBlink(AngeliA.Cell,System.Single,System.Single,System.Boolean,System.Boolean)">
+            <summary>
+            Blink the given cell for action target highlighting
+            </summary>
+            <param name="cell"></param>
+            <param name="pivotX"></param>
+            <param name="pivotY"></param>
+            <param name="horizontal">True if the target attached with nearby entity in left or right</param>
+            <param name="vertical">True if the target attached with nearby entity in up or down</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.Time01_to_TimeDigit(System.Single,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Convert a float value into time
+            </summary>
+            <param name="time01">0 means 0:00, 0.5 means 12:00. 1 means 24:00</param>
+            <param name="hour"></param>
+            <param name="minute"></param>
+            <param name="second"></param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.TimeDigit_to_Time01(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Convert time into a float value
+            </summary>
+            <param name="hour"></param>
+            <param name="minute"></param>
+            <param name="second"></param>
+            <returns>0 means 0:00, 0.5 means 12:00. 1 means 24:00</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.PerformSpringBounce(AngeliA.Entity,AngeliA.Direction4,System.Int32,System.Int32)">
+            <summary>
+            Bounce entities on stage for once
+            </summary>
+            <param name="springEntity">Entity that exists as the spring</param>
+            <param name="direction">Direction that the spring power goes</param>
+            <param name="power">Initial speed for entities get bounced</param>
+            <param name="powerSide">Initial speed on side direction for entities get bounced</param>
+            <returns>True if any entity get bounced</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.PerformSpringBounce(AngeliA.Rigidbody,AngeliA.Entity,AngeliA.Direction4,System.Int32,System.Int32)">
+            <summary>
+            Bounce the given target for once
+            </summary>
+            <param name="target">Target to get bounce</param>
+            <param name="spring">Entity that exists as the spring</param>
+            <param name="direction">Direction that the spring power goes</param>
+            <param name="power">Initial speed for entities get bounced</param>
+            <param name="powerSide">Initial speed on side direction for entities get bounced</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GiveBuffFromMap(AngeliA.IWithCharacterBuff,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Try get buff from map element at given unit position
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.SpawnItemFromMap(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Spawn item based on items list from map. This is used for the map chest.
+            </summary>
+            <param name="squad">Source of the map blocks</param>
+            <param name="unitX">Position X in unit space</param>
+            <param name="unitY">Position Y in unit space</param>
+            <param name="z">Position Z</param>
+            <param name="maxDeltaX">Limitation on horizontal checking distance</param>
+            <param name="maxDeltaY">Limitation on verticle checking distance</param>
+            <param name="placeHolderID">Set spawned item into this ID</param>
+            <param name="spawnEntity">True if spawn the entity that paint as map element</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetPlayerHoldingHandTool">
+            <summary>
+            Get global single instance of the handtool that player currently equipping
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.BroadcastBuff(AngeliA.IRect,System.Int32,System.Int32)">
+            <summary>
+            Give buff for all buff holder in given rectangle range
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.BroadcastBuff(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Give buff for all buff holder in given circle range
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.RunBuiltInSpriteAnalysys(System.Boolean)">
+            <summary>
+            Perform checking logic for checking built-in sprite sync with artwork sheet or not
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.RunEmptyScriptFileAnalysis(System.String,System.Boolean)">
+            <summary>
+            Check for empty script file in given project root
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.RunAngeliaCodeAnalysis(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Perform analyses for current AngeliA project and log the report
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeObjectBreak(System.Int32,AngeliA.IRect)">
+            <summary>
+            Invoke function for object broke animation
+            </summary>
+            <param name="spriteID">Artwork sprite ID</param>
+            <param name="rect">Starting rect position in global space</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeObjectFreeFall(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Invoke function for free fall animation
+            </summary>
+            <param name="spriteID">Artwork sprite ID</param>
+            <param name="x">Start position X in global space</param>
+            <param name="y">Start position Y in global space</param>
+            <param name="speedX">Initial speed X</param>
+            <param name="speedY">Initial speed Y</param>
+            <param name="rotation">Initial rotation</param>
+            <param name="rotationSpeed"></param>
+            <param name="gravity"></param>
+            <param name="flipX">True if artwork sprite flip horizontaly</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeBlockPicked(System.Int32,AngeliA.IRect)">
+            <summary>
+            Invoke function for map block get picked
+            </summary>
+            <param name="spriteID">Artwork sprite ID</param>
+            <param name="rect">Starting rect position in global space</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeFallIntoWater(AngeliA.Rigidbody,AngeliA.Entity)">
+            <summary>
+            Invoke function for object get into water
+            </summary>
+            <param name="rig">Target object</param>
+            <param name="water">Water entity instance. Null if water is from map block</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeCameOutOfWater(AngeliA.Rigidbody,AngeliA.Entity)">
+            <summary>
+            Invoke function for object get out of water
+            </summary>
+            <param name="rig">Target object</param>
+            <param name="water">Water entity instance. Null if water is from map block</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeErrorHint(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Invoke animation hint for error
+            </summary>
+            <param name="x">Position in global space</param>
+            <param name="y">Position in global space</param>
+            <param name="id">Artwork sprite ID for the icon inside</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeErrorHint(AngeliA.Entity,System.Int32)">
+            <summary>
+            Invoke animation hint for error
+            </summary>
+            <param name="holder">Entity that get the error</param>
+            <param name="id">Artwork sprite ID for the icon inside</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeItemCollected(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Invoke function for item get collected by a character
+            </summary>
+            <param name="id">ID of the item</param>
+            <param name="x">Position in global space</param>
+            <param name="y">Position in global space</param>
+            <param name="count">How many items get collected</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeItemCollected(AngeliA.Entity,System.Int32,System.Int32)">
+            <summary>
+            Invoke function for item get collected by a character
+            </summary>
+            <param name="collector">Character that collect the item</param>
+            <param name="id">ID of the item</param>
+            <param name="count">How many items get collected</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeItemLost(AngeliA.Character,System.Int32)">
+            <summary>
+            Invoke function for character lost an item 
+            </summary>
+            <param name="holder">Character that lost the item</param>
+            <param name="id">ID of the item</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeItemDamage(AngeliA.Character,System.Int32,System.Int32)">
+            <summary>
+            Invoke function for item being damaged/broken
+            </summary>
+            <param name="holder">Character that own the item</param>
+            <param name="fromID">ID of the item before it broke</param>
+            <param name="toID">ID of the item after it broke</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeItemUnlocked(System.Int32)">
+            <summary>
+            Invoke function for item being unlocked
+            </summary>
+            <param name="itemID">ID of the unlocked item</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeCheatPerformed(System.String)">
+            <summary>
+            Invoke function for a cheat code get performed
+            </summary>
+            <param name="cheatCode">The performed cheat code</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeOnFootStepped(AngeliA.Entity)">
+            <summary>
+            Invoke function for a character walks with a foot step
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeOnCharacterSleeping(AngeliA.Entity)">
+            <summary>
+            Invoke function for a character is sleeping
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeOnCharacterJump(AngeliA.Entity)">
+            <summary>
+            Invoke function for character jumps
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeOnCharacterPound(AngeliA.Entity)">
+            <summary>
+            Invoke function for character ground pound
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeOnCharacterFly(AngeliA.Entity)">
+            <summary>
+            Invoke function for character fly
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeOnCharacterSlideStepped(AngeliA.Entity)">
+            <summary>
+            Invoke function for character slide with a step
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeOnCharacterPassOut(AngeliA.Entity)">
+            <summary>
+            Invoke function for character get pass out
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeOnCharacterTeleport(AngeliA.Entity)">
+            <summary>
+            Invoke function for character perform a teleport
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.InvokeOnCharacterCrash(AngeliA.Entity)">
+            <summary>
+            Invoke function for character crash
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.RedirectForRule(AngeliA.IBlockSquad,AngeliA.IRect,System.Int32)">
+            <summary>
+            Auto tile all map blocks inside given range
+            </summary>
+            <param name="squad">Source of the map blocks</param>
+            <param name="unitRange">Target range in unit space</param>
+            <param name="z">Position Z</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.RedirectForRule(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32,AngeliA.BlockType)">
+            <summary>
+            Auto tile map block in given position and all tiles nearby
+            </summary>
+            <param name="squad">Source of the map blocks</param>
+            <param name="unitX">Position in unit space</param>
+            <param name="unitY">Position in unit space</param>
+            <param name="z">Position z</param>
+            <param name="type">Type of the auto tile block</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetRuleIndex(System.Collections.Generic.IList{AngeliA.AngeSprite},System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Find which tile in the given list conforms the auto tiling rule
+            </summary>
+            <param name="sprites">Source list</param>
+            <param name="ruleDigit">Int data of the tiling rule. Get this data with FrameworkUtil.BlockRuleToDigit</param>
+            <param name="tl">ID for block at top-left</param>
+            <param name="tm">ID for block at top</param>
+            <param name="tr">ID for block at top-right</param>
+            <param name="ml">ID for block at left</param>
+            <param name="mr">ID for block at right</param>
+            <param name="bl">ID for block at bottom-left</param>
+            <param name="bm">ID for block at bottom</param>
+            <param name="br">ID for block at bottom-right</param>
+            <returns>Index of the founded sprite</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DigitToBlockRule(System.Int32)">
+            <summary>
+            Convert auto tiling rule digit into BlockRule struct
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DigitToRuleByte(System.Int32,System.Byte[])">
+            <summary>
+            Convert auto tiling rule digit into byte array
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.BlockRuleToDigit(AngeliA.BlockRule)">
+            <summary>
+            Convert BlockRule struct into auto tiling rule digit
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.RuleByteToDigit(System.Byte[])">
+            <summary>
+            Convert byte array into auto tiling rule digit
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.BreakEntityBlock(AngeliA.IBlockEntity)">
+            <summary>
+            Remove given block entity from map and invoke corresponding callback functions. (Do not handle item drops)
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.PickBlockAt(System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Perform a block pick
+            </summary>
+            <param name="unitX">Target position X in unit space</param>
+            <param name="unitY">Target position Y in unit space</param>
+            <param name="allowPickBlockEntity">True if entity blocks will be picked</param>
+            <param name="allowPickLevelBlock">True if level blocks will be picked</param>
+            <param name="allowPickBackgroundBlock">True if background blocks will be picked</param>
+            <param name="dropItemAfterPicked">True if spawn an ItemHolder with the block</param>
+            <param name="allowMultiplePick">True if pick more than one block with one function call</param>
+            <returns>True if any block is picked</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.HasPickableBlockAt(System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            True if found any block can be pick at given position
+            </summary>
+            <param name="unitX">Target position X in unit space</param>
+            <param name="unitY">Target position Y in unit space</param>
+            <param name="allowPickBlockEntity">True if entity blocks will be picked</param>
+            <param name="allowPickLevelBlock">True if level blocks will be picked</param>
+            <param name="allowPickBackgroundBlock">True if background blocks will be picked</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.PutBlockTo(System.Int32,AngeliA.BlockType,System.Int32,System.Int32)">
+            <summary>
+            Build a block into the map
+            </summary>
+            <param name="blockID">ID of the building block</param>
+            <param name="blockType">Type of the building block</param>
+            <param name="targetUnitX">Target position X in unit space</param>
+            <param name="targetUnitY">Target position Y in unit space</param>
+            <returns>True if the block is built</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.TryGetEmptyPlaceNearbyForEntity(System.Int32,System.Int32,System.Int32,System.Int32@,System.Int32@,System.Int32,System.Boolean)">
+            <summary>
+            Find an empty place on map nearby given position for placing an entity
+            </summary>
+            <param name="unitX">Target position X in unit space</param>
+            <param name="unitY">Target position Y in unit space</param>
+            <param name="z">Position Z</param>
+            <param name="resultUnitX">Position founded in unit space</param>
+            <param name="resultUnitY">Position founded in unit space</param>
+            <param name="maxRange">Maximal searching range in unit space</param>
+            <param name="preferNoSolidLevel">Set to true to put this entity into place without solid level blocks</param>
+            <returns>True if the place is founded</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.RemoveFromWorldMemory(AngeliA.Entity)">
+            <summary>
+            Remove target entity from world data. Only work when entity spawned from map.
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.SearchlightBlockCheck(AngeliA.IBlockSquad,AngeliA.Int3,System.Nullable{AngeliA.Direction8},System.Int32,System.Boolean)">
+            <summary>
+            True if any block founded inside given range. Search blocks with specific order to lower the CPU usage. 
+            </summary>
+            <param name="squad">Source of map blocks</param>
+            <param name="startUnitPoint">Position to start searching in unit space</param>
+            <param name="direction">Direction of the search operation facing. Set to null to make it search in circle range.</param>
+            <param name="unitDistance">Maximal distance for the search in unit space</param>
+            <param name="reverse">True if search blocks from far side first</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetEntityPose(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Get FittingPose for given position and entity ID from WorldSquad. 
+            eg. 3 mushroom entities makes a tall mushroom, only the top one is the cap. So your entity renders as cap only when the fitting pose is FittingPose.Up.
+            </summary>
+            <param name="typeID">Type of the target entity</param>
+            <param name="unitX">Target position X in unit space</param>
+            <param name="unitY">Target position Y in unit space</param>
+            <param name="horizontal">True if the entity fits horizontaly</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetEntityPose(AngeliA.Entity,System.Boolean,System.Int32,AngeliA.Entity@,AngeliA.Entity@)">
+            <summary>
+            Get FittingPose for given entity type from WorldSquad and stage. 
+            </summary>
+            <param name="entity">Target entity</param>
+            <param name="horizontal">True if the entity fits horizontaly</param>
+            <param name="mask">Physics layers to get the entity instance</param>
+            <param name="left_down">Nearby entity instance at left/down</param>
+            <param name="right_up">Nearby entity instance at right/up</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.ForAllWorldInRange(AngeliA.IRect,System.Int32,System.Int32@)">
+            <summary>
+            Find all world position that overlap the given range. (256 results in maximal)
+            </summary>
+            <param name="overlapUnitRange">Target range in unit space</param>
+            <param name="z">Position Z</param>
+            <param name="count">How many result is founded</param>
+            <returns>Array that holds the result</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.ForAllExistsWorldInRange(AngeliA.IBlockSquad,AngeliA.IRect,System.Int32,System.Int32@)">
+            <summary>
+            Find all existing world position that overlap the given range. (256 results in maximal)
+            </summary>
+            <param name="squad">Source of the world instance</param>
+            <param name="overlapUnitRange">Target range in unit space</param>
+            <param name="z">Position Z</param>
+            <param name="count">How many result is founded</param>
+            <returns>Array that holds the result</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.PaintBlock(System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Paint the map block with BlockColoringSystem at given position
+            </summary>
+            <param name="unitX">Target position X in unit space</param>
+            <param name="unitY">Target position Y in unit space</param>
+            <param name="blockColorID">ID of BlockColor's subclass as a map element</param>
+            <param name="overrideExistingElement">True if existing map element at given position will be override</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.TryEjectOutsideGround(AngeliA.Rigidbody,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Move the given rigidbody to closest empty space nearby
+            </summary>
+            <param name="rig"></param>
+            <param name="collisionMask">Which physics layers should count as "Ground"</param>
+            <param name="unitRange">How far can it move in unit space</param>
+            <param name="speed">How fast will it move</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.SystemNumberID_to_Number(System.Int32)">
+            <summary>
+            Convert system number ID into the number it represents
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.Number_to_SystemNumberID(System.Int32)">
+            <summary>
+            Convert number into system number map element ID. 0 by default.
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.ReadSystemNumber(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            Get system number at given position from map. (Left-to-right then up-to-down)
+            </summary>
+            <param name="squad">Source of the map blocks</param>
+            <param name="unitX">Target position X in unit space</param>
+            <param name="unitY">Target position Y in unit space</param>
+            <param name="z">Position Z</param>
+            <param name="number">Result number</param>
+            <returns>True if the number is founded</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.ReadSystemNumber(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32,AngeliA.Direction4,System.Int32@)">
+            <summary>
+            Get system number at given position from map in specified direction
+            </summary>
+            <param name="squad">Source of the map blocks</param>
+            <param name="unitX">Target position X in unit space</param>
+            <param name="unitY">Target position Y in unit space</param>
+            <param name="z">Position Z</param>
+            <param name="direction">Which direction should it reads</param>
+            <param name="number">Result number</param>
+            <returns>True if the number is founded</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.HasSystemNumber(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            True if there is system number at given position
+            </summary>
+            <param name="squad">Source of the map blocks</param>
+            <param name="unitX">Target position X in unit space</param>
+            <param name="unitY">Target position Y in unit space</param>
+            <param name="z">Position Z</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.TryGetSingleSystemNumber(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            Get a single digit of system number at given position from map
+            </summary>
+            <param name="squad">Source of the map blocks</param>
+            <param name="unitX">Target position X in unit space</param>
+            <param name="unitY">Target position Y in unit space</param>
+            <param name="z">Position Z</param>
+            <param name="digitValue">Result of the digit</param>
+            <returns>True if the digit is founded</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetAimingBuilderPositionFromMouse(AngeliA.Character,AngeliA.BlockType,System.Int32@,System.Int32@,System.Boolean@)">
+            <summary>
+            Get aiming position for block building target with mouse
+            </summary>
+            <param name="holder">Character that using the tool</param>
+            <param name="blockType">Type of building block</param>
+            <param name="targetUnitX">Result position in unit space</param>
+            <param name="targetUnitY">Result position in unit space</param>
+            <param name="requireEmbedAsElement">True if this block can be embed into other block</param>
+            <returns>True if the target is founded</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetAimingBuilderPositionFromKey(AngeliA.Character,AngeliA.BlockType,System.Int32@,System.Int32@,System.Boolean@,System.Boolean)">
+            <summary>
+            Get aiming position for block building target with keyboard keys
+            </summary>
+            <param name="holder">Character that using the tool</param>
+            <param name="blockType">Type of building block</param>
+            <param name="targetUnitX">Result position in unit space</param>
+            <param name="targetUnitY">Result position in unit space</param>
+            <param name="requireEmbedAsElement">True if this block can be embed into other block</param>
+            <param name="ignoreValid">Set to true to skip block building validation</param>
+            <returns>True if valid position is founded</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetAimingPickerPositionFromMouse(AngeliA.Character,System.Int32,System.Int32@,System.Int32@,System.Boolean@,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Get aiming position for block picking target with mouse
+            </summary>
+            <param name="holder">Character that using the tool</param>
+            <param name="unitRange">Range limitation in unit space</param>
+            <param name="targetUnitX">Result position in unit space</param>
+            <param name="targetUnitY">Result position in unit space</param>
+            <param name="inRange">True if the current mouse cursor is in range</param>
+            <param name="allowPickBlockEntity">True if the tool can pick entity blocks</param>
+            <param name="allowPickLevelBlock">True if the tool can pick level blocks</param>
+            <param name="allowPickBackgroundBlock">True if the tool can pick background blocks</param>
+            <returns>True if valid position is founded</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetAimingPickerPositionFromKey(AngeliA.Character,System.Int32@,System.Int32@,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Get aiming position for block picking target with keyboard keys
+            </summary>
+            <param name="pHolder">Character that using the tool</param>
+            <param name="targetUnitX">Result position in unit space</param>
+            <param name="targetUnitY">Result position in unit space</param>
+            <param name="allowPickBlockEntity">True if the tool can pick entity blocks</param>
+            <param name="allowPickLevelBlock">True if the tool can pick level blocks</param>
+            <param name="allowPickBackgroundBlock">True if the tool can pick background blocks</param>
+            <returns>True if valid position is founded</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetSummaryTint(AngeliA.Color32[])">
+            <summary>
+            Get average color of given pixels
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawEnvironmentShadow(AngeliA.Cell,System.Int32,System.Int32,System.Byte,System.Int32)">
+            <summary>
+            Draw a shadow for given rendering cell
+            </summary>
+            <param name="source">Target rendering cell</param>
+            <param name="offsetX">Position offset X in global space</param>
+            <param name="offsetY">Position offset Y in global space</param>
+            <param name="alpha"></param>
+            <param name="z">Position Z for the shadow</param>
+            <returns>Rendering cell of the shadow</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawPoseCharacterAsUI(AngeliA.IRect,AngeliA.PoseCharacterRenderer,System.Int32)">
+            <summary>
+            Display target pose-styled character as UI (like the character preview in player menu)
+            </summary>
+            <param name="rect">Rect position to display the UI in global space</param>
+            <param name="renderer">Target character</param>
+            <param name="animationFrame">Current frame for animation</param>
+            <returns>True if the character is rendered</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawPoseCharacterAsUI(AngeliA.IRect,AngeliA.PoseCharacterRenderer,System.Int32,AngeliA.IRect@,AngeliA.IRect@)">
+            <inheritdoc cref="M:AngeliA.FrameworkUtil.DrawPoseCharacterAsUI(AngeliA.IRect,AngeliA.PoseCharacterRenderer,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.RemapCells(AngeliA.Cell[],System.Int32,System.Int32,AngeliA.IRect,AngeliA.IRect,System.Int32,System.Int32,System.Boolean)">
+            <inheritdoc cref="!:RemapCells(Span&lt;Cell&gt;, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.RemapCells(System.Span{AngeliA.Cell},System.Int32,System.Int32,AngeliA.IRect,AngeliA.IRect,System.Int32,System.Int32,System.Boolean)">
+            <inheritdoc cref="!:RemapCells(Span&lt;Cell&gt;, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.RemapCells(AngeliA.Cell[],System.Int32,System.Int32,AngeliA.IRect,AngeliA.IRect,System.Int32@,System.Int32,System.Int32,System.Boolean)">
+            <inheritdoc cref="!:RemapCells(Span&lt;Cell&gt;, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.RemapCells(System.Span{AngeliA.Cell},System.Int32,System.Int32,AngeliA.IRect,AngeliA.IRect,System.Int32@,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Remap the position and size of given rendering cells
+            </summary>
+            <param name="cells"></param>
+            <param name="cellIndexStart">Start index of remap logic</param>
+            <param name="cellIndexEnd">End index of remap logic (exclude)</param>
+            <param name="from">Remap from this range (global space)</param>
+            <param name="to">Remap to this range (global space)</param>
+            <param name="minZ">Minimal Z value for sort rendering cells</param>
+            <param name="fitPivotX"></param>
+            <param name="fitPivotY"></param>
+            <param name="fit">True if keep the aspect ratio by resize the cells</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawItemUsageBar(AngeliA.IRect,System.Int32,System.Int32)">
+            <summary>
+            Draw usage bar UI
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="usage"></param>
+            <param name="maxUsage"></param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawAllCollidersAsGizmos(System.Int32,AngeliA.Int2,System.Single,System.Boolean,System.Boolean,System.Boolean,AngeliA.Color32[])">
+            <summary>
+            Display current physics colliders with game gizmos functions
+            </summary>
+            <param name="physicsMask">Which physics layers are included</param>
+            <param name="offset">Position offset for all gizmos</param>
+            <param name="brightness">0 means dark, 1 means normal color</param>
+            <param name="ignoreNonOnewayTrigger">True if triggers that is not oneway gate are excluded</param>
+            <param name="ignoreOnewayTrigger">True if oneway gates are excluded</param>
+            <param name="useTechEffect">True if the gizmos glitchs</param>
+            <param name="layerTints">Color for specified layers. Set to null to use default.</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetItemTypeIcon(System.Int32)">
+            <summary>
+            Get type icon artwork sprite ID for given item
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawClockHands(AngeliA.IRect,System.Int32,System.Int32,System.Int32,AngeliA.Color32,System.Int32)">
+            <summary>
+            Draw clock hands from given time
+            </summary>
+            <param name="rect">Rect position for clock face in global space</param>
+            <param name="handCode">Artwork sprite ID for the hand</param>
+            <param name="thickness"></param>
+            <param name="thicknessSecond"></param>
+            <param name="tint">Color tint</param>
+            <param name="z">Z value for sort rendering cells</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawClockHands(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.Color32,System.Int32)">
+            <summary>
+            Draw clock hands from given time
+            </summary>
+            <param name="centerX">Center position in global space</param>
+            <param name="centerY">Center position in global space</param>
+            <param name="radius">Radius of the clock face</param>
+            <param name="handCode">Artwork sprite ID for the hand</param>
+            <param name="thickness"></param>
+            <param name="thicknessSecond"></param>
+            <param name="tint">Color tint</param>
+            <param name="z">Z value for sort rendering cells</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawClockPendulum(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw the pendulum for clocks
+            </summary>
+            <param name="artCodeLeg">Artwork sprite ID for the long handle part</param>
+            <param name="artCodeHead">Artwork sprite ID for the head on the edge</param>
+            <param name="x">Center position in global space</param>
+            <param name="y">Center position in global space</param>
+            <param name="length">Length of the pendulum in global space</param>
+            <param name="thickness">Thichness of the leg in global space</param>
+            <param name="headSize">Size of the head in global space</param>
+            <param name="maxRot">Rotation amount</param>
+            <param name="deltaX">Extra position shift amount</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.SpiralSpinningCellEffect(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Draw spinning effect for teleporting with portal
+            </summary>
+            <param name="localFrame"></param>
+            <param name="pointX">Center position in global space</param>
+            <param name="pointY">Center position in global space</param>
+            <param name="duration">Total duration of the animation</param>
+            <param name="cellIndexStart">Start index of target rendering cells in current rendering layer</param>
+            <param name="reverseSpin"></param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawLoopingActivatedHighlight(AngeliA.IRect,AngeliA.Color32,System.Int32,System.Int32)">
+            <summary>
+            Draw a highlight effect
+            </summary>
+            <param name="targetRect">Rect position in global space</param>
+            <param name="tint">Color tint</param>
+            <param name="lineCount"></param>
+            <param name="duration">Duration in frame for a single loop</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawLoopingTriangleMark(AngeliA.IRect,System.Int32,AngeliA.Color32,AngeliA.Direction4,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw a direction mark with looping moving triangles
+            </summary>
+            <param name="range">Rect position in global space</param>
+            <param name="frame">Current animation frame</param>
+            <param name="tint">Color tint</param>
+            <param name="direction"></param>
+            <param name="count">Triangle count</param>
+            <param name="size">Triangle size</param>
+            <param name="z">Z value for sort rendering cells</param>
+            <param name="speed">Moving speed of the triangle</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawOnFireEffect(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw effect for object on fire
+            </summary>
+            <param name="spriteID">Artwork sprite ID</param>
+            <param name="rect">Rect range in global space</param>
+            <param name="count">Rendering sprite count at same time</param>
+            <param name="loop">Duration for a single loop</param>
+            <param name="size">Size of a single sprite</param>
+            <param name="seed">Seed to generate random value</param>
+            <param name="z">Z value for sort rendering cells</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawFrozenEffect(AngeliA.IRect,System.Byte,System.Int32,AngeliA.Int2,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw effect for frozen zone
+            </summary>
+            <param name="rect">Position range in global space</param>
+            <param name="alpha"></param>
+            <param name="count">Particle count at same time</param>
+            <param name="offset">Position offset</param>
+            <param name="seed">Seed to generate random value</param>
+            <param name="size">Size of a single particle</param>
+            <param name="z">Z value to sort rendering cells</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawLightenEffect(System.Int32,AngeliA.IRect,System.Int32,System.Int32)">
+            <summary>
+            Draw effect for electric light coming out of an object
+            </summary>
+            <param name="spriteID">Artwork sprite ID for a single lighten</param>
+            <param name="rect">Position range in global space</param>
+            <param name="count">Count of sprite at same time</param>
+            <param name="size">Size of a single sprite</param>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.DrawPoisonEffect(System.Int32,AngeliA.IRect,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw effect for object being poisoned
+            </summary>
+            <param name="spriteID">Artwork sprite ID</param>
+            <param name="rect">Rect range in global space</param>
+            <param name="loop">Duration of a single animation loop</param>
+            <param name="count">Count of sprites at same time</param>
+            <param name="seed">Seed to generate random value</param>
+            <param name="size">Size of a single particle in global space</param>
+            <param name="z">Z value for sort rendering cells</param>
+        </member>
+        <member name="T:AngeliA.IJsonSerializationCallback">
+            <summary>
+            Interface that receive callback functions when Serialized with JsonUtil
+            </summary>
+        </member>
+        <member name="M:AngeliA.IJsonSerializationCallback.OnBeforeSaveToDisk">
+            <summary>
+            This function is called before json object save to file
+            </summary>
+        </member>
+        <member name="M:AngeliA.IJsonSerializationCallback.OnAfterLoadedFromDisk">
+            <summary>
+            This function is called after json object load from file
+            </summary>
+        </member>
+        <member name="T:AngeliA.JsonUtil">
+            <summary>
+            Utility class for json operation
+            </summary>
+        </member>
+        <member name="M:AngeliA.JsonUtil.GetJsonPath``1(System.String,System.String,System.String)">
+            <summary>
+            Calculate auto path fot json file
+            </summary>
+            <typeparam name="T">Type of the json object</typeparam>
+            <param name="rootPath">Root folder</param>
+            <param name="name">Name that override the type name</param>
+            <param name="ext">Extension of the file</param>
+        </member>
+        <member name="M:AngeliA.JsonUtil.LoadOrCreateJson``1(System.String,System.String,System.String)">
+            <summary>
+            Load json file inside given folder. Create new instance if file not found.
+            </summary>
+            <typeparam name="T">Type of the json object</typeparam>
+            <param name="rootPath">Root folder</param>
+            <param name="name">Name that override the type name</param>
+            <param name="ext">Extension of the file</param>
+        </member>
+        <member name="M:AngeliA.JsonUtil.LoadOrCreateJsonFromPath``1(System.String)">
+            <summary>
+            Load json file at given path. Create new instance if file not found.
+            </summary>
+            <typeparam name="T">Type of the json object</typeparam>
+            <param name="jsonPath"></param>
+        </member>
+        <member name="M:AngeliA.JsonUtil.LoadJson``1(System.String,System.String,System.String)">
+            <summary>
+            Load json file inside given folder.
+            </summary>
+            <typeparam name="T">Type of the json object</typeparam>
+            <param name="rootPath">Root folder</param>
+            <param name="name">Name that override the type name</param>
+            <param name="ext">Extension of the file</param>
+            <returns>Json object instance if file valid. Return default if file not valid.</returns>
+        </member>
+        <member name="M:AngeliA.JsonUtil.LoadJsonFromPath``1(System.String)">
+            <summary>
+            Load json file at given path.
+            </summary>
+            <typeparam name="T">Type of the json object</typeparam>
+            <param name="jsonPath"></param>
+            <returns>Json object instance if file valid. Return default if file not valid</returns>
+        </member>
+        <member name="M:AngeliA.JsonUtil.SaveJson``1(``0,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Save json object into given folder
+            </summary>
+            <typeparam name="T">Type of the json object</typeparam>
+            <param name="data"></param>
+            <param name="rootPath">Root folder path</param>
+            <param name="name">Name that override the type name</param>
+            <param name="ext">Extension of the file</param>
+            <param name="prettyPrint">True if write with indent and line warp</param>
+        </member>
+        <member name="M:AngeliA.JsonUtil.SaveJsonToPath(System.Object,System.String,System.Boolean)">
+            <summary>
+            Save json object into given path
+            </summary>
+            <param name="data"></param>
+            <param name="jsonPath"></param>
+            <param name="prettyPrint">True if write with indent and line warp</param>
+        </member>
+        <member name="T:AngeliA.LanguageUtil">
+            <summary>
+            Utility class for language system
+            </summary>
+        </member>
+        <member name="F:AngeliA.LanguageUtil.ADD_KEYS_FOR_ALL_LANGUAGE_CODE_SETTING_ID">
+            <summary>
+            Used for remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="M:AngeliA.LanguageUtil.LoadAllPairsFromFolder(System.String,System.String,System.Boolean)">
+            <summary>
+            Load and iterate through all language data pairs from given folder
+            </summary>
+            <param name="languageRoot">Root folder of the language data</param>
+            <param name="language">ISO of the target language</param>
+            <param name="keepEscapeCharacters">True if the escape characters (like "\n") will be set to original data</param>
+        </member>
+        <member name="M:AngeliA.LanguageUtil.LoadAllPairsFromDiskAtPath(System.String,System.Boolean)">
+            <summary>
+            Load and iterate through all language data pairs from given file
+            </summary>
+            <param name="path">Language file path</param>
+            <param name="keepEscapeCharacters">True if the escape characters (like "\n") will be set to original data</param>
+        </member>
+        <member name="M:AngeliA.LanguageUtil.SaveAllPairsToDisk(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}})">
+            <summary>
+            Save given language data pairs into file
+            </summary>
+        </member>
+        <member name="M:AngeliA.LanguageUtil.GetLanguageFolderPath(System.String,System.String)">
+            <summary>
+            Get folder for given language
+            </summary>
+            <param name="languageRoot">Root of the language folder</param>
+            <param name="language">ISO of the target language</param>
+            <returns>Path for the target language file</returns>
+        </member>
+        <member name="M:AngeliA.LanguageUtil.GetSystemLanguageISO">
+            <summary>
+            Get current language ISO of the OS
+            </summary>
+        </member>
+        <member name="M:AngeliA.LanguageUtil.AddKeysForAllLanguageCode(System.String)">
+            <summary>
+            Add all required keys for all language inside the root folder
+            </summary>
+        </member>
         <member name="T:AngeliA.Util">
             <summary>
             Utility class of AngeliA
@@ -13216,6 +14267,170 @@
             <param name="source"></param>
             <param name="target"></param>
             <param name="skipWhenTargetNotExists">True if only override existing file instead of create new file when target not exists.</param>
+        </member>
+        <member name="M:AngeliA.Util.GreatestCommonFactor(System.Int32,System.Int32)">
+            <summary>
+            Get the Greatest-Common-Factor
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.LeastCommonMultiple(System.Int32,System.Int32)">
+            <summary>
+            Get the Least-Common-Multiple
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.RotateAround(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Rotate given point (x,y) around point (originX, originY) for given rotation
+            </summary>
+            <returns>Point after rotation</returns>
+        </member>
+        <member name="M:AngeliA.Util.IsPowerOfTwo(System.Int32)">
+            <summary>
+            True if the given value is power of two
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.SquareDistanceF(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Square of the distance between given two points
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.SquareDistance(AngeliA.Int2,AngeliA.Int2)">
+            <summary>
+            Square of the distance between given two points
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.SquareDistance(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Square of the distance between given two points
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.DistanceFloat(AngeliA.Float2,AngeliA.Float2)">
+            <summary>
+            Distance between given two points
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.DistanceFloat(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Distance between given two points
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.DistanceInt(AngeliA.Int2,AngeliA.Int2)">
+            <summary>
+            Distance between given two points. (Use BabylonianSqrt internaly)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.DistanceInt(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Distance between given two points (Use BabylonianSqrt internaly)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.BabylonianSqrt(System.Int32)">
+            <summary>
+            Get square root of given value without using too many CPU resources
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.PointInTriangle(AngeliA.Float2,AngeliA.Float2,AngeliA.Float2,AngeliA.Float2)">
+            <summary>
+            True if the given point "p" is inside given triangle "a,b,c"
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.PointInTriangle(System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <inheritdoc cref="M:AngeliA.Util.PointInTriangle(AngeliA.Float2,AngeliA.Float2,AngeliA.Float2,AngeliA.Float2)"/>
+        </member>
+        <member name="M:AngeliA.Util.PointLine_Distance(AngeliA.Float2,AngeliA.Float2,AngeliA.Float2,AngeliA.Float2@)">
+            <summary>
+            Get distance between given point "pt" and line "p1,p2"
+            </summary>
+            <param name="pt"></param>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <param name="closest">Closest point on the line</param>
+        </member>
+        <member name="M:AngeliA.Util.SegmentIntersect(AngeliA.Float2,AngeliA.Float2,AngeliA.Float2,AngeliA.Float2)">
+            <summary>
+            If given segment "a1,a2" and "b1,b2" intersects
+            </summary>
+            <returns>Null if not intersect. Return intersection point if intersects</returns>
+        </member>
+        <member name="M:AngeliA.Util.SegmentRectIntersect(AngeliA.Float2,AngeliA.Float2,AngeliA.FRect)">
+            <summary>
+            If given segment "a0,a1" intersect with rectangle "rect"
+            </summary>
+            <returns>Null if not intersect. Return intersection points if intersects</returns>
+        </member>
+        <member name="M:AngeliA.Util.OverlapRectCircle(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            True if given rectangle and circle overlaps
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.IntToColor(System.Int32)">
+            <summary>
+            Convert intager value into color
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.ColorToInt(AngeliA.Color32)">
+            <summary>
+            Convert color value into intager
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.ColorToHtml(AngeliA.Color32,System.Boolean)">
+            <summary>
+            Get html string from given color value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.HtmlToColor(System.String,AngeliA.Color32@)">
+            <summary>
+            Get color from given html string. Works both with and without "#" at start
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.ReflectVector2(AngeliA.Float2,AngeliA.Float2)">
+            <summary>
+            Reflects a vector off the surface defined by a normal.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.CrossVector3(AngeliA.Float3,AngeliA.Float3)">
+            <summary>
+            The cross product of two vectors results in a third vector which is perpendicular to the two input vectors.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.ReflectVector3(AngeliA.Float3,AngeliA.Float3)">
+            <summary>
+            Reflects a vector off the surface defined by a normal.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.ProjectVector3(AngeliA.Float3,AngeliA.Float3)">
+            <summary>
+            Projects a vector onto another vector
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.ProjectOnPlaneVector3(AngeliA.Float3,AngeliA.Float3)">
+            <summary>
+            Projects a vector onto a plane
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.DrawLine_DDA(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw a line between (x0,y0) and (x1,y1) with Digital-Differential-Analyzer algorithm
+            </summary>
+            <returns>All pixel positions</returns>
+        </member>
+        <member name="M:AngeliA.Util.DrawLineWithRect_DDA(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw a line between (x0,y0) and (x1,y1) with Digital-Differential-Analyzer algorithm
+            </summary>
+            <returns>All rect positions that need to fill with color</returns>
+        </member>
+        <member name="M:AngeliA.Util.DrawFilledEllipse_Patrick(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw a filled ellipse with Patrick algorithm
+            </summary>
+            <returns>All rect positions that need to fill with color</returns>
+        </member>
+        <member name="M:AngeliA.Util.DrawHoloEllipse_Patrick(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draw a holo ellipse with Patrick algorithm
+            </summary>
+            <returns>All rect positions that need to fill with color</returns>
         </member>
         <member name="F:AngeliA.Util.Rad2Deg">
             <summary>
@@ -13563,6 +14778,40 @@
         </member>
         <member name="M:AngeliA.Util.RgbToHsvF(AngeliA.ColorF,System.Single@,System.Single@,System.Single@)">
             <inheritdoc cref="M:AngeliA.Util.RgbToHsv(AngeliA.Color32,System.Single@,System.Single@,System.Single@)"/>
+        </member>
+        <member name="M:AngeliA.Util.MergeColor_Overlay(AngeliA.ColorF,AngeliA.ColorF)">
+            <summary>
+            Draw color "top" onto "back" with blending overlay
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.MergeColor_Lerp(AngeliA.ColorF,AngeliA.ColorF)">
+            <summary>
+            Draw color "top" onto "back" with blending lerp
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.MergeColor(AngeliA.ColorF,AngeliA.ColorF)">
+            <summary>
+            Draw color "top" onto "back" with no special blending
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.MergeColor_Overlay(AngeliA.Color32,AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Util.MergeColor_Overlay(AngeliA.ColorF,AngeliA.ColorF)"/>
+        </member>
+        <member name="M:AngeliA.Util.MergeColor_Lerp(AngeliA.Color32,AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Util.MergeColor_Lerp(AngeliA.ColorF,AngeliA.ColorF)"/>
+        </member>
+        <member name="M:AngeliA.Util.MergeColor(AngeliA.Color32,AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Util.MergeColor(AngeliA.ColorF,AngeliA.ColorF)"/>
+        </member>
+        <member name="M:AngeliA.Util.MergeColor_Editor(AngeliA.Color32,AngeliA.Color32)">
+            <summary>
+            Draw color "top" onto "back" with blending for sprite editing
+            </summary>
+        </member>
+        <member name="M:AngeliA.Util.GetDirection(System.Int32,System.Int32)">
+            <summary>
+            Get closest direction for vector (deltaX, deltaY)
+            </summary>
         </member>
         <member name="M:AngeliA.Util.GetParentPath(System.String)">
             <summary>

@@ -6,7 +6,9 @@ using System.Threading;
 
 namespace AngeliA;
 
-
+/// <summary>
+/// Core system for triggering specified function of entities on stage/map
+/// </summary>
 public static class CircuitSystem {
 
 
@@ -131,7 +133,7 @@ public static class CircuitSystem {
 
 	[BeforeSavingSlotChanged]
 	[OnGameQuitting]
-	public static void SaveAndClearAllBackgroundTrigger () {
+	internal static void SaveAndClearAllBackgroundTrigger () {
 		// Save Pusher to File 
 		string path = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "LoadedBackgroundTrigger");
 		using var stream = File.Open(path, FileMode.Create);
@@ -169,12 +171,31 @@ public static class CircuitSystem {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Register target IMapItem as wire for operating circuit
+	/// </summary>
+	/// <param name="id">ID of the target entity/element</param>
+	/// <param name="connectL">True if this wire connect to the wire/operator on left</param>
+	/// <param name="connectR">True if this wire connect to the wire/operator on right</param>
+	/// <param name="connectD">True if this wire connect to the wire/operator on bottom</param>
+	/// <param name="connectU">True if this wire connect to the wire/operator on top</param>
 	public static void RegisterWire (int id, bool connectL, bool connectR, bool connectD, bool connectU) => WireIdPool[id] = (connectL, connectR, connectD, connectU);
 
 
+	/// <summary>
+	/// True if the given ID is registed as wire
+	/// </summary>
 	public static bool IsWire (int typeID) => WireIdPool.ContainsKey(typeID);
 
 
+	/// <summary>
+	/// Trigger the system at given position
+	/// </summary>
+	/// <param name="unitX">Position to start circuit trigger in unit space</param>
+	/// <param name="unitY">Position to start circuit trigger in unit space</param>
+	/// <param name="unitZ">Position Z</param>
+	/// <param name="stamp">unique ID for this operation</param>
+	/// <param name="startDirection">Only start at this direction (Set to center to start all direction)</param>
 	public static void TriggerCircuit (int unitX, int unitY, int unitZ, int stamp = int.MinValue, Direction5 startDirection = Direction5.Center) {
 		stamp = stamp == int.MinValue ? Game.PauselessFrame : stamp;
 		var startPos = new Int3(unitX, unitY, unitZ);
@@ -182,6 +203,13 @@ public static class CircuitSystem {
 	}
 
 
+	/// <summary>
+	/// Perform the function from the operator at given position
+	/// </summary>
+	/// <param name="unitPos">Target position in unit space</param>
+	/// <param name="stamp">unique ID for this operation</param>
+	/// <param name="circuitFrom">Which direction does the circuit came from. Set to center to make current as original.</param>
+	/// <returns></returns>
 	public static bool OperateCircuit (Int3 unitPos, int stamp = int.MinValue, Direction5 circuitFrom = Direction5.Center) {
 
 		var squad = WorldSquad.Front;
@@ -212,6 +240,10 @@ public static class CircuitSystem {
 	}
 
 
+	/// <summary>
+	/// Get connection directions from given wire ID
+	/// </summary>
+	/// <returns>True if the wire ID is valid</returns>
 	public static bool WireEntityID_to_WireConnection (int id, out bool connectL, out bool connectR, out bool connectD, out bool connectU) {
 		if (WireIdPool.TryGetValue(id, out var connect)) {
 			connectL = connect.left;
@@ -229,12 +261,21 @@ public static class CircuitSystem {
 	}
 
 
+	/// <summary>
+	/// True if the given ID is a valid circuit operator entity
+	/// </summary>
 	public static bool IsCircuitOperator (int typeID) => OperatorPool.ContainsKey(typeID) || ICircuitOperator.IsOperator(typeID);
 
 
+	/// <summary>
+	/// Convert wire connection info into an Intager
+	/// </summary>
 	public static int WireConnection_to_BitInt (bool connectL, bool connectR, bool connectD, bool connectU) => (connectL ? 0b1000 : 0b0000) | (connectR ? 0b0100 : 0b0000) | (connectD ? 0b0010 : 0b0000) | (connectU ? 0b0001 : 0b0000);
 
 
+	/// <summary>
+	/// Convert an intager into wire connection info
+	/// </summary>
 	public static void BitInt_to_WireConnection (int bitInt, out bool connectL, out bool connectR, out bool connectD, out bool connectU) {
 		connectL = (bitInt & 0b1000) != 0;
 		connectR = (bitInt & 0b0100) != 0;
@@ -243,10 +284,19 @@ public static class CircuitSystem {
 	}
 
 
+	/// <summary>
+	/// Get unique ID for circuit system at given position in unit space
+	/// </summary>
 	public static int GetStamp (Int3 unitPos) => TriggeredTaskStamp.TryGetValue(unitPos, out var pos) ? pos : -1;
 
 
 	// Background
+	/// <summary>
+	/// Add a trigger in background thread
+	/// </summary>
+	/// <param name="entityID">Source ID of this trigger</param>
+	/// <param name="unitPos">Position in unit space</param>
+	/// <returns>True if the capacity is not reached</returns>
 	public static bool TryAddBackgroundTrigger (int entityID, Int3 unitPos) {
 		if (LoadedBackgroundTrigger.Count >= MAX_COUNT) return false;
 		LoadedBackgroundTrigger.Add(new Int4(unitPos.x, unitPos.y, unitPos.z, entityID));
@@ -254,6 +304,12 @@ public static class CircuitSystem {
 	}
 
 
+	/// <summary>
+	/// Remove the given entity from background thread triggers
+	/// </summary>
+	/// <param name="entityID">Source ID of this trigger</param>
+	/// <param name="unitPos">Position in unit space</param>
+	/// <returns>True if the trigger is removed</returns>
 	public static bool TryRemoveBackgroundTrigger (int entityID, Int3 unitPos) => LoadedBackgroundTrigger.Remove(new Int4(unitPos.x, unitPos.y, unitPos.z, entityID));
 
 

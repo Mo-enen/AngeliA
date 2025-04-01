@@ -24,6 +24,9 @@
 		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<AnalysisLevel>latest-recommended</AnalysisLevel>
 
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile></DocumentationFile>
+
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -65,12 +68,19 @@
 		<None Remove="desktop.ini" />
 	</ItemGroup>
 
-	<!--Copy Package Dll to Runtime Folder-->
+	<!--Copy Package Dll to Engine Packages Folder-->
 	<Target Name="Copy Dll To Engine Runtime Debug Folder" AfterTargets="Build">
 		<Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\Packages\com.angelia.platformer\com.angelia.platformer.dll" ContinueOnError="true" />
+		<Copy SourceFiles="$(OutputPath)$(AssemblyName).xml" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\Packages\com.angelia.platformer\com.angelia.platformer.xml" ContinueOnError="true" />
 	</Target>
 
-	<!--Move Package Dll into Library Folder-->
+	<!--Copy Package Dll to Engine ProjectTemplate Folder-->
+	<Target Name="Copy Dll To Engine Runtime Debug Folder" AfterTargets="Build">
+		<Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\ProjectTemplate\lib\Debug\com.angelia.platformer.dll" ContinueOnError="true" />
+		<Copy SourceFiles="$(OutputPath)$(AssemblyName).xml" DestinationFiles="$(ProjectDir)..\AngeliA Engine\Universe\ProjectTemplate\lib\Debug\com.angelia.platformer.xml" ContinueOnError="true" />
+	</Target>
+	
+	<!--Move Package Dll into Library Folder for Games-->
 	<Target Name="CopyDll" AfterTargets="Build">
 		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\com.angelia.platformer.dll" ContinueOnError="true" />
 	</Target>

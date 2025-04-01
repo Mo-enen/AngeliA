@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace AngeliA;
 
+/// <summary>
+/// Core system to invoke function when user type cheat code during gameplay. Works like NES games. (it does nothing with anti-cheat)
+/// </summary>
 public static class CheatSystem {
 
 
@@ -32,7 +35,13 @@ public static class CheatSystem {
 	private static readonly LanguageCode MatchingHint = ("Hint.Cheat.Match", "Press Enter to Perform Cheat Code");
 
 	// Api
+	/// <summary>
+	/// Custom data from cheat code when it's invoking
+	/// </summary>
 	public static object CurrentParam { get; private set; } = null;
+	/// <summary>
+	/// Total loaded cheat code
+	/// </summary>
 	public static int CheatCodeCount => Pool.Count;
 
 	// Data
@@ -159,6 +168,13 @@ public static class CheatSystem {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Add given cheat code into system
+	/// </summary>
+	/// <param name="code">Code that user need to type. Ignore cases</param>
+	/// <param name="method">Method that invokes when cheat code get triggered</param>
+	/// <param name="param">Custom data for this cheat code. Get this data inside the "method" with CheatSystem.CurrentParam</param>
+	/// <returns>True if the data is successfuly added</returns>
 	public static bool TryAddCheatAction (string code, MethodInfo method, object param = null) {
 
 		code = code.ToLower();
@@ -178,6 +194,11 @@ public static class CheatSystem {
 	}
 
 
+	/// <summary>
+	/// Make given cheat code enable or disable
+	/// </summary>
+	/// <param name="code">The target cheat code</param>
+	/// <param name="enable"></param>
 	public static void SetCheatCodeEnable (string code, bool enable) {
 		if (Pool.TryGetValue(code.ToLower().AngeHash(), out var data)) {
 			data.Enable = enable;
@@ -185,6 +206,10 @@ public static class CheatSystem {
 	}
 
 
+	/// <summary>
+	/// Interate through all loaded cheat code inside the system
+	/// </summary>
+	/// <returns></returns>
 	public static IEnumerable<string> ForAllCheatCodes () {
 		foreach (var (_, data) in Pool) {
 			yield return data.Code;
@@ -192,6 +217,9 @@ public static class CheatSystem {
 	}
 
 
+	/// <summary>
+	/// Get cheat code at given index inside system list
+	/// </summary>
 	public static string GetCodeAt (int index) {
 		if (index < 0 || index >= AllCheatIDs.Count) return "";
 		int id = AllCheatIDs[index];

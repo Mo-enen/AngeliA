@@ -37,7 +37,13 @@ public static partial class FrameworkUtil {
 	private const int REPOS_BASIC_ID = 0b01100100_000000000000_000000000000;
 
 
-	// API
+	// Rule
+	/// <summary>
+	/// Auto tile all map blocks inside given range
+	/// </summary>
+	/// <param name="squad">Source of the map blocks</param>
+	/// <param name="unitRange">Target range in unit space</param>
+	/// <param name="z">Position Z</param>
 	public static void RedirectForRule (IBlockSquad squad, IRect unitRange, int z) {
 		unitRange = unitRange.Expand(1);
 		for (int i = unitRange.xMin; i < unitRange.xMax; i++) {
@@ -48,43 +54,67 @@ public static partial class FrameworkUtil {
 			}
 		}
 	}
-	public static void RedirectForRule (IBlockSquad squad, int i, int j, int z, BlockType type) {
-		int id = squad.GetBlockAt(i, j, z, type);
+
+
+	/// <summary>
+	/// Auto tile map block in given position and all tiles nearby
+	/// </summary>
+	/// <param name="squad">Source of the map blocks</param>
+	/// <param name="unitX">Position in unit space</param>
+	/// <param name="unitY">Position in unit space</param>
+	/// <param name="z">Position z</param>
+	/// <param name="type">Type of the auto tile block</param>
+	public static void RedirectForRule (IBlockSquad squad, int unitX, int unitY, int z, BlockType type) {
+		int id = squad.GetBlockAt(unitX, unitY, z, type);
 		if (id == 0) return;
 		int oldID = id;
 		if (!Renderer.TryGetSprite(id, out var sprite) || sprite.Group == null || !sprite.Group.WithRule) return;
 		var group = sprite.Group;
 		int ruleIndex = GetRuleIndex(
 			group.Sprites, group.ID,
-			squad.GetBlockAt(i - 1, j + 1, z, type),
-			squad.GetBlockAt(i + 0, j + 1, z, type),
-			squad.GetBlockAt(i + 1, j + 1, z, type),
-			squad.GetBlockAt(i - 1, j + 0, z, type),
-			squad.GetBlockAt(i + 1, j + 0, z, type),
-			squad.GetBlockAt(i - 1, j - 1, z, type),
-			squad.GetBlockAt(i + 0, j - 1, z, type),
-			squad.GetBlockAt(i + 1, j - 1, z, type)
+			squad.GetBlockAt(unitX - 1, unitY + 1, z, type),
+			squad.GetBlockAt(unitX + 0, unitY + 1, z, type),
+			squad.GetBlockAt(unitX + 1, unitY + 1, z, type),
+			squad.GetBlockAt(unitX - 1, unitY + 0, z, type),
+			squad.GetBlockAt(unitX + 1, unitY + 0, z, type),
+			squad.GetBlockAt(unitX - 1, unitY - 1, z, type),
+			squad.GetBlockAt(unitX + 0, unitY - 1, z, type),
+			squad.GetBlockAt(unitX + 1, unitY - 1, z, type)
 		);
 		if (ruleIndex < 0 || ruleIndex >= group.Count) return;
 		int newID = group.Sprites[ruleIndex].ID;
 		if (newID == oldID) return;
-		squad.SetBlockAt(i, j, z, type, newID);
+		squad.SetBlockAt(unitX, unitY, z, type, newID);
 	}
 
 
-	public static int GetRuleIndex (IList<AngeSprite> sprites, int ruleID, int tl, int tm, int tr, int ml, int mr, int bl, int bm, int br) {
+	/// <summary>
+	/// Find which tile in the given list conforms the auto tiling rule
+	/// </summary>
+	/// <param name="sprites">Source list</param>
+	/// <param name="ruleDigit">Int data of the tiling rule. Get this data with FrameworkUtil.BlockRuleToDigit</param>
+	/// <param name="tl">ID for block at top-left</param>
+	/// <param name="tm">ID for block at top</param>
+	/// <param name="tr">ID for block at top-right</param>
+	/// <param name="ml">ID for block at left</param>
+	/// <param name="mr">ID for block at right</param>
+	/// <param name="bl">ID for block at bottom-left</param>
+	/// <param name="bm">ID for block at bottom</param>
+	/// <param name="br">ID for block at bottom-right</param>
+	/// <returns>Index of the founded sprite</returns>
+	public static int GetRuleIndex (IList<AngeSprite> sprites, int ruleDigit, int tl, int tm, int tr, int ml, int mr, int bl, int bm, int br) {
 		int count = sprites.Count;
 		for (int i = 0; i < count; i++) {
 			var sprite = sprites[i];
 			var rule = sprite.Rule;
-			if (!CheckForTile(ruleID, tl, rule.RuleTL)) continue;
-			if (!CheckForTile(ruleID, tm, rule.RuleT)) continue;
-			if (!CheckForTile(ruleID, tr, rule.RuleTR)) continue;
-			if (!CheckForTile(ruleID, ml, rule.RuleL)) continue;
-			if (!CheckForTile(ruleID, mr, rule.RuleR)) continue;
-			if (!CheckForTile(ruleID, bl, rule.RuleBL)) continue;
-			if (!CheckForTile(ruleID, bm, rule.RuleB)) continue;
-			if (!CheckForTile(ruleID, br, rule.RuleBR)) continue;
+			if (!CheckForTile(ruleDigit, tl, rule.RuleTL)) continue;
+			if (!CheckForTile(ruleDigit, tm, rule.RuleT)) continue;
+			if (!CheckForTile(ruleDigit, tr, rule.RuleTR)) continue;
+			if (!CheckForTile(ruleDigit, ml, rule.RuleL)) continue;
+			if (!CheckForTile(ruleDigit, mr, rule.RuleR)) continue;
+			if (!CheckForTile(ruleDigit, bl, rule.RuleBL)) continue;
+			if (!CheckForTile(ruleDigit, bm, rule.RuleB)) continue;
+			if (!CheckForTile(ruleDigit, br, rule.RuleBR)) continue;
 			return TryRandom(sprites, i, count);
 		}
 		return -1;
@@ -118,13 +148,100 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static bool BreakEntityBlock (Entity target) {
+	/// <summary>
+	/// Convert auto tiling rule digit into BlockRule struct
+	/// </summary>
+	public static BlockRule DigitToBlockRule (int digit) {
+		// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
+		//              000        001        010           011       100
+		// eg: "02022020,11111111,01022020,02012020,..."
+		// digit: int32 10000000 000 000 000 000 000 000 000 000
+		if (!digit.GetBit(0)) return BlockRule.EMPTY;
+		var result = BlockRule.EMPTY;
+		for (int i = 0; i < 8; i++) {
+			int tileStrNumber = 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 0) ? 4 : 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 1) ? 2 : 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 2) ? 1 : 0;
+			result[i] = (Rule)tileStrNumber;
+		}
+		return result;
+	}
 
-		if (!target.MapUnitPos.HasValue || target is not IBlockEntity eBlock) {
+
+	/// <summary>
+	/// Convert auto tiling rule digit into byte array
+	/// </summary>
+	public static void DigitToRuleByte (int digit, byte[] bytes) {
+		if (!digit.GetBit(0)) {
+			System.Array.Clear(bytes);
+			return;
+		}
+		for (int i = 0; i < 8; i++) {
+			int tileStrNumber = 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 0) ? 4 : 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 1) ? 2 : 0;
+			tileStrNumber += digit.GetBit(8 + i * 3 + 2) ? 1 : 0;
+			bytes[i] = (byte)tileStrNumber;
+		}
+	}
+
+
+	/// <summary>
+	/// Convert BlockRule struct into auto tiling rule digit
+	/// </summary>
+	public static int BlockRuleToDigit (BlockRule ruleStr) {
+		// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
+		//              000        001        010           011       100
+		// eg: "02022020,11111111,01022020,02012020,..."
+		// digit: int32 10000000 000 000 000 000 000 000 000 000
+		int digit = 0;
+		digit.SetBit(0, true);
+		for (int i = 0; i < 8; i++) {
+			byte b = (byte)ruleStr[i];
+			digit.SetBit(8 + i * 3 + 0, (b / 4) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 1, (b / 2) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 2, (b / 1) % 2 == 1);
+		}
+		return digit;
+	}
+
+
+	/// <summary>
+	/// Convert byte array into auto tiling rule digit
+	/// </summary>
+	public static int RuleByteToDigit (byte[] singleRule) {
+		// ↖↑↗←→↙↓↘ 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty 255=Error
+		//              000        001        010           011       100
+		// eg: "02022020,11111111,01022020,02012020,..."
+		// digit: int32 10000000 000 000 000 000 000 000 000 000
+		int digit = 0;
+		digit.SetBit(0, true);
+		for (int i = 0; i < 8; i++) {
+			byte b = singleRule[i];
+			digit.SetBit(8 + i * 3 + 0, (b / 4) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 1, (b / 2) % 2 == 1);
+			digit.SetBit(8 + i * 3 + 2, (b / 1) % 2 == 1);
+		}
+		return digit;
+	}
+
+
+	// Misc
+	/// <summary>
+	/// Remove given block entity from map and invoke corresponding callback functions. (Do not handle item drops)
+	/// </summary>
+	public static bool BreakEntityBlock (IBlockEntity eBlock) {
+
+		if (eBlock is not Entity target) return false;
+
+		// Not from Map
+		if (!target.MapUnitPos.HasValue) {
 			InvokeObjectBreak(target.TypeID, target.Rect);
 			return false;
 		}
 
+		// From Map
 		target.Active = false;
 		var mapPos = target.MapUnitPos.Value;
 		int z = Stage.ViewZ;
@@ -138,10 +255,22 @@ public static partial class FrameworkUtil {
 			WorldSquad.Front.SetBlockAt(mapPos.x, mapPos.y, z, BlockType.Element, 0);
 		}
 		InvokeObjectBreak(target.TypeID, target.Rect);
+
 		return true;
 	}
 
 
+	/// <summary>
+	/// Perform a block pick
+	/// </summary>
+	/// <param name="unitX">Target position X in unit space</param>
+	/// <param name="unitY">Target position Y in unit space</param>
+	/// <param name="allowPickBlockEntity">True if entity blocks will be picked</param>
+	/// <param name="allowPickLevelBlock">True if level blocks will be picked</param>
+	/// <param name="allowPickBackgroundBlock">True if background blocks will be picked</param>
+	/// <param name="dropItemAfterPicked">True if spawn an ItemHolder with the block</param>
+	/// <param name="allowMultiplePick">True if pick more than one block with one function call</param>
+	/// <returns>True if any block is picked</returns>
 	public static bool PickBlockAt (int unitX, int unitY, bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true, bool dropItemAfterPicked = true, bool allowMultiplePick = false) {
 
 		bool result = false;
@@ -296,6 +425,14 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// True if found any block can be pick at given position
+	/// </summary>
+	/// <param name="unitX">Target position X in unit space</param>
+	/// <param name="unitY">Target position Y in unit space</param>
+	/// <param name="allowPickBlockEntity">True if entity blocks will be picked</param>
+	/// <param name="allowPickLevelBlock">True if level blocks will be picked</param>
+	/// <param name="allowPickBackgroundBlock">True if background blocks will be picked</param>
 	public static bool HasPickableBlockAt (int unitX, int unitY, bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true) {
 		// Check for Block Entity
 		if (allowPickBlockEntity) {
@@ -333,6 +470,14 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Build a block into the map
+	/// </summary>
+	/// <param name="blockID">ID of the building block</param>
+	/// <param name="blockType">Type of the building block</param>
+	/// <param name="targetUnitX">Target position X in unit space</param>
+	/// <param name="targetUnitY">Target position Y in unit space</param>
+	/// <returns>True if the block is built</returns>
 	public static bool PutBlockTo (int blockID, BlockType blockType, int targetUnitX, int targetUnitY) {
 
 		bool success = false;
@@ -413,6 +558,17 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Find an empty place on map nearby given position for placing an entity
+	/// </summary>
+	/// <param name="unitX">Target position X in unit space</param>
+	/// <param name="unitY">Target position Y in unit space</param>
+	/// <param name="z">Position Z</param>
+	/// <param name="resultUnitX">Position founded in unit space</param>
+	/// <param name="resultUnitY">Position founded in unit space</param>
+	/// <param name="maxRange">Maximal searching range in unit space</param>
+	/// <param name="preferNoSolidLevel">Set to true to put this entity into place without solid level blocks</param>
+	/// <returns>True if the place is founded</returns>
 	public static bool TryGetEmptyPlaceNearbyForEntity (
 		int unitX, int unitY, int z, out int resultUnitX, out int resultUnitY,
 		int maxRange = 8, bool preferNoSolidLevel = true
@@ -475,6 +631,9 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Remove target entity from world data. Only work when entity spawned from map.
+	/// </summary>
 	public static void RemoveFromWorldMemory (Entity entity) {
 		var mapPos = entity.MapUnitPos;
 		if (mapPos.HasValue) {
@@ -483,6 +642,14 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// True if any block founded inside given range. Search blocks with specific order to lower the CPU usage. 
+	/// </summary>
+	/// <param name="squad">Source of map blocks</param>
+	/// <param name="startUnitPoint">Position to start searching in unit space</param>
+	/// <param name="direction">Direction of the search operation facing. Set to null to make it search in circle range.</param>
+	/// <param name="unitDistance">Maximal distance for the search in unit space</param>
+	/// <param name="reverse">True if search blocks from far side first</param>
 	public static bool SearchlightBlockCheck (IBlockSquad squad, Int3 startUnitPoint, Direction8? direction, int unitDistance = Const.MAP, bool reverse = false) {
 		(int deltaX, int deltaY) = direction.HasValue ? direction.Value.Normal() : Int2.Zero;
 		int z = startUnitPoint.z;
@@ -563,6 +730,14 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Get FittingPose for given position and entity ID from WorldSquad. 
+	/// eg. 3 mushroom entities makes a tall mushroom, only the top one is the cap. So your entity renders as cap only when the fitting pose is FittingPose.Up.
+	/// </summary>
+	/// <param name="typeID">Type of the target entity</param>
+	/// <param name="unitX">Target position X in unit space</param>
+	/// <param name="unitY">Target position Y in unit space</param>
+	/// <param name="horizontal">True if the entity fits horizontaly</param>
 	public static FittingPose GetEntityPose (int typeID, int unitX, int unitY, bool horizontal) {
 		bool n = WorldSquad.Front.GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
 		bool p = WorldSquad.Front.GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;
@@ -574,7 +749,15 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static FittingPose GetEntityPose (Entity entity, bool horizontal, int mask, out Entity left_down, out Entity right_up, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
+	/// <summary>
+	/// Get FittingPose for given entity type from WorldSquad and stage. 
+	/// </summary>
+	/// <param name="entity">Target entity</param>
+	/// <param name="horizontal">True if the entity fits horizontaly</param>
+	/// <param name="mask">Physics layers to get the entity instance</param>
+	/// <param name="left_down">Nearby entity instance at left/down</param>
+	/// <param name="right_up">Nearby entity instance at right/up</param>
+	public static FittingPose GetEntityPose (Entity entity, bool horizontal, int mask, out Entity left_down, out Entity right_up) {
 		left_down = null;
 		right_up = null;
 		int unitX = entity.X.ToUnit();
@@ -583,10 +766,10 @@ public static partial class FrameworkUtil {
 		bool n = WorldSquad.Front.GetBlockAt(horizontal ? unitX - 1 : unitX, horizontal ? unitY : unitY - 1, BlockType.Entity) == typeID;
 		bool p = WorldSquad.Front.GetBlockAt(horizontal ? unitX + 1 : unitX, horizontal ? unitY : unitY + 1, BlockType.Entity) == typeID;
 		if (n) {
-			left_down = Physics.GetEntity(typeID, entity.Rect.EdgeOutside(horizontal ? Direction4.Left : Direction4.Down), mask, entity, mode, tag);
+			left_down = Physics.GetEntity(typeID, entity.Rect.EdgeOutside(horizontal ? Direction4.Left : Direction4.Down), mask, entity, OperationMode.ColliderAndTrigger);
 		}
 		if (p) {
-			right_up = Physics.GetEntity(typeID, entity.Rect.EdgeOutside(horizontal ? Direction4.Right : Direction4.Up), mask, entity, mode, tag);
+			right_up = Physics.GetEntity(typeID, entity.Rect.EdgeOutside(horizontal ? Direction4.Right : Direction4.Up), mask, entity, OperationMode.ColliderAndTrigger);
 		}
 		return
 			n && p ? FittingPose.Mid :
@@ -596,6 +779,13 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Find all world position that overlap the given range. (256 results in maximal)
+	/// </summary>
+	/// <param name="overlapUnitRange">Target range in unit space</param>
+	/// <param name="z">Position Z</param>
+	/// <param name="count">How many result is founded</param>
+	/// <returns>Array that holds the result</returns>
 	public static Int3[] ForAllWorldInRange (IRect overlapUnitRange, int z, out int count) {
 		int left = overlapUnitRange.xMin.UDivide(Const.MAP);
 		int right = (overlapUnitRange.xMax + 1).UDivide(Const.MAP);
@@ -618,6 +808,14 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Find all existing world position that overlap the given range. (256 results in maximal)
+	/// </summary>
+	/// <param name="squad">Source of the world instance</param>
+	/// <param name="overlapUnitRange">Target range in unit space</param>
+	/// <param name="z">Position Z</param>
+	/// <param name="count">How many result is founded</param>
+	/// <returns>Array that holds the result</returns>
 	public static Int3[] ForAllExistsWorldInRange (IBlockSquad squad, IRect overlapUnitRange, int z, out int count) {
 		int left = overlapUnitRange.xMin.UDivide(Const.MAP);
 		int right = (overlapUnitRange.xMax + 1).UDivide(Const.MAP);
@@ -642,15 +840,29 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static void PaintBlock (int unitX, int unitY, int blockColorID, bool overlapExistingElement = false) {
+	/// <summary>
+	/// Paint the map block with BlockColoringSystem at given position
+	/// </summary>
+	/// <param name="unitX">Target position X in unit space</param>
+	/// <param name="unitY">Target position Y in unit space</param>
+	/// <param name="blockColorID">ID of BlockColor's subclass as a map element</param>
+	/// <param name="overrideExistingElement">True if existing map element at given position will be override</param>
+	public static void PaintBlock (int unitX, int unitY, int blockColorID, bool overrideExistingElement = false) {
 		var squad = WorldSquad.Front;
 		var (lv, bg, _, ele) = squad.GetAllBlocksAt(unitX, unitY, Stage.ViewZ);
 		if (lv == 0 && bg == 0) return;
-		if (!overlapExistingElement && !BlockColoringSystem.TryGetColor(ele, out _) && ele != 0) return;
+		if (!overrideExistingElement && !BlockColoringSystem.TryGetColor(ele, out _) && ele != 0) return;
 		squad.SetBlockAt(unitX, unitY, Stage.ViewZ, BlockType.Element, blockColorID);
 	}
 
 
+	/// <summary>
+	/// Move the given rigidbody to closest empty space nearby
+	/// </summary>
+	/// <param name="rig"></param>
+	/// <param name="collisionMask">Which physics layers should count as "Ground"</param>
+	/// <param name="unitRange">How far can it move in unit space</param>
+	/// <param name="speed">How fast will it move</param>
 	public static void TryEjectOutsideGround (Rigidbody rig, int collisionMask = 0, int unitRange = 2, int speed = 32) {
 		var centerPos = rig.Rect.CenterInt();
 		var targetDir = Int2.Zero;
@@ -694,7 +906,8 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static int GetRepositionElementCode (int deltaGlobalX, int deltaGlobalY) {
+	// Stage Reposition
+	internal static int GetRepositionElementCode (int deltaGlobalX, int deltaGlobalY) {
 		const int MAX_RANGE = 8 * Const.CEL;
 		deltaGlobalX = deltaGlobalX.Clamp(-MAX_RANGE, MAX_RANGE) + MAX_RANGE;
 		deltaGlobalY = deltaGlobalY.Clamp(-MAX_RANGE, MAX_RANGE) + MAX_RANGE;
@@ -702,7 +915,7 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static bool TryGetRepositionElementDelta (int elementCode, out int deltaGlobalX, out int deltaGlobalY) {
+	internal static bool TryGetRepositionElementDelta (int elementCode, out int deltaGlobalX, out int deltaGlobalY) {
 		const int MAX_RANGE = 8 * Const.CEL;
 		deltaGlobalX = 0;
 		deltaGlobalY = 0;
@@ -713,16 +926,31 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static bool IsRepositionElementCode (int elementCode) => (REPOS_BASIC_ID >> 24) == (elementCode >> 24);
+	internal static bool IsRepositionElementCode (int elementCode) => (REPOS_BASIC_ID >> 24) == (elementCode >> 24);
 
 
 	// System Number
+	/// <summary>
+	/// Convert system number ID into the number it represents
+	/// </summary>
 	public static int SystemNumberID_to_Number (int id) => SYSTEM_NUMBER_POOL.TryGetValue(id, out int number) ? number : -1;
 
 
+	/// <summary>
+	/// Convert number into system number map element ID. 0 by default.
+	/// </summary>
 	public static int Number_to_SystemNumberID (int number) => SYSTEM_NUMBER_POOL_ALT.TryGetValue(number, out int id) ? id : 0;
 
 
+	/// <summary>
+	/// Get system number at given position from map. (Left-to-right then up-to-down)
+	/// </summary>
+	/// <param name="squad">Source of the map blocks</param>
+	/// <param name="unitX">Target position X in unit space</param>
+	/// <param name="unitY">Target position Y in unit space</param>
+	/// <param name="z">Position Z</param>
+	/// <param name="number">Result number</param>
+	/// <returns>True if the number is founded</returns>
 	public static bool ReadSystemNumber (IBlockSquad squad, int unitX, int unitY, int z, out int number) {
 		number = 0;
 		bool hasH = ReadSystemNumber(squad, unitX, unitY, z, Direction4.Right, out int numberH);
@@ -738,6 +966,16 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Get system number at given position from map in specified direction
+	/// </summary>
+	/// <param name="squad">Source of the map blocks</param>
+	/// <param name="unitX">Target position X in unit space</param>
+	/// <param name="unitY">Target position Y in unit space</param>
+	/// <param name="z">Position Z</param>
+	/// <param name="direction">Which direction should it reads</param>
+	/// <param name="number">Result number</param>
+	/// <returns>True if the number is founded</returns>
 	public static bool ReadSystemNumber (IBlockSquad squad, int unitX, int unitY, int z, Direction4 direction, out int number) {
 
 		number = 0;
@@ -771,12 +1009,28 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// True if there is system number at given position
+	/// </summary>
+	/// <param name="squad">Source of the map blocks</param>
+	/// <param name="unitX">Target position X in unit space</param>
+	/// <param name="unitY">Target position Y in unit space</param>
+	/// <param name="z">Position Z</param>
 	public static bool HasSystemNumber (IBlockSquad squad, int unitX, int unitY, int z) {
 		int id = squad.GetBlockAt(unitX, unitY, z, BlockType.Element);
 		return id != 0 && SystemNumberID_to_Number(id) != -1;
 	}
 
 
+	/// <summary>
+	/// Get a single digit of system number at given position from map
+	/// </summary>
+	/// <param name="squad">Source of the map blocks</param>
+	/// <param name="unitX">Target position X in unit space</param>
+	/// <param name="unitY">Target position Y in unit space</param>
+	/// <param name="z">Position Z</param>
+	/// <param name="digitValue">Result of the digit</param>
+	/// <returns>True if the digit is founded</returns>
 	public static bool TryGetSingleSystemNumber (IBlockSquad squad, int unitX, int unitY, int z, out int digitValue) {
 		int id = squad.GetBlockAt(unitX, unitY, z, BlockType.Element);
 		digitValue = SystemNumberID_to_Number(id);
@@ -785,6 +1039,15 @@ public static partial class FrameworkUtil {
 
 
 	// Block Aiming
+	/// <summary>
+	/// Get aiming position for block building target with mouse
+	/// </summary>
+	/// <param name="holder">Character that using the tool</param>
+	/// <param name="blockType">Type of building block</param>
+	/// <param name="targetUnitX">Result position in unit space</param>
+	/// <param name="targetUnitY">Result position in unit space</param>
+	/// <param name="requireEmbedAsElement">True if this block can be embed into other block</param>
+	/// <returns>True if the target is founded</returns>
 	public static bool GetAimingBuilderPositionFromMouse (Character holder, BlockType blockType, out int targetUnitX, out int targetUnitY, out bool requireEmbedAsElement) {
 
 		requireEmbedAsElement = false;
@@ -804,6 +1067,16 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Get aiming position for block building target with keyboard keys
+	/// </summary>
+	/// <param name="holder">Character that using the tool</param>
+	/// <param name="blockType">Type of building block</param>
+	/// <param name="targetUnitX">Result position in unit space</param>
+	/// <param name="targetUnitY">Result position in unit space</param>
+	/// <param name="requireEmbedAsElement">True if this block can be embed into other block</param>
+	/// <param name="ignoreValid">Set to true to skip block building validation</param>
+	/// <returns>True if valid position is founded</returns>
 	public static bool GetAimingBuilderPositionFromKey (Character holder, BlockType blockType, out int targetUnitX, out int targetUnitY, out bool requireEmbedAsElement, bool ignoreValid = false) {
 
 		bool valid;
@@ -879,6 +1152,18 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Get aiming position for block picking target with mouse
+	/// </summary>
+	/// <param name="holder">Character that using the tool</param>
+	/// <param name="unitRange">Range limitation in unit space</param>
+	/// <param name="targetUnitX">Result position in unit space</param>
+	/// <param name="targetUnitY">Result position in unit space</param>
+	/// <param name="inRange">True if the current mouse cursor is in range</param>
+	/// <param name="allowPickBlockEntity">True if the tool can pick entity blocks</param>
+	/// <param name="allowPickLevelBlock">True if the tool can pick level blocks</param>
+	/// <param name="allowPickBackgroundBlock">True if the tool can pick background blocks</param>
+	/// <returns>True if valid position is founded</returns>
 	public static bool GetAimingPickerPositionFromMouse (
 		Character holder, int unitRange, out int targetUnitX, out int targetUnitY, out bool inRange,
 		bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true
@@ -903,6 +1188,16 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Get aiming position for block picking target with keyboard keys
+	/// </summary>
+	/// <param name="pHolder">Character that using the tool</param>
+	/// <param name="targetUnitX">Result position in unit space</param>
+	/// <param name="targetUnitY">Result position in unit space</param>
+	/// <param name="allowPickBlockEntity">True if the tool can pick entity blocks</param>
+	/// <param name="allowPickLevelBlock">True if the tool can pick level blocks</param>
+	/// <param name="allowPickBackgroundBlock">True if the tool can pick background blocks</param>
+	/// <returns>True if valid position is founded</returns>
 	public static bool GetAimingPickerPositionFromKey (
 		Character pHolder, out int targetUnitX, out int targetUnitY,
 		bool allowPickBlockEntity = true, bool allowPickLevelBlock = true, bool allowPickBackgroundBlock = true
@@ -944,71 +1239,6 @@ public static partial class FrameworkUtil {
 
 		return hasTraget;
 
-	}
-
-
-	// Rule
-	public static BlockRule DigitToBlockRule (int digit) {
-		// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
-		//              000        001        010           011       100
-		// eg: "02022020,11111111,01022020,02012020,..."
-		// digit: int32 10000000 000 000 000 000 000 000 000 000
-		if (!digit.GetBit(0)) return BlockRule.EMPTY;
-		var result = BlockRule.EMPTY;
-		for (int i = 0; i < 8; i++) {
-			int tileStrNumber = 0;
-			tileStrNumber += digit.GetBit(8 + i * 3 + 0) ? 4 : 0;
-			tileStrNumber += digit.GetBit(8 + i * 3 + 1) ? 2 : 0;
-			tileStrNumber += digit.GetBit(8 + i * 3 + 2) ? 1 : 0;
-			result[i] = (Rule)tileStrNumber;
-		}
-		return result;
-	}
-
-	public static void DigitToRuleByte (int digit, byte[] bytes) {
-		if (!digit.GetBit(0)) {
-			System.Array.Clear(bytes);
-			return;
-		}
-		for (int i = 0; i < 8; i++) {
-			int tileStrNumber = 0;
-			tileStrNumber += digit.GetBit(8 + i * 3 + 0) ? 4 : 0;
-			tileStrNumber += digit.GetBit(8 + i * 3 + 1) ? 2 : 0;
-			tileStrNumber += digit.GetBit(8 + i * 3 + 2) ? 1 : 0;
-			bytes[i] = (byte)tileStrNumber;
-		}
-	}
-
-	public static int BlockRuleToDigit (BlockRule ruleStr) {
-		// ↖↑↗←→↙↓↘,... 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty NaN=Error
-		//              000        001        010           011       100
-		// eg: "02022020,11111111,01022020,02012020,..."
-		// digit: int32 10000000 000 000 000 000 000 000 000 000
-		int digit = 0;
-		digit.SetBit(0, true);
-		for (int i = 0; i < 8; i++) {
-			byte b = (byte)ruleStr[i];
-			digit.SetBit(8 + i * 3 + 0, (b / 4) % 2 == 1);
-			digit.SetBit(8 + i * 3 + 1, (b / 2) % 2 == 1);
-			digit.SetBit(8 + i * 3 + 2, (b / 1) % 2 == 1);
-		}
-		return digit;
-	}
-
-	public static int RuleByteToDigit (byte[] singleRule) {
-		// ↖↑↗←→↙↓↘ 0=Whatever 1=SameTile 2=NotSameTile 3=AnyTile 4=Empty 255=Error
-		//              000        001        010           011       100
-		// eg: "02022020,11111111,01022020,02012020,..."
-		// digit: int32 10000000 000 000 000 000 000 000 000 000
-		int digit = 0;
-		digit.SetBit(0, true);
-		for (int i = 0; i < 8; i++) {
-			byte b = singleRule[i];
-			digit.SetBit(8 + i * 3 + 0, (b / 4) % 2 == 1);
-			digit.SetBit(8 + i * 3 + 1, (b / 2) % 2 == 1);
-			digit.SetBit(8 + i * 3 + 2, (b / 1) % 2 == 1);
-		}
-		return digit;
 	}
 
 

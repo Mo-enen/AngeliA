@@ -103,8 +103,8 @@ public class RigidbodyNavigation (Rigidbody target) {
 			CurrentNavOperationCount = 0;
 			CurrentNavOperationIndex = 0;
 			if (NavigationState == RigidbodyNavigationState.Operation) {
-				CurrentNavOperationCount = Navigation.NavigateTo(
-					NavOperations, Game.GlobalFrame, Stage.ViewRect, X, Y, NavigationAim.x, NavigationAim.y
+				Navigation.NavigateTo(
+					NavOperations, out CurrentNavOperationCount, X, Y, NavigationAim.x, NavigationAim.y
 				);
 				if (CurrentNavOperationCount == 0) {
 					NavigationState = RigidbodyNavigationState.Idle;
@@ -290,7 +290,7 @@ public class RigidbodyNavigation (Rigidbody target) {
 
 				// Goto Next Operation
 				if (NavMoveDoneX && NavMoveDoneY) {
-					if (!Navigation.IsGround(Game.GlobalFrame, Stage.ViewRect, targetX, targetY, out _)) {
+					if (!Navigation.IsGround(targetX, targetY, out _)) {
 						NavigationState = RigidbodyNavigationState.Fly;
 						NavFlyStartFrame = Game.GlobalFrame;
 						CurrentNavOperationIndex = 0;

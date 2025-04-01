@@ -20,7 +20,7 @@
 		<Optimize>True</Optimize>
 		<ApplicationIcon>Icon.ico</ApplicationIcon>
 
-		<OutputPath>..\AngeliA Engine\Universe\Runtime\Debug</OutputPath>
+		<OutputPath>$(SolutionDir)Universe\Runtime\Debug</OutputPath>
 		<PublishDir>$(SolutionDir)Publish</PublishDir>
 
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -80,4 +80,9 @@
 		<None Remove="publish.bat" />
 	</ItemGroup>
 
+	<!--Delete createdump.exe-->
+	<Target Name="DeletePakDll" AfterTargets="Build">
+		<Delete Files="$(OutputPath)createdump.exe" ContinueOnError="true" />
+	</Target>
+	
 </Project>

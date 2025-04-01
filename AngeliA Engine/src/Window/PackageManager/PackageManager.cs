@@ -446,6 +446,7 @@ internal class PackageManager : WindowUI {
 				string targetPathRelease = Util.CombinePaths(CurrentProject.DllLibPath_Release, dllName);
 				// Update
 				Util.UpdateFile(sourcePath, targetPathDebug, skipWhenTargetNotExists: false);
+				Util.UpdateFile(Util.ChangeExtension(sourcePath, "xml"), Util.ChangeExtension(targetPathDebug, "xml"), skipWhenTargetNotExists: false);
 				Util.UpdateFile(sourcePath, targetPathRelease, skipWhenTargetNotExists: false);
 			}
 		}

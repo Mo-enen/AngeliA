@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Core system to take screenshot based on rendering cells and save them into file
+/// </summary>
 public static class CellScreenshotSystem {
 
 
@@ -27,22 +30,37 @@ public static class CellScreenshotSystem {
 	}
 
 
+	/// <summary>
+	/// Data to hold a single screenshot
+	/// </summary>
 	public class Screenshot {
 
 		// Info
 		public long CreatedDate;
 		public string FilePath;
+		/// <summary>
+		/// True if the user want to prevent accidental deletion
+		/// </summary>
 		public bool Locked;
 
 		// Content
+		/// <summary>
+		/// Global range of the rendering cells inside this screenshot
+		/// </summary>
 		public IRect Range;
+		/// <summary>
+		/// Sky gradient color on top
+		/// </summary>
 		public Color32 SkyTop;
+		/// <summary>
+		/// Sky gradient color on bottom
+		/// </summary>
 		public Color32 SkyBottom;
 		internal RawCell[] CellsShadow;
 		internal RawCell[] CellsDefault;
 
 		// API
-		public void Read (BinaryReader reader) {
+		internal void Read (BinaryReader reader) {
 
 			Locked = reader.ReadBoolean();
 			CreatedDate = reader.ReadInt64();
@@ -98,7 +116,7 @@ public static class CellScreenshotSystem {
 
 		}
 
-		public void Write (BinaryWriter writer) {
+		internal void Write (BinaryWriter writer) {
 
 			writer.Write((bool)Locked);
 			writer.Write((long)CreatedDate);
@@ -162,6 +180,9 @@ public static class CellScreenshotSystem {
 
 
 	// Api
+	/// <summary>
+	/// Screenshot data count inside the current system
+	/// </summary>
 	public static int Count => Screenshots.Count;
 
 	// Data
@@ -213,12 +234,23 @@ public static class CellScreenshotSystem {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Take screenshot at given range in global space when all cells at this frame is rendered. Result will be saved into system list.
+	/// </summary>
+	/// <param name="cameraRange"></param>
+	/// <param name="delay">Time delay in frame</param>
 	public static void RequireTakeScreenshot (IRect cameraRange, int delay = 0) {
 		RequiringScreenshotRange = cameraRange;
 		RequiringScreenshotFrame = Game.GlobalFrame + delay;
 	}
 
 
+	/// <summary>
+	/// Take screenshot at given range in global space no matter rendering cells are all exists for current frame
+	/// </summary>
+	/// <param name="cameraRange"></param>
+	/// <param name="saveToSystem">True if save this screenshot into system list</param>
+	/// <returns></returns>
 	public static Screenshot TakeScreenshotImmediately (IRect cameraRange, bool saveToSystem = true) {
 		var now = System.DateTime.UtcNow;
 		var result = new Screenshot {
@@ -254,9 +286,17 @@ public static class CellScreenshotSystem {
 	}
 
 
+	/// <summary>
+	/// Get screenshot from system list at given index.
+	/// </summary>
 	public static Screenshot GetScreenshot (int index) => index >= 0 && index < Screenshots.Count ? Screenshots[index] : null;
 
 
+	/// <summary>
+	/// Delete screenshot from system list at given index
+	/// </summary>
+	/// <param name="index"></param>
+	/// <param name="dontDeleteLocked">True if skip the locked ones</param>
 	public static void DeleteScreenshot (int index, bool dontDeleteLocked = true) {
 		if (index < 0 || index >= Screenshots.Count) return;
 		var shot = Screenshots[index];
@@ -267,6 +307,9 @@ public static class CellScreenshotSystem {
 	}
 
 
+	/// <summary>
+	/// Lock/unlock screenshot in system list at given index
+	/// </summary>
 	public static void SetScreenshotLock (int index, bool locked) {
 		if (index < 0 || index >= Screenshots.Count) return;
 		var shot = Screenshots[index];
@@ -276,9 +319,22 @@ public static class CellScreenshotSystem {
 	}
 
 
+	/// <inheritdoc cref="DrawScreenshot(Screenshot, IRect, FRect, Color32, int, int, bool)"/>
 	public static void DrawScreenshot (Screenshot screenshot, IRect rect, int z = 0, int layer = RenderLayer.UI, bool fit = true) => DrawScreenshot(screenshot, rect, new FRect(0, 0, 1, 1), Color32.WHITE, z, layer, fit);
+	/// <inheritdoc cref="DrawScreenshot(Screenshot, IRect, FRect, Color32, int, int, bool)"/>
 	public static void DrawScreenshot (Screenshot screenshot, IRect rect, FRect sourceRange, int z = 0, int layer = RenderLayer.UI, bool fit = true) => DrawScreenshot(screenshot, rect, sourceRange, Color32.WHITE, z, layer, fit);
+	/// <inheritdoc cref="DrawScreenshot(Screenshot, IRect, FRect, Color32, int, int, bool)"/>
 	public static void DrawScreenshot (Screenshot screenshot, IRect rect, Color32 tint, int z = 0, int layer = RenderLayer.UI, bool fit = true) => DrawScreenshot(screenshot, rect, new FRect(0, 0, 1, 1), tint, z, layer, fit);
+	/// <summary>
+	/// Render given screen shot on screen
+	/// </summary>
+	/// <param name="screenshot">Screenshot data</param>
+	/// <param name="rect">Global range to display this screenshot</param>
+	/// <param name="sourceRange">Which part of the screenshot should be display. ((0, 0, 1, 1) means all of them. (0, 0, 0.5, 1) means left half of them)</param>
+	/// <param name="tint">Color tint</param>
+	/// <param name="z">Z value for sort rendering cells</param>
+	/// <param name="layer">Rendering layer to draw into. Use RenderLayer.XXX to get this value.</param>
+	/// <param name="fit">True if resize the result without changing the aspect ratio</param>
 	public static void DrawScreenshot (Screenshot screenshot, IRect rect, FRect sourceRange, Color32 tint, int z = 0, int layer = RenderLayer.UI, bool fit = true) {
 		if (screenshot == null) return;
 		if (sourceRange.width.AlmostZero() || sourceRange.height.AlmostZero()) return;
@@ -321,7 +377,7 @@ public static class CellScreenshotSystem {
 						(rect.x + rect.width * sourceRange.center.x).RoundToInt(),
 						(rect.y + rect.height * sourceRange.center.y).RoundToInt()
 					),
-					round: true, fit: fit
+					fit: fit
 				);
 			}
 			// Func

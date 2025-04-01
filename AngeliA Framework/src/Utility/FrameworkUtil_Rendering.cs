@@ -42,7 +42,7 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static void LimbRotate (
+	internal static void LimbRotate (
 		ref int targetX, ref int targetY, ref int targetPivotX, ref int targetPivotY, ref int targetRotation, ref int targetWidth, ref int targetHeight,
 		int rotation, bool useFlip, int grow
 	) {
@@ -82,7 +82,7 @@ public static partial class FrameworkUtil {
 
 	}
 
-	public static void LimbRotate (
+	internal static void LimbRotate (
 		ref int targetX, ref int targetY, ref int targetPivotX, ref int targetPivotY, ref int targetRotation, ref int targetWidth, ref int targetHeight,
 		int parentX, int parentY, int parentRotation, int parentWidth, int parentHeight,
 		int rotation, bool useFlip, int grow
@@ -128,54 +128,9 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static void GetSlicedUvBorder (AngeSprite sprite, Alignment alignment, out Float2 bl, out Float2 br, out Float2 tl, out Float2 tr) {
-
-		bl = new(0f, 0f);
-		br = new(1f, 0f);
-		tl = new(0f, 1f);
-		tr = new(1f, 1f);
-
-		// Y
-		switch (alignment) {
-			case Alignment.TopLeft:
-			case Alignment.TopMid:
-			case Alignment.TopRight:
-				bl.y = br.y = (sprite.GlobalHeight - sprite.GlobalBorder.up) / (float)sprite.GlobalHeight;
-				break;
-			case Alignment.MidLeft:
-			case Alignment.MidMid:
-			case Alignment.MidRight:
-				tl.y = tr.y = (sprite.GlobalHeight - sprite.GlobalBorder.up) / (float)sprite.GlobalHeight;
-				bl.y = br.y = sprite.GlobalBorder.down / (float)sprite.GlobalHeight;
-				break;
-			case Alignment.BottomLeft:
-			case Alignment.BottomMid:
-			case Alignment.BottomRight:
-				tl.y = tr.y = sprite.GlobalBorder.down / (float)sprite.GlobalHeight;
-				break;
-		}
-		// X
-		switch (alignment) {
-			case Alignment.TopLeft:
-			case Alignment.MidLeft:
-			case Alignment.BottomLeft:
-				br.x = tr.x = sprite.GlobalBorder.left / (float)sprite.GlobalWidth;
-				break;
-			case Alignment.TopMid:
-			case Alignment.MidMid:
-			case Alignment.BottomMid:
-				br.x = tr.x = (sprite.GlobalWidth - sprite.GlobalBorder.right) / (float)sprite.GlobalWidth;
-				bl.x = tl.x = sprite.GlobalBorder.left / (float)sprite.GlobalWidth;
-				break;
-			case Alignment.TopRight:
-			case Alignment.MidRight:
-			case Alignment.BottomRight:
-				bl.x = tl.x = (sprite.GlobalWidth - sprite.GlobalBorder.right) / (float)sprite.GlobalWidth;
-				break;
-		}
-	}
-
-
+	/// <summary>
+	/// Get average color of given pixels
+	/// </summary>
 	public static Color32 GetSummaryTint (Color32[] pixels) {
 		if (pixels == null || pixels.Length == 0) return Color32.CLEAR;
 		var sum = Float3.Zero;
@@ -199,6 +154,15 @@ public static partial class FrameworkUtil {
 
 
 	// Draw
+	/// <summary>
+	/// Draw a shadow for given rendering cell
+	/// </summary>
+	/// <param name="source">Target rendering cell</param>
+	/// <param name="offsetX">Position offset X in global space</param>
+	/// <param name="offsetY">Position offset Y in global space</param>
+	/// <param name="alpha"></param>
+	/// <param name="z">Position Z for the shadow</param>
+	/// <returns>Rendering cell of the shadow</returns>
 	public static Cell DrawEnvironmentShadow (Cell source, int offsetX = -Const.HALF / 2, int offsetY = 0, byte alpha = 64, int z = -64 * 1024 + 16) {
 		int oldLayer = Renderer.CurrentLayerIndex;
 		Renderer.SetLayer(RenderLayer.SHADOW);
@@ -213,106 +177,15 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static void DrawGlitchEffect (Cell cell, int frame, int speedAmount = 1000, int shiftAmount = 1000, int scaleAmount = 1000) {
-
-		if (speedAmount <= 0 || shiftAmount <= 0 || scaleAmount <= 0) return;
-
-		if (frame.UMod(0096000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-012, 012), Util.QuickRandom(-007, 007), Util.QuickRandom(0900, 1100), Util.QuickRandom(0500, 1100), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0061000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-002, 041), Util.QuickRandom(-019, 072), Util.QuickRandom(0500, 1200), Util.QuickRandom(0500, 1200), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0121000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-016, 016), Util.QuickRandom(-007, 007), Util.QuickRandom(0400, 1100), Util.QuickRandom(0600, 1100), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0127000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-016, 016), Util.QuickRandom(-007, 007), Util.QuickRandom(0900, 1100), Util.QuickRandom(0500, 1300), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0185000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-011, 021), Util.QuickRandom(-018, 018), Util.QuickRandom(0900, 1300), Util.QuickRandom(0900, 1300), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0187000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-034, 042), Util.QuickRandom(-012, 008), Util.QuickRandom(0800, 1100), Util.QuickRandom(0900, 1400), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0193000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-052, 002), Util.QuickRandom(-091, 077), Util.QuickRandom(0700, 1400), Util.QuickRandom(0800, 1100), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(0274000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-033, 072), Util.QuickRandom(-031, 079), Util.QuickRandom(0800, 1100), Util.QuickRandom(0900, 1800), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(1846000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-094, 012), Util.QuickRandom(-077, 112), Util.QuickRandom(0900, 1500), Util.QuickRandom(0900, 1300), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(3379000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-194, 112), Util.QuickRandom(-177, 212), Util.QuickRandom(0900, 1600), Util.QuickRandom(0700, 1900), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-		if (frame.UMod(9379000 / speedAmount) == 0) DrawGlitch(cell, shiftAmount, scaleAmount, Util.QuickRandom(-293, 211), Util.QuickRandom(-079, 011), Util.QuickRandom(0900, 1700), Util.QuickRandom(0900, 1100), Util.QuickRandomColor(0, 360, 100, 100, 100, 100, 128, 255));
-
-		// Func
-		static void DrawGlitch (Cell cell, int shiftAmount, int scaleAmount, int offsetX, int offsetY, int scaleX, int scaleY, Color32 color) {
-
-			var cursedCell = Renderer.DrawPixel(default, 0);
-			cursedCell.Sprite = cell.Sprite;
-			cursedCell.TextSprite = cell.TextSprite;
-			cursedCell.X = cell.X;
-			cursedCell.Y = cell.Y;
-			cursedCell.Z = cell.Z + 1;
-			cursedCell.Rotation1000 = cell.Rotation1000;
-			cursedCell.Width = cell.Width * scaleX / 1000 * scaleAmount / 1000;
-			cursedCell.Height = cell.Height * scaleY / 1000 * scaleAmount / 1000;
-			cursedCell.PivotX = cell.PivotX;
-			cursedCell.PivotY = cell.PivotY;
-			cursedCell.Shift = cell.Shift;
-
-			cursedCell.Color = color;
-			cursedCell.X += offsetX * shiftAmount / 1000;
-			cursedCell.Y += offsetY * shiftAmount / 1000;
-
-		}
-	}
-
-
-	public static void DrawAfterimageEffect (Cell source, int speedX, int speedY, Color32 tintStart, Color32 tintEnd, int rotateSpeed = 0, int count = 3, int frameStep = 2, int scaleStart = 1000, int scaleEnd = 1000) {
-		for (int i = 1; i <= count; i++) {
-			int index = i * frameStep;
-			float lerp01 = (i - 1f) / (count - 1);
-			var cell = Renderer.Draw(Const.PIXEL, default);
-			cell.CopyFrom(source);
-			cell.X -= index * speedX;
-			cell.Y -= index * speedY;
-			cell.Z -= index;
-			cell.Rotation -= index * rotateSpeed;
-			cell.Color *= Color32.Lerp(tintStart, tintEnd, lerp01);
-			cell.ScaleFrom(
-				Util.LerpUnclamped(scaleStart, scaleEnd, lerp01).RoundToInt(),
-				cell.X, cell.Y
-			);
-		}
-	}
-
-
-	public static void DrawSegmentHealthBar (int x, int y, int heartLeftCode, int heartRightCode, int emptyHeartLeftCode, int emptyHeartRightCode, int dropParticleID, int hp, int maxHP, int prevHP = int.MinValue) {
-
-		const int SIZE = Const.HALF;
-		const int COLUMN = 4;
-		const int MAX = 8;
-
-		int maxHp = Util.Min(maxHP, MAX);
-		int left = x - SIZE * COLUMN / 4;
-
-		// Draw Hearts
-		var rect = new IRect(0, 0, SIZE / 2, SIZE);
-		bool isLeft = true;
-		for (int i = 0; i < maxHp; i++) {
-			rect.x = left + (i % COLUMN) * SIZE / 2;
-			rect.y = y - (i / COLUMN + 1) * SIZE;
-			if (i < hp) {
-				// Heart
-				Renderer.Draw(isLeft ? heartLeftCode : heartRightCode, rect, 0);
-			} else {
-				// Empty Heart
-				Renderer.Draw(isLeft ? emptyHeartLeftCode : emptyHeartRightCode, rect, 0);
-				// Spawn Drop Particle
-				if (i < prevHP) {
-					Entity heart;
-					if (isLeft) {
-						heart = Stage.SpawnEntity(dropParticleID, rect.x, rect.y);
-					} else {
-						heart = Stage.SpawnEntity(dropParticleID, rect.x, rect.y);
-					}
-					if (heart != null) {
-						heart.Width = rect.width + 8;
-						heart.Height = rect.height + 16;
-					}
-				}
-			}
-			isLeft = !isLeft;
-		}
-	}
-
-
+	/// <summary>
+	/// Display target pose-styled character as UI (like the character preview in player menu)
+	/// </summary>
+	/// <param name="rect">Rect position to display the UI in global space</param>
+	/// <param name="renderer">Target character</param>
+	/// <param name="animationFrame">Current frame for animation</param>
+	/// <returns>True if the character is rendered</returns>
 	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacterRenderer renderer, int animationFrame) => DrawPoseCharacterAsUI(rect, renderer, animationFrame, out _, out _);
+	/// <inheritdoc cref="DrawPoseCharacterAsUI(IRect, PoseCharacterRenderer, int)"/>
 	public static bool DrawPoseCharacterAsUI (IRect rect, PoseCharacterRenderer renderer, int animationFrame, out IRect globalRect, out IRect uiRect) {
 
 		globalRect = default;
@@ -355,7 +228,7 @@ public static partial class FrameworkUtil {
 			cells, cellIndexStart, Util.Min(count, cellIndexEnd),
 			IRect.MinMaxRect(originalMinX, originalMinY, originalMaxX, originalMaxY),
 			rect, out int minZ,
-			500, 0, round: false
+			500, 0
 		);
 		uiRect = rect.Fit(originalMaxX - originalMinX, originalMaxY - originalMinY, 500, 0);
 
@@ -375,10 +248,25 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, int fitPivotX = 500, int fitPivotY = 500, bool round = false, bool fit = true) => RemapCells(cells, cellIndexStart, cellIndexEnd, from, to, out _, fitPivotX, fitPivotY, round, fit);
-	public static void RemapCells (Span<Cell> cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, int fitPivotX = 500, int fitPivotY = 500, bool round = false, bool fit = true) => RemapCells(cells, cellIndexStart, cellIndexEnd, from, to, out _, fitPivotX, fitPivotY, round, fit);
-	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, out int minZ, int fitPivotX = 500, int fitPivotY = 500, bool round = false, bool fit = true) => RemapCells(cells.GetSpan(), cellIndexStart, cellIndexEnd, from, to, out minZ, fitPivotX, fitPivotY, round, fit);
-	public static void RemapCells (Span<Cell> cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, out int minZ, int fitPivotX = 500, int fitPivotY = 500, bool round = false, bool fit = true) {
+	/// <inheritdoc cref="RemapCells(Span{Cell}, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, int fitPivotX = 500, int fitPivotY = 500, bool fit = true) => RemapCells(cells.GetSpan(), cellIndexStart, cellIndexEnd, from, to, out _, fitPivotX, fitPivotY, fit);
+	/// <inheritdoc cref="RemapCells(Span{Cell}, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+	public static void RemapCells (Span<Cell> cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, int fitPivotX = 500, int fitPivotY = 500, bool fit = true) => RemapCells(cells, cellIndexStart, cellIndexEnd, from, to, out _, fitPivotX, fitPivotY, fit);
+	/// <inheritdoc cref="RemapCells(Span{Cell}, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, out int minZ, int fitPivotX = 500, int fitPivotY = 500, bool fit = true) => RemapCells(cells.GetSpan(), cellIndexStart, cellIndexEnd, from, to, out minZ, fitPivotX, fitPivotY, fit);
+	/// <summary>
+	/// Remap the position and size of given rendering cells
+	/// </summary>
+	/// <param name="cells"></param>
+	/// <param name="cellIndexStart">Start index of remap logic</param>
+	/// <param name="cellIndexEnd">End index of remap logic (exclude)</param>
+	/// <param name="from">Remap from this range (global space)</param>
+	/// <param name="to">Remap to this range (global space)</param>
+	/// <param name="minZ">Minimal Z value for sort rendering cells</param>
+	/// <param name="fitPivotX"></param>
+	/// <param name="fitPivotY"></param>
+	/// <param name="fit">True if keep the aspect ratio by resize the cells</param>
+	public static void RemapCells (Span<Cell> cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, out int minZ, int fitPivotX = 500, int fitPivotY = 500, bool fit = true) {
 		int originalWidth = from.width;
 		int originalHeight = from.height;
 		var targetRect = fit ?
@@ -388,17 +276,10 @@ public static partial class FrameworkUtil {
 		for (int i = cellIndexStart; i < cellIndexEnd; i++) {
 			var cell = cells[i];
 			minZ = Util.Min(minZ, cell.Z);
-			if (round) {
-				cell.X = (targetRect.x + (cell.X - from.x) * targetRect.width / (float)originalWidth).FloorToInt();
-				cell.Y = (targetRect.y + (cell.Y - from.y) * targetRect.height / (float)originalHeight).FloorToInt();
-				cell.Width = (cell.Width * targetRect.width / (float)originalWidth).CeilToInt();
-				cell.Height = (cell.Height * targetRect.height / (float)originalHeight).CeilToInt();
-			} else {
-				cell.X = targetRect.x + (cell.X - from.x) * targetRect.width / originalWidth;
-				cell.Y = targetRect.y + (cell.Y - from.y) * targetRect.height / originalHeight;
-				cell.Width = cell.Width * targetRect.width / originalWidth;
-				cell.Height = cell.Height * targetRect.height / originalHeight;
-			}
+			cell.X = (targetRect.x + (cell.X - from.x) * targetRect.width / (float)originalWidth).FloorToInt();
+			cell.Y = (targetRect.y + (cell.Y - from.y) * targetRect.height / (float)originalHeight).FloorToInt();
+			cell.Width = (cell.Width * targetRect.width / (float)originalWidth).CeilToInt();
+			cell.Height = (cell.Height * targetRect.height / (float)originalHeight).CeilToInt();
 			if (!cell.Shift.IsZero) {
 				cell.Shift = new Int4(
 					cell.Shift.left * targetRect.width / originalWidth,
@@ -411,47 +292,12 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static void DrawMagicEncircleAurora (int spriteID, int count, int centerX, int centerY, int localFrame, Color32 tint, int scale = 1000, int rotateSpeed = 16, int swingDuration = 20, int swingAmout = 240, int growDuration = 10, int z = int.MinValue) {
-		if (!Renderer.TryGetSprite(spriteID, out var sprite, false)) return;
-		// Swing
-		int pivotSwing = localFrame.PingPong(swingDuration) * swingAmout / swingDuration - swingAmout / 2;
-		// Grow
-		if (localFrame < growDuration) {
-			float lerp = 1f - (float)localFrame / growDuration;
-			scale = scale.LerpTo(0, lerp);
-			pivotSwing = pivotSwing.LerpTo(0, lerp);
-		}
-		// Draw
-		for (int i = 0; i < count; i++) {
-			Renderer.Draw(
-				sprite,
-				centerX, centerY,
-				sprite.PivotX - pivotSwing,
-				sprite.PivotY - pivotSwing,
-				localFrame * rotateSpeed + i * 360 / count,
-				sprite.GlobalWidth * scale / 1000, sprite.GlobalHeight * scale / 1000,
-				tint, z
-			);
-		}
-	}
-
-
-	public static void DrawExplosionRing (int spriteID, int centerX, int centerY, int radius, int localFrame, int duration, Color32 tint, int z = int.MaxValue - 1) {
-
-		if (!Renderer.TryGetSprite(spriteID, out var ring, true)) return;
-
-		float ease01Ex = Ease.OutCubic((float)localFrame / duration);
-		tint.a = (byte)Util.LerpUnclamped(tint.a, 0, ease01Ex);
-		int ringRadius = radius * 9 / 10;
-		Renderer.DrawSlice(
-			ring, centerX, centerY, 500, 500,
-			(int)(ease01Ex * 720), ringRadius,
-			ringRadius, tint, z - 1
-		);
-
-	}
-
-
+	/// <summary>
+	/// Draw usage bar UI
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="usage"></param>
+	/// <param name="maxUsage"></param>
 	public static void DrawItemUsageBar (IRect rect, int usage, int maxUsage) {
 		rect = rect.Shrink(rect.height / 6);
 		int border = rect.height / 10;
@@ -467,6 +313,16 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Display current physics colliders with game gizmos functions
+	/// </summary>
+	/// <param name="physicsMask">Which physics layers are included</param>
+	/// <param name="offset">Position offset for all gizmos</param>
+	/// <param name="brightness">0 means dark, 1 means normal color</param>
+	/// <param name="ignoreNonOnewayTrigger">True if triggers that is not oneway gate are excluded</param>
+	/// <param name="ignoreOnewayTrigger">True if oneway gates are excluded</param>
+	/// <param name="useTechEffect">True if the gizmos glitchs</param>
+	/// <param name="layerTints">Color for specified layers. Set to null to use default.</param>
 	public static void DrawAllCollidersAsGizmos (
 		int physicsMask = PhysicsMask.ALL,
 		Int2 offset = default,
@@ -545,38 +401,9 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static void DrawBullet (Bullet bullet, int artworkID, bool facingRight, int rotation, int scale, int z = int.MaxValue - 16) {
-		if (!Renderer.TryGetSprite(artworkID, out var sprite, false)) return;
-		int facingSign = facingRight ? 1 : -1;
-		int x = bullet.X + bullet.Width / 2;
-		int y = bullet.Y + bullet.Height / 2;
-		if (Renderer.TryGetAnimationGroup(artworkID, out var aniGroup)) {
-			Renderer.DrawAnimation(
-				aniGroup,
-				x, y,
-				sprite.PivotX,
-				sprite.PivotY,
-				rotation,
-				facingSign * sprite.GlobalWidth * scale / 1000,
-				sprite.GlobalHeight * scale / 1000,
-				Game.GlobalFrame - bullet.SpawnFrame,
-				z
-			);
-		} else {
-			Renderer.Draw(
-				artworkID,
-				x, y,
-				sprite.PivotX,
-				sprite.PivotY,
-				rotation,
-				facingSign * sprite.GlobalWidth * scale / 1000,
-				sprite.GlobalHeight * scale / 1000,
-				z
-			);
-		}
-	}
-
-
+	/// <summary>
+	/// Get type icon artwork sprite ID for given item
+	/// </summary>
 	public static int GetItemTypeIcon (int itemID) {
 		int typeIcon;
 		var item = ItemSystem.GetItem(itemID);
@@ -598,7 +425,29 @@ public static partial class FrameworkUtil {
 	}
 
 
-	public static void DrawClockHands (IRect rect, int handCode, int thickness, int thicknessSecond, Color32 tint) => DrawClockHands(rect.CenterX(), rect.CenterY(), rect.height, handCode, thickness, thicknessSecond, tint);
+	/// <summary>
+	/// Draw clock hands from given time
+	/// </summary>
+	/// <param name="rect">Rect position for clock face in global space</param>
+	/// <param name="handCode">Artwork sprite ID for the hand</param>
+	/// <param name="thickness"></param>
+	/// <param name="thicknessSecond"></param>
+	/// <param name="tint">Color tint</param>
+	/// <param name="z">Z value for sort rendering cells</param>
+	public static void DrawClockHands (IRect rect, int handCode, int thickness, int thicknessSecond, Color32 tint, int z = int.MinValue) => DrawClockHands(rect.CenterX(), rect.CenterY(), rect.height, handCode, thickness, thicknessSecond, tint, z);
+
+
+	/// <summary>
+	/// Draw clock hands from given time
+	/// </summary>
+	/// <param name="centerX">Center position in global space</param>
+	/// <param name="centerY">Center position in global space</param>
+	/// <param name="radius">Radius of the clock face</param>
+	/// <param name="handCode">Artwork sprite ID for the hand</param>
+	/// <param name="thickness"></param>
+	/// <param name="thicknessSecond"></param>
+	/// <param name="tint">Color tint</param>
+	/// <param name="z">Z value for sort rendering cells</param>
 	public static void DrawClockHands (int centerX, int centerY, int radius, int handCode, int thickness, int thicknessSecond, Color32 tint, int z = int.MinValue) {
 
 		Time01_to_TimeDigit(Sky.InGameDaytime01, out int hour, out int min, out int second);
@@ -624,6 +473,18 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Draw the pendulum for clocks
+	/// </summary>
+	/// <param name="artCodeLeg">Artwork sprite ID for the long handle part</param>
+	/// <param name="artCodeHead">Artwork sprite ID for the head on the edge</param>
+	/// <param name="x">Center position in global space</param>
+	/// <param name="y">Center position in global space</param>
+	/// <param name="length">Length of the pendulum in global space</param>
+	/// <param name="thickness">Thichness of the leg in global space</param>
+	/// <param name="headSize">Size of the head in global space</param>
+	/// <param name="maxRot">Rotation amount</param>
+	/// <param name="deltaX">Extra position shift amount</param>
 	public static void DrawClockPendulum (int artCodeLeg, int artCodeHead, int x, int y, int length, int thickness, int headSize, int maxRot, int deltaX = 0) {
 		float t11 = Util.Sin(Game.GlobalFrame * 6 * Util.Deg2Rad);
 		int rot = (t11 * maxRot).RoundToInt();
@@ -639,6 +500,15 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Draw spinning effect for teleporting with portal
+	/// </summary>
+	/// <param name="localFrame"></param>
+	/// <param name="pointX">Center position in global space</param>
+	/// <param name="pointY">Center position in global space</param>
+	/// <param name="duration">Total duration of the animation</param>
+	/// <param name="cellIndexStart">Start index of target rendering cells in current rendering layer</param>
+	/// <param name="reverseSpin"></param>
 	public static void SpiralSpinningCellEffect (int localFrame, int pointX, int pointY, int duration, int cellIndexStart, bool reverseSpin = false) {
 		if (!Renderer.GetCells(out var cells, out int count)) return;
 		for (int i = cellIndexStart; i < count; i++) {
@@ -658,6 +528,13 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Draw a highlight effect
+	/// </summary>
+	/// <param name="targetRect">Rect position in global space</param>
+	/// <param name="tint">Color tint</param>
+	/// <param name="lineCount"></param>
+	/// <param name="duration">Duration in frame for a single loop</param>
 	public static void DrawLoopingActivatedHighlight (IRect targetRect, Color32 tint, int lineCount = 4, int duration = 22) {
 		int localFrame = Game.GlobalFrame % duration;
 		var rect = targetRect;
@@ -673,6 +550,17 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Draw a direction mark with looping moving triangles
+	/// </summary>
+	/// <param name="range">Rect position in global space</param>
+	/// <param name="frame">Current animation frame</param>
+	/// <param name="tint">Color tint</param>
+	/// <param name="direction"></param>
+	/// <param name="count">Triangle count</param>
+	/// <param name="size">Triangle size</param>
+	/// <param name="z">Z value for sort rendering cells</param>
+	/// <param name="speed">Moving speed of the triangle</param>
 	public static void DrawLoopingTriangleMark (IRect range, int frame, Color32 tint, Direction4 direction, int count, int size, int z, int speed) {
 		using var _ = new ClampCellsScope(range);
 		int centerX = range.CenterX();
@@ -700,11 +588,18 @@ public static partial class FrameworkUtil {
 
 
 	// Animate Effect
+	/// <summary>
+	/// Draw effect for object on fire
+	/// </summary>
+	/// <param name="spriteID">Artwork sprite ID</param>
+	/// <param name="rect">Rect range in global space</param>
+	/// <param name="count">Rendering sprite count at same time</param>
+	/// <param name="loop">Duration for a single loop</param>
+	/// <param name="size">Size of a single sprite</param>
+	/// <param name="seed">Seed to generate random value</param>
+	/// <param name="z">Z value for sort rendering cells</param>
 	public static void DrawOnFireEffect (int spriteID, IRect rect, int count = 2, int loop = 40, int size = 200, int seed = 0, int z = int.MaxValue) {
 		if (!Renderer.TryGetSprite(spriteID, out var sprite, ignoreAnimation: false)) return;
-		DrawOnFireEffect(sprite, rect, count, loop, size, seed, z);
-	}
-	public static void DrawOnFireEffect (AngeSprite sprite, IRect rect, int count = 2, int loop = 40, int size = 200, int seed = 0, int z = int.MaxValue) {
 		int left = rect.x;
 		int down = rect.y;
 		int width = rect.width;
@@ -726,6 +621,16 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Draw effect for frozen zone
+	/// </summary>
+	/// <param name="rect">Position range in global space</param>
+	/// <param name="alpha"></param>
+	/// <param name="count">Particle count at same time</param>
+	/// <param name="offset">Position offset</param>
+	/// <param name="seed">Seed to generate random value</param>
+	/// <param name="size">Size of a single particle</param>
+	/// <param name="z">Z value to sort rendering cells</param>
 	public static void DrawFrozenEffect (IRect rect, byte alpha, int count = 32, Int2 offset = default, int seed = 0, int size = 142, int z = 0) {
 		if (!Renderer.TryGetSprite(Const.PIXEL, out var sprite, true)) return;
 		var tint = new Color32(200, 225, 255, alpha);
@@ -752,11 +657,15 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Draw effect for electric light coming out of an object
+	/// </summary>
+	/// <param name="spriteID">Artwork sprite ID for a single lighten</param>
+	/// <param name="rect">Position range in global space</param>
+	/// <param name="count">Count of sprite at same time</param>
+	/// <param name="size">Size of a single sprite</param>
 	public static void DrawLightenEffect (int spriteID, IRect rect, int count = 2, int size = 196) {
 		if (!Renderer.TryGetSprite(spriteID, out var sprite, ignoreAnimation: false)) return;
-		DrawLightenEffect(sprite, rect, count, size);
-	}
-	public static void DrawLightenEffect (AngeSprite sprite, IRect rect, int count = 2, int size = 196) {
 		for (int i = 0; i < count; i++) {
 			size = Util.QuickRandom(size / 2, size);
 			int x = rect.CenterX();
@@ -776,11 +685,18 @@ public static partial class FrameworkUtil {
 	}
 
 
+	/// <summary>
+	/// Draw effect for object being poisoned
+	/// </summary>
+	/// <param name="spriteID">Artwork sprite ID</param>
+	/// <param name="rect">Rect range in global space</param>
+	/// <param name="loop">Duration of a single animation loop</param>
+	/// <param name="count">Count of sprites at same time</param>
+	/// <param name="seed">Seed to generate random value</param>
+	/// <param name="size">Size of a single particle in global space</param>
+	/// <param name="z">Z value for sort rendering cells</param>
 	public static void DrawPoisonEffect (int spriteID, IRect rect, int loop = 120, int count = 4, int seed = 0, int size = 132, int z = int.MaxValue) {
 		if (!Renderer.TryGetSprite(spriteID, out var sprite, ignoreAnimation: false)) return;
-		DrawPoisonEffect(sprite, rect, loop, count, seed, size, z);
-	}
-	public static void DrawPoisonEffect (AngeSprite sprite, IRect rect, int loop = 120, int count = 4, int seed = 0, int size = 132, int z = int.MaxValue) {
 		int left = rect.x;
 		int down = rect.y;
 		int width = rect.width;

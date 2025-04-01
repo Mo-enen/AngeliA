@@ -96,7 +96,7 @@ public abstract class Launcher : Entity, IBlockEntity {
 			)
 		) {
 			var tool = FrameworkUtil.GetPlayerHoldingHandTool();
-			if (tool is BlockBuilder || tool is PickTool) {
+			if (tool is BlockBuilder || tool is BlockPicker) {
 				using var _ = new UILayerScope();
 				Renderer.Draw(
 					iconSp,

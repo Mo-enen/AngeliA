@@ -5,7 +5,7 @@ namespace AngeliA;
 
 
 /// <summary>
-/// Item that represent a map block inside inventory. Also handles the build block to map/stage logic
+/// Item that represent a map block inside inventory. Also handles the build block to map logic
 /// </summary>
 [EntityAttribute.ExcludeInMapEditor]
 [NoItemCombination]

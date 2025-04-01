@@ -5,6 +5,9 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
+/// <summary>
+/// Type of navigation motion for a single step
+/// </summary>
 public enum NavigationOperateMotion {
 	None = 0,
 	Move = 1,
@@ -12,6 +15,9 @@ public enum NavigationOperateMotion {
 }
 
 
+/// <summary>
+/// Core system for navigate a platformer entity to move naturally
+/// </summary>
 public static class Navigation {
 
 
@@ -20,27 +26,16 @@ public static class Navigation {
 	#region --- SUB ---
 
 
-	public interface IExpandRangeValidator {
-		public bool Verify (int cellX, int cellY);
-	}
-
-
-	private class NavigationStartInAirValidator : IExpandRangeValidator {
-		public static readonly NavigationStartInAirValidator Instance = new();
-		public int CellFromX;
-		public int CellFromY;
-		public int CellRangeX;
-		public int CellRangeY;
-		public bool Verify (int cellX, int cellY) =>
-			cellX.InRangeInclude(CellFromX - CellRangeX, CellFromX + CellRangeX) &&
-			cellY.InRangeInclude(CellFromY - CellRangeY, CellFromY + CellRangeY);
-	}
-
-
 	private enum BlockType { Air, Liquid, Solid, }
 
 
+	/// <summary>
+	/// Data for a single step of navigation operation
+	/// </summary>
 	public struct Operation {
+		/// <summary>
+		/// Type of the motion
+		/// </summary>
 		public NavigationOperateMotion Motion;
 		public int TargetGlobalX;
 		public int TargetGlobalY;
@@ -101,6 +96,9 @@ public static class Navigation {
 	// Api
 	internal static int CellWidth { get; private set; } = 1;
 	internal static int CellHeight { get; private set; } = 1;
+	/// <summary>
+	/// True if the navigation system is ready to use
+	/// </summary>
 	public static bool IsReady { get; private set; } = false;
 
 	// Data
@@ -127,8 +125,8 @@ public static class Navigation {
 
 
 	[OnGameInitialize]
-	public static void Initialize () {
-		
+	internal static void Initialize () {
+
 		int maxHeigh = Universe.BuiltInInfo.MaxViewHeight;
 		CellWidth = Universe.BuiltInInfo.ViewRatio * maxHeigh / 1000 / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
 		CellHeight = maxHeigh / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
@@ -153,36 +151,40 @@ public static class Navigation {
 
 
 	// Navigate
-	public static int NavigateTo (
-		in Operation[] Operations, int globalFrame, IRect viewRect,
+	/// <summary>
+	/// Perform a navigation analysis to find the natural way to walk to target position
+	/// </summary>
+	/// <param name="Operations">Array to store the result data</param>
+	/// <param name="operationCount">How many operations generated</param>
+	/// <param name="fromX">Navigate from this position in global space</param>
+	/// <param name="fromY">Navigate from this position in global space</param>
+	/// <param name="toX">Navigate to this position in global space</param>
+	/// <param name="toY">Navigate to this position in global space</param>
+	/// <param name="jumpIteration">Iteration limit for jumpping logic</param>
+	public static void NavigateTo (
+		Operation[] Operations, out int operationCount,
 		int fromX, int fromY, int toX, int toY,
 		int jumpIteration = 16
 	) {
 
-		if (Operations == null || Operations.Length == 0) return 0;
-		GlobalFrame = globalFrame;
+		operationCount = 0;
+		if (Operations == null || Operations.Length == 0) return;
+		GlobalFrame = Game.GlobalFrame;
 
-		RefreshFrameCache(viewRect);
+		RefreshFrameCache(Stage.ViewRect);
 
 		int fromCellX = (fromX.UDivide(Const.CEL) - CellUnitOffsetX).Clamp(0, CellWidth - 1);
 		int fromCellY = (fromY.UDivide(Const.CEL) - CellUnitOffsetY).Clamp(0, CellHeight - 1);
-		int operationCount = 0;
 		FinalDistance = int.MaxValue;
 		FinalCellX = -1;
 		FinalCellY = -1;
 
 		// Start in Air
 		if (!IsGroundCell(fromCellX, fromCellY, out _)) {
-			var val = NavigationStartInAirValidator.Instance;
-			val.CellFromX = fromCellX;
-			val.CellFromY = fromCellY;
-			val.CellRangeX = 3;
-			val.CellRangeY = 6;
 			if (ExpandTo(
-				globalFrame, viewRect, fromX, fromY, fromX, fromY,
+				fromX, fromY, fromX, fromY,
 				Operations.Length, out int _groundX, out int _groundY,
-				endInAir: false,
-				rangeValidator: val
+				endInAir: false
 			)) {
 				// Add Drop Operation
 				Operations[0] = new Operation() {
@@ -196,7 +198,7 @@ public static class Navigation {
 				fromY = _groundY;
 				fromCellX = (fromX.UDivide(Const.CEL) - CellUnitOffsetX).Clamp(0, CellWidth - 1);
 				fromCellY = (fromY.UDivide(Const.CEL) - CellUnitOffsetY).Clamp(0, CellHeight - 1);
-			} else return 0;
+			} else return;
 		}
 
 		// Nav Expand
@@ -224,7 +226,10 @@ public static class Navigation {
 		ExpandQueue.Clear();
 		ExpandQueueJump.Clear();
 
-		if (fromCellX == FinalCellX && fromCellY == FinalCellY) return 0;
+		if (fromCellX == FinalCellX && fromCellY == FinalCellY) {
+			operationCount = 0;
+			return;
+		}
 
 		// Backward Trace
 		bool traceSuccess = false;
@@ -317,20 +322,31 @@ public static class Navigation {
 
 		}
 
-		return operationCount;
 	}
 
 
 
 	// Expand
-	public static bool ExpandTo (
-		int globalFrame, IRect viewRect, int fromX, int fromY, int toX, int toY, int maxIteration,
-		out int resultX, out int resultY,
-		bool endInAir = false, IExpandRangeValidator rangeValidator = null
+	/// <summary>
+	/// Search for a valid place to stay with
+	/// </summary>
+	/// <param name="fromX">Search from this position in global space</param>
+	/// <param name="fromY">Search from this position in global space</param>
+	/// <param name="toX">Search to this position in global space</param>
+	/// <param name="toY">Search to this position in global space</param>
+	/// <param name="maxIteration">Limitation for searching iteration (Set to 16 if you have no idea how many it should be)</param>
+	/// <param name="resultX">Result position to stay with in global space</param>
+	/// <param name="resultY">Result position to stay with in global space</param>
+	/// <param name="endInAir">True if the target is able to stay in air</param>
+	/// <returns>True if the searching performs successfuly</returns>
+	public static bool ExpandTo (int fromX, int fromY, int toX, int toY, int maxIteration, out int resultX, out int resultY, bool endInAir = false) => ExpandToInternal(fromX, fromY, toX, toY, maxIteration, out resultX, out resultY, endInAir, false);
+	private static bool ExpandToInternal (
+		int fromX, int fromY, int toX, int toY, int maxIteration,
+		out int resultX, out int resultY, bool endInAir, bool useInAirValidator
 	) {
-		
-		GlobalFrame = globalFrame;
-		RefreshFrameCache(viewRect);
+
+		GlobalFrame = Game.GlobalFrame;
+		RefreshFrameCache(Stage.ViewRect);
 		OperationStamp++;
 		resultX = fromX;
 		resultY = fromY;
@@ -390,7 +406,7 @@ public static class Navigation {
 				if (
 					!_cell.OperationValid &&
 					!GetBlockCell(pos.x - 1, pos.y).IsBlockedRight &&
-					(rangeValidator == null || rangeValidator.Verify(pos.x - 1, pos.y))
+					(!useInAirValidator || Verify(pos.x - 1, pos.y))
 				) {
 					ExpandQueue.Enqueue(new Int3(pos.x - 1, pos.y, pos.z + 1));
 					_cell.OperationValid = true;
@@ -402,7 +418,7 @@ public static class Navigation {
 				if (
 					!_cell.OperationValid &&
 					!GetBlockCell(pos.x + 1, pos.y).IsBlockedLeft &&
-					(rangeValidator == null || rangeValidator.Verify(pos.x + 1, pos.y))
+					(!useInAirValidator || Verify(pos.x + 1, pos.y))
 				) {
 					ExpandQueue.Enqueue(new Int3(pos.x + 1, pos.y, pos.z + 1));
 					_cell.OperationValid = true;
@@ -414,7 +430,7 @@ public static class Navigation {
 				if (
 					!_cell.OperationValid &&
 					!GetBlockCell(pos.x, pos.y - 1).IsBlockedUp &&
-					(rangeValidator == null || rangeValidator.Verify(pos.x, pos.y - 1))
+					(!useInAirValidator || Verify(pos.x, pos.y - 1))
 				) {
 					ExpandQueue.Enqueue(new Int3(pos.x, pos.y - 1, pos.z + 1));
 					_cell.OperationValid = true;
@@ -426,12 +442,15 @@ public static class Navigation {
 				if (
 					!_cell.OperationValid &&
 					!GetBlockCell(pos.x, pos.y + 1).IsBlockedDown &&
-					(rangeValidator == null || rangeValidator.Verify(pos.x, pos.y + 1))
+					(!useInAirValidator || Verify(pos.x, pos.y + 1))
 				) {
 					ExpandQueue.Enqueue(new Int3(pos.x, pos.y + 1, pos.z + 1));
 					_cell.OperationValid = true;
 				}
 			}
+			bool Verify (int cellX, int cellY) =>
+				cellX.InRangeInclude(fromCellX - 3, fromCellX + 3) &&
+				cellY.InRangeInclude(fromCellY - 6, fromCellY + 6);
 		}
 		return minSquareDis != int.MaxValue;
 	}
@@ -439,9 +458,15 @@ public static class Navigation {
 
 
 	// Ground
-	public static bool IsGround (int globalFrame, IRect viewRect, int globalX, int globalY, out int groundY) {
-		GlobalFrame = globalFrame;
-		RefreshFrameCache(viewRect);
+	/// <summary>
+	/// True if the given location is ground tile for navigation
+	/// </summary>
+	/// <param name="globalX">Target position in global space</param>
+	/// <param name="globalY">Target position in global space</param>
+	/// <param name="groundY">Position Y for top edge of the founded ground in global space</param>
+	public static bool IsGround (int globalX, int globalY, out int groundY) {
+		GlobalFrame = Game.GlobalFrame;
+		RefreshFrameCache(Stage.ViewRect);
 		groundY = globalY;
 		int cellX = globalX.UDivide(Const.CEL) - CellUnitOffsetX;
 		if (cellX.InRangeInclude(0, CellWidth - 1)) {

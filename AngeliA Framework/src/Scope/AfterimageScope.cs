@@ -105,7 +105,7 @@ public readonly struct AfterimageScope : System.IDisposable {
 			Renderer.SetLayer(Layer);
 			try {
 				for (int i = UsedCount; i < count; i++) {
-					FrameworkUtil.DrawAfterimageEffect(
+					DrawAfterimageEffect(
 						cells[i],
 						SpeedX, SpeedY,
 						TintStart, TintEnd,
@@ -117,4 +117,23 @@ public readonly struct AfterimageScope : System.IDisposable {
 			Renderer.SetLayer(oldLayer);
 		}
 	}
+
+	private static void DrawAfterimageEffect (Cell source, int speedX, int speedY, Color32 tintStart, Color32 tintEnd, int rotateSpeed = 0, int count = 3, int frameStep = 2, int scaleStart = 1000, int scaleEnd = 1000) {
+		for (int i = 1; i <= count; i++) {
+			int index = i * frameStep;
+			float lerp01 = (i - 1f) / (count - 1);
+			var cell = Renderer.Draw(Const.PIXEL, default);
+			cell.CopyFrom(source);
+			cell.X -= index * speedX;
+			cell.Y -= index * speedY;
+			cell.Z -= index;
+			cell.Rotation -= index * rotateSpeed;
+			cell.Color *= Color32.Lerp(tintStart, tintEnd, lerp01);
+			cell.ScaleFrom(
+				Util.LerpUnclamped(scaleStart, scaleEnd, lerp01).RoundToInt(),
+				cell.X, cell.Y
+			);
+		}
+	}
+
 }

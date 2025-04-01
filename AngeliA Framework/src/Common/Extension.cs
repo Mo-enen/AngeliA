@@ -8,6 +8,9 @@ using System.Runtime.CompilerServices;
 
 namespace AngeliA;
 
+/// <summary>
+/// Extension method for AngeliA projects
+/// </summary>
 public static class Extension {
 
 
@@ -100,26 +103,6 @@ public static class Extension {
 
 	public static string ToStringWithDoubleQuotes (this string str) => $"\"{str}\"";
 	public static string ToStringWithDoubleQuotes (this StringBuilder builder) => $"\"{builder}\"";
-
-	public static void AddDistinct<T> (this IList<T> list, T item) {
-		if (!list.Contains(item)) list.Add(item);
-	}
-
-	public static void ForEach<T> (this object[] arr, System.Action<T> action) {
-		foreach (var a in arr) {
-			if (a is T t) action(t);
-		}
-	}
-
-	public static void ForEach<T> (this object[] arr, System.Action<T, int> action) {
-		int index = 0;
-		foreach (var a in arr) {
-			if (a is T t) {
-				action(t, index);
-				index++;
-			}
-		}
-	}
 
 	public static void AppendWithDoubleQuotes (this StringBuilder builder, string content) {
 		builder.Append('"');

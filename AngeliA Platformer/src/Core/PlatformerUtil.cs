@@ -5,6 +5,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Utility class for platformer package
+/// </summary>
 public static class PlatformerUtil {
 
 
@@ -38,6 +41,16 @@ public static class PlatformerUtil {
 	}
 
 
+	/// <summary>
+	/// Find final position to move to for wandering around.
+	/// </summary>
+	/// <param name="aimPosition">Target position anchor</param>
+	/// <param name="target">Entity that moves around</param>
+	/// <param name="grounded">True if the final position is on ground</param>
+	/// <param name="frequency">Checking frequency in frame</param>
+	/// <param name="maxDistance">Limitation for being away from the aimPosition</param>
+	/// <param name="randomShift">Position shift on X in global space</param>
+	/// <returns>Final position in global space</returns>
 	public static Int2 NavigationFreeWandering (Int2 aimPosition, Entity target, out bool grounded, int frequency, int maxDistance, int randomShift = 0) {
 
 		int insIndex = target.InstanceOrder;
@@ -48,7 +61,6 @@ public static class PlatformerUtil {
 		// Find Available Ground
 		int offsetX = freeShiftX + Const.CEL * ((insIndex % 12) / 2 + 2) * (insIndex % 2 == 0 ? -1 : 1);
 		if (Navigation.ExpandTo(
-			Game.GlobalFrame, Stage.ViewRect,
 			aimPosition.x, aimPosition.y,
 			aimPosition.x + offsetX, aimPosition.y + Const.HALF,
 			maxIteration: 12,
