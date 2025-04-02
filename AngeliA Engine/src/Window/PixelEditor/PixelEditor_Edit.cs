@@ -409,7 +409,7 @@ internal partial class PixelEditor {
 				if (pixDelta == default) {
 					// Double Click Sprite to Rename
 					if (
-						Game.GlobalFrame < Input.LastMouseLeftButtonDownFrame.prev + 30 &&
+						Input.IsMouseLeftButtonDoubleClick() &&
 						LastClickedSpriteIndex == HoveringSpriteStageIndex
 					) {
 						GUI.StartTyping(BASIC_INPUT_ID + (int)InputName.Name);

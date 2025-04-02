@@ -4,6 +4,9 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Core system to handle localization logic
+/// </summary>
 public static class Language {
 
 
@@ -13,8 +16,17 @@ public static class Language {
 
 
 	// Api
+	/// <summary>
+	/// Total count of languages loaded inside the system
+	/// </summary>
 	public static int LanguageCount => AllLanguages.Length;
+	/// <summary>
+	/// Current selecting language ISO
+	/// </summary>
 	public static string CurrentLanguage => _LoadedLanguage.Value;
+	/// <summary>
+	/// True if the system is ready to use
+	/// </summary>
 	public static bool PoolReady { get; private set; } = false;
 
 	// Data
@@ -73,12 +85,25 @@ public static class Language {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Get display content from given ID
+	/// </summary>
+	/// <param name="id"></param>
+	/// <param name="failback">Default value if content not found in system pool</param>
 	public static string Get (int id, string failback = "") => Pool.TryGetValue(id, out string value) && !string.IsNullOrEmpty(value) ? value : failback;
 
 
+	/// <summary>
+	/// Get ISO of the language from system list at given index
+	/// </summary>
 	public static string GetLanguageAt (int index) => AllLanguages[index];
 
 
+	/// <summary>
+	/// Set current selecting language
+	/// </summary>
+	/// <param name="language">ISO of target language</param>
+	/// <returns>True if successfuly setted</returns>
 	public static bool SetLanguage (string language) {
 		Pool.Clear();
 		foreach (var (key, value) in LanguageUtil.LoadAllPairsFromFolder(Universe.BuiltIn.LanguageRoot, language)) {

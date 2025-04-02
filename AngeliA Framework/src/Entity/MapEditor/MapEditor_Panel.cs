@@ -161,13 +161,13 @@ public partial class MapEditor {
 		// Load New
 		PaletteGroupCache.Clear();
 
-		int spriteCount = Renderer.SpriteCount;
-		int groupCount = Renderer.GroupCount;
+		int spriteCount = Renderer.MainSheet.Sprites.Count;
+		int groupCount = Renderer.MainSheet.Groups.Count;
 
 		// For all Sprite Groups
 		for (int index = 0; index < groupCount; index++) {
 
-			var group = Renderer.GetGroupAt(index);
+			var group = GetGroupAt(index);
 			if (group.Count == 0) continue;
 
 			var firstSprite = group.Sprites[0];
@@ -198,7 +198,7 @@ public partial class MapEditor {
 
 		// For all Sprites
 		for (int index = 0; index < spriteCount; index++) {
-			var sp = Renderer.GetSpriteAt(index);
+			var sp = GetSpriteAt(index);
 			int id = sp.ID;
 
 			var atlasType = sp.Atlas.Type;
@@ -232,6 +232,9 @@ public partial class MapEditor {
 		}
 
 		PaletteGroupCache.Clear();
+
+		static AngeSprite GetSpriteAt (int index) => index >= 0 && index < Renderer.CurrentSheet.Sprites.Count ? Renderer.CurrentSheet.Sprites[index] : null;
+		static SpriteGroup GetGroupAt (int index) => index >= 0 && index < Renderer.CurrentSheet.Groups.Count ? Renderer.CurrentSheet.Groups[index] : null;
 
 	}
 

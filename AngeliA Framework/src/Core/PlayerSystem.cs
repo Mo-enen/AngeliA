@@ -4,6 +4,9 @@ using System.IO;
 
 namespace AngeliA;
 
+/// <summary>
+/// Core system for user character control logic
+/// </summary>
 public static class PlayerSystem {
 
 
@@ -18,9 +21,21 @@ public static class PlayerSystem {
 	private static readonly LanguageCode HINT_WAKE = ("CtrlHint.WakeUp", "Wake");
 
 	// Api
+	/// <summary>
+	/// True if the system is online
+	/// </summary>
 	public static bool Enable { get; private set; } = false;
+	/// <summary>
+	/// Instance of the selecting character as player (can be changed or set to null at any moment)
+	/// </summary>
 	public static Character Selecting { get; private set; } = null;
+	/// <summary>
+	/// Position in unit space for player respawn when game restart
+	/// </summary>
 	public static Int3? RespawnCpUnitPosition { get; set; } = null;
+	/// <summary>
+	/// Respawn position in unit space when player have no check point activated
+	/// </summary>
 	public static Int3 HomeUnitPosition {
 		get => new(HomeUnitPositionX.Value, HomeUnitPositionY.Value, HomeUnitPositionZ.Value);
 		set {
@@ -29,21 +44,47 @@ public static class PlayerSystem {
 			HomeUnitPositionZ.Value = value.z;
 		}
 	}
+	/// <summary>
+	/// True if user have access to the player menu UI
+	/// </summary>
 	public static bool AllowPlayerMenuUI => Selecting != null && Selecting.InventoryType != CharacterInventoryType.None && Game.GlobalFrame > IgnorePlayerMenuFrame;
+	/// <summary>
+	/// True if user have access to the quick player UI
+	/// </summary>
 	public static bool AllowQuickPlayerMenuUI => Selecting != null && Selecting.InventoryType != CharacterInventoryType.None && Game.GlobalFrame > IgnorePlayerQuickMenuFrame;
+	/// <summary>
+	/// True if the system is currently not react to user input
+	/// </summary>
 	public static bool IgnoringInput => Game.GlobalFrame <= IgnoreInputFrame;
+	/// <summary>
+	/// True if the system is currently not react to IActionTarget
+	/// </summary>
 	public static bool IgnoringAction => Game.GlobalFrame <= IgnoreActionFrame;
-	public static int IgnoreInputFrame { get; private set; } = -1;
+	/// <summary>
+	/// Target view position in global space
+	/// </summary>
 	public static int AimViewX { get; private set; } = 0;
+	/// <summary>
+	/// Target view position in global space
+	/// </summary>
 	public static int AimViewY { get; private set; } = 0;
+	/// <summary>
+	/// Current highlighting IActionTarget
+	/// </summary>
 	public static IActionTarget TargetActionEntity { get; private set; } = null;
+	/// <summary>
+	/// Total count of unlocked player characters
+	/// </summary>
 	public static int UnlockedPlayerCount => UnlockedPlayer.Count;
+	/// <summary>
+	/// Total count of playable characters
+	/// </summary>
 	public static int PlayableCharactersCount => AllPlayablesID.Count;
-	public static readonly FrameBasedBool DragPlayerInMiddleButtonToMove_DebugOnly = new(true);
 
 	// Data
 	private static readonly HashSet<int> UnlockedPlayer = [];
 	private static readonly List<int> AllPlayablesID = [];
+	private static int IgnoreInputFrame = -1;
 	private static int AttackRequiringFrame = int.MinValue;
 	private static int LastLeftKeyDown = int.MinValue;
 	private static int LastRightKeyDown = int.MinValue;
@@ -56,7 +97,17 @@ public static class PlayerSystem {
 	private static bool UnlockPlayerDirty = false;
 
 	// Frame Based
+	/// <summary>
+	/// True if allow user use middle mouse button to move player for debug. This feature is not include after the game publish.
+	/// </summary>
+	public static readonly FrameBasedBool DragPlayerInMiddleButtonToMove_DebugOnly = new(true);
+	/// <summary>
+	/// View height in global space the player requiring to have 
+	/// </summary>
 	public static readonly FrameBasedInt TargetViewHeight = new(Const.CEL * 26);
+	/// <summary>
+	/// True if player system should not change the stage view rect
+	/// </summary>
 	public static readonly FrameBasedBool IgnorePlayerView = new(false);
 
 	// Saving
@@ -683,6 +734,11 @@ public static class PlayerSystem {
 
 
 	// Select Player
+	/// <summary>
+	/// Set given ID as selecting player character
+	/// </summary>
+	/// <param name="characterTypeID"></param>
+	/// <param name="failbackToDefault">True if use default character as selected when given one not found</param>
 	public static void SelectCharacterAsPlayer (int characterTypeID, bool failbackToDefault = true) {
 
 		if (!Enable) return;
@@ -702,6 +758,9 @@ public static class PlayerSystem {
 	}
 
 
+	/// <summary>
+	/// Set given character instance as selected player
+	/// </summary>
 	public static void SetCharacterAsPlayer (Character target) {
 
 		if (!Enable) return;
@@ -726,6 +785,9 @@ public static class PlayerSystem {
 
 
 	// Unlock Player
+	/// <summary>
+	/// Iterate through all unlocked playable characters
+	/// </summary>
 	public static IEnumerable<int> ForAllUnlockedPlayers () {
 		foreach (var id in UnlockedPlayer) {
 			yield return id;
@@ -733,6 +795,9 @@ public static class PlayerSystem {
 	}
 
 
+	/// <summary>
+	/// Iterate through all playable characters
+	/// </summary>
 	public static IEnumerable<int> ForAllPlayables () {
 		foreach (var id in AllPlayablesID) {
 			yield return id;
@@ -740,9 +805,15 @@ public static class PlayerSystem {
 	}
 
 
+	/// <summary>
+	/// True if given player character is unlocked
+	/// </summary>
 	public static bool IsPlayerUnlocked (int id) => UnlockedPlayer.Contains(id);
 
 
+	/// <summary>
+	/// Unlock given player character 
+	/// </summary>
 	public static void UnlockPlayer (int id) {
 		UnlockedPlayer.Add(id);
 		UnlockPlayerDirty = true;
@@ -750,6 +821,7 @@ public static class PlayerSystem {
 
 
 	// Misc
+	/// <param name="forceSelect">True if return the first founded IPlayable character ID</param>
 	public static int GetDefaultPlayerID (bool forceSelect = false) {
 		if (!Enable) return 0;
 		System.Type result = null;
@@ -772,9 +844,15 @@ public static class PlayerSystem {
 	}
 
 
+	/// <summary>
+	/// Make player always mark as grounded for view position for given frames long
+	/// </summary>
 	public static void ForceUpdateGroundedForView (int duration = 1) => ForceUpdateViewGroundingFrame = Game.GlobalFrame + duration;
 
 
+	/// <summary>
+	/// Get the position in unit space for player get respawned when game restart
+	/// </summary>
 	public static Int3 GetPlayerFinalRespawnUnitPosition () {
 
 		if (!Enable) return default;
@@ -791,22 +869,40 @@ public static class PlayerSystem {
 	}
 
 
+	/// <summary>
+	/// Get the Y position shift in global space from camera center to player center
+	/// </summary>
 	public static int GetCameraShiftOffset (int cameraHeight) => cameraHeight * 382 / 1000;
 
 
 	// Ignore
+	/// <summary>
+	/// Make user input blocked for given frames long. Set to -1 to make ignoring stop.
+	/// </summary>
 	public static void IgnoreInput (int duration = 1) => IgnoreInputFrame = Game.GlobalFrame + duration;
 
 
+	/// <summary>
+	/// Make user not react to IActionTarget for given frames long. Set to -1 to make ignoring stop.
+	/// </summary>
 	public static void IgnoreAction (int duration = 1) => IgnoreActionFrame = Game.GlobalFrame + duration;
 
 
+	/// <summary>
+	/// Make user have no access to player menu UI for given frames long. Set to -1 to make ignoring stop.
+	/// </summary>
 	public static void IgnorePlayerMenu (int duration = 1) => IgnorePlayerMenuFrame = Game.GlobalFrame + duration;
 
 
+	/// <summary>
+	/// Make user have no access to quick player menu UI for given frames long. Set to -1 to make ignoring stop.
+	/// </summary>
 	public static void IgnorePlayerQuickMenu (int duration = 1) => IgnorePlayerQuickMenuFrame = Game.GlobalFrame + duration;
 
 
+	/// <summary>
+	/// Make user can not attack for given frames long. Set to -1 to make ignoring stop.
+	/// </summary>
 	public static void IgnoreAttack (int duration = 1) => IgnoreAttackFrame = Game.GlobalFrame + duration;
 
 

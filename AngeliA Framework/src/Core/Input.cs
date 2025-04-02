@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace AngeliA;
 
+/// <summary>
+/// Frame based core system for user input from keyboard, mouse and gamepad
+/// </summary>
 public static class Input {
 
 
@@ -45,59 +48,175 @@ public static class Input {
 	];
 
 	// Api
+	/// <summary>
+	/// True if the user just used the gamepad
+	/// </summary>
 	public static bool UsingGamepad { get; private set; } = false;
+	/// <summary>
+	/// True if the user just used the list joystick
+	/// </summary>
 	public static bool UsingLeftStick { get; private set; } = false;
+	/// <summary>
+	/// Horizontal direction at current frame from gamekey, d-pad and joystick
+	/// </summary>
 	public static Direction3 DirectionX => IgnoringKeyInput ? Direction3.None : _DirectionX;
+	/// <summary>
+	/// Vertical direction at current frame from gamekey, d-pad and joystick
+	/// </summary>
 	public static Direction3 DirectionY => IgnoringKeyInput ? Direction3.None : _DirectionY;
+	/// <summary>
+	/// Direction at current frame from gamekey, d-pad and joystick
+	/// </summary>
 	public static Int2 Direction => IgnoringKeyInput ? default : _Direction;
+	/// <summary>
+	/// True if gamepad is allow to use from game setting
+	/// </summary>
 	public static bool AllowGamepad {
 		get => s_AllowGamepad.Value;
 		set => s_AllowGamepad.Value = value;
 	}
+	/// <summary>
+	/// True if ctrl key is holding at current frame
+	/// </summary>
 	public static bool HoldingCtrl => KeyboardHolding(KeyboardKey.LeftCtrl) || KeyboardHolding(KeyboardKey.RightCtrl) || Game.IsGamepadKeyHolding(GamepadKey.LeftTrigger);
+	/// <summary>
+	/// True if shift key is holding at current frame
+	/// </summary>
 	public static bool HoldingShift => KeyboardHolding(KeyboardKey.LeftShift) || KeyboardHolding(KeyboardKey.RightShift) || Game.IsGamepadKeyHolding(GamepadKey.LeftShoulder);
+	/// <summary>
+	/// True if alt key is holding at current frame
+	/// </summary>
 	public static bool HoldingAlt => KeyboardHolding(KeyboardKey.LeftAlt) || KeyboardHolding(KeyboardKey.RightAlt) || Game.IsGamepadKeyHolding(GamepadKey.RightTrigger);
 
 	// Api - Anykey
+	/// <summary>
+	/// True if any keyboard/gamepad/mouse key start to be holding at current frame
+	/// </summary>
 	public static bool AnyKeyDown { get; private set; } = false;
+	/// <summary>
+	/// True if any keyboard/gamepad/mouse key is holding at current frame
+	/// </summary>
 	public static bool AnyKeyHolding { get; private set; } = false;
+	/// <summary>
+	/// True if any gamepad button start to be holding at current frame
+	/// </summary>
 	public static bool AnyGamepadButtonDown { get; private set; } = false;
+	/// <summary>
+	/// True if any gamepad button is holding at current frame
+	/// </summary>
 	public static bool AnyGamepadButtonHolding { get; private set; } = false;
+	/// <summary>
+	/// True if any game-key key start to be holding at current frame
+	/// </summary>
 	public static bool AnyGamekeyDown { get; private set; } = false;
+	/// <summary>
+	/// True if any game-key is holding at current frame
+	/// </summary>
 	public static bool AnyGamekeyHolding { get; private set; } = false;
+	/// <summary>
+	/// True if any keyboard key start to be holding at current frame
+	/// </summary>
 	public static bool AnyKeyboardKeyDown { get; private set; } = false;
+	/// <summary>
+	/// True if any keyboard key is holding at current frame
+	/// </summary>
 	public static bool AnyKeyboardKeyHolding { get; private set; } = false;
+	/// <summary>
+	/// True if any mouse button start to be holding at current frame
+	/// </summary>
 	public static bool AnyMouseButtonDown { get; private set; } = false;
+	/// <summary>
+	/// True if any mouse button is holding at current frame
+	/// </summary>
 	public static bool AnyMouseButtonHolding { get; private set; } = false;
 
 	// API - Mouse
+	/// <summary>
+	/// Position of the mouse at current frame in screen space
+	/// </summary>
 	public static Int2 MouseScreenPosition { get; private set; } = default;
+	/// <summary>
+	/// Position changed of the mouse at current frame in screen space
+	/// </summary>
 	public static Int2 MouseScreenPositionDelta { get; private set; } = default;
+	/// <summary>
+	/// Position changed of the mouse at current frame in global space
+	/// </summary>
 	public static Int2 MouseGlobalPositionDelta { get; private set; } = default;
+	/// <summary>
+	/// Position changed of the mouse at current frame in global space which is not effect by Input.SetMousePositionShift
+	/// </summary>
 	public static Int2 UnshiftedMouseGlobalPosition => _MouseGlobalPosition;
+	/// <summary>
+	/// Position of the mouse at current frame in global space
+	/// </summary>
 	public static Int2 MouseGlobalPosition => _MouseGlobalPosition + MousePositionShift;
+	/// <summary>
+	/// Position of the mouse in global space when last time mouse left button press down 
+	/// </summary>
 	public static Int2 MouseLeftDownGlobalPosition => _MouseLeftDownGlobalPosition + MousePositionShift;
+	/// <summary>
+	/// Position of the mouse in global space when last time mouse right button press down 
+	/// </summary>
 	public static Int2 MouseRightDownGlobalPosition => _MouseRightDownGlobalPosition + MousePositionShift;
+	/// <summary>
+	/// Position of the mouse in global space when last time mouse middle button press down 
+	/// </summary>
 	public static Int2 MouseMidDownGlobalPosition => _MouseMidDownGlobalPosition + MousePositionShift;
+	/// <summary>
+	/// True if mouse moved at current frame
+	/// </summary>
 	public static bool MouseMove { get; private set; } = false;
+	/// <summary>
+	/// True if mouse left button is holding at current frame
+	/// </summary>
 	public static bool MouseLeftButtonHolding => !IgnoringMouseInput && !MouseLeftState.Ignored && MouseLeftState.Holding;
+	/// <summary>
+	/// True if mouse right button is holding at current frame
+	/// </summary>
 	public static bool MouseRightButtonHolding => !IgnoringMouseInput && !MouseRightState.Ignored && MouseRightState.Holding;
+	/// <summary>
+	/// True if mouse middle button is holding at current frame
+	/// </summary>
 	public static bool MouseMidButtonHolding => !IgnoringMouseInput && !MouseMidState.Ignored && MouseMidState.Holding;
+	/// <summary>
+	/// True if mouse left button start to be holding at current frame
+	/// </summary>
 	public static bool MouseLeftButtonDown => !IgnoringMouseInput && !MouseLeftState.Ignored && MouseLeftState.Down;
+	/// <summary>
+	/// True if mouse right button start to be holding at current frame
+	/// </summary>
 	public static bool MouseRightButtonDown => !IgnoringMouseInput && !MouseRightState.Ignored && MouseRightState.Down;
+	/// <summary>
+	/// True if mouse middle button start to be holding at current frame
+	/// </summary>
 	public static bool MouseMidButtonDown => !IgnoringMouseInput && !MouseMidState.Ignored && MouseMidState.Down;
-	public static int IgnoreMouseToActionFrame { get; private set; } = int.MinValue;
-	public static int IgnoreMouseToJumpFrame { get; private set; } = int.MinValue;
-	public static int IgnoreRightStickToMouseWheelFrame { get; private set; } = int.MinValue;
-	public static int MidMouseToActionFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// True if last user action is from mouse instead of keyboard
+	/// </summary>
 	public static bool LastActionFromMouse { get; private set; } = false;
+	/// <summary>
+	/// Mouse wheel scroll value at current frame. Return negative value when the page scrolls down (the content appears to move upward)
+	/// </summary>
 	public static int MouseWheelDelta => IgnoringMouseInput ? 0 : _MouseWheelDelta;
+	/// <summary>
+	/// True if the input system do not receive mouse input currently 
+	/// </summary>
 	public static bool IgnoringMouseInput => Game.GlobalFrame <= IgnoreMouseInputFrame;
+	/// <summary>
+	/// True if the input system do not receive keyboard/game-key input currently 
+	/// </summary>
 	public static bool IgnoringKeyInput => Game.GlobalFrame <= IgnoreKeyInputFrame;
-	public static Int2 MousePositionShift { get; private set; } = default;
-	public static (int prev, int current) LastMouseLeftButtonDownFrame { get; private set; } = (-120, -120);
-	public static (int prev, int current) LastMouseRightButtonDownFrame { get; private set; } = (-120, -120);
-	public static (int prev, int current) LastMouseMidButtonDownFrame { get; private set; } = (-120, -120);
+
+	// Internal Cache
+	internal static Int2 MousePositionShift { get; private set; } = default;
+	internal static int IgnoreMouseToActionFrame { get; private set; } = int.MinValue;
+	internal static int IgnoreMouseToJumpFrame { get; private set; } = int.MinValue;
+	internal static int IgnoreRightStickToMouseWheelFrame { get; private set; } = int.MinValue;
+	internal static int MidMouseToActionFrame { get; private set; } = int.MinValue;
+	internal static (int prev, int current) LastMouseLeftButtonDownFrame { get; private set; } = (-120, -120);
+	internal static (int prev, int current) LastMouseRightButtonDownFrame { get; private set; } = (-120, -120);
+	internal static (int prev, int current) LastMouseMidButtonDownFrame { get; private set; } = (-120, -120);
 
 	// Data
 	private static readonly Dictionary<Gamekey, State> GamekeyStateMap = new() {
@@ -193,7 +312,7 @@ public static class Input {
 
 
 	[OnGameInitialize(-128)]
-	public static void OnGameInitialize () {
+	internal static void OnGameInitialize () {
 
 		// Add Keys for Keyboard
 		var values = System.Enum.GetValues(typeof(KeyboardKey));
@@ -246,7 +365,7 @@ public static class Input {
 
 
 	[OnGameInitializeLater]
-	public static TaskResult OnGameInitializeLater () {
+	internal static TaskResult OnGameInitializeLater () {
 
 		if (!SavingSystem.PoolReady) return TaskResult.Continue;
 
@@ -291,14 +410,6 @@ public static class Input {
 
 		// Final
 		GlobalFrame++;
-
-	}
-
-
-	[OnGameUpdateLater]
-	internal static void UpdateIgnore () {
-
-
 
 	}
 
@@ -658,11 +769,22 @@ public static class Input {
 
 
 	// Any Key
+	/// <summary>
+	/// Get the gamepad button that currently holding
+	/// </summary>
+	/// <param name="button">Result holding button</param>
+	/// <returns>True if holding button founded</returns>
 	public static bool TryGetHoldingGamepadButton (out GamepadKey button) {
-		button = GamepadKey.East;
+		button = default;
 		if (IgnoringKeyInput) return false;
 		return Game.IsGamepadAvailable && SearchAnyGamepadButtonHolding(out button);
 	}
+
+	/// <summary>
+	/// Get the keyboard key that currently holding
+	/// </summary>
+	/// <param name="key">Result holding key</param>
+	/// <returns>True if holding key founded</returns>
 	public static bool TryGetHoldingKeyboardKey (out KeyboardKey key) {
 		key = KeyboardKey.None;
 		if (IgnoringKeyInput) return false;
@@ -671,7 +793,13 @@ public static class Input {
 
 
 	// Game Key
+	/// <summary>
+	/// True if given game-key start to be holding at current frame
+	/// </summary>
 	public static bool GameKeyDown (Gamekey key) => !IgnoringKeyInput && GamekeyStateMap[key].Down && !GamekeyStateMap[key].Ignored;
+	/// <summary>
+	/// True if given game-key pressed down repeatedly by holding down
+	/// </summary>
 	public static bool GameKeyDownGUI (Gamekey key) {
 		if (IgnoringKeyInput) return false;
 		var state = GamekeyStateMap[key];
@@ -683,12 +811,26 @@ public static class Input {
 		}
 		return false;
 	}
+	/// <summary>
+	/// True if given game-key is currently holding
+	/// </summary>
 	public static bool GameKeyHolding (Gamekey key) => !IgnoringKeyInput && GamekeyStateMap[key].Holding && !GamekeyStateMap[key].Ignored;
+	/// <summary>
+	/// True if the given game-key just released at current frame
+	/// </summary>
+	/// <param name="key"></param>
+	/// <returns></returns>
 	public static bool GameKeyUp (Gamekey key) => !IgnoringKeyInput && GamekeyStateMap[key].Up && !GamekeyStateMap[key].Ignored;
 
 
 	// Keyboard Key
+	/// <summary>
+	/// True if given keyboard-key start to be holding at current frame
+	/// </summary>
 	public static bool KeyboardDown (KeyboardKey key) => !IgnoringKeyInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Down && !state.Ignored;
+	/// <summary>
+	/// True if given keyboard-key pressed down repeatedly by holding down
+	/// </summary>
 	public static bool KeyboardDownGUI (KeyboardKey key) {
 		if (IgnoringKeyInput) return false;
 		var state = KeyboardStateMap[key];
@@ -700,26 +842,68 @@ public static class Input {
 		}
 		return false;
 	}
+	/// <summary>
+	/// True if given keyboard-key is currently holding
+	/// </summary>
 	public static bool KeyboardHolding (KeyboardKey key) => !IgnoringKeyInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Holding && !state.Ignored;
+	/// <summary>
+	/// True if the given keyboard-key just released at current frame
+	/// </summary>
+	/// <param name="key"></param>
+	/// <returns></returns>
 	public static bool KeyboardUp (KeyboardKey key) => !IgnoringKeyInput && KeyboardStateMap.TryGetValue(key, out var state) && state.Up && !state.Ignored;
 
 
+	// Mouse
+	/// <summary>
+	/// True if mouse left button performed a double click at current frame
+	/// </summary>
+	/// <param name="clickDeltaFrame">Two clicks inside this time range count as a double click</param>
+	public static bool IsMouseLeftButtonDoubleClick (int clickDeltaFrame = 30) => Game.GlobalFrame < LastMouseLeftButtonDownFrame.current + clickDeltaFrame && Game.GlobalFrame < LastMouseLeftButtonDownFrame.prev + clickDeltaFrame;
+	/// <summary>
+	/// True if mouse right button performed a double click at current frame
+	/// </summary>
+	/// <param name="clickDeltaFrame">Two clicks inside this time range count as a double click</param>
+	public static bool IsMouseRightButtonDoubleClick (int clickDeltaFrame = 30) => Game.GlobalFrame < LastMouseRightButtonDownFrame.current + clickDeltaFrame && Game.GlobalFrame < LastMouseRightButtonDownFrame.prev + clickDeltaFrame;
+	/// <summary>
+	/// True if mouse middle button performed a double click at current frame
+	/// </summary>
+	/// <param name="clickDeltaFrame">Two clicks inside this time range count as a double click</param>
+	public static bool IsMouseMiddleButtonDoubleClick (int clickDeltaFrame = 30) => Game.GlobalFrame < LastMouseMidButtonDownFrame.current + clickDeltaFrame && Game.GlobalFrame < LastMouseMidButtonDownFrame.prev + clickDeltaFrame;
+
+
 	// Use
+	/// <summary>
+	/// True if the given mouse button is mark as used
+	/// </summary>
+	/// <param name="key">0 means left, 1 means right, 2 means middle</param>
 	public static bool MouseKeyUsed (int key) => key switch {
 		0 => MouseLeftState.Ignored,
 		1 => MouseRightState.Ignored,
 		2 => MouseMidState.Ignored,
 		_ => false,
 	};
+	/// <summary>
+	/// True if the given keyboard-key is mark as used
+	/// </summary>
 	public static bool KeyboardKeyUsed (KeyboardKey key) => KeyboardStateMap.TryGetValue(key, out var state) && state.Ignored;
 
 
+	/// <summary>
+	/// Mark given game-key as used so it will not be "down" or "holding" at current frame
+	/// </summary>
 	public static void UseGameKey (Gamekey key) => GamekeyStateMap[key].Ignored = true;
+	/// <summary>
+	/// Mark given keyboard-key as used so it will not be "down" or "holding" at current frame
+	/// </summary>
 	public static void UseKeyboardKey (KeyboardKey key) {
 		if (KeyboardStateMap.TryGetValue(key, out var state)) {
 			state.Ignored = true;
 		}
 	}
+	/// <summary>
+	/// Mark all current holding game-keys ans keyboard-keys as used so they will not be "down" or "holding" at current frame
+	/// </summary>
 	public static void UseAllHoldingKeys (bool ignoreMouse = false) {
 		foreach (var (_, state) in GamekeyStateMap) {
 			if (state.Holding) state.Ignored = true;
@@ -733,12 +917,18 @@ public static class Input {
 			if (MouseMidState.Holding) MouseMidState.Ignored = true;
 		}
 	}
+	/// <summary>
+	/// Mark all current holding mouse buttons as used so they will not be "down" or "holding" at current frame
+	/// </summary>
 	public static void UseAllMouseKey () {
 		MouseLeftState.Ignored = true;
 		MouseRightState.Ignored = true;
 		MouseMidState.Ignored = true;
 		_MouseWheelDelta = 0;
 	}
+	/// <summary>
+	/// Mark given mouse button as used so it will not be "down" or "holding" at current frame
+	/// </summary>
 	public static void UseMouseKey (int index) {
 		if (index == 0 && MouseLeftState.Holding) MouseLeftState.Ignored = true;
 		if (index == 1 && MouseRightState.Holding) MouseRightState.Ignored = true;
@@ -747,12 +937,21 @@ public static class Input {
 	}
 
 
+	/// <summary>
+	/// Remove the used mark for given keyboard-key
+	/// </summary>
 	public static void UnuseKeyboardKey (KeyboardKey key) {
 		if (KeyboardStateMap.TryGetValue(key, out var state)) {
 			state.Ignored = false;
 		}
 	}
+	/// <summary>
+	/// Remove the used mark for given game-key
+	/// </summary>
 	public static void UnuseGameKey (Gamekey key) => GamekeyStateMap[key].Ignored = false;
+	/// <summary>
+	/// Remove the used mark for given mouse button
+	/// </summary>
 	public static void UnuseMouseKey (int key) {
 		switch (key) {
 			case 0:
@@ -766,6 +965,9 @@ public static class Input {
 				break;
 		}
 	}
+	/// <summary>
+	/// Remove the used mark for all mouse button
+	/// </summary>
 	public static void UnuseAllMouseKey () {
 		MouseLeftState.Ignored = false;
 		MouseRightState.Ignored = false;
@@ -773,6 +975,9 @@ public static class Input {
 	}
 
 
+	/// <summary>
+	/// Ignore "mouse left to action and mouse right to jump" for given frames long
+	/// </summary>
 	public static void IgnoreMouseToActionJump (bool ignoreAction = true, bool ignoreJump = true, bool useMidButtonAsAction = false, int duration = 1) {
 		if (ignoreAction) IgnoreMouseToActionFrame = Game.PauselessFrame + duration;
 		if (ignoreJump) IgnoreMouseToJumpFrame = Game.PauselessFrame + duration;
@@ -780,22 +985,44 @@ public static class Input {
 	}
 
 
+	/// <summary>
+	/// Ignore "gamepad right stick to control mouse wheel" for given frames long
+	/// </summary>
+	/// <param name="duration"></param>
 	public static void IgnoreRightStickToMouseWheel (int duration = 1) => IgnoreRightStickToMouseWheelFrame = Game.PauselessFrame + duration;
 
 
 	// Key Map
+	/// <summary>
+	/// Get which keyboard key is mapping into given game-key
+	/// </summary>
 	public static KeyboardKey GetKeyboardMap (Gamekey key) => (KeyboardKey)KeyMap[key].x;
+	/// <summary>
+	/// Get which keyboard key is default mapping key for given game-key
+	/// </summary>
 	public static KeyboardKey GetDefaultKeyboardMap (Gamekey key) => (KeyboardKey)KEYBOARD_DEFAULT[(int)key];
+	/// <summary>
+	/// Get which gamepad-button is mapping into given game-key
+	/// </summary>
 	public static GamepadKey GetGamepadMap (Gamekey key) => (GamepadKey)KeyMap[key].y;
+	/// <summary>
+	/// Get which gamepad-button is default mapping key for given game-key
+	/// </summary>
 	public static GamepadKey GetDefaultGamepadMap (Gamekey key) => (GamepadKey)GAMEPAD_DEFAULT[(int)key];
 
 
+	/// <summary>
+	/// Map given keyboard-key into given game-key and save it to disk
+	/// </summary>
 	public static void SetKeyboardMap (Gamekey gameKey, KeyboardKey keyboardKey) {
 		var oldValue = KeyMap[gameKey];
 		oldValue.x = (int)keyboardKey;
 		KeyMap[gameKey] = oldValue;
 		SaveInputToDisk();
 	}
+	/// <summary>
+	/// Map given gamepad-button into given game-key and save it to disk
+	/// </summary>
 	public static void SetGamepadMap (Gamekey gameKey, GamepadKey gamepadKey) {
 		var oldValue = KeyMap[gameKey];
 		oldValue.y = (int)gamepadKey;
@@ -805,6 +1032,10 @@ public static class Input {
 
 
 	// Mouse
+	/// <summary>
+	/// True if the given mouse button is holding at current frame
+	/// </summary>
+	/// <param name="button">0 means left, 1 means right, 2 means middle</param>
 	public static bool MouseButtonHolding (int button) => !IgnoringKeyInput && button switch {
 		0 => MouseLeftButtonHolding,
 		1 => MouseRightButtonHolding,
@@ -813,6 +1044,10 @@ public static class Input {
 	};
 
 
+	/// <summary>
+	/// Get index of the current holding mouse button. (order: left > right > middle)
+	/// </summary>
+	/// <returns>0 means left, 1 means right, 2 means middle, -1 means no button holding</returns>
 	public static int GetHoldingMouseButton () {
 		if (IgnoringKeyInput) return -1;
 		if (MouseLeftButtonHolding) return 0;
@@ -823,21 +1058,40 @@ public static class Input {
 
 
 	// Misc
+	/// <summary>
+	/// Make all user input ignored by the system for given frames long
+	/// </summary>
 	public static void IgnoreAllInput (int duration = 0) {
 		IgnoreMouseInput(duration);
 		IgnoreKeyInput(duration);
 	}
+
+	/// <summary>
+	/// Make all user mouse input ignored by the system for given frames long
+	/// </summary>
 	public static void IgnoreMouseInput (int duration = 0) {
 		IgnoreMouseInputFrame = Game.GlobalFrame + duration;
 	}
 
+	/// <summary>
+	/// Make user keyboard/game-key input ignored by the system for given frames long
+	/// </summary>
 	public static void IgnoreKeyInput (int duration = 0) => IgnoreKeyInputFrame = Game.GlobalFrame + duration;
 
 
+	/// <summary>
+	/// Do not ignore mouse input any more
+	/// </summary>
 	public static void CancelIgnoreMouseInput () => IgnoreMouseInputFrame = Game.GlobalFrame - 1;
+
+	/// <summary>
+	/// Do not ignore key input any more
+	/// </summary>
 	public static void CancelIgnoreKeyInput () => IgnoreKeyInputFrame = Game.GlobalFrame - 1;
 
-
+	/// <summary>
+	/// Shift mouse position for current frame. Only effect internal system not where the cursor appearingly is.
+	/// </summary>
 	public static void SetMousePositionShift (int x, int y) => MousePositionShift = new Int2(x, y);
 
 

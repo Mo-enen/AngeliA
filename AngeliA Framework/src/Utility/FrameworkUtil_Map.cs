@@ -1133,13 +1133,13 @@ public static partial class FrameworkUtil {
 		}
 
 		// For Entity
-		// Check Overlaping Level Block
+		// Check Overlapping Level Block
 		var rect = new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL).Shrink(64);
 		if (Physics.Overlap(
 			PhysicsMask.LEVEL, rect, null, OperationMode.ColliderOnly
 		)) return false;
 
-		// Check Overlaping Entity
+		// Check Overlapping Entity
 		var hits = Physics.OverlapAll(PhysicsMask.ENTITY, rect, out int count, null, OperationMode.ColliderAndTrigger);
 		for (int i = 0; i < count; i++) {
 			var hit = hits[i];

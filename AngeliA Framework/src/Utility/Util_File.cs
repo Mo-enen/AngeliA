@@ -557,6 +557,7 @@ public static partial class Util {
 		if (sourceDate == targetDate) return;
 		CopyFile(source, target, true);
 		SetFileModifyDate(target, sourceDate);
+		//Debug.Log("FileUpdate:", source, ">>", target);
 	}
 
 

@@ -1,7 +1,7 @@
 ﻿namespace AngeliA;
 
 /// <summary>
-/// Element block that set the color tint of the overlaping level block
+/// Element block that set the color tint of the overlapping level block
 /// </summary>
 [EntityAttribute.MapEditorGroup("System")]
 public abstract class BlockColor : IMapItem {

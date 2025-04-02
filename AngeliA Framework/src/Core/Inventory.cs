@@ -6,7 +6,9 @@ using System.Text.Json.Serialization;
 
 namespace AngeliA;
 
-
+/// <summary>
+/// Core system to handle storage of items
+/// </summary>
 public static class Inventory {
 
 
@@ -66,6 +68,9 @@ public static class Inventory {
 
 
 	// Api
+	/// <summary>
+	/// True if the system is read to use
+	/// </summary>
 	public static bool PoolReady { get; private set; } = false;
 
 	// Data
@@ -191,9 +196,21 @@ public static class Inventory {
 
 
 	// Inventory Data
+	/// <inheritdoc cref="InitializeInventoryData(int, string, int, bool)"/>
 	public static int InitializeInventoryData (string basicName, int capacity, bool hasEquipment = false) => InitializeInventoryData(basicName.AngeHash(), basicName, capacity, new Int3(int.MinValue, int.MinValue, int.MinValue), hasEquipment);
+	/// <inheritdoc cref="InitializeInventoryData(int, string, int, bool)"/>
 	public static int InitializeInventoryData (string basicName, int capacity, Int3 mapUnitPos, bool hasEquipment = false) => InitializeInventoryData(basicName.AngeHash(), basicName, capacity, mapUnitPos, hasEquipment);
+	/// <inheritdoc cref="InitializeInventoryData(int, string, int, bool)"/>
 	public static int InitializeInventoryData (int basicID, string basicName, int capacity, bool hasEquipment = false) => InitializeInventoryData(basicID, basicName, capacity, new Int3(int.MinValue, int.MinValue, int.MinValue), hasEquipment);
+	/// <summary>
+	/// Initialize an inventory data for the system
+	/// </summary>
+	/// <param name="basicID">ID of the holder</param>
+	/// <param name="basicName">Name of the holder</param>
+	/// <param name="capacity">Maximal item count the inventory can hold</param>
+	/// <param name="mapUnitPos">Original position in unit space for the map-type inventory. (int.MinValue, int.MinValue, int.MinValue) for other type inventory.</param>
+	/// <param name="hasEquipment">True if this inventory requires equipment part.</param>
+	/// <returns>Inventory ID</returns>
 	public static int InitializeInventoryData (int basicID, string basicName, int capacity, Int3 mapUnitPos, bool hasEquipment = false) {
 		int invID = GetInventoryIdFromBasicIdAndPos(basicID, basicName, mapUnitPos);
 		if (HasInventory(invID)) {
@@ -211,6 +228,12 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// Calculate inventory ID based of the given infomation
+	/// </summary>
+	/// <param name="basicID">ID of the holder</param>
+	/// <param name="baseName">Name of the holder</param>
+	/// <param name="mapPos">Original position in unit space for the map-type inventory. (int.MinValue, int.MinValue, int.MinValue) for other type inventory.</param>
 	public static int GetInventoryIdFromBasicIdAndPos (int basicID, string baseName, Int3 mapPos) {
 		var key = new Int4(mapPos.x, mapPos.y, mapPos.z, basicID);
 		if (!BasicIdToInvIdPool.TryGetValue(key, out int id)) {
@@ -222,6 +245,9 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// Calculate the original holder position from the given inventory file name
+	/// </summary>
 	public static Int3 GetInventoryMapPosFromName (string invNameWithoutExt, out string basicName) {
 		basicName = invNameWithoutExt;
 		var def = new Int3(int.MinValue, int.MinValue, int.MinValue);
@@ -243,6 +269,9 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// Set capacity of the inventory without changing the content. (items will be clip out if the capacity is not enough to hold)
+	/// </summary>
 	public static void ResizeInventory (int inventoryID, int newSize) {
 		if (!Pool.TryGetValue(inventoryID, out var data)) return;
 		var items = data.Items;
@@ -257,12 +286,21 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// True if the given ID refers to a valid inventory
+	/// </summary>
 	public static bool HasInventory (int inventoryID) => Pool.ContainsKey(inventoryID);
 
 
+	/// <summary>
+	/// Get the item count limit for target inventory
+	/// </summary>
 	public static int GetInventoryCapacity (int inventoryID) => Pool.TryGetValue(inventoryID, out var data) ? data.Items.Length : 0;
 
 
+	/// <summary>
+	/// Reset the map position for the inventory into a new value
+	/// </summary>
 	public static void RepositionInventory (int inventoryID, Int3 newMapUnitPosition) {
 
 		lock (Pool) {
@@ -291,6 +329,9 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// Unlock all items inside given inventory for player
+	/// </summary>
 	public static void UnlockAllItemsInside (int inventoryID) {
 		if (!Pool.TryGetValue(inventoryID, out var data)) return;
 		for (int i = 0; i < data.Items.Length; i++) {
@@ -322,7 +363,14 @@ public static class Inventory {
 
 
 	// Items
+	/// <inheritdoc cref="GetItemAt(int, int, out int)"/>
 	public static int GetItemAt (int inventoryID, int itemIndex) => GetItemAt(inventoryID, itemIndex, out _);
+	/// <summary>
+	/// Get ID of the item inside given inventory
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="itemIndex">Index of the item</param>
+	/// <param name="count">Count of the item</param>
 	public static int GetItemAt (int inventoryID, int itemIndex, out int count) {
 		if (Pool.TryGetValue(inventoryID, out var data)) {
 			count = itemIndex >= 0 && itemIndex < data.Counts.Length ? data.Counts[itemIndex] : 0;
@@ -334,9 +382,22 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// Get count of the given item
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="itemIndex">Index of the item</param>
+	/// <returns>Count of the item</returns>
 	public static int GetItemCount (int inventoryID, int itemIndex) => Pool.TryGetValue(inventoryID, out var data) && itemIndex >= 0 && itemIndex < data.Counts.Length && data.Items[itemIndex] != 0 ? data.Counts[itemIndex] : 0;
 
 
+	/// <summary>
+	/// Set item ID at index of the given inventory
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="itemIndex">Index of the item</param>
+	/// <param name="newItem">ID of the item</param>
+	/// <param name="newCount">Count of the item</param>
 	public static void SetItemAt (int inventoryID, int itemIndex, int newItem, int newCount) {
 		lock (Pool) {
 			if (!Pool.TryGetValue(inventoryID, out var data) || itemIndex < 0 || itemIndex >= data.Items.Length) return;
@@ -348,6 +409,10 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// Find index of the target item inside given inventory
+	/// </summary>
+	/// <returns>Index of the item. -1 when not found.</returns>
 	public static int IndexOfItem (int inventoryID, int itemID) {
 		if (!Pool.TryGetValue(inventoryID, out var data)) return -1;
 		for (int i = 0; i < data.Items.Length; i++) {
@@ -357,6 +422,12 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// True if the given item founded in the target inventory.
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="itemID"></param>
+	/// <param name="includeEquipment">True if search inside equipment part</param>
 	public static bool HasItem (int inventoryID, int itemID, bool includeEquipment = true) {
 		if (!Pool.TryGetValue(inventoryID, out var data)) return false;
 		for (int i = 0; i < data.Items.Length; i++) {
@@ -375,7 +446,10 @@ public static class Inventory {
 	}
 
 
-	/// <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
+	/// <summary>
+	/// Add "count" to the given item
+	/// </summary>
+	/// <returns>How many items has been added. 0 means no item added. "count" means all items added.</returns>
 	public static int AddItemAt (int inventoryID, int itemIndex, int count = 1) {
 		lock (Pool) {
 			if (
@@ -397,8 +471,14 @@ public static class Inventory {
 		}
 	}
 
-
-	/// <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
+	/// <summary>
+	/// Find given item and add "count" to the item
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="targetItemID"></param>
+	/// <param name="count"></param>
+	/// <param name="ignoreEquipment">True if do not search for equipment part</param>
+	/// <returns>How many items has been added. 0 means no item added. "count" means all items added.</returns>
 	public static int FindAndAddItem (int inventoryID, int targetItemID, int count = 1, bool ignoreEquipment = true) {
 		lock (Pool) {
 			if (targetItemID == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
@@ -431,7 +511,13 @@ public static class Inventory {
 	}
 
 
-	/// <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
+	/// <summary>
+	/// Take "count" items at given index for target inventory
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="itemIndex"></param>
+	/// <param name="count"></param>
+	/// <returns>How many items has been taken. 0 means no item taken. "count" means all items taken.</returns>
 	public static int TakeItemAt (int inventoryID, int itemIndex, int count = 1) {
 		lock (Pool) {
 			if (
@@ -458,7 +544,10 @@ public static class Inventory {
 	}
 
 
-	/// <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
+	/// <summary>
+	/// Take "count" items with "targetItemID" from given inventory
+	/// </summary>
+	/// <returns>How many items has been taken. 0 means no item taken. "count" means all items taken.</returns>
 	public static int FindAndTakeItem (int inventoryID, int targetItemID, int count = 1) {
 		lock (Pool) {
 			if (targetItemID == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return 0;
@@ -483,8 +572,19 @@ public static class Inventory {
 	}
 
 
-	/// <returns>How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.</returns>
+	/// <inheritdoc cref="CollectItem(int, int, out int, int, bool, bool, bool)"/>
 	public static int CollectItem (int inventoryID, int item, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false, bool dontCollectIntoEmptyEquipmentSlot = false) => CollectItem(inventoryID, item, out _, count, ignoreEquipment, ignoreInventory, dontCollectIntoEmptyEquipmentSlot);
+	/// <summary>
+	/// Add item into given inventory to first free slot founded.
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="item">ID of the item</param>
+	/// <param name="count">Count of the item</param>
+	/// <param name="ignoreEquipment">True if do not add into equipment part</param>
+	/// <param name="ignoreInventory">True if do not add into inventory part (non-equipment part)</param>
+	/// <param name="dontCollectIntoEmptyEquipmentSlot">True if do not add item into empty slot of equipment part</param>
+	/// <param name="collectIndex">Index of which slot collect the item. -1 if not collected.</param>
+	/// <returns>How many items has been collected. 0 means no item collected. "count" means all items collected.</returns>
 	public static int CollectItem (int inventoryID, int item, out int collectIndex, int count = 1, bool ignoreEquipment = true, bool ignoreInventory = false, bool dontCollectIntoEmptyEquipmentSlot = false) {
 		lock (Pool) {
 			collectIndex = -1;
@@ -638,6 +738,9 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// True if the inventory have enough room to contain all the target items
+	/// </summary>
 	public static bool HasEnoughRoomToCollect (int inventoryID, int item, int count) {
 
 		if (item == 0 || count <= 0 || !Pool.TryGetValue(inventoryID, out var data)) return false;
@@ -674,7 +777,23 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// How many target items are currently inside the inventory
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="itemID"></param>
+	/// <param name="ignoreStack">True if stacked items count as one</param>
 	public static int ItemTotalCount (int inventoryID, int itemID, bool ignoreStack = false) => ItemTotalCount(inventoryID, itemID, -1, out _, ignoreStack);
+
+
+	/// <summary>
+	/// How many target items are currently inside the inventory
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="itemID"></param>
+	/// <param name="targetIndex">Index of the special target</param>
+	/// <param name="targetOrder">Order of the special target between all items inside the inventory with same ID</param>
+	/// <param name="ignoreStack">True if stacked items count as one</param>
 	public static int ItemTotalCount (int inventoryID, int itemID, int targetIndex, out int targetOrder, bool ignoreStack = false) {
 		int result = 0;
 		int order = 0;
@@ -694,7 +813,21 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// How many target items are currently inside the inventory
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="ignoreStack">True if stacked items count as one</param>
 	public static int ItemTotalCount<I> (int inventoryID, bool ignoreStack = false) where I : Item => ItemTotalCount<I>(inventoryID, -1, out _, ignoreStack);
+
+
+	/// <summary>
+	/// How many target items are currently inside the inventory
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="targetIndex">Index of the special target</param>
+	/// <param name="targetOrder">Order of the special target between all items inside the inventory with same ID</param>
+	/// <param name="ignoreStack">True if stacked items count as one</param>
 	public static int ItemTotalCount<I> (int inventoryID, int targetIndex, out int targetOrder, bool ignoreStack = false) where I : Item {
 		int result = 0;
 		int order = 0;
@@ -717,6 +850,14 @@ public static class Inventory {
 
 
 	// Give
+	/// <summary>
+	/// Add target item to inventory of target entity
+	/// </summary>
+	/// <param name="target"></param>
+	/// <param name="itemID"></param>
+	/// <param name="count"></param>
+	/// <param name="spawnWhenInventoryFull">True if spawn an ItemHolder entity to hold the item</param>
+	/// <returns>True if the item is given</returns>
 	public static bool GiveItemToTarget (Entity target, int itemID, int count = 1, bool spawnWhenInventoryFull = true) {
 		lock (Pool) {
 			if (target == null) {
@@ -744,6 +885,12 @@ public static class Inventory {
 
 
 	// Equipment
+	/// <summary>
+	/// Get ID of equipment for given inventory
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="type">Type of the equipment</param>
+	/// <param name="equipmentCount">Stack count of the equipment</param>
 	public static int GetEquipment (int inventoryID, EquipmentType type, out int equipmentCount) {
 		if (Pool.TryGetValue(inventoryID, out var data) && data is EquipmentInventoryData pData) {
 			(int resultID, equipmentCount) = type switch {
@@ -764,6 +911,14 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// Set ID of equipment for given inventory
+	/// </summary>
+	/// <param name="inventoryID"></param>
+	/// <param name="type">Type of the equipment</param>
+	/// <param name="equipmentID"></param>
+	/// <param name="equipmentCount">Stack count of the equipment</param>
+	/// <returns>True if the value successfuly setted</returns>
 	public static bool SetEquipment (int inventoryID, EquipmentType type, int equipmentID, int equipmentCount) {
 		lock (Pool) {
 			if (
@@ -812,6 +967,9 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// Remove equipment count by "delta" (set delta to 1 means remove 1)
+	/// </summary>
 	public static void ReduceEquipmentCount (int inventoryID, int delta, EquipmentType type) {
 		lock (Pool) {
 			int eqID = GetEquipment(inventoryID, type, out int eqCount);
@@ -823,6 +981,9 @@ public static class Inventory {
 	}
 
 
+	/// <summary>
+	/// Make items with same ID inside inventory part stack onto equipment part
+	/// </summary>
 	public static void FillEquipmentFromInventory (int inventoryID, EquipmentType type) {
 		lock (Pool) {
 			if (!Pool.TryGetValue(inventoryID, out var data) || data is not EquipmentInventoryData pData) return;

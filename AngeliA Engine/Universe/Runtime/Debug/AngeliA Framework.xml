@@ -3940,20 +3940,1086 @@
             Last time AngeliA Engine backup the saving files
             </summary>
         </member>
+        <member name="T:AngeliA.CellScreenshotSystem">
+            <summary>
+            Core system to take screenshot based on rendering cells and save them into file
+            </summary>
+        </member>
+        <member name="T:AngeliA.CellScreenshotSystem.Screenshot">
+            <summary>
+            Data to hold a single screenshot
+            </summary>
+        </member>
+        <member name="F:AngeliA.CellScreenshotSystem.Screenshot.Locked">
+            <summary>
+            True if the user want to prevent accidental deletion
+            </summary>
+        </member>
+        <member name="F:AngeliA.CellScreenshotSystem.Screenshot.Range">
+            <summary>
+            Global range of the rendering cells inside this screenshot
+            </summary>
+        </member>
+        <member name="F:AngeliA.CellScreenshotSystem.Screenshot.SkyTop">
+            <summary>
+            Sky gradient color on top
+            </summary>
+        </member>
+        <member name="F:AngeliA.CellScreenshotSystem.Screenshot.SkyBottom">
+            <summary>
+            Sky gradient color on bottom
+            </summary>
+        </member>
+        <member name="P:AngeliA.CellScreenshotSystem.Count">
+            <summary>
+            Screenshot data count inside the current system
+            </summary>
+        </member>
+        <member name="M:AngeliA.CellScreenshotSystem.RequireTakeScreenshot(AngeliA.IRect,System.Int32)">
+            <summary>
+            Take screenshot at given range in global space when all cells at this frame is rendered. Result will be saved into system list.
+            </summary>
+            <param name="cameraRange"></param>
+            <param name="delay">Time delay in frame</param>
+        </member>
+        <member name="M:AngeliA.CellScreenshotSystem.TakeScreenshotImmediately(AngeliA.IRect,System.Boolean)">
+            <summary>
+            Take screenshot at given range in global space no matter rendering cells are all exists for current frame
+            </summary>
+            <param name="cameraRange"></param>
+            <param name="saveToSystem">True if save this screenshot into system list</param>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.CellScreenshotSystem.GetScreenshot(System.Int32)">
+            <summary>
+            Get screenshot from system list at given index.
+            </summary>
+        </member>
+        <member name="M:AngeliA.CellScreenshotSystem.DeleteScreenshot(System.Int32,System.Boolean)">
+            <summary>
+            Delete screenshot from system list at given index
+            </summary>
+            <param name="index"></param>
+            <param name="dontDeleteLocked">True if skip the locked ones</param>
+        </member>
+        <member name="M:AngeliA.CellScreenshotSystem.SetScreenshotLock(System.Int32,System.Boolean)">
+            <summary>
+            Lock/unlock screenshot in system list at given index
+            </summary>
+        </member>
+        <member name="M:AngeliA.CellScreenshotSystem.DrawScreenshot(AngeliA.CellScreenshotSystem.Screenshot,AngeliA.IRect,System.Int32,System.Int32,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.CellScreenshotSystem.DrawScreenshot(AngeliA.CellScreenshotSystem.Screenshot,AngeliA.IRect,AngeliA.FRect,AngeliA.Color32,System.Int32,System.Int32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.CellScreenshotSystem.DrawScreenshot(AngeliA.CellScreenshotSystem.Screenshot,AngeliA.IRect,AngeliA.FRect,System.Int32,System.Int32,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.CellScreenshotSystem.DrawScreenshot(AngeliA.CellScreenshotSystem.Screenshot,AngeliA.IRect,AngeliA.FRect,AngeliA.Color32,System.Int32,System.Int32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.CellScreenshotSystem.DrawScreenshot(AngeliA.CellScreenshotSystem.Screenshot,AngeliA.IRect,AngeliA.Color32,System.Int32,System.Int32,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.CellScreenshotSystem.DrawScreenshot(AngeliA.CellScreenshotSystem.Screenshot,AngeliA.IRect,AngeliA.FRect,AngeliA.Color32,System.Int32,System.Int32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.CellScreenshotSystem.DrawScreenshot(AngeliA.CellScreenshotSystem.Screenshot,AngeliA.IRect,AngeliA.FRect,AngeliA.Color32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Render given screen shot on screen
+            </summary>
+            <param name="screenshot">Screenshot data</param>
+            <param name="rect">Global range to display this screenshot</param>
+            <param name="sourceRange">Which part of the screenshot should be display. ((0, 0, 1, 1) means all of them. (0, 0, 0.5, 1) means left half of them)</param>
+            <param name="tint">Color tint</param>
+            <param name="z">Z value for sort rendering cells</param>
+            <param name="layer">Rendering layer to draw into. Use RenderLayer.XXX to get this value.</param>
+            <param name="fit">True if resize the result without changing the aspect ratio</param>
+        </member>
+        <member name="T:AngeliA.CheatSystem">
+            <summary>
+            Core system to invoke function when user type cheat code during gameplay. Works like NES games. (it does nothing with anti-cheat)
+            </summary>
+        </member>
+        <member name="P:AngeliA.CheatSystem.CurrentParam">
+            <summary>
+            Custom data from cheat code when it's invoking
+            </summary>
+        </member>
+        <member name="P:AngeliA.CheatSystem.CheatCodeCount">
+            <summary>
+            Total loaded cheat code
+            </summary>
+        </member>
+        <member name="M:AngeliA.CheatSystem.TryAddCheatAction(System.String,System.Reflection.MethodInfo,System.Object)">
+            <summary>
+            Add given cheat code into system
+            </summary>
+            <param name="code">Code that user need to type. Ignore cases</param>
+            <param name="method">Method that invokes when cheat code get triggered</param>
+            <param name="param">Custom data for this cheat code. Get this data inside the "method" with CheatSystem.CurrentParam</param>
+            <returns>True if the data is successfuly added</returns>
+        </member>
+        <member name="M:AngeliA.CheatSystem.SetCheatCodeEnable(System.String,System.Boolean)">
+            <summary>
+            Make given cheat code enable or disable
+            </summary>
+            <param name="code">The target cheat code</param>
+            <param name="enable"></param>
+        </member>
+        <member name="M:AngeliA.CheatSystem.ForAllCheatCodes">
+            <summary>
+            Interate through all loaded cheat code inside the system
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.CheatSystem.GetCodeAt(System.Int32)">
+            <summary>
+            Get cheat code at given index inside system list
+            </summary>
+        </member>
+        <member name="T:AngeliA.CircuitSystem">
+            <summary>
+            Core system for triggering specified function of entities on stage/map
+            </summary>
+        </member>
+        <member name="M:AngeliA.CircuitSystem.RegisterWire(System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Register target IMapItem as wire for operating circuit
+            </summary>
+            <param name="id">ID of the target entity/element</param>
+            <param name="connectL">True if this wire connect to the wire/operator on left</param>
+            <param name="connectR">True if this wire connect to the wire/operator on right</param>
+            <param name="connectD">True if this wire connect to the wire/operator on bottom</param>
+            <param name="connectU">True if this wire connect to the wire/operator on top</param>
+        </member>
+        <member name="M:AngeliA.CircuitSystem.IsWire(System.Int32)">
+            <summary>
+            True if the given ID is registed as wire
+            </summary>
+        </member>
+        <member name="M:AngeliA.CircuitSystem.TriggerCircuit(System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.Direction5)">
+            <summary>
+            Trigger the system at given position
+            </summary>
+            <param name="unitX">Position to start circuit trigger in unit space</param>
+            <param name="unitY">Position to start circuit trigger in unit space</param>
+            <param name="unitZ">Position Z</param>
+            <param name="stamp">unique ID for this operation</param>
+            <param name="startDirection">Only start at this direction (Set to center to start all direction)</param>
+        </member>
+        <member name="M:AngeliA.CircuitSystem.OperateCircuit(AngeliA.Int3,System.Int32,AngeliA.Direction5)">
+            <summary>
+            Perform the function from the operator at given position
+            </summary>
+            <param name="unitPos">Target position in unit space</param>
+            <param name="stamp">unique ID for this operation</param>
+            <param name="circuitFrom">Which direction does the circuit came from. Set to center to make current as original.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.CircuitSystem.WireEntityID_to_WireConnection(System.Int32,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@)">
+            <summary>
+            Get connection directions from given wire ID
+            </summary>
+            <returns>True if the wire ID is valid</returns>
+        </member>
+        <member name="M:AngeliA.CircuitSystem.IsCircuitOperator(System.Int32)">
+            <summary>
+            True if the given ID is a valid circuit operator entity
+            </summary>
+        </member>
+        <member name="M:AngeliA.CircuitSystem.WireConnection_to_BitInt(System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Convert wire connection info into an Intager
+            </summary>
+        </member>
+        <member name="M:AngeliA.CircuitSystem.BitInt_to_WireConnection(System.Int32,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@)">
+            <summary>
+            Convert an intager into wire connection info
+            </summary>
+        </member>
+        <member name="M:AngeliA.CircuitSystem.GetStamp(AngeliA.Int3)">
+            <summary>
+            Get unique ID for circuit system at given position in unit space
+            </summary>
+        </member>
+        <member name="M:AngeliA.CircuitSystem.TryAddBackgroundTrigger(System.Int32,AngeliA.Int3)">
+            <summary>
+            Add a trigger in background thread
+            </summary>
+            <param name="entityID">Source ID of this trigger</param>
+            <param name="unitPos">Position in unit space</param>
+            <returns>True if the capacity is not reached</returns>
+        </member>
+        <member name="M:AngeliA.CircuitSystem.TryRemoveBackgroundTrigger(System.Int32,AngeliA.Int3)">
+            <summary>
+            Remove the given entity from background thread triggers
+            </summary>
+            <param name="entityID">Source ID of this trigger</param>
+            <param name="unitPos">Position in unit space</param>
+            <returns>True if the trigger is removed</returns>
+        </member>
+        <member name="T:AngeliA.Cursor">
+            <summary>
+            Core system for set appearance of mouse cursor
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cursor.RequireCursor(System.Int32)">
+            <summary>
+            Need to display the cursor for current frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cursor.SetCursor(System.Int32,AngeliA.IRect,System.Int32)">
+            <param name="cursorIndex">Get this value with Const.CURSOR_XXX</param>
+            <param name="mouseRange">Only work when mouse inside given range in global space</param>
+            <param name="priority"></param>
+        </member>
+        <member name="M:AngeliA.Cursor.SetCursor(System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Cursor.SetCursor(System.Int32,AngeliA.IRect,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Cursor.SetCursorAsNormal(System.Int32)">
+            <summary>
+            Make cursor to default style
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cursor.SetCursorAsHand(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Cursor.SetCursorAsHand(AngeliA.IRect,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Cursor.SetCursorAsHand(AngeliA.IRect,System.Int32)">
+            <summary>
+            Make cursor to point hand for current frame.
+            </summary>
+            <param name="mouseRange">Only work when mouse inside given range in global space</param>
+            <param name="priority"></param>
+        </member>
+        <member name="M:AngeliA.Cursor.SetCursorAsBeam(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Cursor.SetCursorAsBeam(AngeliA.IRect,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Cursor.SetCursorAsBeam(AngeliA.IRect,System.Int32)">
+            <summary>
+            Make cursor to typing beam for current frame.
+            </summary>
+            <param name="mouseRange">Only work when mouse inside given range in global space</param>
+            <param name="priority"></param>
+        </member>
+        <member name="M:AngeliA.Cursor.SetCursorAsMove(System.Int32)">
+            <inheritdoc cref="M:AngeliA.Cursor.SetCursorAsMove(AngeliA.IRect,System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Cursor.SetCursorAsMove(AngeliA.IRect,System.Int32)">
+            <summary>
+            Make cursor to cross with arrows for current frame.
+            </summary>
+            <param name="mouseRange">Only work when mouse inside given range in global space</param>
+            <param name="priority"></param>
+        </member>
+        <member name="M:AngeliA.Cursor.SetCursorAsNone(System.Int32)">
+            <summary>
+            Set cursor into none
+            </summary>
+        </member>
+        <member name="M:AngeliA.Cursor.GetResizeCursorIndex(AngeliA.Direction8)">
+            <summary>
+            Get resize cursor index from given direction
+            </summary>
+        </member>
+        <member name="T:AngeliA.Input">
+            <summary>
+            Frame based core system for user input from keyboard, mouse and gamepad
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.UsingGamepad">
+            <summary>
+            True if the user just used the gamepad
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.UsingLeftStick">
+            <summary>
+            True if the user just used the list joystick
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.DirectionX">
+            <summary>
+            Horizontal direction at current frame from gamekey, d-pad and joystick
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.DirectionY">
+            <summary>
+            Vertical direction at current frame from gamekey, d-pad and joystick
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.Direction">
+            <summary>
+            Direction at current frame from gamekey, d-pad and joystick
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.AllowGamepad">
+            <summary>
+            True if gamepad is allow to use from game setting
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.HoldingCtrl">
+            <summary>
+            True if ctrl key is holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.HoldingShift">
+            <summary>
+            True if shift key is holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.HoldingAlt">
+            <summary>
+            True if alt key is holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.AnyKeyDown">
+            <summary>
+            True if any keyboard/gamepad/mouse key start to be holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.AnyKeyHolding">
+            <summary>
+            True if any keyboard/gamepad/mouse key is holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.AnyGamepadButtonDown">
+            <summary>
+            True if any gamepad button start to be holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.AnyGamepadButtonHolding">
+            <summary>
+            True if any gamepad button is holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.AnyGamekeyDown">
+            <summary>
+            True if any game-key key start to be holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.AnyGamekeyHolding">
+            <summary>
+            True if any game-key is holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.AnyKeyboardKeyDown">
+            <summary>
+            True if any keyboard key start to be holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.AnyKeyboardKeyHolding">
+            <summary>
+            True if any keyboard key is holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.AnyMouseButtonDown">
+            <summary>
+            True if any mouse button start to be holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.AnyMouseButtonHolding">
+            <summary>
+            True if any mouse button is holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseScreenPosition">
+            <summary>
+            Position of the mouse at current frame in screen space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseScreenPositionDelta">
+            <summary>
+            Position changed of the mouse at current frame in screen space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseGlobalPositionDelta">
+            <summary>
+            Position changed of the mouse at current frame in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.UnshiftedMouseGlobalPosition">
+            <summary>
+            Position changed of the mouse at current frame in global space which is not effect by Input.SetMousePositionShift
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseGlobalPosition">
+            <summary>
+            Position of the mouse at current frame in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseLeftDownGlobalPosition">
+            <summary>
+            Position of the mouse in global space when last time mouse left button press down 
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseRightDownGlobalPosition">
+            <summary>
+            Position of the mouse in global space when last time mouse right button press down 
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseMidDownGlobalPosition">
+            <summary>
+            Position of the mouse in global space when last time mouse middle button press down 
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseMove">
+            <summary>
+            True if mouse moved at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseLeftButtonHolding">
+            <summary>
+            True if mouse left button is holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseRightButtonHolding">
+            <summary>
+            True if mouse right button is holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseMidButtonHolding">
+            <summary>
+            True if mouse middle button is holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseLeftButtonDown">
+            <summary>
+            True if mouse left button start to be holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseRightButtonDown">
+            <summary>
+            True if mouse right button start to be holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseMidButtonDown">
+            <summary>
+            True if mouse middle button start to be holding at current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.LastActionFromMouse">
+            <summary>
+            True if last user action is from mouse instead of keyboard
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.MouseWheelDelta">
+            <summary>
+            Mouse wheel scroll value at current frame. Return negative value when the page scrolls down (the content appears to move upward)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.IgnoringMouseInput">
+            <summary>
+            True if the input system do not receive mouse input currently 
+            </summary>
+        </member>
+        <member name="P:AngeliA.Input.IgnoringKeyInput">
+            <summary>
+            True if the input system do not receive keyboard/game-key input currently 
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.TryGetHoldingGamepadButton(AngeliA.GamepadKey@)">
+            <summary>
+            Get the gamepad button that currently holding
+            </summary>
+            <param name="button">Result holding button</param>
+            <returns>True if holding button founded</returns>
+        </member>
+        <member name="M:AngeliA.Input.TryGetHoldingKeyboardKey(AngeliA.KeyboardKey@)">
+            <summary>
+            Get the keyboard key that currently holding
+            </summary>
+            <param name="key">Result holding key</param>
+            <returns>True if holding key founded</returns>
+        </member>
+        <member name="M:AngeliA.Input.GameKeyDown(AngeliA.Gamekey)">
+            <summary>
+            True if given game-key start to be holding at current frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.GameKeyDownGUI(AngeliA.Gamekey)">
+            <summary>
+            True if given game-key pressed down repeatedly by holding down
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.GameKeyHolding(AngeliA.Gamekey)">
+            <summary>
+            True if given game-key is currently holding
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.GameKeyUp(AngeliA.Gamekey)">
+            <summary>
+            True if the given game-key just released at current frame
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.Input.KeyboardDown(AngeliA.KeyboardKey)">
+            <summary>
+            True if given keyboard-key start to be holding at current frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.KeyboardDownGUI(AngeliA.KeyboardKey)">
+            <summary>
+            True if given keyboard-key pressed down repeatedly by holding down
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.KeyboardHolding(AngeliA.KeyboardKey)">
+            <summary>
+            True if given keyboard-key is currently holding
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.KeyboardUp(AngeliA.KeyboardKey)">
+            <summary>
+            True if the given keyboard-key just released at current frame
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.Input.IsMouseLeftButtonDoubleClick(System.Int32)">
+            <summary>
+            True if mouse left button performed a double click at current frame
+            </summary>
+            <param name="clickDeltaFrame">Two clicks inside this time range count as a double click</param>
+        </member>
+        <member name="M:AngeliA.Input.IsMouseRightButtonDoubleClick(System.Int32)">
+            <summary>
+            True if mouse right button performed a double click at current frame
+            </summary>
+            <param name="clickDeltaFrame">Two clicks inside this time range count as a double click</param>
+        </member>
+        <member name="M:AngeliA.Input.IsMouseMiddleButtonDoubleClick(System.Int32)">
+            <summary>
+            True if mouse middle button performed a double click at current frame
+            </summary>
+            <param name="clickDeltaFrame">Two clicks inside this time range count as a double click</param>
+        </member>
+        <member name="M:AngeliA.Input.MouseKeyUsed(System.Int32)">
+            <summary>
+            True if the given mouse button is mark as used
+            </summary>
+            <param name="key">0 means left, 1 means right, 2 means middle</param>
+        </member>
+        <member name="M:AngeliA.Input.KeyboardKeyUsed(AngeliA.KeyboardKey)">
+            <summary>
+            True if the given keyboard-key is mark as used
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.UseGameKey(AngeliA.Gamekey)">
+            <summary>
+            Mark given game-key as used so it will not be "down" or "holding" at current frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.UseKeyboardKey(AngeliA.KeyboardKey)">
+            <summary>
+            Mark given keyboard-key as used so it will not be "down" or "holding" at current frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.UseAllHoldingKeys(System.Boolean)">
+            <summary>
+            Mark all current holding game-keys ans keyboard-keys as used so they will not be "down" or "holding" at current frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.UseAllMouseKey">
+            <summary>
+            Mark all current holding mouse buttons as used so they will not be "down" or "holding" at current frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.UseMouseKey(System.Int32)">
+            <summary>
+            Mark given mouse button as used so it will not be "down" or "holding" at current frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.UnuseKeyboardKey(AngeliA.KeyboardKey)">
+            <summary>
+            Remove the used mark for given keyboard-key
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.UnuseGameKey(AngeliA.Gamekey)">
+            <summary>
+            Remove the used mark for given game-key
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.UnuseMouseKey(System.Int32)">
+            <summary>
+            Remove the used mark for given mouse button
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.UnuseAllMouseKey">
+            <summary>
+            Remove the used mark for all mouse button
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.IgnoreMouseToActionJump(System.Boolean,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            Ignore "mouse left to action and mouse right to jump" for given frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.IgnoreRightStickToMouseWheel(System.Int32)">
+            <summary>
+            Ignore "gamepad right stick to control mouse wheel" for given frames long
+            </summary>
+            <param name="duration"></param>
+        </member>
+        <member name="M:AngeliA.Input.GetKeyboardMap(AngeliA.Gamekey)">
+            <summary>
+            Get which keyboard key is mapping into given game-key
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.GetDefaultKeyboardMap(AngeliA.Gamekey)">
+            <summary>
+            Get which keyboard key is default mapping key for given game-key
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.GetGamepadMap(AngeliA.Gamekey)">
+            <summary>
+            Get which gamepad-button is mapping into given game-key
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.GetDefaultGamepadMap(AngeliA.Gamekey)">
+            <summary>
+            Get which gamepad-button is default mapping key for given game-key
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.SetKeyboardMap(AngeliA.Gamekey,AngeliA.KeyboardKey)">
+            <summary>
+            Map given keyboard-key into given game-key and save it to disk
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.SetGamepadMap(AngeliA.Gamekey,AngeliA.GamepadKey)">
+            <summary>
+            Map given gamepad-button into given game-key and save it to disk
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.MouseButtonHolding(System.Int32)">
+            <summary>
+            True if the given mouse button is holding at current frame
+            </summary>
+            <param name="button">0 means left, 1 means right, 2 means middle</param>
+        </member>
+        <member name="M:AngeliA.Input.GetHoldingMouseButton">
+            <summary>
+            Get index of the current holding mouse button. (order: left > right > middle)
+            </summary>
+            <returns>0 means left, 1 means right, 2 means middle, -1 means no button holding</returns>
+        </member>
+        <member name="M:AngeliA.Input.IgnoreAllInput(System.Int32)">
+            <summary>
+            Make all user input ignored by the system for given frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.IgnoreMouseInput(System.Int32)">
+            <summary>
+            Make all user mouse input ignored by the system for given frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.IgnoreKeyInput(System.Int32)">
+            <summary>
+            Make user keyboard/game-key input ignored by the system for given frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.CancelIgnoreMouseInput">
+            <summary>
+            Do not ignore mouse input any more
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.CancelIgnoreKeyInput">
+            <summary>
+            Do not ignore key input any more
+            </summary>
+        </member>
+        <member name="M:AngeliA.Input.SetMousePositionShift(System.Int32,System.Int32)">
+            <summary>
+            Shift mouse position for current frame. Only effect internal system not where the cursor appearingly is.
+            </summary>
+        </member>
+        <member name="T:AngeliA.Inventory">
+            <summary>
+            Core system to handle storage of items
+            </summary>
+        </member>
+        <member name="P:AngeliA.Inventory.PoolReady">
+            <summary>
+            True if the system is read to use
+            </summary>
+        </member>
+        <member name="M:AngeliA.Inventory.InitializeInventoryData(System.String,System.Int32,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Inventory.InitializeInventoryData(System.Int32,System.String,System.Int32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Inventory.InitializeInventoryData(System.String,System.Int32,AngeliA.Int3,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Inventory.InitializeInventoryData(System.Int32,System.String,System.Int32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Inventory.InitializeInventoryData(System.Int32,System.String,System.Int32,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Inventory.InitializeInventoryData(System.Int32,System.String,System.Int32,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Inventory.InitializeInventoryData(System.Int32,System.String,System.Int32,AngeliA.Int3,System.Boolean)">
+            <summary>
+            Initialize an inventory data for the system
+            </summary>
+            <param name="basicID">ID of the holder</param>
+            <param name="basicName">Name of the holder</param>
+            <param name="capacity">Maximal item count the inventory can hold</param>
+            <param name="mapUnitPos">Original position in unit space for the map-type inventory. (int.MinValue, int.MinValue, int.MinValue) for other type inventory.</param>
+            <param name="hasEquipment">True if this inventory requires equipment part.</param>
+            <returns>Inventory ID</returns>
+        </member>
+        <member name="M:AngeliA.Inventory.GetInventoryIdFromBasicIdAndPos(System.Int32,System.String,AngeliA.Int3)">
+            <summary>
+            Calculate inventory ID based of the given infomation
+            </summary>
+            <param name="basicID">ID of the holder</param>
+            <param name="baseName">Name of the holder</param>
+            <param name="mapPos">Original position in unit space for the map-type inventory. (int.MinValue, int.MinValue, int.MinValue) for other type inventory.</param>
+        </member>
+        <member name="M:AngeliA.Inventory.GetInventoryMapPosFromName(System.String,System.String@)">
+            <summary>
+            Calculate the original holder position from the given inventory file name
+            </summary>
+        </member>
+        <member name="M:AngeliA.Inventory.ResizeInventory(System.Int32,System.Int32)">
+            <summary>
+            Set capacity of the inventory without changing the content. (items will be clip out if the capacity is not enough to hold)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Inventory.HasInventory(System.Int32)">
+            <summary>
+            True if the given ID refers to a valid inventory
+            </summary>
+        </member>
+        <member name="M:AngeliA.Inventory.GetInventoryCapacity(System.Int32)">
+            <summary>
+            Get the item count limit for target inventory
+            </summary>
+        </member>
+        <member name="M:AngeliA.Inventory.RepositionInventory(System.Int32,AngeliA.Int3)">
+            <summary>
+            Reset the map position for the inventory into a new value
+            </summary>
+        </member>
+        <member name="M:AngeliA.Inventory.UnlockAllItemsInside(System.Int32)">
+            <summary>
+            Unlock all items inside given inventory for player
+            </summary>
+        </member>
+        <member name="M:AngeliA.Inventory.GetItemAt(System.Int32,System.Int32)">
+            <inheritdoc cref="M:AngeliA.Inventory.GetItemAt(System.Int32,System.Int32,System.Int32@)"/>
+        </member>
+        <member name="M:AngeliA.Inventory.GetItemAt(System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            Get ID of the item inside given inventory
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="itemIndex">Index of the item</param>
+            <param name="count">Count of the item</param>
+        </member>
+        <member name="M:AngeliA.Inventory.GetItemCount(System.Int32,System.Int32)">
+            <summary>
+            Get count of the given item
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="itemIndex">Index of the item</param>
+            <returns>Count of the item</returns>
+        </member>
+        <member name="M:AngeliA.Inventory.SetItemAt(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Set item ID at index of the given inventory
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="itemIndex">Index of the item</param>
+            <param name="newItem">ID of the item</param>
+            <param name="newCount">Count of the item</param>
+        </member>
+        <member name="M:AngeliA.Inventory.IndexOfItem(System.Int32,System.Int32)">
+            <summary>
+            Find index of the target item inside given inventory
+            </summary>
+            <returns>Index of the item. -1 when not found.</returns>
+        </member>
+        <member name="M:AngeliA.Inventory.HasItem(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            True if the given item founded in the target inventory.
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="itemID"></param>
+            <param name="includeEquipment">True if search inside equipment part</param>
+        </member>
         <member name="M:AngeliA.Inventory.AddItemAt(System.Int32,System.Int32,System.Int32)">
-            <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
+            <summary>
+            Add "count" to the given item
+            </summary>
+            <returns>How many items has been added. 0 means no item added. "count" means all items added.</returns>
         </member>
         <member name="M:AngeliA.Inventory.FindAndAddItem(System.Int32,System.Int32,System.Int32,System.Boolean)">
-            <returns>How many items has been added. Return 0 means no item added. Return "count" means all items added.</returns>
+            <summary>
+            Find given item and add "count" to the item
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="targetItemID"></param>
+            <param name="count"></param>
+            <param name="ignoreEquipment">True if do not search for equipment part</param>
+            <returns>How many items has been added. 0 means no item added. "count" means all items added.</returns>
         </member>
         <member name="M:AngeliA.Inventory.TakeItemAt(System.Int32,System.Int32,System.Int32)">
-            <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
+            <summary>
+            Take "count" items at given index for target inventory
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="itemIndex"></param>
+            <param name="count"></param>
+            <returns>How many items has been taken. 0 means no item taken. "count" means all items taken.</returns>
         </member>
         <member name="M:AngeliA.Inventory.FindAndTakeItem(System.Int32,System.Int32,System.Int32)">
-            <returns>How many items has been taken. Return 0 means no item taken. Return "count" means all items taken.</returns>
+            <summary>
+            Take "count" items with "targetItemID" from given inventory
+            </summary>
+            <returns>How many items has been taken. 0 means no item taken. "count" means all items taken.</returns>
         </member>
         <member name="M:AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
-            <returns>How many items has been collected. Return 0 means no item collected. Return "count" means all items collected.</returns>
+            <inheritdoc cref="M:AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32@,System.Int32,System.Boolean,System.Boolean,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Inventory.CollectItem(System.Int32,System.Int32,System.Int32@,System.Int32,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Add item into given inventory to first free slot founded.
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="item">ID of the item</param>
+            <param name="count">Count of the item</param>
+            <param name="ignoreEquipment">True if do not add into equipment part</param>
+            <param name="ignoreInventory">True if do not add into inventory part (non-equipment part)</param>
+            <param name="dontCollectIntoEmptyEquipmentSlot">True if do not add item into empty slot of equipment part</param>
+            <param name="collectIndex">Index of which slot collect the item. -1 if not collected.</param>
+            <returns>How many items has been collected. 0 means no item collected. "count" means all items collected.</returns>
+        </member>
+        <member name="M:AngeliA.Inventory.HasEnoughRoomToCollect(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            True if the inventory have enough room to contain all the target items
+            </summary>
+        </member>
+        <member name="M:AngeliA.Inventory.ItemTotalCount(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            How many target items are currently inside the inventory
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="itemID"></param>
+            <param name="ignoreStack">True if stacked items count as one</param>
+        </member>
+        <member name="M:AngeliA.Inventory.ItemTotalCount(System.Int32,System.Int32,System.Int32,System.Int32@,System.Boolean)">
+            <summary>
+            How many target items are currently inside the inventory
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="itemID"></param>
+            <param name="targetIndex">Index of the special target</param>
+            <param name="targetOrder">Order of the special target between all items inside the inventory with same ID</param>
+            <param name="ignoreStack">True if stacked items count as one</param>
+        </member>
+        <member name="M:AngeliA.Inventory.ItemTotalCount``1(System.Int32,System.Boolean)">
+            <summary>
+            How many target items are currently inside the inventory
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="ignoreStack">True if stacked items count as one</param>
+        </member>
+        <member name="M:AngeliA.Inventory.ItemTotalCount``1(System.Int32,System.Int32,System.Int32@,System.Boolean)">
+            <summary>
+            How many target items are currently inside the inventory
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="targetIndex">Index of the special target</param>
+            <param name="targetOrder">Order of the special target between all items inside the inventory with same ID</param>
+            <param name="ignoreStack">True if stacked items count as one</param>
+        </member>
+        <member name="M:AngeliA.Inventory.GiveItemToTarget(AngeliA.Entity,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Add target item to inventory of target entity
+            </summary>
+            <param name="target"></param>
+            <param name="itemID"></param>
+            <param name="count"></param>
+            <param name="spawnWhenInventoryFull">True if spawn an ItemHolder entity to hold the item</param>
+            <returns>True if the item is given</returns>
+        </member>
+        <member name="M:AngeliA.Inventory.GetEquipment(System.Int32,AngeliA.EquipmentType,System.Int32@)">
+            <summary>
+            Get ID of equipment for given inventory
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="type">Type of the equipment</param>
+            <param name="equipmentCount">Stack count of the equipment</param>
+        </member>
+        <member name="M:AngeliA.Inventory.SetEquipment(System.Int32,AngeliA.EquipmentType,System.Int32,System.Int32)">
+            <summary>
+            Set ID of equipment for given inventory
+            </summary>
+            <param name="inventoryID"></param>
+            <param name="type">Type of the equipment</param>
+            <param name="equipmentID"></param>
+            <param name="equipmentCount">Stack count of the equipment</param>
+            <returns>True if the value successfuly setted</returns>
+        </member>
+        <member name="M:AngeliA.Inventory.ReduceEquipmentCount(System.Int32,System.Int32,AngeliA.EquipmentType)">
+            <summary>
+            Remove equipment count by "delta" (set delta to 1 means remove 1)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Inventory.FillEquipmentFromInventory(System.Int32,AngeliA.EquipmentType)">
+            <summary>
+            Make items with same ID inside inventory part stack onto equipment part
+            </summary>
+        </member>
+        <member name="T:AngeliA.Language">
+            <summary>
+            Core system to handle localization logic
+            </summary>
+        </member>
+        <member name="P:AngeliA.Language.LanguageCount">
+            <summary>
+            Total count of languages loaded inside the system
+            </summary>
+        </member>
+        <member name="P:AngeliA.Language.CurrentLanguage">
+            <summary>
+            Current selecting language ISO
+            </summary>
+        </member>
+        <member name="P:AngeliA.Language.PoolReady">
+            <summary>
+            True if the system is ready to use
+            </summary>
+        </member>
+        <member name="M:AngeliA.Language.Get(System.Int32,System.String)">
+            <summary>
+            Get display content from given ID
+            </summary>
+            <param name="id"></param>
+            <param name="failback">Default value if content not found in system pool</param>
+        </member>
+        <member name="M:AngeliA.Language.GetLanguageAt(System.Int32)">
+            <summary>
+            Get ISO of the language from system list at given index
+            </summary>
+        </member>
+        <member name="M:AngeliA.Language.SetLanguage(System.String)">
+            <summary>
+            Set current selecting language
+            </summary>
+            <param name="language">ISO of target language</param>
+            <returns>True if successfuly setted</returns>
+        </member>
+        <member name="T:AngeliA.LightingSystem">
+            <summary>
+            Core system that handles dynamic lighting of the stage
+            </summary>
+        </member>
+        <member name="F:AngeliA.LightingSystem.SETTING_PIXEL_STYLE">
+            <summary>
+            ID for remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="F:AngeliA.LightingSystem.SETTING_SELF_LERP">
+            <summary>
+            ID for remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="F:AngeliA.LightingSystem.SETTING_SOLID_ILLUMINANCE">
+            <summary>
+            ID for remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="F:AngeliA.LightingSystem.SETTING_AIR_ILLUMINANCE_DAY">
+            <summary>
+            ID for remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="F:AngeliA.LightingSystem.SETTING_AIR_ILLUMINANCE_NIGHT">
+            <summary>
+            ID for remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="F:AngeliA.LightingSystem.SETTING_BACKGROUND_TINT">
+            <summary>
+            ID for remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="F:AngeliA.LightingSystem.SETTING_LEVEL_ILLUMINATE_REMAIN">
+            <summary>
+            ID for remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="F:AngeliA.LightingSystem.SETTING_IN_GAME_DAYTIME">
+            <summary>
+            ID for remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="F:AngeliA.LightingSystem.SETTING_FREE_IN_GAME_DAYTIME">
+            <summary>
+            ID for remote setting between engine and rigged game
+            </summary>
+        </member>
+        <member name="P:AngeliA.LightingSystem.Enable">
+            <summary>
+            True if the system is in-use
+            </summary>
+        </member>
+        <member name="M:AngeliA.LightingSystem.Illuminate(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Require light at given circle range in global space
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="radius"></param>
+            <param name="amount">0 means no light. 1000 means general amount.</param>
+        </member>
+        <member name="M:AngeliA.LightingSystem.ForceCameraScale(System.Single,System.Int32)">
+            <summary>
+            Override the total size scale
+            </summary>
+            <param name="scale"></param>
+            <param name="duration">How long this operation last in frames</param>
+        </member>
+        <member name="M:AngeliA.LightingSystem.ForceAirLerp(System.Single,System.Int32)">
+            <summary>
+            Override light amount for air
+            </summary>
+            <param name="lerp"></param>
+            <param name="duration">How long this operation last in frames</param>
+        </member>
+        <member name="M:AngeliA.LightingSystem.IgnoreLighting(System.Int32)">
+            <summary>
+            Do not perform any lighting for given frames long
+            </summary>
+        </member>
+        <member name="M:AngeliA.LightingSystem.CancelIgnoreLighting">
+            <summary>
+            Do not ignore lighting any more
+            </summary>
+        </member>
+        <member name="T:AngeliA.PhysicsCell">
+            <summary>
+            Basic unit of a physics data structure
+            </summary>
+        </member>
+        <member name="F:AngeliA.PhysicsCell.Rect">
+            <summary>
+            Rect position in global space
+            </summary>
+        </member>
+        <member name="F:AngeliA.PhysicsCell.Entity">
+            <summary>
+            Target entity (null if from block)
+            </summary>
+        </member>
+        <member name="F:AngeliA.PhysicsCell.IsTrigger">
+            <summary>
+            True if this cell is marked as trigger
+            </summary>
+        </member>
+        <member name="F:AngeliA.PhysicsCell.SourceID">
+            <summary>
+            ID for identify which object filled this cell
+            </summary>
+        </member>
+        <member name="T:AngeliA.OperationMode">
+            <summary>
+            What type of cells are included for the operation
+            </summary>
+        </member>
+        <member name="T:AngeliA.Physics">
+            <summary>
+            Core system that handles physics of AngeliA games.
+            Logic of the system is frame-isolated which means data from prev frame will never effect current frame.
+            </summary>
         </member>
         <member name="T:AngeliA.Bullet">
             <summary>
@@ -15180,7 +16246,7 @@
         </member>
         <member name="T:AngeliA.BlockColor">
             <summary>
-            Element block that set the color tint of the overlaping level block
+            Element block that set the color tint of the overlapping level block
             </summary>
         </member>
         <member name="P:AngeliA.BlockColor.Color">

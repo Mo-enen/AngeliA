@@ -4,6 +4,9 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Core system that handles dynamic lighting of the stage
+/// </summary>
 public static class LightingSystem {
 
 
@@ -13,14 +16,41 @@ public static class LightingSystem {
 
 
 	// Const
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_PIXEL_STYLE = 94852_0;
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_SELF_LERP = 94852_1;
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_SOLID_ILLUMINANCE = 94852_2;
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_AIR_ILLUMINANCE_DAY = 94852_3;
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_AIR_ILLUMINANCE_NIGHT = 94852_4;
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_BACKGROUND_TINT = 94852_5;
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_LEVEL_ILLUMINATE_REMAIN = 94852_6;
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_IN_GAME_DAYTIME = 94852_7;
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_FREE_IN_GAME_DAYTIME = 94852_8;
 	private const int LIGHT_MAP_UNIT_PADDING = 10;
 	private const int LIGHT_MAP_UNIT_PADDING_BOTTOM = 6;
@@ -28,6 +58,9 @@ public static class LightingSystem {
 	private static readonly float[] WEIGHTS = [0.071f, 0.19f, 0.51f, 0.19f, 0.071f,];
 
 	// Api
+	/// <summary>
+	/// True if the system is in-use
+	/// </summary>
 	public static bool Enable { get; private set; } = true;
 
 	// Data
@@ -283,6 +316,13 @@ public static class LightingSystem {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Require light at given circle range in global space
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="radius"></param>
+	/// <param name="amount">0 means no light. 1000 means general amount.</param>
 	public static void Illuminate (int x, int y, int radius, int amount = 1000) {
 
 		if (!Enable || radius <= 0) return;
@@ -321,21 +361,37 @@ public static class LightingSystem {
 	}
 
 
+	/// <summary>
+	/// Override the total size scale
+	/// </summary>
+	/// <param name="scale"></param>
+	/// <param name="duration">How long this operation last in frames</param>
 	public static void ForceCameraScale (float scale, int duration = 1) {
 		ForceCameraScaleFrame = Game.PauselessFrame + duration;
 		CameraScale = scale;
 	}
 
 
+	/// <summary>
+	/// Override light amount for air
+	/// </summary>
+	/// <param name="lerp"></param>
+	/// <param name="duration">How long this operation last in frames</param>
 	public static void ForceAirLerp (float lerp, int duration = 1) {
 		ForceAirLerpFrame = Game.PauselessFrame + duration;
 		ForceAirLerpValue = lerp;
 	}
 
 
+	/// <summary>
+	/// Do not perform any lighting for given frames long
+	/// </summary>
 	public static void IgnoreLighting (int duration = 1) => IgnoreFrame = Game.GlobalFrame + duration;
 
 
+	/// <summary>
+	/// Do not ignore lighting any more
+	/// </summary>
 	public static void CancelIgnoreLighting () => IgnoreFrame = -1;
 
 

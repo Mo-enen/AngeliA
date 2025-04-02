@@ -4,9 +4,166 @@
         <name>com.angelia.platformer</name>
     </assembly>
     <members>
+        <member name="T:AngeliA.Platformer.NavigationOperateMotion">
+            <summary>
+            Type of navigation motion for a single step
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Navigation">
+            <summary>
+            Core system for navigate a platformer entity to move naturally
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Navigation.Operation">
+            <summary>
+            Data for a single step of navigation operation
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.Navigation.Operation.Motion">
+            <summary>
+            Type of the motion
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Navigation.IsReady">
+            <summary>
+            True if the navigation system is ready to use
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Navigation.NavigateTo(AngeliA.Platformer.Navigation.Operation[],System.Int32@,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Perform a navigation analysis to find the natural way to walk to target position
+            </summary>
+            <param name="Operations">Array to store the result data</param>
+            <param name="operationCount">How many operations generated</param>
+            <param name="fromX">Navigate from this position in global space</param>
+            <param name="fromY">Navigate from this position in global space</param>
+            <param name="toX">Navigate to this position in global space</param>
+            <param name="toY">Navigate to this position in global space</param>
+            <param name="jumpIteration">Iteration limit for jumpping logic</param>
+        </member>
+        <member name="M:AngeliA.Platformer.Navigation.ExpandTo(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@,System.Int32@,System.Boolean)">
+            <summary>
+            Search for a valid place to stay with
+            </summary>
+            <param name="fromX">Search from this position in global space</param>
+            <param name="fromY">Search from this position in global space</param>
+            <param name="toX">Search to this position in global space</param>
+            <param name="toY">Search to this position in global space</param>
+            <param name="maxIteration">Limitation for searching iteration (Set to 16 if you have no idea how many it should be)</param>
+            <param name="resultX">Result position to stay with in global space</param>
+            <param name="resultY">Result position to stay with in global space</param>
+            <param name="endInAir">True if the target is able to stay in air</param>
+            <returns>True if the searching performs successfuly</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.Navigation.IsGround(System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            True if the given location is ground tile for navigation
+            </summary>
+            <param name="globalX">Target position in global space</param>
+            <param name="globalY">Target position in global space</param>
+            <param name="groundY">Position Y for top edge of the founded ground in global space</param>
+        </member>
         <member name="T:AngeliA.Platformer.PlatformerUtil">
             <summary>
             Utility class for platformer package
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.PlatformerUtil.NavigationFreeWandering(AngeliA.Int2,AngeliA.Entity,System.Boolean@,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Find final position to move to for wandering around.
+            </summary>
+            <param name="aimPosition">Target position anchor</param>
+            <param name="target">Entity that moves around</param>
+            <param name="grounded">True if the final position is on ground</param>
+            <param name="frequency">Checking frequency in frame</param>
+            <param name="maxDistance">Limitation for being away from the aimPosition</param>
+            <param name="randomShift">Position shift on X in global space</param>
+            <returns>Final position in global space</returns>
+        </member>
+        <member name="T:AngeliA.Platformer.ArrowBullet`1">
+            <summary>
+            Bullet entity that spawns an item when destroy
+            </summary>
+            <typeparam name="I">Type of the item as arrow</typeparam>
+        </member>
+        <member name="T:AngeliA.Platformer.ArrowBullet">
+            <summary>
+            Bullet entity that spawns an item when destroy
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ArrowBullet.ArrowItemID">
+            <summary>
+            Target item to spawn when destroy
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ArrowBullet.ArrowArtworkID">
+            <summary>
+            Artwork sprite ID to render this bullet
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ArrowBullet.SpawnItemWhenBulletDestroy">
+            <summary>
+            True if the arrow item should be spawn when bullet destroy
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.BeamBullet">
+            <summary>
+            A type of bullet that shoot into straight line
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BeamBullet.BeamSpriteID">
+            <summary>
+            Artwork sprite ID for the beam body
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BeamBullet.SparkSpriteID">
+            <summary>
+            Artwork sprite ID for the beam spark effect
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BeamBullet.BurstSpriteID">
+            <summary>
+            Artwork sprite ID for the beam burst effect in the end-side
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BeamBullet.HandBurstSpriteID">
+            <summary>
+            Artwork sprite ID for the beam burst effect in the hand-side
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BeamBullet.BeamSize">
+            <summary>
+            Thickness of the beam in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BeamBullet.SparkSize">
+            <summary>
+            Size of the spark effect in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BeamBullet.BurstSize">
+            <summary>
+            Size of the end burst effect in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BeamBullet.HandBurstSize">
+            <summary>
+            Size of the hand burst effect in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BeamBullet.IllumanteUnitRadius">
+            <summary>
+            Radius in unit space for the LightingSystem
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BeamBullet.IllumanteAmount">
+            <summary>
+            How bright of the illumante (0 means no illumante. 1000 means general amount)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BeamBullet.OnlyShowBurstWhenHitReceiver">
+            <summary>
+            True if show burst effect when hit a IDamageReceiver, not just hit the environment
             </summary>
         </member>
         <member name="P:AngeliA.Platformer.ISlimeWalker.AttachingDirection">

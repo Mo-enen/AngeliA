@@ -23,7 +23,7 @@ public abstract class Launcher : Entity, IBlockEntity {
 	public virtual int LaunchFrequency => 120;
 	public virtual int ItemCountPreLaunch => 1;
 	public virtual bool AllowingAutoLaunch => true;
-	public virtual bool LaunchOverlapingElement => true;
+	public virtual bool LaunchOverlappingElement => true;
 	public virtual bool LaunchWhenEntranceBlocked => false;
 	public virtual bool KeepLaunchedEntityInMap => false;
 	public virtual bool LaunchTowardsPlayer => false;
@@ -54,7 +54,7 @@ public abstract class Launcher : Entity, IBlockEntity {
 
 
 	public void OnEntityRefresh () {
-		if (LaunchOverlapingElement) {
+		if (LaunchOverlappingElement) {
 			var pivotPos = PivotUnitPosition;
 			int id = WorldSquad.Front.GetBlockAt(pivotPos.x, pivotPos.y, pivotPos.z, BlockType.Element);
 			_TargetEntityId = Stage.IsValidEntityID(id) || ItemSystem.HasItem(id) ? id : FailbackEntityID;

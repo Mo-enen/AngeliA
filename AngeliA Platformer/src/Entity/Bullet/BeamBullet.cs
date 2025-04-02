@@ -60,7 +60,7 @@ public abstract class BeamBullet : MovableBullet {
 	/// </summary>
 	protected virtual int IllumanteUnitRadius => 3;
 	/// <summary>
-	/// How bright of the illumante (0 means no illumante. 1000 means full illumante)
+	/// How bright of the illumante (0 means no illumante. 1000 means general amount)
 	/// </summary>
 	protected virtual int IllumanteAmount => 300;
 	/// <summary>

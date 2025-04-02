@@ -5,21 +5,38 @@ using System.Collections.Generic;
 namespace AngeliA;
 
 
+/// <summary>
+/// Basic unit of a physics data structure
+/// </summary>
 public struct PhysicsCell {
 
 	public static readonly PhysicsCell EMPTY = new();
 
+	/// <summary>
+	/// Rect position in global space
+	/// </summary>
 	public IRect Rect;
+	/// <summary>
+	/// Target entity (null if from block)
+	/// </summary>
 	public Entity Entity;
-	public uint Frame;
+	internal uint Frame;
+	/// <summary>
+	/// True if this cell is marked as trigger
+	/// </summary>
 	public bool IsTrigger;
 	public Tag Tag;
+	/// <summary>
+	/// ID for identify which object filled this cell
+	/// </summary>
 	public int SourceID;
 
 }
 
 
-
+/// <summary>
+/// What type of cells are included for the operation
+/// </summary>
 public enum OperationMode {
 	ColliderOnly = 0,
 	TriggerOnly = 1,
@@ -27,6 +44,10 @@ public enum OperationMode {
 }
 
 
+/// <summary>
+/// Core system that handles physics of AngeliA games.
+/// Logic of the system is frame-isolated which means data from prev frame will never effect current frame.
+/// </summary>
 public static class Physics {
 
 
@@ -63,16 +84,15 @@ public static class Physics {
 
 	// Const
 	private const int DEPTH = 8;
-	public const string LayersName = nameof(Layers);
-	public const string CellsName = Layer.CellsName;
+	internal const string LayersName = nameof(Layers);
+	internal const string CellsName = Layer.CellsName;
 
 	// Api
-	public static int PositionX { get; private set; } = 0;
-	public static int PositionY { get; private set; } = 0;
-	public static int CellWidth { get; private set; } = 1;
-	public static int CellHeight { get; private set; } = 1;
-	public static uint CurrentFrame { get; private set; } = uint.MinValue;
+	/// <summary>
+	/// True if the system is ready to use.
+	/// </summary>
 	public static bool IsReady { get; private set; } = false;
+	internal static uint CurrentFrame { get; private set; } = uint.MinValue;
 
 	// Data
 	private static readonly PhysicsCell[] c_RoomOneway = new PhysicsCell[32];
@@ -82,6 +102,10 @@ public static class Physics {
 	private static readonly PhysicsCell[] c_OverlapAll = new PhysicsCell[1024];
 	private static readonly Pipe<(Rigidbody rig, IRect from, IRect to)> c_ForcePushCache = new(256);
 	private static Layer[] Layers = null;
+	private static int PositionX = 0;
+	private static int PositionY = 0;
+	private static int CellWidth = 1;
+	private static int CellHeight = 1;
 	private static int LayerCount = 0;
 	private static int GlobalOperationStamp = int.MinValue;
 
@@ -95,7 +119,7 @@ public static class Physics {
 
 
 	[OnGameInitializeLater(64)]
-	public static void Initialize () {
+	internal static void Initialize () {
 		int maxHeight = Universe.BuiltInInfo.MaxViewHeight;
 		CellWidth = Universe.BuiltInInfo.ViewRatio * maxHeight / 1000 / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
 		CellHeight = maxHeight / Const.CEL + Const.SPAWN_PADDING_UNIT * 2 + Const.LEVEL_SPAWN_PADDING_UNIT * 2;
@@ -117,12 +141,33 @@ public static class Physics {
 	}
 
 
+	/// <summary>
+	/// Add a physics cell for a map block for current frame. Call this function inside Entity.FirstUpdate
+	/// </summary>
+	/// <param name="layer">Which layer to add this cell into. (Use PhysicsLayer.XXX to get this value)</param>
+	/// <param name="blockID">ID of the source block</param>
+	/// <param name="globalRect">Rect position in global space</param>
+	/// <param name="isTrigger">True if the cell should mark as trigger</param>
+	/// <param name="tag">What extra info this cell have</param>
 	public static void FillBlock (int layer, int blockID, IRect globalRect, bool isTrigger = false, Tag tag = 0) => FillLogic(layer, blockID, globalRect, null, 0, 0, isTrigger, tag);
 
 
+	/// <summary>
+	/// Add a physics cell for an entity for current frame. Call this function inside Entity.FirstUpdate
+	/// </summary>
+	/// <param name="layer">Which layer to add this cell into. (Use PhysicsLayer.XXX to get this value)</param>
+	/// <param name="entity">Source entity for this cell</param>
+	/// <param name="isTrigger">True if the cell should mark as trigger</param>
+	/// <param name="tag">What extra info this cell have</param>
 	public static void FillEntity (int layer, Entity entity, bool isTrigger = false, Tag tag = 0) => FillLogic(layer, entity != null ? entity.TypeID : 0, entity.Rect, entity, 0, 0, isTrigger, tag);
 
 
+	/// <summary>
+	/// Remove all cells that overlap target range
+	/// </summary>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="globalRect">Rect position in global space</param>
+	/// <param name="mode">What type of cells are included for the operation</param>
 	public static void IgnoreOverlap (int mask, IRect globalRect, OperationMode mode = OperationMode.ColliderAndTrigger) {
 		for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
 			if ((mask & (1 << layerIndex)) == 0) continue;
@@ -153,6 +198,7 @@ public static class Physics {
 
 
 	// Overlap
+	/// <inheritdoc cref="Overlap(int, IRect, out PhysicsCell, Entity, OperationMode, Tag)"/>
 	public static bool Overlap (int mask, IRect globalRect, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
 			if ((mask & (1 << layerIndex)) == 0) continue;
@@ -162,6 +208,15 @@ public static class Physics {
 	}
 
 
+	/// <summary>
+	/// True if any cell overlap the given rect
+	/// </summary>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="globalRect">Rect position in global space</param>
+	/// <param name="ignore">Entity that should be excluded</param>
+	/// <param name="mode">What type of cells are included for the operation</param>
+	/// <param name="tag">Only cells with all tags should be included</param>
+	/// <param name="info">Cell of the overlaping object</param>
 	public static bool Overlap (int mask, IRect globalRect, out PhysicsCell info, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		for (int layerIndex = 0; layerIndex < LayerCount; layerIndex++) {
 			if ((mask & (1 << layerIndex)) == 0) continue;
@@ -172,6 +227,16 @@ public static class Physics {
 	}
 
 
+	/// <summary>
+	/// Find all cells that overlap with given rect and fill into an array (The array is cached internaly. Max size 1024)
+	/// </summary>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="globalRect">Rect position in global space</param>
+	/// <param name="count">How many cells are founded</param>
+	/// <param name="ignore">Entity that should be excluded</param>
+	/// <param name="mode">What type of cells are included for the operation</param>
+	/// <param name="tag">Only cells with all tags should be included</param>
+	/// <returns>Cell array with the results</returns>
 	public static PhysicsCell[] OverlapAll (
 		int mask, IRect globalRect, out int count, Entity ignore = null,
 		OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0
@@ -181,6 +246,16 @@ public static class Physics {
 	}
 
 
+	/// <summary>
+	/// Find all cells that overlap with given rect and fill into given array
+	/// </summary>
+	/// <param name="hits">The array that will hold the result</param>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="globalRect">Rect position in global space</param>
+	/// <param name="ignore">Entity that should be excluded</param>
+	/// <param name="mode">What type of cells are included for the operation</param>
+	/// <param name="tag">Only cells with all tags should be included</param>
+	/// <returns>How many cells are founded</returns>
 	public static int OverlapAll (
 		PhysicsCell[] hits, int mask, IRect globalRect, Entity ignore = null,
 		OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0
@@ -195,6 +270,15 @@ public static class Physics {
 
 
 	// Entity
+	/// <summary>
+	/// Get entity instance from stage that overlap given rect
+	/// </summary>
+	/// <typeparam name="T">Type of the target entity</typeparam>
+	/// <param name="globalRect">Rect position in global space</param>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="ignore">Entity that should be excluded</param>
+	/// <param name="mode">What type of cells are included for the operation</param>
+	/// <param name="tag">Only cells with all tags should be included</param>
 	public static T GetEntity<T> (IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);
 		for (int i = 0; i < count; i++) {
@@ -203,6 +287,17 @@ public static class Physics {
 		}
 		return default;
 	}
+
+
+	/// <summary>
+	/// Get entity instance from stage that overlap given rect
+	/// </summary>
+	/// <param name="typeID">Type of the target entity</param>
+	/// <param name="globalRect">Rect position in global space</param>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="ignore">Entity that should be excluded</param>
+	/// <param name="mode">What type of cells are included for the operation</param>
+	/// <param name="tag">Only cells with all tags should be included</param>
 	public static Entity GetEntity (int typeID, IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) {
 		int count = OverlapAll(c_GetEntity, mask, globalRect, ignore, mode, tag);
 		for (int i = 0; i < count; i++) {
@@ -213,16 +308,51 @@ public static class Physics {
 	}
 
 
+	/// <summary>
+	/// True if any entity instance from stage that overlap given rect
+	/// </summary>
+	/// <typeparam name="T">Type of the target entity</typeparam>
+	/// <param name="globalRect">Rect position in global space</param>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="ignore">Entity that should be excluded</param>
+	/// <param name="mode">What type of cells are included for the operation</param>
+	/// <param name="tag">Only cells with all tags should be included</param>
 	public static bool HasEntity<T> (IRect globalRect, int mask, Entity ignore = null, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) where T : Entity => GetEntity<T>(globalRect, mask, ignore, mode, tag) != null;
 
 
 	// Room Check
+	/// <inheritdoc cref="RoomCheck(int, IRect, Entity, Direction4, out PhysicsCell, OperationMode, Tag)"/>
 	public static bool RoomCheck (int mask, IRect rect, Entity entity, Direction4 direction, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) => RoomCheck(mask, rect, entity, direction, out _, mode, tag);
+
+
+	/// <summary>
+	/// True if there is free room founded at given direction (only Involving solid colliders)
+	/// </summary>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="rect">Start location in global space</param>
+	/// <param name="entity">Entity that should be exclude</param>
+	/// <param name="direction"></param>
+	/// <param name="mode">What type of cells are included for the operation</param>
+	/// <param name="tag">Only cells with all tags should be included</param>
+	/// <param name="hit">Cell of the object that blocks the free room</param>
 	public static bool RoomCheck (int mask, IRect rect, Entity entity, Direction4 direction, out PhysicsCell hit, OperationMode mode = OperationMode.ColliderOnly, Tag tag = 0) => !Overlap(mask, rect.EdgeOutside(direction), out hit, entity, mode, tag);
 
 
+	/// <inheritdoc cref="RoomCheckOneway(int, IRect, Entity, Direction4, out PhysicsCell, bool, bool)"/>
 	public static bool RoomCheckOneway (int mask, IRect rect, Entity entity, Direction4 direction, bool overlapCheck = false, bool blockOnly = false) =>
 		RoomCheckOneway(mask, rect, entity, direction, out _, overlapCheck, blockOnly);
+
+
+	/// <summary>
+	/// True if there is free room founded at given direction (only Involving oneway gate)
+	/// </summary>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="rect">Start location in global space</param>
+	/// <param name="entity">Entity that should be exclude</param>
+	/// <param name="direction"></param>
+	/// <param name="hit">Cell of the object that blocks the free room</param>
+	/// <param name="overlapCheck">True if oneway gates that not blocking the way (only overlap with rect) count as blocked</param>
+	/// <param name="blockOnly">True if ignore oneway gates from entities</param>
 	public static bool RoomCheckOneway (int mask, IRect rect, Entity entity, Direction4 direction, out PhysicsCell hit, bool overlapCheck = false, bool blockOnly = false) {
 		hit = PhysicsCell.EMPTY;
 		bool result = true;
@@ -244,12 +374,43 @@ public static class Physics {
 
 
 	// Move
+	/// <summary>
+	/// Perform move without oneway involved
+	/// </summary>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="from">Starting position in global space</param>
+	/// <param name="speedX">(in global space)</param>
+	/// <param name="speedY">(in global space)</param>
+	/// <param name="size">(in global space)</param>
+	/// <param name="entity">Target that is performing this movement</param>
+	/// <returns>New position in global space after the movement</returns>
 	public static Int2 MoveIgnoreOneway (int mask, Int2 from, int speedX, int speedY, Int2 size, Entity entity) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, true);
 
 
+	/// <summary>
+	/// Perform move
+	/// </summary>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="from">Starting position in global space</param>
+	/// <param name="speedX">(in global space)</param>
+	/// <param name="speedY">(in global space)</param>
+	/// <param name="size">(in global space)</param>
+	/// <param name="entity">Target that is performing this movement</param>
+	/// <returns>New position in global space after the movement</returns>
 	public static Int2 Move (int mask, Int2 from, int speedX, int speedY, Int2 size, Entity entity) => MoveSafeLogic(mask, from, speedX, speedY, size, entity, false);
 
 
+	/// <summary>
+	/// Perform move without safe checks. (eg. Collide with objects in middle when moving too fast) This version saves CPU usage.
+	/// </summary>
+	/// <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+	/// <param name="from">Starting position in global space</param>
+	/// <param name="direction">Which direction to move</param>
+	/// <param name="speed">(in global space)</param>
+	/// <param name="size">(in global space)</param>
+	/// <param name="entity">Target that is performing this movement</param>
+	/// <param name="ignoreOneway">True if oneway gates are excluded</param>
+	/// <returns>New position in global space after the movement</returns>
 	public static Int2 MoveImmediately (
 		int mask, Int2 from, Direction4 direction, int speed,
 		Int2 size, Entity entity, bool ignoreOneway = false
@@ -269,6 +430,12 @@ public static class Physics {
 	}
 
 
+	/// <summary>
+	/// Make a recursive push
+	/// </summary>
+	/// <param name="host">Entity that pushs other</param>
+	/// <param name="direction"></param>
+	/// <param name="distance">(in global space)</param>
 	public static void ForcePush (Rigidbody host, Direction4 direction, int distance) {
 		c_ForcePushCache.Reset();
 		int deltaX = direction.IsHorizontal() ? distance : 0;

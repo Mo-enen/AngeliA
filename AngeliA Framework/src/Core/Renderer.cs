@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
 
-
+/// <summary>
+/// Core system for draw artwork on screen for current frame
+/// </summary>
 public static class Renderer {
 
 
@@ -14,7 +15,7 @@ public static class Renderer {
 	#region --- SUB ---
 
 
-	public class CellComparer : IComparer<Cell> {
+	internal class CellComparer : IComparer<Cell> {
 		public static readonly CellComparer Instance = new();
 		public int Compare (Cell a, Cell b) =>
 			a.Z < b.Z ? -1 :
@@ -67,13 +68,25 @@ public static class Renderer {
 	[OnMainSheetReload] internal static Action OnMainSheetLoaded;
 
 	// Api
+	/// <summary>
+	/// Current rect position in global space for rendering the screen
+	/// </summary>
 	public static IRect CameraRect { get; private set; } = new IRect(0, 0, 1, 1);
+	/// <summary>
+	/// Local range for the actual range for content on screen (black bar appears when window too wide)
+	/// </summary>
 	public static FRect CameraRange { get; private set; } = new(0, 0, 1f, 1f);
+	/// <summary>
+	/// Rendering rect position in screen position
+	/// </summary>
 	public static IRect ScreenRenderRect { get; private set; }
-	public static float CameraRestrictionRate { get; private set; } = 1f;
+	/// <summary>
+	/// Total rendering layer count
+	/// </summary>
 	public static int LayerCount => Layers.Length;
-	public static int SpriteCount => MainSheet.Sprites.Count;
-	public static int GroupCount => MainSheet.Groups.Count;
+	/// <summary>
+	/// Index of current using artwork sheet
+	/// </summary>
 	public static int CurrentSheetIndex {
 		get => _CurrentSheetIndex;
 		set {
@@ -83,12 +96,31 @@ public static class Renderer {
 			}
 		}
 	}
+	/// <summary>
+	/// Index of current using rendering layer
+	/// </summary>
 	public static int CurrentLayerIndex { get; private set; } = 0;
+	/// <summary>
+	/// Index of current using font
+	/// </summary>
 	public static int CurrentFontIndex { get; private set; } = 0;
+	/// <summary>
+	/// Total alt sheet count
+	/// </summary>
 	public static int AltSheetCount => AltSheets.Count;
+	/// <summary>
+	/// True if the system is ready to use
+	/// </summary>
 	public static bool IsReady { get; private set; } = false;
+	/// <summary>
+	/// Instance of current using artwork sheet
+	/// </summary>
 	public static Sheet CurrentSheet { get; private set; }
+	/// <summary>
+	/// Instance of main/default artwork sheet
+	/// </summary>
 	public static readonly Sheet MainSheet = new(ignoreTextureAndPixels: Game.IgnoreArtworkPixels);
+	internal static float CameraRestrictionRate { get; private set; } = 1f;
 
 	// Data
 	private static readonly List<Sheet> AltSheets = [];
@@ -243,7 +275,7 @@ public static class Renderer {
 
 
 	[OnGameUpdate(-512)]
-	public static void BeginDraw () {
+	internal static void BeginDraw () {
 		IsDrawing = true;
 		Cell.EMPTY.Sprite = null;
 		Cell.EMPTY.TextSprite = null;
@@ -264,7 +296,7 @@ public static class Renderer {
 
 
 	[OnGameUpdatePauseless(-512)]
-	public static void UpdatePausing () {
+	internal static void UpdatePausing () {
 		if (Game.IsPlaying) return;
 		BeginDraw();
 	}
@@ -278,6 +310,9 @@ public static class Renderer {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Reset internal pool for rendering character and unload the textures for them
+	/// </summary>
 	public static void ClearCharSpritePool () {
 		foreach (var (_, sprite) in CharSpritePool) {
 			Game.UnloadTexture(sprite.Texture);
@@ -287,6 +322,14 @@ public static class Renderer {
 
 
 	// Sheet
+	/// <summary>
+	/// Get texture object for given sprite from sheet
+	/// </summary>
+	/// <typeparam name="T">Type of texture object</typeparam>
+	/// <param name="spriteID"></param>
+	/// <param name="sheetIndex"></param>
+	/// <param name="texture"></param>
+	/// <returns>True if the texture founded</returns>
 	public static bool TryGetTextureFromSheet<T> (int spriteID, int sheetIndex, out T texture) {
 		var sheet = sheetIndex < 0 || sheetIndex >= AltSheets.Count ? MainSheet : AltSheets[sheetIndex];
 		if (sheet.TexturePool.TryGetValue(spriteID, out object textureObj) && textureObj is T result) {
@@ -299,6 +342,9 @@ public static class Renderer {
 	}
 
 
+	/// <summary>
+	/// Load main sheet from built-in path
+	/// </summary>
 	public static void LoadMainSheet () {
 
 		string gameSheetPath = Universe.BuiltIn.GameSheetPath;
@@ -320,19 +366,33 @@ public static class Renderer {
 	}
 
 
+	/// <summary>
+	/// Add alt sheet into the system
+	/// </summary>
+	/// <param name="sheet"></param>
+	/// <returns>Index of the added alt sheet</returns>
 	public static int AddAltSheet (Sheet sheet) {
 		AltSheets.Add(sheet);
 		return AltSheets.Count - 1;
 	}
 
 
+	/// <summary>
+	/// Remove alt sheet at index from system
+	/// </summary>
 	public static void RemoveAltSheet (int index) => AltSheets.RemoveAt(index);
 
 
+	/// <summary>
+	/// Get instance of the alt sheet at given index
+	/// </summary>
 	public static Sheet GetAltSheet (int index) => AltSheets[index];
 
 
 	// Layer
+	/// <summary>
+	/// Set current using layer. Use RenderLayer.XXX to get this value.
+	/// </summary>
 	public static void SetLayer (int index) {
 		if (index < 0) {
 			CurrentLayerIndex = 1;
@@ -348,24 +408,57 @@ public static class Renderer {
 	public static void SetLayerToMultiply () => CurrentLayerIndex = RenderLayer.MULT;
 	public static void SetLayerToAdditive () => CurrentLayerIndex = RenderLayer.ADD;
 
+	/// <summary>
+	/// Clear the whole render layer
+	/// </summary>
+	/// <param name="layerIndex">Use RenderLayer.XXX to get this value</param>
 	public static void ResetLayer (int layerIndex) {
 		var layer = Layers[layerIndex];
 		layer.FocusedCell = 0;
 		layer.SortedIndex = 0;
 	}
 
+	/// <summary>
+	/// Sort cells inside layer with default comparer
+	/// </summary>
+	/// <param name="layerIndex">Use RenderLayer.XXX to get this value</param>
 	public static void SortLayer (int layerIndex) => Layers[layerIndex].ZSort();
+
+	/// <summary>
+	/// Sort cells inside layer reversely with default comparer
+	/// </summary>
+	/// <param name="layerIndex">Use RenderLayer.XXX to get this value</param>
 	public static void ReverseUnsortedCells (int layerIndex) => Layers[layerIndex].ReverseUnsorted();
+
+
+	/// <summary>
+	/// Do not sort the unsorted cells inside this layer
+	/// </summary>
+	/// <param name="layerIndex">Use RenderLayer.XXX to get this value</param>
 	public static void AbandonLayerSort (int layerIndex) => Layers[layerIndex].AbandonZSort();
 
 
+	/// <summary>
+	/// Get current cells count inside the using layer
+	/// </summary>
 	public static int GetUsedCellCount () => GetUsedCellCount(CurrentLayerIndex);
+	/// <summary>
+	/// Get current cells count inside given layer
+	/// </summary>
+	/// <param name="layerIndex">Use RenderLayer.XXX to get this value</param>
 	public static int GetUsedCellCount (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].Count : 0;
 
+	/// <summary>
+	/// Get total size of the layer
+	/// </summary>
+	/// <param name="layerIndex">Use RenderLayer.XXX to get this value</param>
 	public static int GetLayerCapacity (int layerIndex) => layerIndex >= 0 && layerIndex < Layers.Length ? Layers[layerIndex].Cells.Length : 0;
 
 
 	// Font
+	/// <summary>
+	/// Set current using font from ID
+	/// </summary>
 	public static void SetFontID (int id) {
 		CurrentFontIndex = 0;
 		if (id == 0) return;
@@ -387,27 +480,64 @@ public static class Renderer {
 	}
 
 
+	/// <summary>
+	/// Set current using font from index
+	/// </summary>
 	public static void SetFontIndex (int index) => CurrentFontIndex = index;
 
 
+	/// <summary>
+	/// Reset internal cache for font id with index
+	/// </summary>
 	public static void ClearFontIndexIdMap () => FontIdIndexMap.Clear();
 
 
+	/// <summary>
+	/// Add/set internal cache for font id with index
+	/// </summary>
 	public static void OverrideFontIdAndIndex (int fontId, int fontIndex) => FontIdIndexMap[fontId] = fontIndex;
 
 
 	// Draw
+	/// <inheritdoc cref="Draw(AngeSprite, int, int, int, int, int, int, int, Color32, int, bool)"/>
 	public static Cell Draw (int globalID, IRect rect, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Color32.WHITE, z);
+	/// <inheritdoc cref="Draw(AngeSprite, int, int, int, int, int, int, int, Color32, int, bool)"/>
 	public static Cell Draw (int globalID, IRect rect, Color32 color, int z = int.MinValue) => Draw(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+	/// <inheritdoc cref="Draw(AngeSprite, int, int, int, int, int, int, int, Color32, int, bool)"/>
 	public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
+	/// <inheritdoc cref="Draw(AngeSprite, int, int, int, int, int, int, int, Color32, int, bool)"/>
 	public static Cell Draw (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) => TryGetSprite(globalID, out var sprite, false) ? Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color, z) : Cell.EMPTY;
+	/// <inheritdoc cref="Draw(AngeSprite, int, int, int, int, int, int, int, Color32, int, bool)"/>
 	public static Cell Draw (SpriteCode globalID, IRect rect, int z = int.MinValue) => Draw(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Color32.WHITE, z);
+	/// <inheritdoc cref="Draw(AngeSprite, int, int, int, int, int, int, int, Color32, int, bool)"/>
 	public static Cell Draw (SpriteCode globalID, IRect rect, Color32 color, int z = int.MinValue) => Draw(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+	/// <inheritdoc cref="Draw(AngeSprite, int, int, int, int, int, int, int, Color32, int, bool)"/>
 	public static Cell Draw (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(globalID.ID, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
+	/// <inheritdoc cref="Draw(AngeSprite, int, int, int, int, int, int, int, Color32, int, bool)"/>
 	public static Cell Draw (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) => TryGetSprite(globalID.ID, out var sprite, false) ? Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color, z) : Cell.EMPTY;
+	/// <inheritdoc cref="Draw(AngeSprite, int, int, int, int, int, int, int, Color32, int, bool)"/>
 	public static Cell Draw (AngeSprite sprite, IRect rect, int z = int.MinValue) => Draw(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Color32.WHITE, z);
+	/// <inheritdoc cref="Draw(AngeSprite, int, int, int, int, int, int, int, Color32, int, bool)"/>
 	public static Cell Draw (AngeSprite sprite, IRect rect, Color32 color, int z = int.MinValue) => Draw(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+	/// <inheritdoc cref="Draw(AngeSprite, int, int, int, int, int, int, int, Color32, int, bool)"/>
 	public static Cell Draw (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
+	/// <summary>
+	/// Draw a artwork sprite into using render layer
+	/// </summary>
+	/// <param name="sprite">Artwork sprite</param>
+	/// <param name="globalID">Artwork sprite ID</param>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="x">Position in global space</param>
+	/// <param name="y">Position in global space</param>
+	/// <param name="pivotX">0 means "x" align with left edge. 1000 means "x" align with right edge.</param>
+	/// <param name="pivotY">0 means "y" align with bottom edge. 1000 means "y" align with top edge.</param>
+	/// <param name="rotation">Rotation in degree. 90 means facing right.</param>
+	/// <param name="width">Size in global space</param>
+	/// <param name="height">Size in global space</param>
+	/// <param name="color">Color tint</param>
+	/// <param name="z">Z value for sorting rendering cells</param>
+	/// <param name="ignoreAttach">True if do not draw attaching sprite</param>
+	/// <returns>Rendering cell for this sprite</returns>
 	public static Cell Draw (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue, bool ignoreAttach = false) {
 
 		if (!IsDrawing || sprite == null) return Cell.EMPTY;
@@ -468,18 +598,46 @@ public static class Renderer {
 		return cell;
 	}
 
+
+	/// <inheritdoc cref="DrawPixel(int, int, int, int, int, int, int, Color32, int)"/>
 	public static Cell DrawPixel (IRect rect, int z = int.MinValue) => Draw(Const.PIXEL, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, Color32.WHITE, z);
+	/// <inheritdoc cref="DrawPixel(int, int, int, int, int, int, int, Color32, int)"/>
 	public static Cell DrawPixel (IRect rect, Color32 color, int z = int.MinValue) => Draw(Const.PIXEL, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+	/// <inheritdoc cref="DrawPixel(int, int, int, int, int, int, int, Color32, int)"/>
 	public static Cell DrawPixel (int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => Draw(Const.PIXEL, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
+	/// <summary>
+	/// Draw a solid rectangle into using render layer
+	/// </summary>
+	/// <param name="x">Position in global space</param>
+	/// <param name="y">Position in global space</param>
+	/// <param name="pivotX">0 means "x" align with left edge. 1000 means "x" align with right edge.</param>
+	/// <param name="pivotY">0 means "y" align with bottom edge. 1000 means "y" align with top edge.</param>
+	/// <param name="rotation">Rotation in degree. 90 means facing right.</param>
+	/// <param name="width">Size in global space</param>
+	/// <param name="height">Size in global space</param>
+	/// <param name="color">Color tint</param>
+	/// <param name="z">Z value for sorting rendering cells</param>
+	/// <returns>Rendering cell for this sprite</returns>
 	public static Cell DrawPixel (int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) => TryGetSprite(Const.PIXEL, out var sprite) ? Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, color, z) : Cell.EMPTY;
 
 
 	// Char
+	/// <inheritdoc cref="DrawChar(CharSprite, int, int, int, int, Color32)"/>
 	public static Cell DrawChar (char c, int x, int y, int width, int height, Color32 color) {
 		if (!IsDrawing) return Cell.EMPTY;
 		if (!CharSpritePool.TryGetValue(new(c, CurrentFontIndex), out var tSprite)) return Cell.EMPTY;
 		return DrawChar(tSprite, x, y, width, height, color);
 	}
+	/// <summary>
+	/// Draw a text character into using render layer
+	/// </summary>
+	/// <param name="sprite"></param>
+	/// <param name="x">Position in global space</param>
+	/// <param name="y">Position in global space</param>
+	/// <param name="width">Size in global space</param>
+	/// <param name="height">Size in global space</param>
+	/// <param name="color">Color tint</param>
+	/// <returns>Rendering cell for this text character</returns>
 	public static Cell DrawChar (CharSprite sprite, int x, int y, int width, int height, Color32 color) {
 
 		if (!IsDrawing || sprite == null) return Cell.EMPTY;
@@ -515,11 +673,17 @@ public static class Renderer {
 
 
 	// 9-Slice
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (int globalID, IRect rect) => DrawSlice(globalID, rect, Color32.WHITE);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (int globalID, IRect rect, Color32 color, int z = int.MinValue) => DrawSlice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (int globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawSlice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (int globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawSlice(globalID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => DrawSlice(globalID, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
 		var border = TryGetSprite(globalID, out var sprite) ? sprite.GlobalBorder : default;
 		return DrawSlice(
@@ -529,8 +693,11 @@ public static class Renderer {
 			color, z
 		);
 	}
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawSlice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawSlice(globalID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (int globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z = int.MinValue) {
 		TryGetSprite(globalID, out var sprite);
 		return DrawSlice(
@@ -539,11 +706,17 @@ public static class Renderer {
 			borderL, borderR, borderD, borderU, partIgnore, color, z
 		);
 	}
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (SpriteCode globalID, IRect rect) => DrawSlice(globalID.ID, rect, Color32.WHITE);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (SpriteCode globalID, IRect rect, Color32 color, int z = int.MinValue) => DrawSlice(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (SpriteCode globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawSlice(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (SpriteCode globalID, IRect rect, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawSlice(globalID.ID, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => DrawSlice(globalID.ID, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
 		var border = TryGetSprite(globalID.ID, out var sprite) ? sprite.GlobalBorder : default;
 		return DrawSlice(
@@ -553,8 +726,12 @@ public static class Renderer {
 			color, z
 		);
 	}
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawSlice(globalID.ID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawSlice(globalID.ID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z = int.MinValue) {
 		TryGetSprite(globalID.ID, out var sprite);
 		return DrawSlice(
@@ -562,11 +739,17 @@ public static class Renderer {
 			borderL, borderR, borderD, borderU, partIgnore, color, z
 		);
 	}
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (AngeSprite sprite, IRect rect) => DrawSlice(sprite, rect, Color32.WHITE);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (AngeSprite sprite, IRect rect, Color32 color, int z = int.MinValue) => DrawSlice(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, color, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (AngeSprite sprite, IRect rect, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawSlice(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (AngeSprite sprite, IRect rect, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawSlice(sprite, rect.x, rect.y, 0, 0, 0, rect.width, rect.height, borderL, borderR, borderD, borderU, color, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int z = int.MinValue) => DrawSlice(sprite, x, y, pivotX, pivotY, rotation, width, height, Color32.WHITE, z);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, Color32 color, int z = int.MinValue) {
 		return DrawSlice(
 			sprite, x, y, pivotX, pivotY, rotation, width, height,
@@ -575,11 +758,31 @@ public static class Renderer {
 			DEFAULT_PART_IGNORE, color, z
 		);
 	}
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawSlice(sprite, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
-	public static Cell[] DrawSlice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawSlice(
-		sprite, x, y, pivotX, pivotY, rotation, width, height,
-		borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z
-	);
+	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
+	public static Cell[] DrawSlice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawSlice(sprite, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);
+	/// <summary>
+	/// Proportionally scale the sprite by dividing it into nine sections, protecting the corners and scaling/tiling the edges and center to maintain the image's integrity and prevent distortion.
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="globalID">Artwork sprite ID</param>
+	/// <param name="sprite">Artwork sprite</param>
+	/// <param name="x">Position in global space</param>
+	/// <param name="y">Position in global space</param>
+	/// <param name="pivotX">0 means "x" align with left edge. 1000 means "x" align with right edge.</param>
+	/// <param name="pivotY">0 means "y" align with bottom edge. 1000 means "y" align with top edge.</param>
+	/// <param name="rotation">Rotation in degree. 90 means facing right.</param>
+	/// <param name="width">Size in global space</param>
+	/// <param name="height">Size in global space</param>
+	/// <param name="borderL">Padding left in global space</param>
+	/// <param name="borderR">Padding right in global space</param>
+	/// <param name="borderD">Padding down in global space</param>
+	/// <param name="borderU">Padding up in global space</param>
+	/// <param name="partIgnore">Which part should be ignored. Set to true to exclude that part.</param>
+	/// <param name="color">Color tint</param>
+	/// <param name="z">Z value for sorting rendering cells</param>
+	/// <returns>9 Rendering cells for this sprite</returns>
 	public static Cell[] DrawSlice (AngeSprite sprite, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, bool[] partIgnore, Color32 color, int z) {
 
 		SLICE_RESULT[0] = SLICE_RESULT[1] = SLICE_RESULT[2] = Cell.EMPTY;
@@ -746,16 +949,39 @@ public static class Renderer {
 
 
 	// Animation
+	/// <summary>
+	/// Get total duration in frame of an animation group
+	/// </summary>
 	public static int GetAnimationGroupDuration (int chainID) {
 		if (!TryGetSpriteGroup(chainID, out var group) || !group.Animated) return 0;
 		return CurrentSheet.GetSpriteAnimationDuration(group);
 	}
+
+	/// <summary>
+	/// Get total duration in frame of an animation group
+	/// </summary>
 	public static int GetAnimationGroupDuration (SpriteGroup group) => CurrentSheet.GetSpriteAnimationDuration(group);
 
+
+	/// <inheritdoc cref="DrawAnimation(SpriteGroup, int, int, int, int, int, int, int, int, int)"/>
 	public static Cell DrawAnimation (int chainID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int z = int.MinValue) {
 		if (!TryGetSpriteGroup(chainID, out var group) || !group.Animated) return Cell.EMPTY;
 		return DrawAnimation(group, x, y, pivotX, pivotY, rotation, width, height, frame, z);
 	}
+	/// <summary>
+	/// Draw the given animation into using render layer
+	/// </summary>
+	/// <param name="group"></param>
+	/// <param name="x">Position in global space</param>
+	/// <param name="y">Position in global space</param>
+	/// <param name="pivotX">0 means "x" align with left edge. 1000 means "x" align with right edge.</param>
+	/// <param name="pivotY">0 means "y" align with bottom edge. 1000 means "y" align with top edge.</param>
+	/// <param name="rotation">Rotation in degree. 90 means facing right.</param>
+	/// <param name="width">Size in global space</param>
+	/// <param name="height">Size in global space</param>
+	/// <param name="frame">Animation frame</param>
+	/// <param name="z">Z value for sorting rendering cells</param>
+	/// <returns>Rendering cell for this sprite</returns>
 	public static Cell DrawAnimation (SpriteGroup group, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int frame, int z = int.MinValue) {
 		if (CurrentSheet.TryGetSpriteFromAnimationFrame(group, frame, out var sprite)) {
 			return Draw(sprite, x, y, pivotX, pivotY, rotation, width, height, z);
@@ -765,10 +991,21 @@ public static class Renderer {
 
 
 	// Sprite Data
+	/// <summary>
+	/// True if sprite with given ID is founded
+	/// </summary>
 	public static bool HasSprite (int globalID) => CurrentSheet.SpritePool.ContainsKey(globalID);
 
 
+	/// <summary>
+	/// True if sprite group with given ID is founded
+	/// </summary>
 	public static bool HasSpriteGroup (int groupID) => CurrentSheet.GroupPool.ContainsKey(groupID);
+	/// <summary>
+	/// True if sprite group with given ID is founded
+	/// </summary>
+	/// <param name="groupID"></param>
+	/// <param name="groupLength"></param>
 	public static bool HasSpriteGroup (int groupID, out int groupLength) {
 		if (CurrentSheet.GroupPool.TryGetValue(groupID, out var values)) {
 			groupLength = values.Count;
@@ -780,6 +1017,13 @@ public static class Renderer {
 	}
 
 
+	/// <summary>
+	/// Get instance of sprite
+	/// </summary>
+	/// <param name="globalID"></param>
+	/// <param name="sprite"></param>
+	/// <param name="ignoreAnimation">True if ignore animation group with "globalID" as chainID</param>
+	/// <returns>True if sprite founded</returns>
 	public static bool TryGetSprite (int globalID, out AngeSprite sprite, bool ignoreAnimation = true) {
 		var sheet = CurrentSheet;
 		if (sheet.SpritePool.TryGetValue(globalID, out sprite)) return true;
@@ -791,12 +1035,34 @@ public static class Renderer {
 	}
 
 
+	/// <summary>
+	/// Get instance of animation group
+	/// </summary>
+	/// <param name="groupID"></param>
+	/// <param name="group"></param>
+	/// <returns>True if animation group founded</returns>
 	public static bool TryGetAnimationGroup (int groupID, out SpriteGroup group) => CurrentSheet.GroupPool.TryGetValue(groupID, out group) && group.Animated;
 
 
+	/// <summary>
+	/// Get instance of sprite group
+	/// </summary>
+	/// <param name="groupID"></param>
+	/// <param name="group"></param>
+	/// <returns>True if sprite group founded</returns>
 	public static bool TryGetSpriteGroup (int groupID, out SpriteGroup group) => CurrentSheet.GroupPool.TryGetValue(groupID, out group);
 
 
+	/// <summary>
+	/// Get sprite instance from given group ID and index
+	/// </summary>
+	/// <param name="groupID"></param>
+	/// <param name="index"></param>
+	/// <param name="sprite"></param>
+	/// <param name="loopIndex">True if the index loop</param>
+	/// <param name="clampIndex">True if clamp the index when out of range</param>
+	/// <param name="ignoreAnimatedWhenFailback">True if don't use animated sprite when returning the failback sprite</param>
+	/// <returns>True if sprite founded</returns>
 	public static bool TryGetSpriteFromGroup (int groupID, int index, out AngeSprite sprite, bool loopIndex = true, bool clampIndex = true, bool ignoreAnimatedWhenFailback = true) {
 		if (CurrentSheet.GroupPool.TryGetValue(groupID, out var group)) {
 			if (loopIndex) index = index.UMod(group.Count);
@@ -814,35 +1080,65 @@ public static class Renderer {
 	}
 
 
+	/// <summary>
+	/// Get sprite for rendering UI/icon/gizmos
+	/// </summary>
+	/// <param name="artworkID"></param>
+	/// <param name="sprite"></param>
+	/// <returns>True if sprite founded</returns>
 	public static bool TryGetSpriteForGizmos (int artworkID, out AngeSprite sprite) => TryGetSprite(artworkID, out sprite, true) || TryGetSpriteFromGroup(artworkID, 0, out sprite);
 
 
-	public static AngeSprite GetSpriteAt (int index) {
-		var sheet = CurrentSheet;
-		return index >= 0 && index < sheet.Sprites.Count ? sheet.Sprites[index] : null;
-	}
-
-
-	public static SpriteGroup GetGroupAt (int index) {
-		var sheet = CurrentSheet;
-		return index >= 0 && index < sheet.Groups.Count ? sheet.Groups[index] : null;
-	}
-
-
 	// Clamp
+	/// <summary>
+	/// Clamp cells in using layer inside rect range
+	/// </summary>
+	/// <param name="rect">Target range in global space</param>
+	/// <param name="startIndex"></param>
+	/// <param name="endIndex">(excluded)</param>
 	public static void ClampCells (IRect rect, int startIndex, int endIndex = -1) {
 		if (endIndex < 0) endIndex = GetUsedCellCount(CurrentLayerIndex);
 		FrameworkUtil.ClampCells(Layers[CurrentLayerIndex].Cells, rect, startIndex, endIndex);
 	}
+
+	/// <summary>
+	/// Clamp cells for given layer inside rect range
+	/// </summary>
+	/// <param name="layerIndex">Use RenderLayer.XXX to get this value</param>
+	/// <param name="rect">Target range in global space</param>
+	/// <param name="startIndex"></param>
+	/// <param name="endIndex">(excluded)</param>
 	public static void ClampCells (int layerIndex, IRect rect, int startIndex, int endIndex = -1) {
 		if (endIndex < 0) endIndex = GetUsedCellCount(layerIndex);
 		FrameworkUtil.ClampCells(Layers[layerIndex].Cells, rect, startIndex, endIndex);
 	}
-	public static void ClampCells (Cell[] cells, IRect rect) => FrameworkUtil.ClampCells(cells, rect, 0, cells.Length);
+
+	/// <summary>
+	/// Clamp cells inside rect range
+	/// </summary>
+	/// <param name="cells"></param>
+	/// <param name="rect">Target range in global space</param>
+	/// <param name="startIndex"></param>
+	/// <param name="endIndex">(excluded)</param>
+	public static void ClampCells (Cell[] cells, IRect rect, int startIndex = 0, int endIndex = -1) => FrameworkUtil.ClampCells(cells, rect, startIndex, endIndex);
 
 
 	// Layer Access
+	/// <summary>
+	/// Get cells inside using layer
+	/// </summary>
+	/// <param name="cells"></param>
+	/// <param name="count"></param>
+	/// <returns>True if cells founded</returns>
 	public static bool GetCells (out Span<Cell> cells, out int count) => GetCells(CurrentLayerIndex, out cells, out count);
+
+	/// <summary>
+	/// Get cells inside given layer
+	/// </summary>
+	/// <param name="layer">Use RenderLayer.XXX to get this value</param>
+	/// <param name="cells"></param>
+	/// <param name="count"></param>
+	/// <returns>True if cells founded</returns>
 	public static bool GetCells (int layer, out Span<Cell> cells, out int count) {
 		if (layer >= 0 && layer < LayerCount) {
 			var item = Layers[layer];
@@ -857,13 +1153,36 @@ public static class Renderer {
 	}
 
 
+	/// <summary>
+	/// Get current color tint for given layer
+	/// </summary>
+	/// <param name="layer">Use RenderLayer.XXX to get this value</param>
 	public static Color32 GetLayerTint (int layer) => Layers[layer].LayerTint;
+
+	/// <summary>
+	/// Set current color tint for given layer
+	/// </summary>
+	/// <param name="layer">Use RenderLayer.XXX to get this value</param>
+	/// <param name="tint"></param>
 	public static void SetLayerTint (int layer, Color32 tint) => Layers[layer].LayerTint = tint;
+
+	/// <summary>
+	/// Make current color tint multiply given value for given layer
+	/// </summary>
+	/// <param name="layer">Use RenderLayer.XXX to get this value</param>
+	/// <param name="tint"></param>
 	public static void MultLayerTint (int layer, Color32 tint) => Layers[layer].LayerTint *= tint;
 
 
 	// Internal
+	/// <summary>
+	/// Require given text character from internal caching
+	/// </summary>
 	public static bool RequireCharForPool (char c, out CharSprite charSprite) => RequireCharForPool(c, CurrentFontIndex, out charSprite);
+
+	/// <summary>
+	/// Require given text character from internal caching
+	/// </summary>
 	public static bool RequireCharForPool (char c, int fontIndex, out CharSprite charSprite) {
 		if (CharSpritePool.TryGetValue(new Int2(c, fontIndex), out var textSprite)) {
 			// Get Exists
