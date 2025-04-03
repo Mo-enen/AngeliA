@@ -2,8 +2,14 @@
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Summon character that summons when other characters put the origin item in their inventory
+/// </summary>
 public abstract class ItemBasedSummon : Summon {
 
+	/// <summary>
+	/// ID of the item that make this character summons
+	/// </summary>
 	public int OriginItemID { get; set; } = 0;
 
 	public override void OnActivated () {

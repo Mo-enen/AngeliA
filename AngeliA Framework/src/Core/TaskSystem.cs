@@ -3,8 +3,23 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
-public enum TaskResult { Continue, End, }
+/// <summary>
+/// Represent result of the task at current frame
+/// </summary>
+public enum TaskResult {
+	/// <summary>
+	/// The task should keep one
+	/// </summary>
+	Continue,
+	/// <summary>
+	/// The task should end
+	/// </summary>
+	End,
+}
 
+/// <summary>
+/// Core system to handle in-game task that interrupt the gameplay
+/// </summary>
 public static class TaskSystem {
 
 
@@ -28,7 +43,7 @@ public static class TaskSystem {
 
 
 	[OnGameInitialize(-128)]
-	public static void Initialize () {
+	internal static void Initialize () {
 		Pool.Clear();
 		foreach (var type in typeof(Task).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is Task item) {
@@ -94,8 +109,22 @@ public static class TaskSystem {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Add a new task to first in current queue
+	/// </summary>
+	/// <param name="id">Type ID of the task. Use typeof(YourTask).AngeHash() to cache this ID</param>
+	/// <param name="task">Instance of the task</param>
+	/// <returns>True if successfuly added</returns>
 	public static bool TryAddToFirst (int id, out Task task) => (task = AddToFirst(id)) is not null;
+	/// <summary>
+	/// Add a new task to first in current queue with custom data
+	/// </summary>
+	/// <param name="id">Type ID of the task. Use typeof(YourTask).AngeHash() to cache this ID</param>
+	/// <param name="userData">Custom data of this operation. Use Task.UserData to get this data in the task's internal logic.</param>
+	/// <param name="task">Instance of the task</param>
+	/// <returns>True if successfuly added</returns>
 	public static bool TryAddToFirst (int id, object userData, out Task task) => (task = AddToFirst(id, userData)) is not null;
+	/// <inheritdoc cref="TryAddToFirst(int, object, out Task)"/>
 	public static Task AddToFirst (int id, object userData = null) {
 		if (!Pool.TryGetValue(id, out var task)) return null;
 		if (CurrentTask == null) {
@@ -107,9 +136,22 @@ public static class TaskSystem {
 		return task;
 	}
 
-
+	/// <summary>
+	/// Add a new task to last in current queue
+	/// </summary>
+	/// <param name="id">Type ID of the task. Use typeof(YourTask).AngeHash() to cache this ID</param>
+	/// <param name="task">Instance of the task</param>
+	/// <returns>True if successfuly added</returns>
 	public static bool TryAddToLast (int id, out Task task) => (task = AddToLast(id)) is not null;
+	/// <summary>
+	/// Add a new task to last in current queue with custom data
+	/// </summary>
+	/// <param name="id">Type ID of the task. Use typeof(YourTask).AngeHash() to cache this ID</param>
+	/// <param name="userData">Custom data of this operation. Use Task.UserData to get this data in the task's internal logic.</param>
+	/// <param name="task">Instance of the task</param>
+	/// <returns>True if successfuly added</returns>
 	public static bool TryAddToLast (int id, object userData, out Task task) => (task = AddToLast(id, userData)) is not null;
+	/// <inheritdoc cref="TryAddToLast(int, object, out Task)"/>
 	public static Task AddToLast (int id, object userData = null) {
 		if (!Pool.TryGetValue(id, out var task)) return null;
 		if (CurrentTask == null) {
@@ -121,13 +163,18 @@ public static class TaskSystem {
 		return task;
 	}
 
-
+	/// <summary>
+	/// Reset all current performing tasks
+	/// </summary>
 	public static void ClearAllTask () {
 		CurrentTask = null;
 		Tasks.Clear();
 	}
 
 
+	/// <summary>
+	/// Make all current performing task ends
+	/// </summary>
 	public static void EndAllTask () {
 		var cTask = CurrentTask;
 		if (cTask != null) {
@@ -141,12 +188,28 @@ public static class TaskSystem {
 	}
 
 
+	/// <summary>
+	/// Get instance of task inside current performing queue
+	/// </summary>
 	public static Task GetTaskAt (int index) => Tasks[index].task;
+	/// <summary>
+	/// Get instance of current performing task
+	/// </summary>
 	public static Task GetCurrentTask () => CurrentTask;
+	/// <summary>
+	/// Get how many tasks are currently waiting for the current task
+	/// </summary>
 	public static int GetWaitingTaskCount () => Tasks.Count;
 
 
+	/// <summary>
+	/// True if there are any task performing
+	/// </summary>
+	/// <returns></returns>
 	public static bool HasTask () => CurrentTask != null;
+	/// <summary>
+	/// True if there are any task in given type performing
+	/// </summary>
 	public static bool HasTask<T> () where T : Task {
 		if (CurrentTask is T) return true;
 		foreach (var s in Tasks) {
@@ -156,9 +219,9 @@ public static class TaskSystem {
 	}
 
 
-	public static bool IsTasking<T> () where T : Task => CurrentTask is T;
-
-
+	/// <summary>
+	/// Get global single instance of the task for given type ID
+	/// </summary>
 	public static Task PeekFromPool (int id) => Pool.TryGetValue(id, out var task) ? task : null;
 
 

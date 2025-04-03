@@ -4,6 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// An invisible bullet created by melee weapon
+/// </summary>
 public class MeleeBullet : Bullet {
 
 	// Const
@@ -22,6 +25,9 @@ public class MeleeBullet : Bullet {
 	}
 
 	// API
+	/// <summary>
+	/// Update the position of bullet so it attach to the weapon
+	/// </summary>
 	public void FollowSender () {
 		if (Sender is not Character character) return;
 		var characterRect = character.Rect;

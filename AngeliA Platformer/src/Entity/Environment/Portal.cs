@@ -6,6 +6,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Entity that teleport player to any given position when player touchs
+/// </summary>
 [EntityAttribute.MapEditorGroup("Teleport")]
 public abstract class Portal : Entity {
 
@@ -53,7 +56,7 @@ public abstract class Portal : Entity {
 			);
 			character.X = X + Width / 2;
 			character.Y = Y;
-			Stage.Settle();
+			Game.Settle();
 			return true;
 		} else if (character != null) {
 			if (TargetGlobalPosition.z != Stage.ViewZ) {

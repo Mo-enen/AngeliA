@@ -3,14 +3,21 @@ using System.Collections.Generic;
 
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 
+/// <summary>
+/// Entity that function as a check point. Can also use to unlock a type of check point.
+/// </summary>
 public abstract class CheckAltar<CP> : CheckAltar where CP : CheckPoint {
 	public CheckAltar () => LinkedCheckPointID = typeof(CP).AngeHash();
 }
 
 
+/// <summary>
+/// Entity that function as a check point. Can also use to unlock a type of check point.
+/// </summary>
 [EntityAttribute.MapEditorGroup("CheckPoint")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
@@ -22,8 +29,17 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 
 
 	// Api
+	/// <summary>
+	/// True if the internal cp link pool is ready to use
+	/// </summary>
 	public static bool LinkPoolReady { get; private set; } = false;
+	/// <summary>
+	/// Current activating altar type ID
+	/// </summary>
 	public static int CurrentAltarID { get; private set; } = 0;
+	/// <summary>
+	/// Current activating altar position in unit space
+	/// </summary>
 	public static Int3 CurrentAltarUnitPos { get; private set; }
 
 	// Data
@@ -139,17 +155,28 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Use this function to control logic that handles player touch
+	/// </summary>
 	public virtual void Touch () => TriggerCheckAltar(TypeID, new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ));
 
 
 	public static bool TryGetLinkedID (int id, out int linkedID) => LinkPool.TryGetValue(id, out linkedID);
 
 
-	public static void TriggerCheckAltar (Int3 unitPos) {
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private static void TriggerCheckAltar (Int3 unitPos) {
 		int id = WorldSquad.Front.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
 		TriggerCheckAltar(id, unitPos);
 	}
-	public static void TriggerCheckAltar (int id, Int3 unitPos) {
+	private static void TriggerCheckAltar (int id, Int3 unitPos) {
 
 		// Update Last Checked Pos
 		CurrentAltarID = id;

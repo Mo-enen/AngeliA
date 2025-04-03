@@ -4,15 +4,33 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Entity that move the objects on top horizontaly
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Conveyor : Entity, IBlockEntity {
 
 	// Api
 	protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
+	/// <summary>
+	/// Speed apply on object on top
+	/// </summary>
 	protected abstract int MoveSpeed { get; }
+	/// <summary>
+	/// Artwork sprite ID for left facing block
+	/// </summary>
 	protected abstract int ArtCodeLeft { get; }
+	/// <summary>
+	/// Artwork sprite ID for middle block
+	/// </summary>
 	protected abstract int ArtCodeMid { get; }
+	/// <summary>
+	/// Artwork sprite ID for right facing block
+	/// </summary>
 	protected abstract int ArtCodeRight { get; }
+	/// <summary>
+	/// Artwork sprite ID for isolated block
+	/// </summary>
 	protected abstract int ArtCodeSingle { get; }
 
 	// MSG
@@ -67,6 +85,9 @@ public abstract class Conveyor : Entity, IBlockEntity {
 	}
 
 	// LGC
+	/// <summary>
+	/// Reload fitting pose from map or stage
+	/// </summary>
 	protected void ReloadPose () {
 		bool hasLeft;
 		bool hasRight;

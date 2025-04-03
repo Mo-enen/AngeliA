@@ -2,7 +2,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Entity that can be break by taking damage
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 
@@ -10,8 +12,14 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 	bool IDamageReceiver.TakeDamageFromLevel => false;
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	public override bool DestroyWhenInsideGround => true;
+	/// <summary>
+	/// True if this entity spawn item from map element overlaps on it
+	/// </summary>
 	public virtual bool SpawnItemFromMapWhenBreak => false;
-	public virtual Tag IgnoreDamageType => Tag.None; // ※ Interface
+	/// <summary>
+	/// This entity do not take damage with this tags
+	/// </summary>
+	public virtual Tag IgnoreDamageType => Tag.None; // ※ From Interface
 
 	// MSG 
 	void IDamageReceiver.OnDamaged (Damage damage) {
@@ -26,6 +34,9 @@ public abstract class Breakable : Rigidbody, IBlockEntity, IDamageReceiver {
 		Draw();
 	}
 
+	/// <summary>
+	/// This function is called when entity breaks
+	/// </summary>
 	protected virtual void OnBreak () {
 		// Drop Item from Code
 		if (!IgnoreReposition) {

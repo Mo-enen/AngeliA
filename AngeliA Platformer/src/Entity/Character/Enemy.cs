@@ -4,6 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Characters that attack the player
+/// </summary>
 [EntityAttribute.SpawnWithCheatCode]
 [EntityAttribute.RepositionWhenInactive]
 public abstract class Enemy : Character {
@@ -11,6 +14,9 @@ public abstract class Enemy : Character {
 	// VAR
 	public override int Team => Const.TEAM_ENEMY;
 	public override int AttackTargetTeam => Const.TEAM_PLAYER | Const.TEAM_ENVIRONMENT;
+	/// <summary>
+	/// True if this enemy deal damage to player when touching the player
+	/// </summary>
 	protected virtual bool DamageOnTouch => true;
 
 	// MSG

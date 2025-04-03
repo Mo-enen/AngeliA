@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer;
+using AngeliA;
+
+namespace AngeliA.Platformer;
 
 
 [EntityAttribute.DontDespawnOutOfRange]

@@ -3,23 +3,42 @@ using System.Collections.Generic;
 
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
 
+/// <summary>
+/// Camera gate that clamp camera to down side
+/// </summary>
 public class CameraGateDown : CameraGate {
 	protected override Direction4 Direction => Direction4.Down;
 }
+
+/// <summary>
+/// Camera gate that clamp camera to up side
+/// </summary>
 public class CameraGateUp : CameraGate {
 	protected override Direction4 Direction => Direction4.Up;
 }
+
+/// <summary>
+/// Camera gate that clamp camera to left side
+/// </summary>
 public class CameraGateLeft : CameraGate {
 	protected override Direction4 Direction => Direction4.Left;
 }
+
+/// <summary>
+/// Camera gate that clamp camera to right side
+/// </summary>
 public class CameraGateRight : CameraGate {
 	protected override Direction4 Direction => Direction4.Right;
 }
 
 
+/// <summary>
+/// Entity that perform extra controls to the in-game camera movement
+/// </summary>
 [EntityAttribute.DontDrawBehind]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.MapEditorGroup("System", -512)]
@@ -28,6 +47,9 @@ public abstract class CameraGate : Entity {
 
 	// Api
 	private const int PRIORITY = 2;
+	/// <summary>
+	/// Which direction does this gate clamp the camera position
+	/// </summary>
 	protected abstract Direction4 Direction { get; }
 
 	// Data

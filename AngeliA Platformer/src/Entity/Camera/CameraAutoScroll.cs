@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Camera control entity that makes the camera follows a given path
+/// </summary>
 [EntityAttribute.MapEditorGroup("System", -512)]
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDrawBehind]

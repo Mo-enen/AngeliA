@@ -67,7 +67,7 @@ public class OnOffSwitch : Entity, IBumpable, IAutoTrackWalker {
 
 	void IBumpable.OnBumped (Entity entity, Damage damage) {
 		if (TrySwitch()) {
-			Game.PlaySoundAtPosition(SWITCH_AC, XY);
+			FrameworkUtil.PlaySoundAtPosition(SWITCH_AC, XY);
 		}
 	}
 

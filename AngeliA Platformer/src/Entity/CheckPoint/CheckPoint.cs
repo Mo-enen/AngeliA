@@ -5,6 +5,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Entity that save player position when player touchs. When game restart, player spawns to the saved position.
+/// </summary>
 [EntityAttribute.MapEditorGroup("CheckPoint")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
@@ -16,9 +19,18 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 
 
 	// Api
-	public static event System.Action<CheckPoint, Character> OnCheckPointTouched;
+	[OnCheckPointTouched_CheckPoint_Character] static readonly System.Action<CheckPoint, Character> OnCheckPointTouched;
+	/// <summary>
+	/// Position in unit space for last check point get triggered
+	/// </summary>
 	public static Int3? LastTriggeredCheckPointUnitPosition { get; private set; } = null;
+	/// <summary>
+	/// Type ID for last check point get triggered
+	/// </summary>
 	public static int LastTriggeredCheckPointID { get; private set; } = 0;
+	/// <summary>
+	/// True if only work when linked altar is unlocked
+	/// </summary>
 	protected virtual bool RequireAltarUnlock => false;
 	protected int LastTriggerFrame = int.MinValue;
 
@@ -42,7 +54,7 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 
 
 	[OnGameRestart]
-	public static void OnGameRestart () {
+	internal static void OnGameRestart () {
 		LastTriggeredCheckPointUnitPosition = null;
 		LastTriggeredCheckPointID = 0;
 	}
@@ -133,6 +145,9 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Use this function to control logic when player touch
+	/// </summary>
 	public virtual void Touch () {
 		TriggerCheckPoint(TypeID, new Int3(X.ToUnit(), Y.ToUnit(), Stage.ViewZ));
 		OnCheckPointTouched?.Invoke(this, PlayerSystem.Selecting);
@@ -140,11 +155,19 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 	}
 
 
-	public static void TriggerCheckPoint (Int3 unitPos) {
+	#endregion
+
+
+
+
+	#region --- LGC ---
+
+
+	private static void TriggerCheckPoint (Int3 unitPos) {
 		int id = WorldSquad.Front.GetBlockAt(unitPos.x, unitPos.y, unitPos.z, BlockType.Entity);
 		TriggerCheckPoint(id, unitPos);
 	}
-	public static void TriggerCheckPoint (int id, Int3 unitPos) {
+	private static void TriggerCheckPoint (int id, Int3 unitPos) {
 
 		LastTriggeredCheckPointUnitPosition = unitPos;
 		LastTriggeredCheckPointID = id;

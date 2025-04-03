@@ -5,9 +5,12 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
-public enum RigidbodyNavigationState { Idle, Operation, Fly, }
+internal enum RigidbodyNavigationState { Idle, Operation, Fly, }
 
 
+/// <summary>
+/// Behavior that handles auto movement for a target rigidbody
+/// </summary>
 public class RigidbodyNavigation (Rigidbody target) {
 
 
@@ -18,26 +21,65 @@ public class RigidbodyNavigation (Rigidbody target) {
 
 	// Api
 	public readonly Rigidbody Target = target;
-	public RigidbodyNavigationState NavigationState { get; set; } = RigidbodyNavigationState.Idle;
+	/// <summary>
+	/// Current target position this navigation want to go for
+	/// </summary>
 	public Int2 NavigationAim { get; set; } = default;
+	/// <summary>
+	/// True if the aim position is touching ground
+	/// </summary>
 	public bool NavigationAimGrounded { get; set; } = default;
+	/// <summary>
+	/// True if there is still any operation to perform
+	/// </summary>
 	public bool HasPerformableOperation => CurrentNavOperationIndex < CurrentNavOperationCount || CurrentNavOperationCount == 0;
+	internal RigidbodyNavigationState NavigationState { get; set; } = RigidbodyNavigationState.Idle;
 
 	// Override
+	/// <summary>
+	/// True if this behavior should work currently
+	/// </summary>
 	public virtual bool NavigationEnable => true;
+	/// <summary>
+	/// True if the target should only be inside the stage spawn rect
+	/// </summary>
 	public virtual bool ClampInSpawnRect => false;
+	/// <summary>
+	/// True if the target immediately goes to the aim position when they can not fly
+	/// </summary>
 	public virtual bool TeleportWhenCantFly => false;
 	public virtual int DefaultRunSpeed => 12;
 	public virtual int DefaultFlySpeed => 32;
+	/// <summary>
+	/// Position offset for distinguish multiple instance with same type
+	/// </summary>
 	public virtual int InstanceShift => 0;
+	/// <summary>
+	/// Start to move when distance between target ans aim position is larger than this value
+	/// </summary>
 	public virtual int StartMoveDistance => Const.CEL * 4;
+	/// <summary>
+	/// Stop moving when distance between target ans aim position is smaller than this value
+	/// </summary>
 	public virtual int EndMoveDistance => Const.CEL * 1;
+	/// <summary>
+	/// Start to fly when distance between target ans aim position is larger than this value
+	/// </summary>
 	public virtual int StartFlyDistance => Const.CEL * 18;
+	/// <summary>
+	/// Stop flying when distance between target ans aim position is smaller than this value
+	/// </summary>
 	public virtual int EndFlyDistance => Const.CEL * 1;
+	/// <summary>
+	/// At least fly this frames long
+	/// </summary>
 	public virtual int MinimumFlyDuration => 60;
 	public virtual int JumpSpeed => 32;
 	public virtual int MaxJumpDuration => 80;
-	public virtual int EndMoveSlowDown => 42;
+	/// <summary>
+	/// Duration in frame for slowly stop moving
+	/// </summary>
+	public virtual int EndMoveSlowDown => 26;
 
 	// Short
 	private IRect Rect => Target.Rect;
@@ -266,10 +308,14 @@ public class RigidbodyNavigation (Rigidbody target) {
 					mov.RunSpeed;
 
 				// Slow Down
-				var endOp = NavOperations[CurrentNavOperationCount - 1];
-				int endDis = (X - endOp.TargetGlobalX).Abs() + (Y - endOp.TargetGlobalY).Abs();
-				int speedLimit = (endDis / EndMoveSlowDown).Clamp(4, speed.Abs());
-				speed = speed.Clamp(-speedLimit, speedLimit);
+				if (CurrentNavOperationIndex == CurrentNavOperationCount - 1) {
+					int endDis = (X - operation.TargetGlobalX).Abs() + (Y - operation.TargetGlobalY).Abs();
+					int speedLimit = (endDis / EndMoveSlowDown.GreaterOrEquel(1)).Clamp(4, speed.Abs());
+					speed = speed.Clamp(-speedLimit, speedLimit);
+				} else if (CurrentNavOperationIndex == 0) {
+					int endDis = (X - operation.TargetGlobalX).Abs() + (Y - operation.TargetGlobalY).Abs();
+					speed = speed.MoveTowards(speed / 2, endDis / 2);
+				}
 
 				// Move
 				if (targetX == X) NavMoveDoneX = true;
@@ -421,6 +467,11 @@ public class RigidbodyNavigation (Rigidbody target) {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Set aim position in global space
+	/// </summary>
+	/// <param name="newAim"></param>
+	/// <param name="grounded">True if the new aim position is grounded</param>
 	public void SetNavigationAim (Int2 newAim, bool grounded) {
 		NavigationAim = newAim;
 		NavigationAimGrounded = grounded;

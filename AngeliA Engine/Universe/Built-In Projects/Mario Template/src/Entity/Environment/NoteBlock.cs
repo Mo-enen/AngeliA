@@ -45,7 +45,7 @@ public class NoteBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 				var hit = hits[i];
 				if (hit.Entity is not Rigidbody) continue;
 				LastBumpedFrame = Game.GlobalFrame;
-				Game.PlaySoundAtPosition(BUMP_AC, XY);
+				FrameworkUtil.PlaySoundAtPosition(BUMP_AC, XY);
 				FrameworkUtil.PerformSpringBounce(this, Direction4.Up, 64);
 				ArtworkOffset.x = 0;
 				ArtworkOffset.y = -Const.CEL;
@@ -68,7 +68,7 @@ public class NoteBlock : Entity, IBumpable, IBlockEntity, IAutoTrackWalker {
 
 	private void NoteBlockBumpLogic (Direction4 bumpFrom) {
 
-		Game.PlaySoundAtPosition(BUMP_AC, XY);
+		FrameworkUtil.PlaySoundAtPosition(BUMP_AC, XY);
 
 		// Bounce
 		if (bumpFrom == Direction4.Up) {

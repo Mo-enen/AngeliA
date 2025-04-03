@@ -51,12 +51,12 @@ public class Mushroom : Rigidbody, IPingPongWalker, IAutoTrackWalker, IBumpable 
 			if (Heal) {
 				player.Health.Heal(1);
 				player.Bounce();
-				Game.PlaySoundAtPosition(MUSHROOM_AC, XY);
+				FrameworkUtil.PlaySoundAtPosition(MUSHROOM_AC, XY);
 			}
 			if (GiveExtraLife) {
 				// ※ No Life Count System ※
 				MarioUtil.GiveScore(500, CenterX, Y + Height);
-				Game.PlaySoundAtPosition(ONE_UP_AC, XY);
+				FrameworkUtil.PlaySoundAtPosition(ONE_UP_AC, XY);
 			}
 			Active = false;
 		}

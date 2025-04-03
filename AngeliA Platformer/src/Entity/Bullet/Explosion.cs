@@ -5,21 +5,64 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
+/// <summary>
+/// General representation of an explosion
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.BULLET)]
 public abstract class Explosion : Entity {
 
 
 	// Api
+	/// <summary>
+	/// Cells in which physics layers will be effect by the explosion
+	/// </summary>
 	protected virtual int CollisionMask => PhysicsMask.DYNAMIC;
+	
+	/// <summary>
+	/// How many frames does this explosion exists in stage
+	/// </summary>
 	protected virtual int Duration => 10;
+	
+	/// <summary>
+	/// How many damage does this explosion deal to the targets
+	/// </summary>
 	protected virtual int Damage => 1;
-	protected virtual int Radius => Const.CEL * 2 + Const.HALF;
+	
+	/// <summary>
+	/// Color tint of the wave sprite
+	/// </summary>
 	protected virtual Color32 WaveColor => new(255, 255, 255, 255);
+	
+	/// <summary>
+	/// Color tint of the ring sprite
+	/// </summary>
 	protected virtual Color32 RingColor => new(255, 0, 0, 255);
+
+	/// <summary>
+	/// Color tint of the fire sprite
+	/// </summary>
 	protected virtual Color32 FireColor => new(255, 255, 0, 255);
+	
+	/// <summary>
+	/// True if this explosion break map blocks
+	/// </summary>
 	protected virtual bool DestroyBlocks => true;
+
+	/// <summary>
+	/// Size of the explosion in global space
+	/// </summary>
+	public int Radius { get; set; } = Const.CEL * 2 + Const.HALF;
+	
+	/// <summary>
+	/// Which entity create this explosion
+	/// </summary>
 	public Entity Sender { get; set; } = null;
+	
+	/// <summary>
+	/// Artwork sprite ID for object break callback
+	/// </summary>
 	public int BreakObjectArtwork { get; set; }
+	
 	protected int ExplodedFrame { get; private set; } = -1;
 
 
@@ -100,6 +143,10 @@ public abstract class Explosion : Entity {
 	}
 
 
+	/// <summary>
+	/// This function is called the this explosion explode
+	/// </summary>
+	/// <param name="range">(in global space)</param>
 	protected abstract void OnExplode (IRect range);
 
 

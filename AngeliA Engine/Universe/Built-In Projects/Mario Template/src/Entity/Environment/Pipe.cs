@@ -319,12 +319,12 @@ public abstract class MarioPipe : CarryingPipe, IBlockEntity {
 
 	protected override void OnPlayerEnter (Character player) {
 		base.OnPlayerEnter(player);
-		Game.PlaySoundAtPosition(ENTER_AC, XY);
+		FrameworkUtil.PlaySoundAtPosition(ENTER_AC, XY);
 	}
 
 	protected override void OnPlayerExit (Character player) {
 		base.OnPlayerExit(player);
-		Game.PlaySoundAtPosition(ENTER_AC, XY);
+		FrameworkUtil.PlaySoundAtPosition(ENTER_AC, XY);
 	}
 
 }

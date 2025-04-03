@@ -4,13 +4,25 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Entity that force character on top run in given direction or their current facing direction
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup("Contraption")]
 public abstract class MomentumBooster : Entity, IBlockEntity {
 
 	// VAR
+	/// <summary>
+	/// Target moving speed
+	/// </summary>
 	protected abstract int BoostSpeed { get; }
+	/// <summary>
+	/// Target moving direction. Set to None to make target run to their facing direction
+	/// </summary>
 	protected abstract Direction3 BoostDirection { get; }
+	/// <summary>
+	/// Decay value for target momentum
+	/// </summary>
 	protected virtual int MomentumDecay => 1;
 	protected int LastBoostFrame { get; private set; } = int.MinValue;
 
@@ -76,6 +88,9 @@ public abstract class MomentumBooster : Entity, IBlockEntity {
 		}
 	}
 
+	/// <summary>
+	/// This function is called when target is getting boost
+	/// </summary>
 	protected virtual void OnBoosting (Rigidbody rig) { }
 
 }

@@ -5,6 +5,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Entity that teleport player into next-front/behind layer of the map
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup("Teleport")]
 public abstract class Door : Entity, IBlockEntity {
@@ -14,8 +17,17 @@ public abstract class Door : Entity, IBlockEntity {
 	private static readonly LanguageCode HINT_ENTER = ("CtrlHint.EnterDoor", "Enter");
 
 	// Api
+	/// <summary>
+	/// True if the door teleport player to next front layer
+	/// </summary>
 	public abstract bool IsFrontDoor { get; }
+	/// <summary>
+	/// ID of required key item. 0 means no key required.
+	/// </summary>
 	public virtual int KeyItemID => 0;
+	/// <summary>
+	/// Entity type id for the unlocked version of this door
+	/// </summary>
 	public virtual int UnlockedDoorID => 0;
 
 	// Data
@@ -89,13 +101,17 @@ public abstract class Door : Entity, IBlockEntity {
 		);
 
 		// Z Fix
-		if (IsFrontDoor != TaskSystem.IsTasking<TeleportTask>()) {
+		if (IsFrontDoor != TaskSystem.GetCurrentTask() is TeleportTask) {
 			cell.Z = -cell.Z;
 		}
 	}
 
 
 	// API
+	/// <summary>
+	/// Use this door
+	/// </summary>
+	/// <returns>True if successfuly used</returns>
 	public virtual bool Invoke (Character character) {
 		if (character == null) return false;
 		if (character == PlayerSystem.Selecting) {
@@ -129,7 +145,7 @@ public abstract class Door : Entity, IBlockEntity {
 			character.Y = Y;
 			Open = true;
 			InputLock = true;
-			Stage.Settle();
+			Game.Settle();
 			return true;
 		} else {
 			character.Active = false;
@@ -138,6 +154,9 @@ public abstract class Door : Entity, IBlockEntity {
 	}
 
 
+	/// <summary>
+	/// True if the door allow the target to use
+	/// </summary>
 	public virtual bool AllowInvoke (Entity target) =>
 		!Open && !TaskSystem.HasTask() && target is Character ch &&
 		ch.IsGrounded && ch.Rect.y >= Y && !ch.Movement.IsSquatting && !ch.Movement.IsClimbing;

@@ -648,8 +648,8 @@ public static class PlayerSystem {
 
 		if (!DragPlayerInMiddleButtonToMove_DebugOnly || Selecting == null || !Input.MouseMidButtonHolding) {
 			// End Hook Task
-			if (TaskSystem.IsTasking<EntityHookTask>()) {
-				TaskSystem.GetCurrentTask().UserData = null;
+			if (TaskSystem.GetCurrentTask() is EntityHookTask hTask) {
+				hTask.UserData = null;
 			}
 			return;
 		}
@@ -690,7 +690,7 @@ public static class PlayerSystem {
 		}
 
 		// Task
-		if (!TaskSystem.IsTasking<EntityHookTask>()) {
+		if (TaskSystem.GetCurrentTask() is not EntityHookTask) {
 			TaskSystem.AddToFirst(EntityHookTask.TYPE_ID, Selecting);
 		}
 

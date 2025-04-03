@@ -90,7 +90,7 @@ public class Coin : Rigidbody, IBumpable, IAutoTrackWalker {
 			FrameworkUtil.InvokeObjectBreak(BrickBlock.TYPE_ID, Rect);
 		} else {
 			// Bump
-			Game.PlaySoundAtPosition(BUMP_AC, XY);
+			FrameworkUtil.PlaySoundAtPosition(BUMP_AC, XY);
 		}
 	}
 

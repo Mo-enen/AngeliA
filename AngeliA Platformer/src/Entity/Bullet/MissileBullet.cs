@@ -4,22 +4,49 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// A bullet that find and follow a target to attack them
+/// </summary>
 public abstract class MissileBullet : Bullet, IDamageReceiver {
 
 	// VAR
 	public override int Duration => 600;
 	protected override int EnvironmentHitCount => int.MaxValue;
 	protected override int ReceiverHitCount => 1;
+	/// <summary>
+	/// True if this bullet do not hit environment
+	/// </summary>
 	protected virtual bool OnlyHitTarget => true;
 	protected virtual bool DestroyOnHitTarget => true;
 	protected virtual int SmokeParticleID => 0;
 	protected virtual int ExplosionParticleID => 0;
+	/// <summary>
+	/// How many frames does it takes to spawn a smoke particle
+	/// </summary>
 	protected virtual int SmokeParticleFrequency => 6;
+	/// <summary>
+	/// Forward speed in global space
+	/// </summary>
 	protected virtual int MissileFlyingSpeed => 42;
+	/// <summary>
+	/// Initial speed in global space
+	/// </summary>
 	protected virtual int MissileStartSpeed => 96;
+	/// <summary>
+	/// Speed acceleration
+	/// </summary>
 	protected virtual int MissileAcceleration => 2;
+	/// <summary>
+	/// True if this bullet get destroy when something else deal damage to it
+	/// </summary>
 	protected virtual bool DestroyWhenTakeDamage => false;
+	/// <summary>
+	/// Current following target entity
+	/// </summary>
 	public Entity MissileTarget { get; set; }
+	/// <summary>
+	/// Current flying rotation
+	/// </summary>
 	public int CurrentRotation { get; set; }
 	public Int2 CurrentVelocity { get; set; }
 	protected int TargetHitFrame { get; private set; }
@@ -137,6 +164,9 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 		}
 	}
 
+	/// <summary>
+	/// Use this function to control how it flys
+	/// </summary>
 	protected virtual void UpdateMissileMovement () {
 		if (MissileTarget != null) {
 			if (TargetHitFrame < 0) {
@@ -182,6 +212,9 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 
 	protected virtual void OnMissileHit (IDamageReceiver receiver) { }
 
+	/// <summary>
+	/// Use this function to control how it find target
+	/// </summary>
 	protected virtual void FindTargetUpdate () {
 
 		if ((Game.GlobalFrame - SpawnFrame) % 6 != 0) return;

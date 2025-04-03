@@ -189,7 +189,7 @@ public static class MarioUtil {
 						rig.VelocityY = 42;
 					}
 					itemInside = 0;
-					Game.PlaySoundAtPosition(SPAWN_AC, entity.XY);
+					FrameworkUtil.PlaySoundAtPosition(SPAWN_AC, entity.XY);
 				}
 			} else {
 				// Rise Animation
@@ -204,7 +204,7 @@ public static class MarioUtil {
 				// Spawn
 				if (itemInside != 0) {
 					if (frame == spawnItemStartFrame) {
-						Game.PlaySoundAtPosition(SPAWN_AC, entity.XY);
+						FrameworkUtil.PlaySoundAtPosition(SPAWN_AC, entity.XY);
 					}
 					if (frame == spawnItemStartFrame + RISE_DUR) {
 						MarioUtil.SpawnEmbedItem(itemInside, sourceRect, spawnDirection);

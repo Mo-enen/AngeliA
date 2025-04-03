@@ -4,20 +4,47 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+
+/// <summary>
+/// Entity holds a rotating chained ball to attack player
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup("Contraption")]
 public abstract class ChainCrusher : Entity, IBlockEntity, ICircuitOperator, IDamageReceiver {
 
 	// VAR
+	/// <summary>
+	/// True if the chained ball rotate in clockwise
+	/// </summary>
 	public virtual bool Clockwise => true;
+	/// <summary>
+	/// Length of the chain in global space
+	/// </summary>
 	public virtual int ChainLength => Const.CEL * 3;
+	/// <summary>
+	/// How many frames does the rotation takes for a loop
+	/// </summary>
 	public virtual int RotateFrequency => 60;
+	/// <summary>
+	/// Amount of damage it deals at once
+	/// </summary>
 	public virtual int DamageAmount => 1;
+	/// <summary>
+	/// Which teams should be attack by the bullet
+	/// </summary>
 	public virtual int AttackTargetTeam => Const.TEAM_ALL;
+	/// <summary>
+	/// Size of the ball in global space
+	/// </summary>
 	public virtual int SpikeBallSize => Const.CEL;
 	public virtual Tag DamageType => Tag.PhysicalDamage;
-	public virtual bool AllowReleaseBall => true;
+	/// <summary>
+	/// True if the ball release when this entity being triggered by circuit
+	/// </summary>
 	public virtual bool ReleaseBallOnCircuitTrigger => false;
+	/// <summary>
+	/// True if the ball release when this entity take damage
+	/// </summary>
 	public virtual bool ReleaseBallOnDamaged => false;
 	int IDamageReceiver.Team => Const.TEAM_ENVIRONMENT;
 
@@ -58,6 +85,9 @@ public abstract class ChainCrusher : Entity, IBlockEntity, ICircuitOperator, IDa
 	}
 
 	// API
+	/// <summary>
+	/// Calculate current ball position in global space and rotation
+	/// </summary>
 	protected virtual (Int2 pos, float rot) CalculateCurrentSpikeBallTransform () {
 		int localFrame = Game.GlobalFrame % RotateFrequency;
 		int centerX = X + Width / 2;
@@ -70,24 +100,21 @@ public abstract class ChainCrusher : Entity, IBlockEntity, ICircuitOperator, IDa
 		), rot);
 	}
 
+	/// <summary>
+	/// This function is called when the ball is released
+	/// </summary>
 	protected virtual void OnReleaseBall () { }
 
 	void ICircuitOperator.OnTriggeredByCircuit () {
-		if (AllowReleaseBall && ReleaseBallOnCircuitTrigger) {
-			if (BallReleaseFrame < 0) {
-				BallReleaseFrame = Game.GlobalFrame;
-				OnReleaseBall();
-			}
-		}
+		if (!ReleaseBallOnCircuitTrigger || BallReleaseFrame >= 0) return;
+		BallReleaseFrame = Game.GlobalFrame;
+		OnReleaseBall();
 	}
 
 	void IDamageReceiver.OnDamaged (Damage damage) {
-		if (AllowReleaseBall && ReleaseBallOnDamaged) {
-			if (BallReleaseFrame < 0) {
-				BallReleaseFrame = Game.GlobalFrame;
-				OnReleaseBall();
-			}
-		}
+		if (!ReleaseBallOnDamaged || BallReleaseFrame >= 0) return;
+		BallReleaseFrame = Game.GlobalFrame;
+		OnReleaseBall();
 	}
 
 }

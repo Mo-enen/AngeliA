@@ -81,6 +81,10 @@ public sealed class WorldSquad : IBlockSquad {
 		Stream.UseBuiltInAsFailback = !Universe.BuiltInInfo.UseProceduralMap;
 		SquadReady = true;
 
+		if (Game.IsToolApplication) {
+			Enable = false;
+		}
+
 		return TaskResult.End;
 	}
 

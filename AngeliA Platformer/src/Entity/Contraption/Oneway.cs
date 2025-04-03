@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Entity that do not allow rigidbody pass through on given direction
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup("Contraption")]
 public abstract class Oneway : Entity, IBlockEntity {
@@ -15,8 +18,11 @@ public abstract class Oneway : Entity, IBlockEntity {
 	private const int MASK = PhysicsMask.DYNAMIC;
 
 	// Api
+	/// <summary>
+	/// Target moving opposite with this direction get blocked
+	/// </summary>
 	public abstract Direction4 GateDirection { get; }
-	protected int ReboundFrame { get; private set; } = int.MinValue;
+	protected int LastReboundFrame { get; private set; } = int.MinValue;
 
 	// Data
 	private int LastContactFrame = int.MinValue;
@@ -33,7 +39,7 @@ public abstract class Oneway : Entity, IBlockEntity {
 		int frame = Game.GlobalFrame;
 		if (ContactReboundUpdate(frame)) {
 			if (LastContactFrame < frame - 1) {
-				ReboundFrame = frame;
+				LastReboundFrame = frame;
 			}
 			LastContactFrame = frame;
 		}
@@ -50,9 +56,9 @@ public abstract class Oneway : Entity, IBlockEntity {
 		int frame = Game.GlobalFrame;
 		var rect = Rect;
 		int rotDelta = 0;
-		if (frame < ReboundFrame + 4) {
-			rect.y += (ReboundFrame - frame + 4) * 8;
-			rotDelta = (ReboundFrame - frame + 4) * 2 * (frame % 2 == 0 ? -1 : 1);
+		if (frame < LastReboundFrame + 4) {
+			rect.y += (LastReboundFrame - frame + 4) * 8;
+			rotDelta = (LastReboundFrame - frame + 4) * 2 * (frame % 2 == 0 ? -1 : 1);
 		}
 		Renderer.Draw(
 			TypeID,

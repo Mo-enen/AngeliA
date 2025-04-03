@@ -3,13 +3,28 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Core system handles background rendering of the game
+/// </summary>
 public static class Sky {
 
 
 	// Api
+	/// <summary>
+	/// Top color of the sky liner gradient
+	/// </summary>
 	public static Color32 SkyTintTopColor { get; private set; }
+	/// <summary>
+	/// Bottom color of the sky liner gradient
+	/// </summary>
 	public static Color32 SkyTintBottomColor { get; private set; }
+	/// <summary>
+	/// Tint color for day-light
+	/// </summary>
 	public static Color32 SunlightTintColor { get; private set; } = Color32.WHITE;
+	/// <summary>
+	/// Gradient for "SkyTintTopColor" along in-game time
+	/// </summary>
 	public static ColorGradient GradientTop { get; set; } = new ColorGradient(
 		(new Color32(0, 41, 75), 0f / 4f),
 		(new Color32(0, 75, 128), 1f / 4f),
@@ -17,6 +32,9 @@ public static class Sky {
 		(new Color32(0, 75, 128), 3f / 4f),
 		(new Color32(0, 41, 75), 4f / 4f)
 	);
+	/// <summary>
+	/// Gradient for "SkyTintBottomColor" along in-game time
+	/// </summary>
 	public static ColorGradient GradientBottom { get; set; } = new ColorGradient(
 		(new Color32(0, 41, 75), 0f / 4f),
 		(new Color32(0, 75, 128), 1f / 4f),
@@ -24,11 +42,17 @@ public static class Sky {
 		(new Color32(0, 75, 128), 3f / 4f),
 		(new Color32(0, 41, 75), 4f / 4f)
 	);
+	/// <summary>
+	/// Gradient for "SunlightTintColor" along in-game time
+	/// </summary>
 	public static ColorGradient SunlightTint { get; set; } = new ColorGradient(
 		(new Color32(190, 230, 255, 255), 0f),
 		(new Color32(255, 250, 240, 255), 0.5f),
 		(new Color32(190, 230, 255, 255), 1f)
 	);
+	/// <summary>
+	/// Current in-game time (0 means 0:00. 0.5 means 12:00. 1 means 24:00)
+	/// </summary>
 	public static float InGameDaytime01 { get; private set; }
 
 	// Data
@@ -73,14 +97,22 @@ public static class Sky {
 
 
 	[OnGameRestart]
-	public static void RefreshSkyTintFromDateTime () {
+	internal static void RefreshSkyTintFromDateTime () {
 		if (Game.PauselessFrame <= ForceBackgroundTintFrame) return;
 		SkyTintTopColor = GradientTop.Evaluate(InGameDaytime01);
 		SkyTintBottomColor = GradientBottom.Evaluate(InGameDaytime01);
 	}
 
 
+	/// <summary>
+	/// Make both top and bottom sky tint gradient color into given color for specified frames long
+	/// </summary>
 	public static void ForceSkyboxTint (Color32 color, int duration = 1) => ForceSkyboxTint(color, color, duration);
+
+
+	/// <summary>
+	/// Make top and bottom sky tint gradient color into given colors for specified frames long
+	/// </summary>
 	public static void ForceSkyboxTint (Color32 top, Color32 bottom, int duration = 1) {
 		ForceBackgroundTintFrame = Game.PauselessFrame + duration;
 		SkyTintTopColor = top;
@@ -88,6 +120,9 @@ public static class Sky {
 	}
 
 
+	/// <summary>
+	/// Set current in-game time (0 means 0:00. 0.5 means 12:00. 1 means 24:00)
+	/// </summary>
 	public static void SetInGameDaytime (float newDaytime01) {
 		if (newDaytime01 < 0f) {
 			ForceInGameDaytimeValue = -1f;
@@ -100,6 +135,10 @@ public static class Sky {
 	}
 
 
+	/// <summary>
+	/// Get in-game time from current date time in real world
+	/// </summary>
+	/// <returns>(0 means 0:00. 0.5 means 12:00. 1 means 24:00)</returns>
 	public static float GetInGameDaytimeFromRealTime () {
 		var date = System.DateTime.Now;
 		return Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);

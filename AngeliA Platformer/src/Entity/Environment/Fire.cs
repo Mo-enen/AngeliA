@@ -4,7 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Entity that burns on target ICombustible
+/// </summary>
 [EntityAttribute.RepositionWhenInactive]
 public abstract class Fire : Entity, IFire {
 
@@ -15,16 +17,46 @@ public abstract class Fire : Entity, IFire {
 
 
 	// Api
-	public static event System.Action<int, IRect> OnFirePutout;
+	[OnFirePutOut_IntTypeID_IRect] static readonly System.Action<int, IRect> OnFirePutout;
+	/// <summary>
+	/// How fast the fire burn down the target ICombustible
+	/// </summary>
 	protected virtual int PowerAmount => 1000;
+	/// <summary>
+	/// Duration in frames that this fire appears to be weaken
+	/// </summary>
 	protected virtual int WeakenDuration => 22;
+	/// <summary>
+	/// Frames this fire takes to spread itself
+	/// </summary>
 	protected virtual int SpreadDuration => 60;
+	/// <summary>
+	/// ICombustible in this range will be on fire when this fire spread
+	/// </summary>
 	protected virtual int SpreadRange => Const.CEL;
+	/// <summary>
+	/// True if the fire use additive shader to render
+	/// </summary>
 	protected virtual bool UseAdditiveShader => false;
+	/// <summary>
+	/// How long does it takes to damage a IDamageReceiver again
+	/// </summary>
 	protected virtual int DamageCooldown => DamageImmediately ? 1 : 30;
+	/// <summary>
+	/// Direction of the fire is facing when it get spawned
+	/// </summary>
 	protected virtual Direction4 DefaultDirection => Direction4.Up;
+	/// <summary>
+	/// Lighting illuminate distance in unit space
+	/// </summary>
 	protected virtual int IlluminateUnitRadius => 6;
+	/// <summary>
+	/// Amount of lighting it gives
+	/// </summary>
 	protected virtual int IlluminateAmount => 1000;
+	/// <summary>
+	/// Direction of the fire is currently facing
+	/// </summary>
 	public Direction4 Direction { get; set; } = Direction4.Up;
 
 	// Data
@@ -244,6 +276,14 @@ public abstract class Fire : Entity, IFire {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Make this fire start to burn on no target
+	/// </summary>
+	/// <param name="burnDuration">How long does it burn</param>
+	/// <param name="direction">Direction it facing</param>
+	/// <param name="width">Size in global space</param>
+	/// <param name="height">Size in global space</param>
+	/// <param name="damageImmediately">Deal damage immediately after spawn</param>
 	public void Setup (int burnDuration, Direction4 direction, int width = Const.CEL, int height = Const.CEL, bool damageImmediately = false) {
 		Width = width;
 		Height = height;
@@ -257,6 +297,10 @@ public abstract class Fire : Entity, IFire {
 	}
 
 
+	/// <summary>
+	/// Make this fire burn on a ICombustible
+	/// </summary>
+	/// <param name="com"></param>
 	public void Setup (ICombustible com) {
 		if (com == null) return;
 		if (com is Entity entity) {
@@ -274,9 +318,16 @@ public abstract class Fire : Entity, IFire {
 	}
 
 
+	/// <summary>
+	/// Make the fire spread
+	/// </summary>
 	public void Spread () => IFire.SpreadFire(TypeID, Rect.Expand(SpreadRange), ignore: this);
 
 
+	/// <summary>
+	/// Make the fire stop burning
+	/// </summary>
+	/// <param name="manually">True if the fire is stopped by something else instead by it own</param>
 	public void Putout (bool manually) {
 		BurnedFrame = Game.GlobalFrame;
 		LifeEndFrame = Game.GlobalFrame + WeakenDuration;

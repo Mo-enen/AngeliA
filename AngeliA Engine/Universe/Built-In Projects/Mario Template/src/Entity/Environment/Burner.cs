@@ -106,7 +106,7 @@ public abstract class Burner : Entity, IAutoTrackWalker {
 			);
 			// Audio
 			if (FireLocalFrame == 0) {
-				Game.PlaySoundAtPosition(FIRE_AC, XY);
+				FrameworkUtil.PlaySoundAtPosition(FIRE_AC, XY);
 			}
 		} else {
 			FireLocalFrame = int.MinValue;

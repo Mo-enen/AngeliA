@@ -51,7 +51,7 @@ public class Icicle : Rigidbody, IAutoTrackWalker {
 		} else if (IsGrounded) {
 			// Touch Ground to Break
 			BreakingParticle.SpawnParticles(TypeID, Rect);
-			Game.PlaySoundAtPosition(BREAK_AC, XY);
+			FrameworkUtil.PlaySoundAtPosition(BREAK_AC, XY);
 			Active = false;
 		}
 	}
@@ -66,7 +66,7 @@ public class Icicle : Rigidbody, IAutoTrackWalker {
 				if (FallAccumulationFrame > 60) {
 					// Start Fall
 					Falling = true;
-					Game.PlaySoundAtPosition(FALL_AC, XY);
+					FrameworkUtil.PlaySoundAtPosition(FALL_AC, XY);
 				}
 			} else {
 				FallAccumulationFrame = 0;
@@ -82,7 +82,7 @@ public class Icicle : Rigidbody, IAutoTrackWalker {
 				// Break when Touch Player
 				Active = false;
 				BreakingParticle.SpawnParticles(TypeID, Rect);
-				Game.PlaySoundAtPosition(BREAK_AC, XY);
+				FrameworkUtil.PlaySoundAtPosition(BREAK_AC, XY);
 			}
 		}
 

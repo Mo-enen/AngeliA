@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Core system that transfer object data along the stage
+/// </summary>
 public static class TransferSystem {
 
 
@@ -55,9 +58,20 @@ public static class TransferSystem {
 	#region --- API ---
 
 
+	/// <summary>
+	/// True if given ID is a valid transfer
+	/// </summary>
+	/// <param name="transferID"></param>
+	/// <param name="direction">Direction this transfer will move items to</param>
 	public static bool IsTransfer (int transferID, out Direction4 direction) => TransferPool.TryGetValue(transferID, out direction);
 
 
+	/// <summary>
+	/// Start a transfer operation
+	/// </summary>
+	/// <param name="unitPos">Starting position in unit space</param>
+	/// <param name="data">Target object data to transfer with</param>
+	/// <param name="stamp">unique number to identify this operation</param>
 	public static void StartTransfer (Int3 unitPos, object data, int stamp = int.MinValue) {
 		OnTransferPass?.Invoke(unitPos, data);
 		Iterate(unitPos, data, stamp == int.MinValue ? Game.PauselessFrame : stamp);

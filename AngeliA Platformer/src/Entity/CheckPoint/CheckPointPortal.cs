@@ -6,6 +6,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Portal that telepart player to target check point
+/// </summary>
 [EntityAttribute.Capacity(1)]
 [EntityAttribute.ExcludeInMapEditor]
 [EntityAttribute.DontSpawnFromWorld]
@@ -44,7 +47,7 @@ public class CheckPointPortal : CircleFlamePortal {
 			const int SIZE = 196;
 			var rect = new IRect(Rect.CenterX() - SIZE / 2, Rect.CenterY() - SIZE / 2, SIZE, SIZE);
 			var tint = Color32.LerpUnclamped(Color32.WHITE_0, Color32.WHITE, (Game.GlobalFrame - SpawnFrame).PingPong(60) / 60f);
-			Renderer.Draw(TargetCheckPointID, rect.Fit(sprite), tint, RenderingMaxZ + 1);
+			Renderer.Draw(TargetCheckPointID, rect.Fit(sprite), tint, int.MaxValue);
 		}
 	}
 
@@ -58,6 +61,11 @@ public class CheckPointPortal : CircleFlamePortal {
 	}
 
 	// API
+	/// <summary>
+	/// Set the target check point
+	/// </summary>
+	/// <param name="checkPointID"></param>
+	/// <param name="unitPosition">Position in unit space to teleport to</param>
 	public void SetCheckPoint (int checkPointID, Int3 unitPosition) {
 		TargetUnitPosition = unitPosition;
 		TargetCheckPointID = checkPointID;

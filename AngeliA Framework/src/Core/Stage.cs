@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace AngeliA;
 
+/// <summary>
+/// Core system that handles entity spawning and despawning logic
+/// </summary>
 public static class Stage {
 
 
@@ -100,23 +103,55 @@ public static class Stage {
 		1024,	//ITEM
 		1024,	//DECORATE
 	];
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_SET_VIEW_X = 92173623_5;
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_SET_VIEW_Y = 92173623_6;
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_SET_VIEW_Z = 92173623_7;
+	/// <summary>
+	/// ID for remote setting between engine and rigged game
+	/// </summary>
 	public const int SETTING_SET_VIEW_H = 92173623_8;
 
 	// Api
+	/// <summary>
+	/// Current spawned entity count for each layers
+	/// </summary>
 	public static int[] EntityCounts { get; private set; } = new int[EntityLayer.COUNT];
+	/// <summary>
+	/// Current spawned entity instances for each layer
+	/// </summary>
 	public static Entity[][] Entities { get; private set; } = null;
+	/// <summary>
+	/// Rect in global space that determine where the entities need to be spawn from map
+	/// </summary>
 	public static IRect SpawnRect { get; private set; } = default;
+	/// <summary>
+	/// Rect in global space that determine where a despawned entity should not respawn from map
+	/// </summary>
 	public static IRect AntiSpawnRect { get; private set; } = default;
+	/// <summary>
+	/// Rect in global space that represents player view. Ascpect ratio of this rect keeps the same when user adjust application window size, so the actual rect range for rendering is Renderer.CameraRect.
+	/// </summary>
 	public static IRect ViewRect { get; private set; } = default;
-	public static int LastSettleFrame { get; private set; } = 0;
+	/// <summary>
+	/// Current position Z value
+	/// </summary>
 	public static int ViewZ { get; private set; } = 0;
-	public static int? DelayingViewX => ViewDelayX.value;
-	public static int? DelayingViewY => ViewDelayY.value;
-	public static int? DelayingViewHeight => ViewDelayHeight.value;
+	/// <summary>
+	/// True is the system is required for the game
+	/// </summary>
 	public static bool Enable { get; private set; } = true;
+	/// <summary>
+	/// True if the system is ready to use
+	/// </summary>
 	public static bool IsReady { get; private set; } = false;
 
 	// Data
@@ -216,6 +251,14 @@ public static class Stage {
 			EntityPool.TryAdd(id, stack);
 		}
 		EntityPool.TrimExcess();
+	}
+
+
+	[OnGameInitializeLater]
+	internal static void OnGameInitializeLater () {
+		if (Game.IsToolApplication) {
+			DespawnAllNonUiEntities();
+		}
 	}
 
 
@@ -324,7 +367,7 @@ public static class Stage {
 		if (RequireSetViewZ.HasValue) {
 			int newZ = RequireSetViewZ.Value;
 			RequireSetViewZ = null;
-			Settle();
+			Game.Settle();
 			// Despawn Entities
 			for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
 				var entities = Entities[layer];
@@ -444,12 +487,23 @@ public static class Stage {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Set current position Z
+	/// </summary>
+	/// <param name="newZ"></param>
+	/// <param name="immediately">True if the internal data is immediately change instead of change in the end of the frame</param>
 	public static void SetViewZ (int newZ, bool immediately = false) {
 		if (immediately) ViewZ = newZ;
 		RequireSetViewZ = newZ;
 	}
 
 
+	/// <summary>
+	/// Set view rect position in global space
+	/// </summary>
+	/// <param name="newRect"></param>
+	/// <param name="remapAllRenderingCells">True if change position and size for all existing rendering cells</param>
+	/// <param name="resetDelay">True if ignore all existing delay operation of view rect position/size</param>
 	public static void SetViewRectImmediately (IRect newRect, bool remapAllRenderingCells = false, bool resetDelay = true) {
 
 		newRect.width = newRect.width.GreaterOrEquel(1);
@@ -497,10 +551,14 @@ public static class Stage {
 	}
 
 
-	public static void Settle () => LastSettleFrame = Game.GlobalFrame;
-
-
 	// Set View
+	/// <summary>
+	/// Set view rect position at the end of current frame
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="lerp">Smooth amount (0 means no motion applys. 1000 means immediately applys)</param>
+	/// <param name="priority"></param>
 	public static void SetViewPositionDelay (int x, int y, int lerp = 1000, int priority = int.MinValue) {
 		if (priority >= ViewDelayX.priority) ViewDelayX = (x, priority);
 		if (priority >= ViewDelayY.priority) ViewDelayY = (y, priority);
@@ -508,18 +566,37 @@ public static class Stage {
 	}
 
 
+	/// <summary>
+	/// Set view rect X at the end of current frame
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="lerp">Smooth amount (0 means no motion applys. 1000 means immediately applys)</param>
+	/// <param name="priority"></param>
 	public static void SetViewXDelay (int x, int lerp = 1000, int priority = int.MinValue) {
 		if (priority >= ViewDelayX.priority) ViewDelayX = (x, priority);
 		ViewLerpRate = lerp;
 	}
 
 
+	/// <summary>
+	/// Set view rect Y at the end of current frame
+	/// </summary>
+	/// <param name="y"></param>
+	/// <param name="lerp">Smooth amount (0 means no motion applys. 1000 means immediately applys)</param>
+	/// <param name="priority"></param>
 	public static void SetViewYDelay (int y, int lerp = 1000, int priority = int.MinValue) {
 		if (priority >= ViewDelayY.priority) ViewDelayY = (y, priority);
 		ViewLerpRate = lerp;
 	}
 
 
+	/// <summary>
+	/// Set view rect height at the end of current frame
+	/// </summary>
+	/// <param name="height"></param>
+	/// <param name="lerp"></param>
+	/// <param name="priority"></param>
+	/// <param name="centralized"></param>
 	public static void SetViewSizeDelay (int height, int lerp = 1000, int priority = int.MinValue, bool centralized = false) {
 		if (priority >= ViewDelayHeight.priority) {
 			ViewDelayHeight = (height, priority, centralized ? Game.GlobalFrame : -1);
@@ -529,12 +606,42 @@ public static class Stage {
 
 
 	// Spawn
+	/// <summary>
+	/// Find an entity with given ID from internal pool and make it into the stage
+	/// </summary>
+	/// <param name="typeID">ID of the entity. Can be cached by typeof(YourEntity).AngeHash()</param>
+	/// <param name="x">Initial position in global space</param>
+	/// <param name="y">Initial position in global space</param>
+	/// <returns>Instance of the entity. Null when failed</returns>
 	public static Entity SpawnEntity (int typeID, int x, int y) => SpawnEntityLogic(typeID, x, y, new Int3(int.MinValue, 0, 0));
+	/// <summary>
+	/// Find an entity with given ID from internal pool and make it into the stage
+	/// </summary>
+	/// <param name="x">Initial position in global space</param>
+	/// <param name="y">Initial position in global space</param>
+	/// <typeparam name="T">Type of the entity</typeparam>
+	/// <returns>Instance of the entity. Null when failed</returns>
 	public static T SpawnEntity<T> (int x, int y) where T : Entity => SpawnEntityLogic(typeof(T).AngeHash(), x, y, new(int.MinValue, 0)) as T;
+	/// <summary>
+	/// Find an entity with given ID from internal pool and make it into the stage
+	/// </summary>
+	/// <param name="typeID">ID of the entity. Can be cached by typeof(YourEntity).AngeHash()</param>
+	/// <param name="x">Initial position in global space</param>
+	/// <param name="y">Initial position in global space</param>
+	/// <param name="entity">Instance of the entity</param>
+	/// <returns>True if the entity is spawned</returns>
 	public static bool TrySpawnEntity (int typeID, int x, int y, out Entity entity) {
 		entity = SpawnEntityLogic(typeID, x, y, new(int.MinValue, 0));
 		return entity != null;
 	}
+	/// <summary>
+	/// Find an entity with given ID from internal pool and make it into the stage
+	/// </summary>
+	/// <typeparam name="T">Type of the entity</typeparam>
+	/// <param name="x">Initial position in global space</param>
+	/// <param name="y">Initial position in global space</param>
+	/// <param name="entity">Instance of the entity</param>
+	/// <returns>True if the entity is spawned</returns>
 	public static bool TrySpawnEntity<T> (int x, int y, out T entity) where T : Entity {
 		entity = SpawnEntityLogic(
 			typeof(T).AngeHash(), x, y, new(int.MinValue, 0)
@@ -543,6 +650,18 @@ public static class Stage {
 	}
 
 
+	/// <summary>
+	/// Find an entity with given ID from internal pool and make it into the stage.
+	/// This function will make it an entity from map
+	/// </summary>
+	/// <param name="typeID">ID of the entity. Can be cached by typeof(YourEntity).AngeHash()</param>
+	/// <param name="x">Initial position in global space</param>
+	/// <param name="y">Initial position in global space</param>
+	/// <param name="z">Z of the map position</param>
+	/// <param name="reposDeltaX">Offset in global space for entity reposition</param>
+	/// <param name="reposDeltaY">Offset in global space for entity reposition</param>
+	/// <param name="forceSpawn">True if ignore the StagedEntityPool check and AntiSpawnRect check</param>
+	/// <returns>Instance of the entity. Null when failed</returns>
 	public static Entity SpawnEntityFromWorld (int typeID, int x, int y, int z, int reposDeltaX = 0, int reposDeltaY = 0, bool forceSpawn = false) {
 		var uPos = new Int3(x.ToUnit(), y.ToUnit(), z);
 		if (!forceSpawn && StagedEntityPool.ContainsKey(uPos)) return null;
@@ -554,10 +673,18 @@ public static class Stage {
 
 
 	// Get Entity
+	/// <summary>
+	/// Get instance of an spawned entity with type of T
+	/// </summary>
 	public static T FindEntity<T> () where T : Entity => TryFindEntity<T>(out var result) ? result : null;
+	/// <summary>
+	/// Get instance of an spawned entity which have given type ID
+	/// </summary>
 	public static Entity FindEntity (int typeID) => TryFindEntity(typeID, out var result) ? result : null;
-
-
+	/// <summary>
+	/// Get instance of an spawned entity with type of E
+	/// </summary>
+	/// <returns>True if the entity founded</returns>
 	public static bool TryFindEntity<E> (out E result) where E : Entity {
 		result = null;
 		if (!Enable) return false;
@@ -574,6 +701,10 @@ public static class Stage {
 		}
 		return false;
 	}
+	/// <summary>
+	/// Get instance of an spawned entity which have given type ID
+	/// </summary>
+	/// <returns>True if the entity founded</returns>
 	public static bool TryFindEntity (int typeID, out Entity result) {
 		result = null;
 		if (!Enable) return false;
@@ -599,6 +730,13 @@ public static class Stage {
 			return false;
 		}
 	}
+	/// <summary>
+	/// Get nearest instance of an spawned entity from given position with type of E
+	/// </summary>
+	/// <param name="pos">(in global space)</param>
+	/// <param name="finalTarget"></param>
+	/// <param name="condition">Only include the entity target when this function return true. Set to null to not having extra checking</param>
+	/// <returns>True if entity founded</returns>
 	public static bool TryFindEntityNearby<E> (Int2 pos, out E finalTarget, Func<E, bool> condition = null) {
 		finalTarget = default;
 		if (!Enable) return false;
@@ -626,6 +764,13 @@ public static class Stage {
 	}
 
 
+	/// <summary>
+	/// Get all entities inside given layer. The result array referenced by the span is cached. No heap pressure.
+	/// </summary>
+	/// <param name="layer">Use EntityLayer.XXX to get this value</param>
+	/// <param name="entities">Result span</param>
+	/// <param name="count">How many entities are inside the result</param>
+	/// <returns>True if the result is founded</returns>
 	public static bool TryGetEntities (int layer, out ReadOnlySpan<Entity> entities, out int count) {
 		if (Enable && layer >= 0 && layer < EntityLayer.COUNT) {
 			count = EntityCounts[layer];
@@ -639,9 +784,17 @@ public static class Stage {
 	}
 
 
+	/// <summary>
+	/// True if the given ID is a valid entity type ID in internal pool
+	/// </summary>
 	public static bool IsValidEntityID (int id) => EntityPool.ContainsKey(id);
 
 
+	/// <summary>
+	/// Iterate through all active entities inside given layer
+	/// </summary>
+	/// <typeparam name="E">Type of target entity</typeparam>
+	/// <param name="entityLayer">Use EntityLayer.XXX to get this value. Set to -1 to target all layers</param>
 	public static IEnumerable<E> ForAllActiveEntities<E> (int entityLayer = -1) where E : Entity {
 		if (!Enable) yield break;
 		int startLayer = entityLayer < 0 ? 0 : entityLayer;
@@ -657,13 +810,24 @@ public static class Stage {
 	}
 
 
+	/// <summary>
+	/// Get how many entities of given type is on stage currently
+	/// </summary>
+	/// <param name="id">ID of the entity. Can be cached by typeof(YourEntity).AngeHash()</param>
 	public static int GetSpawnedEntityCount (int id) => EntityPool.TryGetValue(id, out var meta) ? meta.SpawnedCount : 0;
 
 
+	/// <summary>
+	/// Get instance of an staged entity by instanceID from StagedEntityPool
+	/// </summary>
+	/// <param name="instanceID">Get this from Entity.InstanceID</param>
+	/// <param name="instance"></param>
+	/// <returns>True if the result is founded</returns>
 	public static bool TryGetStagedEntity (Int3 instanceID, out Entity instance) => StagedEntityPool.TryGetValue(instanceID, out instance);
 
 
 	// Despawn
+	/// <param name="targetLayer">Set to -1 to apply on all layers</param>
 	public static void DespawnAllEntitiesOfType<E> (int targetLayer = -1) where E : Entity {
 		if (!Enable) return;
 		int start = targetLayer < 0 ? 0 : targetLayer;
@@ -681,6 +845,9 @@ public static class Stage {
 	}
 
 
+	/// <summary>
+	/// Remove entity with given instance ID from StagedEntityPool
+	/// </summary>
 	public static void RemoveStagedEntity (Int3 instanceID) {
 		if (StagedEntityPool.TryGetValue(instanceID, out var entity)) {
 			StagedEntityPool.Remove(instanceID);
@@ -690,6 +857,7 @@ public static class Stage {
 
 
 	// Stage Workflow
+	/// <param name="refreshImmediately">True if refresh the active state inside this function</param>
 	public static void DespawnAllNonUiEntities (bool refreshImmediately = false) {
 		if (!Enable) return;
 		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
@@ -707,8 +875,23 @@ public static class Stage {
 
 
 	// Composite
+	/// <summary>
+	/// Get instance of an unspawned entity from pool first, if not found, get a spawned one from the stage
+	/// </summary>
+	/// <returns>The entity instance. Null if not found</returns>
 	public static Entity PeekOrGetEntity (int typeID) => PeekEntity(typeID) ?? FindEntity(typeID);
+	/// <summary>
+	/// Get instance of an unspawned entity from pool first, if not found, get a spawned one from the stage
+	/// </summary>
+	/// <returns>True if the instance is founded</returns>
 	public static T PeekOrGetEntity<T> () where T : Entity => PeekEntity<T>() ?? FindEntity<T>();
+	/// <summary>
+	/// Get instance of an entity from stage first, if not found, spawn a new one.
+	/// </summary>
+	/// <param name="typeID"></param>
+	/// <param name="x">Initial position in global space when spawn a new one</param>
+	/// <param name="y">Initial position in global space when spawn a new one</param>
+	/// <returns>The entity instance. Null if not found</returns>
 	public static Entity GetOrSpawnEntity (int typeID, int x, int y) {
 		if (TryFindEntity(typeID, out var entity)) {
 			entity.X = x;
@@ -718,6 +901,12 @@ public static class Stage {
 			return SpawnEntity(typeID, x, y);
 		}
 	}
+	/// <summary>
+	/// Get instance of an entity from stage first, if not found, spawn a new one.
+	/// </summary>
+	/// <param name="x">Initial position in global space when spawn a new one</param>
+	/// <param name="y">Initial position in global space when spawn a new one</param>
+	/// <returns>The entity instance. Null if not found</returns>
 	public static T GetOrSpawnEntity<T> (int x, int y) where T : Entity {
 		if (TryFindEntity<T>(out var entity)) {
 			entity.X = x;
@@ -730,15 +919,27 @@ public static class Stage {
 
 
 	// Misc
+	/// <summary>
+	/// True if entity with given type ID should draw inside behind map layer
+	/// </summary>
 	public static bool IsEntityRequireDrawBehind (int id) => EntityPool.TryGetValue(id, out var stack) && stack.DrawBehind;
 
 
+	/// <summary>
+	/// Get max size limitation of target entity inside it's entity layer
+	/// </summary>
 	public static int GetEntityCapacity (int typeID) => EntityPool.TryGetValue(typeID, out var stack) ? stack.Capacity : 0;
 
 
+	/// <summary>
+	/// True if the target entity keep it's position when out of range. This is done by setting the map block data.
+	/// </summary>
 	public static bool IsEntityRequireReposition (int typeID) => EntityPool.TryGetValue(typeID, out var stack) && stack.RequireReposition;
 
 
+	/// <summary>
+	/// Get current expand padding for camera rect in global space
+	/// </summary>
 	public static Int4 GetCameraCullingPadding () {
 		int expand = Const.CEL + Renderer.CameraRect.width * (Universe.BuiltInInfo.WorldBehindParallax - 1000) / 2000;
 		return TaskSystem.HasTask() ?
@@ -747,6 +948,9 @@ public static class Stage {
 	}
 
 
+	/// <summary>
+	/// Get System.Type for given type ID. Null if ID is invalid
+	/// </summary>
 	public static Type GetEntityType (int id) {
 		if (EntityPool.TryGetValue(id, out var stack)) {
 			return stack.EntityType;
@@ -755,6 +959,11 @@ public static class Stage {
 	}
 
 
+	/// <summary>
+	/// Perform reposition logic of the entity instance.
+	/// </summary>
+	/// <param name="entity"></param>
+	/// <param name="carryThoughZ">True if the entity is being keep into other map z-layer</param>
 	public static void TryRepositionEntity (Entity entity, bool carryThoughZ = false) {
 
 		bool requireRepos = false;
@@ -960,10 +1169,6 @@ public static class Stage {
 
 	private static E PeekEntity<E> () where E : Entity => PeekEntity(typeof(E).AngeHash()) as E;
 	private static Entity PeekEntity (int typeID) => EntityPool.TryGetValue(typeID, out var meta) ? meta.Peek() : null;
-
-	public static void TrySpawnEntity (int tYPE_ID, object x, object value, out Entity _) {
-		throw new NotImplementedException();
-	}
 
 
 	#endregion

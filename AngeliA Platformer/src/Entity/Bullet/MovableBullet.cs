@@ -4,23 +4,55 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// A bullet that moves after being spawned
+/// </summary>
 public abstract class MovableBullet : Bullet {
 
 	// Api
+	/// <summary>
+	/// Movement speed to shooting direction
+	/// </summary>
 	public virtual int SpeedForward => 42;
+	/// <summary>
+	/// Movement speed to 90° of shooting direction
+	/// </summary>
 	public virtual int SpeedSide => 0;
 	public virtual Int2 AriDrag => default;
 	public virtual int Gravity => 0;
 	public virtual int StartRotation => 0;
 	public virtual int RotateSpeed => 0;
+	/// <summary>
+	/// Bullet will become this rotation after hit target
+	/// </summary>
 	public virtual int EndRotation => 0;
+	/// <summary>
+	/// Random angle applys to the end rotation
+	/// </summary>
 	public virtual int EndRotationRandomRange => 180;
+	/// <summary>
+	/// This entity spawns after bullet despawn
+	/// </summary>
 	public virtual int ResidueID => 0;
+	/// <summary>
+	/// Artwork sprite ID to render this bullet
+	/// </summary>
 	public virtual int ArtworkID => TypeID;
+	/// <summary>
+	/// Size scale for artwork only. 0 means 0%, 1000 means 100%
+	/// </summary>
 	public virtual int Scale => 1000;
+	/// <summary>
+	/// Speed multiply rate when bullet inside water. 0 means 0%, 1000 means 100%
+	/// </summary>
 	public virtual int WaterSpeedRate => 200;
+	/// <summary>
+	/// Bullet get despawn when fly longer than this range in global space
+	/// </summary>
 	public virtual int MaxRange => 46339;
+	/// <summary>
+	/// True if bullet facing right currently
+	/// </summary>
 	public virtual bool FacingRight => Velocity.x > 0;
 	public override int Duration => 600;
 	protected override int EnvironmentHitCount => 1;
@@ -28,7 +60,10 @@ public abstract class MovableBullet : Bullet {
 	public int CurrentRotation { get; set; }
 	public Int2 Velocity { get; set; }
 	public bool InWater { get; private set; } = false;
-	protected bool HitReceiver { get; private set; } = false;
+	/// <summary>
+	/// True if the bullet already hit a receiver
+	/// </summary>
+	public bool HitReceiver { get; private set; } = false;
 
 	// Data
 	private int HitStartX;

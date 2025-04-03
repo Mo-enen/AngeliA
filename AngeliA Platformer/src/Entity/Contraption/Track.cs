@@ -4,21 +4,53 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Entity that make IAutoTrackWalker walks along it
+/// </summary>
 [EntityAttribute.MapEditorGroup("Contraption")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Track : Entity, IBlockEntity {
 
 	// Api
+	/// <summary>
+	/// Speed of the targets on it
+	/// </summary>
 	protected virtual int Speed => 12;
+	/// <summary>
+	/// Position offset Y for targets on it
+	/// </summary>
 	protected virtual int HangGap => 0;
+	/// <summary>
+	/// True if tracks can connect straight directions
+	/// </summary>
 	protected virtual bool AllowStraightConnection => true;
+	/// <summary>
+	/// True if tracks can connect from diagonal directions
+	/// </summary>
 	protected virtual bool AllowTiltConnection => true;
+	/// <summary>
+	/// True if targets turn back when walks into edge
+	/// </summary>
 	protected virtual bool TurnBackWhenReachEnd => true;
+	/// <summary>
+	/// True if one of the targets slow down when overlap each other
+	/// </summary>
 	protected virtual bool SlowDownWhenWalkerOverlap => true;
+	/// <summary>
+	/// True if map element overlapping will be spawned
+	/// </summary>
 	protected virtual bool LoadItemFromMapElement => true;
+	/// <summary>
+	/// Artwork sprite for rendering the body
+	/// </summary>
 	protected abstract SpriteCode BodySprite { get; }
+	/// <summary>
+	/// Artwork sprite for rendering the tilted body
+	/// </summary>
 	protected abstract SpriteCode BodyTiltSprite { get; }
+	/// <summary>
+	/// Artwork sprite for rendering the center knob
+	/// </summary>
 	protected abstract SpriteCode CenterSprite { get; }
 	bool IBlockEntity.AllowBeingEmbedAsElement => false;
 	bool IBlockEntity.EmbedEntityAsElement => LoadItemFromMapElement;
@@ -194,9 +226,16 @@ public abstract class Track : Entity, IBlockEntity {
 
 	}
 
+	/// <summary>
+	/// This function is called when a walker is walking on the track
+	/// </summary>
+	/// <param name="walker"></param>
 	protected virtual void OnWalking (IAutoTrackWalker walker) { }
 
 	// API
+	/// <summary>
+	/// True if there is track connecting to given direction
+	/// </summary>
 	public bool IsConnected (Direction8 direction) => HasTrackArr[(int)direction];
 
 }

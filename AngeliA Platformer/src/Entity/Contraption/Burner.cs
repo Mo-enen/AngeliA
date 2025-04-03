@@ -7,6 +7,10 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
+/// <summary>
+/// Entity that spawn a file entity repeately
+/// </summary>
+/// <typeparam name="F">Type of the fire entity</typeparam>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup("Contraption")]
 public abstract class Burner<F> : Entity, IBlockEntity where F : Fire {
@@ -18,9 +22,21 @@ public abstract class Burner<F> : Entity, IBlockEntity where F : Fire {
 
 
 	// Api
+	/// <summary>
+	/// How many frame does it take to spawn another file
+	/// </summary>
 	protected virtual int FireFrequency => 480;
+	/// <summary>
+	/// How long does a single file stay
+	/// </summary>
 	protected virtual int FireDuration => FireFrequency / 4;
+	/// <summary>
+	/// Direction of the file
+	/// </summary>
 	protected virtual Direction4 Direction => Direction4.Up;
+	/// <summary>
+	/// Read fire type from overlaping map element block
+	/// </summary>
 	protected virtual bool AllowFireFromMapElement => true;
 
 	// Data

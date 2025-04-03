@@ -7,6 +7,9 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
+/// <summary>
+/// Entity that bounce the touching targets
+/// </summary>
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.RepositionWhenInactive]
@@ -19,8 +22,17 @@ public abstract class Spring : Rigidbody, IBlockEntity, IAutoTrackWalker {
 
 	// Api
 	public override int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
+	/// <summary>
+	/// True if the spring bounce horizontaly
+	/// </summary>
 	protected abstract bool Horizontal { get; }
+	/// <summary>
+	/// Initial speed this spring gives when bounce
+	/// </summary>
 	protected abstract int Power { get; }
+	/// <summary>
+	/// Current rotation of the artwork sprite
+	/// </summary>
 	public int ArtworkRotation { get; set; } = 0;
 	public override bool AllowBeingPush => !Horizontal;
 	int IAutoTrackWalker.LastWalkingFrame { get; set; }

@@ -4,16 +4,37 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// This entity carry the player when they get in
+/// </summary>
 [EntityAttribute.MapEditorGroup("Entity")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class CarryingPipe : Entity, IBlockEntity {
 
 	// VAR
+	/// <summary>
+	/// Artwork sprite for rendering the edge part
+	/// </summary>
 	protected abstract SpriteCode EdgeSprite { get; }
+	/// <summary>
+	/// Artwork sprite for rendering the middle part
+	/// </summary>
 	protected abstract SpriteCode MidSprite { get; }
+	/// <summary>
+	/// Artwork sprite for rendering the bottom part
+	/// </summary>
 	protected abstract SpriteCode BottomSprite { get; }
+	/// <summary>
+	/// Artwork sprite for rendering the extra expanded part
+	/// </summary>
 	protected abstract SpriteCode InsertSprite { get; }
+	/// <summary>
+	/// Direction this pipe is facing
+	/// </summary>
 	protected abstract Direction4 Direction { get; }
+	/// <summary>
+	/// ID of the pose-style animation applys on pose character
+	/// </summary>
 	protected virtual int CarryingPoseAnimationID => PoseAnimation_SquatIdle.TYPE_ID;
 
 	private static readonly Dictionary<int, Direction4> PipePool = [];
@@ -322,6 +343,9 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 	}
 
 	// API
+	/// <summary>
+	/// True if the pipe is on the edge as entrance
+	/// </summary>
 	public bool IsEdge (bool requireOpenSpace) => Direction switch {
 		Direction4.Left => !NeighborPipeDirL.HasValue || NeighborPipeDirL.Value == Direction5.Center || (!requireOpenSpace && NeighborPipeDirL.Value == Direction5.Right),
 		Direction4.Right => !NeighborPipeDirR.HasValue || NeighborPipeDirR.Value == Direction5.Center || (!requireOpenSpace && NeighborPipeDirR.Value == Direction5.Left),
@@ -330,7 +354,14 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 		_ => false,
 	};
 
+	/// <summary>
+	/// This function is called when player enter the pipe
+	/// </summary>
 	protected virtual void OnPlayerEnter (Character player) { }
+
+	/// <summary>
+	/// This function is called when player exit the pipe
+	/// </summary>
 	protected virtual void OnPlayerExit (Character player) { }
 
 	// LGC

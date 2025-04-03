@@ -4,7 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Represent a character that summoned by another character
+/// </summary>
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
@@ -18,11 +20,23 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 
 	// Api
+	/// <summary>
+	/// The character that summons this character
+	/// </summary>
 	public Character Owner { get; set; } = null;
 	bool IDamageReceiver.TakeDamageFromLevel => false;
-	public int InventoryUpdatedFrame { get; set; } = -1;
+	internal int InventoryUpdatedFrame { get; set; } = -1;
+	/// <summary>
+	/// Behavior object to handle auto movement of this character
+	/// </summary>
 	public SummonNavigation Navigation { get; init; }
+	/// <summary>
+	/// True if this character despawn when owner is null or inactivated
+	/// </summary>
 	public virtual bool RequireOwner => false;
+	/// <summary>
+	/// True if the owner can bring back this character after it passout
+	/// </summary>
 	public virtual bool AllowRescueWhenPassout => true;
 	public override bool AllowBeingPush => true;
 	public override bool CarryOtherOnTop => false;
@@ -80,6 +94,10 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 	}
 
 
+	/// <summary>
+	/// This function is called when the character is being summoned
+	/// </summary>
+	/// <param name="create">True if this character was not on stage before being summon</param>
 	public virtual void OnSummoned (bool create) {
 		Bounce();
 		Navigation.ResetNavigation();
@@ -171,7 +189,18 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 
 	// Summon
+	/// <inheritdoc cref="CreateSummon(Character, int, int, int, bool)"/>
 	public static T CreateSummon<T> (Character owner, int x, int y, bool forceCreate = false) where T : Summon => CreateSummon(owner, typeof(T).AngeHash(), x, y, forceCreate) as T;
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <typeparam name="T">Type of the summon</typeparam>
+	/// <param name="owner">Instance of the summon's owner</param>
+	/// <param name="typeID">Type of the summon</param>
+	/// <param name="x">Position in global space to put this summon</param>
+	/// <param name="y">Position in global space to put this summon</param>
+	/// <param name="forceCreate">True if take an existing summon in same type and owner to summon it again</param>
+	/// <returns>Instance of the summoned character</returns>
 	public static Summon CreateSummon (Character owner, int typeID, int x, int y, bool forceCreate = false) {
 		if (owner == null || !Stage.Enable) return null;
 		if (Stage.SpawnEntity(typeID, x, y) is Summon summon) {
@@ -216,7 +245,7 @@ public abstract class Summon : Character, IDamageReceiver, IActionTarget {
 
 
 	bool IActionTarget.Invoke () {
-		if (!AllowRescueWhenPassout) return false;
+		if (!AllowRescueWhenPassout || PlayerSystem.Selecting != Owner) return false;
 		Health.HP = Health.MaxHP;
 		SetCharacterState(CharacterState.GamePlay);
 		return true;

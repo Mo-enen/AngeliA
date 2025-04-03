@@ -41,7 +41,7 @@ public abstract class Launcher : AngeliA.Platformer.Launcher, ICarrier {
 	protected abstract int MidSprite { get; }
 	protected abstract int BottomSprite { get; }
 	public override int MaxLaunchCount => TargetEntityID == FailbackEntityID ? int.MaxValue : 6;
-	public override int ItemCountPreLaunch => TargetEntityID == Coin.TYPE_ID ? 6 : 1;
+	public override int ItemCountPerLaunch => TargetEntityID == Coin.TYPE_ID ? 6 : 1;
 	public override bool AllowingAutoLaunch => Pose == FittingPose.Up && PlayerSystem.Selecting != null && !PlayerSystem.Selecting.Rect.CenterX().InRangeInclude(X - Const.HALF, X + Width + Const.HALF);
 	public override bool LaunchWhenEntranceBlocked => false;
 	public override bool KeepLaunchedEntityInMap => false;
@@ -107,7 +107,7 @@ public abstract class Launcher : AngeliA.Platformer.Launcher, ICarrier {
 		if (entity is BulletBill bullet) {
 			bullet.MovingRight = LaunchToRightSide();
 		}
-		Game.PlaySoundAtPosition(SPAWN_AC, XY);
+		FrameworkUtil.PlaySoundAtPosition(SPAWN_AC, XY);
 	}
 
 	void ICarrier.PerformCarry (int x, int y) {

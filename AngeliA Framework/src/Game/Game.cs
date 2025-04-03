@@ -24,7 +24,7 @@ public abstract partial class Game {
 	/// <summary>
 	/// Frame number that could be reset by the stage
 	/// </summary>
-	public static int SettleFrame => GlobalFrame - Stage.LastSettleFrame;
+	public static int SettleFrame => GlobalFrame - LastSettleFrame;
 	/// <summary>
 	/// Frame number that still grows when the game is pausing
 	/// </summary>
@@ -119,6 +119,7 @@ public abstract partial class Game {
 	private readonly KeyboardKey[] PressingKeysForCurrentFrame = new KeyboardKey[256];
 	private int PressingCharCount = 0;
 	private int PressingKeyCount = 0;
+	private static int LastSettleFrame;
 	// Saving
 	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false, SavingLocation.Global);
 	private static readonly SavingInt _MusicVolume = new("Game.MusicVolume", 500, SavingLocation.Global);
@@ -229,10 +230,7 @@ public abstract partial class Game {
 			System.GC.Collect();
 
 			// Start Game !!
-			if (IsToolApplication) {
-				WorldSquad.Enable = false;
-				Stage.DespawnAllNonUiEntities();
-			} else {
+			if (!IsToolApplication) {
 				RestartGame();
 			}
 
@@ -394,6 +392,10 @@ public abstract partial class Game {
 		IsPlaying = false;
 	}
 
+	/// <summary>
+	/// Mark the game frame as settled. 
+	/// </summary>
+	public static void Settle () => LastSettleFrame = GlobalFrame;
 
 	// Fonts
 	/// <summary>

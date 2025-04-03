@@ -89,24 +89,9 @@ public partial class Game {
 	/// </summary>
 	protected abstract void _UnloadSound (SoundData sound);
 
-	/// <summary>
-	/// Play a sound like it cames from the given position
-	/// </summary>
-	/// <param name="id">Audio ID</param>
-	/// <param name="globalPosition">Position in global space</param>
-	/// <param name="volume"></param>
-	/// <param name="pitch"></param>
-	public static void PlaySoundAtPosition (int id, Int2 globalPosition, float volume = 1f, float pitch = 1f) {
-		const float PAN_GAP = -0.2f;
-		var viewRect = Stage.ViewRect;
-		float pan = Util.RemapUnclamped(viewRect.xMin, viewRect.xMax, 0f - PAN_GAP, 1f + PAN_GAP, globalPosition.x).Clamp01();
-		float sqDis = Util.SquareDistanceF(globalPosition.x, globalPosition.y, viewRect.CenterX(), viewRect.CenterY());
-		float maxSqDis = viewRect.width * viewRect.width / 4f;
-		volume *= Util.RemapUnclamped(0f, maxSqDis, 1f, 0f, sqDis).Clamp01();
-		PlaySound(id, volume, pitch, pan);
-	}
 	/// <inheritdoc cref="_PlaySound"/>
 	public static void PlaySound (int id, float volume = 1f, float pitch = 1f, float pan = 0.5f) => Instance._PlaySound(id, volume, pitch, pan);
+	
 	/// <summary>
 	/// Play a sound
 	/// </summary>

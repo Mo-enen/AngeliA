@@ -4,6 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Behavior to handle auto movement for a summon character
+/// </summary>
 public class SummonNavigation (Summon target) : RigidbodyNavigation(target) {
 
 	private enum AimMode { FollowOwner, Wandering, }
@@ -19,7 +22,13 @@ public class SummonNavigation (Summon target) : RigidbodyNavigation(target) {
 	public override int MinimumFlyDuration => 120;
 	public override int JumpSpeed => 42;
 	public override int MaxJumpDuration => 60;
+	/// <summary>
+	/// True if the summon following the owner
+	/// </summary>
 	public bool IsFollowingOwner => CurrentAmiMode == AimMode.FollowOwner;
+	/// <summary>
+	/// True if the summon move along a given position
+	/// </summary>
 	public bool IsWandering => CurrentAmiMode == AimMode.Wandering;
 
 	private AimMode CurrentAmiMode { get; set; } = AimMode.FollowOwner;
@@ -82,6 +91,10 @@ public class SummonNavigation (Summon target) : RigidbodyNavigation(target) {
 
 	public void MakeFollowOwner () => CurrentAmiMode = AimMode.FollowOwner;
 
+	/// <summary>
+	/// Make the summon find a given type of entity on stage and move along at it's position
+	/// </summary>
+	/// <returns>True if the target founded</returns>
 	public bool MakeWander<E> () where E : Entity {
 		if (Stage.TryFindEntityNearby(new Int2(Target.X, Target.Y), out E result)) {
 			MakeWander(result.X, result.Y);
@@ -90,6 +103,9 @@ public class SummonNavigation (Summon target) : RigidbodyNavigation(target) {
 		return false;
 	}
 
+	/// <summary>
+	/// Make the summon move along with given position in global space
+	/// </summary>
 	public void MakeWander (int x, int y) {
 		CurrentAmiMode = AimMode.Wandering;
 		CurrentWanderingPos.x = x;

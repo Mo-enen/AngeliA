@@ -3,25 +3,59 @@ using System.Collections.Generic;
 
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Entity that drops when being step on for a well
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class DonutBlock : Entity, IBlockEntity {
 
 
 	// SUB
+	/// <summary>
+	/// How this entity broke
+	/// </summary>
 	protected enum BreakMode {
+		/// <summary>
+		/// Break on drop onto ground
+		/// </summary>
 		BreakOnTouchGround = 0,
+		/// <summary>
+		/// Break when start to fall
+		/// </summary>
 		BreakOnFall = 1,
+		/// <summary>
+		/// Do not auto break
+		/// </summary>
 		DoNotBreak = 2,
 	}
 
 	// Api
+	/// <summary>
+	/// How this entity break
+	/// </summary>
 	protected virtual BreakMode BreakCondition { get; } = BreakMode.BreakOnTouchGround;
+	/// <summary>
+	/// How long does it takes to make it fall by standing on it
+	/// </summary>
 	protected virtual int HoldDuration => 60;
+	/// <summary>
+	/// Speed downward when falling
+	/// </summary>
 	protected virtual int FallingVelocity => 24;
+	/// <summary>
+	/// True if this entity is falling
+	/// </summary>
 	protected bool IsFalling { get; private set; } = false;
+	/// <summary>
+	/// True if this entity is being step on
+	/// </summary>
 	protected bool IsHolding { get; private set; } = false;
+	/// <summary>
+	/// When does this entity begin to be step on
+	/// </summary>
 	protected int HoldStartFrame { get; private set; } = int.MaxValue;
 
 	// Data
@@ -101,6 +135,9 @@ public abstract class DonutBlock : Entity, IBlockEntity {
 	}
 
 
+	/// <summary>
+	/// Make this donut block break
+	/// </summary>
 	protected virtual void Break () {
 		Active = false;
 		FrameworkUtil.InvokeObjectBreak(TypeID, Rect);

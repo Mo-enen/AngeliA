@@ -4,6 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// A slime type enemy that walks on ground/wall/ceilling
+/// </summary>
 public abstract class Slime : Enemy, ISlimeWalker {
 
 	// VAR
@@ -21,14 +24,14 @@ public abstract class Slime : Enemy, ISlimeWalker {
 		}
 	}
 	public override bool AllowBeingPush => false;
-	public Direction5 AttachingDirection { get; set; }
-	public Int2 LocalPosition { get; set; }
-	public IRect AttachingRect { get; set; }
-	public Entity AttachingTarget { get; set; }
-	public int AttachingID { get; set; }
-	public int WalkSpeed => Movement.RunSpeed;
+	Direction5 ISlimeWalker.AttachingDirection { get; set; }
+	Int2 ISlimeWalker.LocalPosition { get; set; }
+	IRect ISlimeWalker.AttachingRect { get; set; }
+	Entity ISlimeWalker.AttachingTarget { get; set; }
+	int ISlimeWalker.AttachingID { get; set; }
+	int ISlimeWalker.WalkSpeed => Movement.RunSpeed;
 	public override bool EjectWhenInsideGround => true;
-	public bool FacingPositive { get; set; }
+	bool ISlimeWalker.FacingPositive { get; set; }
 	private float CurrentRotation = 0;
 
 	// MSG
@@ -46,7 +49,7 @@ public abstract class Slime : Enemy, ISlimeWalker {
 		Movement.MovementWidth.BaseValue = 220;
 		Movement.MovementHeight.BaseValue = 136;
 		ISlimeWalker.ActiveWalker(this);
-		FacingPositive = true;
+		((ISlimeWalker)this).FacingPositive = true;
 		CurrentRotation = 0;
 	}
 
@@ -77,10 +80,11 @@ public abstract class Slime : Enemy, ISlimeWalker {
 		XY = ISlimeWalker.GetAttachingPosition(this);
 		if (ISlimeWalker.RefreshAttachingDirection(this) != Direction5.Center) {
 			// Walking
+			var walker = (ISlimeWalker)this;
 			IgnorePhysics.True(1);
 			XY = ISlimeWalker.GetNextSlimePosition(this);
-			Movement.Move(FacingPositive ? Direction3.Right : Direction3.Left, Direction3.None);
-			Movement.LockFacingRight(FacingPositive);
+			Movement.Move(walker.FacingPositive ? Direction3.Right : Direction3.Left, Direction3.None);
+			Movement.LockFacingRight(walker.FacingPositive);
 		} else {
 			// Falling
 			Movement.Stop();
@@ -121,10 +125,11 @@ public abstract class Slime : Enemy, ISlimeWalker {
 
 	public override void OnDamaged (Damage damage) {
 		base.OnDamaged(damage);
-		LocalPosition = Int2.Zero;
-		AttachingDirection = Direction5.Center;
-		AttachingTarget = null;
-		AttachingRect = default;
+		var walker = (ISlimeWalker)this;
+		walker.LocalPosition = Int2.Zero;
+		walker.AttachingDirection = Direction5.Center;
+		walker.AttachingTarget = null;
+		walker.AttachingRect = default;
 		IgnorePhysics.False(1);
 	}
 

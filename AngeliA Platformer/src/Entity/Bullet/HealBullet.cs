@@ -4,9 +4,15 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Bullet that heal a target Character. Use "Damage" to adjust how much does it heals.
+/// </summary>
 public abstract class HealBullet : Bullet {
 
 	// VAR
+	/// <summary>
+	/// How smooth the bullet move to the target
+	/// </summary>
 	protected virtual int Lerp => 100;
 
 	private static int CurrentSenderTeamCache;

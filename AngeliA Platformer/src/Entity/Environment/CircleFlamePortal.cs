@@ -5,16 +5,29 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Portal that looks like magic thing circling around
+/// </summary>
 public abstract class CircleFlamePortal : Portal {
 	private static readonly SpriteCode CIRCLE_CODE = "PortalCircle";
 	private static readonly SpriteCode FLAME_CODE = "PortalFlame";
 	private static readonly SpriteCode LIGHT_CODE = "PortalLight";
+	/// <summary>
+	/// Artwork sprite ID for rendering the circle part
+	/// </summary>
 	protected virtual int CircleCode => CIRCLE_CODE;
+	/// <summary>
+	/// Artwork sprite ID for rendering the flame part
+	/// </summary>
 	protected virtual int FlameCode => FLAME_CODE;
+	/// <summary>
+	/// Artwork sprite ID for rendering the light part
+	/// </summary>
 	protected virtual int LightCode => LIGHT_CODE;
+	/// <summary>
+	/// Size of the circle in global space
+	/// </summary>
 	protected virtual int CircleSize => Const.CEL * 3 / 2;
-	protected int RenderingMinZ { get; private set; } = 0;
-	protected int RenderingMaxZ { get; private set; } = 0;
 	public override void OnActivated () {
 		base.OnActivated();
 		int size = CircleSize;
@@ -28,9 +41,6 @@ public abstract class CircleFlamePortal : Portal {
 		int centerX = X + Width / 2;
 		int centerY = Y + Height / 2;
 		int scale = ((Game.GlobalFrame - SpawnFrame) * 30).Clamp(0, 1000);
-
-		RenderingMinZ = int.MaxValue;
-		RenderingMaxZ = int.MinValue;
 
 		// Light
 		if (Renderer.TryGetSprite(LightCode, out var light)) {
@@ -84,8 +94,6 @@ public abstract class CircleFlamePortal : Portal {
 					size, size,
 					tint, z
 				);
-				RenderingMinZ = Util.Min(RenderingMinZ, z);
-				RenderingMaxZ = Util.Max(RenderingMaxZ, z);
 			}
 		}
 
@@ -118,8 +126,6 @@ public abstract class CircleFlamePortal : Portal {
 					size, size,
 					tint, z
 				);
-				RenderingMinZ = Util.Min(RenderingMinZ, z);
-				RenderingMaxZ = Util.Max(RenderingMaxZ, z);
 			}
 		}
 	}

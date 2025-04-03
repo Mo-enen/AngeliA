@@ -4,6 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Entity that spawn a given target entity repeately
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup("Contraption")]
 public abstract class Launcher : Entity, IBlockEntity {
@@ -15,23 +18,62 @@ public abstract class Launcher : Entity, IBlockEntity {
 
 
 	// API
+	/// <summary>
+	/// Starting position offset in global space for the launched entity
+	/// </summary>
 	public virtual Int2 LaunchOffset => new(Width / 2, 0);
+	/// <summary>
+	/// Starting velocity for the launched entity
+	/// </summary>
 	public virtual Int2 LaunchVelocity => default;
+	/// <summary>
+	/// Launching entity type ID
+	/// </summary>
 	public virtual int TargetEntityID => _TargetEntityId;
+	/// <summary>
+	/// Launching entity with this type ID when the "TargetEntityID" is invalid
+	/// </summary>
 	public virtual int FailbackEntityID => 0;
+	/// <summary>
+	/// How many entities can it launch every time after the launcher spawned on stage
+	/// </summary>
 	public virtual int MaxLaunchCount => 32;
+	/// <summary>
+	/// How many frames does it takes to launch another entity
+	/// </summary>
 	public virtual int LaunchFrequency => 120;
-	public virtual int ItemCountPreLaunch => 1;
+	/// <summary>
+	/// How many entity does it launch at once
+	/// </summary>
+	public virtual int ItemCountPerLaunch => 1;
+	/// <summary>
+	/// True if the launcher perform launch every "LaunchFrequency" frames
+	/// </summary>
 	public virtual bool AllowingAutoLaunch => true;
+	/// <summary>
+	/// True if launcher search entity target ID from overlapping map element
+	/// </summary>
 	public virtual bool LaunchOverlappingElement => true;
+	/// <summary>
+	/// True if launcher can launch when the starting position is blocked by other entity
+	/// </summary>
 	public virtual bool LaunchWhenEntranceBlocked => false;
+	/// <summary>
+	/// True if the launched entities can reposition and save into the map
+	/// </summary>
 	public virtual bool KeepLaunchedEntityInMap => false;
+	/// <summary>
+	/// True if the launcher always launch towards player horizontal location
+	/// </summary>
 	public virtual bool LaunchTowardsPlayer => false;
+	/// <summary>
+	/// True if the entity is move by monentum instead of velocity
+	/// </summary>
 	public virtual bool UseMomentum => false;
 	bool IBlockEntity.EmbedEntityAsElement => true;
 	bool IBlockEntity.AllowBeingEmbedAsElement => false;
-	public int LastLaunchedFrame { get; set; }
-	public int CurrentLaunchedCount { get; private set; }
+	protected int LastLaunchedFrame { get; set; }
+	protected int CurrentLaunchedCount { get; private set; }
 
 	// Data
 	private int _TargetEntityId;
@@ -78,7 +120,7 @@ public abstract class Launcher : Entity, IBlockEntity {
 			Game.SettleFrame % LaunchFrequency == LaunchFrequency / 2 &&
 			CurrentLaunchedCount < MaxLaunchCount
 		) {
-			for (int i = 0; i < ItemCountPreLaunch; i++) {
+			for (int i = 0; i < ItemCountPerLaunch; i++) {
 				LaunchEntity();
 			}
 		}
@@ -110,6 +152,9 @@ public abstract class Launcher : Entity, IBlockEntity {
 	}
 
 
+	/// <summary>
+	/// This function is called when an entity is launched
+	/// </summary>
 	protected virtual void OnEntityLaunched (Entity entity, int x, int y) { }
 
 
@@ -121,6 +166,9 @@ public abstract class Launcher : Entity, IBlockEntity {
 	#region --- API ---
 
 
+	/// <summary>
+	/// True if the launcher is currently able to launch
+	/// </summary>
 	public bool ValidForLaunch () {
 
 		if (TargetEntityID == 0) return false;
@@ -139,6 +187,9 @@ public abstract class Launcher : Entity, IBlockEntity {
 	}
 
 
+	/// <summary>
+	/// Perform launch for once
+	/// </summary>
 	public Entity LaunchEntity () {
 
 		if (!ValidForLaunch()) return null;
@@ -206,6 +257,9 @@ public abstract class Launcher : Entity, IBlockEntity {
 	}
 
 
+	/// <summary>
+	/// True if the launcher should launch to right currently
+	/// </summary>
 	public bool LaunchToRightSide () => LaunchTowardsPlayer ?
 		PlayerSystem.Selecting == null || PlayerSystem.Selecting.Rect.CenterX() >= Rect.CenterX() :
 		LaunchVelocity.x >= 0;
