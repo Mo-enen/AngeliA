@@ -5,11 +5,20 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Vehicles that characters can ride on
+/// </summary>
+/// <typeparam name="RM">Type of the movement behavior</typeparam>
 public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovement {
 
-
 	public override int StartDriveCooldown => 42;
+	/// <summary>
+	/// True if the vehicle run around when not being drive
+	/// </summary>
 	protected virtual bool AllowFreeWandering => false;
+	/// <summary>
+	/// Navigation behavior for free wandering
+	/// </summary>
 	protected readonly RigidbodyNavigation Navigation;
 	private Int2 SettledPosition = default;
 	private bool _FreeWandering = true;
@@ -165,6 +174,9 @@ public abstract class RideableVehicle<RM> : Vehicle<RM> where RM : RideableMovem
 	}
 
 
+	/// <summary>
+	/// Apply riding pose animation on driver
+	/// </summary>
 	protected virtual void OverrideDriverAnimation (PoseCharacterRenderer renderer) => renderer.ManualPoseAnimate(PoseAnimation_Ride.TYPE_ID);
 
 

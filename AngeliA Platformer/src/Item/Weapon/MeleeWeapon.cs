@@ -2,10 +2,25 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Weapon that spawn invisible bullet that follows the character
+/// </summary>
 public abstract class MeleeWeapon : Weapon<MeleeBullet> {
+	/// <summary>
+	/// Bullet width in global space when attack facing left
+	/// </summary>
 	public abstract int RangeXLeft { get; }
+	/// <summary>
+	/// Bullet width in global space when attack facing right
+	/// </summary>
 	public abstract int RangeXRight { get; }
+	/// <summary>
+	/// Bullet height in global space
+	/// </summary>
 	public abstract int RangeY { get; }
+	/// <summary>
+	/// Damage amount it deals
+	/// </summary>
 	public virtual int Damage => 1;
 	public override Bullet SpawnBullet (Character sender) {
 

@@ -30,3 +30,17 @@ public class OnFirePutOut_IntTypeID_IRectAttribute : EventAttribute {
 	/// </code></example>
 	public OnFirePutOut_IntTypeID_IRectAttribute (int order = 0) : base(order) { }
 }
+
+
+/// <inheritdoc cref="OnMiniGameGiveBadge_IntQuality(int)"/>
+public class OnMiniGameGiveBadge_IntQuality : EventAttribute {
+	/// <summary>
+	/// The function will be called when mini game give reward to player
+	/// </summary>
+	/// <param name="order">Function with smaller order will be called earlier</param>
+	/// <example><code>
+	/// [OnMiniGameGiveBadge_IntQuality]
+	/// internal static void ExampleFunction (int quality) { }
+	/// </code></example>
+	public OnMiniGameGiveBadge_IntQuality (int order = 0) : base(order) { }
+}

@@ -4,6 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Furniture that allows the user to perform given logic as IActionTarget
+/// </summary>
 public abstract class ActionFurniture : Furniture, IActionTarget {
 
 	bool IActionTarget.IsHighlighted => GetIsHighlighted();
@@ -25,8 +28,16 @@ public abstract class ActionFurniture : Furniture, IActionTarget {
 		IActionTarget.DrawActionTarget(this, sprite, Rect, pivotX, 0f, useHorizontal, useVertical);
 	}
 
+	/// <summary>
+	/// Perform the internal logic
+	/// </summary>
+	/// <returns></returns>
 	public abstract bool Invoke ();
 
+	/// <summary>
+	/// True if the user can perform the logic currently
+	/// </summary>
+	/// <returns></returns>
 	public virtual bool AllowInvoke () => PlayerSystem.Selecting != null && !PlayerSystem.IgnoringInput && !PlayerSystem.IgnoringAction;
 
 }

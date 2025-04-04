@@ -2,8 +2,14 @@
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Item that draw a doll sprite onto character's hip when carry inside inventory
+/// </summary>
 public abstract class DollItem : Item {
 	public override int MaxStackCount => 1;
+	/// <summary>
+	/// Size of the doll sprite in global space
+	/// </summary>
 	public abstract int DollSize { get; }
 	public override void OnPoseAnimationUpdate_FromInventory (PoseCharacterRenderer rendering, int inventoryID, int itemIndex) {
 		base.OnPoseAnimationUpdate_FromInventory(rendering, inventoryID, itemIndex);

@@ -2,16 +2,53 @@
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Map blocks that connect to each other and forms a group
+/// </summary>
 public interface IUnitable {
 
-	public enum UniteMode { Horizontal, Vertical, FourDirection, EightDirection, }
+	/// <summary>
+	/// Which direction will be connected
+	/// </summary>
+	public enum UniteMode {
+		/// <summary>
+		/// Left and right
+		/// </summary>
+		Horizontal,
+		/// <summary>
+		/// Up and down
+		/// </summary>
+		Vertical,
+		/// <summary>
+		/// Left right up and down
+		/// </summary>
+		FourDirection,
+		/// <summary>
+		/// Left right up down and diagonal
+		/// </summary>
+		EightDirection,
+	}
 
+	/// <summary>
+	/// Custom object that comes from ForAllUnitedEntity call. Only use this inside the "System.Action{E} results" function.
+	/// </summary>
 	public static object UniteTempParam { get; private set; } = null;
-	public static int GlobalUniteStamp = int.MinValue;
-	public static readonly Pipe<Int2> UnitedPositions = new(1024);
 	public int LocalUniteStamp { get; set; }
 
-	public static void ForAllUnitedEntity<E> (int physicsMask, int entityID, IRect rect, OperationMode mode, UniteMode partialMode, System.Action<E> results, object param = null) where E : IUnitable {
+	private static readonly Pipe<Int2> UnitedPositions = new(1024);
+	private static int GlobalUniteStamp = int.MinValue;
+
+	/// <summary>
+	/// Iterate through all connected IUnitable as a group
+	/// </summary>
+	/// <param name="physicsMask">Which physics layer is include for entity searching</param>
+	/// <param name="entityID">Target entity type ID</param>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="mode"></param>
+	/// <param name="uniteMode">Which direction count as connected</param>
+	/// <param name="results">Invoke this action for all founded result</param>
+	/// <param name="param">Custom data for the "result" action. Use IUnitable.UniteTempParam inside result action to get this data.</param>
+	public static void ForAllUnitedEntity (int physicsMask, int entityID, IRect rect, OperationMode mode, UniteMode uniteMode, System.Action<IUnitable> results, object param = null) {
 		UniteTempParam = param;
 		int eWidth = rect.width;
 		int eHeight = rect.height;
@@ -24,13 +61,13 @@ public interface IUnitable {
 			rect.x = pos.x + eWidth / 2;
 			rect.y = pos.y + eHeight / 2;
 
-			if (Physics.GetEntity(entityID, rect, physicsMask, mode: mode) is not E entity) continue;
+			if (Physics.GetEntity(entityID, rect, physicsMask, mode: mode) is not IUnitable entity) continue;
 			if (entity.LocalUniteStamp == stamp) continue;
 			entity.LocalUniteStamp = stamp;
 			results.Invoke(entity);
 
 			// Link Connected
-			switch (partialMode) {
+			switch (uniteMode) {
 				case UniteMode.Horizontal:
 					UnitedPositions.LinkToTail(pos.Shift(-eWidth, 0));
 					UnitedPositions.LinkToTail(pos.Shift(eWidth, 0));

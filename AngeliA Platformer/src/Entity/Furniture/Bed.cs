@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Furniture that player can sleep on and gain the reward from full-asleep
+/// </summary>
 public abstract class Bed : ActionFurniture {
 
 
@@ -56,6 +59,10 @@ public abstract class Bed : ActionFurniture {
 
 	}
 
+	// API
+	/// <summary>
+	/// Make given character on bed and sleep
+	/// </summary>
 	public void GetTargetOnBed (Character target) {
 
 		if (target == null) return;

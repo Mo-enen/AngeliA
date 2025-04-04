@@ -2,18 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Task for handle logic during player teleport
+/// </summary>
 public class TeleportTask : Task {
 
 
 	// Api
 	private static readonly int TYPE_ID = typeof(TeleportTask).AngeHash();
+	/// <summary>
+	/// Teleport from this position in global space
+	/// </summary>
 	public Int2 TeleportFrom { get; set; } = default;
+	/// <summary>
+	/// Teleport to this position in global space
+	/// </summary>
 	public Int3 TeleportTo { get; set; } = default;
+	/// <summary>
+	/// Teleport actually start after wait this frames long
+	/// </summary>
 	public int WaitDuration { get; set; } = 30;
+	/// <summary>
+	/// Teleport takes this frames long to finish
+	/// </summary>
 	public int Duration { get; set; } = 60;
+	/// <summary>
+	/// True if use the vignette effect during teleport
+	/// </summary>
 	public bool UseVignette { get; set; } = true;
+	/// <summary>
+	/// True if use the map layer parallax effect during teleport
+	/// </summary>
 	public bool UseParallax { get; set; } = true;
 
 	// Data
@@ -175,7 +197,25 @@ public class TeleportTask : Task {
 
 
 	// API
+	/// <summary>
+	/// Make a teleport for selecting player by using a door
+	/// </summary>
+	/// <param name="fromX">(in global space)</param>
+	/// <param name="fromY">(in global space)</param>
+	/// <param name="toX">(in global space)</param>
+	/// <param name="toY">(in global space)</param>
+	/// <param name="toZ"></param>
+	/// <returns>Global single instance of the task unit</returns>
 	public static TeleportTask TeleportFromDoor (int fromX, int fromY, int toX, int toY, int toZ) => TeleportLogic(false, fromX, fromY, toX, toY, toZ, useVignette: false, useParallax: true);
+	/// <summary>
+	/// Make a teleport for selecting player by using a portal
+	/// </summary>
+	/// <param name="fromX">(in global space)</param>
+	/// <param name="fromY">(in global space)</param>
+	/// <param name="toX">(in global space)</param>
+	/// <param name="toY">(in global space)</param>
+	/// <param name="toZ"></param>
+	/// <returns>Global single instance of the task unit</returns>
 	public static TeleportTask TeleportFromPortal (int fromX, int fromY, int toX, int toY, int toZ, bool samePosition) => TeleportLogic(true, fromX, fromY, toX, toY, toZ, useVignette: !samePosition, useParallax: samePosition);
 	private static TeleportTask TeleportLogic (bool portal, int fromX, int fromY, int toX, int toY, int toZ, bool useVignette, bool useParallax) {
 		if (TaskSystem.HasTask()) return null;

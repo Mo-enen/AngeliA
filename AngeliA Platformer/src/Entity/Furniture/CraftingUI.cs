@@ -4,7 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// UI for the crafting table
+/// </summary>
 public sealed class CraftingUI : InventoryPartnerUI {
 
 
@@ -24,7 +26,13 @@ public sealed class CraftingUI : InventoryPartnerUI {
 	private static readonly LanguageCode MARK_KEEP = ("UI.Crafting.Keep", "Keep");
 
 	// Api
+	/// <summary>
+	/// Unified size of a single item field
+	/// </summary>
 	public override int ItemFieldSize => 96;
+	/// <summary>
+	/// Artwork sprite ID for the item field frame
+	/// </summary>
 	public SpriteCode FrameCode { get; set; } = "CraftingTableFrame";
 
 	// Data
@@ -518,6 +526,9 @@ public sealed class CraftingUI : InventoryPartnerUI {
 
 
 	// API
+	/// <summary>
+	/// Set inventory column and row count
+	/// </summary>
 	public void SetColumnAndRow (int newColumn, int newRow) {
 		_Column = newColumn;
 		_Row = newRow;

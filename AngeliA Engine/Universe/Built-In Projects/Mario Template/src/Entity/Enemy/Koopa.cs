@@ -52,7 +52,7 @@ public abstract class Koopa : Enemy, IPingPongWalker, IDamageReceiver {
 		IsInShell = false;
 		LastDamageFrame = int.MinValue;
 		RollingStartFrame = int.MinValue;
-		IPingPongWalker.OnActive(this);
+		IPingPongWalker.OnActivated(this);
 		Width = 196;
 		Height = 255;
 	}

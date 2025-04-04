@@ -55,35 +55,6 @@ public class QuickSmokeBigParticle : Particle {
 	private int _SpeedX = 6;
 	private int _Scale = 1000;
 
-	[OnGameInitializeLater]
-	internal static void OnGameInitializeLater () {
-		Fire.OnFirePutout += OnFirePutout;
-		static void OnFirePutout (int fireID, IRect fireRect) {
-
-			if (Stage.SpawnEntity(
-				TYPE_ID, fireRect.CenterX(), fireRect.CenterY()
-			) is not QuickSmokeBigParticle particle0) return;
-
-			if (Stage.SpawnEntity(
-				TYPE_ID,
-				fireRect.CenterX() + Util.QuickRandom(-Const.HALF, Const.HALF),
-				fireRect.CenterY() + Util.QuickRandom(-Const.HALF, Const.HALF)
-			) is not QuickSmokeBigParticle particle1) return;
-
-			if (Renderer.TryGetSprite(fireID, out var fireSp, true) ||
-				Renderer.TryGetSpriteFromGroup(fireID, 0, out fireSp)
-			) {
-				particle0.Tint = fireSp.SummaryTint;
-			}
-			particle0._Duration = 15;
-			particle0._SpeedX = 0;
-			particle0._Scale = -618;
-			particle1._Duration = 22;
-			particle1._SpeedX = 0;
-			particle1.Tint = Color32.GREY_20;
-		}
-	}
-
 	public override void OnActivated () {
 		base.OnActivated();
 		_Duration = 10;

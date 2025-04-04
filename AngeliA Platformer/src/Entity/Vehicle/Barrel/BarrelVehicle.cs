@@ -4,6 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// A barrel that roll to opposite direction when character walk on it
+/// </summary>
 public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 
 	// Api
@@ -12,6 +15,9 @@ public abstract class BarrelVehicle : Vehicle<BarrelMovement>, IDamageReceiver {
 	public override Int2? DriverLeaveLocalPosition => null;
 	public override int AirDragX => Rolling ? 0 : 5;
 	public virtual int RollSpeed => 18;
+	/// <summary>
+	/// Diameter of the barrel in global space
+	/// </summary>
 	public virtual int BarrelSize => Const.CEL;
 	Tag IDamageReceiver.IgnoreDamageType => Tag.None;
 

@@ -4,7 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Entity that behave like liquid in AngeliA style
+/// </summary>
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.Layer(EntityLayer.WATER)]
 public abstract class Liquid : Entity {
@@ -27,11 +29,29 @@ public abstract class Liquid : Entity {
 
 
 	// Api
+	/// <summary>
+	/// Artwork sprite ID for rendering
+	/// </summary>
 	protected virtual int ArtworkID => TypeID;
+	/// <summary>
+	/// Entity type ID for the new liquid it spawn when flow
+	/// </summary>
 	protected virtual int ProduceID => TypeID;
+	/// <summary>
+	/// When "Volume" greater than this, the liquid will repdoduce itself for flow behavior
+	/// </summary>
 	protected virtual int ReproduceVolume => 200;
+	/// <summary>
+	/// Frames it takes for checking reproduce again
+	/// </summary>
 	protected virtual int ReproduceFrequency => 5;
+	/// <summary>
+	/// Volume lost per frame when liquid vanishing
+	/// </summary>
 	protected virtual int VanishSpeed => 100;
+	/// <summary>
+	/// Current volume of the liquid. 0 means no liquid, 1000 means full volume.
+	/// </summary>
 	public int Volume { get; private set; } = 1000;
 
 	// Data

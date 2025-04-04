@@ -2,6 +2,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Entity that have a 45° diagonal surface to interact with objects on stage
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.StageOrder(-2048)]
 public abstract class Slope : Entity, IBlockEntity {
@@ -13,8 +16,17 @@ public abstract class Slope : Entity, IBlockEntity {
 
 
 	// Api
+	/// <summary>
+	/// Up means ◿ or ◺, Down means ◹ or ◸
+	/// </summary>
 	public abstract Direction2 DirectionVertical { get; }
+	/// <summary>
+	/// Left means ◿ or ◹, Right means ◺ or ◸
+	/// </summary>
 	public abstract Direction2 DirectionHorizontal { get; }
+	/// <summary>
+	/// Which physics layers is include for the hit check
+	/// </summary>
 	public virtual int CollisionMask => PhysicsMask.DYNAMIC;
 
 

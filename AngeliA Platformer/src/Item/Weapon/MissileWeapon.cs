@@ -5,6 +5,10 @@ using AngeliA.Platformer;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Weapon that shoot a missile to attack
+/// </summary>
+/// <typeparam name="B">Type of the missile bullet</typeparam>
 public abstract class MissileWeapon<B> : Weapon<B> where B : MissileBullet {
 
 	protected override WeaponValidDirection ValidDirection => WeaponValidDirection.Two;

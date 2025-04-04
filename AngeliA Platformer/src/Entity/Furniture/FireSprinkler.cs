@@ -4,17 +4,44 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Furniture that detect and put out fire automatically
+/// </summary>
 public abstract class FireSprinkler : Furniture, ICircuitOperator {
 
 
 	// Api
+	/// <summary>
+	/// How many frames does it takes to check for fire again
+	/// </summary>
 	protected virtual int CheckFrequency => 42;
+	/// <summary>
+	/// How many frames does it wait from fire detected to start putting it out
+	/// </summary>
 	protected virtual int RespondDelay => 30;
+	/// <summary>
+	/// How far does the fire checking goes in global space
+	/// </summary>
 	protected virtual int DetectionRadius => Const.CEL * 4;
+	/// <summary>
+	/// How long does a single water splash takes in frame
+	/// </summary>
 	protected virtual int SprinklingDuration => 240;
+	/// <summary>
+	/// How far does the water splash goes in global space
+	/// </summary>
 	protected virtual int SprinklingRange => Const.CEL * 5;
+	/// <summary>
+	/// Artwork sprite ID for the alarm light
+	/// </summary>
 	protected virtual int AlarmLightSpriteCode => 0;
+	/// <summary>
+	/// How many water sprites does it renders at same time
+	/// </summary>
 	protected virtual int SprinklingWaterSpriteCount => 64;
+	/// <summary>
+	/// Artwork sprite group ID for a single water drop
+	/// </summary>
 	protected virtual int SprinklingWaterSpriteGroupCode => 0;
 
 

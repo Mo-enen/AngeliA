@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Task that handles the logic for game restart
+/// </summary>
 public class OpeningTask : Task {
 
 
@@ -18,9 +22,21 @@ public class OpeningTask : Task {
 	private const int PRIORITY = 1;
 
 	// Api
+	/// <summary>
+	/// Camera view position X that the task trying to move to
+	/// </summary>
 	public int TargetViewX { get; set; } = 0;
+	/// <summary>
+	/// Camera view position Y that the task trying to move to
+	/// </summary>
 	public int TargetViewY { get; set; } = 0;
+	/// <summary>
+	/// Z position of the stage
+	/// </summary>
 	public int TargetViewZ { get; set; } = 0;
+	/// <summary>
+	/// True if the task make fade out effect
+	/// </summary>
 	public bool FadeOut { get; set; } = true;
 
 	// Data
@@ -140,7 +156,7 @@ public class OpeningTask : Task {
 
 
 	[OnGameRestart]
-	public static void OnGameRestart () {
+	internal static void OnGameRestart () {
 
 		// Get Start Position
 		var startUnitPosition = PlayerSystem.GetPlayerFinalRespawnUnitPosition();

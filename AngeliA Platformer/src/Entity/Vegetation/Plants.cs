@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Represent a breakable plant on stage
+/// </summary>
 [EntityAttribute.MapEditorGroup("Vegetation")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Plant : Entity, IBlockEntity, ICombustible, IDamageReceiver {
@@ -32,6 +35,9 @@ public abstract class Plant : Entity, IBlockEntity, ICombustible, IDamageReceive
 	}
 
 
+	/// <summary>
+	/// This function is called when the plant is break by something
+	/// </summary>
 	protected virtual void OnPlantBreak () {
 		if (!IgnoreReposition) {
 			ItemSystem.DropItemFor(this);

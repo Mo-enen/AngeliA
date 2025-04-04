@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Movement behavior for rideable vehicles
+/// </summary>
+/// <param name="rig"></param>
 public class RideableMovement (Rigidbody rig) : VehicleMovement(rig) {
 
 	protected override void InitializeMeta () {

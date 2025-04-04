@@ -6,10 +6,16 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Furniture that allow the player to combine items into another item
+/// </summary>
 public abstract class CraftingTable : InventoryFurniture<CraftingUI>, IActionTarget {
 
 	// VAR
 	private static readonly SpriteCode CRAFTING_FRAME_CODE = "CraftingTableFrame";
+	/// <summary>
+	/// True if display a thumbnail for this entity in the inventory UI
+	/// </summary>
 	protected virtual bool UseInventoryThumbnail => true;
 
 	// MSG
@@ -33,6 +39,11 @@ public abstract class CraftingTable : InventoryFurniture<CraftingUI>, IActionTar
 		return result;
 	}
 
+	/// <summary>
+	/// Render the thumbnail for this entity in the inventory UI
+	/// </summary>
+	/// <param name="itemRect"></param>
+	/// <param name="singleRow"></param>
 	protected void DrawInventoryThumbnail (IRect itemRect, bool singleRow = false) {
 		int z = Renderer.TryGetSprite(TypeID, out var sprite) ? sprite.LocalZ + 1 : 1;
 		for (int i = 0; i < 4; i++) {

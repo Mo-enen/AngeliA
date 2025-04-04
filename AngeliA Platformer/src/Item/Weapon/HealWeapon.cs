@@ -5,10 +5,20 @@ using AngeliA.Platformer;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Weapon that shoot bullet to heal friendly forces
+/// </summary>
+/// <typeparam name="B">Type of bullet to spawn</typeparam>
 public abstract class HealWeapon<B> : Weapon<B> where B : HealBullet {
 
 	// VAR
+	/// <summary>
+	/// Frames it takes to auto attack again. Set to 0 for no auto attack
+	/// </summary>
 	protected virtual int AutoAttackFrequency => 0;
+	/// <summary>
+	/// True if this weapon allows manually attack from character
+	/// </summary>
 	protected virtual bool AllowManuallyAttack => true;
 
 	// MSG

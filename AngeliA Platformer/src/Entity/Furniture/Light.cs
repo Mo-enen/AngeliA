@@ -2,16 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Furniture that give illuminate from 6:00 to 18:00 during in-game time
+/// </summary>
 [EntityAttribute.UpdateOutOfRange]
 public abstract class Light : Furniture {
 
 
 	private static readonly SpriteCode LIGHT = "Lamp Light";
+	/// <summary>
+	/// Artwork sprite for the light
+	/// </summary>
 	protected virtual SpriteCode LightSprite => LIGHT;
+	/// <summary>
+	/// Size of the light sprite in global space
+	/// </summary>
 	protected virtual int LightRange => Const.CEL;
+	/// <summary>
+	/// Range of the illuminate in global space
+	/// </summary>
 	protected virtual int IlluminateRange => Const.CEL * 6;
 	private bool OpenLight = false;
 

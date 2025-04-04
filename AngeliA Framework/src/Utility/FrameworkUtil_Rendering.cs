@@ -426,7 +426,7 @@ public static partial class FrameworkUtil {
 
 
 	/// <summary>
-	/// Draw clock hands from given time
+	/// Draw clock hands from in-game time
 	/// </summary>
 	/// <param name="rect">Rect position for clock face in global space</param>
 	/// <param name="handCode">Artwork sprite ID for the hand</param>
@@ -438,7 +438,7 @@ public static partial class FrameworkUtil {
 
 
 	/// <summary>
-	/// Draw clock hands from given time
+	/// Draw clock hands from in-game time
 	/// </summary>
 	/// <param name="centerX">Center position in global space</param>
 	/// <param name="centerY">Center position in global space</param>

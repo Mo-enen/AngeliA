@@ -3,20 +3,35 @@ using System.Collections.Generic;
 
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// A moving entity that carry things on top
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup(nameof(Platform))]
 public abstract class Platform : Entity, IBlockEntity {
 
 
 	// Api
+	/// <summary>
+	/// True if the entity fill upward oneway gate into physics system
+	/// </summary>
 	public abstract bool OneWay { get; }
 
 	// Short
+	/// <summary>
+	/// True if the platform has been touched by selecting player after spawned
+	/// </summary>
 	protected bool TouchedByPlayer { get; private set; } = false;
+	/// <summary>
+	/// True if the platform has been touched by a character after spawned
+	/// </summary>
 	protected bool TouchedByCharacter { get; private set; } = false;
+	/// <summary>
+	/// True if the platform has been touched by a rigidbody after spawned
+	/// </summary>
 	protected bool TouchedByRigidbody { get; private set; } = false;
 	protected FittingPose Pose { get; private set; } = FittingPose.Unknown;
 
@@ -153,15 +168,30 @@ public abstract class Platform : Entity, IBlockEntity {
 
 
 	// ABS
+	/// <summary>
+	/// This function handles the movement logic of this platform
+	/// </summary>
 	protected abstract void Move ();
 
 
+	/// <summary>
+	/// This function is called when a rigidbody touchs this platform
+	/// </summary>
 	protected virtual void OnRigidbodyTouched (Rigidbody rig) { }
+	/// <summary>
+	/// This function is called when a character touchs this platform
+	/// </summary>
 	protected virtual void OnCharacterTouched (Character character) { }
+	/// <summary>
+	/// This function is called when the selecting player touchs this platform
+	/// </summary>
 	protected virtual void OnPlayerTouched (Character player) { }
 
 
 	// API
+	/// <summary>
+	/// Mark the platform as touched. (do not trigger the callback functions)
+	/// </summary>
 	public void SetTouch (bool rigidbody = true, bool character = true, bool player = true) {
 		TouchedByRigidbody = rigidbody;
 		TouchedByCharacter = character;
@@ -169,6 +199,9 @@ public abstract class Platform : Entity, IBlockEntity {
 	}
 
 
+	/// <summary>
+	/// Draw the platform block on screen
+	/// </summary>
 	protected virtual void RenderPlatformBlock (int artworkID) {
 		int index = Pose switch {
 			FittingPose.Single => 0,

@@ -6,14 +6,36 @@ using AngeliA.Platformer;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Weapon that shoot projectile to attack
+/// </summary>
+/// <typeparam name="B">Type of the bullet</typeparam>
 public abstract class ProjectileWeapon<B> : Weapon<B> where B : MovableBullet {
 
 	// VAR
+	/// <summary>
+	/// How many bullet does it shoot at once
+	/// </summary>
 	public virtual int BulletCountInOneShot => 1;
+	/// <summary>
+	/// Bullet start position Y. (0 means bottom of character hitbox. 1000 means top of character hitbox)
+	/// </summary>
 	protected virtual int BulletPivotY => 500;
+	/// <summary>
+	/// Extra speed apply to forward direction
+	/// </summary>
 	protected virtual int AdditionalBulletSpeedForward => 0;
+	/// <summary>
+	/// Extra speed apply to side direction
+	/// </summary>
 	protected virtual int AdditionalBulletSpeedSide => 0;
+	/// <summary>
+	/// How multiple bullets spread when spawned at once
+	/// </summary>
 	public virtual int AngleSpeedDelta => 0;
+	/// <summary>
+	/// Set this value to make "BulletCountInOneShot" different.
+	/// </summary>
 	protected int ForceBulletCountNextShot { get; set; } = -1;
 
 	// MSG

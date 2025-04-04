@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-using AngeliA;namespace AngeliA.Platformer; 
+using AngeliA;
 
+namespace AngeliA.Platformer; 
 
+/// <summary>
+/// Furniture that display the current in-game time
+/// </summary>
 public abstract class Clock : Furniture {
 
 	private static readonly SpriteCode HAND_CODE = "Clock Hand";

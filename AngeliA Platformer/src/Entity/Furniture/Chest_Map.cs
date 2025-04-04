@@ -4,11 +4,17 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Furniture that allow the player to spawn a chain of items from map element below
+/// </summary>
 public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 
 
 	// VAR
 	protected static readonly HashSet<Int3> OpenedChest = [];
+	/// <summary>
+	/// Replace items in map with this id after spawn them
+	/// </summary>
 	protected virtual int ItemPlaceHolder => 0;
 
 
@@ -22,17 +28,20 @@ public abstract class MapChest : Furniture, IActionTarget, IBlockEntity {
 
 
 	// API
+	/// <summary>
+	/// True if the given chest is already opened
+	/// </summary>
 	protected static bool IsChestOpened (MapChest chest) => chest != null && chest.FromWorld && OpenedChest.Contains(chest.InstanceID);
 
 
 	[OnGameRestart]
-	public static void ClearOpenedMarks_Restart () {
+	internal static void ClearOpenedMarks_Restart () {
 		OpenedChest.Clear();
 	}
 
 
 	[OnMapEditorModeChange_Mode]
-	public static void ClearOpenedMarks (OnMapEditorModeChange_ModeAttribute.Mode mode) {
+	internal static void ClearOpenedMarks (OnMapEditorModeChange_ModeAttribute.Mode mode) {
 		if (mode == OnMapEditorModeChange_ModeAttribute.Mode.ExitEditMode) {
 			OpenedChest.Clear();
 		}

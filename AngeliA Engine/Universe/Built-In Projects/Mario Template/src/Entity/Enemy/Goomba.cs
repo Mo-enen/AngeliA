@@ -67,7 +67,7 @@ public abstract class Goomba : Enemy, IPingPongWalker {
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		IPingPongWalker.OnActive(this);
+		IPingPongWalker.OnActivated(this);
 		(this as IPingPongWalker).WalkingRight = StartWithWalkingRight;
 		Width = 196;
 		Height = 255;

@@ -17,6 +17,19 @@
             internal static void ExampleFunction (CheckPoint cp, Character player) { }
             </code></example>
         </member>
+        <member name="T:AngeliA.Platformer.OnFirePutOut_IntTypeID_IRectAttribute">
+            <inheritdoc cref="M:AngeliA.Platformer.OnFirePutOut_IntTypeID_IRectAttribute.#ctor(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Platformer.OnFirePutOut_IntTypeID_IRectAttribute.#ctor(System.Int32)">
+            <summary>
+            The function will be called when a fire entity is put out
+            </summary>
+            <param name="order">Function with smaller order will be called earlier</param>
+            <example><code>
+            [OnFirePutOut_IntTypeID_IRect]
+            internal static void ExampleFunction (int typeID, IRect rect) { }
+            </code></example>
+        </member>
         <member name="T:AngeliA.Platformer.NavigationOperateMotion">
             <summary>
             Type of navigation motion for a single step
@@ -921,6 +934,1024 @@
         <member name="P:AngeliA.Platformer.Launcher.UseMomentum">
             <summary>
             True if the entity is move by monentum instead of velocity
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Launcher.OnEntityLaunched(AngeliA.Entity,System.Int32,System.Int32)">
+            <summary>
+            This function is called when an entity is launched
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Launcher.ValidForLaunch">
+            <summary>
+            True if the launcher is currently able to launch
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Launcher.LaunchEntity">
+            <summary>
+            Perform launch for once
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Launcher.LaunchToRightSide">
+            <summary>
+            True if the launcher should launch to right currently
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.MomentumBooster">
+            <summary>
+            Entity that force character on top run in given direction or their current facing direction
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MomentumBooster.BoostSpeed">
+            <summary>
+            Target moving speed
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MomentumBooster.BoostDirection">
+            <summary>
+            Target moving direction. Set to None to make target run to their facing direction
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MomentumBooster.MomentumDecay">
+            <summary>
+            Decay value for target momentum
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.MomentumBooster.OnBoosting(AngeliA.Rigidbody)">
+            <summary>
+            This function is called when target is getting boost
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Oneway">
+            <summary>
+            Entity that do not allow rigidbody pass through on given direction
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Oneway.GateDirection">
+            <summary>
+            Target moving opposite with this direction get blocked
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Spring">
+            <summary>
+            Entity that bounce the touching targets
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Spring.Horizontal">
+            <summary>
+            True if the spring bounce horizontaly
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Spring.Power">
+            <summary>
+            Initial speed this spring gives when bounce
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Spring.ArtworkRotation">
+            <summary>
+            Current rotation of the artwork sprite
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Track">
+            <summary>
+            Entity that make IAutoTrackWalker walks along it
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Track.Speed">
+            <summary>
+            Speed of the targets on it
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Track.HangGap">
+            <summary>
+            Position offset Y for targets on it
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Track.AllowStraightConnection">
+            <summary>
+            True if tracks can connect straight directions
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Track.AllowTiltConnection">
+            <summary>
+            True if tracks can connect from diagonal directions
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Track.TurnBackWhenReachEnd">
+            <summary>
+            True if targets turn back when walks into edge
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Track.SlowDownWhenWalkerOverlap">
+            <summary>
+            True if one of the targets slow down when overlap each other
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Track.LoadItemFromMapElement">
+            <summary>
+            True if map element overlapping will be spawned
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Track.BodySprite">
+            <summary>
+            Artwork sprite for rendering the body
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Track.BodyTiltSprite">
+            <summary>
+            Artwork sprite for rendering the tilted body
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Track.CenterSprite">
+            <summary>
+            Artwork sprite for rendering the center knob
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Track.OnWalking(AngeliA.Platformer.IAutoTrackWalker)">
+            <summary>
+            This function is called when a walker is walking on the track
+            </summary>
+            <param name="walker"></param>
+        </member>
+        <member name="M:AngeliA.Platformer.Track.IsConnected(AngeliA.Direction8)">
+            <summary>
+            True if there is track connecting to given direction
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.TrapDoor">
+            <summary>
+            Entity that drops characters on top when getting step on
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TrapDoor.TriggerWhenStepOn">
+            <summary>
+            True if trap door get trigger when target step on
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TrapDoor.TriggerByCircuit">
+            <summary>
+            True if trap door get trigger by circuit system
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TrapDoor.OpenDelay">
+            <summary>
+            Frames between target step on and get trigger
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TrapDoor.OpenDuration">
+            <summary>
+            How long does the door stay open before closed again
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TrapDoor.IsOpening">
+            <summary>
+            True if the door is currently opening
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TrapDoor.LastSwitchFrame">
+            <summary>
+            Last time this door switch state in frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.TrapDoor.Open">
+            <summary>
+            Make the door open
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.TrapDoor.Close">
+            <summary>
+            Make the door close
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.TrapDoor.HitCheck">
+            <summary>
+            Return true when the door is step on
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Breakable">
+            <summary>
+            Entity that can be break by taking damage
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Breakable.SpawnItemFromMapWhenBreak">
+            <summary>
+            True if this entity spawn item from map element overlaps on it
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Breakable.IgnoreDamageType">
+            <summary>
+            This entity do not take damage with this tags
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Breakable.OnBreak">
+            <summary>
+            This function is called when entity breaks
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.CarryingPipe">
+            <summary>
+            This entity carry the player when they get in
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CarryingPipe.EdgeSprite">
+            <summary>
+            Artwork sprite for rendering the edge part
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CarryingPipe.MidSprite">
+            <summary>
+            Artwork sprite for rendering the middle part
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CarryingPipe.BottomSprite">
+            <summary>
+            Artwork sprite for rendering the bottom part
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CarryingPipe.InsertSprite">
+            <summary>
+            Artwork sprite for rendering the extra expanded part
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CarryingPipe.Direction">
+            <summary>
+            Direction this pipe is facing
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CarryingPipe.CarryingPoseAnimationID">
+            <summary>
+            ID of the pose-style animation applys on pose character
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.CarryingPipe.IsEdge(System.Boolean)">
+            <summary>
+            True if the pipe is on the edge as entrance
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.CarryingPipe.OnPlayerEnter(AngeliA.Character)">
+            <summary>
+            This function is called when player enter the pipe
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.CarryingPipe.OnPlayerExit(AngeliA.Character)">
+            <summary>
+            This function is called when player exit the pipe
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.CircleFlamePortal">
+            <summary>
+            Portal that looks like magic thing circling around
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CircleFlamePortal.CircleCode">
+            <summary>
+            Artwork sprite ID for rendering the circle part
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CircleFlamePortal.FlameCode">
+            <summary>
+            Artwork sprite ID for rendering the flame part
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CircleFlamePortal.LightCode">
+            <summary>
+            Artwork sprite ID for rendering the light part
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CircleFlamePortal.CircleSize">
+            <summary>
+            Size of the circle in global space
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Collectable">
+            <summary>
+            Entity that get collect when player touchs
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Collectable.ItemID">
+            <summary>
+            Item it give to player when get collected
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Collectable.ItemCount">
+            <summary>
+            How many item does it give at once
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Collectable.OnCollect(AngeliA.Character)">
+            <summary>
+            Make this collectable be collect by given character
+            </summary>
+            <returns>True if sucessfuly collected</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.Collectable.AllowCollect(AngeliA.Character)">
+            <summary>
+            True if given character can collect this collectable
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.DonutBlock">
+            <summary>
+            Entity that drops when being step on for a well
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.DonutBlock.BreakMode">
+            <summary>
+            How this entity broke
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.DonutBlock.BreakMode.BreakOnTouchGround">
+            <summary>
+            Break on drop onto ground
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.DonutBlock.BreakMode.BreakOnFall">
+            <summary>
+            Break when start to fall
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.DonutBlock.BreakMode.DoNotBreak">
+            <summary>
+            Do not auto break
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.DonutBlock.BreakCondition">
+            <summary>
+            How this entity break
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.DonutBlock.HoldDuration">
+            <summary>
+            How long does it takes to make it fall by standing on it
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.DonutBlock.FallingVelocity">
+            <summary>
+            Speed downward when falling
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.DonutBlock.IsFalling">
+            <summary>
+            True if this entity is falling
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.DonutBlock.IsHolding">
+            <summary>
+            True if this entity is being step on
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.DonutBlock.HoldStartFrame">
+            <summary>
+            When does this entity begin to be step on
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.DonutBlock.Break">
+            <summary>
+            Make this donut block break
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Door">
+            <summary>
+            Entity that teleport player into next-front/behind layer of the map
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Door.IsFrontDoor">
+            <summary>
+            True if the door teleport player to next front layer
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Door.KeyItemID">
+            <summary>
+            ID of required key item. 0 means no key required.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Door.UnlockedDoorID">
+            <summary>
+            Entity type id for the unlocked version of this door
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Door.Invoke(AngeliA.Character)">
+            <summary>
+            Use this door
+            </summary>
+            <returns>True if successfuly used</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.Door.AllowInvoke(AngeliA.Entity)">
+            <summary>
+            True if the door allow the target to use
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Fire">
+            <summary>
+            Entity that burns on target ICombustible
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Fire.PowerAmount">
+            <summary>
+            How fast the fire burn down the target ICombustible
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Fire.WeakenDuration">
+            <summary>
+            Duration in frames that this fire appears to be weaken
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Fire.SpreadDuration">
+            <summary>
+            Frames this fire takes to spread itself
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Fire.SpreadRange">
+            <summary>
+            ICombustible in this range will be on fire when this fire spread
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Fire.UseAdditiveShader">
+            <summary>
+            True if the fire use additive shader to render
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Fire.DamageCooldown">
+            <summary>
+            How long does it takes to damage a IDamageReceiver again
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Fire.DefaultDirection">
+            <summary>
+            Direction of the fire is facing when it get spawned
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Fire.IlluminateUnitRadius">
+            <summary>
+            Lighting illuminate distance in unit space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Fire.IlluminateAmount">
+            <summary>
+            Amount of lighting it gives
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Fire.Direction">
+            <summary>
+            Direction of the fire is currently facing
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Fire.Setup(System.Int32,AngeliA.Direction4,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Make this fire start to burn on no target
+            </summary>
+            <param name="burnDuration">How long does it burn</param>
+            <param name="direction">Direction it facing</param>
+            <param name="width">Size in global space</param>
+            <param name="height">Size in global space</param>
+            <param name="damageImmediately">Deal damage immediately after spawn</param>
+        </member>
+        <member name="M:AngeliA.Platformer.Fire.Setup(AngeliA.ICombustible)">
+            <summary>
+            Make this fire burn on a ICombustible
+            </summary>
+            <param name="com"></param>
+        </member>
+        <member name="M:AngeliA.Platformer.Fire.Spread">
+            <summary>
+            Make the fire spread
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Fire.Putout(System.Boolean)">
+            <summary>
+            Make the fire stop burning
+            </summary>
+            <param name="manually">True if the fire is stopped by something else instead by it own</param>
+        </member>
+        <member name="T:AngeliA.Platformer.FrozenZone">
+            <summary>
+            Entity that freeze nearby buff carriers
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.FrozenZone.Duration">
+            <summary>
+            Time in frame that target keep being freeze
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.FrozenZone.Fullscreen">
+            <summary>
+            True if all buff carriers on screen will be freeze while this entity is on stage
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.FrozenZone.OnTouchingZone(AngeliA.Rigidbody)">
+            <summary>
+            This function is called when a target is touching this zone
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.FrozenZone.SpreadFrozenZone(System.Int32,AngeliA.IRect,System.Int32)">
+            <summary>
+            Spawn a frozen zone
+            </summary>
+            <param name="zoneID">Type of the zone</param>
+            <param name="range">Size of the zone</param>
+            <param name="duration">Time in frame that target keep being freeze</param>
+        </member>
+        <member name="T:AngeliA.Platformer.Liquid">
+            <summary>
+            Entity that behave like liquid in AngeliA style
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Liquid.ArtworkID">
+            <summary>
+            Artwork sprite ID for rendering
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Liquid.ProduceID">
+            <summary>
+            Entity type ID for the new liquid it spawn when flow
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Liquid.ReproduceVolume">
+            <summary>
+            When "Volume" greater than this, the liquid will repdoduce itself for flow behavior
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Liquid.ReproduceFrequency">
+            <summary>
+            Frames it takes for checking reproduce again
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Liquid.VanishSpeed">
+            <summary>
+            Volume lost per frame when liquid vanishing
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Liquid.Volume">
+            <summary>
+            Current volume of the liquid. 0 means no liquid, 1000 means full volume.
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Portal">
+            <summary>
+            Entity that teleport player to any given position when player touchs
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Portal.TargetGlobalPosition">
+            <summary>
+            Position in global space to teleport the target
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Portal.DontSpawnAfterUsed">
+            <summary>
+            True if the portal get remove from map after teleport
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Portal.Invoke(AngeliA.Character)">
+            <summary>
+            Perform teleport for given target
+            </summary>
+            <returns>True if successfuly performed</returns>
+        </member>
+        <member name="T:AngeliA.Platformer.Slope">
+            <summary>
+            Entity that have a 45° diagonal surface to interact with objects on stage
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Slope.DirectionVertical">
+            <summary>
+            Up means ◿ or ◺, Down means ◹ or ◸
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Slope.DirectionHorizontal">
+            <summary>
+            Left means ◿ or ◹, Right means ◺ or ◸
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Slope.CollisionMask">
+            <summary>
+            Which physics layers is include for the hit check
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Tornado">
+            <summary>
+            Entity that move in given speed and carry objects it touch
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Tornado.Velocity">
+            <summary>
+            Target moving speed
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Tornado.ArtworkPart">
+            <summary>
+            Artwork sprite for rendering
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Tornado.StrengthGrounded">
+            <summary>
+            Sucking power when touching ground. 0 means no power, 1000 means general power.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Tornado.StrengthInAir">
+            <summary>
+            Sucking power when not touching ground. 0 means no power, 1000 means general power.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Tornado.StiffFrameGap">
+            <summary>
+            How frequently does it shakes the target left and right.
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Wallpaper">
+            <summary>
+            Entity that load from map and keep exists to rendering the content between sky and map-behind layer.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Wallpaper.Amount">
+            <summary>
+            Current weight of this wallpaper
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Wallpaper.DrawBackground(AngeliA.IRect)">
+            <summary>
+            Use this function to handle the rendering logic
+            </summary>
+            <param name="backgroundRect">Range in global space this wallpaper need to render in</param>
+        </member>
+        <member name="M:AngeliA.Platformer.Wallpaper.GetSkyTint(System.Int32)">
+            <summary>
+            Get sky tint at given Y position
+            </summary>
+            <param name="y">(in global space)</param>
+        </member>
+        <member name="T:AngeliA.Platformer.ActionFurniture">
+            <summary>
+            Furniture that allows the user to perform given logic as IActionTarget
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.ActionFurniture.Invoke">
+            <summary>
+            Perform the internal logic
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.Platformer.ActionFurniture.AllowInvoke">
+            <summary>
+            True if the user can perform the logic currently
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AngeliA.Platformer.Bed">
+            <summary>
+            Furniture that player can sleep on and gain the reward from full-asleep
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Bed.GetTargetOnBed(AngeliA.Character)">
+            <summary>
+            Make given character on bed and sleep
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.CabinetIdol">
+            <summary>
+            Furniture that show an idol statue on it
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Chair">
+            <summary>
+            Furniture that makes the player sit on
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Chair.SitPoseAnimationID">
+            <summary>
+            Pose animation apply to the target character when sitting
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Chair.MakeTargetSit(AngeliA.Entity)">
+            <summary>
+            Make the given entity sit on this chair
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.MapChest">
+            <summary>
+            Furniture that allow the player to spawn a chain of items from map element below
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MapChest.ItemPlaceHolder">
+            <summary>
+            Replace items in map with this id after spawn them
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.MapChest.IsChestOpened(AngeliA.Platformer.MapChest)">
+            <summary>
+            True if the given chest is already opened
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Clock">
+            <summary>
+            Furniture that display the current in-game time
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.CraftingTable">
+            <summary>
+            Furniture that allow the player to combine items into another item
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CraftingTable.UseInventoryThumbnail">
+            <summary>
+            True if display a thumbnail for this entity in the inventory UI
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.CraftingTable.DrawInventoryThumbnail(AngeliA.IRect,System.Boolean)">
+            <summary>
+            Render the thumbnail for this entity in the inventory UI
+            </summary>
+            <param name="itemRect"></param>
+            <param name="singleRow"></param>
+        </member>
+        <member name="T:AngeliA.Platformer.CraftingUI">
+            <summary>
+            UI for the crafting table
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CraftingUI.ItemFieldSize">
+            <summary>
+            Unified size of a single item field
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.CraftingUI.FrameCode">
+            <summary>
+            Artwork sprite ID for the item field frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.CraftingUI.SetColumnAndRow(System.Int32,System.Int32)">
+            <summary>
+            Set inventory column and row count
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.FireSprinkler">
+            <summary>
+            Furniture that detect and put out fire automatically
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.FireSprinkler.CheckFrequency">
+            <summary>
+            How many frames does it takes to check for fire again
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.FireSprinkler.RespondDelay">
+            <summary>
+            How many frames does it wait from fire detected to start putting it out
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.FireSprinkler.DetectionRadius">
+            <summary>
+            How far does the fire checking goes in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.FireSprinkler.SprinklingDuration">
+            <summary>
+            How long does a single water splash takes in frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.FireSprinkler.SprinklingRange">
+            <summary>
+            How far does the water splash goes in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.FireSprinkler.AlarmLightSpriteCode">
+            <summary>
+            Artwork sprite ID for the alarm light
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.FireSprinkler.SprinklingWaterSpriteCount">
+            <summary>
+            How many water sprites does it renders at same time
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.FireSprinkler.SprinklingWaterSpriteGroupCode">
+            <summary>
+            Artwork sprite group ID for a single water drop
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Furniture">
+            <summary>
+            Entity that function as a furniture
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Furniture.ModuleType">
+            <summary>
+            Which direction does this entity expand as map block. (eg. Beds goes horizontaly. Fridge goes verticaly)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Furniture.FurnitureLeftOrDown">
+            <summary>
+            Instance of the nearby furniture with same type
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Furniture.FurnitureRightOrUp">
+            <summary>
+            Instance of the nearby furniture with same type
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Furniture.Pose">
+            <summary>
+            Which direction this furniture find it's nearby connection
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.Furniture.ColliderBorder">
+            <summary>
+            Border in global space from artwork sprite
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Furniture.GetIsHighlighted">
+            <summary>
+            True if this furniture is highlighted as IActionTarget
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Furniture.GetSpriteFromPose">
+            <summary>
+            Get the artwork sprite from current rendering sheet
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.GrandfatherClock">
+            <summary>
+            Furniture that works as a combustible and verticaly expanding GrandfatherClock
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.InventoryFurniture`1">
+            <summary>
+            A type of furniture that player can put items inside
+            </summary>
+            <typeparam name="UI">Which type of UI does this furniture shows</typeparam>
+        </member>
+        <member name="T:AngeliA.Platformer.InventoryFurniture">
+            <summary>
+            A type of furniture that player can put items inside
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.InventoryFurniture.PartnerID">
+            <summary>
+            Type ID of the UI entity
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.InventoryFurniture.InventoryID">
+            <summary>
+            ID for inventory system
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.InventoryFurniture.InventoryColumn">
+            <summary>
+            Column count of the inventory UI
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.InventoryFurniture.InventoryRow">
+            <summary>
+            Row count of the inventory UI
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.InventoryFurniture.UnlockItemInside">
+            <summary>
+            True if items inside become unlocked for the player
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.InventoryFurniture.Invoke">
+            <summary>
+            Open the inventory UI
+            </summary>
+            <returns>True if the UI successfuly opens</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.InventoryFurniture.AllowInvoke">
+            <summary>
+            True if the player can open the inventory UI
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.InventoryFurniture.TryGetInventoryUI(System.Int32,AngeliA.InventoryPartnerUI@)">
+            <summary>
+            Get the instance of the inventory UI from given furniture ID
+            </summary>
+            <param name="typeID">Type ID of the furniture</param>
+            <param name="result"></param>
+            <returns>True if the result is founded</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.InventoryFurniture.IsInventoryFurniture(System.Int32,System.Int32@)">
+            <summary>
+            True if the given type ID refers to a valid inventory furniture
+            </summary>
+            <param name="typeID"></param>
+            <param name="capacity">Inventory size limit</param>
+        </member>
+        <member name="T:AngeliA.Platformer.Light">
+            <summary>
+            Furniture that give illuminate from 6:00 to 18:00 during in-game time
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Light.LightSprite">
+            <summary>
+            Artwork sprite for the light
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Light.LightRange">
+            <summary>
+            Size of the light sprite in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Light.IlluminateRange">
+            <summary>
+            Range of the illuminate in global space
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.OpenableFurniture">
+            <summary>
+            Furniture that opens when player triggers
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.OpenableFurniture.Open">
+            <summary>
+            True if the furniture is currently opening
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.OpenableFurniture.Invoke">
+            <summary>
+            Open the furniture
+            </summary>
+            <returns>True if it successfuly opened</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.OpenableFurniture.SetOpen(System.Boolean)">
+            <summary>
+            Set opening state of this furniture
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Table">
+            <summary>
+            Furniture that functions as a horizontal expanding table
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Wardrobe">
+            <summary>
+            Furniture that functions as a vertical expanding wardrobe
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.IAutoTrackWalker">
+            <summary>
+            Interace that provide logic for auto walking on tracks
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.IAutoTrackWalker.OnTrack">
+            <summary>
+            True if this object is currently on track
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.IAutoTrackWalker.LastWalkingFrame">
+            <summary>
+            Last frame for this object when it's walking on track
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.IAutoTrackWalker.WalkStartFrame">
+            <summary>
+            Last frame for this object when it start to walk on track
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.IAutoTrackWalker.TrackWalkSpeedRate">
+            <summary>
+            Value scale for speed from track. (0 means 0%, 1000 means 100%)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.IAutoTrackWalker.IsTypeAutoTrackWalker(System.Int32)">
+            <summary>
+            True if given type ID refers to a valid track walker
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.IPingPongWalker">
+            <summary>
+            Interface that makes object auto walks and turn around when collide on a solid block. (like Goomba in Mario games)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.IPingPongWalker.WalkOffEdge">
+            <summary>
+            True if the target fall off edge
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.IPingPongWalker.TurningCooldown">
+            <summary>
+            Frames it takes to turn around again
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.IPingPongWalker.OnlyWalkWhenGrounded">
+            <summary>
+            True if object don't walk when not touching ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.IPingPongWalker.TurningCheckMask">
+            <summary>
+            Which physics layers is included for solid block checking
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.IPingPongWalker.WalkingRight">
+            <summary>
+            True if the object should walk to right 
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.IPingPongWalker.OnActivated(AngeliA.Platformer.IPingPongWalker)">
+            <summary>
+            Call this method when entity activated
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.IPingPongWalker.PingPongWalk(AngeliA.Platformer.IPingPongWalker)">
+            <summary>
+            Call this method every frame
             </summary>
         </member>
         <member name="P:AngeliA.Platformer.ISlimeWalker.AttachingDirection">

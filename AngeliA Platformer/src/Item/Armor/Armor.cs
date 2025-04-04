@@ -7,15 +7,44 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Equipment as body protection
+/// </summary>
+/// <typeparam name="P">Type of the item this armor will become after take damage for once</typeparam>
+/// <typeparam name="N">Type of the item this armor will become after being repair for once</typeparam>
 public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipment where N : Equipment {
 
+	/// <summary>
+	/// Items required for repair this armor. System will find any available item from start to end inside this array, and only consume one item to repair for once.
+	/// </summary>
 	protected virtual System.Type[] RepairMaterials => null;
+	/// <summary>
+	/// Size scale for rendering only
+	/// </summary>
 	protected virtual int Scale => 1000;
+	/// <summary>
+	/// True if the armor hide ear gadget 
+	/// </summary>
 	protected virtual bool HideEar => false;
+	/// <summary>
+	/// True if the armor hide horn gadget
+	/// </summary>
 	protected virtual bool HideHorn => false;
+	/// <summary>
+	/// True if the armor hide hair gadget
+	/// </summary>
 	protected virtual bool HideHair => false;
+	/// <summary>
+	/// True if the armor hide tail gadget
+	/// </summary>
 	protected virtual bool HideTail => false;
+	/// <summary>
+	/// True if the armor hide face gadget
+	/// </summary>
 	protected virtual bool HideFace => false;
+	/// <summary>
+	/// True if the armor hide wing gadget
+	/// </summary>
 	protected virtual bool HideWing => false;
 	int IProgressiveItem.Progress { get; set; } = 0;
 	int IProgressiveItem.TotalProgress { get; set; } = 1;
@@ -99,6 +128,9 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 	}
 
 
+	/// <summary>
+	/// Render the armor onto given character
+	/// </summary>
 	protected abstract void DrawArmor (PoseCharacterRenderer renderer);
 
 
@@ -127,6 +159,12 @@ public abstract class Armor<P, N> : Equipment, IProgressiveItem where P : Equipm
 	}
 
 
+	/// <summary>
+	/// Repair the armor for once
+	/// </summary>
+	/// <param name="character">Character that holding this armor</param>
+	/// <param name="materialID">Item that will get consume</param>
+	/// <returns>True if the armor get repair for once</returns>
 	public virtual bool RepairArmor (Character character, int materialID) {
 		if (materialID == 0) return false;
 		int invID = character.InventoryID;

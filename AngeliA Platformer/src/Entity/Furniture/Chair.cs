@@ -4,11 +4,16 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Furniture that makes the player sit on
+/// </summary>
 public abstract class Chair : ActionFurniture {
 
 	// VAR
 	protected sealed override Direction3 ModuleType => Direction3.None;
+	/// <summary>
+	/// Pose animation apply to the target character when sitting
+	/// </summary>
 	protected virtual int SitPoseAnimationID => PoseAnimation_Sit.TYPE_ID;
 	private bool? DockedToRight = null;
 	private Entity SittingTarget = null;
@@ -81,6 +86,9 @@ public abstract class Chair : ActionFurniture {
 
 	public override bool AllowInvoke () => base.AllowInvoke() && SittingTarget != PlayerSystem.Selecting;
 
+	/// <summary>
+	/// Make the given entity sit on this chair
+	/// </summary>
 	public void MakeTargetSit (Entity target) {
 		if (SittingTarget != null) return;
 		SittingTarget = target;

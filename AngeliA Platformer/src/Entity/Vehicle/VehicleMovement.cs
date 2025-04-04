@@ -2,8 +2,12 @@
 using System.Collections;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Movement behavior for vehicle override to their driver
+/// </summary>
 public abstract class VehicleMovement : CharacterMovement {
 
 
@@ -14,6 +18,9 @@ public abstract class VehicleMovement : CharacterMovement {
 
 	// Api
 	public sealed override bool SyncFromConfigFile => false;
+	/// <summary>
+	/// Target character that drive the vehicle
+	/// </summary>
 	public Character Driver { get; set; } = null;
 
 
@@ -28,6 +35,9 @@ public abstract class VehicleMovement : CharacterMovement {
 	public VehicleMovement (Rigidbody rig) : base(rig) => InitializeMeta();
 
 
+	/// <summary>
+	/// Initialize config for the movement
+	/// </summary>
 	protected virtual void InitializeMeta () {
 		WalkAvailable.BaseValue = false;
 		SquatAvailable.BaseValue = false;

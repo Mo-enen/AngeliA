@@ -1,5 +1,10 @@
-﻿using AngeliA;namespace AngeliA.Platformer;
+﻿using AngeliA;
 
+namespace AngeliA.Platformer;
+
+/// <summary>
+/// Task to make gameplay occupied during minigame playing
+/// </summary>
 public class MiniGameTask : Task {
 	public MiniGame MiniGame = null;
 	public override TaskResult FrameUpdate () {

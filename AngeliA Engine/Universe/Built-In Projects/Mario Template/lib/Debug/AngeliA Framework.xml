@@ -15727,7 +15727,7 @@
             <param name="unitY">Position Y in unit space</param>
             <param name="z">Position Z</param>
             <param name="maxDeltaX">Limitation on horizontal checking distance</param>
-            <param name="maxDeltaY">Limitation on verticle checking distance</param>
+            <param name="maxDeltaY">Limitation on vertical checking distance</param>
             <param name="placeHolderID">Set spawned item into this ID</param>
             <param name="spawnEntity">True if spawn the entity that paint as map element</param>
         </member>
@@ -16265,7 +16265,7 @@
         </member>
         <member name="M:AngeliA.FrameworkUtil.DrawClockHands(AngeliA.IRect,System.Int32,System.Int32,System.Int32,AngeliA.Color32,System.Int32)">
             <summary>
-            Draw clock hands from given time
+            Draw clock hands from in-game time
             </summary>
             <param name="rect">Rect position for clock face in global space</param>
             <param name="handCode">Artwork sprite ID for the hand</param>
@@ -16276,7 +16276,7 @@
         </member>
         <member name="M:AngeliA.FrameworkUtil.DrawClockHands(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.Color32,System.Int32)">
             <summary>
-            Draw clock hands from given time
+            Draw clock hands from in-game time
             </summary>
             <param name="centerX">Center position in global space</param>
             <param name="centerY">Center position in global space</param>

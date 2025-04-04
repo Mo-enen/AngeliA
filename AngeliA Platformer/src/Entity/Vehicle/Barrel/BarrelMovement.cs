@@ -1,5 +1,10 @@
-﻿using AngeliA;namespace AngeliA.Platformer;
+﻿using AngeliA;
 
+namespace AngeliA.Platformer;
+
+/// <summary>
+/// Movement for rolling on a barrel
+/// </summary>
 public class BarrelMovement : VehicleMovement {
 	public BarrelMovement (Rigidbody rig) : base(rig) { }
 	protected override void InitializeMeta () {

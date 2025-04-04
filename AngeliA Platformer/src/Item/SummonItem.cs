@@ -5,6 +5,10 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Item that create summon character when carry in inventory
+/// </summary>
+/// <typeparam name="T">Type of the summon character</typeparam>
 public abstract class SummonItem<T> : Item where T : ItemBasedSummon {
 
 	private static Entity UpdatingHolder = null;
@@ -45,6 +49,9 @@ public abstract class SummonItem<T> : Item where T : ItemBasedSummon {
 		}
 	}
 
+	/// <summary>
+	/// Spawn the target summon character
+	/// </summary>
 	public T SpawnSummonFromItem (Character owner) {
 		var summon = Summon.CreateSummon<T>(owner, owner.X, owner.Y);
 		if (summon != null) {

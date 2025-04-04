@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Represent a breakable leaf on stage
+/// </summary>
 [EntityAttribute.MapEditorGroup("Vegetation")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Leaf : Entity, IBlockEntity, ICombustible, IDamageReceiver {
@@ -22,8 +25,17 @@ public abstract class Leaf : Entity, IBlockEntity, ICombustible, IDamageReceiver
 
 
 	// Virtual
+	/// <summary>
+	/// Artwork sprite count
+	/// </summary>
 	protected virtual int LeafCount => 3;
+	/// <summary>
+	/// How far does artwork sprite expands
+	/// </summary>
 	protected virtual int LeafExpand => Const.CEL / 3;
+	/// <summary>
+	/// Artwork sprite ID for rendering
+	/// </summary>
 	protected int LeafArtworkCode { get; private set; } = 0;
 	int ICombustible.BurnStartFrame { get; set; }
 	int IDamageReceiver.Team => Const.TEAM_ENVIRONMENT;
@@ -87,6 +99,9 @@ public abstract class Leaf : Entity, IBlockEntity, ICombustible, IDamageReceiver
 	}
 
 
+	/// <summary>
+	/// This function is called when leaf break by something
+	/// </summary>
 	protected virtual void OnLeafBreak () {
 		if (!IgnoreReposition) {
 			ItemSystem.DropItemFor(this);

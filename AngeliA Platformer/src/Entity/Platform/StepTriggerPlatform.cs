@@ -1,8 +1,22 @@
-﻿using AngeliA;namespace AngeliA.Platformer;
+﻿using AngeliA;
 
+namespace AngeliA.Platformer;
+
+/// <summary>
+/// Platform that triggers when target step on it
+/// </summary>
 public abstract class StepTriggerPlatform : TriggerablePlatform {
+	/// <summary>
+	/// True if rigidbody can trigger this platform
+	/// </summary>
 	protected virtual bool TriggerOnRigidbodyTouch => false;
+	/// <summary>
+	/// True if characters can trigger this platform
+	/// </summary>
 	protected virtual bool TriggerOnCharacterTouch => false;
+	/// <summary>
+	/// True if selecting player can trigger this platform
+	/// </summary>
 	protected virtual bool TriggerOnPlayerTouch => true;
 	protected override void OnRigidbodyTouched (Rigidbody rig) {
 		base.OnRigidbodyTouched(rig);

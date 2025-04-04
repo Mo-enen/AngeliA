@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// A game that user can play with an extra in-game window
+/// </summary>
 [EntityAttribute.MapEditorGroup("MiniGame")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class MiniGame : Entity, IActionTarget, IBlockEntity {
@@ -49,25 +52,50 @@ public abstract class MiniGame : Entity, IActionTarget, IBlockEntity {
 	private static readonly SpriteCode[] DEFAULT_BADGE_CODES = ["MiniGameBadgeEmpty", "MiniGameBadgeIron", "MiniGameBadgeGold",];
 
 	// Api
-	public delegate void SpawnBadgeHandler (int quality);
-	public static event SpawnBadgeHandler OnBadgeSpawn;
+	[OnMiniGameGiveBadge_IntQuality] static readonly System.Action<int> OnBadgeSpawn;
+	/// <summary>
+	/// Size of UI window in global space
+	/// </summary>
 	protected virtual Int2 WindowSize => new(
 		Renderer.CameraRect.height * 800 / 1000,
 		Renderer.CameraRect.height * 800 / 1000
 	);
+	/// <summary>
+	/// True if the game require mouse cursor display
+	/// </summary>
 	protected abstract bool RequireMouseCursor { get; }
+	/// <summary>
+	/// Name of the game in English
+	/// </summary>
 	protected abstract string DisplayName { get; }
+	/// <summary>
+	/// Total badge count the user can get
+	/// </summary>
 	protected abstract int BadgeCount { get; }
+	/// <summary>
+	/// True if show confirm window when user trying to quit
+	/// </summary>
 	protected virtual bool RequireQuitConfirm => true;
+	/// <summary>
+	/// True if show restart button on pause menu
+	/// </summary>
 	protected virtual bool ShowRestartOption => true;
+	/// <summary>
+	/// UI window position in global space
+	/// </summary>
 	protected IRect WindowRect => new(
 		Renderer.CameraRect.CenterX() - WindowSize.x / 2,
 		Renderer.CameraRect.CenterY() - WindowSize.y / 2,
 		WindowSize.x, WindowSize.y
 	);
+	/// <summary>
+	/// True if the game is currently playing by the player
+	/// </summary>
 	protected bool IsPlaying => TaskSystem.GetCurrentTask() is MiniGameTask task && task.MiniGame == this;
+	/// <summary>
+	/// Text hint for how to get badges
+	/// </summary>
 	protected virtual LanguageCode[] BadgeHints { get; } = null;
-	protected GUISkin Skin { get; private set; }
 
 	// Data
 	private readonly BadgesSaveData Badges = null;
@@ -101,7 +129,6 @@ public abstract class MiniGame : Entity, IActionTarget, IBlockEntity {
 	public override void FirstUpdate () {
 		base.FirstUpdate();
 		Physics.FillEntity(PhysicsLayer.ENVIRONMENT, this, true);
-		Skin = GUI.Skin;
 	}
 
 
@@ -171,10 +198,21 @@ public abstract class MiniGame : Entity, IActionTarget, IBlockEntity {
 	}
 
 
+	/// <summary>
+	/// Open the window UI and start game
+	/// </summary>
 	protected abstract void StartMiniGame ();
 
+
+	/// <summary>
+	/// Start the game again
+	/// </summary>
 	protected virtual void RestartGame () => StartMiniGame();
 
+
+	/// <summary>
+	/// Quit the game and close the window UI
+	/// </summary>
 	protected virtual void CloseMiniGame () {
 		if (TaskSystem.GetCurrentTask() is MiniGameTask task && task.MiniGame == this) {
 			task.MiniGame = null;
@@ -182,10 +220,14 @@ public abstract class MiniGame : Entity, IActionTarget, IBlockEntity {
 	}
 
 
+	/// <inheritdoc cref="GUI.Unify"/>
 	protected static int Unify (int value) => GUI.Unify(value);
 
 
 	// Badges
+	/// <summary>
+	/// Give target badge to player
+	/// </summary>
 	protected void GiveBadge (int index, bool isGold) {
 		if (index < 0 || index >= BadgeCount) return;
 		int quality = isGold ? 2 : 1;
@@ -199,8 +241,14 @@ public abstract class MiniGame : Entity, IActionTarget, IBlockEntity {
 		OnBadgeSpawn?.Invoke(quality);
 	}
 
-
+	/// <inheritdoc cref="DrawBadges(IRect, Color32)"/>
 	protected void DrawBadges (IRect panelRect) => DrawBadges(panelRect, Color32.BLACK);
+
+	/// <summary>
+	/// Draw the badge list panel on screen
+	/// </summary>
+	/// <param name="panelRect">Rect position in global space</param>
+	/// <param name="backgroundColor"></param>
 	protected void DrawBadges (IRect panelRect, Color32 backgroundColor) {
 		if (Badges == null || Badges.Badges == null) return;
 		int padding = Unify(4);

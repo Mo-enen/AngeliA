@@ -2,9 +2,15 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Furniture that opens when player triggers
+/// </summary>
 public abstract class OpenableFurniture : ActionFurniture, IActionTarget {
 
 
+	/// <summary>
+	/// True if the furniture is currently opening
+	/// </summary>
 	public bool Open { get; private set; } = false;
 	bool IActionTarget.LockInput => Open;
 	bool IActionTarget.IsHighlighted => !Open && GetIsHighlighted();
@@ -36,6 +42,10 @@ public abstract class OpenableFurniture : ActionFurniture, IActionTarget {
 	}
 
 
+	/// <summary>
+	/// Open the furniture
+	/// </summary>
+	/// <returns>True if it successfuly opened</returns>
 	public override bool Invoke () {
 		if (!Open) {
 			SetOpen(true);
@@ -44,6 +54,9 @@ public abstract class OpenableFurniture : ActionFurniture, IActionTarget {
 	}
 
 
+	/// <summary>
+	/// Set opening state of this furniture
+	/// </summary>
 	protected virtual void SetOpen (bool open) {
 		Open = open;
 		for (Furniture i = FurnitureLeftOrDown; i != null; i = i.FurnitureLeftOrDown) {

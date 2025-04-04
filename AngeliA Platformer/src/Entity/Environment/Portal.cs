@@ -13,7 +13,13 @@ namespace AngeliA.Platformer;
 public abstract class Portal : Entity {
 
 	// VAR
+	/// <summary>
+	/// Position in global space to teleport the target
+	/// </summary>
 	protected abstract Int3 TargetGlobalPosition { get; }
+	/// <summary>
+	/// True if the portal get remove from map after teleport
+	/// </summary>
 	protected virtual bool DontSpawnAfterUsed => false;
 	private int CooldownFrame = 0;
 
@@ -42,6 +48,10 @@ public abstract class Portal : Entity {
 		}
 	}
 
+	/// <summary>
+	/// Perform teleport for given target
+	/// </summary>
+	/// <returns>True if successfuly performed</returns>
 	public virtual bool Invoke (Character character) {
 		if (character == PlayerSystem.Selecting) {
 			if (TaskSystem.HasTask()) return false;

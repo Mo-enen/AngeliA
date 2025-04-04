@@ -2,11 +2,31 @@
 
 namespace AngeliA.Platformer;
 
-public enum HelmetWearingMode { Attach, Cover, }
+/// <summary>
+/// How an helmet wear on head
+/// </summary>
+public enum HelmetWearingMode {
+	/// <summary>
+	/// Put onto the head
+	/// </summary>
+	Attach,
+	/// <summary>
+	/// Wrapped around the head
+	/// </summary>
+	Cover,
+}
 
+/// <summary>
+/// Armor on character's head
+/// </summary>
+/// <typeparam name="P">Type of the item this armor will become after take damage for once</typeparam>
+/// <typeparam name="N">Type of the item this armor will become after being repair for once</typeparam>
 public abstract class Helmet<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 	public sealed override EquipmentType EquipmentType => EquipmentType.Helmet;
 	private OrientedSprite SpriteHelmet { get; init; }
+	/// <summary>
+	/// How an helmet wear on head
+	/// </summary>
 	protected abstract HelmetWearingMode WearingMode { get; }
 	public Helmet () => SpriteHelmet = new OrientedSprite(GetType().AngeName(), "Main");
 	protected override void DrawArmor (PoseCharacterRenderer renderer) {

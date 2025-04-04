@@ -6,11 +6,18 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
+/// <summary>
+/// Entity that allow characters to drive with
+/// </summary>
+/// <typeparam name="M">Type of the movement</typeparam>
 public abstract class Vehicle<M> : Vehicle where M : VehicleMovement {
 	public Vehicle () => Movement = System.Activator.CreateInstance(typeof(M), this) as M;
 }
 
 
+/// <summary>
+/// Entity that allow characters to drive with
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.RepositionWhenInactive]
 public abstract class Vehicle : Rigidbody, IDamageReceiver, ICarrier, IWithCharacterMovement {
@@ -22,12 +29,33 @@ public abstract class Vehicle : Rigidbody, IDamageReceiver, ICarrier, IWithChara
 
 
 	// Api
+	/// <summary>
+	/// Movement that override to the driver
+	/// </summary>
 	public VehicleMovement Movement { get; protected set; }
+	/// <summary>
+	/// Character that driving this vehcle. Null when no driver.
+	/// </summary>
 	public Character Driver { get; private set; } = null;
+	/// <summary>
+	/// Last time driving state change in global frame.
+	/// </summary>
 	public int LastDriveChangedFrame { get; private set; } = int.MinValue;
+	/// <summary>
+	/// Position from the vehcile to driver
+	/// </summary>
 	public virtual Int2? DriverLocalPosition => new Int2(Width / 2, 1);
+	/// <summary>
+	/// Position from the vehcile to driver when they leave
+	/// </summary>
 	public virtual Int2? DriverLeaveLocalPosition => new Int2(Width / 2, Height);
+	/// <summary>
+	/// How long does it takes to ride again in frames
+	/// </summary>
 	public virtual int StartDriveCooldown => 6;
+	/// <summary>
+	/// True if driver fill physics collider
+	/// </summary>
 	public virtual bool FillPyhsicsForDriver => true;
 	public override int PhysicalLayer => CurrentPhysicsLayer;
 	public override int AirDragX => Driver != null ? 0 : 5;
@@ -129,6 +157,9 @@ public abstract class Vehicle : Rigidbody, IDamageReceiver, ICarrier, IWithChara
 	}
 
 
+	/// <summary>
+	/// Make driver move with the vehicle
+	/// </summary>
 	protected virtual void TakeDriver () {
 		if (!DriverLocalPosition.HasValue) return;
 		var offste = DriverLocalPosition.Value;
@@ -145,6 +176,9 @@ public abstract class Vehicle : Rigidbody, IDamageReceiver, ICarrier, IWithChara
 	#region --- API ---
 
 
+	/// <summary>
+	/// Make driver start to drive this vehcile
+	/// </summary>
 	public virtual void StartDrive (Character driver) {
 		if (Game.GlobalFrame <= LastDriveChangedFrame + StartDriveCooldown) return;
 		if (driver.Movement != driver.NativeMovement) return;
@@ -159,6 +193,9 @@ public abstract class Vehicle : Rigidbody, IDamageReceiver, ICarrier, IWithChara
 	}
 
 
+	/// <summary>
+	/// Stop current driver from driving this vehicle
+	/// </summary>
 	public virtual void StopDrive () {
 		if (Driver == null) return;
 		if (DriverLeaveLocalPosition.HasValue) {
@@ -175,18 +212,29 @@ public abstract class Vehicle : Rigidbody, IDamageReceiver, ICarrier, IWithChara
 	}
 
 
+	/// <summary>
+	/// Update function for checking if a driver should start to drive
+	/// </summary>
+	/// <returns>True if any driver start to drive</returns>
 	protected virtual bool CheckForStartDrive (out Character driver) {
 		driver = null;
 		return false;
 	}
 
 
+	/// <summary>
+	/// Update function for checking if the current driver should stop driving
+	/// </summary>
+	/// <returns>True if stop driving</returns>
 	protected virtual bool CheckForStopDrive () {
 		if (Driver == null || !Driver.Active) return true;
 		return false;
 	}
 
 
+	/// <summary>
+	/// This function is called when vehicle take damage
+	/// </summary>
 	public virtual void OnDamaged (Damage damage) { }
 
 

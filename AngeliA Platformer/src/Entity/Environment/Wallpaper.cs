@@ -6,7 +6,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Entity that load from map and keep exists to rendering the content between sky and map-behind layer.
+/// </summary>
 [EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.DontDrawBehind]
@@ -21,6 +23,9 @@ public abstract class Wallpaper : Entity {
 
 
 	// Api
+	/// <summary>
+	/// Current weight of this wallpaper
+	/// </summary>
 	protected int Amount { get; private set; } = 0;
 
 	// Data
@@ -43,7 +48,7 @@ public abstract class Wallpaper : Entity {
 
 
 	[OnGameUpdate]
-	public static void OnGameUpdate () {
+	internal static void OnGameUpdate () {
 		if (Current != null && !Current.Active) Current = null;
 	}
 
@@ -96,6 +101,10 @@ public abstract class Wallpaper : Entity {
 	}
 
 
+	/// <summary>
+	/// Use this function to handle the rendering logic
+	/// </summary>
+	/// <param name="backgroundRect">Range in global space this wallpaper need to render in</param>
 	protected abstract void DrawBackground (IRect backgroundRect);
 
 
@@ -107,6 +116,10 @@ public abstract class Wallpaper : Entity {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Get sky tint at given Y position
+	/// </summary>
+	/// <param name="y">(in global space)</param>
 	protected Color32 GetSkyTint (int y) {
 		return Color32.LerpUnclamped(
 			Sky.SkyTintBottomColor, Sky.SkyTintTopColor,

@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using AngeliA;
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Furniture that show an idol statue on it
+/// </summary>
 public abstract class CabinetIdol : Furniture, IActionTarget {
 
-
-
 	private static readonly SavingInt s_ArtworkIndex = new("CabinetIdol.ArtworkIndex", 0, SavingLocation.Slot);
-
 
 	public override void LateUpdate () {
 		if (Renderer.TryGetSpriteFromGroup(
@@ -21,7 +20,6 @@ public abstract class CabinetIdol : Furniture, IActionTarget {
 		}
 	}
 
-
 	bool IActionTarget.Invoke () {
 		s_ArtworkIndex.Value++;
 		if (Renderer.HasSpriteGroup(TypeID, out int length)) {
@@ -30,8 +28,6 @@ public abstract class CabinetIdol : Furniture, IActionTarget {
 		return true;
 	}
 
-
 	bool IActionTarget.AllowInvoke () => true;
-
 
 }

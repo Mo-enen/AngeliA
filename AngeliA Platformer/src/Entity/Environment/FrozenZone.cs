@@ -4,7 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
-
+/// <summary>
+/// Entity that freeze nearby buff carriers
+/// </summary>
 [EntityAttribute.UpdateOutOfRange]
 [EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
@@ -18,7 +20,13 @@ public abstract class FrozenZone : Entity {
 
 	// Api
 	private const int DESPAWN_DURATION = 30;
+	/// <summary>
+	/// Time in frame that target keep being freeze
+	/// </summary>
 	public int Duration { get; set; } = 300;
+	/// <summary>
+	/// True if all buff carriers on screen will be freeze while this entity is on stage
+	/// </summary>
 	public bool Fullscreen { get; set; } = false;
 
 	// Data
@@ -152,6 +160,9 @@ public abstract class FrozenZone : Entity {
 	}
 
 
+	/// <summary>
+	/// This function is called when a target is touching this zone
+	/// </summary>
 	protected virtual void OnTouchingZone (Rigidbody rig) { }
 
 
@@ -163,6 +174,12 @@ public abstract class FrozenZone : Entity {
 	#region --- API ---
 
 
+	/// <summary>
+	/// Spawn a frozen zone
+	/// </summary>
+	/// <param name="zoneID">Type of the zone</param>
+	/// <param name="range">Size of the zone</param>
+	/// <param name="duration">Time in frame that target keep being freeze</param>
 	public static void SpreadFrozenZone (int zoneID, IRect range, int duration = 300) {
 		if (Stage.SpawnEntity(zoneID, range.x, range.y) is not FrozenZone zone) return;
 		zone.X = range.x;

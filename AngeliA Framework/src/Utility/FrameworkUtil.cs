@@ -610,7 +610,7 @@ HasOnewayTag(tag) ||
 	/// <param name="unitY">Position Y in unit space</param>
 	/// <param name="z">Position Z</param>
 	/// <param name="maxDeltaX">Limitation on horizontal checking distance</param>
-	/// <param name="maxDeltaY">Limitation on verticle checking distance</param>
+	/// <param name="maxDeltaY">Limitation on vertical checking distance</param>
 	/// <param name="placeHolderID">Set spawned item into this ID</param>
 	/// <param name="spawnEntity">True if spawn the entity that paint as map element</param>
 	public static void SpawnItemFromMap (

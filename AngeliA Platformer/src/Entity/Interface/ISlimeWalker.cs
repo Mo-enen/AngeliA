@@ -4,26 +4,50 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Interface that makes the object walk on ground/wall/ceilling
+/// </summary>
 internal interface ISlimeWalker {
 
 	// VAR
-	const int CHECKING_GAP = 16;
+	private const int CHECKING_GAP = 16;
 
 	/// <summary>
 	/// When this value is "Up" the walker will be upside-down. "Center" means not attaching anything.
 	/// </summary>
 	public Direction5 AttachingDirection { get; set; }
+	/// <summary>
+	/// Direction this objects currently walking to
+	/// </summary>
 	public Direction5 WalkingDirection =>
 		AttachingDirection == Direction5.Center ? Direction5.Center :
 		FacingPositive ? AttachingDirection.AntiClockwise() : AttachingDirection.Clockwise();
+	/// <summary>
+	/// Local position from attaching block to object
+	/// </summary>
 	public Int2 LocalPosition { get; set; }
+	/// <summary>
+	/// Target that this object attaching on
+	/// </summary>
 	public Entity AttachingTarget { get; set; }
+	/// <summary>
+	/// Block/entity ID this object attaching on
+	/// </summary>
 	public int AttachingID { get; set; }
+	/// <summary>
+	/// Rect position in global space this object attaching on
+	/// </summary>
 	public IRect AttachingRect { get; set; }
 	public int WalkSpeed { get; }
+	/// <summary>
+	/// True if the object walkings to right when facing up.
+	/// </summary>
 	public bool FacingPositive { get; set; }
 
 	// API
+	/// <summary>
+	/// Call this method when entity activated
+	/// </summary>
 	public static void ActiveWalker (ISlimeWalker walker) {
 		walker.AttachingDirection = Direction5.Center;
 		walker.AttachingTarget = null;

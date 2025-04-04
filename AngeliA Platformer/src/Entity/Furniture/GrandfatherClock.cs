@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 
 using AngeliA;
+
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Furniture that works as a combustible and verticaly expanding GrandfatherClock
+/// </summary>
 public abstract class GrandfatherClock : Furniture, ICombustible {
 
 	private static readonly SpriteCode HAND_CODE = "Clock Hand";
 	private static readonly SpriteCode PENDULUM_LEG_CODE = "Clock Pendulum Leg";
 	private static readonly SpriteCode PENDULUM_HEAD_CODE = "Clock Pendulum Head";
 
-	protected override Direction3 ModuleType => Direction3.Vertical;
+	protected sealed override Direction3 ModuleType => Direction3.Vertical;
 	int ICombustible.BurnStartFrame { get; set; }
 
 	public override void LateUpdate () {

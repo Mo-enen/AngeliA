@@ -38,7 +38,7 @@ public class Mushroom : Rigidbody, IPingPongWalker, IAutoTrackWalker, IBumpable 
 	// MSG
 	public override void OnActivated () {
 		base.OnActivated();
-		IPingPongWalker.OnActive(this);
+		IPingPongWalker.OnActivated(this);
 	}
 
 	public override void Update () {

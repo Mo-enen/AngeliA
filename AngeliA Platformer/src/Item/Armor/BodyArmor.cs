@@ -2,6 +2,11 @@
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Armor on body of the character
+/// </summary>
+/// <typeparam name="P">Type of the item this armor will become after take damage for once</typeparam>
+/// <typeparam name="N">Type of the item this armor will become after being repair for once</typeparam>
 public abstract class BodyArmor<P, N> : Armor<P, N> where P : Equipment where N : Equipment {
 
 	public sealed override EquipmentType EquipmentType => EquipmentType.BodyArmor;

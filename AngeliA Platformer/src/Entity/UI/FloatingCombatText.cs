@@ -4,6 +4,9 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Displays text information with flowing up movement. 
+/// </summary>
 [EntityAttribute.Capacity(128, 0)]
 [EntityAttribute.DontDespawnOutOfRange]
 [EntityAttribute.DontDestroyOnZChanged]
@@ -22,8 +25,17 @@ public class FloatingCombatText : Entity {
 	public static readonly int TYPE_ID = typeof(FloatingCombatText).AngeHash();
 
 	// Api
+	/// <summary>
+	/// Total existing time in frame
+	/// </summary>
 	public int Duration = 48;
+	/// <summary>
+	/// Which font does it use
+	/// </summary>
 	public int FontID = 0;
+	/// <summary>
+	/// How far does it flow up in one frame
+	/// </summary>
 	public int FloatSpeed = 6;
 	public int FloatAirDrag = 0;
 	public int GlobalHeight = Const.CEL;
@@ -102,8 +114,20 @@ public class FloatingCombatText : Entity {
 
 	#region --- API ---
 
-
+	/// <summary>
+	/// Spawn a FCT with given infomation
+	/// </summary>
+	/// <param name="x">Start position in global space</param>
+	/// <param name="y">Start position in global space</param>
+	/// <param name="text">Text string content</param>
+	/// <param name="chars">Text string content</param>
+	/// <param name="fontID">Which font does it use</param>
+	/// <param name="color">Text color</param>
+	/// <param name="backgroundColor"></param>
+	/// <param name="style"></param>
+	/// <returns>Instance of the spawned FCT entity. Null if failed.</returns>
 	public static FloatingCombatText Spawn (int x, int y, string text, int fontID = 0, Color32? color = null, Color32? backgroundColor = null, GUIStyle style = null) => SpawnLogic(x, y, text, null, fontID, style, color, backgroundColor);
+	/// <inheritdoc cref="Spawn(int, int, string, int, Color32?, Color32?, GUIStyle)"/>
 	public static FloatingCombatText Spawn (int x, int y, char[] chars, int fontID = 0, Color32? color = null, Color32? backgroundColor = null, GUIStyle style = null) => SpawnLogic(x, y, null, chars, fontID, style, color, backgroundColor);
 
 

@@ -4,16 +4,34 @@ using AngeliA;
 
 namespace AngeliA.Platformer;
 
+/// <summary>
+/// Entity that move in given speed and carry objects it touch
+/// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 public abstract class Tornado : Entity {
 
 	// VAR
 	private static readonly SpriteCode TOR_PART = "Tornado.Part";
 	private const int END_DUR = 30;
+	/// <summary>
+	/// Target moving speed
+	/// </summary>
 	protected abstract Int2 Velocity { get; }
+	/// <summary>
+	/// Artwork sprite for rendering
+	/// </summary>
 	protected virtual SpriteCode ArtworkPart => TOR_PART;
+	/// <summary>
+	/// Sucking power when touching ground. 0 means no power, 1000 means general power.
+	/// </summary>
 	protected virtual int StrengthGrounded => 1000;
+	/// <summary>
+	/// Sucking power when not touching ground. 0 means no power, 1000 means general power.
+	/// </summary>
 	protected virtual int StrengthInAir => 600;
+	/// <summary>
+	/// How frequently does it shakes the target left and right.
+	/// </summary>
 	protected virtual int StiffFrameGap => 6;
 	private int TornadingStopFrame = -1;
 

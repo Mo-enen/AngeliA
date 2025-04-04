@@ -5,19 +5,41 @@ using AngeliA;
 namespace AngeliA.Platformer;
 
 
+/// <summary>
+/// A type of furniture that player can put items inside
+/// </summary>
+/// <typeparam name="UI">Which type of UI does this furniture shows</typeparam>
 public abstract class InventoryFurniture<UI> : InventoryFurniture where UI : InventoryPartnerUI {
 	public InventoryFurniture () => PartnerID = typeof(UI).AngeHash();
 }
 
 
+/// <summary>
+/// A type of furniture that player can put items inside
+/// </summary>
 public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 
 
 	// VAR
+	/// <summary>
+	/// Type ID of the UI entity
+	/// </summary>
 	protected int PartnerID { get; init; }
+	/// <summary>
+	/// ID for inventory system
+	/// </summary>
 	protected int InventoryID { get; private set; } = 0;
+	/// <summary>
+	/// Column count of the inventory UI
+	/// </summary>
 	protected abstract int InventoryColumn { get; }
+	/// <summary>
+	/// Row count of the inventory UI
+	/// </summary>
 	protected abstract int InventoryRow { get; }
+	/// <summary>
+	/// True if items inside become unlocked for the player
+	/// </summary>
 	protected virtual bool UnlockItemInside => true;
 
 	private static readonly Dictionary<int, InventoryPartnerUI> UiPool = [];
@@ -85,6 +107,10 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 
 
 	// API
+	/// <summary>
+	/// Open the inventory UI
+	/// </summary>
+	/// <returns>True if the UI successfuly opens</returns>
 	public override bool Invoke () {
 		if (InventoryID == 0) return false;
 		if (!Open) SetOpen(true);
@@ -104,6 +130,9 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 	}
 
 
+	/// <summary>
+	/// True if the player can open the inventory UI
+	/// </summary>
 	public override bool AllowInvoke () => InventoryID != 0 && base.AllowInvoke();
 
 
@@ -113,9 +142,20 @@ public abstract class InventoryFurniture : OpenableFurniture, IActionTarget {
 	}
 
 
+	/// <summary>
+	/// Get the instance of the inventory UI from given furniture ID
+	/// </summary>
+	/// <param name="typeID">Type ID of the furniture</param>
+	/// <param name="result"></param>
+	/// <returns>True if the result is founded</returns>
 	protected bool TryGetInventoryUI (int typeID, out InventoryPartnerUI result) => UiPool.TryGetValue(typeID, out result);
 
 
+	/// <summary>
+	/// True if the given type ID refers to a valid inventory furniture
+	/// </summary>
+	/// <param name="typeID"></param>
+	/// <param name="capacity">Inventory size limit</param>
 	public static bool IsInventoryFurniture (int typeID, out int capacity) => InventoryFurniturePool.TryGetValue(typeID, out capacity);
 
 
