@@ -9,6 +9,7 @@
     --color-background-dark: #1e1e1e;
     --color-background-table-alt: #212123;
     --color-background-quote: #69696e;
+    scrollbar-color: rgba(0,0,0,0.0);
 }
 
 body.light-theme {
@@ -407,7 +408,7 @@ blockquote {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #00000000;
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -436,6 +437,15 @@ input:checked + .slider:before {
     -webkit-transform: translateX(19px);
     -ms-transform: translateX(19px);
     transform: translateX(19px);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: #00000022;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ffffff33;
 }
 
 /* Rounded sliders */

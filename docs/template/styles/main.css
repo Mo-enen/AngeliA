@@ -408,7 +408,7 @@ blockquote {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #00000000;
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -437,6 +437,15 @@ input:checked + .slider:before {
     -webkit-transform: translateX(19px);
     -ms-transform: translateX(19px);
     transform: translateX(19px);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: #00000022;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ffffff33;
 }
 
 /* Rounded sliders */
@@ -492,8 +501,4 @@ input:checked + .slider:before {
         white-space: nowrap;
         text-overflow: ellipsis;
     }
-}
-
-.scroller {
-    scrollbar-color: #636363 rgba(0,0,0,0.0);
 }
