@@ -11,7 +11,8 @@
           "exclude": [
             "**/ThridParty/**"
           ]
-        }, {
+        },
+        {
           "src": "../AngeliA Platformer",
           "files": [
             "AngeliA Platformer.csproj"
@@ -19,7 +20,7 @@
         }
       ],
       "dest": "api",
-       "filter": "filterConfig.yml"
+      "filter": "filterConfig.yml"
     }
   ],
   "build": {
@@ -50,7 +51,11 @@
       "_appName": "AngeliA",
       "_appTitle": "AngeliA",
       "_enableSearch": true,
-      "pdf": true
+      "pdf": true,
+      "_appFooter": "🐄🐦‍⬛🧦🐈🎃💓🌹☕🏴‍☠️🐤",
+      "_disableBreadcrumb": true,
+      "_disableAffix": true,
+      "_disableContribution": true
     }
   }
 }

@@ -1,15 +1,2 @@
-{
-  "items": [
-    {
-      "name": "Introduction",
-      "href": "introduction.html",
-      "topicHref": "introduction.html"
-    },
-    {
-      "name": "Getting Started",
-      "href": "getting-started.html",
-      "topicHref": "getting-started.html"
-    }
-  ],
-  "pdf": true
-}
+
+{"items":[{"name":"简介","href":"introduction.html","topicHref":"introduction.html"},{"name":"入门","href":"getting-started.html","topicHref":"getting-started.html"}],"pdf":true}

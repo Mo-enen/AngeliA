@@ -727,7 +727,6 @@ public static class Renderer {
 		);
 	}
 	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
-	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, int z = int.MinValue) => DrawSlice(globalID.ID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, Color32.WHITE, z);
 	/// <inheritdoc cref="DrawSlice(AngeSprite, int, int, int, int, int, int, int, int, int, int, int, bool[], Color32, int)"/>
 	public static Cell[] DrawSlice (SpriteCode globalID, int x, int y, int pivotX, int pivotY, int rotation, int width, int height, int borderL, int borderR, int borderD, int borderU, Color32 color, int z = int.MinValue) => DrawSlice(globalID.ID, x, y, pivotX, pivotY, rotation, width, height, borderL, borderR, borderD, borderU, DEFAULT_PART_IGNORE, color, z);

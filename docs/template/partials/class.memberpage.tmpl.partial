@@ -29,19 +29,6 @@
 </table>
 {{/children.0}}
 {{/children}}
-{{#extensionMethods.0}}
-<h3 id="extensionmethods">{{__global.extensionMethods}}</h3>
-{{/extensionMethods.0}}
-{{#extensionMethods}}
-<div>
-  {{#definition}}
-    <xref uid="{{definition}}" altProperty="fullName" displayProperty="nameWithType"/>
-  {{/definition}}
-  {{^definition}}
-    <xref uid="{{uid}}" altProperty="fullName" displayProperty="nameWithType"/>
-  {{/definition}}
-</div>
-{{/extensionMethods}}
 {{#seealso.0}}
 <h3 id="seealso">{{__global.seealso}}</h3>
 <div class="seealso">

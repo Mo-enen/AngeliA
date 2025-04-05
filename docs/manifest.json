@@ -64,7 +64,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.AfterimageScope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.AfterimageScope.yml\" sourcestartlinenumber=\"1\">Draw a continuous tailing cell effect for the objects rendering inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -148,7 +148,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Atlas",
-      "Summary": "<p sourcefile=\"api/AngeliA.Atlas.yml\" sourcestartlinenumber=\"1\">Segment container of sprites inside artwork sheet</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.Atlas.yml\" sourcestartlinenumber=\"1\">Container of sprites inside artwork sheet</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -358,7 +358,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BlockBuilder",
-      "Summary": "<p sourcefile=\"api/AngeliA.BlockBuilder.yml\" sourcestartlinenumber=\"1\">Item that represent a map block inside inventory. Also handles the build block to map/stage logic</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.BlockBuilder.yml\" sourcestartlinenumber=\"1\">Item that represent a map block inside inventory. Also handles the build block to map logic</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -372,7 +372,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BlockColor",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.BlockColor.yml\" sourcestartlinenumber=\"1\">Element block that set the color tint of the overlapping level block</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -526,7 +526,21 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BlockColoringSystem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.BlockColoringSystem.yml\" sourcestartlinenumber=\"1\">Core system for the level block tint from element</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.BlockPicker.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.BlockPicker.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.BlockPicker",
+      "Summary": "<p sourcefile=\"api/AngeliA.BlockPicker.yml\" sourcestartlinenumber=\"1\">Item that represent a map tool inside inventory. Also handles the pick block from map logic</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -540,7 +554,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BlockRule",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.BlockRule.yml\" sourcestartlinenumber=\"1\">Checking rules for auto tiling map blocks for a source block</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -554,7 +568,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BlockType",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.BlockType.yml\" sourcestartlinenumber=\"1\">Type of blocks in map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -778,7 +792,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.CellScreenshotSystem.Screenshot",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.CellScreenshotSystem.Screenshot.yml\" sourcestartlinenumber=\"1\">Data to hold a single screenshot</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -792,7 +806,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.CellScreenshotSystem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.CellScreenshotSystem.yml\" sourcestartlinenumber=\"1\">Core system to take screenshot based on rendering cells and save them into file</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -820,7 +834,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ChangeSavingSlotTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ChangeSavingSlotTask.yml\" sourcestartlinenumber=\"1\">Task that change player saving slot. Require UserData as slot index.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1072,7 +1086,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.CheatSystem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.CheatSystem.yml\" sourcestartlinenumber=\"1\">Core system to invoke function when user type cheat code during gameplay. Works like NES games. (it does nothing with anti-cheat)</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1100,7 +1114,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.CircuitSystem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.CircuitSystem.yml\" sourcestartlinenumber=\"1\">Core system for triggering specified function of entities on stage/map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1170,7 +1184,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Color32",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Color32.yml\" sourcestartlinenumber=\"1\">Color with byte for data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1184,7 +1198,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ColorF",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ColorF.yml\" sourcestartlinenumber=\"1\">Color with float as data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1212,7 +1226,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ColorGradient",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.ColorGradient.yml\" sourcestartlinenumber=\"1\">Represent a list of colors that creates smooth transitions between each other</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1268,7 +1282,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Cursor",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Cursor.yml\" sourcestartlinenumber=\"1\">Core system for set appearance of mouse cursor</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1394,7 +1408,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.DelayTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.DelayTask.yml\" sourcestartlinenumber=\"1\">Task that do nothing but stay inside the task system. Require UserData as duration in frame</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1408,7 +1422,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.DespawnEntityTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.DespawnEntityTask.yml\" sourcestartlinenumber=\"1\">Task to despawn an exists entity. Require UserData as the target entity.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1422,7 +1436,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.DialogueTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.DialogueTask.yml\" sourcestartlinenumber=\"1\">Task that run a dialogue UI entity and display conversation</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1800,7 +1814,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.EntityHookTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.EntityHookTask.yml\" sourcestartlinenumber=\"1\">Task that keep exists util the target entity inactive. Require UserData as the target entity.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1912,7 +1926,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Extension",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Extension.yml\" sourcestartlinenumber=\"1\">Extension method for AngeliA projects</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1926,7 +1940,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.FRect",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.FRect.yml\" sourcestartlinenumber=\"1\">Rectangle with float data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1954,7 +1968,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.FadeInTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.FadeInTask.yml\" sourcestartlinenumber=\"1\">Task that fade the screen from black to normal</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1968,7 +1982,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.FadeOutTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.FadeOutTask.yml\" sourcestartlinenumber=\"1\">Task that fade the screen from normal to black</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2024,7 +2038,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Float2",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Float2.yml\" sourcestartlinenumber=\"1\">2D vector with float data values</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2038,7 +2052,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Float3",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Float3.yml\" sourcestartlinenumber=\"1\">3D vector with float data values</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2052,7 +2066,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Float4",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Float4.yml\" sourcestartlinenumber=\"1\">4D vector with float data values</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2192,7 +2206,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.FrameworkUtil",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.FrameworkUtil.yml\" sourcestartlinenumber=\"1\">Utility class for the AngeliA framework</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2416,7 +2430,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Gamekey",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Gamekey.yml\" sourcestartlinenumber=\"1\">Keys that generaly used with AngeliA games</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2430,7 +2444,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GamepadKey",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.GamepadKey.yml\" sourcestartlinenumber=\"1\">Key on the gamepad</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2459,6 +2473,20 @@
       "IsMRef": true,
       "Title": "AngeliA.GenericPopupUI",
       "Summary": "<p sourcefile=\"api/AngeliA.GenericPopupUI.yml\" sourcestartlinenumber=\"1\">Popup menu UI for general perpose</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.GlitchScope.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.GlitchScope.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.GlitchScope",
+      "Summary": "<p sourcefile=\"api/AngeliA.GlitchScope.yml\" sourcestartlinenumber=\"1\">Scope that make element inside looks glitched</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2682,7 +2710,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Hotkey",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Hotkey.yml\" sourcestartlinenumber=\"1\">Data for a keyboard hotkey configuration</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2724,7 +2752,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.IBlockSquad",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.IBlockSquad.yml\" sourcestartlinenumber=\"1\">Instance that provide map block data from unit position</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2836,7 +2864,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.IJsonSerializationCallback",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.IJsonSerializationCallback.yml\" sourcestartlinenumber=\"1\">Interface that receive callback functions when Serialized with JsonUtil</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2892,7 +2920,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.IRect",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.IRect.yml\" sourcestartlinenumber=\"1\">rectangle with intager data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3046,7 +3074,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Input",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Input.yml\" sourcestartlinenumber=\"1\">Frame based core system for user input from keyboard, mouse and gamepad</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3060,7 +3088,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Int2",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Int2.yml\" sourcestartlinenumber=\"1\">2D vector with intager data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3074,7 +3102,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Int3",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Int3.yml\" sourcestartlinenumber=\"1\">3D vector with intager data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3088,7 +3116,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Int4",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Int4.yml\" sourcestartlinenumber=\"1\">4D vector with intager data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3102,7 +3130,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.IntToChars",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.IntToChars.yml\" sourcestartlinenumber=\"1\">Get char array that holds the given intager as text content without creating heap pressure</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3116,7 +3144,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Inventory",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Inventory.yml\" sourcestartlinenumber=\"1\">Core system to handle storage of items</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3326,7 +3354,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.JsonUtil",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.JsonUtil.yml\" sourcestartlinenumber=\"1\">Utility class for json operation</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3340,7 +3368,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.KeyboardKey",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.KeyboardKey.yml\" sourcestartlinenumber=\"1\">Key on the keyboard</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3354,7 +3382,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Language",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Language.yml\" sourcestartlinenumber=\"1\">Core system to handle localization logic</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3382,7 +3410,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.LanguageUtil",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.LanguageUtil.yml\" sourcestartlinenumber=\"1\">Utility class for language system</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3410,7 +3438,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.LightingSystem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.LightingSystem.yml\" sourcestartlinenumber=\"1\">Core system that handles dynamic lighting of the stage</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3480,7 +3508,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.MethodTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.MethodTask.yml\" sourcestartlinenumber=\"1\">Task that invoke the given System.Action. Require the action as UserData.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4530,7 +4558,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.OperationMode",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.OperationMode.yml\" sourcestartlinenumber=\"1\">What type of cells are included for the operation</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4558,7 +4586,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.OrientedSprite",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.OrientedSprite.yml\" sourcestartlinenumber=\"1\">A set of AngeSprite ID that auto handles orientation logic</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4586,7 +4614,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Physics",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Physics.yml\" sourcestartlinenumber=\"1\">Core system that handles physics of AngeliA games.\nLogic of the system is frame-isolated which means data from prev frame will never effect current frame.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4600,7 +4628,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.PhysicsCell",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.PhysicsCell.yml\" sourcestartlinenumber=\"1\">Basic unit of a physics data structure</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4656,7 +4684,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.ActionFurniture",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.ActionFurniture.yml\" sourcestartlinenumber=\"1\">Furniture that allows the user to perform given logic as IActionTarget</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4670,7 +4698,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Armor<P, N>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Armor-2.yml\" sourcestartlinenumber=\"1\">Equipment as body protection</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4684,7 +4712,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.ArrowBullet<I>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.ArrowBullet-1.yml\" sourcestartlinenumber=\"1\">Bullet entity that spawns an item when destroy</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4698,7 +4726,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.ArrowBullet",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.ArrowBullet.yml\" sourcestartlinenumber=\"1\">Bullet entity that spawns an item when destroy</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4712,7 +4740,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.AuraItem<B>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.AuraItem-1.yml\" sourcestartlinenumber=\"1\">Item that broadcast given buff to nearby object when being put into inventory</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4726,7 +4754,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.BarrelMovement",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.BarrelMovement.yml\" sourcestartlinenumber=\"1\">Movement for rolling on a barrel</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4740,7 +4768,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.BarrelVehicle",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.BarrelVehicle.yml\" sourcestartlinenumber=\"1\">A barrel that roll to opposite direction when character walk on it</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4754,7 +4782,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.BeamBullet",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.BeamBullet.yml\" sourcestartlinenumber=\"1\">A type of bullet that shoot into straight line</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4768,7 +4796,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Bed",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Bed.yml\" sourcestartlinenumber=\"1\">Furniture that player can sleep on and gain the reward from full-asleep</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4782,7 +4810,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.BodyArmor<P, N>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.BodyArmor-2.yml\" sourcestartlinenumber=\"1\">Armor on body of the character</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4796,7 +4824,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Breakable",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Breakable.yml\" sourcestartlinenumber=\"1\">Entity that can be break by taking damage</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4810,7 +4838,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.BulletShooter<B>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.BulletShooter-1.yml\" sourcestartlinenumber=\"1\">Entity that shoot given bullet repeatedly</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4824,7 +4852,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.BulletShooter",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.BulletShooter.yml\" sourcestartlinenumber=\"1\">Entity that shoot given bullet repeatedly</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4838,7 +4866,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Burner<F>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Burner-1.yml\" sourcestartlinenumber=\"1\">Entity that spawn a file entity repeately</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4852,7 +4880,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CabinetIdol",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CabinetIdol.yml\" sourcestartlinenumber=\"1\">Furniture that show an idol statue on it</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4866,7 +4894,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CameraAutoDirection",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CameraAutoDirection.yml\" sourcestartlinenumber=\"1\">Path indicator for the CameraAutoScroll</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4880,7 +4908,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CameraAutoScroll",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CameraAutoScroll.yml\" sourcestartlinenumber=\"1\">Camera control entity that makes the camera follows a given path</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4894,7 +4922,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CameraGate",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CameraGate.yml\" sourcestartlinenumber=\"1\">Entity that perform extra controls to the in-game camera movement</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4908,7 +4936,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CameraGateDown",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CameraGateDown.yml\" sourcestartlinenumber=\"1\">Camera gate that clamp camera to down side</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4922,7 +4950,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CameraGateLeft",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CameraGateLeft.yml\" sourcestartlinenumber=\"1\">Camera gate that clamp camera to left side</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4936,7 +4964,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CameraGateRight",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CameraGateRight.yml\" sourcestartlinenumber=\"1\">Camera gate that clamp camera to right side</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4950,7 +4978,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CameraGateUp",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CameraGateUp.yml\" sourcestartlinenumber=\"1\">Camera gate that clamp camera to up side</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4964,7 +4992,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CarryingPipe",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CarryingPipe.yml\" sourcestartlinenumber=\"1\">This entity carry the player when they get in</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4978,7 +5006,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.ChainCrusher",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.ChainCrusher.yml\" sourcestartlinenumber=\"1\">Entity holds a rotating chained ball to attack player</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -4992,7 +5020,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Chair",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Chair.yml\" sourcestartlinenumber=\"1\">Furniture that makes the player sit on</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5006,7 +5034,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CheckAltar<CP>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CheckAltar-1.yml\" sourcestartlinenumber=\"1\">Entity that function as a check point. Can also use to unlock a type of check point.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5020,7 +5048,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CheckAltar",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CheckAltar.yml\" sourcestartlinenumber=\"1\">Entity that function as a check point. Can also use to unlock a type of check point.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5034,7 +5062,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CheckPoint",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CheckPoint.yml\" sourcestartlinenumber=\"1\">Entity that save player position when player touchs. When game restart, player spawns to the saved position.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5048,7 +5076,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CheckPointPortal",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CheckPointPortal.yml\" sourcestartlinenumber=\"1\">Portal that telepart player to target check point</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5062,7 +5090,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CircleFlamePortal",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CircleFlamePortal.yml\" sourcestartlinenumber=\"1\">Portal that looks like magic thing circling around</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5076,7 +5104,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Clock",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Clock.yml\" sourcestartlinenumber=\"1\">Furniture that display the current in-game time</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5090,7 +5118,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Collectable",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Collectable.yml\" sourcestartlinenumber=\"1\">Entity that get collect when player touchs</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5104,7 +5132,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Conveyor",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Conveyor.yml\" sourcestartlinenumber=\"1\">Entity that move the objects on top horizontaly</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5118,7 +5146,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CraftingTable",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CraftingTable.yml\" sourcestartlinenumber=\"1\">Furniture that allow the player to combine items into another item</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5132,7 +5160,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.CraftingUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.CraftingUI.yml\" sourcestartlinenumber=\"1\">UI for the crafting table</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5146,7 +5174,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.DollItem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.DollItem.yml\" sourcestartlinenumber=\"1\">Item that draw a doll sprite onto character's hip when carry inside inventory</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5160,7 +5188,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.DonutBlock.BreakMode",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.DonutBlock.BreakMode.yml\" sourcestartlinenumber=\"1\">How this entity broke</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5174,7 +5202,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.DonutBlock",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.DonutBlock.yml\" sourcestartlinenumber=\"1\">Entity that drops when being step on for a well</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5188,7 +5216,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Door",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Door.yml\" sourcestartlinenumber=\"1\">Entity that teleport player into next-front/behind layer of the map</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5216,7 +5244,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Enemy",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Enemy.yml\" sourcestartlinenumber=\"1\">Characters that attack the player</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5230,7 +5258,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Explosion",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Explosion.yml\" sourcestartlinenumber=\"1\">General representation of an explosion</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5244,7 +5272,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.ExplosiveMovableBullet",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.ExplosiveMovableBullet.yml\" sourcestartlinenumber=\"1\">Movable bullet that spawn an explosion entity when despawn</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5258,7 +5286,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Fire",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Fire.yml\" sourcestartlinenumber=\"1\">Entity that burns on target ICombustible</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5272,7 +5300,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.FireSprinkler",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.FireSprinkler.yml\" sourcestartlinenumber=\"1\">Furniture that detect and put out fire automatically</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5286,7 +5314,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.FloatingCombatText",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.FloatingCombatText.yml\" sourcestartlinenumber=\"1\">Displays text information with flowing up movement.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5300,7 +5328,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.FrozenZone",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.FrozenZone.yml\" sourcestartlinenumber=\"1\">Entity that freeze nearby buff carriers</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5314,7 +5342,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Furniture",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Furniture.yml\" sourcestartlinenumber=\"1\">Entity that function as a furniture</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5342,7 +5370,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Gloves<P, N>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Gloves-2.yml\" sourcestartlinenumber=\"1\">Armor on character's both hands</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5356,7 +5384,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.GrandfatherClock",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.GrandfatherClock.yml\" sourcestartlinenumber=\"1\">Furniture that works as a combustible and verticaly expanding GrandfatherClock</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5370,7 +5398,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.HealBullet",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.HealBullet.yml\" sourcestartlinenumber=\"1\">Bullet that heal a target Character. Use &quot;Damage&quot; to adjust how much does it heals.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5384,7 +5412,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.HealWeapon<B>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.HealWeapon-1.yml\" sourcestartlinenumber=\"1\">Weapon that shoot bullet to heal friendly forces</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5398,7 +5426,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Helmet<P, N>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Helmet-2.yml\" sourcestartlinenumber=\"1\">Armor on character's head</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5412,7 +5440,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.HelmetWearingMode",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.HelmetWearingMode.yml\" sourcestartlinenumber=\"1\">How an helmet wear on head</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5426,7 +5454,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.IAutoTrackWalker",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.IAutoTrackWalker.yml\" sourcestartlinenumber=\"1\">Interace that provide logic for auto walking on tracks</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5440,7 +5468,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.IPingPongWalker",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.IPingPongWalker.yml\" sourcestartlinenumber=\"1\">Interface that makes object auto walks and turn around when collide on a solid block. (like Goomba in Mario games)</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5454,7 +5482,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.IRider",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.IRider.yml\" sourcestartlinenumber=\"1\">Interface to mark an entity as can be ride by characters</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5468,7 +5496,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.IUnitable.UniteMode",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.IUnitable.UniteMode.yml\" sourcestartlinenumber=\"1\">Which direction will be connected</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5482,7 +5510,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.IUnitable",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.IUnitable.yml\" sourcestartlinenumber=\"1\">Map blocks that connect to each other and forms a group</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5496,7 +5524,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.InventoryFurniture<UI>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.InventoryFurniture-1.yml\" sourcestartlinenumber=\"1\">A type of furniture that player can put items inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5510,7 +5538,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.InventoryFurniture",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.InventoryFurniture.yml\" sourcestartlinenumber=\"1\">A type of furniture that player can put items inside</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5524,7 +5552,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.ItemBasedSummon",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.ItemBasedSummon.yml\" sourcestartlinenumber=\"1\">Summon character that summons when other characters put the origin item in their inventory</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5538,7 +5566,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Launcher",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Launcher.yml\" sourcestartlinenumber=\"1\">Entity that spawn a given target entity repeately</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5552,7 +5580,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Leaf",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Leaf.yml\" sourcestartlinenumber=\"1\">Represent a breakable leaf on stage</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5566,7 +5594,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Light",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Light.yml\" sourcestartlinenumber=\"1\">Furniture that give illuminate from 6:00 to 18:00 during in-game time</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5580,7 +5608,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Liquid",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Liquid.yml\" sourcestartlinenumber=\"1\">Entity that behave like liquid in AngeliA style</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5594,7 +5622,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.MapChest",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.MapChest.yml\" sourcestartlinenumber=\"1\">Furniture that allow the player to spawn a chain of items from map element below</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5608,7 +5636,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.MeleeBullet",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.MeleeBullet.yml\" sourcestartlinenumber=\"1\">An invisible bullet created by melee weapon</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5622,7 +5650,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.MeleeWeapon",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.MeleeWeapon.yml\" sourcestartlinenumber=\"1\">Weapon that spawn invisible bullet that follows the character</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5650,7 +5678,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.MiniGame",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.MiniGame.yml\" sourcestartlinenumber=\"1\">A game that user can play with an extra in-game window</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5664,7 +5692,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.MiniGameTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.MiniGameTask.yml\" sourcestartlinenumber=\"1\">Task to make gameplay occupied during minigame playing</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5678,7 +5706,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.MissileBullet",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.MissileBullet.yml\" sourcestartlinenumber=\"1\">A bullet that find and follow a target to attack them</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5692,7 +5720,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.MissileWeapon<B>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.MissileWeapon-1.yml\" sourcestartlinenumber=\"1\">Weapon that shoot a missile to attack</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5706,7 +5734,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.MomentumBooster",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.MomentumBooster.yml\" sourcestartlinenumber=\"1\">Entity that force character on top run in given direction or their current facing direction</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5720,7 +5748,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.MovableBullet",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.MovableBullet.yml\" sourcestartlinenumber=\"1\">A bullet that moves after being spawned</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5748,7 +5776,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Navigation.Operation",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Navigation.Operation.yml\" sourcestartlinenumber=\"1\">Data for a single step of navigation operation</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5762,7 +5790,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Navigation",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Navigation.yml\" sourcestartlinenumber=\"1\">Core system for navigate a platformer entity to move naturally</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5776,7 +5804,49 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.NavigationOperateMotion",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.NavigationOperateMotion.yml\" sourcestartlinenumber=\"1\">Type of navigation motion for a single step</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.Platformer.OnCheckPointTouched_CheckPoint_CharacterAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.Platformer.OnCheckPointTouched_CheckPoint_CharacterAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.Platformer.OnCheckPointTouched_CheckPoint_CharacterAttribute",
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.OnCheckPointTouched_CheckPoint_CharacterAttribute.yml\" sourcestartlinenumber=\"1\">The function will be called when a check point entity touched by player</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.Platformer.OnFirePutOut_IntTypeID_IRectAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.Platformer.OnFirePutOut_IntTypeID_IRectAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.Platformer.OnFirePutOut_IntTypeID_IRectAttribute",
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.OnFirePutOut_IntTypeID_IRectAttribute.yml\" sourcestartlinenumber=\"1\">The function will be called when a fire entity is put out</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.Platformer.OnMiniGameGiveBadge_IntQuality.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.Platformer.OnMiniGameGiveBadge_IntQuality.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.Platformer.OnMiniGameGiveBadge_IntQuality",
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.OnMiniGameGiveBadge_IntQuality.yml\" sourcestartlinenumber=\"1\">The function will be called when mini game give reward to player</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5790,7 +5860,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Oneway",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Oneway.yml\" sourcestartlinenumber=\"1\">Entity that do not allow rigidbody pass through on given direction</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5804,7 +5874,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.OpenableFurniture",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.OpenableFurniture.yml\" sourcestartlinenumber=\"1\">Furniture that opens when player triggers</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5832,7 +5902,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.OpeningTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.OpeningTask.yml\" sourcestartlinenumber=\"1\">Task that handles the logic for game restart</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5860,7 +5930,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Plant",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Plant.yml\" sourcestartlinenumber=\"1\">Represent a breakable plant on stage</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5874,7 +5944,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Platform",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Platform.yml\" sourcestartlinenumber=\"1\">A moving entity that carry things on top</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5888,7 +5958,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.PlatformerUtil",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.PlatformerUtil.yml\" sourcestartlinenumber=\"1\">Utility class for platformer package</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -5902,7 +5972,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Portal",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Portal.yml\" sourcestartlinenumber=\"1\">Entity that teleport player to any given position when player touchs</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6336,7 +6406,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.ProjectileWeapon<B>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.ProjectileWeapon-1.yml\" sourcestartlinenumber=\"1\">Weapon that shoot projectile to attack</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6350,7 +6420,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.RideableMovement",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.RideableMovement.yml\" sourcestartlinenumber=\"1\">Movement behavior for rideable vehicles</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6364,7 +6434,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.RideableVehicle<RM>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.RideableVehicle-1.yml\" sourcestartlinenumber=\"1\">Vehicles that characters can ride on</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6378,7 +6448,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.RigidbodyNavigation",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.RigidbodyNavigation.yml\" sourcestartlinenumber=\"1\">Behavior that handles auto movement for a target rigidbody</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6406,7 +6476,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Shoes<P, N>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Shoes-2.yml\" sourcestartlinenumber=\"1\">Armor on character's both foot</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6420,7 +6490,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Slime",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Slime.yml\" sourcestartlinenumber=\"1\">A slime type enemy that walks on ground/wall/ceilling</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6434,7 +6504,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Slope",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Slope.yml\" sourcestartlinenumber=\"1\">Entity that have a 45° diagonal surface to interact with objects on stage</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6448,7 +6518,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Spring",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Spring.yml\" sourcestartlinenumber=\"1\">Entity that bounce the touching targets</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6462,7 +6532,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.StepTriggerPlatform",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.StepTriggerPlatform.yml\" sourcestartlinenumber=\"1\">Platform that triggers when target step on it</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6476,7 +6546,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Summon",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Summon.yml\" sourcestartlinenumber=\"1\">Represent a character that summoned by another character</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6490,7 +6560,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.SummonItem<T>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.SummonItem-1.yml\" sourcestartlinenumber=\"1\">Item that create summon character when carry in inventory</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6504,7 +6574,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.SummonNavigation",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.SummonNavigation.yml\" sourcestartlinenumber=\"1\">Behavior to handle auto movement for a summon character</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6518,7 +6588,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Table",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Table.yml\" sourcestartlinenumber=\"1\">Furniture that functions as a horizontal expanding table</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6546,7 +6616,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.TeleportTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.TeleportTask.yml\" sourcestartlinenumber=\"1\">Task for handle logic during player teleport</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6560,7 +6630,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Tornado",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Tornado.yml\" sourcestartlinenumber=\"1\">Entity that move in given speed and carry objects it touch</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6574,7 +6644,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Track",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Track.yml\" sourcestartlinenumber=\"1\">Entity that make IAutoTrackWalker walks along it</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6588,7 +6658,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.TrapDoor",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.TrapDoor.yml\" sourcestartlinenumber=\"1\">Entity that drops characters on top when getting step on</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6602,7 +6672,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.TriggerablePlatform",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.TriggerablePlatform.yml\" sourcestartlinenumber=\"1\">Platform that can be trigger and perform some specified logic</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6616,7 +6686,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Vehicle<M>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Vehicle-1.yml\" sourcestartlinenumber=\"1\">Entity that allow characters to drive with</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6630,7 +6700,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Vehicle",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Vehicle.yml\" sourcestartlinenumber=\"1\">Entity that allow characters to drive with</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6644,7 +6714,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.VehicleMovement",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.VehicleMovement.yml\" sourcestartlinenumber=\"1\">Movement behavior for vehicle override to their driver</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6658,7 +6728,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Wallpaper",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Wallpaper.yml\" sourcestartlinenumber=\"1\">Entity that load from map and keep exists to rendering the content between sky and map-behind layer.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6672,7 +6742,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Platformer.Wardrobe",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Platformer.Wardrobe.yml\" sourcestartlinenumber=\"1\">Furniture that functions as a vertical expanding wardrobe</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -6756,7 +6826,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.PlayerSystem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.PlayerSystem.yml\" sourcestartlinenumber=\"1\">Core system for user character control logic</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7274,7 +7344,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Renderer",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Renderer.yml\" sourcestartlinenumber=\"1\">Core system for draw artwork on screen for current frame</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7302,7 +7372,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.RestartGameTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.RestartGameTask.yml\" sourcestartlinenumber=\"1\">Task that restart the game</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7358,7 +7428,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Rule",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Rule.yml\" sourcestartlinenumber=\"1\">Single checking rule for auto tiling map blocks</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7512,7 +7582,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SelectPlayerTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SelectPlayerTask.yml\" sourcestartlinenumber=\"1\">Task that select current player</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7582,7 +7652,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Sky",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Sky.yml\" sourcestartlinenumber=\"1\">Core system handles background rendering of the game</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7610,7 +7680,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.SpawnEntityTask",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.SpawnEntityTask.yml\" sourcestartlinenumber=\"1\">Task that spawn given entity.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7652,7 +7722,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Stage",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Stage.yml\" sourcestartlinenumber=\"1\">Core system that handles entity spawning and despawning logic</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7736,7 +7806,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Task",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Task.yml\" sourcestartlinenumber=\"1\">Single unit to hold logic for TaskSystem. ⚠ Use global single instance from TaskSystem.PeekFromPool ⚠</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7750,7 +7820,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.TaskResult",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.TaskResult.yml\" sourcestartlinenumber=\"1\">Represent result of the task at current frame</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7764,7 +7834,21 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.TaskSystem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.TaskSystem.yml\" sourcestartlinenumber=\"1\">Core system to handle in-game task that interrupt the gameplay</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.TechGlitchEffectScope.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.TechGlitchEffectScope.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.TechGlitchEffectScope",
+      "Summary": "<p sourcefile=\"api/AngeliA.TechGlitchEffectScope.yml\" sourcestartlinenumber=\"1\">Scope that make element inside looks glitched in the tech item style</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7792,7 +7876,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.TransferSystem",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.TransferSystem.yml\" sourcestartlinenumber=\"1\">Core system that transfer object data along the stage</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7876,7 +7960,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.Util",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.Util.yml\" sourcestartlinenumber=\"1\">Utility class of AngeliA</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7960,7 +8044,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.World",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.World.yml\" sourcestartlinenumber=\"1\">Instance of a 128x128 map data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7988,7 +8072,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.WorldSquad",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.WorldSquad.yml\" sourcestartlinenumber=\"1\">Core system that renders the level/background blocks and load the world data into stage</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8002,7 +8086,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.WorldStream",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.WorldStream.yml\" sourcestartlinenumber=\"1\">Data stream that handles map data from file to instance</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8074,6 +8158,39 @@
         },
         ".json": {
           "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docsCN/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/toc.html"
+        },
+        ".json": {
+          "relative_path": "docsCN/toc.json"
         }
       },
       "version": ""

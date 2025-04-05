@@ -36,7 +36,7 @@ public enum AtlasState {
 
 
 /// <summary>
-/// Segment container of sprites inside artwork sheet
+/// Container of sprites inside artwork sheet
 /// </summary>
 public class Atlas {
 
