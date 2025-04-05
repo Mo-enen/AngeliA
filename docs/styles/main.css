@@ -45,7 +45,6 @@ h2 {
     font-weight: 600;
     font-size: 24px;
     line-height: 1.8;
-   
 }
 
 h3 {
@@ -187,11 +186,13 @@ article h4 {
 .sidetoc > .toc {
     background-color: var(--color-background);
     overflow-x: hidden;
+    scrollbar-color: rgba(0,0,0,0.0);
 }
 
 .sidetoc {
     background-color: var(--color-background);
     border: none;
+    scrollbar-color: rgba(0,0,0,0.0);
 }
 
 .alert {

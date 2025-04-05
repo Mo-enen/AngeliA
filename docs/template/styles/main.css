@@ -9,6 +9,7 @@
     --color-background-dark: #1e1e1e;
     --color-background-table-alt: #212123;
     --color-background-quote: #69696e;
+    scrollbar-color: rgba(0,0,0,0.0);
 }
 
 body.light-theme {
@@ -186,13 +187,13 @@ article h4 {
 .sidetoc > .toc {
     background-color: var(--color-background);
     overflow-x: hidden;
-    scrollbar-color: none;
+    scrollbar-color: rgba(0,0,0,0.0);
 }
 
 .sidetoc {
     background-color: var(--color-background);
     border: none;
-    scrollbar-color: none;
+    scrollbar-color: rgba(0,0,0,0.0);
 }
 
 .alert {
@@ -491,4 +492,8 @@ input:checked + .slider:before {
         white-space: nowrap;
         text-overflow: ellipsis;
     }
+}
+
+.scroller {
+    scrollbar-color: #636363 rgba(0,0,0,0.0);
 }
