@@ -16,5 +16,7 @@
 
 引擎内置了像素绘图器，方便您创作与管理游戏所需的美术素材。所有美术修改均可即时生效，无需重新编译游戏，极大提升了开发过程中的迭代效率与创作灵活性。绘图器全面支持游戏内的各类设定，如地图块的碰撞判定、制定规则自动平铺地图快、角色素材的智能适配等。
 
-此项目由[楠瓜Moenen](https://github.com/Mo-enen)独立开发。整个项目均采用[MIT许可证](https://github.com/Mo-enen/AngeliA/blob/main/License.txt)，您可以使用此项目做几乎任何事，但必须在您的项目中标注我的名字，详见[遵守协议](https://mo-enen.github.io/AngeliA/docsCN/comply-with-the-license.html)。
+<img src="../images/ScreenshotPixelEditor.png" width="61.8%"/>
+
+此项目由[楠瓜Moenen](https://github.com/Mo-enen)独立开发，采用[MIT许可证](https://github.com/Mo-enen/AngeliA/blob/main/License.txt)，您可以使用此项目做几乎任何事，但必须在您的项目中标注我的名字，详见[遵守协议](https://mo-enen.github.io/AngeliA/docsCN/comply-with-the-license.html)。
 
