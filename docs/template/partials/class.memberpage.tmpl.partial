@@ -7,6 +7,7 @@
 {{/overload}}
 <h3 id="{{id}}">{{>partials/classSubtitle}}</h3>
 {{#children.0}}
+{{#description}}
 <table class="table table-bordered table-condensed">
   <thead>
     <tr>
@@ -27,6 +28,7 @@
   {{#children.0}}
   </tbody>
 </table>
+{{/description}}
 {{/children.0}}
 {{/children}}
 {{#seealso.0}}

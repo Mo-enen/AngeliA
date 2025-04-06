@@ -12,10 +12,12 @@
   <thead>
   <tbody>
   {{#children}}
+	{{#summary}}
     <tr>
       <td id="{{id}}">{{name.0.value}}</td>
       <td>{{{summary}}}</td>
     </tr>
+	{{/summary}}
   {{/children}}
   </tbody>
 </table>
@@ -35,16 +37,3 @@
 {{#seealso.0}}
 </div>
 {{/seealso.0}}
-{{#extensionMethods.0}}
-<h3 id="extensionmethods">{{__global.extensionMethods}}</h3>
-{{/extensionMethods.0}}
-{{#extensionMethods}}
-<div>
-  {{#definition}}
-    <xref uid="{{definition}}" fullName="{{fullName.0.value}}" name="{{nameWithType.0.value}}"/>
-  {{/definition}}
-  {{^definition}}
-    <xref uid="{{uid}}" fullName="{{fullName.0.value}}" name="{{nameWithType.0.value}}"/>
-  {{/definition}}
-</div>
-{{/extensionMethods}}

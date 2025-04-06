@@ -17,7 +17,7 @@ public abstract class Fire : Entity, IFire {
 
 
 	// Api
-	[OnFirePutOut_IntTypeID_IRect] static readonly System.Action<int, IRect> OnFirePutout;
+	[OnFirePutOut_IntTypeID_IRect] internal static System.Action<int, IRect> OnFirePutout;
 	/// <summary>
 	/// How fast the fire burn down the target ICombustible
 	/// </summary>

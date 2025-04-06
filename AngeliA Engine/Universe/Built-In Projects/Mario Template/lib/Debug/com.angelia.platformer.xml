@@ -30,6 +30,19 @@
             internal static void ExampleFunction (int typeID, IRect rect) { }
             </code></example>
         </member>
+        <member name="T:AngeliA.Platformer.OnMiniGameGiveBadge_IntQuality">
+            <inheritdoc cref="M:AngeliA.Platformer.OnMiniGameGiveBadge_IntQuality.#ctor(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Platformer.OnMiniGameGiveBadge_IntQuality.#ctor(System.Int32)">
+            <summary>
+            The function will be called when mini game give reward to player
+            </summary>
+            <param name="order">Function with smaller order will be called earlier</param>
+            <example><code>
+            [OnMiniGameGiveBadge_IntQuality]
+            internal static void ExampleFunction (int quality) { }
+            </code></example>
+        </member>
         <member name="T:AngeliA.Platformer.NavigationOperateMotion">
             <summary>
             Type of navigation motion for a single step
@@ -1954,10 +1967,820 @@
             Call this method every frame
             </summary>
         </member>
+        <member name="T:AngeliA.Platformer.ISlimeWalker">
+            <summary>
+            Interface that makes the object walk on ground/wall/ceilling
+            </summary>
+        </member>
         <member name="P:AngeliA.Platformer.ISlimeWalker.AttachingDirection">
             <summary>
             When this value is "Up" the walker will be upside-down. "Center" means not attaching anything.
             </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ISlimeWalker.WalkingDirection">
+            <summary>
+            Direction this objects currently walking to
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ISlimeWalker.LocalPosition">
+            <summary>
+            Local position from attaching block to object
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ISlimeWalker.AttachingTarget">
+            <summary>
+            Target that this object attaching on
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ISlimeWalker.AttachingID">
+            <summary>
+            Block/entity ID this object attaching on
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ISlimeWalker.AttachingRect">
+            <summary>
+            Rect position in global space this object attaching on
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ISlimeWalker.FacingPositive">
+            <summary>
+            True if the object walkings to right when facing up.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.ISlimeWalker.ActiveWalker(AngeliA.Platformer.ISlimeWalker)">
+            <summary>
+            Call this method when entity activated
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.IUnitable">
+            <summary>
+            Map blocks that connect to each other and forms a group
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.IUnitable.UniteMode">
+            <summary>
+            Which direction will be connected
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.IUnitable.UniteMode.Horizontal">
+            <summary>
+            Left and right
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.IUnitable.UniteMode.Vertical">
+            <summary>
+            Up and down
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.IUnitable.UniteMode.FourDirection">
+            <summary>
+            Left right up and down
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.IUnitable.UniteMode.EightDirection">
+            <summary>
+            Left right up down and diagonal
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.IUnitable.UniteTempParam">
+            <summary>
+            Custom object that comes from ForAllUnitedEntity call. Only use this inside the "System.Action{E} results" function.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.IUnitable.ForAllUnitedEntity(System.Int32,System.Int32,AngeliA.IRect,AngeliA.OperationMode,AngeliA.Platformer.IUnitable.UniteMode,System.Action{AngeliA.Platformer.IUnitable},System.Object)">
+            <summary>
+            Iterate through all connected IUnitable as a group
+            </summary>
+            <param name="physicsMask">Which physics layer is include for entity searching</param>
+            <param name="entityID">Target entity type ID</param>
+            <param name="rect">Rect position in global space</param>
+            <param name="mode"></param>
+            <param name="uniteMode">Which direction count as connected</param>
+            <param name="results">Invoke this action for all founded result</param>
+            <param name="param">Custom data for the "result" action. Use IUnitable.UniteTempParam inside result action to get this data.</param>
+        </member>
+        <member name="T:AngeliA.Platformer.MiniGame">
+            <summary>
+            A game that user can play with an extra in-game window
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MiniGame.WindowSize">
+            <summary>
+            Size of UI window in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MiniGame.RequireMouseCursor">
+            <summary>
+            True if the game require mouse cursor display
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MiniGame.DisplayName">
+            <summary>
+            Name of the game in English
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MiniGame.BadgeCount">
+            <summary>
+            Total badge count the user can get
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MiniGame.RequireQuitConfirm">
+            <summary>
+            True if show confirm window when user trying to quit
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MiniGame.ShowRestartOption">
+            <summary>
+            True if show restart button on pause menu
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MiniGame.WindowRect">
+            <summary>
+            UI window position in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MiniGame.IsPlaying">
+            <summary>
+            True if the game is currently playing by the player
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MiniGame.BadgeHints">
+            <summary>
+            Text hint for how to get badges
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.MiniGame.StartMiniGame">
+            <summary>
+            Open the window UI and start game
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.MiniGame.RestartGame">
+            <summary>
+            Start the game again
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.MiniGame.CloseMiniGame">
+            <summary>
+            Quit the game and close the window UI
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.MiniGame.Unify(System.Int32)">
+            <inheritdoc cref="M:AngeliA.GUI.Unify(System.Int32)"/>
+        </member>
+        <member name="M:AngeliA.Platformer.MiniGame.GiveBadge(System.Int32,System.Boolean)">
+            <summary>
+            Give target badge to player
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.MiniGame.DrawBadges(AngeliA.IRect)">
+            <inheritdoc cref="M:AngeliA.Platformer.MiniGame.DrawBadges(AngeliA.IRect,AngeliA.Color32)"/>
+        </member>
+        <member name="M:AngeliA.Platformer.MiniGame.DrawBadges(AngeliA.IRect,AngeliA.Color32)">
+            <summary>
+            Draw the badge list panel on screen
+            </summary>
+            <param name="panelRect">Rect position in global space</param>
+            <param name="backgroundColor"></param>
+        </member>
+        <member name="T:AngeliA.Platformer.MiniGameTask">
+            <summary>
+            Task to make gameplay occupied during minigame playing
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Platform">
+            <summary>
+            A moving entity that carry things on top
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Platform.OneWay">
+            <summary>
+            True if the entity fill upward oneway gate into physics system
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Platform.TouchedByPlayer">
+            <summary>
+            True if the platform has been touched by selecting player after spawned
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Platform.TouchedByCharacter">
+            <summary>
+            True if the platform has been touched by a character after spawned
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Platform.TouchedByRigidbody">
+            <summary>
+            True if the platform has been touched by a rigidbody after spawned
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Platform.Move">
+            <summary>
+            This function handles the movement logic of this platform
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Platform.OnRigidbodyTouched(AngeliA.Rigidbody)">
+            <summary>
+            This function is called when a rigidbody touchs this platform
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Platform.OnCharacterTouched(AngeliA.Character)">
+            <summary>
+            This function is called when a character touchs this platform
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Platform.OnPlayerTouched(AngeliA.Character)">
+            <summary>
+            This function is called when the selecting player touchs this platform
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Platform.SetTouch(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Mark the platform as touched. (do not trigger the callback functions)
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Platform.RenderPlatformBlock(System.Int32)">
+            <summary>
+            Draw the platform block on screen
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.StepTriggerPlatform">
+            <summary>
+            Platform that triggers when target step on it
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.StepTriggerPlatform.TriggerOnRigidbodyTouch">
+            <summary>
+            True if rigidbody can trigger this platform
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.StepTriggerPlatform.TriggerOnCharacterTouch">
+            <summary>
+            True if characters can trigger this platform
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.StepTriggerPlatform.TriggerOnPlayerTouch">
+            <summary>
+            True if selecting player can trigger this platform
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.TriggerablePlatform">
+            <summary>
+            Platform that can be trigger and perform some specified logic
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TriggerablePlatform.TriggerMode">
+            <summary>
+            How does the platforms get trigger in a group
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TriggerablePlatform.AllowMultipleTrigger">
+            <summary>
+            True if a triggered platform can be trigger again
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TriggerablePlatform.TriggeredData">
+            <summary>
+            Custom data from the trigger function.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.TriggerablePlatform.OnTriggered(System.Object)">
+            <summary>
+            This function is called when the platform is triggered
+            </summary>
+            <param name="data">Custom data. Use TriggerablePlatform.TriggeredData to get this value</param>
+        </member>
+        <member name="M:AngeliA.Platformer.TriggerablePlatform.Trigger(System.Object)">
+            <summary>
+            Trigger the platform
+            </summary>
+            <param name="data">Custom data</param>
+        </member>
+        <member name="T:AngeliA.Platformer.FloatingCombatText">
+            <summary>
+            Displays text information with flowing up movement. 
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.FloatingCombatText.Duration">
+            <summary>
+            Total existing time in frame
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.FloatingCombatText.FontID">
+            <summary>
+            Which font does it use
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.FloatingCombatText.FloatSpeed">
+            <summary>
+            How far does it flow up in one frame
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.FloatingCombatText.Spawn(System.Int32,System.Int32,System.String,System.Int32,System.Nullable{AngeliA.Color32},System.Nullable{AngeliA.Color32},AngeliA.GUIStyle)">
+            <summary>
+            Spawn a FCT with given infomation
+            </summary>
+            <param name="x">Start position in global space</param>
+            <param name="y">Start position in global space</param>
+            <param name="text">Text string content</param>
+            <param name="chars">Text string content</param>
+            <param name="fontID">Which font does it use</param>
+            <param name="color">Text color</param>
+            <param name="backgroundColor"></param>
+            <param name="style"></param>
+            <returns>Instance of the spawned FCT entity. Null if failed.</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.FloatingCombatText.Spawn(System.Int32,System.Int32,System.Char[],System.Int32,System.Nullable{AngeliA.Color32},System.Nullable{AngeliA.Color32},AngeliA.GUIStyle)">
+            <inheritdoc cref="M:AngeliA.Platformer.FloatingCombatText.Spawn(System.Int32,System.Int32,System.String,System.Int32,System.Nullable{AngeliA.Color32},System.Nullable{AngeliA.Color32},AngeliA.GUIStyle)"/>
+        </member>
+        <member name="T:AngeliA.Platformer.Leaf">
+            <summary>
+            Represent a breakable leaf on stage
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Leaf.LeafCount">
+            <summary>
+            Artwork sprite count
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Leaf.LeafExpand">
+            <summary>
+            How far does artwork sprite expands
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Leaf.LeafArtworkCode">
+            <summary>
+            Artwork sprite ID for rendering
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Leaf.OnLeafBreak">
+            <summary>
+            This function is called when leaf break by something
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Plant">
+            <summary>
+            Represent a breakable plant on stage
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Plant.OnPlantBreak">
+            <summary>
+            This function is called when the plant is break by something
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.BarrelMovement">
+            <summary>
+            Movement for rolling on a barrel
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.BarrelVehicle">
+            <summary>
+            A barrel that roll to opposite direction when character walk on it
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.BarrelVehicle.BarrelSize">
+            <summary>
+            Diameter of the barrel in global space
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.IRider">
+            <summary>
+            Interface to mark an entity as can be ride by characters
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.IRider.ReadyToRide">
+            <summary>
+            True if the entity can be ride currently
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.RideableMovement">
+            <summary>
+            Movement behavior for rideable vehicles
+            </summary>
+            <param name="rig"></param>
+        </member>
+        <member name="M:AngeliA.Platformer.RideableMovement.#ctor(AngeliA.Rigidbody)">
+            <summary>
+            Movement behavior for rideable vehicles
+            </summary>
+            <param name="rig"></param>
+        </member>
+        <member name="T:AngeliA.Platformer.RideableVehicle`1">
+            <summary>
+            Vehicles that characters can ride on
+            </summary>
+            <typeparam name="RM">Type of the movement behavior</typeparam>
+        </member>
+        <member name="P:AngeliA.Platformer.RideableVehicle`1.AllowFreeWandering">
+            <summary>
+            True if the vehicle run around when not being drive
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.RideableVehicle`1.Navigation">
+            <summary>
+            Navigation behavior for free wandering
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.RideableVehicle`1.OverrideDriverAnimation(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Apply riding pose animation on driver
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Vehicle`1">
+            <summary>
+            Entity that allow characters to drive with
+            </summary>
+            <typeparam name="M">Type of the movement</typeparam>
+        </member>
+        <member name="T:AngeliA.Platformer.Vehicle">
+            <summary>
+            Entity that allow characters to drive with
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Vehicle.Movement">
+            <summary>
+            Movement that override to the driver
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Vehicle.Driver">
+            <summary>
+            Character that driving this vehcle. Null when no driver.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Vehicle.LastDriveChangedFrame">
+            <summary>
+            Last time driving state change in global frame.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Vehicle.DriverLocalPosition">
+            <summary>
+            Position from the vehcile to driver
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Vehicle.DriverLeaveLocalPosition">
+            <summary>
+            Position from the vehcile to driver when they leave
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Vehicle.StartDriveCooldown">
+            <summary>
+            How long does it takes to ride again in frames
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Vehicle.FillPyhsicsForDriver">
+            <summary>
+            True if driver fill physics collider
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Vehicle.TakeDriver">
+            <summary>
+            Make driver move with the vehicle
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Vehicle.StartDrive(AngeliA.Character)">
+            <summary>
+            Make driver start to drive this vehcile
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Vehicle.StopDrive">
+            <summary>
+            Stop current driver from driving this vehicle
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Vehicle.CheckForStartDrive(AngeliA.Character@)">
+            <summary>
+            Update function for checking if a driver should start to drive
+            </summary>
+            <returns>True if any driver start to drive</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.Vehicle.CheckForStopDrive">
+            <summary>
+            Update function for checking if the current driver should stop driving
+            </summary>
+            <returns>True if stop driving</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.Vehicle.OnDamaged(AngeliA.Damage)">
+            <summary>
+            This function is called when vehicle take damage
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.VehicleMovement">
+            <summary>
+            Movement behavior for vehicle override to their driver
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.VehicleMovement.Driver">
+            <summary>
+            Target character that drive the vehicle
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.VehicleMovement.InitializeMeta">
+            <summary>
+            Initialize config for the movement
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Armor`2">
+            <summary>
+            Equipment as body protection
+            </summary>
+            <typeparam name="P">Type of the item this armor will become after take damage for once</typeparam>
+            <typeparam name="N">Type of the item this armor will become after being repair for once</typeparam>
+        </member>
+        <member name="P:AngeliA.Platformer.Armor`2.RepairMaterials">
+            <summary>
+            Items required for repair this armor. System will find any available item from start to end inside this array, and only consume one item to repair for once.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Armor`2.Scale">
+            <summary>
+            Size scale for rendering only
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Armor`2.HideEar">
+            <summary>
+            True if the armor hide ear gadget 
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Armor`2.HideHorn">
+            <summary>
+            True if the armor hide horn gadget
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Armor`2.HideHair">
+            <summary>
+            True if the armor hide hair gadget
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Armor`2.HideTail">
+            <summary>
+            True if the armor hide tail gadget
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Armor`2.HideFace">
+            <summary>
+            True if the armor hide face gadget
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.Armor`2.HideWing">
+            <summary>
+            True if the armor hide wing gadget
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Armor`2.DrawArmor(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Render the armor onto given character
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.Armor`2.RepairArmor(AngeliA.Character,System.Int32)">
+            <summary>
+            Repair the armor for once
+            </summary>
+            <param name="character">Character that holding this armor</param>
+            <param name="materialID">Item that will get consume</param>
+            <returns>True if the armor get repair for once</returns>
+        </member>
+        <member name="T:AngeliA.Platformer.BodyArmor`2">
+            <summary>
+            Armor on body of the character
+            </summary>
+            <typeparam name="P">Type of the item this armor will become after take damage for once</typeparam>
+            <typeparam name="N">Type of the item this armor will become after being repair for once</typeparam>
+        </member>
+        <member name="T:AngeliA.Platformer.Gloves`2">
+            <summary>
+            Armor on character's both hands
+            </summary>
+            <typeparam name="P">Type of the item this armor will become after take damage for once</typeparam>
+            <typeparam name="N">Type of the item this armor will become after being repair for once</typeparam>
+        </member>
+        <member name="T:AngeliA.Platformer.HelmetWearingMode">
+            <summary>
+            How an helmet wear on head
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.HelmetWearingMode.Attach">
+            <summary>
+            Put onto the head
+            </summary>
+        </member>
+        <member name="F:AngeliA.Platformer.HelmetWearingMode.Cover">
+            <summary>
+            Wrapped around the head
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Helmet`2">
+            <summary>
+            Armor on character's head
+            </summary>
+            <typeparam name="P">Type of the item this armor will become after take damage for once</typeparam>
+            <typeparam name="N">Type of the item this armor will become after being repair for once</typeparam>
+        </member>
+        <member name="P:AngeliA.Platformer.Helmet`2.WearingMode">
+            <summary>
+            How an helmet wear on head
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.Shoes`2">
+            <summary>
+            Armor on character's both foot
+            </summary>
+            <typeparam name="P">Type of the item this armor will become after take damage for once</typeparam>
+            <typeparam name="N">Type of the item this armor will become after being repair for once</typeparam>
+        </member>
+        <member name="T:AngeliA.Platformer.AuraItem`1">
+            <summary>
+            Item that broadcast given buff to nearby object when being put into inventory
+            </summary>
+            <typeparam name="B">Type of the buff</typeparam>
+        </member>
+        <member name="P:AngeliA.Platformer.AuraItem`1.Radius">
+            <summary>
+            Broadcast radius in global space
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.DollItem">
+            <summary>
+            Item that draw a doll sprite onto character's hip when carry inside inventory
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.DollItem.DollSize">
+            <summary>
+            Size of the doll sprite in global space
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.SummonItem`1">
+            <summary>
+            Item that create summon character when carry in inventory
+            </summary>
+            <typeparam name="T">Type of the summon character</typeparam>
+        </member>
+        <member name="M:AngeliA.Platformer.SummonItem`1.SpawnSummonFromItem(AngeliA.Character)">
+            <summary>
+            Spawn the target summon character
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.HealWeapon`1">
+            <summary>
+            Weapon that shoot bullet to heal friendly forces
+            </summary>
+            <typeparam name="B">Type of bullet to spawn</typeparam>
+        </member>
+        <member name="P:AngeliA.Platformer.HealWeapon`1.AutoAttackFrequency">
+            <summary>
+            Frames it takes to auto attack again. Set to 0 for no auto attack
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.HealWeapon`1.AllowManuallyAttack">
+            <summary>
+            True if this weapon allows manually attack from character
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.MeleeWeapon">
+            <summary>
+            Weapon that spawn invisible bullet that follows the character
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MeleeWeapon.RangeXLeft">
+            <summary>
+            Bullet width in global space when attack facing left
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MeleeWeapon.RangeXRight">
+            <summary>
+            Bullet width in global space when attack facing right
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MeleeWeapon.RangeY">
+            <summary>
+            Bullet height in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.MeleeWeapon.Damage">
+            <summary>
+            Damage amount it deals
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.MissileWeapon`1">
+            <summary>
+            Weapon that shoot a missile to attack
+            </summary>
+            <typeparam name="B">Type of the missile bullet</typeparam>
+        </member>
+        <member name="T:AngeliA.Platformer.ProjectileWeapon`1">
+            <summary>
+            Weapon that shoot projectile to attack
+            </summary>
+            <typeparam name="B">Type of the bullet</typeparam>
+        </member>
+        <member name="P:AngeliA.Platformer.ProjectileWeapon`1.BulletCountInOneShot">
+            <summary>
+            How many bullet does it shoot at once
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ProjectileWeapon`1.BulletPivotY">
+            <summary>
+            Bullet start position Y. (0 means bottom of character hitbox. 1000 means top of character hitbox)
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ProjectileWeapon`1.AdditionalBulletSpeedForward">
+            <summary>
+            Extra speed apply to forward direction
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ProjectileWeapon`1.AdditionalBulletSpeedSide">
+            <summary>
+            Extra speed apply to side direction
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ProjectileWeapon`1.AngleSpeedDelta">
+            <summary>
+            How multiple bullets spread when spawned at once
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.ProjectileWeapon`1.ForceBulletCountNextShot">
+            <summary>
+            Set this value to make "BulletCountInOneShot" different.
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.OpeningTask">
+            <summary>
+            Task that handles the logic for game restart
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.OpeningTask.TargetViewX">
+            <summary>
+            Camera view position X that the task trying to move to
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.OpeningTask.TargetViewY">
+            <summary>
+            Camera view position Y that the task trying to move to
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.OpeningTask.TargetViewZ">
+            <summary>
+            Z position of the stage
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.OpeningTask.FadeOut">
+            <summary>
+            True if the task make fade out effect
+            </summary>
+        </member>
+        <member name="T:AngeliA.Platformer.TeleportTask">
+            <summary>
+            Task for handle logic during player teleport
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TeleportTask.TeleportFrom">
+            <summary>
+            Teleport from this position in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TeleportTask.TeleportTo">
+            <summary>
+            Teleport to this position in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TeleportTask.WaitDuration">
+            <summary>
+            Teleport actually start after wait this frames long
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TeleportTask.Duration">
+            <summary>
+            Teleport takes this frames long to finish
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TeleportTask.UseVignette">
+            <summary>
+            True if use the vignette effect during teleport
+            </summary>
+        </member>
+        <member name="P:AngeliA.Platformer.TeleportTask.UseParallax">
+            <summary>
+            True if use the map layer parallax effect during teleport
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.TeleportTask.TeleportFromDoor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Make a teleport for selecting player by using a door
+            </summary>
+            <param name="fromX">(in global space)</param>
+            <param name="fromY">(in global space)</param>
+            <param name="toX">(in global space)</param>
+            <param name="toY">(in global space)</param>
+            <param name="toZ"></param>
+            <returns>Global single instance of the task unit</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.TeleportTask.TeleportFromPortal(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Make a teleport for selecting player by using a portal
+            </summary>
+            <param name="fromX">(in global space)</param>
+            <param name="fromY">(in global space)</param>
+            <param name="toX">(in global space)</param>
+            <param name="toY">(in global space)</param>
+            <param name="toZ"></param>
+            <returns>Global single instance of the task unit</returns>
         </member>
     </members>
 </doc>

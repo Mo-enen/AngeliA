@@ -19,7 +19,7 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 
 
 	// Api
-	[OnCheckPointTouched_CheckPoint_Character] static readonly System.Action<CheckPoint, Character> OnCheckPointTouched;
+	[OnCheckPointTouched_CheckPoint_Character] internal static System.Action<CheckPoint, Character> OnCheckPointTouched;
 	/// <summary>
 	/// Position in unit space for last check point get triggered
 	/// </summary>

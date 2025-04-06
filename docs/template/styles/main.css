@@ -502,3 +502,7 @@ input:checked + .slider:before {
         text-overflow: ellipsis;
     }
 }
+
+.typelist.extensionMethods {
+    display: none;
+} 

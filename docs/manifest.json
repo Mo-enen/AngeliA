@@ -8164,6 +8164,16 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "docsCN/comply-with-the-license.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/comply-with-the-license.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "docsCN/getting-started.md",
       "output": {
         ".html": {

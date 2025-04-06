@@ -5660,7 +5660,6 @@
         </member>
         <member name="M:AngeliA.Renderer.DrawSlice(AngeliA.SpriteCode,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
             <inheritdoc cref="M:AngeliA.Renderer.DrawSlice(AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean[],AngeliA.Color32,System.Int32)"/>
-            <inheritdoc cref="M:AngeliA.Renderer.DrawSlice(AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean[],AngeliA.Color32,System.Int32)"/>
         </member>
         <member name="M:AngeliA.Renderer.DrawSlice(AngeliA.SpriteCode,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.Color32,System.Int32)">
             <inheritdoc cref="M:AngeliA.Renderer.DrawSlice(AngeliA.AngeSprite,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean[],AngeliA.Color32,System.Int32)"/>
@@ -13931,7 +13930,7 @@
         </member>
         <member name="T:AngeliA.Atlas">
             <summary>
-            Segment container of sprites inside artwork sheet
+            Container of sprites inside artwork sheet
             </summary>
         </member>
         <member name="F:AngeliA.Atlas.ID">

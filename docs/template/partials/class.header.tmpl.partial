@@ -14,6 +14,7 @@
 </div>
 {{/implements.0}}
 {{#syntax.parameters.0}}
+{{#description}}
 <h5 class="parameters">{{__global.parameters}}</h5>
 <table class="table table-bordered table-condensed">
   <thead>
@@ -24,19 +25,23 @@
     </tr>
   </thead>
   <tbody>
+{{/description}}
 {{/syntax.parameters.0}}
 {{#syntax.parameters}}
+{{#description}}
     <tr>
       <td>{{{type.specName.0.value}}}</td>
       <td><span class="parametername">{{{id}}}</span></td>
       <td>{{{description}}}</td>
     </tr>
+{{/description}}
 {{/syntax.parameters}}
 {{#syntax.parameters.0}}
   </tbody>
 </table>
 {{/syntax.parameters.0}}
 {{#syntax.return}}
+{{#description}}
 <h5 class="returns">{{__global.returns}}</h5>
 <table class="table table-bordered table-condensed">
   <thead>
@@ -52,8 +57,10 @@
     </tr>
   </tbody>
 </table>
+{{/description}}
 {{/syntax.return}}
 {{#syntax.typeParameters.0}}
+{{#description}}
 <h5 class="typeParameters">{{__global.typeParameters}}</h5>
 <table class="table table-bordered table-condensed">
   <thead>
@@ -63,12 +70,15 @@
     </tr>
   </thead>
   <tbody>
+{{/description}}
 {{/syntax.typeParameters.0}}
 {{#syntax.typeParameters}}
+{{#description}}
     <tr>
       <td><span class="parametername">{{{id}}}</span></td>
       <td>{{{description}}}</td>
     </tr>
+{{/description}}
 {{/syntax.typeParameters}}
 {{#syntax.typeParameters.0}}
   </tbody>

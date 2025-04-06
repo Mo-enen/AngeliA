@@ -22,7 +22,7 @@
   "api/AngeliA.Alignment.html": {
     "href": "api/AngeliA.Alignment.html",
     "title": "Enum Alignment | AngeliA",
-    "summary": "Enum Alignment Fields Name Description BottomLeft BottomMid BottomRight Full MidLeft MidMid MidRight TopLeft TopMid TopRight Extension Methods Extension.IsBottom(Alignment) Extension.IsLeft(Alignment) Extension.IsMidX(Alignment) Extension.IsMidY(Alignment) Extension.IsRight(Alignment) Extension.IsTop(Alignment) Extension.Next<Alignment>(Alignment) Extension.Normal(Alignment) Extension.Prev<Alignment>(Alignment) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum Alignment Fields Name Description"
   },
   "api/AngeliA.AngePath.html": {
     "href": "api/AngeliA.AngePath.html",
@@ -37,7 +37,7 @@
   "api/AngeliA.AntiBuffItem-1.TriggerMode.html": {
     "href": "api/AngeliA.AntiBuffItem-1.TriggerMode.html",
     "title": "Enum AntiBuffItem<B>.TriggerMode | AngeliA",
-    "summary": "Enum AntiBuffItem<B>.TriggerMode How anti buff item been trigger Fields Name Description Auto Manual Extension Methods Extension.Next<AntiBuffItem<B>.TriggerMode>(AntiBuffItem<B>.TriggerMode) Extension.Prev<AntiBuffItem<B>.TriggerMode>(AntiBuffItem<B>.TriggerMode) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum AntiBuffItem<B>.TriggerMode How anti buff item been trigger Fields Name Description"
   },
   "api/AngeliA.AntiBuffItem-1.html": {
     "href": "api/AngeliA.AntiBuffItem-1.html",
@@ -52,12 +52,12 @@
   "api/AngeliA.AtlasState.html": {
     "href": "api/AngeliA.AtlasState.html",
     "title": "Enum AtlasState | AngeliA",
-    "summary": "Enum AtlasState Internal data used for display folder layout Fields Name Description Folded Root Sub Unfolded Extension Methods Extension.Next<AtlasState>(AtlasState) Extension.Prev<AtlasState>(AtlasState) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum AtlasState Internal data used for display folder layout Fields Name Description"
   },
   "api/AngeliA.AtlasType.html": {
     "href": "api/AngeliA.AtlasType.html",
     "title": "Enum AtlasType | AngeliA",
-    "summary": "Enum AtlasType Type of sprite atlas Fields Name Description Background Sprites inside are background blocks General No special info Level Sprites inside are level blocks Extension Methods Extension.Next<AtlasType>(AtlasType) Extension.Prev<AtlasType>(AtlasType) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum AtlasType Type of sprite atlas Fields Name Description Background Sprites inside are background blocks General No special info Level Sprites inside are level blocks"
   },
   "api/AngeliA.AudioCode.html": {
     "href": "api/AngeliA.AudioCode.html",
@@ -72,7 +72,7 @@
   "api/AngeliA.AutoValidList-1.html": {
     "href": "api/AngeliA.AutoValidList-1.html",
     "title": "Class AutoValidList<T> | AngeliA",
-    "summary": "Class AutoValidList<T> A list that automatically remove element inside based on the given function Type Parameters Name Description T Constructors AutoValidList(int, Func<T, bool>) A list that automatically remove element inside based on the given function Declaration public AutoValidList(int capacity, Func<T, bool> updateFunc) Properties Capacity Max element count Declaration public int Capacity { get; } Count How many elements are currently inside this list Declaration public int Count { get; } Methods Add(T) Declaration public bool Add(T element) Update() Valid all elements in the list based on the given funtion. Declaration public void Update()"
+    "summary": "Class AutoValidList<T> A list that automatically remove element inside based on the given function Constructors AutoValidList(int, Func<T, bool>) A list that automatically remove element inside based on the given function Declaration public AutoValidList(int capacity, Func<T, bool> updateFunc) Properties Capacity Max element count Declaration public int Capacity { get; } Count How many elements are currently inside this list Declaration public int Count { get; } Methods Add(T) Declaration public bool Add(T element) Update() Valid all elements in the list based on the given funtion. Declaration public void Update()"
   },
   "api/AngeliA.BasicGlobalItemCombinationAttribute.html": {
     "href": "api/AngeliA.BasicGlobalItemCombinationAttribute.html",
@@ -197,7 +197,7 @@
   "api/AngeliA.BlockType.html": {
     "href": "api/AngeliA.BlockType.html",
     "title": "Enum BlockType | AngeliA",
-    "summary": "Enum BlockType Type of blocks in map Fields Name Description Background Static block without collider Element Internal IMapItem that do not spawn into stage Entity Dynamic object with logic attached Level Static block with collider Extension Methods Extension.Next<BlockType>(BlockType) Extension.Prev<BlockType>(BlockType) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum BlockType Type of blocks in map Fields Name Description Background Static block without collider Element Internal IMapItem that do not spawn into stage Entity Dynamic object with logic attached Level Static block with collider"
   },
   "api/AngeliA.BodyCloth.html": {
     "href": "api/AngeliA.BodyCloth.html",
@@ -217,12 +217,12 @@
   "api/AngeliA.BodyGadgetType.html": {
     "href": "api/AngeliA.BodyGadgetType.html",
     "title": "Enum BodyGadgetType | AngeliA",
-    "summary": "Enum BodyGadgetType Fields Name Description Ear Face Hair Horn Tail Wing Extension Methods Extension.Next<BodyGadgetType>(BodyGadgetType) Extension.Prev<BodyGadgetType>(BodyGadgetType) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum BodyGadgetType Fields Name Description"
   },
   "api/AngeliA.BodyPart.CoverMode.html": {
     "href": "api/AngeliA.BodyPart.CoverMode.html",
     "title": "Enum BodyPart.CoverMode | AngeliA",
-    "summary": "Enum BodyPart.CoverMode How cloths is covering the bodypart Fields Name Description Covered FullCovered None Extension Methods Extension.Next<BodyPart.CoverMode>(BodyPart.CoverMode) Extension.Prev<BodyPart.CoverMode>(BodyPart.CoverMode) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum BodyPart.CoverMode How cloths is covering the bodypart Fields Name Description"
   },
   "api/AngeliA.BodyPart.html": {
     "href": "api/AngeliA.BodyPart.html",
@@ -307,7 +307,7 @@
   "api/AngeliA.CharacterAnimationType.html": {
     "href": "api/AngeliA.CharacterAnimationType.html",
     "title": "Enum CharacterAnimationType | AngeliA",
-    "summary": "Enum CharacterAnimationType Which type of animation does this character shows Fields Name Description Brake Climb Crash Dash Fly GrabSide GrabTop Idle JumpDown JumpUp PassOut Pound Rolling Run Rush Sleep Slide Spin SquatIdle SquatMove SwimIdle SwimMove TakingDamage Walk Extension Methods Extension.IsLyingDown(CharacterAnimationType) Extension.Next<CharacterAnimationType>(CharacterAnimationType) Extension.Prev<CharacterAnimationType>(CharacterAnimationType) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum CharacterAnimationType Which type of animation does this character shows Fields Name Description"
   },
   "api/AngeliA.CharacterAttackness.html": {
     "href": "api/AngeliA.CharacterAttackness.html",
@@ -332,7 +332,7 @@
   "api/AngeliA.CharacterFaceExpression.html": {
     "href": "api/AngeliA.CharacterFaceExpression.html",
     "title": "Enum CharacterFaceExpression | AngeliA",
-    "summary": "Enum CharacterFaceExpression Face expression type for pose animation characters Fields Name Description Attack Blink Damage Happy Normal PassOut Sleep Suffer Extension Methods Extension.Next<CharacterFaceExpression>(CharacterFaceExpression) Extension.Prev<CharacterFaceExpression>(CharacterFaceExpression) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum CharacterFaceExpression Face expression type for pose animation characters Fields Name Description"
   },
   "api/AngeliA.CharacterHealth.html": {
     "href": "api/AngeliA.CharacterHealth.html",
@@ -342,7 +342,7 @@
   "api/AngeliA.CharacterInventoryType.html": {
     "href": "api/AngeliA.CharacterInventoryType.html",
     "title": "Enum CharacterInventoryType | AngeliA",
-    "summary": "Enum CharacterInventoryType Which type of inventory does this character have Fields Name Description Map Every instance of this type of characters have it's own inventory data based on where this character spawn from map None No inventory logic should be perform Unique All instance of this type of characters share the same inventory data Extension Methods Extension.Next<CharacterInventoryType>(CharacterInventoryType) Extension.Prev<CharacterInventoryType>(CharacterInventoryType) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum CharacterInventoryType Which type of inventory does this character have Fields Name Description Map Every instance of this type of characters have it's own inventory data based on where this character spawn from map None No inventory logic should be perform Unique All instance of this type of characters share the same inventory data"
   },
   "api/AngeliA.CharacterMovement.html": {
     "href": "api/AngeliA.CharacterMovement.html",
@@ -352,7 +352,7 @@
   "api/AngeliA.CharacterMovementState.html": {
     "href": "api/AngeliA.CharacterMovementState.html",
     "title": "Enum CharacterMovementState | AngeliA",
-    "summary": "Enum CharacterMovementState Fields Name Description Climb Crash Dash Fly GrabFlip GrabSide GrabTop Idle JumpDown JumpUp Pound Run Rush Slide SquatIdle SquatMove SwimIdle SwimMove Walk Extension Methods Extension.Next<CharacterMovementState>(CharacterMovementState) Extension.Prev<CharacterMovementState>(CharacterMovementState) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum CharacterMovementState Fields Name Description"
   },
   "api/AngeliA.CharacterPose.html": {
     "href": "api/AngeliA.CharacterPose.html",
@@ -372,7 +372,7 @@
   "api/AngeliA.CharacterState.html": {
     "href": "api/AngeliA.CharacterState.html",
     "title": "Enum CharacterState | AngeliA",
-    "summary": "Enum CharacterState General game state of a character Fields Name Description GamePlay The character is online PassOut The character is offline Sleep The character is sleeping Extension Methods Extension.Next<CharacterState>(CharacterState) Extension.Prev<CharacterState>(CharacterState) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum CharacterState General game state of a character Fields Name Description GamePlay The character is online PassOut The character is offline Sleep The character is sleeping"
   },
   "api/AngeliA.CheatCodeAttribute.html": {
     "href": "api/AngeliA.CheatCodeAttribute.html",
@@ -412,7 +412,7 @@
   "api/AngeliA.ClothType.html": {
     "href": "api/AngeliA.ClothType.html",
     "title": "Enum ClothType | AngeliA",
-    "summary": "Enum ClothType Fields Name Description Body Foot Hand Head Hip Extension Methods Extension.Next<ClothType>(ClothType) Extension.Prev<ClothType>(ClothType) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum ClothType Fields Name Description"
   },
   "api/AngeliA.Color32.html": {
     "href": "api/AngeliA.Color32.html",
@@ -437,7 +437,7 @@
   "api/AngeliA.CompareMode.html": {
     "href": "api/AngeliA.CompareMode.html",
     "title": "Enum CompareMode | AngeliA",
-    "summary": "Enum CompareMode Fields Name Description And Equal GreaterOrEqual GreaterThan LessOrEqual LessThan NotEqual Or Extension Methods Extension.Next<CompareMode>(CompareMode) Extension.Prev<CompareMode>(CompareMode) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum CompareMode Fields Name Description"
   },
   "api/AngeliA.Const.html": {
     "href": "api/AngeliA.Const.html",
@@ -517,27 +517,27 @@
   "api/AngeliA.Direction2.html": {
     "href": "api/AngeliA.Direction2.html",
     "title": "Enum Direction2 | AngeliA",
-    "summary": "Enum Direction2 Fields Name Description Down Horizontal Left Negative Positive Right Up Vertical Extension Methods Extension.Next<Direction2>(Direction2) Extension.Prev<Direction2>(Direction2) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum Direction2 Fields Name Description"
   },
   "api/AngeliA.Direction3.html": {
     "href": "api/AngeliA.Direction3.html",
     "title": "Enum Direction3 | AngeliA",
-    "summary": "Enum Direction3 Fields Name Description Down Horizontal Left Negative None Positive Right Up Vertical Extension Methods Extension.Next<Direction3>(Direction3) Extension.Opposite(Direction3) Extension.Prev<Direction3>(Direction3) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum Direction3 Fields Name Description"
   },
   "api/AngeliA.Direction4.html": {
     "href": "api/AngeliA.Direction4.html",
     "title": "Enum Direction4 | AngeliA",
-    "summary": "Enum Direction4 Fields Name Description Down Left Right Up Extension Methods Extension.AntiClockwise(Direction4) Extension.Clockwise(Direction4) Extension.GetRotation(Direction4) Extension.IsHorizontal(Direction4) Extension.IsPositive(Direction4) Extension.IsVertical(Direction4) Extension.Next<Direction4>(Direction4) Extension.Normal(Direction4) Extension.Opposite(Direction4) Extension.Prev<Direction4>(Direction4) Extension.ToAlignment(Direction4) Extension.ToDirection5(Direction4) Extension.ToDirection8(Direction4) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum Direction4 Fields Name Description"
   },
   "api/AngeliA.Direction5.html": {
     "href": "api/AngeliA.Direction5.html",
     "title": "Enum Direction5 | AngeliA",
-    "summary": "Enum Direction5 Fields Name Description Center Down Left Right Up Extension Methods Extension.AntiClockwise(Direction5) Extension.Clockwise(Direction5) Extension.GetHorizontalDirection(Direction5) Extension.GetVerticalDirection(Direction5) Extension.IsHorizontal(Direction5) Extension.IsPositive(Direction5) Extension.IsVertical(Direction5) Extension.Next<Direction5>(Direction5) Extension.Normal(Direction5) Extension.Opposite(Direction5) Extension.Prev<Direction5>(Direction5) Extension.ToAlignment(Direction5) Extension.ToDirection4(Direction5, Direction4) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum Direction5 Fields Name Description"
   },
   "api/AngeliA.Direction8.html": {
     "href": "api/AngeliA.Direction8.html",
     "title": "Enum Direction8 | AngeliA",
-    "summary": "Enum Direction8 Fields Name Description Bottom BottomLeft BottomRight Left Right Top TopLeft TopRight Extension Methods Extension.AntiClockwise(Direction8, int) Extension.Clockwise(Direction8, int) Extension.GetRotation(Direction8) Extension.IsBottom(Direction8) Extension.IsHorizontal(Direction8) Extension.IsLeft(Direction8) Extension.IsPositive(Direction8) Extension.IsRight(Direction8) Extension.IsTilted(Direction8) Extension.IsTop(Direction8) Extension.IsVertical(Direction8) Extension.Next<Direction8>(Direction8) Extension.Normal(Direction8) Extension.Opposite(Direction8) Extension.Prev<Direction8>(Direction8) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum Direction8 Fields Name Description"
   },
   "api/AngeliA.DynamicClampCellScope.html": {
     "href": "api/AngeliA.DynamicClampCellScope.html",
@@ -557,7 +557,7 @@
   "api/AngeliA.EchoDictionary-2.html": {
     "href": "api/AngeliA.EchoDictionary-2.html",
     "title": "Class EchoDictionary<TKey, TValue> | AngeliA",
-    "summary": "Class EchoDictionary<TKey, TValue> Implements IEnumerable<KeyValuePair<TKey, TValue>> IEnumerable Type Parameters Name Description TKey TValue Properties Count Declaration public int Count { get; } this[TKey] Declaration public TValue this[TKey key] { get; set; } this[TValue] Declaration public TKey this[TValue tValue] { get; set; } Methods Add(TKey, TValue) Declaration public void Add(TKey key, TValue value) Clear() Declaration public void Clear() ContainsAny(TKey, TValue) Declaration public bool ContainsAny(TKey key, TValue value) ContainsKey(TKey) Declaration public bool ContainsKey(TKey key) ContainsPair(TKey, TValue) Declaration public bool ContainsPair(TKey key, TValue value) ContainsValue(TValue) Declaration public bool ContainsValue(TValue value) GetEnumerator() Returns an enumerator that iterates through the collection. Declaration public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() Returns Type Description IEnumerator<KeyValuePair<TKey, TValue>> An enumerator that can be used to iterate through the collection. GetKey(TValue) Declaration public TKey GetKey(TValue value) GetValue(TKey) Declaration public TValue GetValue(TKey key) Remove(TKey) Declaration public bool Remove(TKey key) Remove(TKey, out TValue) Declaration public bool Remove(TKey key, out TValue value) Remove(TValue) Declaration public bool Remove(TValue value) Remove(TValue, out TKey) Declaration public bool Remove(TValue value, out TKey key) SetValue(TKey, TValue) Declaration public void SetValue(TKey key, TValue value) TryAdd(TKey, TValue) Declaration public bool TryAdd(TKey key, TValue value) TryGetKey(TValue, out TKey) Declaration public bool TryGetKey(TValue value, out TKey key) TryGetValue(TKey, out TValue) Declaration public bool TryGetValue(TKey key, out TValue value)"
+    "summary": "Class EchoDictionary<TKey, TValue> Implements IEnumerable<KeyValuePair<TKey, TValue>> IEnumerable Properties Count Declaration public int Count { get; } this[TKey] Declaration public TValue this[TKey key] { get; set; } this[TValue] Declaration public TKey this[TValue tValue] { get; set; } Methods Add(TKey, TValue) Declaration public void Add(TKey key, TValue value) Clear() Declaration public void Clear() ContainsAny(TKey, TValue) Declaration public bool ContainsAny(TKey key, TValue value) ContainsKey(TKey) Declaration public bool ContainsKey(TKey key) ContainsPair(TKey, TValue) Declaration public bool ContainsPair(TKey key, TValue value) ContainsValue(TValue) Declaration public bool ContainsValue(TValue value) GetEnumerator() Returns an enumerator that iterates through the collection. Declaration public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() Returns Type Description IEnumerator<KeyValuePair<TKey, TValue>> An enumerator that can be used to iterate through the collection. GetKey(TValue) Declaration public TKey GetKey(TValue value) GetValue(TKey) Declaration public TValue GetValue(TKey key) Remove(TKey) Declaration public bool Remove(TKey key) Remove(TKey, out TValue) Declaration public bool Remove(TKey key, out TValue value) Remove(TValue) Declaration public bool Remove(TValue value) Remove(TValue, out TKey) Declaration public bool Remove(TValue value, out TKey key) SetValue(TKey, TValue) Declaration public void SetValue(TKey key, TValue value) TryAdd(TKey, TValue) Declaration public bool TryAdd(TKey key, TValue value) TryGetKey(TValue, out TKey) Declaration public bool TryGetKey(TValue value, out TKey key) TryGetValue(TKey, out TValue) Declaration public bool TryGetValue(TKey key, out TValue value)"
   },
   "api/AngeliA.EmptyScope.html": {
     "href": "api/AngeliA.EmptyScope.html",
@@ -672,7 +672,7 @@
   "api/AngeliA.EquipmentType.html": {
     "href": "api/AngeliA.EquipmentType.html",
     "title": "Enum EquipmentType | AngeliA",
-    "summary": "Enum EquipmentType Represent the type of the equipment Fields Name Description BodyArmor Equipment that equip into body slot Gloves Equipment that equip into hand slot HandTool Equipment that equip into hand slot and can be use as a tool Helmet Equipment that equip into head slot Jewelry Equipment that equip into jewelry slot. Do not render onto the character by default. Shoes Equipment that equip into foot slot Extension Methods Extension.Next<EquipmentType>(EquipmentType) Extension.Prev<EquipmentType>(EquipmentType) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum EquipmentType Represent the type of the equipment Fields Name Description BodyArmor Equipment that equip into body slot Gloves Equipment that equip into hand slot HandTool Equipment that equip into hand slot and can be use as a tool Helmet Equipment that equip into head slot Jewelry Equipment that equip into jewelry slot. Do not render onto the character by default. Shoes Equipment that equip into foot slot"
   },
   "api/AngeliA.EventAttribute.html": {
     "href": "api/AngeliA.EventAttribute.html",
@@ -717,7 +717,7 @@
   "api/AngeliA.FittingPose.html": {
     "href": "api/AngeliA.FittingPose.html",
     "title": "Enum FittingPose | AngeliA",
-    "summary": "Enum FittingPose Fields Name Description Down Left Mid Right Single Unknown Up Extension Methods Extension.Next<FittingPose>(FittingPose) Extension.Prev<FittingPose>(FittingPose) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum FittingPose Fields Name Description"
   },
   "api/AngeliA.Float2.html": {
     "href": "api/AngeliA.Float2.html",
@@ -772,7 +772,7 @@
   "api/AngeliA.FrameBasedValue-1.html": {
     "href": "api/AngeliA.FrameBasedValue-1.html",
     "title": "Class FrameBasedValue<T> | AngeliA",
-    "summary": "Class FrameBasedValue<T> A data that can be override for specified frames Type Parameters Name Description T Constructors FrameBasedValue() Declaration public FrameBasedValue() FrameBasedValue(T) Declaration public FrameBasedValue(T value) Fields BaseValue Declaration public T BaseValue OverrideValue Declaration public T OverrideValue Properties FinalValue Declaration public T FinalValue { get; } Methods Override(T, int, int) Declaration public void Override(T value, int duration = 0, int priority = 0) ToString() Returns a string that represents the current object. Declaration public override string ToString() Returns Type Description string A string that represents the current object. Overrides object.ToString()"
+    "summary": "Class FrameBasedValue<T> A data that can be override for specified frames Constructors FrameBasedValue() Declaration public FrameBasedValue() FrameBasedValue(T) Declaration public FrameBasedValue(T value) Fields BaseValue Declaration public T BaseValue OverrideValue Declaration public T OverrideValue Properties FinalValue Declaration public T FinalValue { get; } Methods Override(T, int, int) Declaration public void Override(T value, int duration = 0, int priority = 0) ToString() Returns a string that represents the current object. Declaration public override string ToString() Returns Type Description string A string that represents the current object. Overrides object.ToString()"
   },
   "api/AngeliA.FrameBasedValue.html": {
     "href": "api/AngeliA.FrameBasedValue.html",
@@ -842,7 +842,7 @@
   "api/AngeliA.GUIState.html": {
     "href": "api/AngeliA.GUIState.html",
     "title": "Enum GUIState | AngeliA",
-    "summary": "Enum GUIState Fields Name Description Disable Hover Normal Press Extension Methods Extension.Next<GUIState>(GUIState) Extension.Prev<GUIState>(GUIState) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum GUIState Fields Name Description"
   },
   "api/AngeliA.GUIStyle.html": {
     "href": "api/AngeliA.GUIStyle.html",
@@ -862,12 +862,12 @@
   "api/AngeliA.Gamekey.html": {
     "href": "api/AngeliA.Gamekey.html",
     "title": "Enum Gamekey | AngeliA",
-    "summary": "Enum Gamekey Keys that generaly used with AngeliA games Fields Name Description Action Make player attack or perform action. Confirm/OK button in menu UI. Down Direction down Jump Make player jump or cancel action. Cancel button in menu UI. Left Direction left Right Direction right Select Open main menu for player, quit in-game panel UI, perform some uncommon logic inside in-game UI. Start Start the game in title screen, pause the game during gameplay, quit in-game panel UI. Up Direction up Extension Methods Extension.GetDirection(Gamekey) Extension.Next<Gamekey>(Gamekey) Extension.Prev<Gamekey>(Gamekey) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum Gamekey Keys that generaly used with AngeliA games Fields Name Description Action Make player attack or perform action. Confirm/OK button in menu UI. Down Direction down Jump Make player jump or cancel action. Cancel button in menu UI. Left Direction left Right Direction right Select Open main menu for player, quit in-game panel UI, perform some uncommon logic inside in-game UI. Start Start the game in title screen, pause the game during gameplay, quit in-game panel UI. Up Direction up"
   },
   "api/AngeliA.GamepadKey.html": {
     "href": "api/AngeliA.GamepadKey.html",
     "title": "Enum GamepadKey | AngeliA",
-    "summary": "Enum GamepadKey Key on the gamepad Fields Name Description DpadDown D-Pad down button DpadLeft D-Pad left button DpadRight D-Pad right button DpadUp D-Pad up button East Face button on right side LeftShoulder Left shoulder button (the one on top) LeftStick Left joy stick (press it as a button) LeftTrigger Left trigger button (the one on bottom) North Face button on top RightShoulder Right shoulder button (the one on top) RightStick Right joy stick (press it as a button) RightTrigger Right trigger button (the one on bottom) Select System button select (-) South Face button on button Start System button start (+) West Face button on left side Extension Methods Extension.Next<GamepadKey>(GamepadKey) Extension.Prev<GamepadKey>(GamepadKey) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum GamepadKey Key on the gamepad Fields Name Description DpadDown D-Pad down button DpadLeft D-Pad left button DpadRight D-Pad right button DpadUp D-Pad up button East Face button on right side LeftShoulder Left shoulder button (the one on top) LeftStick Left joy stick (press it as a button) LeftTrigger Left trigger button (the one on bottom) North Face button on top RightShoulder Right shoulder button (the one on top) RightStick Right joy stick (press it as a button) RightTrigger Right trigger button (the one on bottom) Select System button select (-) South Face button on button Start System button start (+) West Face button on left side"
   },
   "api/AngeliA.GenericDialogUI.html": {
     "href": "api/AngeliA.GenericDialogUI.html",
@@ -892,22 +892,22 @@
   "api/AngeliA.GlobalItemCombinationAttribute-1.html": {
     "href": "api/AngeliA.GlobalItemCombinationAttribute-1.html",
     "title": "Class GlobalItemCombinationAttribute<I0> | AngeliA",
-    "summary": "Class GlobalItemCombinationAttribute<I0> Define a item combination to craft the item. Type Parameters Name Description I0 Constructors GlobalItemCombinationAttribute(string, int, string, string, string, string, string, string, string) Define a item combination to craft the item. Declaration public GlobalItemCombinationAttribute(string result, int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraB = \"\", string extraC = \"\", string extraD = \"\") int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraB Use this if the item is not based on class string extraC Use this if the item is not based on class string extraD Use this if the item is not based on class"
+    "summary": "Class GlobalItemCombinationAttribute<I0> Define a item combination to craft the item. Constructors GlobalItemCombinationAttribute(string, int, string, string, string, string, string, string, string) Define a item combination to craft the item. Declaration public GlobalItemCombinationAttribute(string result, int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraB = \"\", string extraC = \"\", string extraD = \"\") int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraB Use this if the item is not based on class string extraC Use this if the item is not based on class string extraD Use this if the item is not based on class"
   },
   "api/AngeliA.GlobalItemCombinationAttribute-2.html": {
     "href": "api/AngeliA.GlobalItemCombinationAttribute-2.html",
     "title": "Class GlobalItemCombinationAttribute<I0, I1> | AngeliA",
-    "summary": "Class GlobalItemCombinationAttribute<I0, I1> Define a item combination to craft the item. Type Parameters Name Description I0 I1 Constructors GlobalItemCombinationAttribute(string, int, string, string, string, string, string, string) Define a item combination to craft the item. Declaration public GlobalItemCombinationAttribute(string result, int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraC = \"\", string extraD = \"\") int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraC Use this if the item is not based on class string extraD Use this if the item is not based on class"
+    "summary": "Class GlobalItemCombinationAttribute<I0, I1> Define a item combination to craft the item. Constructors GlobalItemCombinationAttribute(string, int, string, string, string, string, string, string) Define a item combination to craft the item. Declaration public GlobalItemCombinationAttribute(string result, int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraC = \"\", string extraD = \"\") int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraC Use this if the item is not based on class string extraD Use this if the item is not based on class"
   },
   "api/AngeliA.GlobalItemCombinationAttribute-3.html": {
     "href": "api/AngeliA.GlobalItemCombinationAttribute-3.html",
     "title": "Class GlobalItemCombinationAttribute<I0, I1, I2> | AngeliA",
-    "summary": "Class GlobalItemCombinationAttribute<I0, I1, I2> Define a item combination to craft the item. Type Parameters Name Description I0 I1 I2 Constructors GlobalItemCombinationAttribute(string, int, string, string, string, string, string) Define a item combination to craft the item. Declaration public GlobalItemCombinationAttribute(string result, int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraD = \"\") int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraD Use this if the item is not based on class"
+    "summary": "Class GlobalItemCombinationAttribute<I0, I1, I2> Define a item combination to craft the item. Constructors GlobalItemCombinationAttribute(string, int, string, string, string, string, string) Define a item combination to craft the item. Declaration public GlobalItemCombinationAttribute(string result, int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraD = \"\") int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraD Use this if the item is not based on class"
   },
   "api/AngeliA.GlobalItemCombinationAttribute-4.html": {
     "href": "api/AngeliA.GlobalItemCombinationAttribute-4.html",
     "title": "Class GlobalItemCombinationAttribute<I0, I1, I2, I3> | AngeliA",
-    "summary": "Class GlobalItemCombinationAttribute<I0, I1, I2, I3> Define a item combination to craft the item. Type Parameters Name Description I0 I1 I2 I3 Constructors GlobalItemCombinationAttribute(string, int, string, string, string, string) Define a item combination to craft the item. Declaration public GlobalItemCombinationAttribute(string result, int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\") int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item"
+    "summary": "Class GlobalItemCombinationAttribute<I0, I1, I2, I3> Define a item combination to craft the item. Constructors GlobalItemCombinationAttribute(string, int, string, string, string, string) Define a item combination to craft the item. Declaration public GlobalItemCombinationAttribute(string result, int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\") int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item"
   },
   "api/AngeliA.GlobalItemCombinationAttribute.html": {
     "href": "api/AngeliA.GlobalItemCombinationAttribute.html",
@@ -947,7 +947,7 @@
   "api/AngeliA.HipCloth.HipClothType.html": {
     "href": "api/AngeliA.HipCloth.HipClothType.html",
     "title": "Enum HipCloth.HipClothType | AngeliA",
-    "summary": "Enum HipCloth.HipClothType Fields Name Description None Pants Skirt Extension Methods Extension.Next<HipCloth.HipClothType>(HipCloth.HipClothType) Extension.Prev<HipCloth.HipClothType>(HipCloth.HipClothType) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum HipCloth.HipClothType Fields Name Description"
   },
   "api/AngeliA.HipCloth.html": {
     "href": "api/AngeliA.HipCloth.html",
@@ -1132,22 +1132,22 @@
   "api/AngeliA.ItemCombinationAttribute-1.html": {
     "href": "api/AngeliA.ItemCombinationAttribute-1.html",
     "title": "Class ItemCombinationAttribute<I0> | AngeliA",
-    "summary": "Class ItemCombinationAttribute<I0> Define a item combination to craft the item. Type Parameters Name Description I0 Constructors ItemCombinationAttribute(int, string, string, string, string, string, string, string) Define a item combination to craft the item. Declaration public ItemCombinationAttribute(int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraB = \"\", string extraC = \"\", string extraD = \"\") Parameters Type Name Description int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraB Use this if the item is not based on class string extraC Use this if the item is not based on class string extraD Use this if the item is not based on class"
+    "summary": "Class ItemCombinationAttribute<I0> Define a item combination to craft the item. Constructors ItemCombinationAttribute(int, string, string, string, string, string, string, string) Define a item combination to craft the item. Declaration public ItemCombinationAttribute(int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraB = \"\", string extraC = \"\", string extraD = \"\") Parameters Type Name Description int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraB Use this if the item is not based on class string extraC Use this if the item is not based on class string extraD Use this if the item is not based on class"
   },
   "api/AngeliA.ItemCombinationAttribute-2.html": {
     "href": "api/AngeliA.ItemCombinationAttribute-2.html",
     "title": "Class ItemCombinationAttribute<I0, I1> | AngeliA",
-    "summary": "Class ItemCombinationAttribute<I0, I1> Define a item combination to craft the item. Type Parameters Name Description I0 I1 Constructors ItemCombinationAttribute(int, string, string, string, string, string, string) Define a item combination to craft the item. Declaration public ItemCombinationAttribute(int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraC = \"\", string extraD = \"\") Parameters Type Name Description int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraC Use this if the item is not based on class string extraD Use this if the item is not based on class"
+    "summary": "Class ItemCombinationAttribute<I0, I1> Define a item combination to craft the item. Constructors ItemCombinationAttribute(int, string, string, string, string, string, string) Define a item combination to craft the item. Declaration public ItemCombinationAttribute(int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraC = \"\", string extraD = \"\") Parameters Type Name Description int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraC Use this if the item is not based on class string extraD Use this if the item is not based on class"
   },
   "api/AngeliA.ItemCombinationAttribute-3.html": {
     "href": "api/AngeliA.ItemCombinationAttribute-3.html",
     "title": "Class ItemCombinationAttribute<I0, I1, I2> | AngeliA",
-    "summary": "Class ItemCombinationAttribute<I0, I1, I2> Define a item combination to craft the item. Type Parameters Name Description I0 I1 I2 Constructors ItemCombinationAttribute(int, string, string, string, string, string) Define a item combination to craft the item. Declaration public ItemCombinationAttribute(int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraD = \"\") Parameters Type Name Description int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraD Use this if the item is not based on class"
+    "summary": "Class ItemCombinationAttribute<I0, I1, I2> Define a item combination to craft the item. Constructors ItemCombinationAttribute(int, string, string, string, string, string) Define a item combination to craft the item. Declaration public ItemCombinationAttribute(int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\", string extraD = \"\") Parameters Type Name Description int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item string extraD Use this if the item is not based on class"
   },
   "api/AngeliA.ItemCombinationAttribute-4.html": {
     "href": "api/AngeliA.ItemCombinationAttribute-4.html",
     "title": "Class ItemCombinationAttribute<I0, I1, I2, I3> | AngeliA",
-    "summary": "Class ItemCombinationAttribute<I0, I1, I2, I3> Define a item combination to craft the item. Type Parameters Name Description I0 I1 I2 I3 Constructors ItemCombinationAttribute(int, string, string, string, string) Define a item combination to craft the item. Declaration public ItemCombinationAttribute(int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\") Parameters Type Name Description int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item"
+    "summary": "Class ItemCombinationAttribute<I0, I1, I2, I3> Define a item combination to craft the item. Constructors ItemCombinationAttribute(int, string, string, string, string) Define a item combination to craft the item. Declaration public ItemCombinationAttribute(int count = 1, string keepId0 = \"\", string keepId1 = \"\", string keepId2 = \"\", string keepId3 = \"\") Parameters Type Name Description int count How many item does it craft at once string keepId0 Do not consume this item string keepId1 Do not consume this item string keepId2 Do not consume this item string keepId3 Do not consume this item"
   },
   "api/AngeliA.ItemCombinationAttribute.html": {
     "href": "api/AngeliA.ItemCombinationAttribute.html",
@@ -1197,7 +1197,7 @@
   "api/AngeliA.KeyboardKey.html": {
     "href": "api/AngeliA.KeyboardKey.html",
     "title": "Enum KeyboardKey | AngeliA",
-    "summary": "Enum KeyboardKey Key on the keyboard Fields Name Description A B Backquote Backslash Backspace C CapsLock Comma D Delete Digit0 Digit1 Digit2 Digit3 Digit4 Digit5 Digit6 Digit7 Digit8 Digit9 DownArrow E End Enter Equals Escape F F1 F10 F11 F12 F2 F3 F4 F5 F6 F7 F8 F9 G H Home I IMESelected Insert J K L LeftAlt LeftArrow LeftBracket LeftCtrl LeftMeta LeftShift M Minus N None NumLock Numpad0 Numpad1 Numpad2 Numpad3 Numpad4 Numpad5 Numpad6 Numpad7 Numpad8 Numpad9 NumpadDivide NumpadEnter NumpadEquals NumpadMinus NumpadMultiply NumpadPeriod NumpadPlus O OEM1 OEM2 OEM3 OEM4 OEM5 P PageDown PageUp Pause Period PrintScreen Q Quote R RightAlt RightArrow RightBracket RightCtrl RightMeta RightShift S ScrollLock Semicolon Slash Space T Tab U UpArrow V W X Y Z Extension Methods Extension.Next<KeyboardKey>(KeyboardKey) Extension.Prev<KeyboardKey>(KeyboardKey) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum KeyboardKey Key on the keyboard Fields Name Description"
   },
   "api/AngeliA.Language.html": {
     "href": "api/AngeliA.Language.html",
@@ -1322,7 +1322,7 @@
   "api/AngeliA.NoiseMatching.html": {
     "href": "api/AngeliA.NoiseMatching.html",
     "title": "Enum NoiseMatching | AngeliA",
-    "summary": "Enum NoiseMatching Fields Name Description Disable Divide Minus Multiply Plus Extension Methods Extension.Next<NoiseMatching>(NoiseMatching) Extension.Prev<NoiseMatching>(NoiseMatching) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum NoiseMatching Fields Name Description"
   },
   "api/AngeliA.NonStackableItem.html": {
     "href": "api/AngeliA.NonStackableItem.html",
@@ -1557,7 +1557,7 @@
   "api/AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.html": {
     "href": "api/AngeliA.OnMapEditorModeChange_ModeAttribute.Mode.html",
     "title": "Enum OnMapEditorModeChange_ModeAttribute.Mode | AngeliA",
-    "summary": "Enum OnMapEditorModeChange_ModeAttribute.Mode Fields Name Description EnterEditMode Play mode to edit mode. After map editor internal logic is done EnterPlayMode Edit mode to play mode. After map editor internal logic is done ExitEditMode Edit mode to play mode. Before map editor internal logic is done ExitPlayMode Play mode to edit mode. Before map editor internal logic is done Extension Methods Extension.Next<OnMapEditorModeChange_ModeAttribute.Mode>(OnMapEditorModeChange_ModeAttribute.Mode) Extension.Prev<OnMapEditorModeChange_ModeAttribute.Mode>(OnMapEditorModeChange_ModeAttribute.Mode) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum OnMapEditorModeChange_ModeAttribute.Mode Fields Name Description EnterEditMode Play mode to edit mode. After map editor internal logic is done EnterPlayMode Edit mode to play mode. After map editor internal logic is done ExitEditMode Edit mode to play mode. Before map editor internal logic is done ExitPlayMode Play mode to edit mode. Before map editor internal logic is done"
   },
   "api/AngeliA.OnMapEditorModeChange_ModeAttribute.html": {
     "href": "api/AngeliA.OnMapEditorModeChange_ModeAttribute.html",
@@ -1622,7 +1622,7 @@
   "api/AngeliA.OperationMode.html": {
     "href": "api/AngeliA.OperationMode.html",
     "title": "Enum OperationMode | AngeliA",
-    "summary": "Enum OperationMode What type of cells are included for the operation Fields Name Description ColliderAndTrigger ColliderOnly TriggerOnly Extension Methods Extension.Next<OperationMode>(OperationMode) Extension.Prev<OperationMode>(OperationMode) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum OperationMode What type of cells are included for the operation Fields Name Description"
   },
   "api/AngeliA.OrderedAttribute.html": {
     "href": "api/AngeliA.OrderedAttribute.html",
@@ -1662,7 +1662,7 @@
   "api/AngeliA.Pipe-1.html": {
     "href": "api/AngeliA.Pipe-1.html",
     "title": "Class Pipe<T> | AngeliA",
-    "summary": "Class Pipe<T> A linked list that can add/remove from head/tail. No heap pressure. Type Parameters Name Description T Constructors Pipe(int) A linked list that can add/remove from head/tail. No heap pressure. Declaration public Pipe(int capacity = 1024) Properties Capacity Total length of the data Declaration public int Capacity { get; init; } Data Raw data of this pipe Declaration public T[] Data { get; init; } IsFull True if the pipe reached max capacity Declaration public bool IsFull { get; } this[int] Get filled data at index Declaration public T this[int index] { get; set; } Parameters Type Name Description int index Local index from \"Start\" Length Length of the filled data Declaration public int Length { get; } Start Head index of the filled data Declaration public int Start { get; } Methods LinkToHead(T) Add data before head Declaration public bool LinkToHead(T data) Returns Type Description bool True if the data is added LinkToTail(T) Add data after tail Declaration public bool LinkToTail(T data) Returns Type Description bool True if the data is added Reorganize() Move data at head to the first of the internal array Declaration public void Reorganize() Reset() Declaration public void Reset() Sort(IComparer<T>) Declaration public void Sort(IComparer<T> comparer) TryPeekHead(out T) Get data at head without remove the data from pipe Declaration public bool TryPeekHead(out T data) Returns Type Description bool True if length of pipe is not 0 TryPeekTail(out T) Get data at tail without remove the data from pipe Declaration public bool TryPeekTail(out T data) Returns Type Description bool True if length of pipe is not 0 TryPopHead(out T) Get and remove data at head Declaration public bool TryPopHead(out T data) Returns Type Description bool True if pipe is not empty TryPopTail(out T) Get and remove data at tail Declaration public bool TryPopTail(out T data) Returns Type Description bool True if pipe is not empty"
+    "summary": "Class Pipe<T> A linked list that can add/remove from head/tail. No heap pressure. Constructors Pipe(int) A linked list that can add/remove from head/tail. No heap pressure. Declaration public Pipe(int capacity = 1024) Properties Capacity Total length of the data Declaration public int Capacity { get; init; } Data Raw data of this pipe Declaration public T[] Data { get; init; } IsFull True if the pipe reached max capacity Declaration public bool IsFull { get; } this[int] Get filled data at index Declaration public T this[int index] { get; set; } Parameters Type Name Description int index Local index from \"Start\" Length Length of the filled data Declaration public int Length { get; } Start Head index of the filled data Declaration public int Start { get; } Methods LinkToHead(T) Add data before head Declaration public bool LinkToHead(T data) Returns Type Description bool True if the data is added LinkToTail(T) Add data after tail Declaration public bool LinkToTail(T data) Returns Type Description bool True if the data is added Reorganize() Move data at head to the first of the internal array Declaration public void Reorganize() Reset() Declaration public void Reset() Sort(IComparer<T>) Declaration public void Sort(IComparer<T> comparer) TryPeekHead(out T) Get data at head without remove the data from pipe Declaration public bool TryPeekHead(out T data) Returns Type Description bool True if length of pipe is not 0 TryPeekTail(out T) Get data at tail without remove the data from pipe Declaration public bool TryPeekTail(out T data) Returns Type Description bool True if length of pipe is not 0 TryPopHead(out T) Get and remove data at head Declaration public bool TryPopHead(out T data) Returns Type Description bool True if pipe is not empty TryPopTail(out T) Get and remove data at tail Declaration public bool TryPopTail(out T data) Returns Type Description bool True if pipe is not empty"
   },
   "api/AngeliA.Platformer.ActionFurniture.html": {
     "href": "api/AngeliA.Platformer.ActionFurniture.html",
@@ -1792,7 +1792,7 @@
   "api/AngeliA.Platformer.CheckAltar-1.html": {
     "href": "api/AngeliA.Platformer.CheckAltar-1.html",
     "title": "Class CheckAltar<CP> | AngeliA",
-    "summary": "Class CheckAltar<CP> Entity that function as a check point. Can also use to unlock a type of check point. Implements IMapItem ICircuitOperator IBlockEntity Type Parameters Name Description CP Constructors CheckAltar() Declaration public CheckAltar()"
+    "summary": "Class CheckAltar<CP> Entity that function as a check point. Can also use to unlock a type of check point. Implements IMapItem ICircuitOperator IBlockEntity Constructors CheckAltar() Declaration public CheckAltar()"
   },
   "api/AngeliA.Platformer.CheckAltar.html": {
     "href": "api/AngeliA.Platformer.CheckAltar.html",
@@ -1847,7 +1847,7 @@
   "api/AngeliA.Platformer.DonutBlock.BreakMode.html": {
     "href": "api/AngeliA.Platformer.DonutBlock.BreakMode.html",
     "title": "Enum DonutBlock.BreakMode | AngeliA",
-    "summary": "Enum DonutBlock.BreakMode How this entity broke Fields Name Description BreakOnFall Break when start to fall BreakOnTouchGround Break on drop onto ground DoNotBreak Do not auto break Extension Methods Extension.Next<DonutBlock.BreakMode>(DonutBlock.BreakMode) Extension.Prev<DonutBlock.BreakMode>(DonutBlock.BreakMode) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum DonutBlock.BreakMode How this entity broke Fields Name Description BreakOnFall Break when start to fall BreakOnTouchGround Break on drop onto ground DoNotBreak Do not auto break"
   },
   "api/AngeliA.Platformer.DonutBlock.html": {
     "href": "api/AngeliA.Platformer.DonutBlock.html",
@@ -1937,7 +1937,7 @@
   "api/AngeliA.Platformer.HelmetWearingMode.html": {
     "href": "api/AngeliA.Platformer.HelmetWearingMode.html",
     "title": "Enum HelmetWearingMode | AngeliA",
-    "summary": "Enum HelmetWearingMode How an helmet wear on head Fields Name Description Attach Put onto the head Cover Wrapped around the head Extension Methods Extension.Next<HelmetWearingMode>(HelmetWearingMode) Extension.Prev<HelmetWearingMode>(HelmetWearingMode) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum HelmetWearingMode How an helmet wear on head Fields Name Description Attach Put onto the head Cover Wrapped around the head"
   },
   "api/AngeliA.Platformer.IAutoTrackWalker.html": {
     "href": "api/AngeliA.Platformer.IAutoTrackWalker.html",
@@ -1957,7 +1957,7 @@
   "api/AngeliA.Platformer.IUnitable.UniteMode.html": {
     "href": "api/AngeliA.Platformer.IUnitable.UniteMode.html",
     "title": "Enum IUnitable.UniteMode | AngeliA",
-    "summary": "Enum IUnitable.UniteMode Which direction will be connected Fields Name Description EightDirection Left right up down and diagonal FourDirection Left right up and down Horizontal Left and right Vertical Up and down Extension Methods Extension.Next<IUnitable.UniteMode>(IUnitable.UniteMode) Extension.Prev<IUnitable.UniteMode>(IUnitable.UniteMode) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum IUnitable.UniteMode Which direction will be connected Fields Name Description EightDirection Left right up down and diagonal FourDirection Left right up and down Horizontal Left and right Vertical Up and down"
   },
   "api/AngeliA.Platformer.IUnitable.html": {
     "href": "api/AngeliA.Platformer.IUnitable.html",
@@ -2017,7 +2017,7 @@
   "api/AngeliA.Platformer.MiniGame.SpawnBadgeHandler.html": {
     "href": "api/AngeliA.Platformer.MiniGame.SpawnBadgeHandler.html",
     "title": "Delegate MiniGame.SpawnBadgeHandler | AngeliA",
-    "summary": "Delegate MiniGame.SpawnBadgeHandler Parameters Type Name Description int quality"
+    "summary": "Delegate MiniGame.SpawnBadgeHandler"
   },
   "api/AngeliA.Platformer.MiniGame.html": {
     "href": "api/AngeliA.Platformer.MiniGame.html",
@@ -2067,7 +2067,7 @@
   "api/AngeliA.Platformer.NavigationOperateMotion.html": {
     "href": "api/AngeliA.Platformer.NavigationOperateMotion.html",
     "title": "Enum NavigationOperateMotion | AngeliA",
-    "summary": "Enum NavigationOperateMotion Type of navigation motion for a single step Fields Name Description Jump Move None Extension Methods Extension.Next<NavigationOperateMotion>(NavigationOperateMotion) Extension.Prev<NavigationOperateMotion>(NavigationOperateMotion) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum NavigationOperateMotion Type of navigation motion for a single step Fields Name Description"
   },
   "api/AngeliA.Platformer.OnCheckPointTouched_CheckPoint_CharacterAttribute.html": {
     "href": "api/AngeliA.Platformer.OnCheckPointTouched_CheckPoint_CharacterAttribute.html",
@@ -2302,7 +2302,7 @@
   "api/AngeliA.Platformer.RigidbodyNavigationState.html": {
     "href": "api/AngeliA.Platformer.RigidbodyNavigationState.html",
     "title": "Enum RigidbodyNavigationState | AngeliA",
-    "summary": "Enum RigidbodyNavigationState Fields Name Description Fly Idle Operation Extension Methods Extension.Next<RigidbodyNavigationState>(RigidbodyNavigationState) Extension.Prev<RigidbodyNavigationState>(RigidbodyNavigationState) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum RigidbodyNavigationState Fields Name Description"
   },
   "api/AngeliA.Platformer.Shoes-2.html": {
     "href": "api/AngeliA.Platformer.Shoes-2.html",
@@ -2587,7 +2587,7 @@
   "api/AngeliA.ProjectType.html": {
     "href": "api/AngeliA.ProjectType.html",
     "title": "Enum ProjectType | AngeliA",
-    "summary": "Enum ProjectType Fields Name Description Artwork Project with only pixel artwork EngineTheme Project with only pixel artwork for theme of AngeliA Engine Game Project with coded logic, pixel artwork and audio etc... Extension Methods Extension.Next<ProjectType>(ProjectType) Extension.Prev<ProjectType>(ProjectType) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum ProjectType Fields Name Description Artwork Project with only pixel artwork EngineTheme Project with only pixel artwork for theme of AngeliA Engine Game Project with coded logic, pixel artwork and audio etc..."
   },
   "api/AngeliA.PropGroupAttribute.html": {
     "href": "api/AngeliA.PropGroupAttribute.html",
@@ -2647,7 +2647,7 @@
   "api/AngeliA.Rule.html": {
     "href": "api/AngeliA.Rule.html",
     "title": "Enum Rule | AngeliA",
-    "summary": "Enum Rule Single checking rule for auto tiling map blocks Fields Name Description AnyTile True if the target block is not 0 Empty True if the target block is 0 NotSameTile True if the target block is the different with source SameTile True if the target block is the same with source Whatever Always true, do not check Extension Methods Extension.Next<Rule>(Rule) Extension.Prev<Rule>(Rule) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum Rule Single checking rule for auto tiling map blocks Fields Name Description AnyTile True if the target block is not 0 Empty True if the target block is 0 NotSameTile True if the target block is the different with source SameTile True if the target block is the same with source Whatever Always true, do not check"
   },
   "api/AngeliA.Saving-1.html": {
     "href": "api/AngeliA.Saving-1.html",
@@ -2687,7 +2687,7 @@
   "api/AngeliA.SavingLocation.html": {
     "href": "api/AngeliA.SavingLocation.html",
     "title": "Enum SavingLocation | AngeliA",
-    "summary": "Enum SavingLocation Where should the saving data local inside the disk Fields Name Description Global Shared between all saving slot Slot Only for it's own saving slot Extension Methods Extension.Next<SavingLocation>(SavingLocation) Extension.Prev<SavingLocation>(SavingLocation) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum SavingLocation Where should the saving data local inside the disk Fields Name Description Global Shared between all saving slot Slot Only for it's own saving slot"
   },
   "api/AngeliA.SavingString.html": {
     "href": "api/AngeliA.SavingString.html",
@@ -2767,7 +2767,7 @@
   "api/AngeliA.Tag.html": {
     "href": "api/AngeliA.Tag.html",
     "title": "Enum Tag | AngeliA",
-    "summary": "Enum Tag Fields Name Description Climb Can be climb by characters and allow them move horizontaly ClimbStable Can be climb by characters with fixed horizontal position ExplosiveDamage Damage from explosion FireDamage Damage from fire GrabSide Target can be grab from side GrabTop Target can be grab from below HideLimb Target cloth require limb behind not be render IceDamage Damage from ice LightenDamage Damage from electricity LoopStart Target sprite is the start frame of the loop MagicalDamage Damage from magic Mark Used in general perpose NoSlide Target can not be slide as wall None No tag OnewayDown Oneway gate facing downward OnewayLeft Oneway gate facing leftward OnewayRight Oneway gate facing rightward OnewayUp Oneway gate facing upward Palette Target sprite is a palette for pixel editing. PhysicalDamage General type of damage PoisonDamage Damage from poison Random When painting sprite from this group with map editor. It randomly select one sprite from this group and paint. ShowLimb Target cloth require limb behind to be render Slide Target can be slide as wall Slip Target is slippery Unbreackable Target can not be break or pick Water Target is water Extension Methods Extension.Next<Tag>(Tag) Extension.Prev<Tag>(Tag) TagUtil.HasAll(Tag, Tag) TagUtil.HasAny(Tag, Tag) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum Tag Fields Name Description Climb Can be climb by characters and allow them move horizontaly ClimbStable Can be climb by characters with fixed horizontal position ExplosiveDamage Damage from explosion FireDamage Damage from fire GrabSide Target can be grab from side GrabTop Target can be grab from below HideLimb Target cloth require limb behind not be render IceDamage Damage from ice LightenDamage Damage from electricity LoopStart Target sprite is the start frame of the loop MagicalDamage Damage from magic Mark Used in general perpose NoSlide Target can not be slide as wall None No tag OnewayDown Oneway gate facing downward OnewayLeft Oneway gate facing leftward OnewayRight Oneway gate facing rightward OnewayUp Oneway gate facing upward Palette Target sprite is a palette for pixel editing. PhysicalDamage General type of damage PoisonDamage Damage from poison Random When painting sprite from this group with map editor. It randomly select one sprite from this group and paint. ShowLimb Target cloth require limb behind to be render Slide Target can be slide as wall Slip Target is slippery Unbreackable Target can not be break or pick Water Target is water"
   },
   "api/AngeliA.TagUtil.html": {
     "href": "api/AngeliA.TagUtil.html",
@@ -2787,7 +2787,7 @@
   "api/AngeliA.TaskResult.html": {
     "href": "api/AngeliA.TaskResult.html",
     "title": "Enum TaskResult | AngeliA",
-    "summary": "Enum TaskResult Represent result of the task at current frame Fields Name Description Continue The task should keep one End The task should end Extension Methods Extension.Next<TaskResult>(TaskResult) Extension.Prev<TaskResult>(TaskResult) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum TaskResult Represent result of the task at current frame Fields Name Description Continue The task should keep one End The task should end"
   },
   "api/AngeliA.TaskSystem.html": {
     "href": "api/AngeliA.TaskSystem.html",
@@ -2842,7 +2842,7 @@
   "api/AngeliA.Weapon-1.html": {
     "href": "api/AngeliA.Weapon-1.html",
     "title": "Class Weapon<B> | AngeliA",
-    "summary": "Class Weapon<B> A type of handtool that launch a type of bullet when being used Implements IMapItem Type Parameters Name Description B Constructors Weapon() Declaration public Weapon()"
+    "summary": "Class Weapon<B> A type of handtool that launch a type of bullet when being used Implements IMapItem Constructors Weapon() Declaration public Weapon()"
   },
   "api/AngeliA.Weapon.html": {
     "href": "api/AngeliA.Weapon.html",
@@ -2852,7 +2852,7 @@
   "api/AngeliA.WeaponValidDirection.html": {
     "href": "api/AngeliA.WeaponValidDirection.html",
     "title": "Enum WeaponValidDirection | AngeliA",
-    "summary": "Enum WeaponValidDirection Which direction can the weapon attack to Fields Name Description Eight ← → ↑ ↖ ↗ ↓ ↙ ↘ Five ← → ↑ ↖ ↗ Four ← → ↑ ↓ Three ← → ↑ Two ← → Extension Methods Extension.Next<WeaponValidDirection>(WeaponValidDirection) Extension.Prev<WeaponValidDirection>(WeaponValidDirection) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum WeaponValidDirection Which direction can the weapon attack to Fields Name Description Eight ← → ↑ ↖ ↗ ↓ ↙ ↘ Five ← → ↑ ↖ ↗ Four ← → ↑ ↓ Three ← → ↑ Two ← →"
   },
   "api/AngeliA.WindowUI.html": {
     "href": "api/AngeliA.WindowUI.html",
@@ -2887,7 +2887,7 @@
   "api/AngeliA.WrapMode.html": {
     "href": "api/AngeliA.WrapMode.html",
     "title": "Enum WrapMode | AngeliA",
-    "summary": "Enum WrapMode How text wrap when reach edge Fields Name Description NoWrap WordWrap Wrap Extension Methods Extension.Next<WrapMode>(WrapMode) Extension.Prev<WrapMode>(WrapMode) Extension.ForAllFields<T>(object, BindingFlags, bool) Extension.ForAllProperties<T>(object)"
+    "summary": "Enum WrapMode How text wrap when reach edge Fields Name Description"
   },
   "api/AngeliA.html": {
     "href": "api/AngeliA.html",
@@ -2904,6 +2904,11 @@
     "title": "Introduction | AngeliA",
     "summary": "Introduction This page is still under construction... \uD83C\uDFD7️"
   },
+  "docsCN/comply-with-the-license.html": {
+    "href": "docsCN/comply-with-the-license.html",
+    "title": "遵守协议 | AngeliA",
+    "summary": "遵守协议"
+  },
   "docsCN/getting-started.html": {
     "href": "docsCN/getting-started.html",
     "title": "入门 | AngeliA",
@@ -2911,12 +2916,12 @@
   },
   "docsCN/introduction.html": {
     "href": "docsCN/introduction.html",
-    "title": "介绍 | AngeliA",
-    "summary": "介绍 正在编写中... \uD83C\uDFD7️"
+    "title": "简介 | AngeliA",
+    "summary": "简介 欢迎来到 安吉利亚引擎 文档，安吉利亚引擎是一款免费开源的2D游戏引擎， 此项目由楠瓜Moenen独立开发。整个项目均采用MIT许可证，您可以使用此项目做几乎任何事，但必须在您的项目中标注我的名字，详见遵守协议。"
   },
   "index.html": {
     "href": "index.html",
-    "title": "| AngeliA",
-    "summary": "Welcome to the AngeliA Engine document. Download & Setup Download the latest version from the Release section, extract the file and you're ready to go! Community & Support Discord AngeliA Official YouTube Moenen BiliBili 楠瓜Moenen"
+    "title": "AngeliA Engine | AngeliA",
+    "summary": "AngeliA Engine A 2D game engine focused on open-world platformer games, built with C#. Features Seamless Playtesting: The built-in map editor is specifically designed for platformer games, allowing you to playtest while editing the map. The engine supports open-world-style maps without boundaries. Integrated Game Window: Run your game directly within the engine. No need to launch a separate window every time. Built-in Pixel Art Editor: A dedicated pixel art editor designed for creating and managing sprite sheets. Supports importing assets from Aseprite. PC-Only: Currently, the engine and the games it produces are PC only. The implementation is based on Raylib. More platforms will be support in the future. Download & Setup Download the latest version from the Release section, extract the file and you're ready to go! Community & Support Discord AngeliA Official YouTube Moenen BiliBili 楠瓜Moenen Documentation & API Reference Documentation | API Reference Documentations are still under construction... \uD83C\uDFD7️ Screenshots Contributors More features and improvements are coming soon. Stay tuned :)"
   }
 }

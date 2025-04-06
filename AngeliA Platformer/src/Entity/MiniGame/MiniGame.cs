@@ -52,7 +52,7 @@ public abstract class MiniGame : Entity, IActionTarget, IBlockEntity {
 	private static readonly SpriteCode[] DEFAULT_BADGE_CODES = ["MiniGameBadgeEmpty", "MiniGameBadgeIron", "MiniGameBadgeGold",];
 
 	// Api
-	[OnMiniGameGiveBadge_IntQuality] static readonly System.Action<int> OnBadgeSpawn;
+	[OnMiniGameGiveBadge_IntQuality] internal static System.Action<int> OnBadgeSpawn;
 	/// <summary>
 	/// Size of UI window in global space
 	/// </summary>
