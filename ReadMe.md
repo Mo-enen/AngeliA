@@ -2,6 +2,8 @@
 
 A 2D game engine focused on open-world platformer games, built with C#.
 
+<img src="docs/images/MapEditorTest.gif" width="61.8%"/>
+
 ## Features
 
 - **Seamless Playtesting**: The built-in map editor is specifically designed for platformer games, allowing you to playtest while editing the map. The engine supports open-world-style maps without boundaries.
