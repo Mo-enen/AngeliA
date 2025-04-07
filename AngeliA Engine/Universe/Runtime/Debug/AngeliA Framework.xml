@@ -1527,7 +1527,7 @@
         </member>
         <member name="F:AngeliA.CharacterMovement.MovementHeight">
             <summary>
-            Default height of the character
+            Height of the character in global space when character is 160cm
             </summary>
         </member>
         <member name="F:AngeliA.CharacterMovement.WalkAvailable">
@@ -15753,6 +15753,11 @@
         <member name="M:AngeliA.FrameworkUtil.GetGameKeyLabel(AngeliA.Gamekey)">
             <summary>
             Get display name for given game-key.
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetFrameAmortizedValue(System.Int32,System.Int32)">
+            <summary>
+            Used to calculate acceleration with intager. eg. When value is 2000, it means 2 unit every frame. When value is 500, it means 1 unit every 2 frames.
             </summary>
         </member>
         <member name="M:AngeliA.FrameworkUtil.SpawnItemFromMap(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">

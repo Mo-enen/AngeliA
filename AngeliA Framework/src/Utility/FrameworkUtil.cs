@@ -557,6 +557,22 @@ HasOnewayTag(tag) ||
 	public static string GetGameKeyLabel (Gamekey key) => GAMEKEY_UI_CODES[(int)key];
 
 
+	/// <summary>
+	/// Used to calculate acceleration with intager. eg. When value is 2000, it means 2 unit every frame. When value is 500, it means 1 unit every 2 frames.
+	/// </summary>
+	public static int GetFrameAmortizedValue (int value1000, int frame = int.MinValue) {
+		int sub1000 = value1000 % 1000;
+		int sub = 0;
+		if (sub1000 > 0) {
+			frame = frame == int.MinValue ? Game.GlobalFrame : frame;
+			if (frame % (1000 / sub1000) == 0) {
+				sub = 1;
+			}
+		}
+		return value1000 / 1000 + sub;
+	}
+
+
 	// FrameBasedValue Load/Save
 	internal static bool NameAndIntFile_to_List (List<(string name, int value)> list, string path) {
 		if (!Util.FileExists(path)) return false;

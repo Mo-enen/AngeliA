@@ -13,7 +13,7 @@ public enum CharacterMovementState {
 	SwimIdle, SwimMove, SquatIdle, SquatMove,
 	Dash, Rush, Crash, Pound, Climb, Fly, Slide, GrabTop, GrabSide, GrabFlip,
 }
-#pragma warning restore CS1591
+
 
 
 /// <summary>
@@ -34,9 +34,9 @@ public class CharacterMovement (Rigidbody rig) {
 	[PropGroup("Size")]
 	public readonly FrameBasedInt MovementWidth = new(150);
 	/// <summary>
-	/// Default height of the character
+	/// Height of the character in global space when character is 160cm
 	/// </summary>
-	public readonly FrameBasedInt MovementHeight = new(384); // Height when Character is 160cm
+	public readonly FrameBasedInt MovementHeight = new(384);
 
 	/// <summary>
 	/// Allow character to walk
@@ -50,15 +50,15 @@ public class CharacterMovement (Rigidbody rig) {
 	/// <summary>
 	/// Speed acceleration when character is walking
 	/// </summary>
-	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkAcceleration = new(3);
+	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkAcceleration = new(3000);
 	/// <summary>
 	/// Speed acceleration when character is trying to walk to the opposite direction
 	/// </summary>
-	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkBrakeAcceleration = new(30);
+	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkBrakeAcceleration = new(30000);
 	/// <summary>
 	/// Speed deceleration when character is walking
 	/// </summary>
-	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkDeceleration = new(4);
+	[PropVisibility(nameof(WalkAvailable))] public readonly FrameBasedInt WalkDeceleration = new(4000);
 
 	/// <summary>
 	/// Allow character to run
@@ -72,15 +72,15 @@ public class CharacterMovement (Rigidbody rig) {
 	/// <summary>
 	/// Speed acceleration when character is running
 	/// </summary>
-	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunAcceleration = new(3);
+	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunAcceleration = new(3000);
 	/// <summary>
 	/// Speed acceleration when character is trying to run to the opposite direction
 	/// </summary>
-	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunBrakeAcceleration = new(30);
+	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunBrakeAcceleration = new(30000);
 	/// <summary>
 	/// Speed deceleration when character is running
 	/// </summary>
-	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunDeceleration = new(4);
+	[PropVisibility(nameof(RunAvailable))] public readonly FrameBasedInt RunDeceleration = new(4000);
 
 	/// <summary>
 	/// How many times can the character jump without touching ground
@@ -144,11 +144,11 @@ public class CharacterMovement (Rigidbody rig) {
 	/// <summary>
 	/// Movement acceleration when squat moving
 	/// </summary>
-	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatAcceleration = new(48);
+	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatAcceleration = new(48000);
 	/// <summary>
 	/// Movement deceleration when squat moving
 	/// </summary>
-	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatDeceleration = new(48);
+	[PropVisibility(nameof(SquatAvailable))] public readonly FrameBasedInt SquatDeceleration = new(48000);
 
 	/// <summary>
 	/// Allow character to dash (player hold down button and press jump button for once)
@@ -182,7 +182,7 @@ public class CharacterMovement (Rigidbody rig) {
 	/// <summary>
 	/// Speed acceleration when dashing
 	/// </summary>
-	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashAcceleration = new(24);
+	[PropVisibility(nameof(DashAvailable))] public readonly FrameBasedInt DashAcceleration = new(24000);
 	/// <summary>
 	/// Speed multiply this rate when dash being cancel (0 means 0%, 1000 means 100%)
 	/// </summary>
@@ -240,11 +240,11 @@ public class CharacterMovement (Rigidbody rig) {
 	/// <summary>
 	/// Speed acceleration when rushing
 	/// </summary>
-	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushAcceleration = new(12);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushAcceleration = new(12000);
 	/// <summary>
 	/// Speed deceleration when rushing
 	/// </summary>
-	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushDeceleration = new(4);
+	[PropVisibility(nameof(RushAvailable))] public readonly FrameBasedInt RushDeceleration = new(4000);
 
 	/// <summary>
 	/// Allow character slip when run on slippery ground
@@ -254,11 +254,11 @@ public class CharacterMovement (Rigidbody rig) {
 	/// <summary>
 	/// Speed acceleration when moving on slippery ground
 	/// </summary>
-	[PropVisibility(nameof(SlipAvailable))] public readonly FrameBasedInt SlipAcceleration = new(2);
+	[PropVisibility(nameof(SlipAvailable))] public readonly FrameBasedInt SlipAcceleration = new(2000);
 	/// <summary>
 	/// Speed deceleration when moving on slippery ground
 	/// </summary>
-	[PropVisibility(nameof(SlipAvailable))] public readonly FrameBasedInt SlipDeceleration = new(1);
+	[PropVisibility(nameof(SlipAvailable))] public readonly FrameBasedInt SlipDeceleration = new(1000);
 
 	/// <summary>
 	/// Allow character ground pound in air (player press down button in air)
@@ -302,11 +302,11 @@ public class CharacterMovement (Rigidbody rig) {
 	/// <summary>
 	/// Speed acceleration when chracter inside water
 	/// </summary>
-	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimAcceleration = new(4);
+	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimAcceleration = new(4000);
 	/// <summary>
 	/// Speed deceleration when chracter inside water
 	/// </summary>
-	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimDeceleration = new(4);
+	[PropVisibility(nameof(SwimAvailable))] public readonly FrameBasedInt SwimDeceleration = new(4000);
 
 	/// <summary>
 	/// Allow character to climb
@@ -366,11 +366,11 @@ public class CharacterMovement (Rigidbody rig) {
 	/// <summary>
 	/// Speed acceleration when flying
 	/// </summary>
-	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyAcceleration = new(2);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyAcceleration = new(2000);
 	/// <summary>
 	/// Speed deceleration when flying
 	/// </summary>
-	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyDeceleration = new(1);
+	[PropVisibility(nameof(FlyAvailable))] public readonly FrameBasedInt FlyDeceleration = new(1000);
 
 	/// <summary>
 	/// Allow character to slide on wall
@@ -460,7 +460,7 @@ public class CharacterMovement (Rigidbody rig) {
 	/// <summary>
 	/// Speed deceleration when character crashing
 	/// </summary>
-	[PropVisibility(nameof(CrashAvailable))] public readonly FrameBasedInt CrashDeceleration = new(1);
+	[PropVisibility(nameof(CrashAvailable))] public readonly FrameBasedInt CrashDeceleration = new(1000);
 
 	/// <summary>
 	/// Allow character push other rigidbody
@@ -496,9 +496,9 @@ public class CharacterMovement (Rigidbody rig) {
 	private const int JUMP_BOOST_TOLERANCE = 12;
 
 	// Api
-	
+
 	public readonly Rigidbody Target = rig;
-	
+
 	public readonly Character TargetCharacter = rig as Character;
 	/// <summary>
 	/// Direction for last movement
@@ -545,7 +545,7 @@ public class CharacterMovement (Rigidbody rig) {
 	/// <summary>
 	/// Last frame when character start to move
 	/// </summary>
-	public int LastStartMoveFrame { get; private set; } = int.MinValue;
+	public int LastStartMoveFrame { get; private set; } = -1;
 	/// <summary>
 	/// Last frame when character moving ends
 	/// </summary>
@@ -708,7 +708,6 @@ public class CharacterMovement (Rigidbody rig) {
 	protected bool InWater => Target.InWater;
 	protected bool IsGrounded => Target.IsGrounded;
 	protected int CollisionMask => Target.CollisionMask;
-#pragma warning restore CS1591
 
 	// Data
 	private static readonly Dictionary<int, List<(string name, int value)>> ConfigPool = [];
@@ -775,7 +774,6 @@ public class CharacterMovement (Rigidbody rig) {
 		}
 
 	}
-
 
 
 	public virtual void OnActivated () {
@@ -846,7 +844,6 @@ public class CharacterMovement (Rigidbody rig) {
 			LastStartRunFrame = int.MinValue;
 		}
 	}
-#pragma warning restore CS1591
 
 
 	private void Update_Cache () {
@@ -1408,7 +1405,12 @@ public class CharacterMovement (Rigidbody rig) {
 		}
 
 		// Final
-		VelocityX = VelocityX.MoveTowards(speed, acc, dcc);
+		int localFrame = Game.GlobalFrame - LastStartMoveFrame;
+		VelocityX = VelocityX.MoveTowards(
+			speed,
+			FrameworkUtil.GetFrameAmortizedValue(acc, localFrame),
+			FrameworkUtil.GetFrameAmortizedValue(dcc, localFrame)
+		);
 	}
 
 
@@ -1424,7 +1426,9 @@ public class CharacterMovement (Rigidbody rig) {
 			case CharacterMovementState.SwimMove:
 				if (IntendedY != 0) {
 					VelocityY = VelocityY.MoveTowards(
-						IntendedY * SwimSpeed, SwimAcceleration, SwimDeceleration
+						IntendedY * SwimSpeed,
+						FrameworkUtil.GetFrameAmortizedValue(SwimAcceleration),
+						FrameworkUtil.GetFrameAmortizedValue(SwimDeceleration)
 					);
 					ignoreGravity = true;
 				}
@@ -1697,7 +1701,7 @@ public class CharacterMovement (Rigidbody rig) {
 
 
 	// Move
-	
+
 	protected void MoveLogic (int x, int y, bool walk = false) {
 		if (IntendedX != 0 && x == 0) LastEndMoveFrame = Game.GlobalFrame;
 		if (IntendedX == 0 && x != 0) {

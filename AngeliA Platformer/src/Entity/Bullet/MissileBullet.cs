@@ -35,7 +35,7 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 	/// <summary>
 	/// Speed acceleration
 	/// </summary>
-	protected virtual int MissileAcceleration => 2;
+	protected virtual int MissileAcceleration => 2000;
 	/// <summary>
 	/// True if this bullet get destroy when something else deal damage to it
 	/// </summary>
@@ -171,10 +171,11 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 		if (MissileTarget != null) {
 			if (TargetHitFrame < 0) {
 				// Change Velocity
+				var acc = FrameworkUtil.GetFrameAmortizedValue(MissileAcceleration);
 				var targetVel = GetTargetVelocity(MissileTarget, this, MissileFlyingSpeed);
 				CurrentVelocity = new(
-					CurrentVelocity.x.MoveTowards(targetVel.x, MissileAcceleration),
-					CurrentVelocity.y.MoveTowards(targetVel.y, MissileAcceleration)
+					CurrentVelocity.x.MoveTowards(targetVel.x, acc),
+					CurrentVelocity.y.MoveTowards(targetVel.y, acc)
 				);
 			} else {
 				// After Hit Target
@@ -191,8 +192,9 @@ public abstract class MissileBullet : Bullet, IDamageReceiver {
 				vel.x = wMov.CurrentMovement.FacingRight ? 1 : -1;
 			}
 			int targetVelX = CurrentVelocity.x.Sign() * MissileFlyingSpeed;
-			vel.x = CurrentVelocity.x.MoveTowards(targetVelX, MissileAcceleration);
-			vel.y = CurrentVelocity.y.MoveTowards(0, MissileAcceleration);
+			var acc = FrameworkUtil.GetFrameAmortizedValue(MissileAcceleration);
+			vel.x = CurrentVelocity.x.MoveTowards(targetVelX, acc);
+			vel.y = CurrentVelocity.y.MoveTowards(0, acc);
 			CurrentVelocity = vel;
 		}
 		// Perform Move
