@@ -715,7 +715,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		Body.Rotation = Body.Rotation.Clamp(-90, 90);
 		if (Body.Rotation != 0) {
 			int rawX = (-Body.Rotation.Sign() * Ease.OutSine(Body.Rotation.Abs() / 90f) * Body.Width.Abs() / 2f).RoundToInt();
-			int rawY = (-Ease.OutQuint(Body.Rotation.Abs() / 90f) * Body.Width.Abs() / 2f).RoundToInt();
+			int rawY = (-Ease.OutQuint(Body.Rotation.Abs() / 90f) * Body.Width.Abs() / 4f).RoundToInt();
 			Body.X += rawX;
 			Body.Y += rawY;
 			Body.GlobalX += rawX;

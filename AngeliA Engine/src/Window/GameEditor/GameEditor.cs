@@ -323,108 +323,80 @@ internal partial class GameEditor : WindowUI {
 		int padding = Unify(8);
 		int iconPadding = Unify(16);
 		int panelPadding = Unify(24);
-		int btnDownShift = Unify(-6);
 		var panelRect = WindowRect.CornerInside(
 			Alignment.TopMid,
 			(btnSize + padding) * 12 + btnSize * 2,
 			btnSize + panelPadding * 2
 		).Shrink(panelPadding);
 		var rect = panelRect.EdgeInsideSquareLeft();
+		var iconRect = rect;
 
 		// BG
-		Renderer.DrawPixel(panelRect.Expand(panelPadding/2), Color32.BLACK_32);
+		Renderer.DrawPixel(panelRect.Expand(panelPadding / 2), Color32.BLACK_32);
 
 		// Key Press UI
 		using (new GUIContentColorScope(Color32.GREY_32)) {
 
 			// Up
-			if (Input.GameKeyHolding(Gamekey.Up)) {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect.Shift(0, btnDownShift), Color32.GREY_160);
-				GUI.Icon(rect.Shrink(iconPadding).Shift(0, btnDownShift), BuiltInSprite.ICON_TRIANGLE_UP);
-			} else {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect);
-				GUI.Icon(rect.Shrink(iconPadding), BuiltInSprite.ICON_TRIANGLE_UP);
-			}
+			iconRect = DrawButton(rect, Input.GameKeyHolding(Gamekey.Up));
+			GUI.Icon(iconRect.Shrink(iconPadding), BuiltInSprite.ICON_TRIANGLE_UP);
 			rect.SlideRight(padding);
 
 			// Down
-			if (Input.GameKeyHolding(Gamekey.Down)) {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect.Shift(0, btnDownShift), Color32.GREY_160);
-				GUI.Icon(rect.Shrink(iconPadding).Shift(0, btnDownShift), BuiltInSprite.ICON_TRIANGLE_DOWN);
-			} else {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect);
-				GUI.Icon(rect.Shrink(iconPadding), BuiltInSprite.ICON_TRIANGLE_DOWN);
-			}
+			iconRect = DrawButton(rect, Input.GameKeyHolding(Gamekey.Down));
+			GUI.Icon(iconRect.Shrink(iconPadding), BuiltInSprite.ICON_TRIANGLE_DOWN);
 			rect.SlideRight(padding);
 
 			// Left
-			if (Input.GameKeyHolding(Gamekey.Left)) {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect.Shift(0, btnDownShift), Color32.GREY_160);
-				GUI.Icon(rect.Shrink(iconPadding).Shift(0, btnDownShift), BuiltInSprite.ICON_TRIANGLE_LEFT);
-			} else {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect);
-				GUI.Icon(rect.Shrink(iconPadding), BuiltInSprite.ICON_TRIANGLE_LEFT);
-			}
+			iconRect = DrawButton(rect, Input.GameKeyHolding(Gamekey.Left));
+			GUI.Icon(iconRect.Shrink(iconPadding), BuiltInSprite.ICON_TRIANGLE_LEFT);
 			rect.SlideRight(padding);
 
 			// Right
-			if (Input.GameKeyHolding(Gamekey.Right)) {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect.Shift(0, btnDownShift), Color32.GREY_160);
-				GUI.Icon(rect.Shrink(iconPadding).Shift(0, btnDownShift), BuiltInSprite.ICON_TRIANGLE_RIGHT);
-			} else {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect);
-				GUI.Icon(rect.Shrink(iconPadding), BuiltInSprite.ICON_TRIANGLE_RIGHT);
-			}
+			iconRect = DrawButton(rect, Input.GameKeyHolding(Gamekey.Right));
+			GUI.Icon(iconRect.Shrink(iconPadding), BuiltInSprite.ICON_TRIANGLE_RIGHT);
 			rect.SlideRight(padding);
 			rect.SlideRight(padding);
 
 			// Select
-			if (Input.GameKeyHolding(Gamekey.Select)) {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect.Shift(0, btnDownShift), Color32.GREY_160);
-				GUI.Label(rect.Shift(0, btnDownShift), FrameworkUtil.GetGameKeyLabel(Gamekey.Select), Skin.SmallCenterLabel);
-			} else {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect);
-				GUI.Label(rect, FrameworkUtil.GetGameKeyLabel(Gamekey.Select), Skin.SmallCenterLabel);
-			}
+			iconRect = DrawButton(rect, Input.GameKeyHolding(Gamekey.Select));
+			GUI.Label(iconRect, FrameworkUtil.GetGameKeyLabel(Gamekey.Select), Skin.SmallCenterLabel);
 			rect.SlideRight(padding);
 			rect.SlideRight(padding);
 
 			// Action
-			if (Input.GameKeyHolding(Gamekey.Action)) {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect.Shift(0, btnDownShift), Color32.GREY_160);
-				GUI.Label(rect.Shift(0, btnDownShift), FrameworkUtil.GetGameKeyLabel(Gamekey.Action), Skin.SmallCenterLabel);
-			} else {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect);
-				GUI.Label(rect, FrameworkUtil.GetGameKeyLabel(Gamekey.Action), Skin.SmallCenterLabel);
-			}
+			iconRect = DrawButton(rect, Input.GameKeyHolding(Gamekey.Action));
+			GUI.Label(iconRect, FrameworkUtil.GetGameKeyLabel(Gamekey.Action), Skin.SmallCenterLabel);
 			rect.SlideRight(padding);
 
 			// Jump
-			if (Input.GameKeyHolding(Gamekey.Jump)) {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect.Shift(0, btnDownShift), Color32.GREY_160);
-				GUI.Label(rect.Shift(0, btnDownShift), FrameworkUtil.GetGameKeyLabel(Gamekey.Jump), Skin.SmallCenterLabel);
-			} else {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect);
-				GUI.Label(rect, FrameworkUtil.GetGameKeyLabel(Gamekey.Jump), Skin.SmallCenterLabel);
-			}
+			iconRect = DrawButton(rect, Input.GameKeyHolding(Gamekey.Jump));
+			GUI.Label(iconRect, FrameworkUtil.GetGameKeyLabel(Gamekey.Jump), Skin.SmallCenterLabel);
 			rect.SlideRight(padding);
 			rect.SlideRight(padding);
 
 			// Next Frame
-			if (EngineSetting.Hotkey_FrameDebug_Next.Value.Holding()) {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect.Shift(0, btnDownShift), Color32.ORANGE_DARK);
-				GUI.Label(rect.Shift(0, btnDownShift), TIP_NEXT_FRAME, Skin.SmallCenterLabel);
-			} else {
-				Renderer.Draw(BuiltInSprite.HINT_BUTTON, rect);
-				GUI.Label(rect, TIP_NEXT_FRAME, Skin.SmallCenterLabel);
-			}
+			rect.width *= 2;
+			iconRect = DrawButton(rect, EngineSetting.Hotkey_FrameDebug_Next.Value.Holding());
+			GUI.Label(iconRect, TIP_NEXT_FRAME, Skin.SmallCenterLabel);
 			rect.SlideRight(padding);
+			rect.width /= 2;
 		}
 
 		// Frame Count UI
 		rect.x += padding * 2;
 		GUI.ShadowLabel(rect, FrameCountToChars.GetChars(RiggedGameGlobalFrame));
 
+		static IRect DrawButton (IRect rect, bool press) {
+			int border = Unify(6);
+			var color = Color32.WHITE;
+			if (press) {
+				rect = rect.Shift(0, -Unify(6));
+				color = Color32.GREY_160;
+			}
+			Renderer.DrawSlice(BuiltInSprite.HINT_BUTTON, rect, border, border, border, border, color);
+			return rect;
+		}
 	}
 
 

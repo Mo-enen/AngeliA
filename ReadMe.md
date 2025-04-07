@@ -2,7 +2,7 @@
 
 A 2D game engine focused on open-world platformer games, built with C#.
 
-<img src="docs/images/MapEditorTest.gif" width="61.8%"/>
+<img src="docs/images/MapEditorTest.gif" width="61.8%"/><img src="docs/images/FrameDebugTest.gif" width="61.8%"/>
 
 ## Features
 
