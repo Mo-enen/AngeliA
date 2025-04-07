@@ -91,9 +91,9 @@ public static class MarioUtil {
 
 		mov.RunAvailable.BaseValue = true;
 		mov.RunSpeed.BaseValue = 48;
-		mov.RunAcceleration.BaseValue = 1;
-		mov.RunDeceleration.BaseValue = 2;
-		mov.RunBrakeAcceleration.BaseValue = 3;
+		mov.RunAcceleration.BaseValue = 1000;
+		mov.RunDeceleration.BaseValue = 2000;
+		mov.RunBrakeAcceleration.BaseValue = 3000;
 
 		mov.JumpCount.BaseValue = 1;
 		mov.JumpSpeed.BaseValue = 80;
@@ -105,12 +105,12 @@ public static class MarioUtil {
 		mov.SquatAvailable.BaseValue = true;
 		mov.SquatHeightAmount.BaseValue = 521;
 		mov.SquatMoveSpeed.BaseValue = 0;
-		mov.SquatAcceleration.BaseValue = 1;
-		mov.SquatDeceleration.BaseValue = 1;
+		mov.SquatAcceleration.BaseValue = 1000;
+		mov.SquatDeceleration.BaseValue = 1000;
 
 		mov.SlipAvailable.BaseValue = true;
-		mov.SlipAcceleration.BaseValue = 1;
-		mov.SlipAcceleration.BaseValue = 1;
+		mov.SlipAcceleration.BaseValue = 1000;
+		mov.SlipAcceleration.BaseValue = 1000;
 
 		mov.SwimAvailable.BaseValue = true;
 		mov.InWaterSpeedRate.BaseValue = 500;
@@ -118,8 +118,8 @@ public static class MarioUtil {
 		mov.SwimHeightAmount.BaseValue = 1000;
 		mov.SwimSpeed.BaseValue = 42;
 		mov.SwimJumpSpeed.BaseValue = 128;
-		mov.SwimAcceleration.BaseValue = 2;
-		mov.SwimDeceleration.BaseValue = 2;
+		mov.SwimAcceleration.BaseValue = 2000;
+		mov.SwimDeceleration.BaseValue = 2000;
 
 		mov.ClimbAvailable.BaseValue = true;
 		mov.AllowJumpWhenClimbing.BaseValue = true;
@@ -128,8 +128,8 @@ public static class MarioUtil {
 
 		mov.WalkAvailable.BaseValue = true;
 		mov.WalkSpeed.BaseValue = 20;
-		mov.WalkAcceleration.BaseValue = 3;
-		mov.WalkDeceleration.BaseValue = 4;
+		mov.WalkAcceleration.BaseValue = 3000;
+		mov.WalkDeceleration.BaseValue = 4000;
 
 		mov.DashAvailable.BaseValue = false;
 		mov.RushAvailable.BaseValue = false;
