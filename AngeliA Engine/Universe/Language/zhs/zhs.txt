@@ -1,4 +1,5 @@
-﻿AtlasType.Background:背景
+﻿UI.EngineSetting.ShowKeyPressWhenFrameDebugging:在逐帧测试时显示按键界面
+AtlasType.Background:背景
 AtlasType.General:通用
 AtlasType.Level:关卡
 ConsoleWindow:终 端

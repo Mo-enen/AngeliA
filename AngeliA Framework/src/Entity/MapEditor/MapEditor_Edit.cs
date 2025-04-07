@@ -155,10 +155,20 @@ public partial class MapEditor {
 
 	// Mouse Event
 	private void MouseDragBegin () {
-		if (MouseDownInSelection && MouseDownButton == 0 && !Pasting) {
-			StartPaste(true);
+		if (MouseDownInSelection && MouseDownButton == 0) {
+			if (!Pasting) {
+				// Start Drag
+				StartPaste(!CtrlHolding);
+			} else {
+				// Drag Again
+				if (CtrlHolding) {
+					SettlePaste(ignoreUndoStep: false);
+				}
+			}
 		}
-		if (SelectionUnitRect.HasValue) DragBeginSelectionUnitRect = SelectionUnitRect.Value;
+		if (SelectionUnitRect.HasValue) {
+			DragBeginSelectionUnitRect = SelectionUnitRect.Value;
+		}
 	}
 
 
@@ -373,6 +383,21 @@ public partial class MapEditor {
 		SetDirty();
 		SelectionUnitRect = null;
 		PastingBuffer.Clear();
+	}
+
+
+	private void SettlePaste (bool ignoreUndoStep = false) {
+		if (!Pasting) return;
+		if (!SelectionUnitRect.HasValue || PastingBuffer.Count <= 0) return;
+		var unitRect = SelectionUnitRect.Value;
+		int z = CurrentZ;
+		foreach (var buffer in PastingBuffer) {
+			int unitX = buffer.LocalUnitX + unitRect.x;
+			int unitY = buffer.LocalUnitY + unitRect.y;
+			UserSetBlock(unitX, unitY, buffer.Type, buffer.ID, ignoreStep: ignoreUndoStep, ignoreEmbedAsElement: true);
+		}
+		FrameworkUtil.RedirectForRule(Stream, unitRect, z);
+		SetDirty();
 	}
 
 

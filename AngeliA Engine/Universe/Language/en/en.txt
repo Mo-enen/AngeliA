@@ -1,4 +1,5 @@
-﻿AtlasType.Background:Background
+﻿UI.EngineSetting.ShowKeyPressWhenFrameDebugging:Show Key Press UI when Frame Debugging
+AtlasType.Background:Background
 AtlasType.General:General
 AtlasType.Level:Level
 ConsoleWindow:Console

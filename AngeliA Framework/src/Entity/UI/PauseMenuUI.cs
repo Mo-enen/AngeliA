@@ -51,16 +51,7 @@ internal class PauseMenuUI : MenuUI {
 	private static readonly LanguageCode UI_RESTART_REGENERATE = ("UI.RestartAndRegenerateMap", "Restart and Regenerate Map");
 	private static readonly LanguageCode UI_RESET_SAVING = ("UI.ResetSaving", "Reset Game Saving");
 	private static readonly LanguageCode NOTI_SAVING_RESETED = ("Notify.SavingReseted", "Saving Reseted");
-	private static readonly LanguageCode[] GAMEKEY_UI_CODES = [
-		($"UI.GameKey.{Gamekey.Left}", "Left"),
-		($"UI.GameKey.{Gamekey.Right}", "Right"),
-		($"UI.GameKey.{Gamekey.Down}", "Down"),
-		($"UI.GameKey.{Gamekey.Up}", "Up"),
-		($"UI.GameKey.{Gamekey.Action}", "Action"),
-		($"UI.GameKey.{Gamekey.Jump}", "Jump"),
-		($"UI.GameKey.{Gamekey.Start}", "Start"),
-		($"UI.GameKey.{Gamekey.Select}", "Select"),
-	];
+
 
 	// Data
 	private static PauseMenuUI Instance = null;
@@ -492,8 +483,7 @@ internal class PauseMenuUI : MenuUI {
 		Message = forGamepad ? MENU_KEYSETTER_GAMEPAD_MESSAGE : MENU_KEYSETTER_KEYBOARD_MESSAGE;
 
 		// All Game Keys
-		for (int i = 0; i < GAMEKEY_UI_CODES.Length; i++) {
-			int code = GAMEKEY_UI_CODES[i].ID;
+		for (int i = 0; i < 8; i++) {
 			int iconID = 0;
 			Color32 tint = Color32.WHITE;
 			string text;
@@ -507,7 +497,7 @@ internal class PauseMenuUI : MenuUI {
 				text = MENU_SETTER_RECORD;
 			}
 			using (new GUIContentColorScope(tint)) {
-				if (DrawItem(Language.Get(code), text, iconID)) {
+				if (DrawItem(FrameworkUtil.GetGameKeyLabel((Gamekey)i), text, iconID)) {
 					RecordLock = true;
 					RecordingKey = i;
 				}
@@ -524,10 +514,7 @@ internal class PauseMenuUI : MenuUI {
 		}
 
 		// Back
-		if (
-			DrawItem(BuiltInText.UI_BACK) ||
-			(RecordingKey < 0 && Input.GameKeyUp(Gamekey.Jump))
-		) {
+		if (DrawItem(BuiltInText.UI_BACK) || (RecordingKey < 0 && Input.GameKeyUp(Gamekey.Jump))) {
 			if (RecordDirty) {
 				// Confirm
 				KeySetterConfirming = true;

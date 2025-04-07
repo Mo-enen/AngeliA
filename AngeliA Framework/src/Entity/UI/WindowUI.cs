@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AngeliA;
 
+/// <summary>
+/// Entity UI that represent a window
+/// </summary>
 [EntityAttribute.DontDestroyOnZChanged]
 [EntityAttribute.Capacity(1, 0)]
 public abstract class WindowUI : EntityUI, IWindowEntityUI {
@@ -18,7 +21,7 @@ public abstract class WindowUI : EntityUI, IWindowEntityUI {
 	/// </summary>
 	public virtual string DefaultWindowName => "";
 	/// <summary>
-	/// Rect position for the root boundary
+	/// Rect position for the root boundary in global space
 	/// </summary>
 	public static IRect WindowRect { get; private set; }
 	/// <summary>

@@ -89,6 +89,7 @@ public class RigRespondMessage {
 	public const int REQUIRE_CHAR_MAX_COUNT = 64;
 
 	// Pipe
+	public int GlobalFrame;
 	public int ViewX;
 	public int ViewY;
 	public int ViewZ;
@@ -175,6 +176,7 @@ public class RigRespondMessage {
 
 
 	public void Reset (bool clearLastRendering = false) {
+		GlobalFrame = Game.GlobalFrame;
 		RequireSetCursorIndex = int.MinValue;
 		HasEffectParams = 0;
 		RequirePlayMusicID = 0;
@@ -444,6 +446,7 @@ public class RigRespondMessage {
 
 			byte* end = pointer + Const.RIG_BUFFER_SIZE - 2;
 
+			GlobalFrame = Util.ReadInt(ref pointer, end);
 			ViewX = Util.ReadInt(ref pointer, end);
 			ViewY = Util.ReadInt(ref pointer, end);
 			ViewZ = Util.ReadInt(ref pointer, end);
@@ -678,6 +681,7 @@ public class RigRespondMessage {
 
 			byte* end = pointer + Const.RIG_BUFFER_SIZE - 2;
 
+			Util.Write(ref pointer, GlobalFrame, end);
 			Util.Write(ref pointer, ViewX, end);
 			Util.Write(ref pointer, ViewY, end);
 			Util.Write(ref pointer, ViewZ, end);

@@ -41,7 +41,16 @@ public static partial class FrameworkUtil {
 		{ GamepadKey.LeftShoulder, BuiltInSprite.GAMEPAD_LEFT_SHOULDER},
 		{ GamepadKey.RightShoulder, BuiltInSprite.GAMEPAD_RIGHT_SHOULDER},
 	};
-
+	private static readonly LanguageCode[] GAMEKEY_UI_CODES = [
+		($"UI.GameKey.{Gamekey.Left}", "Left"),
+		($"UI.GameKey.{Gamekey.Right}", "Right"),
+		($"UI.GameKey.{Gamekey.Down}", "Down"),
+		($"UI.GameKey.{Gamekey.Up}", "Up"),
+		($"UI.GameKey.{Gamekey.Action}", "Action"),
+		($"UI.GameKey.{Gamekey.Jump}", "Jump"),
+		($"UI.GameKey.{Gamekey.Start}", "Start"),
+		($"UI.GameKey.{Gamekey.Select}", "Select"),
+	];
 
 	// API
 	/// <summary>
@@ -541,6 +550,11 @@ HasOnewayTag(tag) ||
 		if (id == 0) return;
 		wBuff.CurrentBuff.GiveBuff(id, duration);
 	}
+
+	/// <summary>
+	/// Get display name for given game-key.
+	/// </summary>
+	public static string GetGameKeyLabel (Gamekey key) => GAMEKEY_UI_CODES[(int)key];
 
 
 	// FrameBasedValue Load/Save

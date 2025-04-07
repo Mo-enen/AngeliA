@@ -1066,9 +1066,29 @@ public static class Extension {
 		//);
 	}
 
+	/// <summary>
+	/// Move the rect left by it's width.
+	/// </summary>
+	/// <param name="rect"></param>
+	/// <param name="padding">Extra distance to move</param>
 	[MethodImpl(INLINE)] public static void SlideLeft (ref this IRect rect, int padding = 0) => rect.x -= rect.width + padding;
+	/// <summary>
+	/// Move the rect right by it's width.
+	/// </summary>
+	/// <param name="rect"></param>
+	/// <param name="padding">Extra distance to move</param>
 	[MethodImpl(INLINE)] public static void SlideRight (ref this IRect rect, int padding = 0) => rect.x += rect.width + padding;
+	/// <summary>
+	/// Move the rect down by it's height.
+	/// </summary>
+	/// <param name="rect"></param>
+	/// <param name="padding">Extra distance to move</param>
 	[MethodImpl(INLINE)] public static void SlideDown (ref this IRect rect, int padding = 0) => rect.y -= rect.height + padding;
+	/// <summary>
+	/// Move the rect up by it's height.
+	/// </summary>
+	/// <param name="rect"></param>
+	/// <param name="padding">Extra distance to move</param>
 	[MethodImpl(INLINE)] public static void SlideUp (ref this IRect rect, int padding = 0) => rect.y += rect.height + padding;
 
 	[MethodImpl(INLINE)]

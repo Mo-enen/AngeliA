@@ -3135,6 +3135,34 @@
             True if mouse currently inside the given rectangle
             </summary>
         </member>
+        <member name="M:AngeliA.Extension.SlideLeft(AngeliA.IRect@,System.Int32)">
+            <summary>
+            Move the rect left by it's width.
+            </summary>
+            <param name="rect"></param>
+            <param name="padding">Extra distance to move</param>
+        </member>
+        <member name="M:AngeliA.Extension.SlideRight(AngeliA.IRect@,System.Int32)">
+            <summary>
+            Move the rect right by it's width.
+            </summary>
+            <param name="rect"></param>
+            <param name="padding">Extra distance to move</param>
+        </member>
+        <member name="M:AngeliA.Extension.SlideDown(AngeliA.IRect@,System.Int32)">
+            <summary>
+            Move the rect down by it's height.
+            </summary>
+            <param name="rect"></param>
+            <param name="padding">Extra distance to move</param>
+        </member>
+        <member name="M:AngeliA.Extension.SlideUp(AngeliA.IRect@,System.Int32)">
+            <summary>
+            Move the rect up by it's height.
+            </summary>
+            <param name="rect"></param>
+            <param name="padding">Extra distance to move</param>
+        </member>
         <member name="T:AngeliA.FrameBasedValue">
             <summary>
             A data that can be override for specified frames
@@ -9864,6 +9892,11 @@
             Close the quick menu UI if it's opening
             </summary>
         </member>
+        <member name="T:AngeliA.WindowUI">
+            <summary>
+            Entity UI that represent a window
+            </summary>
+        </member>
         <member name="P:AngeliA.WindowUI.BackgroundRect">
             <summary>
             Rect position of the background part in global space
@@ -9876,7 +9909,7 @@
         </member>
         <member name="P:AngeliA.WindowUI.WindowRect">
             <summary>
-            Rect position for the root boundary
+            Rect position for the root boundary in global space
             </summary>
         </member>
         <member name="P:AngeliA.WindowUI.IsDirty">
@@ -15715,6 +15748,11 @@
         <member name="M:AngeliA.FrameworkUtil.GiveBuffFromMap(AngeliA.IWithCharacterBuff,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             Try get buff from map element at given unit position
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetGameKeyLabel(AngeliA.Gamekey)">
+            <summary>
+            Get display name for given game-key.
             </summary>
         </member>
         <member name="M:AngeliA.FrameworkUtil.SpawnItemFromMap(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">

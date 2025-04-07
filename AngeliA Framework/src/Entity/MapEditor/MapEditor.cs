@@ -607,7 +607,7 @@ public sealed partial class MapEditor : WindowUI {
 		var delta = Int2.Zero;
 		if (
 			(!Input.MouseMidButtonDown && Input.MouseMidButtonHolding) ||
-			(Input.MouseLeftButtonHolding && CtrlHolding)
+			(Input.MouseRightButtonHolding && CtrlHolding && !AltHolding)
 		) {
 			delta = Input.MouseScreenPositionDelta;
 		} else if (!CtrlHolding && !ShiftHolding && !Input.AnyMouseButtonHolding) {
@@ -626,7 +626,7 @@ public sealed partial class MapEditor : WindowUI {
 			// Manual Zoom
 			int wheelDelta = CtrlHolding ? 0 : Input.MouseWheelDelta;
 			int zoomDelta = wheelDelta * Const.CEL * 2;
-			if (zoomDelta == 0 && Input.MouseRightButtonHolding && CtrlHolding) {
+			if (zoomDelta == 0 && Input.MouseRightButtonHolding && CtrlHolding && AltHolding) {
 				zoomDelta = Input.MouseScreenPositionDelta.y * 6;
 			}
 			if (zoomDelta != 0) {

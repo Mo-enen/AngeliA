@@ -70,11 +70,19 @@ public class ControlHintUI : EntityUI {
 		("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1), ("",int.MinValue,-1),
 	];
 	private static int CurrentHintOffsetY = 0;
+	private readonly GUIStyle HintKeyLabelCenterStyle = new(GUI.Skin.Label) {
+		CharSize = 14,
+		ContentColor = Color32.GREY_20,
+		Clip = false,
+		Wrap = WrapMode.NoWrap,
+		Alignment = Alignment.MidMid,
+	};
 	private readonly GUIStyle HintKeyLabelStyle = new(GUI.Skin.Label) {
 		CharSize = 14,
 		ContentColor = Color32.GREY_20,
 		Clip = false,
 		Wrap = WrapMode.NoWrap,
+		Alignment = Alignment.MidLeft,
 	};
 	private Int4 ButtonBorder = default;
 	private int ForceHintFrame = int.MinValue;
@@ -440,7 +448,7 @@ public class ControlHintUI : EntityUI {
 			Renderer.Draw(keyIdA, rect.Shrink(border), KeyTint, int.MaxValue);
 		} else {
 			using (new ReverseCellsScope()) {
-				GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds, HintKeyLabelStyle);
+				GUI.Label(rect.Shrink(border), keyTextA, out var keyBounds, keyTextA.Length >= 1 ? HintKeyLabelStyle : HintKeyLabelCenterStyle);
 				int targetWidth = keyBounds.width + border.horizontal;
 				if (rect.width < targetWidth) rect.width = targetWidth;
 				Renderer.DrawSlice(
@@ -461,7 +469,7 @@ public class ControlHintUI : EntityUI {
 				Renderer.Draw(keyIdB, rect.Shrink(border), KeyTint, int.MaxValue);
 			} else {
 				using (new ReverseCellsScope()) {
-					GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds, HintKeyLabelStyle);
+					GUI.Label(rect.Shrink(border), keyTextB, out var keyBounds, keyTextB.Length >= 1 ? HintKeyLabelStyle : HintKeyLabelCenterStyle);
 					int targetWidth = keyBounds.width + border.horizontal;
 					if (rect.width < targetWidth) rect.width = targetWidth;
 					Renderer.DrawSlice(
