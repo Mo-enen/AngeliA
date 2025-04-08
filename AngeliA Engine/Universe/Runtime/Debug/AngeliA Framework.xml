@@ -3306,6 +3306,26 @@
             Move data at head to the first of the internal array
             </summary>
         </member>
+        <member name="T:AngeliA.PixelPerfect">
+            <summary>
+            Class that makes rendering cells pixel perfect
+            </summary>
+        </member>
+        <member name="F:AngeliA.PixelPerfect.Enable">
+            <summary>
+            True if require pixel perfect for current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.PixelPerfect.IncludeUiLayer">
+            <summary>
+            True if require pixel perfect for UI rendering layer
+            </summary>
+        </member>
+        <member name="F:AngeliA.PixelPerfect.PixelScale">
+            <summary>
+            Global unit / pixel. Default 16.
+            </summary>
+        </member>
         <member name="T:AngeliA.QTest">
             <summary>
             Utility tool for quick testing ⚠Debug only. Do not work after game release.⚠
@@ -3966,6 +3986,11 @@
         <member name="F:AngeliA.UniverseInfo.LastBackupSavingDate">
             <summary>
             Last time AngeliA Engine backup the saving files
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.UsePixelPerfectRendering">
+            <summary>
+            True if the game require rendering cell pixel perfect
             </summary>
         </member>
         <member name="T:AngeliA.CellScreenshotSystem">
@@ -5958,7 +5983,7 @@
         </member>
         <member name="M:AngeliA.Sky.SetInGameDaytime(System.Single)">
             <summary>
-            Set current in-game time (0 means 0:00. 0.5 means 12:00. 1 means 24:00)
+            Set current in-game time. (0 means 0:00. 0.5 means 12:00. 1 means 24:00. -1 means real world time)
             </summary>
         </member>
         <member name="M:AngeliA.Sky.GetInGameDaytimeFromRealTime">
@@ -15599,6 +15624,64 @@
             <summary>
             Task that select current player
             </summary>
+        </member>
+        <member name="T:AngeliA.TeleportTask">
+            <summary>
+            Task for handle logic during player teleport
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.TeleportFrom">
+            <summary>
+            Teleport from this position in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.TeleportTo">
+            <summary>
+            Teleport to this position in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.WaitDuration">
+            <summary>
+            Teleport actually start after wait this frames long
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.Duration">
+            <summary>
+            Teleport takes this frames long to finish
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.UseVignette">
+            <summary>
+            True if use the vignette effect during teleport
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.UseParallax">
+            <summary>
+            True if use the map layer parallax effect during teleport
+            </summary>
+        </member>
+        <member name="M:AngeliA.TeleportTask.TeleportFromDoor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Make a teleport for selecting player by using a door
+            </summary>
+            <param name="fromX">(in global space)</param>
+            <param name="fromY">(in global space)</param>
+            <param name="toX">(in global space)</param>
+            <param name="toY">(in global space)</param>
+            <param name="toZ"></param>
+            <returns>Global single instance of the task unit</returns>
+        </member>
+        <member name="M:AngeliA.TeleportTask.TeleportFromPortal(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Make a teleport for selecting player by using a portal
+            </summary>
+            <param name="fromX">(in global space)</param>
+            <param name="fromY">(in global space)</param>
+            <param name="toX">(in global space)</param>
+            <param name="toY">(in global space)</param>
+            <param name="toZ"></param>
+            <param name="samePosition">True if the X and Y position are the same</param>
+            <returns>Global single instance of the task unit</returns>
         </member>
         <member name="T:AngeliA.FrameworkUtil">
             <summary>

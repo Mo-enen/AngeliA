@@ -1,5 +1,4 @@
-﻿UI.EngineSetting.ShowKeyPressWhenFrameDebugging:Show Key Press UI when Frame Debugging
-AtlasType.Background:Background
+﻿AtlasType.Background:Background
 AtlasType.General:General
 AtlasType.Level:Level
 ConsoleWindow:Console
@@ -94,6 +93,7 @@ Label.Project.AllowQuitFromMenu:Allow Quit from Menu
 Label.Project.AllowRestartFromMenu:Allow Restart from Menu
 Label.Project.Font:Font
 Label.Project.Music:Music
+Label.Project.PixelPerfect:Use Pixel Perfect Rendering
 Label.Project.ReadonlyMap:Map Readonly for Player
 Label.Project.SavePlayerChangesToMap:Save Map Changes from Player (After Release)
 Label.Project.ScaleUiBasedOnMonitor:Scale UI Based On Monitor Height
@@ -354,6 +354,7 @@ UI.EngineSetting.MapEditor_ShowBehind:Show Map  Behind
 UI.EngineSetting.MapEditor_ShowGizmos:Show Gizmos
 UI.EngineSetting.MapEditor_ShowState:Show State
 UI.EngineSetting.OpenLastProjectOnStart:Open Last Project on Start
+UI.EngineSetting.ShowKeyPressWhenFrameDebugging:Show Key Press UI when Frame Debugging
 UI.EngineSetting.ShowLogTime:Show Log Time
 UI.EngineSetting.ShowOutBoundsMark:Show Marks for Sprites Outside Canvas
 UI.EngineSetting.ShowTagPreview:Show Tag Preview

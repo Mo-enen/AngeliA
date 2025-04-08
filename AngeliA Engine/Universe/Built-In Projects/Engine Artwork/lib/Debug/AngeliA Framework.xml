@@ -1527,7 +1527,7 @@
         </member>
         <member name="F:AngeliA.CharacterMovement.MovementHeight">
             <summary>
-            Default height of the character
+            Height of the character in global space when character is 160cm
             </summary>
         </member>
         <member name="F:AngeliA.CharacterMovement.WalkAvailable">
@@ -3306,6 +3306,26 @@
             Move data at head to the first of the internal array
             </summary>
         </member>
+        <member name="T:AngeliA.PixelPerfect">
+            <summary>
+            Class that makes rendering cells pixel perfect
+            </summary>
+        </member>
+        <member name="P:AngeliA.PixelPerfect.Enable">
+            <summary>
+            True if require pixel perfect for current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.PixelPerfect.IncludeUiLayer">
+            <summary>
+            True if require pixel perfect for UI rendering layer
+            </summary>
+        </member>
+        <member name="P:AngeliA.PixelPerfect.PixelScale">
+            <summary>
+            Global unit / pixel. Default 16.
+            </summary>
+        </member>
         <member name="T:AngeliA.QTest">
             <summary>
             Utility tool for quick testing ⚠Debug only. Do not work after game release.⚠
@@ -3966,6 +3986,11 @@
         <member name="F:AngeliA.UniverseInfo.LastBackupSavingDate">
             <summary>
             Last time AngeliA Engine backup the saving files
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.UsePixelPerfectRendering">
+            <summary>
+            True if the game require rendering cell pixel perfect
             </summary>
         </member>
         <member name="T:AngeliA.CellScreenshotSystem">
@@ -15753,6 +15778,11 @@
         <member name="M:AngeliA.FrameworkUtil.GetGameKeyLabel(AngeliA.Gamekey)">
             <summary>
             Get display name for given game-key.
+            </summary>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.GetFrameAmortizedValue(System.Int32,System.Int32)">
+            <summary>
+            Used to calculate acceleration with intager. eg. When value is 2000, it means 2 unit every frame. When value is 500, it means 1 unit every 2 frames.
             </summary>
         </member>
         <member name="M:AngeliA.FrameworkUtil.SpawnItemFromMap(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">

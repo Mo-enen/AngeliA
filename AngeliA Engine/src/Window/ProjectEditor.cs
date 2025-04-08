@@ -35,13 +35,10 @@ internal class ProjectEditor : WindowUI {
 
 	private static readonly LanguageCode LABEL_EDIT = ("Label.EditCs", "Edit");
 	private static readonly LanguageCode LABEL_RECOMPILE = ("Label.Recompile", "Recompile");
-	private static readonly LanguageCode LABEL_RUN = ("Label.Run", "Run");
 	private static readonly LanguageCode LABEL_PUBLISH = ("Label.Publish", "Publish");
 	private static readonly LanguageCode TIP_EDIT = ("Tip.EditCs", "Open .sln or .csproj file in this project folder with default application");
 	private static readonly LanguageCode TIP_RECOMPILE = ("Tip.Recompile", "Manually rebuild the project in debug mode");
-	private static readonly LanguageCode TIP_RUN = ("Tip.Run", "Run the current built project in a new window in debug mode");
 	private static readonly LanguageCode TIP_PUBLISH = ("Tip.Publish", "Build the project for final product in release mode");
-
 	private static readonly LanguageCode TITLE_PUBLISH_PROJECT = ("Title.PublishProject", "Publish Project");
 	private static readonly LanguageCode TITLE_PICK_ICON = ("Title.PickPngForIcon", "Pick a .png file for game icon");
 	private static readonly LanguageCode LOG_PRODUCT_NAME_INVALID = ("Log.ProductNameInvalid", "Product name contains invalid characters for file name");
@@ -80,6 +77,7 @@ internal class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_ALLOW_QUIT_MENU = ("Label.Project.AllowQuitFromMenu", "Allow Quit from Menu");
 	private static readonly LanguageCode LABEL_ALLOW_CHEAT = ("Label.Project.AllowCheat", "Allow Cheat Code on Release Mode");
 	private static readonly LanguageCode LABEL_SCALE_UI_MONITOR = ("Label.Project.ScaleUiBasedOnMonitor", "Scale UI Based On Monitor Height");
+	private static readonly LanguageCode LABEL_PIX_PER = ("Label.Project.PixelPerfect", "Use Pixel Perfect Rendering");
 	private static readonly LanguageCode LABEL_BEHIND_PARA = ("Setting.BehindPara", "Behind Map Parallax");
 	private static readonly LanguageCode LABEL_BEHIND_TINT = ("Setting.BehindAlpha", "Behind Map Alpha");
 	private static readonly LanguageCode LABEL_VIEW_RATIO = ("Setting.ViewRatio", "View Ratio");
@@ -257,7 +255,7 @@ internal class ProjectEditor : WindowUI {
 
 		var _rect = rect;
 		int padding = Unify(8);
-		_rect.width = rect.width / 4 - padding;
+		_rect.width = rect.width / 3 - padding;
 
 		// Edit
 		if (GUI.Button(_rect, LABEL_EDIT, WorkflowButtonStyle)) {
@@ -292,16 +290,23 @@ internal class ProjectEditor : WindowUI {
 			RequireTooltip(_rect, TIP_RECOMPILE);
 			_rect.SlideRight(padding);
 
-			// Run
-			if (GUI.Button(_rect, LABEL_RUN, WorkflowButtonStyle)) {
-				EngineUtil.RunAngeliaBuild(CurrentProject);
-			}
-			RequireTooltip(_rect, TIP_RUN);
-			_rect.SlideRight(padding);
-
 			// Publish
-			if (GUI.Button(_rect, LABEL_PUBLISH, WorkflowButtonStyle)) {
-				FileBrowserUI.SaveFolder(TITLE_PUBLISH_PROJECT, CurrentProject.Universe.Info.ProductName, PublishProject);
+			bool isDebug = false;
+#if DEBUG
+			isDebug = true;
+#endif
+			using (new GUIEnableScope(!isDebug)) {
+				if (GUI.Button(_rect, LABEL_PUBLISH, WorkflowButtonStyle)) {
+					FileBrowserUI.SaveFolder(TITLE_PUBLISH_PROJECT, CurrentProject.Universe.Info.ProductName, PublishProject);
+				}
+			}
+			if (isDebug) {
+				using var _ = new GUIContentColorScope(Color32.YELLOW);
+				GUI.Label(
+					_rect.EdgeOutsideUp(GUI.FieldHeight).Shrink(GUI.FieldPadding),
+					"Require Engine in Release Mode",
+					style: Skin.SmallCenterLabel
+				);
 			}
 			RequireTooltip(_rect, TIP_PUBLISH);
 			_rect.SlideRight(padding);
@@ -463,6 +468,16 @@ internal class ProjectEditor : WindowUI {
 				SetDirty();
 			}
 			rect.SlideDown(padding);
+
+			// Pixel Perfect
+			bool newPixelPerfect = GUI.Toggle(rect, info.UsePixelPerfectRendering, LABEL_PIX_PER, labelStyle: Skin.SmallLabel);
+			if (newPixelPerfect != info.UsePixelPerfectRendering) {
+				info.UsePixelPerfectRendering = newPixelPerfect;
+				RequireRecompileOnSave = true;
+				SetDirty();
+			}
+			rect.SlideDown(padding);
+
 		}
 
 		// Icon

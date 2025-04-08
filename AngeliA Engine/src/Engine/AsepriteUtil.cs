@@ -5,9 +5,7 @@ using AngeliA;
 
 namespace AngeliaEngine;
 
-/// <summary>
-/// Utility class for support Aseprite
-/// </summary>
+
 public static class AsepriteUtil {
 
 	private class FlexSprite {
@@ -38,10 +36,6 @@ public static class AsepriteUtil {
 	}
 
 	// API
-	/// <summary>
-	/// If any *.ase or *.aseprite files inside asepriteRoot folder is changed, create a new sheet file from all the Aseprite files.
-	/// </summary>
-	/// <returns>True if the sheet was recreate.</returns>
 	public static bool RecreateSheetIfArtworkModified (string sheetPath, string asepriteRoot) {
 		long sheetDate = Util.GetFileModifyDate(sheetPath);
 		bool requireCreateSheet = false;
@@ -71,9 +65,6 @@ public static class AsepriteUtil {
 		return requireCreateSheet;
 	}
 
-	/// <summary>
-	/// Create a new sheet instance from given aseprite file paths.
-	/// </summary>
 	public static Sheet CreateNewSheet (ICollection<string> asePaths) {
 
 		var flexSprites = CreateSpritesFromAsepriteFiles(asePaths);

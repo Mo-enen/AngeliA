@@ -784,10 +784,6 @@ internal partial class Engine {
 				}
 			}
 
-			// Run Game
-			if (EngineSetting.Hotkey_Run.Value.Down()) {
-				EngineUtil.RunAngeliaBuild(CurrentProject);
-			}
 		}
 
 		// Switch Window

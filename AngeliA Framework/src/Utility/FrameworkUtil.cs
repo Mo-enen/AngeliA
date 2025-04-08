@@ -442,8 +442,8 @@ HasOnewayTag(tag) ||
 	/// <param name="second"></param>
 	public static void Time01_to_TimeDigit (float time01, out int hour, out int minute, out int second) {
 		hour = (int)(time01 * 24f).UMod(24f);
-		minute = (int)(hour * 24f * 60f).UMod(60f);
-		second = (int)(hour * 24f * 60f * 60f).UMod(60f);
+		minute = (int)(time01 * 24f * 60f).UMod(60f);
+		second = (int)(time01 * 24f * 60f * 60f).UMod(60f);
 	}
 
 	/// <summary>

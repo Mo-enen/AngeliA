@@ -1,5 +1,4 @@
-﻿UI.EngineSetting.ShowKeyPressWhenFrameDebugging:在逐帧测试时显示按键界面
-AtlasType.Background:背景
+﻿AtlasType.Background:背景
 AtlasType.General:通用
 AtlasType.Level:关卡
 ConsoleWindow:终 端
@@ -94,6 +93,7 @@ Label.Project.AllowQuitFromMenu:允许从菜单中退出游戏
 Label.Project.AllowRestartFromMenu:允许从菜单中重新开始游戏
 Label.Project.Font:字体
 Label.Project.Music:音乐
+Label.Project.PixelPerfect:使用完美像素渲染
 Label.Project.ReadonlyMap:地图对玩家只读
 Label.Project.SavePlayerChangesToMap:保存玩家对地图的修改（发布后）
 Label.Project.ScaleUiBasedOnMonitor:根据屏幕高度缩放UI
@@ -354,6 +354,7 @@ UI.EngineSetting.MapEditor_ShowBehind:显示后置场景
 UI.EngineSetting.MapEditor_ShowGizmos:显示网格
 UI.EngineSetting.MapEditor_ShowState:显示状态数字
 UI.EngineSetting.OpenLastProjectOnStart:打开上次的工程
+UI.EngineSetting.ShowKeyPressWhenFrameDebugging:在逐帧测试时显示按键界面
 UI.EngineSetting.ShowLogTime:显示输出时间
 UI.EngineSetting.ShowOutBoundsMark:标记画布外的图块
 UI.EngineSetting.ShowTagPreview:显示标签预览

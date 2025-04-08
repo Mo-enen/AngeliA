@@ -35,7 +35,6 @@ internal class EngineSetting {
 
 	// Hotkey
 	[EngineSetting("Hotkey", "Recompile", gameOnly: true)] public static readonly SavingHotkey Hotkey_Recompile = new("Hotkey.Recompile", new Hotkey(KeyboardKey.R, ctrl: true), SavingLocation.Global);
-	[EngineSetting("Hotkey", "Run", gameOnly: true)] public static readonly SavingHotkey Hotkey_Run = new("Hotkey.Run", new Hotkey(KeyboardKey.R, ctrl: true, shift: true), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Clear Console", gameOnly: true)] public static readonly SavingHotkey Hotkey_ClearConsole = new("Hotkey.ClearConsole", new Hotkey(KeyboardKey.C, ctrl: true, shift: true), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Open Map Editor", gameOnly: true)] public static readonly SavingHotkey Hotkey_Window_MapEditor = new("Hotkey.Window.MapEditor", new Hotkey(KeyboardKey.F1), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Open Artwork")] public static readonly SavingHotkey Hotkey_Window_Artwork = new("Hotkey.Window.Artwork", new Hotkey(KeyboardKey.F2), SavingLocation.Global);

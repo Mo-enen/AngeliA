@@ -451,7 +451,7 @@ public static partial class FrameworkUtil {
 	public static void DrawClockHands (int centerX, int centerY, int radius, int handCode, int thickness, int thicknessSecond, Color32 tint, int z = int.MinValue) {
 
 		Time01_to_TimeDigit(Sky.InGameDaytime01, out int hour, out int min, out int second);
-
+		
 		// Sec
 		Renderer.Draw(
 			handCode, centerX, centerY,

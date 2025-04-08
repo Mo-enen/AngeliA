@@ -251,7 +251,7 @@ public static class Renderer {
 
 
 	[OnGameUpdatePauseless(32)]
-	internal static void FrameUpdate () {
+	internal static void RenderAllLayers () {
 		IsDrawing = false;
 		Game.BeforeAllLayersUpdate();
 		for (int i = 0; i < Layers.Length; i++) {

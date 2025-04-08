@@ -58,11 +58,15 @@ public static class Sky {
 	// Data
 	private static int ForceBackgroundTintFrame = int.MinValue;
 	private static float ForceInGameDaytimeValue = -1f;
+	private static System.DateTime GameInitDate;
 
 
 	// MSG
 	[OnGameInitialize]
-	internal static void OnGameInitialize () => InGameDaytime01 = GetInGameDaytimeFromRealTime();
+	internal static void OnGameInitialize () {
+		GameInitDate = System.DateTime.Now;
+		InGameDaytime01 = GetInGameDaytimeFromRealTime();
+	}
 
 
 	[OnGameUpdatePauseless]
@@ -70,19 +74,19 @@ public static class Sky {
 
 		if (Game.IsToolApplication) return;
 
-		bool everyMinute = Game.PauselessFrame % 3600 == 0;
+		bool everySec = Game.PauselessFrame % 60 == 0;
 
 		// Refresh In-Game Daytime
 		if (ForceInGameDaytimeValue >= 0f) {
 			InGameDaytime01 = ForceInGameDaytimeValue;
-		} else if (everyMinute) {
+		} else if (everySec) {
 			InGameDaytime01 = GetInGameDaytimeFromRealTime();
 		}
 
 		// Refresh Sky Tint
 		if (
 			Game.PauselessFrame == ForceBackgroundTintFrame + 1 ||
-			(everyMinute && Game.PauselessFrame > ForceBackgroundTintFrame)
+			(everySec && Game.PauselessFrame > ForceBackgroundTintFrame)
 		) {
 			RefreshSkyTintFromDateTime();
 			SunlightTintColor = SunlightTint != null ? SunlightTint.Evaluate(InGameDaytime01) : Color32.WHITE;
@@ -121,7 +125,7 @@ public static class Sky {
 
 
 	/// <summary>
-	/// Set current in-game time (0 means 0:00. 0.5 means 12:00. 1 means 24:00)
+	/// Set current in-game time. (0 means 0:00. 0.5 means 12:00. 1 means 24:00. -1 means real world time)
 	/// </summary>
 	public static void SetInGameDaytime (float newDaytime01) {
 		if (newDaytime01 < 0f) {
@@ -140,8 +144,9 @@ public static class Sky {
 	/// </summary>
 	/// <returns>(0 means 0:00. 0.5 means 12:00. 1 means 24:00)</returns>
 	public static float GetInGameDaytimeFromRealTime () {
-		var date = System.DateTime.Now;
-		return Util.InverseLerp(0, 24 * 3600, date.Hour * 3600 + date.Minute * 60 + date.Second);
+		int initSec = GameInitDate.Hour * 3600 + GameInitDate.Minute * 60 + GameInitDate.Second;
+		int frameSec = Game.PauselessFrame / 60;
+		return Util.InverseLerp(0, 24 * 3600, initSec + frameSec);
 	}
 
 

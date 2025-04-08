@@ -536,6 +536,11 @@ public sealed partial class MapEditor : WindowUI {
 			RequireIsNavigating = null;
 		}
 
+		// Ignore Pix Perfect
+		if (!PlayingGame) {
+			PixelPerfect.Enable.False(1);
+		}
+
 	}
 
 
