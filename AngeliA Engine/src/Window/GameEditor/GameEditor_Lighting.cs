@@ -65,7 +65,7 @@ internal partial class GameEditor {
 		GUI.SmallLabel(rect, LABEL_SELF_LERP);
 		info.LightMap_SelfLerp = GUI.HandleSlider(
 			37423672, rect.Shrink(GUI.LabelWidth, digitWidth, 0, 0),
-			(int)(info.LightMap_SelfLerp * 1000), 0, 1000
+			(int)(info.LightMap_SelfLerp * 1000), 850, 1000
 		) / 1000f;
 		GUI.IntLabel(rect.EdgeInsideRight(digitWidth), (int)(info.LightMap_SelfLerp * 1000), GUI.Skin.SmallCenterLabel);
 		rect.SlideDown(padding);

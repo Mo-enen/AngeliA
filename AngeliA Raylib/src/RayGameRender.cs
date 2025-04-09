@@ -492,11 +492,13 @@ public partial class RayGame {
 		var br = new Vector2(maxX, minY);
 		var tl = new Vector2(minX, maxY);
 		var tr = new Vector2(maxX, maxY);
-		var mm = new Vector2((minX + maxX) / 2f, (minY + maxY) / 2f);
 		var cTL = colorBL.ToRaylib();
 		var cTR = colorBR.ToRaylib();
 		var cBL = colorTL.ToRaylib();
 		var cBR = colorTR.ToRaylib();
+
+		// Cross
+		var mm = new Vector2((minX + maxX) / 2f, (minY + maxY) / 2f);
 		var cMM = new Color(
 			(byte)((colorTL.r + colorTR.r + colorBL.r + colorBR.r) / 4),
 			(byte)((colorTL.g + colorTR.g + colorBL.g + colorBR.g) / 4),
@@ -507,6 +509,7 @@ public partial class RayGame {
 		Raylib.DrawTriangle3Colors(tr, br, mm, cTR, cBR, cMM);
 		Raylib.DrawTriangle3Colors(br, bl, mm, cBR, cBL, cMM);
 		Raylib.DrawTriangle3Colors(tl, tr, mm, cTL, cTR, cMM);
+
 	}
 
 	protected override void _DrawGizmosLine (int startX, int startY, int endX, int endY, int thickness, Color32 color) {

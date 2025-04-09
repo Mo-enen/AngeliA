@@ -126,6 +126,7 @@ public static unsafe class RayUtil {
 			}
 		}
 		Raylib.UnloadImageColors(colors);
+		Raylib.UnloadImage(image);
 		return result;
 	}
 
@@ -154,6 +155,7 @@ public static unsafe class RayUtil {
 		var image = Raylib.LoadImageFromMemory(".png", bytes);
 		var result = Raylib.LoadTextureFromImage(image);
 		Raylib.SetTextureFilter(result, TextureFilter.Point);
+		Raylib.UnloadImage(image);
 		return result;
 	}
 
@@ -161,11 +163,13 @@ public static unsafe class RayUtil {
 		if (texture is not Texture2D rTexture) return [];
 		var fileType = Marshal.StringToHGlobalAnsi(".png");
 		int fileSize = 0;
+		var img = Raylib.LoadImageFromTexture(rTexture);
 		char* result = Raylib.ExportImageToMemory(
-			Raylib.LoadImageFromTexture(rTexture),
+			img,
 			(sbyte*)fileType.ToPointer(),
 			&fileSize
 		);
+		Raylib.UnloadImage(img);
 		if (fileSize == 0) return [];
 		var resultBytes = new byte[fileSize];
 		Marshal.Copy((nint)result, resultBytes, 0, fileSize);
@@ -213,6 +217,7 @@ public static unsafe class RayUtil {
 		}
 		if (!Raylib.IsImageReady(img)) return;
 		Raylib.UpdateTexture(rTarget, img.Data);
+		Raylib.UnloadImage(img);
 	}
 
 
@@ -249,6 +254,7 @@ public static unsafe class RayUtil {
 			textureResult = Raylib.LoadTextureFromImage(image);
 		}
 		Raylib.SetTextureFilter(textureResult, TextureFilter.Point);
+
 		return textureResult;
 
 	}

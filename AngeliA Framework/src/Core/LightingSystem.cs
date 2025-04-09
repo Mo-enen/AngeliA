@@ -55,7 +55,6 @@ public static class LightingSystem {
 	private const int LIGHT_MAP_UNIT_PADDING = 10;
 	private const int LIGHT_MAP_UNIT_PADDING_BOTTOM = 6;
 	private const int LIGHT_MAP_UNIT_PADDING_TOP = 6;
-	private const int UNIT_SCL = 2;
 	private static readonly float[] WEIGHTS = [0.071f, 0.19f, 0.51f, 0.19f, 0.071f,];
 
 	// Api
@@ -76,6 +75,7 @@ public static class LightingSystem {
 	private static float ForceAirLerpValue = 1f;
 	private static int ForceAirLerpFrame = -1;
 	private static int IgnoreFrame = -1;
+	private static bool Debugging = false;
 
 
 	#endregion
@@ -130,6 +130,10 @@ public static class LightingSystem {
 				break;
 		}
 	}
+
+
+	[CheatCode("LightingDebug")]
+	internal static void DebugCheatCode () => Debugging = !Debugging;
 
 
 	[OnGameUpdate(-63)]
@@ -208,6 +212,14 @@ public static class LightingSystem {
 	internal static void RenderAllIlluminance () {
 
 		if (!Enable || !WorldSquad.Enable || Game.GlobalFrame <= IgnoreFrame) return;
+
+		if (Debugging) {
+			GUI.ShadowLabel(
+				Renderer.CameraRect.CornerInside(Alignment.TopMid, 1, GUI.FieldHeight),
+				"Lighting System Debugging\nType \"lightingdebug\" to Stop",
+				style: GUI.Skin.SmallCenterLabel
+			);
+		}
 
 		var info = Universe.BuiltInInfo;
 		float day01 = Util.PingPong(Sky.InGameDaytime01, 0.5f) * 2f;
@@ -295,13 +307,55 @@ public static class LightingSystem {
 					byte aBR = (byte)br;
 					if (aTL == 0 && aTR == 0 && aBL == 0 && aBR == 0) continue;
 					rect.x = offsetX + i * Const.CEL;
-					Game.DrawGizmosRect(
-						scaling ? rect.ScaleFrom(CameraScale, cameraCenter.x, cameraCenter.y) : rect,
-						new Color32(0, 0, 0, aTL),
-						new Color32(0, 0, 0, aTR),
-						new Color32(0, 0, 0, aBL),
-						new Color32(0, 0, 0, aBR)
-					);
+
+					if (Debugging) {
+						if ((j - OriginUnitY) % 2 == 0) {
+							if ((i - OriginUnitX) % 2 == 0) {
+								Game.DrawGizmosRect(
+									scaling ? rect.ScaleFrom(CameraScale, cameraCenter.x, cameraCenter.y) : rect,
+									new Color32(255, 0, 0, aTL),
+									new Color32(255, 255, 0, aTR),
+									new Color32(0, 255, 0, aBL),
+									new Color32(0, 0, 255, aBR)
+								);
+							} else {
+								Game.DrawGizmosRect(
+									scaling ? rect.ScaleFrom(CameraScale, cameraCenter.x, cameraCenter.y) : rect,
+									new Color32(255, 255, 0, aTL),
+									new Color32(255, 0, 0, aTR),
+									new Color32(0, 0, 255, aBL),
+									new Color32(0, 255, 0, aBR)
+								);
+							}
+						} else {
+							if ((i - OriginUnitX) % 2 == 0) {
+								Game.DrawGizmosRect(
+									scaling ? rect.ScaleFrom(CameraScale, cameraCenter.x, cameraCenter.y) : rect,
+									new Color32(0, 255, 0, aTL),
+									new Color32(0, 0, 255, aTR),
+									new Color32(255, 0, 0, aBL),
+									new Color32(255, 255, 0, aBR)
+								);
+							} else {
+								Game.DrawGizmosRect(
+									scaling ? rect.ScaleFrom(CameraScale, cameraCenter.x, cameraCenter.y) : rect,
+									new Color32(0, 0, 255, aTL),
+									new Color32(0, 255, 0, aTR),
+									new Color32(255, 255, 0, aBL),
+									new Color32(255, 0, 0, aBR)
+								);
+							}
+						}
+					} else {
+						Game.DrawGizmosRect(
+							scaling ? rect.ScaleFrom(CameraScale, cameraCenter.x, cameraCenter.y) : rect,
+							new Color32(0, 0, 0, aTL),
+							new Color32(0, 0, 0, aTR),
+							new Color32(0, 0, 0, aBL),
+							new Color32(0, 0, 0, aBR)
+						);
+					}
+
 				}
 			}
 		}

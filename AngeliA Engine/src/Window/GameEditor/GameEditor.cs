@@ -91,9 +91,6 @@ internal partial class GameEditor : WindowUI {
 		const int THUMBNAIL_WIDTH = 600;
 		const int THUMBNAIL_HEIGHT = 400;
 		ScreenThumbnailTexture = Game.GetTextureFromPixels(new Color32[THUMBNAIL_WIDTH * THUMBNAIL_HEIGHT].FillWithValue(Color32.CLEAR), THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
-		const int CHART_WIDTH = 600;
-		const int CHART_HEIGHT = 400;
-		ColorAnalyzeChartTexture = Game.GetTextureFromPixels(new Color32[CHART_WIDTH * CHART_HEIGHT].FillWithValue(Color32.CLEAR), CHART_WIDTH, CHART_HEIGHT);
 	}
 
 
