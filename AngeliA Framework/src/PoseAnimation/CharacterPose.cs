@@ -9,7 +9,7 @@ namespace AngeliA;
 public class CharacterPose {
 
 	// Api
-	private readonly BodyPart[] BodyParts = new BodyPart[PoseCharacterRenderer.BODY_PART_COUNT];
+	private readonly BodyPart[] BodyParts = new BodyPart[BodyPart.BODY_PART_COUNT];
 
 	public BodyPart Head { get; init; } = null;
 	public BodyPart Body { get; init; } = null;
@@ -43,7 +43,13 @@ public class CharacterPose {
 	// API
 	public CharacterPose () {
 		for (int i = 0; i < BodyParts.Length; i++) {
-			BodyParts[i] = new BodyPart(null, false, false);
+			BodyParts[i] = new BodyPart(
+				parent: (i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null,
+				useLimbFlip: i == 9 || i == 10 || i == 15 || i == 16,
+				rotateWithBody: i != 2 && i != 1 && i < 11,
+				defaultPivotX: BodyPart.BODY_DEF_PIVOT[i].x,
+				defaultPivotY: BodyPart.BODY_DEF_PIVOT[i].y
+			);
 		}
 		Head = BodyParts[0];
 		Body = BodyParts[1];
@@ -130,7 +136,9 @@ public class CharacterPose {
 	/// Make the character perform this pose with weight
 	/// </summary>
 	public void BlendToCharacter (PoseCharacterRenderer rendering, float blend01) {
+
 		blend01 = 1f - blend01;
+
 		for (int i = 0; i < BodyParts.Length; i++) {
 			var record = BodyParts[i];
 			var pose = rendering.BodyParts[i];
@@ -138,15 +146,17 @@ public class CharacterPose {
 			pose.Width = FixSign(pose.Width, record.Width);
 			pose.Height = FixSign(pose.Height, record.Height);
 
-			pose.X = (int)Util.LerpUnclamped(pose.X, record.X, blend01);
-			pose.Y = (int)Util.LerpUnclamped(pose.Y, record.Y, blend01);
-			pose.Z = (int)Util.LerpUnclamped(pose.Z, record.Z, blend01);
-			pose.Rotation = (int)Util.LerpUnclamped(pose.Rotation, record.Rotation, blend01);
-			pose.Width = (int)Util.LerpUnclamped(pose.Width, record.Width, blend01);
-			pose.Height = (int)Util.LerpUnclamped(pose.Height, record.Height, blend01);
-			pose.PivotX = (int)Util.LerpUnclamped(pose.PivotX, record.PivotX, blend01);
-			pose.PivotY = (int)Util.LerpUnclamped(pose.PivotY, record.PivotY, blend01);
+			pose.Z = Util.LerpUnclamped(pose.Z, record.Z, blend01).RoundToInt();
+			pose.Rotation = Util.LerpAngleUnclamped(pose.Rotation, record.Rotation, blend01).RoundToInt();
+			pose.Width = Util.LerpUnclamped(pose.Width, record.Width, blend01).RoundToInt();
+			pose.Height = Util.LerpUnclamped(pose.Height, record.Height, blend01).RoundToInt();
 			pose.Tint = Color32.Lerp(pose.Tint, record.Tint, blend01);
+
+			pose.PivotX = Util.LerpUnclamped(pose.PivotX, record.PivotX, blend01).RoundToInt();
+			pose.PivotY = Util.LerpUnclamped(pose.PivotY, record.PivotY, blend01).RoundToInt();
+			pose.X = Util.LerpUnclamped(pose.X, record.X, blend01).RoundToInt();
+			pose.Y = Util.LerpUnclamped(pose.Y, record.Y, blend01).RoundToInt();
+
 		}
 
 		rendering.HandGrabScaleL.Override(FixSign(rendering.HandGrabScaleL, HandGrabScaleL));

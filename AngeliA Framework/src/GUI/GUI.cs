@@ -766,6 +766,7 @@ public static partial class GUI {
 	/// GUI element that behave like a button
 	/// </summary>
 	/// <param name="rect">Rect position in global space</param>
+	/// <param name="state"></param>
 	/// <param name="icon">Artwork sprite ID for the icon inside this button</param>
 	/// <param name="label">Text content inside this button</param>
 	/// <param name="charSize">Character size of the label in unified space</param>

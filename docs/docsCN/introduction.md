@@ -22,9 +22,5 @@
 
 <img src="../images/ScreenshotPixelEditor.png" width="61.8%"/>
 
-
-
-
-
 此项目由[楠瓜Moenen](https://github.com/Mo-enen)独立开发，采用[MIT许可证](https://github.com/Mo-enen/AngeliA/blob/main/License.txt)，您可以使用此项目做几乎任何事，但必须在您的项目中标注我的名字，详见[遵守协议](https://mo-enen.github.io/AngeliA/docsCN/comply-with-the-license.html)。
 

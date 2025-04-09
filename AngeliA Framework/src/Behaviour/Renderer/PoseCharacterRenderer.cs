@@ -13,16 +13,10 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 	// Const
 	/// <summary>
-	/// How many body part does a pose character have
-	/// </summary>
-	public const int BODY_PART_COUNT = 17;
-	/// <summary>
 	/// How many cm does one artwork pixel represents
 	/// </summary>
 	public const int CM_PER_PX = 5;
 	private const int A2G = Const.CEL / Const.ART_CEL;
-	public static readonly int[] DEFAULT_BODY_PART_ID = ["DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(),];
-	public static readonly string[] BODY_PART_NAME = ["Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot",];
 	private static readonly int[] DEFAULT_POSE_ANIMATION_IDS = [typeof(PoseAnimation_Idle).AngeHash(), typeof(PoseAnimation_Walk).AngeHash(), typeof(PoseAnimation_Run).AngeHash(), typeof(PoseAnimation_JumpUp).AngeHash(), typeof(PoseAnimation_JumpDown).AngeHash(), typeof(PoseAnimation_SwimIdle).AngeHash(), typeof(PoseAnimation_SwimMove).AngeHash(), typeof(PoseAnimation_SquatIdle).AngeHash(), typeof(PoseAnimation_SquatMove).AngeHash(), typeof(PoseAnimation_Dash).AngeHash(), typeof(PoseAnimation_Rush).AngeHash(), typeof(PoseAnimation_Crash).AngeHash(), typeof(PoseAnimation_Pound).AngeHash(), typeof(PoseAnimation_Brake).AngeHash(), typeof(PoseAnimation_Climb).AngeHash(), typeof(PoseAnimation_Fly).AngeHash(), typeof(PoseAnimation_Slide).AngeHash(), typeof(PoseAnimation_GrabTop).AngeHash(), typeof(PoseAnimation_GrabSide).AngeHash(), typeof(PoseAnimation_Spin).AngeHash(), typeof(PoseAnimation_Animation_TakingDamage).AngeHash(), typeof(PoseAnimation_Sleep).AngeHash(), typeof(PoseAnimation_PassOut).AngeHash(), typeof(PoseAnimation_Rolling).AngeHash(),];
 	private static readonly int ANI_TYPE_COUNT = typeof(CharacterAnimationType).EnumLength();
 	private const int POSE_Z_HEAD = 10;
@@ -73,7 +67,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 	/// <summary>
 	/// All body parts of the pose character
 	/// </summary>
-	public readonly BodyPart[] BodyParts = new BodyPart[BODY_PART_COUNT];
+	public readonly BodyPart[] BodyParts = new BodyPart[BodyPart.BODY_PART_COUNT];
 	/// <summary>
 	/// Head of the pose character
 	/// </summary>
@@ -278,13 +272,15 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 	public PoseCharacterRenderer (Character target) : base(target) {
 		// Body Part
-		for (int i = 0; i < BODY_PART_COUNT; i++) {
+		for (int i = 0; i < BodyPart.BODY_PART_COUNT; i++) {
 			var bodyPart = BodyParts[i] = new BodyPart(
 				parent: (i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null,
 				useLimbFlip: i == 9 || i == 10 || i == 15 || i == 16,
-				rotateWithBody: i != 2 && i != 1 && i < 11
+				rotateWithBody: i != 2 && i != 1 && i < 11,
+				defaultPivotX: BodyPart.BODY_DEF_PIVOT[i].x,
+				defaultPivotY: BodyPart.BODY_DEF_PIVOT[i].y
 			);
-			bodyPart.SetData(DEFAULT_BODY_PART_ID[i]);
+			bodyPart.SetData(BodyPart.DEFAULT_BODY_PART_ID[i]);
 		}
 		Head = BodyParts[0];
 		Body = BodyParts[1];
@@ -468,6 +464,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		foreach (var bodypart in BodyParts) {
 			bodypart.Rotation = 0;
 			bodypart.FrontSide = Movement.FacingFront;
+			bodypart.SetPivotToDefault();
 			if (!motionOnly) {
 				bodypart.Tint = Color32.WHITE;
 				bodypart.Covered = BodyPart.CoverMode.None;
@@ -479,16 +476,12 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		Hip.Y = 0;
 		Hip.Z = POSE_Z_BODY;
 		Hip.Width = facingSign * Hip.SizeX;
-		Hip.PivotX = 500;
-		Hip.PivotY = 0;
 
 		// Body
 		Body.X = 0;
 		Body.Y = Hip.Height;
 		Body.Z = POSE_Z_BODY;
 		Body.Width = facingSign * Body.SizeX;
-		Body.PivotX = 500;
-		Body.PivotY = 0;
 
 		// Character Height
 		int bodyHipSizeY = Body.SizeY + Hip.SizeY;
@@ -515,8 +508,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		Head.Z = POSE_Z_HEAD;
 		Head.Width = facingSign * Head.SizeX;
 		Head.Height = Head.SizeY;
-		Head.PivotX = 500;
-		Head.PivotY = 0;
 
 		// Bounce
 		if (bounce.Abs() != 1000) {
@@ -541,15 +532,11 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		ShoulderL.Y = Body.Y + Body.Height - bodyBorderU;
 		ShoulderL.Width = ShoulderL.SizeX;
 		ShoulderL.Height = ShoulderL.SizeY;
-		ShoulderL.PivotX = 1000;
-		ShoulderL.PivotY = 1000;
 
 		ShoulderR.X = Body.X + Body.Width.Abs() / 2 - bodyBorderR;
 		ShoulderR.Y = Body.Y + Body.Height - bodyBorderU;
 		ShoulderR.Width = -ShoulderR.SizeX;
 		ShoulderR.Height = ShoulderR.SizeY;
-		ShoulderR.PivotX = 1000;
-		ShoulderR.PivotY = 1000;
 
 		// Arm
 		UpperArmL.X = ShoulderL.X;
@@ -557,16 +544,12 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		UpperArmL.Z = (Movement.FacingFront ? facingSign * POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
 		UpperArmL.Width = UpperArmL.SizeX;
 		UpperArmL.Height = UpperArmL.FlexableSizeY;
-		UpperArmL.PivotX = 1000;
-		UpperArmL.PivotY = 1000;
 
 		UpperArmR.X = ShoulderR.X;
 		UpperArmR.Y = ShoulderR.Y - ShoulderR.Height + ShoulderR.Border.down;
 		UpperArmR.Z = (Movement.FacingFront ? facingSign * -POSE_Z_UPPERARM : -POSE_Z_UPPERARM);
 		UpperArmR.Width = UpperArmR.SizeX;
 		UpperArmR.Height = UpperArmR.FlexableSizeY;
-		UpperArmR.PivotX = 0;
-		UpperArmR.PivotY = 1000;
 
 		ShoulderL.Z = UpperArmL.Z - 1;
 		ShoulderR.Z = UpperArmR.Z - 1;
@@ -576,32 +559,24 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		LowerArmL.Z = (Movement.FacingFront ? facingSign * POSE_Z_LOWERARM : -POSE_Z_LOWERARM);
 		LowerArmL.Width = LowerArmL.SizeX;
 		LowerArmL.Height = LowerArmL.FlexableSizeY;
-		LowerArmL.PivotX = 1000;
-		LowerArmL.PivotY = 1000;
 
 		LowerArmR.X = UpperArmR.X;
 		LowerArmR.Y = UpperArmR.Y - UpperArmR.Height;
 		LowerArmR.Z = (Movement.FacingFront ? facingSign * -POSE_Z_LOWERARM : -POSE_Z_LOWERARM);
 		LowerArmR.Width = LowerArmR.SizeX;
 		LowerArmR.Height = LowerArmR.FlexableSizeY;
-		LowerArmR.PivotX = 0;
-		LowerArmR.PivotY = 1000;
 
 		HandL.X = LowerArmL.X;
 		HandL.Y = LowerArmL.Y - LowerArmL.Height;
 		HandL.Z = (Movement.FacingFront && Movement.FacingRight ? POSE_Z_HAND : -POSE_Z_HAND_CASUAL);
 		HandL.Width = HandL.SizeX;
 		HandL.Height = HandL.SizeY;
-		HandL.PivotX = 1000;
-		HandL.PivotY = 1000;
 
 		HandR.X = LowerArmR.X;
 		HandR.Y = LowerArmR.Y - LowerArmR.Height;
 		HandR.Z = (Movement.FacingFront && !Movement.FacingRight ? POSE_Z_HAND : -POSE_Z_HAND_CASUAL);
 		HandR.Width = -HandR.SizeX;
 		HandR.Height = HandR.SizeY;
-		HandR.PivotX = 1000;
-		HandR.PivotY = 1000;
 
 		// Leg
 		UpperLegL.X = Hip.X - Hip.Width.Abs() / 2 + hipBorderL;
@@ -609,24 +584,18 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		UpperLegL.Z = POSE_Z_UPPERLEG;
 		UpperLegL.Width = UpperLegL.SizeX;
 		UpperLegL.Height = UpperLegL.FlexableSizeY;
-		UpperLegL.PivotX = 0;
-		UpperLegL.PivotY = 1000;
 
 		UpperLegR.X = Hip.X + Hip.Width.Abs() / 2 - hipBorderR;
 		UpperLegR.Y = Hip.Y;
 		UpperLegR.Z = POSE_Z_UPPERLEG;
 		UpperLegR.Width = UpperLegR.SizeX;
 		UpperLegR.Height = UpperLegR.FlexableSizeY;
-		UpperLegR.PivotX = 1000;
-		UpperLegR.PivotY = 1000;
 
 		LowerLegL.X = UpperLegL.X;
 		LowerLegL.Y = UpperLegL.Y - UpperLegL.Height;
 		LowerLegL.Z = POSE_Z_LOWERLEG;
 		LowerLegL.Width = LowerLegL.SizeX;
 		LowerLegL.Height = LowerLegL.FlexableSizeY;
-		LowerLegL.PivotX = 0;
-		LowerLegL.PivotY = 1000;
 		if (Movement.FacingRight) LowerLegL.X -= A2G;
 
 		LowerLegR.X = UpperLegR.X;
@@ -634,8 +603,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		LowerLegR.Z = POSE_Z_LOWERLEG;
 		LowerLegR.Width = LowerLegR.SizeX;
 		LowerLegR.Height = LowerLegR.FlexableSizeY;
-		LowerLegR.PivotX = 1000;
-		LowerLegR.PivotY = 1000;
 		if (!Movement.FacingRight) LowerLegR.X += A2G;
 
 		FootL.X = Movement.FacingRight ? LowerLegL.X : LowerLegL.X + LowerLegL.SizeX;
@@ -643,16 +610,12 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		FootL.Z = POSE_Z_FOOT;
 		FootL.Width = facingSign * FootL.SizeX;
 		FootL.Height = FootL.FlexableSizeY;
-		FootL.PivotX = 0;
-		FootL.PivotY = 1000;
 
 		FootR.X = Movement.FacingRight ? LowerLegR.X - FootR.SizeX : LowerLegR.X;
 		FootR.Y = LowerLegR.Y - LowerLegR.Height;
 		FootR.Z = POSE_Z_FOOT;
 		FootR.Width = facingSign * FootR.SizeX;
 		FootR.Height = FootR.FlexableSizeY;
-		FootR.PivotX = 0;
-		FootR.PivotY = 1000;
 
 	}
 
@@ -720,7 +683,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			Body.Y += rawY;
 			Body.GlobalX += rawX;
 			Body.GlobalY += rawY;
-			for (int i = 0; i < BODY_PART_COUNT; i++) {
+			for (int i = 0; i < BodyPart.BODY_PART_COUNT; i++) {
 				var bodypart = BodyParts[i];
 				if (!bodypart.RotateWithBody) continue;
 				bodypart.X += rawX;
@@ -916,8 +879,8 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		if (ConfigPoolRendering.TryGetValue(TargetCharacter.TypeID, out var rConfig)) {
 			rConfig.LoadToCharacter(this);
 		} else {
-			for (int i = 0; i < DEFAULT_BODY_PART_ID.Length; i++) {
-				BodyParts[i].SetData(DEFAULT_BODY_PART_ID[i]);
+			for (int i = 0; i < BodyPart.DEFAULT_BODY_PART_ID.Length; i++) {
+				BodyParts[i].SetData(BodyPart.DEFAULT_BODY_PART_ID[i]);
 			}
 		}
 	}

@@ -55,6 +55,7 @@ public static class LightingSystem {
 	private const int LIGHT_MAP_UNIT_PADDING = 10;
 	private const int LIGHT_MAP_UNIT_PADDING_BOTTOM = 6;
 	private const int LIGHT_MAP_UNIT_PADDING_TOP = 6;
+	private const int UNIT_SCL = 2;
 	private static readonly float[] WEIGHTS = [0.071f, 0.19f, 0.51f, 0.19f, 0.071f,];
 
 	// Api

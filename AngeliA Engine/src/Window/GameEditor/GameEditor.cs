@@ -19,7 +19,7 @@ internal partial class GameEditor : WindowUI {
 	}
 
 
-	private enum PanelType { None, Profiler, Movement, Lighting, Location, }
+	private enum PanelType { None, Profiler, Movement, Lighting, ColorAnalyzer, Location, }
 
 
 	#endregion
@@ -39,6 +39,7 @@ internal partial class GameEditor : WindowUI {
 	private static readonly SpriteCode BTN_PAUSE = "Engine.Game.Pause";
 	private static readonly SpriteCode BTN_MOVEMENT = "Engine.Game.Movement";
 	private static readonly SpriteCode BTN_LIGHTING = "Engine.Game.Lighting";
+	private static readonly SpriteCode BTN_COLOR_ANA = "Engine.Game.ColorAnalyzer";
 	private static readonly SpriteCode BTN_LOCATION = "Engine.Game.Location";
 	private static readonly SpriteCode TOOLBAR_BG = "Engine.Game.Toolbar";
 	private static readonly SpriteCode PANEL_BG = "Engine.Game.PanelBG";
@@ -49,6 +50,7 @@ internal partial class GameEditor : WindowUI {
 	private static readonly LanguageCode TIP_ENTITY_CLICER = ("Engine.Game.Tip.EntityClicker", "Entity Debugger");
 	private static readonly LanguageCode TIP_COLLIDER = ("Engine.Game.Tip.Collider", "Collider");
 	private static readonly LanguageCode TIP_LIGHTING = ("Engine.Game.Tip.Lighting", "Lighting System");
+	private static readonly LanguageCode TIP_COLOR_ANA = ("Engine.Game.Tip.ColorAnalyzer", "Color Analyzer");
 	private static readonly LanguageCode TIP_LOCATION = ("Engine.Game.Tip.Location", "View Positions");
 	private static readonly LanguageCode TIP_MOVEMENT = ("Engine.Game.Tip.Movement", "Movement System");
 
@@ -73,6 +75,7 @@ internal partial class GameEditor : WindowUI {
 	private Project CurrentProject = null;
 	private PanelType CurrentPanel = PanelType.None;
 	private int RiggedGameGlobalFrame;
+	private int RiggedGameLeftBarWidth;
 
 
 	#endregion
@@ -83,7 +86,15 @@ internal partial class GameEditor : WindowUI {
 	#region --- MSG ---
 
 
-	public GameEditor () => Instance = this;
+	public GameEditor () {
+		Instance = this;
+		const int THUMBNAIL_WIDTH = 600;
+		const int THUMBNAIL_HEIGHT = 400;
+		ScreenThumbnailTexture = Game.GetTextureFromPixels(new Color32[THUMBNAIL_WIDTH * THUMBNAIL_HEIGHT].FillWithValue(Color32.CLEAR), THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+		const int CHART_WIDTH = 600;
+		const int CHART_HEIGHT = 400;
+		ColorAnalyzeChartTexture = Game.GetTextureFromPixels(new Color32[CHART_WIDTH * CHART_HEIGHT].FillWithValue(Color32.CLEAR), CHART_WIDTH, CHART_HEIGHT);
+	}
 
 
 	public override void FirstUpdate () {
@@ -164,6 +175,7 @@ internal partial class GameEditor : WindowUI {
 				case PanelType.Profiler: DrawProfilerPanel(ref panelRect); break;
 				case PanelType.Movement: break;
 				case PanelType.Lighting: DrawLightingPanel(ref panelRect); break;
+				case PanelType.ColorAnalyzer: DrawColorAnalyzerPanel(ref panelRect); break;
 				case PanelType.Location: DrawLocationPanel(ref panelRect); break;
 			}
 
@@ -259,6 +271,21 @@ internal partial class GameEditor : WindowUI {
 				rect.SlideDown(padding);
 			}
 
+
+			// Color Analyzer
+			isOn = CurrentPanel == PanelType.ColorAnalyzer;
+			newIsOn = GUI.IconToggle(rect, isOn, BTN_COLOR_ANA);
+			if (isOn != newIsOn) {
+				CurrentPanel = newIsOn ? PanelType.ColorAnalyzer : PanelType.None;
+			}
+			if (rect.MouseInside()) {
+				GUI.BackgroundLabel(rect.EdgeInsideLeft(1).Shift(-padding, 0), TIP_COLOR_ANA, Color32.GREY_20, padding, style: GUI.Skin.SmallRightLabel);
+			}
+			rect.SlideDown(padding);
+			if (Game.GlobalFrame == RequireColorAnalyzeFrame + 1) {
+				PerformColorAnalyze();
+			}
+
 			// Collider
 			DrawCollider = GUI.IconToggle(rect, DrawCollider, BTN_COLLIDER);
 			if (rect.MouseInside()) {
@@ -329,7 +356,7 @@ internal partial class GameEditor : WindowUI {
 			btnSize + panelPadding * 2
 		).Shrink(panelPadding);
 		var rect = panelRect.EdgeInsideSquareLeft();
-		var iconRect = rect;
+		IRect iconRect;
 
 		// BG
 		Renderer.DrawPixel(panelRect.Expand(panelPadding / 2), Color32.BLACK_32);
@@ -417,8 +444,9 @@ internal partial class GameEditor : WindowUI {
 	}
 
 
-	public void SetRiggedGameInfo (int riggedGameGlobalFrame) {
+	public void SetRiggedGameInfo (int riggedGameGlobalFrame, int leftBarWidth) {
 		RiggedGameGlobalFrame = riggedGameGlobalFrame;
+		RiggedGameLeftBarWidth = leftBarWidth;
 	}
 
 

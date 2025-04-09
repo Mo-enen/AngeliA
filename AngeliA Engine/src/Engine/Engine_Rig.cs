@@ -220,7 +220,7 @@ internal partial class Engine {
 						ignoreInGameGizmos
 					);
 					gameEDT.UpdateUsageData(resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities);
-					gameEDT.SetRiggedGameInfo(resp.GlobalFrame);
+					gameEDT.SetRiggedGameInfo(resp.GlobalFrame, GetEngineLeftBarWidth(out _));
 					gameEDT.HavingGamePlay = resp.GamePlaying;
 					if (openingGameEditor) {
 						Sky.ForceSkyboxTint(resp.SkyTop, resp.SkyBottom, 3);

@@ -27,6 +27,7 @@ CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake
 CtrlHint.Wardrobe.Type:Suit Type
 Engine.Game.Tip.Collider:Collider
+Engine.Game.Tip.ColorAnalyzer:Color Analyzer
 Engine.Game.Tip.EntityClicker:Entity Debugger
 Engine.Game.Tip.FrameDebug:Frame Debugger
 Engine.Game.Tip.Lighting:Lighting System

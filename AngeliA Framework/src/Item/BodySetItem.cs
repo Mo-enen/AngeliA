@@ -70,16 +70,16 @@ public sealed class BodySetItem : NonStackableItem {
 		TargetCharacterName = basicName;
 		TargetCharacterID = TargetCharacterName.AngeHash();
 		Data = new() {
-			Head = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[0]}".AngeHash(),
-			Body = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[1]}".AngeHash(),
-			Hip = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[2]}".AngeHash(),
-			Shoulder = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[3]}".AngeHash(),
-			UpperArm = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[5]}".AngeHash(),
-			LowerArm = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[7]}".AngeHash(),
-			Hand = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[9]}".AngeHash(),
-			UpperLeg = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[11]}".AngeHash(),
-			LowerLeg = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[13]}".AngeHash(),
-			Foot = $"{basicName}.{PoseCharacterRenderer.BODY_PART_NAME[15]}".AngeHash(),
+			Head = $"{basicName}.{BodyPart.BODY_PART_NAME[0]}".AngeHash(),
+			Body = $"{basicName}.{BodyPart.BODY_PART_NAME[1]}".AngeHash(),
+			Hip = $"{basicName}.{BodyPart.BODY_PART_NAME[2]}".AngeHash(),
+			Shoulder = $"{basicName}.{BodyPart.BODY_PART_NAME[3]}".AngeHash(),
+			UpperArm = $"{basicName}.{BodyPart.BODY_PART_NAME[5]}".AngeHash(),
+			LowerArm = $"{basicName}.{BodyPart.BODY_PART_NAME[7]}".AngeHash(),
+			Hand = $"{basicName}.{BodyPart.BODY_PART_NAME[9]}".AngeHash(),
+			UpperLeg = $"{basicName}.{BodyPart.BODY_PART_NAME[11]}".AngeHash(),
+			LowerLeg = $"{basicName}.{BodyPart.BODY_PART_NAME[13]}".AngeHash(),
+			Foot = $"{basicName}.{BodyPart.BODY_PART_NAME[15]}".AngeHash(),
 		};
 	}
 

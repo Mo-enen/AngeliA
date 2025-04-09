@@ -132,6 +132,10 @@ public partial class RiggedGame {
 
 	protected override object _GetResizedTexture (object texture, int newWidth, int newHeight, bool nearestNeighbor = true) => RayUtil.GetResizedTexture(texture, newWidth, newHeight, nearestNeighbor);
 
+	protected override void _FillResizedTexture (object sourceTexture, object targetTexture, bool nearestNeighbor = true) { }
+
+	protected override object _GetScreenRenderingTexture () => RayUtil.EMPTY_TEXTURE_OBJ;
+
 
 	// Gizmos
 	protected override void _DrawGizmosRect (IRect rect, Color32 color) => _DrawGizmosRect(rect, color, color, color, color);
@@ -161,7 +165,7 @@ public partial class RiggedGame {
 		RespondMessage.RequireGizmosLineCount++;
 	}
 
-	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse) { }
+	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse, bool flipX, bool flipY) { }
 
 	protected override void _IgnoreGizmos (int duration = 0) { }
 

@@ -217,7 +217,6 @@ public static class PlayerSystem {
 	}
 
 
-
 	[OnGameRestart]
 	internal static void OnGameRestart () => Selecting?.GetBonusFromFullSleep();
 
@@ -231,6 +230,9 @@ public static class PlayerSystem {
 
 		Selecting.IgnoreDespawnFromMap(1);
 		Selecting.DespawnAfterPassoutDelay = -1;
+
+		// Illuminate
+		LightingSystem.Illuminate(Selecting.CenterX, Selecting.CenterY, ((IPlayable)Selecting).IlluminateRadius, ((IPlayable)Selecting).IlluminateAmount);
 
 		// Update Player
 		switch (Selecting.CharacterState) {
@@ -602,18 +604,6 @@ public static class PlayerSystem {
 
 		// Size
 		Stage.SetViewSizeDelay(TargetViewHeight, 96, int.MinValue, centralized: true);
-
-		// Clamp
-		//if (!Stage.ViewRect.Contains(Selecting.X, Selecting.Y)) {
-		//	var viewRect = Stage.ViewRect;
-		//	if (Selecting.X >= viewRect.xMax) AimViewX = Selecting.X - viewRect.width + 1;
-		//	if (Selecting.X <= viewRect.xMin) AimViewX = Selecting.X - 1;
-		//	if (Selecting.Y >= viewRect.yMax) AimViewY = Selecting.Y - viewRect.height + 1;
-		//	if (Selecting.Y <= viewRect.yMin) AimViewY = Selecting.Y - 1;
-		//	viewRect.x = AimViewX;
-		//	viewRect.y = AimViewY;
-		//	Stage.SetViewRectImmediately(viewRect, resetDelay: false);
-		//}
 
 	}
 

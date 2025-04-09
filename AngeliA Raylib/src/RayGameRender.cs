@@ -438,6 +438,10 @@ public partial class RayGame {
 
 	protected override object _GetResizedTexture (object texture, int newWidth, int newHeight, bool nearestNeighbor = true) => RayUtil.GetResizedTexture(texture, newWidth, newHeight, nearestNeighbor);
 
+	protected override void _FillResizedTexture (object sourceTexture, object targetTexture, bool nearestNeighbor = true) => RayUtil.FillResizedTexture(sourceTexture, targetTexture, nearestNeighbor);
+
+	protected override object _GetScreenRenderingTexture () => RenderTexture.Texture;
+
 
 	// Gizmos
 	protected override void _DrawGizmosRect (IRect rect, Color32 color) {
@@ -526,7 +530,7 @@ public partial class RayGame {
 		);
 	}
 
-	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse) {
+	protected override void _DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse, bool flipX, bool flipY) {
 		if (PauselessFrame <= IgnoreGizmosFrame) return;
 		if (texture is not Texture2D rTexture) return;
 		if (CurrentAltTextureMode != AltTextureMode.Gizmos) {
@@ -561,10 +565,16 @@ public partial class RayGame {
 				new Vector2(ScreenWidth, ScreenHeight), ShaderUniformDataType.Vec2
 			);
 		}
+		gizmosUV = gizmosUV.ShrinkRectangle(0.001f);
+		gizmosRect = gizmosRect.ExpandRectangle(0.001f);
+		if (flipX) {
+			gizmosUV.FlipHorizontal();
+		}
+		if (flipY) {
+			gizmosUV.Height = -gizmosUV.Height;
+		}
 		Raylib.DrawTexturePro(
-			rTexture,
-			gizmosUV.ShrinkRectangle(0.001f),
-			gizmosRect.ExpandRectangle(0.001f),
+			rTexture, gizmosUV, gizmosRect,
 			new(0, 0), 0, tint.ToRaylib()
 		);
 		if (inverse) {

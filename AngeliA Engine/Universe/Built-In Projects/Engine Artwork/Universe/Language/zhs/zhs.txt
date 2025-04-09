@@ -27,6 +27,7 @@ CtrlHint.Use:使用
 CtrlHint.WakeUp:醒来
 CtrlHint.Wardrobe.Type:服装类型
 Engine.Game.Tip.Collider:碰撞体
+Engine.Game.Tip.ColorAnalyzer:颜色分析器
 Engine.Game.Tip.EntityClicker:实体调试
 Engine.Game.Tip.FrameDebug:逐帧调试
 Engine.Game.Tip.Lighting:光照系统

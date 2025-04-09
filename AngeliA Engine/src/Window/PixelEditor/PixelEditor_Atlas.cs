@@ -607,7 +607,7 @@ internal partial class PixelEditor {
 		if (!folder) {
 			SetCurrentAtlas(EditingSheet.Atlas.Count - 1);
 			// Create Default Sprites
-			CreateSpriteForPalette(useDefaultPos: true);
+			Instance.CreateSpritesFromTemplates(atlas.Name, "BuiltInPalette", tag: Tag.Palette);
 			CreateNewSprite($"{atlas.Name}.NewSprite");
 		}
 	}

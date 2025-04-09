@@ -7,14 +7,24 @@ namespace AngeliA;
 /// <summary>
 /// Representation of a bodypart for a pose-style character
 /// </summary>
-/// <param name="parent">Which bodypart does this bodypart attached on. Set to null if it's not a limb</param>
-/// <param name="useLimbFlip">True if the limb flip horizontaly when rotate over specified angle</param>
-/// <param name="rotateWithBody">True if the limb apply rotation from body of the character</param>
-public class BodyPart (BodyPart parent, bool useLimbFlip, bool rotateWithBody) {
+public class BodyPart {
 
 
 	// Const
 	private static readonly System.Type BASIC_CHARACTER_TYPE = typeof(Character);
+	internal const int BODY_PART_COUNT = 17;
+	internal static readonly int[] DEFAULT_BODY_PART_ID = ["DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(),];
+	internal static readonly string[] BODY_PART_NAME = ["Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot",];
+	internal static readonly Int2[] BODY_DEF_PIVOT = [
+		new(500, 0), new(500, 0), new(500, 0),
+		new(1000, 1000), new(1000, 1000), new(1000, 1000), new(0, 1000), new(1000, 1000), new(0, 1000), new(1000, 1000), new(1000, 1000),
+		new(0, 1000), new(1000, 1000), new(0, 1000), new(1000, 1000), new(0, 1000), new(0, 1000),
+	];
+	internal static readonly bool[] REQUIRE_LIMB_ROT = [
+		false,false,false,
+		false,false,true,true,true,true,true,true,
+		true,true,true,true,true,true,
+	];
 
 	// SUB
 	/// <summary>
@@ -54,15 +64,15 @@ public class BodyPart (BodyPart parent, bool useLimbFlip, bool rotateWithBody) {
 	/// <summary>
 	/// True if the limb flip horizontaly when rotate over specified angle	
 	/// </summary>
-	public bool UseLimbFlip { get; init; } = useLimbFlip;
+	public bool UseLimbFlip { get; init; }
 	/// <summary>
 	/// Which bodypart does this bodypart attached on. Set to null if it's not a limb
 	/// </summary>
-	public BodyPart LimbParent { get; init; } = parent;
+	public BodyPart LimbParent { get; init; }
 	/// <summary>
 	/// True if the limb apply rotation from body of the character
 	/// </summary>
-	public bool RotateWithBody { get; init; } = rotateWithBody;
+	public bool RotateWithBody { get; init; }
 	/// <summary>
 	/// True if this bodypart is totaly covered by cloth
 	/// </summary>
@@ -128,6 +138,28 @@ public class BodyPart (BodyPart parent, bool useLimbFlip, bool rotateWithBody) {
 	/// Color tint
 	/// </summary>
 	public Color32 Tint;
+
+	private readonly int DefaultPivotX;
+	private readonly int DefaultPivotY;
+
+
+	// MSG
+	/// <summary>
+	/// Representation of a bodypart for a pose-style character
+	/// </summary>
+	/// <param name="parent">Which bodypart does this bodypart attached on. Set to null if it's not a limb</param>
+	/// <param name="useLimbFlip">True if the limb flip horizontaly when rotate over specified angle</param>
+	/// <param name="rotateWithBody">True if the limb apply rotation from body of the character</param>
+	/// <param name="defaultPivotX"></param>
+	/// <param name="defaultPivotY"></param>
+	public BodyPart (BodyPart parent, bool useLimbFlip, bool rotateWithBody, int defaultPivotX, int defaultPivotY) {
+		UseLimbFlip = useLimbFlip;
+		LimbParent = parent;
+		RotateWithBody = rotateWithBody;
+		DefaultPivotX = defaultPivotX;
+		DefaultPivotY = defaultPivotY;
+	}
+
 
 	// API
 	/// <summary>
@@ -279,6 +311,12 @@ public class BodyPart (BodyPart parent, bool useLimbFlip, bool rotateWithBody) {
 		if (LimbParent != null && (Rotation - LimbParent.Rotation).Abs() <= 1) {
 			Rotation = LimbParent.Rotation;
 		}
+	}
+
+
+	internal void SetPivotToDefault () {
+		PivotX = DefaultPivotX;
+		PivotY = DefaultPivotY;
 	}
 
 

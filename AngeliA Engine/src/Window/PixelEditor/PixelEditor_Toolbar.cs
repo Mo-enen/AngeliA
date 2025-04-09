@@ -1152,7 +1152,8 @@ internal partial class PixelEditor {
 		}
 		static void NewPalette () {
 			if (GenericPopupUI.InvokingItemData is not Int2 pixPos) return;
-			Instance.CreateSpriteForPalette(false, pixelPos: pixPos);
+			string name = EditingSheet.GetAvailableSpriteName("Palette");
+			Instance.CreateSpritesFromTemplates(name, "BuiltInPalette", pixPos, tag: Tag.Palette);
 		}
 		static void NewPoseCharSprite () {
 			if (GenericPopupUI.InvokingItemData is not (string name, Int2 pixPos)) return;

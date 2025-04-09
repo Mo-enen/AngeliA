@@ -371,6 +371,24 @@ public partial class Game {
 	protected abstract object _GetResizedTexture (object texture, int newWidth, int newHeight, bool nearestNeighbor = true);
 
 
+	/// <inheritdoc cref="_FillResizedTexture"/>
+	public static void FillResizedTexture (object sourceTexture, object targetTexture, bool nearestNeighbor = true) => Instance._FillResizedTexture(sourceTexture, targetTexture, nearestNeighbor);
+	/// <summary>
+	/// Copy data from source texture into target texture. Stretch resize the content if two textures have different size.
+	/// </summary>
+	/// <param name="sourceTexture"></param>
+	/// <param name="targetTexture"></param>
+	/// <param name="nearestNeighbor">True if the misaligned pixels should be averaged with it's nearby pixels</param>
+	protected abstract void _FillResizedTexture (object sourceTexture, object targetTexture, bool nearestNeighbor = true);
+
+
+	/// <summary>
+	/// Get the instance of the internal texture that holds the pixel data on screen
+	/// </summary>
+	public static object GetScreenRenderingTexture () => Instance._GetScreenRenderingTexture();
+	protected abstract object _GetScreenRenderingTexture ();
+
+
 	// Gizmos
 	/// <inheritdoc cref="DrawGizmosFrame(IRect, Color32, Int4, Int4)"/>
 	public static void DrawGizmosFrame (IRect rect, Color32 color, int thickness, int gap = 0) => DrawGizmosFrame(rect, color, new Int4(thickness, thickness, thickness, thickness), new Int4(gap, gap, gap, gap));
@@ -458,13 +476,13 @@ public partial class Game {
 
 
 	/// <inheritdoc cref="_DrawGizmosTexture"/>
-	public static void DrawGizmosTexture (IRect rect, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture, Color32.WHITE, inverse);
+	public static void DrawGizmosTexture (IRect rect, object texture, bool inverse = false, bool flipX = false, bool flipY = false) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture, Color32.WHITE, inverse, flipX, flipY);
 	/// <inheritdoc cref="_DrawGizmosTexture"/>
-	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse = false) => Instance._DrawGizmosTexture(rect, uv, texture, Color32.WHITE, inverse);
+	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, bool inverse = false, bool flipX = false, bool flipY = false) => Instance._DrawGizmosTexture(rect, uv, texture, Color32.WHITE, inverse, flipX, flipY);
 	/// <inheritdoc cref="_DrawGizmosTexture"/>
-	public static void DrawGizmosTexture (IRect rect, object texture, Color32 tint, bool inverse = false) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture, tint, inverse);
+	public static void DrawGizmosTexture (IRect rect, object texture, Color32 tint, bool inverse = false, bool flipX = false, bool flipY = false) => Instance._DrawGizmosTexture(rect, new FRect(0f, 0f, 1f, 1f), texture, tint, inverse, flipX, flipY);
 	/// <inheritdoc cref="_DrawGizmosTexture"/>
-	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse = false) => Instance._DrawGizmosTexture(rect, uv, texture, tint, inverse);
+	public static void DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse = false, bool flipX = false, bool flipY = false) => Instance._DrawGizmosTexture(rect, uv, texture, tint, inverse, flipX, flipY);
 	/// <summary>
 	/// Draw the given texture as gizmos for current frame
 	/// </summary>
@@ -473,7 +491,7 @@ public partial class Game {
 	/// <param name="texture"></param>
 	/// <param name="tint">Color tint</param>
 	/// <param name="inverse">True if the texture display as the inversed color of the current rendered pixel on screen.</param>
-	protected abstract void _DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse);
+	protected abstract void _DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse, bool flipX, bool flipY);
 
 
 	/// <inheritdoc cref="_DrawGizmosLine"/>

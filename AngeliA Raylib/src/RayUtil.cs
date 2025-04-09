@@ -11,6 +11,7 @@ public static unsafe class RayUtil {
 
 	// VAR
 	private static readonly Color[] FillPixelCache = new Color[512 * 512];
+	public static object EMPTY_TEXTURE_OBJ => EMPTY_TEXTURE;
 	public static Texture2D EMPTY_TEXTURE { get; private set; }
 
 
@@ -198,6 +199,20 @@ public static unsafe class RayUtil {
 		Raylib.UnloadImage(img);
 		if (!Raylib.IsTextureReady(result)) return null;
 		return result;
+	}
+
+	public static void FillResizedTexture (object source, object target, bool nearestNeighbor = true) {
+		if (source is not Texture2D rSource) return;
+		if (target is not Texture2D rTarget) return;
+		var img = Raylib.LoadImageFromTexture(rSource);
+		if (!Raylib.IsImageReady(img)) return;
+		if (nearestNeighbor) {
+			Raylib.ImageResizeNN(ref img, rTarget.Width, rTarget.Height);
+		} else {
+			Raylib.ImageResize(ref img, rTarget.Width, rTarget.Height);
+		}
+		if (!Raylib.IsImageReady(img)) return;
+		Raylib.UpdateTexture(rTarget, img.Data);
 	}
 
 

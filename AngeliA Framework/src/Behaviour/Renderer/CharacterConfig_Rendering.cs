@@ -82,9 +82,9 @@ public class CharacterRenderingConfig {
 
 		// Body Parts
 		if (!ignoreBodyPart) {
-			for (int i = 0; i < PoseCharacterRenderer.BODY_PART_COUNT; i++) {
-				if (!BodyPart.TryGetSpriteIdFromSheet(characterType, PoseCharacterRenderer.BODY_PART_NAME[i], i == 0, out int id)) {
-					id = PoseCharacterRenderer.DEFAULT_BODY_PART_ID[i];
+			for (int i = 0; i < BodyPart.BODY_PART_COUNT; i++) {
+				if (!BodyPart.TryGetSpriteIdFromSheet(characterType, BodyPart.BODY_PART_NAME[i], i == 0, out int id)) {
+					id = BodyPart.DEFAULT_BODY_PART_ID[i];
 				}
 				switch (i) {
 					case 0: Head = id; break;
@@ -139,9 +139,9 @@ public class CharacterRenderingConfig {
 	};
 
 	public bool AllBodyPartIsDefault () {
-		for (int i = 0; i < PoseCharacterRenderer.BODY_PART_COUNT; i++) {
+		for (int i = 0; i < BodyPart.BODY_PART_COUNT; i++) {
 			int id = GetBodyPartID(i);
-			if (id != PoseCharacterRenderer.DEFAULT_BODY_PART_ID[i]) return false;
+			if (id != BodyPart.DEFAULT_BODY_PART_ID[i]) return false;
 		}
 		return true;
 	}
