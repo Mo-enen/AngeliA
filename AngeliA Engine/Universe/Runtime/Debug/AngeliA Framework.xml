@@ -17371,6 +17371,14 @@
         <member name="M:AngeliA.Util.RgbToHsvF(AngeliA.ColorF,System.Single@,System.Single@,System.Single@)">
             <inheritdoc cref="M:AngeliA.Util.RgbToHsv(AngeliA.Color32,System.Single@,System.Single@,System.Single@)"/>
         </member>
+        <member name="M:AngeliA.Util.RgbToGrey(AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Util.RgbToGreyF(AngeliA.ColorF)"/>
+        </member>
+        <member name="M:AngeliA.Util.RgbToGreyF(AngeliA.ColorF)">
+            <summary>
+            Get grey scale of given color. (return between 0 and 1)
+            </summary>
+        </member>
         <member name="M:AngeliA.Util.MergeColor_Overlay(AngeliA.ColorF,AngeliA.ColorF)">
             <summary>
             Draw color "top" onto "back" with blending overlay

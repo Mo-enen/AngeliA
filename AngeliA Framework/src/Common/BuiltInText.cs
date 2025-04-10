@@ -50,6 +50,7 @@ public static class BuiltInText {
 	public static readonly LanguageCode UI_LOCK = ("UI.Lock", "Lock");
 	public static readonly LanguageCode UI_UNLOCK = ("UI.Unlock", "Unlock");
 	public static readonly LanguageCode UI_RENAME = ("UI.Rename", "Rename");
+	public static readonly LanguageCode UI_REFRESH = ("UI.Refresh", "Refresh");
 
 	// Label
 	public static readonly LanguageCode LABEL_L = ("Label.L", "L");

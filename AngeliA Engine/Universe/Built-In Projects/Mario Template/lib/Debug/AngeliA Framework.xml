@@ -2391,11 +2391,6 @@
             Callback function for character entity get activated
             </summary>
         </member>
-        <member name="F:AngeliA.PoseCharacterRenderer.BODY_PART_COUNT">
-            <summary>
-            How many body part does a pose character have
-            </summary>
-        </member>
         <member name="F:AngeliA.PoseCharacterRenderer.CM_PER_PX">
             <summary>
             How many cm does one artwork pixel represents
@@ -3306,6 +3301,26 @@
             Move data at head to the first of the internal array
             </summary>
         </member>
+        <member name="T:AngeliA.PixelPerfect">
+            <summary>
+            Class that makes rendering cells pixel perfect
+            </summary>
+        </member>
+        <member name="F:AngeliA.PixelPerfect.Enable">
+            <summary>
+            True if require pixel perfect for current frame
+            </summary>
+        </member>
+        <member name="P:AngeliA.PixelPerfect.IncludeUiLayer">
+            <summary>
+            True if require pixel perfect for UI rendering layer
+            </summary>
+        </member>
+        <member name="F:AngeliA.PixelPerfect.PixelScale">
+            <summary>
+            Global unit / pixel. Default 16.
+            </summary>
+        </member>
         <member name="T:AngeliA.QTest">
             <summary>
             Utility tool for quick testing ⚠Debug only. Do not work after game release.⚠
@@ -3966,6 +3981,11 @@
         <member name="F:AngeliA.UniverseInfo.LastBackupSavingDate">
             <summary>
             Last time AngeliA Engine backup the saving files
+            </summary>
+        </member>
+        <member name="F:AngeliA.UniverseInfo.UsePixelPerfectRendering">
+            <summary>
+            True if the game require rendering cell pixel perfect
             </summary>
         </member>
         <member name="T:AngeliA.CellScreenshotSystem">
@@ -5958,7 +5978,7 @@
         </member>
         <member name="M:AngeliA.Sky.SetInGameDaytime(System.Single)">
             <summary>
-            Set current in-game time (0 means 0:00. 0.5 means 12:00. 1 means 24:00)
+            Set current in-game time. (0 means 0:00. 0.5 means 12:00. 1 means 24:00. -1 means real world time)
             </summary>
         </member>
         <member name="M:AngeliA.Sky.GetInGameDaytimeFromRealTime">
@@ -6985,17 +7005,6 @@
             <summary>
             Representation of a bodypart for a pose-style character
             </summary>
-            <param name="parent">Which bodypart does this bodypart attached on. Set to null if it's not a limb</param>
-            <param name="useLimbFlip">True if the limb flip horizontaly when rotate over specified angle</param>
-            <param name="rotateWithBody">True if the limb apply rotation from body of the character</param>
-        </member>
-        <member name="M:AngeliA.BodyPart.#ctor(AngeliA.BodyPart,System.Boolean,System.Boolean)">
-            <summary>
-            Representation of a bodypart for a pose-style character
-            </summary>
-            <param name="parent">Which bodypart does this bodypart attached on. Set to null if it's not a limb</param>
-            <param name="useLimbFlip">True if the limb flip horizontaly when rotate over specified angle</param>
-            <param name="rotateWithBody">True if the limb apply rotation from body of the character</param>
         </member>
         <member name="T:AngeliA.BodyPart.CoverMode">
             <summary>
@@ -7131,6 +7140,16 @@
             <summary>
             Color tint
             </summary>
+        </member>
+        <member name="M:AngeliA.BodyPart.#ctor(AngeliA.BodyPart,System.Boolean,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Representation of a bodypart for a pose-style character
+            </summary>
+            <param name="parent">Which bodypart does this bodypart attached on. Set to null if it's not a limb</param>
+            <param name="useLimbFlip">True if the limb flip horizontaly when rotate over specified angle</param>
+            <param name="rotateWithBody">True if the limb apply rotation from body of the character</param>
+            <param name="defaultPivotX"></param>
+            <param name="defaultPivotY"></param>
         </member>
         <member name="M:AngeliA.BodyPart.TryGetSpriteIdFromSheet(System.Type,System.String,System.Boolean,System.Int32@)">
             <summary>
@@ -8496,6 +8515,16 @@
         <member name="T:AngeliA.IPlayable">
             <summary>
             Interface that mark the character as playable character
+            </summary>
+        </member>
+        <member name="P:AngeliA.IPlayable.IlluminateRadius">
+            <summary>
+            Lighting system illuminate size in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.IPlayable.IlluminateAmount">
+            <summary>
+            Lighting system illuminate amount. 0 means no illuminate. 1000 means general amount.
             </summary>
         </member>
         <member name="T:AngeliA.IRouteWalker">
@@ -10755,6 +10784,22 @@
             <param name="nearestNeighbor">True if the misaligned pixels should be averaged with it's nearby pixels</param>
             <returns>Return null if invalid. Don't throw exception.</returns>
         </member>
+        <member name="M:AngeliA.Game.FillResizedTexture(System.Object,System.Object,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._FillResizedTexture(System.Object,System.Object,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game._FillResizedTexture(System.Object,System.Object,System.Boolean)">
+            <summary>
+            Copy data from source texture into target texture. Stretch resize the content if two textures have different size.
+            </summary>
+            <param name="sourceTexture"></param>
+            <param name="targetTexture"></param>
+            <param name="nearestNeighbor">True if the misaligned pixels should be averaged with it's nearby pixels</param>
+        </member>
+        <member name="M:AngeliA.Game.GetScreenRenderingTexture">
+            <summary>
+            Get the instance of the internal texture that holds the pixel data on screen
+            </summary>
+        </member>
         <member name="M:AngeliA.Game.DrawGizmosFrame(AngeliA.IRect,AngeliA.Color32,System.Int32,System.Int32)">
             <inheritdoc cref="M:AngeliA.Game.DrawGizmosFrame(AngeliA.IRect,AngeliA.Color32,AngeliA.Int4,AngeliA.Int4)"/>
         </member>
@@ -10795,19 +10840,19 @@
             <param name="colorB">Color tint</param>
             <param name="color">Color tint</param>
         </member>
-        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,System.Boolean)">
-            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)"/>
+        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,System.Boolean,System.Boolean,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)"/>
         </member>
-        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,System.Boolean)">
-            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)"/>
+        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,System.Boolean,System.Boolean,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)"/>
         </member>
-        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,AngeliA.Color32,System.Boolean)">
-            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)"/>
+        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)"/>
         </member>
-        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)">
-            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)"/>
+        <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)"/>
         </member>
-        <member name="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)">
+        <member name="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Draw the given texture as gizmos for current frame
             </summary>
@@ -11545,6 +11590,7 @@
             GUI element that behave like a button
             </summary>
             <param name="rect">Rect position in global space</param>
+            <param name="state"></param>
             <param name="icon">Artwork sprite ID for the icon inside this button</param>
             <param name="label">Text content inside this button</param>
             <param name="charSize">Character size of the label in unified space</param>
@@ -15600,6 +15646,64 @@
             Task that select current player
             </summary>
         </member>
+        <member name="T:AngeliA.TeleportTask">
+            <summary>
+            Task for handle logic during player teleport
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.TeleportFrom">
+            <summary>
+            Teleport from this position in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.TeleportTo">
+            <summary>
+            Teleport to this position in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.WaitDuration">
+            <summary>
+            Teleport actually start after wait this frames long
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.Duration">
+            <summary>
+            Teleport takes this frames long to finish
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.UseVignette">
+            <summary>
+            True if use the vignette effect during teleport
+            </summary>
+        </member>
+        <member name="P:AngeliA.TeleportTask.UseParallax">
+            <summary>
+            True if use the map layer parallax effect during teleport
+            </summary>
+        </member>
+        <member name="M:AngeliA.TeleportTask.TeleportFromDoor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Make a teleport for selecting player by using a door
+            </summary>
+            <param name="fromX">(in global space)</param>
+            <param name="fromY">(in global space)</param>
+            <param name="toX">(in global space)</param>
+            <param name="toY">(in global space)</param>
+            <param name="toZ"></param>
+            <returns>Global single instance of the task unit</returns>
+        </member>
+        <member name="M:AngeliA.TeleportTask.TeleportFromPortal(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Make a teleport for selecting player by using a portal
+            </summary>
+            <param name="fromX">(in global space)</param>
+            <param name="fromY">(in global space)</param>
+            <param name="toX">(in global space)</param>
+            <param name="toY">(in global space)</param>
+            <param name="toZ"></param>
+            <param name="samePosition">True if the X and Y position are the same</param>
+            <returns>Global single instance of the task unit</returns>
+        </member>
         <member name="T:AngeliA.FrameworkUtil">
             <summary>
             Utility class for the AngeliA framework
@@ -17266,6 +17370,14 @@
         </member>
         <member name="M:AngeliA.Util.RgbToHsvF(AngeliA.ColorF,System.Single@,System.Single@,System.Single@)">
             <inheritdoc cref="M:AngeliA.Util.RgbToHsv(AngeliA.Color32,System.Single@,System.Single@,System.Single@)"/>
+        </member>
+        <member name="M:AngeliA.Util.RgbToGrey(AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Util.RgbToGreyF(AngeliA.ColorF)"/>
+        </member>
+        <member name="M:AngeliA.Util.RgbToGreyF(AngeliA.ColorF)">
+            <summary>
+            Get grey scale of given color. (return between 0 and 1)
+            </summary>
         </member>
         <member name="M:AngeliA.Util.MergeColor_Overlay(AngeliA.ColorF,AngeliA.ColorF)">
             <summary>

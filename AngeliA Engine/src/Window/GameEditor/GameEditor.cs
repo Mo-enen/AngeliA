@@ -139,6 +139,7 @@ internal partial class GameEditor : WindowUI {
 					CurrentPanel = PanelType.None;
 					break;
 				case PanelType.Lighting:
+				case PanelType.ColorAnalyzer:
 					CurrentPanel = PanelType.None;
 					break;
 			}

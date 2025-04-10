@@ -8,11 +8,14 @@ internal partial class GameEditor {
 
 
 	// VAR
-	const int HUE_ITER_COUNT = 2;
 	private readonly object ScreenThumbnailTexture;
-	private readonly float[] HueAmount = new float[360];
-	private readonly float[] HueAmountAlt = new float[360];
+	private readonly float[] HueAmount = new float[24];
+	private readonly float[] SaturationAmount = new float[24];
+	private readonly float[] ValueAmount = new float[24];
+	private readonly float[] DullHueAmount = new float[3];
 	private float MaxHueAmount;
+	private float MaxSaturationAmount;
+	private float MaxValueAmount;
 	private int RequireColorAnalyzeFrame = -2;
 	private FRect ThumbnailUV;
 	private Int2 ScreenTextureSize;
@@ -21,7 +24,7 @@ internal partial class GameEditor {
 	// MSG
 	private void DrawColorAnalyzerPanel (ref IRect panelRect) {
 
-		if (Game.GlobalFrame == RequireColorAnalyzeFrame) {
+		if (Game.GlobalFrame == RequireColorAnalyzeFrame || GenericDialogUI.ShowingDialog) {
 			Game.CancelGizmosOnTopOfUI();
 			return;
 		}
@@ -56,12 +59,12 @@ internal partial class GameEditor {
 			int chartHeight = Unify(128);
 			rect.yMin = rect.yMax - chartHeight;
 			DrawColorAnalyzeChart(rect.Shrink(padding));
-			rect.SlideDown(padding);
+			rect.SlideDown(padding + GUI.FieldHeight);
 			rect.yMin = rect.yMax - toolbarSize;
 		}
 
-		// Analyze Button
-		if (GUI.Button(rect.Shrink(padding * 2, padding * 2, 0, 0), BuiltInText.UI_APPLY)) {
+		// Refresh Button
+		if (GUI.Button(rect.Shrink(padding * 2, padding * 2, 0, 0), BuiltInText.UI_REFRESH) || RequireColorAnalyzeFrame < 0) {
 			RequireColorAnalyzeFrame = Game.GlobalFrame + 1;
 		}
 		rect.SlideDown(padding);
@@ -98,61 +101,128 @@ internal partial class GameEditor {
 
 		// Calculate Result
 		System.Array.Clear(HueAmount);
-		System.Array.Clear(HueAmountAlt);
+		System.Array.Clear(DullHueAmount);
+		System.Array.Clear(SaturationAmount);
+		System.Array.Clear(ValueAmount);
 		MaxHueAmount = 0f;
+		MaxSaturationAmount = 0f;
+		MaxValueAmount = 0f;
+		int hueCount = HueAmount.Length;
+		int dullHueCount = DullHueAmount.Length;
+		int satCount = SaturationAmount.Length;
+		int valCount = ValueAmount.Length;
 		var screenPixels = Game.GetPixelsFromTexture(screenTexture);
 		int len = screenPixels.Length;
 		for (int i = 0; i < len; i++) {
 			var pix = screenPixels[i];
 			Util.RgbToHsv(pix, out float h, out float s, out float v);
-			if (s < 0.1f || v < 0.1f) continue;
-			int hueIndex = (h * 360).RoundToInt().Clamp(0, 359);
-			float hueAmount = s * 0.3f + v;
-			HueAmount[hueIndex] += hueAmount;
-		}
-
-		// Iterate Hue
-		for (int iter = 0; iter < HUE_ITER_COUNT; iter++) {
-			var (source, target) = iter % 2 == 0 ? (HueAmount, HueAmountAlt) : (HueAmountAlt, HueAmount);
-			for (int i = 0; i < 360; i++) {
-				if (source[i].AlmostZero()) continue;
-				target[i] = GetIterateHue(source, i);
+			// Hue
+			if (v >= 0.2f && s >= 0.2f) {
+				int hueIndex = (h * hueCount).RoundToInt().Clamp(0, hueCount - 1);
+				HueAmount[hueIndex] += 0.618f;
+			} else {
+				int hueIndex = (v * dullHueCount).RoundToInt().Clamp(0, dullHueCount - 1);
+				DullHueAmount[hueIndex] += 0.618f;
 			}
-			static float GetIterateHue (float[] hues, int index) {
-				const int RAD = 2;
-				float result = 0f;
-				int left = index - RAD;
-				int right = index + RAD;
-				for (int i = left; i <= right; i++) {
-					result += hues[i.UMod(360)];
-				}
-				return result / (RAD * 2 + 1);
-			}
+			// Saturation
+			int sIndex = (s * satCount).RoundToInt().Clamp(0, satCount - 1);
+			SaturationAmount[sIndex] += 1f;
+			// Value
+			int vIndex = (v * valCount).RoundToInt().Clamp(0, valCount - 1);
+			ValueAmount[vIndex] += 1f;
 		}
 
 		// Cache
-		var targetCache = HUE_ITER_COUNT % 2 == 0 ? HueAmount : HueAmountAlt;
-		for (int i = 0; i < 360; i++) {
-			float amount = targetCache[i];
-			amount = (float)System.Math.Log(amount + 1f);
-			targetCache[i] = amount;
-			MaxHueAmount = Util.Max(MaxHueAmount, amount);
+		for (int i = 0; i < hueCount; i++) {
+			MaxHueAmount = Util.Max(MaxHueAmount, HueAmount[i]);
+		}
+		for (int i = 0; i < dullHueCount; i++) {
+			MaxHueAmount = Util.Max(MaxHueAmount, DullHueAmount[i]);
+		}
+		for (int i = 0; i < satCount; i++) {
+			MaxSaturationAmount = Util.Max(MaxSaturationAmount, SaturationAmount[i]);
+		}
+		for (int i = 0; i < valCount; i++) {
+			MaxValueAmount = Util.Max(MaxValueAmount, ValueAmount[i]);
 		}
 
 	}
 
 	private void DrawColorAnalyzeChart (IRect rect) {
-		var hues = HUE_ITER_COUNT % 2 == 0 ? HueAmount : HueAmountAlt;
-		int left = rect.x;
-		int right = rect.xMax;
-		int down = rect.y;
-		int up = rect.yMax;
-		float maxHue = Util.Max(MaxHueAmount, 0.00000001f);
-		for (int i = 0; i < 360; i++) {
-			int x = (int)Util.LerpUnclamped(left, right, i / 360f);
-			int nextX = (int)Util.LerpUnclamped(left, right, (i + 1) / 360f);
-			int top = (int)Util.LerpUnclamped(down, up, hues[i] / maxHue);
-			Game.DrawGizmosLine(x, down, x, top, nextX - x, Util.HsvToRgb(i / 360f, 1f, 1f));
+
+		rect = rect.Shrink(GUI.FieldPadding, 0, GUI.FieldPadding, GUI.FieldPadding);
+
+		DrawChart(rect.PartHorizontal(0, 3).ShrinkRight(GUI.FieldPadding), HueAmount, MaxHueAmount, 0, DullHueAmount);
+
+		DrawChart(rect.PartHorizontal(1, 3).ShrinkRight(GUI.FieldPadding), SaturationAmount, MaxSaturationAmount, 1, DullHueAmount);
+
+		DrawChart(rect.PartHorizontal(2, 3).ShrinkRight(GUI.FieldPadding), ValueAmount, MaxValueAmount, 2, DullHueAmount);
+
+		// Final
+		static void DrawChart (IRect rect, float[] amounts, float max, int typeIndex, float[] dullHue) {
+
+			// BG
+			Renderer.DrawPixel(rect, Color32.GREY_20);
+
+			// Label
+			GUI.Label(
+				rect.EdgeOutsideDown(GUI.FieldHeight),
+				typeIndex == 0 ? "H" : typeIndex == 1 ? "S" : "V",
+				GUI.Skin.SmallCenterGreyLabel
+			);
+
+			// Chart
+			max = Util.Max(max, 0.00000001f);
+			int left = rect.x;
+			int right = rect.xMax;
+			int down = rect.y;
+			int up = rect.yMax;
+			int count = amounts.Length;
+			int dullCount = dullHue.Length;
+			for (int i = 0; i < count; i++) {
+				if (typeIndex == 0) {
+					// H
+					int x = (int)Util.LerpUnclamped(left, right, i / (float)(count + dullCount));
+					int nextX = (int)Util.LerpUnclamped(left, right, (i + 1) / (float)(count + dullCount));
+					int top = (int)Util.LerpUnclamped(down, up, amounts[i] / max);
+					Game.DrawGizmosRect(
+						IRect.MinMaxRect(x, down, nextX, top),
+						Util.HsvToRgb(i / (float)count, 1f, 1f)
+					);
+				} else if (typeIndex == 1) {
+					// S
+					int x = (int)Util.LerpUnclamped(left, right, i / (float)count);
+					int nextX = (int)Util.LerpUnclamped(left, right, (i + 1) / (float)count);
+					int top = (int)Util.LerpUnclamped(down, up, amounts[i] / max);
+					Game.DrawGizmosRect(
+						IRect.MinMaxRect(x, down, nextX, top),
+						Util.HsvToRgb(0.618f, i / (float)count, 1f)
+					);
+				} else {
+					// V
+					int x = (int)Util.LerpUnclamped(left, right, i / (float)count);
+					int nextX = (int)Util.LerpUnclamped(left, right, (i + 1) / (float)count);
+					int top = (int)Util.LerpUnclamped(down, up, amounts[i] / max);
+					Game.DrawGizmosRect(
+						IRect.MinMaxRect(x, down, nextX, top),
+						Util.HsvToRgb(0f, 1f, Util.LerpUnclamped(0.3f, 1f, i / (float)count))
+					);
+				}
+			}
+
+			// Dull Hue
+			if (typeIndex == 0) {
+				left = (int)Util.LerpUnclamped(left, right, count / (float)(count + dullCount));
+				for (int i = 0; i < dullCount; i++) {
+					int x = (int)Util.LerpUnclamped(left, right, i / (float)dullCount);
+					int nextX = (int)Util.LerpUnclamped(left, right, (i + 1) / (float)dullCount);
+					int top = (int)Util.LerpUnclamped(down, up, dullHue[i] / max);
+					Game.DrawGizmosRect(
+						IRect.MinMaxRect(x, down, nextX, top),
+						Util.HsvToRgb(0f, 0f, Util.LerpUnclamped(0.3f, 1f, i / (float)dullCount))
+					);
+				}
+			}
 		}
 	}
 

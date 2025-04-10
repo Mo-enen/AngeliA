@@ -777,6 +777,14 @@ public static partial class Util {
 	}
 
 
+	/// <inheritdoc cref="RgbToGreyF"/>
+	public static float RgbToGrey (Color32 rgbColor) => RgbToGreyF(rgbColor.ToColorF());
+	/// <summary>
+	/// Get grey scale of given color. (return between 0 and 1)
+	/// </summary>
+	public static float RgbToGreyF (ColorF rgbColor) => rgbColor.r * 0.299f + rgbColor.g * 0.587f + rgbColor.b * 0.114f;
+
+
 	/// <summary>
 	/// Draw color "top" onto "back" with blending overlay
 	/// </summary>

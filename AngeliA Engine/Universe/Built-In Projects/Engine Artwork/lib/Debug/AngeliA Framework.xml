@@ -8517,6 +8517,16 @@
             Interface that mark the character as playable character
             </summary>
         </member>
+        <member name="P:AngeliA.IPlayable.IlluminateRadius">
+            <summary>
+            Lighting system illuminate size in global space
+            </summary>
+        </member>
+        <member name="P:AngeliA.IPlayable.IlluminateAmount">
+            <summary>
+            Lighting system illuminate amount. 0 means no illuminate. 1000 means general amount.
+            </summary>
+        </member>
         <member name="T:AngeliA.IRouteWalker">
             <summary>
             Interface that makes an entity walks along a given path
@@ -10774,6 +10784,17 @@
             <param name="nearestNeighbor">True if the misaligned pixels should be averaged with it's nearby pixels</param>
             <returns>Return null if invalid. Don't throw exception.</returns>
         </member>
+        <member name="M:AngeliA.Game.FillResizedTexture(System.Object,System.Object,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Game._FillResizedTexture(System.Object,System.Object,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Game._FillResizedTexture(System.Object,System.Object,System.Boolean)">
+            <summary>
+            Copy data from source texture into target texture. Stretch resize the content if two textures have different size.
+            </summary>
+            <param name="sourceTexture"></param>
+            <param name="targetTexture"></param>
+            <param name="nearestNeighbor">True if the misaligned pixels should be averaged with it's nearby pixels</param>
+        </member>
         <member name="M:AngeliA.Game.GetScreenRenderingTexture">
             <summary>
             Get the instance of the internal texture that holds the pixel data on screen
@@ -11569,6 +11590,7 @@
             GUI element that behave like a button
             </summary>
             <param name="rect">Rect position in global space</param>
+            <param name="state"></param>
             <param name="icon">Artwork sprite ID for the icon inside this button</param>
             <param name="label">Text content inside this button</param>
             <param name="charSize">Character size of the label in unified space</param>
@@ -17348,6 +17370,14 @@
         </member>
         <member name="M:AngeliA.Util.RgbToHsvF(AngeliA.ColorF,System.Single@,System.Single@,System.Single@)">
             <inheritdoc cref="M:AngeliA.Util.RgbToHsv(AngeliA.Color32,System.Single@,System.Single@,System.Single@)"/>
+        </member>
+        <member name="M:AngeliA.Util.RgbToGrey(AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Util.RgbToGreyF(AngeliA.ColorF)"/>
+        </member>
+        <member name="M:AngeliA.Util.RgbToGreyF(AngeliA.ColorF)">
+            <summary>
+            Get grey scale of given color. (return between 0 and 1)
+            </summary>
         </member>
         <member name="M:AngeliA.Util.MergeColor_Overlay(AngeliA.ColorF,AngeliA.ColorF)">
             <summary>

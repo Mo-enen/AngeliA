@@ -532,6 +532,7 @@ UI.Project.DeleteSoundMsg:Delete sound "{0}" ? This will delete the file.
 UI.Quit:Quit
 UI.QuitGame:Quit Game
 UI.QuitMessage:Close engine window ?
+UI.Refresh:Refresh
 UI.Rename:Rename
 UI.Reset:Reset
 UI.ResetSaving:Reset Game Saving

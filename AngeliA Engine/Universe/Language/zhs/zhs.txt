@@ -532,6 +532,7 @@ UI.Project.DeleteSoundMsg:是否删除音效 {0} ？这会删除文件。
 UI.Quit:退出
 UI.QuitGame:退出游戏
 UI.QuitMessage:是否关闭引擎窗口？
+UI.Refresh:刷新
 UI.Rename:重命名
 UI.Reset:重置
 UI.ResetSaving:重置游戏存档

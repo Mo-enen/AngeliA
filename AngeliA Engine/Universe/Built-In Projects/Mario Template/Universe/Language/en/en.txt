@@ -1,5 +1,4 @@
-﻿UI.EngineSetting.ShowKeyPressWhenFrameDebugging:Show Key Press UI when Frame Debugging
-AtlasType.Background:Background
+﻿AtlasType.Background:Background
 AtlasType.General:General
 AtlasType.Level:Level
 ConsoleWindow:Console
@@ -28,6 +27,7 @@ CtrlHint.Use:Use
 CtrlHint.WakeUp:Wake
 CtrlHint.Wardrobe.Type:Suit Type
 Engine.Game.Tip.Collider:Collider
+Engine.Game.Tip.ColorAnalyzer:Color Analyzer
 Engine.Game.Tip.EntityClicker:Entity Debugger
 Engine.Game.Tip.FrameDebug:Frame Debugger
 Engine.Game.Tip.Lighting:Lighting System
@@ -94,6 +94,7 @@ Label.Project.AllowQuitFromMenu:Allow Quit from Menu
 Label.Project.AllowRestartFromMenu:Allow Restart from Menu
 Label.Project.Font:Font
 Label.Project.Music:Music
+Label.Project.PixelPerfect:Use Pixel Perfect Rendering
 Label.Project.ReadonlyMap:Map Readonly for Player
 Label.Project.SavePlayerChangesToMap:Save Map Changes from Player (After Release)
 Label.Project.ScaleUiBasedOnMonitor:Scale UI Based On Monitor Height
@@ -354,6 +355,7 @@ UI.EngineSetting.MapEditor_ShowBehind:Show Map  Behind
 UI.EngineSetting.MapEditor_ShowGizmos:Show Gizmos
 UI.EngineSetting.MapEditor_ShowState:Show State
 UI.EngineSetting.OpenLastProjectOnStart:Open Last Project on Start
+UI.EngineSetting.ShowKeyPressWhenFrameDebugging:Show Key Press UI when Frame Debugging
 UI.EngineSetting.ShowLogTime:Show Log Time
 UI.EngineSetting.ShowOutBoundsMark:Show Marks for Sprites Outside Canvas
 UI.EngineSetting.ShowTagPreview:Show Tag Preview
@@ -530,6 +532,7 @@ UI.Project.DeleteSoundMsg:Delete sound "{0}" ? This will delete the file.
 UI.Quit:Quit
 UI.QuitGame:Quit Game
 UI.QuitMessage:Close engine window ?
+UI.Refresh:Refresh
 UI.Rename:Rename
 UI.Reset:Reset
 UI.ResetSaving:Reset Game Saving
