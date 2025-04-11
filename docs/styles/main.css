@@ -1,31 +1,18 @@
-:root, body.dark-theme {
+body {
     --color-foreground: #ccd5dc;
     --color-navbar: #66666d;
     --color-breadcrumb: #999;
     --color-underline: #ddd;
     --color-toc-hover: #fff;
-    --color-background: #2d2d30;
-    --color-background-subnav: #333337;
-    --color-background-dark: #1e1e1e;
+    --color-background: #1e1e1e;
+    --color-background-subnav: #262626;
+    --color-background-dark: #131313;
     --color-background-table-alt: #212123;
     --color-background-quote: #69696e;
     scrollbar-color: rgba(0,0,0,0.0);
-}
-
-body.light-theme {
-    --color-foreground: #171717;
-    --color-breadcrumb: #4a4a4a;
-    --color-toc-hover: #4c4c4c;
-    --color-background: #ffffff;
-    --color-background-subnav: #f5f5f5;
-    --color-background-dark: #ddd;
-    --color-background-table-alt: #f9f9f9;
-}
-
-body {
     color: var(--color-foreground);
-    line-height: 1.5;
-    font-size: 14px;
+    line-height: 2;
+    font-size: 18px;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     word-wrap: break-word;
@@ -38,13 +25,30 @@ body {
 
 h1 {
     font-weight: 600;
-    font-size: 48px;
+    font-size: 64px;
     color: #DDD;
+    text-indent: 38.2%;
+    /*text-align: center;*/
+}
+
+hr {
+    display: block;
+    height: 18px;
+    border: 0;
+    border-top: 1px solid #00000000;
+    margin: 1em 0;
+    padding: 0;
+}
+
+#_content {
+    max-width: 80rem;
+    margin-left: 10%;
+    margin-right: auto;
 }
 
 h2 {
     font-weight: 600;
-    font-size: 24px;
+    font-size: 28px;
     line-height: 1.8;
 }
 
@@ -131,9 +135,6 @@ article h4 {
     border-radius: 0;
 }
 
-.light-theme .navbar-brand svg {
-    filter: brightness(20%);
-}
 
 .toc .level1 > li {
     font-weight: 400;
@@ -218,7 +219,7 @@ article h4 {
         font-weight: bold;
         border-top: 2px solid;
         background-color: var(--color-background-dark);
-        border-radius: none;
+        border-radius: unset;
     }
 
     .alert > ul {
@@ -306,9 +307,6 @@ code {
     padding: 0;
 }
 
-.light-theme .breadcrumb > li + li:before {
-    color: var(--color-foreground)
-}
 
 .toc .level1 > li {
     font-weight: 600;
@@ -505,4 +503,4 @@ input:checked + .slider:before {
 
 .typelist.extensionMethods {
     display: none;
-} 
+}

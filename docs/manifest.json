@@ -4674,6 +4674,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.PixelPerfect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.PixelPerfect.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.PixelPerfect",
+      "Summary": "<p sourcefile=\"api/AngeliA.PixelPerfect.yml\" sourcestartlinenumber=\"1\">Class that makes rendering cells pixel perfect</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.Platformer.ActionFurniture.yml",
       "output": {
         ".html": {
@@ -7852,6 +7866,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.TeleportTask.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.TeleportTask.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.TeleportTask",
+      "Summary": "<p sourcefile=\"api/AngeliA.TeleportTask.yml\" sourcestartlinenumber=\"1\">Task for handle logic during player teleport</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.ToolApplicationAttribute.yml",
       "output": {
         ".html": {
@@ -8016,7 +8044,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.WindowUI",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/AngeliA.WindowUI.yml\" sourcestartlinenumber=\"1\">Entity UI that represent a window</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -8164,30 +8192,50 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/comply-with-the-license.md",
+      "source_relative_path": "docsCN/1-introduction.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/comply-with-the-license.html"
+          "relative_path": "docsCN/1-introduction.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/getting-started.md",
+      "source_relative_path": "docsCN/2-comply-with-the-license.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/getting-started.html"
+          "relative_path": "docsCN/2-comply-with-the-license.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/introduction.md",
+      "source_relative_path": "docsCN/3-basic-concept/1-file-layout.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/introduction.html"
+          "relative_path": "docsCN/3-basic-concept/1-file-layout.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/3-basic-concept/2-engine-window.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/3-basic-concept/2-engine-window.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-getting-started.html"
         }
       },
       "version": ""
@@ -8217,6 +8265,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/Coding.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/Coding.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/Discord.png",
       "output": {
         "resource": {
@@ -8227,10 +8285,80 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/EngineFileLayout.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/EngineFileLayout.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/EngineFileLayout.psd",
+      "output": {
+        "resource": {
+          "relative_path": "images/EngineFileLayout.psd"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/FrameDebugTest.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/FrameDebugTest.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/Icon.png",
       "output": {
         "resource": {
           "relative_path": "images/Icon.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/MapEditorTest.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/MapEditorTest.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/PhysicsTest.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/PhysicsTest.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/SavingFileLayout.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/SavingFileLayout.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/SavingFileLayout.psd",
+      "output": {
+        "resource": {
+          "relative_path": "images/SavingFileLayout.psd"
         }
       },
       "version": ""

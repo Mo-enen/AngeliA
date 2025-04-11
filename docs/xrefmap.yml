@@ -2954,15 +2954,15 @@ references:
   commentId: T:AngeliA.BodyPart
   fullName: AngeliA.BodyPart
   nameWithType: BodyPart
-- uid: AngeliA.BodyPart.#ctor(AngeliA.BodyPart,System.Boolean,System.Boolean)
-  name: BodyPart(BodyPart, bool, bool)
-  href: api/AngeliA.BodyPart.html#AngeliA_BodyPart__ctor_AngeliA_BodyPart_System_Boolean_System_Boolean_
-  commentId: M:AngeliA.BodyPart.#ctor(AngeliA.BodyPart,System.Boolean,System.Boolean)
-  name.vb: New(BodyPart, Boolean, Boolean)
-  fullName: AngeliA.BodyPart.BodyPart(AngeliA.BodyPart, bool, bool)
-  fullName.vb: AngeliA.BodyPart.New(AngeliA.BodyPart, Boolean, Boolean)
-  nameWithType: BodyPart.BodyPart(BodyPart, bool, bool)
-  nameWithType.vb: BodyPart.New(BodyPart, Boolean, Boolean)
+- uid: AngeliA.BodyPart.#ctor(AngeliA.BodyPart,System.Boolean,System.Boolean,System.Int32,System.Int32)
+  name: BodyPart(BodyPart, bool, bool, int, int)
+  href: api/AngeliA.BodyPart.html#AngeliA_BodyPart__ctor_AngeliA_BodyPart_System_Boolean_System_Boolean_System_Int32_System_Int32_
+  commentId: M:AngeliA.BodyPart.#ctor(AngeliA.BodyPart,System.Boolean,System.Boolean,System.Int32,System.Int32)
+  name.vb: New(BodyPart, Boolean, Boolean, Integer, Integer)
+  fullName: AngeliA.BodyPart.BodyPart(AngeliA.BodyPart, bool, bool, int, int)
+  fullName.vb: AngeliA.BodyPart.New(AngeliA.BodyPart, Boolean, Boolean, Integer, Integer)
+  nameWithType: BodyPart.BodyPart(BodyPart, bool, bool, int, int)
+  nameWithType.vb: BodyPart.New(BodyPart, Boolean, Boolean, Integer, Integer)
 - uid: AngeliA.BodyPart.#ctor*
   name: BodyPart
   href: api/AngeliA.BodyPart.html#AngeliA_BodyPart__ctor_
@@ -4939,6 +4939,12 @@ references:
   commentId: F:AngeliA.BuiltInText.UI_QUIT_GAME
   fullName: AngeliA.BuiltInText.UI_QUIT_GAME
   nameWithType: BuiltInText.UI_QUIT_GAME
+- uid: AngeliA.BuiltInText.UI_REFRESH
+  name: UI_REFRESH
+  href: api/AngeliA.BuiltInText.html#AngeliA_BuiltInText_UI_REFRESH
+  commentId: F:AngeliA.BuiltInText.UI_REFRESH
+  fullName: AngeliA.BuiltInText.UI_REFRESH
+  nameWithType: BuiltInText.UI_REFRESH
 - uid: AngeliA.BuiltInText.UI_RENAME
   name: UI_RENAME
   href: api/AngeliA.BuiltInText.html#AngeliA_BuiltInText_UI_RENAME
@@ -23137,6 +23143,35 @@ references:
   isSpec: "True"
   fullName: AngeliA.FrameworkUtil.GetFlyingFormation
   nameWithType: FrameworkUtil.GetFlyingFormation
+- uid: AngeliA.FrameworkUtil.GetFrameAmortizedValue(System.Int32,System.Int32)
+  name: GetFrameAmortizedValue(int, int)
+  href: api/AngeliA.FrameworkUtil.html#AngeliA_FrameworkUtil_GetFrameAmortizedValue_System_Int32_System_Int32_
+  commentId: M:AngeliA.FrameworkUtil.GetFrameAmortizedValue(System.Int32,System.Int32)
+  name.vb: GetFrameAmortizedValue(Integer, Integer)
+  fullName: AngeliA.FrameworkUtil.GetFrameAmortizedValue(int, int)
+  fullName.vb: AngeliA.FrameworkUtil.GetFrameAmortizedValue(Integer, Integer)
+  nameWithType: FrameworkUtil.GetFrameAmortizedValue(int, int)
+  nameWithType.vb: FrameworkUtil.GetFrameAmortizedValue(Integer, Integer)
+- uid: AngeliA.FrameworkUtil.GetFrameAmortizedValue*
+  name: GetFrameAmortizedValue
+  href: api/AngeliA.FrameworkUtil.html#AngeliA_FrameworkUtil_GetFrameAmortizedValue_
+  commentId: Overload:AngeliA.FrameworkUtil.GetFrameAmortizedValue
+  isSpec: "True"
+  fullName: AngeliA.FrameworkUtil.GetFrameAmortizedValue
+  nameWithType: FrameworkUtil.GetFrameAmortizedValue
+- uid: AngeliA.FrameworkUtil.GetGameKeyLabel(AngeliA.Gamekey)
+  name: GetGameKeyLabel(Gamekey)
+  href: api/AngeliA.FrameworkUtil.html#AngeliA_FrameworkUtil_GetGameKeyLabel_AngeliA_Gamekey_
+  commentId: M:AngeliA.FrameworkUtil.GetGameKeyLabel(AngeliA.Gamekey)
+  fullName: AngeliA.FrameworkUtil.GetGameKeyLabel(AngeliA.Gamekey)
+  nameWithType: FrameworkUtil.GetGameKeyLabel(Gamekey)
+- uid: AngeliA.FrameworkUtil.GetGameKeyLabel*
+  name: GetGameKeyLabel
+  href: api/AngeliA.FrameworkUtil.html#AngeliA_FrameworkUtil_GetGameKeyLabel_
+  commentId: Overload:AngeliA.FrameworkUtil.GetGameKeyLabel
+  isSpec: "True"
+  fullName: AngeliA.FrameworkUtil.GetGameKeyLabel
+  nameWithType: FrameworkUtil.GetGameKeyLabel
 - uid: AngeliA.FrameworkUtil.GetGroupInfoFromSpriteRealName(System.String,System.String@,System.Int32@)
   name: GetGroupInfoFromSpriteRealName(string, out string, out int)
   href: api/AngeliA.FrameworkUtil.html#AngeliA_FrameworkUtil_GetGroupInfoFromSpriteRealName_System_String_System_String__System_Int32__
@@ -26857,42 +26892,42 @@ references:
   isSpec: "True"
   fullName: AngeliA.Game.DrawGizmosRect
   nameWithType: Game.DrawGizmosRect
-- uid: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)
-  name: DrawGizmosTexture(IRect, FRect, object, Color32, bool)
-  href: api/AngeliA.Game.html#AngeliA_Game_DrawGizmosTexture_AngeliA_IRect_AngeliA_FRect_System_Object_AngeliA_Color32_System_Boolean_
-  commentId: M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)
-  name.vb: DrawGizmosTexture(IRect, FRect, Object, Color32, Boolean)
-  fullName: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, object, AngeliA.Color32, bool)
-  fullName.vb: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, Object, AngeliA.Color32, Boolean)
-  nameWithType: Game.DrawGizmosTexture(IRect, FRect, object, Color32, bool)
-  nameWithType.vb: Game.DrawGizmosTexture(IRect, FRect, Object, Color32, Boolean)
-- uid: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,System.Boolean)
-  name: DrawGizmosTexture(IRect, FRect, object, bool)
-  href: api/AngeliA.Game.html#AngeliA_Game_DrawGizmosTexture_AngeliA_IRect_AngeliA_FRect_System_Object_System_Boolean_
-  commentId: M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,System.Boolean)
-  name.vb: DrawGizmosTexture(IRect, FRect, Object, Boolean)
-  fullName: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, object, bool)
-  fullName.vb: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, Object, Boolean)
-  nameWithType: Game.DrawGizmosTexture(IRect, FRect, object, bool)
-  nameWithType.vb: Game.DrawGizmosTexture(IRect, FRect, Object, Boolean)
-- uid: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,AngeliA.Color32,System.Boolean)
-  name: DrawGizmosTexture(IRect, object, Color32, bool)
-  href: api/AngeliA.Game.html#AngeliA_Game_DrawGizmosTexture_AngeliA_IRect_System_Object_AngeliA_Color32_System_Boolean_
-  commentId: M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,AngeliA.Color32,System.Boolean)
-  name.vb: DrawGizmosTexture(IRect, Object, Color32, Boolean)
-  fullName: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, object, AngeliA.Color32, bool)
-  fullName.vb: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, Object, AngeliA.Color32, Boolean)
-  nameWithType: Game.DrawGizmosTexture(IRect, object, Color32, bool)
-  nameWithType.vb: Game.DrawGizmosTexture(IRect, Object, Color32, Boolean)
-- uid: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,System.Boolean)
-  name: DrawGizmosTexture(IRect, object, bool)
-  href: api/AngeliA.Game.html#AngeliA_Game_DrawGizmosTexture_AngeliA_IRect_System_Object_System_Boolean_
-  commentId: M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,System.Boolean)
-  name.vb: DrawGizmosTexture(IRect, Object, Boolean)
-  fullName: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, object, bool)
-  fullName.vb: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, Object, Boolean)
-  nameWithType: Game.DrawGizmosTexture(IRect, object, bool)
-  nameWithType.vb: Game.DrawGizmosTexture(IRect, Object, Boolean)
+- uid: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)
+  name: DrawGizmosTexture(IRect, FRect, object, Color32, bool, bool, bool)
+  href: api/AngeliA.Game.html#AngeliA_Game_DrawGizmosTexture_AngeliA_IRect_AngeliA_FRect_System_Object_AngeliA_Color32_System_Boolean_System_Boolean_System_Boolean_
+  commentId: M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)
+  name.vb: DrawGizmosTexture(IRect, FRect, Object, Color32, Boolean, Boolean, Boolean)
+  fullName: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, object, AngeliA.Color32, bool, bool, bool)
+  fullName.vb: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, Object, AngeliA.Color32, Boolean, Boolean, Boolean)
+  nameWithType: Game.DrawGizmosTexture(IRect, FRect, object, Color32, bool, bool, bool)
+  nameWithType.vb: Game.DrawGizmosTexture(IRect, FRect, Object, Color32, Boolean, Boolean, Boolean)
+- uid: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,System.Boolean,System.Boolean,System.Boolean)
+  name: DrawGizmosTexture(IRect, FRect, object, bool, bool, bool)
+  href: api/AngeliA.Game.html#AngeliA_Game_DrawGizmosTexture_AngeliA_IRect_AngeliA_FRect_System_Object_System_Boolean_System_Boolean_System_Boolean_
+  commentId: M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,System.Boolean,System.Boolean,System.Boolean)
+  name.vb: DrawGizmosTexture(IRect, FRect, Object, Boolean, Boolean, Boolean)
+  fullName: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, object, bool, bool, bool)
+  fullName.vb: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, Object, Boolean, Boolean, Boolean)
+  nameWithType: Game.DrawGizmosTexture(IRect, FRect, object, bool, bool, bool)
+  nameWithType.vb: Game.DrawGizmosTexture(IRect, FRect, Object, Boolean, Boolean, Boolean)
+- uid: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)
+  name: DrawGizmosTexture(IRect, object, Color32, bool, bool, bool)
+  href: api/AngeliA.Game.html#AngeliA_Game_DrawGizmosTexture_AngeliA_IRect_System_Object_AngeliA_Color32_System_Boolean_System_Boolean_System_Boolean_
+  commentId: M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)
+  name.vb: DrawGizmosTexture(IRect, Object, Color32, Boolean, Boolean, Boolean)
+  fullName: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, object, AngeliA.Color32, bool, bool, bool)
+  fullName.vb: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, Object, AngeliA.Color32, Boolean, Boolean, Boolean)
+  nameWithType: Game.DrawGizmosTexture(IRect, object, Color32, bool, bool, bool)
+  nameWithType.vb: Game.DrawGizmosTexture(IRect, Object, Color32, Boolean, Boolean, Boolean)
+- uid: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,System.Boolean,System.Boolean,System.Boolean)
+  name: DrawGizmosTexture(IRect, object, bool, bool, bool)
+  href: api/AngeliA.Game.html#AngeliA_Game_DrawGizmosTexture_AngeliA_IRect_System_Object_System_Boolean_System_Boolean_System_Boolean_
+  commentId: M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,System.Boolean,System.Boolean,System.Boolean)
+  name.vb: DrawGizmosTexture(IRect, Object, Boolean, Boolean, Boolean)
+  fullName: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, object, bool, bool, bool)
+  fullName.vb: AngeliA.Game.DrawGizmosTexture(AngeliA.IRect, Object, Boolean, Boolean, Boolean)
+  nameWithType: Game.DrawGizmosTexture(IRect, object, bool, bool, bool)
+  nameWithType.vb: Game.DrawGizmosTexture(IRect, Object, Boolean, Boolean, Boolean)
 - uid: AngeliA.Game.DrawGizmosTexture*
   name: DrawGizmosTexture
   href: api/AngeliA.Game.html#AngeliA_Game_DrawGizmosTexture_
@@ -26916,6 +26951,22 @@ references:
   isSpec: "True"
   fullName: AngeliA.Game.FillPixelsIntoTexture
   nameWithType: Game.FillPixelsIntoTexture
+- uid: AngeliA.Game.FillResizedTexture(System.Object,System.Object,System.Boolean)
+  name: FillResizedTexture(object, object, bool)
+  href: api/AngeliA.Game.html#AngeliA_Game_FillResizedTexture_System_Object_System_Object_System_Boolean_
+  commentId: M:AngeliA.Game.FillResizedTexture(System.Object,System.Object,System.Boolean)
+  name.vb: FillResizedTexture(Object, Object, Boolean)
+  fullName: AngeliA.Game.FillResizedTexture(object, object, bool)
+  fullName.vb: AngeliA.Game.FillResizedTexture(Object, Object, Boolean)
+  nameWithType: Game.FillResizedTexture(object, object, bool)
+  nameWithType.vb: Game.FillResizedTexture(Object, Object, Boolean)
+- uid: AngeliA.Game.FillResizedTexture*
+  name: FillResizedTexture
+  href: api/AngeliA.Game.html#AngeliA_Game_FillResizedTexture_
+  commentId: Overload:AngeliA.Game.FillResizedTexture
+  isSpec: "True"
+  fullName: AngeliA.Game.FillResizedTexture
+  nameWithType: Game.FillResizedTexture
 - uid: AngeliA.Game.FontCount
   name: FontCount
   href: api/AngeliA.Game.html#AngeliA_Game_FontCount
@@ -27183,6 +27234,19 @@ references:
   isSpec: "True"
   fullName: AngeliA.Game.GetResizedTexture
   nameWithType: Game.GetResizedTexture
+- uid: AngeliA.Game.GetScreenRenderingTexture
+  name: GetScreenRenderingTexture()
+  href: api/AngeliA.Game.html#AngeliA_Game_GetScreenRenderingTexture
+  commentId: M:AngeliA.Game.GetScreenRenderingTexture
+  fullName: AngeliA.Game.GetScreenRenderingTexture()
+  nameWithType: Game.GetScreenRenderingTexture()
+- uid: AngeliA.Game.GetScreenRenderingTexture*
+  name: GetScreenRenderingTexture
+  href: api/AngeliA.Game.html#AngeliA_Game_GetScreenRenderingTexture_
+  commentId: Overload:AngeliA.Game.GetScreenRenderingTexture
+  isSpec: "True"
+  fullName: AngeliA.Game.GetScreenRenderingTexture
+  nameWithType: Game.GetScreenRenderingTexture
 - uid: AngeliA.Game.GetTargetFramerate
   name: GetTargetFramerate()
   href: api/AngeliA.Game.html#AngeliA_Game_GetTargetFramerate
@@ -28718,15 +28782,15 @@ references:
   isSpec: "True"
   fullName: AngeliA.Game._DrawGizmosRect
   nameWithType: Game._DrawGizmosRect
-- uid: AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)
-  name: _DrawGizmosTexture(IRect, FRect, object, Color32, bool)
-  href: api/AngeliA.Game.html#AngeliA_Game__DrawGizmosTexture_AngeliA_IRect_AngeliA_FRect_System_Object_AngeliA_Color32_System_Boolean_
-  commentId: M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean)
-  name.vb: _DrawGizmosTexture(IRect, FRect, Object, Color32, Boolean)
-  fullName: AngeliA.Game._DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, object, AngeliA.Color32, bool)
-  fullName.vb: AngeliA.Game._DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, Object, AngeliA.Color32, Boolean)
-  nameWithType: Game._DrawGizmosTexture(IRect, FRect, object, Color32, bool)
-  nameWithType.vb: Game._DrawGizmosTexture(IRect, FRect, Object, Color32, Boolean)
+- uid: AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)
+  name: _DrawGizmosTexture(IRect, FRect, object, Color32, bool, bool, bool)
+  href: api/AngeliA.Game.html#AngeliA_Game__DrawGizmosTexture_AngeliA_IRect_AngeliA_FRect_System_Object_AngeliA_Color32_System_Boolean_System_Boolean_System_Boolean_
+  commentId: M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)
+  name.vb: _DrawGizmosTexture(IRect, FRect, Object, Color32, Boolean, Boolean, Boolean)
+  fullName: AngeliA.Game._DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, object, AngeliA.Color32, bool, bool, bool)
+  fullName.vb: AngeliA.Game._DrawGizmosTexture(AngeliA.IRect, AngeliA.FRect, Object, AngeliA.Color32, Boolean, Boolean, Boolean)
+  nameWithType: Game._DrawGizmosTexture(IRect, FRect, object, Color32, bool, bool, bool)
+  nameWithType.vb: Game._DrawGizmosTexture(IRect, FRect, Object, Color32, Boolean, Boolean, Boolean)
 - uid: AngeliA.Game._DrawGizmosTexture*
   name: _DrawGizmosTexture
   href: api/AngeliA.Game.html#AngeliA_Game__DrawGizmosTexture_
@@ -28811,6 +28875,22 @@ references:
   isSpec: "True"
   fullName: AngeliA.Game._FillPixelsIntoTexture
   nameWithType: Game._FillPixelsIntoTexture
+- uid: AngeliA.Game._FillResizedTexture(System.Object,System.Object,System.Boolean)
+  name: _FillResizedTexture(object, object, bool)
+  href: api/AngeliA.Game.html#AngeliA_Game__FillResizedTexture_System_Object_System_Object_System_Boolean_
+  commentId: M:AngeliA.Game._FillResizedTexture(System.Object,System.Object,System.Boolean)
+  name.vb: _FillResizedTexture(Object, Object, Boolean)
+  fullName: AngeliA.Game._FillResizedTexture(object, object, bool)
+  fullName.vb: AngeliA.Game._FillResizedTexture(Object, Object, Boolean)
+  nameWithType: Game._FillResizedTexture(object, object, bool)
+  nameWithType.vb: Game._FillResizedTexture(Object, Object, Boolean)
+- uid: AngeliA.Game._FillResizedTexture*
+  name: _FillResizedTexture
+  href: api/AngeliA.Game.html#AngeliA_Game__FillResizedTexture_
+  commentId: Overload:AngeliA.Game._FillResizedTexture
+  isSpec: "True"
+  fullName: AngeliA.Game._FillResizedTexture
+  nameWithType: Game._FillResizedTexture
 - uid: AngeliA.Game._GetCharSprite(System.Int32,System.Char,AngeliA.CharSprite@)
   name: _GetCharSprite(int, char, out CharSprite)
   href: api/AngeliA.Game.html#AngeliA_Game__GetCharSprite_System_Int32_System_Char_AngeliA_CharSprite__
@@ -29024,6 +29104,19 @@ references:
   isSpec: "True"
   fullName: AngeliA.Game._GetScreenHeight
   nameWithType: Game._GetScreenHeight
+- uid: AngeliA.Game._GetScreenRenderingTexture
+  name: _GetScreenRenderingTexture()
+  href: api/AngeliA.Game.html#AngeliA_Game__GetScreenRenderingTexture
+  commentId: M:AngeliA.Game._GetScreenRenderingTexture
+  fullName: AngeliA.Game._GetScreenRenderingTexture()
+  nameWithType: Game._GetScreenRenderingTexture()
+- uid: AngeliA.Game._GetScreenRenderingTexture*
+  name: _GetScreenRenderingTexture
+  href: api/AngeliA.Game.html#AngeliA_Game__GetScreenRenderingTexture_
+  commentId: Overload:AngeliA.Game._GetScreenRenderingTexture
+  isSpec: "True"
+  fullName: AngeliA.Game._GetScreenRenderingTexture
+  nameWithType: Game._GetScreenRenderingTexture
 - uid: AngeliA.Game._GetScreenWidth
   name: _GetScreenWidth()
   href: api/AngeliA.Game.html#AngeliA_Game__GetScreenWidth
@@ -33520,6 +33613,32 @@ references:
   commentId: T:AngeliA.IPlayable
   fullName: AngeliA.IPlayable
   nameWithType: IPlayable
+- uid: AngeliA.IPlayable.IlluminateAmount
+  name: IlluminateAmount
+  href: api/AngeliA.IPlayable.html#AngeliA_IPlayable_IlluminateAmount
+  commentId: P:AngeliA.IPlayable.IlluminateAmount
+  fullName: AngeliA.IPlayable.IlluminateAmount
+  nameWithType: IPlayable.IlluminateAmount
+- uid: AngeliA.IPlayable.IlluminateAmount*
+  name: IlluminateAmount
+  href: api/AngeliA.IPlayable.html#AngeliA_IPlayable_IlluminateAmount_
+  commentId: Overload:AngeliA.IPlayable.IlluminateAmount
+  isSpec: "True"
+  fullName: AngeliA.IPlayable.IlluminateAmount
+  nameWithType: IPlayable.IlluminateAmount
+- uid: AngeliA.IPlayable.IlluminateRadius
+  name: IlluminateRadius
+  href: api/AngeliA.IPlayable.html#AngeliA_IPlayable_IlluminateRadius
+  commentId: P:AngeliA.IPlayable.IlluminateRadius
+  fullName: AngeliA.IPlayable.IlluminateRadius
+  nameWithType: IPlayable.IlluminateRadius
+- uid: AngeliA.IPlayable.IlluminateRadius*
+  name: IlluminateRadius
+  href: api/AngeliA.IPlayable.html#AngeliA_IPlayable_IlluminateRadius_
+  commentId: Overload:AngeliA.IPlayable.IlluminateRadius
+  isSpec: "True"
+  fullName: AngeliA.IPlayable.IlluminateRadius
+  nameWithType: IPlayable.IlluminateRadius
 - uid: AngeliA.IProgressiveItem
   name: IProgressiveItem
   href: api/AngeliA.IProgressiveItem.html
@@ -42889,6 +43008,37 @@ references:
   fullName.vb: AngeliA.Pipe(Of T).TryPopTail
   nameWithType: Pipe<T>.TryPopTail
   nameWithType.vb: Pipe(Of T).TryPopTail
+- uid: AngeliA.PixelPerfect
+  name: PixelPerfect
+  href: api/AngeliA.PixelPerfect.html
+  commentId: T:AngeliA.PixelPerfect
+  fullName: AngeliA.PixelPerfect
+  nameWithType: PixelPerfect
+- uid: AngeliA.PixelPerfect.Enable
+  name: Enable
+  href: api/AngeliA.PixelPerfect.html#AngeliA_PixelPerfect_Enable
+  commentId: F:AngeliA.PixelPerfect.Enable
+  fullName: AngeliA.PixelPerfect.Enable
+  nameWithType: PixelPerfect.Enable
+- uid: AngeliA.PixelPerfect.IncludeUiLayer
+  name: IncludeUiLayer
+  href: api/AngeliA.PixelPerfect.html#AngeliA_PixelPerfect_IncludeUiLayer
+  commentId: P:AngeliA.PixelPerfect.IncludeUiLayer
+  fullName: AngeliA.PixelPerfect.IncludeUiLayer
+  nameWithType: PixelPerfect.IncludeUiLayer
+- uid: AngeliA.PixelPerfect.IncludeUiLayer*
+  name: IncludeUiLayer
+  href: api/AngeliA.PixelPerfect.html#AngeliA_PixelPerfect_IncludeUiLayer_
+  commentId: Overload:AngeliA.PixelPerfect.IncludeUiLayer
+  isSpec: "True"
+  fullName: AngeliA.PixelPerfect.IncludeUiLayer
+  nameWithType: PixelPerfect.IncludeUiLayer
+- uid: AngeliA.PixelPerfect.PixelScale
+  name: PixelScale
+  href: api/AngeliA.PixelPerfect.html#AngeliA_PixelPerfect_PixelScale
+  commentId: F:AngeliA.PixelPerfect.PixelScale
+  fullName: AngeliA.PixelPerfect.PixelScale
+  nameWithType: PixelPerfect.PixelScale
 - uid: AngeliA.Platformer
   name: AngeliA.Platformer
   href: api/AngeliA.Platformer.html
@@ -58777,18 +58927,6 @@ references:
   fullName.vb: AngeliA.PoseCharacterRenderer.New
   nameWithType: PoseCharacterRenderer.PoseCharacterRenderer
   nameWithType.vb: PoseCharacterRenderer.New
-- uid: AngeliA.PoseCharacterRenderer.BODY_PART_COUNT
-  name: BODY_PART_COUNT
-  href: api/AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_BODY_PART_COUNT
-  commentId: F:AngeliA.PoseCharacterRenderer.BODY_PART_COUNT
-  fullName: AngeliA.PoseCharacterRenderer.BODY_PART_COUNT
-  nameWithType: PoseCharacterRenderer.BODY_PART_COUNT
-- uid: AngeliA.PoseCharacterRenderer.BODY_PART_NAME
-  name: BODY_PART_NAME
-  href: api/AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_BODY_PART_NAME
-  commentId: F:AngeliA.PoseCharacterRenderer.BODY_PART_NAME
-  fullName: AngeliA.PoseCharacterRenderer.BODY_PART_NAME
-  nameWithType: PoseCharacterRenderer.BODY_PART_NAME
 - uid: AngeliA.PoseCharacterRenderer.BasicRootY
   name: BasicRootY
   href: api/AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_BasicRootY
@@ -58879,12 +59017,6 @@ references:
   isSpec: "True"
   fullName: AngeliA.PoseCharacterRenderer.CharacterHeight
   nameWithType: PoseCharacterRenderer.CharacterHeight
-- uid: AngeliA.PoseCharacterRenderer.DEFAULT_BODY_PART_ID
-  name: DEFAULT_BODY_PART_ID
-  href: api/AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_DEFAULT_BODY_PART_ID
-  commentId: F:AngeliA.PoseCharacterRenderer.DEFAULT_BODY_PART_ID
-  fullName: AngeliA.PoseCharacterRenderer.DEFAULT_BODY_PART_ID
-  nameWithType: PoseCharacterRenderer.DEFAULT_BODY_PART_ID
 - uid: AngeliA.PoseCharacterRenderer.EarID
   name: EarID
   href: api/AngeliA.PoseCharacterRenderer.html#AngeliA_PoseCharacterRenderer_EarID
@@ -65022,6 +65154,148 @@ references:
   isSpec: "True"
   fullName: AngeliA.TechGlitchEffectScope.Dispose
   nameWithType: TechGlitchEffectScope.Dispose
+- uid: AngeliA.TeleportTask
+  name: TeleportTask
+  href: api/AngeliA.TeleportTask.html
+  commentId: T:AngeliA.TeleportTask
+  fullName: AngeliA.TeleportTask
+  nameWithType: TeleportTask
+- uid: AngeliA.TeleportTask.Duration
+  name: Duration
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_Duration
+  commentId: P:AngeliA.TeleportTask.Duration
+  fullName: AngeliA.TeleportTask.Duration
+  nameWithType: TeleportTask.Duration
+- uid: AngeliA.TeleportTask.Duration*
+  name: Duration
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_Duration_
+  commentId: Overload:AngeliA.TeleportTask.Duration
+  isSpec: "True"
+  fullName: AngeliA.TeleportTask.Duration
+  nameWithType: TeleportTask.Duration
+- uid: AngeliA.TeleportTask.FrameUpdate
+  name: FrameUpdate()
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_FrameUpdate
+  commentId: M:AngeliA.TeleportTask.FrameUpdate
+  fullName: AngeliA.TeleportTask.FrameUpdate()
+  nameWithType: TeleportTask.FrameUpdate()
+- uid: AngeliA.TeleportTask.FrameUpdate*
+  name: FrameUpdate
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_FrameUpdate_
+  commentId: Overload:AngeliA.TeleportTask.FrameUpdate
+  isSpec: "True"
+  fullName: AngeliA.TeleportTask.FrameUpdate
+  nameWithType: TeleportTask.FrameUpdate
+- uid: AngeliA.TeleportTask.OnStart
+  name: OnStart()
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_OnStart
+  commentId: M:AngeliA.TeleportTask.OnStart
+  fullName: AngeliA.TeleportTask.OnStart()
+  nameWithType: TeleportTask.OnStart()
+- uid: AngeliA.TeleportTask.OnStart*
+  name: OnStart
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_OnStart_
+  commentId: Overload:AngeliA.TeleportTask.OnStart
+  isSpec: "True"
+  fullName: AngeliA.TeleportTask.OnStart
+  nameWithType: TeleportTask.OnStart
+- uid: AngeliA.TeleportTask.TeleportFrom
+  name: TeleportFrom
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_TeleportFrom
+  commentId: P:AngeliA.TeleportTask.TeleportFrom
+  fullName: AngeliA.TeleportTask.TeleportFrom
+  nameWithType: TeleportTask.TeleportFrom
+- uid: AngeliA.TeleportTask.TeleportFrom*
+  name: TeleportFrom
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_TeleportFrom_
+  commentId: Overload:AngeliA.TeleportTask.TeleportFrom
+  isSpec: "True"
+  fullName: AngeliA.TeleportTask.TeleportFrom
+  nameWithType: TeleportTask.TeleportFrom
+- uid: AngeliA.TeleportTask.TeleportFromDoor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  name: TeleportFromDoor(int, int, int, int, int)
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_TeleportFromDoor_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_
+  commentId: M:AngeliA.TeleportTask.TeleportFromDoor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  name.vb: TeleportFromDoor(Integer, Integer, Integer, Integer, Integer)
+  fullName: AngeliA.TeleportTask.TeleportFromDoor(int, int, int, int, int)
+  fullName.vb: AngeliA.TeleportTask.TeleportFromDoor(Integer, Integer, Integer, Integer, Integer)
+  nameWithType: TeleportTask.TeleportFromDoor(int, int, int, int, int)
+  nameWithType.vb: TeleportTask.TeleportFromDoor(Integer, Integer, Integer, Integer, Integer)
+- uid: AngeliA.TeleportTask.TeleportFromDoor*
+  name: TeleportFromDoor
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_TeleportFromDoor_
+  commentId: Overload:AngeliA.TeleportTask.TeleportFromDoor
+  isSpec: "True"
+  fullName: AngeliA.TeleportTask.TeleportFromDoor
+  nameWithType: TeleportTask.TeleportFromDoor
+- uid: AngeliA.TeleportTask.TeleportFromPortal(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)
+  name: TeleportFromPortal(int, int, int, int, int, bool)
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_TeleportFromPortal_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Boolean_
+  commentId: M:AngeliA.TeleportTask.TeleportFromPortal(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean)
+  name.vb: TeleportFromPortal(Integer, Integer, Integer, Integer, Integer, Boolean)
+  fullName: AngeliA.TeleportTask.TeleportFromPortal(int, int, int, int, int, bool)
+  fullName.vb: AngeliA.TeleportTask.TeleportFromPortal(Integer, Integer, Integer, Integer, Integer, Boolean)
+  nameWithType: TeleportTask.TeleportFromPortal(int, int, int, int, int, bool)
+  nameWithType.vb: TeleportTask.TeleportFromPortal(Integer, Integer, Integer, Integer, Integer, Boolean)
+- uid: AngeliA.TeleportTask.TeleportFromPortal*
+  name: TeleportFromPortal
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_TeleportFromPortal_
+  commentId: Overload:AngeliA.TeleportTask.TeleportFromPortal
+  isSpec: "True"
+  fullName: AngeliA.TeleportTask.TeleportFromPortal
+  nameWithType: TeleportTask.TeleportFromPortal
+- uid: AngeliA.TeleportTask.TeleportTo
+  name: TeleportTo
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_TeleportTo
+  commentId: P:AngeliA.TeleportTask.TeleportTo
+  fullName: AngeliA.TeleportTask.TeleportTo
+  nameWithType: TeleportTask.TeleportTo
+- uid: AngeliA.TeleportTask.TeleportTo*
+  name: TeleportTo
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_TeleportTo_
+  commentId: Overload:AngeliA.TeleportTask.TeleportTo
+  isSpec: "True"
+  fullName: AngeliA.TeleportTask.TeleportTo
+  nameWithType: TeleportTask.TeleportTo
+- uid: AngeliA.TeleportTask.UseParallax
+  name: UseParallax
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_UseParallax
+  commentId: P:AngeliA.TeleportTask.UseParallax
+  fullName: AngeliA.TeleportTask.UseParallax
+  nameWithType: TeleportTask.UseParallax
+- uid: AngeliA.TeleportTask.UseParallax*
+  name: UseParallax
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_UseParallax_
+  commentId: Overload:AngeliA.TeleportTask.UseParallax
+  isSpec: "True"
+  fullName: AngeliA.TeleportTask.UseParallax
+  nameWithType: TeleportTask.UseParallax
+- uid: AngeliA.TeleportTask.UseVignette
+  name: UseVignette
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_UseVignette
+  commentId: P:AngeliA.TeleportTask.UseVignette
+  fullName: AngeliA.TeleportTask.UseVignette
+  nameWithType: TeleportTask.UseVignette
+- uid: AngeliA.TeleportTask.UseVignette*
+  name: UseVignette
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_UseVignette_
+  commentId: Overload:AngeliA.TeleportTask.UseVignette
+  isSpec: "True"
+  fullName: AngeliA.TeleportTask.UseVignette
+  nameWithType: TeleportTask.UseVignette
+- uid: AngeliA.TeleportTask.WaitDuration
+  name: WaitDuration
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_WaitDuration
+  commentId: P:AngeliA.TeleportTask.WaitDuration
+  fullName: AngeliA.TeleportTask.WaitDuration
+  nameWithType: TeleportTask.WaitDuration
+- uid: AngeliA.TeleportTask.WaitDuration*
+  name: WaitDuration
+  href: api/AngeliA.TeleportTask.html#AngeliA_TeleportTask_WaitDuration_
+  commentId: Overload:AngeliA.TeleportTask.WaitDuration
+  isSpec: "True"
+  fullName: AngeliA.TeleportTask.WaitDuration
+  nameWithType: TeleportTask.WaitDuration
 - uid: AngeliA.ToolApplicationAttribute
   name: ToolApplicationAttribute
   href: api/AngeliA.ToolApplicationAttribute.html
@@ -65845,6 +66119,12 @@ references:
   commentId: F:AngeliA.UniverseInfo.UseMapEditor
   fullName: AngeliA.UniverseInfo.UseMapEditor
   nameWithType: UniverseInfo.UseMapEditor
+- uid: AngeliA.UniverseInfo.UsePixelPerfectRendering
+  name: UsePixelPerfectRendering
+  href: api/AngeliA.UniverseInfo.html#AngeliA_UniverseInfo_UsePixelPerfectRendering
+  commentId: F:AngeliA.UniverseInfo.UsePixelPerfectRendering
+  fullName: AngeliA.UniverseInfo.UsePixelPerfectRendering
+  nameWithType: UniverseInfo.UsePixelPerfectRendering
 - uid: AngeliA.UniverseInfo.UseProceduralMap
   name: UseProceduralMap
   href: api/AngeliA.UniverseInfo.html#AngeliA_UniverseInfo_UseProceduralMap
@@ -68632,6 +68912,32 @@ references:
   isSpec: "True"
   fullName: AngeliA.Util.Repeat
   nameWithType: Util.Repeat
+- uid: AngeliA.Util.RgbToGrey(AngeliA.Color32)
+  name: RgbToGrey(Color32)
+  href: api/AngeliA.Util.html#AngeliA_Util_RgbToGrey_AngeliA_Color32_
+  commentId: M:AngeliA.Util.RgbToGrey(AngeliA.Color32)
+  fullName: AngeliA.Util.RgbToGrey(AngeliA.Color32)
+  nameWithType: Util.RgbToGrey(Color32)
+- uid: AngeliA.Util.RgbToGrey*
+  name: RgbToGrey
+  href: api/AngeliA.Util.html#AngeliA_Util_RgbToGrey_
+  commentId: Overload:AngeliA.Util.RgbToGrey
+  isSpec: "True"
+  fullName: AngeliA.Util.RgbToGrey
+  nameWithType: Util.RgbToGrey
+- uid: AngeliA.Util.RgbToGreyF(AngeliA.ColorF)
+  name: RgbToGreyF(ColorF)
+  href: api/AngeliA.Util.html#AngeliA_Util_RgbToGreyF_AngeliA_ColorF_
+  commentId: M:AngeliA.Util.RgbToGreyF(AngeliA.ColorF)
+  fullName: AngeliA.Util.RgbToGreyF(AngeliA.ColorF)
+  nameWithType: Util.RgbToGreyF(ColorF)
+- uid: AngeliA.Util.RgbToGreyF*
+  name: RgbToGreyF
+  href: api/AngeliA.Util.html#AngeliA_Util_RgbToGreyF_
+  commentId: Overload:AngeliA.Util.RgbToGreyF
+  isSpec: "True"
+  fullName: AngeliA.Util.RgbToGreyF
+  nameWithType: Util.RgbToGreyF
 - uid: AngeliA.Util.RgbToHsv(AngeliA.Color32,System.Single@,System.Single@,System.Single@)
   name: RgbToHsv(Color32, out float, out float, out float)
   href: api/AngeliA.Util.html#AngeliA_Util_RgbToHsv_AngeliA_Color32_System_Single__System_Single__System_Single__

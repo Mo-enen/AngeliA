@@ -1,1 +1,1 @@
-docfx serve
+docfx serve --open-browser

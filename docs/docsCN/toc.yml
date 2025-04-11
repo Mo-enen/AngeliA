@@ -1,6 +1,12 @@
 - name: 简介
-  href: introduction.md
-- name: 入门
-  href: getting-started.md
+  href: 1-introduction.md
 - name: 遵守协议
-  href: comply-with-the-license.md
+  href: 2-comply-with-the-license.md
+- name: 基本概念
+  items:
+  - name: 文件结构
+    href: 3-basic-concept/1-file-layout.md
+  - name: 引擎窗口
+    href: 3-basic-concept/2-engine-window.md
+- name: 入门
+  href: 4-getting-started.md
