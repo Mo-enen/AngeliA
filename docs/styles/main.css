@@ -31,15 +31,6 @@ h1 {
     text-align: center;
 }
 
-hr {
-    display: block;
-    height: 18px;
-    border: 0;
-    border-top: 1px solid #00000000;
-    margin: 1em 0;
-    padding: 0;
-}
-
 #_content {
     max-width: 80rem;
     margin-left: 10%;

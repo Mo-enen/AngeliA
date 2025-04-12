@@ -8212,30 +8212,160 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/1-file-layout.md",
+      "source_relative_path": "docsCN/3-getting-started.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/1-file-layout.html"
+          "relative_path": "docsCN/3-getting-started.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/2-engine-window.md",
+      "source_relative_path": "docsCN/4-basic-concept/01-file-layout.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/2-engine-window.html"
+          "relative_path": "docsCN/4-basic-concept/01-file-layout.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-getting-started.md",
+      "source_relative_path": "docsCN/4-basic-concept/02-engine-window.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-getting-started.html"
+          "relative_path": "docsCN/4-basic-concept/02-engine-window.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/03-open-world-sandbox.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/03-open-world-sandbox.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/04-pixel-artwork.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/04-pixel-artwork.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/05-code.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/05-code.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/06-event.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/06-event.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/07-entity.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/07-entity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/08-physics.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/08-physics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/09-rendering.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/09-rendering.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/10-input.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/10-input.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/11-saving.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/11-saving.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/12-character-movement.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/12-character-movement.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/13-character-animation.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/13-character-animation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/14-inventory.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/14-inventory.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docsCN/4-basic-concept/15-language.md",
+      "output": {
+        ".html": {
+          "relative_path": "docsCN/4-basic-concept/15-language.html"
         }
       },
       "version": ""
@@ -8299,6 +8429,76 @@
       "output": {
         "resource": {
           "relative_path": "images/EngineFileLayout.psd"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/EngineWindow-Artwork.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/EngineWindow-Artwork.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/EngineWindow-Console.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/EngineWindow-Console.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/EngineWindow-Game.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/EngineWindow-Game.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/EngineWindow-Language.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/EngineWindow-Language.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/EngineWindow-Package.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/EngineWindow-Package.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/EngineWindow-Project.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/EngineWindow-Project.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/EngineWindow-Setting.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/EngineWindow-Setting.png"
         }
       },
       "version": ""
