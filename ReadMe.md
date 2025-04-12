@@ -8,11 +8,11 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
 - **Integrated Game Window**: Run your game directly within the engine. No need to launch a separate window every time.
 
-  <img src="docs/images/MapEditorTest.gif" width="61.8%"/>
+  <img src="docs/images/MapEditorTest.gif" width="61.8%" align="center"/>
 
 - **Frame Debugger**: precisely test your game frame-by-frame. Executing tight dodges and jumps in challenging levels, you'll have all the time you need to press each critical key and capture every subtle feedback.
 
-  <img src="docs/images/FrameDebugTest.gif" width="61.8%"/>
+  <img src="docs/images/FrameDebugTest.gif" width="61.8%" align="center"/>
 
 - **Built-in Pixel Art Editor**: A dedicated pixel art editor designed for creating and managing sprite sheets. Supports importing assets from Aseprite.
 
