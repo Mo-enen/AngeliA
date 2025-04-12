@@ -2,11 +2,37 @@
   href: 1-introduction.md
 - name: 遵守协议
   href: 2-comply-with-the-license.md
+- name: 入门
+  href: 3-getting-started.md
 - name: 基本概念
   items:
   - name: 文件结构
-    href: 3-basic-concept/1-file-layout.md
+    href: 4-basic-concept/01-file-layout.md
   - name: 引擎窗口
-    href: 3-basic-concept/2-engine-window.md
-- name: 入门
-  href: 4-getting-started.md
+    href: 4-basic-concept/02-engine-window.md
+ - name: 开放世界沙盒
+    href: 4-basic-concept/03-open-world-sandbox.md
+ - name: 像素美工
+    href: 4-basic-concept/04-pixel-artwork.md
+ - name: 代码
+    href: 4-basic-concept/05-code.md
+ - name: 事件
+    href: 4-basic-concept/06-event.md
+ - name: 实体
+    href: 4-basic-concept/07-entity.md
+ - name: 物理
+    href: 4-basic-concept/08-physics.md
+ - name: 渲染
+    href: 4-basic-concept/09-rendering.md
+ - name: 输入
+    href: 4-basic-concept/10-input.md
+ - name: 存档
+    href: 4-basic-concept/11-saving.md
+ - name: 角色运动
+    href: 4-basic-concept/12-character-movement.md
+ - name: 角色动画
+    href: 4-basic-concept/13-character-animation.md
+ - name: 物品栏
+    href: 4-basic-concept/14-inventory.md
+ - name: 多语言
+    href: 4-basic-concept/15-language.md

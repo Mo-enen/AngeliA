@@ -27,17 +27,8 @@ h1 {
     font-weight: 600;
     font-size: 64px;
     color: #DDD;
-    text-indent: 38.2%;
-    /*text-align: center;*/
-}
-
-hr {
-    display: block;
-    height: 18px;
-    border: 0;
-    border-top: 1px solid #00000000;
-    margin: 1em 0;
-    padding: 0;
+    white-space: nowrap;
+    text-align: center;
 }
 
 #_content {

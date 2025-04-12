@@ -1,5 +1,7 @@
 # 遵守协议
 
+
+
 AngeliA 采用[MIT许可证](https://github.com/Mo-enen/AngeliA/blob/main/License.txt)创建并分发，由[楠瓜Moenen](https://github.com/Mo-enen)独立开发并保留所有权。您的项目可以使用不同的许可证，但必须同时保留并遵守原始许可证。您需要将以下内容包含在您项目的某处（项目根文件夹、制作人员名单、开场画面、关于界面等任何一处即可）
 
 AngeliA MIT 许可证全文：

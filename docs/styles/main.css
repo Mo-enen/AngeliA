@@ -27,8 +27,8 @@ h1 {
     font-weight: 600;
     font-size: 64px;
     color: #DDD;
-    text-indent: 38.2%;
-    /*text-align: center;*/
+    white-space: nowrap;
+    text-align: center;
 }
 
 hr {

@@ -8345,6 +8345,26 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/ProjectFileLayout.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ProjectFileLayout.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/ProjectFileLayout.psd",
+      "output": {
+        "resource": {
+          "relative_path": "images/ProjectFileLayout.psd"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/SavingFileLayout.png",
       "output": {
         "resource": {
