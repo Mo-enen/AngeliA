@@ -137,7 +137,7 @@ Log.DevNameEmpty:开发者名不能为空
 Log.DevNameInvalid:开发者名包含不支持的字符
 Log.ProductNameEmpty:产品名不能为空
 Log.ProductNameInvalid:产品名包含不支持的字符
-MEDT.AsElement:作为辅助
+MEDT.AsElement:作为元素
 MEDT.BackgroundOnly:仅背景
 MEDT.CancelDrop:取消放下
 MEDT.Drop:按鼠标左键放下
@@ -231,7 +231,7 @@ Setting.MinViewHeight:最小场景高度（块）
 Setting.ViewRatio:场景长宽比
 SettingWindow:设 置
 Tip.AddAtlas:创建图集
-Tip.AddAtlasFolder:创建文件夹
+Tip.AddAtlasFolder:创建图集夹
 Tip.BorderD:下边框
 Tip.BorderL:左边框
 Tip.BorderR:有边框
