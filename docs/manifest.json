@@ -8212,160 +8212,150 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-getting-started.md",
+      "source_relative_path": "docsCN/3-basic-concept/01-file-layout.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-getting-started.html"
+          "relative_path": "docsCN/3-basic-concept/01-file-layout.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/01-file-layout.md",
+      "source_relative_path": "docsCN/3-basic-concept/02-engine-window.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/01-file-layout.html"
+          "relative_path": "docsCN/3-basic-concept/02-engine-window.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/02-engine-window.md",
+      "source_relative_path": "docsCN/3-basic-concept/03-open-world-sandbox.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/02-engine-window.html"
+          "relative_path": "docsCN/3-basic-concept/03-open-world-sandbox.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/03-open-world-sandbox.md",
+      "source_relative_path": "docsCN/3-basic-concept/04-pixel-artwork.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/03-open-world-sandbox.html"
+          "relative_path": "docsCN/3-basic-concept/04-pixel-artwork.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/04-pixel-artwork.md",
+      "source_relative_path": "docsCN/3-basic-concept/05-code.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/04-pixel-artwork.html"
+          "relative_path": "docsCN/3-basic-concept/05-code.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/05-code.md",
+      "source_relative_path": "docsCN/3-basic-concept/06-event.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/05-code.html"
+          "relative_path": "docsCN/3-basic-concept/06-event.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/06-event.md",
+      "source_relative_path": "docsCN/3-basic-concept/07-entity.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/06-event.html"
+          "relative_path": "docsCN/3-basic-concept/07-entity.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/07-entity.md",
+      "source_relative_path": "docsCN/3-basic-concept/08-physics.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/07-entity.html"
+          "relative_path": "docsCN/3-basic-concept/08-physics.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/08-physics.md",
+      "source_relative_path": "docsCN/3-basic-concept/09-rendering.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/08-physics.html"
+          "relative_path": "docsCN/3-basic-concept/09-rendering.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/09-rendering.md",
+      "source_relative_path": "docsCN/3-basic-concept/10-input.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/09-rendering.html"
+          "relative_path": "docsCN/3-basic-concept/10-input.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/10-input.md",
+      "source_relative_path": "docsCN/3-basic-concept/11-saving.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/10-input.html"
+          "relative_path": "docsCN/3-basic-concept/11-saving.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/11-saving.md",
+      "source_relative_path": "docsCN/3-basic-concept/12-character-movement.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/11-saving.html"
+          "relative_path": "docsCN/3-basic-concept/12-character-movement.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/12-character-movement.md",
+      "source_relative_path": "docsCN/3-basic-concept/13-character-animation.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/12-character-movement.html"
+          "relative_path": "docsCN/3-basic-concept/13-character-animation.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/13-character-animation.md",
+      "source_relative_path": "docsCN/3-basic-concept/14-inventory.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/13-character-animation.html"
+          "relative_path": "docsCN/3-basic-concept/14-inventory.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/14-inventory.md",
+      "source_relative_path": "docsCN/3-basic-concept/15-language.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/4-basic-concept/14-inventory.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "docsCN/4-basic-concept/15-language.md",
-      "output": {
-        ".html": {
-          "relative_path": "docsCN/4-basic-concept/15-language.html"
+          "relative_path": "docsCN/3-basic-concept/15-language.html"
         }
       },
       "version": ""
@@ -8379,6 +8369,36 @@
         },
         ".json": {
           "relative_path": "docsCN/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Artwork-Rule.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/Artwork-Rule.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Artwork-Toolbar.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/Artwork-Toolbar.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Artwork-Tools.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/Artwork-Tools.png"
         }
       },
       "version": ""
@@ -8515,6 +8535,16 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/GoThroughLayer.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/GoThroughLayer.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/Icon.png",
       "output": {
         "resource": {
@@ -8529,6 +8559,26 @@
       "output": {
         "resource": {
           "relative_path": "images/MapEditorTest.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/OpenWorldSandbox-Map.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/OpenWorldSandbox-Map.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/OpenWorldSandbox-MapFile.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/OpenWorldSandbox-MapFile.png"
         }
       },
       "version": ""

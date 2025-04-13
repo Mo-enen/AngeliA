@@ -2,8 +2,6 @@
   href: 1-introduction.md
 - name: 遵守协议
   href: 2-comply-with-the-license.md
-- name: 入门
-  href: 3-getting-started.md
 - name: 基本概念
   items:
   - name: 文件结构

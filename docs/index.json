@@ -2924,83 +2924,78 @@
     "title": "遵守协议 | AngeliA",
     "summary": "遵守协议 AngeliA 采用MIT许可证创建并分发，由楠瓜Moenen独立开发并保留所有权。您的项目可以使用不同的许可证，但必须同时保留并遵守原始许可证。您需要将以下内容包含在您项目的某处（项目根文件夹、制作人员名单、开场画面、关于界面等任何一处即可） AngeliA MIT 许可证全文： MIT License Copyright (c) 2025 AngeliA Engine by Moenen (MaYinan) Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
   },
-  "docsCN/3-getting-started.html": {
-    "href": "docsCN/3-getting-started.html",
-    "title": "| AngeliA",
-    "summary": "#入门"
-  },
-  "docsCN/4-basic-concept/01-file-layout.html": {
-    "href": "docsCN/4-basic-concept/01-file-layout.html",
+  "docsCN/3-basic-concept/01-file-layout.html": {
+    "href": "docsCN/3-basic-concept/01-file-layout.html",
     "title": "文件结构 | AngeliA",
-    "summary": "文件结构 引擎程序 ① 引擎程序文件夹，运行引擎需要的全部文件都在这个文件夹里，修改此文件夹的位置不会影响引擎的使用； ② 引擎程序文件夹内部 \uD83D\uDCC1Library：AngeliA 引擎也是一款 AngeliA 游戏，就像所有的 AngeliA 游戏一样，Library 文件夹内的 dll 文件包含着此程序特有的功能，引擎提供的通用功能内嵌在 exe 文件里； \uD83D\uDCC1Universe：资源文件夹，包含着引擎程序需要的配置、美工、后台游戏启动器等； \uD83D\uDC04AngeliA.exe：引擎程序入口； \uD83D\uDCC4License.txt：使用引擎时需要遵守的软件许可证； \uD83D\uDCC4ReadMe.pdf：引擎简介，同 GitHub 项目首页； ③ 资源文件夹内部 \uD83D\uDCC1Built-In Projects：引擎自带的游戏工程，用于更好的学习引擎的使用方法。这些工程会在第一次打开引擎时自动加入到工程列表中，删除这些文件不会影响引擎的功能； \uD83D\uDCC1dotnet：由微软团队开发的dotnet SDK，用于将用户编写的 C# 代码编译为 dll 文件以供引擎运行使用； \uD83D\uDCC1Fonts：引擎本身UI所用的字体文件； \uD83D\uDCC1Language：引擎本身UI所用的多语言支持文件，您可以自行修改其内容以支持更多语言； \uD83D\uDCC2Map：此文件夹并未被引擎使用，AngeliA 框架无论项目是否使用地图都会自动创建 Map 文件夹； \uD83D\uDCC1Packages：引擎自带的拓展包，用户可根据自己开发的游戏类型选择需要的拓展包； \uD83D\uDCC1ProjectTemplate：新工程模板，您可以修改里面的文件来自定义新建工程的内容； \uD83D\uDCC1Runtime：让引擎在后台进程运行用户开发的游戏，并使用共享原生内存来传递输入与输出的信息； \uD83D\uDCC1Sheet：引擎本身UI所用的美术资源； \uD83D\uDCC1Theme：引擎的额外主题皮肤； \uD83D\uDCC4Info.json：引擎作为 AngeliA 游戏的项目配置； 游戏工程 ① 用户开发的游戏工程文件夹 ② 工程文件夹内部 \uD83D\uDCC1Build：存放用户编译生成的dll文件； \uD83D\uDCC1Entry：此工程的入口，仅供 IDE 运行游戏时使用； \uD83D\uDCC1lib：存放工程引用的 AngeliA 框架 dll 文件和拓展包 dll 文件； \uD83D\uDCC1obj：由 .net 框架生成； \uD83D\uDCC1src：存放用户编写的代码文件； \uD83D\uDCC1Universe：此工程的资源文件夹（详见③）； \uD83D\uDDBC️Icon.ico：工程的图标文件，是引擎内部显示的图标，也是最终发布出的 exe 文件所使用的图标； \uD83D\uDDBC️Icon.png：图标文件的 png 版本，未被引擎使用，删除该文件不影响引擎功能； \uD83D\uDCCB*.csproj：工程对应的 C# 工程文件； \uD83D\uDCCB*.sln：工程对应的 C# 解决方案； ③ 资源文件夹内部 \uD83D\uDCC1Audio：存放工程所需的音乐音效文件，使用 Universe.BuiltIn.MusicRoot和 Universe.BuiltIn.SoundRoot来获取此文件夹的路径； \uD83D\uDCC1Language：存放支持多语言所需的文本文件，使用 Universe.BuiltIn.LanguageRoot 来获取此文件夹的路径； \uD83D\uDCC1Sheet：存放工程的美工文件，使用 Universe.BuiltIn.SheetRoot 来获取此文件夹的路径； \uD83D\uDCC1Fonts：存放工程的字体文件，使用 Universe.BuiltIn.FontRoot 来获取此文件夹的路径； \uD83D\uDCC1Meta：存放由用户自定义的文本信息，使用 Universe.BuiltIn.UniverseMetaRoot 来获取此文件夹的路径； \uD83D\uDCC1Map：存放工程自带的地图文件，这里的地图文件不会被玩家修改。使用 Universe.BuiltIn.BuiltInMapRoot 来获取此文件夹的路径； \uD83D\uDCC4Info.json：工程的配置设置，包含如工程名，开发者名，工程版本等内容。使用 Universe.BuiltInInfo 来获取此文件的内容； 用户存档 ① 存档根目录，一个 AngeliA 工程由用户生成的所有存档内容都保存在这个文件夹里。，使用 Universe.SavingRoot 来获取这个文件夹的路径； ② 存档根目录内部 \uD83D\uDCC1Slot 0：第0号存档槽位，用户可创建并选择存档槽位，新的槽位将命名为 “Slot 1”、“Slot 2” 等。使用 Universe.SlotRoot 来获取当前选择的槽位文件夹路径； \uD83D\uDCC4CurrentSlot.txt：当前选择的存档槽位编号，使用 Universe.CurrentSavingSlot来获取当前选择的存档编号； \uD83D\uDCC4Saving.txt：全局设置存档内容，所有存档槽位共享这里的内容，使用 private static readonly SavingInt Name = new(\"UniqueKey\", yourDefaultValue, SavingLocation.Global); 来定义一个 int 类型的全局存档信息； ③ 存档槽位内部 \uD83D\uDCC1Meta：用户自定义的存档内容，使用 Universe.SlotMetaRoot 来获取此文件夹路径； \uD83D\uDCC1User Map：存放玩家游玩过的关卡文件，玩家对关卡的修改将保存在这些文件里，使用 Universe.SlotUserMapRoot 来获取此文件夹路径； ④ 信息文件夹内部 \uD83D\uDCC1Character Attack：存放角色的攻击相关的配置信息； \uD83D\uDCC1Character Rendering：存放角色渲染相关的配置信息； \uD83D\uDCC1Inventory：存放物品栏内的物品信息，包含角色的装备、指定位置的宝箱里的物品等； \uD83D\uDCC1MiniGame：迷你游戏的奖励信息； \uD83D\uDCC1Screenshot：游戏内部的截图功能，使用渲染Cell保存信息，使用 CellScreenshotSystem.RequireTakeScreenshot(yourGlobalRange); 来对游戏进行截图； \uD83D\uDCD1LoadedBackgroundTrigger：用于保存电路系统激活的后台触发器位置，详见 CircuitSystem 类； \uD83D\uDCC4Saving.txt：槽位内部存档内容，使用 SavingLocation.Local 来把存档内容存入此文件中。当玩家更换槽位后，这里的存档信息将不会出现在新的槽位里； \uD83D\uDCD1UnlockedItem：玩家解锁过的物品ID； \uD83D\uDCD1UnlockedPlayers：玩家解锁过的可控角色ID；"
+    "summary": "文件结构 本章将为您简述 AngeliA 在硬盘中存储的所有文件的作用，分为引擎程序、游戏工程和用户存档三部分，更详细的解释请参考后续文档内容。 引擎程序 ① 引擎程序文件夹，运行引擎需要的全部文件都在这个文件夹里，移动此文件夹的位置不会影响引擎的使用； ② 引擎程序文件夹内部 \uD83D\uDCC1Library：AngeliA 引擎也是一款 AngeliA 游戏，就像所有的 AngeliA 游戏一样，Library 文件夹内的 dll 文件包含着此程序特有的功能，引擎提供的通用功能内嵌在 exe 文件里； \uD83D\uDCC1Universe：资源文件夹，包含着引擎程序需要的配置、美工、后台游戏启动器等； \uD83D\uDC04AngeliA.exe：引擎程序入口； \uD83D\uDCC4License.txt：使用引擎时需要遵守的软件许可证； \uD83D\uDCC4ReadMe.pdf：引擎简介，同 GitHub 项目首页； ③ 资源文件夹内部 \uD83D\uDCC1Built-In Projects：引擎自带的游戏工程，用于更好的学习引擎的使用方法。这些工程会在第一次打开引擎时自动加入到工程列表中，删除这些文件不会影响引擎的功能； \uD83D\uDCC1dotnet：由微软团队开发的dotnet SDK，用于将用户编写的 C# 代码编译为 dll 文件以供引擎运行使用； \uD83D\uDCC1Fonts：引擎本身UI所用的字体文件； \uD83D\uDCC1Language：引擎本身UI所用的多语言支持文件，您可以自行修改其内容以支持更多语言； \uD83D\uDCC2Map：此文件夹并未被引擎使用，AngeliA 框架无论项目是否使用地图都会自动创建 Map 文件夹； \uD83D\uDCC1Packages：引擎自带的拓展包，用户可根据自己开发的游戏类型选择需要的拓展包； \uD83D\uDCC1ProjectTemplate：新工程模板，您可以修改里面的文件来自定义新建工程的内容； \uD83D\uDCC1Runtime：让引擎在后台进程运行用户开发的游戏，并使用共享原生内存来传递输入与输出的信息； \uD83D\uDCC1Sheet：引擎本身UI所用的美术资源； \uD83D\uDCC1Theme：引擎的额外主题皮肤； \uD83D\uDCC4Info.json：引擎作为 AngeliA 游戏的项目配置； 游戏工程 ① 用户开发的游戏工程文件夹 ② 工程文件夹内部 \uD83D\uDCC1Build：存放用户编译生成的dll文件； \uD83D\uDCC1Entry：此工程的入口，仅供 IDE 运行游戏时使用； \uD83D\uDCC1lib：存放工程引用的 AngeliA 框架 dll 文件和拓展包 dll 文件； \uD83D\uDCC1obj：由 .net 框架生成； \uD83D\uDCC1src：存放用户编写的代码文件； \uD83D\uDCC1Universe：此工程的资源文件夹（详见③）； \uD83D\uDDBC️Icon.ico：工程的图标文件，是引擎内部显示的图标，也是最终发布出的 exe 文件所使用的图标； \uD83D\uDDBC️Icon.png：图标文件的 png 版本，未被引擎使用，删除该文件不影响引擎功能； \uD83D\uDCCB*.csproj：工程对应的 C# 工程文件； \uD83D\uDCCB*.sln：工程对应的 C# 解决方案； ③ 资源文件夹内部 \uD83D\uDCC1Audio：存放工程所需的音乐音效文件，使用 Universe.BuiltIn.MusicRoot和 Universe.BuiltIn.SoundRoot来获取此文件夹的路径； \uD83D\uDCC1Language：存放支持多语言所需的文本文件，使用 Universe.BuiltIn.LanguageRoot 来获取此文件夹的路径； \uD83D\uDCC1Sheet：存放工程的美工文件，使用 Universe.BuiltIn.SheetRoot 来获取此文件夹的路径； \uD83D\uDCC1Fonts：存放工程的字体文件，使用 Universe.BuiltIn.FontRoot 来获取此文件夹的路径； \uD83D\uDCC1Meta：存放由用户自定义的文本信息，使用 Universe.BuiltIn.UniverseMetaRoot 来获取此文件夹的路径； \uD83D\uDCC1Map：存放工程自带的地图文件，这里的地图文件不会被玩家修改。使用 Universe.BuiltIn.BuiltInMapRoot 来获取此文件夹的路径； \uD83D\uDCC4Info.json：工程的配置设置，包含如工程名，开发者名，工程版本等内容。使用 Universe.BuiltInInfo 来获取此文件的内容； 用户存档 ① 存档根目录，一个 AngeliA 工程由用户生成的所有存档内容都保存在这个文件夹里。，使用 Universe.SavingRoot 来获取这个文件夹的路径； ② 存档根目录内部 \uD83D\uDCC1Slot 0：第0号存档槽位，用户可创建并选择存档槽位，新的槽位将命名为 “Slot 1”、“Slot 2” 等。使用 Universe.SlotRoot 来获取当前选择的槽位文件夹路径； \uD83D\uDCC4CurrentSlot.txt：当前选择的存档槽位编号，使用 Universe.CurrentSavingSlot来获取当前选择的存档编号； \uD83D\uDCC4Saving.txt：全局设置存档内容，所有存档槽位共享这里的内容，使用 Saving 类时SavingLocation.Global 用于定义全局存档信息； ③ 存档槽位内部 \uD83D\uDCC1Meta：用户自定义的存档内容，使用 Universe.SlotMetaRoot 来获取此文件夹路径； \uD83D\uDCC1User Map：存放玩家游玩过的关卡文件，玩家对关卡的修改将保存在这些文件里，使用 Universe.SlotUserMapRoot 来获取此文件夹路径； ④ 信息文件夹内部 \uD83D\uDCC1Character Attack：存放角色的攻击相关的配置信息； \uD83D\uDCC1Character Rendering：存放角色渲染相关的配置信息； \uD83D\uDCC1Inventory：存放物品栏内的物品信息，包含角色的装备、指定位置的宝箱里的物品等； \uD83D\uDCC1MiniGame：迷你游戏的奖励信息； \uD83D\uDCC1Screenshot：游戏内部的截图功能，使用渲染Cell保存信息，使用 CellScreenshotSystem.RequireTakeScreenshot(yourGlobalRange); 来对游戏进行截图； \uD83D\uDCD1LoadedBackgroundTrigger：用于保存电路系统激活的后台触发器位置，详见 CircuitSystem 类； \uD83D\uDCC4Saving.txt：槽位内部存档内容，使用 SavingLocation.Local 来把存档内容存入此文件中。当玩家更换槽位后，这里的存档信息将不会出现在新的槽位里； \uD83D\uDCD1UnlockedItem：玩家解锁过的物品ID； \uD83D\uDCD1UnlockedPlayers：玩家解锁过的可控角色ID；"
   },
-  "docsCN/4-basic-concept/02-engine-window.html": {
-    "href": "docsCN/4-basic-concept/02-engine-window.html",
+  "docsCN/3-basic-concept/02-engine-window.html": {
+    "href": "docsCN/3-basic-concept/02-engine-window.html",
     "title": "引擎窗口 | AngeliA",
-    "summary": "引擎窗口 游戏 美工编辑器 多语言 日志输出 工程信息 拓展包 引擎设置"
+    "summary": "引擎窗口 本章将简要介绍 AngeliA 引擎中各个编辑器窗口的功能。在打开游戏工程后，您可以通过左侧边栏选择任意一个编辑器窗口以使用其提供的功能。引擎仅支持同时打开一个编辑器窗口，所有可用的编辑器窗口均列于左侧边栏。有关各窗口更详细的使用说明，请参阅后续章节。 游戏窗口 该窗口用于编辑关卡并试玩用户开发的游戏。要在游戏窗口中成功显示游戏内容，项目须做到无任何编译错误。打开游戏窗口后，右侧将出现专属工具栏，提供如逐帧调试、显示碰撞体、鼠标拖拽移动实体等实用功能。 美工编辑器 该窗口用于管理和创作当前游戏所需的像素图块。游戏中的几乎所有画面元素——无论是一块树桩、角色的头部，还是一节梯子——都是通过图块渲染的。窗口左侧是用户自定义的图集列表，便于对图块进行分类管理；中间的主区域用于绘制和管理具体图块，支持创建新图块、在图块中绘制、重命名图块，或为其设置自动平铺规则等操作。所有修改在保存后将即时应用于游戏，无需重新编译游戏。 多语言 该窗口用于以多种语言填写游戏所需的文字 UI 内容。您可以自定义游戏所支持的语言，并手动填写对应的翻译文本。游戏代码将通过窗口左侧第一列的 Key 值，查找并获取对应语言的翻译内容，从而实现多语言支持。使用 Language.Get(ange_hash_of_key);来获取用户选择的语言所对应的文本。 日志输出 该窗口显示游戏输出的文本内容、游戏运行时抛出的异常与游戏的编译错误。使用 Debug.Log(your_content); 来输出一行文本到日志窗口。 工程信息 该窗口用于调整当前工程的配置信息，例如工程名称、开发者名称、版本号等。所有设置将保存在游戏工程文件夹中，仅对当前打开的工程生效。窗口上方的按钮可用于重新编译游戏，或将其打包发布为最终的游戏成品。 拓展包 该窗口用于将指定的拓展包加载到游戏中或从游戏中移除。您也可以将当前游戏导出为拓展包，以便在其他项目中复用和共享。 引擎设置 该窗口用于调整与引擎程序本身相关的设置，例如是否在启动时自动打开上次使用的工程、引擎界面的显示语言，以及各项功能的快捷键配置等。这些设置仅影响引擎的使用体验，不会对任何游戏工程的内容产生影响。"
   },
-  "docsCN/4-basic-concept/03-open-world-sandbox.html": {
-    "href": "docsCN/4-basic-concept/03-open-world-sandbox.html",
+  "docsCN/3-basic-concept/03-open-world-sandbox.html": {
+    "href": "docsCN/3-basic-concept/03-open-world-sandbox.html",
     "title": "开放世界沙盒 | AngeliA",
-    "summary": "开放世界沙盒"
+    "summary": "开放世界沙盒 本章将为您简要介绍地图关卡相关的内容，更详细的使用说明，请参阅后续章节。 地图逻辑 引擎能够将多个地图无缝拼接，并流畅地呈现给玩家，营造出开放世界的体验。仅有玩家视野范围内的地图块会被渲染，进入画面的实体会被动态加载，而离开画面的实体则会被自动卸载。 各类地图块的功能如下： 背景块：仅用于视觉展示，不参与碰撞计算。 关卡块：默认具有碰撞效果。通过添加“单向板”标签，可设置为仅在特定方向上阻挡实体通过。 实体块：用于加载包含用户自定义逻辑的实例，通常代表具有行为的游戏对象。 辅助块：仅存在于后台数据中，不参与渲染，也不产生交互，用于标记或内部逻辑用途。 地图层 玩家可使用门或传送门前往相邻的地图层（如下图），引擎会在游戏进行时显示相邻的后置层。使用 TeleportTask.TeleportFromDoor 方法来传送玩家角色。 地图文件 地图文件格式为 ibb 意为 int byte byte，每个ibb文件储存着 128 × 128 (块) 尺寸的地图，文件名为对应正方形区域的左下角的 x_y_z 坐标。文件内容为 int, byte, byte 为一组所串成的列表（例如 7126723, 0, 0, -467174, 1, 0, 892135, 2, 1,...），其中 int 为块名称的AngeHash ，第一个 byte 为块在地图内的本地 x 坐标，第二个 byte 为 y 坐标。当坐标超过 127 时，需将数值减去 128 得到真实数据。当 x<128 y<128 时，块为实体类型；当 x<128 y≥128 时，块为辅助类型；当 x≥128 y<128 时，块为关卡类型；当 x≥128 y≥128 时，块为背景类型；"
   },
-  "docsCN/4-basic-concept/04-pixel-artwork.html": {
-    "href": "docsCN/4-basic-concept/04-pixel-artwork.html",
+  "docsCN/3-basic-concept/04-pixel-artwork.html": {
+    "href": "docsCN/3-basic-concept/04-pixel-artwork.html",
     "title": "像素美工 | AngeliA",
-    "summary": "像素美工"
+    "summary": "像素美工 本章将简要介绍引擎内置的美工编辑器。该编辑器所编辑的数据来源于当前工程文件夹下的 Universe\\Sheet\\Game Sheet.sheet 文件。该文件是 AngeliA 专用格式的无损压缩二进制文件，用于保存像素风格的美术资源及其所有附加信息，例如图块的标签、边框等内容。 美工编辑器主要分为两大部分：左侧的图集列表和右侧的主编辑区。 图集由用户自行创建和修改，多个图集可归类至图集文件夹中，便于统一管理。图集分为三种类型：普通、关卡 和 背景。其中，关卡类图集中的图块将被引擎识别为“可用于地图的关卡块”，背景类图集同理。要更改图集类型，只需在图集列表中右键点击目标图集，并在弹出菜单中选择所需类型。 主编辑区用于显示当前图集中的全部图块。您可以在右侧工具栏中选择“图块工具”，通过左键点击并拖动来选择一个或多个图块。选中图块后，上方工具栏将切换为如下所示的界面： ① 图块名称： 图块名称必须唯一，不能与同一图集或其他图集中的图块重名。当同时选中多个图块时，输入框内将显示 *，此时仍可编辑图块名称。系统会自动将图块依次命名为“名称 0”、“名称 1”、“名称 2”……，这些图块将被视为一个图块组，可用于帧动画、自动平铺等功能。 ② 图块尺寸： 以像素为单位，显示并可编辑图块的宽高。 ③ 图块边框： 从左至右依次为左、右、下、上边框。该设置用于 9-Slice 渲染图块，也可用于为关卡块指定更小的碰撞区域。 ④ 图块枢纽（Pivot）： 指定图块的对齐参考点。在游戏中以点位渲染图块时，该点将与代码指定的位置对齐。修改关卡块或背景块的枢纽会影响地图中图块的渲染位置。 ⑤ 图块的 Z 位置： 用于确定图块的渲染遮挡顺序。该值可在游戏代码中被覆盖。 ⑥ 动画持续时间： 以帧为单位，设置图块的动画帧持续时间。 ⑦ 通用工具栏（从左至右）： 触发器（Trigger）： 将选中的图块标记为触发器。触发器不会与实体发生碰撞，但仍会被加载进物理系统，可用于触发特定的游戏逻辑，例如触碰时为角色回复生命、定义一个可被检测的范围等。 标签（Tag）： 为选中图块添加逻辑标签，详见 枚举Tag 自动平铺规则： 设置图块在关卡编辑器中的自动平铺行为（如下图）。引擎会按图块组顺序逐一匹配规则，若当前地图内容符合某条规则，即使用对应图块绘制。下图的规则为：左右相邻块需与当前图块 ID 相同，上下相邻块需 ID 不同，斜向块不参与判断（系统支持设置斜向规则） 删除选中图块（快捷键 Del） 输出图块信息（仅在引擎 Debug 模式下可用） ⑧ 内容转换工具栏（从左至右）： 顺时针旋转图块 逆时针旋转图块 水平翻转图块 垂直翻转图块 一键裁剪图块四周空白区域"
   },
-  "docsCN/4-basic-concept/05-code.html": {
-    "href": "docsCN/4-basic-concept/05-code.html",
+  "docsCN/3-basic-concept/05-code.html": {
+    "href": "docsCN/3-basic-concept/05-code.html",
     "title": "代码 | AngeliA",
     "summary": "代码"
   },
-  "docsCN/4-basic-concept/06-event.html": {
-    "href": "docsCN/4-basic-concept/06-event.html",
+  "docsCN/3-basic-concept/06-event.html": {
+    "href": "docsCN/3-basic-concept/06-event.html",
     "title": "事件 | AngeliA",
     "summary": "事件"
   },
-  "docsCN/4-basic-concept/07-entity.html": {
-    "href": "docsCN/4-basic-concept/07-entity.html",
+  "docsCN/3-basic-concept/07-entity.html": {
+    "href": "docsCN/3-basic-concept/07-entity.html",
     "title": "实体 | AngeliA",
     "summary": "实体"
   },
-  "docsCN/4-basic-concept/08-physics.html": {
-    "href": "docsCN/4-basic-concept/08-physics.html",
+  "docsCN/3-basic-concept/08-physics.html": {
+    "href": "docsCN/3-basic-concept/08-physics.html",
     "title": "物理 | AngeliA",
     "summary": "物理"
   },
-  "docsCN/4-basic-concept/09-rendering.html": {
-    "href": "docsCN/4-basic-concept/09-rendering.html",
+  "docsCN/3-basic-concept/09-rendering.html": {
+    "href": "docsCN/3-basic-concept/09-rendering.html",
     "title": "渲染 | AngeliA",
     "summary": "渲染"
   },
-  "docsCN/4-basic-concept/10-input.html": {
-    "href": "docsCN/4-basic-concept/10-input.html",
+  "docsCN/3-basic-concept/10-input.html": {
+    "href": "docsCN/3-basic-concept/10-input.html",
     "title": "输入 | AngeliA",
     "summary": "输入"
   },
-  "docsCN/4-basic-concept/11-saving.html": {
-    "href": "docsCN/4-basic-concept/11-saving.html",
+  "docsCN/3-basic-concept/11-saving.html": {
+    "href": "docsCN/3-basic-concept/11-saving.html",
     "title": "存档 | AngeliA",
     "summary": "存档"
   },
-  "docsCN/4-basic-concept/12-character-movement.html": {
-    "href": "docsCN/4-basic-concept/12-character-movement.html",
+  "docsCN/3-basic-concept/12-character-movement.html": {
+    "href": "docsCN/3-basic-concept/12-character-movement.html",
     "title": "角色运动 | AngeliA",
     "summary": "角色运动"
   },
-  "docsCN/4-basic-concept/13-character-animation.html": {
-    "href": "docsCN/4-basic-concept/13-character-animation.html",
+  "docsCN/3-basic-concept/13-character-animation.html": {
+    "href": "docsCN/3-basic-concept/13-character-animation.html",
     "title": "角色动画 | AngeliA",
     "summary": "角色动画"
   },
-  "docsCN/4-basic-concept/14-inventory.html": {
-    "href": "docsCN/4-basic-concept/14-inventory.html",
+  "docsCN/3-basic-concept/14-inventory.html": {
+    "href": "docsCN/3-basic-concept/14-inventory.html",
     "title": "物品栏 | AngeliA",
     "summary": "物品栏"
   },
-  "docsCN/4-basic-concept/15-language.html": {
-    "href": "docsCN/4-basic-concept/15-language.html",
+  "docsCN/3-basic-concept/15-language.html": {
+    "href": "docsCN/3-basic-concept/15-language.html",
     "title": "多语言 | AngeliA",
     "summary": "多语言"
   },

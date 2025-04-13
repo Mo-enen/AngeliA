@@ -23,12 +23,18 @@ body {
     color: var(--color-foreground);
 }
 
+img {
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
 h1 {
     font-weight: 600;
     font-size: 64px;
     color: #DDD;
     white-space: nowrap;
     text-align: center;
+    padding-bottom: 50px;
 }
 
 #_content {
