@@ -8,10 +8,7 @@ namespace AngeliA;
 /// <summary>
 /// Artwork sheet that holds sprites, sprite groups, atlas and textures data for rendering
 /// </summary>
-/// <param name="ignoreGroups">True if do not require sprite group</param>
-/// <param name="ignoreSpriteWithPaletteTag">True if do not load sprites with Tag.Palette</param>
-/// <param name="ignoreTextureAndPixels">True if do not load pixel data and do not create textures</param>
-public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithPaletteTag = true, bool ignoreTextureAndPixels = false) {
+public class Sheet {
 
 
 
@@ -41,9 +38,10 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithPaletteTag =
 	public readonly Dictionary<int, object> TexturePool = [];
 
 	// Data
-	private readonly bool IgnoreGroups = ignoreGroups;
-	private readonly bool IgnoreSpriteWithPaletteTag = ignoreSpriteWithPaletteTag;
-	private readonly bool IgnoreTextureAndPixels = ignoreTextureAndPixels;
+	private readonly bool IgnoreGroups;
+	private readonly bool IgnoreSpriteWithPaletteTag;
+	private readonly bool IgnoreTextureAndPixels;
+
 
 	#endregion
 
@@ -69,6 +67,19 @@ public class Sheet (bool ignoreGroups = false, bool ignoreSpriteWithPaletteTag =
 		bool ignoreTextureAndPixels = false
 	) : this(ignoreGroups, ignoreSpriteWithIgnoreTag, ignoreTextureAndPixels) {
 		SetData(sprites, atlasInfo);
+	}
+
+
+	/// <summary>
+	/// Artwork sheet that holds sprites, sprite groups, atlas and textures data for rendering
+	/// </summary>
+	/// <param name="ignoreGroups">True if do not require sprite group</param>
+	/// <param name="ignoreSpriteWithPaletteTag">True if do not load sprites with Tag.Palette</param>
+	/// <param name="ignoreTextureAndPixels">True if do not load pixel data and do not create textures</param>
+	public Sheet (bool ignoreGroups = false, bool ignoreSpriteWithPaletteTag = true, bool ignoreTextureAndPixels = false) {
+		IgnoreGroups = ignoreGroups;
+		IgnoreSpriteWithPaletteTag = ignoreSpriteWithPaletteTag;
+		IgnoreTextureAndPixels = ignoreTextureAndPixels;
 	}
 
 
