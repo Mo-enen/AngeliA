@@ -1,6 +1,10 @@
 #  <img src="docs\images\Icon.png" width="50"/> AngeliA Engine
 
+
+
 A 2D game engine focused on open-world platformer games, built with C#.
+
+
 
 ## Features
 
@@ -18,9 +22,18 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
 - **PC-Only**: Currently, the engine and the games it produces are PC only. The implementation is based on Raylib. More platforms will be support in the future.
 
+- **Layered Map**: Player can go to behind or front layer of the map by using a door.
+
+<img src="docs/images/GoThroughLayer.gif" width="61.8%"/>
+
+
+
 ## Download & Setup
 
 - Download the latest version from the [Release](https://github.com/Mo-enen/AngeliA/releases) section, extract the file and you're ready to go!
+
+
+
 
 ## Community & Support
 
@@ -28,10 +41,16 @@ A 2D game engine focused on open-world platformer games, built with C#.
 - <img src="docs\images\YouTube.png" width="16"/> YouTube [Moenen](https://www.youtube.com/@game.angelia)
 - <img src="docs\images\BiliBili.png" width="16"/> BiliBili [楠瓜Moenen](https://space.bilibili.com/11318413)
 
+
+
+
 ## Documentation & API Reference
 
 - [Documentation](https://mo-enen.github.io/AngeliA/docs/introduction.html) | [API Reference](https://mo-enen.github.io/AngeliA/api/AngeliA.html)
 - Documentations are still under construction... 🏗️
+
+
+
 
 ## Screenshots
 
@@ -39,6 +58,8 @@ A 2D game engine focused on open-world platformer games, built with C#.
 <img src="docs\images\ScreenshotPixelEditor.png" width="100%"/>
 <img src="docs\images\ScreenshotProject.png" width="100%"/>
 <img src="docs\images\ScreenshotGameplay.png" width="100%"/>
+
+
 
 ## Contributors
 <a href="https://github.com/Mo-enen/AngeliA/graphs/contributors">

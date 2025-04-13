@@ -11,7 +11,7 @@
 
 您可以用引擎自带的关卡编辑器创作开放式世界关卡，并在编辑的过程中随时开始游戏测试正在创作的部分，工作流程就像游玩一款沙盒游戏，轻松且充满创造力。
 
-<img src="../images/MapEditorTest.gif" width="61.8%"/>
+ <img src="../images/MapEditorTest.gif" width="61.8%"/>
 
 
 
@@ -19,7 +19,7 @@
 
 您可以使用逐帧调试，精确地观察与测试游戏。从角色动作的每一帧过渡，到极限关卡的闪避与跳跃，您将拥有充足的时间按下每一个关键按键，捕捉每一个细微的反馈。无论是验证动画是否丝滑衔接，还是检视物理响应是否合理，逐帧调试都将为您提供绝对的掌控力，是打磨手感与优化体验的利器。
 
-<img src="../images/FrameDebugTest.gif" width="61.8%"/>
+ <img src="../images/FrameDebugTest.gif" width="61.8%"/>
 
 
 
@@ -27,7 +27,7 @@
 
 AngeliA 引擎本身也是一款 AngeliA 游戏，采用高效且优雅的 C# 作为编程语言。您可以编写自定义的 Entity 类，并通过关卡编辑器将它们直观地布置在地图上。引擎内置的拓展包涵盖了丰富的游戏常用元素，如传送带、弹簧、单向板等，您只需编写这些物体的子类，稍作参数调整，便可立即投入游戏原型的创作与测试，大幅提升开发效率与灵感实现的速度。
 
-<img src="../images/Coding.png" width="61.8%"/>
+ <img src="../images/Coding.png" width="61.8%"/>
 
 
 
@@ -35,7 +35,7 @@ AngeliA 引擎本身也是一款 AngeliA 游戏，采用高效且优雅的 C# �
 
 引擎包含为复古风格游戏专门打造的原创物理系统，简单高效，还原像素时代的经典手感与运动逻辑。角色跳跃的滞空感、滑动的惯性、碰撞的反馈细节，都已经过精心调校，让您的游戏拥有一流的操作手感。
 
-<img src="../images/PhysicsTest.png" width="61.8%"/>
+ <img src="../images/PhysicsTest.png" width="61.8%"/>
 
 
 
@@ -43,7 +43,7 @@ AngeliA 引擎本身也是一款 AngeliA 游戏，采用高效且优雅的 C# �
 
 引擎内置了像素绘图器，方便您创作与管理游戏所需的美术素材。所有美术修改均可即时生效，无需重新编译游戏，极大提升了开发过程中的迭代效率与创作灵活性。绘图器全面支持游戏内的各类设定，如地图块的碰撞判定、制定规则自动平铺地图快、角色素材的智能适配等。
 
-<img src="../images/ScreenshotPixelEditor.png" width="61.8%"/>
+ <img src="../images/ScreenshotPixelEditor.png" width="61.8%"/>
 
 
 
