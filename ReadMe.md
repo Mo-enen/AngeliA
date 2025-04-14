@@ -12,17 +12,24 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
   <img src="docs/images/MapEditorTest.gif" width="61.8%"/>
 
-- **Frame Debugger**: precisely test your game frame-by-frame. Executing tight dodges and jumps in challenging levels, you'll have all the time you need to press each critical key and capture every subtle feedback.
+- **Frame Debugger**: Precisely test your game frame-by-frame. Executing tight dodges and jumps in challenging levels, you'll have all the time you need to press each critical key and capture every subtle feedback.
 
   <img src="docs/images/FrameDebugTest.gif" width="61.8%"/>
 
+- **Entity Debugger**: Move entities on stage by drag them with mouse.
+
+  <img src="docs/images/EntityDebuggerTest.gif" width="61.8%"/>
+
 - **Built-in Pixel Art Editor**: A dedicated pixel art editor designed for creating and managing sprite sheets. Supports importing assets from Aseprite.
 
-- **PC-Only**: Currently, the engine and the games it produces are PC only. The implementation is based on Raylib. More platforms will be support in the future.
+
+<img src="docs/images/EngineWindow-Artwork.png" width="61.8%"/>
 
 - **Layered Map**: Player can go to behind or front layer of the map by using a door.
 
   <img src="docs/images/GoThroughLayer.gif" width="61.8%"/>
+
+- **PC-Only**: Currently, the engine and the games it produces are PC only. The implementation is based on Raylib. More platforms will be support in the future.
 
 
 

@@ -10,9 +10,7 @@ AngeliA 工程本质上是一个 C# 工程，推荐使用 Visual Studio 或 Visu
 
 ### 静态事件
 
-为工程内的任意类的一个静态函数添加 `[OnGameInitialize]` 标签后，这个函数会在游戏初始化时被调用，`[OnGameUpdate]` 则会让函数每帧都被调用一次，全部同类标签请看 [速查表](https://mo-enen.github.io/AngeliA/docsCN/4-cheat-sheet.html) 章节。
-
-示例代码
+为工程内的任意类的一个静态函数添加 `[OnGameInitialize]` 标签后，这个函数会在游戏初始化时被调用，`[OnGameUpdate]` 则会让函数每帧都被调用一次，全部静态事件标签请看 [速查表](https://mo-enen.github.io/AngeliA/docsCN/4-cheat-sheet.html) 章节。
 
 ```c#
 using AngeliA;
@@ -70,7 +68,7 @@ public static class Test {
 }
 ```
 
-运行结果
+运行结果（裁剪后画面）
 
  <img src="../../images/Coding-Test.png" width="50%"/>
 
@@ -78,7 +76,7 @@ public static class Test {
 
 ### 载入实体
 
-
+以下代码会在鼠标点击时载入一个测试实体，实体在载入后将留在舞台上，直到移出画面范围外才会被自动卸载，您也可以使用 `entity.Active = false;` 来手动卸载实体。
 
 ```C#
 using AngeliA;
@@ -109,7 +107,7 @@ public class TestRigidbody : Rigidbody {
 }
 ```
 
-运行结果
+运行结果（裁剪后画面，加速快放）
 
  <img src="../../images/SpawnEntityTest.gif" width="50%"/>
 

@@ -135,7 +135,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	/// <summary>
 	/// Which physical layer should this entity fill it's collider in
 	/// </summary>
-	public abstract int PhysicalLayer { get; }
+	public virtual int PhysicalLayer => PhysicsLayer.ENVIRONMENT;
 	/// <summary>
 	/// Intrinsic physics layers this entity should collide with
 	/// </summary>
