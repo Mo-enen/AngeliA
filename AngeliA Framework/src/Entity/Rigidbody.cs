@@ -87,7 +87,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 	/// <summary>
 	/// True if this entity try to move out of ground automatically when it stuck inside ground
 	/// </summary>
-	public virtual bool EjectWhenInsideGround => true;
+	public virtual bool EjectWhenInsideGround => false;
 
 	// Based Value
 	/// <summary>

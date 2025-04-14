@@ -14,23 +14,23 @@
     href: 3-basic-concept/04-pixel-artwork.md
   - name: 代码
     href: 3-basic-concept/05-code.md
-  - name: 事件
-    href: 3-basic-concept/06-event.md
   - name: 实体
-    href: 3-basic-concept/07-entity.md
+    href: 3-basic-concept/06-entity.md
   - name: 物理
-    href: 3-basic-concept/08-physics.md
+    href: 3-basic-concept/07-physics.md
   - name: 渲染
-    href: 3-basic-concept/09-rendering.md
+    href: 3-basic-concept/08-rendering.md
   - name: 输入
-    href: 3-basic-concept/10-input.md
+    href: 3-basic-concept/09-input.md
   - name: 存档
-    href: 3-basic-concept/11-saving.md
+    href: 3-basic-concept/10-saving.md
   - name: 角色运动
-    href: 3-basic-concept/12-character-movement.md
+    href: 3-basic-concept/11-character-movement.md
   - name: 角色动画
-    href: 3-basic-concept/13-character-animation.md
+    href: 3-basic-concept/12-character-animation.md
   - name: 物品栏
-    href: 3-basic-concept/14-inventory.md
+    href: 3-basic-concept/13-inventory.md
   - name: 多语言
-    href: 3-basic-concept/15-language.md
+    href: 3-basic-concept/14-language.md
+- name: 速查表
+  href: 4-cheat-sheet.md

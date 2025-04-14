@@ -193,7 +193,10 @@ public class OnViewZChangedAttribute : EventAttribute { }
 /// <summary>
 /// The function will be called before rendering layer update
 /// </summary>
-/// <example>internal static void ExampleFunction (int layerIndex) { }</example>
+/// <example><code>
+/// [BeforeLayerFrameUpdate_IntLayer]
+/// internal static void ExampleFunction (int layer) { }
+/// </code></example>
 public class BeforeLayerFrameUpdate_IntLayerAttribute : EventAttribute { }
 
 

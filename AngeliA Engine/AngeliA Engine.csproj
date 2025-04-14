@@ -63,9 +63,8 @@
 		<None Remove="Resources\**" />
 		<None Remove="Universe\**" />
 	</ItemGroup>
-
 	<ItemGroup>
-		<ProjectReference Include="..\AngeliA Rigged\AngeliA Rigged.csproj" />
+	  <ProjectReference Include="..\AngeliA Raylib\AngeliA Raylib.csproj" />
 	</ItemGroup>
 
 	<!--Move Game Lib into Library Folder-->

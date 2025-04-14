@@ -619,7 +619,10 @@
             <summary>
             The function will be called before rendering layer update
             </summary>
-            <example>internal static void ExampleFunction (int layerIndex) { }</example>
+            <example><code>
+            [BeforeLayerFrameUpdate_IntLayer]
+            internal static void ExampleFunction (int layer) { }
+            </code></example>
         </member>
         <member name="T:AngeliA.AfterLayerFrameUpdate_IntLayerAttribute">
             <summary>
@@ -14086,17 +14089,6 @@
             <summary>
             Artwork sheet that holds sprites, sprite groups, atlas and textures data for rendering
             </summary>
-            <param name="ignoreGroups">True if do not require sprite group</param>
-            <param name="ignoreSpriteWithPaletteTag">True if do not load sprites with Tag.Palette</param>
-            <param name="ignoreTextureAndPixels">True if do not load pixel data and do not create textures</param>
-        </member>
-        <member name="M:AngeliA.Sheet.#ctor(System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Artwork sheet that holds sprites, sprite groups, atlas and textures data for rendering
-            </summary>
-            <param name="ignoreGroups">True if do not require sprite group</param>
-            <param name="ignoreSpriteWithPaletteTag">True if do not load sprites with Tag.Palette</param>
-            <param name="ignoreTextureAndPixels">True if do not load pixel data and do not create textures</param>
         </member>
         <member name="F:AngeliA.Sheet.Sprites">
             <summary>
@@ -14121,6 +14113,14 @@
             <param name="atlasInfo"></param>
             <param name="ignoreGroups">True if do not require sprite group</param>
             <param name="ignoreSpriteWithIgnoreTag">True if do not load sprites with Tag.Palette</param>
+            <param name="ignoreTextureAndPixels">True if do not load pixel data and do not create textures</param>
+        </member>
+        <member name="M:AngeliA.Sheet.#ctor(System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Artwork sheet that holds sprites, sprite groups, atlas and textures data for rendering
+            </summary>
+            <param name="ignoreGroups">True if do not require sprite group</param>
+            <param name="ignoreSpriteWithPaletteTag">True if do not load sprites with Tag.Palette</param>
             <param name="ignoreTextureAndPixels">True if do not load pixel data and do not create textures</param>
         </member>
         <member name="M:AngeliA.Sheet.SetData(System.Collections.Generic.List{AngeliA.AngeSprite},System.Collections.Generic.List{AngeliA.Atlas})">
