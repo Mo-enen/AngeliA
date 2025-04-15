@@ -17,7 +17,7 @@
 - **实体块**：用于加载包含用户自定义逻辑的实例，通常代表具有行为的游戏对象。
 - **辅助块**：仅存在于后台数据中，不参与渲染，也不产生交互，用于标记或内部逻辑用途。
 
- <img src="../../images/OpenWorldSandbox-Map.png" width="61.8%"/>
+<img src="../../images/OpenWorldSandbox-Map.png" width="61.8%"/>
 
 
 
@@ -26,7 +26,7 @@
 
 玩家可使用门或传送门前往相邻的地图层（如下图），引擎会在游戏进行时显示相邻的后置层。使用 `TeleportTask.TeleportFromDoor` 方法来传送玩家角色。
 
- <img src="../../images/GoThroughLayer.gif" width="61.8%"/>
+<img src="../../images/GoThroughLayer.gif" width="61.8%"/>
 
 
 
@@ -35,5 +35,5 @@
 
 地图文件格式为 `ibb` 意为 `int byte byte`，每个`ibb`文件储存着 128 × 128 (块) 尺寸的地图，文件名为对应正方形区域的左下角的 x_y_z 坐标。文件内容为 int, byte, byte 为一组所串成的列表（例如 7126723, 0, 0, -467174, 1, 0, 892135, 2, 1,...），其中 int 为块名称的`AngeHash` ，第一个 byte 为块在地图内的本地 x 坐标，第二个 byte 为 y 坐标。当坐标超过 127 时，需将数值减去 128 得到真实数据。当 x\<128  y\<128 时，块为实体类型；当 x\<128  y≥128 时，块为辅助类型；当 x≥128  y\<128 时，块为关卡类型；当 x≥128  y≥128 时，块为背景类型；
 
- <img src="../../images/OpenWorldSandbox-MapFile.png" width="61.8%"/>
+<img src="../../images/OpenWorldSandbox-MapFile.png" width="61.8%"/>
 

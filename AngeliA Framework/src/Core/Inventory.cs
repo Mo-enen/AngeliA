@@ -229,7 +229,7 @@ public static class Inventory {
 
 
 	/// <summary>
-	/// Calculate inventory ID based of the given infomation
+	/// Calculate inventory ID based of the given information
 	/// </summary>
 	/// <param name="basicID">ID of the holder</param>
 	/// <param name="baseName">Name of the holder</param>

@@ -174,7 +174,6 @@ public abstract class Track : Entity, IBlockEntity {
 				TrackSet
 			);
 			if (entity is Rigidbody rig) {
-				rig.RequireDodgeOverlap = true;
 				rig.FillAsTrigger(1);
 				rig.IgnoreGravity.True(1);
 				rig.IgnorePhysics.True(1);

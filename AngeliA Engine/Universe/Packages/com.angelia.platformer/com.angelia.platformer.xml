@@ -1019,6 +1019,11 @@
             Initial speed this spring gives when bounce
             </summary>
         </member>
+        <member name="P:AngeliA.Platformer.Spring.BounceWhenInsideGround">
+            <summary>
+            True if the spring perform bounce when stuck inside ground
+            </summary>
+        </member>
         <member name="P:AngeliA.Platformer.Spring.ArtworkRotation">
             <summary>
             Current rotation of the artwork sprite

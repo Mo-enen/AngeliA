@@ -153,6 +153,7 @@ public abstract class Fire : Entity, IFire {
 				if (Game.GlobalFrame == BurnedFrame) {
 					Target.OnBurned();
 					eTarget.Active = false;
+					eTarget.IgnoreReposition = true;
 					IgnoreReposition = true;
 				}
 				// Follow Target

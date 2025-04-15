@@ -248,11 +248,11 @@ public static partial class FrameworkUtil {
 	}
 
 
-	/// <inheritdoc cref="RemapCells(Span{Cell}, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+	/// <inheritdoc cref="RemapCells(Span{Cell}, int, int, IRect, IRect, out int, int, int, bool)"/>
 	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, int fitPivotX = 500, int fitPivotY = 500, bool fit = true) => RemapCells(cells.GetSpan(), cellIndexStart, cellIndexEnd, from, to, out _, fitPivotX, fitPivotY, fit);
-	/// <inheritdoc cref="RemapCells(Span{Cell}, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+	/// <inheritdoc cref="RemapCells(Span{Cell}, int, int, IRect, IRect, out int, int, int, bool)"/>
 	public static void RemapCells (Span<Cell> cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, int fitPivotX = 500, int fitPivotY = 500, bool fit = true) => RemapCells(cells, cellIndexStart, cellIndexEnd, from, to, out _, fitPivotX, fitPivotY, fit);
-	/// <inheritdoc cref="RemapCells(Span{Cell}, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+	/// <inheritdoc cref="RemapCells(Span{Cell}, int, int, IRect, IRect, out int, int, int, bool)"/>
 	public static void RemapCells (Cell[] cells, int cellIndexStart, int cellIndexEnd, IRect from, IRect to, out int minZ, int fitPivotX = 500, int fitPivotY = 500, bool fit = true) => RemapCells(cells.GetSpan(), cellIndexStart, cellIndexEnd, from, to, out minZ, fitPivotX, fitPivotY, fit);
 	/// <summary>
 	/// Remap the position and size of given rendering cells
@@ -322,6 +322,7 @@ public static partial class FrameworkUtil {
 	/// <param name="ignoreNonOnewayTrigger">True if triggers that is not oneway gate are excluded</param>
 	/// <param name="ignoreOnewayTrigger">True if oneway gates are excluded</param>
 	/// <param name="useTechEffect">True if the gizmos glitchs</param>
+	/// <param name="drawVelocity">True if draw the current velocity for rigidbody</param>
 	/// <param name="layerTints">Color for specified layers. Set to null to use default.</param>
 	public static void DrawAllCollidersAsGizmos (
 		int physicsMask = PhysicsMask.ALL,
@@ -330,6 +331,7 @@ public static partial class FrameworkUtil {
 		bool ignoreNonOnewayTrigger = false,
 		bool ignoreOnewayTrigger = false,
 		bool useTechEffect = false,
+		bool drawVelocity = false,
 		Color32[] layerTints = null
 	) {
 
@@ -392,6 +394,17 @@ public static partial class FrameworkUtil {
 									Game.DrawGizmosLine(rect.x, rect.y, rect.xMax, rect.yMax, thick, _tint);
 									Game.DrawGizmosLine(rect.xMax, rect.y, rect.x, rect.yMax, thick, _tint);
 								}
+								// Velocity
+								if (drawVelocity && cell.Entity is Rigidbody rig) {
+									int velX = rig.VelocityX;
+									int velY = rig.VelocityY;
+									int startX = rig.CenterX;
+									int startY = rig.CenterY;
+									Game.DrawGizmosLine(
+										startX, startY, startX + velX, startY + velY,
+										thick, Color32.WHITE
+									);
+								}
 							}
 						}
 					}
@@ -451,7 +464,7 @@ public static partial class FrameworkUtil {
 	public static void DrawClockHands (int centerX, int centerY, int radius, int handCode, int thickness, int thicknessSecond, Color32 tint, int z = int.MinValue) {
 
 		Time01_to_TimeDigit(Sky.InGameDaytime01, out int hour, out int min, out int second);
-		
+
 		// Sec
 		Renderer.Draw(
 			handCode, centerX, centerY,

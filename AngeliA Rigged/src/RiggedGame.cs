@@ -376,7 +376,7 @@ public partial class RiggedGame : Game {
 	internal static void OnGameUpdateLater () {
 		if (Instance == null) return;
 		if (Instance.DrawCollider) {
-			FrameworkUtil.DrawAllCollidersAsGizmos();
+			FrameworkUtil.DrawAllCollidersAsGizmos(drawVelocity:true);
 		}
 		Instance?.UpdateEntityClicker();
 	}

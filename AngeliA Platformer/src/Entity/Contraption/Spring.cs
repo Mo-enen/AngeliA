@@ -31,14 +31,18 @@ public abstract class Spring : Rigidbody, IBlockEntity, IAutoTrackWalker {
 	/// </summary>
 	protected abstract int Power { get; }
 	/// <summary>
-	/// Current rotation of the artwork sprite
+	/// True if the spring perform bounce when stuck inside ground
 	/// </summary>
-	public int ArtworkRotation { get; set; } = 0;
+	protected virtual bool BounceWhenInsideGround => false;
 	public override bool AllowBeingPush => !Horizontal;
 	int IAutoTrackWalker.LastWalkingFrame { get; set; }
 	int IAutoTrackWalker.WalkStartFrame { get; set; }
 	Direction8 IRouteWalker.CurrentDirection { get; set; }
 	Int2 IRouteWalker.TargetPosition { get; set; }
+	/// <summary>
+	/// Current rotation of the artwork sprite
+	/// </summary>
+	public int ArtworkRotation { get; set; } = 0;
 
 	// Data
 	private int LastBounceFrame = int.MinValue;
@@ -55,25 +59,27 @@ public abstract class Spring : Rigidbody, IBlockEntity, IAutoTrackWalker {
 
 	public override void BeforeUpdate () {
 		base.BeforeUpdate();
-		// Check for Bounce
-		if (Horizontal) {
-			// Horizontal
-			if (Physics.Overlap(
-				PhysicsMask.DYNAMIC, Rect.EdgeOutsideLeft(1), this, OperationMode.ColliderAndTrigger
-			)) {
-				PerformBounce(Direction4.Left);
-			}
-			if (Physics.Overlap(
-				PhysicsMask.DYNAMIC, Rect.EdgeOutsideRight(1), this, OperationMode.ColliderAndTrigger
-			)) {
-				PerformBounce(Direction4.Right);
-			}
-		} else {
-			// Vertical
-			if (Physics.Overlap(
-				PhysicsMask.DYNAMIC, Rect.EdgeOutsideUp(1), this, OperationMode.ColliderAndTrigger
-			)) {
-				PerformBounce(Direction4.Up);
+		if (!IsInsideGround || BounceWhenInsideGround) {
+			// Check for Bounce
+			if (Horizontal) {
+				// Horizontal
+				if (Physics.Overlap(
+					PhysicsMask.DYNAMIC, Rect.EdgeOutsideLeft(1), this, OperationMode.ColliderAndTrigger
+				)) {
+					PerformBounce(Direction4.Left);
+				}
+				if (Physics.Overlap(
+					PhysicsMask.DYNAMIC, Rect.EdgeOutsideRight(1), this, OperationMode.ColliderAndTrigger
+				)) {
+					PerformBounce(Direction4.Right);
+				}
+			} else {
+				// Vertical
+				if (Physics.Overlap(
+					PhysicsMask.DYNAMIC, Rect.EdgeOutsideUp(1), this, OperationMode.ColliderAndTrigger
+				)) {
+					PerformBounce(Direction4.Up);
+				}
 			}
 		}
 	}

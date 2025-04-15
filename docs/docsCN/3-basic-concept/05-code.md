@@ -107,7 +107,7 @@ public class TestRigidbody : Rigidbody {
 }
 ```
 
-运行结果（裁剪后画面，加速快放）
+运行结果（裁剪后画面，加速播放）
 
  <img src="../../images/SpawnEntityTest.gif" width="50%"/>
 

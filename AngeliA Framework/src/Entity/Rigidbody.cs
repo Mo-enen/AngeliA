@@ -77,10 +77,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	/// </summary>
 	public (int value, int decay) MomentumY = (0, 1);
 	/// <summary>
-	/// True if this entity do not react to the colliders which already overlaps on it.
-	/// </summary>
-	public bool RequireDodgeOverlap { get; set; } = false;
-	/// <summary>
 	/// True if this entity is facing right side
 	/// </summary>
 	public virtual bool FacingRight => true;
@@ -88,6 +84,10 @@ public abstract class Rigidbody : Entity, ICarrier {
 	/// True if this entity try to move out of ground automatically when it stuck inside ground
 	/// </summary>
 	public virtual bool EjectWhenInsideGround => false;
+	/// <summary>
+	/// True if this entity do not react to the colliders which already overlaps on it.
+	/// </summary>
+	public bool RequireDodgeOverlap { get; set; } = false;
 
 	// Based Value
 	/// <summary>
@@ -276,9 +276,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 				Active = false;
 				OnInsideGroundDestroyed();
 			} else {
-				if (VelocityX != 0 || VelocityY != 0) {
-					PerformMove(VelocityX, VelocityY);
-				}
+				PerformMove(VelocityX, VelocityY);
 				IsGrounded = GroundedCheck();
 				if (EjectWhenInsideGround) {
 					FrameworkUtil.TryEjectOutsideGround(this, CollisionMask, unitRange: 4, speed: 16);
@@ -480,7 +478,7 @@ public abstract class Rigidbody : Entity, ICarrier {
 		int speedScale = InWater ? WaterSpeedRate : 1000;
 		speedX = speedX * speedScale / 1000;
 		speedY = speedY * speedScale / 1000;
-		int mask = IsInsideGround ? CollisionMask & ~PhysicsMask.LEVEL & ~PhysicsMask.ENVIRONMENT : CollisionMask;
+		int mask = IsInsideGround ? CollisionMask & ~PhysicsMask.LEVEL : CollisionMask;
 		if (IgnoreOneway) {
 			newPos = Physics.MoveIgnoreOneway(mask, oldPos, speedX, speedY, new(Width, Height), this);
 		} else {
@@ -601,14 +599,13 @@ public abstract class Rigidbody : Entity, ICarrier {
 
 
 	/// <summary>
-	/// Function that holds the stuch inside ground checking logic
+	/// Function that holds the stuck inside ground checking logic
 	/// </summary>
 	protected virtual bool InsideGroundCheck () {
 		if (IgnoreInsideGround) return IsInsideGround;
-		int mask = PhysicsMask.MAP & CollisionMask;
+		int mask = PhysicsMask.LEVEL & CollisionMask;
 		if (mask == 0) return false;
-		var rect = Rect;
-		return Physics.Overlap(mask, IRect.Point(rect.CenterInt()), this);
+		return Physics.Overlap(mask, IRect.Point(Center), this);
 	}
 
 

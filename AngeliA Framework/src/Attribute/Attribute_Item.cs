@@ -160,7 +160,7 @@ public abstract class BasicGlobalItemCombinationAttribute (
 // Basic Combination
 #pragma warning disable CS1572
 /// <summary>
-/// Define a item combination to craft the item.
+/// Define an item combination to craft the item.
 /// </summary>
 /// <param name="count">How many item does it craft at once</param>
 /// <param name="keepId0">Do not consume this item</param>

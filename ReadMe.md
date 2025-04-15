@@ -22,8 +22,7 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
 - **Built-in Pixel Art Editor**: A dedicated pixel art editor designed for creating and managing sprite sheets. Supports importing assets from Aseprite.
 
-
-<img src="docs/images/EngineWindow-Artwork.png" width="61.8%"/>
+  <img src="docs/images/EngineWindow-Artwork.png" width="61.8%"/>
 
 - **Layered Map**: Player can go to behind or front layer of the map by using a door.
 
