@@ -1,4 +1,36 @@
 - name: Introduction
-  href: introduction.md
-- name: Getting Started
-  href: getting-started.md
+  href: 1-introduction.md
+- name: License Compliance
+  href: 2-comply-with-the-license.md
+- name: Basic Concept
+  items:
+  - name: File Layout
+    href: 3-basic-concept/01-file-layout.md
+  - name: Engine Window
+    href: 3-basic-concept/02-engine-window.md
+  - name: Open World Sandbox
+    href: 3-basic-concept/03-open-world-sandbox.md
+  - name: Pixel Artwork
+    href: 3-basic-concept/04-pixel-artwork.md
+  - name: Code
+    href: 3-basic-concept/05-code.md
+  - name: Entity
+    href: 3-basic-concept/06-entity.md
+  - name: Physics
+    href: 3-basic-concept/07-physics.md
+  - name: Rendering
+    href: 3-basic-concept/08-rendering.md
+  - name: Input
+    href: 3-basic-concept/09-input.md
+  - name: Saving
+    href: 3-basic-concept/10-saving.md
+  - name: Character Movement
+    href: 3-basic-concept/11-character-movement.md
+  - name: Character Animation
+    href: 3-basic-concept/12-character-animation.md
+  - name: Inventory
+    href: 3-basic-concept/13-inventory.md
+  - name: Language
+    href: 3-basic-concept/14-language.md
+- name: Cheat Sheet
+  href: 4-cheat-sheet.md

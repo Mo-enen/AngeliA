@@ -49,5 +49,5 @@ AngeliA 引擎本身也是一款 AngeliA 游戏，采用高效且优雅的 C# �
 
 ### 遵守协议
 
-此项目由[楠瓜Moenen](https://github.com/Mo-enen)独立开发，采用[MIT许可证](https://github.com/Mo-enen/AngeliA/blob/main/License.txt)，您可以使用此项目做几乎任何事，但必须在您的项目中标注我的名字，详见[遵守协议](https://mo-enen.github.io/AngeliA/docsCN/comply-with-the-license.html)。
+此项目由[楠瓜Moenen](https://github.com/Mo-enen)独立开发，采用[MIT许可证](https://github.com/Mo-enen/AngeliA/blob/main/License.txt)，您可以使用此项目做几乎任何事，但必须在您的项目中标注我的名字，详见[遵守协议](https://mo-enen.github.io/AngeliA/docsCN/2-comply-with-the-license.html)。
 
