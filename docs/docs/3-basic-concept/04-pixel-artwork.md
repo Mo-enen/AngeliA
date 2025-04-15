@@ -6,7 +6,7 @@ The editor interface is divided into four main sections: the atlas list on the l
 
 <img src="../../images/EngineWindow-Artwork.png" width="61.8%"/>
 
----
+
 
 ### Tiles and Atlases
 
@@ -57,7 +57,7 @@ Duration per frame in tiles, in units of frames.
 - Flip vertically  
 - Auto-crop transparent edges
 
----
+
 
 ### Drawing
 

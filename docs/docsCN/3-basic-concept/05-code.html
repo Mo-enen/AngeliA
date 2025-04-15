@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>代码 | AngeliA </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="代码 | AngeliA ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-12">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="代码">代码</h1>
+
+<p>AngeliA 工程本质上是一个 C# 工程，推荐使用 Visual Studio 或 Visual Studio Code 来编写代码。您可以根据需要修改 <code>.csproj</code> 文件以自定义工程配置，引擎不会对该文件进行修改。建议将您编写的所有代码放置于 <code>src</code> 文件夹中。如果您希望在项目中添加额外的文件夹，请将其置于 <code>Universe</code> 文件夹内。您可以通过 <code>Universe.BuiltIn.UniverseRoot</code> 获取该文件夹的路径。</p>
+<img src="../../images/ProjectFolder.png" width="61.8%">
+<h3 id="静态事件">静态事件</h3>
+<p>为工程内的任意类的一个静态函数添加 <code>[OnGameInitialize]</code> 标签后，这个函数会在游戏初始化时被调用，<code>[OnGameUpdate]</code> 则会让函数每帧都被调用一次，全部静态事件标签请看 <a href="https://mo-enen.github.io/AngeliA/docsCN/4-cheat-sheet.html">速查表</a> 章节。</p>
+<pre><code class="lang-c#">using AngeliA;
+
+namespace Test;
+
+public static class Test {
+
+    [OnGameInitialize]
+    internal static void OnGameInitialize () {
+        Debug.Log(&quot;Game Init&quot;);
+    }
+
+    [OnGameUpdate]
+    internal static void OnGameUpdate () {
+        Debug.Log(&quot;Game Update&quot;, Game.GlobalFrame);
+    }
+
+}
+</code></pre>
+<p>运行结果</p>
+<pre><code>Game Init
+Game Update 0
+Game Update 1
+Game Update 2
+Game Update 3
+...
+</code></pre>
+<h3 id="渲染图块">渲染图块</h3>
+<p>以下代码会在画面正中间绘制一个系统自带的 Entity 图标，绘制内容不会保留到下一帧，所以需要每帧都进行绘制。</p>
+<pre><code class="lang-C#">using AngeliA;
+
+namespace Test;
+
+public static class Test {
+
+	private static readonly int SpriteID = &quot;Icon.Entity&quot;.AngeHash();
+
+	[OnGameUpdate]
+	internal static void OnGameUpdate () {
+		int x = Renderer.CameraRect.CenterX();
+		int y = Renderer.CameraRect.CenterY();
+		Renderer.Draw(SpriteID, new IRect(x, y, 512, 512));
+	}
+
+}
+</code></pre>
+<p>运行结果（裁剪后画面）</p>
+ <img src="../../images/Coding-Test.png" width="50%">
+<h3 id="载入实体">载入实体</h3>
+<p>以下代码会在鼠标点击时载入一个测试实体，实体在载入后将留在舞台上，直到移出画面范围外才会被自动卸载，您也可以使用 <code>entity.Active = false;</code> 来手动卸载实体。</p>
+<pre><code class="lang-C#">using AngeliA;
+
+namespace Test;
+
+public class TestRigidbody : Rigidbody {
+    
+	// Cache the Type ID for Spawn the Entity
+	public static readonly int TYPE_ID = typeof(TestRigidbody).AngeHash();
+	public override int PhysicalLayer =&gt; PhysicsLayer.ENVIRONMENT;
+
+	[OnGameUpdate]
+	internal static void OnGameUpdate () {
+         // Handle Mouse Click
+		if (Input.MouseLeftButtonDown) {
+			var mousePos = Input.MouseGlobalPosition;
+			Stage.SpawnEntity(TYPE_ID, mousePos.x, mousePos.y);
+		}
+	}
+
+	public override void LateUpdate () {
+		base.LateUpdate();
+         // Render the Entity
+		Renderer.Draw(BuiltInSprite.ICON_ENTITY, base.Rect);
+	}
+
+}
+</code></pre>
+<p>运行结果（裁剪后画面，加速播放）</p>
+ <img src="../../images/SpawnEntityTest.gif" width="50%">
+
+</article>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      🐄🐦‍⬛🧦🐈🎃💓🌹☕🏴‍☠️🐤
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

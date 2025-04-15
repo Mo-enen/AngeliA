@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Code | AngeliA </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Code | AngeliA ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-12">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="code">Code</h1>
+
+<p>An AngeliA project is essentially a C# project. We recommend using <strong>Visual Studio</strong> or <strong>Visual Studio Code</strong> for development. You may freely modify the <code>.csproj</code> file to customize your project settings—the engine will not alter this file. It is recommended to place all your custom code inside the <code>src</code> folder. If you wish to add additional folders to the project, place them under the <code>Universe</code> directory. You can retrieve this path using <code>Universe.BuiltIn.UniverseRoot</code>.</p>
+<img src="../../images/ProjectFolder.png" width="61.8%">
+<hr>
+<h3 id="static-events">Static Events</h3>
+<p>By adding the <code>[OnGameInitialize]</code> attribute to a static method in any class, the method will be invoked when the game initializes. Similarly, <code>[OnGameUpdate]</code> will cause the method to be called once per frame. For a full list of available event attributes, see the <a href="https://mo-enen.github.io/AngeliA/docs/4-cheat-sheet.html">Cheat Sheet</a>.</p>
+<pre><code class="lang-csharp">using AngeliA;
+
+namespace Test;
+
+public static class Test {
+
+    [OnGameInitialize]
+    internal static void OnGameInitialize () {
+        Debug.Log(&quot;Game Init&quot;);
+    }
+
+    [OnGameUpdate]
+    internal static void OnGameUpdate () {
+        Debug.Log(&quot;Game Update&quot;, Game.GlobalFrame);
+    }
+
+}
+</code></pre>
+<p><strong>Console Output:</strong></p>
+<pre><code>Game Init
+Game Update 0
+Game Update 1
+Game Update 2
+Game Update 3
+...
+</code></pre>
+<hr>
+<h3 id="rendering-a-sprite">Rendering a Sprite</h3>
+<p>The following code draws a built-in <code>Entity</code> icon in the center of the screen. Since rendering is not persistent between frames, you must redraw it every frame.</p>
+<pre><code class="lang-csharp">using AngeliA;
+
+namespace Test;
+
+public static class Test {
+
+	private static readonly int SpriteID = &quot;Icon.Entity&quot;.AngeHash();
+
+	[OnGameUpdate]
+	internal static void OnGameUpdate () {
+		int x = Renderer.CameraRect.CenterX();
+		int y = Renderer.CameraRect.CenterY();
+		Renderer.Draw(SpriteID, new IRect(x, y, 512, 512));
+	}
+
+}
+</code></pre>
+<p><strong>Runtime Result (cropped view):</strong></p>
+<img src="../../images/Coding-Test.png" width="50%">
+<hr>
+<h3 id="spawning-an-entity">Spawning an Entity</h3>
+<p>The following code spawns a test entity at the mouse position when the player clicks. Once spawned, the entity remains active on the stage until it moves out of view and is automatically unloaded. You can also manually unload it using <code>entity.Active = false;</code>.</p>
+<pre><code class="lang-csharp">using AngeliA;
+
+namespace Test;
+
+public class TestRigidbody : Rigidbody {
+    
+	// Cache the Type ID for spawning the entity
+	public static readonly int TYPE_ID = typeof(TestRigidbody).AngeHash();
+	public override int PhysicalLayer =&gt; PhysicsLayer.ENVIRONMENT;
+
+	[OnGameUpdate]
+	internal static void OnGameUpdate () {
+		// Handle mouse click
+		if (Input.MouseLeftButtonDown) {
+			var mousePos = Input.MouseGlobalPosition;
+			Stage.SpawnEntity(TYPE_ID, mousePos.x, mousePos.y);
+		}
+	}
+
+	public override void LateUpdate () {
+		base.LateUpdate();
+		// Render the entity
+		Renderer.Draw(BuiltInSprite.ICON_ENTITY, base.Rect);
+	}
+
+}
+</code></pre>
+<p><strong>Runtime Result (cropped view, time-lapsed):</strong></p>
+<img src="../../images/SpawnEntityTest.gif" width="50%">
+
+</article>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      🐄🐦‍⬛🧦🐈🎃💓🌹☕🏴‍☠️🐤
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

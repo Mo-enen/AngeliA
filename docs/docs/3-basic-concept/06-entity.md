@@ -6,7 +6,7 @@ Entities are the core building blocks of game logic in AngeliA. Most interactive
 
 <img src="../../images/EntityDebuggerTest.gif" width="61.8%"/>
 
----
+
 
 ### Callback Methods
 

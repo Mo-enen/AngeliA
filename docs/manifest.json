@@ -246,7 +246,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.BasicItemCombinationAttribute",
-      "Summary": "<p sourcefile=\"api/AngeliA.BasicItemCombinationAttribute.yml\" sourcestartlinenumber=\"1\">Define a item combination to craft the item.</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.BasicItemCombinationAttribute.yml\" sourcestartlinenumber=\"1\">Define an item combination to craft the item.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2514,7 +2514,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GlobalItemCombinationAttribute<I0>",
-      "Summary": "<p sourcefile=\"api/AngeliA.GlobalItemCombinationAttribute-1.yml\" sourcestartlinenumber=\"1\">Define a item combination to craft the item.</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.GlobalItemCombinationAttribute-1.yml\" sourcestartlinenumber=\"1\">Define an item combination to craft the item.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2528,7 +2528,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GlobalItemCombinationAttribute<I0, I1>",
-      "Summary": "<p sourcefile=\"api/AngeliA.GlobalItemCombinationAttribute-2.yml\" sourcestartlinenumber=\"1\">Define a item combination to craft the item.</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.GlobalItemCombinationAttribute-2.yml\" sourcestartlinenumber=\"1\">Define an item combination to craft the item.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2542,7 +2542,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GlobalItemCombinationAttribute<I0, I1, I2>",
-      "Summary": "<p sourcefile=\"api/AngeliA.GlobalItemCombinationAttribute-3.yml\" sourcestartlinenumber=\"1\">Define a item combination to craft the item.</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.GlobalItemCombinationAttribute-3.yml\" sourcestartlinenumber=\"1\">Define an item combination to craft the item.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2556,7 +2556,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GlobalItemCombinationAttribute<I0, I1, I2, I3>",
-      "Summary": "<p sourcefile=\"api/AngeliA.GlobalItemCombinationAttribute-4.yml\" sourcestartlinenumber=\"1\">Define a item combination to craft the item.</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.GlobalItemCombinationAttribute-4.yml\" sourcestartlinenumber=\"1\">Define an item combination to craft the item.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -2570,7 +2570,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.GlobalItemCombinationAttribute",
-      "Summary": "<p sourcefile=\"api/AngeliA.GlobalItemCombinationAttribute.yml\" sourcestartlinenumber=\"1\">Define a item combination to craft the item.</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.GlobalItemCombinationAttribute.yml\" sourcestartlinenumber=\"1\">Define an item combination to craft the item.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3186,7 +3186,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ItemCombinationAttribute<I0>",
-      "Summary": "<p sourcefile=\"api/AngeliA.ItemCombinationAttribute-1.yml\" sourcestartlinenumber=\"1\">Define a item combination to craft the item.</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.ItemCombinationAttribute-1.yml\" sourcestartlinenumber=\"1\">Define an item combination to craft the item.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3200,7 +3200,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ItemCombinationAttribute<I0, I1>",
-      "Summary": "<p sourcefile=\"api/AngeliA.ItemCombinationAttribute-2.yml\" sourcestartlinenumber=\"1\">Define a item combination to craft the item.</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.ItemCombinationAttribute-2.yml\" sourcestartlinenumber=\"1\">Define an item combination to craft the item.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3214,7 +3214,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ItemCombinationAttribute<I0, I1, I2>",
-      "Summary": "<p sourcefile=\"api/AngeliA.ItemCombinationAttribute-3.yml\" sourcestartlinenumber=\"1\">Define a item combination to craft the item.</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.ItemCombinationAttribute-3.yml\" sourcestartlinenumber=\"1\">Define an item combination to craft the item.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3228,7 +3228,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ItemCombinationAttribute<I0, I1, I2, I3>",
-      "Summary": "<p sourcefile=\"api/AngeliA.ItemCombinationAttribute-4.yml\" sourcestartlinenumber=\"1\">Define a item combination to craft the item.</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.ItemCombinationAttribute-4.yml\" sourcestartlinenumber=\"1\">Define an item combination to craft the item.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -3242,7 +3242,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AngeliA.ItemCombinationAttribute",
-      "Summary": "<p sourcefile=\"api/AngeliA.ItemCombinationAttribute.yml\" sourcestartlinenumber=\"1\">Define a item combination to craft the item.</p>\n"
+      "Summary": "<p sourcefile=\"api/AngeliA.ItemCombinationAttribute.yml\" sourcestartlinenumber=\"1\">Define an item combination to craft the item.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -7404,6 +7404,160 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.RigCallingMessage.CharRequirementData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.RigCallingMessage.CharRequirementData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.RigCallingMessage.CharRequirementData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.RigCallingMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.RigCallingMessage.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.RigCallingMessage",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.RigRespondMessage.DoodleRectData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.RigRespondMessage.DoodleRectData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.RigRespondMessage.DoodleRectData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.RigRespondMessage.DoodleWorldData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.RigRespondMessage.DoodleWorldData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.RigRespondMessage.DoodleWorldData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.RigRespondMessage.GizmosLineData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.RigRespondMessage.GizmosLineData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.RigRespondMessage.GizmosLineData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.RigRespondMessage.GizmosRectData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.RigRespondMessage.GizmosRectData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.RigRespondMessage.GizmosRectData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.RigRespondMessage.PlaySoundRequirement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.RigRespondMessage.PlaySoundRequirement.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.RigRespondMessage.PlaySoundRequirement",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.RigRespondMessage.RenderingCellData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.RigRespondMessage.RenderingCellData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.RigRespondMessage.RenderingCellData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.RigRespondMessage.RenderingLayerData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.RigRespondMessage.RenderingLayerData.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.RigRespondMessage.RenderingLayerData",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.RigRespondMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.RigRespondMessage.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.RigRespondMessage",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/AngeliA.RigTransceiver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/AngeliA.RigTransceiver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AngeliA.RigTransceiver",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/AngeliA.Rigidbody.yml",
       "output": {
         ".html": {
@@ -8159,20 +8313,170 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docs/getting-started.md",
+      "source_relative_path": "docs/1-introduction.md",
       "output": {
         ".html": {
-          "relative_path": "docs/getting-started.html"
+          "relative_path": "docs/1-introduction.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docs/introduction.md",
+      "source_relative_path": "docs/2-comply-with-the-license.md",
       "output": {
         ".html": {
-          "relative_path": "docs/introduction.html"
+          "relative_path": "docs/2-comply-with-the-license.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/01-file-layout.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/01-file-layout.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/02-engine-window.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/02-engine-window.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/03-open-world-sandbox.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/03-open-world-sandbox.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/04-pixel-artwork.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/04-pixel-artwork.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/05-code.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/05-code.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/06-entity.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/06-entity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/07-physics.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/07-physics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/08-rendering.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/08-rendering.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/09-input.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/09-input.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/10-saving.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/10-saving.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/11-character-movement.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/11-character-movement.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/12-character-animation.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/12-character-animation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/13-inventory.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/13-inventory.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/3-basic-concept/14-language.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/3-basic-concept/14-language.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/4-cheat-sheet.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/4-cheat-sheet.html"
         }
       },
       "version": ""
@@ -8262,100 +8566,100 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/06-event.md",
+      "source_relative_path": "docsCN/3-basic-concept/06-entity.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/06-event.html"
+          "relative_path": "docsCN/3-basic-concept/06-entity.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/07-entity.md",
+      "source_relative_path": "docsCN/3-basic-concept/07-physics.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/07-entity.html"
+          "relative_path": "docsCN/3-basic-concept/07-physics.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/08-physics.md",
+      "source_relative_path": "docsCN/3-basic-concept/08-rendering.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/08-physics.html"
+          "relative_path": "docsCN/3-basic-concept/08-rendering.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/09-rendering.md",
+      "source_relative_path": "docsCN/3-basic-concept/09-input.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/09-rendering.html"
+          "relative_path": "docsCN/3-basic-concept/09-input.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/10-input.md",
+      "source_relative_path": "docsCN/3-basic-concept/10-saving.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/10-input.html"
+          "relative_path": "docsCN/3-basic-concept/10-saving.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/11-saving.md",
+      "source_relative_path": "docsCN/3-basic-concept/11-character-movement.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/11-saving.html"
+          "relative_path": "docsCN/3-basic-concept/11-character-movement.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/12-character-movement.md",
+      "source_relative_path": "docsCN/3-basic-concept/12-character-animation.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/12-character-movement.html"
+          "relative_path": "docsCN/3-basic-concept/12-character-animation.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/13-character-animation.md",
+      "source_relative_path": "docsCN/3-basic-concept/13-inventory.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/13-character-animation.html"
+          "relative_path": "docsCN/3-basic-concept/13-inventory.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/14-inventory.md",
+      "source_relative_path": "docsCN/3-basic-concept/14-language.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/14-inventory.html"
+          "relative_path": "docsCN/3-basic-concept/14-language.html"
         }
       },
       "version": ""
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "docsCN/3-basic-concept/15-language.md",
+      "source_relative_path": "docsCN/4-cheat-sheet.md",
       "output": {
         ".html": {
-          "relative_path": "docsCN/3-basic-concept/15-language.html"
+          "relative_path": "docsCN/4-cheat-sheet.html"
         }
       },
       "version": ""
@@ -8369,6 +8673,16 @@
         },
         ".json": {
           "relative_path": "docsCN/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/Artwork-Paint.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/Artwork-Paint.png"
         }
       },
       "version": ""
@@ -8395,20 +8709,20 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "images/Artwork-Tools.png",
+      "source_relative_path": "images/BiliBili.png",
       "output": {
         "resource": {
-          "relative_path": "images/Artwork-Tools.png"
+          "relative_path": "images/BiliBili.png"
         }
       },
       "version": ""
     },
     {
       "type": "Resource",
-      "source_relative_path": "images/BiliBili.png",
+      "source_relative_path": "images/Coding-Test.png",
       "output": {
         "resource": {
-          "relative_path": "images/BiliBili.png"
+          "relative_path": "images/Coding-Test.png"
         }
       },
       "version": ""
@@ -8525,6 +8839,26 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/EntityDebuggerTest.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/EntityDebuggerTest.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/EntityTest.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/EntityTest.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/FrameDebugTest.gif",
       "output": {
         "resource": {
@@ -8585,6 +8919,36 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "images/PhysicsCodingExample.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/PhysicsCodingExample.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/PhysicsTest-0.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/PhysicsTest-0.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/PhysicsTest-1.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/PhysicsTest-1.gif"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "images/PhysicsTest.png",
       "output": {
         "resource": {
@@ -8609,6 +8973,16 @@
       "output": {
         "resource": {
           "relative_path": "images/ProjectFileLayout.psd"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/ProjectFolder.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/ProjectFolder.png"
         }
       },
       "version": ""
@@ -8669,6 +9043,16 @@
       "output": {
         "resource": {
           "relative_path": "images/ScreenshotProject.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/SpawnEntityTest.gif",
+      "output": {
+        "resource": {
+          "relative_path": "images/SpawnEntityTest.gif"
         }
       },
       "version": ""

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>像素美工 | AngeliA </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="像素美工 | AngeliA ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-12">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="像素美工">像素美工</h1>
+
+<p>本章将简要介绍引擎内置的美工编辑器。该编辑器所编辑的数据来源于当前工程文件夹下的 <code>Universe\Sheet\Game Sheet.sheet</code> 文件。该文件是 AngeliA 专用格式的无损压缩二进制文件，用于保存像素风格的美术资源及其所有附加信息，例如图块的标签、边框等内容。</p>
+<p>美工编辑器主要分为这几个部分：左侧的图集列表、中间的主编辑区、上方的工具栏、右侧的绘图工具。</p>
+<img src="../../images/EngineWindow-Artwork.png" width="61.8%">
+<h3 id="图块与图集">图块与图集</h3>
+<p>图集由用户自行创建和修改，多个图集可归类至图集文件夹中，便于统一管理。图集分为三种类型：<strong>普通</strong>、<strong>关卡</strong> 和 <strong>背景</strong>。其中，关卡类图集中的图块将被引擎识别为“可用于地图的关卡块”，背景类图集同理。要更改图集类型，只需在图集列表中右键点击目标图集，并在弹出菜单中选择所需类型。</p>
+<p>主编辑区用于显示当前图集中的全部图块。您可以在右侧工具栏中选择“图块工具”，通过左键点击并拖动来选择一个或多个图块。选中图块后，上方工具栏将切换为如下所示的界面：</p>
+  <img src="../../images/Artwork-Toolbar.png" width="100%">
+<p>① 图块名称：
+图块名称必须唯一，不能与同一图集或其他图集中的图块重名。当同时选中多个图块时，输入框内将显示 <code>*</code>，此时仍可编辑图块名称。系统会自动将图块依次命名为“名称 0”、“名称 1”、“名称 2”……，这些图块将被视为一个图块组，可用于帧动画、自动平铺等功能。</p>
+<p>② 图块尺寸：
+以像素为单位，显示并可编辑图块的宽高。</p>
+<p>③ 图块边框：
+从左至右依次为左、右、下、上边框。该设置用于 9-Slice 渲染图块，也可用于为关卡块指定更小的碰撞区域。</p>
+<p>④ 图块枢纽（Pivot）：
+指定图块的对齐参考点。在游戏中以点位渲染图块时，该点将与代码指定的位置对齐。修改关卡块或背景块的枢纽会影响地图中图块的渲染位置。</p>
+<p>⑤ 图块的 Z 位置：
+用于确定图块的渲染遮挡顺序。该值可在游戏代码中被覆盖。</p>
+<p>⑥ 动画持续时间：
+以帧为单位，设置图块的动画帧持续时间。</p>
+<p>⑦ 通用工具栏（从左至右）：</p>
+<ul>
+<li><p>触发器（Trigger）：
+将选中的图块标记为触发器。触发器不会与实体发生碰撞，但仍会被加载进物理系统，可用于触发特定的游戏逻辑，例如触碰时为角色回复生命、定义一个可被检测的范围等。</p>
+</li>
+<li><p>标签（Tag）：
+为选中图块添加逻辑标签，详见 <a href="https://mo-enen.github.io/AngeliA/api/AngeliA.Tag.html">枚举Tag</a></p>
+</li>
+<li><p>自动平铺规则：
+设置图块在关卡编辑器中的自动平铺行为（如下图）。引擎会按图块组顺序逐一匹配规则，若当前地图内容符合某条规则，即使用对应图块绘制。下图的规则为：左右相邻块需与当前图块 ID 相同，上下相邻块需 ID 不同，斜向块不参与判断（系统支持设置斜向规则）</p>
+<img src="../../images/Artwork-Rule.png" width="25%">
+</li>
+<li><p>删除选中图块（快捷键 <code>Del</code>）</p>
+</li>
+<li><p>输出图块信息（仅在引擎 Debug 模式下可用）</p>
+</li>
+</ul>
+<p>⑧ 内容转换工具栏（从左至右）：</p>
+<ul>
+<li>顺时针旋转图块</li>
+<li>逆时针旋转图块</li>
+<li>水平翻转图块</li>
+<li>垂直翻转图块</li>
+<li>一键裁剪图块四周空白区域</li>
+</ul>
+<h3 id="绘图">绘图</h3>
+<p>编辑器仅允许在图块内进行绘图。选中绘图工具后，在图块区域内按住左键并拖动鼠标即可绘制像素，右键点击则可吸取像素颜色。</p>
+<p>绘图工具自上而下依次为：</p>
+<ul>
+<li>矩形工具：按住 Shift 键绘制正方形，按住 Alt 键绘制空心矩形。</li>
+<li>椭圆工具：按住 Shift 键绘制正圆，按住 Alt 键绘制空心圆。</li>
+<li>直线工具：拖拽鼠标绘制直线。</li>
+<li>油漆桶工具：填充图块内所有相邻且颜色相同的区域；拖拽可填充线性渐变；按住 Ctrl 点击可替换图块中所有相同颜色的像素（不要求相邻）。</li>
+<li>像素选择工具：用于选中像素并进行移动、删除或复制操作，支持跨多个图块进行选择。</li>
+<li>图块工具：用于选择、复制、删除图块，或修改图块的属性信息。</li>
+</ul>
+<img src="../../images/Artwork-Paint.png" width="61.8%">
+
+</article>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      🐄🐦‍⬛🧦🐈🎃💓🌹☕🏴‍☠️🐤
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

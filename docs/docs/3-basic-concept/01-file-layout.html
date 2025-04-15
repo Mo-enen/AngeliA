@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>File Layout | AngeliA </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="File Layout | AngeliA ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-12">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="file-layout">File Layout</h1>
+
+<p>This section provides an overview of the file structure used by AngeliA on disk, divided into three categories: Engine Program, Game Projects, and User Save Data. For more detailed explanations, please refer to the relevant documentation sections.</p>
+<h3 id="engine-program">Engine Program</h3>
+<img src="../../images/EngineFileLayout.png" width="61.8%">
+<p>① <strong>Engine Folder</strong>: Contains all the files required to run the engine. You can move this folder freely without affecting the engine’s functionality.</p>
+<p>② <strong>Inside the Engine Folder</strong>:</p>
+<ul>
+<li>📁<code>Library</code>: AngeliA Engine is itself built as an AngeliA game. Like any AngeliA project, this folder contains <code>.dll</code> files that provide game-specific functionality. The engine’s core features are embedded in the <code>exe</code> file.</li>
+<li>📁<code>Universe</code>: Resource folder including configuration files, UI assets, and background launcher components required by the engine.</li>
+<li>🐄<code>AngeliA.exe</code>: Entry point for launching the engine.</li>
+<li>📄<code>License.txt</code>: Software license for using the engine.</li>
+<li>📄<code>ReadMe.pdf</code>: Engine overview (same as the GitHub project homepage).</li>
+</ul>
+<p>③ <strong>Inside the Resource Folder</strong>:</p>
+<ul>
+<li>📁<code>Built-In Projects</code>: Sample projects bundled with the engine to help you learn how to use it. These are automatically added to the project list on first launch. Deleting them does not affect engine functionality.</li>
+<li>📁<code>dotnet</code>: Contains the .NET SDK (provided by Microsoft) used to compile your C# code into <code>.dll</code> files.</li>
+<li>📁<code>Fonts</code>: Fonts used by the engine’s UI.</li>
+<li>📁<code>Language</code>: Localization files for the engine UI. You can modify these to support additional languages.</li>
+<li>📂<code>Map</code>: Auto-generated folder. It will be created regardless of whether your project uses maps.</li>
+<li>📁<code>Packages</code>: Built-in extension packages. Choose what you need based on the type of game you're developing.</li>
+<li>📁<code>ProjectTemplate</code>: Default template for new projects. You can customize it to define the structure of newly created projects.</li>
+<li>📁<code>Runtime</code>: Background process used to run user-created games and exchange input/output data through shared native memory.</li>
+<li>📁<code>Sheet</code>: Art assets used by the engine UI.</li>
+<li>📁<code>Theme</code>: Additional UI themes for the engine.</li>
+<li>📄<code>Info.json</code>: Engine project configuration file (as an AngeliA game).</li>
+</ul>
+<h3 id="game-projects">Game Projects</h3>
+<img src="../../images/ProjectFileLayout.png" width="61.8%">
+<p>① <strong>Your Game Project Folder</strong></p>
+<p>② <strong>Inside the Project Folder</strong>:</p>
+<ul>
+<li>📁<code>Build</code>: Compiled <code>.dll</code> files generated by the user.</li>
+<li>📁<code>Entry</code>: Project entry files used when running the game from an IDE.</li>
+<li>📁<code>lib</code>: Contains referenced AngeliA framework and extension package <code>.dll</code> files.</li>
+<li>📁<code>obj</code>: Auto-generated by the .NET framework.</li>
+<li>📁<code>src</code>: Contains the user’s source code files.</li>
+<li>📁<code>Universe</code>: The project’s resource folder (see below).</li>
+<li>🖼️<code>Icon.ico</code>: Project icon used both inside the engine and in the final <code>.exe</code>.</li>
+<li>🖼️<code>Icon.png</code>: PNG version of the icon, not used by the engine—safe to delete.</li>
+<li>📋<code>*.csproj</code>: C# project file.</li>
+<li>📋<code>*.sln</code>: C# solution file.</li>
+</ul>
+<p>③ <strong>Inside the Resource Folder (<code>Universe</code>)</strong>:</p>
+<ul>
+<li>📁<code>Audio</code>: Music and sound effects. Access path via <code>Universe.BuiltIn.MusicRoot</code> and <code>Universe.BuiltIn.SoundRoot</code>.</li>
+<li>📁<code>Language</code>: Localization text files. Access path via <code>Universe.BuiltIn.LanguageRoot</code>.</li>
+<li>📁<code>Sheet</code>: Art files for the project. Access path via <code>Universe.BuiltIn.SheetRoot</code>.</li>
+<li>📁<code>Fonts</code>: Fonts used in the project. Access path via <code>Universe.BuiltIn.FontRoot</code>.</li>
+<li>📁<code>Meta</code>: Custom metadata. Access path via <code>Universe.BuiltIn.UniverseMetaRoot</code>.</li>
+<li>📁<code>Map</code>: Built-in map files for the project (not modifiable by players). Access path via <code>Universe.BuiltIn.BuiltInMapRoot</code>.</li>
+<li>📄<code>Info.json</code>: Project configuration including project name, author, version, etc. Access via <code>Universe.BuiltInInfo</code>.</li>
+</ul>
+<h3 id="user-save-data">User Save Data</h3>
+<img src="../../images/SavingFileLayout.png" width="61.8%">
+<p>① <strong>Save Root Directory</strong>: All save-related data generated by a project is stored here. Access path via <code>Universe.SavingRoot</code>.</p>
+<p>② <strong>Inside the Save Root Directory</strong>:</p>
+<ul>
+<li>📁<code>Slot 0</code>: Slot 0 save data. Users can create and select save slots. New slots will be named &quot;Slot 1&quot;, &quot;Slot 2&quot;, and so on. Access current slot path via <code>Universe.SlotRoot</code>.</li>
+<li>📄<code>CurrentSlot.txt</code>: Stores the current slot number. Access via <code>Universe.CurrentSavingSlot</code>.</li>
+<li>📄<code>Saving.txt</code>: Global save data shared across all slots. When using the <code>Saving</code> class, use <code>SavingLocation.Global</code> to write to this file.</li>
+</ul>
+<p>③ <strong>Inside a Save Slot Folder</strong>:</p>
+<ul>
+<li>📁<code>Meta</code>: User-defined save data. Access path via <code>Universe.SlotMetaRoot</code>.</li>
+<li>📁<code>User Map</code>: Player-modified map files. Access via <code>Universe.SlotUserMapRoot</code>.</li>
+</ul>
+<p>④ <strong>Inside the Info Folder</strong>:</p>
+<ul>
+<li>📁<code>Character Attack</code>: Character attack configuration.</li>
+<li>📁<code>Character Rendering</code>: Character rendering configuration.</li>
+<li>📁<code>Inventory</code>: Inventory data, including equipped items and chest contents.</li>
+<li>📁<code>MiniGame</code>: Reward data from mini-games.</li>
+<li>📁<code>Screenshot</code>: Screenshots taken in-game using render cells. Call <code>CellScreenshotSystem.RequireTakeScreenshot(yourGlobalRange);</code> to take a screenshot.</li>
+<li>📑<code>LoadedBackgroundTrigger</code>: Stores active circuit system triggers. See the <code>CircuitSystem</code> class for details.</li>
+<li>📄<code>Saving.txt</code>: Local save data for the slot. Use <code>SavingLocation.Local</code> to save to this file. This data is isolated and will not appear when switching to another slot.</li>
+<li>📑<code>UnlockedItem</code>: IDs of unlocked items.</li>
+<li>📑<code>UnlockedPlayers</code>: IDs of unlocked playable characters.</li>
+</ul>
+
+</article>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      🐄🐦‍⬛🧦🐈🎃💓🌹☕🏴‍☠️🐤
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

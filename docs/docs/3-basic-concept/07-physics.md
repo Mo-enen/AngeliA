@@ -9,7 +9,7 @@ Physics data is **not persistent** between frames. The system resets and repopul
 <img src="../../images/PhysicsTest-0.gif" width="50%"/>
 <img src="../../images/PhysicsTest-1.gif" width="50%"/>
 
----
+
 
 ### Performing Movement
 

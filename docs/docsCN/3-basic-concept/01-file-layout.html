@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>文件结构 | AngeliA </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="文件结构 | AngeliA ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-12">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="文件结构">文件结构</h1>
+
+<p>本章将为您简述 AngeliA 在硬盘中存储的所有文件的作用，分为引擎程序、游戏工程和用户存档三部分，更详细的解释请参考后续文档内容。</p>
+<h3 id="引擎程序">引擎程序</h3>
+ <img src="../../images/EngineFileLayout.png" width="61.8%">
+<p>① 引擎程序文件夹，运行引擎需要的全部文件都在这个文件夹里，移动此文件夹的位置不会影响引擎的使用；</p>
+<p>② 引擎程序文件夹内部</p>
+<ul>
+<li>📁Library：AngeliA 引擎也是一款 AngeliA 游戏，就像所有的 AngeliA 游戏一样，Library 文件夹内的 dll 文件包含着此程序特有的功能，引擎提供的通用功能内嵌在 exe 文件里；</li>
+<li>📁Universe：资源文件夹，包含着引擎程序需要的配置、美工、后台游戏启动器等；</li>
+<li>🐄AngeliA.exe：引擎程序入口；</li>
+<li>📄License.txt：使用引擎时需要遵守的软件许可证；</li>
+<li>📄ReadMe.pdf：引擎简介，同 GitHub 项目首页；</li>
+</ul>
+<p>③ 资源文件夹内部</p>
+<ul>
+<li>📁Built-In Projects：引擎自带的游戏工程，用于更好的学习引擎的使用方法。这些工程会在第一次打开引擎时自动加入到工程列表中，删除这些文件不会影响引擎的功能；</li>
+<li>📁dotnet：由微软团队开发的dotnet SDK，用于将用户编写的 C# 代码编译为 dll 文件以供引擎运行使用；</li>
+<li>📁Fonts：引擎本身UI所用的字体文件；</li>
+<li>📁Language：引擎本身UI所用的多语言支持文件，您可以自行修改其内容以支持更多语言；</li>
+<li>📂Map：此文件夹并未被引擎使用，AngeliA 框架无论项目是否使用地图都会自动创建 Map 文件夹；</li>
+<li>📁Packages：引擎自带的拓展包，用户可根据自己开发的游戏类型选择需要的拓展包；</li>
+<li>📁ProjectTemplate：新工程模板，您可以修改里面的文件来自定义新建工程的内容；</li>
+<li>📁Runtime：让引擎在后台进程运行用户开发的游戏，并使用共享原生内存来传递输入与输出的信息；</li>
+<li>📁Sheet：引擎本身UI所用的美术资源；</li>
+<li>📁Theme：引擎的额外主题皮肤；</li>
+<li>📄Info.json：引擎作为 AngeliA 游戏的项目配置；</li>
+</ul>
+<h3 id="游戏工程">游戏工程</h3>
+ <img src="../../images/ProjectFileLayout.png" width="61.8%">
+<p>① 用户开发的游戏工程文件夹</p>
+<p>② 工程文件夹内部</p>
+<ul>
+<li>📁Build：存放用户编译生成的dll文件；</li>
+<li>📁Entry：此工程的入口，仅供 IDE 运行游戏时使用；</li>
+<li>📁lib：存放工程引用的 AngeliA 框架 dll 文件和拓展包 dll 文件；</li>
+<li>📁obj：由 .net 框架生成；</li>
+<li>📁src：存放用户编写的代码文件；</li>
+<li>📁Universe：此工程的资源文件夹（详见③）；</li>
+<li>🖼️Icon.ico：工程的图标文件，是引擎内部显示的图标，也是最终发布出的 exe 文件所使用的图标；</li>
+<li>🖼️Icon.png：图标文件的 png 版本，未被引擎使用，删除该文件不影响引擎功能；</li>
+<li>📋*.csproj：工程对应的 C# 工程文件；</li>
+<li>📋*.sln：工程对应的 C# 解决方案；</li>
+</ul>
+<p>③ 资源文件夹内部</p>
+<ul>
+<li>📁Audio：存放工程所需的音乐音效文件，使用 <code>Universe.BuiltIn.MusicRoot</code>和  <code>Universe.BuiltIn.SoundRoot</code>来获取此文件夹的路径；</li>
+<li>📁Language：存放支持多语言所需的文本文件，使用 <code>Universe.BuiltIn.LanguageRoot</code> 来获取此文件夹的路径；</li>
+<li>📁Sheet：存放工程的美工文件，使用 <code>Universe.BuiltIn.SheetRoot</code> 来获取此文件夹的路径；</li>
+<li>📁Fonts：存放工程的字体文件，使用 <code>Universe.BuiltIn.FontRoot</code> 来获取此文件夹的路径；</li>
+<li>📁Meta：存放由用户自定义的文本信息，使用 <code>Universe.BuiltIn.UniverseMetaRoot</code> 来获取此文件夹的路径；</li>
+<li>📁Map：存放工程自带的地图文件，这里的地图文件不会被玩家修改。使用 <code>Universe.BuiltIn.BuiltInMapRoot</code> 来获取此文件夹的路径；</li>
+<li>📄Info.json：工程的配置设置，包含如工程名，开发者名，工程版本等内容。使用 <code>Universe.BuiltInInfo</code> 来获取此文件的内容；</li>
+</ul>
+<h3 id="用户存档">用户存档</h3>
+ <img src="../../images/SavingFileLayout.png" width="61.8%">
+<p>① 存档根目录，一个 AngeliA 工程由用户生成的所有存档内容都保存在这个文件夹里。，使用 <code>Universe.SavingRoot</code>  来获取这个文件夹的路径；</p>
+<p>② 存档根目录内部</p>
+<ul>
+<li>📁Slot 0：第0号存档槽位，用户可创建并选择存档槽位，新的槽位将命名为 “Slot 1”、“Slot 2” 等。使用 <code>Universe.SlotRoot</code>  来获取当前选择的槽位文件夹路径；</li>
+<li>📄CurrentSlot.txt：当前选择的存档槽位编号，使用 <code>Universe.CurrentSavingSlot</code>来获取当前选择的存档编号；</li>
+<li>📄Saving.txt：全局设置存档内容，所有存档槽位共享这里的内容，使用 Saving 类时<code>SavingLocation.Global</code> 用于定义全局存档信息；</li>
+</ul>
+<p>③ 存档槽位内部</p>
+<ul>
+<li>📁Meta：用户自定义的存档内容，使用 <code>Universe.SlotMetaRoot</code> 来获取此文件夹路径；</li>
+<li>📁User Map：存放玩家游玩过的关卡文件，玩家对关卡的修改将保存在这些文件里，使用 <code>Universe.SlotUserMapRoot</code> 来获取此文件夹路径；</li>
+</ul>
+<p>④ 信息文件夹内部</p>
+<ul>
+<li>📁Character Attack：存放角色的攻击相关的配置信息；</li>
+<li>📁Character Rendering：存放角色渲染相关的配置信息；</li>
+<li>📁Inventory：存放物品栏内的物品信息，包含角色的装备、指定位置的宝箱里的物品等；</li>
+<li>📁MiniGame：迷你游戏的奖励信息；</li>
+<li>📁Screenshot：游戏内部的截图功能，使用渲染Cell保存信息，使用 <code>CellScreenshotSystem.RequireTakeScreenshot(yourGlobalRange);</code> 来对游戏进行截图；</li>
+<li>📑LoadedBackgroundTrigger：用于保存电路系统激活的后台触发器位置，详见 <code>CircuitSystem</code> 类；</li>
+<li>📄Saving.txt：槽位内部存档内容，使用 <code>SavingLocation.Local</code> 来把存档内容存入此文件中。当玩家更换槽位后，这里的存档信息将不会出现在新的槽位里；</li>
+<li>📑UnlockedItem：玩家解锁过的物品ID；</li>
+<li>📑UnlockedPlayers：玩家解锁过的可控角色ID；</li>
+</ul>
+
+</article>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      🐄🐦‍⬛🧦🐈🎃💓🌹☕🏴‍☠️🐤
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

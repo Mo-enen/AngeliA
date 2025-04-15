@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Physics | AngeliA </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Physics | AngeliA ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-12">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="physics">Physics</h1>
+
+<p>AngeliA features a built-in, high-performance physics system designed specifically for retro-style games. The system supports <strong>rectangular colliders only</strong>, and it does <strong>not</strong> take rotation into account—allowing it to maintain excellent runtime efficiency without sacrificing core functionality.</p>
+<p>At the start of each frame, entities register their collider information into the physics system during the <code>FirstUpdate</code> phase. Once all entities have completed registration, the physics system processes motion and collision logic during the <code>BeforeUpdate</code> and <code>Update</code> phases.</p>
+<p>Physics data is <strong>not persistent</strong> between frames. The system resets and repopulates all collider data at the beginning of every frame, ensuring that all physics behaviors remain fully synchronized with the current game state.</p>
+<img src="../../images/PhysicsTest-0.gif" width="50%">
+<img src="../../images/PhysicsTest-1.gif" width="50%">
+<hr>
+<h3 id="performing-movement">Performing Movement</h3>
+<p>The following example shows how to spawn a test entity on mouse click. Once spawned, the entity moves steadily to the right under control of the physics system. The system automatically detects collisions and resolves them by moving the entity up to the edge of any object it collides with.</p>
+<pre><code class="lang-csharp">using AngeliA;
+
+namespace Test;
+
+public class TestRigidbody : Rigidbody {
+
+	// Cache the Type ID for spawning the entity
+	public static readonly int TYPE_ID = typeof(TestRigidbody).AngeHash();
+
+	[OnGameUpdate]
+	internal static void OnGameUpdate () {
+		// Handle mouse click
+		if (Input.MouseLeftButtonDown) {
+			var mousePos = Input.MouseGlobalPosition;
+			Stage.SpawnEntity(TYPE_ID, mousePos.x, mousePos.y);
+		}
+	}
+
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
+		// Move the entity to the right
+		base.XY = Physics.Move(base.CollisionMask, base.XY, 12, 0, base.Size, this);
+	}
+
+	public override void LateUpdate () {
+		base.LateUpdate();
+		// Render the entity using the built-in icon
+		Renderer.Draw(BuiltInSprite.ICON_ENTITY, base.Rect);
+	}
+
+}
+</code></pre>
+<p><strong>Runtime Result (cropped and speed-up view):</strong></p>
+<img src="../../images/PhysicsCodingExample.gif" width="50%">
+
+</article>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      🐄🐦‍⬛🧦🐈🎃💓🌹☕🏴‍☠️🐤
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

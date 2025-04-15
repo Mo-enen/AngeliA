@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>物理 | AngeliA </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="物理 | AngeliA ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-12">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="物理">物理</h1>
+
+<p>AngeliA 引擎内置了一套适用于复古风格游戏的高效物理系统，该系统仅支持矩形碰撞器，并不考虑旋转角度，因而在保证功能的同时拥有极高的运行效率。</p>
+<p>在每一帧游戏开始刷新时，实体会在 <code>FirstUpdate</code> 函数中将自身的碰撞器信息注册到物理系统中。当舞台上的所有实体都完成注册后，物理系统会在 <code>BeforeUpdate</code> 和 <code>Update</code> 函数中处理碰撞与运动逻辑。</p>
+<p>值得注意的是，当前帧的物理信息不会保留到下一帧，每一帧的数据都会在刷新开始时重新填充注册，并在当前帧内完成全部处理，确保物理行为始终与游戏状态同步。</p>
+<img src="../../images/PhysicsTest-0.gif" width="50%">
+<img src="../../images/PhysicsTest-1.gif" width="50%">
+<h3 id="执行运动">执行运动</h3>
+<p>以下代码将在鼠标点击时加载一个测试实体。该实体会在物理系统的控制下持续向右匀速移动，并在运动过程中自动检测与其他物体的碰撞。当发生碰撞时，实体将移动至碰撞物体的边缘位置。</p>
+<pre><code class="lang-C#">using AngeliA;
+
+namespace Test;
+
+public class TestRigidbody : Rigidbody {
+
+	// Cache the Type ID for Spawn the Entity
+	public static readonly int TYPE_ID = typeof(TestRigidbody).AngeHash();
+
+	[OnGameUpdate]
+	internal static void OnGameUpdate () {
+		// Handle Mouse Click
+		if (Input.MouseLeftButtonDown) {
+			var mousePos = Input.MouseGlobalPosition;
+			Stage.SpawnEntity(TYPE_ID, mousePos.x, mousePos.y);
+		}
+	}
+
+	public override void BeforeUpdate () {
+		base.BeforeUpdate();
+		// Move the Entity to right
+		base.XY = Physics.Move(base.CollisionMask, base.XY, 12, 0, base.Size, this);
+	}
+
+	public override void LateUpdate () {
+		// Render the Entity with Built-In Icon
+		base.LateUpdate();
+		Renderer.Draw(BuiltInSprite.ICON_ENTITY, base.Rect);
+	}
+
+}
+</code></pre>
+<p>运行结果（裁剪后画面，加速播放）</p>
+<img src="../../images/PhysicsCodingExample.gif" width="50%">
+
+</article>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      🐄🐦‍⬛🧦🐈🎃💓🌹☕🏴‍☠️🐤
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

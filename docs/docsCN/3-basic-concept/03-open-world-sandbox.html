@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>开放世界沙盒 | AngeliA </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="开放世界沙盒 | AngeliA ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-12">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="开放世界沙盒">开放世界沙盒</h1>
+
+<p>本章将为您简要介绍地图关卡相关的内容，更详细的使用说明，请参阅后续章节。</p>
+<h3 id="地图逻辑">地图逻辑</h3>
+<p>引擎能够将多个地图无缝拼接，并流畅地呈现给玩家，营造出开放世界的体验。仅有玩家视野范围内的地图块会被渲染，进入画面的实体会被动态加载，而离开画面的实体则会被自动卸载。</p>
+<p>各类地图块的功能如下：</p>
+<ul>
+<li><strong>背景块</strong>：仅用于视觉展示，不参与碰撞计算。</li>
+<li><strong>关卡块</strong>：默认具有碰撞效果。通过添加“单向板”标签，可设置为仅在特定方向上阻挡实体通过。</li>
+<li><strong>实体块</strong>：用于加载包含用户自定义逻辑的实例，通常代表具有行为的游戏对象。</li>
+<li><strong>辅助块</strong>：仅存在于后台数据中，不参与渲染，也不产生交互，用于标记或内部逻辑用途。</li>
+</ul>
+<img src="../../images/OpenWorldSandbox-Map.png" width="61.8%">
+<h3 id="地图层">地图层</h3>
+<p>玩家可使用门或传送门前往相邻的地图层（如下图），引擎会在游戏进行时显示相邻的后置层。使用 <code>TeleportTask.TeleportFromDoor</code> 方法来传送玩家角色。</p>
+<img src="../../images/GoThroughLayer.gif" width="61.8%">
+<h3 id="地图文件">地图文件</h3>
+<p>地图文件格式为 <code>ibb</code> 意为 <code>int byte byte</code>，每个<code>ibb</code>文件储存着 128 × 128 (块) 尺寸的地图，文件名为对应正方形区域的左下角的 x_y_z 坐标。文件内容为 int, byte, byte 为一组所串成的列表（例如 7126723, 0, 0, -467174, 1, 0, 892135, 2, 1,...），其中 int 为块名称的<code>AngeHash</code> ，第一个 byte 为块在地图内的本地 x 坐标，第二个 byte 为 y 坐标。当坐标超过 127 时，需将数值减去 128 得到真实数据。当 x&lt;128  y&lt;128 时，块为实体类型；当 x&lt;128  y≥128 时，块为辅助类型；当 x≥128  y&lt;128 时，块为关卡类型；当 x≥128  y≥128 时，块为背景类型；</p>
+<img src="../../images/OpenWorldSandbox-MapFile.png" width="61.8%">
+
+</article>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      🐄🐦‍⬛🧦🐈🎃💓🌹☕🏴‍☠️🐤
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

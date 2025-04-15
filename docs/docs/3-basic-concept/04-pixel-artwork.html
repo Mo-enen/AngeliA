@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Pixel Artwork | AngeliA </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Pixel Artwork | AngeliA ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-12">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="pixel-artwork">Pixel Artwork</h1>
+
+<p>This section provides a brief overview of the built-in Pixel Art Editor in the AngeliA engine. The editor operates on data stored in the file <code>Universe\Sheet\Game Sheet.sheet</code> within the current project directory. This file uses a custom, lossless binary format designed for AngeliA to store pixel-style art assets along with all associated metadata—such as tile tags, borders, and more.</p>
+<p>The editor interface is divided into four main sections: the atlas list on the left, the main editing area in the center, the toolbar at the top, and the drawing tools on the right.</p>
+<img src="../../images/EngineWindow-Artwork.png" width="61.8%">
+<hr>
+<h3 id="tiles-and-atlases">Tiles and Atlases</h3>
+<p>Atlases can be created and modified by the user and organized into folders for better management. Atlases come in three types: <strong>Normal</strong>, <strong>Level</strong>, and <strong>Background</strong>. Tiles within a Level-type atlas are treated as &quot;Level Tiles&quot; that can be used in map editing. Background-type atlases work similarly. To change an atlas type, right-click the target atlas in the list and select the desired type from the context menu.</p>
+<p>The central editing area displays all tiles in the selected atlas. When you select the &quot;Tile Tool&quot; from the right-hand toolbar, you can click and drag to select one or more tiles. When tiles are selected, the top toolbar switches to the interface shown below:</p>
+<img src="../../images/Artwork-Toolbar.png" width="100%">
+<p>① <strong>Tile Name</strong>:<br>
+Each tile must have a unique name, not shared with any tile in the same or other atlases. If multiple tiles are selected, the input box will display <code>*</code>, but you can still enter a base name. The system will auto-generate names like “Name 0”, “Name 1”, “Name 2”, etc. These tiles will be treated as a tile group, usable for animation and auto-tiling.</p>
+<p>② <strong>Tile Size</strong>:<br>
+Width and height in pixels. Editable.</p>
+<p>③ <strong>Tile Borders</strong>:<br>
+From left to right: left, right, bottom, and top borders. Used for 9-slice rendering or to define custom collision areas for level tiles.</p>
+<p>④ <strong>Tile Pivot</strong>:<br>
+Defines the alignment reference point. When rendered in-game by position, the pivot point aligns to the specified location in code. Modifying the pivot of level or background tiles affects their rendering position on the map.</p>
+<p>⑤ <strong>Tile Z-Index</strong>:<br>
+Determines the rendering order. This value can be overridden in your game code.</p>
+<p>⑥ <strong>Animation Frame Duration</strong>:<br>
+Duration per frame in tiles, in units of frames.</p>
+<p>⑦ <strong>General Tools (left to right)</strong>:</p>
+<ul>
+<li><p><strong>Trigger</strong>:<br>
+Marks the selected tile as a trigger. Triggers do not collide with entities but are still loaded into the physics system, allowing them to trigger specific gameplay logic (e.g., heal the player on contact or define detection zones).</p>
+</li>
+<li><p><strong>Tag</strong>:<br>
+Adds logic tags to selected tiles. See <a href="https://mo-enen.github.io/AngeliA/api/AngeliA.Tag.html">Enum Tag</a> for details.</p>
+</li>
+<li><p><strong>Auto-Tile Rules</strong>:<br>
+Defines auto-tiling behavior in the level editor (see below). The engine evaluates rules in order by tile group. If the current tile arrangement matches a rule, the corresponding tile is used for rendering.<br>
+The example rule below requires left and right neighbors to share the same ID, and top/bottom neighbors to differ. Diagonal neighbors are ignored in this case (but diagonal rules are supported).</p>
+<img src="../../images/Artwork-Rule.png" width="25%">
+</li>
+<li><p><strong>Delete selected tiles</strong> (Shortcut: <code>Del</code>)</p>
+</li>
+<li><p><strong>Export tile info</strong> (only in Debug Mode)</p>
+</li>
+</ul>
+<p>⑧ <strong>Transform Tools (left to right)</strong>:</p>
+<ul>
+<li>Rotate clockwise</li>
+<li>Rotate counterclockwise</li>
+<li>Flip horizontally</li>
+<li>Flip vertically</li>
+<li>Auto-crop transparent edges</li>
+</ul>
+<hr>
+<h3 id="drawing">Drawing</h3>
+<p>Drawing is only allowed within tiles. With a drawing tool selected, hold down the left mouse button and drag to draw pixels. Right-click to pick a color from the tile.</p>
+<p>Drawing tools from top to bottom:</p>
+<ul>
+<li><strong>Rectangle Tool</strong>: Hold <code>Shift</code> to draw a square, <code>Alt</code> to draw a hollow rectangle.</li>
+<li><strong>Ellipse Tool</strong>: Hold <code>Shift</code> to draw a circle, <code>Alt</code> to draw a hollow ellipse.</li>
+<li><strong>Line Tool</strong>: Click and drag to draw straight lines.</li>
+<li><strong>Bucket Tool</strong>:
+<ul>
+<li>Fills all adjacent pixels of the same color.</li>
+<li>Drag to fill with a gradient.</li>
+<li>Hold <code>Ctrl</code> and click to replace all pixels of the same color in the tile (not limited to adjacent pixels).</li>
+</ul>
+</li>
+<li><strong>Pixel Selection Tool</strong>:
+<ul>
+<li>Select pixels for moving, deleting, or copying.</li>
+<li>Supports selecting across multiple tiles.</li>
+</ul>
+</li>
+<li><strong>Tile Tool</strong>:
+<ul>
+<li>Select, copy, or delete tiles.</li>
+<li>Modify tile properties.</li>
+</ul>
+</li>
+</ul>
+<img src="../../images/Artwork-Paint.png" width="61.8%">
+
+</article>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      🐄🐦‍⬛🧦🐈🎃💓🌹☕🏴‍☠️🐤
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

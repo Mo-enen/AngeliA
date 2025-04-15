@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Engine Windows | AngeliA </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Engine Windows | AngeliA ">
+    
+    
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../../styles/docfx.css">
+      <link rel="stylesheet" href="../../styles/main.css">
+      <meta property="docfx:navrel" content="../../toc.html">
+      <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../logo.svg" alt="AngeliA">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-12">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="engine-windows">Engine Windows</h1>
+
+<p>This section provides a brief overview of the editor windows available in the AngeliA Engine. After opening a game project, you can access any of the editor windows from the sidebar on the left. The engine supports only one editor window open at a time. All available editors are listed in the left-hand sidebar. For detailed instructions on how to use each window, please refer to the following chapters.</p>
+<hr>
+<h3 id="game-window">Game Window</h3>
+<p>This window is used to design levels and playtest the user-developed game. To display game content successfully, the project must be free of compilation errors. When the game window is open, a dedicated toolbar appears on the right side, offering helpful features such as frame-by-frame debugging, collision shape display, and entity dragging with the mouse.</p>
+<img src="../../images/EngineWindow-Game.png" width="61.8%">
+<hr>
+<h3 id="artwork-editor">Artwork Editor</h3>
+<p>This window is used to manage and create pixel tiles needed for your game. Nearly all visual elements—whether it's a tree stump, a character's head, or a ladder segment—are rendered using tiles. On the left is the customizable tileset list for organized tile management. The main area in the center allows you to draw, rename, create new tiles, and set auto-tiling rules. All changes are applied immediately upon saving—no need to recompile the game.</p>
+<img src="../../images/EngineWindow-Artwork.png" width="61.8%">
+<hr>
+<h3 id="language-window">Language Window</h3>
+<p>This window enables you to provide UI text in multiple languages for your game. You can define the supported languages and manually fill in the translation entries. The game code retrieves localized text using the Key value shown in the first column on the left. Use <code>Language.Get(ange_hash_of_key);</code> to get the localized string for the currently selected language.</p>
+<img src="../../images/EngineWindow-Language.png" width="61.8%">
+<hr>
+<h3 id="console-window">Console Window</h3>
+<p>This window displays log messages, runtime exceptions, and compile-time errors. Use <code>Debug.Log(your_content);</code> to print messages to the console.</p>
+<img src="../../images/EngineWindow-Console.png" width="61.8%">
+<hr>
+<h3 id="project-settings">Project Settings</h3>
+<p>This window allows you to configure current project settings such as project name, developer name, version number, and more. All settings are saved within the project folder and only apply to the currently opened project. Buttons at the top allow you to recompile the game or build it into a standalone executable.</p>
+<img src="../../images/EngineWindow-Project.png" width="61.8%">
+<hr>
+<h3 id="packages-window">Packages Window</h3>
+<p>This window allows you to add or remove extension packages from your game. You can also export the current project as a package to reuse or share it across other projects.</p>
+<img src="../../images/EngineWindow-Package.png" width="61.8%">
+<hr>
+<h3 id="engine-settings">Engine Settings</h3>
+<p>This window is used to configure settings related to the engine itself—for example, whether to automatically reopen the last used project on startup, the UI language of the engine, or the keybindings for various features. These settings only affect the engine’s behavior and do not impact any project content.</p>
+<img src="../../images/EngineWindow-Setting.png" width="61.8%">
+
+</article>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      🐄🐦‍⬛🧦🐈🎃💓🌹☕🏴‍☠️🐤
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

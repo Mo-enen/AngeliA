@@ -2,7 +2,7 @@
 
 This section provides a brief overview of map and level-related concepts. For more in-depth usage instructions, please refer to the following chapters.
 
----
+
 
 ### Map Logic
 
@@ -17,7 +17,7 @@ There are several types of map tiles, each serving a distinct purpose:
 
 <img src="../../images/OpenWorldSandbox-Map.png" width="61.8%"/>
 
----
+
 
 ### Map Layers
 
@@ -25,7 +25,7 @@ Players can travel between adjacent map layers using doors or portals (as shown 
 
 <img src="../../images/GoThroughLayer.gif" width="61.8%"/>
 
----
+
 
 ### Map File Format
 

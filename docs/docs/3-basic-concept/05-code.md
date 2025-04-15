@@ -4,7 +4,7 @@ An AngeliA project is essentially a C# project. We recommend using **Visual Stud
 
 <img src="../../images/ProjectFolder.png" width="61.8%"/>
 
----
+
 
 ### Static Events
 
@@ -40,7 +40,7 @@ Game Update 3
 ...
 ```
 
----
+
 
 ### Rendering a Sprite
 
@@ -69,7 +69,7 @@ public static class Test {
 
 <img src="../../images/Coding-Test.png" width="50%"/>
 
----
+
 
 ### Spawning an Entity
 
