@@ -3,9 +3,9 @@
 /// <summary>
 /// Layer for entity spawning
 /// </summary>
-public static class EntityLayer {
+public readonly struct EntityLayer {
 	public static readonly string[] LAYER_NAMES = [
-		"UI","Game", "Character", "Environment", "Water","Bullet", "Item", "Decorate",
+		"UI", "Game", "Character", "Environment", "Water","Bullet", "Item", "Decorate",
 	];
 	public const int UI = 0;
 	/// <summary>

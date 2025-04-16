@@ -16,7 +16,7 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
   <img src="docs/images/FrameDebugTest.gif" width="61.8%"/>
 
-- **Entity Debugger**: Move entities on stage by drag them with mouse.
+- **Entity Debugger**: Whether you're optimizing performance, fixing bugs, or just exploring how your game work, the Entity Debugger will be an indispensable tool.
 
   <img src="docs/images/EntityDebuggerTest.gif" width="61.8%"/>
 
@@ -24,7 +24,7 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
   <img src="docs/images/EngineWindow-Artwork.png" width="61.8%"/>
 
-- **Layered Map**: Player can go to behind or front layer of the map by using a door.
+- **Layered Map**: go to the behind or front map layer
 
   <img src="docs/images/GoThroughLayer.gif" width="61.8%"/>
 

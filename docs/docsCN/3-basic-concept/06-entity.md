@@ -10,6 +10,24 @@
 
 
 
+### 实体层
+
+舞台上的实体分别保存在以下层中：`UI`, `Game`, `Character`, `Environment`, `Water`, `Bullet`, `Item`, `Decorate`，使用 `EntityLayer.XXX` 来获取实体层的值。游戏窗口右上方的探查器可以显示当前舞台中的实体数量，进度条代表当前数量占最大限制的比例。
+
+<img src="../../images/Profiler-Entity.png" width="50%"/>
+
+使用 `EntityLayerCapacity`标签修改实体层的最大限制：
+
+```C#
+using AngeliA;
+
+[assembly: EntityLayerCapacity(EntityLayer.GAME, 1024)]
+[assembly: EntityLayerCapacity(EntityLayer.DECORATE, 256)]
+
+```
+
+
+
 ### 回调函数
 
 实体类通过回调函数接受来自系统的事件，您可以重载这些函数来接收这些事件，所有可用的回调函数分别为：

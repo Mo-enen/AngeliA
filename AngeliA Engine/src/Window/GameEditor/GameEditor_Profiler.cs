@@ -42,14 +42,35 @@ internal partial class GameEditor {
 		// Func
 		static void DrawBar (IRect rect, ProfilerUiBarData data, Color32 barColor) {
 			int width = Util.RemapUnclamped(0, data.Capacity, 0, rect.width, data.Value);
-			Renderer.DrawPixel(new IRect(rect.x, rect.y, width, rect.height), data.Value < data.Capacity ? barColor : Color32.RED, int.MaxValue);
-			// Label
 			int padding = Unify(6);
+			var barRect = new IRect(rect.x, rect.y, width, rect.height);
+
+			// Bar
+			Renderer.DrawPixel(
+				barRect,
+				data.Value < data.Capacity ? barColor : Color32.RED,
+				z: int.MaxValue
+			);
+
+			// Label
 			GUI.Label(rect.ShrinkLeft(padding), data.Name, GUI.Skin.SmallLabel);
+			// Number Label
 			using (new GUIColorScope(new Color32(96, 96, 96, 255))) {
 				GUI.IntLabel(rect.ShrinkRight(padding), data.Capacity, out var bounds, GUI.Skin.SmallRightLabel);
 				GUI.Label(bounds.EdgeOutsideLeft(rect.width).ShrinkRight(padding), "/", out bounds, GUI.Skin.SmallRightLabel);
 				GUI.IntLabel(bounds.EdgeOutsideLeft(rect.width).ShrinkRight(padding), data.Value, GUI.Skin.SmallRightLabel);
+			}
+			using (new ClampCellsScope(barRect)) {
+				// Black Label
+				using (new GUIColorScope(new Color32(24, 24, 24, 255))) {
+					GUI.Label(rect.ShrinkLeft(padding), data.Name, GUI.Skin.SmallLabel);
+				}
+				// Black Number Label
+				using (new GUIColorScope(new Color32(12, 12, 12, 255))) {
+					GUI.IntLabel(rect.ShrinkRight(padding), data.Capacity, out var bounds, GUI.Skin.SmallRightLabel);
+					GUI.Label(bounds.EdgeOutsideLeft(rect.width).ShrinkRight(padding), "/", out bounds, GUI.Skin.SmallRightLabel);
+					GUI.IntLabel(bounds.EdgeOutsideLeft(rect.width).ShrinkRight(padding), data.Value, GUI.Skin.SmallRightLabel);
+				}
 			}
 		}
 	}
