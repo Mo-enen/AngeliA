@@ -34,14 +34,12 @@ public static class Test {
 
 运行结果
 
-```
-Game Init
-Game Update 0
-Game Update 1
-Game Update 2
-Game Update 3
-...
-```
+> Game Init
+> Game Update 0
+> Game Update 1
+> Game Update 2
+> Game Update 3
+> ...
 
 
 

@@ -121,5 +121,6 @@ public abstract class Saving<T> : Saving {
 	/// </summary>
 	protected abstract string ValueToString (T value);
 
+	public override string ToString () => Value.ToString();
 
 }
