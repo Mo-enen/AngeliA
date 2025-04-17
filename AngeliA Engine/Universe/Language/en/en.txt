@@ -439,10 +439,11 @@ UI.MovementProp.GrabTopAvailable:Grab Top Available
 UI.MovementProp.GrabTopHeightAmount:Grab Top Height Amount
 UI.MovementProp.GrowJumpCountWhenFallOffEdge:Grow Jump Count When Fall Off Edge
 UI.MovementProp.InWaterSpeedRate:In Water Speed Rate
+UI.MovementProp.JumpBoostFromMoveRate:Jump Boost From Move Rate
 UI.MovementProp.JumpBreakDash:Jump Break Dash
 UI.MovementProp.JumpBreakRush:Jump Break Rush
 UI.MovementProp.JumpCount:Jump Count
-UI.MovementProp.JumpDownThoughOneway:Jump Down Though Oneway
+UI.MovementProp.JumpDownThroughOneway:Jump Down Through Oneway
 UI.MovementProp.JumpReleaseSpeedRate:Jump Release Speed Rate
 UI.MovementProp.JumpRiseGravityRate:Jump Rise Gravity Rate
 UI.MovementProp.JumpSpeed:Jump Speed

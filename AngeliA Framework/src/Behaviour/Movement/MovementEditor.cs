@@ -1,11 +1,10 @@
-﻿using System.Collections;
+﻿#if DEBUG
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
 namespace AngeliA;
-
-
 
 public class MovementEditor {
 
@@ -59,7 +58,6 @@ public class MovementEditor {
 	}
 
 
-#if DEBUG
 	[OnGameUpdateLater]
 	internal static void OnGameUpdateLater () {
 		if (Instance == null || !Instance.ShowingPanel) return;
@@ -75,7 +73,6 @@ public class MovementEditor {
 			Input.IgnoreMouseToActionJump();
 		}
 	}
-#endif
 
 
 	internal MovementEditor () => Instance = this;
@@ -87,7 +84,7 @@ public class MovementEditor {
 		try {
 
 			var hostMov = System.Activator.CreateInstance(movementType, [null]);
-			//var hostMov = new CharacterMovement(null);
+			
 			var fields = movementType.GetFields(
 				BindingFlags.Public | BindingFlags.Instance
 			).OrderBy(f => f.MetadataToken).ToArray();
@@ -311,3 +308,4 @@ public class MovementEditor {
 
 
 }
+#endif

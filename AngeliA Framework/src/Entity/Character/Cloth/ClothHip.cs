@@ -236,6 +236,8 @@ public abstract class HipCloth : Cloth {
 		}
 		if (body.Height < 0) offsetY = -offsetY;
 
+		int rot = body.Rotation ;
+
 		if (group != null) {
 			// Dress Group
 
@@ -273,10 +275,11 @@ public abstract class HipCloth : Cloth {
 					segSprite,
 					centerX + motionX / 2,
 					currentY,
-					500, 0, 0,
+					500, 0, rot,
 					segWidth, segHeight,
 					z: hip.Z + localZ
 				);
+				rot = (int)Util.LerpUnclamped(rot, 0, 0.5f);
 
 			}
 
@@ -286,7 +289,7 @@ public abstract class HipCloth : Cloth {
 				sprite,
 				centerX,
 				centerY + offsetY,
-				500, 1000, 0,
+				500, 1000, rot,
 				width, height,
 				hip.Z + localZ
 			);

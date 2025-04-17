@@ -8,18 +8,22 @@ using System.Threading.Tasks;
 
 namespace AngeliA;
 
+
 /// <summary>
 /// Utility class for language system
 /// </summary>
 public static partial class LanguageUtil {
+
 
 	/// <summary>
 	/// Used for remote setting between engine and rigged game
 	/// </summary>
 	public const int ADD_KEYS_FOR_ALL_LANGUAGE_CODE_SETTING_ID = 914528783;
 
+
 	// Data
 	private static readonly StringBuilder CacheBuilder = new();
+
 
 	// Api
 	/// <summary>
@@ -30,12 +34,20 @@ public static partial class LanguageUtil {
 	/// <param name="keepEscapeCharacters">True if the escape characters (like "\n") will be set to original data</param>
 	public static IEnumerable<KeyValuePair<string, string>> LoadAllPairsFromFolder (string languageRoot, string language, bool keepEscapeCharacters = false) {
 		string lanFolder = GetLanguageFolderPath(languageRoot, language);
+		// Primary
+		string primaryPath = Util.CombinePaths(lanFolder, $"{language}.{AngePath.LANGUAGE_FILE_EXT}");
+		foreach (var pair in LoadAllPairsFromDiskAtPath(primaryPath, keepEscapeCharacters)) {
+			yield return pair;
+		}
+		// Alt
 		foreach (var filePath in Util.EnumerateFiles(lanFolder, true, AngePath.LANGUAGE_SEARCH_PATTERN)) {
+			if (Util.GetNameWithoutExtension(filePath) == language) continue;
 			foreach (var pair in LoadAllPairsFromDiskAtPath(filePath, keepEscapeCharacters)) {
 				yield return pair;
 			}
 		}
 	}
+
 
 	/// <summary>
 	/// Load and iterate through all language data pairs from given file
@@ -54,6 +66,7 @@ public static partial class LanguageUtil {
 		}
 	}
 
+
 	/// <summary>
 	/// Save given language data pairs into file
 	/// </summary>
@@ -69,6 +82,7 @@ public static partial class LanguageUtil {
 		CacheBuilder.Clear();
 	}
 
+
 	/// <summary>
 	/// Get folder for given language
 	/// </summary>
@@ -76,6 +90,7 @@ public static partial class LanguageUtil {
 	/// <param name="language">ISO of the target language</param>
 	/// <returns>Path for the target language file</returns>
 	public static string GetLanguageFolderPath (string languageRoot, string language) => Util.CombinePaths(languageRoot, language);
+
 
 	/// <summary>
 	/// Get current language ISO of the OS
@@ -88,10 +103,11 @@ public static partial class LanguageUtil {
 		return iso;
 	}
 
+
 	/// <summary>
 	/// Add all required keys for all language inside the root folder
 	/// </summary>
-	public static void AddKeysForAllLanguageCode (string languageRoot) {
+	public static void AddKeysForAllLanguageCode (string languageRoot, bool includeMovementProp = false) {
 		var fieldBinding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 		foreach (string folderPath in Util.EnumerateFolders(languageRoot, true)) {
 			string lan = Util.GetNameWithoutExtension(folderPath);
@@ -125,6 +141,19 @@ public static partial class LanguageUtil {
 				string angeName = type.AngeName();
 				pairs.Add(new($"iName.{angeName}", loadDef ? Util.GetDisplayName(angeName) : ""));
 				pairs.Add(new($"iDes.{angeName}", ""));
+			}
+			// Movement Prop
+			if (includeMovementProp) {
+				var fields = typeof(CharacterMovement).GetFields(BindingFlags.Public | BindingFlags.Instance).ToArray();
+				var intType = typeof(FrameBasedInt);
+				var boolType = typeof(FrameBasedBool);
+				for (int i = 0; i < fields.Length; i++) {
+					var field = fields[i];
+					bool isInt = field.FieldType == intType;
+					bool isBool = field.FieldType == boolType;
+					if (!isInt && !isBool) continue;
+					pairs.Add(new($"UI.MovementProp.{field.Name}", loadDef ? Util.GetDisplayName(field.Name) : ""));
+				}
 			}
 			// Save to Disk
 			SaveAllPairsToDisk(filePath, pairs);

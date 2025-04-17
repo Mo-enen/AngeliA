@@ -16651,7 +16651,7 @@
             Get current language ISO of the OS
             </summary>
         </member>
-        <member name="M:AngeliA.LanguageUtil.AddKeysForAllLanguageCode(System.String)">
+        <member name="M:AngeliA.LanguageUtil.AddKeysForAllLanguageCode(System.String,System.Boolean)">
             <summary>
             Add all required keys for all language inside the root folder
             </summary>

@@ -272,7 +272,7 @@ internal class LanguageEditor : WindowUI {
 				// Engine Artworl Project
 				Instance.Lines.RemoveAll(line => string.IsNullOrEmpty(line.Key));
 				int oldLineCount = Instance.Lines.Count;
-				LanguageUtil.AddKeysForAllLanguageCode(project.Universe.LanguageRoot);
+				LanguageUtil.AddKeysForAllLanguageCode(project.Universe.LanguageRoot, includeMovementProp: true);
 				Instance.Load(project.Universe.LanguageRoot);
 				Instance.SetDirty();
 				GenericDialogUI.SpawnDialog_Button(
@@ -287,7 +287,6 @@ internal class LanguageEditor : WindowUI {
 				Instance.ReloadCheckingDate = Util.GetFileModifyDate(
 					Util.CombinePaths(project.Universe.LanguageRoot, lan, $"{lan}.{AngePath.LANGUAGE_FILE_EXT}")
 				);
-
 			}
 		}
 	}

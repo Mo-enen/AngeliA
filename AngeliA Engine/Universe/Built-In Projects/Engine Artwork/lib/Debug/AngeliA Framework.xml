@@ -304,7 +304,7 @@
         </member>
         <member name="T:AngeliA.BasicItemCombinationAttribute">
             <summary>
-            Define a item combination to craft the item.
+            Define an item combination to craft the item.
             </summary>
             <param name="count">How many item does it craft at once</param>
             <param name="keepId0">Do not consume this item</param>
@@ -322,7 +322,7 @@
         </member>
         <member name="M:AngeliA.BasicItemCombinationAttribute.#ctor(AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,AngeliA.ItemCombinationParam,System.Int32,System.String,System.String,System.String,System.String)">
             <summary>
-            Define a item combination to craft the item.
+            Define an item combination to craft the item.
             </summary>
             <param name="count">How many item does it craft at once</param>
             <param name="keepId0">Do not consume this item</param>
@@ -4707,7 +4707,7 @@
         </member>
         <member name="M:AngeliA.Inventory.GetInventoryIdFromBasicIdAndPos(System.Int32,System.String,AngeliA.Int3)">
             <summary>
-            Calculate inventory ID based of the given infomation
+            Calculate inventory ID based of the given information
             </summary>
             <param name="basicID">ID of the holder</param>
             <param name="baseName">Name of the holder</param>
@@ -8884,11 +8884,6 @@
             Velocity Y that keep applying on this entity. Every frame the value will move to 0 by "decay"
             </summary>
         </member>
-        <member name="P:AngeliA.Rigidbody.RequireDodgeOverlap">
-            <summary>
-            True if this entity do not react to the colliders which already overlaps on it.
-            </summary>
-        </member>
         <member name="P:AngeliA.Rigidbody.FacingRight">
             <summary>
             True if this entity is facing right side
@@ -8897,6 +8892,11 @@
         <member name="P:AngeliA.Rigidbody.EjectWhenInsideGround">
             <summary>
             True if this entity try to move out of ground automatically when it stuck inside ground
+            </summary>
+        </member>
+        <member name="P:AngeliA.Rigidbody.RequireDodgeOverlap">
+            <summary>
+            True if this entity do not react to the colliders which already overlaps on it.
             </summary>
         </member>
         <member name="F:AngeliA.Rigidbody.GlobalGravity">
@@ -9053,7 +9053,7 @@
         </member>
         <member name="M:AngeliA.Rigidbody.InsideGroundCheck">
             <summary>
-            Function that holds the stuch inside ground checking logic
+            Function that holds the stuck inside ground checking logic
             </summary>
         </member>
         <member name="T:AngeliA.NumberZero">
@@ -16362,13 +16362,13 @@
             <inheritdoc cref="M:AngeliA.FrameworkUtil.DrawPoseCharacterAsUI(AngeliA.IRect,AngeliA.PoseCharacterRenderer,System.Int32)"/>
         </member>
         <member name="M:AngeliA.FrameworkUtil.RemapCells(AngeliA.Cell[],System.Int32,System.Int32,AngeliA.IRect,AngeliA.IRect,System.Int32,System.Int32,System.Boolean)">
-            <inheritdoc cref="!:RemapCells(Span&lt;Cell&gt;, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+            <inheritdoc cref="M:AngeliA.FrameworkUtil.RemapCells(System.Span{AngeliA.Cell},System.Int32,System.Int32,AngeliA.IRect,AngeliA.IRect,System.Int32@,System.Int32,System.Int32,System.Boolean)"/>
         </member>
         <member name="M:AngeliA.FrameworkUtil.RemapCells(System.Span{AngeliA.Cell},System.Int32,System.Int32,AngeliA.IRect,AngeliA.IRect,System.Int32,System.Int32,System.Boolean)">
-            <inheritdoc cref="!:RemapCells(Span&lt;Cell&gt;, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+            <inheritdoc cref="M:AngeliA.FrameworkUtil.RemapCells(System.Span{AngeliA.Cell},System.Int32,System.Int32,AngeliA.IRect,AngeliA.IRect,System.Int32@,System.Int32,System.Int32,System.Boolean)"/>
         </member>
         <member name="M:AngeliA.FrameworkUtil.RemapCells(AngeliA.Cell[],System.Int32,System.Int32,AngeliA.IRect,AngeliA.IRect,System.Int32@,System.Int32,System.Int32,System.Boolean)">
-            <inheritdoc cref="!:RemapCells(Span&lt;Cell&gt;, int, int, IRect, IRect, out int, int, int, bool, bool)"/>
+            <inheritdoc cref="M:AngeliA.FrameworkUtil.RemapCells(System.Span{AngeliA.Cell},System.Int32,System.Int32,AngeliA.IRect,AngeliA.IRect,System.Int32@,System.Int32,System.Int32,System.Boolean)"/>
         </member>
         <member name="M:AngeliA.FrameworkUtil.RemapCells(System.Span{AngeliA.Cell},System.Int32,System.Int32,AngeliA.IRect,AngeliA.IRect,System.Int32@,System.Int32,System.Int32,System.Boolean)">
             <summary>
@@ -16392,7 +16392,7 @@
             <param name="usage"></param>
             <param name="maxUsage"></param>
         </member>
-        <member name="M:AngeliA.FrameworkUtil.DrawAllCollidersAsGizmos(System.Int32,AngeliA.Int2,System.Single,System.Boolean,System.Boolean,System.Boolean,AngeliA.Color32[])">
+        <member name="M:AngeliA.FrameworkUtil.DrawAllCollidersAsGizmos(System.Int32,AngeliA.Int2,System.Single,System.Boolean,System.Boolean,System.Boolean,System.Boolean,AngeliA.Color32[])">
             <summary>
             Display current physics colliders with game gizmos functions
             </summary>
@@ -16402,6 +16402,7 @@
             <param name="ignoreNonOnewayTrigger">True if triggers that is not oneway gate are excluded</param>
             <param name="ignoreOnewayTrigger">True if oneway gates are excluded</param>
             <param name="useTechEffect">True if the gizmos glitchs</param>
+            <param name="drawVelocity">True if draw the current velocity for rigidbody</param>
             <param name="layerTints">Color for specified layers. Set to null to use default.</param>
         </member>
         <member name="M:AngeliA.FrameworkUtil.GetItemTypeIcon(System.Int32)">
@@ -16650,7 +16651,7 @@
             Get current language ISO of the OS
             </summary>
         </member>
-        <member name="M:AngeliA.LanguageUtil.AddKeysForAllLanguageCode(System.String)">
+        <member name="M:AngeliA.LanguageUtil.AddKeysForAllLanguageCode(System.String,System.Boolean)">
             <summary>
             Add all required keys for all language inside the root folder
             </summary>

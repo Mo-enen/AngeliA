@@ -82,12 +82,9 @@ public abstract class Face : BodyGadget {
 		DrawEye(expression, faceRect, true, facingRight, aniFrame);
 		DrawEye(expression, faceRect, false, facingRight, aniFrame);
 		DrawMouth(expression, faceRect, facingRight, aniFrame);
-		DrawSpriteAsHumanEar(renderer, SpriteEarLeft, SpriteEarRight);
-
-		// Move with Head
+		
+		// Twist
 		if (Renderer.GetCells(out var cells, out int count)) {
-
-			// Twist
 			int twist = renderer.HeadTwist;
 			if (twist != 0) {
 				int offsetX = faceRect.width * twist / 2000;
@@ -98,7 +95,12 @@ public abstract class Face : BodyGadget {
 				}
 				FrameworkUtil.ClampCells(cells, headRect, startCellIndex, count);
 			}
+		}
 
+		DrawSpriteAsHumanEar(renderer, SpriteEarLeft, SpriteEarRight);
+
+		// Move with Head
+		if (Renderer.GetCells(out cells, out count)) {
 			// Rotate
 			int headRot = renderer.Head.Rotation;
 			if (headRot != 0) {

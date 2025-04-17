@@ -439,10 +439,11 @@ UI.MovementProp.GrabTopAvailable:允许上抓爬
 UI.MovementProp.GrabTopHeightAmount:上抓爬身高率
 UI.MovementProp.GrowJumpCountWhenFallOffEdge:走落边缘消耗跳跃数
 UI.MovementProp.InWaterSpeedRate:水中速率
+UI.MovementProp.JumpBoostFromMoveRate:助跑跳跃更高
 UI.MovementProp.JumpBreakDash:跳跃打断冲刺
 UI.MovementProp.JumpBreakRush:跳跃打断突进
 UI.MovementProp.JumpCount:跳跃数
-UI.MovementProp.JumpDownThoughOneway:允许下跳翻越单向板
+UI.MovementProp.JumpDownThroughOneway:向下跳跃穿过单向板
 UI.MovementProp.JumpReleaseSpeedRate:松开跳跃键乘速率
 UI.MovementProp.JumpRiseGravityRate:跳跃上升重力
 UI.MovementProp.JumpSpeed:跳跃速度

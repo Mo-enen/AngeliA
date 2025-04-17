@@ -1,10 +1,7 @@
-﻿global using Debug = AngeliA.Debug;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AngeliA;
-
-[assembly: ToolApplication]
 
 namespace AngeliaEngine;
 
@@ -923,8 +920,8 @@ internal partial class Engine {
 		Game.UnloadFontsFromPool(ignoreBuiltIn: true);
 		Game.LoadFontsIntoPool(CurrentProject.Universe.FontRoot, builtIn: false);
 
-		// Update Built-in Sheet from Engine Sheet to Project Sheet
 		if (!CurrentProject.IsEngineInternalProject || CurrentProject.Universe.Info.ProjectType != ProjectType.Artwork) {
+			// Update Built-in Sheet from Engine Sheet to Project Sheet
 			long builtInSheetModDate = Util.GetFileModifyDate(Universe.BuiltIn.GameSheetPath);
 			if (builtInSheetModDate != Util.GetFileModifyDate(CurrentProject.Universe.BuiltInSheetPath)) {
 				var engineSheet = new Sheet();
@@ -936,6 +933,15 @@ internal partial class Engine {
 						Debug.Log("Built-in Sheet Updated");
 					}
 				}
+			}
+			// Update Built-in Language from Engine Language to Project Language
+			foreach (string lanFolder in Util.EnumerateFolders(Universe.BuiltIn.LanguageRoot, true)) {
+				string lanName = Util.GetNameWithExtension(lanFolder);
+				string targetLanFolder = Util.CombinePaths(CurrentProject.Universe.LanguageRoot, lanName);
+				if (!Util.FolderExists(targetLanFolder)) continue;
+				string sourcePath = Util.CombinePaths(lanFolder, $"{lanName}.{AngePath.LANGUAGE_FILE_EXT}");
+				string targetPath = Util.CombinePaths(targetLanFolder, $"engine.{AngePath.LANGUAGE_FILE_EXT}");
+				Util.UpdateFile(sourcePath, targetPath);
 			}
 		}
 
