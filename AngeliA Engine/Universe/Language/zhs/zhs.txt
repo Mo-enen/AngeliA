@@ -449,9 +449,9 @@ UI.MovementProp.JumpRiseGravityRate:跳跃上升重力
 UI.MovementProp.JumpSpeed:跳跃速度
 UI.MovementProp.MovementHeight:身高
 UI.MovementProp.MovementWidth:身宽
-UI.MovementProp.PoundAvailable:允许冲坐
-UI.MovementProp.PoundPutoutFire:冲坐可灭火
-UI.MovementProp.PoundSpeed:冲坐速度
+UI.MovementProp.PoundAvailable:允许坐地
+UI.MovementProp.PoundPutoutFire:坐地可灭火
+UI.MovementProp.PoundSpeed:坐地速度
 UI.MovementProp.PushAvailable:允许推
 UI.MovementProp.PushSpeed:推速度
 UI.MovementProp.ResetJumpCountWhenGrab:上抓爬时重置跳跃数
@@ -506,7 +506,7 @@ UI.MovementTab.Dash:冲刺
 UI.MovementTab.Fly:飞行
 UI.MovementTab.Grab:抓爬
 UI.MovementTab.Jump:跳跃
-UI.MovementTab.Pound:冲坐
+UI.MovementTab.Pound:坐地
 UI.MovementTab.Push:推
 UI.MovementTab.Run:跑步
 UI.MovementTab.Rush:突进

@@ -994,6 +994,11 @@ public class CharacterMovement (Rigidbody rig) {
 		if (!IsGrabbingTop && IntendedY == -1) GrabDropLock = true;
 		if (IsGrabbingTop && IntendedY != -1) GrabDropLock = false;
 
+		// Grab Flip
+		if (IsGrabFlipping) {
+			Target.CollisionMask.Override(0, 1);
+		}
+
 		// Fly
 		if (
 			(!HoldingJump && frame > LastFlyFrame + FlyCooldown) ||
