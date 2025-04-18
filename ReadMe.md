@@ -32,19 +32,19 @@ A 2D game engine focused on open-world platformer games, built with C#.
 
 
 
-## Download & Setup
+## Download
 
 - Download the latest version from the [Release](https://github.com/Mo-enen/AngeliA/releases) section, extract the file and you're ready to go!
 
 
-## Community & Support
+## Community
 
 - <img src="https://raw.githubusercontent.com/Mo-enen/AngeliA-Document/refs/heads/main/images\Discord.png" width="16"/> Discord [AngeliA Official](https://discord.gg/JVTQcev3P3)
 - <img src="https://raw.githubusercontent.com/Mo-enen/AngeliA-Document/refs/heads/main/images\YouTube.png" width="16"/> YouTube [Moenen](https://www.youtube.com/@game.angelia)
 - <img src="https://raw.githubusercontent.com/Mo-enen/AngeliA-Document/refs/heads/main/images\BiliBili.png" width="16"/> BiliBili [楠瓜Moenen](https://space.bilibili.com/11318413)
 
 
-## Documentation & API Reference
+## Documentation
 
 - [Documentation](https://mo-enen.github.io/AngeliA/docs/1-introduction.html) | [中文文档](https://mo-enen.github.io/AngeliA/docsCN/1-introduction.html) | [API Reference](https://mo-enen.github.io/AngeliA/api/AngeliA.html)
 - Documentations are still under construction... 🏗️
@@ -63,4 +63,4 @@ A 2D game engine focused on open-world platformer games, built with C#.
 </a>
 <br/>
 
-###### More features and improvements are coming soon. Stay tuned :)
+More features and improvements are coming soon. Stay tuned :)
