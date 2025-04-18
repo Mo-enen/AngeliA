@@ -1,1 +1,0 @@
-docfx serve --open-browser

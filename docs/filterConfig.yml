@@ -1,7 +1,0 @@
-apiRules:
-- exclude:
-    uidRegex: GeorgeMamaladze
-    type: Type
-- exclude:
-    uidRegex: JordanPeck
-    type: Type
