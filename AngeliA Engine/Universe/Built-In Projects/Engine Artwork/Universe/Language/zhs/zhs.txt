@@ -454,8 +454,8 @@ UI.MovementProp.PoundPutoutFire:坐地可灭火
 UI.MovementProp.PoundSpeed:坐地速度
 UI.MovementProp.PushAvailable:允许推
 UI.MovementProp.PushSpeed:推速度
-UI.MovementProp.ResetJumpCountWhenGrab:上抓爬时重置跳跃数
-UI.MovementProp.ResetJumpCountWhenSlide:侧抓爬时重置跳跃数
+UI.MovementProp.ResetJumpCountWhenGrab:抓爬时重置跳跃数
+UI.MovementProp.ResetJumpCountWhenSlide:滑墙时重置跳跃数
 UI.MovementProp.RunAcceleration:跑步加速度
 UI.MovementProp.RunAvailable:允许跑步
 UI.MovementProp.RunBrakeAcceleration:跑步刹车加速度

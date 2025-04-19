@@ -1178,7 +1178,7 @@ public class CharacterMovement (Rigidbody rig) {
 				if (IntendedJump || frame < RequireJumpFrame + JUMP_REQUIRE_TOLERANCE) {
 					// Perform Jump
 					CurrentJumpCount++;
-					int jumpSpeed = InWater ? SwimJumpSpeed : JumpSpeed;
+					int jumpSpeed = InWater && SwimAvailable ? SwimJumpSpeed : JumpSpeed;
 					if (IntendedX != 0) {
 						int boostFrame = (frame - LastStartMoveFrame).Clamp(0, JUMP_BOOST_TOLERANCE);
 						jumpSpeed += RunSpeed * JumpBoostFromMoveRate * boostFrame / 1000 / JUMP_BOOST_TOLERANCE;
