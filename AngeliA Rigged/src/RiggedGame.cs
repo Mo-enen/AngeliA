@@ -376,7 +376,7 @@ public partial class RiggedGame : Game {
 	internal static void OnGameUpdateLater () {
 		if (Instance == null) return;
 		if (Instance.DrawCollider) {
-			FrameworkUtil.DrawAllCollidersAsGizmos(drawVelocity:true);
+			FrameworkUtil.DrawAllCollidersAsGizmos(drawVelocity: true);
 		}
 		Instance?.UpdateEntityClicker();
 	}
@@ -386,7 +386,7 @@ public partial class RiggedGame : Game {
 
 		if (PlayerMenuUI.ShowingUI || !EntityClickerOn) return;
 
-		PlayerSystem.DragPlayerInMiddleButtonToMove_DebugOnly.False(1, 4096);
+		DebugTool.DragPlayerInMiddleButtonToMove.False(1, 4096);
 		Input.IgnoreMouseToActionJump(ignoreAction: true, ignoreJump: false, useMidButtonAsAction: true);
 		bool mouseDown = Input.MouseLeftButtonDown;
 		bool mouseHolding = Input.MouseLeftButtonHolding;

@@ -63,11 +63,11 @@ public static class PlayerSystem {
 	/// <summary>
 	/// Target view position in global space
 	/// </summary>
-	public static int AimViewX { get; private set; } = 0;
+	public static int AimViewX { get; internal set; } = 0;
 	/// <summary>
 	/// Target view position in global space
 	/// </summary>
-	public static int AimViewY { get; private set; } = 0;
+	public static int AimViewY { get; internal set; } = 0;
 	/// <summary>
 	/// Current highlighting IActionTarget
 	/// </summary>
@@ -97,10 +97,6 @@ public static class PlayerSystem {
 	private static bool UnlockPlayerDirty = false;
 
 	// Frame Based
-	/// <summary>
-	/// True if allow user use middle mouse button to move player for debug. This feature is not include after the game publish.
-	/// </summary>
-	public static readonly FrameBasedBool DragPlayerInMiddleButtonToMove_DebugOnly = new(true);
 	/// <summary>
 	/// View height in global space the player requiring to have 
 	/// </summary>
@@ -278,11 +274,6 @@ public static class PlayerSystem {
 				break;
 		}
 
-		// Final
-#if DEBUG
-		UpdateDebugDragging();
-		UpdateDebugHotkey();
-#endif
 		UpdateView();
 
 	}
@@ -629,75 +620,6 @@ public static class PlayerSystem {
 			TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
 			Input.UseGameKey(Gamekey.Action);
 		}
-
-	}
-
-
-	// Debug
-	private static void UpdateDebugDragging () {
-
-		if (!DragPlayerInMiddleButtonToMove_DebugOnly || Selecting == null || !Input.MouseMidButtonHolding) {
-			// End Hook Task
-			if (TaskSystem.GetCurrentTask() is EntityHookTask hTask) {
-				hTask.UserData = null;
-			}
-			return;
-		}
-
-		// Revive
-		if (Selecting.CharacterState == CharacterState.PassOut) {
-			Selecting.Health.Heal(Selecting.Health.MaxHP);
-			Selecting.SetCharacterState(CharacterState.GamePlay);
-		}
-
-		// Move Player to Cursor Pos
-		var mousePos = Input.MouseGlobalPosition;
-		Selecting.X = mousePos.x;
-		Selecting.Y = mousePos.y - Const.CEL * 2;
-		IgnorePlayerView.True(1, 4096);
-		if (Selecting.Rendering is PoseCharacterRenderer pRenderer) {
-			pRenderer.ManualPoseAnimate(PoseAnimation_Idle.TYPE_ID, 1);
-		}
-		Selecting.IgnorePhysics.True(1, 4096);
-		Selecting.Health.MakeInvincible(1);
-
-		// Move View when Hover on Edge
-		var cameraRect = Renderer.CameraRect;
-		var center = cameraRect.CenterInt();
-		int startMoveDis = cameraRect.height / 4;
-		int mouseCenterDis = Util.DistanceInt(mousePos, center);
-		if (mouseCenterDis > startMoveDis) {
-			// Move
-			var viewRect = Stage.ViewRect;
-			var delta = (Float2)(mousePos - center);
-			float targetMag = (delta.Magnitude - startMoveDis) / 16f;
-			delta = delta.Normalized * targetMag;
-			viewRect.x += delta.x.RoundToInt();
-			viewRect.y += delta.y.RoundToInt() * cameraRect.width / cameraRect.height;
-			Stage.SetViewPositionDelay(viewRect.x, viewRect.y, priority: 4096);
-			AimViewX = viewRect.x;
-			AimViewY = viewRect.y;
-		}
-
-		// Task
-		if (TaskSystem.GetCurrentTask() is not EntityHookTask) {
-			TaskSystem.AddToFirst(EntityHookTask.TYPE_ID, Selecting);
-		}
-
-	}
-
-
-	private static void UpdateDebugHotkey () {
-
-		// Make Invincible
-		if (Input.KeyboardDown(KeyboardKey.I) && Input.HoldingCtrl) {
-			if (Selecting.Health.IsInvincible) {
-				Selecting.Health.MakeInvincible(-1);
-			} else {
-				Selecting.Health.MakeInvincible(int.MinValue - Game.GlobalFrame - 1);
-			}
-		}
-
 
 	}
 

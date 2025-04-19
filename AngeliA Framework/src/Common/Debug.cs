@@ -93,4 +93,5 @@ public static class Debug {
 
 	internal static void LogErrorInternal (int id, string message) => OnLogErrorInternal?.Invoke(id, message);
 
+
 }

@@ -166,14 +166,7 @@ public class CharacterPose {
 		rendering.PoseRootY = (int)Util.LerpUnclamped(rendering.PoseRootY, PoseRootY, blend01);
 		rendering.BodyTwist = (int)Util.LerpUnclamped(rendering.BodyTwist, BodyTwist, blend01);
 		rendering.HeadTwist = (int)Util.LerpUnclamped(rendering.HeadTwist, HeadTwist, blend01);
-		rendering.HandGrabRotationL.Override((int)Util.LerpAngle(rendering.HandGrabRotationL, HandGrabRotationL, blend01));
-		rendering.HandGrabRotationR.Override((int)Util.LerpAngle(rendering.HandGrabRotationR, HandGrabRotationR, blend01));
-		rendering.HandGrabScaleL.Override((int)Util.LerpUnclamped(rendering.HandGrabScaleL, HandGrabScaleL, blend01));
-		rendering.HandGrabScaleR.Override((int)Util.LerpUnclamped(rendering.HandGrabScaleR, HandGrabScaleR, blend01));
-		rendering.HandGrabAttackTwistL.Override((int)Util.LerpUnclamped(rendering.HandGrabAttackTwistL, HandGrabAttackTwistL, blend01));
-		rendering.HandGrabAttackTwistR.Override((int)Util.LerpUnclamped(rendering.HandGrabAttackTwistR, HandGrabAttackTwistR, blend01));
-
-
+		
 		// Func
 		static int FixSign (int basicValue, int targetValue) {
 			if (basicValue.Sign() != targetValue.Sign()) {

@@ -1,6 +1,7 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_JumpDown : PoseAnimation {
+
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 
@@ -64,4 +65,5 @@ public class PoseAnimation_JumpDown : PoseAnimation {
 		Rendering.HandGrabScaleL.Override( FacingSign * 1000);
 		Rendering.HandGrabScaleR.Override( FacingSign * 1000);
 	}
+
 }

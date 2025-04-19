@@ -3073,6 +3073,21 @@
             Draw a label on top-right of the screen for the current frame
             </summary>
         </member>
+        <member name="T:AngeliA.DebugTool">
+            <summary>
+            Provide extra tools for debugging. eg. Drag with mouse middle button to move player.
+            </summary>
+        </member>
+        <member name="F:AngeliA.DebugTool.DragPlayerInMiddleButtonToMove">
+            <summary>
+            True if allow user use middle mouse button to move player for debug. This feature is not include after the game publish.
+            </summary>
+        </member>
+        <member name="F:AngeliA.DebugTool.UseDebugHotkey">
+            <summary>
+            True if use hotkeys to debug. eg. Ctrl+Alt+I to make player invincible
+            </summary>
+        </member>
         <member name="T:AngeliA.EntityLayer">
             <summary>
             Layer for entity spawning
@@ -5318,11 +5333,6 @@
         <member name="P:AngeliA.PlayerSystem.PlayableCharactersCount">
             <summary>
             Total count of playable characters
-            </summary>
-        </member>
-        <member name="F:AngeliA.PlayerSystem.DragPlayerInMiddleButtonToMove_DebugOnly">
-            <summary>
-            True if allow user use middle mouse button to move player for debug. This feature is not include after the game publish.
             </summary>
         </member>
         <member name="F:AngeliA.PlayerSystem.TargetViewHeight">
