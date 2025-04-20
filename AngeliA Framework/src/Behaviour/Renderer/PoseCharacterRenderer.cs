@@ -413,8 +413,9 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		for (int i = 0; i < EquipmentTypeCount; i++) {
 			var eqType = (EquipmentType)i;
 			using var _ = new RotateCellScope(
-				eqType == EquipmentType.HandTool ? Body.Rotation : 0, Body.GlobalX, Body.GlobalY,
-				keepOriginalRotation: true
+				eqType == EquipmentType.HandTool ? Body.Rotation : 0, 
+				Body.GlobalX, Body.GlobalY,
+				keepOriginalRotation: false
 			);
 			int id = Inventory.GetEquipment(TargetCharacter.InventoryID, eqType, out int equipmentCount);
 			var eq = id != 0 && equipmentCount >= 0 ? ItemSystem.GetItem(id) as Equipment : null;
@@ -625,8 +626,10 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		// Movement
 		var Movement = TargetCharacter.Movement;
 
-		HandGrabScaleL.Override(Movement.FacingRight ? 1000 : -1000);
-		HandGrabScaleR.Override(Movement.FacingRight ? 1000 : -1000);
+		HandGrabScaleL.BaseValue = Movement.FacingRight ? 1000 : -1000;
+		HandGrabScaleR.BaseValue = Movement.FacingRight ? 1000 : -1000;
+		HandGrabRotationL.BaseValue = 0;
+		HandGrabRotationR.BaseValue = 0;
 
 		PerformPoseAnimation();
 		CalculateBodypartGlobalPosition();
@@ -661,10 +664,6 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 
 	private void PoseUpdateRotationAndTwist () {
-
-		//Body.Rotation = QTest.Int("b", 0, -100, 100);
-		//BodyTwist = QTest.Int("t", 0, -1000, 1000);
-		//Head.Rotation = QTest.Int("r", 0, -100, 100);
 
 		Head.Rotation = Head.Rotation.Clamp(-90, 90);
 		HeadTwist = !Head.FrontSide ? 0 : HeadTwist.Clamp(-1000, 1000);
@@ -720,7 +719,11 @@ public class PoseCharacterRenderer : CharacterRenderer {
 
 			if (bodyPart.ID == 0 || bodyPart.IsFullCovered) continue;
 
-			using var _ = new RotateCellScope(bodyPart.RotateWithBody ? Body.Rotation : 0, Body.GlobalX, Body.GlobalY);
+			using var _ = new RotateCellScope(
+				bodyPart.RotateWithBody ? Body.Rotation : 0, 
+				Body.GlobalX, 
+				Body.GlobalY
+			);
 
 			if (bodyPart == Head && Renderer.TryGetSpriteFromGroup(bodyPart.ID, Head.FrontSide ? 0 : 1, out var headSprite, false, true)) {
 				Renderer.Draw(

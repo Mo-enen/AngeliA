@@ -522,7 +522,7 @@ public static partial class Util {
 	/// </summary>
 	[MethodImpl(INLINE)]
 	public static float LerpAngle (float a, float b, float t) {
-		float delta = Repeat((b - a), 360);
+		float delta = Repeat(b - a, 360);
 		if (delta > 180)
 			delta -= 360;
 		return a + delta * Clamp01(t);
@@ -531,7 +531,7 @@ public static partial class Util {
 	/// <inheritdoc cref="LerpAngle(float, float, float)"/>
 	[MethodImpl(INLINE)]
 	public static float LerpAngleUnclamped (float a, float b, float t) {
-		float delta = Repeat((b - a), 360);
+		float delta = Repeat(b - a, 360);
 		if (delta > 180)
 			delta -= 360;
 		return a + delta * t;

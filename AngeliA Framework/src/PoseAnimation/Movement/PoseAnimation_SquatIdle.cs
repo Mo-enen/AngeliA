@@ -85,5 +85,9 @@ public class PoseAnimation_SquatIdle : PoseAnimation {
 		HandL.X -= halfEase;
 		HandR.X += halfEase;
 
+		// Final
+		Rendering.HandGrabRotationL.Override(FacingRight ? 80 : -100);
+		Rendering.HandGrabRotationR.Override(FacingRight ? 100 : -80);
+
 	}
 }

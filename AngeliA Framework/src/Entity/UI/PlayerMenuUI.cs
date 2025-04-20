@@ -1107,7 +1107,14 @@ public class PlayerMenuUI : EntityUI {
 
 		// Item Frame
 		if (equipAvailable) {
-			Renderer.DrawSlice(ITEM_FRAME_CODE, itemRect, enableTint, int.MinValue + 2);
+			int frameBorder = Unify(1);
+			Renderer.DrawSlice(
+				ITEM_FRAME_CODE,
+				itemRect.x,
+				itemRect.y, 0, 0, 0, itemRect.width, itemRect.height,
+				frameBorder, frameBorder, frameBorder, frameBorder,
+				Const.SliceIgnoreCenter, enableTint, int.MinValue + 2
+			);
 		}
 
 		// Icon

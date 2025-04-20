@@ -68,8 +68,8 @@ public class PoseAnimation_SquatMove : PoseAnimation {
 		FootR.Y = FootR.Height - above;
 
 		// Final
-		Rendering.HandGrabRotationL.Override( FacingSign * 100);
-		Rendering.HandGrabRotationR.Override( FacingSign * 100);
+		Rendering.HandGrabRotationL.Override(FacingRight ? 80 : -100);
+		Rendering.HandGrabRotationR.Override(FacingRight ? 100 : -80);
 
 	}
 }

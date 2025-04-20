@@ -81,15 +81,26 @@ public static class DebugTool {
 
 	[OnGameUpdateLater]
 	internal static void OnGameUpdateLater () {
+
+		if (Game.IsToolApplication) return;
+
 		UpdateDebugDragging();
 		UpdateDebugHotkey();
 		UpdateZoom();
 		PlayerPoseAnimation();
+
 	}
 
 
-	[CheatCode("Zoom20")] internal static void ZoomCheatCode10 () => Zooming = 20;
-	[CheatCode("Zoom50")] internal static void ZoomCheatCode50 () => Zooming = 15;
+	[CheatCode("Zoom10")] internal static void ZoomCheatCode10 () => Zooming = 10;
+	[CheatCode("Zoom20")] internal static void ZoomCheatCode20 () => Zooming = 20;
+	[CheatCode("Zoom30")] internal static void ZoomCheatCode30 () => Zooming = 30;
+	[CheatCode("Zoom40")] internal static void ZoomCheatCode40 () => Zooming = 40;
+	[CheatCode("Zoom50")] internal static void ZoomCheatCode50 () => Zooming = 50;
+	[CheatCode("Zoom60")] internal static void ZoomCheatCode60 () => Zooming = 60;
+	[CheatCode("Zoom70")] internal static void ZoomCheatCode70 () => Zooming = 70;
+	[CheatCode("Zoom80")] internal static void ZoomCheatCode80 () => Zooming = 80;
+	[CheatCode("Zoom90")] internal static void ZoomCheatCode90 () => Zooming = 90;
 	[CheatCode("Zoom100")]
 	internal static void ZoomCheatCode100 () {
 		Zooming = -1;

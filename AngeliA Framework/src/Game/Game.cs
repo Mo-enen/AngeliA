@@ -250,10 +250,10 @@ public abstract partial class Game {
 
 			// Update Callbacks
 			if (IsPlaying) {
-				OnGameUpdate?.Invoke();
-				OnGameUpdateLater?.Invoke();
+				OnGameUpdate?.InvokeSafe();
+				OnGameUpdateLater?.InvokeSafe();
 			}
-			OnGameUpdatePauseless?.Invoke();
+			OnGameUpdatePauseless?.InvokeSafe();
 
 			// Switch Between Play and Pause
 			if (Universe.BuiltInInfo.AllowPause) {

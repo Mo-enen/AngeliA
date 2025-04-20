@@ -21,12 +21,10 @@ public class PoseHandheld_EachHand : HandheldPoseAnimation {
 		) return;
 
 		bool attacking = renderer.TargetCharacter.Attackness.IsAttacking;
-		bool squatting = renderer.TargetCharacter.Movement.IsSquatting;
 		int grabScaleL = renderer.HandGrabScaleL;
 		int grabScaleR = renderer.HandGrabScaleR;
-		bool facingR = renderer.TargetCharacter.FacingRight;
-		int grabRotL = squatting ? (facingR ? 80 : -100) : renderer.HandGrabRotationL;
-		int grabRotR = squatting ? (facingR ? 100 : -80) : renderer.HandGrabRotationR;
+		int grabRotL = renderer.HandGrabRotationL;
+		int grabRotR = renderer.HandGrabRotationR;
 		int twistL = attacking && !tool.IgnoreGrabTwist ? renderer.HandGrabAttackTwistL : 1000;
 		int twistR = attacking && !tool.IgnoreGrabTwist ? renderer.HandGrabAttackTwistR : 1000;
 		int zLeft = renderer.HandL.Z - 1;
