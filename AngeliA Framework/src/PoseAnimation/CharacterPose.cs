@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
+using System.Text.Json.Serialization;
 
 namespace AngeliA;
 
@@ -9,25 +10,26 @@ namespace AngeliA;
 public class CharacterPose {
 
 	// Api
-	private readonly BodyPart[] BodyParts = new BodyPart[BodyPart.BODY_PART_COUNT];
+	[JsonIgnore]
+	private readonly BodyPartTransform[] BodyParts = new BodyPartTransform[BodyPart.BODY_PART_COUNT];
 
-	public BodyPart Head { get; init; } = null;
-	public BodyPart Body { get; init; } = null;
-	public BodyPart Hip { get; init; } = null;
-	public BodyPart ShoulderL { get; init; } = null;
-	public BodyPart ShoulderR { get; init; } = null;
-	public BodyPart UpperArmL { get; init; } = null;
-	public BodyPart UpperArmR { get; init; } = null;
-	public BodyPart LowerArmL { get; init; } = null;
-	public BodyPart LowerArmR { get; init; } = null;
-	public BodyPart HandL { get; init; } = null;
-	public BodyPart HandR { get; init; } = null;
-	public BodyPart UpperLegL { get; init; } = null;
-	public BodyPart UpperLegR { get; init; } = null;
-	public BodyPart LowerLegL { get; init; } = null;
-	public BodyPart LowerLegR { get; init; } = null;
-	public BodyPart FootL { get; init; } = null;
-	public BodyPart FootR { get; init; } = null;
+	public BodyPartTransform Head { get; init; } = null;
+	public BodyPartTransform Body { get; init; } = null;
+	public BodyPartTransform Hip { get; init; } = null;
+	public BodyPartTransform ShoulderL { get; init; } = null;
+	public BodyPartTransform ShoulderR { get; init; } = null;
+	public BodyPartTransform UpperArmL { get; init; } = null;
+	public BodyPartTransform UpperArmR { get; init; } = null;
+	public BodyPartTransform LowerArmL { get; init; } = null;
+	public BodyPartTransform LowerArmR { get; init; } = null;
+	public BodyPartTransform HandL { get; init; } = null;
+	public BodyPartTransform HandR { get; init; } = null;
+	public BodyPartTransform UpperLegL { get; init; } = null;
+	public BodyPartTransform UpperLegR { get; init; } = null;
+	public BodyPartTransform LowerLegL { get; init; } = null;
+	public BodyPartTransform LowerLegR { get; init; } = null;
+	public BodyPartTransform FootL { get; init; } = null;
+	public BodyPartTransform FootR { get; init; } = null;
 
 	public int PoseRootX;
 	public int PoseRootY;
@@ -43,13 +45,7 @@ public class CharacterPose {
 	// API
 	public CharacterPose () {
 		for (int i = 0; i < BodyParts.Length; i++) {
-			BodyParts[i] = new BodyPart(
-				parent: (i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null,
-				useLimbFlip: i == 9 || i == 10 || i == 15 || i == 16,
-				rotateWithBody: i != 2 && i != 1 && i < 11,
-				defaultPivotX: BodyPart.BODY_DEF_PIVOT[i].x,
-				defaultPivotY: BodyPart.BODY_DEF_PIVOT[i].y
-			);
+			BodyParts[i] = new BodyPartTransform();
 		}
 		Head = BodyParts[0];
 		Body = BodyParts[1];
@@ -68,6 +64,10 @@ public class CharacterPose {
 		LowerLegR = BodyParts[14];
 		FootL = BodyParts[15];
 		FootR = BodyParts[16];
+	}
+
+	public CharacterPose (PoseCharacterRenderer source) : this() {
+		RecordFromCharacter(source);
 	}
 
 	/// <summary>
@@ -90,7 +90,7 @@ public class CharacterPose {
 			pose.Tint = record.Tint;
 		}
 		rendering.PoseRootX = PoseRootX;
-		rendering.PoseRootY = PoseRootY;
+		rendering.PoseRootY = rendering.BasicRootY + PoseRootY;
 		rendering.BodyTwist = BodyTwist;
 		rendering.HeadTwist = HeadTwist;
 		rendering.HandGrabRotationL.Override(HandGrabRotationL);
@@ -121,7 +121,7 @@ public class CharacterPose {
 			record.Tint = pose.Tint;
 		}
 		PoseRootX = rendering.PoseRootX;
-		PoseRootY = rendering.PoseRootY;
+		PoseRootY = rendering.PoseRootY - rendering.BasicRootY;
 		BodyTwist = rendering.BodyTwist;
 		HeadTwist = rendering.HeadTwist;
 		HandGrabRotationL = rendering.HandGrabRotationL;
@@ -135,9 +135,9 @@ public class CharacterPose {
 	/// <summary>
 	/// Make the character perform this pose with weight
 	/// </summary>
+	/// <param name="rendering">Target character</param>
+	/// <param name="blend01">1 means this apply pose. 0 means apply character's current pose.</param>
 	public void BlendToCharacter (PoseCharacterRenderer rendering, float blend01) {
-
-		blend01 = 1f - blend01;
 
 		for (int i = 0; i < BodyParts.Length; i++) {
 			var record = BodyParts[i];
@@ -174,7 +174,7 @@ public class CharacterPose {
 		);
 
 		rendering.PoseRootX = (int)Util.LerpUnclamped(rendering.PoseRootX, PoseRootX, blend01);
-		rendering.PoseRootY = (int)Util.LerpUnclamped(rendering.PoseRootY, PoseRootY, blend01);
+		rendering.PoseRootY = (int)Util.LerpUnclamped(rendering.PoseRootY, rendering.BasicRootY + PoseRootY, blend01);
 		rendering.BodyTwist = (int)Util.LerpUnclamped(rendering.BodyTwist, BodyTwist, blend01);
 		rendering.HeadTwist = (int)Util.LerpUnclamped(rendering.HeadTwist, HeadTwist, blend01);
 

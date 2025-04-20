@@ -413,7 +413,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 		for (int i = 0; i < EquipmentTypeCount; i++) {
 			var eqType = (EquipmentType)i;
 			using var _ = new RotateCellScope(
-				eqType == EquipmentType.HandTool ? Body.Rotation : 0, 
+				eqType == EquipmentType.HandTool ? Body.Rotation : 0,
 				Body.GlobalX, Body.GlobalY,
 				keepOriginalRotation: false
 			);
@@ -468,7 +468,7 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			bodypart.SetPivotToDefault();
 			if (!motionOnly) {
 				bodypart.Tint = Color32.WHITE;
-				bodypart.Covered = BodyPart.CoverMode.None;
+				bodypart.Covered = CoverMode.None;
 			}
 		}
 
@@ -720,8 +720,8 @@ public class PoseCharacterRenderer : CharacterRenderer {
 			if (bodyPart.ID == 0 || bodyPart.IsFullCovered) continue;
 
 			using var _ = new RotateCellScope(
-				bodyPart.RotateWithBody ? Body.Rotation : 0, 
-				Body.GlobalX, 
+				bodyPart.RotateWithBody ? Body.Rotation : 0,
+				Body.GlobalX,
 				Body.GlobalY
 			);
 

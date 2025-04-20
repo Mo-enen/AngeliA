@@ -385,7 +385,7 @@ public static class Stage {
 			}
 			AntiSpawnRect = new IRect(int.MinValue + 1, 0, 0, 0);
 			ViewZ = newZ;
-			OnViewZChanged?.Invoke();
+			OnViewZChanged?.InvokeAsEvent();
 		}
 
 	}
@@ -413,7 +413,7 @@ public static class Stage {
 		}
 
 		// First (Fill Physics)
-		BeforeFirstUpdate?.Invoke();
+		BeforeFirstUpdate?.InvokeAsEvent();
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var span = new ReadOnlySpan<Entity>(Entities[layer]);
 			int count = EntityCounts[layer].Clamp(0, span.Length);
@@ -425,7 +425,7 @@ public static class Stage {
 		}
 
 		// Before
-		BeforeBeforeUpdate?.Invoke();
+		BeforeBeforeUpdate?.InvokeAsEvent();
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var span = new ReadOnlySpan<Entity>(Entities[layer]);
 			int count = EntityCounts[layer].Clamp(0, span.Length);
@@ -440,7 +440,7 @@ public static class Stage {
 		}
 
 		// Update
-		BeforeUpdateUpdate?.Invoke();
+		BeforeUpdateUpdate?.InvokeAsEvent();
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var span = new ReadOnlySpan<Entity>(Entities[layer]);
 			int count = EntityCounts[layer].Clamp(0, span.Length);
@@ -455,7 +455,7 @@ public static class Stage {
 		}
 
 		// Late
-		BeforeLateUpdate?.Invoke();
+		BeforeLateUpdate?.InvokeAsEvent();
 		var expandedCameraRect = Renderer.CameraRect.Expand(GetCameraCullingPadding());
 		for (int layer = startLayer; layer < endLayer; layer++) {
 			var span = new ReadOnlySpan<Entity>(Entities[layer]);
@@ -472,7 +472,7 @@ public static class Stage {
 			}
 			AfterLayerFrameUpdate?.Invoke(layer);
 		}
-		AfterLateUpdate?.Invoke();
+		AfterLateUpdate?.InvokeAsEvent();
 
 		// Final
 		AntiSpawnRect = ViewRect.Expand(Const.ANTI_SPAWN_PADDING);

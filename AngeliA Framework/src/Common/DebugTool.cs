@@ -9,11 +9,22 @@ namespace AngeliA;
 public static class DebugTool {
 
 
+	// Api
+	/// <summary>
+	/// True if allow user use middle mouse button to move player for debug. This feature is not include after the game publish.
+	/// </summary>
+	public static readonly FrameBasedBool DragPlayerInMiddleButtonToMove = new(true);
+	/// <summary>
+	/// True if use hotkeys to debug. eg. Ctrl+Alt+I to make player invincible
+	/// </summary>
+	public static readonly FrameBasedBool UseDebugHotkey = new(true);
+
+
+#if DEBUG
+
 	// SUB
 	private class TestPoseAnimation : PoseAnimation {
-
 		public static readonly int TYPE_ID = typeof(TestPoseAnimation).AngeHash();
-
 		public override void Animate (PoseCharacterRenderer renderer) {
 			base.Animate(renderer);
 
@@ -21,6 +32,8 @@ public static class DebugTool {
 			QTest.SetCurrentWindow(0, "Main");
 
 			Movement.FacingRight = QTest.Bool("FacingRight", true);
+			renderer.PoseRootX += QTest.Int("Root X", 0, -256, 256);
+			renderer.PoseRootY += QTest.Int("Root Y", 0, -256, 256);
 
 			Head.Rotation = QTest.Int("Head", 0, -90, 90);
 			Body.Rotation = QTest.Int("Body", 0, -90, 90);
@@ -53,26 +66,16 @@ public static class DebugTool {
 			FootR.LimbRotate(QTest.Int("Foot R", 0, -180, 180));
 
 		}
-
 	}
 
 
 	// VAR
-	/// <summary>
-	/// True if allow user use middle mouse button to move player for debug. This feature is not include after the game publish.
-	/// </summary>
-	public static readonly FrameBasedBool DragPlayerInMiddleButtonToMove = new(true);
-	/// <summary>
-	/// True if use hotkeys to debug. eg. Ctrl+Alt+I to make player invincible
-	/// </summary>
-	public static readonly FrameBasedBool UseDebugHotkey = new(true);
 	private static int Zooming = -1;
 	private static bool EditPlayerAnimation = false;
 	private static int TargetMinViewHeight;
 
 
 	// MSG
-#if DEBUG
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
 		TargetMinViewHeight = Universe.BuiltInInfo.MinViewHeight;
@@ -195,10 +198,7 @@ public static class DebugTool {
 
 	private static void UpdateZoom () {
 
-		if (Zooming < 0) {
-
-			return;
-		}
+		if (Zooming < 0) return;
 
 		PlayerSystem.TargetViewHeight.Override(
 			Universe.BuiltInInfo.DefaultViewHeight * Zooming / 100,
@@ -225,10 +225,11 @@ public static class DebugTool {
 			return;
 		}
 
+		DragPlayerInMiddleButtonToMove.False(1, 9000);
 		rendering.ManualPoseAnimate(TestPoseAnimation.TYPE_ID, 1);
 
 	}
+
+
 #endif
-
-
 }

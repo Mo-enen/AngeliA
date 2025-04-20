@@ -13,7 +13,11 @@ public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 
 
 	// Data
+	private static readonly Dictionary<Delegate, Delegate[]> ActionDelegatePool = [];
 	private static List<(MethodInfo method, EventAttribute att)> MethodCache = null;
+	private static readonly object[] ParamCache1 = [null];
+	private static readonly object[] ParamCache2 = [null, null];
+	private static readonly object[] ParamCache3 = [null, null, null];
 
 
 	// MSG
@@ -33,6 +37,46 @@ public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 	internal static void ClearAllMethodCache () => MethodCache = null;
 
 
+	internal static void InvokeActionFromDelegatePool (Action action) {
+		if (!ActionDelegatePool.TryGetValue(action, out var list) || list == null || list.Length == 0) return;
+		foreach (var del in list) {
+			try {
+				del.Method.Invoke(null, null);
+			} catch (Exception ex) { Debug.LogException(ex); }
+		}
+	}
+	internal static void InvokeActionFromDelegatePool<T> (Action<T> action, T param) {
+		if (!ActionDelegatePool.TryGetValue(action, out var list) || list == null || list.Length == 0) return;
+		foreach (var del in list) {
+			try {
+				ParamCache1[0] = param;
+				del.Method.Invoke(null, ParamCache1);
+			} catch (Exception ex) { Debug.LogException(ex); }
+		}
+	}
+	internal static void InvokeActionFromDelegatePool<T0, T1> (Action<T0, T1> action, T0 param0, T1 param1) {
+		if (!ActionDelegatePool.TryGetValue(action, out var list) || list == null || list.Length == 0) return;
+		foreach (var del in list) {
+			try {
+				ParamCache2[0] = param0;
+				ParamCache2[1] = param1;
+				del.Method.Invoke(null, ParamCache2);
+			} catch (Exception ex) { Debug.LogException(ex); }
+		}
+	}
+	internal static void InvokeActionFromDelegatePool<T0, T1, T2> (Action<T0, T1, T2> action, T0 param0, T1 param1, T2 param2) {
+		if (!ActionDelegatePool.TryGetValue(action, out var list) || list == null || list.Length == 0) return;
+		foreach (var del in list) {
+			try {
+				ParamCache3[0] = param0;
+				ParamCache3[1] = param1;
+				ParamCache3[2] = param2;
+				del.Method.Invoke(null, ParamCache3);
+			} catch (Exception ex) { Debug.LogException(ex); }
+		}
+	}
+
+
 	// LGC
 	private static IEnumerable<(MethodInfo method, EventAttribute att)> ForAllStaticMethodWithEventAttribute () {
 		if (MethodCache == null) {
@@ -50,7 +94,7 @@ public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 
 	private static void LinkEventWithAttribute (Type attributeType, Type sender, FieldInfo actionField) {
 
-		if (!IsAction(actionField.FieldType)) return;
+		if (!Util.IsActionType(actionField.FieldType)) return;
 
 		if (actionField.IsInitOnly) {
 			Debug.LogWarning($"{sender.Name}.{actionField.Name} can not be readonly.");
@@ -73,6 +117,7 @@ public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 						goto _PARAM_ERROR_;
 					}
 				}
+
 				// Add to List
 				var del = Delegate.CreateDelegate(actionField.FieldType, method);
 				if (hostDel == null) {
@@ -90,6 +135,7 @@ public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 
 				_PARAM_ERROR_:;
 #if DEBUG
+				// Check Params
 				var infoMsg = new StringBuilder();
 				var methodMsg = new StringBuilder();
 				for (int i = 0; i < infoParams.Length; i++) {
@@ -115,30 +161,16 @@ public abstract class EventAttribute (int order = 0) : OrderedAttribute(order) {
 				Debug.LogException(ex);
 			}
 		}
-		static bool IsAction (Type type) {
-			if (type == typeof(System.Action)) return true;
-			Type generic = null;
-			if (type.IsGenericTypeDefinition) generic = type;
-			else if (type.IsGenericType) generic = type.GetGenericTypeDefinition();
-			if (generic == null) return false;
-			if (generic == typeof(System.Action<>)) return true;
-			if (generic == typeof(System.Action<,>)) return true;
-			if (generic == typeof(System.Action<,,>)) return true;
-			if (generic == typeof(System.Action<,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,,,,,>)) return true;
-			if (generic == typeof(System.Action<,,,,,,,,,,,,,,,>)) return true;
-			return false;
+
+		// Add Action to Pool
+		if (actionField.GetValue(null) is Delegate action) {
+			if (Util.IsActionType(action.GetType())) {
+				ActionDelegatePool.TryAdd(action, action.GetInvocationList());
+			} else {
+				Debug.LogError($"{actionField.DeclaringType.Name}.{actionField.Name} should have action value.");
+			}
 		}
+
 	}
 
 

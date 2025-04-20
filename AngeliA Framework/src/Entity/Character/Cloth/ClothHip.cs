@@ -165,7 +165,7 @@ public abstract class HipCloth : Cloth {
 
 		// Limb
 		hip.Covered = sprite.Tag.HasAll(Tag.HideLimb) ?
-			 BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
+			 CoverMode.FullCovered : CoverMode.Covered;
 
 		// Draw
 		Renderer.Draw(sprite, rect, hip.Z + localZ);
@@ -236,7 +236,7 @@ public abstract class HipCloth : Cloth {
 		}
 		if (body.Height < 0) offsetY = -offsetY;
 
-		int rot = body.Rotation ;
+		int rot = body.Rotation;
 
 		if (group != null) {
 			// Dress Group
@@ -296,7 +296,7 @@ public abstract class HipCloth : Cloth {
 		}
 
 		// Limb
-		hip.Covered = sprite.Tag.HasAll(Tag.HideLimb) ? BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
+		hip.Covered = sprite.Tag.HasAll(Tag.HideLimb) ? CoverMode.FullCovered : CoverMode.Covered;
 
 	}
 

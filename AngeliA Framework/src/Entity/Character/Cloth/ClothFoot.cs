@@ -82,7 +82,7 @@ public abstract class FootCloth : Cloth {
 			}
 
 			foot.Covered = !sprite.Tag.HasAll(Tag.ShowLimb) ?
-				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
+				CoverMode.FullCovered : CoverMode.Covered;
 
 		}
 	}

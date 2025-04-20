@@ -224,7 +224,7 @@ public abstract class PoseAnimation {
 		}
 
 		// Blend with Recorded A
-		BlendRecordAni.BlendToCharacter(Rendering, blend01);
+		BlendRecordAni.BlendToCharacter(Rendering, 1f - blend01);
 
 	}
 

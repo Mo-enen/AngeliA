@@ -210,7 +210,7 @@ public abstract class BodyCloth : Cloth {
 		}
 
 		// Hide Limb
-		body.Covered = suitSprite.Tag.HasAll(Tag.HideLimb) ? BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
+		body.Covered = suitSprite.Tag.HasAll(Tag.HideLimb) ? CoverMode.FullCovered : CoverMode.Covered;
 
 	}
 

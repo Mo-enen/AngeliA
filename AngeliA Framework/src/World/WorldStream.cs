@@ -133,7 +133,7 @@ public sealed class WorldStream : IBlockSquad {
 				string path = PathPool.GetOrAddPath(pos);
 				data.World.SaveToDisk(path);
 				data.SavedVersion = data.Version;
-				OnWorldSaved?.InvokeSafe(this, data.World);
+				OnWorldSaved?.InvokeAsEvent(this, data.World);
 			}
 		}
 	}
@@ -345,7 +345,7 @@ public sealed class WorldStream : IBlockSquad {
 
 			// Check if Loaded
 			if (loaded) {
-				OnWorldLoaded?.InvokeSafe(this, worldData.World);
+				OnWorldLoaded?.InvokeAsEvent(this, worldData.World);
 			} else {
 				worldData.World = null;
 			}
@@ -396,12 +396,12 @@ public sealed class WorldStream : IBlockSquad {
 
 			// Final
 			if (!loaded) {
-				OnWorldCreated?.InvokeSafe(this, newWorld);
+				OnWorldCreated?.InvokeAsEvent(this, newWorld);
 				Version++;
 				data.Version++;
 				WorldPool[worldPos] = data;
 			}
-			OnWorldLoaded?.InvokeSafe(this, newWorld);
+			OnWorldLoaded?.InvokeAsEvent(this, newWorld);
 
 			return data;
 		}

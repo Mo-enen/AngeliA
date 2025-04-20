@@ -84,7 +84,7 @@ public abstract class HeadCloth : Cloth {
 		}
 		if (hideHead) {
 			renderer.HairID.Override(0, 1, 4096);
-			renderer.Head.Covered = BodyPart.CoverMode.FullCovered;
+			renderer.Head.Covered = CoverMode.FullCovered;
 		}
 
 	}

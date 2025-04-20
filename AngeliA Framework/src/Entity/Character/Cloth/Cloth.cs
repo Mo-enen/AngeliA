@@ -238,10 +238,10 @@ public abstract class Cloth {
 		}
 		if (defaultHideLimb) {
 			bodyPart.Covered = !sprite.Tag.HasAll(Tag.ShowLimb) ?
-				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
+				CoverMode.FullCovered : CoverMode.Covered;
 		} else {
 			bodyPart.Covered = sprite.Tag.HasAll(Tag.HideLimb) ?
-				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
+				CoverMode.FullCovered : CoverMode.Covered;
 		}
 		return result;
 	}
@@ -279,10 +279,10 @@ public abstract class Cloth {
 		}
 		if (defaultHideLimb) {
 			bodyPart.Covered = !sprite.Tag.HasAll(Tag.ShowLimb) ?
-				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
+				CoverMode.FullCovered : CoverMode.Covered;
 		} else {
 			bodyPart.Covered = sprite.Tag.HasAll(Tag.HideLimb) ?
-				BodyPart.CoverMode.FullCovered : BodyPart.CoverMode.Covered;
+				CoverMode.FullCovered : CoverMode.Covered;
 		}
 		return result;
 	}

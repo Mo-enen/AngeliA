@@ -250,10 +250,10 @@ public abstract partial class Game {
 
 			// Update Callbacks
 			if (IsPlaying) {
-				OnGameUpdate?.InvokeSafe();
-				OnGameUpdateLater?.InvokeSafe();
+				OnGameUpdate?.InvokeAsEvent();
+				OnGameUpdateLater?.InvokeAsEvent();
 			}
-			OnGameUpdatePauseless?.InvokeSafe();
+			OnGameUpdatePauseless?.InvokeAsEvent();
 
 			// Switch Between Play and Pause
 			if (Universe.BuiltInInfo.AllowPause) {
@@ -358,7 +358,7 @@ public abstract partial class Game {
 		if (ScreenWidth != newScreenW || ScreenHeight != newScreenH) {
 			ScreenWidth = newScreenW;
 			ScreenHeight = newScreenH;
-			OnWindowSizeChanged?.Invoke();
+			OnWindowSizeChanged?.InvokeAsEvent();
 		}
 		MonitorWidth = Instance._GetMonitorWidth(monitor);
 		MonitorHeight = Instance._GetMonitorHeight(monitor);
@@ -376,7 +376,7 @@ public abstract partial class Game {
 	/// <summary>
 	/// Invoke the OnGameRestart event. The game-play logic will be reset after this is called
 	/// </summary>
-	public static void RestartGame () => OnGameRestart?.Invoke();
+	public static void RestartGame () => OnGameRestart?.InvokeAsEvent();
 
 	/// <summary>
 	/// Continue game from pausing
@@ -590,7 +590,7 @@ public abstract partial class Game {
 		}
 		ClearAndUnloadAudioPool();
 		UnloadFontsFromPool(ignoreBuiltIn: false);
-		OnGameQuitting?.InvokeSafe();
+		OnGameQuitting?.InvokeAsEvent();
 	}
 
 	/// <summary>
@@ -613,7 +613,7 @@ public abstract partial class Game {
 	/// <summary>
 	/// Invoke OnGameFocus/OnGameLostFocus event
 	/// </summary>
-	protected void InvokeWindowFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.Invoke();
+	protected void InvokeWindowFocusChanged (bool focus) => (focus ? OnGameFocused : OnGameLostFocus)?.InvokeAsEvent();
 
 	/// <summary>
 	/// Invoke OnFileDropped event

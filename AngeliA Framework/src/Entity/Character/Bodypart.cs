@@ -1,8 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 
 namespace AngeliA;
+
+
+/// <summary>
+/// How cloths is covering the bodypart
+/// </summary>
+public enum CoverMode { None, Covered, FullCovered }
+
+
+public class BodyPartTransform {
+	/// <summary>
+	/// Position X in local space
+	/// </summary>
+	public int X;
+	/// <summary>
+	/// Position Y in local space
+	/// </summary>
+	public int Y;
+	/// <summary>
+	/// Z value for sort rendering cells
+	/// </summary>
+	public int Z;
+	/// <summary>
+	/// Angle of this bodypart
+	/// </summary>
+	public int Rotation;
+	/// <summary>
+	/// Horizontal size of this bodypart
+	/// </summary>
+	public int Width;
+	/// <summary>
+	/// Vertical size of this bodypart
+	/// </summary>
+	public int Height;
+	/// <summary>
+	/// Current pivot X of this bodypart (0 means left, 1000 means right)
+	/// </summary>
+	public int PivotX;
+	/// <summary>
+	/// Current pivot Y of this bodypart (0 means bottom, 1000 means top)
+	/// </summary>
+	public int PivotY;
+	/// <summary>
+	/// True if the bodypart is facing front
+	/// </summary>
+	public bool FrontSide;
+	/// <summary>
+	/// How this bodypart is being covered by cloths
+	/// </summary>
+	public CoverMode Covered;
+	/// <summary>
+	/// Color tint
+	/// </summary>
+	public Color32 Tint;
+}
+
 
 /// <summary>
 /// Representation of a bodypart for a pose-style character
@@ -25,12 +81,6 @@ public class BodyPart {
 		false,false,true,true,true,true,true,true,
 		true,true,true,true,true,true,
 	];
-
-	// SUB
-	/// <summary>
-	/// How cloths is covering the bodypart
-	/// </summary>
-	public enum CoverMode { None, Covered, FullCovered }
 
 	// Api
 	/// <summary>
@@ -76,16 +126,15 @@ public class BodyPart {
 	/// <summary>
 	/// True if this bodypart is totaly covered by cloth
 	/// </summary>
-	public bool IsFullCovered => Covered == CoverMode.FullCovered;
+	public bool IsFullCovered => Transform.Covered == CoverMode.FullCovered;
 	/// <summary>
 	/// Return 1 if this bodypart is facing right
 	/// </summary>
-	public int FacingSign => Width.Sign();
+	public int FacingSign => Transform.Width.Sign();
 	/// <summary>
 	/// True if this bodypart is facing right
 	/// </summary>
-	public bool FacingRight => Width > 0;
-
+	public bool FacingRight => Transform.Width > 0;
 	/// <summary>
 	/// Position X in global space
 	/// </summary>
@@ -94,51 +143,53 @@ public class BodyPart {
 	/// Position Y in global space
 	/// </summary>
 	public int GlobalY;
+
 	/// <summary>
 	/// Position X in local space
 	/// </summary>
-	public int X;
+	public int X { get => Transform.X; set => Transform.X = value; }
 	/// <summary>
 	/// Position Y in local space
 	/// </summary>
-	public int Y;
+	public int Y { get => Transform.Y; set => Transform.Y = value; }
 	/// <summary>
 	/// Z value for sort rendering cells
 	/// </summary>
-	public int Z;
+	public int Z { get => Transform.Z; set => Transform.Z = value; }
 	/// <summary>
 	/// Angle of this bodypart
 	/// </summary>
-	public int Rotation;
+	public int Rotation { get => Transform.Rotation; set => Transform.Rotation = value; }
 	/// <summary>
 	/// Horizontal size of this bodypart
 	/// </summary>
-	public int Width;
+	public int Width { get => Transform.Width; set => Transform.Width = value; }
 	/// <summary>
 	/// Vertical size of this bodypart
 	/// </summary>
-	public int Height;
+	public int Height { get => Transform.Height; set => Transform.Height = value; }
 	/// <summary>
 	/// Current pivot X of this bodypart (0 means left, 1000 means right)
 	/// </summary>
-	public int PivotX;
+	public int PivotX { get => Transform.PivotX; set => Transform.PivotX = value; }
 	/// <summary>
 	/// Current pivot Y of this bodypart (0 means bottom, 1000 means top)
 	/// </summary>
-	public int PivotY;
+	public int PivotY { get => Transform.PivotY; set => Transform.PivotY = value; }
 	/// <summary>
 	/// True if the bodypart is facing front
 	/// </summary>
-	public bool FrontSide;
+	public bool FrontSide { get => Transform.FrontSide; set => Transform.FrontSide = value; }
 	/// <summary>
 	/// How this bodypart is being covered by cloths
 	/// </summary>
-	public CoverMode Covered;
+	public CoverMode Covered { get => Transform.Covered; set => Transform.Covered = value; }
 	/// <summary>
 	/// Color tint
 	/// </summary>
-	public Color32 Tint;
+	public Color32 Tint { get => Transform.Tint; set => Transform.Tint = value; }
 
+	public readonly BodyPartTransform Transform = new();
 	private readonly int DefaultPivotX;
 	private readonly int DefaultPivotY;
 
@@ -294,13 +345,13 @@ public class BodyPart {
 	public void LimbRotate (int rotation, int grow = 1000) {
 		if (LimbParent != null) {
 			FrameworkUtil.LimbRotate(
-				ref X, ref Y, ref PivotX, ref PivotY, ref Rotation, ref Width, ref Height,
+				ref Transform.X, ref Transform.Y, ref Transform.PivotX, ref Transform.PivotY, ref Transform.Rotation, ref Transform.Width, ref Transform.Height,
 				LimbParent.X, LimbParent.Y, LimbParent.Rotation, LimbParent.Width, LimbParent.Height,
 				rotation, UseLimbFlip, grow
 			);
 		} else {
 			FrameworkUtil.LimbRotate(
-				ref X, ref Y, ref PivotX, ref PivotY, ref Rotation, ref Width, ref Height,
+				ref Transform.X, ref Transform.Y, ref Transform.PivotX, ref Transform.PivotY, ref Transform.Rotation, ref Transform.Width, ref Transform.Height,
 				rotation, UseLimbFlip, grow
 			);
 		}

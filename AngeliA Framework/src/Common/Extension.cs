@@ -1426,24 +1426,24 @@ public static class Extension {
 	}
 
 	// Action
-	public static void InvokeSafe (this System.Action action) {
+	public static void InvokeAsEvent (this System.Action action) {
 		try {
-			action.Invoke();
+			EventAttribute.InvokeActionFromDelegatePool(action);
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 	}
-	public static void InvokeSafe<T0> (this System.Action<T0> action, T0 a) {
+	public static void InvokeAsEvent<T0> (this System.Action<T0> action, T0 a) {
 		try {
-			action.Invoke(a);
+			EventAttribute.InvokeActionFromDelegatePool(action, a);
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 	}
-	public static void InvokeSafe<T0, T1> (this System.Action<T0, T1> action, T0 a, T1 b) {
+	public static void InvokeAsEvent<T0, T1> (this System.Action<T0, T1> action, T0 a, T1 b) {
 		try {
-			action.Invoke(a, b);
+			EventAttribute.InvokeActionFromDelegatePool(action, a, b);
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 	}
-	public static void InvokeSafe<T0, T1, T2> (this System.Action<T0, T1, T2> action, T0 a, T1 b, T2 c) {
+	public static void InvokeAsEvent<T0, T1, T2> (this System.Action<T0, T1, T2> action, T0 a, T1 b, T2 c) {
 		try {
-			action.Invoke(a, b, c);
+			EventAttribute.InvokeActionFromDelegatePool(action, a, b, c);
 		} catch (System.Exception ex) { Debug.LogException(ex); }
 	}
 

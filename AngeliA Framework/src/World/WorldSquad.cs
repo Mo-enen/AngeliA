@@ -269,7 +269,7 @@ public sealed class WorldSquad : IBlockSquad {
 
 		// BG-Level
 		if (!isBehind) {
-			BeforeLevelRendered?.Invoke();
+			BeforeLevelRendered?.InvokeAsEvent();
 		}
 		int worldL = unitRect_Level.xMin.UDivide(Const.MAP);
 		int worldR = unitRect_Level.xMax.CeilDivide(Const.MAP);
@@ -324,7 +324,7 @@ public sealed class WorldSquad : IBlockSquad {
 			}
 		}
 		if (!isBehind) {
-			AfterLevelRendered?.Invoke();
+			AfterLevelRendered?.InvokeAsEvent();
 		}
 
 		// Entity-Element

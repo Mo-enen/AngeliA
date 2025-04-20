@@ -362,7 +362,7 @@ public static class Renderer {
 		MainSheet.CombineAllSheetInFolder(Universe.BuiltIn.SheetRoot, false, gameSheetName);
 
 		// Event
-		OnMainSheetLoaded?.Invoke();
+		OnMainSheetLoaded?.InvokeAsEvent();
 	}
 
 

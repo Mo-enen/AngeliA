@@ -110,7 +110,7 @@ public static class Language {
 			Pool.TryAdd(key.AngeHash(), value);
 		}
 		_LoadedLanguage.Value = language;
-		OnLanguageChanged?.Invoke();
+		OnLanguageChanged?.InvokeAsEvent();
 		return true;
 	}
 

@@ -266,7 +266,7 @@ public class QTest {
 
 		using var _ = new UILayerScope();
 		var cameraRect = Renderer.CameraRect;
-		int basicPanelWidth = cameraRect.width / (validWindowCount + 1);
+		int basicPanelWidth = cameraRect.width / (validWindowCount + 1).LessOrEquel(5);
 		if (PanelPositionOffset.x == int.MinValue) {
 			PanelPositionOffset.x = 1024 + windowIndex * basicPanelWidth;
 			PanelPositionOffset.y = 1024 + cameraRect.height;
@@ -335,7 +335,7 @@ public class QTest {
 			rect.x = groupNotEmpty ? rectLeft + indent : rectLeft;
 
 			// Update Check
-			if (!ShowNotUpdatedData && kData.UpdateFrame < Game.PauselessFrame - 1) continue;
+			if (!ShowNotUpdatedData && kData.UpdateFrame < Game.PauselessFrame) continue;
 
 			// Group Fold
 			if (group != CurrentGroup) {
@@ -756,7 +756,6 @@ public class QTest {
 
 		using var fs = File.OpenWrite(path);
 		using var wr = new BinaryWriter(fs);
-		string test = "";
 
 		wr.Write((int)0);
 		int validContentCount = 0;
@@ -775,10 +774,8 @@ public class QTest {
 			wr.Write((int)_keys.Count);
 			foreach (var keyData in _keys) {
 				wr.Write((string)keyData.key);
-				//wr.Write((int)keyData.Order);
 				wr.Write((byte)keyData.Type);
 				wr.Write((string)keyData.Group);
-				//wr.Write((int)keyData.GroupOrder);
 			}
 
 			// Bool
@@ -838,7 +835,6 @@ public class QTest {
 		}
 		fs.Seek(0, SeekOrigin.Begin);
 		wr.Write((int)validContentCount);
-		Game.SetClipboardText(test);
 
 	}
 
@@ -1142,7 +1138,7 @@ public class QTest {
 		FuncPool.Clear();
 		Keys.Clear();
 		GroupFolding.Clear();
-		PrevKeyCount = 0;
+		PrevKeyCount = -1;
 	}
 
 
@@ -1447,6 +1443,13 @@ public class QTest {
 			CurrentGroupOrder++;
 		}
 		gData.UpdateFrame = Game.PauselessFrame;
+	}
+
+
+	public static void SortAllKeys () {
+		for (int i = 0; i < MAX_WINDOW_COUNT; i++) {
+			Windows[i].PrevKeyCount = -1;
+		}
 	}
 
 
