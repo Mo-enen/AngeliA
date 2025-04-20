@@ -47,7 +47,6 @@ A 2D game engine focused on open-world platformer games, built with C#.
 ## Documentation
 
 - [Documentation](https://mo-enen.github.io/AngeliA-Document/docs/1-introduction.html) | [中文文档](https://mo-enen.github.io/AngeliA-Document/docsCN/1-introduction.html) | [API Reference](https://mo-enen.github.io/AngeliA-Document/api/AngeliA.html)
-- Documentations are still under construction... 🏗️
 
 
 ## Screenshots
