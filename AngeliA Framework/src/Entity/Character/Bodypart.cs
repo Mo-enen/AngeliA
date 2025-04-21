@@ -30,6 +30,14 @@ public class BodyPartTransform {
 	/// </summary>
 	public int Rotation;
 	/// <summary>
+	/// Artwork sprite Width in global size
+	/// </summary>
+	public int SizeX;
+	/// <summary>
+	/// Artwork sprite Height in global size
+	/// </summary>
+	public int SizeY;
+	/// <summary>
 	/// Horizontal size of this bodypart
 	/// </summary>
 	public int Width;
@@ -49,14 +57,6 @@ public class BodyPartTransform {
 	/// True if the bodypart is facing front
 	/// </summary>
 	public bool FrontSide;
-	/// <summary>
-	/// How this bodypart is being covered by cloths
-	/// </summary>
-	public CoverMode Covered;
-	/// <summary>
-	/// Color tint
-	/// </summary>
-	public Color32 Tint;
 }
 
 
@@ -100,14 +100,6 @@ public class BodyPart {
 	/// </summary>
 	public int SpritePivotY { get; private set; } = 0;
 	/// <summary>
-	/// Artwork sprite Width in global size
-	/// </summary>
-	public int SizeX { get; private set; } = Const.HALF;
-	/// <summary>
-	/// Artwork sprite Height in global size
-	/// </summary>
-	public int SizeY { get; private set; } = Const.HALF;
-	/// <summary>
 	/// Height that changes with character's body height
 	/// </summary>
 	public int FlexableSizeY { get; set; } = Const.HALF;
@@ -126,7 +118,7 @@ public class BodyPart {
 	/// <summary>
 	/// True if this bodypart is totaly covered by cloth
 	/// </summary>
-	public bool IsFullCovered => Transform.Covered == CoverMode.FullCovered;
+	public bool IsFullCovered => Covered == CoverMode.FullCovered;
 	/// <summary>
 	/// Return 1 if this bodypart is facing right
 	/// </summary>
@@ -161,6 +153,14 @@ public class BodyPart {
 	/// </summary>
 	public int Rotation { get => Transform.Rotation; set => Transform.Rotation = value; }
 	/// <summary>
+	/// Artwork sprite Width in global size
+	/// </summary>
+	public int SizeX { get => Transform.SizeX; private set => Transform.SizeX = value; }
+	/// <summary>
+	/// Artwork sprite Height in global size
+	/// </summary>
+	public int SizeY { get => Transform.SizeY; private set => Transform.SizeY = value; }
+	/// <summary>
 	/// Horizontal size of this bodypart
 	/// </summary>
 	public int Width { get => Transform.Width; set => Transform.Width = value; }
@@ -181,13 +181,13 @@ public class BodyPart {
 	/// </summary>
 	public bool FrontSide { get => Transform.FrontSide; set => Transform.FrontSide = value; }
 	/// <summary>
-	/// How this bodypart is being covered by cloths
-	/// </summary>
-	public CoverMode Covered { get => Transform.Covered; set => Transform.Covered = value; }
-	/// <summary>
 	/// Color tint
 	/// </summary>
-	public Color32 Tint { get => Transform.Tint; set => Transform.Tint = value; }
+	public Color32 Tint { get; set; } = Color32.WHITE;
+	/// <summary>
+	/// How this bodypart is being covered by cloths
+	/// </summary>
+	public CoverMode Covered { get; set; } = CoverMode.None;
 
 	public readonly BodyPartTransform Transform = new();
 	private readonly int DefaultPivotX;

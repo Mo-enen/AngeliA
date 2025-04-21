@@ -71,37 +71,6 @@ public class CharacterPose {
 	}
 
 	/// <summary>
-	/// Make the character perform this pose
-	/// </summary>
-	public void ApplyToCharacter (PoseCharacterRenderer rendering) {
-		for (int i = 0; i < BodyParts.Length; i++) {
-			var record = BodyParts[i];
-			var pose = rendering.BodyParts[i];
-			pose.X = record.X;
-			pose.Y = record.Y;
-			pose.Z = record.Z;
-			pose.Rotation = record.Rotation;
-			pose.Width = record.Width;
-			pose.Height = record.Height;
-			pose.PivotX = record.PivotX;
-			pose.PivotY = record.PivotY;
-			pose.FrontSide = record.FrontSide;
-			pose.Covered = record.Covered;
-			pose.Tint = record.Tint;
-		}
-		rendering.PoseRootX = PoseRootX;
-		rendering.PoseRootY = rendering.BasicRootY + PoseRootY;
-		rendering.BodyTwist = BodyTwist;
-		rendering.HeadTwist = HeadTwist;
-		rendering.HandGrabRotationL.Override(HandGrabRotationL);
-		rendering.HandGrabRotationR.Override(HandGrabRotationR);
-		rendering.HandGrabScaleL.Override(HandGrabScaleL);
-		rendering.HandGrabScaleR.Override(HandGrabScaleR);
-		rendering.HandGrabAttackTwistL.Override(HandGrabAttackTwistL);
-		rendering.HandGrabAttackTwistR.Override(HandGrabAttackTwistR);
-	}
-
-	/// <summary>
 	/// Read pose data from the character
 	/// </summary>
 	public void RecordFromCharacter (PoseCharacterRenderer rendering) {
@@ -112,13 +81,13 @@ public class CharacterPose {
 			record.Y = pose.Y;
 			record.Z = pose.Z;
 			record.Rotation = pose.Rotation;
-			record.Width = pose.Width;
-			record.Height = pose.Height;
+			record.SizeX = pose.SizeX * pose.Width.Sign3();
+			record.SizeY = pose.SizeY * pose.Height.Sign3();
+			record.Width = pose.Width.Sign3() * (pose.Width.Abs() - pose.SizeX);
+			record.Height = pose.Height.Sign3() * (pose.Height.Abs() - pose.SizeY);
 			record.PivotX = pose.PivotX;
 			record.PivotY = pose.PivotY;
 			record.FrontSide = pose.FrontSide;
-			record.Covered = pose.Covered;
-			record.Tint = pose.Tint;
 		}
 		PoseRootX = rendering.PoseRootX;
 		PoseRootY = rendering.PoseRootY - rendering.BasicRootY;
@@ -133,6 +102,35 @@ public class CharacterPose {
 	}
 
 	/// <summary>
+	/// Make the character perform this pose
+	/// </summary>
+	public void ApplyToCharacter (PoseCharacterRenderer rendering) {
+		for (int i = 0; i < BodyParts.Length; i++) {
+			var record = BodyParts[i];
+			var pose = rendering.BodyParts[i];
+			pose.X = record.X;
+			pose.Y = record.Y;
+			pose.Z = record.Z;
+			pose.Rotation = record.Rotation;
+			pose.Width = record.Width + record.SizeX.Sign3() * pose.SizeX;
+			pose.Height = record.Height + record.SizeY.Sign3() * pose.SizeY;
+			pose.PivotX = record.PivotX;
+			pose.PivotY = record.PivotY;
+			pose.FrontSide = record.FrontSide;
+		}
+		rendering.PoseRootX = PoseRootX;
+		rendering.PoseRootY = rendering.BasicRootY + PoseRootY;
+		rendering.BodyTwist = BodyTwist;
+		rendering.HeadTwist = HeadTwist;
+		rendering.HandGrabRotationL.Override(HandGrabRotationL);
+		rendering.HandGrabRotationR.Override(HandGrabRotationR);
+		rendering.HandGrabScaleL.Override(HandGrabScaleL);
+		rendering.HandGrabScaleR.Override(HandGrabScaleR);
+		rendering.HandGrabAttackTwistL.Override(HandGrabAttackTwistL);
+		rendering.HandGrabAttackTwistR.Override(HandGrabAttackTwistR);
+	}
+
+	/// <summary>
 	/// Make the character perform this pose with weight
 	/// </summary>
 	/// <param name="rendering">Target character</param>
@@ -143,14 +141,16 @@ public class CharacterPose {
 			var record = BodyParts[i];
 			var pose = rendering.BodyParts[i];
 
-			pose.Width = FixSign(pose.Width, record.Width);
-			pose.Height = FixSign(pose.Height, record.Height);
-
 			pose.Z = Util.LerpUnclamped(pose.Z, record.Z, blend01).RoundToInt();
 			pose.Rotation = Util.LerpAngleUnclamped(pose.Rotation, record.Rotation, blend01).RoundToInt();
-			pose.Width = Util.LerpUnclamped(pose.Width, record.Width, blend01).RoundToInt();
-			pose.Height = Util.LerpUnclamped(pose.Height, record.Height, blend01).RoundToInt();
-			pose.Tint = Color32.Lerp(pose.Tint, record.Tint, blend01);
+
+			int targetW = record.Width + record.SizeX.Sign3() * pose.SizeX;
+			int targetH = record.Height + record.SizeY.Sign3() * pose.SizeY;
+
+			pose.Width = FixSign(pose.Width, targetW);
+			pose.Height = FixSign(pose.Height, targetH);
+			pose.Width = Util.LerpUnclamped(pose.Width, targetW, blend01).RoundToInt();
+			pose.Height = Util.LerpUnclamped(pose.Height, targetH, blend01).RoundToInt();
 
 			pose.PivotX = Util.LerpUnclamped(pose.PivotX, record.PivotX, blend01).RoundToInt();
 			pose.PivotY = Util.LerpUnclamped(pose.PivotY, record.PivotY, blend01).RoundToInt();

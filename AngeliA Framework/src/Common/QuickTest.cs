@@ -24,6 +24,7 @@ public class QTest {
 	private class BoolData {
 		public bool value;
 		public string displayLabel;
+		public string overrideLabel;
 		public KeyData Key;
 	}
 
@@ -35,6 +36,7 @@ public class QTest {
 		public int max;
 		public int step;
 		public string displayLabel;
+		public string overrideLabel;
 		public KeyData Key;
 	}
 
@@ -46,12 +48,14 @@ public class QTest {
 		public float max;
 		public float step;
 		public string displayLabel;
+		public string overrideLabel;
 		public KeyData Key;
 	}
 
 
 	private class StringData {
 		public string value;
+		public string overrideLabel;
 		public KeyData Key;
 	}
 
@@ -367,7 +371,7 @@ public class QTest {
 				case DataType.Bool: {
 					var data = BoolPool[key];
 					// Label
-					GUI.SmallLabel(rect, key);
+					GUI.SmallLabel(rect, data.overrideLabel ?? key);
 					// Value
 					data.value = GUI.Toggle(valueRect, data.value);
 					// Display Label
@@ -391,7 +395,7 @@ public class QTest {
 				case DataType.Int: {
 					var data = IntPool[key];
 					// Label
-					GUI.SmallLabel(rect, key);
+					GUI.SmallLabel(rect, data.overrideLabel ?? key);
 					// Value
 					int valueLabelWidth = valueRect.height * 2;
 					data.value = GUI.HandleSlider(
@@ -423,7 +427,7 @@ public class QTest {
 				case DataType.Float: {
 					var data = FloatPool[key];
 					// Label
-					GUI.SmallLabel(rect, key);
+					GUI.SmallLabel(rect, data.overrideLabel ?? key);
 					// Value
 					int valueLabelWidth = valueRect.height * 2;
 
@@ -462,7 +466,7 @@ public class QTest {
 				case DataType.String: {
 					var data = StringPool[key];
 					// Label
-					GUI.SmallLabel(rect, key);
+					GUI.SmallLabel(rect, data.overrideLabel ?? key);
 					// Value
 					data.value = GUI.SmallInputField(
 						3126784 + index + windowIndex * 624123,
@@ -597,6 +601,7 @@ public class QTest {
 	public static void SetCurrentWindow (int index, string title = "") {
 		CurrentWindowIndex = index.Clamp(0, MAX_WINDOW_COUNT - 1);
 		Windows[CurrentWindowIndex].Title = title;
+		Group("");
 	}
 
 
@@ -846,14 +851,16 @@ public class QTest {
 	/// <param name="key">Unique key to identify this field</param>
 	/// <param name="defaultValue"></param>
 	/// <param name="displayLabel">Text content for rendering only</param>
+	/// <param name="overrideLabel">Force firld use this label</param>
 	/// <param name="windowIndex">Force field into given window instead of current window</param>
 	/// <returns>The current data of this field</returns>
-	public static bool Bool (string key, bool defaultValue = false, string displayLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].BoolLogic(key, defaultValue, displayLabel);
-	private bool BoolLogic (string key, bool defaultValue = false, string displayLabel = null) {
+	public static bool Bool (string key, bool defaultValue = false, string displayLabel = null, string overrideLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].BoolLogic(key, defaultValue, displayLabel, overrideLabel);
+	private bool BoolLogic (string key, bool defaultValue, string displayLabel, string overrideLabel) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (BoolPool.TryGetValue(key, out var result)) {
 			result.displayLabel = displayLabel;
+			result.overrideLabel = overrideLabel;
 			var kData = result.Key;
 			kData.Order = CurrentOrder;
 			kData.Group = CurrentGroup;
@@ -870,6 +877,7 @@ public class QTest {
 		BoolPool.Add(key, new BoolData() {
 			value = defaultValue,
 			displayLabel = displayLabel,
+			overrideLabel = overrideLabel,
 			Key = keyData,
 		});
 		Keys.Add(keyData);
@@ -887,14 +895,16 @@ public class QTest {
 	/// <param name="max">Maximal limitation of this value</param>
 	/// <param name="step">Step count when dragging the slider. 0 means no step.</param>
 	/// <param name="displayLabel">Text content for rendering only</param>
+	/// <param name="overrideLabel">Force firld use this label</param>
 	/// <param name="windowIndex">Force field into given window instead of current window</param>
 	/// <returns>The current data of this field</returns>
-	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].IntLogic(key, defaultValue, min, max, step, displayLabel);
-	private int IntLogic (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null) {
+	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null, string overrideLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].IntLogic(key, defaultValue, min, max, step, displayLabel, overrideLabel);
+	private int IntLogic (string key, int defaultValue, int min, int max, int step, string displayLabel, string overrideLabel) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (IntPool.TryGetValue(key, out var result)) {
 			result.displayLabel = displayLabel;
+			result.overrideLabel = overrideLabel;
 			var kData = result.Key;
 			kData.Order = CurrentOrder;
 			result.min = min;
@@ -916,6 +926,7 @@ public class QTest {
 			value = defaultValue.Clamp(min, max),
 			defaultValue = defaultValue.Clamp(min, max),
 			displayLabel = displayLabel,
+			overrideLabel = overrideLabel,
 			min = min,
 			max = max,
 			step = step,
@@ -936,14 +947,16 @@ public class QTest {
 	/// <param name="max">Maximal limitation of this value</param>
 	/// <param name="step">Step count when dragging the slider. 0 means no step.</param>
 	/// <param name="displayLabel">Text content for rendering only</param>
+	/// <param name="overrideLabel">Force firld use this label</param>
 	/// <param name="windowIndex">Force field into given window instead of current window</param>
 	/// <returns>The current data of this field</returns>
-	public static float Float (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0, string displayLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].FloatLogic(key, defaultValue, min, max, step, displayLabel);
-	private float FloatLogic (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0f, string displayLabel = null) {
+	public static float Float (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0, string displayLabel = null, string overrideLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].FloatLogic(key, defaultValue, min, max, step, displayLabel, overrideLabel);
+	private float FloatLogic (string key, float defaultValue, float min, float max, float step, string displayLabel, string overrideLabel) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (FloatPool.TryGetValue(key, out var result)) {
 			result.displayLabel = displayLabel;
+			result.overrideLabel = overrideLabel;
 			var kData = result.Key;
 			kData.Order = CurrentOrder;
 			result.min = min;
@@ -965,6 +978,7 @@ public class QTest {
 			value = defaultValue.Clamp(min, max),
 			defaultValue = defaultValue.Clamp(min, max),
 			displayLabel = displayLabel,
+			overrideLabel = overrideLabel,
 			min = min,
 			max = max,
 			step = step,
@@ -982,12 +996,14 @@ public class QTest {
 	/// <param name="key">Unique key to identify this field</param>
 	/// <param name="defaultValue"></param>
 	/// <param name="windowIndex">Force field into given window instead of current window</param>
+	/// <param name="overrideLabel">Force firld use this label</param>
 	/// <returns>The current data of this field</returns>
-	public static string String (string key, string defaultValue = "", int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].StringLogic(key, defaultValue);
-	private string StringLogic (string key, string defaultValue = "") {
+	public static string String (string key, string defaultValue = "", string overrideLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].StringLogic(key, defaultValue, overrideLabel);
+	private string StringLogic (string key, string defaultValue, string overrideLabel) {
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (StringPool.TryGetValue(key, out var result)) {
+			result.overrideLabel = overrideLabel;
 			var kData = result.Key;
 			kData.Order = CurrentOrder;
 			kData.UpdateFrame = Game.PauselessFrame;
@@ -1003,6 +1019,7 @@ public class QTest {
 		};
 		StringPool.Add(key, new StringData() {
 			value = defaultValue,
+			overrideLabel = overrideLabel,
 			Key = keyData,
 		});
 		Keys.Add(keyData);
@@ -1202,6 +1219,15 @@ public class QTest {
 	/// <param name="folding">True if the group should fold</param>
 	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void SetGroupFolding (string key, bool folding, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetGroupFoldingLogic(key, folding);
+	public static void SetAllGroupsFolding (bool folding, int windowIndex = -1) {
+		if (windowIndex < 0) {
+			for (int i = 0; i < MAX_WINDOW_COUNT; i++) {
+				Windows[i].SetAllGroupsFoldingLogic(folding);
+			}
+		} else {
+			Windows[windowIndex].SetAllGroupsFoldingLogic(folding);
+		}
+	}
 	private void SetGroupFoldingLogic (string key, bool folding) {
 		if (GroupFolding.TryGetValue(key, out var gData)) {
 			gData.Folding = folding;
@@ -1210,6 +1236,12 @@ public class QTest {
 				Folding = folding,
 				UpdateFrame = Game.PauselessFrame,
 			};
+		}
+	}
+	private void SetAllGroupsFoldingLogic (bool folding) {
+		foreach (var pair in GroupFolding) {
+			if (string.IsNullOrWhiteSpace(pair.Key)) continue;
+			pair.Value.Folding = folding;
 		}
 	}
 
