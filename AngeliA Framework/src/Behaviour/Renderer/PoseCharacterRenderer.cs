@@ -277,8 +277,8 @@ public class PoseCharacterRenderer : CharacterRenderer {
 				parent: (i >= 7 && i < 11) || (i >= 13 && i < 17) ? BodyParts[i - 2] : null,
 				useLimbFlip: i == 9 || i == 10 || i == 15 || i == 16,
 				rotateWithBody: i != 2 && i != 1 && i < 11,
-				defaultPivotX: BodyPart.BODY_DEF_PIVOT[i].x,
-				defaultPivotY: BodyPart.BODY_DEF_PIVOT[i].y
+				defaultPivotX: BodyPart.DEF_PIVOT[i].x,
+				defaultPivotY: BodyPart.DEF_PIVOT[i].y
 			);
 			bodyPart.SetData(BodyPart.DEFAULT_BODY_PART_ID[i]);
 		}

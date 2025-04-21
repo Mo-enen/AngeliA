@@ -11,7 +11,7 @@ public class CharacterPose {
 
 	// Api
 	[JsonIgnore]
-	private readonly BodyPartTransform[] BodyParts = new BodyPartTransform[BodyPart.BODY_PART_COUNT];
+	public readonly BodyPartTransform[] BodyParts = new BodyPartTransform[BodyPart.BODY_PART_COUNT];
 
 	public BodyPartTransform Head { get; init; } = null;
 	public BodyPartTransform Body { get; init; } = null;
@@ -108,15 +108,15 @@ public class CharacterPose {
 		for (int i = 0; i < BodyParts.Length; i++) {
 			var record = BodyParts[i];
 			var pose = rendering.BodyParts[i];
+			pose.Z = record.Z;
+			pose.FrontSide = record.FrontSide;
 			pose.X = record.X;
 			pose.Y = record.Y;
-			pose.Z = record.Z;
 			pose.Rotation = record.Rotation;
 			pose.Width = record.Width + record.SizeX.Sign3() * pose.SizeX;
 			pose.Height = record.Height + record.SizeY.Sign3() * pose.SizeY;
 			pose.PivotX = record.PivotX;
 			pose.PivotY = record.PivotY;
-			pose.FrontSide = record.FrontSide;
 		}
 		rendering.PoseRootX = PoseRootX;
 		rendering.PoseRootY = rendering.BasicRootY + PoseRootY;
@@ -145,11 +145,11 @@ public class CharacterPose {
 			pose.Rotation = Util.LerpAngleUnclamped(pose.Rotation, record.Rotation, blend01).RoundToInt();
 
 			int targetW = record.Width + record.SizeX.Sign3() * pose.SizeX;
-			int targetH = record.Height + record.SizeY.Sign3() * pose.SizeY;
-
 			pose.Width = FixSign(pose.Width, targetW);
-			pose.Height = FixSign(pose.Height, targetH);
 			pose.Width = Util.LerpUnclamped(pose.Width, targetW, blend01).RoundToInt();
+
+			int targetH = record.Height + record.SizeY.Sign3() * pose.SizeY;
+			pose.Height = FixSign(pose.Height, targetH);
 			pose.Height = Util.LerpUnclamped(pose.Height, targetH, blend01).RoundToInt();
 
 			pose.PivotX = Util.LerpUnclamped(pose.PivotX, record.PivotX, blend01).RoundToInt();
@@ -173,18 +173,26 @@ public class CharacterPose {
 			(int)Util.LerpUnclamped(rendering.HandGrabScaleR, HandGrabScaleR, blend01)
 		);
 
+		rendering.HandGrabAttackTwistL.Override(
+			(int)Util.LerpUnclamped(rendering.HandGrabAttackTwistL, HandGrabAttackTwistL, blend01)
+		);
+		rendering.HandGrabAttackTwistR.Override(
+			(int)Util.LerpUnclamped(rendering.HandGrabAttackTwistR, HandGrabAttackTwistR, blend01)
+		);
+
 		rendering.PoseRootX = (int)Util.LerpUnclamped(rendering.PoseRootX, PoseRootX, blend01);
 		rendering.PoseRootY = (int)Util.LerpUnclamped(rendering.PoseRootY, rendering.BasicRootY + PoseRootY, blend01);
 		rendering.BodyTwist = (int)Util.LerpUnclamped(rendering.BodyTwist, BodyTwist, blend01);
 		rendering.HeadTwist = (int)Util.LerpUnclamped(rendering.HeadTwist, HeadTwist, blend01);
 
-		// Func
-		static int FixSign (int basicValue, int targetValue) {
-			if (basicValue.Sign() != targetValue.Sign()) {
-				basicValue = -basicValue;
-			}
-			return basicValue;
+	}
+
+	// LGC
+	private static int FixSign (int basicValue, int targetValue) {
+		if (basicValue.Sign() != targetValue.Sign()) {
+			basicValue = -basicValue;
 		}
+		return basicValue;
 	}
 
 }

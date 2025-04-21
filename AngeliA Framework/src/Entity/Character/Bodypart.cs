@@ -68,15 +68,15 @@ public class BodyPart {
 
 	// Const
 	private static readonly System.Type BASIC_CHARACTER_TYPE = typeof(Character);
-	internal const int BODY_PART_COUNT = 17;
-	internal static readonly int[] DEFAULT_BODY_PART_ID = ["DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(),];
-	internal static readonly string[] BODY_PART_NAME = ["Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot",];
-	internal static readonly Int2[] BODY_DEF_PIVOT = [
+	public const int BODY_PART_COUNT = 17;
+	public static readonly int[] DEFAULT_BODY_PART_ID = ["DefaultCharacter.Head".AngeHash(), "DefaultCharacter.Body".AngeHash(), "DefaultCharacter.Hip".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.Shoulder".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.UpperArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.LowerArm".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.Hand".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.UpperLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.LowerLeg".AngeHash(), "DefaultCharacter.Foot".AngeHash(), "DefaultCharacter.Foot".AngeHash(),];
+	public static readonly string[] BODY_PART_NAME = ["Head", "Body", "Hip", "Shoulder", "Shoulder", "UpperArm", "UpperArm", "LowerArm", "LowerArm", "Hand", "Hand", "UpperLeg", "UpperLeg", "LowerLeg", "LowerLeg", "Foot", "Foot",];
+	public static readonly Int2[] DEF_PIVOT = [
 		new(500, 0), new(500, 0), new(500, 0),
 		new(1000, 1000), new(1000, 1000), new(1000, 1000), new(0, 1000), new(1000, 1000), new(0, 1000), new(1000, 1000), new(1000, 1000),
 		new(0, 1000), new(1000, 1000), new(0, 1000), new(1000, 1000), new(0, 1000), new(0, 1000),
 	];
-	internal static readonly bool[] REQUIRE_LIMB_ROT = [
+	public static readonly bool[] REQUIRE_LIMB_ROT = [
 		false,false,false,
 		false,false,true,true,true,true,true,true,
 		true,true,true,true,true,true,

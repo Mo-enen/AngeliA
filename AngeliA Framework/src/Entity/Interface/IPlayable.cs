@@ -11,5 +11,5 @@ public interface IPlayable {
 	/// <summary>
 	/// Lighting system illuminate amount. 0 means no illuminate. 1000 means general amount.
 	/// </summary>
-	int IlluminateAmount => 1000;
+	int IlluminateAmount => 300;
 }
