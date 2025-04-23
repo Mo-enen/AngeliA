@@ -35,6 +35,7 @@ public partial class RayGame {
 	private int ShaderPropIndex_INV_SCREEN_SIZE;
 	private Float2 DoodleRenderingOffset;
 	private float DoodleRenderingZoom;
+	private int LastDoodleResetFrame = -1;
 
 
 	// MSG
@@ -589,11 +590,12 @@ public partial class RayGame {
 
 
 	// Doodle
-	protected override void _ResetDoodle () {
+	protected override void _ResetDoodle (Color32 color) {
 		if (CurrentAltTextureMode != AltTextureMode.Doodle) {
 			SwitchToDoodleTextureMode();
 		}
-		Raylib.ClearBackground(Color.Blank);
+		Raylib.ClearBackground(color.ToRaylib());
+		LastDoodleResetFrame = PauselessFrame;
 	}
 
 	protected override void _SetDoodleOffset (Float2 screenOffset) => DoodleRenderingOffset = screenOffset;
@@ -613,6 +615,7 @@ public partial class RayGame {
 		}
 		if (ignoreLevel && ignoreBG && ignoreEntity && ignoreElement) return;
 
+		var bgColor = Color32.Lerp(Sky.SkyTintTopColor, Sky.SkyTintBottomColor, 0.5f).ToRaylib();
 		float pixW = screenRect.width / worldUnitRange.width;
 		float pixH = screenRect.height / worldUnitRange.height;
 		int unitRangeL = worldUnitRange.xMin;
@@ -627,7 +630,31 @@ public partial class RayGame {
 		int doodleScreenWidth = ScreenWidth - DoodleScreenPadding.horizontal;
 		int doodleScreenHeight = ScreenHeight - DoodleScreenPadding.vertical;
 
-		var worldPoses = FrameworkUtil.ForAllExistsWorldInRange(squad, worldUnitRange, z, out int count);
+		var worldPoses = FrameworkUtil.ForAllExistsWorldInRangeWithNotExistsInEnd(squad, worldUnitRange, z, out int count, out int notExistsCount);
+
+		// BG
+		if (PauselessFrame != LastDoodleResetFrame) {
+			rect.Width = pixW;
+			rect.Height = pixH;
+			for (int worldIndex = 0; worldIndex < notExistsCount; worldIndex++) {
+				var worldPos = worldPoses[worldPoses.Length - worldIndex - 1];
+				int unitL = Util.Max(worldPos.x * Const.MAP, unitRangeL);
+				int unitR = Util.Min((worldPos.x + 1) * Const.MAP, unitRangeR);
+				int unitD = Util.Max(worldPos.y * Const.MAP, unitRangeD);
+				int unitU = Util.Min((worldPos.y + 1) * Const.MAP, unitRangeU);
+				for (int j = unitD; j < unitU; j++) {
+					rect.Y = Util.RemapUnclamped(unitRangeD, unitRangeU, screenD, screenU, j).UMod(doodleScreenHeight);
+					for (int i = unitL; i < unitR; i++) {
+						rect.X = Util.RemapUnclamped(unitRangeL, unitRangeR, screenL, screenR, i).UMod(doodleScreenWidth);
+						Raylib.DrawRectangleRec(rect, bgColor);
+					}
+				}
+			}
+		}
+
+		// World
+		rect.Width = pixW;
+		rect.Height = pixH;
 		for (int worldIndex = 0; worldIndex < count; worldIndex++) {
 			var worldPos = worldPoses[worldIndex];
 			int unitL = Util.Max(worldPos.x * Const.MAP, unitRangeL);
@@ -637,19 +664,22 @@ public partial class RayGame {
 			for (int j = unitD; j < unitU; j++) {
 				rect.Y = Util.RemapUnclamped(unitRangeD, unitRangeU, screenD, screenU, j).UMod(doodleScreenHeight);
 				for (int i = unitL; i < unitR; i++) {
+					rect.X = Util.RemapUnclamped(unitRangeL, unitRangeR, screenL, screenR, i).UMod(doodleScreenWidth);
 					var (lv, bg, en, el) = squad.GetAllBlocksAt(i, j, z);
 					int id =
 						!ignoreEntity && en != 0 ? en :
 						!ignoreElement && el != 0 ? el :
 						!ignoreLevel && lv != 0 ? lv :
 						!ignoreBG && bg != 0 ? bg : 0;
-					if (id == 0) continue;
-					if (!Renderer.TryGetSpriteForGizmos(id, out var sp)) continue;
-					rect.X = Util.RemapUnclamped(unitRangeL, unitRangeR, screenL, screenR, i).UMod(doodleScreenWidth);
-					Raylib.DrawRectangleRec(rect, sp.SummaryTint.ToRaylib());
+					if (id != 0 && Renderer.TryGetSpriteForGizmos(id, out var sp)) {
+						Raylib.DrawRectangleRec(rect, sp.SummaryTint.ToRaylib());
+					} else {
+						Raylib.DrawRectangleRec(rect, bgColor);
+					}
 				}
 			}
 		}
+
 
 	}
 

@@ -43,6 +43,87 @@
             internal static void ExampleFunction (int quality) { }
             </code></example>
         </member>
+        <member name="T:AngeliA.Platformer.CircuitSystem">
+            <summary>
+            Core system for triggering specified function of entities on stage/map
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.CircuitSystem.RegisterWire(System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Register target IMapItem as wire for operating circuit
+            </summary>
+            <param name="id">ID of the target entity/element</param>
+            <param name="connectL">True if this wire connect to the wire/operator on left</param>
+            <param name="connectR">True if this wire connect to the wire/operator on right</param>
+            <param name="connectD">True if this wire connect to the wire/operator on bottom</param>
+            <param name="connectU">True if this wire connect to the wire/operator on top</param>
+        </member>
+        <member name="M:AngeliA.Platformer.CircuitSystem.IsWire(System.Int32)">
+            <summary>
+            True if the given ID is registed as wire
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.CircuitSystem.TriggerCircuit(System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.Direction5)">
+            <summary>
+            Trigger the system at given position
+            </summary>
+            <param name="unitX">Position to start circuit trigger in unit space</param>
+            <param name="unitY">Position to start circuit trigger in unit space</param>
+            <param name="unitZ">Position Z</param>
+            <param name="stamp">unique ID for this operation</param>
+            <param name="startDirection">Only start at this direction (Set to center to start all direction)</param>
+        </member>
+        <member name="M:AngeliA.Platformer.CircuitSystem.OperateCircuit(AngeliA.Int3,System.Int32,AngeliA.Direction5)">
+            <summary>
+            Perform the function from the operator at given position
+            </summary>
+            <param name="unitPos">Target position in unit space</param>
+            <param name="stamp">unique ID for this operation</param>
+            <param name="circuitFrom">Which direction does the circuit came from. Set to center to make current as original.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AngeliA.Platformer.CircuitSystem.WireEntityID_to_WireConnection(System.Int32,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@)">
+            <summary>
+            Get connection directions from given wire ID
+            </summary>
+            <returns>True if the wire ID is valid</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.CircuitSystem.IsCircuitOperator(System.Int32)">
+            <summary>
+            True if the given ID is a valid circuit operator entity
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.CircuitSystem.WireConnection_to_BitInt(System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Convert wire connection info into an Intager
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.CircuitSystem.BitInt_to_WireConnection(System.Int32,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@)">
+            <summary>
+            Convert an intager into wire connection info
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.CircuitSystem.GetStamp(AngeliA.Int3)">
+            <summary>
+            Get unique ID for circuit system at given position in unit space
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.CircuitSystem.TryAddBackgroundTrigger(System.Int32,AngeliA.Int3)">
+            <summary>
+            Add a trigger in background thread
+            </summary>
+            <param name="entityID">Source ID of this trigger</param>
+            <param name="unitPos">Position in unit space</param>
+            <returns>True if the capacity is not reached</returns>
+        </member>
+        <member name="M:AngeliA.Platformer.CircuitSystem.TryRemoveBackgroundTrigger(System.Int32,AngeliA.Int3)">
+            <summary>
+            Remove the given entity from background thread triggers
+            </summary>
+            <param name="entityID">Source ID of this trigger</param>
+            <param name="unitPos">Position in unit space</param>
+            <returns>True if the trigger is removed</returns>
+        </member>
         <member name="T:AngeliA.Platformer.NavigationOperateMotion">
             <summary>
             Type of navigation motion for a single step
@@ -118,6 +199,26 @@
             <param name="maxDistance">Limitation for being away from the aimPosition</param>
             <param name="randomShift">Position shift on X in global space</param>
             <returns>Final position in global space</returns>
+        </member>
+        <member name="T:AngeliA.Platformer.TransferSystem">
+            <summary>
+            Core system that transfer object data along the stage
+            </summary>
+        </member>
+        <member name="M:AngeliA.Platformer.TransferSystem.IsTransfer(System.Int32,AngeliA.Direction4@)">
+            <summary>
+            True if given ID is a valid transfer
+            </summary>
+            <param name="transferID"></param>
+            <param name="direction">Direction this transfer will move items to</param>
+        </member>
+        <member name="M:AngeliA.Platformer.TransferSystem.StartTransfer(AngeliA.Int3,System.Object,System.Int32)">
+            <summary>
+            Start a transfer operation
+            </summary>
+            <param name="unitPos">Starting position in unit space</param>
+            <param name="data">Target object data to transfer with</param>
+            <param name="stamp">unique number to identify this operation</param>
         </member>
         <member name="T:AngeliA.Platformer.ArrowBullet`1">
             <summary>

@@ -171,7 +171,7 @@ public partial class RiggedGame {
 
 
 	// Doodle
-	protected override void _ResetDoodle () => RespondMessage.RequireResetDoodle = true;
+	protected override void _ResetDoodle (Color32 color) => RespondMessage.RequireResetDoodle = true;
 
 	protected override void _SetDoodleOffset (Float2 screenOffset) => RespondMessage.RequireDoodleRenderingOffset = screenOffset;
 

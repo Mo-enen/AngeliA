@@ -36,6 +36,7 @@ public abstract class Bed : ActionFurniture {
 
 		// Target Leave
 		if (Target != null && (!Target.Active || Target.CharacterState != CharacterState.Sleep)) {
+			Target.Y = Y + 1;
 			Target = null;
 			return;
 		}
@@ -56,6 +57,9 @@ public abstract class Bed : ActionFurniture {
 				Game.RestartGame();
 			}
 		}
+
+		// Make Target Grounded
+		Target?.MakeGrounded(1);
 
 	}
 

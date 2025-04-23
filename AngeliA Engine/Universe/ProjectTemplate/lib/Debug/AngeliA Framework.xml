@@ -3387,17 +3387,18 @@
             </summary>
             <param name="path">Path of a file with any extension you want (not a folder)</param>
         </member>
-        <member name="M:AngeliA.QTest.Bool(System.String,System.Boolean,System.String,System.Int32)">
+        <member name="M:AngeliA.QTest.Bool(System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
             Require a toggle inside the current test window
             </summary>
             <param name="key">Unique key to identify this field</param>
             <param name="defaultValue"></param>
             <param name="displayLabel">Text content for rendering only</param>
+            <param name="overrideLabel">Force firld use this label</param>
             <param name="windowIndex">Force field into given window instead of current window</param>
             <returns>The current data of this field</returns>
         </member>
-        <member name="M:AngeliA.QTest.Int(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.Int32)">
+        <member name="M:AngeliA.QTest.Int(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String,System.Int32)">
             <summary>
             Require a intager slider inside the current test window
             </summary>
@@ -3407,10 +3408,11 @@
             <param name="max">Maximal limitation of this value</param>
             <param name="step">Step count when dragging the slider. 0 means no step.</param>
             <param name="displayLabel">Text content for rendering only</param>
+            <param name="overrideLabel">Force firld use this label</param>
             <param name="windowIndex">Force field into given window instead of current window</param>
             <returns>The current data of this field</returns>
         </member>
-        <member name="M:AngeliA.QTest.Float(System.String,System.Single,System.Single,System.Single,System.Single,System.String,System.Int32)">
+        <member name="M:AngeliA.QTest.Float(System.String,System.Single,System.Single,System.Single,System.Single,System.String,System.String,System.Int32)">
             <summary>
             Require a float slider inside the current test window
             </summary>
@@ -3420,16 +3422,18 @@
             <param name="max">Maximal limitation of this value</param>
             <param name="step">Step count when dragging the slider. 0 means no step.</param>
             <param name="displayLabel">Text content for rendering only</param>
+            <param name="overrideLabel">Force firld use this label</param>
             <param name="windowIndex">Force field into given window instead of current window</param>
             <returns>The current data of this field</returns>
         </member>
-        <member name="M:AngeliA.QTest.String(System.String,System.String,System.Int32)">
+        <member name="M:AngeliA.QTest.String(System.String,System.String,System.String,System.Int32)">
             <summary>
             Require a text input field inside the current test window
             </summary>
             <param name="key">Unique key to identify this field</param>
             <param name="defaultValue"></param>
             <param name="windowIndex">Force field into given window instead of current window</param>
+            <param name="overrideLabel">Force firld use this label</param>
             <returns>The current data of this field</returns>
         </member>
         <member name="M:AngeliA.QTest.Button(System.String,System.Action,System.Object,System.Object,System.Int32,System.Action,System.String,System.String,System.Action,System.String,System.Action,System.String)">
@@ -4135,87 +4139,6 @@
             <summary>
             Get cheat code at given index inside system list
             </summary>
-        </member>
-        <member name="T:AngeliA.CircuitSystem">
-            <summary>
-            Core system for triggering specified function of entities on stage/map
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.RegisterWire(System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Register target IMapItem as wire for operating circuit
-            </summary>
-            <param name="id">ID of the target entity/element</param>
-            <param name="connectL">True if this wire connect to the wire/operator on left</param>
-            <param name="connectR">True if this wire connect to the wire/operator on right</param>
-            <param name="connectD">True if this wire connect to the wire/operator on bottom</param>
-            <param name="connectU">True if this wire connect to the wire/operator on top</param>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.IsWire(System.Int32)">
-            <summary>
-            True if the given ID is registed as wire
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.TriggerCircuit(System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.Direction5)">
-            <summary>
-            Trigger the system at given position
-            </summary>
-            <param name="unitX">Position to start circuit trigger in unit space</param>
-            <param name="unitY">Position to start circuit trigger in unit space</param>
-            <param name="unitZ">Position Z</param>
-            <param name="stamp">unique ID for this operation</param>
-            <param name="startDirection">Only start at this direction (Set to center to start all direction)</param>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.OperateCircuit(AngeliA.Int3,System.Int32,AngeliA.Direction5)">
-            <summary>
-            Perform the function from the operator at given position
-            </summary>
-            <param name="unitPos">Target position in unit space</param>
-            <param name="stamp">unique ID for this operation</param>
-            <param name="circuitFrom">Which direction does the circuit came from. Set to center to make current as original.</param>
-            <returns></returns>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.WireEntityID_to_WireConnection(System.Int32,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@)">
-            <summary>
-            Get connection directions from given wire ID
-            </summary>
-            <returns>True if the wire ID is valid</returns>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.IsCircuitOperator(System.Int32)">
-            <summary>
-            True if the given ID is a valid circuit operator entity
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.WireConnection_to_BitInt(System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Convert wire connection info into an Intager
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.BitInt_to_WireConnection(System.Int32,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@)">
-            <summary>
-            Convert an intager into wire connection info
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.GetStamp(AngeliA.Int3)">
-            <summary>
-            Get unique ID for circuit system at given position in unit space
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.TryAddBackgroundTrigger(System.Int32,AngeliA.Int3)">
-            <summary>
-            Add a trigger in background thread
-            </summary>
-            <param name="entityID">Source ID of this trigger</param>
-            <param name="unitPos">Position in unit space</param>
-            <returns>True if the capacity is not reached</returns>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.TryRemoveBackgroundTrigger(System.Int32,AngeliA.Int3)">
-            <summary>
-            Remove the given entity from background thread triggers
-            </summary>
-            <param name="entityID">Source ID of this trigger</param>
-            <param name="unitPos">Position in unit space</param>
-            <returns>True if the trigger is removed</returns>
         </member>
         <member name="T:AngeliA.Cursor">
             <summary>
@@ -6436,26 +6359,6 @@
             Get global single instance of the task for given type ID
             </summary>
         </member>
-        <member name="T:AngeliA.TransferSystem">
-            <summary>
-            Core system that transfer object data along the stage
-            </summary>
-        </member>
-        <member name="M:AngeliA.TransferSystem.IsTransfer(System.Int32,AngeliA.Direction4@)">
-            <summary>
-            True if given ID is a valid transfer
-            </summary>
-            <param name="transferID"></param>
-            <param name="direction">Direction this transfer will move items to</param>
-        </member>
-        <member name="M:AngeliA.TransferSystem.StartTransfer(AngeliA.Int3,System.Object,System.Int32)">
-            <summary>
-            Start a transfer operation
-            </summary>
-            <param name="unitPos">Starting position in unit space</param>
-            <param name="data">Target object data to transfer with</param>
-            <param name="stamp">unique number to identify this operation</param>
-        </member>
         <member name="T:AngeliA.Bullet">
             <summary>
             An entity represent bullet from weapons that deal damage to IDamageReceiver
@@ -7014,14 +6917,69 @@
             True if the given wing is a propeller style wing
             </summary>
         </member>
+        <member name="T:AngeliA.CoverMode">
+            <summary>
+            How cloths is covering the bodypart
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.X">
+            <summary>
+            Position X in local space
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.Y">
+            <summary>
+            Position Y in local space
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.Z">
+            <summary>
+            Z value for sort rendering cells
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.Rotation">
+            <summary>
+            Angle of this bodypart
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.SizeX">
+            <summary>
+            Artwork sprite Width in global size
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.SizeY">
+            <summary>
+            Artwork sprite Height in global size
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.Width">
+            <summary>
+            Horizontal size of this bodypart
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.Height">
+            <summary>
+            Vertical size of this bodypart
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.PivotX">
+            <summary>
+            Current pivot X of this bodypart (0 means left, 1000 means right)
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.PivotY">
+            <summary>
+            Current pivot Y of this bodypart (0 means bottom, 1000 means top)
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.FrontSide">
+            <summary>
+            True if the bodypart is facing front
+            </summary>
+        </member>
         <member name="T:AngeliA.BodyPart">
             <summary>
             Representation of a bodypart for a pose-style character
-            </summary>
-        </member>
-        <member name="T:AngeliA.BodyPart.CoverMode">
-            <summary>
-            How cloths is covering the bodypart
             </summary>
         </member>
         <member name="P:AngeliA.BodyPart.ID">
@@ -7042,16 +7000,6 @@
         <member name="P:AngeliA.BodyPart.SpritePivotY">
             <summary>
             Artwork sprite pivot Y
-            </summary>
-        </member>
-        <member name="P:AngeliA.BodyPart.SizeX">
-            <summary>
-            Artwork sprite Width in global size
-            </summary>
-        </member>
-        <member name="P:AngeliA.BodyPart.SizeY">
-            <summary>
-            Artwork sprite Height in global size
             </summary>
         </member>
         <member name="P:AngeliA.BodyPart.FlexableSizeY">
@@ -7099,59 +7047,69 @@
             Position Y in global space
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.X">
+        <member name="P:AngeliA.BodyPart.X">
             <summary>
             Position X in local space
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Y">
+        <member name="P:AngeliA.BodyPart.Y">
             <summary>
             Position Y in local space
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Z">
+        <member name="P:AngeliA.BodyPart.Z">
             <summary>
             Z value for sort rendering cells
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Rotation">
+        <member name="P:AngeliA.BodyPart.Rotation">
             <summary>
             Angle of this bodypart
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Width">
+        <member name="P:AngeliA.BodyPart.SizeX">
+            <summary>
+            Artwork sprite Width in global size
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.SizeY">
+            <summary>
+            Artwork sprite Height in global size
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.Width">
             <summary>
             Horizontal size of this bodypart
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Height">
+        <member name="P:AngeliA.BodyPart.Height">
             <summary>
             Vertical size of this bodypart
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.PivotX">
+        <member name="P:AngeliA.BodyPart.PivotX">
             <summary>
             Current pivot X of this bodypart (0 means left, 1000 means right)
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.PivotY">
+        <member name="P:AngeliA.BodyPart.PivotY">
             <summary>
             Current pivot Y of this bodypart (0 means bottom, 1000 means top)
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.FrontSide">
+        <member name="P:AngeliA.BodyPart.FrontSide">
             <summary>
             True if the bodypart is facing front
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Covered">
-            <summary>
-            How this bodypart is being covered by cloths
-            </summary>
-        </member>
-        <member name="F:AngeliA.BodyPart.Tint">
+        <member name="P:AngeliA.BodyPart.Tint">
             <summary>
             Color tint
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.Covered">
+            <summary>
+            How this bodypart is being covered by cloths
             </summary>
         </member>
         <member name="M:AngeliA.BodyPart.#ctor(AngeliA.BodyPart,System.Boolean,System.Boolean,System.Int32,System.Int32)">
@@ -8347,6 +8305,7 @@
             Trie if the given direction can be bump
             </summary>
             <param name="bump">Target entity</param>
+            <param name="from"></param>
         </member>
         <member name="M:AngeliA.IBumpable.BumpAllOverlap(AngeliA.Entity,AngeliA.Direction4,System.Boolean,AngeliA.Damage,System.Int32)">
             <summary>
@@ -10832,13 +10791,30 @@
             <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
         </member>
         <member name="M:AngeliA.Game.DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32)">
-            <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+            <summary>
+            Draw a rectangle as gizmos for current frame
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="colorT">Color tint</param>
+            <param name="colorB">Color tint</param>
         </member>
         <member name="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32)">
-            <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+            <summary>
+            Draw a rectangle as gizmos for current frame
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="colorT">Color tint</param>
+            <param name="colorB">Color tint</param>
         </member>
         <member name="M:AngeliA.Game.DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)">
-            <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+            <summary>
+            Draw a rectangle as gizmos for current frame
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="colorTL">Color tint</param>
+            <param name="colorTR">Color tint</param>
+            <param name="colorBL">Color tint</param>
+            <param name="colorBR">Color tint</param>
         </member>
         <member name="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)">
             <summary>
@@ -10849,9 +10825,6 @@
             <param name="colorTR">Color tint</param>
             <param name="colorBL">Color tint</param>
             <param name="colorBR">Color tint</param>
-            <param name="colorT">Color tint</param>
-            <param name="colorB">Color tint</param>
-            <param name="color">Color tint</param>
         </member>
         <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,System.Boolean,System.Boolean,System.Boolean)">
             <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)"/>
@@ -10872,6 +10845,8 @@
             <param name="rect">Rect position</param>
             <param name="uv">Which part of this texture should be draw. (0, 0, 1, 1) means all of them. (0, 0, 0.5f, 1) means left half.</param>
             <param name="texture"></param>
+            <param name="flipX"></param>
+            <param name="flipY"></param>
             <param name="tint">Color tint</param>
             <param name="inverse">True if the texture display as the inversed color of the current rendered pixel on screen.</param>
         </member>
@@ -10952,10 +10927,10 @@
             Do not display doodled pixels
             </summary>
         </member>
-        <member name="M:AngeliA.Game.ResetDoodle">
-            <inheritdoc cref="M:AngeliA.Game._ResetDoodle"/>
+        <member name="M:AngeliA.Game.ResetDoodle(AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Game._ResetDoodle(AngeliA.Color32)"/>
         </member>
-        <member name="M:AngeliA.Game._ResetDoodle">
+        <member name="M:AngeliA.Game._ResetDoodle(AngeliA.Color32)">
             <summary>
             Clear the doodle pixels canvas
             </summary>
@@ -12666,20 +12641,22 @@
             Complete pose infomation at one moment for a pose-style character
             </summary>
         </member>
-        <member name="M:AngeliA.CharacterPose.ApplyToCharacter(AngeliA.PoseCharacterRenderer)">
-            <summary>
-            Make the character perform this pose
-            </summary>
-        </member>
         <member name="M:AngeliA.CharacterPose.RecordFromCharacter(AngeliA.PoseCharacterRenderer)">
             <summary>
             Read pose data from the character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterPose.ApplyToCharacter(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Make the character perform this pose
             </summary>
         </member>
         <member name="M:AngeliA.CharacterPose.BlendToCharacter(AngeliA.PoseCharacterRenderer,System.Single)">
             <summary>
             Make the character perform this pose with weight
             </summary>
+            <param name="rendering">Target character</param>
+            <param name="blend01">1 means this apply pose. 0 means apply character's current pose.</param>
         </member>
         <member name="T:AngeliA.HandheldPoseAnimation">
             <summary>
@@ -16215,7 +16192,7 @@
         </member>
         <member name="M:AngeliA.FrameworkUtil.ForAllExistsWorldInRange(AngeliA.IBlockSquad,AngeliA.IRect,System.Int32,System.Int32@)">
             <summary>
-            Find all existing world position that overlap the given range. (256 results in maximal)
+            Find all existing world position that overlap the given range. (512 results in maximal)
             </summary>
             <param name="squad">Source of the world instance</param>
             <param name="overlapUnitRange">Target range in unit space</param>

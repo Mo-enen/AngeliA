@@ -32,7 +32,7 @@ public static partial class FrameworkUtil {
 		{ 8, NumberEight.TYPE_ID},
 		{ 9, NumberNine.TYPE_ID},
 	};
-	private static readonly Int3[] WorldPosInViewCache = new Int3[256];
+	private static readonly Int3[] WorldPosInViewCache = new Int3[512];
 	private const int SEARCHLIGHT_DENSITY = 32;
 	private const int REPOS_BASIC_ID = 0b01100100_000000000000_000000000000;
 
@@ -809,28 +809,41 @@ public static partial class FrameworkUtil {
 
 
 	/// <summary>
-	/// Find all existing world position that overlap the given range. (256 results in maximal)
+	/// Find all existing world position that overlap the given range. (512 results in maximal)
 	/// </summary>
 	/// <param name="squad">Source of the world instance</param>
 	/// <param name="overlapUnitRange">Target range in unit space</param>
 	/// <param name="z">Position Z</param>
 	/// <param name="count">How many result is founded</param>
 	/// <returns>Array that holds the result</returns>
-	public static Int3[] ForAllExistsWorldInRange (IBlockSquad squad, IRect overlapUnitRange, int z, out int count) {
+	public static Int3[] ForAllExistsWorldInRange (IBlockSquad squad, IRect overlapUnitRange, int z, out int count) => ForAllExistsWorldInRangeLogic(squad, overlapUnitRange, z, out count, false, out _);
+	public static Int3[] ForAllExistsWorldInRangeWithNotExistsInEnd (IBlockSquad squad, IRect overlapUnitRange, int z, out int count, out int notExistsCount) => ForAllExistsWorldInRangeLogic(squad, overlapUnitRange, z, out count, true, out notExistsCount);
+	private static Int3[] ForAllExistsWorldInRangeLogic (IBlockSquad squad, IRect overlapUnitRange, int z, out int count, bool fillNotExistsToEnd, out int notExistsCount) {
 		int left = overlapUnitRange.xMin.UDivide(Const.MAP);
 		int right = (overlapUnitRange.xMax + 1).UDivide(Const.MAP);
 		int down = overlapUnitRange.yMin.UDivide(Const.MAP);
 		int up = (overlapUnitRange.yMax + 1).UDivide(Const.MAP);
 		int index = 0;
+		notExistsCount = 0;
+		int endIndex = WorldPosInViewCache.Length - 1;
 		int maxCount = WorldPosInViewCache.Length;
 		for (int i = left; i <= right; i++) {
 			for (int j = down; j <= up; j++) {
 				var worldPos = new Int3(i, j, z);
-				if (!squad.WorldExists(worldPos)) continue;
-				WorldPosInViewCache[index] = worldPos;
-				index++;
-				if (index >= maxCount) {
-					goto _END_;
+				if (squad.WorldExists(worldPos)) {
+					WorldPosInViewCache[index] = worldPos;
+					index++;
+					if (index >= maxCount) {
+						goto _END_;
+					}
+				} else if (fillNotExistsToEnd) {
+					WorldPosInViewCache[endIndex] = worldPos;
+					notExistsCount++;
+					endIndex--;
+					maxCount--;
+					if (index >= maxCount) {
+						goto _END_;
+					}
 				}
 			}
 		}

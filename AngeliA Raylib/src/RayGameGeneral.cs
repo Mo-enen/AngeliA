@@ -10,7 +10,6 @@ public partial class RayGame {
 
 	// VAR
 	private static Image EMPTY_IMG;
-	private int TargetFPS = -1;
 
 
 	// System

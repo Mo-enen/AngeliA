@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
 
 namespace AngeliA.Platformer;
+
 
 /// <inheritdoc cref="OnCheckPointTouched_CheckPoint_CharacterAttribute(int)"/>
 public class OnCheckPointTouched_CheckPoint_CharacterAttribute : EventAttribute {
@@ -44,3 +46,5 @@ public class OnMiniGameGiveBadge_IntQuality : EventAttribute {
 	/// </code></example>
 	public OnMiniGameGiveBadge_IntQuality (int order = 0) : base(order) { }
 }
+
+

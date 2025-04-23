@@ -453,13 +453,30 @@ public partial class Game {
 	protected abstract void _DrawGizmosRect (IRect rect, Color32 color);
 
 
-	/// <inheritdoc cref="_DrawGizmosRect(IRect, Color32, Color32, Color32, Color32)"/>
+	/// <summary>
+	/// Draw a rectangle as gizmos for current frame
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="colorT">Color tint</param>
+	/// <param name="colorB">Color tint</param>
 	public static void DrawGizmosRect (IRect rect, Color32 colorT, Color32 colorB) => Instance._DrawGizmosRect(rect, colorT, colorB);
-	/// <inheritdoc cref="_DrawGizmosRect(IRect, Color32, Color32, Color32, Color32)"/>
+	/// <summary>
+	/// Draw a rectangle as gizmos for current frame
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="colorT">Color tint</param>
+	/// <param name="colorB">Color tint</param>
 	protected abstract void _DrawGizmosRect (IRect rect, Color32 colorT, Color32 colorB);
 
 
-	/// <inheritdoc cref="_DrawGizmosRect(IRect, Color32, Color32, Color32, Color32)"/>
+	/// <summary>
+	/// Draw a rectangle as gizmos for current frame
+	/// </summary>
+	/// <param name="rect">Rect position in global space</param>
+	/// <param name="colorTL">Color tint</param>
+	/// <param name="colorTR">Color tint</param>
+	/// <param name="colorBL">Color tint</param>
+	/// <param name="colorBR">Color tint</param>
 	public static void DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR) => Instance._DrawGizmosRect(rect, colorTL, colorTR, colorBL, colorBR);
 	/// <summary>
 	/// Draw a rectangle as gizmos for current frame
@@ -469,9 +486,6 @@ public partial class Game {
 	/// <param name="colorTR">Color tint</param>
 	/// <param name="colorBL">Color tint</param>
 	/// <param name="colorBR">Color tint</param>
-	/// <param name="colorT">Color tint</param>
-	/// <param name="colorB">Color tint</param>
-	/// <param name="color">Color tint</param>
 	protected abstract void _DrawGizmosRect (IRect rect, Color32 colorTL, Color32 colorTR, Color32 colorBL, Color32 colorBR);
 
 
@@ -489,6 +503,8 @@ public partial class Game {
 	/// <param name="rect">Rect position</param>
 	/// <param name="uv">Which part of this texture should be draw. (0, 0, 1, 1) means all of them. (0, 0, 0.5f, 1) means left half.</param>
 	/// <param name="texture"></param>
+	/// <param name="flipX"></param>
+	/// <param name="flipY"></param>
 	/// <param name="tint">Color tint</param>
 	/// <param name="inverse">True if the texture display as the inversed color of the current rendered pixel on screen.</param>
 	protected abstract void _DrawGizmosTexture (IRect rect, FRect uv, object texture, Color32 tint, bool inverse, bool flipX, bool flipY);
@@ -567,11 +583,11 @@ public partial class Game {
 
 
 	/// <inheritdoc cref="_ResetDoodle"/>
-	public static void ResetDoodle () => Instance._ResetDoodle();
+	public static void ResetDoodle (Color32 color) => Instance._ResetDoodle(color);
 	/// <summary>
 	/// Clear the doodle pixels canvas
 	/// </summary>
-	protected abstract void _ResetDoodle ();
+	protected abstract void _ResetDoodle (Color32 color);
 
 
 	/// <inheritdoc cref="_SetDoodleOffset"/>

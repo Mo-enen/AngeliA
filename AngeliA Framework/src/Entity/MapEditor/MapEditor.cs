@@ -1165,7 +1165,7 @@ public sealed partial class MapEditor : WindowUI {
 	public void SetViewZ (int newZ) {
 		CurrentZ = newZ;
 		if (IsNavigating) {
-			Game.ResetDoodle();
+			Game.ResetDoodle(GetNavBgColor());
 		}
 	}
 

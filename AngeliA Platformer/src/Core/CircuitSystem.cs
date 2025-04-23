@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
 /// <summary>
 /// Core system for triggering specified function of entities on stage/map

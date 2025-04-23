@@ -158,6 +158,7 @@ public interface IBumpable {
 	/// Trie if the given direction can be bump
 	/// </summary>
 	/// <param name="bump">Target entity</param>
+	/// <param name="from"></param>
 	public static bool IsValidBumpDirection (IBumpable bump, Direction4 from) => from switch {
 		Direction4.Up => bump.FromAbove,
 		Direction4.Down => bump.FromBelow,

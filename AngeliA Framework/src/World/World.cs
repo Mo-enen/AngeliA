@@ -41,7 +41,6 @@ public class World {
 
 
 	// Api
-	internal static readonly Dictionary<uint, Int3> TextureMapLinkedPool = [];
 	/// <summary>
 	/// Position for the bottom-left of the world in world space (1 world space = 256 * 128 global space)
 	/// </summary>

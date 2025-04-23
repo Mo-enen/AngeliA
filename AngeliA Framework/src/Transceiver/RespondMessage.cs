@@ -130,6 +130,7 @@ public class RigRespondMessage {
 	public GizmosLineData[] RequireGizmosLines = new GizmosLineData[256 * 256];
 	public bool RequireShowDoodle;
 	public bool RequireResetDoodle;
+	public Color32 RequireResetDoodleColor;
 	public Float2 RequireDoodleRenderingOffset;
 	public float RequireDoodleRenderingZoom;
 	public int RequireDoodleRectCount;
@@ -169,7 +170,7 @@ public class RigRespondMessage {
 		SkyTop.a = 255;
 		SkyBottom.a = 255;
 		DoodlingStream = null;
-		Game.ResetDoodle();
+		Game.ResetDoodle(Color32.CLEAR);
 	}
 
 
@@ -190,6 +191,7 @@ public class RigRespondMessage {
 		RequireDoodleWorldCount = 0;
 		RequireShowDoodle = false;
 		RequireResetDoodle = false;
+		RequireResetDoodleColor = Color32.CLEAR;
 		TargetFramerate = 60;
 		RequireDoodleRenderingOffset = default;
 		RequireDoodleRenderingZoom = 1f;
@@ -321,11 +323,12 @@ public class RigRespondMessage {
 			Game.HideDoodle();
 		}
 		if (RequireResetDoodle) {
-			Game.ResetDoodle();
+			Game.ResetDoodle(RequireResetDoodleColor);
 			DoodlingStream.DiscardAllChanges(forceDiscard: true);
 		}
 		RequireShowDoodle = false;
 		RequireResetDoodle = false;
+		RequireResetDoodleColor = default;
 		float doodleShiftX = (float)leftPadding * Game.ScreenWidth / Renderer.CameraRect.width;
 		Game.DoodleScreenPadding = Int4.Direction(doodleShiftX.FloorToInt(), 0, 0, 0);
 		Game.SetDoodleOffset(RequireDoodleRenderingOffset);
@@ -569,6 +572,14 @@ public class RigRespondMessage {
 
 			RequireShowDoodle = Util.ReadBool(ref pointer, end);
 			RequireResetDoodle = Util.ReadBool(ref pointer, end);
+			if (RequireResetDoodle) {
+				RequireResetDoodleColor = new Color32(
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end),
+					Util.ReadByte(ref pointer, end)
+				);
+			}
 			RequireDoodleRenderingOffset.x = Util.ReadFloat(ref pointer, end);
 			RequireDoodleRenderingOffset.y = Util.ReadFloat(ref pointer, end);
 			RequireDoodleRenderingZoom = Util.ReadFloat(ref pointer, end);
@@ -783,6 +794,12 @@ public class RigRespondMessage {
 
 			Util.Write(ref pointer, RequireShowDoodle, end);
 			Util.Write(ref pointer, RequireResetDoodle, end);
+			if (RequireResetDoodle) {
+				Util.Write(ref pointer, RequireResetDoodleColor.r, end);
+				Util.Write(ref pointer, RequireResetDoodleColor.g, end);
+				Util.Write(ref pointer, RequireResetDoodleColor.b, end);
+				Util.Write(ref pointer, RequireResetDoodleColor.a, end);
+			}
 			Util.Write(ref pointer, RequireDoodleRenderingOffset.x, end);
 			Util.Write(ref pointer, RequireDoodleRenderingOffset.y, end);
 			Util.Write(ref pointer, RequireDoodleRenderingZoom, end);

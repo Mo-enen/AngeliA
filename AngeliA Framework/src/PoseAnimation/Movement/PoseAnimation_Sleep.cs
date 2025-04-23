@@ -1,6 +1,7 @@
 ﻿namespace AngeliA;
 
 public class PoseAnimation_Sleep : PoseAnimation {
+	protected override bool DontBlendToNext => true;
 	public override void Animate (PoseCharacterRenderer renderer) {
 		base.Animate(renderer);
 		bool alt = CurrentAnimationFrame.UMod(120) >= 60;

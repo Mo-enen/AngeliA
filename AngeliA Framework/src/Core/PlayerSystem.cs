@@ -547,7 +547,6 @@ public static class PlayerSystem {
 			Input.UseGameKey(Gamekey.Jump);
 			Selecting.SetCharacterState(CharacterState.GamePlay);
 			Selecting.SleepStartFrame = int.MinValue;
-			Selecting.Y -= 4;
 		}
 
 		// Hint

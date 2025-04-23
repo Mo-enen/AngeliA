@@ -57,7 +57,16 @@ public sealed class CraftingUI : InventoryPartnerUI {
 
 
 	public override void DrawPanel (IRect panelRect) {
+
+		int minPanelHeight = Unify(128);
+		if (panelRect.height < minPanelHeight) {
+			int bgPadding = Unify(6);
+			int gap = minPanelHeight - panelRect.height;
+			Renderer.DrawPixel(panelRect.EdgeOutsideUp(gap + bgPadding), Color32.BLACK);
+			panelRect = panelRect.Expand(0, 0, 0, gap);
+		}
 		BackgroundRect = panelRect;
+
 		int sidePanelGapL = Unify(24);
 		int sidePanelGapR = Unify(64);
 		int docPanelWidth = Unify(196);

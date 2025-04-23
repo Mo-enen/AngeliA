@@ -141,10 +141,6 @@ public abstract class PoseAnimation {
 	public static void PerformAnimationFromPool (int id, PoseCharacterRenderer renderer) {
 		if (Pool.TryGetValue(id, out var result)) {
 			PerformAnimation(result, renderer);
-		} else {
-			// Valid Head Position
-			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
-			Body.Height = Body.Height.GreaterOrEquel(1);
 		}
 	}
 
@@ -181,10 +177,6 @@ public abstract class PoseAnimation {
 			PerformAnimationBlend(resultA, resultB, blend01, renderer);
 		} else if (resultA != null || resultB != null) {
 			PerformAnimation(resultA ?? resultB, renderer);
-		} else {
-			// Valid Head Position
-			Head.Y = Head.Y.GreaterOrEquel(Body.Y + 1);
-			Body.Height = Body.Height.GreaterOrEquel(1);
 		}
 	}
 

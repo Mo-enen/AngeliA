@@ -7,11 +7,10 @@ namespace AngeliA;
 /// <summary>
 /// Complete pose infomation at one moment for a pose-style character
 /// </summary>
-public class CharacterPose {
+internal class CharacterPose {
 
 	// Api
-	[JsonIgnore]
-	public readonly BodyPartTransform[] BodyParts = new BodyPartTransform[BodyPart.BODY_PART_COUNT];
+	private readonly BodyPartTransform[] BodyParts = new BodyPartTransform[BodyPart.BODY_PART_COUNT];
 
 	public BodyPartTransform Head { get; init; } = null;
 	public BodyPartTransform Body { get; init; } = null;

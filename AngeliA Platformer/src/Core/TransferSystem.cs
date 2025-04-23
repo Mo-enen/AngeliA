@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AngeliA;
 
-namespace AngeliA;
+namespace AngeliA.Platformer;
 
 /// <summary>
 /// Core system that transfer object data along the stage

@@ -37,10 +37,6 @@ public partial class MapEditor {
 
 		if (TaskingRoute) return;
 
-		// BG
-		//BackgroundColor = Color32.Lerp(Sky.SkyTintTopColor, Sky.SkyTintBottomColor, 0.5f);
-		//Sky.ForceSkyboxTint(BackgroundColor);
-
 		// Switch Mode Hotkey
 		if (Input.KeyboardDown(KeyboardKey.Tab)) {
 			Input.UseKeyboardKey(KeyboardKey.Tab);
@@ -207,7 +203,7 @@ public partial class MapEditor {
 		var unitRect = new IRect(unitX, unitY, unitRangeW, unitRangeH);
 		float screenOffsetX = (float)unitRect.x * gameScreenH / unitRangeH;
 		float screenOffsetY = (float)unitRect.y * gameScreenH / unitRangeH;
-		var bgColor = Color32.Lerp(Sky.SkyTintTopColor, Sky.SkyTintBottomColor, 0.5f);
+		var bgColor = GetNavBgColor();
 		bool inTransition = Game.GlobalFrame < TransitionFrame + TransitionDuration;
 
 		Game.ShowDoodle();
@@ -234,7 +230,7 @@ public partial class MapEditor {
 		if (unitRect != NavWorldDoodledUnitRange) {
 			if (!NavWorldDoodledUnitRange.Overlaps(unitRect)) {
 				// Doodle All
-				Game.DoodleRect(new FRect(0, 0, gameScreenW, gameScreenH), bgColor);
+				Game.ResetDoodle(bgColor);
 				Game.DoodleWorld(
 					Stream,
 					new FRect(screenOffsetX, screenOffsetY, gameScreenW, gameScreenH),
@@ -262,7 +258,7 @@ public partial class MapEditor {
 						deltaX < 0 ? NavWorldDoodledUnitRange.x : unitRect.xMax,
 						Util.Min(unitRect.yMax, NavWorldDoodledUnitRange.yMax)
 					);
-					Game.DoodleRectSwap(doodleRect, bgColor);
+					//Game.DoodleRectSwap(doodleRect, bgColor);
 					Game.DoodleWorld(Stream, doodleRect, doodleUnitRect, CurrentZ);
 				}
 				// Doodle Delta Y
@@ -279,7 +275,7 @@ public partial class MapEditor {
 						Util.Min(unitRect.xMax, NavWorldDoodledUnitRange.xMax),
 						deltaY < 0 ? NavWorldDoodledUnitRange.y : unitRect.yMax
 					);
-					Game.DoodleRectSwap(doodleRect, bgColor);
+					//Game.DoodleRectSwap(doodleRect, bgColor);
 					Game.DoodleWorld(Stream, doodleRect, doodleUnitRect, CurrentZ);
 				}
 				// Doodle Delta X&Y
@@ -296,7 +292,7 @@ public partial class MapEditor {
 						deltaX < 0 ? NavWorldDoodledUnitRange.x : unitRect.xMax,
 						deltaY < 0 ? NavWorldDoodledUnitRange.y : unitRect.yMax
 					);
-					Game.DoodleRectSwap(doodleRect, bgColor);
+					//Game.DoodleRectSwap(doodleRect, bgColor);
 					Game.DoodleWorld(Stream, doodleRect, doodleUnitRect, CurrentZ);
 				}
 			}
@@ -315,7 +311,7 @@ public partial class MapEditor {
 		NavMouseLeftDragged = false;
 		if (navigating) {
 			NavWorldDoodledZ = int.MinValue;
-			Game.ResetDoodle();
+			Game.ResetDoodle(GetNavBgColor());
 			Save();
 			RequireTransition(TargetViewRect.CenterX(), TargetViewRect.CenterY(), 10f, 1f, 20);
 		} else {
@@ -323,6 +319,9 @@ public partial class MapEditor {
 			RequireTransition(TargetViewRect.CenterX(), TargetViewRect.CenterY(), 0.618f, 1f, 20);
 		}
 	}
+
+
+	private Color32 GetNavBgColor () => Color32.Lerp(Sky.SkyTintTopColor, Sky.SkyTintBottomColor, 0.5f);
 
 
 }
