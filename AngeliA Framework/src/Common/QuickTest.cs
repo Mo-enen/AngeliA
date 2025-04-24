@@ -182,7 +182,6 @@ public class QTest {
 	private string CurrentGroup = "";
 	private int CurrentOrder;
 	private int CurrentGroupOrder;
-	private int PrevKeyCount = 0;
 	private int PanelMaxExpand = 0;
 	private string Title = "";
 
@@ -256,17 +255,14 @@ public class QTest {
 		CurrentGroup = "";
 		CurrentOrder = 0;
 		CurrentGroupOrder = 0;
-		if (Keys.Count != PrevKeyCount) {
-			// Update Group Order
-			foreach (var key in Keys) {
-				if (GroupFolding.TryGetValue(key.Group, out var gData)) {
-					key.GroupOrder = gData.Order;
-				}
+
+		// Sort Keys
+		foreach (var key in Keys) {
+			if (GroupFolding.TryGetValue(key.Group, out var gData)) {
+				key.GroupOrder = gData.Order;
 			}
-			// Sort Keys
-			PrevKeyCount = Keys.Count;
-			Keys.Sort(KeyComparer.Instance);
 		}
+		Keys.Sort(KeyComparer.Instance);
 
 		using var _ = new UILayerScope();
 		var cameraRect = Renderer.CameraRect;
@@ -324,7 +320,6 @@ public class QTest {
 		rect.SlideDown(padding);
 
 		// Content
-		GUI.BeginChangeCheck();
 		int index = 0;
 		int indent = GUI.Unify(26);
 		rect = rect.ShrinkLeft(indent);
@@ -355,7 +350,6 @@ public class QTest {
 					// Fold Button
 					if (GUI.Button(rect.Expand(indent, 0, 0, 0), group, GUI.Skin.SmallLabelButton)) {
 						gData.Folding = !folding;
-						PrevKeyCount = -1;
 					}
 					rect.SlideDown();
 				}
@@ -555,10 +549,6 @@ public class QTest {
 			}
 
 			index++;
-		}
-
-		if (GUI.EndChangeCheck()) {
-			PrevKeyCount = -1;
 		}
 
 		// Final
@@ -1155,7 +1145,6 @@ public class QTest {
 		FuncPool.Clear();
 		Keys.Clear();
 		GroupFolding.Clear();
-		PrevKeyCount = -1;
 	}
 
 
@@ -1468,20 +1457,12 @@ public class QTest {
 		if (!GroupFolding.TryGetValue(group, out var gData)) {
 			GroupFolding[group] = gData = new GroupData();
 			gData.Folding = folding;
-			PrevKeyCount = 0;
 		}
 		if (gData.UpdateFrame != Game.PauselessFrame) {
 			gData.Order = CurrentGroupOrder;
 			CurrentGroupOrder++;
 		}
 		gData.UpdateFrame = Game.PauselessFrame;
-	}
-
-
-	public static void SortAllKeys () {
-		for (int i = 0; i < MAX_WINDOW_COUNT; i++) {
-			Windows[i].PrevKeyCount = -1;
-		}
 	}
 
 

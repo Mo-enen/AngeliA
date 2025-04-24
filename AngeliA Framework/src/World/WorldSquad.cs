@@ -24,6 +24,10 @@ public sealed class WorldSquad : IBlockSquad {
 	/// </summary>
 	public static bool SquadReady { get; private set; } = false;
 	/// <summary>
+	/// True if the game copy built-in maps into user map folder.
+	/// </summary>
+	public static bool UseBuiltInAsFailback { get; private set; } = true;
+	/// <summary>
 	/// Squad that handles the front side map
 	/// </summary>
 	public static WorldSquad Front { get; set; } = null;
@@ -61,6 +65,7 @@ public sealed class WorldSquad : IBlockSquad {
 
 		if (!Renderer.IsReady) return TaskResult.Continue;
 
+		UseBuiltInAsFailback = !Util.TryGetAttributeFromAllAssemblies<DontUseBuiltInMapAsFailbackAttribute>();
 		var info = Universe.BuiltInInfo;
 		WorldBehindAlpha = info.WorldBehindAlpha;
 		WorldBehindParallax = info.WorldBehindParallax;
@@ -78,7 +83,7 @@ public sealed class WorldSquad : IBlockSquad {
 			OnWorldLoaded?.Invoke(world);
 		}
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
-		Stream.UseBuiltInAsFailback = !Universe.BuiltInInfo.UseProceduralMap;
+		Stream.UseBuiltInAsFailback = UseBuiltInAsFailback;
 		SquadReady = true;
 
 		if (Game.IsToolApplication) {
@@ -105,7 +110,7 @@ public sealed class WorldSquad : IBlockSquad {
 			Stream?.SaveAllDirty();
 		}
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
-		Stream.UseBuiltInAsFailback = !Universe.BuiltInInfo.UseProceduralMap;
+		Stream.UseBuiltInAsFailback = UseBuiltInAsFailback;
 		Stream.ClearWorldPool();
 		SquadReady = true;
 	}
@@ -241,7 +246,7 @@ public sealed class WorldSquad : IBlockSquad {
 		CameraRect = Renderer.CameraRect;
 		var cullingPadding = Stage.GetCameraCullingPadding();
 		CullingCameraRect = CameraRect.Expand(cullingPadding);
-		bool procedural = Universe.BuiltInInfo.UseProceduralMap;
+		bool useBuiltInAsFailback = Stream.UseBuiltInAsFailback;
 
 		if (!isBehind) {
 			// Current
@@ -279,10 +284,10 @@ public sealed class WorldSquad : IBlockSquad {
 			for (int worldJ = worldD; worldJ < worldU; worldJ++) {
 				// Get World
 				World world;
-				if (procedural) {
-					world = Stream.GetOrCreateWorld(worldI, worldJ, z);
-				} else {
+				if (useBuiltInAsFailback) {
 					if (!Stream.TryGetWorld(worldI, worldJ, z, out world)) continue;
+				} else {
+					world = Stream.GetOrCreateWorld(worldI, worldJ, z);
 				}
 				// Draw World
 				var worldUnitRect = new IRect(
@@ -336,10 +341,10 @@ public sealed class WorldSquad : IBlockSquad {
 			for (int worldJ = worldD; worldJ < worldU; worldJ++) {
 				// Get World
 				World world;
-				if (procedural) {
-					world = Stream.GetOrCreateWorld(worldI, worldJ, z);
-				} else {
+				if (useBuiltInAsFailback) {
 					if (!Stream.TryGetWorld(worldI, worldJ, z, out world)) continue;
+				} else {
+					world = Stream.GetOrCreateWorld(worldI, worldJ, z);
 				}
 				// Draw World
 				var worldUnitRect = new IRect(

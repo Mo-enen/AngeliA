@@ -94,3 +94,9 @@ public class BodySetAttribute (string name) : Attribute {
 	internal readonly string Name = name;
 }
 
+
+/// <summary>
+/// When not having map file in user map folder, create an empty map instead of copy from built-in map folder.
+/// </summary>
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class DontUseBuiltInMapAsFailbackAttribute : Attribute { }

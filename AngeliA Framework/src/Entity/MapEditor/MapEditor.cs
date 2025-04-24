@@ -703,7 +703,14 @@ public sealed partial class MapEditor : WindowUI {
 
 				// Switch Mode
 				if (Input.KeyboardDown(KeyboardKey.Space)) {
-					StartDropPlayer();
+					if (WorldSquad.UseBuiltInAsFailback) {
+						StartDropPlayer();
+					} else {
+						SetEditorMode(true);
+						TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
+						Input.UseAllHoldingKeys();
+						Input.UseGameKey(Gamekey.Start);
+					}
 				}
 				ControlHintUI.AddHint(KeyboardKey.Space, HINT_MEDT_SWITCH_PLAY);
 
@@ -1249,7 +1256,7 @@ public sealed partial class MapEditor : WindowUI {
 
 		} else {
 			// Edit >> Play
-			if (!Universe.BuiltInInfo.UseProceduralMap) {
+			if (WorldSquad.UseBuiltInAsFailback) {
 				WorldSquad.ClearStreamWorldPool();
 				WorldSquad.ResetStreamFailbackCopying();
 			}

@@ -53,10 +53,6 @@ public class UniverseInfo : IJsonSerializationCallback {
 	/// </summary>
 	public uint EngineBuildVersion = 0;
 	/// <summary>
-	/// Generate map proceduraly during game play
-	/// </summary>
-	public bool UseProceduralMap = false;
-	/// <summary>
 	/// Require map editor from AngeliA Engine when under development
 	/// </summary>
 	public bool UseMapEditor = true;

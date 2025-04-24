@@ -372,15 +372,10 @@ internal class PauseMenuUI : MenuUI {
 
 #if DEBUG
 		// Restart & Regenerate Map
-		if (Universe.BuiltInInfo.UseProceduralMap && DrawItem(UI_RESTART_REGENERATE)) {
-			Game.UnpauseGame();
+		if (!WorldSquad.UseBuiltInAsFailback && DrawItem(UI_RESTART_REGENERATE)) {
 			Active = false;
+			Game.UnpauseGame();
 			Input.UseAllHoldingKeys();
-			ResetAll(restartGame: false);
-			TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
-		}
-		static void ResetAll (bool restartGame = false) {
-
 			var uni = Universe.BuiltIn;
 			Stage.DespawnAllNonUiEntities(refreshImmediately: true);
 			WorldSquad.ClearStreamWorldPool();
@@ -400,11 +395,7 @@ internal class PauseMenuUI : MenuUI {
 
 			// Reload Saving Slot
 			uni.ReloadSavingSlot(uni.CurrentSavingSlot, forceReload: true);
-
-			// Start Game
-			if (restartGame) {
-				Game.RestartGame();
-			}
+			TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
 		}
 #endif
 
