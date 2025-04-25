@@ -151,7 +151,7 @@ internal partial class GameEditor : WindowUI {
 		int buttonSize = ToolbarWidth - padding * 2;
 		var barRect = ToolbarRect = WindowRect.EdgeInsideRight(buttonSize + padding * 2);
 		var oldPanel = CurrentPanel;
-		bool allowLocationPanel = !HavingGamePlay || !CurrentProject.Universe.Info.UseProceduralMap;
+		bool allowLocationPanel = !HavingGamePlay;
 		if (!allowLocationPanel && CurrentPanel == PanelType.Location) {
 			CurrentPanel = PanelType.None;
 		}

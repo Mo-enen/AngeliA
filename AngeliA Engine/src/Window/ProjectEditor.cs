@@ -68,7 +68,6 @@ internal class ProjectEditor : WindowUI {
 	private static readonly LanguageCode LABEL_ADD_MUSIC = ("Label.Project.AddMusic", "+ music");
 	private static readonly LanguageCode LABEL_ADD_SOUND = ("Label.Project.AddSound", "+ Sound");
 	private static readonly LanguageCode LABEL_ADD_FONT = ("Label.Project.AddFont", "+ Font");
-	private static readonly LanguageCode LABEL_USE_PROCE_MAP = ("Label.Project.UseProceduralMap", "Use Procedural Map");
 	private static readonly LanguageCode LABEL_USE_MAP_EDT = ("Label.Project.UseMapEditor", "Use Map Editor");
 	private static readonly LanguageCode LABEL_READONLY_MAP = ("Label.Project.ReadonlyMap", "Map Readonly for Player");
 	private static readonly LanguageCode LABEL_USE_LIGHT_SYS = ("Label.Project.UseLightingSystem", "Use Map Lighting System");
@@ -530,15 +529,6 @@ internal class ProjectEditor : WindowUI {
 		int padding = GUI.FieldPadding;
 		int itemHeight = GUI.FieldHeight;
 		rect.yMin = rect.yMax - itemHeight;
-
-		// Use Procedural Map
-		bool newUseProceduralMap = GUI.Toggle(rect, info.UseProceduralMap, LABEL_USE_PROCE_MAP, labelStyle: Skin.SmallLabel);
-		if (newUseProceduralMap != info.UseProceduralMap) {
-			info.UseProceduralMap = newUseProceduralMap;
-			RequireRecompileOnSave = true;
-			SetDirty();
-		}
-		rect.SlideDown(padding);
 
 		// Use Map Editor
 		bool newUseMapEDT = GUI.Toggle(rect, info.UseMapEditor, LABEL_USE_MAP_EDT, labelStyle: Skin.SmallLabel);

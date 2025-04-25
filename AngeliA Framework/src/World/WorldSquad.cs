@@ -30,11 +30,8 @@ public sealed class WorldSquad : IBlockSquad {
 	/// <summary>
 	/// Squad that handles the front side map
 	/// </summary>
-	public static WorldSquad Front { get; set; } = null;
-	/// <summary>
-	/// Squad that handles the behind side map
-	/// </summary>
-	public static WorldSquad Behind { get; set; } = null;
+	public static WorldSquad Front { get; private set; } = null;
+	public static WorldStream Stream { get; private set; } = null;
 
 	// Data
 	[BeforeLevelRendered] internal static System.Action BeforeLevelRendered;
@@ -42,7 +39,7 @@ public sealed class WorldSquad : IBlockSquad {
 	[OnWorldCreatedBySquad_World] internal static System.Action<World> OnWorldCreated;
 	[OnWorldLoadedBySquad_World] internal static System.Action<World> OnWorldLoaded;
 	private static readonly Dictionary<int, int> BlockRedirect = [];
-	private static WorldStream Stream = null;
+	private static WorldSquad Behind = null;
 	private static byte WorldBehindAlpha;
 	private static int WorldBehindParallax;
 	private static bool ReadonlyMap = false;

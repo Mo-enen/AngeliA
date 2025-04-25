@@ -151,6 +151,14 @@ public static class DebugTool {
 		player.IgnorePhysics.True(1, 4096);
 		player.Health.MakeInvincible(1);
 
+		// Shift Layer
+		if (Input.KeyboardDown(KeyboardKey.S)) {
+			Stage.SetViewZ(Stage.ViewZ - 1);
+		}
+		if (Input.KeyboardDown(KeyboardKey.W)) {
+			Stage.SetViewZ(Stage.ViewZ + 1);
+		}
+
 		// Move View when Hover on Edge
 		var cameraRect = Renderer.CameraRect;
 		var center = cameraRect.CenterInt();

@@ -34,8 +34,8 @@ public class OnFirePutOut_IntTypeID_IRectAttribute : EventAttribute {
 }
 
 
-/// <inheritdoc cref="OnMiniGameGiveBadge_IntQuality(int)"/>
-public class OnMiniGameGiveBadge_IntQuality : EventAttribute {
+/// <inheritdoc cref="OnMiniGameGiveBadge_IntQualityAttribute(int)"/>
+public class OnMiniGameGiveBadge_IntQualityAttribute : EventAttribute {
 	/// <summary>
 	/// The function will be called when mini game give reward to player
 	/// </summary>
@@ -44,7 +44,19 @@ public class OnMiniGameGiveBadge_IntQuality : EventAttribute {
 	/// [OnMiniGameGiveBadge_IntQuality]
 	/// internal static void ExampleFunction (int quality) { }
 	/// </code></example>
-	public OnMiniGameGiveBadge_IntQuality (int order = 0) : base(order) { }
+	public OnMiniGameGiveBadge_IntQualityAttribute (int order = 0) : base(order) { }
 }
 
 
+
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class SpriteReflectionAttribute (string spriteName, int amount = 1000) : Attribute {
+	private string SpriteName { get; init; } = spriteName;
+	private int Amount { get; init; } = amount;
+	[OnGameInitializeLater]
+	internal static void OnGameInitializeLater () {
+		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<SpriteReflectionAttribute>()) {
+			SpriteReflectionSystem.RegisterSprite(att.SpriteName.AngeHash(), att.Amount);
+		}
+	}
+}

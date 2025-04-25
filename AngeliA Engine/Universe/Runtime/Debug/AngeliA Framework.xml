@@ -99,6 +99,11 @@
             </summary>
             <param name="name">The name of the bodyset</param>
         </member>
+        <member name="T:AngeliA.DontUseBuiltInMapAsFailbackAttribute">
+            <summary>
+            When not having map file in user map folder, create an empty map instead of copy from built-in map folder.
+            </summary>
+        </member>
         <member name="T:AngeliA.CharacterAttribute">
             <summary>
             Attribute for character class
@@ -3873,11 +3878,6 @@
         <member name="F:AngeliA.UniverseInfo.EngineBuildVersion">
             <summary>
             Which version of AngeliA Engine published this project
-            </summary>
-        </member>
-        <member name="F:AngeliA.UniverseInfo.UseProceduralMap">
-            <summary>
-            Generate map proceduraly during game play
             </summary>
         </member>
         <member name="F:AngeliA.UniverseInfo.UseMapEditor">
@@ -17938,14 +17938,14 @@
             True if the system is ready to use
             </summary>
         </member>
+        <member name="P:AngeliA.WorldSquad.UseBuiltInAsFailback">
+            <summary>
+            True if the game copy built-in maps into user map folder.
+            </summary>
+        </member>
         <member name="P:AngeliA.WorldSquad.Front">
             <summary>
             Squad that handles the front side map
-            </summary>
-        </member>
-        <member name="P:AngeliA.WorldSquad.Behind">
-            <summary>
-            Squad that handles the behind side map
             </summary>
         </member>
         <member name="M:AngeliA.WorldSquad.ClearStreamWorldPool">

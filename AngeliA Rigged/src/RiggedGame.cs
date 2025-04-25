@@ -116,9 +116,6 @@ public partial class RiggedGame : Game {
 
 	public void InitializeLater () {
 		Universe.BuiltInInfo.AllowQuitFromMenu = false;
-		if (!Universe.BuiltInInfo.UseProceduralMap) {
-			Universe.BuiltInInfo.AllowRestartFromMenu = false;
-		}
 		OriginalMinViewHeight = Universe.BuiltInInfo.MinViewHeight;
 		OriginalMaxViewHeight = Universe.BuiltInInfo.MaxViewHeight;
 		Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;

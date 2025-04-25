@@ -30,10 +30,10 @@
             internal static void ExampleFunction (int typeID, IRect rect) { }
             </code></example>
         </member>
-        <member name="T:AngeliA.Platformer.OnMiniGameGiveBadge_IntQuality">
-            <inheritdoc cref="M:AngeliA.Platformer.OnMiniGameGiveBadge_IntQuality.#ctor(System.Int32)"/>
+        <member name="T:AngeliA.Platformer.OnMiniGameGiveBadge_IntQualityAttribute">
+            <inheritdoc cref="M:AngeliA.Platformer.OnMiniGameGiveBadge_IntQualityAttribute.#ctor(System.Int32)"/>
         </member>
-        <member name="M:AngeliA.Platformer.OnMiniGameGiveBadge_IntQuality.#ctor(System.Int32)">
+        <member name="M:AngeliA.Platformer.OnMiniGameGiveBadge_IntQualityAttribute.#ctor(System.Int32)">
             <summary>
             The function will be called when mini game give reward to player
             </summary>
