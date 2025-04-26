@@ -6,7 +6,6 @@
   "MinorVersion": 0,
   "PatchVersion": 1,
   "EngineBuildVersion": 21,
-  "UseProceduralMap": false,
   "UseMapEditor": true,
   "UseLightingSystem": true,
   "ReadonlyMap": false,

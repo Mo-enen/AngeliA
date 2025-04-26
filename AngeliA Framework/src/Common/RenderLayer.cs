@@ -30,16 +30,15 @@ public static class RenderLayer {
 	/// Render cells with additive shader
 	/// </summary>
 	public const int ADD = 6;
-	public const int REFLECTION = 7;
-	public const int UI = 8;
+	public const int UI = 7;
 
-	public const int COUNT = 9;
+	public const int COUNT = 8;
 
 	public static readonly string[] NAMES = [
-		"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "Reflection", "UI",
+		"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI",
 	];
 	public static readonly int[] DEFAULT_CAPACITY = [
-		256, 8192, 4096, 16384, 256, 128, 128, 8192, 8192,
+		1024, 16384, 8192, 65536, 512, 256, 256, 8192,
 	];
 
 }

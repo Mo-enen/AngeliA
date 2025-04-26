@@ -50,13 +50,13 @@ public class OnMiniGameGiveBadge_IntQualityAttribute : EventAttribute {
 
 
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-public class SpriteReflectionAttribute (string spriteName, int amount = 1000) : Attribute {
+public class SpriteReflectionAttribute (string spriteName, byte alpha = 108) : Attribute {
 	private string SpriteName { get; init; } = spriteName;
-	private int Amount { get; init; } = amount;
+	private byte Alpha { get; init; } = alpha;
 	[OnGameInitializeLater]
 	internal static void OnGameInitializeLater () {
 		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<SpriteReflectionAttribute>()) {
-			SpriteReflectionSystem.RegisterSprite(att.SpriteName.AngeHash(), att.Amount);
+			SpriteReflectionSystem.RegisterSprite(att.SpriteName.AngeHash(), att.Alpha);
 		}
 	}
 }

@@ -126,7 +126,7 @@ public static class DebugTool {
 	private static void UpdateDebugDragging () {
 
 		var player = PlayerSystem.Selecting;
-		if (!DragPlayerInMiddleButtonToMove || player == null || !Input.MouseMidButtonHolding) {
+		if (MapEditor.IsEditing || !DragPlayerInMiddleButtonToMove || player == null || !Input.MouseMidButtonHolding) {
 			// End Hook Task
 			if (TaskSystem.GetCurrentTask() is EntityHookTask hTask) {
 				hTask.UserData = null;

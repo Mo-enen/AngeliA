@@ -100,3 +100,14 @@ public enum FittingPose {
 
 
 
+/// <summary>
+/// What type of cells are included for the operation
+/// </summary>
+public enum OperationMode {
+	ColliderOnly = 0,
+	TriggerOnly = 1,
+	ColliderAndTrigger = 2,
+}
+
+
+

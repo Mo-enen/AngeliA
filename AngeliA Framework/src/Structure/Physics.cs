@@ -6,45 +6,6 @@ namespace AngeliA;
 
 
 /// <summary>
-/// Basic unit of a physics data structure
-/// </summary>
-public struct PhysicsCell {
-
-	public static readonly PhysicsCell EMPTY = new();
-
-	/// <summary>
-	/// Rect position in global space
-	/// </summary>
-	public IRect Rect;
-	/// <summary>
-	/// Target entity (null if from block)
-	/// </summary>
-	public Entity Entity;
-	internal uint Frame;
-	/// <summary>
-	/// True if this cell is marked as trigger
-	/// </summary>
-	public bool IsTrigger;
-	public Tag Tag;
-	/// <summary>
-	/// ID for identify which object filled this cell
-	/// </summary>
-	public int SourceID;
-
-}
-
-
-/// <summary>
-/// What type of cells are included for the operation
-/// </summary>
-public enum OperationMode {
-	ColliderOnly = 0,
-	TriggerOnly = 1,
-	ColliderAndTrigger = 2,
-}
-
-
-/// <summary>
 /// Core system that handles physics of AngeliA games.
 /// Logic of the system is frame-isolated which means data from prev frame will never effect current frame.
 /// </summary>

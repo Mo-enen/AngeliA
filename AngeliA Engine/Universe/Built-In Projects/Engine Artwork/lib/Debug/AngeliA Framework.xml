@@ -99,6 +99,11 @@
             </summary>
             <param name="name">The name of the bodyset</param>
         </member>
+        <member name="T:AngeliA.DontUseBuiltInMapAsFailbackAttribute">
+            <summary>
+            When not having map file in user map folder, create an empty map instead of copy from built-in map folder.
+            </summary>
+        </member>
         <member name="T:AngeliA.CharacterAttribute">
             <summary>
             Attribute for character class
@@ -3073,6 +3078,21 @@
             Draw a label on top-right of the screen for the current frame
             </summary>
         </member>
+        <member name="T:AngeliA.DebugTool">
+            <summary>
+            Provide extra tools for debugging. eg. Drag with mouse middle button to move player.
+            </summary>
+        </member>
+        <member name="F:AngeliA.DebugTool.DragPlayerInMiddleButtonToMove">
+            <summary>
+            True if allow user use middle mouse button to move player for debug. This feature is not include after the game publish.
+            </summary>
+        </member>
+        <member name="F:AngeliA.DebugTool.UseDebugHotkey">
+            <summary>
+            True if use hotkeys to debug. eg. Ctrl+Alt+I to make player invincible
+            </summary>
+        </member>
         <member name="T:AngeliA.EntityLayer">
             <summary>
             Layer for entity spawning
@@ -3091,6 +3111,11 @@
         <member name="T:AngeliA.WrapMode">
             <summary>
             How text wrap when reach edge
+            </summary>
+        </member>
+        <member name="T:AngeliA.OperationMode">
+            <summary>
+            What type of cells are included for the operation
             </summary>
         </member>
         <member name="T:AngeliA.Extension">
@@ -3372,17 +3397,18 @@
             </summary>
             <param name="path">Path of a file with any extension you want (not a folder)</param>
         </member>
-        <member name="M:AngeliA.QTest.Bool(System.String,System.Boolean,System.String,System.Int32)">
+        <member name="M:AngeliA.QTest.Bool(System.String,System.Boolean,System.String,System.String,System.Int32)">
             <summary>
             Require a toggle inside the current test window
             </summary>
             <param name="key">Unique key to identify this field</param>
             <param name="defaultValue"></param>
             <param name="displayLabel">Text content for rendering only</param>
+            <param name="overrideLabel">Force firld use this label</param>
             <param name="windowIndex">Force field into given window instead of current window</param>
             <returns>The current data of this field</returns>
         </member>
-        <member name="M:AngeliA.QTest.Int(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.Int32)">
+        <member name="M:AngeliA.QTest.Int(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String,System.Int32)">
             <summary>
             Require a intager slider inside the current test window
             </summary>
@@ -3392,10 +3418,11 @@
             <param name="max">Maximal limitation of this value</param>
             <param name="step">Step count when dragging the slider. 0 means no step.</param>
             <param name="displayLabel">Text content for rendering only</param>
+            <param name="overrideLabel">Force firld use this label</param>
             <param name="windowIndex">Force field into given window instead of current window</param>
             <returns>The current data of this field</returns>
         </member>
-        <member name="M:AngeliA.QTest.Float(System.String,System.Single,System.Single,System.Single,System.Single,System.String,System.Int32)">
+        <member name="M:AngeliA.QTest.Float(System.String,System.Single,System.Single,System.Single,System.Single,System.String,System.String,System.Int32)">
             <summary>
             Require a float slider inside the current test window
             </summary>
@@ -3405,16 +3432,18 @@
             <param name="max">Maximal limitation of this value</param>
             <param name="step">Step count when dragging the slider. 0 means no step.</param>
             <param name="displayLabel">Text content for rendering only</param>
+            <param name="overrideLabel">Force firld use this label</param>
             <param name="windowIndex">Force field into given window instead of current window</param>
             <returns>The current data of this field</returns>
         </member>
-        <member name="M:AngeliA.QTest.String(System.String,System.String,System.Int32)">
+        <member name="M:AngeliA.QTest.String(System.String,System.String,System.String,System.Int32)">
             <summary>
             Require a text input field inside the current test window
             </summary>
             <param name="key">Unique key to identify this field</param>
             <param name="defaultValue"></param>
             <param name="windowIndex">Force field into given window instead of current window</param>
+            <param name="overrideLabel">Force firld use this label</param>
             <returns>The current data of this field</returns>
         </member>
         <member name="M:AngeliA.QTest.Button(System.String,System.Action,System.Object,System.Object,System.Int32,System.Action,System.String,System.String,System.Action,System.String,System.Action,System.String)">
@@ -3856,11 +3885,6 @@
             Which version of AngeliA Engine published this project
             </summary>
         </member>
-        <member name="F:AngeliA.UniverseInfo.UseProceduralMap">
-            <summary>
-            Generate map proceduraly during game play
-            </summary>
-        </member>
         <member name="F:AngeliA.UniverseInfo.UseMapEditor">
             <summary>
             Require map editor from AngeliA Engine when under development
@@ -4120,87 +4144,6 @@
             <summary>
             Get cheat code at given index inside system list
             </summary>
-        </member>
-        <member name="T:AngeliA.CircuitSystem">
-            <summary>
-            Core system for triggering specified function of entities on stage/map
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.RegisterWire(System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Register target IMapItem as wire for operating circuit
-            </summary>
-            <param name="id">ID of the target entity/element</param>
-            <param name="connectL">True if this wire connect to the wire/operator on left</param>
-            <param name="connectR">True if this wire connect to the wire/operator on right</param>
-            <param name="connectD">True if this wire connect to the wire/operator on bottom</param>
-            <param name="connectU">True if this wire connect to the wire/operator on top</param>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.IsWire(System.Int32)">
-            <summary>
-            True if the given ID is registed as wire
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.TriggerCircuit(System.Int32,System.Int32,System.Int32,System.Int32,AngeliA.Direction5)">
-            <summary>
-            Trigger the system at given position
-            </summary>
-            <param name="unitX">Position to start circuit trigger in unit space</param>
-            <param name="unitY">Position to start circuit trigger in unit space</param>
-            <param name="unitZ">Position Z</param>
-            <param name="stamp">unique ID for this operation</param>
-            <param name="startDirection">Only start at this direction (Set to center to start all direction)</param>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.OperateCircuit(AngeliA.Int3,System.Int32,AngeliA.Direction5)">
-            <summary>
-            Perform the function from the operator at given position
-            </summary>
-            <param name="unitPos">Target position in unit space</param>
-            <param name="stamp">unique ID for this operation</param>
-            <param name="circuitFrom">Which direction does the circuit came from. Set to center to make current as original.</param>
-            <returns></returns>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.WireEntityID_to_WireConnection(System.Int32,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@)">
-            <summary>
-            Get connection directions from given wire ID
-            </summary>
-            <returns>True if the wire ID is valid</returns>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.IsCircuitOperator(System.Int32)">
-            <summary>
-            True if the given ID is a valid circuit operator entity
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.WireConnection_to_BitInt(System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Convert wire connection info into an Intager
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.BitInt_to_WireConnection(System.Int32,System.Boolean@,System.Boolean@,System.Boolean@,System.Boolean@)">
-            <summary>
-            Convert an intager into wire connection info
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.GetStamp(AngeliA.Int3)">
-            <summary>
-            Get unique ID for circuit system at given position in unit space
-            </summary>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.TryAddBackgroundTrigger(System.Int32,AngeliA.Int3)">
-            <summary>
-            Add a trigger in background thread
-            </summary>
-            <param name="entityID">Source ID of this trigger</param>
-            <param name="unitPos">Position in unit space</param>
-            <returns>True if the capacity is not reached</returns>
-        </member>
-        <member name="M:AngeliA.CircuitSystem.TryRemoveBackgroundTrigger(System.Int32,AngeliA.Int3)">
-            <summary>
-            Remove the given entity from background thread triggers
-            </summary>
-            <param name="entityID">Source ID of this trigger</param>
-            <param name="unitPos">Position in unit space</param>
-            <returns>True if the trigger is removed</returns>
         </member>
         <member name="T:AngeliA.Cursor">
             <summary>
@@ -5061,195 +5004,6 @@
             ID for identify which object filled this cell
             </summary>
         </member>
-        <member name="T:AngeliA.OperationMode">
-            <summary>
-            What type of cells are included for the operation
-            </summary>
-        </member>
-        <member name="T:AngeliA.Physics">
-            <summary>
-            Core system that handles physics of AngeliA games.
-            Logic of the system is frame-isolated which means data from prev frame will never effect current frame.
-            </summary>
-        </member>
-        <member name="P:AngeliA.Physics.IsReady">
-            <summary>
-            True if the system is ready to use.
-            </summary>
-        </member>
-        <member name="M:AngeliA.Physics.FillBlock(System.Int32,System.Int32,AngeliA.IRect,System.Boolean,AngeliA.Tag)">
-            <summary>
-            Add a physics cell for a map block for current frame. Call this function inside Entity.FirstUpdate
-            </summary>
-            <param name="layer">Which layer to add this cell into. (Use PhysicsLayer.XXX to get this value)</param>
-            <param name="blockID">ID of the source block</param>
-            <param name="globalRect">Rect position in global space</param>
-            <param name="isTrigger">True if the cell should mark as trigger</param>
-            <param name="tag">What extra info this cell have</param>
-        </member>
-        <member name="M:AngeliA.Physics.FillEntity(System.Int32,AngeliA.Entity,System.Boolean,AngeliA.Tag)">
-            <summary>
-            Add a physics cell for an entity for current frame. Call this function inside Entity.FirstUpdate
-            </summary>
-            <param name="layer">Which layer to add this cell into. (Use PhysicsLayer.XXX to get this value)</param>
-            <param name="entity">Source entity for this cell</param>
-            <param name="isTrigger">True if the cell should mark as trigger</param>
-            <param name="tag">What extra info this cell have</param>
-        </member>
-        <member name="M:AngeliA.Physics.IgnoreOverlap(System.Int32,AngeliA.IRect,AngeliA.OperationMode)">
-            <summary>
-            Remove all cells that overlap target range
-            </summary>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="globalRect">Rect position in global space</param>
-            <param name="mode">What type of cells are included for the operation</param>
-        </member>
-        <member name="M:AngeliA.Physics.Overlap(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
-            <inheritdoc cref="M:AngeliA.Physics.Overlap(System.Int32,AngeliA.IRect,AngeliA.PhysicsCell@,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)"/>
-        </member>
-        <member name="M:AngeliA.Physics.Overlap(System.Int32,AngeliA.IRect,AngeliA.PhysicsCell@,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
-            <summary>
-            True if any cell overlap the given rect
-            </summary>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="globalRect">Rect position in global space</param>
-            <param name="ignore">Entity that should be excluded</param>
-            <param name="mode">What type of cells are included for the operation</param>
-            <param name="tag">Only cells with all tags should be included</param>
-            <param name="info">Cell of the overlaping object</param>
-        </member>
-        <member name="M:AngeliA.Physics.OverlapAll(System.Int32,AngeliA.IRect,System.Int32@,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
-            <summary>
-            Find all cells that overlap with given rect and fill into an array (The array is cached internaly. Max size 1024)
-            </summary>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="globalRect">Rect position in global space</param>
-            <param name="count">How many cells are founded</param>
-            <param name="ignore">Entity that should be excluded</param>
-            <param name="mode">What type of cells are included for the operation</param>
-            <param name="tag">Only cells with all tags should be included</param>
-            <returns>Cell array with the results</returns>
-        </member>
-        <member name="M:AngeliA.Physics.OverlapAll(AngeliA.PhysicsCell[],System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
-            <summary>
-            Find all cells that overlap with given rect and fill into given array
-            </summary>
-            <param name="hits">The array that will hold the result</param>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="globalRect">Rect position in global space</param>
-            <param name="ignore">Entity that should be excluded</param>
-            <param name="mode">What type of cells are included for the operation</param>
-            <param name="tag">Only cells with all tags should be included</param>
-            <returns>How many cells are founded</returns>
-        </member>
-        <member name="M:AngeliA.Physics.GetEntity``1(AngeliA.IRect,System.Int32,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
-            <summary>
-            Get entity instance from stage that overlap given rect
-            </summary>
-            <typeparam name="T">Type of the target entity</typeparam>
-            <param name="globalRect">Rect position in global space</param>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="ignore">Entity that should be excluded</param>
-            <param name="mode">What type of cells are included for the operation</param>
-            <param name="tag">Only cells with all tags should be included</param>
-        </member>
-        <member name="M:AngeliA.Physics.GetEntity(System.Int32,AngeliA.IRect,System.Int32,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
-            <summary>
-            Get entity instance from stage that overlap given rect
-            </summary>
-            <param name="typeID">Type of the target entity</param>
-            <param name="globalRect">Rect position in global space</param>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="ignore">Entity that should be excluded</param>
-            <param name="mode">What type of cells are included for the operation</param>
-            <param name="tag">Only cells with all tags should be included</param>
-        </member>
-        <member name="M:AngeliA.Physics.HasEntity``1(AngeliA.IRect,System.Int32,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
-            <summary>
-            True if any entity instance from stage that overlap given rect
-            </summary>
-            <typeparam name="T">Type of the target entity</typeparam>
-            <param name="globalRect">Rect position in global space</param>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="ignore">Entity that should be excluded</param>
-            <param name="mode">What type of cells are included for the operation</param>
-            <param name="tag">Only cells with all tags should be included</param>
-        </member>
-        <member name="M:AngeliA.Physics.RoomCheck(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,AngeliA.OperationMode,AngeliA.Tag)">
-            <inheritdoc cref="M:AngeliA.Physics.RoomCheck(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,AngeliA.PhysicsCell@,AngeliA.OperationMode,AngeliA.Tag)"/>
-        </member>
-        <member name="M:AngeliA.Physics.RoomCheck(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,AngeliA.PhysicsCell@,AngeliA.OperationMode,AngeliA.Tag)">
-            <summary>
-            True if there is free room founded at given direction (only Involving solid colliders)
-            </summary>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="rect">Start location in global space</param>
-            <param name="entity">Entity that should be exclude</param>
-            <param name="direction"></param>
-            <param name="mode">What type of cells are included for the operation</param>
-            <param name="tag">Only cells with all tags should be included</param>
-            <param name="hit">Cell of the object that blocks the free room</param>
-        </member>
-        <member name="M:AngeliA.Physics.RoomCheckOneway(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,System.Boolean,System.Boolean)">
-            <inheritdoc cref="M:AngeliA.Physics.RoomCheckOneway(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,AngeliA.PhysicsCell@,System.Boolean,System.Boolean)"/>
-        </member>
-        <member name="M:AngeliA.Physics.RoomCheckOneway(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,AngeliA.PhysicsCell@,System.Boolean,System.Boolean)">
-            <summary>
-            True if there is free room founded at given direction (only Involving oneway gate)
-            </summary>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="rect">Start location in global space</param>
-            <param name="entity">Entity that should be exclude</param>
-            <param name="direction"></param>
-            <param name="hit">Cell of the object that blocks the free room</param>
-            <param name="overlapCheck">True if oneway gates that not blocking the way (only overlap with rect) count as blocked</param>
-            <param name="blockOnly">True if ignore oneway gates from entities</param>
-        </member>
-        <member name="M:AngeliA.Physics.MoveIgnoreOneway(System.Int32,AngeliA.Int2,System.Int32,System.Int32,AngeliA.Int2,AngeliA.Entity)">
-            <summary>
-            Perform move without oneway involved
-            </summary>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="from">Starting position in global space</param>
-            <param name="speedX">(in global space)</param>
-            <param name="speedY">(in global space)</param>
-            <param name="size">(in global space)</param>
-            <param name="entity">Target that is performing this movement</param>
-            <returns>New position in global space after the movement</returns>
-        </member>
-        <member name="M:AngeliA.Physics.Move(System.Int32,AngeliA.Int2,System.Int32,System.Int32,AngeliA.Int2,AngeliA.Entity)">
-            <summary>
-            Perform move
-            </summary>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="from">Starting position in global space</param>
-            <param name="speedX">(in global space)</param>
-            <param name="speedY">(in global space)</param>
-            <param name="size">(in global space)</param>
-            <param name="entity">Target that is performing this movement</param>
-            <returns>New position in global space after the movement</returns>
-        </member>
-        <member name="M:AngeliA.Physics.MoveImmediately(System.Int32,AngeliA.Int2,AngeliA.Direction4,System.Int32,AngeliA.Int2,AngeliA.Entity,System.Boolean)">
-            <summary>
-            Perform move without safe checks. (eg. Collide with objects in middle when moving too fast) This version saves CPU usage.
-            </summary>
-            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
-            <param name="from">Starting position in global space</param>
-            <param name="direction">Which direction to move</param>
-            <param name="speed">(in global space)</param>
-            <param name="size">(in global space)</param>
-            <param name="entity">Target that is performing this movement</param>
-            <param name="ignoreOneway">True if oneway gates are excluded</param>
-            <returns>New position in global space after the movement</returns>
-        </member>
-        <member name="M:AngeliA.Physics.ForcePush(AngeliA.Rigidbody,AngeliA.Direction4,System.Int32)">
-            <summary>
-            Make a recursive push
-            </summary>
-            <param name="host">Entity that pushs other</param>
-            <param name="direction"></param>
-            <param name="distance">(in global space)</param>
-        </member>
         <member name="T:AngeliA.PlayerSystem">
             <summary>
             Core system for user character control logic
@@ -5318,11 +5072,6 @@
         <member name="P:AngeliA.PlayerSystem.PlayableCharactersCount">
             <summary>
             Total count of playable characters
-            </summary>
-        </member>
-        <member name="F:AngeliA.PlayerSystem.DragPlayerInMiddleButtonToMove_DebugOnly">
-            <summary>
-            True if allow user use middle mouse button to move player for debug. This feature is not include after the game publish.
             </summary>
         </member>
         <member name="F:AngeliA.PlayerSystem.TargetViewHeight">
@@ -6426,26 +6175,6 @@
             Get global single instance of the task for given type ID
             </summary>
         </member>
-        <member name="T:AngeliA.TransferSystem">
-            <summary>
-            Core system that transfer object data along the stage
-            </summary>
-        </member>
-        <member name="M:AngeliA.TransferSystem.IsTransfer(System.Int32,AngeliA.Direction4@)">
-            <summary>
-            True if given ID is a valid transfer
-            </summary>
-            <param name="transferID"></param>
-            <param name="direction">Direction this transfer will move items to</param>
-        </member>
-        <member name="M:AngeliA.TransferSystem.StartTransfer(AngeliA.Int3,System.Object,System.Int32)">
-            <summary>
-            Start a transfer operation
-            </summary>
-            <param name="unitPos">Starting position in unit space</param>
-            <param name="data">Target object data to transfer with</param>
-            <param name="stamp">unique number to identify this operation</param>
-        </member>
         <member name="T:AngeliA.Bullet">
             <summary>
             An entity represent bullet from weapons that deal damage to IDamageReceiver
@@ -7004,14 +6733,69 @@
             True if the given wing is a propeller style wing
             </summary>
         </member>
+        <member name="T:AngeliA.CoverMode">
+            <summary>
+            How cloths is covering the bodypart
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.X">
+            <summary>
+            Position X in local space
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.Y">
+            <summary>
+            Position Y in local space
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.Z">
+            <summary>
+            Z value for sort rendering cells
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.Rotation">
+            <summary>
+            Angle of this bodypart
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.SizeX">
+            <summary>
+            Artwork sprite Width in global size
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.SizeY">
+            <summary>
+            Artwork sprite Height in global size
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.Width">
+            <summary>
+            Horizontal size of this bodypart
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.Height">
+            <summary>
+            Vertical size of this bodypart
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.PivotX">
+            <summary>
+            Current pivot X of this bodypart (0 means left, 1000 means right)
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.PivotY">
+            <summary>
+            Current pivot Y of this bodypart (0 means bottom, 1000 means top)
+            </summary>
+        </member>
+        <member name="F:AngeliA.BodyPartTransform.FrontSide">
+            <summary>
+            True if the bodypart is facing front
+            </summary>
+        </member>
         <member name="T:AngeliA.BodyPart">
             <summary>
             Representation of a bodypart for a pose-style character
-            </summary>
-        </member>
-        <member name="T:AngeliA.BodyPart.CoverMode">
-            <summary>
-            How cloths is covering the bodypart
             </summary>
         </member>
         <member name="P:AngeliA.BodyPart.ID">
@@ -7032,16 +6816,6 @@
         <member name="P:AngeliA.BodyPart.SpritePivotY">
             <summary>
             Artwork sprite pivot Y
-            </summary>
-        </member>
-        <member name="P:AngeliA.BodyPart.SizeX">
-            <summary>
-            Artwork sprite Width in global size
-            </summary>
-        </member>
-        <member name="P:AngeliA.BodyPart.SizeY">
-            <summary>
-            Artwork sprite Height in global size
             </summary>
         </member>
         <member name="P:AngeliA.BodyPart.FlexableSizeY">
@@ -7089,59 +6863,69 @@
             Position Y in global space
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.X">
+        <member name="P:AngeliA.BodyPart.X">
             <summary>
             Position X in local space
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Y">
+        <member name="P:AngeliA.BodyPart.Y">
             <summary>
             Position Y in local space
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Z">
+        <member name="P:AngeliA.BodyPart.Z">
             <summary>
             Z value for sort rendering cells
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Rotation">
+        <member name="P:AngeliA.BodyPart.Rotation">
             <summary>
             Angle of this bodypart
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Width">
+        <member name="P:AngeliA.BodyPart.SizeX">
+            <summary>
+            Artwork sprite Width in global size
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.SizeY">
+            <summary>
+            Artwork sprite Height in global size
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.Width">
             <summary>
             Horizontal size of this bodypart
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Height">
+        <member name="P:AngeliA.BodyPart.Height">
             <summary>
             Vertical size of this bodypart
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.PivotX">
+        <member name="P:AngeliA.BodyPart.PivotX">
             <summary>
             Current pivot X of this bodypart (0 means left, 1000 means right)
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.PivotY">
+        <member name="P:AngeliA.BodyPart.PivotY">
             <summary>
             Current pivot Y of this bodypart (0 means bottom, 1000 means top)
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.FrontSide">
+        <member name="P:AngeliA.BodyPart.FrontSide">
             <summary>
             True if the bodypart is facing front
             </summary>
         </member>
-        <member name="F:AngeliA.BodyPart.Covered">
-            <summary>
-            How this bodypart is being covered by cloths
-            </summary>
-        </member>
-        <member name="F:AngeliA.BodyPart.Tint">
+        <member name="P:AngeliA.BodyPart.Tint">
             <summary>
             Color tint
+            </summary>
+        </member>
+        <member name="P:AngeliA.BodyPart.Covered">
+            <summary>
+            How this bodypart is being covered by cloths
             </summary>
         </member>
         <member name="M:AngeliA.BodyPart.#ctor(AngeliA.BodyPart,System.Boolean,System.Boolean,System.Int32,System.Int32)">
@@ -8337,6 +8121,7 @@
             Trie if the given direction can be bump
             </summary>
             <param name="bump">Target entity</param>
+            <param name="from"></param>
         </member>
         <member name="M:AngeliA.IBumpable.BumpAllOverlap(AngeliA.Entity,AngeliA.Direction4,System.Boolean,AngeliA.Damage,System.Int32)">
             <summary>
@@ -10822,13 +10607,30 @@
             <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
         </member>
         <member name="M:AngeliA.Game.DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32)">
-            <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+            <summary>
+            Draw a rectangle as gizmos for current frame
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="colorT">Color tint</param>
+            <param name="colorB">Color tint</param>
         </member>
         <member name="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32)">
-            <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+            <summary>
+            Draw a rectangle as gizmos for current frame
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="colorT">Color tint</param>
+            <param name="colorB">Color tint</param>
         </member>
         <member name="M:AngeliA.Game.DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)">
-            <inheritdoc cref="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)"/>
+            <summary>
+            Draw a rectangle as gizmos for current frame
+            </summary>
+            <param name="rect">Rect position in global space</param>
+            <param name="colorTL">Color tint</param>
+            <param name="colorTR">Color tint</param>
+            <param name="colorBL">Color tint</param>
+            <param name="colorBR">Color tint</param>
         </member>
         <member name="M:AngeliA.Game._DrawGizmosRect(AngeliA.IRect,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32,AngeliA.Color32)">
             <summary>
@@ -10839,9 +10641,6 @@
             <param name="colorTR">Color tint</param>
             <param name="colorBL">Color tint</param>
             <param name="colorBR">Color tint</param>
-            <param name="colorT">Color tint</param>
-            <param name="colorB">Color tint</param>
-            <param name="color">Color tint</param>
         </member>
         <member name="M:AngeliA.Game.DrawGizmosTexture(AngeliA.IRect,System.Object,System.Boolean,System.Boolean,System.Boolean)">
             <inheritdoc cref="M:AngeliA.Game._DrawGizmosTexture(AngeliA.IRect,AngeliA.FRect,System.Object,AngeliA.Color32,System.Boolean,System.Boolean,System.Boolean)"/>
@@ -10862,6 +10661,8 @@
             <param name="rect">Rect position</param>
             <param name="uv">Which part of this texture should be draw. (0, 0, 1, 1) means all of them. (0, 0, 0.5f, 1) means left half.</param>
             <param name="texture"></param>
+            <param name="flipX"></param>
+            <param name="flipY"></param>
             <param name="tint">Color tint</param>
             <param name="inverse">True if the texture display as the inversed color of the current rendered pixel on screen.</param>
         </member>
@@ -10942,10 +10743,10 @@
             Do not display doodled pixels
             </summary>
         </member>
-        <member name="M:AngeliA.Game.ResetDoodle">
-            <inheritdoc cref="M:AngeliA.Game._ResetDoodle"/>
+        <member name="M:AngeliA.Game.ResetDoodle(AngeliA.Color32)">
+            <inheritdoc cref="M:AngeliA.Game._ResetDoodle(AngeliA.Color32)"/>
         </member>
-        <member name="M:AngeliA.Game._ResetDoodle">
+        <member name="M:AngeliA.Game._ResetDoodle(AngeliA.Color32)">
             <summary>
             Clear the doodle pixels canvas
             </summary>
@@ -12656,20 +12457,22 @@
             Complete pose infomation at one moment for a pose-style character
             </summary>
         </member>
-        <member name="M:AngeliA.CharacterPose.ApplyToCharacter(AngeliA.PoseCharacterRenderer)">
-            <summary>
-            Make the character perform this pose
-            </summary>
-        </member>
         <member name="M:AngeliA.CharacterPose.RecordFromCharacter(AngeliA.PoseCharacterRenderer)">
             <summary>
             Read pose data from the character
+            </summary>
+        </member>
+        <member name="M:AngeliA.CharacterPose.ApplyToCharacter(AngeliA.PoseCharacterRenderer)">
+            <summary>
+            Make the character perform this pose
             </summary>
         </member>
         <member name="M:AngeliA.CharacterPose.BlendToCharacter(AngeliA.PoseCharacterRenderer,System.Single)">
             <summary>
             Make the character perform this pose with weight
             </summary>
+            <param name="rendering">Target character</param>
+            <param name="blend01">1 means this apply pose. 0 means apply character's current pose.</param>
         </member>
         <member name="T:AngeliA.HandheldPoseAnimation">
             <summary>
@@ -15353,6 +15156,190 @@
             <param name="sprite">Result sprite</param>
             <returns>True if the sprite is founded</returns>
         </member>
+        <member name="T:AngeliA.Physics">
+            <summary>
+            Core system that handles physics of AngeliA games.
+            Logic of the system is frame-isolated which means data from prev frame will never effect current frame.
+            </summary>
+        </member>
+        <member name="P:AngeliA.Physics.IsReady">
+            <summary>
+            True if the system is ready to use.
+            </summary>
+        </member>
+        <member name="M:AngeliA.Physics.FillBlock(System.Int32,System.Int32,AngeliA.IRect,System.Boolean,AngeliA.Tag)">
+            <summary>
+            Add a physics cell for a map block for current frame. Call this function inside Entity.FirstUpdate
+            </summary>
+            <param name="layer">Which layer to add this cell into. (Use PhysicsLayer.XXX to get this value)</param>
+            <param name="blockID">ID of the source block</param>
+            <param name="globalRect">Rect position in global space</param>
+            <param name="isTrigger">True if the cell should mark as trigger</param>
+            <param name="tag">What extra info this cell have</param>
+        </member>
+        <member name="M:AngeliA.Physics.FillEntity(System.Int32,AngeliA.Entity,System.Boolean,AngeliA.Tag)">
+            <summary>
+            Add a physics cell for an entity for current frame. Call this function inside Entity.FirstUpdate
+            </summary>
+            <param name="layer">Which layer to add this cell into. (Use PhysicsLayer.XXX to get this value)</param>
+            <param name="entity">Source entity for this cell</param>
+            <param name="isTrigger">True if the cell should mark as trigger</param>
+            <param name="tag">What extra info this cell have</param>
+        </member>
+        <member name="M:AngeliA.Physics.IgnoreOverlap(System.Int32,AngeliA.IRect,AngeliA.OperationMode)">
+            <summary>
+            Remove all cells that overlap target range
+            </summary>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="globalRect">Rect position in global space</param>
+            <param name="mode">What type of cells are included for the operation</param>
+        </member>
+        <member name="M:AngeliA.Physics.Overlap(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
+            <inheritdoc cref="M:AngeliA.Physics.Overlap(System.Int32,AngeliA.IRect,AngeliA.PhysicsCell@,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)"/>
+        </member>
+        <member name="M:AngeliA.Physics.Overlap(System.Int32,AngeliA.IRect,AngeliA.PhysicsCell@,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
+            <summary>
+            True if any cell overlap the given rect
+            </summary>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="globalRect">Rect position in global space</param>
+            <param name="ignore">Entity that should be excluded</param>
+            <param name="mode">What type of cells are included for the operation</param>
+            <param name="tag">Only cells with all tags should be included</param>
+            <param name="info">Cell of the overlaping object</param>
+        </member>
+        <member name="M:AngeliA.Physics.OverlapAll(System.Int32,AngeliA.IRect,System.Int32@,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
+            <summary>
+            Find all cells that overlap with given rect and fill into an array (The array is cached internaly. Max size 1024)
+            </summary>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="globalRect">Rect position in global space</param>
+            <param name="count">How many cells are founded</param>
+            <param name="ignore">Entity that should be excluded</param>
+            <param name="mode">What type of cells are included for the operation</param>
+            <param name="tag">Only cells with all tags should be included</param>
+            <returns>Cell array with the results</returns>
+        </member>
+        <member name="M:AngeliA.Physics.OverlapAll(AngeliA.PhysicsCell[],System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
+            <summary>
+            Find all cells that overlap with given rect and fill into given array
+            </summary>
+            <param name="hits">The array that will hold the result</param>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="globalRect">Rect position in global space</param>
+            <param name="ignore">Entity that should be excluded</param>
+            <param name="mode">What type of cells are included for the operation</param>
+            <param name="tag">Only cells with all tags should be included</param>
+            <returns>How many cells are founded</returns>
+        </member>
+        <member name="M:AngeliA.Physics.GetEntity``1(AngeliA.IRect,System.Int32,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
+            <summary>
+            Get entity instance from stage that overlap given rect
+            </summary>
+            <typeparam name="T">Type of the target entity</typeparam>
+            <param name="globalRect">Rect position in global space</param>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="ignore">Entity that should be excluded</param>
+            <param name="mode">What type of cells are included for the operation</param>
+            <param name="tag">Only cells with all tags should be included</param>
+        </member>
+        <member name="M:AngeliA.Physics.GetEntity(System.Int32,AngeliA.IRect,System.Int32,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
+            <summary>
+            Get entity instance from stage that overlap given rect
+            </summary>
+            <param name="typeID">Type of the target entity</param>
+            <param name="globalRect">Rect position in global space</param>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="ignore">Entity that should be excluded</param>
+            <param name="mode">What type of cells are included for the operation</param>
+            <param name="tag">Only cells with all tags should be included</param>
+        </member>
+        <member name="M:AngeliA.Physics.HasEntity``1(AngeliA.IRect,System.Int32,AngeliA.Entity,AngeliA.OperationMode,AngeliA.Tag)">
+            <summary>
+            True if any entity instance from stage that overlap given rect
+            </summary>
+            <typeparam name="T">Type of the target entity</typeparam>
+            <param name="globalRect">Rect position in global space</param>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="ignore">Entity that should be excluded</param>
+            <param name="mode">What type of cells are included for the operation</param>
+            <param name="tag">Only cells with all tags should be included</param>
+        </member>
+        <member name="M:AngeliA.Physics.RoomCheck(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,AngeliA.OperationMode,AngeliA.Tag)">
+            <inheritdoc cref="M:AngeliA.Physics.RoomCheck(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,AngeliA.PhysicsCell@,AngeliA.OperationMode,AngeliA.Tag)"/>
+        </member>
+        <member name="M:AngeliA.Physics.RoomCheck(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,AngeliA.PhysicsCell@,AngeliA.OperationMode,AngeliA.Tag)">
+            <summary>
+            True if there is free room founded at given direction (only Involving solid colliders)
+            </summary>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="rect">Start location in global space</param>
+            <param name="entity">Entity that should be exclude</param>
+            <param name="direction"></param>
+            <param name="mode">What type of cells are included for the operation</param>
+            <param name="tag">Only cells with all tags should be included</param>
+            <param name="hit">Cell of the object that blocks the free room</param>
+        </member>
+        <member name="M:AngeliA.Physics.RoomCheckOneway(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,System.Boolean,System.Boolean)">
+            <inheritdoc cref="M:AngeliA.Physics.RoomCheckOneway(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,AngeliA.PhysicsCell@,System.Boolean,System.Boolean)"/>
+        </member>
+        <member name="M:AngeliA.Physics.RoomCheckOneway(System.Int32,AngeliA.IRect,AngeliA.Entity,AngeliA.Direction4,AngeliA.PhysicsCell@,System.Boolean,System.Boolean)">
+            <summary>
+            True if there is free room founded at given direction (only Involving oneway gate)
+            </summary>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="rect">Start location in global space</param>
+            <param name="entity">Entity that should be exclude</param>
+            <param name="direction"></param>
+            <param name="hit">Cell of the object that blocks the free room</param>
+            <param name="overlapCheck">True if oneway gates that not blocking the way (only overlap with rect) count as blocked</param>
+            <param name="blockOnly">True if ignore oneway gates from entities</param>
+        </member>
+        <member name="M:AngeliA.Physics.MoveIgnoreOneway(System.Int32,AngeliA.Int2,System.Int32,System.Int32,AngeliA.Int2,AngeliA.Entity)">
+            <summary>
+            Perform move without oneway involved
+            </summary>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="from">Starting position in global space</param>
+            <param name="speedX">(in global space)</param>
+            <param name="speedY">(in global space)</param>
+            <param name="size">(in global space)</param>
+            <param name="entity">Target that is performing this movement</param>
+            <returns>New position in global space after the movement</returns>
+        </member>
+        <member name="M:AngeliA.Physics.Move(System.Int32,AngeliA.Int2,System.Int32,System.Int32,AngeliA.Int2,AngeliA.Entity)">
+            <summary>
+            Perform move
+            </summary>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="from">Starting position in global space</param>
+            <param name="speedX">(in global space)</param>
+            <param name="speedY">(in global space)</param>
+            <param name="size">(in global space)</param>
+            <param name="entity">Target that is performing this movement</param>
+            <returns>New position in global space after the movement</returns>
+        </member>
+        <member name="M:AngeliA.Physics.MoveImmediately(System.Int32,AngeliA.Int2,AngeliA.Direction4,System.Int32,AngeliA.Int2,AngeliA.Entity,System.Boolean)">
+            <summary>
+            Perform move without safe checks. (eg. Collide with objects in middle when moving too fast) This version saves CPU usage.
+            </summary>
+            <param name="mask">What physics layers is included (use PhysicsMask.XXX to get this value)</param>
+            <param name="from">Starting position in global space</param>
+            <param name="direction">Which direction to move</param>
+            <param name="speed">(in global space)</param>
+            <param name="size">(in global space)</param>
+            <param name="entity">Target that is performing this movement</param>
+            <param name="ignoreOneway">True if oneway gates are excluded</param>
+            <returns>New position in global space after the movement</returns>
+        </member>
+        <member name="M:AngeliA.Physics.ForcePush(AngeliA.Rigidbody,AngeliA.Direction4,System.Int32)">
+            <summary>
+            Make a recursive push
+            </summary>
+            <param name="host">Entity that pushs other</param>
+            <param name="direction"></param>
+            <param name="distance">(in global space)</param>
+        </member>
         <member name="T:AngeliA.SpriteCode">
             <summary>
             Quick setup for an artwork sprite
@@ -16205,7 +16192,7 @@
         </member>
         <member name="M:AngeliA.FrameworkUtil.ForAllExistsWorldInRange(AngeliA.IBlockSquad,AngeliA.IRect,System.Int32,System.Int32@)">
             <summary>
-            Find all existing world position that overlap the given range. (256 results in maximal)
+            Find all existing world position that overlap the given range. (512 results in maximal)
             </summary>
             <param name="squad">Source of the world instance</param>
             <param name="overlapUnitRange">Target range in unit space</param>
@@ -17951,14 +17938,14 @@
             True if the system is ready to use
             </summary>
         </member>
+        <member name="P:AngeliA.WorldSquad.UseBuiltInAsFailback">
+            <summary>
+            True if the game copy built-in maps into user map folder.
+            </summary>
+        </member>
         <member name="P:AngeliA.WorldSquad.Front">
             <summary>
             Squad that handles the front side map
-            </summary>
-        </member>
-        <member name="P:AngeliA.WorldSquad.Behind">
-            <summary>
-            Squad that handles the behind side map
             </summary>
         </member>
         <member name="M:AngeliA.WorldSquad.ClearStreamWorldPool">
