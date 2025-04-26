@@ -60,7 +60,7 @@ public static class SavingSystem {
 	}
 
 
-	[OnSavingSlotChanged]
+	[OnSavingSlotChanged(int.MinValue)]
 	internal static void OnSavingSlotChanged () {
 		SlotSavingPath = Util.CombinePaths(Universe.BuiltIn.SlotMetaRoot, "Saving.txt");
 		LoadFromFile();
