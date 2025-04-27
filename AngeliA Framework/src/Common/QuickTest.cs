@@ -197,7 +197,7 @@ public class QTest {
 
 	[OnGameInitialize(-4096)]
 	internal static void OnGameInitialize () {
-		AllowQuickTest = Util.TryGetAttributeFromAllAssemblies<DisableQuickTestAttribute>();
+		AllowQuickTest = !Util.TryGetAttributeFromAllAssemblies<DisableQuickTestAttribute>();
 	}
 
 
