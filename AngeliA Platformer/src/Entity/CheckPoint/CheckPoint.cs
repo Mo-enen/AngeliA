@@ -10,7 +10,7 @@ namespace AngeliA.Platformer;
 /// </summary>
 [EntityAttribute.MapEditorGroup("CheckPoint")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
+public abstract class CheckPoint : Entity, IBlockEntity {
 
 
 
@@ -132,9 +132,6 @@ public abstract class CheckPoint : Entity, IBlockEntity, ICircuitOperator {
 			}
 		}
 	}
-
-
-	void ICircuitOperator.OnTriggeredByCircuit () => Touch();
 
 
 	#endregion

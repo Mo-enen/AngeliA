@@ -95,6 +95,9 @@ public partial class GUISkin {
 	public readonly GUIStyle SmallCenterMessage = ProduceLabel(LabelPattern.Small | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip, lineSpace: 10);
 	public readonly GUIStyle CenterMessage = ProduceLabel(LabelPattern.Normal | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip, lineSpace: 10);
 	public readonly GUIStyle LargeCenterMessage = ProduceLabel(LabelPattern.Large | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip, lineSpace: 10);
+	public readonly GUIStyle SmallCenterMessageGrey = ProduceLabel(LabelPattern.Small | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.Grey, lineSpace: 10);
+	public readonly GUIStyle CenterMessageGrey = ProduceLabel(LabelPattern.Normal | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.Grey, lineSpace: 10);
+	public readonly GUIStyle LargeCenterMessageGrey = ProduceLabel(LabelPattern.Large | LabelPattern.MidMid | LabelPattern.WordWrap | LabelPattern.Clip | LabelPattern.Grey, lineSpace: 10);
 
 	// Text Area
 	public readonly GUIStyle LargeTextArea = ProduceLabel(LabelPattern.Large | LabelPattern.TopLeft | LabelPattern.WordWrap | LabelPattern.Clip);

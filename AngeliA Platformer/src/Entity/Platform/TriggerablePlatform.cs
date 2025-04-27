@@ -8,7 +8,7 @@ namespace AngeliA.Platformer;
 /// <summary>
 /// Platform that can be trigger and perform some specified logic
 /// </summary>
-public abstract class TriggerablePlatform : Platform, IUnitable, ICircuitOperator {
+public abstract class TriggerablePlatform : Platform, IUnitable {
 
 	// Api
 	/// <summary>
@@ -58,7 +58,5 @@ public abstract class TriggerablePlatform : Platform, IUnitable, ICircuitOperato
 			platform.OnTriggered(IUnitable.UniteTempParam);
 		}
 	}
-
-	void ICircuitOperator.OnTriggeredByCircuit () => Trigger();
 
 }

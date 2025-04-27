@@ -49,8 +49,8 @@ public class PoseAnimation_Run : PoseAnimation {
 		var forwardLowerArm = (FacingRight ? LowerArmR : LowerArmL);
 		forwardLowerArm.Height -= forwardLowerArm.Height * bodyRot.Abs() / 42;
 
-		HandL.LimbRotate(0);
-		HandR.LimbRotate(1);
+		HandL.LimbRotate(-FacingSign);
+		HandR.LimbRotate(-FacingSign);
 
 		// Leg
 		UpperLegL.X += legOffsetX;

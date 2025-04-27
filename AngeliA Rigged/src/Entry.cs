@@ -3,6 +3,7 @@ using AngeliA;
 using AngeliaRigged;
 
 [assembly: IgnoreArtworkPixels]
+[assembly: DisableQuickTest]
 
 var riggedGame = new RiggedGame(args);
 riggedGame.Initialize();

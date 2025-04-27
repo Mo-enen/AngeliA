@@ -925,11 +925,6 @@
             Size of the ball in global space
             </summary>
         </member>
-        <member name="P:AngeliA.Platformer.ChainCrusher.ReleaseBallOnCircuitTrigger">
-            <summary>
-            True if the ball release when this entity being triggered by circuit
-            </summary>
-        </member>
         <member name="P:AngeliA.Platformer.ChainCrusher.ReleaseBallOnDamaged">
             <summary>
             True if the ball release when this entity take damage

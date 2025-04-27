@@ -100,3 +100,8 @@ public class BodySetAttribute (string name) : Attribute {
 /// </summary>
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class DontUseBuiltInMapAsFailbackAttribute : Attribute { }
+
+
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class DisableQuickTestAttribute : Attribute { }
+

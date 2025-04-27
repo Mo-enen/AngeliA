@@ -7,7 +7,7 @@ namespace AngeliA.Platformer;
 /// <summary>
 /// Furniture that detect and put out fire automatically
 /// </summary>
-public abstract class FireSprinkler : Furniture, ICircuitOperator {
+public abstract class FireSprinkler : Furniture {
 
 
 	// Api
@@ -128,12 +128,6 @@ public abstract class FireSprinkler : Furniture, ICircuitOperator {
 				tint.a = (byte)(i * 256 / len + 64).Clamp(64, 255);
 				Renderer.Draw(waterSP, x, y, px, py, 0, w, h, tint);
 			}
-		}
-	}
-
-	void ICircuitOperator.OnTriggeredByCircuit () {
-		if (SprinklingFrame < 0) {
-			SprinklingFrame = Game.GlobalFrame + RespondDelay;
 		}
 	}
 

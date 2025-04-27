@@ -8173,21 +8173,6 @@
             <param name="_deltaY">Position delta Y at current frame in global space</param>
             <param name="colMode">Does this operation include colliders and triggers</param>
         </member>
-        <member name="T:AngeliA.ICircuitOperator">
-            <summary>
-            Interface that makes an entity behave like operator in circuit system
-            </summary>
-        </member>
-        <member name="M:AngeliA.ICircuitOperator.IsOperator(System.Int32)">
-            <summary>
-            True if the given type of entity is a circuit operator
-            </summary>
-        </member>
-        <member name="M:AngeliA.ICircuitOperator.OnTriggeredByCircuit">
-            <summary>
-            This function is called when the operator get triggered by the system
-            </summary>
-        </member>
         <member name="T:AngeliA.ICombustible">
             <summary>
             This interface makes the entity can be set on fire

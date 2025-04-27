@@ -9,7 +9,7 @@ namespace AngeliA.Platformer;
 /// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup("Contraption")]
-public abstract class TrapDoor : Entity, IBlockEntity, ICircuitOperator {
+public abstract class TrapDoor : Entity, IBlockEntity {
 
 	// VAR
 	/// <summary>
@@ -72,11 +72,6 @@ public abstract class TrapDoor : Entity, IBlockEntity, ICircuitOperator {
 				Close();
 			}
 		}
-	}
-
-	void ICircuitOperator.OnTriggeredByCircuit () {
-		if (!TriggerByCircuit) return;
-		Open();
 	}
 
 	/// <summary>

@@ -29,6 +29,7 @@ public static class CircuitSystem {
 	private static readonly object[] OperateParamCache = [null, 0, Direction4.Down];
 	private static readonly HashSet<Int4> LoadedBackgroundTrigger = [];
 	[OnCircuitWireActived_Int3UnitPos] internal static System.Action<Int3> OnCircuitWireActived;
+	private static int LastBackgroundTriggeredFrame = 0;
 
 
 	#endregion
@@ -86,8 +87,14 @@ public static class CircuitSystem {
 		static void TriggerAllLoadedLoop () {
 			while (true) {
 
-				if (Game.GlobalFrame == 0) goto _SLEEP_;
+				// Frame Check
+				if (Game.PauselessFrame <= LastBackgroundTriggeredFrame) {
+					Thread.Sleep(200);
+					continue;
+				}
+				LastBackgroundTriggeredFrame = Game.PauselessFrame;
 
+				// Update All Loaded Triggers
 				try {
 					var squad = WorldSquad.Front;
 					lock (LoadedBackgroundTrigger) {
@@ -105,9 +112,8 @@ public static class CircuitSystem {
 					}
 				} catch (System.Exception ex) { Debug.LogException(ex); }
 
-				// Sleep
-				_SLEEP_:;
-				Thread.Sleep(1000);
+				// Final
+				Thread.Sleep(200);
 
 			}
 		}
@@ -227,16 +233,6 @@ public static class CircuitSystem {
 			triggered = true;
 		}
 
-		// Check Staged Operator
-		if (unitPos.z == Stage.ViewZ && Physics.GetEntity<ICircuitOperator>(
-				IRect.Point(unitPos.x.ToGlobal() + Const.HALF, unitPos.y.ToGlobal() + Const.HALF),
-				PhysicsMask.ENTITY, null, OperationMode.ColliderAndTrigger
-			) is ICircuitOperator _operator
-		) {
-			_operator.OnTriggeredByCircuit();
-			triggered = true;
-		}
-
 		return triggered;
 	}
 
@@ -265,7 +261,7 @@ public static class CircuitSystem {
 	/// <summary>
 	/// True if the given ID is a valid circuit operator entity
 	/// </summary>
-	public static bool IsCircuitOperator (int typeID) => OperatorPool.ContainsKey(typeID) || ICircuitOperator.IsOperator(typeID);
+	public static bool IsCircuitOperator (int typeID) => OperatorPool.ContainsKey(typeID);
 
 
 	/// <summary>

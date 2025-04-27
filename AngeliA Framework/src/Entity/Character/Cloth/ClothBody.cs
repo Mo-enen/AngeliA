@@ -188,7 +188,7 @@ public abstract class BodyCloth : Cloth {
 		var cell = Renderer.Draw(suitSprite, rect, body.Z + localZ);
 
 		// Twist
-		if (poseTwist != 0 && body.FrontSide && body.Height > 0) {
+		if ((poseTwist != 0 || body.Rotation != 0) && body.FrontSide && body.Height > 0) {
 			if (flipX) poseTwist = -poseTwist;
 			int shiftTop = body.Height * twistShiftTopAmount / 1000;
 			int shiftX = poseTwist * cell.Width / 2500;
@@ -207,6 +207,11 @@ public abstract class BodyCloth : Cloth {
 			cellR.Shift.left = cellR.Width.Abs() / 2;
 
 			cell.Shift.down = cell.Height - shiftTop;
+
+			if (body.Rotation != 0) {
+				cellR.Shift.down = Util.Remap(0, 90, 0, cellR.Height * 2 / 3, body.Rotation.Abs());
+			}
+
 		}
 
 		// Hide Limb

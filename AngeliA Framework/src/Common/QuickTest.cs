@@ -143,6 +143,7 @@ public class QTest {
 	/// Limit of testing window panels
 	/// </summary>
 	public const int MAX_WINDOW_COUNT = 16;
+	public static bool AllowQuickTest { get; private set; } = true;
 	/// <summary>
 	/// True if the QTest is operating with window on screen
 	/// </summary>
@@ -194,8 +195,15 @@ public class QTest {
 	#region --- MSG ---
 
 
+	[OnGameInitialize(-4096)]
+	internal static void OnGameInitialize () {
+		AllowQuickTest = Util.TryGetAttributeFromAllAssemblies<DisableQuickTestAttribute>();
+	}
+
+
 	[OnGameUpdateLater]
 	internal static void UpdateMarks () {
+		if (!AllowQuickTest) return;
 		if (Testing) {
 			Game.ForceGizmosOnTopOfUI(1);
 			LightingSystem.IgnoreLighting(1);
@@ -228,6 +236,7 @@ public class QTest {
 
 	[OnGameUpdate(-256)]
 	internal static void UpdateAllWindows () {
+		if (!AllowQuickTest) return;
 		if (!Testing) return;
 		for (int i = 0; i < Windows.Length; i++) {
 			Windows[i].UpdateWindow(i);
@@ -236,7 +245,10 @@ public class QTest {
 
 
 	[OnGameUpdateLater(int.MaxValue)]
-	internal static void ResetWindowIndex () => CurrentWindowIndex = 0;
+	internal static void ResetWindowIndex () {
+		if (!AllowQuickTest) return;
+		CurrentWindowIndex = 0;
+	}
 
 
 	private void UpdateWindow (int windowIndex) {
@@ -589,6 +601,7 @@ public class QTest {
 	/// Set which window should include the fields comes after
 	/// </summary>
 	public static void SetCurrentWindow (int index, string title = "") {
+		if (!AllowQuickTest) return;
 		CurrentWindowIndex = index.Clamp(0, MAX_WINDOW_COUNT - 1);
 		Windows[CurrentWindowIndex].Title = title;
 		Group("");
@@ -601,6 +614,7 @@ public class QTest {
 	/// <param name="path">Path of the data file (not a folder)</param>
 	/// <param name="ignorePanelOffset">True if this function do not adjust position of window panels</param>
 	public static void LoadAllDataFromFile (string path, bool ignorePanelOffset = false) {
+		if (!AllowQuickTest) return;
 		ClearAll();
 		if (!Util.FileExists(path)) return;
 
@@ -748,6 +762,7 @@ public class QTest {
 	/// </summary>
 	/// <param name="path">Path of a file with any extension you want (not a folder)</param>
 	public static void SaveAllDataToFile (string path) {
+		if (!AllowQuickTest) return;
 
 		using var fs = File.OpenWrite(path);
 		using var wr = new BinaryWriter(fs);
@@ -846,6 +861,7 @@ public class QTest {
 	/// <returns>The current data of this field</returns>
 	public static bool Bool (string key, bool defaultValue = false, string displayLabel = null, string overrideLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].BoolLogic(key, defaultValue, displayLabel, overrideLabel);
 	private bool BoolLogic (string key, bool defaultValue, string displayLabel, string overrideLabel) {
+		if (!AllowQuickTest) return false;
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (BoolPool.TryGetValue(key, out var result)) {
@@ -890,6 +906,7 @@ public class QTest {
 	/// <returns>The current data of this field</returns>
 	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null, string overrideLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].IntLogic(key, defaultValue, min, max, step, displayLabel, overrideLabel);
 	private int IntLogic (string key, int defaultValue, int min, int max, int step, string displayLabel, string overrideLabel) {
+		if (!AllowQuickTest) return 0;
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (IntPool.TryGetValue(key, out var result)) {
@@ -942,6 +959,7 @@ public class QTest {
 	/// <returns>The current data of this field</returns>
 	public static float Float (string key, float defaultValue = 0, float min = 0, float max = 1f, float step = 0, string displayLabel = null, string overrideLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].FloatLogic(key, defaultValue, min, max, step, displayLabel, overrideLabel);
 	private float FloatLogic (string key, float defaultValue, float min, float max, float step, string displayLabel, string overrideLabel) {
+		if (!AllowQuickTest) return 0;
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (FloatPool.TryGetValue(key, out var result)) {
@@ -990,6 +1008,7 @@ public class QTest {
 	/// <returns>The current data of this field</returns>
 	public static string String (string key, string defaultValue = "", string overrideLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].StringLogic(key, defaultValue, overrideLabel);
 	private string StringLogic (string key, string defaultValue, string overrideLabel) {
+		if (!AllowQuickTest) return "";
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (StringPool.TryGetValue(key, out var result)) {
@@ -1035,6 +1054,7 @@ public class QTest {
 	/// <param name="label3">Fourth button's label content</param>
 	public static void Button (string key, Action action, object icon = null, object param = null, int windowIndex = -1, Action action1 = null, string label = "", string label1 = "", Action action2 = null, string label2 = "", Action action3 = null, string label3 = "") => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].ButtonLogic(key, action, icon, param, action1, action2, action3, label, label1, label2, label3);
 	private void ButtonLogic (string key, Action action, object icon, object param, Action action1, Action action2, Action action3, string label, string label1, string label2, string label3) {
+		if (!AllowQuickTest) return;
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (ButtonPool.TryGetValue(key, out var result)) {
@@ -1091,6 +1111,7 @@ public class QTest {
 	/// <param name="windowIndex">Force field into given window instead of current window</param>
 	public static void Func (string key, Func<IRect, int> func, object param = null, bool showLabel = false, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].FuncLogic(key, func, param, showLabel);
 	private void FuncLogic (string key, Func<IRect, int> func, object param, bool showLabel) {
+		if (!AllowQuickTest) return;
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (FuncPool.TryGetValue(key, out var result)) {
@@ -1135,6 +1156,7 @@ public class QTest {
 		}
 	}
 	private void ClearAllLogic () {
+		if (!AllowQuickTest) return;
 		BoolPool.Clear();
 		IntPool.Clear();
 		FloatPool.Clear();
@@ -1157,6 +1179,7 @@ public class QTest {
 	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void SetBool (string key, bool value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetBoolLogic(key, value);
 	private void SetBoolLogic (string key, bool value) {
+		if (!AllowQuickTest) return;
 		if (BoolPool.TryGetValue(key, out var data)) {
 			data.value = value;
 		}
@@ -1170,6 +1193,7 @@ public class QTest {
 	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void SetInt (string key, int value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetIntLogic(key, value);
 	private void SetIntLogic (string key, int value) {
+		if (!AllowQuickTest) return;
 		if (IntPool.TryGetValue(key, out var data)) {
 			data.value = value;
 		}
@@ -1183,6 +1207,7 @@ public class QTest {
 	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void SetFloat (string key, float value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetFloatLogic(key, value);
 	private void SetFloatLogic (string key, float value) {
+		if (!AllowQuickTest) return;
 		if (FloatPool.TryGetValue(key, out var data)) {
 			data.value = value;
 		}
@@ -1196,6 +1221,7 @@ public class QTest {
 	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void SetString (string key, string value, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetStringLogic(key, value);
 	private void SetStringLogic (string key, string value) {
+		if (!AllowQuickTest) return;
 		if (StringPool.TryGetValue(key, out var data)) {
 			data.value = value;
 		}
@@ -1207,8 +1233,12 @@ public class QTest {
 	/// <param name="key">Unique key to identify the group</param>
 	/// <param name="folding">True if the group should fold</param>
 	/// <param name="windowIndex">Force value set for given window instead of current window</param>
-	public static void SetGroupFolding (string key, bool folding, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetGroupFoldingLogic(key, folding);
+	public static void SetGroupFolding (string key, bool folding, int windowIndex = -1) {
+		if (!AllowQuickTest) return;
+		Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].SetGroupFoldingLogic(key, folding);
+	}
 	public static void SetAllGroupsFolding (bool folding, int windowIndex = -1) {
+		if (!AllowQuickTest) return;
 		if (windowIndex < 0) {
 			for (int i = 0; i < MAX_WINDOW_COUNT; i++) {
 				Windows[i].SetAllGroupsFoldingLogic(folding);
@@ -1295,6 +1325,7 @@ public class QTest {
 	/// <param name="windowIndex">Force start inside for given window instead of current window</param>
 	public static void StartDrawPixels (string key, int width, int height, bool clearPrevPixels = true, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].StartDrawPixelsLogic(key, width, height, clearPrevPixels);
 	private void StartDrawPixelsLogic (string key, int width, int height, bool clearPrevPixels = true) {
+		if (!AllowQuickTest) return;
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (PixelsPool.TryGetValue(key, out var result)) {
@@ -1334,6 +1365,7 @@ public class QTest {
 	/// <param name="windowIndex">Force paint into given window instead of current window</param>
 	public static void DrawColumn (int x, float value01, Color32 color, Color32 bgColor, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].DrawColumnLogic(x, value01, color, bgColor);
 	private void DrawColumnLogic (int x, float value01, Color32 color, Color32 bgColor) {
+		if (!AllowQuickTest) return;
 		int height = CurrentPixels.GetLength(1);
 		int valueHeight = (height * value01).RoundToInt().Clamp(0, height);
 		for (int i = 0; i < height; i++) {
@@ -1348,7 +1380,10 @@ public class QTest {
 	/// <param name="y">Position Y in local pixel space</param>
 	/// <param name="pixel">Color of this pixel</param>
 	/// <param name="windowIndex">Force paint into given window instead of current window</param>
-	public static void DrawPixel (int x, int y, Color32 pixel, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].CurrentPixels[x, y] = pixel;
+	public static void DrawPixel (int x, int y, Color32 pixel, int windowIndex = -1) {
+		if (!AllowQuickTest) return;
+		Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].CurrentPixels[x, y] = pixel;
+	}
 
 
 	/// <summary>
@@ -1360,6 +1395,7 @@ public class QTest {
 	public static byte[] GetPngByteFromPixels (int windowIndex, out object texture) => Windows[windowIndex].GetPngByteFromPixels(out texture);
 	private byte[] GetPngByteFromPixels (out object texture) {
 		texture = null;
+		if (!AllowQuickTest) return null;
 		if (CurrentPixels == null || CurrentPixels.Length == 0) return null;
 		int w = CurrentPixels.GetLength(0);
 		int h = CurrentPixels.GetLength(1);
@@ -1376,11 +1412,23 @@ public class QTest {
 
 	// Mark
 	/// <inheritdoc cref="Mark(int, int, Color32, int, int)"/>
-	public static void Mark (Int2 pos, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, Color32.RED));
+	public static void Mark (Int2 pos, int duration = 60, int size = 42) {
+		if (!AllowQuickTest) return;
+		Marks.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, Color32.RED));
+	}
+
 	/// <inheritdoc cref="Mark(int, int, Color32, int, int)"/>
-	public static void Mark (int x, int y, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, Color32.RED));
+	public static void Mark (int x, int y, int duration = 60, int size = 42) {
+		if (!AllowQuickTest) return;
+		Marks.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, Color32.RED));
+	}
+
 	/// <inheritdoc cref="Mark(int, int, Color32, int, int)"/>
-	public static void Mark (Int2 pos, Color32 color, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, color));
+	public static void Mark (Int2 pos, Color32 color, int duration = 60, int size = 42) {
+		if (!AllowQuickTest) return;
+		Marks.Add((Game.GlobalFrame, new Int3(pos.x, pos.y, Stage.ViewZ), duration, size, color));
+	}
+
 	/// <summary>
 	/// Paint a circle mark at screen for given frames long
 	/// </summary>
@@ -1390,7 +1438,10 @@ public class QTest {
 	/// <param name="color">Color tint of the circle</param>
 	/// <param name="duration">Length in frame</param>
 	/// <param name="size">Diameter in global space</param>
-	public static void Mark (int x, int y, Color32 color, int duration = 60, int size = 42) => Marks.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, color));
+	public static void Mark (int x, int y, Color32 color, int duration = 60, int size = 42) {
+		if (!AllowQuickTest) return;
+		Marks.Add((Game.GlobalFrame, new Int3(x, y, Stage.ViewZ), duration, size, color));
+	}
 
 
 	// Obj
@@ -1416,11 +1467,12 @@ public class QTest {
 	/// <returns>True if the object is found</returns>
 	public static bool TryGetObject<T> (string key, out T result, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].TryGetObjectLogic(key, out result);
 	private bool TryGetObjectLogic<T> (string key, out T result) {
+		result = default;
+		if (!AllowQuickTest) return false;
 		if (ObjectPool.TryGetValue(key, out var obj) && obj is T tObj) {
 			result = tObj;
 			return true;
 		} else {
-			result = default;
 			return false;
 		}
 	}
@@ -1431,6 +1483,7 @@ public class QTest {
 	/// Hide the testing windows
 	/// </summary>
 	public static void HideTest () {
+		if (!AllowQuickTest) return;
 		ShowingWindow = false;
 		IgnoringWindow = true;
 	}
@@ -1440,6 +1493,7 @@ public class QTest {
 	/// Show the testing windows
 	/// </summary>
 	public static void ShowTest () {
+		if (!AllowQuickTest) return;
 		ShowingWindow = true;
 		IgnoringWindow = false;
 	}
@@ -1453,6 +1507,7 @@ public class QTest {
 	/// <param name="windowIndex">Force value set for given window instead of current window</param>
 	public static void Group (string group, bool folding = false, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].GroupLogic(group, folding);
 	private void GroupLogic (string group, bool folding = false) {
+		if (!AllowQuickTest) return;
 		CurrentGroup = group;
 		if (!GroupFolding.TryGetValue(group, out var gData)) {
 			GroupFolding[group] = gData = new GroupData();

@@ -20,7 +20,7 @@ public abstract class CheckAltar<CP> : CheckAltar where CP : CheckPoint {
 /// </summary>
 [EntityAttribute.MapEditorGroup("CheckPoint")]
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
-public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
+public abstract class CheckAltar : Entity, IBlockEntity {
 
 
 
@@ -142,9 +142,6 @@ public abstract class CheckAltar : Entity, ICircuitOperator, IBlockEntity {
 			FrameworkUtil.DrawLoopingActivatedHighlight(Rect, tint);
 		}
 	}
-
-
-	void ICircuitOperator.OnTriggeredByCircuit () => Touch();
 
 
 	#endregion

@@ -760,7 +760,7 @@ HasOnewayTag(tag) ||
 			}
 		}
 		if (!anyWarning && !onlyLogWhenWarningFounded) {
-			Debug.Log("[✓] No empty script file founded.");
+			Debug.Log("✓ No empty script file founded.");
 		}
 	}
 

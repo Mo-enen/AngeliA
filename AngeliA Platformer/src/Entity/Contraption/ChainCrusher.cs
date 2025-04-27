@@ -10,7 +10,7 @@ namespace AngeliA.Platformer;
 /// </summary>
 [EntityAttribute.Layer(EntityLayer.ENVIRONMENT)]
 [EntityAttribute.MapEditorGroup("Contraption")]
-public abstract class ChainCrusher : Entity, IBlockEntity, ICircuitOperator, IDamageReceiver {
+public abstract class ChainCrusher : Entity, IBlockEntity, IDamageReceiver {
 
 	// VAR
 	/// <summary>
@@ -38,10 +38,6 @@ public abstract class ChainCrusher : Entity, IBlockEntity, ICircuitOperator, IDa
 	/// </summary>
 	public virtual int SpikeBallSize => Const.CEL;
 	public virtual Tag DamageType => Tag.PhysicalDamage;
-	/// <summary>
-	/// True if the ball release when this entity being triggered by circuit
-	/// </summary>
-	public virtual bool ReleaseBallOnCircuitTrigger => false;
 	/// <summary>
 	/// True if the ball release when this entity take damage
 	/// </summary>
@@ -104,12 +100,6 @@ public abstract class ChainCrusher : Entity, IBlockEntity, ICircuitOperator, IDa
 	/// This function is called when the ball is released
 	/// </summary>
 	protected virtual void OnReleaseBall () { }
-
-	void ICircuitOperator.OnTriggeredByCircuit () {
-		if (!ReleaseBallOnCircuitTrigger || BallReleaseFrame >= 0) return;
-		BallReleaseFrame = Game.GlobalFrame;
-		OnReleaseBall();
-	}
 
 	void IDamageReceiver.OnDamaged (Damage damage) {
 		if (!ReleaseBallOnDamaged || BallReleaseFrame >= 0) return;

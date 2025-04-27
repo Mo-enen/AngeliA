@@ -167,7 +167,7 @@ public abstract class MenuUI : EntityUI, IWindowEntityUI {
 		ActiveFrame = Game.GlobalFrame;
 		AnimationFrame = 0;
 		Input.UseAllHoldingKeys();
-		MessageStyle = GUI.Skin.CenterMessage;
+		MessageStyle = GUI.Skin.CenterMessageGrey;
 		BackgroundStyle = null;
 		OverrideWindowWidth = -1;
 		AnimationDuration = 8;
