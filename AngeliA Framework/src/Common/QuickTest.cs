@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿#if DEBUG
+using System.IO;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using System;
 
 namespace AngeliA;
 
-#if DEBUG
 /// <summary>
 /// Utility tool for quick testing ⚠Debug only. Do not work after game release.⚠
 /// </summary>
@@ -160,6 +160,7 @@ public class QTest {
 	/// User data for QTest.Func
 	/// </summary>
 	public static object CurrentInvokingParam { get; private set; } = null;
+	public static bool GrowPanelWidthWhenLabelTooLong { get; set; } = true;
 
 	// Data
 	private static readonly QTest[] Windows = new QTest[MAX_WINDOW_COUNT].FillWithNewValue();
@@ -254,6 +255,7 @@ public class QTest {
 	private void UpdateWindow (int windowIndex) {
 
 		if (Keys.Count == 0) return;
+		PanelMaxExpand = 0;
 
 		int validWindowCount = 0;
 		int lastWindowIndex = -1;
@@ -277,6 +279,7 @@ public class QTest {
 		Keys.Sort(KeyComparer.Instance);
 
 		using var _ = new UILayerScope();
+		int cellStartIndex = Renderer.GetUsedCellCount();
 		var cameraRect = Renderer.CameraRect;
 		int basicPanelWidth = cameraRect.width / (validWindowCount + 1).LessOrEquel(5);
 		if (PanelPositionOffset.x == int.MinValue) {
@@ -289,13 +292,14 @@ public class QTest {
 			basicPanelWidth, 1
 		);
 		int padding = GUI.FieldPadding;
+		int panelPadding = GUI.FieldPadding * 2;
 		int fieldHeight = GUI.Unify(FieldHeight);
 
 		Input.CancelIgnoreMouseInput();
 		bool mouseHoldingL = Game.IsMouseLeftHolding;
 		bool mouseMidDown = Input.MouseMidButtonDown;
 		bool ignoreStep = Input.HoldingAlt;
-		var rect = panelRect.EdgeInsideUp(fieldHeight).Shrink(padding, padding, 0, 0);
+		var rect = panelRect.EdgeInsideUp(fieldHeight).Shrink(panelPadding, panelPadding, 0, 0);
 
 		// BG
 		int border = GUI.Unify(1);
@@ -319,31 +323,29 @@ public class QTest {
 			}
 		}
 
-		// Ignore Btn
+		// Close Button
 		if (lastWindowIndex == windowIndex) {
 			var ignoreRect = rect.EdgeInsideRight(rect.height).Shift(PanelMaxExpand, 0);
-			if (GUI.Button(ignoreRect, BuiltInSprite.ICON_DELETE, GUI.Skin.SmallIconButton)) {
+			if (GUI.Button(ignoreRect, BuiltInSprite.ICON_DELETE, GUI.Skin.IconButton)) {
 				IgnoringWindow = true;
 				Input.UseAllMouseKey();
 			}
 		}
 
-
-		rect.SlideDown(padding);
+		rect.SlideDown(panelPadding);
 
 		// Content
 		int index = 0;
 		int indent = GUI.Unify(26);
-		rect = rect.ShrinkLeft(indent);
 		int rectLeft = rect.x;
-		rect = rect.ShrinkLeft(indent);
+		bool hasDisplayLabel = false;
 		foreach (var kData in Keys) {
 
 			string key = kData.key;
 			string group = kData.Group;
 			bool groupNotEmpty = !string.IsNullOrEmpty(group);
 			bool folding = GroupFolding.TryGetValue(group, out var gData) && gData.Folding;
-			rect.x = groupNotEmpty ? rectLeft + indent : rectLeft;
+			rect.xMin = groupNotEmpty ? rectLeft + indent : rectLeft;
 
 			// Update Check
 			if (!ShowNotUpdatedData && kData.UpdateFrame < Game.PauselessFrame) continue;
@@ -356,11 +358,11 @@ public class QTest {
 					// Tri Mark
 					Renderer.Draw(
 						folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN,
-						rect.EdgeOutsideLeft(rect.height - padding).Shift(-indent - padding / 2, 0).Fit(1, 1),
+						rect.EdgeOutsideLeft(rect.height - padding).Shift(-indent - padding / 2 + rect.height, 0).Fit(1, 1),
 						Color32.GREY_96
 					);
 					// Fold Button
-					if (GUI.Button(rect.Expand(indent, 0, 0, 0), group, GUI.Skin.SmallLabelButton)) {
+					if (GUI.Button(rect.Expand(indent - rect.height, 0, 0, 0), group, GUI.Skin.SmallLabelButton)) {
 						gData.Folding = !folding;
 					}
 					rect.SlideDown();
@@ -382,17 +384,17 @@ public class QTest {
 					data.value = GUI.Toggle(valueRect, data.value);
 					// Display Label
 					if (data.displayLabel != null) {
-						GUI.BackgroundLabel(
+						hasDisplayLabel = true;
+						GUI.SmallLabel(
 							valueRect.ShrinkLeft(valueRect.height + padding + padding),
 							data.displayLabel,
-							Color32.BLACK,
-							out var bounds,
-							padding,
-							style: GUI.Skin.SmallLabel
+							out var bounds
 						);
-						int maxX = bounds.xMax + padding;
-						if (maxX > panelRect.xMax) {
-							panelRect.xMax = maxX;
+						if (GrowPanelWidthWhenLabelTooLong) {
+							int maxX = bounds.xMax + padding;
+							if (maxX > panelRect.xMax) {
+								panelRect.xMax = maxX;
+							}
 						}
 					}
 					break;
@@ -416,15 +418,17 @@ public class QTest {
 					if (data.displayLabel == null) {
 						GUI.IntLabel(valueRect.EdgeInsideRight(valueLabelWidth), data.value, GUI.Skin.SmallCenterLabel);
 					} else {
-						GUI.BackgroundLabel(
+						hasDisplayLabel = true;
+						GUI.SmallLabel(
 							valueRect.EdgeInsideRight(valueLabelWidth).Shift(padding, 0),
 							data.displayLabel,
-							Color32.BLACK, out var bounds, padding,
-							style: GUI.Skin.SmallLabel
+							out var bounds
 						);
-						int maxX = bounds.xMax + padding;
-						if (maxX > panelRect.xMax) {
-							panelRect.xMax = maxX;
+						if (GrowPanelWidthWhenLabelTooLong) {
+							int maxX = bounds.xMax + padding;
+							if (maxX > panelRect.xMax) {
+								panelRect.xMax = maxX;
+							}
 						}
 					}
 					break;
@@ -455,15 +459,17 @@ public class QTest {
 							GUI.Skin.SmallCenterLabel
 						);
 					} else {
-						GUI.BackgroundLabel(
+						hasDisplayLabel = true;
+						GUI.SmallLabel(
 							valueRect.EdgeInsideRight(valueLabelWidth).Shift(padding, 0),
 							data.displayLabel,
-							Color32.BLACK, out var bounds, padding,
-							style: GUI.Skin.SmallLabel
+							out var bounds
 						);
-						int maxX = bounds.xMax + padding;
-						if (maxX > panelRect.xMax) {
-							panelRect.xMax = maxX;
+						if (GrowPanelWidthWhenLabelTooLong) {
+							int maxX = bounds.xMax + padding;
+							if (maxX > panelRect.xMax) {
+								panelRect.xMax = maxX;
+							}
 						}
 					}
 					break;
@@ -506,8 +512,8 @@ public class QTest {
 					float pixelFixH = 512f / height;
 					var pRect = new IRect(
 						0, 0,
-						((pxWidth + pixelFixW) * 5f / 4f).CeilToInt(),
-						((pxHeight + pixelFixH) * 5f / 4f).CeilToInt()
+						(pxWidth + pixelFixW).CeilToInt(),
+						(pxHeight + pixelFixH).CeilToInt()
 					);
 					for (int j = 0; j < height; j++) {
 						pRect.y = canvasRect.y + (j * pxHeight).RoundToInt();
@@ -565,13 +571,23 @@ public class QTest {
 
 		// Final
 		PanelMaxExpand = Util.Max(PanelMaxExpand, panelRect.width - basicPanelWidth);
+		if (!GrowPanelWidthWhenLabelTooLong && hasDisplayLabel) {
+			panelRect = panelRect.Expand(0, GUI.Unify(32), 0, 0);
+		}
 		panelRect.yMin = rect.yMax - padding;
 		panelRect.width = Util.Max(panelRect.width, basicPanelWidth + PanelMaxExpand);
 		bgCell.SetRect(panelRect);
 		titleCell.SetRect(panelRect.EdgeInsideUp(titleCell.Height));
 		CurrentGroup = "";
 
-		// Clamp
+		// Clamp Cells
+		if (Renderer.GetCells(out var cells, out int count)) {
+			for (int i = cellStartIndex; i < count; i++) {
+				cells[i].Clamp(panelRect);
+			}
+		}
+
+		// Clamp Panel Position
 		PanelPositionOffset.Clamp(
 			0,
 			Util.Min(panelRect.height, cameraRect.height),

@@ -33,10 +33,10 @@ public class PoseAnimation_JumpDown : PoseAnimation {
 		LowerArmR.LimbRotate(alt ? -45 : -35);
 
 		HandL.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
-		HandL.LimbRotate(0);
+		HandL.LimbRotate(1);
 
 		HandR.Z = (FacingFront ? POSE_Z_HAND : -POSE_Z_HAND);
-		HandR.LimbRotate(1);
+		HandR.LimbRotate(-1);
 
 		// Leg
 		UpperLegL.X += FacingRight ? A2G / 2 : -A2G / 2;
@@ -60,10 +60,10 @@ public class PoseAnimation_JumpDown : PoseAnimation {
 		FootR.Z += 2;
 
 		// Final
-		Rendering.HandGrabRotationL.Override( LowerArmL.Rotation - FacingSign * 90);
-		Rendering.HandGrabRotationR.Override( LowerArmR.Rotation - FacingSign * 90);
-		Rendering.HandGrabScaleL.Override( FacingSign * 1000);
-		Rendering.HandGrabScaleR.Override( FacingSign * 1000);
+		Rendering.HandGrabRotationL.Override(LowerArmL.Rotation - FacingSign * 90);
+		Rendering.HandGrabRotationR.Override(LowerArmR.Rotation - FacingSign * 90);
+		Rendering.HandGrabScaleL.Override(FacingSign * 1000);
+		Rendering.HandGrabScaleR.Override(FacingSign * 1000);
 	}
 
 }
