@@ -18,6 +18,9 @@ public class QTest {
 	#region --- SUB ---
 
 
+	public enum IntFieldType : byte { Slider, Field, Dial, }
+
+
 	private enum DataType : byte { Bool, Int, Float, String, Pixels, Button, Func, }
 
 
@@ -35,6 +38,7 @@ public class QTest {
 		public int min;
 		public int max;
 		public int step;
+		public IntFieldType FieldType;
 		public string displayLabel;
 		public string overrideLabel;
 		public KeyData Key;
@@ -406,17 +410,41 @@ public class QTest {
 					GUI.SmallLabel(rect, data.overrideLabel ?? key);
 					// Value
 					int valueLabelWidth = valueRect.height * 2;
-					data.value = GUI.HandleSlider(
-						3126784 + index + windowIndex * 624123,
-						valueRect.ShrinkRight(valueLabelWidth),
-						data.value, data.min, data.max,
-						step: ignoreStep ? 0 : data.step
-					);
+					int ctrlID = 3126784 + index + windowIndex * 624123;
+					var fieldRect = valueRect.ShrinkRight(valueLabelWidth);
+					switch (data.FieldType) {
+						case IntFieldType.Slider:
+							data.value = GUI.HandleSlider(
+								ctrlID, fieldRect,
+								data.value, data.min, data.max,
+								step: ignoreStep ? 0 : data.step
+							);
+							break;
+						case IntFieldType.Field:
+							string currentValueStr = data.value.ToString();
+							string valueStr = GUI.SmallInputField(ctrlID, fieldRect, currentValueStr);
+							if (currentValueStr != valueStr && int.TryParse(valueStr, out int newValue)) {
+								data.value = newValue.Clamp(data.min, data.max);
+							}
+							break;
+						case IntFieldType.Dial:
+							valueLabelWidth = valueRect.width / 2;
+							fieldRect = valueRect.ShrinkRight(valueLabelWidth);
+							data.value = GUI.IntDial(
+								fieldRect, data.value,
+								delta: data.step.GreaterOrEquel(1),
+								min: data.min,
+								max: data.max
+							);
+							break;
+					}
 					if (mouseMidDown && valueRect.MouseInside()) {
 						data.value = data.defaultValue;
 					}
 					if (data.displayLabel == null) {
-						GUI.IntLabel(valueRect.EdgeInsideRight(valueLabelWidth), data.value, GUI.Skin.SmallCenterLabel);
+						if (data.FieldType != IntFieldType.Dial) {
+							GUI.IntLabel(valueRect.EdgeInsideRight(valueLabelWidth), data.value, GUI.Skin.SmallCenterLabel);
+						}
 					} else {
 						hasDisplayLabel = true;
 						GUI.SmallLabel(
@@ -919,15 +947,17 @@ public class QTest {
 	/// <param name="displayLabel">Text content for rendering only</param>
 	/// <param name="overrideLabel">Force firld use this label</param>
 	/// <param name="windowIndex">Force field into given window instead of current window</param>
+	/// <param name="useSlider">True if use slider UI for this int</param>
 	/// <returns>The current data of this field</returns>
-	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null, string overrideLabel = null, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].IntLogic(key, defaultValue, min, max, step, displayLabel, overrideLabel);
-	private int IntLogic (string key, int defaultValue, int min, int max, int step, string displayLabel, string overrideLabel) {
+	public static int Int (string key, int defaultValue = 0, int min = 0, int max = 100, int step = 0, string displayLabel = null, string overrideLabel = null, IntFieldType fieldType = IntFieldType.Slider, int windowIndex = -1) => Windows[windowIndex >= 0 ? windowIndex : CurrentWindowIndex].IntLogic(key, defaultValue, min, max, step, displayLabel, overrideLabel, fieldType);
+	private int IntLogic (string key, int defaultValue, int min, int max, int step, string displayLabel, string overrideLabel, IntFieldType fieldType) {
 		if (!AllowQuickTest) return 0;
 		ShowingWindow = true;
 		CurrentOrder++;
 		if (IntPool.TryGetValue(key, out var result)) {
 			result.displayLabel = displayLabel;
 			result.overrideLabel = overrideLabel;
+			result.FieldType = fieldType;
 			var kData = result.Key;
 			kData.Order = CurrentOrder;
 			result.min = min;
@@ -954,6 +984,7 @@ public class QTest {
 			max = max,
 			step = step,
 			Key = keyData,
+			FieldType = fieldType,
 		});
 		Keys.Add(keyData);
 		IgnoringWindow = false;

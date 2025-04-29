@@ -32,9 +32,11 @@ internal class NoiseMaker : QMaker {
 
 	// MSG
 	protected override void OnActivated () {
-		base.OnActivated();
 		NoiseDataRoot = Util.CombinePaths(Universe.BuiltIn.UniverseMetaRoot, "Noise");
 		Util.CreateFolder(NoiseDataRoot);
+
+		base.OnActivated();
+
 		foreach (var filePath in Util.EnumerateFiles(NoiseDataRoot, true, "*")) {
 			string name = Util.GetNameWithoutExtension(filePath);
 			string noiseSourcePath = Util.CombinePaths(FileRoot, $"{name}.{FileExtension}");

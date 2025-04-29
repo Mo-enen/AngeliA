@@ -8,11 +8,12 @@ public partial class Game {
 
 	private static int ForcedTargetFramerate = 60;
 	private static int TargetFramerateFrame = -1;
+	public static float FrameDurationMilliSecond { get; protected set; } = 0f;
 
 
 	// API
 	/// <inheritdoc cref="_SetFullscreen"/>
-	internal static bool IsFullscreen {
+	public static bool IsFullscreen {
 		get => _IsFullscreen.Value;
 		set {
 			_IsFullscreen.Value = value;

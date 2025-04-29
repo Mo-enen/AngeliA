@@ -38,6 +38,7 @@ public partial class RiggedGame : Game {
 	private string HoveringEntityLabel = "";
 	private int OriginalMinViewHeight;
 	private int OriginalMaxViewHeight;
+	private long StartTicks;
 
 
 	#endregion
@@ -166,6 +167,7 @@ public partial class RiggedGame : Game {
 				if (HostProcess == null || HostProcess.HasExited) return false;
 			}
 			if (*BufferPointer == 255) return false;
+			StartTicks = System.DateTime.UtcNow.Ticks;
 			CallingMessage.ReadDataFromPipe(BufferPointer + 1);
 		}
 		CurrentPressedCharIndex = 0;
@@ -352,6 +354,7 @@ public partial class RiggedGame : Game {
 		// Respond to Memory
 		unsafe {
 			RespondMessage.WriteDataToPipe(BufferPointer + 1);
+			FrameDurationMilliSecond = (System.DateTime.UtcNow.Ticks - StartTicks) / 10000f;
 			unsafe {
 				if (*BufferPointer == 255) return false;
 			}

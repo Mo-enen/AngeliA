@@ -32,6 +32,8 @@ public partial class RayGame : Game {
 	private int CurrentBgmID = 0;
 	private bool HasScreenEffectEnabled;
 	private int PrevFPS = -1;
+	protected long StartTicks;
+
 
 	// Saving
 	private static readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false, SavingLocation.Global);
@@ -52,10 +54,12 @@ public partial class RayGame : Game {
 		InitializeGame();
 		while (!RequireQuitGame) {
 			try {
+				StartTicks = DateTime.UtcNow.Ticks;
 				UpdateWindow();
 				if (!Raylib.IsWindowMinimized()) {
 					UpdateGame();
 				} else {
+					FrameDurationMilliSecond = (DateTime.UtcNow.Ticks - StartTicks) / 10000f;
 					Raylib.EndDrawing();
 				}
 			} catch (Exception ex) {
@@ -229,6 +233,7 @@ public partial class RayGame : Game {
 
 		// End
 		Raylib.EndBlendMode();
+		FrameDurationMilliSecond = (DateTime.UtcNow.Ticks - StartTicks) / 10000f;
 		Raylib.EndDrawing();
 	}
 

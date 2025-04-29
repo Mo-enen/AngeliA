@@ -90,22 +90,20 @@ public abstract class QMaker {
 			// File Root
 			FileRoot = Util.CombinePaths(Universe.BuiltIn.SavingRoot, Name);
 			Util.CreateFolder(FileRoot);
-			// Load First
-			foreach (var filePath in Util.EnumerateFiles(FileRoot, true, $"*.{FileExtension}")) {
-				LoadData(filePath);
-				int windowIndex = QTest.MAX_WINDOW_COUNT - 2;
-				ViewZoom = DefaultViewZoom;
-				QTest.SetInt("Zoom", DefaultViewZoom, windowIndex);
-				QTest.SetFloat("Speed X", DefaultViewSpeed.x, windowIndex);
-				QTest.SetFloat("Speed Y", DefaultViewSpeed.y, windowIndex);
-				QTest.SetFloat("Speed Z", DefaultViewSpeed.z, windowIndex);
-				break;
-			}
 		}
+		LoadData(Util.CombinePaths(FileRoot, $"Current.{FileExtension}"));
+		SaveName = "Current";
+		SaveData();
+		int windowIndex = QTest.MAX_WINDOW_COUNT - 2;
+		ViewZoom = DefaultViewZoom;
+		QTest.SetInt("Zoom", DefaultViewZoom, windowIndex);
+		QTest.SetFloat("Speed X", DefaultViewSpeed.x, windowIndex);
+		QTest.SetFloat("Speed Y", DefaultViewSpeed.y, windowIndex);
+		QTest.SetFloat("Speed Z", DefaultViewSpeed.z, windowIndex);
 	}
 
 
-	protected virtual void OnInactivated () { }
+	protected virtual void OnInactivated () => SaveData();
 
 
 	private void Update () {
