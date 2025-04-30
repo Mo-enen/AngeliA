@@ -30,8 +30,8 @@ public abstract class Light : Furniture {
 
 	public override void OnActivated () {
 		base.OnActivated();
-		int hour = System.DateTime.Now.Hour;
-		OpenLight = hour <= 6 || hour >= 18;
+		float time01 = Sky.InGameDaytime01;
+		OpenLight = time01 < 0.25f || time01 > 0.75f;
 #if DEBUG
 		OpenLight = true;
 #endif

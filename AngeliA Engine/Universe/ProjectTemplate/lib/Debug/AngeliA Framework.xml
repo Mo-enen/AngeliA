@@ -3408,7 +3408,7 @@
             <param name="windowIndex">Force field into given window instead of current window</param>
             <returns>The current data of this field</returns>
         </member>
-        <member name="M:AngeliA.QTest.Int(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String,System.Int32)">
+        <member name="M:AngeliA.QTest.Int(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String,AngeliA.QTest.IntFieldType,System.Int32)">
             <summary>
             Require a intager slider inside the current test window
             </summary>
@@ -3420,6 +3420,7 @@
             <param name="displayLabel">Text content for rendering only</param>
             <param name="overrideLabel">Force firld use this label</param>
             <param name="windowIndex">Force field into given window instead of current window</param>
+            <param name="useSlider">True if use slider UI for this int</param>
             <returns>The current data of this field</returns>
         </member>
         <member name="M:AngeliA.QTest.Float(System.String,System.Single,System.Single,System.Single,System.Single,System.String,System.String,System.Int32)">

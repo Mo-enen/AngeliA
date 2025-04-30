@@ -107,7 +107,7 @@ public static partial class Util {
 	/// <summary>
 	/// Get a string for current date and time
 	/// </summary>
-	public static string GetTimeString () => System.DateTime.Now.ToString("yyyyMMddHHmmssffff");
+	public static string GetTimeString () => System.DateTime.UtcNow.ToString("yyyyMMddHHmmssffff");
 
 
 	/// <summary>
@@ -141,10 +141,10 @@ public static partial class Util {
 		path = path.Replace(adsChar, dsChar);
 		path = path.Replace(new string(dsChar, 2), dsChar.ToString());
 		while (path.Length > 0 && path[0] == dsChar) {
-			path = path.Remove(0, 1);
+			path = path[1..];
 		}
 		while (path.Length > 0 && path[^1] == dsChar) {
-			path = path.Remove(path.Length - 1, 1);
+			path = path[..^1];
 		}
 		return path;
 	}

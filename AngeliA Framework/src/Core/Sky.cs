@@ -64,7 +64,7 @@ public static class Sky {
 	// MSG
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
-		GameInitDate = System.DateTime.Now;
+		GameInitDate = System.DateTime.UtcNow;
 		InGameDaytime01 = GetInGameDaytimeFromRealTime();
 	}
 

@@ -110,8 +110,7 @@ public abstract class QMaker {
 
 		// Close Check
 		if (!QTest.Testing) {
-			OnInactivated();
-			Current = null;
+			CloseMaker();
 			LastMakerName.Value = "";
 			return;
 		}
