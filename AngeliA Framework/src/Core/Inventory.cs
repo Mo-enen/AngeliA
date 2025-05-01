@@ -88,10 +88,9 @@ public static class Inventory {
 
 
 	[OnGameInitialize]
-	[OnSavingSlotChanged]
 	internal static void OnGameInitialize () {
 		PoolReady = false;
-		LoadInventoryPoolFromDisk();
+		LoadInventoryPoolFromDisk(false);
 		PoolReady = true;
 	}
 
@@ -148,6 +147,14 @@ public static class Inventory {
 
 	[BeforeSavingSlotChanged]
 	internal static void BeforeSavingSlotChanged () => PoolReady = false;
+
+
+	[OnSavingSlotChanged]
+	internal static void OnSavingSlotChanged () {
+		PoolReady = false;
+		LoadInventoryPoolFromDisk(true);
+		PoolReady = true;
+	}
 
 
 	[OnMainSheetReload]
@@ -1003,10 +1010,31 @@ public static class Inventory {
 	#region --- LGC ---
 
 
-	private static void LoadInventoryPoolFromDisk () {
+	private static void LoadInventoryPoolFromDisk (bool keepOriginalCapacity) {
 		lock (Pool) {
 			IsPoolDirty = false;
-			Pool.Clear();
+			if (!keepOriginalCapacity) {
+				Pool.Clear();
+			} else {
+				foreach (var (_, data) in Pool) {
+					System.Array.Clear(data.Items);
+					System.Array.Clear(data.Counts);
+					if (data is EquipmentInventoryData eData) {
+						eData.HandTool = 0;
+						eData.Helmet = 0;
+						eData.BodySuit = 0;
+						eData.Shoes = 0;
+						eData.Gloves = 0;
+						eData.Jewelry = 0;
+						eData.HandToolCount = 0;
+						eData.HelmetCount = 0;
+						eData.BodySuitCount = 0;
+						eData.ShoesCount = 0;
+						eData.GlovesCount = 0;
+						eData.JewelryCount = 0;
+					}
+				}
+			}
 			string root = Universe.BuiltIn.SlotInventoryRoot;
 			if (!Util.FolderExists(root)) return;
 			foreach (var path in Util.EnumerateFiles(
@@ -1015,7 +1043,7 @@ public static class Inventory {
 				try {
 					string name = Util.GetNameWithoutExtension(path);
 					int id = name.AngeHash();
-					if (Pool.ContainsKey(id)) continue;
+					if (!keepOriginalCapacity && Pool.ContainsKey(id)) continue;
 					InventoryData data;
 					if (path.EndsWith(AngePath.EQ_INVENTORY_FILE_EXT)) {
 						data = JsonUtil.LoadOrCreateJsonFromPath<EquipmentInventoryData>(path);
@@ -1027,7 +1055,7 @@ public static class Inventory {
 					data.Path = path;
 					data.MapUnitPosition = GetInventoryMapPosFromName(name, out string basicName);
 					data.BasicName = basicName;
-					Pool.TryAdd(id, data);
+					Pool[id] = data;
 					// Valid Item Count
 					for (int i = 0; i < data.Items.Length; i++) {
 						int iCount = data.Counts[i];
