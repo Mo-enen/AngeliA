@@ -328,6 +328,8 @@ public partial class RiggedGame : Game {
 		}
 
 		// Finish
+		RespondMessage.GlobalFrame = GlobalFrame;
+		RespondMessage.FrameDurationMilliSecond = FrameDurationMilliSecond;
 		RespondMessage.GamePlaying = WorldSquad.Enable;
 		RespondMessage.ViewX = Stage.ViewRect.x;
 		RespondMessage.ViewY = Stage.ViewRect.y;

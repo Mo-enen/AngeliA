@@ -843,26 +843,30 @@ public static partial class GUI {
 		return isOn;
 	}
 	/// <inheritdoc cref="BlankToggle"/>
-	public static bool ToggleFold (IRect rect, ref bool folding, int icon, string label, int paddingLeft = 0, int paddingRight = 0) {
+	public static bool ToggleFold (IRect rect, ref bool opening, int icon, string label, int paddingLeft = 0, int paddingRight = 0) {
 
 		// Fold Icon
-		Icon(rect.EdgeInside(Direction4.Left, rect.height * 3 / 4).Shift(-paddingLeft / 5, 0), icon);
+		if (icon != 0) {
+			Icon(rect.EdgeInside(Direction4.Left, rect.height * 3 / 4).Shift(-paddingLeft / 5, 0), icon);
+		}
 
 		// Fold Label
-		if (Button(rect.Expand(paddingLeft, paddingRight, 0, 0), 0, Skin.WeakHighlightPixel)) {
-			folding = !folding;
+		var btnRect = rect.Expand(paddingLeft, paddingRight, 0, 0);
+		if (Button(btnRect, 0, Skin.WeakHighlightPixel)) {
+			opening = !opening;
 		}
-		Label(rect.ShrinkLeft(rect.height), label, Skin.SmallGreyLabel);
+		Cursor.SetCursorAsHand(btnRect);
+		Label(rect.ShrinkLeft(icon != 0 ? rect.height : 0), label, Skin.SmallGreyLabel);
 
 		// Fold Triangle
 		using (new GUIColorScope(Color32.GREY_128)) {
 			Icon(
 				rect.EdgeOutsideLeft(rect.height / 2).Shift(-paddingLeft / 3, 0),
-				folding ? BuiltInSprite.ICON_TRIANGLE_RIGHT : BuiltInSprite.ICON_TRIANGLE_DOWN
+				opening ? BuiltInSprite.ICON_TRIANGLE_DOWN : BuiltInSprite.ICON_TRIANGLE_RIGHT
 			);
 		}
 
-		return folding;
+		return opening;
 	}
 	/// <inheritdoc cref="BlankToggle"/>
 	public static bool Toggle (IRect rect, bool isOn, GUIStyle bodyStyle = null, GUIStyle markStyle = null) =>

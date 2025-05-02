@@ -91,18 +91,21 @@ public class RigTransceiver {
 			}
 
 			var process = new Process();
-			process.StartInfo.FileName = ExePath;
-			process.StartInfo.UseShellExecute = false;
-			process.StartInfo.CreateNoWindow = true;
-			process.StartInfo.Arguments = GetArgumentsForRigGame(gameBuildFolder, universePath);
-			process.StartInfo.WorkingDirectory = gameBuildFolder;
-			process.StartInfo.RedirectStandardOutput = true;
-			process.StartInfo.RedirectStandardError = true;
+			var startInfo = process.StartInfo;
+			startInfo.FileName = ExePath;
+			startInfo.UseShellExecute = false;
+			startInfo.CreateNoWindow = true;
+			startInfo.Arguments = GetArgumentsForRigGame(gameBuildFolder, universePath);
+			startInfo.WorkingDirectory = gameBuildFolder;
+			startInfo.RedirectStandardOutput = true;
+			startInfo.RedirectStandardError = true;
 
 			bool processStarted = process.Start();
 			if (!processStarted) {
 				return ERROR_PROCESS_FAIL_TO_START;
 			}
+
+			process.PriorityClass = ProcessPriorityClass.RealTime;
 
 			UniversePath = universePath;
 			RigPipeClientProcess = process;

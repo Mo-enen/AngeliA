@@ -101,10 +101,10 @@ internal class ProjectEditor : WindowUI {
 	private long IconFileModifyDate = 0;
 	private object MenuItem = null;
 	private bool RequireRecompileOnSave = false;
-	private bool FoldingGamePanel = false;
-	private bool FoldingMapPanel = true;
-	private bool FoldingStagePanel = true;
-	private bool FoldingResourcePanel = true;
+	private bool ShowingGamePanel = true;
+	private bool ShowingMapPanel = false;
+	private bool ShowingStagePanel = false;
+	private bool ShowingResourcePanel = false;
 
 
 	#endregion
@@ -176,7 +176,7 @@ internal class ProjectEditor : WindowUI {
 			// Game
 			rect.yMin = rect.yMax - GUI.FieldHeight;
 			rect.xMin += indent;
-			if (!GUI.ToggleFold(rect, ref FoldingGamePanel, ICON_GAME, LABEL_GAME, foldPaddingL)) {
+			if (GUI.ToggleFold(rect, ref ShowingGamePanel, ICON_GAME, LABEL_GAME, foldPaddingL)) {
 				rect.xMin += indent;
 				rect.SlideDown(GUI.FieldPadding);
 				OnGUI_Game(ref rect);
@@ -190,7 +190,7 @@ internal class ProjectEditor : WindowUI {
 				rect.x = left;
 				rect.yMin = rect.yMax - GUI.FieldHeight;
 				rect.xMin += indent;
-				if (!GUI.ToggleFold(rect, ref FoldingMapPanel, ICON_MAP, LABEL_MAP, foldPaddingL)) {
+				if (GUI.ToggleFold(rect, ref ShowingMapPanel, ICON_MAP, LABEL_MAP, foldPaddingL)) {
 					rect.xMin += indent;
 					rect.SlideDown(GUI.FieldPadding);
 					OnGUI_Map(ref rect);
@@ -202,7 +202,7 @@ internal class ProjectEditor : WindowUI {
 				rect.x = left;
 				rect.yMin = rect.yMax - GUI.FieldHeight;
 				rect.xMin += indent;
-				if (!GUI.ToggleFold(rect, ref FoldingStagePanel, ICON_STAGE, LABEL_STAGE, foldPaddingL)) {
+				if (GUI.ToggleFold(rect, ref ShowingStagePanel, ICON_STAGE, LABEL_STAGE, foldPaddingL)) {
 					rect.xMin += indent;
 					rect.SlideDown(GUI.FieldPadding);
 					OnGUI_Stage(ref rect);
@@ -212,7 +212,7 @@ internal class ProjectEditor : WindowUI {
 
 				// Resource
 				rect.xMin = left + indent;
-				if (!GUI.ToggleFold(rect, ref FoldingResourcePanel, ICON_RESOURCE, LABEL_RESOURCE, foldPaddingL)) {
+				if (GUI.ToggleFold(rect, ref ShowingResourcePanel, ICON_RESOURCE, LABEL_RESOURCE, foldPaddingL)) {
 					rect.xMin += indent;
 					rect.SlideDown(GUI.FieldPadding);
 					OnGUI_Resource(ref rect);

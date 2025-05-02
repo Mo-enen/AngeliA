@@ -202,8 +202,9 @@ internal class SettingWindow : WindowUI {
 		GUI.BeginChangeCheck();
 
 		// Fold
-		if (!GUI.ToggleFold(
-			rect, ref groupData.Folding, groupData.Icon, groupData.Name, boxPadding.left, boxPadding.right
+		bool opening = !groupData.Folding;
+		if (GUI.ToggleFold(
+			rect, ref opening, groupData.Icon, groupData.Name, boxPadding.left, boxPadding.right
 		)) {
 
 			rect.SlideDown(GUI.FieldPadding);
@@ -270,6 +271,7 @@ internal class SettingWindow : WindowUI {
 		} else {
 			rect.SlideDown();
 		}
+		groupData.Folding = !opening;
 
 		changed = GUI.EndChangeCheck();
 

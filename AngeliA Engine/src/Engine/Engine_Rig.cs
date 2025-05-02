@@ -218,7 +218,9 @@ internal partial class Engine {
 						!requireRigGameRender,
 						ignoreInGameGizmos
 					);
-					gameEDT.UpdateUsageData(resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities);
+					gameEDT.UpdateUsageData(
+						resp.FrameDurationMilliSecond, resp.RenderUsages, resp.RenderCapacities, resp.EntityUsages, resp.EntityCapacities
+					);
 					gameEDT.SetRiggedGameInfo(resp.GlobalFrame, GetEngineLeftBarWidth(out _));
 					gameEDT.HavingGamePlay = resp.GamePlaying;
 					if (openingGameEditor) {

@@ -121,6 +121,8 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode ICON_DELETE = ICON_CROSS;
 	public static readonly SpriteCode ICON_HOME = "Icon.Home";
 	public static readonly SpriteCode ICON_ENTITY = "Icon.Entity";
+	public static readonly SpriteCode ICON_RENDER = "Icon.Render";
+	public static readonly SpriteCode ICON_CPU = "Icon.CPU";
 	public static readonly SpriteCode ICON_BUFF = "Icon.Buff";
 	public static readonly SpriteCode UI_TOGGLE = "UI.Toggle";
 	public static readonly SpriteCode UI_TOGGLE_DOWN = "UI.ToggleDown";

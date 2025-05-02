@@ -12,13 +12,6 @@ internal partial class GameEditor : WindowUI {
 	#region --- SUB ---
 
 
-	private class ProfilerUiBarData {
-		public string Name;
-		public int Value;
-		public int Capacity;
-	}
-
-
 	private enum PanelType { None, Profiler, Movement, Lighting, ColorAnalyzer, Location, }
 
 
