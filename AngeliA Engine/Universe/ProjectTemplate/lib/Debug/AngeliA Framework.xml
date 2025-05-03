@@ -4006,11 +4006,6 @@
             Last edit view rect height from map editor
             </summary>
         </member>
-        <member name="F:AngeliA.UniverseInfo.LastBackupSavingDate">
-            <summary>
-            Last time AngeliA Engine backup the saving files
-            </summary>
-        </member>
         <member name="F:AngeliA.UniverseInfo.UsePixelPerfectRendering">
             <summary>
             True if the game require rendering cell pixel perfect

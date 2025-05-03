@@ -11,7 +11,6 @@ internal class EngineSetting {
 	[EngineSetting("Engine", "Show Tooltip")] public static readonly SavingBool UseTooltip = new("Engine.UseTooltip", true, SavingLocation.Global);
 	[EngineSetting("Engine", "Show Notification")] public static readonly SavingBool UseNotification = new("Engine.UseNotification", true, SavingLocation.Global);
 	[EngineSetting("Engine", "Auto Recompile when Script Changed", gameOnly: true)] public static readonly SavingBool AutoRecompile = new("Engine.AutoRecompile", true, SavingLocation.Global);
-	[EngineSetting("Engine", "Backup Game Saving Data when Open Project", gameOnly: true)] public static readonly SavingBool BackupSaving = new("Engine.BackupSaving", true, SavingLocation.Global);
 	[EngineSetting("Engine", "Show Key Press UI when Frame Debugging", gameOnly: true)] public static readonly SavingBool ShowKeyPressWhenFrameDebugging = new("Engine.ShowKeyFrameDebug", true, SavingLocation.Global);
 
 	// Pixel Editor

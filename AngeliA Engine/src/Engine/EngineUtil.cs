@@ -364,16 +364,6 @@ internal static class EngineUtil {
 	}
 
 
-	// Misc
-	public static void BackupSaving (Project project) {
-		string from = project.Universe.SavingRoot;
-		string to = project.BackupSavingDataRoot;
-		if (!Util.FolderExists(from)) return;
-		Util.DeleteFolder(project.BackupSavingDataRoot);
-		Util.CopyFolder(from, to, true, false, true);
-	}
-
-
 	#endregion
 
 

@@ -969,12 +969,6 @@ internal partial class Engine {
 			case ProjectType.Game:
 				// Build
 				EngineUtil.BuildAngeliaProjectInBackground(CurrentProject, RequireBackgroundBuildDate);
-				// Backup
-				long timeNow = Util.GetLongTime();
-				if (EngineSetting.BackupSaving.Value && !Util.IsSameDay(CurrentProject.Universe.Info.LastBackupSavingDate, timeNow)) {
-					EngineUtil.BackupSaving(CurrentProject);
-					CurrentProject.Universe.Info.LastBackupSavingDate = timeNow;
-				}
 				break;
 
 			case ProjectType.Artwork:

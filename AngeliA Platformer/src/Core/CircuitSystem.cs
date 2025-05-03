@@ -19,7 +19,7 @@ public static class CircuitSystem {
 
 
 	// Const
-	private const int MAX_COUNT = 4096 * 2;
+	private const int MAX_BACKGROUND_TRIGGER_COUNT = 4096 * 2;
 
 	// Data
 	private static readonly Dictionary<int, (bool left, bool right, bool down, bool up)> WireIdPool = [];
@@ -69,7 +69,7 @@ public static class CircuitSystem {
 			using var stream = File.Open(path, FileMode.Open);
 			using var reader = new BinaryReader(stream);
 			while (reader.NotEnd()) {
-				if (LoadedBackgroundTrigger.Count >= MAX_COUNT) {
+				if (LoadedBackgroundTrigger.Count >= MAX_BACKGROUND_TRIGGER_COUNT) {
 					break;
 				}
 				LoadedBackgroundTrigger.Add(new Int4(
@@ -88,7 +88,7 @@ public static class CircuitSystem {
 			while (true) {
 
 				// Frame Check
-				if (Game.PauselessFrame <= LastBackgroundTriggeredFrame) {
+				if (Game.PauselessFrame <= LastBackgroundTriggeredFrame + 60) {
 					Thread.Sleep(200);
 					continue;
 				}
@@ -107,6 +107,8 @@ public static class CircuitSystem {
 									continue;
 								}
 								OperateCircuit(unitPos);
+								//TriggerCircuit(unitPos.x, unitPos.y, unitPos.z);
+								//Iterate(unitPos, int.MinValue, Direction5.Center);
 							}
 						}
 					}
@@ -159,13 +161,18 @@ public static class CircuitSystem {
 
 	[OnGameUpdateLater]
 	internal static void OnGameUpdateLater () {
+		// Iterate
 		int targetCount = TriggeringTask.Count;
 		for (int i = 0; i < targetCount; i++) {
 			var (pos, left, right, down, up, stamp) = TriggeringTask.Dequeue();
-			if (left) Interate(pos.Shift(-1, 0), stamp, Direction5.Right);
-			if (right) Interate(pos.Shift(1, 0), stamp, Direction5.Left);
-			if (down) Interate(pos.Shift(0, -1), stamp, Direction5.Up);
-			if (up) Interate(pos.Shift(0, 1), stamp, Direction5.Down);
+			if (left) Iterate(pos.Shift(-1, 0), stamp, Direction5.Right);
+			if (right) Iterate(pos.Shift(1, 0), stamp, Direction5.Left);
+			if (down) Iterate(pos.Shift(0, -1), stamp, Direction5.Up);
+			if (up) Iterate(pos.Shift(0, 1), stamp, Direction5.Down);
+		}
+		// Warning Label
+		if (LoadedBackgroundTrigger.Count >= MAX_BACKGROUND_TRIGGER_COUNT) {
+			Debug.LogLabel("Max background circuit trigger count reached");
 		}
 	}
 
@@ -206,7 +213,7 @@ public static class CircuitSystem {
 	public static void TriggerCircuit (int unitX, int unitY, int unitZ, int stamp = int.MinValue, Direction5 startDirection = Direction5.Center) {
 		stamp = stamp == int.MinValue ? Game.PauselessFrame : stamp;
 		var startPos = new Int3(unitX, unitY, unitZ);
-		Interate(startPos, stamp, startDirection.Opposite());
+		Iterate(startPos, stamp, startDirection.Opposite());
 	}
 
 
@@ -295,7 +302,7 @@ public static class CircuitSystem {
 	/// <param name="unitPos">Position in unit space</param>
 	/// <returns>True if the capacity is not reached</returns>
 	public static bool TryAddBackgroundTrigger (int entityID, Int3 unitPos) {
-		if (LoadedBackgroundTrigger.Count >= MAX_COUNT) return false;
+		if (LoadedBackgroundTrigger.Count >= MAX_BACKGROUND_TRIGGER_COUNT) return false;
 		LoadedBackgroundTrigger.Add(new Int4(unitPos.x, unitPos.y, unitPos.z, entityID));
 		return true;
 	}
@@ -318,7 +325,7 @@ public static class CircuitSystem {
 	#region --- LGC ---
 
 
-	private static void Interate (Int3 pos, int stamp, Direction5 circuitFrom) {
+	private static void Iterate (Int3 pos, int stamp, Direction5 circuitFrom) {
 
 		if (TriggeredTaskStamp.TryGetValue(pos, out int triggeredStamp) && stamp <= triggeredStamp) return;
 		var squad = WorldSquad.Front;
@@ -341,7 +348,6 @@ public static class CircuitSystem {
 		}
 
 		OperateCircuit(pos, stamp, circuitFrom);
-
 
 	}
 

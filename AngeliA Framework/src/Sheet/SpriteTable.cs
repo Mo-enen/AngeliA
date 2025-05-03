@@ -53,8 +53,8 @@ public class SpriteTable {
 	}
 
 	public int GetBlock (float x01, float y01) {
-		var row = Blocks[(int)(y01 * Blocks.Length).Clamp(0, Blocks.Length - 1)];
-		return row[(int)(x01 * row.Length).Clamp(0, row.Length - 1)];
+		var row = Blocks[((int)(y01 * Blocks.Length)).UMod(Blocks.Length)];
+		return row[((int)(x01 * row.Length)).UMod(row.Length)];
 	}
 
 	public int[] GetRow (int index) => Blocks[index];

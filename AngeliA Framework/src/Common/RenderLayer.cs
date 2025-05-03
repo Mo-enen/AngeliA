@@ -3,7 +3,7 @@
 /// <summary>
 /// Layer for rendering
 /// </summary>
-public static class RenderLayer {
+public struct RenderLayer {
 
 	/// <summary>
 	/// Most behind rendering layer, only overlap on top of sky color

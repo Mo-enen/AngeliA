@@ -6,7 +6,6 @@ using JordanPeck;
 
 namespace AngeliA;
 
-
 public class FastNoiseGroup (int length) {
 
 
@@ -14,6 +13,8 @@ public class FastNoiseGroup (int length) {
 
 	#region --- VAR ---
 
+	// Const
+	private static readonly FastNoiseGroup FailbackNoiseGroup = new(1);
 
 	// Api
 	public readonly int Length = length;
@@ -22,7 +23,20 @@ public class FastNoiseGroup (int length) {
 	public float SolidMax { get; set; } = 0.5f;
 
 	// Data
+	private static readonly Dictionary<int, FastNoiseGroup> NoisePool = [];
 	private readonly FastNoiseLite[] Noises = new FastNoiseLite[length].FillWithNewValue();
+
+
+	#endregion
+
+
+
+
+	#region --- MSG ---
+
+
+	[OnGameUpdateLater]
+	internal static void OnGameUpdateLater () => NoisePool.TrimExcess();
 
 
 	#endregion
@@ -51,6 +65,20 @@ public class FastNoiseGroup (int length) {
 
 	public bool IsSolid (float value) => SolidMin < SolidMax ? value > SolidMin && value < SolidMax :
 		value < SolidMax || value > SolidMin;
+
+
+	// Pool
+	public static FastNoiseGroup GetNoiseGroupFromPool (int id) => NoisePool.TryGetValue(id, out var result) ? result : FailbackNoiseGroup;
+
+
+	public static void AddNoiseGroupIntoPool (int id, FastNoiseGroup group) => NoisePool.TryAdd(id, group);
+
+
+	public static void SetAllNoiseSeedInPool (int newSeed) {
+		foreach (var (_, group) in NoisePool) {
+			group.SetSeed(newSeed);
+		}
+	}
 
 
 	// File

@@ -150,10 +150,6 @@ public class UniverseInfo : IJsonSerializationCallback {
 	/// </summary>
 	public int LastEdittingViewHeight = -1;
 	/// <summary>
-	/// Last time AngeliA Engine backup the saving files
-	/// </summary>
-	public long LastBackupSavingDate = 0;
-	/// <summary>
 	/// True if the game require rendering cell pixel perfect
 	/// </summary>
 	public bool UsePixelPerfectRendering = false;

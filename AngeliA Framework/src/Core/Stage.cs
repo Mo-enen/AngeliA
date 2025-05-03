@@ -262,6 +262,19 @@ public static class Stage {
 	}
 
 
+	[BeforeSavingSlotChanged]
+	internal static void BeforeSavingSlotChanged () {
+		for (int layer = 0; layer < EntityLayer.COUNT; layer++) {
+			int count = EntityCounts[layer];
+			var entities = Entities[layer].GetReadOnlySpan();
+			for (int i = 0; i < count; i++) {
+				var e = entities[i];
+				e.IgnoreReposition = true;
+			}
+		}
+	}
+
+
 	[OnGameRestart]
 	internal static void OnGameRestart () {
 		if (!Enable) return;
