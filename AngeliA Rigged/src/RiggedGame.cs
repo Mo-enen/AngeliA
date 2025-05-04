@@ -356,7 +356,7 @@ public partial class RiggedGame : Game {
 		// Respond to Memory
 		unsafe {
 			RespondMessage.WriteDataToPipe(BufferPointer + 1);
-			FrameDurationMilliSecond = (System.DateTime.UtcNow.Ticks - StartTicks) / 10000f;
+			FrameDurationMilliSecond = (System.DateTime.UtcNow.Ticks - StartTicks).TicksToMilliSecond();
 			unsafe {
 				if (*BufferPointer == 255) return false;
 			}

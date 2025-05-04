@@ -836,7 +836,7 @@ internal partial class Engine {
 		// Reload Sheet
 		if (PackageManager.Instance.RequiringReloadSheet) {
 			PackageManager.Instance.RequiringReloadSheet = false;
-			ReloadRenderingSheet();
+			ReloadRenderingSheet(syncPackageSheet: true);
 		}
 
 		// Publish
@@ -858,9 +858,9 @@ internal partial class Engine {
 		}
 
 		// Rendering Sheet
-		if (PixelEditor.Instance.RequireReloadRenderingSheet) {
+		if (PixelEditor.Instance.RequireReloadRenderingSheet && CurrentWindow is GameEditor) {
 			PixelEditor.Instance.RequireReloadRenderingSheet = false;
-			ReloadRenderingSheet();
+			ReloadRenderingSheet(syncPackageSheet: false);
 		}
 
 		// Dirty
@@ -949,7 +949,7 @@ internal partial class Engine {
 		CheckScriptChanged();
 		UpdateDllLibraryFiles();
 		CheckResourceChanged();
-		ReloadRenderingSheet();
+		ReloadRenderingSheet(syncPackageSheet: true);
 
 		// Sync Engine Version
 		if (Universe.BuiltInInfo.EngineBuildVersion != CurrentProject.Universe.Info.EngineBuildVersion) {
@@ -1209,10 +1209,14 @@ internal partial class Engine {
 	}
 
 
-	private void ReloadRenderingSheet () {
+	private void ReloadRenderingSheet (bool syncPackageSheet) {
 		if (CurrentProject == null) return;
 		if (!RenderingSheet.LoadFromDisk(CurrentProject.Universe.GameSheetPath)) return;
-		PackageManager.Instance.SyncPackageWithProject(CurrentProject, syncDll: false, syncSheet: true);
+		if (syncPackageSheet) {
+			PackageManager.Instance.SyncPackageWithProject(
+				CurrentProject, syncDll: false, syncSheet: true
+			);
+		}
 		RenderingSheet.CombineAllSheetInFolder(
 			CurrentProject.Universe.SheetRoot,
 			topOnly: false,

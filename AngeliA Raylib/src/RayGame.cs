@@ -59,7 +59,7 @@ public partial class RayGame : Game {
 				if (!Raylib.IsWindowMinimized()) {
 					UpdateGame();
 				} else {
-					FrameDurationMilliSecond = (DateTime.UtcNow.Ticks - StartTicks) / 10000f;
+					FrameDurationMilliSecond = (DateTime.UtcNow.Ticks - StartTicks).TicksToMilliSecond();
 					Raylib.EndDrawing();
 				}
 			} catch (Exception ex) {
@@ -233,7 +233,7 @@ public partial class RayGame : Game {
 
 		// End
 		Raylib.EndBlendMode();
-		FrameDurationMilliSecond = (DateTime.UtcNow.Ticks - StartTicks) / 10000f;
+		FrameDurationMilliSecond = (DateTime.UtcNow.Ticks - StartTicks).TicksToMilliSecond();
 		Raylib.EndDrawing();
 	}
 

@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
 namespace AngeliA;
+
+
 
 /// <summary>
 /// Log debug messages to the console or screen
@@ -18,6 +22,11 @@ public static class Debug {
 	private static readonly StringBuilder ParamsCacheBuilder = new();
 	private static int LastLogLabelFrame = -1;
 	private static int LogLabelCount = 0;
+	private static readonly Stack<long> TimeMeasurementTicks = [];
+
+	// MSG
+	[OnGameUpdatePauseless]
+	internal static void OnGameUpdatePauseless () => TimeMeasurementTicks.Clear();
 
 	// API
 	public static void Log (params object[] messages) {
@@ -93,5 +102,17 @@ public static class Debug {
 
 	internal static void LogErrorInternal (int id, string message) => OnLogErrorInternal?.Invoke(id, message);
 
+	// Time Measurement
+	public static void BeginTimeMeasuring () => TimeMeasurementTicks.Push(DateTime.UtcNow.Ticks);
+
+	/// <summary>
+	/// Get time duration from last Debug.BeginTimeMeasuring() call in milli-second
+	/// </summary>
+	public static float EndTimeMeasuring () {
+		if (!TimeMeasurementTicks.TryPop(out long ticks)) return -1f;
+		return (DateTime.UtcNow.Ticks - ticks).TicksToMilliSecond();
+	}
+
+	public static void LogTimeMeasuring (string label = "") => Log($"{label}: {EndTimeMeasuring():0.00} ms");
 
 }

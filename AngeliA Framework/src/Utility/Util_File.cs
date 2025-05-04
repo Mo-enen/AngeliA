@@ -493,10 +493,11 @@ public static partial class Util {
 	/// <param name="path"></param>
 	/// <param name="rawBytes"></param>
 	/// <param name="length">Set to -1 for the full array</param>
-	public static void ByteToCompressedFile (string path, byte[] rawBytes, int length = -1) {
+	/// <param name="level"></param>
+	public static void ByteToCompressedFile (string path, byte[] rawBytes, int length = -1, CompressionLevel level = CompressionLevel.Optimal) {
 		CreateFolder(GetParentPath(path));
 		using var fileStream = File.Create(path);
-		using var compressor = new ZLibStream(fileStream, CompressionLevel.SmallestSize);
+		using var compressor = new ZLibStream(fileStream, level);
 		compressor.Write(rawBytes, 0, length < 0 ? rawBytes.Length : length);
 	}
 

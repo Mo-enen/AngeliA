@@ -87,6 +87,10 @@ public static class Extension {
 
 
 	// Misc
+	public static float TicksToMilliSecond (this long ticks) => ticks / 10000f;
+	public static double TicksToMilliSecondDouble (this long ticks) => ticks / 10000d;
+
+
 	/// <summary>
 	/// True if the character should be rendered lying down
 	/// </summary>

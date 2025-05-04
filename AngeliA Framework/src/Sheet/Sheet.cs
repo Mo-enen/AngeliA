@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Runtime.InteropServices;
 
 namespace AngeliA;
@@ -132,7 +133,7 @@ public class Sheet {
 		using var writer = new BinaryWriter(stream);
 		writer.Write((int)CODE_FILE_VERSION);
 		SaveToBinary_v0(writer);
-		Util.ByteToCompressedFile(path, stream.GetBuffer(), (int)stream.Position);
+		Util.ByteToCompressedFile(path, stream.GetBuffer(), (int)stream.Position, CompressionLevel.Optimal);
 	}
 
 	/// <summary>
