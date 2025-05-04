@@ -301,6 +301,11 @@ public class OnWorldCreatedBySquad_WorldAttribute (int order = 0) : EventAttribu
 public class OnWorldLoadedBySquad_WorldAttribute (int order = 0) : EventAttribute(order) { }
 
 
+public class OnWorldCreatedByStream_WorldStream_WorldAttribute (int order = 0) : EventAttribute(order) { }
+public class OnWorldLoadedByStream_WorldStream_WorldAttribute (int order = 0) : EventAttribute(order) { }
+public class OnWorldSavedByStream_WorldStream_WorldAttribute (int order = 0) : EventAttribute(order) { }
+
+
 // Map Editor
 /// <summary>
 /// The function will be called when a world instance is saved to file by the world squad

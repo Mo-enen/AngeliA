@@ -40,18 +40,9 @@ public sealed class WorldStream : IBlockSquad {
 	private static readonly object POOL_LOCK = new();
 
 	// Api
-	/// <summary>
-	/// Invoke when a world instance created
-	/// </summary>
-	public static event System.Action<WorldStream, World> OnWorldCreated;
-	/// <summary>
-	/// Invoke when a world instance loaded from file
-	/// </summary>
-	public static event System.Action<WorldStream, World> OnWorldLoaded;
-	/// <summary>
-	/// Invoke when a world instance saved to file
-	/// </summary>
-	public static event System.Action<WorldStream, World> OnWorldSaved;
+	[OnWorldCreatedByStream_WorldStream_World] internal static System.Action<WorldStream, World> OnWorldCreated;
+	[OnWorldLoadedByStream_WorldStream_World] internal static System.Action<WorldStream, World> OnWorldLoaded;
+	[OnWorldSavedByStream_WorldStream_World] internal static System.Action<WorldStream, World> OnWorldSaved;
 	/// <summary>
 	/// Path of the map root folder 
 	/// </summary>
@@ -129,13 +120,18 @@ public sealed class WorldStream : IBlockSquad {
 				ref var data = ref CollectionsMarshal.GetValueRefOrNullRef(WorldPool, pair.Key);
 				bool notExists = Unsafe.IsNullRef(ref data);
 				if (notExists || data.World == null || !data.IsDirty) continue;
-				var pos = data.World.WorldPosition;
-				string path = PathPool.GetOrAddPath(pos);
-				data.World.SaveToDisk(path);
+				SaveWorld(data.World);
 				data.SavedVersion = data.Version;
-				OnWorldSaved?.InvokeAsEvent(this, data.World);
 			}
 		}
+	}
+
+
+	public void SaveWorld (World world) {
+		var pos = world.WorldPosition;
+		string path = PathPool.GetOrAddPath(pos);
+		world.SaveToDisk(path);
+		OnWorldSaved?.InvokeAsEvent(this, world);
 	}
 
 

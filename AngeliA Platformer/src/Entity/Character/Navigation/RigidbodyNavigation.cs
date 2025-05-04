@@ -109,10 +109,10 @@ public class RigidbodyNavigation (Rigidbody target) {
 
 	#region --- MSG ---
 
-
+#if DEBUG
 	[CheatCode("DrawNavGizmos")]
 	internal static void DebugGizmosCheat () => DrawDebugGizmos = true;
-
+#endif
 
 	public virtual void OnActivated () => ResetNavigation();
 

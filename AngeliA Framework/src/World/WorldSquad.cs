@@ -57,6 +57,20 @@ public sealed class WorldSquad : IBlockSquad {
 	#region --- MSG ---
 
 
+	[OnWorldLoadedByStream_WorldStream_World]
+	internal static void OnWorldLoadedByStream (WorldStream stream, World world) {
+		if (stream != Stream) return;
+		OnWorldLoaded?.InvokeAsEvent(world);
+	}
+
+
+	[OnWorldCreatedByStream_WorldStream_World]
+	internal static void OnWorldCreatedByStream (WorldStream stream, World world) {
+		if (stream != Stream) return;
+		OnWorldCreated?.InvokeAsEvent(world);
+	}
+
+
 	[OnGameInitialize(-128)]
 	internal static TaskResult OnGameInitialize () {
 
@@ -69,16 +83,6 @@ public sealed class WorldSquad : IBlockSquad {
 		ReadonlyMap = info.ReadonlyMap;
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
-		WorldStream.OnWorldCreated += _OnWorldCreated;
-		WorldStream.OnWorldLoaded += _OnWorldLoaded;
-		static void _OnWorldCreated (WorldStream stream, World world) {
-			if (stream != Stream) return;
-			OnWorldCreated?.Invoke(world);
-		}
-		static void _OnWorldLoaded (WorldStream stream, World world) {
-			if (stream != Stream) return;
-			OnWorldLoaded?.Invoke(world);
-		}
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
 		Stream.UseBuiltInAsFailback = UseBuiltInAsFailback;
 		SquadReady = true;
@@ -93,6 +97,9 @@ public sealed class WorldSquad : IBlockSquad {
 
 	[BeforeSavingSlotChanged]
 	internal static void BeforeSavingSlotChanged () {
+		if (!ReadonlyMap) {
+			Stream?.SaveAllDirty();
+		}
 		SquadReady = false;
 		Stage.SetViewZ(Stage.ViewZ);
 		Stage.DespawnAllNonUiEntities();
@@ -101,11 +108,9 @@ public sealed class WorldSquad : IBlockSquad {
 
 	[OnSavingSlotChanged]
 	internal static void OnSavingSlotChanged () {
+		Debug.Log(23);
 		BlockRedirect.Clear();
 		// Reset Stream
-		if (!ReadonlyMap) {
-			Stream?.SaveAllDirty();
-		}
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
 		Stream.UseBuiltInAsFailback = UseBuiltInAsFailback;
 		Stream.ClearWorldPool();
