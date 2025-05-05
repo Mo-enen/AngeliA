@@ -1116,7 +1116,7 @@ public partial class PixelEditor {
 		GenericPopupUI.AddItem(MENU_NEW_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
 		GenericPopupUI.BeginSubItem();
 		GenericPopupUI.AddItem("(Enter Name Here)", NewPoseCharSprite, data: ("", pixPos), editable: true);
-		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN)) {
+		foreach (var filePath in Util.EnumerateFiles(CharMovConfigPath, true, AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN)) {
 			string name = Util.GetNameWithoutExtension(filePath);
 			GenericPopupUI.AddItem(name, NewPoseCharSprite, data: (name, pixPos));
 		}
@@ -1126,7 +1126,7 @@ public partial class PixelEditor {
 		GenericPopupUI.AddItem(MENU_NEW_SHEET_CHAR_SPRITE, Const.EmptyMethod, data: pixPos);
 		GenericPopupUI.BeginSubItem();
 		GenericPopupUI.AddItem("(Enter Name Here)", NewSheetCharSprite, data: ("", pixPos), editable: true);
-		foreach (var filePath in Util.EnumerateFiles(CurrentProject.Universe.CharacterMovementConfigRoot, true, AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN)) {
+		foreach (var filePath in Util.EnumerateFiles(CharMovConfigPath, true, AngePath.MOVEMENT_CONFIG_SEARCH_PATTERN)) {
 			string name = Util.GetNameWithoutExtension(filePath);
 			GenericPopupUI.AddItem(name, NewSheetCharSprite, data: (name, pixPos));
 		}

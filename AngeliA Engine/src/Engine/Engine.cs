@@ -72,17 +72,13 @@ internal partial class Engine {
 	private string NotificationContent = null;
 	private string NotificationSubContent = null;
 	private string DroppingFilePath = "";
+	private string RequireChangeThemePath = null;
 
 	// Saving
 	private static readonly SavingString ProjectPaths = new("Engine.ProjectPaths", "#", SavingLocation.Global);
 	private static readonly SavingString LastOpenProject = new("Engine.LastOpenProject", "", SavingLocation.Global);
 	private static readonly SavingString CurrentThemeName = new("Engine.CurrentThemeName", "", SavingLocation.Global);
-	private static readonly SavingBool Maximize = new("Engine.Maximize", true, SavingLocation.Global);
 	private static readonly SavingBool FullsizeMenu = new("Engine.FullsizeMenu", true, SavingLocation.Global);
-	private static readonly SavingInt WindowSizeX = new("Engine.WindowSizeX", 1024, SavingLocation.Global);
-	private static readonly SavingInt WindowSizeY = new("Engine.WindowSizeY", 1024, SavingLocation.Global);
-	private static readonly SavingInt WindowPositionX = new("Engine.WindowPosX", 128, SavingLocation.Global);
-	private static readonly SavingInt WindowPositionY = new("Engine.WindowPosY", 128, SavingLocation.Global);
 	private static readonly SavingInt LastOpenedWindowIndex = new("Engine.LastOpenedWindowIndex", 0, SavingLocation.Global);
 	private static readonly SavingInt ProjectSortIndex = new("Engine.ProjectSortIndex", 0, SavingLocation.Global);
 
@@ -126,6 +122,8 @@ internal partial class Engine {
 		}
 #endif
 
+		PixelEditor.OnPixelEditorSave += OnPixelEditorSave;
+
 		engine.ProjectSort = (ProjectSortMode)ProjectSortIndex.Value;
 
 		// Projects
@@ -163,12 +161,6 @@ internal partial class Engine {
 		SyncIconSpriteToMainSheet();
 
 		// Engine Window
-		if (Maximize.Value) {
-			Game.IsWindowMaximized = Maximize.Value;
-		} else {
-			Game.SetWindowPosition(WindowPositionX.Value, WindowPositionY.Value);
-			Game.SetWindowSize(WindowSizeX.Value, WindowSizeY.Value);
-		}
 		Game.SetEventWaiting(false);
 		Game.ProcedureAudioVolume = 1000;
 
@@ -303,14 +295,6 @@ internal partial class Engine {
 	[OnGameQuitting]
 	internal static void OnEngineQuitting () {
 		if (Instance == null) return;
-		var windowPos = Game.GetWindowPosition();
-		Maximize.Value = Game.IsWindowMaximized;
-		if (!Game.IsWindowMinimized) {
-			WindowSizeX.Value = Game.ScreenWidth;
-			WindowSizeY.Value = Game.ScreenHeight;
-			WindowPositionX.Value = windowPos.x;
-			WindowPositionY.Value = windowPos.y;
-		}
 		ProjectSortIndex.Value = (int)Instance.ProjectSort;
 		ProjectPaths.Value = Instance.Projects.JoinArray(p => p.Path, ';');
 		foreach (var win in Instance.AllWindows) win.OnInactivated();
@@ -814,11 +798,11 @@ internal partial class Engine {
 		if (EngineUtil.BuildingProjectInBackground) return;
 
 		// Theme
-		string requireChangeThemePath = SettingWindow.Instance.RequireChangeThemePath ?? PixelEditor.Instance.RequireChangeThemePath;
+		string requireChangeThemePath = SettingWindow.Instance.RequireChangeThemePath ?? RequireChangeThemePath;
 		if (requireChangeThemePath != null) {
 			string path = requireChangeThemePath;
 			SettingWindow.Instance.RequireChangeThemePath = null;
-			PixelEditor.Instance.RequireChangeThemePath = null;
+			RequireChangeThemePath = null;
 			LoadTheme(path, true);
 		}
 
@@ -906,7 +890,7 @@ internal partial class Engine {
 
 		// Windows
 		LanguageEditor.Instance.SetCurrentProject(CurrentProject);
-		PixelEditor.Instance.SetCurrentProject(CurrentProject);
+		PixelEditor.Instance.SetCurrentSheetPath(CurrentProject.Universe.GameSheetPath);
 		ProjectEditor.Instance.SetCurrentProject(CurrentProject);
 		SettingWindow.Instance.SetCurrentProject(CurrentProject);
 		GameEditor.Instance.CleanDirty();
@@ -1032,7 +1016,7 @@ internal partial class Engine {
 				ui.OnInactivated();
 			}
 			LanguageEditor.Instance.SetCurrentProject(null);
-			PixelEditor.Instance.SetCurrentProject(null);
+			PixelEditor.Instance.SetCurrentSheetPath(null);
 			ProjectEditor.Instance.SetCurrentProject(null);
 			SettingWindow.Instance.SetCurrentProject(null);
 			GameEditor.Instance.CleanDirty();
@@ -1188,6 +1172,35 @@ internal partial class Engine {
 			NotificationContent = loaded ? NOTI_THEME_LOADED : NOTI_THEME_NOT_LOADED;
 			NotificationSubContent = loaded ? ThemeSkin.Name : "";
 		}
+	}
+
+
+	private static void OnPixelEditorSave () {
+		if (Instance == null || PixelEditor.Instance == null) return;
+		var currentProject = Instance.CurrentProject;
+		if (currentProject == null) return;
+
+		currentProject.Universe.Info.LastOpenAtlasIndex = PixelEditor.Instance.CurrentAtlasIndex;
+
+#if DEBUG
+		if (currentProject.IsEngineInternalProject) {
+			if (currentProject.Universe.Info.ProjectType == ProjectType.Artwork) {
+				// Project "Engine Artwork" >> Ange Engine
+				if (Util.FileExists(currentProject.Universe.GameSheetPath)) {
+					Util.CopyFile(currentProject.Universe.GameSheetPath, Universe.BuiltIn.GameSheetPath);
+					Renderer.LoadMainSheet();
+				}
+			} else if (currentProject.Universe.Info.ProjectType == ProjectType.EngineTheme) {
+				// Project "Theme" >> Ange Engine Theme
+				if (Util.FileExists(currentProject.Universe.GameSheetPath)) {
+					string themeRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Theme");
+					string path = Util.CombinePaths(themeRoot, $"{currentProject.Universe.Info.ProductName}.{AngePath.SHEET_FILE_EXT}");
+					Util.CopyFile(currentProject.Universe.GameSheetPath, path);
+					Instance.RequireChangeThemePath = path;
+				}
+			}
+		}
+#endif
 	}
 
 

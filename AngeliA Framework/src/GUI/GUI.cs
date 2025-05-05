@@ -1429,7 +1429,7 @@ public static partial class GUI {
 		if (clampRect != default) xRect = xRect.Clamp(clampRect);
 		Renderer.DrawPixel(xRect, color: colorX, z: z);
 		if (stepCount.x > 1) {
-			int stepLengthX = length.x / stepCount.x;
+			int stepLengthX = (length.x / stepCount.x).GreaterOrEquel(1);
 			float f_stepLenX = (float)length.x / stepCount.x;
 			int stepL = (xRect.x - position.x).UDivide(stepLengthX) * stepLengthX + position.x;
 			int stepR = rect.xMax;
@@ -1458,7 +1458,7 @@ public static partial class GUI {
 		if (clampRect.height > 0) yRect = yRect.Clamp(clampRect);
 		Renderer.DrawPixel(yRect, color: colorY, z: z);
 		if (stepCount.y > 1) {
-			int stepLengthY = length.y / stepCount.y;
+			int stepLengthY = (length.y / stepCount.y).GreaterOrEquel(1);
 			float f_stepLenY = (float)length.y / stepCount.y;
 			int stepD = (yRect.y - position.y).UDivide(stepLengthY) * stepLengthY + position.y;
 			int stepU = rect.yMax;

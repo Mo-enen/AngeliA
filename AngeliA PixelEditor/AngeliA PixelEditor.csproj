@@ -59,9 +59,4 @@
 		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
 	</ItemGroup>
 
-	<!--Move Game Lib into Library Folder-->
-	<Target Name="CopyDll" AfterTargets="Build">
-		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\$(AssemblyName).dll" ContinueOnError="true" />
-	</Target>
-
 </Project>

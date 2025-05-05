@@ -64,8 +64,8 @@
 		<None Remove="Universe\**" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\AngeliA PixelEditor\AngeliA PixelEditor.csproj" />
-	  <ProjectReference Include="..\AngeliA Raylib\AngeliA Raylib.csproj" />
+		<ProjectReference Include="..\AngeliA PixelEditor\AngeliA PixelEditor.csproj" />
+		<ProjectReference Include="..\AngeliA Raylib\AngeliA Raylib.csproj" />
 	</ItemGroup>
 
 	<!--Move Game Lib into Library Folder-->
@@ -82,6 +82,11 @@
 	<Target Name="Copy AngeFramework Dll and Project Template" AfterTargets="Build" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<Copy SourceFiles="$(OutputPath)AngeliA Framework.dll" DestinationFiles="$(SolutionDir)Universe\ProjectTemplate\lib\Debug\AngeliA Framework.dll" ContinueOnError="true" />
 		<Copy SourceFiles="$(OutputPath)AngeliA Framework.xml" DestinationFiles="$(SolutionDir)Universe\ProjectTemplate\lib\Debug\AngeliA Framework.xml" ContinueOnError="true" />
+	</Target>
+
+	<!--Move Pixel Editor Dll into Library Folder-->
+	<Target Name="CopyDll" AfterTargets="Build">
+		<Move SourceFiles="$(OutputPath)AngeliA PixelEditor.dll" DestinationFiles="$(OutputPath)Library\AngeliA PixelEditor.dll" ContinueOnError="true" />
 	</Target>
 
 </Project>

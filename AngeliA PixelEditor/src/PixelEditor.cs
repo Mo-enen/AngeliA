@@ -86,15 +86,14 @@ public partial class PixelEditor : WindowUI {
 	public static readonly Sheet EditingSheet = new(ignoreGroups: false, ignoreSpriteWithPaletteTag: false);
 	public static PixelEditor Instance { get; private set; }
 	public bool RequireReloadRenderingSheet { get; set; }
-	public string RequireChangeThemePath { get; set; } = null;
 	public bool RequireUniverseDirty { get; set; } = false;
 	protected override bool BlockEvent => true;
 	public override string DefaultWindowName => "Artwork";
+	public static event System.Action OnPixelEditorSave;
 
 	// Data
 	private readonly List<SpriteData> StagedSprites = [];
 	private readonly List<AngeSprite> SpriteTemplateChace = [];
-	private Project CurrentProject;
 	private bool HoldingCtrl = false;
 	private bool HoldingAlt = false;
 	private bool HoldingShift = false;
@@ -117,6 +116,8 @@ public partial class PixelEditor : WindowUI {
 	private Tool CurrentTool = Tool.Rect;
 	private Tag SelectionTagCache = Tag.None;
 	private int DelayResetCameraFrame = -2;
+	private string CurrentSheetPath = null;
+	private string CharMovConfigPath;
 
 	// Setting
 	public Color32 BackgroundColor { get; set; } = new Color32(32, 33, 37, 255);
@@ -155,9 +156,9 @@ public partial class PixelEditor : WindowUI {
 
 		Instance = this;
 		Undo = new(512 * 1024, OnUndoPerformed, OnRedoPerformed);
-		
+
 		Instance.EditingSheetIndex = Renderer.AddAltSheet(EditingSheet);
-		
+
 		// Atlas Type Names
 		ATLAS_TYPE_NAMES = new string[ATLAS_TYPE_COUNT];
 		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
@@ -200,7 +201,7 @@ public partial class PixelEditor : WindowUI {
 			BackgroundColor,
 			GradientBackground ? Color32.Lerp(BackgroundColor, Color32.WHITE, 0.1f) : BackgroundColor
 		);
-		if (CurrentProject == null) return;
+		if (CurrentSheetPath == null) return;
 		Update_AtlasPanel();
 		Update_AtlasToolbar();
 		Update_Cache();
@@ -910,9 +911,10 @@ public partial class PixelEditor : WindowUI {
 	#region --- API ---
 
 
-	public void SetCurrentProject (Project project) {
-		CurrentProject = project;
-		if (project == null) {
+	public void SetCurrentSheetPath (string newPath, int lastOpenAtlasIndex = 0) {
+		CurrentSheetPath = newPath;
+		CharMovConfigPath = "";
+		if (newPath == null) {
 			EditingSheet.Clear();
 			return;
 		}
@@ -920,44 +922,29 @@ public partial class PixelEditor : WindowUI {
 		DraggingState = DragState.None;
 		PaintingColor = Color32.CLEAR;
 		PaintingColorF = default;
-		RequireChangeThemePath = null;
-		EditingSheet.LoadFromDisk(project.Universe.GameSheetPath);
-		SetCurrentAtlas(project.Universe.Info.LastOpenAtlasIndex, forceChange: true, resetUndo: true);
+		EditingSheet.LoadFromDisk(newPath);
+		SetCurrentAtlas(lastOpenAtlasIndex, forceChange: true, resetUndo: true);
 		ResetCamera(delay: true);
+		try {
+			string uniFolder = Util.GetParentPath(Util.GetParentPath(newPath));
+			CharMovConfigPath = AngePath.GetCharacterMovementConfigRoot(uniFolder);
+		} catch (System.Exception ex) { Debug.LogException(ex); }
 	}
 
 
 	public override void Save (bool forceSave = false) {
-		if (CurrentProject == null) {
+		if (CurrentSheetPath == null) {
 			CleanDirty();
 			return;
 		}
 		if (!forceSave && !IsDirty) return;
 		CleanDirty();
-		if (string.IsNullOrEmpty(CurrentProject.Universe.GameSheetPath)) return;
+		if (string.IsNullOrEmpty(CurrentSheetPath)) return;
 		TryApplyPixelBuffer(true);
-		EditingSheet.SaveToDisk(CurrentProject.Universe.GameSheetPath);
+		EditingSheet.SaveToDisk(CurrentSheetPath);
 		RequireReloadRenderingSheet = true;
+		OnPixelEditorSave?.Invoke();
 
-#if DEBUG
-		if (CurrentProject != null && CurrentProject.IsEngineInternalProject) {
-			if (CurrentProject.Universe.Info.ProjectType == ProjectType.Artwork) {
-				// Project "Engine Artwork" >> Ange Engine
-				if (Util.FileExists(CurrentProject.Universe.GameSheetPath)) {
-					Util.CopyFile(CurrentProject.Universe.GameSheetPath, Universe.BuiltIn.GameSheetPath);
-					Renderer.LoadMainSheet();
-				}
-			} else if (CurrentProject.Universe.Info.ProjectType == ProjectType.EngineTheme) {
-				// Project "Theme" >> Ange Engine Theme
-				if (Util.FileExists(CurrentProject.Universe.GameSheetPath)) {
-					string themeRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Theme");
-					string path = Util.CombinePaths(themeRoot, $"{CurrentProject.Universe.Info.ProductName}.{AngePath.SHEET_FILE_EXT}");
-					Util.CopyFile(CurrentProject.Universe.GameSheetPath, path);
-					RequireChangeThemePath = path;
-				}
-			}
-		}
-#endif
 	}
 
 

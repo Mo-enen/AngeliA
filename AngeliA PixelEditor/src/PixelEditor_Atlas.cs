@@ -34,6 +34,9 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.PixelEditor.ImportPNG", "Import PNG file into current canvas");
 	private static readonly LanguageCode TIP_EXPORT_PNG = ("Tip.PixelEditor.ExportPNG", "Export current canvas to a PNG file");
 
+	// Api
+	public int CurrentAtlasIndex { get; private set; } = -1;
+
 	// Data
 	private static readonly GUIStyle LevelBlockAtlasLabelStyle = new(GUI.Skin.SmallLabel) {
 		ContentColor = Color32.ORANGE_BETTER,
@@ -41,7 +44,6 @@ public partial class PixelEditor {
 		ContentColorDown = Color32.ORANGE_BETTER,
 		ContentColorDisable = Color32.ORANGE_BETTER,
 	};
-	private int CurrentAtlasIndex = -1;
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
 	private int AtlasItemReorderIndex = -1;
@@ -464,7 +466,7 @@ public partial class PixelEditor {
 
 	private void SetCurrentAtlas (int atlasIndex, bool forceChange = false, bool resetUndo = true) {
 		var altasList = EditingSheet.Atlas;
-		if (altasList.Count == 0 || CurrentProject == null) return;
+		if (altasList.Count == 0) return;
 		atlasIndex = atlasIndex.Clamp(0, altasList.Count - 1);
 		// Redirect for Folder
 		if (altasList[atlasIndex].IsFolder) {
@@ -490,7 +492,6 @@ public partial class PixelEditor {
 		ResizingStageIndex = -1;
 		HoveringResizeDirection = null;
 		SelectingPaletteIndex = -1;
-		CurrentProject.Universe.Info.LastOpenAtlasIndex = atlasIndex;
 		PixelSelectionPixelRect = default;
 		PixelBufferSize = Int2.Zero;
 		if (resetUndo) Undo.Reset();

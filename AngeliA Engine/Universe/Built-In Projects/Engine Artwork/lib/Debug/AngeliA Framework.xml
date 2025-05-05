@@ -3078,6 +3078,11 @@
             Draw a label on top-right of the screen for the current frame
             </summary>
         </member>
+        <member name="M:AngeliA.Debug.EndTimeMeasuring">
+            <summary>
+            Get time duration from last Debug.BeginTimeMeasuring() call in milli-second
+            </summary>
+        </member>
         <member name="T:AngeliA.DebugTool">
             <summary>
             Provide extra tools for debugging. eg. Drag with mouse middle button to move player.
@@ -4004,11 +4009,6 @@
         <member name="F:AngeliA.UniverseInfo.LastEdittingViewHeight">
             <summary>
             Last edit view rect height from map editor
-            </summary>
-        </member>
-        <member name="F:AngeliA.UniverseInfo.LastBackupSavingDate">
-            <summary>
-            Last time AngeliA Engine backup the saving files
             </summary>
         </member>
         <member name="F:AngeliA.UniverseInfo.UsePixelPerfectRendering">
@@ -16800,13 +16800,14 @@
             </summary>
             /// <returns>True if successfuly moved</returns>
         </member>
-        <member name="M:AngeliA.Util.ByteToCompressedFile(System.String,System.Byte[],System.Int32)">
+        <member name="M:AngeliA.Util.ByteToCompressedFile(System.String,System.Byte[],System.Int32,System.IO.Compression.CompressionLevel)">
             <summary>
             Save byte array into compressed file
             </summary>
             <param name="path"></param>
             <param name="rawBytes"></param>
             <param name="length">Set to -1 for the full array</param>
+            <param name="level"></param>
         </member>
         <member name="M:AngeliA.Util.CompressedFileToByte(System.String,System.Int32@)">
             <summary>
@@ -17999,21 +18000,6 @@
         <member name="T:AngeliA.WorldStream">
             <summary>
             Data stream that handles map data from file to instance
-            </summary>
-        </member>
-        <member name="E:AngeliA.WorldStream.OnWorldCreated">
-            <summary>
-            Invoke when a world instance created
-            </summary>
-        </member>
-        <member name="E:AngeliA.WorldStream.OnWorldLoaded">
-            <summary>
-            Invoke when a world instance loaded from file
-            </summary>
-        </member>
-        <member name="E:AngeliA.WorldStream.OnWorldSaved">
-            <summary>
-            Invoke when a world instance saved to file
             </summary>
         </member>
         <member name="P:AngeliA.WorldStream.MapRoot">

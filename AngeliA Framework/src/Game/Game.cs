@@ -122,8 +122,11 @@ public abstract partial class Game {
 	private static int LastSettleFrame;
 	// Saving
 	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false, SavingLocation.Global);
+	private static readonly SavingBool _IsMaximize = new("Game.IsMaximize", false, SavingLocation.Global);
 	private static readonly SavingInt _MusicVolume = new("Game.MusicVolume", 500, SavingLocation.Global);
 	private static readonly SavingInt _SoundVolume = new("Game.SoundVolume", 700, SavingLocation.Global);
+	private static readonly SavingInt _LastUsedWindowX = new("Game.LastUsedWindowX", 128, SavingLocation.Global);
+	private static readonly SavingInt _LastUsedWindowY = new("Game.LastUsedWindowY", 128, SavingLocation.Global);
 	private static readonly SavingInt _LastUsedWindowWidth = new("Game.LastUsedWindowWidth", 1024 * 16 / 9, SavingLocation.Global);
 	private static readonly SavingInt _LastUsedWindowHeight = new("Game.LastUsedWindowHeight", 1024, SavingLocation.Global);
 
@@ -140,7 +143,8 @@ public abstract partial class Game {
 		// Framework
 		Util.AddAssembly(typeof(Game).Assembly);
 		// Game Libs
-		foreach (var dllpath in Util.EnumerateFiles("Library", true, "*.dll")) {
+		string libRoot = Util.CombinePaths(Util.GetParentPath(System.Environment.ProcessPath), "Library");
+		foreach (var dllpath in Util.EnumerateFiles(libRoot, true, "*.dll")) {
 			if (Assembly.LoadFrom(dllpath) is Assembly assembly) {
 				Util.AddAssembly(assembly);
 			}
@@ -159,6 +163,7 @@ public abstract partial class Game {
 		string universeRoot = null;
 		for (int i = 0; i < args.Length; i++) {
 			string arg = args[i];
+			if (string.IsNullOrEmpty(arg)) continue;
 			try {
 				// Load Assemblies from Args
 				if (arg.StartsWith("-lib:")) {
@@ -182,7 +187,10 @@ public abstract partial class Game {
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
-		universeRoot ??= AngePath.GetUniverseRoot(System.Environment.CurrentDirectory);
+		if (universeRoot == null) {
+			System.Environment.CurrentDirectory = Util.GetParentPath(System.Environment.ProcessPath);
+			universeRoot = AngePath.GetUniverseRoot(System.Environment.CurrentDirectory);
+		}
 		if (!Util.FolderExists(universeRoot)) {
 			universeRoot = AngePath.GetUniverseRoot(Util.GetParentPath(System.Environment.CurrentDirectory));
 		}
@@ -217,8 +225,12 @@ public abstract partial class Game {
 
 			OrderedAttribute.InvokeAsAutoOrderingTask<OnGameInitializeAttribute>();
 
-			_SetFullscreen(_IsFullscreen.Value);
-			_SetWindowSize(_LastUsedWindowWidth.Value, _LastUsedWindowHeight.Value);
+			_SetWindowMaximized(_IsMaximize.Value);
+			if (!_IsMaximize.Value) {
+				_SetWindowPosition(_LastUsedWindowX.Value, _LastUsedWindowY.Value);
+				_SetWindowSize(_LastUsedWindowWidth.Value, _LastUsedWindowHeight.Value);
+				_SetFullscreen(_IsFullscreen.Value);
+			}
 			_SetMusicVolume(MusicVolume);
 			_SetSoundVolume(SoundVolume);
 
@@ -585,7 +597,11 @@ public abstract partial class Game {
 	protected void InvokeGameQuitting () {
 		int width = _GetScreenWidth();
 		int height = _GetScreenHeight();
+		var pos = _GetWindowPosition();
+		_IsMaximize.Value = _GetWindowMaximized();
 		if (width > 0 && height > 0) {
+			_LastUsedWindowX.Value = pos.x;
+			_LastUsedWindowY.Value = pos.y;
 			_LastUsedWindowWidth.Value = width;
 			_LastUsedWindowHeight.Value = height;
 		}
