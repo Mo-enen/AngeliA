@@ -64,6 +64,7 @@
 		<None Remove="Universe\**" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\AngeliA PixelEditor\AngeliA PixelEditor.csproj" />
 	  <ProjectReference Include="..\AngeliA Raylib\AngeliA Raylib.csproj" />
 	</ItemGroup>
 

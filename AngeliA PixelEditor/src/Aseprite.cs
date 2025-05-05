@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using AngeliA;
 
-namespace AngeliaEngine;
+namespace AngeliA.PixelEditor;
 
 internal class Aseprite {
 

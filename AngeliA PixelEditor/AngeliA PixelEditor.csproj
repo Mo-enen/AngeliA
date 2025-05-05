@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>AngeliA PixelEditor</AssemblyName>
+		<RootNamespace>AngeliA.PixelEditor</RootNamespace>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<OutputType>Library</OutputType>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+		<RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<EnableNETAnalyzers>False</EnableNETAnalyzers>
+		<GenerateDependencyFile>false</GenerateDependencyFile>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<ErrorReport>none</ErrorReport>
+
+		<OutputPath>$(SolutionDir)Build</OutputPath>
+		<PublishDir>$(SolutionDir)Publish</PublishDir>
+
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<AnalysisLevel>latest-recommended</AnalysisLevel>
+
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<DocumentationFile></DocumentationFile>
+
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<DebugType>portable</DebugType>
+		<Optimize>True</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<DebugType>none</DebugType>
+		<Optimize>True</Optimize>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Build\**" />
+		<Compile Remove="Publish\**" />
+		<EmbeddedResource Remove="Build\**" />
+		<EmbeddedResource Remove="Publish\**" />
+		<None Remove="Build\**" />
+		<None Remove="Publish\**" />
+	</ItemGroup>
+
+	<!--Remove-->
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="desktop.ini" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\AngeliA Framework\AngeliA Framework.csproj" />
+	</ItemGroup>
+
+	<!--Move Game Lib into Library Folder-->
+	<Target Name="CopyDll" AfterTargets="Build">
+		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\$(AssemblyName).dll" ContinueOnError="true" />
+	</Target>
+
+</Project>

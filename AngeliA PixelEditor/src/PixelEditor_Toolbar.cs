@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using AngeliA;
 
-namespace AngeliaEngine;
+namespace AngeliA.PixelEditor;
 
-internal partial class PixelEditor {
+public partial class PixelEditor {
 
 
 
@@ -292,7 +292,7 @@ internal partial class PixelEditor {
 
 	private void Update_GeneralToolbar_PickingColor (IRect toolbarRect, ref IRect rect) {
 
-		if (FoldingColorField && EngineSetting.AlwaysExpandPaintingColor.Value) {
+		if (FoldingColorField && AlwaysExpandPaintingColor) {
 			FoldingColorField = false;
 		}
 		rect.width = FoldingColorField ? rect.height : Util.Min(Unify(512), toolbarRect.xMax - rect.x);
@@ -736,7 +736,7 @@ internal partial class PixelEditor {
 		if (GUI.Button(rect, SelectionTagCache == Tag.None ? ICON_TAG : ICON_TAG_MARKED, Skin.SmallDarkButton)) {
 			OpenSpriteTagMenu();
 		}
-		if (SelectionTagCache != Tag.None && EngineSetting.ShowTagPreview.Value) {
+		if (SelectionTagCache != Tag.None && ShowTagPreview) {
 			var tagPreviewRect = rect.EdgeOutsideDown(Unify(16)).Shift(0, -Unify(4));
 			int previewPadding = Unify(2);
 			int startIndex = Renderer.GetUsedCellCount();

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using AngeliA;
 
-namespace AngeliaEngine;
+namespace AngeliA.PixelEditor;
 
-internal partial class PixelEditor : WindowUI {
+public partial class PixelEditor : WindowUI {
 
 
 
@@ -118,6 +118,26 @@ internal partial class PixelEditor : WindowUI {
 	private Tag SelectionTagCache = Tag.None;
 	private int DelayResetCameraFrame = -2;
 
+	// Setting
+	public Color32 BackgroundColor { get; set; } = new Color32(32, 33, 37, 255);
+	public bool GradientBackground { get; set; } = true;
+	public bool ShowOutBoundsMark { get; set; } = true;
+	public bool SolidPaintingPreview { get; set; } = true;
+	public bool AlwaysExpandPaintingColor { get; set; } = false;
+	public bool ShowTagPreview { get; set; } = true;
+	public Hotkey Hotkey_Pix_PalettePrev { get; set; } = new Hotkey(KeyboardKey.Digit1);
+	public Hotkey Hotkey_Pix_PaletteNext { get; set; } = new Hotkey(KeyboardKey.Digit2);
+	public Hotkey Hotkey_PixTool_Rect { get; set; } = new Hotkey(KeyboardKey.U);
+	public Hotkey Hotkey_PixTool_Circle { get; set; } = new Hotkey(KeyboardKey.C);
+	public Hotkey Hotkey_PixTool_Line { get; set; } = new Hotkey(KeyboardKey.L);
+	public Hotkey Hotkey_PixTool_Bucket { get; set; } = new Hotkey(KeyboardKey.G);
+	public Hotkey Hotkey_PixTool_Select { get; set; } = new Hotkey(KeyboardKey.M);
+	public Hotkey Hotkey_PixTool_Sprite { get; set; } = new Hotkey(KeyboardKey.S);
+	public Hotkey Hotkey_Pix_FlipX { get; set; } = new Hotkey(KeyboardKey.H, shift: true);
+	public Hotkey Hotkey_Pix_FlipY { get; set; } = new Hotkey(KeyboardKey.V, shift: true);
+	public Hotkey Hotkey_Pix_RotC { get; set; } = new Hotkey(KeyboardKey.W, shift: true);
+	public Hotkey Hotkey_Pix_RotCC { get; set; } = new Hotkey(KeyboardKey.Q, shift: true);
+
 	// Saving
 	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false, SavingLocation.Global);
 	private static readonly SavingBool ShowAxis = new("PixEdt.ShowAxis", true, SavingLocation.Global);
@@ -131,10 +151,13 @@ internal partial class PixelEditor : WindowUI {
 	#region --- MSG ---
 
 
-	[OnGameInitializeLater(32)]
-	internal static TaskResult OnGameInitializeLater () {
-		if (Instance == null || !Renderer.IsReady) return TaskResult.Continue;
+	public PixelEditor () {
+
+		Instance = this;
+		Undo = new(512 * 1024, OnUndoPerformed, OnRedoPerformed);
+		
 		Instance.EditingSheetIndex = Renderer.AddAltSheet(EditingSheet);
+		
 		// Atlas Type Names
 		ATLAS_TYPE_NAMES = new string[ATLAS_TYPE_COUNT];
 		for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
@@ -152,13 +175,7 @@ internal partial class PixelEditor : WindowUI {
 		for (int i = 0; i < toolCount; i++) {
 			TIP_TOOLS[i] = ($"Tip.PixelTool.{(Tool)i}", ((Tool)i).ToString());
 		}
-		return TaskResult.End;
-	}
 
-
-	public PixelEditor () {
-		Instance = this;
-		Undo = new(512 * 1024, OnUndoPerformed, OnRedoPerformed);
 	}
 
 
@@ -180,8 +197,8 @@ internal partial class PixelEditor : WindowUI {
 
 		Cursor.RequireCursor();
 		Sky.ForceSkyboxTint(
-			EngineSetting.BackgroundColor.Value,
-			EngineSetting.GradientBackground.Value ? Color32.Lerp(EngineSetting.BackgroundColor.Value, Color32.WHITE, 0.1f) : EngineSetting.BackgroundColor.Value
+			BackgroundColor,
+			GradientBackground ? Color32.Lerp(BackgroundColor, Color32.WHITE, 0.1f) : BackgroundColor
 		);
 		if (CurrentProject == null) return;
 		Update_AtlasPanel();
@@ -421,7 +438,7 @@ internal partial class PixelEditor : WindowUI {
 		}
 
 		// Sprite Content
-		bool showOutBoundsMark = EngineSetting.ShowOutBoundsMark.Value;
+		bool showOutBoundsMark = ShowOutBoundsMark;
 		var outMarkColor = Color32.GREY_128;
 		using var _sheet = new SheetIndexScope(-1);
 		for (int i = 0; i < StagedSprites.Count; i++) {
@@ -793,56 +810,56 @@ internal partial class PixelEditor : WindowUI {
 		}
 
 		// Pal
-		if (EngineSetting.Hotkey_Pix_PalettePrev.Value.Down()) {
+		if (Hotkey_Pix_PalettePrev.Down()) {
 			ShiftPaintingColorFromPalette(false);
 		}
-		if (EngineSetting.Hotkey_Pix_PaletteNext.Value.Down()) {
+		if (Hotkey_Pix_PaletteNext.Down()) {
 			ShiftPaintingColorFromPalette(true);
 		}
 
 		// Tools
-		if (EngineSetting.Hotkey_PixTool_Rect.Value.Down()) {
+		if (Hotkey_PixTool_Rect.Down()) {
 			SetCurrentTool(Tool.Rect);
 		}
-		if (EngineSetting.Hotkey_PixTool_Circle.Value.Down()) {
+		if (Hotkey_PixTool_Circle.Down()) {
 			SetCurrentTool(Tool.Circle);
 		}
-		if (EngineSetting.Hotkey_PixTool_Line.Value.Down()) {
+		if (Hotkey_PixTool_Line.Down()) {
 			SetCurrentTool(Tool.Line);
 		}
-		if (EngineSetting.Hotkey_PixTool_Bucket.Value.Down()) {
+		if (Hotkey_PixTool_Bucket.Down()) {
 			SetCurrentTool(Tool.Bucket);
 		}
-		if (EngineSetting.Hotkey_PixTool_Select.Value.Down()) {
+		if (Hotkey_PixTool_Select.Down()) {
 			SetCurrentTool(Tool.Select);
 		}
-		if (EngineSetting.Hotkey_PixTool_Sprite.Value.Down()) {
+		if (Hotkey_PixTool_Sprite.Down()) {
 			SetCurrentTool(Tool.Sprite);
 		}
 
 		// Pixel Selection Operation
-		if (EngineSetting.Hotkey_Pix_FlipX.Value.Down()) {
+		if (Hotkey_Pix_FlipX.Down()) {
 			if (CurrentTool == Tool.Select) {
 				FlipPixelSelection(true);
 			} else if (CurrentTool == Tool.Sprite) {
 				FlipSpriteSelection(true);
 			}
 		}
-		if (EngineSetting.Hotkey_Pix_FlipY.Value.Down()) {
+		if (Hotkey_Pix_FlipY.Down()) {
 			if (CurrentTool == Tool.Select) {
 				FlipPixelSelection(false);
 			} else if (CurrentTool == Tool.Sprite) {
 				FlipSpriteSelection(false);
 			}
 		}
-		if (EngineSetting.Hotkey_Pix_RotC.Value.Down()) {
+		if (Hotkey_Pix_RotC.Down()) {
 			if (CurrentTool == Tool.Select) {
 				RotatePixelSelection(true);
 			} else if (CurrentTool == Tool.Sprite) {
 				RotateSpriteSelection(true);
 			}
 		}
-		if (EngineSetting.Hotkey_Pix_RotCC.Value.Down()) {
+		if (Hotkey_Pix_RotCC.Down()) {
 			if (CurrentTool == Tool.Select) {
 				RotatePixelSelection(false);
 			} else if (CurrentTool == Tool.Sprite) {
@@ -933,7 +950,8 @@ internal partial class PixelEditor : WindowUI {
 			} else if (CurrentProject.Universe.Info.ProjectType == ProjectType.EngineTheme) {
 				// Project "Theme" >> Ange Engine Theme
 				if (Util.FileExists(CurrentProject.Universe.GameSheetPath)) {
-					string path = Util.CombinePaths(EngineUtil.ThemeRoot, $"{CurrentProject.Universe.Info.ProductName}.{AngePath.SHEET_FILE_EXT}");
+					string themeRoot = Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Theme");
+					string path = Util.CombinePaths(themeRoot, $"{CurrentProject.Universe.Info.ProductName}.{AngePath.SHEET_FILE_EXT}");
 					Util.CopyFile(CurrentProject.Universe.GameSheetPath, path);
 					RequireChangeThemePath = path;
 				}

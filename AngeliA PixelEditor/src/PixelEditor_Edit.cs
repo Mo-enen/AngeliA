@@ -2,9 +2,9 @@
 using System.Collections;
 using AngeliA;
 
-namespace AngeliaEngine;
+namespace AngeliA.PixelEditor;
 
-internal partial class PixelEditor {
+public partial class PixelEditor {
 
 
 
@@ -534,7 +534,7 @@ internal partial class PixelEditor {
 				} else {
 					// Painting Rect
 					using (new DefaultLayerScope()) {
-						if (EngineSetting.SolidPaintingPreview.Value && !HoldingAlt) {
+						if (SolidPaintingPreview && !HoldingAlt) {
 							Renderer.DrawPixel(stageRect, PaintingColor, z: int.MaxValue);
 						} else {
 							DrawFrame(stageRect, PaintingColor, (CanvasRect.width / STAGE_SIZE).CeilToInt());
@@ -545,7 +545,7 @@ internal partial class PixelEditor {
 			}
 			case Tool.Circle: {
 				// Painting Gizmos Circle
-				if (DraggingPixelRect.width < 3 || DraggingPixelRect.height < 3 || (EngineSetting.SolidPaintingPreview.Value && !HoldingAlt)) {
+				if (DraggingPixelRect.width < 3 || DraggingPixelRect.height < 3 || (SolidPaintingPreview && !HoldingAlt)) {
 					foreach (var rect in Util.DrawFilledEllipse_Patrick(
 						DraggingPixelRect.x,
 						DraggingPixelRect.y,

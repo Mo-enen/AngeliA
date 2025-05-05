@@ -212,7 +212,8 @@ public abstract partial class Game {
 #if DEBUG
 			_IsFullscreen.Value = false;
 #endif
-			OnGameTryingToQuitMethods = Util.AllStaticMethodWithAttribute<OnGameTryingToQuitAttribute>().Select(selector => selector.Key).ToArray();
+			var allTryingToQuitMethods = Util.AllStaticMethodWithAttribute<OnGameTryingToQuitAttribute>().Select(selector => selector.Key);
+			OnGameTryingToQuitMethods = [.. allTryingToQuitMethods];
 
 			OrderedAttribute.InvokeAsAutoOrderingTask<OnGameInitializeAttribute>();
 

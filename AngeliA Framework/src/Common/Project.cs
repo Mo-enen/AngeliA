@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AngeliA;
 
-namespace AngeliaEngine;
+namespace AngeliA;
 
-internal class Project {
+public class Project {
 
 	public string ProjectPath { get; init; }
 	public string SourceCodePath { get; init; }
@@ -38,11 +37,13 @@ internal class Project {
 			CsprojPath = Util.EnumerateFiles(projectPath, true, "*.csproj").FirstOrDefault(path => !path.Contains("#ignore", System.StringComparison.OrdinalIgnoreCase), defaultValue: ""),
 			LocalEntryRoot = Util.CombinePaths(projectPath, "Entry"),
 			BackupSavingDataRoot = Util.CombinePaths(projectPath, "Backup Saving Data"),
-			IsEngineInternalProject = Util.IsSamePath(Util.GetParentPath(projectPath), EngineUtil.BuiltInProjectRoot),
+			IsEngineInternalProject = Util.IsSamePath(Util.GetParentPath(projectPath), GetBuiltInProjectRoot()),
 			Universe = Universe.LoadFromFile(AngePath.GetUniverseRoot(projectPath)),
 		};
 	}
 
 	public static string GetLibraryFolderPath (string projectPath, bool debug) => Util.CombinePaths(projectPath, "lib", debug ? "Debug" : "Release");
+
+	public static string GetBuiltInProjectRoot () => Util.CombinePaths(AngePath.BuiltInUniverseRoot, "Built-In Projects");
 
 }

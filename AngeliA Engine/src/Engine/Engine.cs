@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AngeliA;
+using AngeliA.PixelEditor;
 
 namespace AngeliaEngine;
 
@@ -133,7 +134,7 @@ internal partial class Engine {
 			// Init for First Time Open
 			ProjectPaths.Value = "";
 			// Add Built-in Projects
-			foreach (var path in Util.EnumerateFolders(EngineUtil.BuiltInProjectRoot, true)) {
+			foreach (var path in Util.EnumerateFolders(Project.GetBuiltInProjectRoot(), true)) {
 				engine.Projects.Add(new ProjectData(
 					path: path,
 					folderExists: true,
@@ -912,6 +913,7 @@ internal partial class Engine {
 		GameEditor.Instance.SetCurrentProject(CurrentProject);
 		PackageManager.Instance.SetCurrentProject(CurrentProject);
 		ConsoleWindow.Instance.SetCurrentProject(CurrentProject);
+		RefreshPixelEditorSetting();
 
 		// Audio
 		Game.SyncAudioPool(Universe.BuiltIn.UniverseRoot, CurrentProject.UniversePath);
@@ -1081,6 +1083,7 @@ internal partial class Engine {
 			Game.MusicVolume = 1000;
 			Game.SoundVolume = 1000;
 			Game.PauseMusic();
+			RefreshPixelEditorSetting();
 		}
 		CurrentWindowIndex = index;
 		LastOpenedWindowIndex.Value = index;
@@ -1096,6 +1099,33 @@ internal partial class Engine {
 		foreach (var project in Projects) {
 			project.FolderExists = Util.FolderExists(project.Path);
 		}
+	}
+
+
+	private void RefreshPixelEditorSetting () {
+
+		var pix = PixelEditor.Instance;
+		if (pix == null) return;
+
+		pix.BackgroundColor = EngineSetting.BackgroundColor.Value;
+		pix.GradientBackground = EngineSetting.GradientBackground.Value;
+		pix.ShowOutBoundsMark = EngineSetting.ShowOutBoundsMark.Value;
+		pix.SolidPaintingPreview = EngineSetting.SolidPaintingPreview.Value;
+		pix.AlwaysExpandPaintingColor = EngineSetting.AlwaysExpandPaintingColor.Value;
+		pix.ShowTagPreview = EngineSetting.ShowTagPreview.Value;
+		pix.Hotkey_Pix_PalettePrev = EngineSetting.Hotkey_Pix_PalettePrev.Value;
+		pix.Hotkey_Pix_PaletteNext = EngineSetting.Hotkey_Pix_PaletteNext.Value;
+		pix.Hotkey_PixTool_Rect = EngineSetting.Hotkey_PixTool_Rect.Value;
+		pix.Hotkey_PixTool_Circle = EngineSetting.Hotkey_PixTool_Circle.Value;
+		pix.Hotkey_PixTool_Line = EngineSetting.Hotkey_PixTool_Line.Value;
+		pix.Hotkey_PixTool_Bucket = EngineSetting.Hotkey_PixTool_Bucket.Value;
+		pix.Hotkey_PixTool_Select = EngineSetting.Hotkey_PixTool_Select.Value;
+		pix.Hotkey_PixTool_Sprite = EngineSetting.Hotkey_PixTool_Sprite.Value;
+		pix.Hotkey_Pix_FlipX = EngineSetting.Hotkey_Pix_FlipX.Value;
+		pix.Hotkey_Pix_FlipY = EngineSetting.Hotkey_Pix_FlipY.Value;
+		pix.Hotkey_Pix_RotC = EngineSetting.Hotkey_Pix_RotC.Value;
+		pix.Hotkey_Pix_RotCC = EngineSetting.Hotkey_Pix_RotCC.Value;
+
 	}
 
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AngeliA;
 
-namespace AngeliaEngine;
+namespace AngeliA.PixelEditor;
 
 
 public static class AsepriteUtil {

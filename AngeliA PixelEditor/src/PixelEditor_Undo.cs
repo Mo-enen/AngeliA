@@ -2,9 +2,9 @@
 using System.Collections;
 using AngeliA;
 
-namespace AngeliaEngine;
+namespace AngeliA.PixelEditor;
 
-internal partial class PixelEditor {
+public partial class PixelEditor {
 
 
 

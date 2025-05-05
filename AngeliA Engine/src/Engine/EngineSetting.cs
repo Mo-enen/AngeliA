@@ -48,8 +48,8 @@ internal class EngineSetting {
 	[EngineSetting("Hotkey", "Artwork - Bucket Tool")] public static readonly SavingHotkey Hotkey_PixTool_Bucket = new("Hotkey.Pix.Bucket", new Hotkey(KeyboardKey.G), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Artwork - Select Tool")] public static readonly SavingHotkey Hotkey_PixTool_Select = new("Hotkey.Pix.Select", new Hotkey(KeyboardKey.M), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Artwork - Sprite Tool")] public static readonly SavingHotkey Hotkey_PixTool_Sprite = new("Hotkey.Pix.Sprite", new Hotkey(KeyboardKey.S), SavingLocation.Global);
-	[EngineSetting("Hotkey", "Artwork - Prev Palette Color")] public static readonly SavingHotkey Hotkey_Pix_PalettePrev = new("Hotkey.Pix.PalPrev", new Hotkey(KeyboardKey.Q), SavingLocation.Global);
-	[EngineSetting("Hotkey", "Artwork - Next Palette Color")] public static readonly SavingHotkey Hotkey_Pix_PaletteNext = new("Hotkey.Pix.PalNext", new Hotkey(KeyboardKey.W), SavingLocation.Global);
+	[EngineSetting("Hotkey", "Artwork - Prev Palette Color")] public static readonly SavingHotkey Hotkey_Pix_PalettePrev = new("Hotkey.Pix.PalPrev", new Hotkey(KeyboardKey.Digit1), SavingLocation.Global);
+	[EngineSetting("Hotkey", "Artwork - Next Palette Color")] public static readonly SavingHotkey Hotkey_Pix_PaletteNext = new("Hotkey.Pix.PalNext", new Hotkey(KeyboardKey.Digit2), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Artwork - Flip Selection Horizontal")] public static readonly SavingHotkey Hotkey_Pix_FlipX = new("Hotkey.Pix.FlipX", new Hotkey(KeyboardKey.H, shift: true), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Artwork - Flip Selection Vertical")] public static readonly SavingHotkey Hotkey_Pix_FlipY = new("Hotkey.Pix.FlipY", new Hotkey(KeyboardKey.V, shift: true), SavingLocation.Global);
 	[EngineSetting("Hotkey", "Artwork - Rotate Selection Clockwise")] public static readonly SavingHotkey Hotkey_Pix_RotC = new("Hotkey.Pix.RotC", new Hotkey(KeyboardKey.W, shift: true), SavingLocation.Global);
