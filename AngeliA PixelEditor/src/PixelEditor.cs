@@ -83,13 +83,14 @@ public partial class PixelEditor : WindowUI {
 	private static readonly SpriteCode CURSOR_SPRITE = "Cursor.Sprite";
 
 	// Api
+	public static event System.Action OnPixelEditorSave;
 	public static readonly Sheet EditingSheet = new(ignoreGroups: false, ignoreSpriteWithPaletteTag: false);
 	public static PixelEditor Instance { get; private set; }
 	public bool RequireReloadRenderingSheet { get; set; }
 	public bool RequireUniverseDirty { get; set; } = false;
 	protected override bool BlockEvent => true;
 	public override string DefaultWindowName => "Artwork";
-	public static event System.Action OnPixelEditorSave;
+	public string CurrentSheetPath { get; private set; } = null;
 
 	// Data
 	private readonly List<SpriteData> StagedSprites = [];
@@ -116,7 +117,6 @@ public partial class PixelEditor : WindowUI {
 	private Tool CurrentTool = Tool.Rect;
 	private Tag SelectionTagCache = Tag.None;
 	private int DelayResetCameraFrame = -2;
-	private string CurrentSheetPath = null;
 	private string CharMovConfigPath;
 
 	// Setting
