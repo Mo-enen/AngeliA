@@ -236,9 +236,39 @@ public partial class PixelEditor {
 						// Bucket
 						if (HoveringSpriteStageIndex >= 0) {
 							if (Input.HoldingCtrl) {
-								ReplaceColorInSprite(HoveringSpriteStageIndex, MousePixelPos.x, MousePixelPos.y, PaintingColor);
+								// Replace Color
+								var hoveringSp = StagedSprites[HoveringSpriteStageIndex];
+								if (Input.HoldingShift && FrameworkUtil.GetGroupInfoFromSpriteRealName(
+									hoveringSp.Sprite.RealName, out string groupName, out _
+								)) {
+									// For Group
+									int pixelX = MousePixelPos.x;
+									int pixelY = MousePixelPos.y;
+									var pixelRect = hoveringSp.Sprite.PixelRect;
+									if (!pixelRect.Contains(pixelX, pixelY)) return;
+									int localX = pixelX - pixelRect.xMin;
+									int localY = pixelY - pixelRect.yMin;
+									var targetColor = hoveringSp.Sprite.Pixels[
+										localY * hoveringSp.Sprite.PixelRect.width + localX
+									];
+									for (int i = 0; i < StagedSprites.Count; i++) {
+										SpriteData spData = StagedSprites[i];
+										if (FrameworkUtil.GetGroupInfoFromSpriteRealName(
+											spData.Sprite.RealName, out string gName, out _
+										) && gName == groupName) {
+											ReplaceColorInSprite(i, targetColor, PaintingColor);
+										}
+									}
+								} else {
+									// For Hovering Only
+									ReplaceColorInSprite(
+										HoveringSpriteStageIndex,
+										MousePixelPos.x, MousePixelPos.y, PaintingColor
+									);
+								}
 								painted = true;
 							} else {
+								// Bucket Paint
 								var bucketStartPixPoint = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 								BucketPaintPixel(
 									HoveringSpriteStageIndex,
@@ -1197,10 +1227,16 @@ public partial class PixelEditor {
 		int localX = pixelX - pixelRect.xMin;
 		int localY = pixelY - pixelRect.yMin;
 		var targetColor = sprite.Pixels[localY * pixelRect.width + localX];
+		ReplaceColorInSprite(spriteIndex, targetColor, newColor);
+	}
+
+
+	private void ReplaceColorInSprite (int spriteIndex, Color32 targetColor, Color32 newColor) {
 		if (targetColor == PaintingColor) return;
-		RegisterUndo(new PaintUndoItem() {
-			SpriteID = sprite.ID,
-		});
+		if (spriteIndex < 0 || spriteIndex >= StagedSprites.Count) return;
+		var spData = StagedSprites[spriteIndex];
+		var sprite = spData.Sprite;
+		RegisterUndo(new PaintUndoItem() { SpriteID = sprite.ID, });
 		// Start
 		for (int i = 0; i < sprite.Pixels.Length; i++) {
 			var px = sprite.Pixels[i];
