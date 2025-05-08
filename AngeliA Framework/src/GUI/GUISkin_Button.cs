@@ -70,6 +70,8 @@ public partial class GUISkin {
 		ContentColorDown = Color32.GREY_230,
 		ContentColorDisable = Color32.CLEAR,
 
+
+
 	};
 
 	public readonly GUIStyle DarkButton = new() {

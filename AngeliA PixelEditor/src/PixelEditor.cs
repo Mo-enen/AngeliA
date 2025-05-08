@@ -118,6 +118,7 @@ public partial class PixelEditor : WindowUI {
 	private Tag SelectionTagCache = Tag.None;
 	private int DelayResetCameraFrame = -2;
 	private string CharMovConfigPath;
+	private int IgnoreSpriteGizmosFrame = int.MinValue;
 
 	// Setting
 	public Color32 BackgroundColor { get; set; } = new Color32(32, 33, 37, 255);
@@ -138,10 +139,13 @@ public partial class PixelEditor : WindowUI {
 	public Hotkey Hotkey_Pix_FlipY { get; set; } = new Hotkey(KeyboardKey.V, shift: true);
 	public Hotkey Hotkey_Pix_RotC { get; set; } = new Hotkey(KeyboardKey.W, shift: true);
 	public Hotkey Hotkey_Pix_RotCC { get; set; } = new Hotkey(KeyboardKey.Q, shift: true);
+	public Hotkey Hotkey_Pix_ViewTile { get; set; } = new Hotkey(KeyboardKey.T);
+	public Hotkey Hotkey_Pix_AtlasList { get; set; } = new Hotkey(KeyboardKey.Tab);
 
 	// Saving
 	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false, SavingLocation.Global);
 	private static readonly SavingBool ShowAxis = new("PixEdt.ShowAxis", true, SavingLocation.Global);
+	private static readonly SavingBool ShowAtlasList = new("PixEdt.ShowAtlasList", true, SavingLocation.Global);
 
 
 	#endregion
@@ -202,8 +206,10 @@ public partial class PixelEditor : WindowUI {
 			GradientBackground ? Color32.Lerp(BackgroundColor, Color32.WHITE, 0.1f) : BackgroundColor
 		);
 		if (CurrentSheetPath == null) return;
-		Update_AtlasPanel();
-		Update_AtlasToolbar();
+		if (ShowAtlasList.Value) {
+			Update_AtlasPanel();
+			Update_AtlasToolbar();
+		}
 		Update_Cache();
 		if (!Input.IgnoringMouseInput) {
 			Update_Cursor();
@@ -238,7 +244,7 @@ public partial class PixelEditor : WindowUI {
 		HoveringSpriteStageIndex = -1;
 		MousePixelPos = Stage_to_Pixel(Input.MouseGlobalPosition, round: false);
 		MousePixelPosRound = Stage_to_Pixel(Input.MouseGlobalPosition, round: true);
-		StageRect = WindowRect.Shrink(Unify(PANEL_WIDTH), GUI.ToolbarSize, 0, GUI.ToolbarSize);
+		StageRect = WindowRect.Shrink(ShowAtlasList.Value ? Unify(PANEL_WIDTH) : 0, GUI.ToolbarSize, 0, GUI.ToolbarSize);
 		HoveringResizeStageIndex = -1;
 		HoldingCtrl = Input.HoldingCtrl;
 		HoldingAlt = Input.HoldingAlt;
@@ -411,6 +417,7 @@ public partial class PixelEditor : WindowUI {
 
 		if (EditingSheet.Atlas.Count <= 0) return;
 		using var _layer = new DefaultLayerScope();
+		int pixelStageSize = PixelStageSize.GreaterOrEquel(1);
 
 		// BG
 		GUI.DrawSlice(UI_BG, StageRect);
@@ -420,10 +427,10 @@ public partial class PixelEditor : WindowUI {
 		if (ShowCheckerBoard.Value && Renderer.TryGetSprite(UI_CHECKER_BOARD, out var checkerSprite)) {
 			// Checker Board
 			var rect = StageRect;
-			int sizeX = canvasRectInt.width / 16;
-			int sizeY = canvasRectInt.height / 16;
-			int countX = (rect.width / PixelStageSize).CeilDivide(32);
-			int countY = (rect.height / PixelStageSize).CeilDivide(32);
+			int sizeX = (canvasRectInt.width / 16).GreaterOrEquel(1);
+			int sizeY = (canvasRectInt.height / 16).GreaterOrEquel(1);
+			int countX = (rect.width / pixelStageSize).CeilDivide(32);
+			int countY = (rect.height / pixelStageSize).CeilDivide(32);
 			countX++;
 			countY++;
 			rect.x = (rect.x - canvasRectInt.x).UDivide(sizeX) * sizeX + canvasRectInt.x;
@@ -471,7 +478,7 @@ public partial class PixelEditor : WindowUI {
 			if (DraggingState != DragState.ResizeSprite || ResizingStageIndex != i || ResizeForBorder) {
 				Renderer.Draw(
 					BuiltInSprite.SHADOW_LINE_16,
-					rect.EdgeOutsideDown(PixelStageSize),
+					rect.EdgeOutsideDown(pixelStageSize),
 					color: Color32.BLACK_64,
 					z: int.MinValue + 3
 				);
@@ -621,11 +628,13 @@ public partial class PixelEditor : WindowUI {
 				}
 			} else if (DraggingState != DragState.MoveSprite || !spData.Selecting) {
 				// Normal Frame
-				DrawFrame(
-					rect.Expand(GizmosThickness),
-					i == SelectingPaletteIndex ? Skin.HighlightColorAlt : Skin.GizmosNormal,
-					GizmosThickness
-				);
+				if (Game.PauselessFrame > IgnoreSpriteGizmosFrame) {
+					DrawFrame(
+						rect.Expand(GizmosThickness),
+						i == SelectingPaletteIndex ? Skin.HighlightColorAlt : Skin.GizmosNormal,
+						GizmosThickness
+					);
+				}
 			}
 
 			// Resize Hover Highlight
@@ -810,6 +819,15 @@ public partial class PixelEditor : WindowUI {
 
 		}
 
+		// Misc
+		if (Hotkey_Pix_ViewTile.Holding()) {
+			DrawTilingThumbnail();
+		}
+
+		if (Hotkey_Pix_AtlasList.Down()) {
+			ShowAtlasList.Value = !ShowAtlasList.Value;
+		}
+
 		// Pal
 		if (Hotkey_Pix_PalettePrev.Down()) {
 			ShiftPaintingColorFromPalette(false);
@@ -969,7 +987,7 @@ public partial class PixelEditor : WindowUI {
 
 	private void ResetCamera (bool delay) {
 		if (!delay) {
-			CanvasRect = WindowRect.Shrink(Unify(PANEL_WIDTH), 0, 0, GUI.ToolbarSize).Fit(1, 1).ToFRect();
+			CanvasRect = WindowRect.Shrink(ShowAtlasList.Value ? Unify(PANEL_WIDTH) : 0, 0, 0, GUI.ToolbarSize).Fit(1, 1).ToFRect();
 			CanvasRect.width = Util.Max(CanvasRect.width, 1f);
 			CanvasRect.height = Util.Max(CanvasRect.height, 1f);
 			ZoomLevel = 1;
@@ -1084,6 +1102,23 @@ public partial class PixelEditor : WindowUI {
 				sprite.PivotY = pivotY;
 			}
 		}
+	}
+
+
+	private void DrawTilingThumbnail () {
+		if (HoveringSpriteStageIndex < 0) return;
+		var sp = StagedSprites[HoveringSpriteStageIndex].Sprite;
+		var min = Pixel_to_Stage(sp.PixelRect.min).RoundToInt();
+		var max = Pixel_to_Stage(sp.PixelRect.max).RoundToInt();
+		using var _ = new SheetIndexScope(EditingSheetIndex);
+		var rect = IRect.MinMaxRect(min, max);
+		for (int j = -1; j <= 1; j++) {
+			for (int i = -1; i <= 1; i++) {
+				if (i == 0 && j == 0) continue;
+				Renderer.Draw(sp, rect.Shift(i * rect.width, j * rect.height), z: int.MaxValue);
+			}
+		}
+		IgnoreSpriteGizmosFrame = Game.PauselessFrame + 1;
 	}
 
 
@@ -1221,9 +1256,8 @@ public partial class PixelEditor : WindowUI {
 
 	// Drawing Util
 	private void DrawSheetSprite (AngeSprite sprite, IRect rect, int z = 0) {
-		Renderer.CurrentSheetIndex = EditingSheetIndex;
+		using var _ = new SheetIndexScope(EditingSheetIndex);
 		Renderer.Draw(sprite, rect, z);
-		Renderer.CurrentSheetIndex = -1;
 	}
 
 

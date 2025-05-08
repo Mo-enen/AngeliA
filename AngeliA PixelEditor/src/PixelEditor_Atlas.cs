@@ -326,7 +326,7 @@ public partial class PixelEditor {
 
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		int padding = Unify(4);
-		var rect = toolbarRect.EdgeInside(Direction4.Left, toolbarRect.height);
+		var rect = toolbarRect.EdgeInsideSquareLeft();
 
 		// Add Atlas
 		if (GUI.Button(rect, BuiltInSprite.ICON_PLUS, Skin.SmallDarkButton)) {
@@ -367,6 +367,18 @@ public partial class PixelEditor {
 		}
 		RequireTooltip(rect, TIP_EXPORT_PNG);
 		rect.SlideRight(padding);
+
+
+		// Hide Atlas
+		if (ShowAtlasList.Value) {
+			var btnRect = toolbarRect.EdgeInsideSquareRight();
+			if (GUI.Button(btnRect, 0, Skin.IconButton)) {
+				ShowAtlasList.Value = !ShowAtlasList.Value;
+			}
+			if (Renderer.TryGetSprite(BuiltInSprite.ICON_TRIANGLE_LEFT, out var triIcon)) {
+				Renderer.Draw(triIcon, btnRect.Shrink(Unify(6)).Fit(triIcon), Color32.GREY_128);
+			}
+		}
 
 	}
 

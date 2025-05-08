@@ -164,7 +164,18 @@ public partial class PixelEditor {
 		toolbarRect = toolbarRect.Shrink(Unify(6));
 		var rect = toolbarRect.EdgeInside(Direction4.Left, Unify(30));
 
+
 		if (SelectingSpriteCount == 0) {
+			// Show Atlas
+			if (!ShowAtlasList.Value) {
+				if (GUI.Button(rect, 0, Skin.IconButton)) {
+					ShowAtlasList.Value = !ShowAtlasList.Value;
+				}
+				if (Renderer.TryGetSprite(BuiltInSprite.ICON_TRIANGLE_RIGHT, out var triIcon)) {
+					Renderer.Draw(triIcon, rect.Shrink(Unify(6)).Fit(triIcon), Color32.GREY_128);
+				}
+				rect.SlideRight(Unify(4));
+			}
 			// --- General ---
 			Update_GeneralToolbar(toolbarRect, ref rect);
 		} else {
