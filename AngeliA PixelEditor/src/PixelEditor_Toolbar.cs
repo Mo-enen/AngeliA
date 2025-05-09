@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using AngeliA;
 
 namespace AngeliA.PixelEditor;
@@ -774,8 +776,8 @@ public partial class PixelEditor {
 		if (GUI.Button(rect, ICON_RULE, Skin.SmallDarkButton)) {
 			OpeningTilingRuleEditor = !OpeningTilingRuleEditor;
 			if (OpeningTilingRuleEditor) {
-				StagedSprites.Sort(SpriteDataComparer.Instance);
 				TilingRuleModeA = null;
+				StagedSprites.Sort(SpriteNameComparer.Instance);
 			}
 		}
 		RequireTooltip(rect, TIP_RULE);

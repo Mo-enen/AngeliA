@@ -8,7 +8,7 @@ public static class Cursor {
 
 	// Api
 	internal static int CursorPriority { get; set; } = int.MinValue;
-	internal static int CurrentCursorIndex { get; private set; } = -1;
+	public static int CurrentCursorIndex { get; private set; } = -1;
 
 	// Data
 	private static int CursorEndFrame = int.MinValue + 1;

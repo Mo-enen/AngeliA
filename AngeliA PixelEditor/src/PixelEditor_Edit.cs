@@ -465,7 +465,7 @@ public partial class PixelEditor {
 						SetDirty();
 					}
 				}
-				StagedSprites.Sort(SpriteDataComparer.Instance);
+				StagedSprites.Sort(SpriteSelectionComparer.Instance);
 				break;
 
 		}

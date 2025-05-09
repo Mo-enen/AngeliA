@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using AngeliA;
 
 namespace AngeliA.PixelEditor;
@@ -12,14 +14,39 @@ public partial class PixelEditor : WindowUI {
 	#region --- SUB ---
 
 
-	private class SpriteDataComparer : IComparer<SpriteData> {
-		public static readonly SpriteDataComparer Instance = new();
+	private partial class SpriteNameComparer : IComparer<SpriteData> {
+		public static readonly SpriteNameComparer Instance = new();
 		public int Compare (SpriteData a, SpriteData b) {
-			int result = a.Selecting.CompareTo(b.Selecting);
-			if (result == 0) {
-				return a.Sprite.RealName.CompareTo(b.Sprite.RealName);
-			}
-			return result;
+			if (a == null || b == null) return a == null ? -1 : 1;
+
+			string prefixA = ReplaceA().Replace(a.Sprite.RealName, "");
+			string prefixB = ReplaceB().Replace(b.Sprite.RealName, "");
+			int numberA =
+				MatchA().IsMatch(a.Sprite.RealName) ?
+				int.Parse(MatchB().Match(a.Sprite.RealName).Value) : 0;
+			int numberB =
+				MatchC().IsMatch(b.Sprite.RealName) ?
+				int.Parse(MatchD().Match(b.Sprite.RealName).Value) : 0;
+
+			int prefixComparison = prefixA.CompareTo(prefixB);
+			if (prefixComparison != 0)
+				return prefixComparison;
+
+			return numberA.CompareTo(numberB);
+		}
+		[GeneratedRegex(@"\d+$")] private static partial Regex ReplaceA ();
+		[GeneratedRegex(@"\d+$")] private static partial Regex ReplaceB ();
+		[GeneratedRegex(@"\d+$")] private static partial Regex MatchA ();
+		[GeneratedRegex(@"\d+$")] private static partial Regex MatchB ();
+		[GeneratedRegex(@"\d+$")] private static partial Regex MatchC ();
+		[GeneratedRegex(@"\d+$")] private static partial Regex MatchD ();
+	}
+
+
+	private class SpriteSelectionComparer : IComparer<SpriteData> {
+		public static readonly SpriteSelectionComparer Instance = new();
+		public int Compare (SpriteData a, SpriteData b) {
+			return a.Selecting.CompareTo(b.Selecting);
 		}
 	}
 
@@ -1106,19 +1133,47 @@ public partial class PixelEditor : WindowUI {
 
 
 	private void DrawTilingThumbnail () {
+
 		if (HoveringSpriteStageIndex < 0) return;
 		var sp = StagedSprites[HoveringSpriteStageIndex].Sprite;
 		var min = Pixel_to_Stage(sp.PixelRect.min).RoundToInt();
 		var max = Pixel_to_Stage(sp.PixelRect.max).RoundToInt();
-		using var _ = new SheetIndexScope(EditingSheetIndex);
-		var rect = IRect.MinMaxRect(min, max);
-		for (int j = -1; j <= 1; j++) {
-			for (int i = -1; i <= 1; i++) {
-				if (i == 0 && j == 0) continue;
-				Renderer.Draw(sp, rect.Shift(i * rect.width, j * rect.height), z: int.MaxValue);
+
+		// BG
+		using (new SheetIndexScope(-1)) {
+			int bgPadding = Unify(12);
+			var rect = IRect.MinMaxRect(min, max);
+			for (int j = -1; j <= 1; j++) {
+				for (int i = -1; i <= 1; i++) {
+					if (i == 0 && j == 0) continue;
+					var _rect = rect.Shift(i * rect.width, j * rect.height);
+					Renderer.DrawPixel(
+						_rect.Expand(
+							i == -1 ? bgPadding : 0,
+							i == 1 ? bgPadding : 0,
+							j == -1 ? bgPadding : 0,
+							j == 1 ? bgPadding : 0
+						), Color32.BLACK
+					);
+				}
 			}
 		}
+
+		// Sprite
+		using (new SheetIndexScope(EditingSheetIndex)) {
+			var rect = IRect.MinMaxRect(min, max);
+			for (int j = -1; j <= 1; j++) {
+				for (int i = -1; i <= 1; i++) {
+					if (i == 0 && j == 0) continue;
+					var _rect = rect.Shift(i * rect.width, j * rect.height);
+					Renderer.Draw(sp, _rect, z: int.MaxValue);
+				}
+			}
+		}
+
+		// Final
 		IgnoreSpriteGizmosFrame = Game.PauselessFrame + 1;
+		Cursor.SetCursor(Const.CURSOR_NONE, int.MaxValue);
 	}
 
 
@@ -1416,6 +1471,7 @@ public partial class PixelEditor : WindowUI {
 
 	private void DrawPaintingCursor (bool allowOutsideSprite, bool forSelection, out bool hasFrame) {
 		hasFrame = false;
+		if (Game.PauselessFrame <= IgnoreSpriteGizmosFrame) return;
 		var mousePos = Input.MouseGlobalPosition;
 		float pixSize = Util.Max(CanvasRect.width, 1f) / STAGE_SIZE;
 		var cursorRect = new FRect(
@@ -1479,6 +1535,7 @@ public partial class PixelEditor : WindowUI {
 
 
 	private void DrawInverseCursor (int spriteID, int size = 0) {
+		if (Game.PauselessFrame <= IgnoreSpriteGizmosFrame) return;
 		using var _ = new SheetIndexScope(-1);
 		if (
 			!Renderer.TryGetTextureFromSheet(spriteID, -1, out object texture) ||
