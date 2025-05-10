@@ -500,6 +500,7 @@ public partial class PixelEditor {
 					PaintingColorF = PaintingColor.ToColorF();
 					ColorFieldCode = Util.ColorToHtml(PaintingColor);
 					changed = true;
+					LastPaintedSpriteID = sprite.ID;
 					break;
 				}
 			}
@@ -1071,6 +1072,7 @@ public partial class PixelEditor {
 				LocalPixelRect = localRect,
 			});
 			painted = true;
+			LastPaintedSpriteID = paintingSprite.ID;
 			if (targetColor.a != 0) {
 				// Paint
 				for (int j = d; j < u; j++) {
@@ -1214,6 +1216,7 @@ public partial class PixelEditor {
 			SpriteID = sprite.ID,
 		});
 		spData.PixelDirty = true;
+		LastPaintedSpriteID = sprite.ID;
 		SetDirty();
 	}
 
@@ -1254,6 +1257,7 @@ public partial class PixelEditor {
 		});
 		spData.PixelDirty = true;
 		SetDirty();
+		LastPaintedSpriteID = sprite.ID;
 	}
 
 

@@ -146,6 +146,8 @@ public partial class PixelEditor : WindowUI {
 	private int DelayResetCameraFrame = -2;
 	private string CharMovConfigPath;
 	private int IgnoreSpriteGizmosFrame = int.MinValue;
+	private bool RequireTilingThumbnail = false;
+	private int LastPaintedSpriteID = 0;
 
 	// Setting
 	public Color32 BackgroundColor { get; set; } = new Color32(32, 33, 37, 255);
@@ -265,6 +267,7 @@ public partial class PixelEditor : WindowUI {
 		GizmosThickness = Unify(1);
 		HoveringResizeDirection = null;
 		SelectingSpriteCount = 0;
+		RequireTilingThumbnail = false;
 		SelectingAnyTiggerSprite = false;
 		SelectingAnySpriteWithBorder = false;
 		SelectingAnySpriteWithoutBorder = false;
@@ -854,9 +857,7 @@ public partial class PixelEditor : WindowUI {
 		}
 
 		// Misc
-		if (h_ViewTile.Holding()) {
-			DrawTilingThumbnail();
-		}
+		RequireTilingThumbnail = h_ViewTile.Holding();
 
 		if (h_AtlasList.Down()) {
 			ShowAtlasList.Value = !ShowAtlasList.Value;
@@ -1143,69 +1144,22 @@ public partial class PixelEditor : WindowUI {
 	}
 
 
-	private void DrawTilingThumbnail () {
-
-		if (HoveringSpriteStageIndex < 0) return;
-		var sp = StagedSprites[HoveringSpriteStageIndex].Sprite;
-		var min = Pixel_to_Stage(sp.PixelRect.min).RoundToInt();
-		var max = Pixel_to_Stage(sp.PixelRect.max).RoundToInt();
-		var rect = IRect.MinMaxRect(min, max);
-		const int TILE_EXPAND = 2;
-		int bgPadding = Unify(12);
-
-		using (new SheetIndexScope(-1)) {
-
-			// BG
-			var bgColor = ShowCheckerBoard.Value ? new Color32(162, 162, 162) : BackgroundColor;
-			for (int j = -TILE_EXPAND; j <= TILE_EXPAND; j++) {
-				for (int i = -TILE_EXPAND; i <= TILE_EXPAND; i++) {
-					var _rect = rect.Shift(i * rect.width, j * rect.height);
-					Renderer.DrawPixel(
-						_rect.Expand(
-							i == -TILE_EXPAND ? bgPadding : 0,
-							i == TILE_EXPAND ? bgPadding : 0,
-							j == -TILE_EXPAND ? bgPadding : 0,
-							j == TILE_EXPAND ? bgPadding : 0
-						), bgColor
-					);
-				}
-			}
-
-			// Frame
-			int border = Unify(2);
-			Renderer.DrawSlice(BuiltInSprite.FRAME_16, rect.Expand(
-				TILE_EXPAND * rect.width + bgPadding,
-				TILE_EXPAND * rect.width + bgPadding,
-				TILE_EXPAND * rect.height + bgPadding,
-				TILE_EXPAND * rect.height + bgPadding
-			), border, border, border, border, Color32.BLACK);
-
-		}
-
-		// Sprite
-		using (new SheetIndexScope(EditingSheetIndex)) {
-			for (int j = -TILE_EXPAND; j <= TILE_EXPAND; j++) {
-				for (int i = -TILE_EXPAND; i <= TILE_EXPAND; i++) {
-					Renderer.Draw(sp, rect.Shift(i * rect.width, j * rect.height));
-				}
-			}
-		}
-
-		// Final
-		IgnoreSpriteGizmosFrame = Game.PauselessFrame + 1;
-		Cursor.SetCursor(Const.CURSOR_NONE, int.MaxValue);
-	}
-
-
 	private void DrawSpriteThumbnail () {
 
-		int thumbnailSize = Unify(96);
+		if (LastPaintedSpriteID == 0) return;
+
+		const int TILE_EXPAND = 2;
+		const int TILE_COUNT = 1 + TILE_EXPAND * 2;
+		int thumbnailSize = Unify(76);
 		int panelPadding = Unify(22);
 		int bgPadding = Unify(6);
 		int spPadding = Unify(6);
+		if (RequireTilingThumbnail) {
+			thumbnailSize *= TILE_COUNT;
+		}
 		var panelRect = StageRect.CornerInside(Alignment.BottomRight, thumbnailSize).Shift(-panelPadding, panelPadding);
 		var bgRect = panelRect.Expand(bgPadding);
-		if (bgRect.MouseInside()) return;
+		if (bgRect.MouseInside() && !RequireTilingThumbnail) return;
 
 		// BG
 		using (new SheetIndexScope(-1)) {
@@ -1216,12 +1170,22 @@ public partial class PixelEditor : WindowUI {
 		}
 
 		// Sprite
-		if (HoveringSpriteStageIndex >= 0) {
-			var sprite = StagedSprites[HoveringSpriteStageIndex].Sprite;
-			var contentRect = panelRect.Shrink(spPadding).Fit(sprite);
-			using (new SheetIndexScope(EditingSheetIndex)) {
+		using (new SheetIndexScope(EditingSheetIndex)) {
+			if (Renderer.TryGetSprite(LastPaintedSpriteID, out var sprite)) {
+				var contentRect = panelRect.Shrink(spPadding).Fit(sprite);
 				if (Renderer.CurrentSheet.TryGetTextureFromPool(sprite.ID, out var texture)) {
-					Game.DrawGizmosTexture(contentRect, texture);
+					if (RequireTilingThumbnail) {
+						for (int j = 0; j < TILE_COUNT; j++) {
+							for (int i = 0; i < TILE_COUNT; i++) {
+								Game.DrawGizmosTexture(
+									contentRect.PartHorizontal(i, TILE_COUNT).PartVertical(j, TILE_COUNT),
+									texture
+								);
+							}
+						}
+					} else {
+						Game.DrawGizmosTexture(contentRect, texture);
+					}
 				}
 			}
 		}

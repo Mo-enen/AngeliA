@@ -27,7 +27,15 @@ public class SpriteTable {
 		int atlasID = basicName.AngeHash();
 		var buffer = new List<AngeSprite>();
 		foreach (var sprite in sheet.Sprites) {
-			if (sprite.AtlasID == atlasID) buffer.Add(sprite);
+			if (sprite.AtlasID != atlasID) continue;
+			var group = sprite.Group;
+			if (group != null && !sprite.Rule.IsEmpty) {
+				if (group.Count > 0 && sprite == group.Sprites[0]) {
+					buffer.Add(sprite);
+				}
+			} else {
+				buffer.Add(sprite);
+			}
 		}
 		buffer.Sort(BlockSpriteComparerY.Instance);
 		// Buffer List >> Final List
@@ -43,7 +51,11 @@ public class SpriteTable {
 					tempList.Clear();
 				}
 			}
-			tempList.Add(sp.ID);
+			if (sp.Group != null && !sp.Rule.IsEmpty) {
+				tempList.Add(sp.Group.ID);
+			} else {
+				tempList.Add(sp.ID);
+			}
 		}
 		if (tempList.Count > 0) {
 			final.Add([.. tempList]);

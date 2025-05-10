@@ -135,6 +135,13 @@ public sealed class WorldStream : IBlockSquad {
 	}
 
 
+	public void MarkWorldAsDirty (Int3 worldPos) {
+		if (!WorldPool.TryGetValue(worldPos, out var data)) return;
+		Version++;
+		data.Version++;
+	}
+
+
 	/// <summary>
 	/// Load changed map from file
 	/// </summary>
