@@ -1097,18 +1097,18 @@ internal partial class Engine {
 		pix.SolidPaintingPreview = EngineSetting.SolidPaintingPreview.Value;
 		pix.AlwaysExpandPaintingColor = EngineSetting.AlwaysExpandPaintingColor.Value;
 		pix.ShowTagPreview = EngineSetting.ShowTagPreview.Value;
-		pix.Hotkey_Pix_PalettePrev = EngineSetting.Hotkey_Pix_PalettePrev.Value;
-		pix.Hotkey_Pix_PaletteNext = EngineSetting.Hotkey_Pix_PaletteNext.Value;
-		pix.Hotkey_PixTool_Rect = EngineSetting.Hotkey_PixTool_Rect.Value;
-		pix.Hotkey_PixTool_Circle = EngineSetting.Hotkey_PixTool_Circle.Value;
-		pix.Hotkey_PixTool_Line = EngineSetting.Hotkey_PixTool_Line.Value;
-		pix.Hotkey_PixTool_Bucket = EngineSetting.Hotkey_PixTool_Bucket.Value;
-		pix.Hotkey_PixTool_Select = EngineSetting.Hotkey_PixTool_Select.Value;
-		pix.Hotkey_PixTool_Sprite = EngineSetting.Hotkey_PixTool_Sprite.Value;
-		pix.Hotkey_Pix_FlipX = EngineSetting.Hotkey_Pix_FlipX.Value;
-		pix.Hotkey_Pix_FlipY = EngineSetting.Hotkey_Pix_FlipY.Value;
-		pix.Hotkey_Pix_RotC = EngineSetting.Hotkey_Pix_RotC.Value;
-		pix.Hotkey_Pix_RotCC = EngineSetting.Hotkey_Pix_RotCC.Value;
+		pix.h_PalettePrev = EngineSetting.h_PalettePrev.Value;
+		pix.h_PaletteNext = EngineSetting.h_PaletteNext.Value;
+		pix.h_ToolRect = EngineSetting.h_Tool_Rect.Value;
+		pix.h_ToolCircle = EngineSetting.h_Tool_Circle.Value;
+		pix.h_ToolLine = EngineSetting.h_Tool_Line.Value;
+		pix.h_ToolBucket = EngineSetting.h_Tool_Bucket.Value;
+		pix.h_ToolSelect = EngineSetting.h_Tool_Select.Value;
+		pix.h_ToolSprite = EngineSetting.h_Tool_Sprite.Value;
+		pix.h_FlipX = EngineSetting.h_FlipX.Value;
+		pix.h_FlipY = EngineSetting.h_FlipY.Value;
+		pix.h_RotC = EngineSetting.h_RotC.Value;
+		pix.h_RotCC = EngineSetting.h_RotCC.Value;
 
 	}
 

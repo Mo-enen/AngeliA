@@ -154,25 +154,27 @@ public partial class PixelEditor : WindowUI {
 	public bool SolidPaintingPreview { get; set; } = true;
 	public bool AlwaysExpandPaintingColor { get; set; } = false;
 	public bool ShowTagPreview { get; set; } = true;
-	public Hotkey Hotkey_Pix_PalettePrev { get; set; } = new Hotkey(KeyboardKey.Digit1);
-	public Hotkey Hotkey_Pix_PaletteNext { get; set; } = new Hotkey(KeyboardKey.Digit2);
-	public Hotkey Hotkey_PixTool_Rect { get; set; } = new Hotkey(KeyboardKey.U);
-	public Hotkey Hotkey_PixTool_Circle { get; set; } = new Hotkey(KeyboardKey.C);
-	public Hotkey Hotkey_PixTool_Line { get; set; } = new Hotkey(KeyboardKey.L);
-	public Hotkey Hotkey_PixTool_Bucket { get; set; } = new Hotkey(KeyboardKey.G);
-	public Hotkey Hotkey_PixTool_Select { get; set; } = new Hotkey(KeyboardKey.M);
-	public Hotkey Hotkey_PixTool_Sprite { get; set; } = new Hotkey(KeyboardKey.S);
-	public Hotkey Hotkey_Pix_FlipX { get; set; } = new Hotkey(KeyboardKey.H, shift: true);
-	public Hotkey Hotkey_Pix_FlipY { get; set; } = new Hotkey(KeyboardKey.V, shift: true);
-	public Hotkey Hotkey_Pix_RotC { get; set; } = new Hotkey(KeyboardKey.W, shift: true);
-	public Hotkey Hotkey_Pix_RotCC { get; set; } = new Hotkey(KeyboardKey.Q, shift: true);
-	public Hotkey Hotkey_Pix_ViewTile { get; set; } = new Hotkey(KeyboardKey.T);
-	public Hotkey Hotkey_Pix_AtlasList { get; set; } = new Hotkey(KeyboardKey.Tab);
+	public Hotkey h_PalettePrev { get; set; } = new Hotkey(KeyboardKey.Digit1);
+	public Hotkey h_PaletteNext { get; set; } = new Hotkey(KeyboardKey.Digit2);
+	public Hotkey h_ToolRect { get; set; } = new Hotkey(KeyboardKey.U);
+	public Hotkey h_ToolCircle { get; set; } = new Hotkey(KeyboardKey.C);
+	public Hotkey h_ToolLine { get; set; } = new Hotkey(KeyboardKey.L);
+	public Hotkey h_ToolBucket { get; set; } = new Hotkey(KeyboardKey.G);
+	public Hotkey h_ToolSelect { get; set; } = new Hotkey(KeyboardKey.M);
+	public Hotkey h_ToolSprite { get; set; } = new Hotkey(KeyboardKey.S);
+	public Hotkey h_FlipX { get; set; } = new Hotkey(KeyboardKey.H, shift: true);
+	public Hotkey h_FlipY { get; set; } = new Hotkey(KeyboardKey.V, shift: true);
+	public Hotkey h_RotC { get; set; } = new Hotkey(KeyboardKey.W, shift: true);
+	public Hotkey h_RotCC { get; set; } = new Hotkey(KeyboardKey.Q, shift: true);
+	public Hotkey h_ViewTile { get; set; } = new Hotkey(KeyboardKey.T);
+	public Hotkey h_AtlasList { get; set; } = new Hotkey(KeyboardKey.Tab);
+	public Hotkey h_Thumbnail { get; set; } = new Hotkey(KeyboardKey.I);
 
 	// Saving
 	private static readonly SavingBool ShowCheckerBoard = new("PixEdt.ShowChecker", false, SavingLocation.Global);
 	private static readonly SavingBool ShowAxis = new("PixEdt.ShowAxis", true, SavingLocation.Global);
 	private static readonly SavingBool ShowAtlasList = new("PixEdt.ShowAtlasList", true, SavingLocation.Global);
+	private static readonly SavingBool ShowThumbnail = new("PixEdt.ShowThumbnail", true, SavingLocation.Global);
 
 
 	#endregion
@@ -516,6 +518,11 @@ public partial class PixelEditor : WindowUI {
 
 		}
 
+		// Sprite Thumbnail
+		if (ShowThumbnail.Value) {
+			DrawSpriteThumbnail();
+		}
+
 	}
 
 
@@ -847,65 +854,69 @@ public partial class PixelEditor : WindowUI {
 		}
 
 		// Misc
-		if (Hotkey_Pix_ViewTile.Holding()) {
+		if (h_ViewTile.Holding()) {
 			DrawTilingThumbnail();
 		}
 
-		if (Hotkey_Pix_AtlasList.Down()) {
+		if (h_AtlasList.Down()) {
 			ShowAtlasList.Value = !ShowAtlasList.Value;
 		}
 
+		if (h_Thumbnail.Down()) {
+			ShowThumbnail.Value = !ShowThumbnail.Value;
+		}
+
 		// Pal
-		if (Hotkey_Pix_PalettePrev.Down()) {
+		if (h_PalettePrev.Down()) {
 			ShiftPaintingColorFromPalette(false);
 		}
-		if (Hotkey_Pix_PaletteNext.Down()) {
+		if (h_PaletteNext.Down()) {
 			ShiftPaintingColorFromPalette(true);
 		}
 
 		// Tools
-		if (Hotkey_PixTool_Rect.Down()) {
+		if (h_ToolRect.Down()) {
 			SetCurrentTool(Tool.Rect);
 		}
-		if (Hotkey_PixTool_Circle.Down()) {
+		if (h_ToolCircle.Down()) {
 			SetCurrentTool(Tool.Circle);
 		}
-		if (Hotkey_PixTool_Line.Down()) {
+		if (h_ToolLine.Down()) {
 			SetCurrentTool(Tool.Line);
 		}
-		if (Hotkey_PixTool_Bucket.Down()) {
+		if (h_ToolBucket.Down()) {
 			SetCurrentTool(Tool.Bucket);
 		}
-		if (Hotkey_PixTool_Select.Down()) {
+		if (h_ToolSelect.Down()) {
 			SetCurrentTool(Tool.Select);
 		}
-		if (Hotkey_PixTool_Sprite.Down()) {
+		if (h_ToolSprite.Down()) {
 			SetCurrentTool(Tool.Sprite);
 		}
 
 		// Pixel Selection Operation
-		if (Hotkey_Pix_FlipX.Down()) {
+		if (h_FlipX.Down()) {
 			if (CurrentTool == Tool.Select) {
 				FlipPixelSelection(true);
 			} else if (CurrentTool == Tool.Sprite) {
 				FlipSpriteSelection(true);
 			}
 		}
-		if (Hotkey_Pix_FlipY.Down()) {
+		if (h_FlipY.Down()) {
 			if (CurrentTool == Tool.Select) {
 				FlipPixelSelection(false);
 			} else if (CurrentTool == Tool.Sprite) {
 				FlipSpriteSelection(false);
 			}
 		}
-		if (Hotkey_Pix_RotC.Down()) {
+		if (h_RotC.Down()) {
 			if (CurrentTool == Tool.Select) {
 				RotatePixelSelection(true);
 			} else if (CurrentTool == Tool.Sprite) {
 				RotateSpriteSelection(true);
 			}
 		}
-		if (Hotkey_Pix_RotCC.Down()) {
+		if (h_RotCC.Down()) {
 			if (CurrentTool == Tool.Select) {
 				RotatePixelSelection(false);
 			} else if (CurrentTool == Tool.Sprite) {
@@ -1138,35 +1149,44 @@ public partial class PixelEditor : WindowUI {
 		var sp = StagedSprites[HoveringSpriteStageIndex].Sprite;
 		var min = Pixel_to_Stage(sp.PixelRect.min).RoundToInt();
 		var max = Pixel_to_Stage(sp.PixelRect.max).RoundToInt();
+		var rect = IRect.MinMaxRect(min, max);
+		const int TILE_EXPAND = 2;
+		int bgPadding = Unify(12);
 
-		// BG
 		using (new SheetIndexScope(-1)) {
-			int bgPadding = Unify(12);
-			var rect = IRect.MinMaxRect(min, max);
-			for (int j = -1; j <= 1; j++) {
-				for (int i = -1; i <= 1; i++) {
-					if (i == 0 && j == 0) continue;
+
+			// BG
+			var bgColor = ShowCheckerBoard.Value ? new Color32(162, 162, 162) : BackgroundColor;
+			for (int j = -TILE_EXPAND; j <= TILE_EXPAND; j++) {
+				for (int i = -TILE_EXPAND; i <= TILE_EXPAND; i++) {
 					var _rect = rect.Shift(i * rect.width, j * rect.height);
 					Renderer.DrawPixel(
 						_rect.Expand(
-							i == -1 ? bgPadding : 0,
-							i == 1 ? bgPadding : 0,
-							j == -1 ? bgPadding : 0,
-							j == 1 ? bgPadding : 0
-						), Color32.BLACK
+							i == -TILE_EXPAND ? bgPadding : 0,
+							i == TILE_EXPAND ? bgPadding : 0,
+							j == -TILE_EXPAND ? bgPadding : 0,
+							j == TILE_EXPAND ? bgPadding : 0
+						), bgColor
 					);
 				}
 			}
+
+			// Frame
+			int border = Unify(2);
+			Renderer.DrawSlice(BuiltInSprite.FRAME_16, rect.Expand(
+				TILE_EXPAND * rect.width + bgPadding,
+				TILE_EXPAND * rect.width + bgPadding,
+				TILE_EXPAND * rect.height + bgPadding,
+				TILE_EXPAND * rect.height + bgPadding
+			), border, border, border, border, Color32.BLACK);
+
 		}
 
 		// Sprite
 		using (new SheetIndexScope(EditingSheetIndex)) {
-			var rect = IRect.MinMaxRect(min, max);
-			for (int j = -1; j <= 1; j++) {
-				for (int i = -1; i <= 1; i++) {
-					if (i == 0 && j == 0) continue;
-					var _rect = rect.Shift(i * rect.width, j * rect.height);
-					Renderer.Draw(sp, _rect, z: int.MaxValue);
+			for (int j = -TILE_EXPAND; j <= TILE_EXPAND; j++) {
+				for (int i = -TILE_EXPAND; i <= TILE_EXPAND; i++) {
+					Renderer.Draw(sp, rect.Shift(i * rect.width, j * rect.height));
 				}
 			}
 		}
@@ -1174,6 +1194,38 @@ public partial class PixelEditor : WindowUI {
 		// Final
 		IgnoreSpriteGizmosFrame = Game.PauselessFrame + 1;
 		Cursor.SetCursor(Const.CURSOR_NONE, int.MaxValue);
+	}
+
+
+	private void DrawSpriteThumbnail () {
+
+		int thumbnailSize = Unify(96);
+		int panelPadding = Unify(22);
+		int bgPadding = Unify(6);
+		int spPadding = Unify(6);
+		var panelRect = StageRect.CornerInside(Alignment.BottomRight, thumbnailSize).Shift(-panelPadding, panelPadding);
+		var bgRect = panelRect.Expand(bgPadding);
+		if (bgRect.MouseInside()) return;
+
+		// BG
+		using (new SheetIndexScope(-1)) {
+			// BG
+			Game.DrawGizmosRect(bgRect, ShowCheckerBoard.Value ? new Color32(162, 162, 162) : BackgroundColor);
+			// Frame
+			Game.DrawGizmosFrame(bgRect, Color32.BLACK, Unify(2));
+		}
+
+		// Sprite
+		if (HoveringSpriteStageIndex >= 0) {
+			var sprite = StagedSprites[HoveringSpriteStageIndex].Sprite;
+			var contentRect = panelRect.Shrink(spPadding).Fit(sprite);
+			using (new SheetIndexScope(EditingSheetIndex)) {
+				if (Renderer.CurrentSheet.TryGetTextureFromPool(sprite.ID, out var texture)) {
+					Game.DrawGizmosTexture(contentRect, texture);
+				}
+			}
+		}
+
 	}
 
 

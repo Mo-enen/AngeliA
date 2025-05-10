@@ -49,6 +49,7 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_DELETE_SPRITE = "Icon.DeleteSprite";
 	private static readonly SpriteCode ICON_SHOW_CHECKER = "Icon.ShowCheckerBoard";
 	private static readonly SpriteCode ICON_SHOW_AXIS = "Icon.Axis";
+	private static readonly SpriteCode ICON_SHOW_THUMBNAIL = "Icon.Thumbnail";
 	private static readonly SpriteCode ICON_NEW_SPRITE = "Icon.NewSprite";
 	private static readonly SpriteCode ICON_TRIGGER_ON = "Icon.TriggerOn";
 	private static readonly SpriteCode ICON_TRIGGER_OFF = "Icon.TriggerOff";
@@ -79,6 +80,7 @@ public partial class PixelEditor {
 	private static readonly LanguageCode TIP_PAINTING_COLOR = ("Tip.PaintingColor", "Current painting color");
 	private static readonly LanguageCode TIP_SHOW_CHECKER = ("Tip.ShowCheckerBoard", "Show Checker Board");
 	private static readonly LanguageCode TIP_SHOW_AXIS = ("Tip.ShowAxis", "Show Axis");
+	private static readonly LanguageCode TIP_SHOW_THUMBNAIL = ("Tip.ShowThumbnail", "Show Thumbnail");
 	private static readonly LanguageCode TIP_RESET_CAMERA = ("Tip.ResetCamera", "Reset canvas position");
 	private static readonly LanguageCode TIP_NEW_SPRITE = ("Tip.NewSprite", "Create a New Sprite");
 	private static readonly LanguageCode TIP_DEL_SPRITE = ("Tip.DeleteSprite", "Delete sprite");
@@ -239,6 +241,11 @@ public partial class PixelEditor {
 		// Show Axis
 		ShowAxis.Value = GUI.ToggleButton(rect, ShowAxis.Value, ICON_SHOW_AXIS, Skin.SmallDarkButton);
 		RequireTooltip(rect, TIP_SHOW_AXIS);
+		rect.SlideRight(padding);
+
+		// Show Thumbnail
+		ShowThumbnail.Value = GUI.ToggleButton(rect, ShowThumbnail.Value, ICON_SHOW_THUMBNAIL, Skin.SmallDarkButton);
+		RequireTooltip(rect, TIP_SHOW_THUMBNAIL);
 		rect.SlideRight(padding);
 
 		// Reset Camera
