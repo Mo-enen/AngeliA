@@ -231,19 +231,17 @@ public sealed class WorldStream : IBlockSquad {
 	public int GetBlockAt (int unitX, int unitY, int z, BlockType type) {
 		int worldX = unitX.UDivide(Const.MAP);
 		int worldY = unitY.UDivide(Const.MAP);
-		if (TryGetWorldData(worldX, worldY, z, out var worldData)) {
-			var world = worldData.World;
-			int localX = unitX.UMod(Const.MAP);
-			int localY = unitY.UMod(Const.MAP);
-			return type switch {
-				BlockType.Entity => world.Entities[localY * Const.MAP + localX],
-				BlockType.Level => world.Levels[localY * Const.MAP + localX],
-				BlockType.Background => world.Backgrounds[localY * Const.MAP + localX],
-				BlockType.Element => world.Elements[localY * Const.MAP + localX],
-				_ => 0,
-			};
-		}
-		return 0;
+		if (!TryGetWorldData(worldX, worldY, z, out var worldData)) return 0;
+		var world = worldData.World;
+		int localX = unitX.UMod(Const.MAP);
+		int localY = unitY.UMod(Const.MAP);
+		return type switch {
+			BlockType.Entity => world.Entities[localY * Const.MAP + localX],
+			BlockType.Level => world.Levels[localY * Const.MAP + localX],
+			BlockType.Background => world.Backgrounds[localY * Const.MAP + localX],
+			BlockType.Element => world.Elements[localY * Const.MAP + localX],
+			_ => 0,
+		};
 	}
 
 
@@ -399,10 +397,10 @@ public sealed class WorldStream : IBlockSquad {
 
 			// Final
 			if (!loaded) {
-				OnWorldCreated?.InvokeAsEvent(this, newWorld);
 				Version++;
 				data.Version++;
 				WorldPool[worldPos] = data;
+				OnWorldCreated?.InvokeAsEvent(this, newWorld);
 			}
 			OnWorldLoaded?.InvokeAsEvent(this, newWorld);
 

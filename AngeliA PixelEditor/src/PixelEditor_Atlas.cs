@@ -44,6 +44,12 @@ public partial class PixelEditor {
 		ContentColorDown = Color32.ORANGE_BETTER,
 		ContentColorDisable = Color32.ORANGE_BETTER,
 	};
+	private static readonly GUIStyle BgBlockAtlasLabelStyle = new(GUI.Skin.SmallLabel) {
+		ContentColor = new(100, 220, 100),
+		ContentColorHover = new(100, 220, 100),
+		ContentColorDown = new(100, 220, 100),
+		ContentColorDisable = new(100, 220, 100),
+	};
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
 	private int AtlasItemReorderIndex = -1;
@@ -258,8 +264,7 @@ public partial class PixelEditor {
 						GUI.Label(
 							contentRect.Shrink(contentRect.height + labelPadding, 0, 0, 0),
 							atlas.Name,
-							atlas.Type == AtlasType.Level || atlas.Type == AtlasType.Background ? LevelBlockAtlasLabelStyle :
-							Skin.SmallLabel
+							atlas.Type == AtlasType.Level ? LevelBlockAtlasLabelStyle : atlas.Type == AtlasType.Background ? BgBlockAtlasLabelStyle : Skin.SmallLabel
 						);
 					}
 				}
@@ -620,7 +625,11 @@ public partial class PixelEditor {
 		if (!folder) {
 			SetCurrentAtlas(EditingSheet.Atlas.Count - 1);
 			// Create Default Sprites
-			Instance.CreateSpritesFromTemplates($"{atlas.Name}.Palette", "BuiltInPalette", tag: Tag.Palette);
+			Instance.CreateSpritesFromTemplates(
+				$"{atlas.Name}.Palette", "BuiltInPalette",
+				tag: Tag.Palette,
+				pixelPos: new Int2(1, STAGE_SIZE - 34)
+			);
 			CreateNewSprite($"{atlas.Name}.NewSprite");
 		}
 	}

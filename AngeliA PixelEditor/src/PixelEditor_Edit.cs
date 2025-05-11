@@ -500,7 +500,9 @@ public partial class PixelEditor {
 					PaintingColorF = PaintingColor.ToColorF();
 					ColorFieldCode = Util.ColorToHtml(PaintingColor);
 					changed = true;
-					LastPaintedSpriteID = sprite.ID;
+					if (!sprite.Tag.HasAny(Tag.Palette)) {
+						LastPaintedSpriteID = sprite.ID;
+					}
 					break;
 				}
 			}
@@ -1053,6 +1055,7 @@ public partial class PixelEditor {
 
 	private void PaintPixelRect (IRect _pixelRange, Color32 targetColor, bool holo, out bool painted) {
 		painted = false;
+		var mouseDownPixPos = Stage_to_Pixel(Input.MouseLeftDownGlobalPosition);
 		for (int spriteIndex = 0; spriteIndex < StagedSprites.Count; spriteIndex++) {
 			var paintingSpData = StagedSprites[spriteIndex];
 			var paintingSprite = paintingSpData.Sprite;
@@ -1072,7 +1075,9 @@ public partial class PixelEditor {
 				LocalPixelRect = localRect,
 			});
 			painted = true;
-			LastPaintedSpriteID = paintingSprite.ID;
+			if (spritePixelRect.Contains(mouseDownPixPos) && !paintingSprite.Tag.HasAny(Tag.Palette)) {
+				LastPaintedSpriteID = paintingSprite.ID;
+			}
 			if (targetColor.a != 0) {
 				// Paint
 				for (int j = d; j < u; j++) {
