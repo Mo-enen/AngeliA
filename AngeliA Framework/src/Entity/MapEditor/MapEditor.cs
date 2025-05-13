@@ -195,6 +195,7 @@ public sealed partial class MapEditor : WindowUI {
 	private float TransitionScaleStart;
 	private float TransitionScaleEnd;
 	private int TransitionDuration = 20;
+	private int LastSaveFrame = int.MinValue;
 
 	// Saving
 	private static readonly SavingInt LastEdittingViewX = new("MapEditor.LastEdittingViewX", Const.CEL * -10, SavingLocation.Global);
@@ -211,15 +212,10 @@ public sealed partial class MapEditor : WindowUI {
 	#region --- MSG ---
 
 
-
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		// Callback
-		WorldStream.OnWorldSaved += _OnWorldSaved;
-		static void _OnWorldSaved (WorldStream stream, World world) {
-			if (Instance == null || stream != Instance.Stream) return;
-			OnWorldSavedByMapEditor?.Invoke(world);
-		}
+	[OnWorldSavedByStream_WorldStream_World]
+	internal static void OnWorldSavedByStream (WorldStream stream, World world) {
+		if (Instance == null || stream != Instance.Stream) return;
+		OnWorldSavedByMapEditor?.Invoke(world);
 	}
 
 
@@ -506,8 +502,8 @@ public sealed partial class MapEditor : WindowUI {
 			DraggingForReorderPaletteGroup = -1;
 		}
 
-		// Auto Save
-		if (IsDirty && Game.GlobalFrame % 120 == 0 && IsEditing) {
+		// Auto Save (every 1 min)
+		if (IsDirty && IsEditing && Game.GlobalFrame > LastSaveFrame + 60 * 60) {
 			Save();
 		}
 
@@ -1189,6 +1185,7 @@ public sealed partial class MapEditor : WindowUI {
 		if (PlayingGame) return;
 		CleanDirty();
 		Stream?.SaveAllDirty();
+		LastSaveFrame = Game.GlobalFrame;
 	}
 
 

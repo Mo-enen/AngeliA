@@ -10,7 +10,7 @@ public class SpriteTable {
 		public static readonly BlockSpriteComparerY Instance = new();
 		public int Compare (AngeSprite a, AngeSprite b) => a.PixelRect.y.CompareTo(b.PixelRect.y);
 	}
-
+	
 	// Api
 	public int RowCount => Blocks.Length;
 

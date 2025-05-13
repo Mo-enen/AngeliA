@@ -63,6 +63,7 @@ public class FastNoiseGroup (int length) {
 	}
 
 
+	public bool IsSolid (float x, float y, float z) => IsSolid(GetNoise(x, y, z));
 	public bool IsSolid (float value) => SolidMin < SolidMax ? value > SolidMin && value < SolidMax :
 		value < SolidMax || value > SolidMin;
 

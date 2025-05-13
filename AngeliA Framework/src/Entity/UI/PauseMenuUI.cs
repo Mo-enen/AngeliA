@@ -50,7 +50,9 @@ internal class PauseMenuUI : MenuUI {
 	private static readonly LanguageCode MENU_ALLOW_GAMEPAD = ("Menu.Setting.AllowGamepad", "Allow Gamepad");
 	private static readonly LanguageCode UI_RESTART_REGENERATE = ("UI.RestartAndRegenerateMap", "Restart and Regenerate Map");
 	private static readonly LanguageCode UI_RESET_SAVING = ("UI.ResetSaving", "Reset Game Saving");
+	private static readonly LanguageCode UI_DEL_MAP = ("UI.DeleteMapFolder", "Delete Map Folder");
 	private static readonly LanguageCode NOTI_SAVING_RESETED = ("Notify.SavingReseted", "Saving Reseted");
+	private static readonly LanguageCode NOTI_MAP_DEL = ("Notify.MapDeleted", "Map Deleted");
 
 
 	// Data
@@ -409,8 +411,17 @@ internal class PauseMenuUI : MenuUI {
 #endif
 		Message = MENU_DEBUG_MESSAGE;
 
-		// Delete Saving Folder and Quit
 		using (new GUIContentColorScope(Color32.RED_BETTER)) {
+			// Delete Map Folder and Restart
+			if (DrawItem(UI_DEL_MAP)) {
+				Util.DeleteFolder(Universe.BuiltIn.SlotUserMapRoot);
+				Universe.BuiltIn.ReloadSavingSlot(Universe.BuiltIn.CurrentSavingSlot, true);
+				Game.UnpauseGame();
+				Active = false;
+				Input.UseAllHoldingKeys();
+				NotificationUI.SpawnNotification(NOTI_MAP_DEL);
+			}
+			// Delete Saving Folder and Restart
 			if (DrawItem(UI_RESET_SAVING)) {
 				Util.DeleteFolder(Universe.BuiltIn.SavingRoot);
 				Universe.BuiltIn.ReloadSavingSlot(Universe.BuiltIn.CurrentSavingSlot, true);
