@@ -108,6 +108,23 @@ public partial class PixelEditor : WindowUI {
 	private static readonly SpriteCode CURSOR_CROSS = "Cursor.Cross";
 	private static readonly SpriteCode CURSOR_BUCKET = "Cursor.Bucket";
 	private static readonly SpriteCode CURSOR_SPRITE = "Cursor.Sprite";
+	private static readonly byte[,] TILE_RULE_SET = {
+		{ 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+		{ 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
+		{ 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
+		{ 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+		{ 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0 },
+		{ 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0 },
+		{ 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0 },
+		{ 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0 },
+		{ 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1 },
+		{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1 },
+		{ 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0 },
+		{ 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0 },
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0 },
+	};
+
 
 	// Api
 	public static event System.Action OnPixelEditorSave;
@@ -267,7 +284,6 @@ public partial class PixelEditor : WindowUI {
 		GizmosThickness = Unify(1);
 		HoveringResizeDirection = null;
 		SelectingSpriteCount = 0;
-		RequireTilingThumbnail = false;
 		SelectingAnyTiggerSprite = false;
 		SelectingAnySpriteWithBorder = false;
 		SelectingAnySpriteWithoutBorder = false;
@@ -857,7 +873,9 @@ public partial class PixelEditor : WindowUI {
 		}
 
 		// Misc
-		RequireTilingThumbnail = h_ViewTile.Holding();
+		if (h_ViewTile.Down()) {
+			RequireTilingThumbnail = !RequireTilingThumbnail;
+		}
 
 		if (h_AtlasList.Down()) {
 			ShowAtlasList.Value = !ShowAtlasList.Value;
@@ -1146,8 +1164,6 @@ public partial class PixelEditor : WindowUI {
 
 	private void DrawSpriteThumbnail () {
 
-		if (LastPaintedSpriteID == 0) return;
-
 		const int TILE_EXPAND = 2;
 		const int TILE_COUNT = 1 + TILE_EXPAND * 2;
 		int thumbnailSize = Unify(76);
@@ -1159,7 +1175,7 @@ public partial class PixelEditor : WindowUI {
 		}
 		var panelRect = StageRect.CornerInside(Alignment.BottomRight, thumbnailSize).Shift(-panelPadding, panelPadding);
 		var bgRect = panelRect.Expand(bgPadding);
-		if (bgRect.MouseInside() && !RequireTilingThumbnail) return;
+		if (bgRect.MouseInside()) return;
 
 		// BG
 		using (new SheetIndexScope(-1)) {
@@ -1172,9 +1188,43 @@ public partial class PixelEditor : WindowUI {
 		// Sprite
 		using (new SheetIndexScope(EditingSheetIndex)) {
 			if (Renderer.TryGetSprite(LastPaintedSpriteID, out var sprite)) {
-				var contentRect = panelRect.Shrink(spPadding).Fit(sprite);
-				if (Renderer.CurrentSheet.TryGetTextureFromPool(sprite.ID, out var texture)) {
+				if (RequireTilingThumbnail && sprite.Group != null && !sprite.Rule.IsEmpty) {
+					// Rule Tile
+					int countX = TILE_RULE_SET.GetLength(1);
+					int countY = TILE_RULE_SET.GetLength(0);
+					var contentRect = panelRect.Shrink(spPadding).Fit(countX, countY);
+					int firstSpID = sprite.Group.Sprites[0].ID;
+					for (int j = 0; j < countY; j++) {
+						for (int i = 0; i < countX; i++) {
+							if (TILE_RULE_SET[j, i] == 0) continue;
+							int ruleIndex = FrameworkUtil.GetRuleIndex(
+								sprite.Group.Sprites, sprite.Group.ID,
+								_GetID(i - 1, j + 1, firstSpID, countX, countY),
+								_GetID(i, j + 1, firstSpID, countX, countY),
+								_GetID(i + 1, j + 1, firstSpID, countX, countY),
+								_GetID(i - 1, j, firstSpID, countX, countY),
+								_GetID(i + 1, j, firstSpID, countX, countY),
+								_GetID(i - 1, j - 1, firstSpID, countX, countY),
+								_GetID(i, j - 1, firstSpID, countX, countY),
+								_GetID(i + 1, j - 1, firstSpID, countX, countY)
+							);
+							if (ruleIndex < 0 || ruleIndex >= sprite.Group.Count) continue;
+							if (!Renderer.CurrentSheet.TryGetTextureFromPool(
+								sprite.Group.Sprites[ruleIndex].ID, out var texture
+							)) continue;
+							Game.DrawGizmosTexture(
+								contentRect.PartHorizontal(i, countX).PartVertical(j, countY),
+								texture
+							);
+							// Func
+							static int _GetID (int _x, int _y, int _fID, int _w, int _h) =>
+								_x >= 0 && _x < _w && _y >= 0 && _y < _h ? (TILE_RULE_SET[_y, _x] == 1 ? _fID : 0) : 0;
+						}
+					}
+				} else if (Renderer.CurrentSheet.TryGetTextureFromPool(sprite.ID, out var texture)) {
+					var contentRect = panelRect.Shrink(spPadding).Fit(sprite);
 					if (RequireTilingThumbnail) {
+						// Tile
 						for (int j = 0; j < TILE_COUNT; j++) {
 							for (int i = 0; i < TILE_COUNT; i++) {
 								Game.DrawGizmosTexture(
@@ -1184,6 +1234,7 @@ public partial class PixelEditor : WindowUI {
 							}
 						}
 					} else {
+						// Single Sprite
 						Game.DrawGizmosTexture(contentRect, texture);
 					}
 				}

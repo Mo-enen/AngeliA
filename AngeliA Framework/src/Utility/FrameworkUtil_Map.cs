@@ -92,7 +92,7 @@ public static partial class FrameworkUtil {
 	/// Find which tile in the given list conforms the auto tiling rule
 	/// </summary>
 	/// <param name="sprites">Source list</param>
-	/// <param name="ruleDigit">Int data of the tiling rule. Get this data with FrameworkUtil.BlockRuleToDigit</param>
+	/// <param name="ruleGroupID">Int data of the tiling rule. Get this data with FrameworkUtil.BlockRuleToDigit</param>
 	/// <param name="tl">ID for block at top-left</param>
 	/// <param name="tm">ID for block at top</param>
 	/// <param name="tr">ID for block at top-right</param>
@@ -102,19 +102,19 @@ public static partial class FrameworkUtil {
 	/// <param name="bm">ID for block at bottom</param>
 	/// <param name="br">ID for block at bottom-right</param>
 	/// <returns>Index of the founded sprite</returns>
-	public static int GetRuleIndex (IList<AngeSprite> sprites, int ruleDigit, int tl, int tm, int tr, int ml, int mr, int bl, int bm, int br) {
+	public static int GetRuleIndex (IList<AngeSprite> sprites, int ruleGroupID, int tl, int tm, int tr, int ml, int mr, int bl, int bm, int br) {
 		int count = sprites.Count;
 		for (int i = 0; i < count; i++) {
 			var sprite = sprites[i];
 			var rule = sprite.Rule;
-			if (!CheckForTile(ruleDigit, tl, rule.RuleTL)) continue;
-			if (!CheckForTile(ruleDigit, tm, rule.RuleT)) continue;
-			if (!CheckForTile(ruleDigit, tr, rule.RuleTR)) continue;
-			if (!CheckForTile(ruleDigit, ml, rule.RuleL)) continue;
-			if (!CheckForTile(ruleDigit, mr, rule.RuleR)) continue;
-			if (!CheckForTile(ruleDigit, bl, rule.RuleBL)) continue;
-			if (!CheckForTile(ruleDigit, bm, rule.RuleB)) continue;
-			if (!CheckForTile(ruleDigit, br, rule.RuleBR)) continue;
+			if (!CheckForTile(ruleGroupID, tl, rule.RuleTL)) continue;
+			if (!CheckForTile(ruleGroupID, tm, rule.RuleT)) continue;
+			if (!CheckForTile(ruleGroupID, tr, rule.RuleTR)) continue;
+			if (!CheckForTile(ruleGroupID, ml, rule.RuleL)) continue;
+			if (!CheckForTile(ruleGroupID, mr, rule.RuleR)) continue;
+			if (!CheckForTile(ruleGroupID, bl, rule.RuleBL)) continue;
+			if (!CheckForTile(ruleGroupID, bm, rule.RuleB)) continue;
+			if (!CheckForTile(ruleGroupID, br, rule.RuleBR)) continue;
 			return TryRandom(sprites, i, count);
 		}
 		return -1;
