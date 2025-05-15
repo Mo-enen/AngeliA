@@ -78,7 +78,7 @@ public static partial class Util {
 	/// </summary>
 	public static IEnumerable<string> ForAllLinesInFile (string path) {
 		if (!FileExists(path)) yield break;
-		using StreamReader sr = new(path);
+		using var sr = new StreamReader(path);
 		while (sr.Peek() >= 0) yield return sr.ReadLine();
 	}
 

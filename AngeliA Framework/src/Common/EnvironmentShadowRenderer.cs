@@ -1,28 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace AngeliA;
-
 
 internal static class EnvironmentShadowRenderer {
 
-
 	private static int CellStartIndex = int.MaxValue;
 	private static int CellUpdateFrame = -1;
-
 
 	[BeforeLevelRendered]
 	public static void BeforeLevelRendered () {
 		BeforeLayerFrameUpdate(EntityLayer.ENVIRONMENT);
 	}
 
-
 	[AfterLevelRendered]
 	public static void AfterLevelRendered () {
 		AfterLayerFrameUpdate(EntityLayer.ENVIRONMENT);
 	}
-
 
 	[BeforeLayerFrameUpdate_IntLayer]
 	public static void BeforeLayerFrameUpdate (int layerIndex) {
@@ -30,7 +24,6 @@ internal static class EnvironmentShadowRenderer {
 		CellStartIndex = Renderer.GetUsedCellCount(RenderLayer.DEFAULT);
 		CellUpdateFrame = Game.GlobalFrame;
 	}
-
 
 	[AfterLayerFrameUpdate_IntLayer]
 	public static void AfterLayerFrameUpdate (int layerIndex) {
@@ -47,6 +40,4 @@ internal static class EnvironmentShadowRenderer {
 		}
 	}
 
-
 }
-
