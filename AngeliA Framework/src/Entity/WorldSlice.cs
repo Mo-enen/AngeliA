@@ -1,14 +1,14 @@
 ﻿namespace AngeliA;
 
 [EntityAttribute.MapEditorGroup("System", -512)]
-public class Slice : IMapItem {
+public class WorldSlice : IMapItem {
 
 	// Api
 	public const int MAX_DISTANCE = Const.MAP * 2;
-	public static readonly int TYPE_ID = typeof(Slice).AngeHash();
+	public static readonly int TYPE_ID = typeof(WorldSlice).AngeHash();
 
 	// API
-	public static bool TryGetSliceFromMap (IBlockSquad squad, int unitX, int unitY, int unitZ, out WorldSlice slice) {
+	public static bool TryGetSliceFromMap (IBlockSquad squad, int unitX, int unitY, int unitZ, out WorldSliceRegion slice) {
 		slice = default;
 
 		// Pivot Check
@@ -20,9 +20,7 @@ public class Slice : IMapItem {
 		) return false;
 
 		// ID
-		int resultID = FrameworkUtil.ReadSystemNumber(
-			squad, unitX, unitY - 1, unitZ, Direction4.Right, out int idNumber
-		) ? idNumber : int.MinValue;
+		int resultID = FrameworkUtil.ReadSystemLetterAngeHash(squad, unitX, unitY - 1, unitZ, Direction4.Right);
 
 		// Tag
 		var (tagLV, tagBG, tagEN, tagEL) = squad.GetAllBlocksAt(unitX - 1, unitY - 1, unitZ);
@@ -49,7 +47,7 @@ public class Slice : IMapItem {
 		int resultH = u - unitY + 1;
 
 		// Final
-		slice = new WorldSlice(resultID, resultTag, resultX, resultY, resultZ, resultW, resultH);
+		slice = new WorldSliceRegion(resultID, resultTag, resultX, resultY, resultZ, resultW, resultH);
 		return false;
 
 		// Func

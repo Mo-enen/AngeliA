@@ -1473,12 +1473,12 @@ public sealed partial class MapEditor : WindowUI {
 			blockItem.UnitX, blockItem.UnitY, blockItem.UnitZ, blockItem.Type,
 			reversed ? blockItem.FromID : blockItem.ToID
 		);
-		if (blockItem.Type == BlockType.Level || blockItem.Type == BlockType.Background) {
-			CurrentUndoRuleMin.x = Util.Min(CurrentUndoRuleMin.x, blockItem.UnitX);
-			CurrentUndoRuleMin.y = Util.Min(CurrentUndoRuleMin.y, blockItem.UnitY);
-			CurrentUndoRuleMax.x = Util.Max(CurrentUndoRuleMax.x, blockItem.UnitX);
-			CurrentUndoRuleMax.y = Util.Max(CurrentUndoRuleMax.y, blockItem.UnitY);
-		}
+
+		CurrentUndoRuleMin.x = Util.Min(CurrentUndoRuleMin.x, blockItem.UnitX);
+		CurrentUndoRuleMin.y = Util.Min(CurrentUndoRuleMin.y, blockItem.UnitY);
+		CurrentUndoRuleMax.x = Util.Max(CurrentUndoRuleMax.x, blockItem.UnitX);
+		CurrentUndoRuleMax.y = Util.Max(CurrentUndoRuleMax.y, blockItem.UnitY);
+
 
 		// Move View
 		if (TargetUndoViewPos.HasValue) {
@@ -1516,7 +1516,7 @@ public sealed partial class MapEditor : WindowUI {
 			!Renderer.TryGetSpriteForGizmos(ENTITY_CODE, out sprite)
 		) return;
 
-		if (!sprite.Rule.IsEmpty) {
+		if (sprite.Group != null && sprite.Group.WithRule) {
 			// Full Size for Rule Block
 			Renderer.Draw(sprite, new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL));
 			return;

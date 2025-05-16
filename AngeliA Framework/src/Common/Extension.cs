@@ -68,6 +68,24 @@ public static class Extension {
 	}
 
 	/// <summary>
+	/// Hash code that used inside AngeliA
+	/// </summary>
+	public static int AngeHash (this char[] arr, int start, int length) {
+		const int p = 31;
+		const int m = 1837465129;
+		int hash_value = 0;
+		int p_pow = 1;
+		int end = start + length;
+		int arrLen = arr.Length;
+		for (int i = start; i < end; i++) {
+			char c = arr[i % arrLen];
+			hash_value = (hash_value + (c - 'a' + 1) * p_pow) % m;
+			p_pow = (p_pow * p) % m;
+		}
+		return hash_value == 0 ? 1 : hash_value;
+	}
+
+	/// <summary>
 	/// Hash code that used inside AngeliA but generate with the reversed string data
 	/// </summary>
 	public static int AngeReverseHash (this char[] arr, int start, int length) {

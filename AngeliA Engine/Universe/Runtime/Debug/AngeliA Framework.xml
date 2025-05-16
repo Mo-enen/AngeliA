@@ -2689,6 +2689,26 @@
             Valid all elements in the list based on the given funtion.
             </summary>
         </member>
+        <member name="T:AngeliA.BlockColor">
+            <summary>
+            Element block that set the color tint of the overlapping level block
+            </summary>
+        </member>
+        <member name="P:AngeliA.BlockColor.Color">
+            <summary>
+            Target color tint
+            </summary>
+        </member>
+        <member name="T:AngeliA.BlockColoringSystem">
+            <summary>
+            Core system for the level block tint from element
+            </summary>
+        </member>
+        <member name="M:AngeliA.BlockColoringSystem.TryGetColor(System.Int32,AngeliA.Color32@)">
+            <summary>
+            Get the tint color from given element ID
+            </summary>
+        </member>
         <member name="T:AngeliA.BuiltInSprite">
             <summary>
             Utility class to get built-in sprites 
@@ -3144,6 +3164,11 @@
             </summary>
         </member>
         <member name="M:AngeliA.Extension.AngeHash(System.String,System.Int32,System.Int32)">
+            <summary>
+            Hash code that used inside AngeliA
+            </summary>
+        </member>
+        <member name="M:AngeliA.Extension.AngeHash(System.Char[],System.Int32,System.Int32)">
             <summary>
             Hash code that used inside AngeliA
             </summary>
@@ -16050,7 +16075,7 @@
             Find which tile in the given list conforms the auto tiling rule
             </summary>
             <param name="sprites">Source list</param>
-            <param name="ruleDigit">Int data of the tiling rule. Get this data with FrameworkUtil.BlockRuleToDigit</param>
+            <param name="ruleGroupID">Int data of the tiling rule. Get this data with FrameworkUtil.BlockRuleToDigit</param>
             <param name="tl">ID for block at top-left</param>
             <param name="tm">ID for block at top</param>
             <param name="tr">ID for block at top-right</param>
@@ -16225,18 +16250,6 @@
             <param name="number">Result number</param>
             <returns>True if the number is founded</returns>
         </member>
-        <member name="M:AngeliA.FrameworkUtil.ReadSystemNumber(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32,AngeliA.Direction4,System.Int32@)">
-            <summary>
-            Get system number at given position from map in specified direction
-            </summary>
-            <param name="squad">Source of the map blocks</param>
-            <param name="unitX">Target position X in unit space</param>
-            <param name="unitY">Target position Y in unit space</param>
-            <param name="z">Position Z</param>
-            <param name="direction">Which direction should it reads</param>
-            <param name="number">Result number</param>
-            <returns>True if the number is founded</returns>
-        </member>
         <member name="M:AngeliA.FrameworkUtil.HasSystemNumber(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32)">
             <summary>
             True if there is system number at given position
@@ -16256,6 +16269,18 @@
             <param name="z">Position Z</param>
             <param name="digitValue">Result of the digit</param>
             <returns>True if the digit is founded</returns>
+        </member>
+        <member name="M:AngeliA.FrameworkUtil.ReadSystemNumber(AngeliA.IBlockSquad,System.Int32,System.Int32,System.Int32,AngeliA.Direction4,System.Int32@)">
+            <summary>
+            Get system number at given position from map in specified direction
+            </summary>
+            <param name="squad">Source of the map blocks</param>
+            <param name="unitX">Target position X in unit space</param>
+            <param name="unitY">Target position Y in unit space</param>
+            <param name="z">Position Z</param>
+            <param name="direction">Which direction should it reads</param>
+            <param name="number">Result number</param>
+            <returns>True if the number is founded</returns>
         </member>
         <member name="M:AngeliA.FrameworkUtil.GetAimingBuilderPositionFromMouse(AngeliA.Character,AngeliA.BlockType,System.Int32@,System.Int32@,System.Boolean@)">
             <summary>
@@ -17752,26 +17777,6 @@
             <param name="type">Type of class that holds the field</param>
             <param name="name">Name of the field</param>
             <returns>System.Type that this field holds</returns>
-        </member>
-        <member name="T:AngeliA.BlockColor">
-            <summary>
-            Element block that set the color tint of the overlapping level block
-            </summary>
-        </member>
-        <member name="P:AngeliA.BlockColor.Color">
-            <summary>
-            Target color tint
-            </summary>
-        </member>
-        <member name="T:AngeliA.BlockColoringSystem">
-            <summary>
-            Core system for the level block tint from element
-            </summary>
-        </member>
-        <member name="M:AngeliA.BlockColoringSystem.TryGetColor(System.Int32,AngeliA.Color32@)">
-            <summary>
-            Get the tint color from given element ID
-            </summary>
         </member>
         <member name="T:AngeliA.IBlockSquad">
             <summary>

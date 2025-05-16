@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AngeliA;
 
-public readonly struct WorldSlice (int id, int tag, int x, int y, int z, int w, int h) {
+public readonly struct WorldSliceRegion (int id, int tag, int x, int y, int z, int w, int h) {
 
 
 
@@ -26,8 +26,9 @@ public readonly struct WorldSlice (int id, int tag, int x, int y, int z, int w, 
 	private static string SliceFilePath => Util.CombinePaths(Universe.BuiltIn.UniverseMetaRoot, "WorldSlice");
 
 	// Data
-	private static readonly Dictionary<int, WorldSlice> Pool = [];
+	private static readonly Dictionary<int, WorldSliceRegion> Pool = [];
 	private static readonly StringBuilder FileTextBuilder = new();
+	private static bool IsPoolDirty = false;
 
 
 	#endregion
@@ -54,71 +55,70 @@ public readonly struct WorldSlice (int id, int tag, int x, int y, int z, int w, 
 	#region --- API ---
 
 
-	public static bool AddSlice (int id, int tag, int x, int y, int z, int w, int h) => Pool.TryAdd(id, new WorldSlice(id, tag, x, y, z, w, h));
+	public static bool AddSlice (int id, int tag, int x, int y, int z, int w, int h) {
+		bool added = Pool.TryAdd(id, new WorldSliceRegion(id, tag, x, y, z, w, h));
+		IsPoolDirty = true;
+		return added;
+	}
 
 
-	public static bool RemoveSlice (int id) => Pool.Remove(id);
+	public static bool RemoveSlice (int id) {
+		bool removed = Pool.Remove(id);
+		IsPoolDirty = true;
+		return removed;
+	}
 
 
-	public static void SyncAllSlicesFromMapToPool (string mapFolder) {
+	public static void SyncAllSlicesFromMapToPool (string mapFolder, out bool changed) {
+
 		// Check for Changes
-		bool changed = false;
+		changed = false;
 		long sliceMoDate = Util.GetFileModifyDate(SliceFilePath);
 		foreach (var path in Util.EnumerateFiles(mapFolder, true, AngePath.MAP_SEARCH_PATTERN)) {
 			long mapMoDate = Util.GetFileModifyDate(path);
-			if (mapMoDate != sliceMoDate) {
+			if (mapMoDate > sliceMoDate) {
 				changed = true;
 				break;
 			}
 		}
-		// Perform Sync
-		if (changed) {
-			// Recalculate Pool from Maps
-			int currentDynamicID = -1;
-			Pool.Clear();
-			var stream = WorldStream.GetOrCreateStreamFromPool(mapFolder);
-			foreach (var path in Util.EnumerateFiles(mapFolder, true, AngePath.MAP_SEARCH_PATTERN)) {
-				string name = Util.GetNameWithoutExtension(path);
-				if (!WorldPathPool.TryGetWorldPositionFromName(name, out var worldPos)) continue;
-				// Get Slices Inside World
-				int z = worldPos.z;
-				int l = worldPos.x * Const.MAP;
-				int r = l + Const.MAP;
-				int d = worldPos.y * Const.MAP;
-				int u = d + Const.MAP;
-				for (int j = d; j < u; j++) {
-					for (int i = l; i < r; i++) {
-						int id = stream.GetBlockAt(i, j, z, BlockType.Element);
-						if (id != Slice.TYPE_ID) continue;
-						if (!Slice.TryGetSliceFromMap(stream, i, j, z, out var slice)) continue;
-						if (slice.ID == int.MinValue) {
-							slice = new WorldSlice(
-								currentDynamicID, slice.Tag, slice.X, slice.Y, slice.Z, slice.W, slice.H
-							);
-							currentDynamicID--;
-						}
-						Pool.Add(slice.ID, slice);
+		if (!changed) return;
+
+		// Recalculate Pool from Maps
+		IsPoolDirty = true;
+		Pool.Clear();
+		int currentDynamicID = int.MinValue;
+		var stream = WorldStream.GetOrCreateStreamFromPool(mapFolder);
+		foreach (var path in Util.EnumerateFiles(mapFolder, true, AngePath.MAP_SEARCH_PATTERN)) {
+			string name = Util.GetNameWithoutExtension(path);
+			if (!WorldPathPool.TryGetWorldPositionFromName(name, out var worldPos)) continue;
+			// Get Slices Inside World
+			int z = worldPos.z;
+			int l = worldPos.x * Const.MAP;
+			int r = l + Const.MAP;
+			int d = worldPos.y * Const.MAP;
+			int u = d + Const.MAP;
+			for (int j = d; j < u; j++) {
+				for (int i = l; i < r; i++) {
+					int id = stream.GetBlockAt(i, j, z, BlockType.Element);
+					if (id != WorldSlice.TYPE_ID) continue;
+					if (!WorldSlice.TryGetSliceFromMap(stream, i, j, z, out var slice)) continue;
+					if (slice.ID == 0) {
+						slice = new WorldSliceRegion(
+							currentDynamicID, slice.Tag, slice.X, slice.Y, slice.Z, slice.W, slice.H
+						);
+						currentDynamicID++;
 					}
+					Pool.TryAdd(slice.ID, slice);
 				}
 			}
-			// Save to File
-			SaveSliceToFile();
 		}
 	}
 
 
-	#endregion
-
-
-
-
-	#region --- LGC ---
-
-
-	private static void LoadSliceFromFile () {
-		Pool.Clear();
+	public static bool LoadSliceFromFile () {
 		string path = SliceFilePath;
-		if (!Util.FileExists(path)) return;
+		if (!Util.FileExists(path)) return false;
+		Pool.Clear();
 		try {
 			using var sr = new StreamReader(path);
 			while (sr.Peek() >= 0) {
@@ -131,11 +131,17 @@ public readonly struct WorldSlice (int id, int tag, int x, int y, int z, int w, 
 				int z = int.Parse(sr.ReadLine());
 				Pool.Add(id, new(id, tag, x, y, z, w, h));
 			}
-		} catch (System.Exception ex) { Debug.LogException(ex); }
+		} catch (System.Exception ex) {
+			Debug.LogException(ex);
+			return false;
+		}
+		IsPoolDirty = false;
+		return true;
 	}
 
 
-	private static void SaveSliceToFile () {
+	public static void SaveSliceToFile (bool forceSave = false) {
+		if (!IsPoolDirty && !forceSave) return;
 		FileTextBuilder.Clear();
 		foreach (var (_, slice) in Pool) {
 			FileTextBuilder.Append(slice.ID);
@@ -155,6 +161,7 @@ public readonly struct WorldSlice (int id, int tag, int x, int y, int z, int w, 
 		}
 		Util.TextToFile(FileTextBuilder.ToString(), SliceFilePath);
 		FileTextBuilder.Clear();
+		IsPoolDirty = false;
 	}
 
 

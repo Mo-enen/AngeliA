@@ -8,31 +8,12 @@ public static partial class FrameworkUtil {
 
 
 	// VAR
-	private static readonly Dictionary<int, int> SYSTEM_NUMBER_POOL = new(10) {
-		{ NumberZero.TYPE_ID, 0 },
-		{ NumberOne.TYPE_ID, 1 },
-		{ NumberTwo.TYPE_ID, 2 },
-		{ NumberThree.TYPE_ID, 3 },
-		{ NumberFour.TYPE_ID, 4 },
-		{ NumberFive.TYPE_ID, 5 },
-		{ NumberSix.TYPE_ID, 6 },
-		{ NumberSeven.TYPE_ID, 7 },
-		{ NumberEight.TYPE_ID, 8 },
-		{ NumberNine.TYPE_ID, 9 },
-	};
-	private static readonly Dictionary<int, int> SYSTEM_NUMBER_POOL_ALT = new(10) {
-		{ 0, NumberZero.TYPE_ID},
-		{ 1, NumberOne.TYPE_ID},
-		{ 2, NumberTwo.TYPE_ID},
-		{ 3, NumberThree.TYPE_ID},
-		{ 4, NumberFour.TYPE_ID},
-		{ 5, NumberFive.TYPE_ID},
-		{ 6, NumberSix.TYPE_ID},
-		{ 7, NumberSeven.TYPE_ID},
-		{ 8, NumberEight.TYPE_ID},
-		{ 9, NumberNine.TYPE_ID},
-	};
+	private static readonly Dictionary<int, int> SYSTEM_NUMBER_POOL = new(10) { { NumberZero.TYPE_ID, 0 }, { NumberOne.TYPE_ID, 1 }, { NumberTwo.TYPE_ID, 2 }, { NumberThree.TYPE_ID, 3 }, { NumberFour.TYPE_ID, 4 }, { NumberFive.TYPE_ID, 5 }, { NumberSix.TYPE_ID, 6 }, { NumberSeven.TYPE_ID, 7 }, { NumberEight.TYPE_ID, 8 }, { NumberNine.TYPE_ID, 9 }, };
+	private static readonly Dictionary<int, int> SYSTEM_NUMBER_POOL_ALT = new(10) { { 0, NumberZero.TYPE_ID }, { 1, NumberOne.TYPE_ID }, { 2, NumberTwo.TYPE_ID }, { 3, NumberThree.TYPE_ID }, { 4, NumberFour.TYPE_ID }, { 5, NumberFive.TYPE_ID }, { 6, NumberSix.TYPE_ID }, { 7, NumberSeven.TYPE_ID }, { 8, NumberEight.TYPE_ID }, { 9, NumberNine.TYPE_ID }, };
+	private static readonly Dictionary<int, char> SYSTEM_LETTER_POOL = new(27) { { LetterA.TYPE_ID, 'A' }, { LetterB.TYPE_ID, 'B' }, { LetterC.TYPE_ID, 'C' }, { LetterD.TYPE_ID, 'D' }, { LetterE.TYPE_ID, 'E' }, { LetterF.TYPE_ID, 'F' }, { LetterG.TYPE_ID, 'G' }, { LetterH.TYPE_ID, 'H' }, { LetterI.TYPE_ID, 'I' }, { LetterJ.TYPE_ID, 'J' }, { LetterK.TYPE_ID, 'K' }, { LetterL.TYPE_ID, 'L' }, { LetterM.TYPE_ID, 'M' }, { LetterN.TYPE_ID, 'N' }, { LetterO.TYPE_ID, 'O' }, { LetterP.TYPE_ID, 'P' }, { LetterQ.TYPE_ID, 'Q' }, { LetterR.TYPE_ID, 'R' }, { LetterS.TYPE_ID, 'S' }, { LetterT.TYPE_ID, 'T' }, { LetterU.TYPE_ID, 'U' }, { LetterV.TYPE_ID, 'V' }, { LetterW.TYPE_ID, 'W' }, { LetterX.TYPE_ID, 'X' }, { LetterY.TYPE_ID, 'Y' }, { LetterZ.TYPE_ID, 'Z' }, { Letter_.TYPE_ID, '_' }, };
+	private static readonly Dictionary<char, int> SYSTEM_LETTER_POOL_ALT = new(27) { { 'A', LetterA.TYPE_ID }, { 'B', LetterB.TYPE_ID }, { 'C', LetterC.TYPE_ID }, { 'D', LetterD.TYPE_ID }, { 'E', LetterE.TYPE_ID }, { 'F', LetterF.TYPE_ID }, { 'G', LetterG.TYPE_ID }, { 'H', LetterH.TYPE_ID }, { 'I', LetterI.TYPE_ID }, { 'J', LetterJ.TYPE_ID }, { 'K', LetterK.TYPE_ID }, { 'L', LetterL.TYPE_ID }, { 'M', LetterM.TYPE_ID }, { 'N', LetterN.TYPE_ID }, { 'O', LetterO.TYPE_ID }, { 'P', LetterP.TYPE_ID }, { 'Q', LetterQ.TYPE_ID }, { 'R', LetterR.TYPE_ID }, { 'S', LetterS.TYPE_ID }, { 'T', LetterT.TYPE_ID }, { 'U', LetterU.TYPE_ID }, { 'V', LetterV.TYPE_ID }, { 'W', LetterW.TYPE_ID }, { 'X', LetterX.TYPE_ID }, { 'Y', LetterY.TYPE_ID }, { 'Z', LetterZ.TYPE_ID }, { '_', Letter_.TYPE_ID }, };
 	private static readonly Int3[] WorldPosInViewCache = new Int3[512];
+	private static readonly char[] SystemLetterBuffer = new char[512];
 	private const int SEARCHLIGHT_DENSITY = 32;
 	private const int REPOS_BASIC_ID = 0b01100100_000000000000_000000000000;
 
@@ -980,6 +961,35 @@ public static partial class FrameworkUtil {
 
 
 	/// <summary>
+	/// True if there is system number at given position
+	/// </summary>
+	/// <param name="squad">Source of the map blocks</param>
+	/// <param name="unitX">Target position X in unit space</param>
+	/// <param name="unitY">Target position Y in unit space</param>
+	/// <param name="z">Position Z</param>
+	public static bool HasSystemNumber (IBlockSquad squad, int unitX, int unitY, int z) {
+		int id = squad.GetBlockAt(unitX, unitY, z, BlockType.Element);
+		return id != 0 && SYSTEM_NUMBER_POOL.ContainsKey(id);
+	}
+
+
+	/// <summary>
+	/// Get a single digit of system number at given position from map
+	/// </summary>
+	/// <param name="squad">Source of the map blocks</param>
+	/// <param name="unitX">Target position X in unit space</param>
+	/// <param name="unitY">Target position Y in unit space</param>
+	/// <param name="z">Position Z</param>
+	/// <param name="digitValue">Result of the digit</param>
+	/// <returns>True if the digit is founded</returns>
+	public static bool TryGetSingleSystemNumber (IBlockSquad squad, int unitX, int unitY, int z, out int digitValue) {
+		int id = squad.GetBlockAt(unitX, unitY, z, BlockType.Element);
+		digitValue = SystemNumberID_to_Number(id);
+		return digitValue >= 0;
+	}
+
+
+	/// <summary>
 	/// Get system number at given position from map in specified direction
 	/// </summary>
 	/// <param name="squad">Source of the map blocks</param>
@@ -1022,32 +1032,48 @@ public static partial class FrameworkUtil {
 	}
 
 
-	/// <summary>
-	/// True if there is system number at given position
-	/// </summary>
-	/// <param name="squad">Source of the map blocks</param>
-	/// <param name="unitX">Target position X in unit space</param>
-	/// <param name="unitY">Target position Y in unit space</param>
-	/// <param name="z">Position Z</param>
-	public static bool HasSystemNumber (IBlockSquad squad, int unitX, int unitY, int z) {
+	// System Letter
+	public static char SystemLetterID_to_Char (int id) => SYSTEM_LETTER_POOL.TryGetValue(id, out char c) ? c : '\0';
+
+
+	public static int Char_to_SystemLetterID (char c) => SYSTEM_LETTER_POOL_ALT.TryGetValue(c, out int id) ? id : 0;
+
+
+	public static bool HasSystemLetter (IBlockSquad squad, int unitX, int unitY, int z) {
 		int id = squad.GetBlockAt(unitX, unitY, z, BlockType.Element);
-		return id != 0 && SystemNumberID_to_Number(id) != -1;
+		return id != 0 && SYSTEM_LETTER_POOL.ContainsKey(id);
 	}
 
 
-	/// <summary>
-	/// Get a single digit of system number at given position from map
-	/// </summary>
-	/// <param name="squad">Source of the map blocks</param>
-	/// <param name="unitX">Target position X in unit space</param>
-	/// <param name="unitY">Target position Y in unit space</param>
-	/// <param name="z">Position Z</param>
-	/// <param name="digitValue">Result of the digit</param>
-	/// <returns>True if the digit is founded</returns>
-	public static bool TryGetSingleSystemNumber (IBlockSquad squad, int unitX, int unitY, int z, out int digitValue) {
+	public static bool TryGetSingleSystemLetter (IBlockSquad squad, int unitX, int unitY, int z, out char charValue) {
 		int id = squad.GetBlockAt(unitX, unitY, z, BlockType.Element);
-		digitValue = SystemNumberID_to_Number(id);
-		return digitValue >= 0;
+		charValue = SystemLetterID_to_Char(id);
+		return charValue != '\0';
+	}
+
+
+	public static char[] ReadSystemLetter (IBlockSquad squad, int unitX, int unitY, int z, Direction4 direction, out int length) {
+		length = 0;
+		int maxDistance = SystemLetterBuffer.Length;
+		int x = unitX;
+		int y = unitY;
+		var delta = direction.Normal();
+		for (int i = 0; i < maxDistance; i++) {
+			int id = squad.GetBlockAt(x, y, z, BlockType.Element);
+			if (id == 0) break;
+			char c = SystemLetterID_to_Char(id);
+			if (c == '\0') break;
+			SystemLetterBuffer[i] = c;
+			x += delta.x;
+			y += delta.y;
+		}
+		return SystemLetterBuffer;
+	}
+
+
+	public static int ReadSystemLetterAngeHash (IBlockSquad squad, int unitX, int unitY, int z, Direction4 direction) {
+		var chars = ReadSystemLetter(squad, unitX, unitY, z, direction, out int length);
+		return length > 0 ? chars.AngeHash(0, length) : 0;
 	}
 
 

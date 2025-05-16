@@ -1422,21 +1422,21 @@ public partial class PixelEditor {
 			}
 
 			// Pivot
-			int oldPivotX = sprite.PivotX;
-			int oldPivotY = sprite.PivotY;
-			if (horizontal) {
-				sprite.PivotX = 1000 - sprite.PivotX;
-			} else {
-				sprite.PivotY = 1000 - sprite.PivotY;
-			}
-			if (oldPivotX != sprite.PivotX || oldPivotY != sprite.PivotY) {
-				RegisterUndo(new SpritePivotUndoItem() {
-					SpriteID = sprite.ID,
-					From = horizontal ? oldPivotX : oldPivotY,
-					To = horizontal ? sprite.PivotX : sprite.PivotY,
-					X = horizontal,
-				}, ignoreStep: true);
-			}
+			//int oldPivotX = sprite.PivotX;
+			//int oldPivotY = sprite.PivotY;
+			//if (horizontal) {
+			//	sprite.PivotX = 1000 - sprite.PivotX;
+			//} else {
+			//	sprite.PivotY = 1000 - sprite.PivotY;
+			//}
+			//if (oldPivotX != sprite.PivotX || oldPivotY != sprite.PivotY) {
+			//	RegisterUndo(new SpritePivotUndoItem() {
+			//		SpriteID = sprite.ID,
+			//		From = horizontal ? oldPivotX : oldPivotY,
+			//		To = horizontal ? sprite.PivotX : sprite.PivotY,
+			//		X = horizontal,
+			//	}, ignoreStep: true);
+			//}
 
 			// Final
 			checkedSelectCount++;
@@ -1532,29 +1532,29 @@ public partial class PixelEditor {
 			}
 
 			// Pivot
-			int oldPivotX = newSprite.PivotX;
-			int oldPivotY = newSprite.PivotY;
-			if (clockwise) {
-				(newSprite.PivotX, newSprite.PivotY) = (newSprite.PivotY, newSprite.PivotX);
-				newSprite.PivotY = 1000 - newSprite.PivotY;
-			} else {
-				(newSprite.PivotX, newSprite.PivotY) = (newSprite.PivotY, newSprite.PivotX);
-				newSprite.PivotX = 1000 - newSprite.PivotX;
-			}
-			if (oldPivotX != newSprite.PivotX || oldPivotY != newSprite.PivotY) {
-				RegisterUndo(new SpritePivotUndoItem() {
-					SpriteID = newSprite.ID,
-					From = oldPivotX,
-					To = newSprite.PivotX,
-					X = true,
-				}, ignoreStep: true);
-				RegisterUndo(new SpritePivotUndoItem() {
-					SpriteID = newSprite.ID,
-					From = oldPivotY,
-					To = newSprite.PivotY,
-					X = false,
-				}, ignoreStep: true);
-			}
+			//int oldPivotX = newSprite.PivotX;
+			//int oldPivotY = newSprite.PivotY;
+			//if (clockwise) {
+			//	(newSprite.PivotX, newSprite.PivotY) = (newSprite.PivotY, newSprite.PivotX);
+			//	newSprite.PivotY = 1000 - newSprite.PivotY;
+			//} else {
+			//	(newSprite.PivotX, newSprite.PivotY) = (newSprite.PivotY, newSprite.PivotX);
+			//	newSprite.PivotX = 1000 - newSprite.PivotX;
+			//}
+			//if (oldPivotX != newSprite.PivotX || oldPivotY != newSprite.PivotY) {
+			//	RegisterUndo(new SpritePivotUndoItem() {
+			//		SpriteID = newSprite.ID,
+			//		From = oldPivotX,
+			//		To = newSprite.PivotX,
+			//		X = true,
+			//	}, ignoreStep: true);
+			//	RegisterUndo(new SpritePivotUndoItem() {
+			//		SpriteID = newSprite.ID,
+			//		From = oldPivotY,
+			//		To = newSprite.PivotY,
+			//		X = false,
+			//	}, ignoreStep: true);
+			//}
 
 			RegisterUndo(new SpriteObjectUndoItem() {
 				Sprite = newSprite.CreateCopy(),
