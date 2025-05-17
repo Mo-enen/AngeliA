@@ -82,8 +82,9 @@ public static partial class FrameworkUtil {
 	/// <param name="bl">ID for block at bottom-left</param>
 	/// <param name="bm">ID for block at bottom</param>
 	/// <param name="br">ID for block at bottom-right</param>
+	/// <param name="randomSeed"></param>
 	/// <returns>Index of the founded sprite</returns>
-	public static int GetRuleIndex (IList<AngeSprite> sprites, int ruleGroupID, int tl, int tm, int tr, int ml, int mr, int bl, int bm, int br) {
+	public static int GetRuleIndex (IList<AngeSprite> sprites, int ruleGroupID, int tl, int tm, int tr, int ml, int mr, int bl, int bm, int br, int randomSeed = 0) {
 		int count = sprites.Count;
 		for (int i = 0; i < count; i++) {
 			var sprite = sprites[i];
@@ -96,7 +97,7 @@ public static partial class FrameworkUtil {
 			if (!CheckForTile(ruleGroupID, bl, rule.RuleBL)) continue;
 			if (!CheckForTile(ruleGroupID, bm, rule.RuleB)) continue;
 			if (!CheckForTile(ruleGroupID, br, rule.RuleBR)) continue;
-			return TryRandom(sprites, i, count);
+			return TryRandom(sprites, i, count, randomSeed);
 		}
 		return -1;
 		// Func
@@ -107,7 +108,7 @@ public static partial class FrameworkUtil {
 			Rule.Empty => targetID == 0,
 			_ => true,
 		};
-		static int TryRandom (IList<AngeSprite> sprites, int resultIndex, int count) {
+		static int TryRandom (IList<AngeSprite> sprites, int resultIndex, int count, int seed) {
 			int lastIndex = resultIndex;
 			bool jumpOut = false;
 			var resultRule = sprites[resultIndex].Rule;
@@ -122,7 +123,11 @@ public static partial class FrameworkUtil {
 				if (jumpOut) break;
 				lastIndex = i;
 			}
-			if (resultIndex != lastIndex) resultIndex = Util.QuickRandom(resultIndex, lastIndex + 1);
+			if (resultIndex != lastIndex) {
+				resultIndex = seed == 0 ?
+					Util.QuickRandom(resultIndex, lastIndex + 1) :
+					Util.QuickRandomWithSeed(seed, resultIndex, lastIndex + 1);
+			}
 			return resultIndex;
 		}
 		static int GpID (int spriteID) => Renderer.TryGetSprite(spriteID, out var sprite) && sprite.Group != null ? sprite.Group.ID : 0;
@@ -1066,6 +1071,7 @@ public static partial class FrameworkUtil {
 			SystemLetterBuffer[i] = c;
 			x += delta.x;
 			y += delta.y;
+			length++;
 		}
 		return SystemLetterBuffer;
 	}

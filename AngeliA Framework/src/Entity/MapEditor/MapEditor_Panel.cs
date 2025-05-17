@@ -186,6 +186,7 @@ public partial class MapEditor {
 					DisplayNameID = atlasID,
 				});
 			}
+			// Add Item
 			palGroup.Items.Add(new PaletteItem() {
 				ID = group.ID,
 				ArtworkID = group.Animated ? group.ID : firstSprite.ID,
@@ -193,7 +194,6 @@ public partial class MapEditor {
 				BlockType = atlasType == AtlasType.Level ? BlockType.Level : BlockType.Background,
 				Group = group,
 			});
-
 		}
 
 		// For all Sprites

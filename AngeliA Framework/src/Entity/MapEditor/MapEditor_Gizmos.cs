@@ -58,6 +58,7 @@ public partial class MapEditor {
 		if (!DraggingUnitRect.HasValue || MouseDownOutsideBoundary) return;
 		if (IsPlaying || DroppingPlayer || TaskingRoute || CtrlHolding) return;
 		using var _ = new LayerScope(RenderLayer.DEFAULT);
+		var pal = SelectingPaletteItem;
 
 		// Rect Frame
 		var draggingRect = new IRect(
@@ -69,7 +70,7 @@ public partial class MapEditor {
 		int thickness = Unify(1);
 
 		// Rect Frame
-		if (MouseDownButton != 0 || SelectingPaletteItem == null) {
+		if (MouseDownButton != 0 || pal == null) {
 			Renderer.DrawSlice(
 				BuiltInSprite.FRAME_16, draggingRect.Shrink(thickness),
 				thickness, thickness, thickness, thickness, Color32.BLACK, z: int.MaxValue - 1
@@ -83,18 +84,21 @@ public partial class MapEditor {
 
 		// Painting Content
 		if (MouseDownButton == 0) {
-			if (SelectingPaletteItem == null) {
+			if (pal == null) {
 				// Draw Erase Cross
 				DrawCrossLineGizmos(DraggingUnitRect.Value.ToGlobal(), Unify(1), Color32.WHITE, Color32.BLACK);
 				DrawModifyFilterLabel(DraggingUnitRect.Value.ToGlobal());
 			} else {
 				// Draw Painting Thumbnails
-				Renderer.TryGetSprite(SelectingPaletteItem.ArtworkID, out var sprite);
+				bool edgeOnly =
+					pal.Group != null && pal.Group.Count > 0 &&
+					pal.Group.Sprites[0].Tag.HasAny(Tag.Mark);
 				var unitRect = DraggingUnitRect.Value;
 				if (unitRect != PaintingThumbnailRect) {
 					PaintingThumbnailRect = unitRect;
 					PaintingThumbnailStartIndex = 0;
 				}
+				bool shrink = pal.BlockType == BlockType.Element;
 				var rect = new IRect(0, 0, Const.CEL, Const.CEL);
 				int endIndex = unitRect.width * unitRect.height;
 				int cellRemain = Renderer.GetLayerCapacity(RenderLayer.UI) - Renderer.GetUsedCellCount(RenderLayer.UI);
@@ -104,14 +108,57 @@ public partial class MapEditor {
 					endIndex = PaintingThumbnailStartIndex + cellRemain;
 					nextStartIndex = endIndex;
 				}
+				int localW = unitRect.width;
+				int localH = unitRect.height;
+				bool withRule = pal.Group != null && pal.Group.WithRule;
 				for (int i = PaintingThumbnailStartIndex; i < endIndex; i++) {
-					rect.x = (unitRect.x + (i % unitRect.width)) * Const.CEL;
-					rect.y = (unitRect.y + (i / unitRect.width)) * Const.CEL;
-					DrawSpriteGizmos(
-						SelectingPaletteItem.ArtworkID,
-						SelectingPaletteItem.BlockType == BlockType.Element ? rect.Shrink(Const.QUARTER) : rect,
-						false, sprite
-					);
+					int localX = i % localW;
+					int localY = i / localW;
+					bool edgeL = localX <= 0;
+					bool edgeR = localX >= localW - 1;
+					bool edgeB = localY <= 0;
+					bool edgeT = localY >= localH - 1;
+					bool isEdge = edgeL || edgeR || edgeB || edgeT;
+					if (edgeOnly && !isEdge) continue;
+					rect.x = (unitRect.x + localX) * Const.CEL;
+					rect.y = (unitRect.y + localY) * Const.CEL;
+					int artID = pal.ArtworkID;
+					// Rule
+					if (withRule) {
+						shrink = false;
+						int ruleSpID = Renderer.TryGetSpriteGroup(artID, out var artGroup) && artGroup.Count > 0 ? artGroup[0].ID : artID;
+						int tl = !isEdge || (!edgeT && !edgeL) ? ruleSpID : 0;
+						int tm = !isEdge || !edgeT ? ruleSpID : 0;
+						int tr = !isEdge || (!edgeT && !edgeR) ? ruleSpID : 0;
+						int ml = !isEdge || !edgeL ? ruleSpID : 0;
+						int mr = !isEdge || !edgeR ? ruleSpID : 0;
+						int bl = !isEdge || (!edgeB && !edgeL) ? ruleSpID : 0;
+						int bm = !isEdge || !edgeB ? ruleSpID : 0;
+						int br = !isEdge || (!edgeB && !edgeR) ? ruleSpID : 0;
+						if (edgeOnly) {
+							tl = EdgeCheck(localX - 1, localY + 1, localW, localH) ? tl : 0;
+							tm = EdgeCheck(localX, localY + 1, localW, localH) ? tm : 0;
+							tr = EdgeCheck(localX + 1, localY + 1, localW, localH) ? tr : 0;
+							ml = EdgeCheck(localX - 1, localY, localW, localH) ? ml : 0;
+							mr = EdgeCheck(localX + 1, localY, localW, localH) ? mr : 0;
+							bl = EdgeCheck(localX - 1, localY - 1, localW, localH) ? bl : 0;
+							bm = EdgeCheck(localX, localY - 1, localW, localH) ? bm : 0;
+							br = EdgeCheck(localX + 1, localY - 1, localW, localH) ? br : 0;
+						}
+						int ruleIndex = FrameworkUtil.GetRuleIndex(
+							pal.Group.Sprites, pal.Group.ID,
+							tl, tm, tr, ml, mr, bl, bm, br,
+							randomSeed: 892136
+						);
+						if (ruleIndex >= 0) {
+							artID = pal.Group[ruleIndex].ID;
+						}
+					}
+					// Draw
+					Renderer.TryGetSprite(artID, out var gizSp);
+					DrawSpriteGizmos(artID, rect, shrink, gizSp);
+					// Func
+					static bool EdgeCheck (int x, int y, int w, int h) => x == 0 || y == 0 || x == w - 1 || y == h - 1;
 				}
 				PaintingThumbnailStartIndex = nextStartIndex;
 			}

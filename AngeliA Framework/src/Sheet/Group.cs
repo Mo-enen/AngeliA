@@ -16,6 +16,9 @@ public class SpriteGroup {
 	/// How many sprites does this group have
 	/// </summary>
 	public int Count => Sprites.Count;
+
+	public AngeSprite this[int index] => Sprites[index];
+
 	/// <summary>
 	/// Unique ID of this group
 	/// </summary>

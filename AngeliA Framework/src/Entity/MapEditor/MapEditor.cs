@@ -270,7 +270,7 @@ public sealed partial class MapEditor : WindowUI {
 	}
 
 
-	[OnGameQuitting(-1)]
+	[OnGameQuitting(-2)]
 	internal static void OnGameQuitting_Editor () {
 		if (Instance == null) return;
 		if (!Instance.PlayingGame) {

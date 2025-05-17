@@ -1,13 +1,33 @@
-﻿namespace AngeliA;
+﻿using System.Collections.Generic;
+
+namespace AngeliA;
 
 [EntityAttribute.MapEditorGroup("System", -512)]
 public class WorldSlice : IMapItem {
 
-	// Api
+	// VAR
 	public const int MAX_DISTANCE = Const.MAP * 2;
 	public static readonly int TYPE_ID = typeof(WorldSlice).AngeHash();
+	private static readonly HashSet<int> SliceIdSet = [];
+
+	// MSG
+	[OnGameInitializeLater]
+	internal static void OnGameInitializeLater () {
+		SliceIdSet.Clear();
+		if (Renderer.TryGetSpriteGroup(TYPE_ID, out var group)) {
+			for (int i = 0; i < group.Count; i++) {
+				var sp = group.Sprites[i];
+				if (!sp.Rule.IsEmpty) {
+					SliceIdSet.Add(sp.ID);
+				}
+			}
+		}
+		SliceIdSet.TrimExcess();
+	}
 
 	// API
+	public static bool IsSlice (int id) => id != 0 && SliceIdSet.Contains(id);
+
 	public static bool TryGetSliceFromMap (IBlockSquad squad, int unitX, int unitY, int unitZ, out WorldSliceRegion slice) {
 		slice = default;
 
@@ -48,10 +68,13 @@ public class WorldSlice : IMapItem {
 
 		// Final
 		slice = new WorldSliceRegion(resultID, resultTag, resultX, resultY, resultZ, resultW, resultH);
-		return false;
+		return true;
 
 		// Func
-		static bool IsSlice (IBlockSquad squad, int x, int y, int z) => squad.GetBlockAt(x, y, z, BlockType.Element) == TYPE_ID;
+		static bool IsSlice (IBlockSquad squad, int x, int y, int z) {
+			int id = squad.GetBlockAt(x, y, z, BlockType.Element);
+			return id != 0 && SliceIdSet.Contains(id);
+		}
 	}
 
 }

@@ -188,6 +188,7 @@ public partial class MapEditor {
 
 		// Paint / Erase
 		ApplyPaste();
+		var pal = SelectingPaletteItem;
 		SelectionUnitRect = null;
 		var unitRect = new IRect(
 			Util.Min(mouseDownUnitPos.x, mouseUnitPos.x),
@@ -195,27 +196,37 @@ public partial class MapEditor {
 			(Util.Abs(mouseDownUnitPos.x - mouseUnitPos.x) + 1).Clamp(0, Const.MAP),
 			(Util.Abs(mouseDownUnitPos.y - mouseUnitPos.y) + 1).Clamp(0, Const.MAP)
 		);
-		bool paint = SelectingPaletteItem != null;
-		int id = paint ? SelectingPaletteItem.ID : 0;
-		var type = paint ? SelectingPaletteItem.BlockType : default;
+		bool paint = pal != null;
+		int id = paint ? pal.ID : 0;
+		var type = paint ? pal.BlockType : default;
 		int z = CurrentZ;
+		bool edgeOnly =
+			pal != null && pal.Group != null && pal.Group.Count > 0 &&
+			pal.Group.Sprites[0].Tag.HasAny(Tag.Mark);
 		for (int i = unitRect.xMin; i < unitRect.xMax; i++) {
 			for (int j = unitRect.yMin; j < unitRect.yMax; j++) {
+				// Check for Edge
+				if (
+					edgeOnly && 
+					j > unitRect.yMin && j < unitRect.yMax - 1 && 
+					i > unitRect.xMin && i < unitRect.xMax - 1
+				) continue;
+				// Perform
 				if (paint) {
 					// Paint Block
 					// Group
 					if (
-						SelectingPaletteItem.Group != null &&
-						Renderer.TryGetSpriteGroup(SelectingPaletteItem.Group.ID, out var group) &&
+						pal.Group != null &&
+						Renderer.TryGetSpriteGroup(pal.Group.ID, out var group) &&
 						group.Count > 0
 					) {
-						if (SelectingPaletteItem.Group.Random) {
+						if (pal.Group.Random) {
 							// Redirect for Random
 							var _targetSp = group.Sprites[PaintingRan.Next(0, group.Count)];
 							id = _targetSp != null ? _targetSp.ID : 0;
-						} else if (SelectingPaletteItem.Group.WithRule) {
+						} else if (pal.Group.WithRule) {
 							// Redirect for Rule
-							id = SelectingPaletteItem.Group.Sprites[0].ID;
+							id = pal.Group.Sprites[0].ID;
 						}
 					}
 					// Set Data

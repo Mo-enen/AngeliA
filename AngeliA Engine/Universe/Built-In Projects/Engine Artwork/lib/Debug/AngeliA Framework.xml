@@ -16070,7 +16070,7 @@
             <param name="z">Position z</param>
             <param name="type">Type of the auto tile block</param>
         </member>
-        <member name="M:AngeliA.FrameworkUtil.GetRuleIndex(System.Collections.Generic.IList{AngeliA.AngeSprite},System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+        <member name="M:AngeliA.FrameworkUtil.GetRuleIndex(System.Collections.Generic.IList{AngeliA.AngeSprite},System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
             Find which tile in the given list conforms the auto tiling rule
             </summary>
@@ -16084,6 +16084,7 @@
             <param name="bl">ID for block at bottom-left</param>
             <param name="bm">ID for block at bottom</param>
             <param name="br">ID for block at bottom-right</param>
+            <param name="randomSeed"></param>
             <returns>Index of the founded sprite</returns>
         </member>
         <member name="M:AngeliA.FrameworkUtil.DigitToBlockRule(System.Int32)">

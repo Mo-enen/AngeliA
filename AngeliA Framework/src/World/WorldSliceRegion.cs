@@ -47,6 +47,9 @@ public readonly struct WorldSliceRegion (int id, int tag, int x, int y, int z, i
 	internal static void OnGameQuitting () => SaveSliceToFile();
 
 
+	public override string ToString () => $"[Slice] id: {ID}, tag: {Tag}, rect:({X}, {Y}, {W}, {H}), z:{Z}";
+
+
 	#endregion
 
 
@@ -74,13 +77,19 @@ public readonly struct WorldSliceRegion (int id, int tag, int x, int y, int z, i
 		// Check for Changes
 		changed = false;
 		long sliceMoDate = Util.GetFileModifyDate(SliceFilePath);
-		foreach (var path in Util.EnumerateFiles(mapFolder, true, AngePath.MAP_SEARCH_PATTERN)) {
-			long mapMoDate = Util.GetFileModifyDate(path);
-			if (mapMoDate > sliceMoDate) {
-				changed = true;
-				break;
+		if (sliceMoDate != 0) {
+			foreach (var path in Util.EnumerateFiles(mapFolder, true, AngePath.MAP_SEARCH_PATTERN)) {
+				long mapMoDate = Util.GetFileModifyDate(path);
+				if (mapMoDate > sliceMoDate) {
+					changed = true;
+					break;
+				}
 			}
+		} else {
+			changed = true;
 		}
+
+		// Only Sync when Changed
 		if (!changed) return;
 
 		// Recalculate Pool from Maps
@@ -100,7 +109,7 @@ public readonly struct WorldSliceRegion (int id, int tag, int x, int y, int z, i
 			for (int j = d; j < u; j++) {
 				for (int i = l; i < r; i++) {
 					int id = stream.GetBlockAt(i, j, z, BlockType.Element);
-					if (id != WorldSlice.TYPE_ID) continue;
+					if (!WorldSlice.IsSlice(id)) continue;
 					if (!WorldSlice.TryGetSliceFromMap(stream, i, j, z, out var slice)) continue;
 					if (slice.ID == 0) {
 						slice = new WorldSliceRegion(
