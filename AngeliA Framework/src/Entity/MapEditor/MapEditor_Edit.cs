@@ -46,7 +46,7 @@ public partial class MapEditor {
 
 		DraggingUnitRect = null;
 
-		if (IsPlaying || DroppingPlayer || TaskingRoute || GUI.IsTyping) {
+		if (IsPlaying || DroppingPlayer || TaskingRoute || GUI.IsTyping || TypingLetter) {
 			MouseDownPosition = null;
 			MouseDownOutsideBoundary = false;
 			MouseOutsideBoundary = false;
@@ -122,6 +122,75 @@ public partial class MapEditor {
 			MouseDownButton = -1;
 			MouseDownPosition = null;
 			MouseDownOutsideBoundary = false;
+		}
+
+	}
+
+
+	private void Update_TypeLetter () {
+
+		if (!TypingLetter) return;
+
+		ApplyPaste();
+
+		// End Check
+		if (Input.KeyboardDown(KeyboardKey.Enter) || Input.KeyboardUp(KeyboardKey.Escape)) {
+			Input.UseKeyboardKey(KeyboardKey.Enter);
+			Input.UseKeyboardKey(KeyboardKey.Escape);
+			Input.UseGameKey(Gamekey.Start);
+			TypingLetter = false;
+			return;
+		}
+
+		// Move Cursor
+		if (Input.MouseLeftButtonDown) {
+			Input.UseMouseKey(0);
+			if (!TypingLetterPos.HasValue) {
+				TypingLetterPos = Input.MouseGlobalPosition.ToUnit();
+			} else {
+				TypingLetterPos = null;
+				TypingLetter = false;
+			}
+		}
+
+		// Type
+		if (TypingLetterPos.HasValue) {
+			var beamPos = TypingLetterPos.Value;
+			// Letters
+			for (int i = 0; i < 26; i++) {
+				var key = (KeyboardKey)(((int)(KeyboardKey.A)) + i);
+				if (Input.KeyboardDownGUI(key)) {
+					int keyID = FrameworkUtil.Char_to_SystemLetterID((char)('A' + i));
+					UserSetBlock(beamPos.x, beamPos.y, BlockType.Element, keyID, ignoreEmbedAsElement: true);
+					beamPos.x++;
+					TypingLetterPos = beamPos;
+					break;
+				}
+			}
+			// Numbers
+			int targetNumberID = 0;
+			if (Input.KeyboardDownGUI(KeyboardKey.Digit0)) targetNumberID = typeof(NumberZero).AngeHash();
+			if (Input.KeyboardDownGUI(KeyboardKey.Digit1)) targetNumberID = typeof(NumberOne).AngeHash();
+			if (Input.KeyboardDownGUI(KeyboardKey.Digit2)) targetNumberID = typeof(NumberTwo).AngeHash();
+			if (Input.KeyboardDownGUI(KeyboardKey.Digit3)) targetNumberID = typeof(NumberThree).AngeHash();
+			if (Input.KeyboardDownGUI(KeyboardKey.Digit4)) targetNumberID = typeof(NumberFour).AngeHash();
+			if (Input.KeyboardDownGUI(KeyboardKey.Digit5)) targetNumberID = typeof(NumberFive).AngeHash();
+			if (Input.KeyboardDownGUI(KeyboardKey.Digit6)) targetNumberID = typeof(NumberSix).AngeHash();
+			if (Input.KeyboardDownGUI(KeyboardKey.Digit7)) targetNumberID = typeof(NumberSeven).AngeHash();
+			if (Input.KeyboardDownGUI(KeyboardKey.Digit8)) targetNumberID = typeof(NumberEight).AngeHash();
+			if (Input.KeyboardDownGUI(KeyboardKey.Digit9)) targetNumberID = typeof(NumberNine).AngeHash();
+			if (targetNumberID != 0) {
+				UserSetBlock(beamPos.x, beamPos.y, BlockType.Element, targetNumberID, ignoreEmbedAsElement: true);
+				beamPos.x++;
+				TypingLetterPos = beamPos;
+			}
+			// Backspace
+			if (Input.KeyboardDownGUI(KeyboardKey.Backspace)) {
+				beamPos.x--;
+				UserSetBlock(beamPos.x, beamPos.y, BlockType.Element, 0, ignoreEmbedAsElement: true);
+				TypingLetterPos = beamPos;
+			}
+
 		}
 
 	}
@@ -207,8 +276,8 @@ public partial class MapEditor {
 			for (int j = unitRect.yMin; j < unitRect.yMax; j++) {
 				// Check for Edge
 				if (
-					edgeOnly && 
-					j > unitRect.yMin && j < unitRect.yMax - 1 && 
+					edgeOnly &&
+					j > unitRect.yMin && j < unitRect.yMax - 1 &&
 					i > unitRect.xMin && i < unitRect.xMax - 1
 				) continue;
 				// Perform

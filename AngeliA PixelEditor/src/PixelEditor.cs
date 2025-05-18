@@ -1206,7 +1206,8 @@ public partial class PixelEditor : WindowUI {
 								_GetID(i + 1, j, firstSpID, countX, countY),
 								_GetID(i - 1, j - 1, firstSpID, countX, countY),
 								_GetID(i, j - 1, firstSpID, countX, countY),
-								_GetID(i + 1, j - 1, firstSpID, countX, countY)
+								_GetID(i + 1, j - 1, firstSpID, countX, countY),
+								randomSeed: 78321567
 							);
 							if (ruleIndex < 0 || ruleIndex >= sprite.Group.Count) continue;
 							if (!Renderer.CurrentSheet.TryGetTextureFromPool(

@@ -100,6 +100,7 @@ public partial class MapEditor {
 		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_TRIANGLE_UP, ("Tip.MapEDT.BackZ","Goto the behind layer"), ToolbarButton_Z_Back, ToolbarButton_Z_Back_Enable),
 		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_REFRESH, ("Tip.MapEDT.ResetCamera", "Reset camera to default position"), ToolbarButton_ResetCamera),
 		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_GAMEPAD, ("Tip.MapEDT.Play","Start play test"), ToolbarButton_Play),
+		new BuiltInMapEditorToolbarButton(BuiltInSprite.ICON_LETTER, ("Tip.MapEDT.TypeLetter","Type letter inside map"), ToolbarButton_TypeLetter,ToolbarButton_TypeLetter_Enable),
 	];
 	private IRect PaletteGroupPanelRect = default;
 	private PaletteTabType CurrentPaletteTab = PaletteTabType.BuiltIn;
@@ -662,6 +663,7 @@ public partial class MapEditor {
 				// Click
 				if (mouseHovering) {
 					if (Input.MouseLeftButtonDown) {
+						// Select Palette
 						SelectingPaletteItem = pal;
 					} else if (Input.MouseRightButtonDown) {
 						Input.UseMouseKey(1);
@@ -1074,8 +1076,14 @@ public partial class MapEditor {
 			Instance.SetEditorMode(!Instance.PlayingGame);
 		}
 	}
+	private static void ToolbarButton_TypeLetter () {
+		if (Instance == null || IsPlaying) return;
+		Instance.TypingLetter = true;
+		Instance.TypingLetterPos = null;
+	}
 	private static bool ToolbarButton_Z_Front_Enable () => Instance != null && Instance.CurrentZ != int.MinValue;
 	private static bool ToolbarButton_Z_Back_Enable () => Instance != null && Instance.CurrentZ != int.MaxValue;
+	private static bool ToolbarButton_TypeLetter_Enable () => Instance != null && IsEditing && !Instance.TypingLetter;
 
 
 	#endregion

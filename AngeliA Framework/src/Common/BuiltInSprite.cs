@@ -105,6 +105,7 @@ public static class BuiltInSprite {
 	public static readonly SpriteCode MENU_MORE_MARK = "Menu More Mark";
 	public static readonly SpriteCode ICON_REFRESH = "Icon Refresh";
 	public static readonly SpriteCode ICON_GAMEPAD = "Icon Gamepad";
+	public static readonly SpriteCode ICON_LETTER = "Icon Letter";
 	public static readonly SpriteCode CHECK_MARK_32 = "CheckMark32";
 	public static readonly SpriteCode CHECK_MARK_16 = "CheckMark16";
 	public static readonly SpriteCode ICON_BODYPART_HEIGHT = "Icon.BodyPart.Height";

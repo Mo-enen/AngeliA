@@ -258,19 +258,50 @@ public partial class MapEditor {
 		if (Input.AnyMouseButtonHolding && MouseDownInSelection) return;
 		using var _ = new LayerScope(RenderLayer.DEFAULT);
 
+		int thickness = Unify(1);
 		var cursorRect = new IRect(
 			Input.MouseGlobalPosition.x.ToUnifyGlobal(),
 			Input.MouseGlobalPosition.y.ToUnifyGlobal(),
 			Const.CEL, Const.CEL
 		);
-		int thickness = Unify(1);
 
+		// Typing Letter
+		if (TypingLetter) {
+
+			// Screen Frame
+			if (Game.GlobalFrame % 56 < 28) {
+				int fThickness = Unify(2);
+				Renderer.DrawSlice(
+					BuiltInSprite.FRAME_16,
+					WindowRect.Shrink(PanelRect.width, 0, 0, 0).Shrink(thickness),
+					fThickness, fThickness, fThickness, fThickness,
+					Color32.GREEN, z: int.MaxValue - 1
+				);
+			}
+
+			// Mouse Cursor
+			if (!TypingLetterPos.HasValue) {
+				Renderer.DrawPixel(cursorRect, Color32.GREEN.WithNewA(20), z: int.MaxValue - 1);
+			}
+
+			// Beam
+			if (TypingLetterPos.HasValue && Game.GlobalFrame % 56 < 28) {
+				Renderer.DrawPixel(
+					new IRect(TypingLetterPos.Value.x.ToGlobal(), TypingLetterPos.Value.y.ToGlobal(), Const.CEL, 32),
+					GUI.Skin.HighlightColor,
+					z: int.MaxValue - 1
+				);
+			}
+
+			return;
+		}
+
+		// Frame
 		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_HOLLOW_16, cursorRect.Shrink(thickness),
 			thickness, thickness, thickness, thickness,
 			CURSOR_TINT_DARK, z: int.MaxValue - 1
 		);
-
 		Renderer.DrawSlice(
 			BuiltInSprite.FRAME_HOLLOW_16, cursorRect,
 			thickness, thickness, thickness, thickness,

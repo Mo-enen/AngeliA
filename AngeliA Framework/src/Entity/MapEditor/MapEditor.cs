@@ -196,6 +196,8 @@ public sealed partial class MapEditor : WindowUI {
 	private float TransitionScaleEnd;
 	private int TransitionDuration = 20;
 	private int LastSaveFrame = int.MinValue;
+	private bool TypingLetter = false;
+	private Int2? TypingLetterPos = null;
 
 	// Saving
 	private static readonly SavingInt LastEdittingViewX = new("MapEditor.LastEdittingViewX", Const.CEL * -10, SavingLocation.Global);
@@ -360,6 +362,7 @@ public sealed partial class MapEditor : WindowUI {
 		PanelRect.x = Renderer.CameraRect.x - PanelRect.width;
 		WorldBehindAlpha = info.WorldBehindAlpha;
 		WorldBehindParallax = info.WorldBehindParallax;
+		TypingLetter = false;
 
 		// Init View
 		var newView = new IRect(
@@ -433,6 +436,7 @@ public sealed partial class MapEditor : WindowUI {
 				Update_Hotkey();
 				if (Game.GlobalFrame >= TransitionFrame + TransitionDuration) {
 					Update_Mouse();
+					Update_TypeLetter();
 					Update_View();
 					Update_DropPlayer();
 				}
@@ -479,10 +483,14 @@ public sealed partial class MapEditor : WindowUI {
 		// Cursor
 		if (!IsPlaying) Cursor.RequireCursor(int.MinValue);
 
-		// Search
+		// Reset for Playing
 		if (IsPlaying || DroppingPlayer) {
+			TypingLetter = false;
 			SearchingText = "";
 			SearchResult.Clear();
+		}
+		if (TypingLetterPos.HasValue && !TypingLetter) {
+			TypingLetterPos = null;
 		}
 
 		// Cache
@@ -611,7 +619,7 @@ public sealed partial class MapEditor : WindowUI {
 			(Input.MouseRightButtonHolding && CtrlHolding && !AltHolding)
 		) {
 			delta = Input.MouseScreenPositionDelta;
-		} else if (!CtrlHolding && !ShiftHolding && !Input.AnyMouseButtonHolding) {
+		} else if (!TypingLetter && !CtrlHolding && !ShiftHolding && !Input.AnyMouseButtonHolding) {
 			delta = Input.Direction / -32;
 		}
 		if (delta.x != 0 || delta.y != 0) {
@@ -679,7 +687,7 @@ public sealed partial class MapEditor : WindowUI {
 
 	private void Update_Hotkey () {
 
-		if (TaskingRoute || GUI.IsTyping) return;
+		if (TaskingRoute || GUI.IsTyping || TypingLetter) return;
 
 		// Cancel Drop
 		if (!CtrlHolding && IsEditing && DroppingPlayer) {
@@ -720,6 +728,12 @@ public sealed partial class MapEditor : WindowUI {
 				// Start Search
 				if (Input.KeyboardDown(KeyboardKey.Enter)) {
 					GUI.StartTyping(SEARCH_BAR_ID);
+				}
+
+				// Typing Letter
+				if (Input.KeyboardDown(KeyboardKey.T)) {
+					TypingLetter = true;
+					TypingLetterPos = null;
 				}
 
 				// Delete
@@ -1516,7 +1530,9 @@ public sealed partial class MapEditor : WindowUI {
 			!Renderer.TryGetSpriteForGizmos(ENTITY_CODE, out sprite)
 		) return;
 
-		if (sprite.Group != null && sprite.Group.WithRule) {
+		bool fullSize = sprite.Group != null && sprite.Group.WithRule;
+		fullSize = fullSize || FrameworkUtil.SystemLetterID_to_Char(id) != '\0';
+		if (fullSize) {
 			// Full Size for Rule Block
 			Renderer.Draw(sprite, new IRect(unitX.ToGlobal(), unitY.ToGlobal(), Const.CEL, Const.CEL));
 			return;
