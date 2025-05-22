@@ -23,16 +23,20 @@ public partial class PixelEditor {
 	private static readonly SpriteCode ICON_IMPORT_ASE = "Icon.ImportAseprite";
 	private static readonly SpriteCode ICON_IMPORT_PNG = "Icon.ImportPNG";
 	private static readonly SpriteCode ICON_EXPORT_PNG = "Icon.ExportPNG";
+	private static readonly SpriteCode ICON_EXPORT_ASE = "Icon.ExportAseprite";
 	private static readonly LanguageCode PIX_DELETE_ATLAS_MSG = ("UI.DeleteAtlasMsg", "Delete atlas \"{0}\"? All sprites inside will be delete too.");
 	private static readonly LanguageCode TITLE_IMPORT_ASE = ("PixelEditor.Title.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TITLE_IMPORT_PNG = ("PixelEditor.Title.ImportPNG", "Import PNG file");
 	private static readonly LanguageCode TITLE_EXPORT_PNG = ("PixelEditor.Title.ExportPNG", "Export PNG file");
+	private static readonly LanguageCode TITLE_EXPORT_ASE = ("PixelEditor.Title.ExportASE", "Export Aseprite file");
 	private static readonly LanguageCode MENU_ATLAS_TYPE = ("Menu.AtlasType", "Type");
 	private static readonly LanguageCode TIP_ADD_ATLAS = ("Tip.AddAtlas", "Create new atlas");
 	private static readonly LanguageCode TIP_ADD_ATLAS_FOLDER = ("Tip.AddAtlasFolder", "Create new folder");
+	private static readonly LanguageCode MENU_ATLAS_EXPORT = ("PixelEditor.Atlas.Export", "Export");
+	private static readonly LanguageCode MENU_ATLAS_EXPORT_PNG = ("PixelEditor.Atlas.ExportPNG", "PNG");
+	private static readonly LanguageCode MENU_ATLAS_EXPORT_ASE = ("PixelEditor.Atlas.ExportASE", "ASE");
 	private static readonly LanguageCode TIP_IMPORT_ASE = ("Tip.ImportAse", "Import Aseprite file");
 	private static readonly LanguageCode TIP_IMPORT_PNG = ("Tip.PixelEditor.ImportPNG", "Import PNG file into current canvas");
-	private static readonly LanguageCode TIP_EXPORT_PNG = ("Tip.PixelEditor.ExportPNG", "Export current canvas to a PNG file");
 
 	// Api
 	public int CurrentAtlasIndex { get; private set; } = -1;
@@ -50,6 +54,7 @@ public partial class PixelEditor {
 		ContentColorDown = new(100, 220, 100),
 		ContentColorDisable = new(100, 220, 100),
 	};
+	private int ExportingAtlasIndex = -1;
 	private int RenamingAtlasIndex = -1;
 	private int AtlasPanelScrollY = 0;
 	private int AtlasItemReorderIndex = -1;
@@ -361,19 +366,6 @@ public partial class PixelEditor {
 		RequireTooltip(rect, TIP_IMPORT_PNG);
 		rect.SlideRight(padding);
 
-		// Export to Image File
-		using (new GUIEnableScope(Instance.StagedSprites.Count > 0)) {
-			if (GUI.Button(rect, ICON_EXPORT_PNG, Skin.SmallDarkButton)) {
-				if (CurrentAtlasIndex >= 0 && CurrentAtlasIndex < EditingSheet.Atlas.Count) {
-					string name = EditingSheet.Atlas[CurrentAtlasIndex].Name;
-					FileBrowserUI.SaveFile(TITLE_EXPORT_PNG, $"{name}.png", ExportCanvasToPngFile, "*.png");
-				}
-			}
-		}
-		RequireTooltip(rect, TIP_EXPORT_PNG);
-		rect.SlideRight(padding);
-
-
 		// Hide Atlas
 		if (ShowAtlasList.Value) {
 			var btnRect = toolbarRect.EdgeInsideSquareRight();
@@ -417,59 +409,6 @@ public partial class PixelEditor {
 			EditingSheet.CombineSheet(aseSheet, renameDuplicateSprites: true);
 			Instance.SetCurrentAtlas(EditingSheet.Atlas.Count - 1);
 		}
-	}
-
-
-	public static void ExportCanvasToPngFile (string path) {
-
-		if (Instance.StagedSprites.Count == 0) return;
-
-		// Get Bounds
-		int minX = int.MaxValue;
-		int minY = int.MaxValue;
-		int maxX = int.MinValue;
-		int maxY = int.MinValue;
-		var limitRect = new IRect(0, 0, 512, 512).Expand(1024);
-		bool hasValidRect = false;
-		foreach (var data in Instance.StagedSprites) {
-			var rect = data.Sprite.PixelRect;
-			if (!rect.CompleteInside(limitRect)) continue;
-			minX = Util.Min(minX, rect.x);
-			minY = Util.Min(minY, rect.y);
-			maxX = Util.Max(maxX, rect.xMax);
-			maxY = Util.Max(maxY, rect.yMax);
-			hasValidRect = true;
-		}
-		if (!hasValidRect) {
-			Debug.LogWarning("Failed to export png. No sprite is near canvas center range.");
-			return;
-		}
-
-		// Fill Into Pixels
-		int width = maxX - minX + 1;
-		int height = maxY - minY + 1;
-		var pixels = new Color32[width * height];
-		foreach (var data in Instance.StagedSprites) {
-			var rect = data.Sprite.PixelRect;
-			if (!rect.CompleteInside(limitRect)) continue;
-			try {
-				for (int j = 0; j < rect.height; j++) {
-					for (int i = 0; i < rect.width; i++) {
-						pixels[(rect.y + j - minY) * width + (rect.x + i - minX)] =
-							data.Sprite.Pixels[j * rect.width + i];
-					}
-				}
-			} catch { }
-		}
-
-		// Save Pixels to File
-		var texture = Game.GetTextureFromPixels(pixels, width, height);
-		var pngBytes = Game.TextureToPngBytes(texture);
-		Util.BytesToFile(pngBytes, path);
-		if (Util.FileExists(path)) {
-			Game.OpenUrl(Util.GetParentPath(path));
-		}
-
 	}
 
 
@@ -526,16 +465,16 @@ public partial class PixelEditor {
 
 		// Rename
 		GenericPopupUI.AddItem(BuiltInText.UI_RENAME, StartRename, data: atlasIndex);
+
 		// Delete
 		GenericPopupUI.AddItem(BuiltInText.UI_DELETE, DeleteAtlasConfirm, enabled: atlasList.Count > 1, data: atlasIndex);
 
 		if (!atlas.IsFolder) {
 
-
 			GenericPopupUI.AddSeparator();
 
 			// Type
-			GenericPopupUI.AddItem(MENU_ATLAS_TYPE, Const.EmptyMethod, data: atlasIndex);
+			GenericPopupUI.AddItem(MENU_ATLAS_TYPE, Const.EmptyMethod);
 			GenericPopupUI.BeginSubItem();
 			int currentType = (int)atlas.Type;
 			for (int i = 0; i < ATLAS_TYPE_COUNT; i++) {
@@ -547,6 +486,18 @@ public partial class PixelEditor {
 				);
 			}
 			GenericPopupUI.EndSubItem();
+
+			// Export
+			GenericPopupUI.AddItem(MENU_ATLAS_EXPORT, Const.EmptyMethod);
+			GenericPopupUI.BeginSubItem();
+			{
+				// Export to PNG
+				GenericPopupUI.AddItem(MENU_ATLAS_EXPORT_PNG, ExportToPNG, data: atlasIndex);
+				// Export to ASE
+				GenericPopupUI.AddItem(MENU_ATLAS_EXPORT_ASE, ExportToASE, data: atlasIndex);
+			}
+			GenericPopupUI.EndSubItem();
+
 		}
 
 		// Func
@@ -589,6 +540,31 @@ public partial class PixelEditor {
 			if (atlasList.Count == 0) return;
 			if (targetIndex < 0 || targetIndex >= atlasList.Count) return;
 			Instance.RequireStartRenameAtlasIndex = targetIndex;
+		}
+		static void ExportToPNG () {
+			if (Instance == null) return;
+			if (GenericPopupUI.InvokingItemData is not int atlasIndex) return;
+			if (atlasIndex < 0 || atlasIndex >= EditingSheet.Atlas.Count) return;
+			string name = EditingSheet.Atlas[atlasIndex].Name;
+			Instance.ExportingAtlasIndex = atlasIndex;
+			FileBrowserUI.SaveFile(TITLE_EXPORT_PNG, $"{name}.png", ExportAtlas, "*.png");
+			static void ExportAtlas (string path) {
+				if (Instance == null) return;
+				int index = Instance.ExportingAtlasIndex;
+				Instance.ExportAtlasLogic(path, EditingSheet.Atlas[index].ID, false, true);
+			}
+		}
+		static void ExportToASE () {
+			if (GenericPopupUI.InvokingItemData is not int atlasIndex) return;
+			if (atlasIndex < 0 || atlasIndex >= EditingSheet.Atlas.Count) return;
+			string name = EditingSheet.Atlas[atlasIndex].Name;
+			Instance.ExportingAtlasIndex = atlasIndex;
+			FileBrowserUI.SaveFile(TITLE_EXPORT_ASE, $"{name}.ase", ExportAtlas, "*.ase");
+			static void ExportAtlas (string path) {
+				if (Instance == null) return;
+				int index = Instance.ExportingAtlasIndex;
+				Instance.ExportAtlasLogic(path, EditingSheet.Atlas[index].ID, true, false);
+			}
 		}
 	}
 
@@ -697,6 +673,86 @@ public partial class PixelEditor {
 			SetCurrentAtlas(newIndex, forceChange: true, resetUndo: false);
 		}
 		SetDirty();
+	}
+
+
+	private void ExportAtlasLogic (string filePath, int atlasID, bool exportAse, bool exportPNG) {
+
+		var allSprites = EditingSheet.Sprites;
+
+		// Get Bounds
+		int minX = int.MaxValue;
+		int minY = int.MaxValue;
+		int maxX = int.MinValue;
+		int maxY = int.MinValue;
+		foreach (var sprite in allSprites) {
+			if (sprite.AtlasID != atlasID) continue;
+			var rect = sprite.PixelRect;
+			minX = Util.Min(minX, rect.x);
+			minY = Util.Min(minY, rect.y);
+			maxX = Util.Max(maxX, rect.xMax);
+			maxY = Util.Max(maxY, rect.yMax);
+		}
+
+		// Fill Into Pixels
+		int width = maxX - minX + 1;
+		int height = maxY - minY + 1;
+		if (width > 4096 || height > 4096) {
+			Debug.LogError($"Fail to export canvas. Content range must be smaller than 4096 (current {width}×{height}).");
+			return;
+		}
+		var pixels = new Color32[width * height];
+		foreach (var sprite in allSprites) {
+			if (sprite.AtlasID != atlasID) continue;
+			var rect = sprite.PixelRect;
+			try {
+				for (int j = 0; j < rect.height; j++) {
+					for (int i = 0; i < rect.width; i++) {
+						pixels[(rect.y + j - minY) * width + (rect.x + i - minX)] =
+							sprite.Pixels[j * rect.width + i];
+					}
+				}
+			} catch { }
+		}
+
+		// Save Pixels to PNG
+		if (exportPNG) {
+			var texture = Game.GetTextureFromPixels(pixels, width, height);
+			var pngBytes = Game.TextureToPngBytes(texture);
+			Util.BytesToFile(pngBytes, filePath);
+			if (Util.FileExists(filePath)) {
+				Game.OpenUrl(Util.GetParentPath(filePath));
+			}
+		}
+
+		// Save Pixels to ASE
+		if (exportAse) {
+			string templatePath = Util.CombinePaths(Universe.BuiltIn.UniverseMetaRoot, "AseTemplate.ase");
+			if (Util.FileExists(templatePath)) {
+				var sliceList = new List<AsepriteUtil.AsepriteSliceData>();
+				foreach (var sp in allSprites) {
+					if (sp.AtlasID != atlasID) continue;
+					var rect = sp.PixelRect.Shift(-minX, -minY);
+					rect.y = height - rect.y - rect.height;
+					var border = sp.GlobalBorder / Const.ART_SCALE;
+					(border.down, border.up) = (border.up, border.down);
+					var pivot = new Int2(sp.PivotX, sp.PivotY);
+					pivot.x = rect.width * pivot.x / 1000;
+					pivot.y = rect.height - rect.height * pivot.y / 1000;
+					sliceList.Add(new AsepriteUtil.AsepriteSliceData(sp.RealName, rect, border, pivot));
+				}
+				var ase = Aseprite.CreateFromBytes(Util.FileToBytes(templatePath));
+				AsepriteUtil.FillPixelsIntoAse(ase, pixels, width, height);
+				AsepriteUtil.FillSlicesIntoAse(ase, [.. sliceList]);
+				Util.BytesToFile(ase.ToBytes(), filePath);
+				if (Util.FileExists(filePath)) {
+					Game.OpenUrl(Util.GetParentPath(filePath));
+				}
+			} else {
+				Debug.LogError($"AseTemplate.ase not found. \n{templatePath}");
+			}
+		}
+
 	}
 
 

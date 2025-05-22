@@ -184,6 +184,17 @@ public sealed class FileBrowserUI : EntityUI, IWindowEntityUI {
 		Update_ControlPanel(Rect.EdgeInside(Direction4.Down, controlPanelHeight));
 		Update_Explorer(Rect.Shrink(favPanelWidth, 0, controlPanelHeight, navBarHeight + titleHeight));
 
+		// Hotkey
+		if (!GUI.IsTyping) {
+			if (Input.KeyboardDown(KeyboardKey.Escape)) {
+				Input.UseKeyboardKey(KeyboardKey.Escape);
+				Input.UseGameKey(Gamekey.Start);
+				OnPathPicked = null;
+				Active = false;
+				Input.UseAllMouseKey();
+			}
+		}
+
 		// Final
 		Input.UseGameKey(Gamekey.Action);
 		Input.UseGameKey(Gamekey.Jump);

@@ -13,9 +13,6 @@ public class FastNoiseGroup (int length) {
 
 	#region --- VAR ---
 
-	// Const
-	private static readonly FastNoiseGroup FailbackNoiseGroup = new(1);
-
 	// Api
 	public readonly int Length = length;
 	public FastNoiseLite this[int index] => Noises[index];
@@ -69,7 +66,7 @@ public class FastNoiseGroup (int length) {
 
 
 	// Pool
-	public static FastNoiseGroup GetNoiseGroupFromPool (int id) => NoisePool.TryGetValue(id, out var result) ? result : FailbackNoiseGroup;
+	public static bool TryGetNoiseGroupFromPool (int id, out FastNoiseGroup result) => NoisePool.TryGetValue(id, out result);
 
 
 	public static void AddNoiseGroupIntoPool (int id, FastNoiseGroup group) => NoisePool.TryAdd(id, group);

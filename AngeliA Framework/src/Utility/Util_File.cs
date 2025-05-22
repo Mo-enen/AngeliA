@@ -520,6 +520,14 @@ public static partial class Util {
 	}
 
 
+	public static byte[] CompressBytes (byte[] rawBytes, int sourceLength = -1, CompressionLevel level = CompressionLevel.Optimal) {
+		using var stream = new MemoryStream();
+		using var compressor = new ZLibStream(stream, level);
+		compressor.Write(rawBytes, 0, sourceLength < 0 ? rawBytes.Length : sourceLength);
+		return stream.ToArray();
+	}
+
+
 	/// <summary>
 	/// Make compressed byte array into raw byte array
 	/// </summary>

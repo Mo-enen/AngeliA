@@ -6,7 +6,7 @@ using AngeliA;
 namespace AngeliA.PixelEditor;
 
 
-public static class AsepriteUtil {
+internal static class AsepriteUtil {
 
 	private class FlexSprite {
 		public string FullName;
@@ -35,8 +35,19 @@ public static class AsepriteUtil {
 		public SpriteMetaData[] Sprites;
 	}
 
+	internal readonly struct AsepriteSliceData (string name, IRect rect, Int4 border, Int2 pivot) {
+		public readonly string Name = name;
+		public readonly IRect Rect = rect;
+		public readonly Int4 Border = border;
+		public readonly Int2 Pivot = pivot;
+	}
+
+	// VAR
+	private static Color32[] FillPixelsCache;
+	private static Int2 FillPixelsSize;
+
 	// API
-	public static bool RecreateSheetIfArtworkModified (string sheetPath, string asepriteRoot) {
+	internal static bool RecreateSheetIfArtworkModified (string sheetPath, string asepriteRoot) {
 		long sheetDate = Util.GetFileModifyDate(sheetPath);
 		bool requireCreateSheet = false;
 		bool hasArtwork = false;
@@ -65,7 +76,7 @@ public static class AsepriteUtil {
 		return requireCreateSheet;
 	}
 
-	public static Sheet CreateNewSheet (ICollection<string> asePaths) {
+	internal static Sheet CreateNewSheet (ICollection<string> asePaths) {
 
 		var flexSprites = CreateSpritesFromAsepriteFiles(asePaths);
 		var spriteList = new List<AngeSprite>();
@@ -142,6 +153,63 @@ public static class AsepriteUtil {
 
 	}
 
+	internal static void FillPixelsIntoAse (Aseprite ase, Color32[] pixels, int width, int height) {
+
+		FillPixelsCache = pixels;
+		FillPixelsSize = new Int2(width, height);
+
+		try {
+			ase.Header.ColorDepth = 32;
+			ase.Header.Width = (ushort)width;
+			ase.Header.Height = (ushort)height;
+			ase.ForAllChunks<Aseprite.CelChunk>(FillPixelIntoCel);
+		} catch (System.Exception ex) { Debug.LogException(ex); }
+
+		FillPixelsCache = null;
+
+		// Func
+		static void FillPixelIntoCel (Aseprite.CelChunk cel, int frameIndex, int chunkIndex) {
+			var pixels = FillPixelsCache;
+			int width = FillPixelsSize.x;
+			int height = FillPixelsSize.y;
+			cel.Type = (ushort)Aseprite.CelChunk.CelType.Raw;
+			cel.X = 0;
+			cel.Y = 0;
+			cel.Width = (ushort)width;
+			cel.Height = (ushort)height;
+			cel.Opacity = 255;
+			cel.Pixels = new Aseprite.CelChunk.Pixel[pixels.Length];
+			for (int i = 0; i < pixels.Length; i++) {
+				var pix = pixels[i];
+				int x = i % width;
+				int y = height - i / width - 1;
+				cel.Pixels[y * width + x] = new Aseprite.CelChunk.Pixel() {
+					r = pix.r,
+					g = pix.g,
+					b = pix.b,
+					a = pix.a,
+				};
+			}
+		}
+	}
+
+	internal static void FillSlicesIntoAse (Aseprite ase, AsepriteSliceData[] slices) {
+		ase.RemoveAllChunks<Aseprite.SliceChunk>();
+		foreach (var sliceData in slices) {
+			var slice = new Aseprite.SliceChunk();
+			FillSliceInfoTo(slice, sliceData.Name, sliceData.Rect, sliceData.Border, sliceData.Pivot);
+			ase.AddChunk(0, slice);
+			ase.AddChunk(0, new Aseprite.UserDataChunk() {
+				Flag = 2,
+				R = 0,
+				G = 0,
+				B = 0,
+				A = 128,
+				Text = "",
+			});
+		}
+	}
+
 	// LGC
 	private static List<FlexSprite> CreateSpritesFromAsepriteFiles (ICollection<string> asePaths) {
 
@@ -191,7 +259,8 @@ public static class AsepriteUtil {
 				errorMsg = exc.Message;
 				Debug.LogException(exc);
 			}
-		};
+		}
+		;
 
 		// Final
 		System.GC.Collect();
@@ -394,6 +463,35 @@ public static class AsepriteUtil {
 		z = sheetZ ?? 0;
 		pivotX = _pivotX;
 		pivotY = _pivotY;
+	}
+
+	private static void FillSliceInfoTo (Aseprite.SliceChunk slice, string name, IRect rect, Int4 border, Int2? pivot) {
+
+		border.left = Util.Max(border.left, 0);
+		border.right = Util.Max(border.right, 0);
+		border.down = Util.Max(border.down, 0);
+		border.up = Util.Max(border.up, 0);
+
+		slice.Name = name;
+		slice.SliceNum = 1;
+		slice.Flag =
+			border.IsZero && !pivot.HasValue ? 0u :
+			!border.IsZero && !pivot.HasValue ? 1u :
+			border.IsZero && pivot.HasValue ? 2u :
+			3u;
+		slice.Slices = [ new (){
+			X = rect.x,
+			Y = rect.y,
+			Width = (uint)rect.width,
+			Height = (uint)rect.height,
+			FrameIndex = 0,
+			PivotX = pivot.HasValue ? pivot.Value.x : 0,
+			PivotY = pivot.HasValue ? pivot.Value.y : 0,
+			CenterX = border.left,
+			CenterY = border.up,
+			CenterWidth = (uint)(rect.width - border.left - border.right),
+			CenterHeight= (uint)(rect.height - border.down - border.up),
+		}];
 	}
 
 }
