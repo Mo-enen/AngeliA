@@ -7,7 +7,7 @@
 /// <example><code>
 /// using AngeliA;
 /// 
-/// namespace AngeliaGame;
+/// namespace AngeliA_Game;
 /// 
 /// public class Example {
 /// 
@@ -52,7 +52,7 @@ public readonly struct GUIVerticalScrollScope : System.IDisposable {
 /// <example><code>
 /// using AngeliA;
 /// 
-/// namespace AngeliaGame;
+/// namespace AngeliA_Game;
 /// 
 /// public class Example {
 /// 
@@ -97,7 +97,7 @@ public readonly struct GUIHorizontalScrollScope : System.IDisposable {
 /// <example><code>
 /// using AngeliA;
 /// 
-/// namespace AngeliaGame;
+/// namespace AngeliA_Game;
 /// 
 /// public class Example {
 /// 

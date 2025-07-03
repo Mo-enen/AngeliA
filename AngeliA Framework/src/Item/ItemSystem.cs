@@ -437,7 +437,7 @@ public static class ItemSystem {
 	/// <example><code>
 	/// using AngeliA;
 	/// 
-	/// namespace AngeliaGame;
+	/// namespace AngeliA_Game;
 	/// 
 	/// public class Example {
 	/// 

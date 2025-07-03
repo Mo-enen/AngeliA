@@ -69,7 +69,7 @@
 	</ItemGroup>
 
 	<!--Move Game Lib into Library Folder-->
-	<Target Name="CopyDll" AfterTargets="Build">
+	<Target Name="MoveDll" AfterTargets="Build">
 		<Move SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(OutputPath)Library\$(AssemblyName).dll" ContinueOnError="true" />
 	</Target>
 
@@ -85,7 +85,7 @@
 	</Target>
 
 	<!--Move Pixel Editor Dll into Library Folder-->
-	<Target Name="CopyDll" AfterTargets="Build">
+	<Target Name="MovePixelEditorDll" AfterTargets="Build">
 		<Move SourceFiles="$(OutputPath)AngeliA PixelEditor.dll" DestinationFiles="$(OutputPath)Library\AngeliA PixelEditor.dll" ContinueOnError="true" />
 	</Target>
 

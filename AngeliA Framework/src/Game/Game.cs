@@ -165,25 +165,33 @@ public abstract partial class Game {
 			string arg = args[i];
 			if (string.IsNullOrEmpty(arg)) continue;
 			try {
-				// Load Assemblies from Args
-				if (arg.StartsWith("-lib:")) {
-					string path = Util.ArgPath_to_Path(arg[5..]);
-					if (Util.PathIsFolder(path)) {
-						if (!Util.FolderExists(path)) continue;
-						foreach (var dllpath in Util.EnumerateFiles(path, true, "*.dll")) {
-							if (Assembly.LoadFrom(dllpath) is Assembly assembly) {
+				switch (arg) {
+					// -lib:
+					case var _ when arg.StartsWith("-lib:"):
+						// Load Assemblies from Args
+						string path = Util.ArgPath_to_Path(arg[5..]);
+						if (Util.PathIsFolder(path)) {
+							if (!Util.FolderExists(path)) continue;
+							foreach (var dllpath in Util.EnumerateFiles(path, true, "*.dll")) {
+								if (Assembly.LoadFrom(dllpath) is Assembly assembly) {
+									Util.AddAssembly(assembly);
+								}
+							}
+						} else {
+							if (!Util.FileExists(path)) continue;
+							if (Assembly.LoadFrom(path) is Assembly assembly) {
 								Util.AddAssembly(assembly);
 							}
 						}
-					} else {
-						if (!Util.FileExists(path)) continue;
-						if (Assembly.LoadFrom(path) is Assembly assembly) {
-							Util.AddAssembly(assembly);
-						}
-					}
-				} else if (arg.StartsWith("-uni:")) {
-					// Set Universe Path from Args
-					universeRoot = Util.ArgPath_to_Path(arg[5..]);
+						break;
+					// -uni:
+					case var _ when arg.StartsWith("-uni:"):
+						universeRoot = Util.ArgPath_to_Path(arg[5..]);
+						break;
+					// -tool:
+					case var _ when arg.StartsWith("-tool:"):
+						IsToolApplication = true;
+						break;
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
@@ -197,9 +205,6 @@ public abstract partial class Game {
 		AngePath.BuiltInUniverseRoot = universeRoot;
 
 		// Attribute >> Game
-		if (Util.TryGetAttributeFromAllAssemblies<ToolApplicationAttribute>()) {
-			IsToolApplication = true;
-		}
 		if (Util.TryGetAttributeFromAllAssemblies<IgnoreArtworkPixelsAttribute>()) {
 			IgnoreArtworkPixels = true;
 		}
