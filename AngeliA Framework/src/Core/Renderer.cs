@@ -61,6 +61,12 @@ public static class Renderer {
 
 
 	// Const
+	public static readonly string[] NAMES = [
+		"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI",
+	];
+	public static readonly int[] DEFAULT_CAPACITY = [
+		1024, 16384, 8192, 65536, 512, 256, 256, 8192,
+	];
 	private static readonly bool[] DEFAULT_PART_IGNORE = [false, false, false, false, false, false, false, false, false,];
 	private static readonly Cell[] SLICE_RESULT = new Cell[9];
 
@@ -145,17 +151,9 @@ public static class Renderer {
 	[OnGameInitialize(-4096)]
 	internal static void Initialize () {
 
-		// Load Capacity from Attribute
-		var capacities = new int[RenderLayer.COUNT];
-		RenderLayer.DEFAULT_CAPACITY.CopyTo(capacities, 0);
-		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<RendererLayerCapacityAttribute>()) {
-			if (att.Layer < 0 || att.Layer >= RenderLayer.COUNT) continue;
-			capacities[att.Layer] = att.Capacity;
-		}
-
 		// Create Layers
 		for (int i = 0; i < RenderLayer.COUNT; i++) {
-			int capacity = capacities[i];
+			int capacity = DEFAULT_CAPACITY[i];
 			int order = i;
 			Layers[i] = new Layer {
 				Cells = new Cell[capacity].FillWithNewValue(),
@@ -308,6 +306,15 @@ public static class Renderer {
 
 
 	#region --- API ---
+
+
+	public static void ConfigRenderLayerCapacity (int renderLayer, int capacity) {
+		if (Game.GlobalFrame > 0) {
+			Debug.LogWarning($"{nameof(Renderer)}.{nameof(ConfigRenderLayerCapacity)} can only be called in Entry.cs (before the game run)");
+			return;
+		}
+		DEFAULT_CAPACITY[renderLayer] = capacity;
+	}
 
 
 	/// <summary>

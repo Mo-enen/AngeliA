@@ -192,15 +192,6 @@ public abstract class Rigidbody : Entity, ICarrier {
 	#region --- MSG ---
 
 
-	[OnGameInitialize]
-	internal static void OnGameInitialize () {
-		// Init Global Gravity from Attribute
-		if (Util.TryGetAttributeFromAllAssemblies<GlobalGravityAttribute>(out var att)) {
-			GlobalGravity.BaseValue = att.Gravity;
-		}
-	}
-
-
 	public override void OnActivated () {
 		base.OnActivated();
 		InWaterHit = default;

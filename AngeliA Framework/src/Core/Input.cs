@@ -335,14 +335,6 @@ public static class Input {
 			}
 		}
 
-		// Custom Default Input
-		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<DefaultKeyboardGamekeyAttribute>()) {
-			KEYBOARD_DEFAULT[(int)att.Gamekey] = att.InputKey;
-		}
-		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<DefaultGamepadGamekeyAttribute>()) {
-			GAMEPAD_DEFAULT[(int)att.Gamekey] = att.InputKey;
-		}
-
 		// Save all Default Key Config
 		for (int i = 0; i < KeyboardConfigSaving.Length; i++) {
 			var saving = KeyboardConfigSaving[i];
@@ -766,6 +758,12 @@ public static class Input {
 
 
 	#region --- API ---
+
+
+	public static void ConfigDefaultGameKey (Gamekey key, KeyboardKey keyboardKey, GamepadKey gamepadKey) {
+		KEYBOARD_DEFAULT[(int)key] = keyboardKey;
+		GAMEPAD_DEFAULT[(int)key] = gamepadKey;
+	}
 
 
 	// Any Key

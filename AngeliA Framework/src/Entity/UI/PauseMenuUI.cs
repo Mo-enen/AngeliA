@@ -18,7 +18,7 @@ internal class PauseMenuUI : MenuUI {
 	#region --- SUB ---
 
 
-	private enum MenuMode { Root, Setting, KeySetter, Restart, Debug, Quit, Setter_Keyboard, Setter_Gamepad }
+	private enum MenuMode { Root, Setting, KeySetter, Restart, Quit, Setter_Keyboard, Setter_Gamepad }
 
 
 	#endregion
@@ -31,7 +31,6 @@ internal class PauseMenuUI : MenuUI {
 
 	// Const 
 	private static readonly LanguageCode MENU_QUIT_MESSAGE = ("Menu.Pause.QuitMessage", "Quit Game?");
-	private static readonly LanguageCode MENU_DEBUG_MESSAGE = ("Menu.Pause.DebugMessage", "This menu is not included in the publish version.");
 	private static readonly LanguageCode MENU_RESTART_MESSAGE = ("Menu.Pause.RestartMessage", "Restart Game?");
 	private static readonly LanguageCode MENU_KEYSETTER_GAMEPAD_MESSAGE = ("Menu.KeySetter.GamepadMessage", "Press F1 key to reset");
 	private static readonly LanguageCode MENU_KEYSETTER_KEYBOARD_MESSAGE = ("Menu.KeySetter.KeyboardMessage", "Press F1 key to reset");
@@ -49,11 +48,16 @@ internal class PauseMenuUI : MenuUI {
 	private static readonly LanguageCode MENU_GAMEPAD_HINT = ("Menu.Setting.UseGamepadHint", "Show Gamepad Hint");
 	private static readonly LanguageCode MENU_ALLOW_GAMEPAD = ("Menu.Setting.AllowGamepad", "Allow Gamepad");
 	private static readonly LanguageCode UI_RESTART_REGENERATE = ("UI.RestartAndRegenerateMap", "Restart and Regenerate Map");
-	private static readonly LanguageCode UI_RESET_SAVING = ("UI.ResetSaving", "Reset Game Saving");
-	private static readonly LanguageCode UI_DEL_MAP = ("UI.DeleteMapFolder", "Delete Map Folder");
-	private static readonly LanguageCode NOTI_SAVING_RESETED = ("Notify.SavingReseted", "Saving Reseted");
-	private static readonly LanguageCode NOTI_MAP_DEL = ("Notify.MapDeleted", "Map Deleted");
-
+	
+	// Api
+	/// <summary>
+	/// Show quit option inside pause menu
+	/// </summary>
+	public static bool AllowQuitFromMenu { get; private set; } = true;
+	/// <summary>
+	/// Show restart option inside pause menu
+	/// </summary>
+	public static bool AllowRestartFromMenu { get; private set; } = true;
 
 	// Data
 	private static PauseMenuUI Instance = null;
@@ -144,7 +148,7 @@ internal class PauseMenuUI : MenuUI {
 
 	protected override void DrawMenu () {
 		Message = string.Empty;
-		if (Mode == MenuMode.Quit && !Universe.BuiltInInfo.AllowQuitFromMenu) {
+		if (Mode == MenuMode.Quit && !AllowQuitFromMenu) {
 			Mode = MenuMode.Root;
 		}
 		switch (Mode) {
@@ -159,9 +163,6 @@ internal class PauseMenuUI : MenuUI {
 				break;
 			case MenuMode.Restart:
 				MenuRestart();
-				break;
-			case MenuMode.Debug:
-				MenuDebug();
 				break;
 			case MenuMode.Quit:
 				MenuQuit();
@@ -200,25 +201,15 @@ internal class PauseMenuUI : MenuUI {
 		}
 
 		// Restart Game
-		if (Universe.BuiltInInfo.AllowRestartFromMenu) {
+		if (AllowRestartFromMenu) {
 			if (DrawItem(BuiltInText.UI_RESTART)) {
 				RequireMode = MenuMode.Restart;
 				SetSelection(0);
 			}
 		}
 
-		// Debug
-#if DEBUG
-		using (new GUIContentColorScope(Color32.ORANGE_BETTER)) {
-			if (DrawItem(BuiltInText.UI_DEBUG)) {
-				RequireMode = MenuMode.Debug;
-				SetSelection(0);
-			}
-		}
-#endif
-
 		// Quit
-		if (Universe.BuiltInInfo.AllowQuitFromMenu) {
+		if (AllowQuitFromMenu) {
 			using (new GUIContentColorScope(Color32.RED_BETTER)) {
 				if (DrawItem(BuiltInText.UI_QUIT)) {
 					bool quitImmediately = false;
@@ -400,43 +391,6 @@ internal class PauseMenuUI : MenuUI {
 			TaskSystem.AddToLast(RestartGameTask.TYPE_ID);
 		}
 #endif
-
-	}
-
-
-	private void MenuDebug () {
-
-#if !DEBUG
-		return;
-#endif
-		Message = MENU_DEBUG_MESSAGE;
-
-		using (new GUIContentColorScope(Color32.RED_BETTER)) {
-			// Delete Map Folder and Restart
-			if (DrawItem(UI_DEL_MAP)) {
-				Util.DeleteFolder(Universe.BuiltIn.SlotUserMapRoot);
-				Universe.BuiltIn.ReloadSavingSlot(Universe.BuiltIn.CurrentSavingSlot, true);
-				Game.UnpauseGame();
-				Active = false;
-				Input.UseAllHoldingKeys();
-				NotificationUI.SpawnNotification(NOTI_MAP_DEL);
-			}
-			// Delete Saving Folder and Restart
-			if (DrawItem(UI_RESET_SAVING)) {
-				Util.DeleteFolder(Universe.BuiltIn.SavingRoot);
-				Universe.BuiltIn.ReloadSavingSlot(Universe.BuiltIn.CurrentSavingSlot, true);
-				Game.UnpauseGame();
-				Active = false;
-				Input.UseAllHoldingKeys();
-				NotificationUI.SpawnNotification(NOTI_SAVING_RESETED);
-			}
-		}
-
-		// Back
-		if (DrawItem(BuiltInText.UI_BACK) || Input.GameKeyDown(Gamekey.Jump)) {
-			RequireMode = MenuMode.Root;
-			SetSelection(2);
-		}
 
 	}
 
@@ -623,6 +577,24 @@ internal class PauseMenuUI : MenuUI {
 				}
 			}
 		}
+	}
+
+
+	#endregion
+
+
+
+
+	#region --- API ---
+
+
+	public static void Config (bool allowQuitFromMenu = true, bool allowRestartFromMenu = true) {
+		if (Game.GlobalFrame > 0) {
+			Debug.LogWarning($"{nameof(PauseMenuUI)}.{nameof(Config)} can only be called in Entry.cs (before the game run)");
+			return;
+		}
+		AllowQuitFromMenu = allowQuitFromMenu;
+		AllowRestartFromMenu = allowRestartFromMenu;
 	}
 
 

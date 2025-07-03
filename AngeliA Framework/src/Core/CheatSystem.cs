@@ -45,7 +45,8 @@ public static class CheatSystem {
 	public static int CheatCodeCount => Pool.Count;
 
 	// Data
-	private static bool Enable = false;
+	private static bool Enable_Debug = true;
+	private static bool Enable = true;
 	private static readonly Pipe<char> CheatInput = new(96);
 	private static readonly Dictionary<int, CheatAction> Pool = [];
 	private static readonly List<int> AllCheatIDs = [];
@@ -62,11 +63,10 @@ public static class CheatSystem {
 
 	[OnGameInitialize(-256)]
 	internal static void OnGameInitialize () {
-		// Init Pool
-		Enable = !Game.IsToolApplication && Universe.BuiltInInfo.AllowCheatCode;
 #if DEBUG
-		Enable = !Game.IsToolApplication;
+		Enable = Enable_Debug;
 #endif
+		// Init Pool
 		if (Enable) {
 			foreach (var (method, att) in Util.AllStaticMethodWithAttribute<CheatCodeAttribute>()) {
 				TryAddCheatAction(att.Code, method);
@@ -166,6 +166,16 @@ public static class CheatSystem {
 
 
 	#region --- API ---
+
+
+	public static void Config (bool enable, bool enableDebug = true) {
+		if (Game.GlobalFrame > 0) {
+			Debug.LogWarning($"{nameof(CheatSystem)}.{nameof(Config)} can only be called in Entry.cs (before the game run)");
+			return;
+		}
+		Enable = enable;
+		Enable_Debug = enableDebug;
+	}
 
 
 	/// <summary>

@@ -147,7 +147,7 @@ public class QTest {
 	/// Limit of testing window panels
 	/// </summary>
 	public const int MAX_WINDOW_COUNT = 16;
-	public static bool AllowQuickTest { get; private set; } = true;
+	public static bool AllowQuickTest { get; set; } = true;
 	/// <summary>
 	/// True if the QTest is operating with window on screen
 	/// </summary>
@@ -198,12 +198,6 @@ public class QTest {
 
 
 	#region --- MSG ---
-
-
-	[OnGameInitialize(-4096)]
-	internal static void OnGameInitialize () {
-		AllowQuickTest = !Util.TryGetAttributeFromAllAssemblies<DisableQuickTestAttribute>();
-	}
 
 
 	[OnGameUpdateLater]

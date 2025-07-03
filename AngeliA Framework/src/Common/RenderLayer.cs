@@ -34,11 +34,5 @@ public struct RenderLayer {
 
 	public const int COUNT = 8;
 
-	public static readonly string[] NAMES = [
-		"Wallpaper", "Behind", "Shadow", "Default", "Color", "Mult", "Add", "UI",
-	];
-	public static readonly int[] DEFAULT_CAPACITY = [
-		1024, 16384, 8192, 65536, 512, 256, 256, 8192,
-	];
-
+	
 }

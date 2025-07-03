@@ -8,52 +8,6 @@
 public class UniverseInfo : IJsonSerializationCallback {
 
 	/// <summary>
-	/// Official name of this project in English
-	/// </summary>
-	public string ProductName = "";
-	/// <summary>
-	/// Developer name of this project in English
-	/// </summary>
-	public string DeveloperName = "";
-	/// <summary>
-	/// Major version of this project
-	/// </summary>
-	public int MajorVersion = 0;
-	/// <summary>
-	/// Minor version of this project
-	/// </summary>
-	public int MinorVersion = 0;
-	/// <summary>
-	/// Patch version of this project
-	/// </summary>
-	public int PatchVersion = 0;
-	
-	
-	/// <summary>
-	/// Save map file changes made by the player
-	/// </summary>
-	public bool ReadonlyMap = false;
-	/// <summary>
-	/// Use cheat code after release
-	/// </summary>
-	public bool AllowCheatCode = false;
-	/// <summary>
-	/// Allow player press start button (esc) to pause
-	/// </summary>
-	public bool AllowPause = true;
-	/// <summary>
-	/// Show quit option inside pause menu
-	/// </summary>
-	public bool AllowQuitFromMenu = true;
-	/// <summary>
-	/// Show restart option inside pause menu
-	/// </summary>
-	public bool AllowRestartFromMenu = true;
-	/// <summary>
-	/// Scale ui elements based on the monitor height instead of application window height
-	/// </summary>
-	public bool ScaleUiBasedOnMonitor = true;
-	/// <summary>
 	/// Size ratio of the view rect. (1000 means 1:1, 2000 means 2:1)
 	/// </summary>
 	public int ViewRatio = 2000;

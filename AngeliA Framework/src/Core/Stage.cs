@@ -197,15 +197,9 @@ public static class Stage {
 
 		if (!Enable) return;
 
-		var capacities = new int[EntityLayer.COUNT];
-		DEFAULT_ENTITY_CAPACITY.CopyTo(capacities, 0);
-		foreach (var (_, att) in Util.ForAllAssemblyWithAttribute<EntityLayerCapacityAttribute>()) {
-			if (att.Layer < 0 || att.Layer >= EntityLayer.COUNT) continue;
-			capacities[att.Layer] = att.Capacity;
-		}
 		Entities = new Entity[EntityLayer.COUNT][];
 		for (int i = 0; i < EntityLayer.COUNT; i++) {
-			Entities[i] = new Entity[capacities[i]];
+			Entities[i] = new Entity[DEFAULT_ENTITY_CAPACITY[i]];
 		}
 		EntityPool.Clear();
 
@@ -498,6 +492,15 @@ public static class Stage {
 
 
 	#region --- API ---
+
+
+	public static void ConfigEntityLayerCapacity (int entityLayer, int capacity) {
+		if (Game.GlobalFrame > 0) {
+			Debug.LogWarning($"{nameof(Stage)}.{nameof(ConfigEntityLayerCapacity)} can only be called in Entry.cs (before the game run)");
+			return;
+		}
+		DEFAULT_ENTITY_CAPACITY[entityLayer] = capacity;
+	}
 
 
 	/// <summary>
