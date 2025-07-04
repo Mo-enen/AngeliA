@@ -1,7 +1,16 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 
 namespace AngeliA;
+
+
+/// <summary>
+/// If application with current assembly should be treat as a "tool" rather than "game"
+/// </summary>
+[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+public class ToolApplicationAttribute : Attribute { }
 
 
 /// <summary>
@@ -96,6 +105,3 @@ public class DontUseBuiltInMapAsFailbackAttribute : Attribute { }
 [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 public class DisableQuickTestAttribute : Attribute { }
 
-
-[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
-public class DisableLightingSystemAttribute : Attribute { }

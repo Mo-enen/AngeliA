@@ -1,6 +1,23 @@
 ﻿namespace AngeliA;
 
 
+/// <summary></summary>
+public enum ProjectType {
+	/// <summary>
+	/// Project with coded logic, pixel artwork and audio etc...
+	/// </summary>
+	Game,
+	/// <summary>
+	/// Project with only pixel artwork
+	/// </summary>
+	Artwork,
+	/// <summary>
+	/// Project with only pixel artwork for theme of AngeliA Engine
+	/// </summary>
+	EngineTheme,
+}
+
+
 /// <summary>
 /// Representation of Info.json in universe folder
 /// </summary>
@@ -16,6 +33,10 @@ public class UniverseInfo : IJsonSerializationCallback {
 	/// </summary>
 	public string DeveloperName = "";
 	/// <summary>
+	/// Type of this project
+	/// </summary>
+	public ProjectType ProjectType = ProjectType.Game;
+	/// <summary>
 	/// Major version of this project
 	/// </summary>
 	public int MajorVersion = 0;
@@ -27,8 +48,18 @@ public class UniverseInfo : IJsonSerializationCallback {
 	/// Patch version of this project
 	/// </summary>
 	public int PatchVersion = 0;
-	
-	
+	/// <summary>
+	/// Which version of AngeliA Engine published this project
+	/// </summary>
+	public uint EngineBuildVersion = 0;
+	/// <summary>
+	/// Require map editor from AngeliA Engine when under development
+	/// </summary>
+	public bool UseMapEditor = true;
+	/// <summary>
+	/// Use the global lighting system
+	/// </summary>
+	public bool UseLightingSystem = false;
 	/// <summary>
 	/// Save map file changes made by the player
 	/// </summary>

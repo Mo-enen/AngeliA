@@ -9,6 +9,7 @@ namespace AngeliA;
 public interface IBlockEntity {
 
 	// VAR
+	private static readonly PhysicsCell[] BlockOperationCache = new PhysicsCell[32];
 	/// <summary>
 	/// Max item stack count as a block item.
 	/// </summary>
@@ -22,7 +23,6 @@ public interface IBlockEntity {
 	/// </summary>
 	public bool AllowBeingEmbedAsElement => true;
 	private static readonly HashSet<int> IgnoreEmbedAsElement = [];
-	private static readonly PhysicsCell[] BlockOperationCache = new PhysicsCell[32];
 
 	// MSG
 	[OnGameInitialize]

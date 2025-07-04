@@ -129,10 +129,6 @@ public sealed partial class MapEditor : WindowUI {
 	/// True if the map editor entity is in navigating mode
 	/// </summary>
 	public static bool IsEditorNavigating => Instance != null && Instance.IsNavigating;
-	public static bool QuickPlayerDrop { get; set; } = false;
-	public static bool ShowState { get; set; } = false;
-	public static bool ShowBehind { get; set; } = true;
-	public static bool ShowGridGizmos { get; set; } = true;
 	public override IRect BackgroundRect => default;
 	/// <summary>
 	/// Current position Z value for the camera view
@@ -154,6 +150,10 @@ public sealed partial class MapEditor : WindowUI {
 	private MapEditorMeta EditorMeta = new();
 
 	// Data
+	private static bool QuickPlayerDrop = false;
+	private static bool ShowState = false;
+	private static bool ShowBehind = true;
+	private static bool ShowGridGizmos = true;
 	private readonly IntToChars StateXLabelToString = new("x:");
 	private readonly IntToChars StateYLabelToString = new("y:");
 	private readonly IntToChars StateZLabelToString = new("z:");
@@ -481,7 +481,7 @@ public sealed partial class MapEditor : WindowUI {
 		UpdatePanelRect(Renderer.CameraRect);
 
 		// Cursor
-		if (!IsPlaying) Cursor.RequireCursor();
+		if (!IsPlaying) Cursor.RequireCursor(int.MinValue);
 
 		// Reset for Playing
 		if (IsPlaying || DroppingPlayer) {
@@ -1184,13 +1184,6 @@ public sealed partial class MapEditor : WindowUI {
 		if (IsNavigating) {
 			Game.ResetDoodle(GetNavBgColor());
 		}
-	}
-
-
-	public static void SpawnToStage (bool startAsPlayMode) {
-		if (Instance != null) return;
-		if (Stage.SpawnEntity<MapEditor>(0, 0) is not MapEditor editor) return;
-		editor.SetEditorMode(startAsPlayMode);
 	}
 
 

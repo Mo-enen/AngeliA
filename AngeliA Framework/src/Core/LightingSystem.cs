@@ -88,7 +88,7 @@ public static class LightingSystem {
 
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
-		Enable = !Game.IsToolApplication && !Util.TryGetAttributeFromAllAssemblies<DisableLightingSystemAttribute>();
+		Enable = !Game.IsToolApplication && Universe.BuiltInInfo.UseLightingSystem;
 		if (!Enable) return;
 		int maxHeight = Universe.BuiltInInfo.MaxViewHeight;
 		CellWidth = Universe.BuiltInInfo.ViewRatio * maxHeight / 1000 / Const.CEL + LIGHT_MAP_UNIT_PADDING * 2;
