@@ -112,6 +112,7 @@ public class Universe {
 	internal static void OnGameInitializeMin () {
 		BuiltIn = LoadFromFile(AngePath.BuiltInUniverseRoot);
 		BuiltInInfo = BuiltIn.Info;
+		AngePath.SetCurrentUserPath(BuiltIn.Info.DeveloperName, BuiltIn.Info.ProductName);
 	}
 
 
@@ -141,7 +142,7 @@ public class Universe {
 		// Load Saving & Slot
 		int currentSlot = 0;
 		string savingRoot = useBuiltInSavingRoot ?
-			Util.CombinePaths(AngePath.GetPersistentDataPath(Game.DeveloperName, Game.ProjectName), "Saving") :
+			Util.CombinePaths(AngePath.GetPersistentDataPath(result.Info.DeveloperName, result.Info.ProductName), "Saving") :
 			Util.CombinePaths(universeFolder, "Saving");
 		string currentSlotStr = Util.FileToText(Util.CombinePaths(savingRoot, "CurrentSlot.txt"));
 		if (!string.IsNullOrWhiteSpace(currentSlotStr) && int.TryParse(currentSlotStr, out currentSlot)) {

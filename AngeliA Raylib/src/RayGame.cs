@@ -20,7 +20,7 @@ public partial class RayGame : Game {
 
 	// Api
 #if DEBUG
-	private bool CloseWindowsTerminalOnQuit = true;
+	private readonly bool CloseWindowsTerminalOnQuit = true;
 #endif
 
 	// Data
@@ -34,6 +34,7 @@ public partial class RayGame : Game {
 	private int PrevFPS = -1;
 	protected long StartTicks;
 
+
 	// Saving
 	private static readonly SavingBool WindowMaximized = new("Game.WindowMaximized", false, SavingLocation.Global);
 
@@ -42,15 +43,14 @@ public partial class RayGame : Game {
 	static RayGame () => Util.AddAssembly(typeof(RayGame).Assembly);
 
 
-	public RayGame (string developerName, string projectName) : base(developerName, projectName) { }
+	public RayGame (string[] args) : base(args) {
+#if DEBUG
+		CloseWindowsTerminalOnQuit = !args.Any(arg => arg.Equals("DontCloseCMD", StringComparison.OrdinalIgnoreCase));
+#endif
+	}
 
 
 	public void Run () {
-#if DEBUG
-		CloseWindowsTerminalOnQuit = !Environment.GetCommandLineArgs().Any(
-			arg => arg.Equals("DontCloseCMD", StringComparison.OrdinalIgnoreCase)
-		);
-#endif
 		InitializeGame();
 		while (!RequireQuitGame) {
 			try {

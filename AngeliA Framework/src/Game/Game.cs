@@ -75,7 +75,7 @@ public abstract partial class Game {
 	/// </summary>
 	public static object CurrentBGM { get; protected set; }
 
-	// Config Info
+	// Attribute Info
 	/// <summary>
 	/// True if the application should be treated as tool instead of game
 	/// </summary>
@@ -84,13 +84,7 @@ public abstract partial class Game {
 	/// True if the application don't need pixel data from artwork sheet
 	/// </summary>
 	public static bool IgnoreArtworkPixels { get; private set; } = false;
-	public static string ProjectName { get; private set; } = "(untitled)";
-	public static string DeveloperName { get; private set; } = "(default)";
-	/// <summary>
-	/// Allow player press start button (esc) to pause
-	/// </summary>
-	public static bool AllowPause { get; private set; } = true;
-	
+
 	// Event
 	[OnGameRestart] internal static System.Action OnGameRestart;
 	[OnGameQuitting] internal static System.Action OnGameQuitting;
@@ -121,12 +115,11 @@ public abstract partial class Game {
 	private static readonly List<int> CacheForAudioSyncRemove = [];
 	private static readonly int[] ScreenEffectEnableFrames = new int[Const.SCREEN_EFFECT_COUNT].FillWithValue(-1);
 	private static int _ProcedureAudioVolume = 1000;
-	private static int LastSettleFrame;
 	private readonly char[] PressingCharsForCurrentFrame = new char[256];
 	private readonly KeyboardKey[] PressingKeysForCurrentFrame = new KeyboardKey[256];
 	private int PressingCharCount = 0;
 	private int PressingKeyCount = 0;
-
+	private static int LastSettleFrame;
 	// Saving
 	private static readonly SavingBool _IsFullscreen = new("Game.IsFullscreen", false, SavingLocation.Global);
 	private static readonly SavingBool _IsMaximize = new("Game.IsMaximize", false, SavingLocation.Global);
@@ -162,15 +155,12 @@ public abstract partial class Game {
 	/// <summary>
 	/// Create a game instance with command-line arguments 
 	/// </summary>
-	public Game (string developerName, string projectName) {
+	public Game (params string[] args) {
 
 		Instance = this;
-		DeveloperName = developerName;
-		ProjectName = projectName;
 
 		// Args
 		string universeRoot = null;
-		var args = System.Environment.GetCommandLineArgs();
 		for (int i = 0; i < args.Length; i++) {
 			string arg = args[i];
 			if (string.IsNullOrEmpty(arg)) continue;
@@ -198,6 +188,10 @@ public abstract partial class Game {
 					case var _ when arg.StartsWith("-uni:"):
 						universeRoot = Util.ArgPath_to_Path(arg[5..]);
 						break;
+					// -tool:
+					case var _ when arg.StartsWith("-tool:"):
+						IsToolApplication = true;
+						break;
 				}
 			} catch (System.Exception ex) { Debug.LogException(ex); }
 		}
@@ -209,7 +203,11 @@ public abstract partial class Game {
 			universeRoot = AngePath.GetUniverseRoot(Util.GetParentPath(System.Environment.CurrentDirectory));
 		}
 		AngePath.BuiltInUniverseRoot = universeRoot;
-		AngePath.SetCurrentUserPath(developerName, projectName);
+
+		// Attribute >> Game
+		if (Util.TryGetAttributeFromAllAssemblies<IgnoreArtworkPixelsAttribute>()) {
+			IgnoreArtworkPixels = true;
+		}
 
 	}
 
@@ -218,7 +216,6 @@ public abstract partial class Game {
 	/// Call this function once to initialize the game. Must be called before any Update function called.
 	/// </summary>
 	public void Initialize () {
-
 		try {
 
 			GlobalFrame = 0;
@@ -245,7 +242,7 @@ public abstract partial class Game {
 			OrderedAttribute.InvokeAsAutoOrderingTask<OnGameInitializeLaterAttribute>();
 
 			if (!IsToolApplication) {
-				SetWindowTitle(ProjectName);
+				SetWindowTitle(Universe.BuiltInInfo.ProductName);
 				SetWindowIcon("WindowIcon".AngeHash());
 			}
 			System.GC.Collect();
@@ -277,7 +274,7 @@ public abstract partial class Game {
 			OnGameUpdatePauseless?.InvokeAsEvent();
 
 			// Switch Between Play and Pause
-			if (AllowPause) {
+			if (Universe.BuiltInInfo.AllowPause) {
 				if (Input.GameKeyUp(Gamekey.Start)) {
 					if (IsPlaying) {
 						PauseGame();
@@ -393,19 +390,6 @@ public abstract partial class Game {
 
 	#region --- API ---
 
-	public static void Config (
-		bool isToolApplication = false,
-		bool ignoreArtworkPixels = false,
-		bool allowPause = true
-	) {
-		if (GlobalFrame > 0) {
-			Debug.LogWarning($"{nameof(Game)}.{nameof(Config)} can only be called in Entry.cs (before the game run)");
-			return;
-		}
-		IsToolApplication = isToolApplication;
-		IgnoreArtworkPixels = ignoreArtworkPixels;
-		AllowPause = allowPause;
-	}
 
 	/// <summary>
 	/// Invoke the OnGameRestart event. The game-play logic will be reset after this is called
@@ -421,7 +405,7 @@ public abstract partial class Game {
 	/// Pause the game from playing
 	/// </summary>
 	public static void PauseGame () {
-		if (!IsPlaying || !AllowPause) return;
+		if (!IsPlaying || !Universe.BuiltInInfo.AllowPause) return;
 		StopAllSounds();
 		IsPlaying = false;
 	}

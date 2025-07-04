@@ -93,7 +93,7 @@ public static partial class GUI {
 	private static int CheckingContentVersion = int.MinValue;
 	private static int InternalRequiringControlID = int.MinValue;
 	private static int TextInputAnchoredIndex = -1;
-	private static bool ForceUnifyBasedOnMonitor = true;
+	private static bool ForceUnifyBasedOnMonitor;
 
 
 	#endregion
@@ -101,7 +101,13 @@ public static partial class GUI {
 
 
 
-	#region --- MSG ---
+	#region --- API ---
+
+
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		ForceUnifyBasedOnMonitor = Universe.BuiltInInfo.ScaleUiBasedOnMonitor;
+	}
 
 
 	[OnGameUpdate(1023)]
@@ -153,19 +159,6 @@ public static partial class GUI {
 		ToolbarSize = Unify(42);
 		ScrollbarSize = Unify(12);
 		LabelWidth = Unify(196);
-	}
-
-
-	#endregion
-
-
-
-
-	#region --- API ---
-
-
-	public static void Config (bool forceUnifyBasedOnMonitor) {
-		ForceUnifyBasedOnMonitor = forceUnifyBasedOnMonitor;
 	}
 
 

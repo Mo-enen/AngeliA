@@ -88,7 +88,7 @@ public static class LightingSystem {
 
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
-		Enable = Enable && !Game.IsToolApplication;
+		Enable = !Game.IsToolApplication && !Util.TryGetAttributeFromAllAssemblies<DisableLightingSystemAttribute>();
 		if (!Enable) return;
 		int maxHeight = Universe.BuiltInInfo.MaxViewHeight;
 		CellWidth = Universe.BuiltInInfo.ViewRatio * maxHeight / 1000 / Const.CEL + LIGHT_MAP_UNIT_PADDING * 2;
@@ -369,15 +369,6 @@ public static class LightingSystem {
 
 
 	#region --- API ---
-
-
-	public static void Config (bool enable) {
-		if (Game.GlobalFrame > 0) {
-			Debug.LogWarning($"{nameof(LightingSystem)}.{nameof(Config)} can only be called in Entry.cs (before the game run)");
-			return;
-		}
-		Enable = enable;
-	}
 
 
 	/// <summary>

@@ -24,7 +24,7 @@ public static class PlayerSystem {
 	/// <summary>
 	/// True if the system is online
 	/// </summary>
-	public static bool Enable { get; private set; } = true;
+	public static bool Enable { get; private set; } = false;
 	/// <summary>
 	/// Instance of the selecting character as player (can be changed or set to null at any moment)
 	/// </summary>
@@ -172,6 +172,9 @@ public static class PlayerSystem {
 
 	[OnGameInitialize]
 	internal static void OnGameInitialize () {
+		if (Util.TryGetAttributeFromAllAssemblies<EnablePlayerSystemAttribute>()) {
+			Enable = true;
+		}
 		TargetViewHeight.BaseValue = Universe.BuiltInInfo.DefaultViewHeight;
 	}
 
@@ -639,11 +642,6 @@ public static class PlayerSystem {
 
 
 	#region --- API ---
-
-
-	public static void Config (bool enable = true) {
-		Enable = enable;
-	}
 
 
 	// Select Player

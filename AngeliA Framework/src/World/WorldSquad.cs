@@ -76,9 +76,11 @@ public sealed class WorldSquad : IBlockSquad {
 
 		if (!Renderer.IsReady) return TaskResult.Continue;
 
+		UseBuiltInAsFailback = !Util.TryGetAttributeFromAllAssemblies<DontUseBuiltInMapAsFailbackAttribute>();
 		var info = Universe.BuiltInInfo;
 		WorldBehindAlpha = info.WorldBehindAlpha;
 		WorldBehindParallax = info.WorldBehindParallax;
+		ReadonlyMap = info.ReadonlyMap;
 		Front = new WorldSquad();
 		Behind = new WorldSquad();
 		Stream = WorldStream.GetOrCreateStreamFromPool(Universe.BuiltIn.SlotUserMapRoot);
@@ -147,16 +149,6 @@ public sealed class WorldSquad : IBlockSquad {
 
 
 	#region --- API ---
-
-
-	public static void Config (bool useBuiltInAsFailback, bool readonlyMap) {
-		if (Game.GlobalFrame > 0) {
-			Debug.LogWarning($"{nameof(WorldSquad)}.{nameof(Config)} can only be called in Entry.cs (before the game run)");
-			return;
-		}
-		UseBuiltInAsFailback = useBuiltInAsFailback;
-		ReadonlyMap = readonlyMap;
-	}
 
 
 	/// <summary>
