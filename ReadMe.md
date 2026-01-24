@@ -1,6 +1,13 @@
 #  <img src="https://raw.githubusercontent.com/Mo-enen/AngeliA-Document/refs/heads/main/docs/images\Icon.png" width="50"/> AngeliA Engine
 
+<br>
+<br>
 
+> [!WARNING]
+> New update of this project will not be open source anymore
+
+<br>
+<br>
 
 A 2D game engine focused on open-world platformer games, built with C#.
 
