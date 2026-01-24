@@ -46,8 +46,9 @@ public abstract class CarryingPipe : Entity, IBlockEntity {
 	private Direction5? NeighborPipeDirU = null;
 
 	// MSG
-	[OnGameUpdate]
-	internal static void OnGameUpdate () {
+	[OnGameInitialize]
+	internal static void OnGameInitialize () {
+		PipePool.Clear();
 		foreach (var type in typeof(CarryingPipe).AllChildClass()) {
 			if (System.Activator.CreateInstance(type) is not CarryingPipe pipe) continue;
 			PipePool.TryAdd(type.AngeHash(), pipe.Direction);
